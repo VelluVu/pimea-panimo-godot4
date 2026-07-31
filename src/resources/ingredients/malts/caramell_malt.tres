@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="IngredientData" format=3 uid="uid://bueux2llqlk26"]
+
+[ext_resource type="Script" uid="uid://dniwiyu5ynp71" path="res://src/classes/ingredient_data.gd" id="1_1hcu2"]
+
+[resource]
+script = ExtResource("1_1hcu2")
+id = 102
+name = "Karamelli Mallas"
+description = "Erikoismallas joka antaa väriä ja paahteista makua olueen"
+metadata/_custom_type_script = "uid://dniwiyu5ynp71"

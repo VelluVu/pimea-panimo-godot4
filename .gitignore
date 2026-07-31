@@ -1,0 +1,8 @@
+.godot/
+*.translation
+
+.godot/mono/
+msbuild.log
+
+.DS_Store
+Thumbs.db

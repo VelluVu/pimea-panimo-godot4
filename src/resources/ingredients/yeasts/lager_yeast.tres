@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="IngredientData" format=3 uid="uid://dtvq8l5l3k1kt"]
+
+[ext_resource type="Script" uid="uid://dniwiyu5ynp71" path="res://src/classes/ingredient_data.gd" id="1_q4p8x"]
+
+[resource]
+script = ExtResource("1_q4p8x")
+type = 2
+id = 301
+name = "Lagerhiiva"
+description = "Pohjahiiva tuottaa puhtaan raikkaan oluen"
+unit = 2
+metadata/_custom_type_script = "uid://dniwiyu5ynp71"

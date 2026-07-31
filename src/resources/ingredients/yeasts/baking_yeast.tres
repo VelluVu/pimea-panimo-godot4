@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="IngredientData" format=3 uid="uid://dvyekqqpqmwn7"]
+
+[ext_resource type="Script" uid="uid://dniwiyu5ynp71" path="res://src/classes/ingredient_data.gd" id="1_mnyt8"]
+
+[resource]
+script = ExtResource("1_mnyt8")
+type = 2
+id = 300
+name = "Leivonta hiiva"
+description = "Halvinta mahdollista hiivaa tämä ei tee kovin hyvää olutta"
+unit = 2
+metadata/_custom_type_script = "uid://dniwiyu5ynp71"

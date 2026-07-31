@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://d3urkorwgnfgm"]
+
+[node name="BeerBatchElement" type="HBoxContainer" unique_id=233669745]
+
+[node name="BeerStyleLabel" type="Label" parent="." unique_id=1063645653]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Olut Tyyli"
+
+[node name="AmountLabel" type="Label" parent="." unique_id=206597047]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "0 kpl"
+
+[node name="MaturityLabel" type="Label" parent="." unique_id=1697670967]
+layout_mode = 2
+text = "Laatu: 0.0"

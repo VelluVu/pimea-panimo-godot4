@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="IngredientData" format=3 uid="uid://dtuqebl4vdhv8"]
+
+[ext_resource type="Script" uid="uid://dniwiyu5ynp71" path="res://src/classes/ingredient_data.gd" id="1_7r1ep"]
+
+[resource]
+script = ExtResource("1_7r1ep")
+id = 100
+name = "Pilsner Malt"
+description = "Vaalean värinen perusmallas joka antaa myös hieman makua olueen"
+metadata/_custom_type_script = "uid://dniwiyu5ynp71"
