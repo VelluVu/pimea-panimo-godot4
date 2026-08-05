@@ -38,3 +38,17 @@ static func build_ingredient_database_recursive(folder_path: String) -> void:
 				else:
 					database[ingredient_res.id] = ingredient_res
 					print("Tietokanta löysi alikansiosta: ", ingredient_res.name, " (ID: ", ingredient_res.id, ")")
+
+
+func has_item_by_id(id : int) -> bool:
+	if not database.has(id):
+		print(ErrorMessageContainer.INVALID_ID % [ErrorMessageContainer.DATABASE_STRING, id, ErrorMessageContainer.LIST_STRING])
+		return false
+	return true
+
+
+func get_item_by_id(id : int) -> IngredientData:
+	if not has_item_by_id(id):
+		return null
+	
+	return database[id]

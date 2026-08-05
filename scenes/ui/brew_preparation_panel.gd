@@ -21,7 +21,7 @@ func _initialize_table_nodes() -> void:
 		table_labels[id] = new_label
 
 
-func _on_brewery_state_changed(brewery : Brewery) -> void:
+func _on_brewery_state_changed(_brewery : Brewery) -> void:
 	_update_table_list_ui()
 
 

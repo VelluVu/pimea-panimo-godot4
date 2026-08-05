@@ -37,8 +37,9 @@ func _update_ingredient_list() -> void:
 	for id in IngredientDatabase.sorted_ids:
 		var ingredient : IngredientData = IngredientDatabase.database[id]
 		var label: Label = storage_labels[id]
+		var item : InventoryItem = inventory.get_item_by_type_and_id(ingredient.type, id)
 		
-		if inventory.has_item(ingredient, 1):
+		if item != null:
 			var current_amount: int = inventory.items[ingredient.type][ingredient.id].amount
 			
 			label.text = ingredient.name + ": " + str(current_amount) + " " + ingredient.get_unit_string()

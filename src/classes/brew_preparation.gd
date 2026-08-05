@@ -8,17 +8,31 @@ extends Resource
 func clear_preparation() -> void:
 	selected_contents.clear()
 
-# Lisää ainetta pöydälle
+
+func has_item(ingredient_id: int, amount: int) -> bool:
+	if not IngredientDatabase.has_item_by_id(ingredient_id):
+		return false
+	
+	if not selected_contents.has(ingredient_id):
+		return false
+		
+	return selected_contents[ingredient_id] >= amount
+
+#check the id reliablitity
 func add_to_table(ingredient_id: int, amount: int) -> void:
+	if amount <= 0:
+		return
+	
+	if not IngredientDatabase.has_item_by_id(ingredient_id):
+		return
+	
 	if not selected_contents.has(ingredient_id):
 		selected_contents[ingredient_id] = 0
+		
 	selected_contents[ingredient_id] += amount
 
-# Vähentää ainetta pöydältä ja poistaa avaimen jos määrä menee nollaan
+
 func remove_from_table(ingredient_id: int, amount: int) -> int:
-	if not selected_contents.has(ingredient_id):
-		return 0
-		
 	var on_table : int = selected_contents[ingredient_id]
 	
 	if on_table >= amount:

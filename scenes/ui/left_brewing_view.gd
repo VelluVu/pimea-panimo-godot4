@@ -21,15 +21,15 @@ var last_used_slider_index : int = -1
 
 
 func _on_malt_slider_value_changed(value: float) -> void:
-	_edit_header(0,value)
+	_edit_header(0,roundi(value))
 
 
 func _on_hop_slider_value_changed(value: float) -> void:
-	_edit_header(1,value)
+	_edit_header(1,roundi(value))
 
 
 func _on_yeast_slider_value_changed(value: float) -> void:
-	_edit_header(2,value)
+	_edit_header(2,roundi(value))
 
 
 func _edit_header(index : int, value : int) -> void:

@@ -39,15 +39,15 @@ func _handle_slider_selection(index : int, value : int) -> void:
 
 
 func _on_malt_slider_value_changed(value: float) -> void:
-	_handle_slider_selection(0, value)
+	_handle_slider_selection(0, roundi(value))
 
 
 func _on_hop_slider_value_changed(value: float) -> void:
-	_handle_slider_selection(1, value)
+	_handle_slider_selection(1, roundi(value))
 
 
 func _on_yeast_slider_value_changed(value: float) -> void:
-	_handle_slider_selection(2, value)
+	_handle_slider_selection(2, roundi(value))
 
 
 func _on_buy_button_pressed() -> void:
