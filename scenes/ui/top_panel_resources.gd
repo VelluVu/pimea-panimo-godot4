@@ -35,7 +35,7 @@ func _on_brewery_state_changed(brewery : Brewery) -> void:
 		if change != 0:
 			_create_popup_effect(reputation_label, change, " €", false)
 	
-	reputation_label.text = str(new_reputation) + " €"
+	reputation_label.text = "Maine: " + str(new_reputation)
 	last_reputation = new_reputation
 	
 	# B: LASKETAAN RISKI-MUUTOS LENNOSTA
