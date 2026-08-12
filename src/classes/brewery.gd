@@ -1,6 +1,7 @@
 class_name Brewery
 extends Resource
 
+
 @export var inventory : Inventory
 @export var money: int = 100
 @export var risk: int = 0
@@ -49,7 +50,7 @@ func _on_buy_ingredient(ingredient_id : int, amount : int) -> void:
 	var buy_price : int = roundi(ingredient.base_price * amount)
 	
 	if money < buy_price:
-		print(ErrorMessageContainer.RESOURCE_ERROR % [money, buy_price, ErrorMessageContainer.MONEY_STRING])
+		print(StringContainer.RESOURCE_ERROR % [money, buy_price, StringContainer.MONEY_STRING])
 		return
 
 	money -= buy_price
@@ -69,10 +70,33 @@ func _on_sell_ingredient(ingredient_id : int, amount : int) -> void:
 		
 	var sell_price : int = roundi(final_amount * ingredient.base_price * 0.75)
 	money += sell_price #ei saa ihan samaa hintaa takas millä joskus osti...
-	print("Myit %s määrän rojuja ja saat %s takas" % [final_amount, sell_price])
+	print(StringContainer.SELL_MESSAGE % [final_amount, sell_price])
 	BrewerySignals.brewery_state_changed.emit(self)
 
 
 func _on_start_brew() -> void:
-	print("brewery start_brew is not implemented")
-	#check if have enough added ingredients in list
+	if brew_preparation.selected_contents.is_empty():
+		print(StringContainer.TABLE_EMPTY_ERROR)
+		return
+	
+	var resolver := BrewResolver.new()
+	var brew_report : BrewResult = resolver.resolve_brew_style(brew_preparation.selected_contents)
+	
+	if brew_report == null:
+		brew_preparation.clear_preparation()
+		BrewerySignals.brewery_state_changed.emit(self)
+		return 
+	
+	risk += brew_report.risk_change
+	reputation += brew_report.reputation_change
+	
+	var new_batch := BrewBatch.new()
+	new_batch.style = brew_report.style
+	new_batch.amount_bottles = brew_report.bottle_yield
+	new_batch.current_quality = brew_report.quality_multiplier
+	
+	inventory.brew_batches.append(new_batch)
+	
+	brew_preparation.clear_preparation()
+	print(StringContainer.SUCCESFULL_BREW_MESSAGE, brew_report.get_style_string())
+	BrewerySignals.brewery_state_changed.emit(self)

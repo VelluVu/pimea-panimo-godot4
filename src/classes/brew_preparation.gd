@@ -33,6 +33,9 @@ func add_to_table(ingredient_id: int, amount: int) -> void:
 
 
 func remove_from_table(ingredient_id: int, amount: int) -> int:
+	if not has_item(ingredient_id, amount):
+		return 0
+	
 	var on_table : int = selected_contents[ingredient_id]
 	
 	if on_table >= amount:

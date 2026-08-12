@@ -21,7 +21,7 @@ GUISignals="*uid://blglgg64fcgx6"
 BrewerySignals="*uid://c7qf7wkp1jef8"
 IngredientDatabase="*uid://dexbsgkyojbsd"
 BrewEngine="*uid://v1ldxk71j6xp"
-ErrorMessageContainer="*uid://dpid4q4x5pp7w"
+StringContainer="*uid://dpid4q4x5pp7w"
 
 [physics]
 

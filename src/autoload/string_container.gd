@@ -1,0 +1,40 @@
+extends Node
+
+const PATH_TO_INGREDIENTS : String = "res://src/resources/ingredients/"
+
+const TUNTEMATON : String = "Tuntematon"
+const KOTIKALJA : String = "Kotikalja"
+const BULKKILAGER : String = "Bulkki Lager"
+const TUMMALAGER : String = "Tumma Lager"
+const VAALEAALE : String = "Vaalea Ale"
+const AMBERALE : String = "Amber Ale"
+const IPA : String = "IPA"
+
+const KG : String = "kg"
+const G : String = "g"
+const KPL : String = "kpl"
+const SLASH : String = "/"
+const RESOURCE_END : String = ".tres"
+
+const DATABASE_STRING : String = "Database"
+const LIST_STRING : String = "List"
+const INVENTORY_STRING : String = "Inventory"
+const MONEY_STRING : String = "Money"
+
+const INVALID_ID_ERROR : String = "%s ERROR: item with ID: %s does not exist in %s"
+const WITHDRAW_NO_STOCK_ERROR : String = "%s ERROR: withdraw failed. Not enough stock for: %s"
+const WITHDRAW_INVALID_AMOUNT_ERROR : String = "%s ERROR: withraw failed. Invalid withraw amount: %s"
+const RESOURCE_ERROR : String = "Resource ERROR: currently have %s, and need %s %s"
+const TABLE_EMPTY_ERROR : String = "Start Brewing ERROR: table has no ingredients"
+const NOT_ENOUGH_INGREDIENTS_ERROR : String = "Brew resolver ERROR: not enough ingredients"
+const DATABASE_DUBLICATE_KEY_ERROR : String = "ERROR: ID %s is already in use! Dublicate key: %s"
+const INVALID_EXPORT_SCRIPT_ERROR : String = "%s ERROR: Export script is null"
+const TYPE_ERROR : String = "ERROR: ID %s is correct type, but file is not correct inherited class!"
+const INVALID_ADD_AMOUNT_ERROR : String = "%s ERROR: Trying to add %s amount of ingredient with ID: %s"
+
+const SELL_MESSAGE : String = "Sold %s amount of stuff, and you get %s€ back"
+const SUCCESFULL_BREW_MESSAGE : String = "Succesfull brew batch: "
+const NEW_GAME_MESSAGE : String = "New game started! Brewery established."
+const FOLDER_SCAN_MESSAGE : String = "[IngredientDatabase] Start recursive folder scan..."
+const FOLDER_SCAN_COMPLETE_MESSAGE : String = "[IngredientDatabase] Database fully sorted! Total registered items: "
+const DATABASE_FOUND_DATA_MESSAGE : String = "[IngredientDatabase] found from subfolder: %s (ID: %s)"

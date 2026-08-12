@@ -1,12 +1,14 @@
-[gd_resource type="Resource" script_class="IngredientData" format=3 uid="uid://cjh76cv0wbnuc"]
+[gd_resource type="Resource" script_class="HopData" format=3 uid="uid://cjh76cv0wbnuc"]
 
-[ext_resource type="Script" uid="uid://dniwiyu5ynp71" path="res://src/classes/ingredient_data.gd" id="1_ehgf6"]
+[ext_resource type="Script" uid="uid://ccv8ohajnmhif" path="res://src/classes/hop_data.gd" id="1_ywku1"]
 
 [resource]
-script = ExtResource("1_ehgf6")
-type = 1
+script = ExtResource("1_ywku1")
+alpha_acids = 16
+beta_acids = 6
 id = 200
 name = "Magnum Humala"
 description = "Tämä katkerohumala antaa oluelle hyvät katkerot"
 unit = 1
+type = 1
 metadata/_custom_type_script = "uid://dniwiyu5ynp71"

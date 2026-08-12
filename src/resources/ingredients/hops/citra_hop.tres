@@ -1,12 +1,14 @@
-[gd_resource type="Resource" script_class="IngredientData" format=3 uid="uid://dh71cn3ey25q5"]
+[gd_resource type="Resource" script_class="HopData" format=3 uid="uid://dh71cn3ey25q5"]
 
-[ext_resource type="Script" uid="uid://dniwiyu5ynp71" path="res://src/classes/ingredient_data.gd" id="1_ex7le"]
+[ext_resource type="Script" uid="uid://ccv8ohajnmhif" path="res://src/classes/hop_data.gd" id="1_2au4y"]
 
 [resource]
-script = ExtResource("1_ex7le")
-type = 1
+script = ExtResource("1_2au4y")
+alpha_acids = 13
+beta_acids = 4
 id = 202
 name = "Citra Humala"
 description = "Tämä aromihumala antaa trooppisia makuja oluelle"
 unit = 1
+type = 1
 metadata/_custom_type_script = "uid://dniwiyu5ynp71"

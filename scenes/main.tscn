@@ -1,11 +1,11 @@
 [gd_scene format=3 uid="uid://ccmro4v7bveuo"]
 
 [ext_resource type="Script" uid="uid://dcx0ivwno5nl2" path="res://scenes/ui/gui.gd" id="1_o5qli"]
-[ext_resource type="PackedScene" uid="uid://d3urkorwgnfgm" path="res://scenes/ui/beer_batch_element.tscn" id="2_0wfyh"]
 [ext_resource type="Script" uid="uid://ckjoayiqlli51" path="res://scenes/ui/right_warehouse_view.gd" id="2_sugp2"]
 [ext_resource type="Script" uid="uid://bvpo7jgusrd3q" path="res://scenes/ui/top_panel_resources.gd" id="2_tipki"]
 [ext_resource type="Script" uid="uid://v0858wg1wksr" path="res://scenes/ui/ingredient_inventory_panel.gd" id="4_85g3d"]
 [ext_resource type="Script" uid="uid://ctq44eyxh0uc8" path="res://scenes/ui/left_brewing_view.gd" id="4_jyhfs"]
+[ext_resource type="Script" uid="uid://dxiexvbe7ambw" path="res://scenes/ui/beer_batch_panel.gd" id="5_choun"]
 [ext_resource type="Script" uid="uid://dbsgu6mke0d4q" path="res://scenes/ui/left_shop_view.gd" id="5_tbgi4"]
 [ext_resource type="Script" uid="uid://bh2cqv03r8t8o" path="res://scenes/ui/ingredient_option_button.gd" id="5_tipki"]
 [ext_resource type="Script" uid="uid://be6oyi80fbyom" path="res://scenes/ui/brew_preparation_panel.gd" id="7_tipki"]
@@ -86,6 +86,7 @@ size_flags_vertical = 3
 [node name="BeerBatchPanel" type="VBoxContainer" parent="GUI/Right_WarehouseView" unique_id=1674197645]
 layout_mode = 2
 size_flags_vertical = 3
+script = ExtResource("5_choun")
 
 [node name="BeerBatchHeaderLabel" type="Label" parent="GUI/Right_WarehouseView/BeerBatchPanel" unique_id=262175860]
 layout_mode = 2
@@ -93,14 +94,12 @@ text = "Pullovarasto (0.5L):"
 
 [node name="BeerBatchScrollContainer" type="ScrollContainer" parent="GUI/Right_WarehouseView/BeerBatchPanel" unique_id=1019617282]
 layout_mode = 2
+size_flags_vertical = 3
 
 [node name="BeerBatchListVBox" type="VBoxContainer" parent="GUI/Right_WarehouseView/BeerBatchPanel/BeerBatchScrollContainer" unique_id=681395783]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-
-[node name="BeerBatchElement" parent="GUI/Right_WarehouseView/BeerBatchPanel/BeerBatchScrollContainer/BeerBatchListVBox" unique_id=233669745 instance=ExtResource("2_0wfyh")]
-layout_mode = 2
 
 [node name="Left_BrewingView" type="VBoxContainer" parent="GUI" unique_id=968176738 node_paths=PackedStringArray("malt_selection_header", "hop_selection_header", "yeast_selection_header", "malt_option_button", "hop_option_button", "yeast_option_button", "malt_slider", "hop_slider", "yeast_slider", "add_button", "remove_button")]
 layout_mode = 1
@@ -316,15 +315,15 @@ layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4
 
-[node name="BuyButton" type="Button" parent="GUI/Left_ShopView/IngredientSelectionElementList/BuySellLastModifiedButtonPanel" unique_id=2004856264]
-custom_minimum_size = Vector2(64, 64)
-layout_mode = 2
-text = "Osta"
-
 [node name="SellButton" type="Button" parent="GUI/Left_ShopView/IngredientSelectionElementList/BuySellLastModifiedButtonPanel" unique_id=31296574]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 text = "Myy"
+
+[node name="BuyButton" type="Button" parent="GUI/Left_ShopView/IngredientSelectionElementList/BuySellLastModifiedButtonPanel" unique_id=2004856264]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+text = "Osta"
 
 [node name="BottomPanel_EventsView" type="PanelContainer" parent="GUI" unique_id=1317728424]
 visible = false
@@ -397,8 +396,8 @@ text = "back"
 [connection signal="value_changed" from="GUI/Left_ShopView/IngredientSelectionElementList/MaltSelectionElement/MaltSelection/MaltSlider" to="GUI/Left_ShopView" method="_on_malt_slider_value_changed"]
 [connection signal="value_changed" from="GUI/Left_ShopView/IngredientSelectionElementList/HopSelectionElement/HopSelection/HopSlider" to="GUI/Left_ShopView" method="_on_hop_slider_value_changed"]
 [connection signal="value_changed" from="GUI/Left_ShopView/IngredientSelectionElementList/YeastSelectionElement/YeastSelection/YeastSlider" to="GUI/Left_ShopView" method="_on_yeast_slider_value_changed"]
-[connection signal="pressed" from="GUI/Left_ShopView/IngredientSelectionElementList/BuySellLastModifiedButtonPanel/BuyButton" to="GUI/Left_ShopView" method="_on_buy_button_pressed"]
 [connection signal="pressed" from="GUI/Left_ShopView/IngredientSelectionElementList/BuySellLastModifiedButtonPanel/SellButton" to="GUI/Left_ShopView" method="_on_sell_button_pressed"]
+[connection signal="pressed" from="GUI/Left_ShopView/IngredientSelectionElementList/BuySellLastModifiedButtonPanel/BuyButton" to="GUI/Left_ShopView" method="_on_buy_button_pressed"]
 [connection signal="pressed" from="GUI/ShopEntrancePanel/ShopButton" to="GUI" method="_on_shop_button_pressed"]
 [connection signal="pressed" from="GUI/BreweryEntrancePanel/BreweryButton" to="GUI" method="_on_brewery_button_pressed"]
 [connection signal="pressed" from="GUI/BackButton" to="GUI" method="_on_back_button_pressed"]

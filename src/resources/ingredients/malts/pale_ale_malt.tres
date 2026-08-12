@@ -1,9 +1,10 @@
-[gd_resource type="Resource" script_class="IngredientData" format=3 uid="uid://bjh8nwsbre0td"]
+[gd_resource type="Resource" script_class="MaltData" format=3 uid="uid://bjh8nwsbre0td"]
 
-[ext_resource type="Script" uid="uid://dniwiyu5ynp71" path="res://src/classes/ingredient_data.gd" id="1_xy10s"]
+[ext_resource type="Script" uid="uid://glh0u5xmw6sx" path="res://src/classes/malt_data.gd" id="1_5lmxx"]
 
 [resource]
-script = ExtResource("1_xy10s")
+script = ExtResource("1_5lmxx")
+ebc = 4
 id = 101
 name = "Pale-Ale Mallas"
 description = "Vaalein pohjamallas joka antaa hyvin vähän maltaiden makua olueen"
