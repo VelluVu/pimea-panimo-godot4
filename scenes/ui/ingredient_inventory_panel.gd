@@ -33,11 +33,14 @@ func _update_ingredient_list() -> void:
 		return
 	
 	var inventory : Inventory = BrewEngine.current_brewery.inventory
-	
+
 	for id in IngredientDatabase.sorted_ids:
 		var ingredient : IngredientData = IngredientDatabase.database[id]
 		var label: Label = storage_labels[id]
-		var item : InventoryItem = inventory.get_item_by_type_and_id(ingredient.type, id)
+		var item : InventoryItem = null
+		
+		if inventory.items.has(ingredient.type) and inventory.items[ingredient.type].has(ingredient.id):
+			item = inventory.items[ingredient.type][id]
 		
 		if item != null:
 			var current_amount: int = inventory.items[ingredient.type][ingredient.id].amount

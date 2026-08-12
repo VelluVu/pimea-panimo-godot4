@@ -1,12 +1,13 @@
-[gd_resource type="Resource" script_class="IngredientData" format=3 uid="uid://ca2nx4qhoo13y"]
+[gd_resource type="Resource" script_class="YeastData" format=3 uid="uid://ca2nx4qhoo13y"]
 
-[ext_resource type="Script" uid="uid://dniwiyu5ynp71" path="res://src/classes/ingredient_data.gd" id="1_d5yes"]
+[ext_resource type="Script" uid="uid://fq1bgyegsftk" path="res://src/classes/yeast_data.gd" id="1_kk726"]
 
 [resource]
-script = ExtResource("1_d5yes")
-type = 2
+script = ExtResource("1_kk726")
+attentuation_percent = 75
 id = 302
 name = "Alehiiva"
 description = "Pintahiiva tuottaa aromikkaan oluen"
 unit = 2
+type = 2
 metadata/_custom_type_script = "uid://dniwiyu5ynp71"

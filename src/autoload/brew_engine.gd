@@ -12,4 +12,4 @@ func _on_start_game() -> void:
 	current_brewery = Brewery.new()
 	current_brewery._ready()
 	
-	print("Uusi peli aloitettu! Panimo luotu muistiin.")
+	print(StringContainer.NEW_GAME_MESSAGE)

@@ -1,12 +1,14 @@
-[gd_resource type="Resource" script_class="IngredientData" format=3 uid="uid://bx6ee8qbfnoui"]
+[gd_resource type="Resource" script_class="HopData" format=3 uid="uid://bx6ee8qbfnoui"]
 
-[ext_resource type="Script" uid="uid://dniwiyu5ynp71" path="res://src/classes/ingredient_data.gd" id="1_kgqu7"]
+[ext_resource type="Script" uid="uid://ccv8ohajnmhif" path="res://src/classes/hop_data.gd" id="1_p3cxr"]
 
 [resource]
-script = ExtResource("1_kgqu7")
-type = 1
+script = ExtResource("1_p3cxr")
+alpha_acids = 5
+beta_acids = 4
 id = 201
 name = "Tettnanger Humala"
 description = "Tämä jalohumala antaa oluelle klassista makua"
 unit = 1
+type = 1
 metadata/_custom_type_script = "uid://dniwiyu5ynp71"
