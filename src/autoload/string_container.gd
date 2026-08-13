@@ -16,6 +16,13 @@ const KPL : String = "kpl"
 const SLASH : String = "/"
 const RESOURCE_END : String = ".tres"
 
+const MALT_ITEM_SELECTION_STRING : String = "%s %s kg"
+const HOP_ITEM_SELECTION_STRING : String = "%s %s g"
+const YEAST_ITEM_SELECTION_STRING : String = "%s %s kpl"
+const MALT_ITEM_SHOP_SELECTION_STRING : String = "%s %s kg Hinta: %s €"
+const HOP_ITEM_SHOP_SELECTION_STRING : String = "%s %s g Hinta: %s €"
+const YEAST_ITEM_SHOP_SELECTION_STRING : String = "%s %s kpl Hinta: %s €"
+
 const DATABASE_STRING : String = "Database"
 const LIST_STRING : String = "List"
 const INVENTORY_STRING : String = "Inventory"

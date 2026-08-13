@@ -101,7 +101,8 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Left_BrewingView" type="VBoxContainer" parent="GUI" unique_id=968176738 node_paths=PackedStringArray("malt_selection_header", "hop_selection_header", "yeast_selection_header", "malt_option_button", "hop_option_button", "yeast_option_button", "malt_slider", "hop_slider", "yeast_slider", "add_button", "remove_button")]
+[node name="Left_BrewingView" type="VBoxContainer" parent="GUI" unique_id=968176738 node_paths=PackedStringArray("current_item_label", "malt_option_button", "hop_option_button", "yeast_option_button", "main_slider", "add_button", "remove_button")]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.046000004
@@ -111,15 +112,11 @@ offset_top = 0.19199753
 offset_right = -2.0
 size_flags_horizontal = 3
 script = ExtResource("4_jyhfs")
-malt_selection_header = NodePath("IngredientSelectionPanel/MaltSelectionElement/MaltSelection/MaltSelectionHeader")
-hop_selection_header = NodePath("IngredientSelectionPanel/HopSelectionElement/HopSelection/HopSelectionHeader")
-yeast_selection_header = NodePath("IngredientSelectionPanel/YeastSelectionElement/YeastSelection/YeastSelectionHeader")
+current_item_label = NodePath("IngredientSelectionPanel/CurrentItemLabel")
 malt_option_button = NodePath("IngredientSelectionPanel/MaltSelectionElement/MaltSelection/MaltOptionButton")
 hop_option_button = NodePath("IngredientSelectionPanel/HopSelectionElement/HopSelection/HopOptionButton")
 yeast_option_button = NodePath("IngredientSelectionPanel/YeastSelectionElement/YeastSelection/YeastOptionButton")
-malt_slider = NodePath("IngredientSelectionPanel/MaltSelectionElement/MaltSelection/MaltSlider")
-hop_slider = NodePath("IngredientSelectionPanel/HopSelectionElement/HopSelection/HopSlider")
-yeast_slider = NodePath("IngredientSelectionPanel/YeastSelectionElement/YeastSelection/YeastSlider")
+main_slider = NodePath("IngredientSelectionPanel/AddRemoveLastModifiedButtonPanel/MainSlider")
 add_button = NodePath("IngredientSelectionPanel/AddRemoveLastModifiedButtonPanel/AddButton")
 remove_button = NodePath("IngredientSelectionPanel/AddRemoveLastModifiedButtonPanel/RemoveButton")
 
@@ -135,17 +132,11 @@ size_flags_horizontal = 3
 
 [node name="MaltSelectionHeader" type="Label" parent="GUI/Left_BrewingView/IngredientSelectionPanel/MaltSelectionElement/MaltSelection" unique_id=453415180]
 layout_mode = 2
-text = "Valitse Maltaat: 0 kg"
+text = "Maltaat"
 
 [node name="MaltOptionButton" type="OptionButton" parent="GUI/Left_BrewingView/IngredientSelectionPanel/MaltSelectionElement/MaltSelection" unique_id=1466153152]
 layout_mode = 2
 script = ExtResource("5_tipki")
-
-[node name="MaltSlider" type="HSlider" parent="GUI/Left_BrewingView/IngredientSelectionPanel/MaltSelectionElement/MaltSelection" unique_id=1342227202]
-layout_mode = 2
-max_value = 10.0
-step = 0.1
-rounded = true
 
 [node name="HopSelectionElement" type="VBoxContainer" parent="GUI/Left_BrewingView/IngredientSelectionPanel" unique_id=1284252196]
 layout_mode = 2
@@ -156,16 +147,12 @@ size_flags_horizontal = 3
 
 [node name="HopSelectionHeader" type="Label" parent="GUI/Left_BrewingView/IngredientSelectionPanel/HopSelectionElement/HopSelection" unique_id=196314318]
 layout_mode = 2
-text = "Valitse Humalat: 0 g"
+text = "Humalat"
 
 [node name="HopOptionButton" type="OptionButton" parent="GUI/Left_BrewingView/IngredientSelectionPanel/HopSelectionElement/HopSelection" unique_id=1674880709]
 layout_mode = 2
 script = ExtResource("5_tipki")
 target_type = 1
-
-[node name="HopSlider" type="HSlider" parent="GUI/Left_BrewingView/IngredientSelectionPanel/HopSelectionElement/HopSelection" unique_id=2092562061]
-layout_mode = 2
-rounded = true
 
 [node name="YeastSelectionElement" type="VBoxContainer" parent="GUI/Left_BrewingView/IngredientSelectionPanel" unique_id=190254131]
 layout_mode = 2
@@ -176,21 +163,25 @@ size_flags_horizontal = 3
 
 [node name="YeastSelectionHeader" type="Label" parent="GUI/Left_BrewingView/IngredientSelectionPanel/YeastSelectionElement/YeastSelection" unique_id=1249181807]
 layout_mode = 2
-text = "Valitse Hiivat: 0 kpl"
+text = "Hiivat"
 
 [node name="YeastOptionButton" type="OptionButton" parent="GUI/Left_BrewingView/IngredientSelectionPanel/YeastSelectionElement/YeastSelection" unique_id=967225361]
 layout_mode = 2
 script = ExtResource("5_tipki")
 target_type = 2
 
-[node name="YeastSlider" type="HSlider" parent="GUI/Left_BrewingView/IngredientSelectionPanel/YeastSelectionElement/YeastSelection" unique_id=1345169062]
+[node name="CurrentItemLabel" type="Label" parent="GUI/Left_BrewingView/IngredientSelectionPanel" unique_id=490371421]
 layout_mode = 2
-max_value = 10.0
-rounded = true
+text = "ju"
 
 [node name="AddRemoveLastModifiedButtonPanel" type="HBoxContainer" parent="GUI/Left_BrewingView/IngredientSelectionPanel" unique_id=848313313]
 layout_mode = 2
-size_flags_horizontal = 8
+
+[node name="MainSlider" type="HSlider" parent="GUI/Left_BrewingView/IngredientSelectionPanel/AddRemoveLastModifiedButtonPanel" unique_id=1859372210]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+rounded = true
 
 [node name="AddButton" type="Button" parent="GUI/Left_BrewingView/IngredientSelectionPanel/AddRemoveLastModifiedButtonPanel" unique_id=461576018]
 custom_minimum_size = Vector2(64, 64)
@@ -222,8 +213,7 @@ size_flags_horizontal = 8
 size_flags_vertical = 8
 text = "Brew"
 
-[node name="Left_ShopView" type="VBoxContainer" parent="GUI" unique_id=578953931 node_paths=PackedStringArray("malt_selection_header", "hop_selection_header", "yeast_selection_header", "malt_option_button", "hop_option_button", "yeast_option_button", "malt_slider", "hop_slider", "yeast_slider", "buy_button", "sell_button")]
-visible = false
+[node name="Left_ShopView" type="VBoxContainer" parent="GUI" unique_id=578953931 node_paths=PackedStringArray("current_item_label", "malt_option_button", "hop_option_button", "yeast_option_button", "main_slider", "buy_button", "sell_button")]
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.046000004
@@ -233,15 +223,11 @@ offset_top = 0.19199753
 offset_right = -2.0
 size_flags_horizontal = 3
 script = ExtResource("5_tbgi4")
-malt_selection_header = NodePath("IngredientSelectionElementList/MaltSelectionElement/MaltSelection/MaltSelectionHeader")
-hop_selection_header = NodePath("IngredientSelectionElementList/HopSelectionElement/HopSelection/HopSelectionHeader")
-yeast_selection_header = NodePath("IngredientSelectionElementList/YeastSelectionElement/YeastSelection/YeastSelectionHeader")
+current_item_label = NodePath("IngredientSelectionElementList/CurrentItemLabel")
 malt_option_button = NodePath("IngredientSelectionElementList/MaltSelectionElement/MaltSelection/MaltOptionButton")
 hop_option_button = NodePath("IngredientSelectionElementList/HopSelectionElement/HopSelection/HopOptionButton")
 yeast_option_button = NodePath("IngredientSelectionElementList/YeastSelectionElement/YeastSelection/YeastOptionButton")
-malt_slider = NodePath("IngredientSelectionElementList/MaltSelectionElement/MaltSelection/MaltSlider")
-hop_slider = NodePath("IngredientSelectionElementList/HopSelectionElement/HopSelection/HopSlider")
-yeast_slider = NodePath("IngredientSelectionElementList/YeastSelectionElement/YeastSelection/YeastSlider")
+main_slider = NodePath("IngredientSelectionElementList/BuySellLastModifiedButtonPanel/MainSlider")
 buy_button = NodePath("IngredientSelectionElementList/BuySellLastModifiedButtonPanel/BuyButton")
 sell_button = NodePath("IngredientSelectionElementList/BuySellLastModifiedButtonPanel/SellButton")
 
@@ -257,17 +243,11 @@ size_flags_horizontal = 3
 
 [node name="MaltSelectionHeader" type="Label" parent="GUI/Left_ShopView/IngredientSelectionElementList/MaltSelectionElement/MaltSelection" unique_id=909010579]
 layout_mode = 2
-text = "Valitse Maltaat: 0 kg Hinta: 0 €"
+text = "Maltaat"
 
 [node name="MaltOptionButton" type="OptionButton" parent="GUI/Left_ShopView/IngredientSelectionElementList/MaltSelectionElement/MaltSelection" unique_id=337315106]
 layout_mode = 2
 script = ExtResource("5_tipki")
-
-[node name="MaltSlider" type="HSlider" parent="GUI/Left_ShopView/IngredientSelectionElementList/MaltSelectionElement/MaltSelection" unique_id=865928258]
-layout_mode = 2
-max_value = 10.0
-step = 0.1
-rounded = true
 
 [node name="HopSelectionElement" type="VBoxContainer" parent="GUI/Left_ShopView/IngredientSelectionElementList" unique_id=2105210495]
 layout_mode = 2
@@ -278,16 +258,12 @@ size_flags_horizontal = 3
 
 [node name="HopSelectionHeader" type="Label" parent="GUI/Left_ShopView/IngredientSelectionElementList/HopSelectionElement/HopSelection" unique_id=1099268520]
 layout_mode = 2
-text = "Valitse Humalat: 0 g Hinta: 0 €"
+text = "Humalat"
 
 [node name="HopOptionButton" type="OptionButton" parent="GUI/Left_ShopView/IngredientSelectionElementList/HopSelectionElement/HopSelection" unique_id=1669807594]
 layout_mode = 2
 script = ExtResource("5_tipki")
 target_type = 1
-
-[node name="HopSlider" type="HSlider" parent="GUI/Left_ShopView/IngredientSelectionElementList/HopSelectionElement/HopSelection" unique_id=61787120]
-layout_mode = 2
-rounded = true
 
 [node name="YeastSelectionElement" type="VBoxContainer" parent="GUI/Left_ShopView/IngredientSelectionElementList" unique_id=1316832927]
 layout_mode = 2
@@ -298,22 +274,25 @@ size_flags_horizontal = 3
 
 [node name="YeastSelectionHeader" type="Label" parent="GUI/Left_ShopView/IngredientSelectionElementList/YeastSelectionElement/YeastSelection" unique_id=134490927]
 layout_mode = 2
-text = "Valitse Hiivat: 0 kpl Hinta: 0 €"
+text = "Hiivat"
 
 [node name="YeastOptionButton" type="OptionButton" parent="GUI/Left_ShopView/IngredientSelectionElementList/YeastSelectionElement/YeastSelection" unique_id=1931664817]
 layout_mode = 2
 script = ExtResource("5_tipki")
 target_type = 2
 
-[node name="YeastSlider" type="HSlider" parent="GUI/Left_ShopView/IngredientSelectionElementList/YeastSelectionElement/YeastSelection" unique_id=145329864]
+[node name="CurrentItemLabel" type="Label" parent="GUI/Left_ShopView/IngredientSelectionElementList" unique_id=344108055]
 layout_mode = 2
-max_value = 10.0
-rounded = true
 
 [node name="BuySellLastModifiedButtonPanel" type="HBoxContainer" parent="GUI/Left_ShopView/IngredientSelectionElementList" unique_id=1383531834]
 layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 4
+size_flags_vertical = 3
+
+[node name="MainSlider" type="HSlider" parent="GUI/Left_ShopView/IngredientSelectionElementList/BuySellLastModifiedButtonPanel" unique_id=1634980263]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+rounded = true
 
 [node name="SellButton" type="Button" parent="GUI/Left_ShopView/IngredientSelectionElementList/BuySellLastModifiedButtonPanel" unique_id=31296574]
 custom_minimum_size = Vector2(64, 64)
@@ -387,15 +366,9 @@ offset_right = 8.0
 grow_vertical = 0
 text = "back"
 
-[connection signal="value_changed" from="GUI/Left_BrewingView/IngredientSelectionPanel/MaltSelectionElement/MaltSelection/MaltSlider" to="GUI/Left_BrewingView" method="_on_malt_slider_value_changed"]
-[connection signal="value_changed" from="GUI/Left_BrewingView/IngredientSelectionPanel/HopSelectionElement/HopSelection/HopSlider" to="GUI/Left_BrewingView" method="_on_hop_slider_value_changed"]
-[connection signal="value_changed" from="GUI/Left_BrewingView/IngredientSelectionPanel/YeastSelectionElement/YeastSelection/YeastSlider" to="GUI/Left_BrewingView" method="_on_yeast_slider_value_changed"]
 [connection signal="pressed" from="GUI/Left_BrewingView/IngredientSelectionPanel/AddRemoveLastModifiedButtonPanel/AddButton" to="GUI/Left_BrewingView" method="_on_add_button_pressed"]
 [connection signal="pressed" from="GUI/Left_BrewingView/IngredientSelectionPanel/AddRemoveLastModifiedButtonPanel/RemoveButton" to="GUI/Left_BrewingView" method="_on_remove_button_pressed"]
 [connection signal="pressed" from="GUI/Left_BrewingView/BrewPreparationPanel/StartBrewButton" to="GUI/Left_BrewingView" method="_on_start_brew_button_pressed"]
-[connection signal="value_changed" from="GUI/Left_ShopView/IngredientSelectionElementList/MaltSelectionElement/MaltSelection/MaltSlider" to="GUI/Left_ShopView" method="_on_malt_slider_value_changed"]
-[connection signal="value_changed" from="GUI/Left_ShopView/IngredientSelectionElementList/HopSelectionElement/HopSelection/HopSlider" to="GUI/Left_ShopView" method="_on_hop_slider_value_changed"]
-[connection signal="value_changed" from="GUI/Left_ShopView/IngredientSelectionElementList/YeastSelectionElement/YeastSelection/YeastSlider" to="GUI/Left_ShopView" method="_on_yeast_slider_value_changed"]
 [connection signal="pressed" from="GUI/Left_ShopView/IngredientSelectionElementList/BuySellLastModifiedButtonPanel/SellButton" to="GUI/Left_ShopView" method="_on_sell_button_pressed"]
 [connection signal="pressed" from="GUI/Left_ShopView/IngredientSelectionElementList/BuySellLastModifiedButtonPanel/BuyButton" to="GUI/Left_ShopView" method="_on_buy_button_pressed"]
 [connection signal="pressed" from="GUI/ShopEntrancePanel/ShopButton" to="GUI" method="_on_shop_button_pressed"]

@@ -8,4 +8,5 @@ ebc = 4
 id = 101
 name = "Pale-Ale Mallas"
 description = "Vaalein pohjamallas joka antaa hyvin vähän maltaiden makua olueen"
+base_price = 2
 metadata/_custom_type_script = "uid://dniwiyu5ynp71"

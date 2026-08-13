@@ -1,68 +1,77 @@
 class_name BrewingView
 extends VBoxContainer
 
-@export var malt_selection_header : Label
-@export var hop_selection_header : Label
-@export var yeast_selection_header : Label
+@export var current_item_label : Label
 @export var malt_option_button : OptionButton
 @export var hop_option_button : OptionButton
 @export var yeast_option_button : OptionButton
-@export var malt_slider : Slider
-@export var hop_slider : Slider
-@export var yeast_slider : Slider
+@export var main_slider : Slider
 @export var add_button : Button
 @export var remove_button : Button
-@export var selected_ingredients_list : VBoxContainer
 
-var malt_selection_header_formatted_string : String = "Valitse mallas: %s kg"
-var hop_selection_header_formatted_string : String = "Valitse humala: %s g"
-var yeast_selection_header_formatted_string : String = "Valitse hiiva: %s kpl"
-var last_used_slider_index : int = -1
+var current_id : int = -1
 
 
-func _on_malt_slider_value_changed(value: float) -> void:
-	_edit_header(0,roundi(value))
+func _ready() -> void:
+	main_slider.value_changed.connect(_on_slider_changed)
+	GUISignals.active_ingredient_changed.connect(_set_active_ingredient)
+	_update_label()
 
 
-func _on_hop_slider_value_changed(value: float) -> void:
-	_edit_header(1,roundi(value))
+func _set_active_ingredient(id: int) -> void:
+	current_id = id
+	_update_slider()
+	_update_label()
 
 
-func _on_yeast_slider_value_changed(value: float) -> void:
-	_edit_header(2,roundi(value))
-
-
-func _edit_header(index : int, value : int) -> void:
-	last_used_slider_index = index
+func _on_slider_changed(_value: float) -> void:
+	if current_id == -1:
+		return
 	
-	if index == 0:
-		malt_selection_header.text = malt_selection_header_formatted_string % value
-	elif index == 1:
-		hop_selection_header.text = hop_selection_header_formatted_string % value
-	elif index == 2:
-		yeast_selection_header.text = yeast_selection_header_formatted_string % value
+	_update_label()
+
+
+func _update_slider() -> void:
+	if current_id == -1:
+		return
+	
+	var item : InventoryItem = BrewEngine.current_brewery.inventory.get_item_by_id(current_id)
+	
+	if item == null:
+		return
+	
+	var max_available = item.amount
+
+	main_slider.max_value = max_available
+	main_slider.value = min(main_slider.value, max_available)
+
+
+func _update_label() -> void:
+	if current_id == -1:
+		current_item_label.text = "Valitse lisättävä raaka-aine ylhäältä..."
+		return
+	
+	var ingredient = IngredientDatabase.get_item_by_id(current_id)
+	if ingredient == null:
+		return
+	
+	if current_id >= 100 and current_id < 200:
+		current_item_label.text = StringContainer.MALT_ITEM_SELECTION_STRING % [ingredient.name, int(main_slider.value)]
+	elif current_id >= 200 and current_id < 300:
+		current_item_label.text = StringContainer.HOP_ITEM_SELECTION_STRING % [ingredient.name, int(main_slider.value)]
+	elif current_id >= 300 and current_id < 400:
+		current_item_label.text = StringContainer.YEAST_ITEM_SELECTION_STRING % [ingredient.name, int(main_slider.value)]
 	else:
-		last_used_slider_index = -1
+		current_item_label.text = StringContainer.YEAST_ITEM_SELECTION_STRING % [ingredient.name, int(main_slider.value)]
 
 
 func _on_add_button_pressed() -> void:
-	if last_used_slider_index == -1:
+	if current_id == -1:
 		return
-		
-	var final_id : int = 0
-	var final_amount : int = 0
 	
-	match last_used_slider_index:
-		0: # MALTAAT
-			final_id = malt_option_button.get_selected_id()
-			final_amount = roundi(malt_slider.value)
-		1: # HUMALAT
-			final_id = hop_option_button.get_selected_id()
-			final_amount = roundi(hop_slider.value)
-		2: # HIIVAT
-			final_id = yeast_option_button.get_selected_id()
-			final_amount = roundi(yeast_slider.value)
-			
+	var final_id : int = current_id
+	var final_amount : int = roundi(main_slider.value)
+	
 	if final_amount <= 0:
 		return
 		
@@ -70,23 +79,12 @@ func _on_add_button_pressed() -> void:
 
 
 func _on_remove_button_pressed() -> void:
-	if last_used_slider_index == -1:
+	if current_id == -1:
 		return
 		
-	var final_id : int = 0
-	var final_amount : int = 0
+	var final_id : int = current_id
+	var final_amount : int = roundi(main_slider.value)
 	
-	match last_used_slider_index:
-		0: # MALTAAT
-			final_id = malt_option_button.get_selected_id()
-			final_amount = roundi(malt_slider.value)
-		1: # HUMALAT
-			final_id = hop_option_button.get_selected_id()
-			final_amount = roundi(hop_slider.value)
-		2: # HIIVAT
-			final_id = yeast_option_button.get_selected_id()
-			final_amount = roundi(yeast_slider.value)
-			
 	if final_amount <= 0:
 		return
 	

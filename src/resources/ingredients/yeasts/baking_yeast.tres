@@ -8,6 +8,7 @@ attentuation_percent = 70
 id = 300
 name = "Leivonta hiiva"
 description = "Halvinta mahdollista hiivaa tämä ei tee kovin hyvää olutta"
+base_price = 2
 unit = 2
 type = 2
 metadata/_custom_type_script = "uid://dniwiyu5ynp71"

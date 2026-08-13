@@ -1,73 +1,85 @@
 class_name ShopView
 extends VBoxContainer
 
-@export var malt_selection_header : Label
-@export var hop_selection_header : Label
-@export var yeast_selection_header : Label
+@export var current_item_label : Label
 @export var malt_option_button : OptionButton
 @export var hop_option_button : OptionButton
 @export var yeast_option_button : OptionButton
-@export var malt_slider : Slider
-@export var hop_slider : Slider
-@export var yeast_slider : Slider
+@export var main_slider : Slider
 @export var buy_button : Button
 @export var sell_button : Button
 
-var malt_selection_header_formatted_string = "Valitse mallas: %s kg Hinta: %s €"
-var hop_selection_header_formatted_string = "Valitse humala: %s g Hinta: %s €"
-var yeast_selection_header_formatted_string = "Valitse hiiva: %s kpl Hinta: %s €"
 
-var last_used_slider_index = -1
+var current_id: int = -1
 
 
-func _handle_slider_selection(index : int, value : int) -> void:
-	last_used_slider_index = index
-	var total_price : int = 0
+func _ready() -> void:
+	main_slider.value_changed.connect(_on_slider_changed)
+	GUISignals.active_ingredient_changed.connect(_on_ingredient_selected_globally)
+	_update_label()
+
+
+func _on_ingredient_selected_globally(id: int) -> void:
+	current_id = id
+	_update_slider()
+	_update_label()
+
+
+func _on_slider_changed(value : float) -> void:
+	if current_id == -1:
+		return
 	
-	if index == 0:
-		var malt_id = malt_option_button.get_selected_id()
-		total_price = IngredientDatabase.database[malt_id].base_price * value
-		malt_selection_header.text = malt_selection_header_formatted_string % [value, total_price]
-	elif index == 1:
-		var hop_id = hop_option_button.get_selected_id()
-		total_price = IngredientDatabase.database[hop_id].base_price * value
-		hop_selection_header.text = hop_selection_header_formatted_string % [value, total_price]
-	elif index == 2:
-		var yeast_id = yeast_option_button.get_selected_id()
-		total_price = IngredientDatabase.database[yeast_id].base_price * value
-		yeast_selection_header.text = yeast_selection_header_formatted_string % [value, total_price]
+	_update_label()
 
 
-func _on_malt_slider_value_changed(value: float) -> void:
-	_handle_slider_selection(0, roundi(value))
+func _update_slider() -> void:
+	if current_id == -1:
+		return
+	
+	var ingredient = IngredientDatabase.get_item_by_id(current_id)
+	if ingredient == null:
+		return
+	
+	var player_money : int = BrewEngine.current_brewery.money
+	
+	var max_affordable : int = 0
+	if ingredient.base_price > 0:
+		max_affordable = int(player_money / ingredient.base_price)
+		
+	var max_limit = min(max_affordable, 99)
+	
+	main_slider.max_value = max_limit
+	main_slider.value = min(main_slider.value, max_limit)
 
 
-func _on_hop_slider_value_changed(value: float) -> void:
-	_handle_slider_selection(1, roundi(value))
-
-
-func _on_yeast_slider_value_changed(value: float) -> void:
-	_handle_slider_selection(2, roundi(value))
+func _update_label() -> void:
+	if current_id == -1:
+		current_item_label.text = "Valitse lisättävä raaka-aine ylhäältä..."
+		return
+	
+	var ingredient = IngredientDatabase.get_item_by_id(current_id)
+	if ingredient == null:
+		return
+	
+	var total_price : int = ingredient.base_price * main_slider.value
+	
+	if current_id >= 100 and current_id < 200:
+		current_item_label.text = StringContainer.MALT_ITEM_SHOP_SELECTION_STRING % [ingredient.name, int(main_slider.value), total_price]
+	elif current_id >= 200 and current_id < 300:
+		current_item_label.text = StringContainer.HOP_ITEM_SHOP_SELECTION_STRING % [ingredient.name, int(main_slider.value), total_price]
+	elif current_id >= 300 and current_id < 400:
+		current_item_label.text = StringContainer.YEAST_ITEM_SHOP_SELECTION_STRING % [ingredient.name, int(main_slider.value), total_price]
+	else:
+		current_item_label.text = StringContainer.YEAST_ITEM_SHOP_SELECTION_STRING % [ingredient.name, int(main_slider.value), total_price]
 
 
 func _on_buy_button_pressed() -> void:
-	if last_used_slider_index == -1:
+	if current_id == -1:
 		return
 	
-	var final_id : int = 0
-	var final_amount : int = 0
+	var final_id : int = current_id
+	var final_amount : int = roundi(main_slider.value)
 	
-	match last_used_slider_index:
-		0: # MALTAAT
-			final_id = malt_option_button.get_selected_id()
-			final_amount = roundi(malt_slider.value)
-		1: # HUMALAT
-			final_id = hop_option_button.get_selected_id()
-			final_amount = roundi(hop_slider.value)
-		2: # HIIVAT
-			final_id = yeast_option_button.get_selected_id()
-			final_amount = roundi(yeast_slider.value)
-			
 	if final_amount <= 0:
 		return
 	
@@ -75,28 +87,13 @@ func _on_buy_button_pressed() -> void:
 
 
 func _on_sell_button_pressed() -> void:
-	# 1. Tarkistetaan, onko mitään liukuria käytetty
-	if last_used_slider_index == -1:
+	if current_id == -1:
 		return
 		
-	var final_id : int = 0
-	var final_amount : int = 0
+	var final_id : int = current_id
+	var final_amount : int = roundi(main_slider.value)
 	
-	# 2. Katsotaan lennosta suoraan oikeat elementit indeksin perusteella
-	match last_used_slider_index:
-		0: # MALTAAT
-			final_id = malt_option_button.get_selected_id()
-			final_amount = roundi(malt_slider.value) # Korvataan kuvasi 'last_used_slider_value' suoralla luvulla
-		1: # HUMALAT
-			final_id = hop_option_button.get_selected_id()
-			final_amount = roundi(hop_slider.value)
-		2: # HIIVAT
-			final_id = yeast_option_button.get_selected_id()
-			final_amount = roundi(yeast_slider.value)
-			
-	# 3. Turvatarkistus nollalle tai negatiiviselle
 	if final_amount <= 0:
 		return
-		
-	# 4. Ammutaan universaali signaali täysin virheettömästi!
+	
 	GUISignals.sell_ingredient.emit(final_id, final_amount)

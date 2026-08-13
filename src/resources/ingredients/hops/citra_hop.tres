@@ -9,6 +9,7 @@ beta_acids = 4
 id = 202
 name = "Citra Humala"
 description = "Tämä aromihumala antaa trooppisia makuja oluelle"
+base_price = 3
 unit = 1
 type = 1
 metadata/_custom_type_script = "uid://dniwiyu5ynp71"
