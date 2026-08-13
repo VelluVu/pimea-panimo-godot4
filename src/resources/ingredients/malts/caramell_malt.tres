@@ -8,4 +8,5 @@ ebc = 20
 id = 102
 name = "Karamelli Mallas"
 description = "Erikoismallas joka antaa väriä ja paahteista makua olueen"
+base_price = 3
 metadata/_custom_type_script = "uid://dniwiyu5ynp71"

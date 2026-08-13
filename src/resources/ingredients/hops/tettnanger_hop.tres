@@ -9,6 +9,7 @@ beta_acids = 4
 id = 201
 name = "Tettnanger Humala"
 description = "Tämä jalohumala antaa oluelle klassista makua"
+base_price = 2
 unit = 1
 type = 1
 metadata/_custom_type_script = "uid://dniwiyu5ynp71"

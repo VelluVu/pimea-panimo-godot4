@@ -9,6 +9,7 @@ beta_acids = 6
 id = 200
 name = "Magnum Humala"
 description = "Tämä katkerohumala antaa oluelle hyvät katkerot"
+base_price = 2
 unit = 1
 type = 1
 metadata/_custom_type_script = "uid://dniwiyu5ynp71"

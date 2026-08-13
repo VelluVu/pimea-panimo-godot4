@@ -8,6 +8,7 @@ attentuation_percent = 75
 id = 302
 name = "Alehiiva"
 description = "Pintahiiva tuottaa aromikkaan oluen"
+base_price = 5
 unit = 2
 type = 2
 metadata/_custom_type_script = "uid://dniwiyu5ynp71"

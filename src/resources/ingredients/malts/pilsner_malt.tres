@@ -8,4 +8,5 @@ ebc = 2
 id = 100
 name = "Pilsner mallas"
 description = "Pilsner pohja mallas"
+base_price = 2
 metadata/_custom_type_script = "uid://dniwiyu5ynp71"

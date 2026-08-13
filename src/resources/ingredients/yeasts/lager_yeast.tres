@@ -8,6 +8,7 @@ attentuation_percent = 80
 id = 301
 name = "Lagerhiiva"
 description = "Pohjahiiva tuottaa puhtaan raikkaan oluen"
+base_price = 5
 unit = 2
 type = 2
 metadata/_custom_type_script = "uid://dniwiyu5ynp71"
