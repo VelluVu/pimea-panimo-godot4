@@ -25,7 +25,7 @@ func _on_ingredient_selected_globally(id: int) -> void:
 	_update_label()
 
 
-func _on_slider_changed(value : float) -> void:
+func _on_slider_changed(_value : float) -> void:
 	if current_id == -1:
 		return
 	

@@ -1,4 +1,5 @@
+#class_name BrewerySignals (Autoload)
 extends Node
 
-signal confirm_start_brew(brew_stats : BrewStats)
+@warning_ignore("unused_signal")
 signal brewery_state_changed(brewery: Brewery)

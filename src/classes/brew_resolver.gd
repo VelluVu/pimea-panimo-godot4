@@ -4,15 +4,15 @@ extends Resource
 
 func resolve_brew_style(prep_contents : Dictionary) -> BrewResult:
 	var total_malt_weight: int = 0
-	var weighted_ebc_sum: int = 0
+	var weighted_ebc_sum: float = 0
 	var total_hop_amount: int = 0
-	var total_alpha_acids: int = 0
+	var total_alpha_acids: float = 0
 	var yeast_type: int = -1
 	
 	for id in prep_contents.keys():
 		var amount: int = prep_contents[id]
 		var data: IngredientData = IngredientDatabase.database[id]
-
+		
 		match data.type:
 			IngredientData.IngredientType.MALT:
 				total_malt_weight += amount
@@ -28,7 +28,7 @@ func resolve_brew_style(prep_contents : Dictionary) -> BrewResult:
 		return null
 	
 	var result := BrewResult.new()
-	result.final_ebc = weighted_ebc_sum / total_malt_weight
+	result.final_ebc = roundi(weighted_ebc_sum / total_malt_weight)
 	
 	if total_hop_amount == 0:
 		result.style = BrewResult.BeerStyle.KOTIKALJA
@@ -38,7 +38,7 @@ func resolve_brew_style(prep_contents : Dictionary) -> BrewResult:
 		result.reputation_change = 0
 		return result
 	
-	result.final_ibu = total_alpha_acids / 10
+	result.final_ibu = roundi(total_alpha_acids / 10)
 	
 	if yeast_type == 301: # LAGER-HIIVA
 		if result.final_ebc > 45:

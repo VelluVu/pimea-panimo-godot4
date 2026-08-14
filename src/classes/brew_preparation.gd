@@ -18,7 +18,7 @@ func has_item(ingredient_id: int, amount: int) -> bool:
 		
 	return selected_contents[ingredient_id] >= amount
 
-#check the id reliablitity
+
 func add_to_table(ingredient_id: int, amount: int) -> void:
 	if amount <= 0:
 		return

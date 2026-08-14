@@ -18,13 +18,11 @@ func _ready() -> void:
 func _on_brewery_state_changed(brewery : Brewery) -> void:
 	var new_money: int = brewery.money
 	
-	# Jos peli vasta alkoi (last_money on -1), asetetaan arvo ilman popupia
 	if last_money != -1:
 		var change = new_money - last_money
 		if change != 0:
 			_create_popup_effect(money_label, change, " €", false)
 			
-	# Päivitetään teksti ja tallennetaan uusi luku muistiin
 	money_label.text = str(new_money) + " €"
 	last_money = new_money
 	
@@ -38,7 +36,6 @@ func _on_brewery_state_changed(brewery : Brewery) -> void:
 	reputation_label.text = "Maine: " + str(new_reputation)
 	last_reputation = new_reputation
 	
-	# B: LASKETAAN RISKI-MUUTOS LENNOSTA
 	var new_risk: int = brewery.risk
 	if last_risk != -1:
 		var change = new_risk - last_risk
@@ -52,30 +49,22 @@ func _on_brewery_state_changed(brewery : Brewery) -> void:
 func _create_popup_effect(target_label: Label, amount: int, suffix: String, is_risk: bool) -> void:
 	var popup := Label.new()
 	
-	# Muotoillaan tekstiasu. Jos luku on positiivinen, laitetaan "+" eteen
 	if amount > 0:
 		popup.text = "+" + str(amount) + suffix
-		# Jos kyseessä on riski, nousu on punainen. Muuten vihreä.
 		popup.modulate = Color.RED if is_risk else Color.GREEN
 	else:
 		popup.text = str(amount) + suffix
-		# Jos riski laskee, se on hyvä asia (vihreä). Muuten punainen.
 		popup.modulate = Color.GREEN if is_risk else Color.RED
 		
-	# Lisätään popup-teksti kyseisen Labelin lapseksi
 	target_label.add_child(popup)
-	
-	# Aloituspaikka (esim. 80 pikseliä Labelin tekstin oikealle puolelle)
 	popup.position = Vector2(80, 0)
 	
-	# Animoidaan teksti nousemaan ja haihtumaan Godotin omalla Tween-järjestelmällä
 	var tween := create_tween().set_parallel(true)
 	var target_pos := popup.position + Vector2(0, -35)
 	var target_color := popup.modulate
-	target_color.a = 0.0 # Häivytetään läpinäkyvyys nollaan
+	target_color.a = 0.0
 	
 	tween.tween_property(popup, "position", target_pos, 1.0)
 	tween.tween_property(popup, "modulate", target_color, 1.0)
 	
-	# Kun animaatio sekunnin päästä loppuu, siivotaan solmu automaattisesti pois muistista
 	tween.chain().tween_callback(popup.queue_free)
