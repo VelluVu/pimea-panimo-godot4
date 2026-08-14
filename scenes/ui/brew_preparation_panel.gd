@@ -16,7 +16,7 @@ func _ready() -> void:
 func _initialize_table_nodes() -> void:
 	for id in IngredientDatabase.sorted_ids:
 		var new_label := Label.new()
-		new_label.visible = false # Aluksi piilossa, koska pöytä on tyhjä
+		new_label.visible = false
 		table_list_vbox.add_child(new_label)
 		table_labels[id] = new_label
 

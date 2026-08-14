@@ -25,7 +25,6 @@ func add_amount(ingredient : IngredientData, amount : int) -> void:
 		items[ingredient.type][ingredient.id] = new_item
 
 
-# Inventory.gd - ID-pohjaiset suojatut metodit
 func get_item(ingredient : IngredientData) -> InventoryItem:
 	if not has_item(ingredient):
 		return null
