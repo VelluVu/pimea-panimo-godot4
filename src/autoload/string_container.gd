@@ -49,3 +49,4 @@ const FOLDER_SCAN_COMPLETE_MESSAGE : String = "[IngredientDatabase] Database ful
 const DATABASE_FOUND_DATA_MESSAGE : String = "[IngredientDatabase] found from subfolder: %s (ID: %s)"
 const CREATED_MISSING_BEER_STYLES_FOLDER : String = "Created missing beer_styles folder: "
 const LOADED_BEER_STYLES_MESSAGE : String = "Ladattu yhteensä %s oluttyyliä datasta:"
+const BEER_BATCH_STARTED_SPOILING_MESSAGE : String = "HUOMIO: Erä %s (Ikä: %s päivää) alkaa etikkoitua kellarissa!"

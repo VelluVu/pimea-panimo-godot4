@@ -14,4 +14,5 @@ min_ibu = 40
 max_ibu = 200
 risk_change = 3
 reputation_change = 5
+aging_factor = -0.1
 metadata/_custom_type_script = "uid://qpqfdi1wacne"

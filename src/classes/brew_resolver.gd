@@ -78,20 +78,28 @@ func resolve_brew_style(prep_contents : Dictionary) -> BrewResult:
 			continue
 	
 		var result := BrewResult.new()
-		result.style = beer_style.style
+		result.beer_style = beer_style
 		result.final_ebc = final_ebc
 		result.final_ibu = final_ibu
-		result.quality_multiplier = beer_style.quality_multiplier
+		result.original_quality = beer_style.original_quality
 		result.risk_change = beer_style.risk_change
 		result.reputation_change = beer_style.reputation_change
 		return result
 	
 	var failed_result := BrewResult.new()
-	failed_result.style = BeerStyle.Style.KOTIKALJA
+	failed_result.beer_style = get_beer_style(BeerStyle.Style.KOTIKALJA)
 	failed_result.final_ebc = final_ebc
 	failed_result.final_ibu = final_ibu
-	failed_result.quality_multiplier = 0.1
-	failed_result.risk_change = 1          
-	failed_result.reputation_change = -1   
+	failed_result.original_quality = 1.0
+	failed_result.risk_change = 2
+	failed_result.reputation_change = -1
 	
 	return failed_result
+
+
+func get_beer_style(style : BeerStyle.Style) -> BeerStyle:
+	for beer_Style in active_styles:
+		if beer_Style.style == style:
+			return beer_Style
+	
+	return null

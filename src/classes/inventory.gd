@@ -117,3 +117,15 @@ func add_amount_by_id(id: int, amount: int) -> void:
 		return
 		
 	add_amount(ingredient, amount)
+
+
+func process_cellar_aging() -> void:
+	for batch in brew_batches:
+		if batch:
+			var old_qual = batch.current_quality
+			batch.age_one_day()
+			
+			if batch.current_quality < 0.3 and old_qual >= 0.3:
+				print(StringContainer.BEER_BATCH_STARTED_SPOILING_MESSAGE % [batch.get_style_name(),batch.age_in_days])
+				
+	BrewerySignals.brewery_state_changed.emit(BrewEngine.current_brewery)
