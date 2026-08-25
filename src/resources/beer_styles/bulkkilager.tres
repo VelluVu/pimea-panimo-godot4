@@ -12,4 +12,7 @@ min_ibu = 8
 max_ibu = 40
 risk_change = 3
 reputation_change = 3
+peak_days = 30
+shelf_life_days = 360
+aging_factor = 0.01
 metadata/_custom_type_script = "uid://qpqfdi1wacne"

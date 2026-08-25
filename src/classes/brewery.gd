@@ -89,19 +89,15 @@ func _on_start_brew() -> void:
 		BrewerySignals.brewery_state_changed.emit(self)
 		return 
 	
-	#These will change when items are sold as well as money!
-	#risk += brew_report.risk_change
-	#reputation += brew_report.reputation_change
-	
 	var new_batch := BrewBatch.new()
-	new_batch.style = brew_report.style
+	new_batch.beer_style = brew_report.beer_style
 	new_batch.amount_bottles = brew_report.bottle_yield
-	new_batch.current_quality = brew_report.quality_multiplier
+	new_batch.original_quality = brew_report.original_quality
 	new_batch.final_ebc = brew_report.final_ebc
 	new_batch.final_ibu = brew_report.final_ibu
 	
 	inventory.brew_batches.append(new_batch)
 	
 	brew_preparation.clear_preparation()
-	print(StringContainer.SUCCESFULL_BREW_MESSAGE, BeerStyle.get_style_string_from_style(brew_report.style))
+	print(StringContainer.SUCCESFULL_BREW_MESSAGE, BeerStyle.get_style_string_from_style(brew_report.beer_style.style))
 	BrewerySignals.brewery_state_changed.emit(self)

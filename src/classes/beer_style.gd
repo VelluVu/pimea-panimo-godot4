@@ -27,9 +27,14 @@ enum Style {
 @export var max_ibu: int = 999
 
 @export_group("Palkkiot & Riskit")
-@export var quality_multiplier: float = 1.0
+@export var original_quality: float = 1.0
 @export var risk_change: int = 5
 @export var reputation_change: int = 2
+
+@export_group("Kellarointi & Kypsytys")
+@export var peak_days: int = 0 
+@export var shelf_life_days: int = 14 
+@export var aging_factor: float = 0.05 
 
 
 func get_style_string() -> String:
