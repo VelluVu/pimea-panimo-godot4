@@ -4,10 +4,10 @@
 
 [resource]
 script = ExtResource("1_jjk5j")
-style_name = "Vaalea Ale"
+style_name = "Pale Ale"
 style = 3
 required_yeast_id = 302
-min_ebc = 6
+min_ebc = 4
 max_ebc = 30
 min_ibu = 20
 max_ibu = 40

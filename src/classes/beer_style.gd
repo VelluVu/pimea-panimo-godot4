@@ -6,7 +6,7 @@ enum Style {
 	KOTIKALJA,
 	BULKKILAGER,
 	TUMMA_LAGER,
-	VAALEA_ALE,
+	PALE_ALE,
 	AMBER_ALE,
 	IPA
 }
@@ -37,7 +37,7 @@ func get_style_string() -> String:
 		Style.KOTIKALJA: return StringContainer.KOTIKALJA
 		Style.BULKKILAGER: return StringContainer.BULKKILAGER
 		Style.TUMMA_LAGER: return StringContainer.TUMMALAGER
-		Style.VAALEA_ALE: return StringContainer.VAALEAALE
+		Style.PALE_ALE: return StringContainer.PALEALE
 		Style.AMBER_ALE: return StringContainer.AMBERALE
 		Style.IPA: return StringContainer.IPA
 		_: return StringContainer.TUNTEMATON
@@ -48,7 +48,7 @@ static func get_style_string_from_style(new_style : BeerStyle.Style) -> String:
 		Style.KOTIKALJA: return StringContainer.KOTIKALJA
 		Style.BULKKILAGER: return StringContainer.BULKKILAGER
 		Style.TUMMA_LAGER: return StringContainer.TUMMALAGER
-		Style.VAALEA_ALE: return StringContainer.VAALEAALE
+		Style.PALE_ALE: return StringContainer.PALEALE
 		Style.AMBER_ALE: return StringContainer.AMBERALE
 		Style.IPA: return StringContainer.IPA
 		_: return StringContainer.TUNTEMATON
