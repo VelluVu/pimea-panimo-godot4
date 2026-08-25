@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="BeerStyle" format=3 uid="uid://cbttgjfnstm72"]
+
+[ext_resource type="Script" uid="uid://qpqfdi1wacne" path="res://src/classes/beer_style.gd" id="1_kckc3"]
+
+[resource]
+script = ExtResource("1_kckc3")
+style_name = "Indian Pale ale"
+style = 5
+required_yeast_id = 302
+min_malt_weight = 4
+min_ebc = 12
+max_ebc = 28
+min_ibu = 40
+max_ibu = 200
+risk_change = 3
+reputation_change = 5
+metadata/_custom_type_script = "uid://qpqfdi1wacne"

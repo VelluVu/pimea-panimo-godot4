@@ -2,6 +2,41 @@ class_name BrewResolver
 extends Resource
 
 
+var active_styles: Array[BeerStyle] = []
+
+
+func _ready() -> void:
+	_load_all_beer_styles()
+
+
+func _load_all_beer_styles() -> void:
+	var path = StringContainer.PATH_TO_BREW_STYLES
+	
+	if not DirAccess.dir_exists_absolute(path):
+		DirAccess.make_dir_absolute(path)
+		print(StringContainer.CREATED_MISSING_BEER_STYLES_FOLDER, path)
+		return
+	
+	var dir = DirAccess.open(path)
+	if dir:
+		dir.list_dir_begin()
+		var file_name = dir.get_next()
+		
+		while file_name != "":
+			if not dir.current_is_dir() and (file_name.ends_with(StringContainer.RESOURCE_END) or file_name.ends_with(StringContainer.REMAP_END)):
+				var clean_path = path + file_name.replace(StringContainer.REMAP_END, "")
+				var style_resource = load(clean_path)
+				
+				if style_resource is BeerStyle:
+					active_styles.append(style_resource)
+					
+			file_name = dir.get_next()
+		dir.list_dir_end()
+		print(StringContainer.LOADED_BEER_STYLES_MESSAGE % str(active_styles.size()))
+		for current_style in active_styles:
+			print(current_style.get_style_string())
+
+
 func resolve_brew_style(prep_contents : Dictionary) -> BrewResult:
 	var total_malt_weight: int = 0
 	var weighted_ebc_sum: float = 0
@@ -27,41 +62,36 @@ func resolve_brew_style(prep_contents : Dictionary) -> BrewResult:
 		print(StringContainer.NOT_ENOUGH_INGREDIENTS_ERROR)
 		return null
 	
-	var result := BrewResult.new()
-	result.final_ebc = roundi(weighted_ebc_sum / total_malt_weight)
+	var final_ebc = roundi(weighted_ebc_sum / total_malt_weight)
+	var final_ibu = 0
+	if total_hop_amount > 0:
+		final_ibu = roundi(total_alpha_acids / 10)
 	
-	if total_hop_amount == 0:
-		result.style = BrewResult.BeerStyle.KOTIKALJA
-		result.final_ibu = 0
-		result.quality_multiplier = 0.4
-		result.risk_change = 1
-		result.reputation_change = 0
+	for beer_style in active_styles:
+		if yeast_type != beer_style.required_yeast_id:
+			continue
+		if total_malt_weight < beer_style.min_malt_weight:
+			continue
+		if final_ebc < beer_style.min_ebc or final_ebc > beer_style.max_ebc:
+			continue
+		if final_ibu < beer_style.min_ibu or final_ibu > beer_style.max_ibu:
+			continue
+	
+		var result := BrewResult.new()
+		result.style = beer_style.style
+		result.final_ebc = final_ebc
+		result.final_ibu = final_ibu
+		result.quality_multiplier = beer_style.quality_multiplier
+		result.risk_change = beer_style.risk_change
+		result.reputation_change = beer_style.reputation_change
 		return result
 	
-	result.final_ibu = roundi(total_alpha_acids / 10)
+	var failed_result := BrewResult.new()
+	failed_result.style = BeerStyle.Style.KOTIKALJA
+	failed_result.final_ebc = final_ebc
+	failed_result.final_ibu = final_ibu
+	failed_result.quality_multiplier = 0.1
+	failed_result.risk_change = 1          
+	failed_result.reputation_change = -1   
 	
-	if yeast_type == 301: # LAGER-HIIVA
-		if result.final_ebc > 45:
-			result.style = BrewResult.BeerStyle.TUMMA_LAGER
-			result.risk_change = 5
-			result.reputation_change = 2
-		else:
-			result.style = BrewResult.BeerStyle.BULKKI_LAGER
-			result.risk_change = 3
-			result.reputation_change = 1
-	
-	elif yeast_type == 302: # ALE-HIIVA
-		if result.final_ibu > 40: 
-			result.style = BrewResult.BeerStyle.IPA
-			result.risk_change = 8
-			result.reputation_change = 4
-		elif result.final_ebc > 25:
-			result.style = BrewResult.BeerStyle.AMBER_ALE
-			result.risk_change = 5
-			result.reputation_change = 2
-		else:
-			result.style = BrewResult.BeerStyle.VAALEA_ALE
-			result.risk_change = 4
-			result.reputation_change = 2
-	
-	return result
+	return failed_result
