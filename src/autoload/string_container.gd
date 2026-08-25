@@ -7,7 +7,7 @@ const TUNTEMATON : String = "Tuntematon"
 const KOTIKALJA : String = "Kotikalja"
 const BULKKILAGER : String = "Bulkki Lager"
 const TUMMALAGER : String = "Tumma Lager"
-const VAALEAALE : String = "Vaalea Ale"
+const PALEALE : String = "Pale Ale"
 const AMBERALE : String = "Amber Ale"
 const IPA : String = "IPA"
 
