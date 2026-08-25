@@ -35,8 +35,8 @@ func _update_slider() -> void:
 	if current_id == -1:
 		return
 	
-	var item : InventoryItem = BrewEngine.current_brewery.inventory.get_item_by_id(current_id)
-	
+	var item = BrewEngine.current_brewery.inventory.get_item_by_id(current_id)
+
 	if item == null:
 		return
 	

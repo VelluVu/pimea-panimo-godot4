@@ -29,15 +29,17 @@ func _update_beer_batches_ui() -> void:
 			
 			var row_label := Label.new()
 			
-			row_label.text = "🍺 %s (Laatu: %s) - %s pulloa" % [
+			row_label.text = "🍺 %s (Laatu: %s) - %s pulloa - ebc %s - ibu %s" % [
 				batch.get_style_name(), 
 				str(batch.quality_multiplier), 
-				str(batch.amount_bottles)
+				str(batch.amount_bottles),
+				str(batch.final_ebc),
+				str(batch.final_ibu)
 			]
 			
-			if batch.style == BrewResult.BeerStyle.KOTIKALJA:
+			if batch.style == BeerStyle.Style.KOTIKALJA:
 				row_label.modulate = Color.DARK_GRAY
-			elif batch.style == BrewResult.BeerStyle.IPA:
+			elif batch.style == BeerStyle.Style.IPA:
 				row_label.modulate = Color.GOLD
 				
 			beer_batch_list_vbox.add_child(row_label)

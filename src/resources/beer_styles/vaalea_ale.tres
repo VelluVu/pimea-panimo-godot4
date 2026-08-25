@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="BeerStyle" format=3 uid="uid://diatpfddj61kg"]
+
+[ext_resource type="Script" uid="uid://qpqfdi1wacne" path="res://src/classes/beer_style.gd" id="1_jjk5j"]
+
+[resource]
+script = ExtResource("1_jjk5j")
+style_name = "Vaalea Ale"
+style = 3
+required_yeast_id = 302
+min_ebc = 6
+max_ebc = 30
+min_ibu = 20
+max_ibu = 40
+risk_change = 3
+reputation_change = 3
+metadata/_custom_type_script = "uid://qpqfdi1wacne"

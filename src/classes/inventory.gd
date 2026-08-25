@@ -57,7 +57,7 @@ func withdraw_item(ingredient : IngredientData, amount : int) -> int:
 
 func has_item(ingredient : IngredientData) -> bool:
 	if not items.has(ingredient.type) or not items[ingredient.type].has(ingredient.id):
-		print(StringContainer.INVALID_ID_ERROR % [StringContainer.INVENTORY_STRING , ingredient.id, StringContainer.LIST_STRING])
+		#print(StringContainer.INVALID_ID_ERROR % [StringContainer.INVENTORY_STRING , ingredient.id, StringContainer.LIST_STRING])
 		return false
 	return true
 
@@ -68,7 +68,7 @@ func has_item_by_id(id: int) -> bool:
 		return false
 	
 	if not items.has(ingredient.type) or not items[ingredient.type].has(id):
-		print(StringContainer.INVALID_ID_ERROR % [StringContainer.INVENTORY_STRING , id, StringContainer.LIST_STRING])
+		#print(StringContainer.INVALID_ID_ERROR % [StringContainer.INVENTORY_STRING , id, StringContainer.LIST_STRING])
 		return false
 		
 	return true

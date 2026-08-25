@@ -1,6 +1,7 @@
 extends Node
 
 const PATH_TO_INGREDIENTS : String = "res://src/resources/ingredients/"
+const PATH_TO_BREW_STYLES : String = "res://src/resources/beer_styles/"
 
 const TUNTEMATON : String = "Tuntematon"
 const KOTIKALJA : String = "Kotikalja"
@@ -15,6 +16,7 @@ const G : String = "g"
 const KPL : String = "kpl"
 const SLASH : String = "/"
 const RESOURCE_END : String = ".tres"
+const REMAP_END : String = ".remap"
 
 const MALT_ITEM_SELECTION_STRING : String = "%s %s kg"
 const HOP_ITEM_SELECTION_STRING : String = "%s %s g"
@@ -45,3 +47,5 @@ const NEW_GAME_MESSAGE : String = "New game started! Brewery established."
 const FOLDER_SCAN_MESSAGE : String = "[IngredientDatabase] Start recursive folder scan..."
 const FOLDER_SCAN_COMPLETE_MESSAGE : String = "[IngredientDatabase] Database fully sorted! Total registered items: "
 const DATABASE_FOUND_DATA_MESSAGE : String = "[IngredientDatabase] found from subfolder: %s (ID: %s)"
+const CREATED_MISSING_BEER_STYLES_FOLDER : String = "Created missing beer_styles folder: "
+const LOADED_BEER_STYLES_MESSAGE : String = "Ladattu yhteensä %s oluttyyliä datasta:"

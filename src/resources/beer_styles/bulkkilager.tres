@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="BeerStyle" format=3 uid="uid://fpjl3mw325ug"]
+
+[ext_resource type="Script" uid="uid://qpqfdi1wacne" path="res://src/classes/beer_style.gd" id="1_12rbt"]
+
+[resource]
+script = ExtResource("1_12rbt")
+style_name = "Bulkkilager"
+style = 1
+min_ebc = 1
+max_ebc = 10
+min_ibu = 8
+max_ibu = 40
+risk_change = 3
+reputation_change = 3
+metadata/_custom_type_script = "uid://qpqfdi1wacne"

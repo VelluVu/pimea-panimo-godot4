@@ -7,11 +7,14 @@ extends Resource
 @export var risk: int = 0
 @export var reputation: int = 10
 @export var brew_preparation : BrewPreparation
+var resolver : BrewResolver = null
 
 
 func _init() -> void:
 	inventory = Inventory.new()
 	brew_preparation = BrewPreparation.new()
+	resolver = BrewResolver.new()
+	resolver._ready()
 
 
 func _ready() -> void:
@@ -79,7 +82,6 @@ func _on_start_brew() -> void:
 		print(StringContainer.TABLE_EMPTY_ERROR)
 		return
 	
-	var resolver := BrewResolver.new()
 	var brew_report : BrewResult = resolver.resolve_brew_style(brew_preparation.selected_contents)
 	
 	if brew_report == null:
@@ -87,16 +89,19 @@ func _on_start_brew() -> void:
 		BrewerySignals.brewery_state_changed.emit(self)
 		return 
 	
-	risk += brew_report.risk_change
-	reputation += brew_report.reputation_change
+	#These will change when items are sold as well as money!
+	#risk += brew_report.risk_change
+	#reputation += brew_report.reputation_change
 	
 	var new_batch := BrewBatch.new()
 	new_batch.style = brew_report.style
 	new_batch.amount_bottles = brew_report.bottle_yield
 	new_batch.current_quality = brew_report.quality_multiplier
+	new_batch.final_ebc = brew_report.final_ebc
+	new_batch.final_ibu = brew_report.final_ibu
 	
 	inventory.brew_batches.append(new_batch)
 	
 	brew_preparation.clear_preparation()
-	print(StringContainer.SUCCESFULL_BREW_MESSAGE, brew_report.get_style_string())
+	print(StringContainer.SUCCESFULL_BREW_MESSAGE, BeerStyle.get_style_string_from_style(brew_report.style))
 	BrewerySignals.brewery_state_changed.emit(self)

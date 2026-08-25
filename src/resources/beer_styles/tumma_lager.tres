@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="BeerStyle" format=3 uid="uid://bmu023ujp3w3b"]
+
+[ext_resource type="Script" uid="uid://qpqfdi1wacne" path="res://src/classes/beer_style.gd" id="1_tigno"]
+
+[resource]
+script = ExtResource("1_tigno")
+style_name = "Tumma Lager"
+style = 2
+min_ebc = 28
+max_ebc = 70
+min_ibu = 8
+max_ibu = 34
+risk_change = 3
+reputation_change = 3
+metadata/_custom_type_script = "uid://qpqfdi1wacne"

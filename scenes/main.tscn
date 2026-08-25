@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://ccmro4v7bveuo"]
 
 [ext_resource type="Script" uid="uid://dcx0ivwno5nl2" path="res://scenes/ui/gui.gd" id="1_o5qli"]
-[ext_resource type="Script" uid="uid://ckjoayiqlli51" path="res://scenes/ui/right_warehouse_view.gd" id="2_sugp2"]
+[ext_resource type="Texture2D" uid="uid://o6vh3frtnlhf" path="res://assets/textures/underground_brewery_fixed-0001.png" id="2_85g3d"]
 [ext_resource type="Script" uid="uid://bvpo7jgusrd3q" path="res://scenes/ui/top_panel_resources.gd" id="2_tipki"]
 [ext_resource type="Script" uid="uid://v0858wg1wksr" path="res://scenes/ui/ingredient_inventory_panel.gd" id="4_85g3d"]
 [ext_resource type="Script" uid="uid://ctq44eyxh0uc8" path="res://scenes/ui/left_brewing_view.gd" id="4_jyhfs"]
@@ -27,6 +27,15 @@ brewery_entrance_panel = NodePath("BreweryEntrancePanel")
 shop_entrance_panel = NodePath("ShopEntrancePanel")
 back_button = NodePath("BackButton")
 
+[node name="TextureRect" type="TextureRect" parent="GUI" unique_id=354978620]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_85g3d")
+
 [node name="TopPanel_Resources" type="HBoxContainer" parent="GUI" unique_id=1849355740]
 layout_mode = 1
 anchors_preset = 10
@@ -51,6 +60,7 @@ size_flags_horizontal = 3
 text = "AVI Riski: 0%"
 
 [node name="Right_WarehouseView" type="VBoxContainer" parent="GUI" unique_id=1128246563]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.50200003
@@ -63,7 +73,6 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 32
-script = ExtResource("2_sugp2")
 
 [node name="IngredientInventoryPanel" type="VBoxContainer" parent="GUI/Right_WarehouseView" unique_id=192853891]
 layout_mode = 2
@@ -214,6 +223,7 @@ size_flags_vertical = 8
 text = "Brew"
 
 [node name="Left_ShopView" type="VBoxContainer" parent="GUI" unique_id=578953931 node_paths=PackedStringArray("current_item_label", "malt_option_button", "hop_option_button", "yeast_option_button", "main_slider", "buy_button", "sell_button")]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.046000004
@@ -323,12 +333,11 @@ layout_mode = 2
 text = "Asiakkaat odottavat olutta"
 
 [node name="ShopEntrancePanel" type="VBoxContainer" parent="GUI" unique_id=653702569]
-visible = false
 layout_mode = 0
-offset_left = 714.0
-offset_top = 183.0
-offset_right = 773.0
-offset_bottom = 242.0
+offset_left = 944.0
+offset_top = 325.0
+offset_right = 1003.0
+offset_bottom = 416.0
 
 [node name="ShopLabel" type="Label" parent="GUI/ShopEntrancePanel" unique_id=1972996700]
 layout_mode = 2
@@ -339,12 +348,11 @@ custom_minimum_size = Vector2(32, 64)
 layout_mode = 2
 
 [node name="BreweryEntrancePanel" type="VBoxContainer" parent="GUI" unique_id=645292808]
-visible = false
 layout_mode = 0
-offset_left = 188.0
-offset_top = 241.0
-offset_right = 247.0
-offset_bottom = 281.0
+offset_left = 300.0
+offset_top = 198.0
+offset_right = 361.0
+offset_bottom = 289.0
 
 [node name="BreweryLabel" type="Label" parent="GUI/BreweryEntrancePanel" unique_id=1092436156]
 layout_mode = 2

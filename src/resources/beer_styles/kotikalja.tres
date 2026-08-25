@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="BeerStyle" format=3 uid="uid://d1ujdvtla3aa3"]
+
+[ext_resource type="Script" uid="uid://qpqfdi1wacne" path="res://src/classes/beer_style.gd" id="1_qu52c"]
+
+[resource]
+script = ExtResource("1_qu52c")
+style_name = "Kotikalja"
+required_yeast_id = 300
+risk_change = 2
+reputation_change = -1
+metadata/_custom_type_script = "uid://qpqfdi1wacne"

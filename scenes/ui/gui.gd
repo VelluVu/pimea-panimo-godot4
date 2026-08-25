@@ -3,7 +3,7 @@ extends Control
 
 @export var shop_view : ShopView
 @export var brewery_view : BrewingView
-@export var warehouse_view : WarehouseView
+@export var warehouse_view : VBoxContainer
 @export var brewery_entrance_panel : Control
 @export var shop_entrance_panel : Control
 @export var back_button : Control
