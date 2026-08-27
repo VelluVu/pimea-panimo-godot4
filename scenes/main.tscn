@@ -5,9 +5,12 @@
 [ext_resource type="Script" uid="uid://bvpo7jgusrd3q" path="res://scenes/ui/top_panel_resources.gd" id="2_tipki"]
 [ext_resource type="Script" uid="uid://v0858wg1wksr" path="res://scenes/ui/ingredient_inventory_panel.gd" id="4_85g3d"]
 [ext_resource type="Script" uid="uid://ctq44eyxh0uc8" path="res://scenes/ui/left_brewing_view.gd" id="4_jyhfs"]
+[ext_resource type="Texture2D" uid="uid://y2xw4opasm1r" path="res://assets/textures/clock_bg_64.png" id="4_ya4ey"]
 [ext_resource type="Script" uid="uid://dxiexvbe7ambw" path="res://scenes/ui/beer_batch_panel.gd" id="5_choun"]
+[ext_resource type="Texture2D" uid="uid://w5pa604suqjy" path="res://assets/textures/clockhand_64.png" id="5_eb6dy"]
 [ext_resource type="Script" uid="uid://dbsgu6mke0d4q" path="res://scenes/ui/left_shop_view.gd" id="5_tbgi4"]
 [ext_resource type="Script" uid="uid://bh2cqv03r8t8o" path="res://scenes/ui/ingredient_option_button.gd" id="5_tipki"]
+[ext_resource type="Script" uid="uid://cx0sfer400res" path="res://scenes/ui/clock_ui.gd" id="5_trceg"]
 [ext_resource type="Script" uid="uid://be6oyi80fbyom" path="res://scenes/ui/brew_preparation_panel.gd" id="7_tipki"]
 
 [node name="Main" type="Node" unique_id=1659433080]
@@ -27,7 +30,7 @@ brewery_entrance_panel = NodePath("BreweryEntrancePanel")
 shop_entrance_panel = NodePath("ShopEntrancePanel")
 back_button = NodePath("BackButton")
 
-[node name="TextureRect" type="TextureRect" parent="GUI" unique_id=354978620]
+[node name="BG_TextureRect" type="TextureRect" parent="GUI" unique_id=354978620]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -58,6 +61,22 @@ text = "Maine: 0"
 layout_mode = 2
 size_flags_horizontal = 3
 text = "AVI Riski: 0%"
+
+[node name="DayLabel" type="Label" parent="GUI/TopPanel_Resources" unique_id=1287966115]
+layout_mode = 2
+text = "päivä: 1"
+
+[node name="ClockUITextureRect" type="TextureRect" parent="GUI/TopPanel_Resources" unique_id=586740352]
+layout_mode = 2
+texture = ExtResource("4_ya4ey")
+script = ExtResource("5_trceg")
+
+[node name="ClockHandTextureRect" type="TextureRect" parent="GUI/TopPanel_Resources/ClockUITextureRect" unique_id=787688972]
+layout_mode = 1
+anchors_preset = -1
+pivot_offset = Vector2(32, 32)
+offset_transform_enabled = true
+texture = ExtResource("5_eb6dy")
 
 [node name="Right_WarehouseView" type="VBoxContainer" parent="GUI" unique_id=1128246563]
 visible = false
