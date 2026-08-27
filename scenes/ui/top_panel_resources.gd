@@ -1,18 +1,32 @@
 class_name TopPanelResources
 extends HBoxContainer
 
+
+const DAY_STRING : String = "Päivä: %s"
+
 @onready var money_label : Label = $MoneyLabel
 @onready var reputation_label : Label = $ReputationLabel
 @onready var risk_label : Label = $RiskLabel
+@onready var day_label : Label = $DayLabel
 var last_money: int = -1
 var last_reputation : int = -1
 var last_risk: int = -1
 
 func _ready() -> void:
 	BrewerySignals.brewery_state_changed.connect(_on_brewery_state_changed)
+	TimeManager.day_changed.connect(_on_day_changed)
 	
 	if BrewEngine.current_brewery != null:
 		BrewEngine.current_brewery.emit_initial_values()
+
+
+func _on_day_changed(new_day: int) -> void:
+	_update_day_display(new_day)
+
+
+func _update_day_display(day_num: int) -> void:
+	if day_label:
+		day_label.text = DAY_STRING % str(day_num)
 
 
 func _on_brewery_state_changed(brewery : Brewery) -> void:
