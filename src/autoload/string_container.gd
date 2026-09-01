@@ -41,6 +41,10 @@ const INVALID_EXPORT_SCRIPT_ERROR : String = "%s ERROR: Export script is null"
 const TYPE_ERROR : String = "ERROR: ID %s is correct type, but file is not correct inherited class!"
 const INVALID_ADD_AMOUNT_ERROR : String = "%s ERROR: Trying to add %s amount of ingredient with ID: %s"
 
+const NO_CUSTOMERS_IN_RESOURCES_WARNING : String = "CustomerManager: The customer pool is empty! Check that .tres resources exists."
+const SERVING_NULL_CUSTOMER_WARNING : String = "CustomerManager: Tried to serve beer, but there are no customer."
+const NOT_ENOUGH_BOTTLES_IN_BATCH_WARNING : String = "CustomerManager: Not enough bottles in batch!"
+
 const SELL_MESSAGE : String = "Sold %s amount of stuff, and you get %s€ back"
 const SUCCESFULL_BREW_MESSAGE : String = "Succesfull brew batch: "
 const NEW_GAME_MESSAGE : String = "New game started! Brewery established."
@@ -51,3 +55,5 @@ const CREATED_MISSING_BEER_STYLES_FOLDER : String = "Created missing beer_styles
 const LOADED_BEER_STYLES_MESSAGE : String = "Ladattu yhteensä %s oluttyyliä datasta:"
 const BEER_BATCH_STARTED_SPOILING_MESSAGE : String = "HUOMIO: Erä %s (Ikä: %s päivää) alkaa etikkoitua kellarissa!"
 const DAY_CHANGED_MESSAGE : String = "--- DAY CHANGED: Day %s starts ---"
+
+const WRONG_STYLE_DIALOGUE_STRING : String = "Ei tää sitä ollu mitä hain, mut jotaki kuitenki."

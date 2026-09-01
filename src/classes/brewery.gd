@@ -77,6 +77,10 @@ func _on_sell_ingredient(ingredient_id : int, amount : int) -> void:
 	BrewerySignals.brewery_state_changed.emit(self)
 
 
+func start_brew() -> void:
+	_on_start_brew()
+
+
 func _on_start_brew() -> void:
 	if brew_preparation.selected_contents.is_empty():
 		print(StringContainer.TABLE_EMPTY_ERROR)

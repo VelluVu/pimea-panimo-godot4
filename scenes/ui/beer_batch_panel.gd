@@ -3,6 +3,7 @@ extends VBoxContainer
 
 
 @onready var beer_batch_list_vbox : VBoxContainer = $BeerBatchScrollContainer/BeerBatchListVBox
+const LABEL_STRING : String = "🍺 %s (Laatu: %s) - %s pulloa - ebc %s - ibu %s"
 
 
 func _ready() -> void:
@@ -29,7 +30,7 @@ func _update_beer_batches_ui() -> void:
 			
 			var row_label := Label.new()
 			
-			row_label.text = "🍺 %s (Laatu: %s) - %s pulloa - ebc %s - ibu %s" % [
+			row_label.text = LABEL_STRING % [
 				batch.get_style_name(), 
 				str(batch.current_quality), 
 				str(batch.amount_bottles),
