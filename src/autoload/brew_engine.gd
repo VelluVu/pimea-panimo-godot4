@@ -2,6 +2,8 @@
 extends Node
 
 var current_brewery: Brewery = null
+const DEVELOPER_MODE : bool = true
+
 
 func _init() -> void:
 	_on_start_game()

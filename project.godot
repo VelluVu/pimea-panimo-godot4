@@ -23,6 +23,7 @@ IngredientDatabase="*uid://dexbsgkyojbsd"
 BrewEngine="*uid://v1ldxk71j6xp"
 StringContainer="*uid://dpid4q4x5pp7w"
 TimeManager="*uid://bt32vf1r28xyy"
+CustomerManager="*uid://dlbx6ek8v84lo"
 
 [physics]
 

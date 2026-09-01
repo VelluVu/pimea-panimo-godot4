@@ -12,6 +12,10 @@
 [ext_resource type="Script" uid="uid://bh2cqv03r8t8o" path="res://scenes/ui/ingredient_option_button.gd" id="5_tipki"]
 [ext_resource type="Script" uid="uid://cx0sfer400res" path="res://scenes/ui/clock_ui.gd" id="5_trceg"]
 [ext_resource type="Script" uid="uid://be6oyi80fbyom" path="res://scenes/ui/brew_preparation_panel.gd" id="7_tipki"]
+[ext_resource type="Script" uid="uid://clwrlsny0wt3b" path="res://scenes/ui/dialog_view.gd" id="13_jkv2x"]
+[ext_resource type="Texture2D" uid="uid://d076wdffwlg85" path="res://assets/textures/accept_button_32.png" id="14_jbj1t"]
+[ext_resource type="Texture2D" uid="uid://do2eqagr661lg" path="res://assets/textures/decline_button_32.png" id="15_muem4"]
+[ext_resource type="Script" uid="uid://otqswed5rb6a" path="res://scenes/ui/feature_tester_panel.gd" id="16_jbj1t"]
 
 [node name="Main" type="Node" unique_id=1659433080]
 
@@ -38,6 +42,82 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_85g3d")
+
+[node name="DialogView" type="Control" parent="GUI" unique_id=1731748201 node_paths=PackedStringArray("counter_positions_parent")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("13_jkv2x")
+counter_positions_parent = NodePath("CounterPositionsParent")
+
+[node name="BubbleSpawnPoint" type="Control" parent="GUI/DialogView" unique_id=1300708516]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="SpecialPanel" type="Panel" parent="GUI/DialogView" unique_id=540823075]
+custom_minimum_size = Vector2(256, 128)
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 590.0
+offset_top = -199.0
+offset_right = 892.0
+offset_bottom = -18.0
+grow_vertical = 2
+
+[node name="SpecialLabel" type="Label" parent="GUI/DialogView/SpecialPanel" unique_id=601412703]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="AcceptButton" type="Button" parent="GUI/DialogView/SpecialPanel" unique_id=1007812338]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -8.0
+offset_right = 8.0
+grow_vertical = 0
+icon = ExtResource("14_jbj1t")
+
+[node name="RejectButton" type="Button" parent="GUI/DialogView/SpecialPanel" unique_id=1897142736]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -8.0
+offset_top = -8.0
+grow_horizontal = 0
+grow_vertical = 0
+icon = ExtResource("15_muem4")
+
+[node name="CounterPositionsParent" type="Node2D" parent="GUI/DialogView" unique_id=2107604814]
+position = Vector2(690, 451)
+
+[node name="CounterMarker1" type="Marker2D" parent="GUI/DialogView/CounterPositionsParent" unique_id=1548923890]
+position = Vector2(-159, 57)
+
+[node name="CounterMarker2" type="Marker2D" parent="GUI/DialogView/CounterPositionsParent" unique_id=1665718045]
+position = Vector2(-72, 64)
+
+[node name="CounterMarker3" type="Marker2D" parent="GUI/DialogView/CounterPositionsParent" unique_id=922537437]
+position = Vector2(8, 67)
+
+[node name="CounterMarker4" type="Marker2D" parent="GUI/DialogView/CounterPositionsParent" unique_id=2025945167]
+position = Vector2(98, 68)
+
+[node name="CounterMarker5" type="Marker2D" parent="GUI/DialogView/CounterPositionsParent" unique_id=498340080]
+position = Vector2(185, 68)
 
 [node name="TopPanel_Resources" type="HBoxContainer" parent="GUI" unique_id=1849355740]
 layout_mode = 1
@@ -83,11 +163,11 @@ visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.50200003
-anchor_top = 0.046000004
+anchor_top = 0.096
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -0.3040161
-offset_top = 0.19199753
+offset_top = -0.20800018
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
@@ -133,11 +213,12 @@ size_flags_vertical = 3
 visible = false
 layout_mode = 1
 anchors_preset = -1
-anchor_top = 0.046000004
-anchor_right = 0.5
+anchor_top = 0.097
+anchor_right = 0.49800003
 anchor_bottom = 1.0
-offset_top = 0.19199753
-offset_right = -2.0
+offset_top = 0.14399719
+offset_right = 0.30395508
+offset_bottom = -3.0
 size_flags_horizontal = 3
 script = ExtResource("4_jyhfs")
 current_item_label = NodePath("IngredientSelectionPanel/CurrentItemLabel")
@@ -245,11 +326,12 @@ text = "Brew"
 visible = false
 layout_mode = 1
 anchors_preset = -1
-anchor_top = 0.046000004
-anchor_right = 0.5
+anchor_top = 0.096
+anchor_right = 0.49800003
 anchor_bottom = 1.0
-offset_top = 0.19199753
-offset_right = -2.0
+offset_top = 1.7919998
+offset_right = 0.30395508
+offset_bottom = -2.0
 size_flags_horizontal = 3
 script = ExtResource("5_tbgi4")
 current_item_label = NodePath("IngredientSelectionElementList/CurrentItemLabel")
@@ -333,24 +415,6 @@ custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 text = "Osta"
 
-[node name="BottomPanel_EventsView" type="PanelContainer" parent="GUI" unique_id=1317728424]
-visible = false
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -103.0
-offset_top = -40.0
-offset_right = 103.0
-grow_horizontal = 2
-grow_vertical = 0
-
-[node name="DialogLabel" type="Label" parent="GUI/BottomPanel_EventsView" unique_id=2048314983]
-layout_mode = 2
-text = "Asiakkaat odottavat olutta"
-
 [node name="ShopEntrancePanel" type="VBoxContainer" parent="GUI" unique_id=653702569]
 layout_mode = 0
 offset_left = 944.0
@@ -368,10 +432,10 @@ layout_mode = 2
 
 [node name="BreweryEntrancePanel" type="VBoxContainer" parent="GUI" unique_id=645292808]
 layout_mode = 0
-offset_left = 300.0
-offset_top = 198.0
-offset_right = 361.0
-offset_bottom = 289.0
+offset_left = 308.0
+offset_top = 143.0
+offset_right = 369.0
+offset_bottom = 234.0
 
 [node name="BreweryLabel" type="Label" parent="GUI/BreweryEntrancePanel" unique_id=1092436156]
 layout_mode = 2
@@ -381,8 +445,45 @@ text = "Keittola"
 custom_minimum_size = Vector2(32, 64)
 layout_mode = 2
 
+[node name="FeatureTesterPanel" type="Panel" parent="GUI" unique_id=1015855295]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.86700004
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -6.1035156e-05
+grow_horizontal = 2
+grow_vertical = 0
+script = ExtResource("16_jbj1t")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GUI/FeatureTesterPanel" unique_id=555193852]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="BrewLagerButton" type="Button" parent="GUI/FeatureTesterPanel/HBoxContainer" unique_id=1520330430]
+custom_minimum_size = Vector2(128, 64)
+layout_mode = 2
+text = "Keitä Bulkkilager"
+autowrap_mode = 3
+
+[node name="TestSpecialCustomerButton" type="Button" parent="GUI/FeatureTesterPanel/HBoxContainer" unique_id=2068403438]
+custom_minimum_size = Vector2(128, 64)
+layout_mode = 2
+text = "Erikoisasiakas"
+autowrap_mode = 3
+
+[node name="TestNormalCustomerButton" type="Button" parent="GUI/FeatureTesterPanel/HBoxContainer" unique_id=1714273010]
+custom_minimum_size = Vector2(128, 64)
+layout_mode = 2
+text = "Tavallinen asiakas"
+autowrap_mode = 3
+
 [node name="BackButton" type="Button" parent="GUI" unique_id=1869511055]
-visible = false
 custom_minimum_size = Vector2(64, 32)
 layout_mode = 1
 anchors_preset = 2
@@ -391,7 +492,7 @@ anchor_bottom = 1.0
 offset_top = -8.0
 offset_right = 8.0
 grow_vertical = 0
-text = "back"
+text = "Takaisin"
 
 [connection signal="pressed" from="GUI/Left_BrewingView/IngredientSelectionPanel/AddRemoveLastModifiedButtonPanel/AddButton" to="GUI/Left_BrewingView" method="_on_add_button_pressed"]
 [connection signal="pressed" from="GUI/Left_BrewingView/IngredientSelectionPanel/AddRemoveLastModifiedButtonPanel/RemoveButton" to="GUI/Left_BrewingView" method="_on_remove_button_pressed"]

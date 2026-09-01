@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="CustomerData" format=3 uid="uid://k6820w6sn41v"]
+
+[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/classes/customer_data.gd" id="1_1ar4k"]
+
+[resource]
+script = ExtResource("1_1ar4k")
+customer_name = "Otto"
+min_quality = 0.1
+dialogue_success = "Hyvät kaljat! Tässä rahat."
+dialogue_fallback = "Kaikki käy."
+dialogue_reject = "Oho, melekosta litkua."
+metadata/_custom_type_script = "uid://b2vqc8lkfjwic"
