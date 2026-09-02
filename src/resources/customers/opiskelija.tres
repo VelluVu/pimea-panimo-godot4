@@ -6,7 +6,7 @@
 script = ExtResource("1_1ar4k")
 customer_name = "Otto"
 min_quality = 0.1
-dialogue_success = "Hyvät kaljat! Tässä rahat."
+dialogue_success = "Jes, kunnon oluet!"
 dialogue_fallback = "Kaikki käy."
 dialogue_reject = "Oho, melekosta litkua."
 metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

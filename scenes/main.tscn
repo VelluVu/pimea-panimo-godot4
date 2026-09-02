@@ -13,11 +13,46 @@
 [ext_resource type="Script" uid="uid://cx0sfer400res" path="res://scenes/ui/clock_ui.gd" id="5_trceg"]
 [ext_resource type="Script" uid="uid://be6oyi80fbyom" path="res://scenes/ui/brew_preparation_panel.gd" id="7_tipki"]
 [ext_resource type="Script" uid="uid://clwrlsny0wt3b" path="res://scenes/ui/dialog_view.gd" id="13_jkv2x"]
-[ext_resource type="Texture2D" uid="uid://d076wdffwlg85" path="res://assets/textures/accept_button_32.png" id="14_jbj1t"]
-[ext_resource type="Texture2D" uid="uid://do2eqagr661lg" path="res://assets/textures/decline_button_32.png" id="15_muem4"]
 [ext_resource type="Script" uid="uid://otqswed5rb6a" path="res://scenes/ui/feature_tester_panel.gd" id="16_jbj1t"]
+[ext_resource type="Script" uid="uid://cabnw1tbiyona" path="res://src/classes/customer_spawner.gd" id="17_muem4"]
 
 [node name="Main" type="Node" unique_id=1659433080]
+
+[node name="BG_TextureRect" type="TextureRect" parent="." unique_id=354978620]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_85g3d")
+
+[node name="CustomerSpawner" type="Node2D" parent="." unique_id=82506958]
+position = Vector2(164, 183)
+script = ExtResource("17_muem4")
+
+[node name="CounterPositionsParent" type="Node2D" parent="CustomerSpawner" unique_id=2107604814]
+position = Vector2(526, 268)
+
+[node name="CounterMarker1" type="Marker2D" parent="CustomerSpawner/CounterPositionsParent" unique_id=1548923890]
+position = Vector2(-223, 62)
+
+[node name="CounterMarker2" type="Marker2D" parent="CustomerSpawner/CounterPositionsParent" unique_id=1665718045]
+position = Vector2(-105, 67)
+
+[node name="CounterMarker3" type="Marker2D" parent="CustomerSpawner/CounterPositionsParent" unique_id=922537437]
+position = Vector2(8, 67)
+
+[node name="CounterMarker4" type="Marker2D" parent="CustomerSpawner/CounterPositionsParent" unique_id=2025945167]
+position = Vector2(110, 68)
+
+[node name="CounterMarker5" type="Marker2D" parent="CustomerSpawner/CounterPositionsParent" unique_id=498340080]
+position = Vector2(224, 68)
+
+[node name="StairsBottomMarker" type="Marker2D" parent="CustomerSpawner" unique_id=1346504694]
+position = Vector2(-156, 417)
+
+[node name="RoomCenterMarker" type="Marker2D" parent="CustomerSpawner" unique_id=683741727]
+position = Vector2(462, 434)
 
 [node name="GUI" type="Control" parent="." unique_id=2102684685 node_paths=PackedStringArray("shop_view", "brewery_view", "warehouse_view", "brewery_entrance_panel", "shop_entrance_panel", "back_button")]
 layout_mode = 3
@@ -34,16 +69,7 @@ brewery_entrance_panel = NodePath("BreweryEntrancePanel")
 shop_entrance_panel = NodePath("ShopEntrancePanel")
 back_button = NodePath("BackButton")
 
-[node name="BG_TextureRect" type="TextureRect" parent="GUI" unique_id=354978620]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("2_85g3d")
-
-[node name="DialogView" type="Control" parent="GUI" unique_id=1731748201 node_paths=PackedStringArray("counter_positions_parent")]
+[node name="DialogView" type="Control" parent="GUI" unique_id=1731748201]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -51,73 +77,21 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("13_jkv2x")
-counter_positions_parent = NodePath("CounterPositionsParent")
 
 [node name="BubbleSpawnPoint" type="Control" parent="GUI/DialogView" unique_id=1300708516]
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="SpecialPanel" type="Panel" parent="GUI/DialogView" unique_id=540823075]
-custom_minimum_size = Vector2(256, 128)
+[node name="SpecialEventsContainer" type="VBoxContainer" parent="GUI/DialogView" unique_id=224237195]
 layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_left = 590.0
-offset_top = -199.0
-offset_right = 892.0
-offset_bottom = -18.0
-grow_vertical = 2
-
-[node name="SpecialLabel" type="Label" parent="GUI/DialogView/SpecialPanel" unique_id=601412703]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="AcceptButton" type="Button" parent="GUI/DialogView/SpecialPanel" unique_id=1007812338]
-layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_top = -8.0
-offset_right = 8.0
-grow_vertical = 0
-icon = ExtResource("14_jbj1t")
-
-[node name="RejectButton" type="Button" parent="GUI/DialogView/SpecialPanel" unique_id=1897142736]
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -8.0
-offset_top = -8.0
-grow_horizontal = 0
-grow_vertical = 0
-icon = ExtResource("15_muem4")
-
-[node name="CounterPositionsParent" type="Node2D" parent="GUI/DialogView" unique_id=2107604814]
-position = Vector2(690, 451)
-
-[node name="CounterMarker1" type="Marker2D" parent="GUI/DialogView/CounterPositionsParent" unique_id=1548923890]
-position = Vector2(-159, 57)
-
-[node name="CounterMarker2" type="Marker2D" parent="GUI/DialogView/CounterPositionsParent" unique_id=1665718045]
-position = Vector2(-72, 64)
-
-[node name="CounterMarker3" type="Marker2D" parent="GUI/DialogView/CounterPositionsParent" unique_id=922537437]
-position = Vector2(8, 67)
-
-[node name="CounterMarker4" type="Marker2D" parent="GUI/DialogView/CounterPositionsParent" unique_id=2025945167]
-position = Vector2(98, 68)
-
-[node name="CounterMarker5" type="Marker2D" parent="GUI/DialogView/CounterPositionsParent" unique_id=498340080]
-position = Vector2(185, 68)
+anchors_preset = -1
+anchor_top = 0.1
+anchor_right = 0.248
+anchor_bottom = 0.87
+offset_top = 0.9039993
+offset_right = 1.9360046
+offset_bottom = -4.40802
 
 [node name="TopPanel_Resources" type="HBoxContainer" parent="GUI" unique_id=1849355740]
 layout_mode = 1
