@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://bgjd0jb4nknd7"]
+
+[ext_resource type="Script" uid="uid://cw8uqmorifcpm" path="res://scenes/customer.gd" id="1_ktfjk"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_yf5fn"]
+size = Vector2(128, 128)
+
+[node name="Customer" type="Node2D" unique_id=348033307]
+script = ExtResource("1_ktfjk")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=393562816]
+texture = SubResource("PlaceholderTexture2D_yf5fn")
+centered = false
+offset = Vector2(-64, -128)

@@ -31,7 +31,7 @@ func _on_brew_lager_button_down() -> void:
 
 
 func _on_test_special_customer_button_down() -> void:
-	CustomerManager.spawn_special_customer()
+	SpecialEventManager.spawn_special_customer()
 
 
 func _on_test_normal_customer_button_down() -> void:

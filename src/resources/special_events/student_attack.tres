@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="SpecialEventData" format=3 uid="uid://c7wwypcimfta5"]
+
+[ext_resource type="Script" uid="uid://cl0kqitrmb4gj" path="res://src/classes/special_event_data.gd" id="1_8vv1f"]
+
+[resource]
+script = ExtResource("1_8vv1f")
+event_caller_name = "Alpha-Opiskelija"
+reject_dialogue = "Ei perkele, pitää mennä sit muualle."
+metadata/_custom_type_script = "uid://cl0kqitrmb4gj"
