@@ -71,7 +71,7 @@ func _set_bubble_text(bubble: Node, text: String) -> void:
 
 
 func _fade_out_bubble_delayed(bubble: Node, slot: int) -> void:
-	await get_tree().create_timer(DISPLAY_TIME_SECONDS).timeout
+	await get_tree().create_timer(FADE_OUT_TIME_SECONDS).timeout
 	
 	if is_instance_valid(bubble) and active_slot_bubbles.get(slot) == bubble:
 		bubble.queue_free()

@@ -19,6 +19,8 @@ func _ready() -> void:
 	
 	progress_bar.max_value = 10.0
 	progress_bar.value = 10.0
+	accept_button.visible = true
+	reject_button.visible = true
 	
 	accept_button.pressed.connect(_on_accept_pressed)
 	reject_button.pressed.connect(_on_reject_pressed)
@@ -62,6 +64,8 @@ func _timeout_event() -> void:
 
 
 func _hide_buttons() -> void:
+	reject_button.visible = false
+	accept_button.visible = false
 	is_active = false
 	progress_bar.visible = false
 
