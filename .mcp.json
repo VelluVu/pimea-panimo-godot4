@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "hi-godot": {
+      "command": "npx",
+      "args": ["-y", "@hi-godot/mcp-server"]
+    }
+  }
+}

@@ -25,3 +25,9 @@ signal brewery_view_requested()
 
 @warning_ignore("unused_signal")
 signal brewery_view_closed()
+
+@warning_ignore("unused_signal")
+signal mouse_entered_brewery_hover_area(is_entered : bool)
+
+@warning_ignore("unused_signal")
+signal mouse_entered_shop_hover_area(is_entered : bool)

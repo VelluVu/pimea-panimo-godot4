@@ -21,7 +21,6 @@ func _ready() -> void:
 
 
 func _on_mouse_entered() -> void:
-	print("BreweryHoverArea: Mouse entered")
 	if overlay_glow_sprite == null: return
 	
 	if current_tween and current_tween.is_running():
@@ -29,10 +28,10 @@ func _on_mouse_entered() -> void:
 		
 	current_tween = create_tween()
 	current_tween.tween_property(overlay_glow_sprite, "self_modulate", HOVER_GLOW_COLOR, TWEEN_DURATION_SECONDS).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	GUISignals.mouse_entered_brewery_hover_area.emit(true)
 
 
 func _on_mouse_exited() -> void:
-	print("Mouse exited brewery hover area")
 	if overlay_glow_sprite == null: return
 	
 	if current_tween and current_tween.is_running():
@@ -40,6 +39,7 @@ func _on_mouse_exited() -> void:
 		
 	current_tween = create_tween()
 	current_tween.tween_property(overlay_glow_sprite, "self_modulate", HIDDEN_COLOR, TWEEN_DURATION_SECONDS).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	GUISignals.mouse_entered_brewery_hover_area.emit(false)
 
 
 func _on_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
