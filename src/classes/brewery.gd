@@ -22,7 +22,7 @@ func _ready() -> void:
 	GUISignals.remove_ingredients_from_brew_preparation.connect(_on_remove_ingredient_from_brew_preparation)
 	GUISignals.buy_ingredient.connect(_on_buy_ingredient)
 	GUISignals.sell_ingredient.connect(_on_sell_ingredient)
-	GUISignals.start_brewing.connect(_on_start_brew)
+	GUISignals.start_brewing.connect(start_brew)
 
 
 func emit_initial_values() -> void:
@@ -78,10 +78,6 @@ func _on_sell_ingredient(ingredient_id : int, amount : int) -> void:
 
 
 func start_brew() -> void:
-	_on_start_brew()
-
-
-func _on_start_brew() -> void:
 	if brew_preparation.selected_contents.is_empty():
 		print(StringContainer.TABLE_EMPTY_ERROR)
 		return

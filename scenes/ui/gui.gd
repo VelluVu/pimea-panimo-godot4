@@ -4,6 +4,7 @@ extends Control
 
 @onready var shop_view : ShopView = $Left_ShopView
 @onready var brewery_view : BrewingView = $Left_BrewingView
+@onready var brew_preparation_panel : BrewPreparationPanel = $BrewPreparationPanel
 @onready var warehouse_view : VBoxContainer = $Right_WarehouseView
 @onready var brewery_entrance_panel : Control = $BreweryEntrancePanel
 @onready var shop_entrance_panel : ShopEntrancePanel = $ShopEntrancePanel
@@ -18,6 +19,7 @@ func _ready() -> void:
 func _move_to_shop() -> void:
 	back_button.show()
 	brewery_view.hide()
+	brew_preparation_panel.hide()
 	shop_entrance_panel.deactivate_shop_panel()
 	brewery_entrance_panel.hide()
 	shop_view.show()
@@ -30,6 +32,7 @@ func _move_to_brewery() -> void:
 	shop_entrance_panel.deactivate_shop_panel()
 	brewery_entrance_panel.hide()
 	brewery_view.show()
+	brew_preparation_panel.show()
 	warehouse_view.show_warehouse_view()
 
 
@@ -37,6 +40,7 @@ func _move_to_bar() -> void:
 	back_button.hide()
 	shop_view.hide()
 	brewery_view.hide()
+	brew_preparation_panel.hide()
 	warehouse_view.hide_warehouse_view()
 	shop_entrance_panel.activate_shop_panel()
 	brewery_entrance_panel.show()

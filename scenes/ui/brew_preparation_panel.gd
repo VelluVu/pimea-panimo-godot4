@@ -17,6 +17,8 @@ func _initialize_table_nodes() -> void:
 	for id in IngredientDatabase.sorted_ids:
 		var new_label := Label.new()
 		new_label.visible = false
+		new_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		new_label.add_theme_font_size_override("font_size", 12)
 		table_list_vbox.add_child(new_label)
 		table_labels[id] = new_label
 
