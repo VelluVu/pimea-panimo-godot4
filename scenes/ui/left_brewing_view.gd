@@ -1,5 +1,5 @@
 class_name BrewingView
-extends VBoxContainer
+extends Control
 
 @export var current_item_label : Label
 @export var malt_option_button : OptionButton

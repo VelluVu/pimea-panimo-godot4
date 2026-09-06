@@ -10,7 +10,7 @@ const FADE_OUT_TIME_SECONDS : float = 3.5
 const SPEECH_BUBBLE_SCENE : PackedScene = preload("res://scenes/ui/speech_bubble.tscn")
 const SPECIAL_EVENT_WINDOW_SCENE : PackedScene = preload("res://scenes/ui/special_event_window.tscn")
 
-const BUBBLE_OFFSET_Y : float = -248.0
+const BUBBLE_OFFSET_Y : float = -180.0
 
 @onready var special_events_container: VBoxContainer = $SpecialEventsContainer	
 @onready var bubble_spawn_point: Control = $BubbleSpawnPoint

@@ -17,8 +17,10 @@ func _initialize_storage_nodes() -> void:
 		var ingredient: IngredientData = IngredientDatabase.database[id]
 		
 		var new_label := Label.new()
-		new_label.visible = false 
+		new_label.visible = false
 		new_label.modulate = ingredient.get_color()
+		new_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		new_label.add_theme_font_size_override("font_size", 12)
 			
 		ingredient_list_vbox.add_child(new_label)
 		storage_labels[id] = new_label 

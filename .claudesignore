@@ -1,0 +1,16 @@
+# Ohita Godotin sisäiset välimuistit ja tuonnit (TÄRKEIN!)
+.godot/
+*.import
+export_presets.cfg
+
+# Ohita raskaat grafiikka- ja äänitiedostot
+assets/
+music/
+sounds/
+*.png
+*.wav
+*.mp3
+*.ogg
+
+# Ohita muiden valmiiden lisäosien koodit (vapaaehtoinen)
+addons/jonkun_muun_plugin/

@@ -6,9 +6,12 @@ extends OptionButton
 
 
 func _ready() -> void:
+	clip_text = true
+	fit_to_longest_item = false
+
 	while not IngredientDatabase.is_loaded:
 		await get_tree().process_frame
-	
+
 	item_selected.connect(_on_item_selected)
 	pressed.connect(_on_menu_opened)
 	GUISignals.active_ingredient_changed.connect(_on_global_ingredient_changed)
