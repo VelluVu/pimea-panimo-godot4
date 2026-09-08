@@ -1,11 +1,11 @@
-[gd_resource type="Resource" script_class="CustomerData" format=3 uid="uid://k6820w6sn41v"]
+[gd_resource type="Resource" script_class="CustomerData" format=3 uid="uid://cs577fkweqv8m"]
 
 [ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/classes/customer_data.gd" id="1_1ar4k"]
-[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/opiskelija_male_anim.tres" id="2_sprite"]
+[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/opiskelija_naaras_anim.tres" id="2_sprite"]
 
 [resource]
 script = ExtResource("1_1ar4k")
-customer_name = "Otto"
+customer_name = "Oona"
 min_quality = 0.1
 sprite_frames = ExtResource("2_sprite")
 dialogue_success = "Jes, kunnon oluet!"

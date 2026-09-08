@@ -6,18 +6,22 @@ const WARNING_FOLDER_OPEN_FAILED = "CustomerRegistry: Failed to open path: "
 const WARNING_POOL_EMPTY = "CustomerRegistry: Customer pool is empty!"
 const WARNING_EVENTS_EMPTY = "CustomerRegistry: Special events pool is empty!"
 
-const NAMES_OPISKELIJA = ["Otto", "Onni", "Oona", "Olli", "Anni", "Eetu", "Emma", "Iida", "Juho", "Kalle"]
+const NAMES_OPISKELIJA = ["Otto", "Onni", "Olli", "Eetu", "Juho", "Kalle"]
+const NAMES_OPISKELIJA_NAARAS = ["Oona", "Anni", "Emma", "Iida", "Aino", "Sanni"]
 const NAMES_RAKSAMIES = ["Rane", "Reijo", "Arto", "Make", "Jorma", "Seppo", "Pentti", "Tane", "Jari", "Kake"]
 const NAMES_HIPSTERI = ["Hilkka", "Heka", "Hugo", "Saga", "Milo", "Luna", "Felix", "Alva", "Eno", "Noa"]
 const NAMES_AGENTTI = ["Asko", "Aaro", "Ilona", "Kari", "Risto", "Sami", "Veera", "Tapio", "Tuula", "Oskari"]
-const NAMES_BARBAARI = ["Urho", "Rolf", "Kustaa", "Turkka", "Valto", "Helga", "Thor", "Birger", "Aila", "Inkeri"]
+const NAMES_BARBAARI = ["Urho", "Rolf", "Kustaa", "Turkka", "Valto", "Thor", "Birger"]
+const NAMES_BARBAARI_NAARAS = ["Helga", "Aila", "Inkeri", "Brynhild", "Sigrid"]
 const NAMES_MAFIOSO = ["Don", "Vito", "Carlo", "Rane", "Toni", "Sulo", "Gunnar", "Pepe", "Vesa", "Arska"]
 
 const TITLES = {
+	"opiskelija_naaras": {"title": "Opiskelija", "names": NAMES_OPISKELIJA_NAARAS},
 	"opiskelija": {"title": "Opiskelija", "names": NAMES_OPISKELIJA},
 	"raksamies": {"title": "Raksamies", "names": NAMES_RAKSAMIES},
 	"hipsteri": {"title": "Hipsteri", "names": NAMES_HIPSTERI},
 	"agentti": {"title": "Agentti", "names": NAMES_AGENTTI},
+	"barbaari_naaras": {"title": "Barbaari", "names": NAMES_BARBAARI_NAARAS},
 	"barbaari": {"title": "Barbaari", "names": NAMES_BARBAARI},
 	"mafioso": {"title": "Mafioso", "names": NAMES_MAFIOSO}
 }
@@ -37,9 +41,22 @@ func _ready() -> void:
 
 
 func get_random_customer_data() -> CustomerData:
-	if customer_pool.is_empty(): 
+	if customer_pool.is_empty():
 		return null
-	return customer_pool.pick_random()
+
+	var current_reputation : int = 0
+	if BrewEngine.current_brewery != null:
+		current_reputation = BrewEngine.current_brewery.reputation
+
+	var eligible_customers : Array[CustomerData] = []
+	for customer in customer_pool:
+		if current_reputation >= customer.min_reputation_to_appear:
+			eligible_customers.append(customer)
+
+	if eligible_customers.is_empty():
+		eligible_customers = customer_pool
+
+	return eligible_customers.pick_random()
 
 
 func get_random_special_event() -> SpecialEventData:
