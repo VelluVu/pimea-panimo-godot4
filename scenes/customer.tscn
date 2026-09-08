@@ -1,14 +1,15 @@
 [gd_scene format=3 uid="uid://bgjd0jb4nknd7"]
 
 [ext_resource type="Script" uid="uid://cw8uqmorifcpm" path="res://scenes/customer.gd" id="1_ktfjk"]
-
-[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_yf5fn"]
-size = Vector2(128, 128)
+[ext_resource type="SpriteFrames" uid="uid://xbg47c0gkylu" path="res://src/resources/sprite_frames/default_customer.tres" id="2_xss0h"]
 
 [node name="Customer" type="Node2D" unique_id=348033307]
 script = ExtResource("1_ktfjk")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=393562816]
-texture = SubResource("PlaceholderTexture2D_yf5fn")
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=701948396]
+texture_filter = 1
+scale = Vector2(4, 4)
+sprite_frames = ExtResource("2_xss0h")
+animation = &"idle"
 centered = false
-offset = Vector2(-64, -128)
+offset = Vector2(-16, -32)
