@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="BeerStyle" format=3 uid="uid://d33mfuwpber20"]
+
+[ext_resource type="Script" uid="uid://qpqfdi1wacne" path="res://src/classes/beer_style.gd" id="1_scotch"]
+
+[resource]
+script = ExtResource("1_scotch")
+style_name = "Scotch Ale"
+style = 17
+required_yeast_id = 302
+preferred_hop_profile = 5
+min_malt_weight = 4
+min_ebc = 41
+max_ebc = 55
+min_ibu = 15
+max_ibu = 25
+risk_change = 4
+reputation_change = 5
+peak_days = 30
+shelf_life_days = 400
+metadata/_custom_type_script = "uid://qpqfdi1wacne"

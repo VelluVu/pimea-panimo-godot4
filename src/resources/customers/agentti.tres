@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="CustomerData" format=3]
+
+[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/classes/customer_data.gd" id="1_agentti"]
+
+[resource]
+script = ExtResource("1_agentti")
+customer_name = "Asko"
+min_quality = 0.3
+dialogue_intro = "Iltaa. Kuulin että täältä saa erikoisempaakin tavaraa."
+dialogue_success = "Kiinnostavaa. Kirjoitan tämän ylös."
+dialogue_fallback = "Riittää tutkimuksiin."
+dialogue_wrong_style = "Ei aivan sitä mitä etsin, mutta otan tämän näytteeksi."
+dialogue_reject = "Selvä. Tämäkään ei mennyt hukkaan."
+min_reputation_to_appear = 50
+randomizes_preference = true
+primary_match_risk_multiplier = 2.5
+metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

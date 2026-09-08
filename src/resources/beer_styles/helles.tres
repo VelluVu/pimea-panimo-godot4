@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="BeerStyle" format=3 uid="uid://r7xpwi7gauq2"]
+
+[ext_resource type="Script" uid="uid://qpqfdi1wacne" path="res://src/classes/beer_style.gd" id="1_helles"]
+
+[resource]
+script = ExtResource("1_helles")
+style_name = "Helles"
+style = 6
+preferred_hop_profile = 4
+min_ebc = 11
+max_ebc = 14
+min_ibu = 14
+max_ibu = 20
+risk_change = 2
+peak_days = 10
+shelf_life_days = 270
+aging_factor = 0.02
+metadata/_custom_type_script = "uid://qpqfdi1wacne"

@@ -14,9 +14,25 @@ var current_tween: Tween
 func _ready() -> void:
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
+	GUISignals.warehouse_view_opened.connect(_on_warehouse_view_opened)
+	GUISignals.warehouse_view_closed.connect(_on_warehouse_view_closed)
 
 	if is_instance_valid(overlay_glow_sprite):
 		overlay_glow_sprite.modulate = BASE_COLOR
+
+
+func _on_warehouse_view_opened() -> void:
+	input_pickable = false
+
+	if current_tween and current_tween.is_running():
+		current_tween.kill()
+
+	if is_instance_valid(overlay_glow_sprite):
+		overlay_glow_sprite.modulate = BASE_COLOR
+
+
+func _on_warehouse_view_closed() -> void:
+	input_pickable = true
 
 
 func _on_mouse_entered() -> void:

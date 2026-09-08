@@ -12,4 +12,5 @@ description = "Tämä jalohumala antaa oluelle klassista makua"
 base_price = 2
 unit = 1
 type = 1
+flavor_profile = 4
 metadata/_custom_type_script = "uid://dniwiyu5ynp71"

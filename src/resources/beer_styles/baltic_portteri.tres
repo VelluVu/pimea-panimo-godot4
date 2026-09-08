@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="BeerStyle" format=3]
+
+[ext_resource type="Script" uid="uid://qpqfdi1wacne" path="res://src/classes/beer_style.gd" id="1_balticportteri"]
+
+[resource]
+script = ExtResource("1_balticportteri")
+style_name = "Baltic Portteri"
+style = 9
+required_yeast_id = 301
+min_malt_weight = 4
+min_ebc = 28
+max_ebc = 70
+min_ibu = 35
+max_ibu = 48
+risk_change = 4
+reputation_change = 5
+peak_days = 30
+shelf_life_days = 500
+aging_factor = 0.08
+metadata/_custom_type_script = "uid://qpqfdi1wacne"

@@ -60,33 +60,49 @@ func _on_brewery_state_changed(brewery: Brewery) -> void:
 	
 
 func process_auto_sale(data: CustomerData) -> String:
-	if BrewEngine.current_brewery == null: 
+	if BrewEngine.current_brewery == null:
 		return ""
-		
+
 	var brewery = BrewEngine.current_brewery
 	var best_batch = _find_best_batch(brewery.inventory.brew_batches, data)
-	if best_batch == null:
-		best_batch = brewery.inventory.brew_batches
-		
+
 	if best_batch == null or best_batch.amount_bottles < BOTTLES_SOLD_PER_TRANSACTION:
 		return ""
-		
-	var results: Dictionary
-	if data.has_method("evaluate_brew_batch"):
-		results = data.evaluate_brew_batch(best_batch)
-	else:
-		results = data.call("evaluate_brew_batch", best_batch)
-		
-	brewery.money += results[KEY_INCOME]
+
+	var results: Dictionary = data.evaluate_brew_batch(best_batch)
+
+	var bottles_sold : int = randi_range(data.min_bottles_per_visit, data.max_bottles_per_visit)
+	bottles_sold = min(bottles_sold, best_batch.amount_bottles)
+
+	brewery.money += results[KEY_INCOME] * bottles_sold
 	brewery.reputation = max(0, brewery.reputation + results[KEY_REPUTATION])
-	brewery.risk += results[KEY_RISK]
-	
-	best_batch.amount_bottles -= BOTTLES_SOLD_PER_TRANSACTION
+	brewery.add_risk(results[KEY_RISK])
+
+	best_batch.amount_bottles -= bottles_sold
 	if best_batch.amount_bottles <= 0:
 		brewery.inventory.brew_batches.erase(best_batch)
-		
+
+	var response_text : String = results[KEY_RESPONSE]
+
+	if data.bar_fight_chance > 0.0 and randf() < data.bar_fight_chance:
+		response_text += "\n" + _trigger_bar_fight(brewery, data, best_batch)
+
 	BrewerySignals.brewery_state_changed.emit(brewery)
-	return results[KEY_RESPONSE]
+	return response_text
+
+
+func _trigger_bar_fight(brewery: Brewery, data: CustomerData, batch: BrewBatch) -> String:
+	brewery.reputation = max(0, brewery.reputation - data.bar_fight_reputation_penalty)
+	brewery.add_risk(data.bar_fight_risk_penalty)
+
+	if data.bar_fight_max_bottles_broken > 0 and brewery.inventory.brew_batches.has(batch):
+		var broken_bottles : int = randi_range(1, data.bar_fight_max_bottles_broken)
+		batch.amount_bottles = max(0, batch.amount_bottles - broken_bottles)
+
+		if batch.amount_bottles <= 0:
+			brewery.inventory.brew_batches.erase(batch)
+
+	return data.dialogue_bar_fight
 
 
 func _find_best_batch(batches: Array[BrewBatch], data: CustomerData) -> BrewBatch:
@@ -104,5 +120,5 @@ func _find_best_batch(batches: Array[BrewBatch], data: CustomerData) -> BrewBatc
 	return best_batch
 
 
-func spawn_normal_customer() -> void:
-	active_spawner._on_walk_in_timer_timeout()
+func spawn_normal_customer(forced_data: CustomerData = null) -> void:
+	active_spawner._on_walk_in_timer_timeout(forced_data)

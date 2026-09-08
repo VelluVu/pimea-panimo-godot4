@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="HopData" format=3]
+
+[ext_resource type="Script" uid="uid://ccv8ohajnmhif" path="res://src/classes/hop_data.gd" id="1_hallertau"]
+
+[resource]
+script = ExtResource("1_hallertau")
+alpha_acids = 4
+beta_acids = 4
+id = 206
+name = "Hallertau Humala"
+description = "Saksalainen jalohumala, hienostunut ja kukkainen"
+base_price = 3
+unit = 1
+type = 1
+flavor_profile = 4
+metadata/_custom_type_script = "uid://dniwiyu5ynp71"

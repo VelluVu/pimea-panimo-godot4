@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="BeerStyle" format=3 uid="uid://douvpyy3dva6h"]
+
+[ext_resource type="Script" uid="uid://qpqfdi1wacne" path="res://src/classes/beer_style.gd" id="1_marzen"]
+
+[resource]
+script = ExtResource("1_marzen")
+style_name = "Märzen"
+style = 8
+preferred_hop_profile = 4
+min_ebc = 20
+max_ebc = 27
+min_ibu = 20
+max_ibu = 28
+risk_change = 3
+reputation_change = 4
+peak_days = 21
+shelf_life_days = 300
+aging_factor = 0.03
+metadata/_custom_type_script = "uid://qpqfdi1wacne"

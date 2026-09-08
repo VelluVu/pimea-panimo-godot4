@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="BeerStyle" format=3]
+
+[ext_resource type="Script" uid="uid://qpqfdi1wacne" path="res://src/classes/beer_style.gd" id="1_imperialstout"]
+
+[resource]
+script = ExtResource("1_imperialstout")
+style_name = "Imperial Stout"
+style = 19
+required_yeast_id = 302
+preferred_hop_profile = 5
+min_malt_weight = 5
+min_ebc = 96
+max_ebc = 140
+min_ibu = 45
+max_ibu = 75
+risk_change = 5
+reputation_change = 6
+peak_days = 60
+shelf_life_days = 900
+aging_factor = 0.1
+metadata/_custom_type_script = "uid://qpqfdi1wacne"
