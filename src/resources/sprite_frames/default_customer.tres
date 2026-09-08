@@ -1,0 +1,15 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://xbg47c0gkylu"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_default"]
+size = Vector2(32, 32)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("PlaceholderTexture2D_default")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 5.0
+}]
