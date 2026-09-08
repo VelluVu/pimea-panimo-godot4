@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="BeerStyle" format=3]
+
+[ext_resource type="Script" uid="uid://qpqfdi1wacne" path="res://src/classes/beer_style.gd" id="1_doppelbock"]
+
+[resource]
+script = ExtResource("1_doppelbock")
+style_name = "Doppelbock"
+style = 10
+required_yeast_id = 301
+min_malt_weight = 4
+min_ebc = 71
+max_ebc = 95
+min_ibu = 16
+max_ibu = 30
+risk_change = 4
+reputation_change = 5
+peak_days = 30
+shelf_life_days = 450
+aging_factor = 0.06
+metadata/_custom_type_script = "uid://qpqfdi1wacne"

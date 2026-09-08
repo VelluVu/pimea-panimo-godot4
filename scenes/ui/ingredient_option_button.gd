@@ -34,12 +34,13 @@ func populate_ingredient_option_menu() -> void:
 	
 	for id in IngredientDatabase.sorted_ids:
 		var ingredient: IngredientData = IngredientDatabase.database[id]
-		
+
 		if ingredient.type == target_type:
 			add_item(ingredient.name)
 			var new_item_index = get_item_count() - 1
 			set_item_id(new_item_index, ingredient.id)
-			
+			get_popup().set_item_tooltip(new_item_index, ingredient.description + "\n" + ingredient.get_stat_string())
+
 	if get_item_count() > 0:
 		select(0)
 		item_selected.emit(0) 

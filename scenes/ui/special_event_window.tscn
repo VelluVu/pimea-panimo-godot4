@@ -5,14 +5,13 @@
 [ext_resource type="Texture2D" uid="uid://do2eqagr661lg" path="res://assets/textures/decline_button_32.png" id="2_gtnj8"]
 
 [node name="SpecialEventWindow" type="Panel" unique_id=1223569826]
-custom_minimum_size = Vector2(256, 128)
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_left = 590.0
-offset_top = -199.0
-offset_right = 892.0
-offset_bottom = -18.0
+custom_minimum_size = Vector2(170, 85)
+anchors_preset = -1
+anchor_left = 0.02
+anchor_top = 0.1
+anchor_right = 0.3
+anchor_bottom = 0.35
+grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_gtnj8")
 
@@ -28,20 +27,21 @@ offset_bottom = -50.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 1
-autowrap_mode = 3
 horizontal_alignment = 1
+autowrap_mode = 3
 
 [node name="AcceptButton" type="Button" parent="." unique_id=1172634082]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -40.0
-offset_right = 40.0
+offset_top = -25.0
+offset_right = 24.2
 grow_vertical = 0
 size_flags_horizontal = 0
 size_flags_vertical = 8
 icon = ExtResource("1_p7uxu")
+expand_icon = true
 
 [node name="RejectButton" type="Button" parent="." unique_id=469745695]
 layout_mode = 1
@@ -50,21 +50,23 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -40.0
-offset_top = -40.0
+offset_left = -25.0
+offset_top = -25.0
 grow_horizontal = 0
 grow_vertical = 0
 size_flags_horizontal = 8
 size_flags_vertical = 8
 icon = ExtResource("2_gtnj8")
+icon_alignment = 1
+expand_icon = true
 
 [node name="ProgressBar" type="ProgressBar" parent="." unique_id=636685925]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.14
-anchor_top = 1.0
-anchor_right = 0.86
-anchor_bottom = 1.0
-offset_top = -27.0
+anchor_left = 0.15178572
+anchor_top = 0.6888889
+anchor_right = 0.84375
+anchor_bottom = 0.98888886
 grow_horizontal = 2
 grow_vertical = 0
+metadata/_edit_use_anchors_ = true

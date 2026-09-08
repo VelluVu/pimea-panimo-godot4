@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="HopData" format=3]
+
+[ext_resource type="Script" uid="uid://ccv8ohajnmhif" path="res://src/classes/hop_data.gd" id="1_fuggle"]
+
+[resource]
+script = ExtResource("1_fuggle")
+alpha_acids = 5
+beta_acids = 3
+id = 207
+name = "Fuggle Humala"
+description = "Perinteinen englantilainen humala, maanläheinen ja hedelmäinen"
+base_price = 2
+unit = 1
+type = 1
+flavor_profile = 5
+metadata/_custom_type_script = "uid://dniwiyu5ynp71"

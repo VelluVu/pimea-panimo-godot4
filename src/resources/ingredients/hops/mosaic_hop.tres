@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="HopData" format=3]
+
+[ext_resource type="Script" uid="uid://ccv8ohajnmhif" path="res://src/classes/hop_data.gd" id="1_mosaic"]
+
+[resource]
+script = ExtResource("1_mosaic")
+alpha_acids = 12
+beta_acids = 4
+id = 211
+name = "Mosaic Humala"
+description = "Trooppinen ja marjainen humala, hyvin monipuolinen aromeiltaan"
+base_price = 5
+unit = 1
+type = 1
+flavor_profile = 2
+metadata/_custom_type_script = "uid://dniwiyu5ynp71"

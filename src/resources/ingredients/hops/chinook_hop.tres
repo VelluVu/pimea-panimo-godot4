@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="HopData" format=3]
+
+[ext_resource type="Script" uid="uid://ccv8ohajnmhif" path="res://src/classes/hop_data.gd" id="1_chinook"]
+
+[resource]
+script = ExtResource("1_chinook")
+alpha_acids = 13
+beta_acids = 4
+id = 209
+name = "Chinook Humala"
+description = "Voimakas katkerohumala, mäntyinen ja mausteinen"
+base_price = 4
+unit = 1
+type = 1
+flavor_profile = 3
+metadata/_custom_type_script = "uid://dniwiyu5ynp71"

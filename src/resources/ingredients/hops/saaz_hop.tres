@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="HopData" format=3]
+
+[ext_resource type="Script" uid="uid://ccv8ohajnmhif" path="res://src/classes/hop_data.gd" id="1_saaz"]
+
+[resource]
+script = ExtResource("1_saaz")
+alpha_acids = 4
+beta_acids = 5
+id = 205
+name = "Saaz Humala"
+description = "Klassinen tsekkiläinen jalohumala, mieto ja mausteinen"
+base_price = 3
+unit = 1
+type = 1
+flavor_profile = 4
+metadata/_custom_type_script = "uid://dniwiyu5ynp71"

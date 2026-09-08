@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="CustomerData" format=3 uid="uid://bfck6af6h0iss"]
+
+[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/classes/customer_data.gd" id="1_hipsteri"]
+
+[resource]
+script = ExtResource("1_hipsteri")
+customer_name = "Hilkka"
+min_quality = 0.8
+budget_multiplier = 1.5
+primary_style = 5
+secondary_style = 3
+dialogue_intro = "Onko teillä jotain käsityöläismäistä? Ei mitään massatuotantoa."
+dialogue_success = "Vihdoinkin joku joka ymmärtää humalaprofiileja."
+dialogue_fallback = "Tästä puuttuu vähän kompleksisuutta, mutta juon sen."
+dialogue_wrong_style = "Mielenkiintoinen valinta, muttei ihan sitä mitä hain."
+dialogue_reject = "Tää on ihan teollisuusjätettä. En koske tähän."
+multiplier_bad_quality = 0.2
+multiplier_primary_style = 1.6
+rep_bad_quality = -5
+rep_primary_style = 12
+min_reputation_to_appear = 20
+metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

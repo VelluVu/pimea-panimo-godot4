@@ -2,6 +2,7 @@ class_name ShopView
 extends VBoxContainer
 
 @export var current_item_label : Label
+@export var stat_label : Label
 @export var malt_option_button : OptionButton
 @export var hop_option_button : OptionButton
 @export var yeast_option_button : OptionButton
@@ -55,12 +56,15 @@ func _update_slider() -> void:
 func _update_label() -> void:
 	if current_id == -1:
 		current_item_label.text = "Valitse lisättävä raaka-aine ylhäältä..."
+		stat_label.text = ""
 		return
-	
+
 	var ingredient = IngredientDatabase.get_item_by_id(current_id)
 	if ingredient == null:
 		return
-	
+
+	stat_label.text = ingredient.description + "\n" + ingredient.get_stat_string()
+
 	var total_price : int = ingredient.base_price * main_slider.value
 	
 	if current_id >= 100 and current_id < 200:

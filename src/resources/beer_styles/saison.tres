@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="BeerStyle" format=3 uid="uid://dm8igqjkms2du"]
+
+[ext_resource type="Script" uid="uid://qpqfdi1wacne" path="res://src/classes/beer_style.gd" id="1_saison"]
+
+[resource]
+script = ExtResource("1_saison")
+style_name = "Saison"
+style = 14
+required_yeast_id = 302
+preferred_hop_profile = 5
+min_ebc = 14
+max_ebc = 18
+min_ibu = 16
+max_ibu = 19
+risk_change = 3
+reputation_change = 4
+peak_days = 10
+shelf_life_days = 200
+aging_factor = 0.02
+metadata/_custom_type_script = "uid://qpqfdi1wacne"

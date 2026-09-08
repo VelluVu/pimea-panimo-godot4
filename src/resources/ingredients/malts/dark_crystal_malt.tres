@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="MaltData" format=3]
+
+[ext_resource type="Script" uid="uid://glh0u5xmw6sx" path="res://src/classes/malt_data.gd" id="1_darkcrystal"]
+
+[resource]
+script = ExtResource("1_darkcrystal")
+ebc = 140
+id = 107
+name = "Tumma Karamellimallas"
+description = "Voimakkaasti paahdettu karamellimallas tummille ja väkeville oluille"
+base_price = 5
+metadata/_custom_type_script = "uid://dniwiyu5ynp71"

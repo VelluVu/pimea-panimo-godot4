@@ -27,7 +27,27 @@ signal brewery_view_requested()
 signal brewery_view_closed()
 
 @warning_ignore("unused_signal")
+signal warehouse_view_opened()
+
+@warning_ignore("unused_signal")
+signal warehouse_view_closed()
+
+@warning_ignore("unused_signal")
+signal bar_view_exited()
+
+@warning_ignore("unused_signal")
+signal bar_view_entered()
+
+@warning_ignore("unused_signal")
 signal mouse_entered_brewery_hover_area(is_entered : bool)
 
 @warning_ignore("unused_signal")
 signal mouse_entered_shop_hover_area(is_entered : bool)
+
+@warning_ignore("unused_signal")
+signal recipe_library_requested()
+
+@warning_ignore("unused_signal")
+signal save_recipe_requested()
+@warning_ignore("unused_signal")
+signal load_recipe_requested(recipe : BrewRecipe)

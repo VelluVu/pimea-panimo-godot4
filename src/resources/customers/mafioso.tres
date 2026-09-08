@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="CustomerData" format=3]
+
+[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/classes/customer_data.gd" id="1_mafioso"]
+
+[resource]
+script = ExtResource("1_mafioso")
+customer_name = "Don"
+min_quality = 0.4
+budget_multiplier = 2.0
+dialogue_intro = "Don kuulostaa kiinnostuneelta liiketoiminnastanne. Näytä mitä sulla on."
+dialogue_success = "Don pitää tästä. Homma hoidossa, ei tarvii huolehtia tarkastajista hetkeen."
+dialogue_fallback = "Käy tällä kertaa."
+dialogue_wrong_style = "Ei ollut tilattu, mutta hoidamme tämän silti."
+dialogue_reject = "Tämä oli virhe sinulta."
+multiplier_primary_style = 1.8
+rep_primary_style = 15
+min_reputation_to_appear = 50
+randomizes_preference = true
+primary_match_risk_multiplier = -1.5
+metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

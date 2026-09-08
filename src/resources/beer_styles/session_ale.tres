@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="BeerStyle" format=3 uid="uid://b7npu6lu4t1cs"]
+
+[ext_resource type="Script" uid="uid://qpqfdi1wacne" path="res://src/classes/beer_style.gd" id="1_sessionale"]
+
+[resource]
+script = ExtResource("1_sessionale")
+style_name = "Session Ale"
+style = 13
+required_yeast_id = 302
+preferred_hop_profile = 1
+min_ebc = 1
+max_ebc = 3
+min_ibu = 10
+max_ibu = 20
+risk_change = 2
+shelf_life_days = 45
+aging_factor = -0.05
+metadata/_custom_type_script = "uid://qpqfdi1wacne"

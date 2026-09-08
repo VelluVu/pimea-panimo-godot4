@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="BeerStyle" format=3 uid="uid://cnv1x323v0jdd"]
+
+[ext_resource type="Script" uid="uid://qpqfdi1wacne" path="res://src/classes/beer_style.gd" id="1_vienna"]
+
+[resource]
+script = ExtResource("1_vienna")
+style_name = "Vienna Lager"
+style = 7
+preferred_hop_profile = 4
+min_ebc = 15
+max_ebc = 19
+min_ibu = 18
+max_ibu = 26
+risk_change = 3
+reputation_change = 3
+peak_days = 14
+shelf_life_days = 300
+aging_factor = 0.02
+metadata/_custom_type_script = "uid://qpqfdi1wacne"
