@@ -42,12 +42,15 @@ func resolve_brew_style(prep_contents : Dictionary) -> BrewResult:
 	var weighted_ebc_sum: float = 0
 	var total_hop_amount: int = 0
 	var total_alpha_acids: float = 0
+	var total_beta_acids: float = 0
 	var yeast_type: int = -1
-	
+	var distinct_hop_ids: Dictionary = {}
+	var hop_profiles_used: Dictionary = {}
+
 	for id in prep_contents.keys():
 		var amount: int = prep_contents[id]
 		var data: IngredientData = IngredientDatabase.database[id]
-		
+
 		match data.type:
 			IngredientData.IngredientType.MALT:
 				total_malt_weight += amount
@@ -55,18 +58,22 @@ func resolve_brew_style(prep_contents : Dictionary) -> BrewResult:
 			IngredientData.IngredientType.HOP:
 				total_hop_amount += amount
 				total_alpha_acids += (data.alpha_acids * amount)
+				total_beta_acids += (data.beta_acids * amount)
+				if amount > 0:
+					distinct_hop_ids[id] = true
+					hop_profiles_used[data.flavor_profile] = true
 			IngredientData.IngredientType.YEAST:
 				yeast_type = id
-	
+
 	if total_malt_weight < 3 or yeast_type == -1:
 		print(StringContainer.NOT_ENOUGH_INGREDIENTS_ERROR)
 		return null
-	
+
 	var final_ebc = roundi(weighted_ebc_sum / total_malt_weight)
 	var final_ibu = 0
 	if total_hop_amount > 0:
 		final_ibu = roundi(total_alpha_acids / 10)
-	
+
 	for beer_style in active_styles:
 		if yeast_type != beer_style.required_yeast_id:
 			continue
@@ -76,16 +83,37 @@ func resolve_brew_style(prep_contents : Dictionary) -> BrewResult:
 			continue
 		if final_ibu < beer_style.min_ibu or final_ibu > beer_style.max_ibu:
 			continue
-	
+
+		var ebc_precision := _range_precision(final_ebc, beer_style.min_ebc, beer_style.max_ebc)
+		var ibu_precision := _range_precision(final_ibu, beer_style.min_ibu, beer_style.max_ibu)
+		var precision_score := (ebc_precision + ibu_precision) / 2.0
+
+		var distinct_hop_bonus := clampf((distinct_hop_ids.size() - 1) * 0.05, 0.0, 0.15)
+
+		var hop_balance_bonus := 0.0
+		if total_alpha_acids > 0.0 and total_beta_acids > 0.0:
+			hop_balance_bonus = (min(total_alpha_acids, total_beta_acids) / max(total_alpha_acids, total_beta_acids)) * 0.1
+
+		var flavor_matched := beer_style.preferred_hop_profile != HopData.FlavorProfile.NONE and hop_profiles_used.has(beer_style.preferred_hop_profile)
+		var flavor_match_bonus := 0.1 if flavor_matched else 0.0
+
+		var quality_multiplier := 1.0 + (precision_score - 0.5) * 0.4 + distinct_hop_bonus + hop_balance_bonus + flavor_match_bonus
+		quality_multiplier = clampf(quality_multiplier, 0.5, 1.5)
+
 		var result := BrewResult.new()
 		result.beer_style = beer_style
 		result.final_ebc = final_ebc
 		result.final_ibu = final_ibu
-		result.original_quality = beer_style.original_quality
+		result.original_quality = snappedf(beer_style.original_quality * quality_multiplier, 0.01)
 		result.risk_change = beer_style.risk_change
 		result.reputation_change = beer_style.reputation_change
+		result.is_matched = true
+		result.precision_score = precision_score
+		result.hop_diversity_count = distinct_hop_ids.size()
+		result.hop_balance_bonus = hop_balance_bonus
+		result.flavor_matched = flavor_matched
 		return result
-	
+
 	var failed_result := BrewResult.new()
 	failed_result.beer_style = get_beer_style(BeerStyle.Style.KOTIKALJA)
 	failed_result.final_ebc = final_ebc
@@ -93,8 +121,20 @@ func resolve_brew_style(prep_contents : Dictionary) -> BrewResult:
 	failed_result.original_quality = 1.0
 	failed_result.risk_change = 2
 	failed_result.reputation_change = -1
-	
+	failed_result.is_matched = false
+
 	return failed_result
+
+
+func _range_precision(value: float, min_v: float, max_v: float) -> float:
+	if max_v <= min_v:
+		return 1.0
+
+	var center := (min_v + max_v) / 2.0
+	var half_range := (max_v - min_v) / 2.0
+	var distance := absf(value - center)
+
+	return clampf(1.0 - (distance / half_range), 0.0, 1.0)
 
 
 func get_beer_style(style : BeerStyle.Style) -> BeerStyle:

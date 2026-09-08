@@ -2,6 +2,7 @@ class_name BrewingView
 extends Control
 
 @export var current_item_label : Label
+@export var stat_label : Label
 @export var malt_option_button : OptionButton
 @export var hop_option_button : OptionButton
 @export var yeast_option_button : OptionButton
@@ -49,12 +50,15 @@ func _update_slider() -> void:
 func _update_label() -> void:
 	if current_id == -1:
 		current_item_label.text = "Valitse lisättävä raaka-aine ylhäältä..."
+		stat_label.text = ""
 		return
-	
+
 	var ingredient = IngredientDatabase.get_item_by_id(current_id)
 	if ingredient == null:
 		return
-	
+
+	stat_label.text = ingredient.description + "\n" + ingredient.get_stat_string()
+
 	if current_id >= 100 and current_id < 200:
 		current_item_label.text = StringContainer.MALT_ITEM_SELECTION_STRING % [ingredient.name, int(main_slider.value)]
 	elif current_id >= 200 and current_id < 300:

@@ -5,8 +5,12 @@ extends Resource
 # Avain: int (Ingredient ID) -> Arvo: int (Määrä fyysisesti pöydällä juuri nyt)
 @export var selected_contents: Dictionary = {}
 
+# Avain: int (Ingredient ID) -> Arvo: int (Ladatun reseptin vaatima määrä), tyhjä jos reseptiä ei ole ladattu
+@export var active_recipe_target: Dictionary = {}
+
 func clear_preparation() -> void:
 	selected_contents.clear()
+	active_recipe_target.clear()
 
 
 func has_item(ingredient_id: int, amount: int) -> bool:

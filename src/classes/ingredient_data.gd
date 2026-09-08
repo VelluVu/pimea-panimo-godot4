@@ -24,3 +24,7 @@ func get_unit_string() -> String:
 	if type == IngredientType.HOP: return StringContainer.G
 	if type == IngredientType.YEAST: return StringContainer.KPL
 	return StringContainer.KPL
+
+
+func get_stat_string() -> String:
+	return ""

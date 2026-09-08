@@ -50,9 +50,9 @@ func process_accept(event_data: SpecialEventData) -> String:
 		brewery.reputation += event_data.reward_reputation
 		
 		if event_data.clears_risk:
-			brewery.risk = 0
+			brewery.clear_risk()
 		else:
-			brewery.risk += event_data.reward_risk
+			brewery.add_risk(event_data.reward_risk)
 			
 		if matching_batch.amount_bottles <= 0: 
 			brewery.inventory.brew_batches.erase(matching_batch)

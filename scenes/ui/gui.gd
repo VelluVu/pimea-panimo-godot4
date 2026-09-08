@@ -8,12 +8,17 @@ extends Control
 @onready var warehouse_view : VBoxContainer = $Right_WarehouseView
 @onready var brewery_entrance_panel : Control = $BreweryEntrancePanel
 @onready var shop_entrance_panel : ShopEntrancePanel = $ShopEntrancePanel
+@onready var recipe_library_window : Control = $RecipeLibraryWindow
+@onready var AVI_raid_window : Control = $AviRaidWindow
 @onready var back_button : Control = $BackButton
 
 
 func _ready() -> void:
+	await get_tree().process_frame
 	_move_to_bar()
 	GUISignals.brewery_view_requested.connect(_on_brewery_button_pressed)
+	AVI_raid_window.hide()
+	recipe_library_window.hide()
 
 
 func _move_to_shop() -> void:
@@ -24,6 +29,8 @@ func _move_to_shop() -> void:
 	brewery_entrance_panel.hide()
 	shop_view.show()
 	warehouse_view.show_warehouse_view()
+	GUISignals.warehouse_view_opened.emit()
+	GUISignals.bar_view_exited.emit()
 
 
 func _move_to_brewery() -> void:
@@ -34,6 +41,8 @@ func _move_to_brewery() -> void:
 	brewery_view.show()
 	brew_preparation_panel.show()
 	warehouse_view.show_warehouse_view()
+	GUISignals.warehouse_view_opened.emit()
+	GUISignals.bar_view_exited.emit()
 
 
 func _move_to_bar() -> void:
@@ -44,6 +53,8 @@ func _move_to_bar() -> void:
 	warehouse_view.hide_warehouse_view()
 	shop_entrance_panel.activate_shop_panel()
 	brewery_entrance_panel.show()
+	GUISignals.warehouse_view_closed.emit()
+	GUISignals.bar_view_entered.emit()
 
 
 func _on_shop_button_pressed() -> void:

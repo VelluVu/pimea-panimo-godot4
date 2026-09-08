@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="BeerStyle" format=3]
+
+[ext_resource type="Script" uid="uid://qpqfdi1wacne" path="res://src/classes/beer_style.gd" id="1_strongdark"]
+
+[resource]
+script = ExtResource("1_strongdark")
+style_name = "Belgian Strong Dark Ale"
+style = 16
+required_yeast_id = 302
+min_malt_weight = 4
+min_ebc = 36
+max_ebc = 40
+min_ibu = 20
+max_ibu = 24
+risk_change = 4
+reputation_change = 5
+peak_days = 30
+shelf_life_days = 400
+aging_factor = 0.05
+metadata/_custom_type_script = "uid://qpqfdi1wacne"

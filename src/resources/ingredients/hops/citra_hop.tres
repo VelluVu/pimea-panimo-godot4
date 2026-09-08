@@ -12,4 +12,5 @@ description = "Tämä aromihumala antaa trooppisia makuja oluelle"
 base_price = 3
 unit = 1
 type = 1
+flavor_profile = 2
 metadata/_custom_type_script = "uid://dniwiyu5ynp71"

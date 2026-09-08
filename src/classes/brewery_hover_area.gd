@@ -15,9 +15,25 @@ func _ready() -> void:
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
 	input_event.connect(_on_input_event)
-	
+	GUISignals.bar_view_exited.connect(_on_bar_view_exited)
+	GUISignals.bar_view_entered.connect(_on_bar_view_entered)
+
 	if overlay_glow_sprite:
 		overlay_glow_sprite.self_modulate = HIDDEN_COLOR
+
+
+func _on_bar_view_exited() -> void:
+	input_pickable = false
+
+	if current_tween and current_tween.is_running():
+		current_tween.kill()
+
+	if overlay_glow_sprite:
+		overlay_glow_sprite.self_modulate = HIDDEN_COLOR
+
+
+func _on_bar_view_entered() -> void:
+	input_pickable = true
 
 
 func _on_mouse_entered() -> void:

@@ -8,6 +8,7 @@ style_name = "Indian Pale ale"
 style = 5
 required_yeast_id = 302
 min_malt_weight = 4
+preferred_hop_profile = 1
 min_ebc = 12
 max_ebc = 28
 min_ibu = 40

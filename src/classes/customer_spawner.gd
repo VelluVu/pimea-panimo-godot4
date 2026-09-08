@@ -4,6 +4,8 @@ extends Node2D
 
 const WALK_IN_INTERVAL_MIN_SECONDS = 30.0
 const WALK_IN_INTERVAL_MAX_SECONDS = 90.0
+const WALK_IN_INTERVAL_FLOOR_SECONDS = 10.0
+const REPUTATION_SPAWN_SOFT_CAP = 100.0
 
 const CUSTOMER_SCENE = preload("res://scenes/customer.tscn")
 
@@ -42,31 +44,45 @@ func start_spawning() -> void:
 
 
 func _start_next_walk_in_timer() -> void:
-	var next_time = randf_range(WALK_IN_INTERVAL_MIN_SECONDS, WALK_IN_INTERVAL_MAX_SECONDS)
+	var factor := _get_reputation_spawn_factor()
+	var min_time := maxf(WALK_IN_INTERVAL_FLOOR_SECONDS, WALK_IN_INTERVAL_MIN_SECONDS * factor)
+	var max_time := maxf(min_time, WALK_IN_INTERVAL_MAX_SECONDS * factor)
+	var next_time = randf_range(min_time, max_time)
 	walk_in_timer.start(next_time)
 
 
-func _on_walk_in_timer_timeout() -> void:
+func _get_reputation_spawn_factor() -> float:
+	var brewery = BrewEngine.current_brewery
+	if brewery == null:
+		return 1.0
+	return REPUTATION_SPAWN_SOFT_CAP / (REPUTATION_SPAWN_SOFT_CAP + brewery.reputation)
+
+
+func _on_walk_in_timer_timeout(forced_data: CustomerData = null) -> void:
 	if BrewEngine.current_brewery == null or counter_markers.is_empty():
 		_start_next_walk_in_timer()
 		return
-		
+
 	var brewery = BrewEngine.current_brewery
 	if brewery.inventory.brew_batches.is_empty():
 		_start_next_walk_in_timer()
 		return
-		
+
 	var free_slot = CustomerManager.get_free_slot_index()
 	if free_slot == -1 or free_slot >= counter_markers.size():
 		_start_next_walk_in_timer()
 		return
-		
-	var data = CustomerManager.get_random_customer_data()
+
+	var data = forced_data if forced_data != null else CustomerManager.get_random_customer_data()
 	if data == null:
 		_start_next_walk_in_timer()
 		return
-	
+
 	var filename = data.resource_path.get_file()
+
+	if data.randomizes_preference:
+		data = data.duplicate()
+		data.reroll_preference()
 
 	var new_customer = CUSTOMER_SCENE.instantiate()
 	add_child(new_customer)

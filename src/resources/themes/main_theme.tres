@@ -183,7 +183,7 @@ anti_aliasing = false
 
 [resource]
 default_font = ExtResource("1_qtffb")
-default_font_size = 14
+default_font_size = 16
 Button/colors/font_color = Color(0.9254902, 0.8627451, 0.72156864, 1)
 Button/colors/font_disabled_color = Color(0.5411765, 0.47843137, 0.36862746, 1)
 Button/colors/font_focus_color = Color(0.9490196, 0.7882353, 0.41960785, 1)

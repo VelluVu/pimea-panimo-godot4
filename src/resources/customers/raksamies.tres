@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="CustomerData" format=3]
+
+[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/classes/customer_data.gd" id="1_raksamies"]
+
+[resource]
+script = ExtResource("1_raksamies")
+customer_name = "Rane"
+secondary_style = 2
+min_quality = 0.05
+budget_multiplier = 1.3
+dialogue_intro = "Terve! Työpäivä ohi, nyt kelpais kylmä kalja."
+dialogue_success = "Just tätä tarvittiin homman jälkeen!"
+dialogue_fallback = "No käyppä tämäkin."
+dialogue_wrong_style = "En ollu ihan tätä hakemassa, mut menköön."
+dialogue_reject = "Tää on aika laimeeta läpänä."
+multiplier_primary_style = 1.15
+rep_primary_style = 8
+risk_primary_style = 2
+metadata/_custom_type_script = "uid://b2vqc8lkfjwic"
