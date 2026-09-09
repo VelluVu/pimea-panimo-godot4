@@ -35,4 +35,7 @@ This project was built from scratch with a heavy focus on clean, decoupled, and 
 
 ## 📜 License
 
-This repository is published under the **MIT License**. Feel free to study the backend patterns or use them as a foundation for your own Godot 4 manager games!
+Copyright (c) 2026 VeituVu. All Rights Reserved. 
+
+This repository contains proprietary software. 
+While the source code is publicly visible for transparency, security auditing, and portfolio evaluation, no open-source rights are granted.
