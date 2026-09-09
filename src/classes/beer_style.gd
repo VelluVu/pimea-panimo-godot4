@@ -43,7 +43,6 @@ enum Style {
 
 @export_group("Palkkiot & Riskit")
 @export var original_quality: float = 1.0
-@export var risk_change: int = 5
 @export var reputation_change: int = 2
 
 @export_group("Kellarointi & Kypsytys")

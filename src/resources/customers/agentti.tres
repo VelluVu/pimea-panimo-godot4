@@ -1,11 +1,21 @@
-[gd_resource type="Resource" script_class="CustomerData" format=3]
+[gd_resource type="Resource" script_class="CustomerData" format=3 uid="uid://dtg3fntafwt27"]
 
 [ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/classes/customer_data.gd" id="1_agentti"]
+[ext_resource type="SpriteFrames" uid="uid://4hf7kyk1mcmb" path="res://src/resources/sprite_frames/agentti_anim.tres" id="2_sprite"]
 
 [resource]
 script = ExtResource("1_agentti")
 customer_name = "Asko"
+title = "Agentti"
+first_names = Array[String](["Asko", "Aaro", "Antti", "Anssi", "Unto"])
 min_quality = 0.3
+sprite_frames = ExtResource("2_sprite")
+hair_base_color = Color(0.047059, 0.047059, 0.054902, 1)
+clothes_base_color = Color(0.086275, 0.086275, 0.109804, 1)
+shoes_base_color = Color(0.039216, 0.039216, 0.047059, 1)
+randomize_hair = false
+randomize_clothes = false
+randomize_shoes = false
 dialogue_intro = "Iltaa. Kuulin että täältä saa erikoisempaakin tavaraa."
 dialogue_success = "Kiinnostavaa. Kirjoitan tämän ylös."
 dialogue_fallback = "Riittää tutkimuksiin."

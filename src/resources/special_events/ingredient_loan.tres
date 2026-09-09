@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="IngredientDonationEventData" format=3]
+
+[ext_resource type="Script" uid="uid://bucd3sgymdlc4" path="res://src/classes/ingredient_donation_event_data.gd" id="1_loan"]
+
+[resource]
+script = ExtResource("1_loan")
+event_caller_name = "Naapuripanimon Jussi"
+intro_dialogue = "Meiltä loppui mallas kesken kaiken! Voisitko lainata vähän, maksan takaisin suosiolla?"
+success_dialogue = "Pelastit päiväni! Kiitos avusta."
+fail_dialogue = "Ei ollut tarpeeksi mallasta. No, keksin jotain muuta."
+reject_dialogue = "Selvä, pärjäämme kyllä jotenkin."
+timeout_seconds = 12.0
+reward_money = 25
+reward_reputation = 12
+reward_risk = 0
+clears_risk = false
+required_ingredient_id = 100
+required_ingredient_amount = 5
+metadata/_custom_type_script = "uid://bucd3sgymdlc4"

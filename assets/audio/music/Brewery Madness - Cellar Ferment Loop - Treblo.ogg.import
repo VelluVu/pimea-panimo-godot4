@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://d3pibgknueur6"
+path="res://.godot/imported/Brewery Madness - Cellar Ferment Loop - Treblo.ogg-c830152540835f2e4562058604989bd8.oggvorbisstr"
+
+[deps]
+
+source_file="res://assets/audio/music/Brewery Madness - Cellar Ferment Loop - Treblo.ogg"
+dest_files=["res://.godot/imported/Brewery Madness - Cellar Ferment Loop - Treblo.ogg-c830152540835f2e4562058604989bd8.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

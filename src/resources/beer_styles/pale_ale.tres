@@ -12,7 +12,6 @@ min_ebc = 4
 max_ebc = 30
 min_ibu = 20
 max_ibu = 40
-risk_change = 3
 reputation_change = 3
 aging_factor = -0.1
 metadata/_custom_type_script = "uid://qpqfdi1wacne"

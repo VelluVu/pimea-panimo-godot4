@@ -6,29 +6,6 @@ const WARNING_FOLDER_OPEN_FAILED = "CustomerRegistry: Failed to open path: "
 const WARNING_POOL_EMPTY = "CustomerRegistry: Customer pool is empty!"
 const WARNING_EVENTS_EMPTY = "CustomerRegistry: Special events pool is empty!"
 
-const NAMES_OPISKELIJA = ["Otto", "Onni", "Olli", "Eetu", "Juho", "Kalle"]
-const NAMES_OPISKELIJA_NAARAS = ["Oona", "Anni", "Emma", "Iida", "Aino", "Sanni"]
-const NAMES_RAKSAMIES = ["Rane", "Reijo", "Arto", "Make", "Jorma", "Seppo", "Pentti", "Tane", "Jari", "Kake"]
-const NAMES_HIPSTERI = ["Hilkka", "Heka", "Hugo", "Saga", "Milo", "Luna", "Felix", "Alva", "Eno", "Noa"]
-const NAMES_AGENTTI = ["Asko", "Aaro", "Ilona", "Kari", "Risto", "Sami", "Veera", "Tapio", "Tuula", "Oskari"]
-const NAMES_BARBAARI = ["Urho", "Rolf", "Kustaa", "Turkka", "Valto", "Thor", "Birger"]
-const NAMES_BARBAARI_NAARAS = ["Helga", "Aila", "Inkeri", "Brynhild", "Sigrid"]
-const NAMES_MAFIOSO = ["Don", "Vito", "Carlo", "Rane", "Toni", "Sulo", "Gunnar", "Pepe", "Vesa", "Arska"]
-
-const TITLES = {
-	"opiskelija_naaras": {"title": "Opiskelija", "names": NAMES_OPISKELIJA_NAARAS},
-	"opiskelija": {"title": "Opiskelija", "names": NAMES_OPISKELIJA},
-	"raksamies": {"title": "Raksamies", "names": NAMES_RAKSAMIES},
-	"hipsteri": {"title": "Hipsteri", "names": NAMES_HIPSTERI},
-	"agentti": {"title": "Agentti", "names": NAMES_AGENTTI},
-	"barbaari_naaras": {"title": "Barbaari", "names": NAMES_BARBAARI_NAARAS},
-	"barbaari": {"title": "Barbaari", "names": NAMES_BARBAARI},
-	"mafioso": {"title": "Mafioso", "names": NAMES_MAFIOSO}
-}
-
-const DEFAULT_TITLE = "Asiakas"
-const DEFAULT_NAMES = ["Matti", "Maija", "Pekka", "Liisa", "Antti"]
-
 @export var customer_folder_path: String = "res://src/resources/customers/"
 @export var special_event_folder_path: String = "res://src/resources/special_events/"
 
@@ -63,24 +40,6 @@ func get_random_special_event() -> SpecialEventData:
 	if special_events_pool.is_empty(): 
 		return null
 	return special_events_pool.pick_random()
-
-
-func generate_random_name(resource_filename: String) -> String:
-	var lower_filename = resource_filename.to_lower()
-	var matched_key = ""
-	
-	for key in TITLES.keys():
-		if lower_filename.begins_with(key):
-			matched_key = key
-			break
-			
-	if matched_key != "":
-		var data = TITLES[matched_key]
-		var random_first_name = data["names"].pick_random()
-		return data["title"] + " " + random_first_name
-		
-	var backup_name = DEFAULT_NAMES.pick_random()
-	return DEFAULT_TITLE + " " + backup_name
 
 
 func _load_resources() -> void:

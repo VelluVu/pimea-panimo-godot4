@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="SpecialEventData" format=3]
+
+[ext_resource type="Script" uid="uid://cl0kqitrmb4gj" path="res://src/classes/special_event_data.gd" id="1_journalist"]
+
+[resource]
+script = ExtResource("1_journalist")
+event_caller_name = "Toimittaja Liisa"
+intro_dialogue = "Teen juttua paikallisista pienpanimoista. Saisinko muutaman pullon IPA:a maisteluun?"
+success_dialogue = "Tästä tulee hyvä juttu lehteen!"
+fail_dialogue = "Harmi, ei ollut tarjolla mitä etsin."
+reject_dialogue = "No, ehkä toiste sitten."
+timeout_seconds = 15.0
+required_style = 5
+required_bottles = 5
+reward_money = 30
+reward_reputation = 20
+reward_risk = 15
+clears_risk = false
+metadata/_custom_type_script = "uid://cl0kqitrmb4gj"

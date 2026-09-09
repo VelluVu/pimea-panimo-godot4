@@ -6,7 +6,6 @@
 script = ExtResource("1_qu52c")
 style_name = "Kotikalja"
 required_yeast_id = 300
-risk_change = 2
 reputation_change = -1
 shelf_life_days = 360
 aging_factor = 0.01

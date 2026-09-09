@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="AudioBank" format=3]
+
+[ext_resource type="Script" path="res://src/classes/audio_bank.gd" id="1_bank"]
+[ext_resource type="AudioStream" uid="uid://d3hu7ob8luc58" path="res://assets/audio/music/Brewery Madness - Ale Behind the Pixel Door - Treblo.ogg" id="2_music1"]
+[ext_resource type="AudioStream" uid="uid://bb56ygfoi443n" path="res://assets/audio/music/Brewery Madness - Basement Screens - Treblo.ogg" id="3_music2"]
+[ext_resource type="AudioStream" uid="uid://d3pibgknueur6" path="res://assets/audio/music/Brewery Madness - Cellar Ferment Loop - Treblo.ogg" id="4_music3"]
+[ext_resource type="AudioStream" uid="uid://chr2jkhepl536" path="res://assets/audio/music/Brewery Madness - Murk & Malt - Treblo.ogg" id="5_music4"]
+[ext_resource type="AudioStream" uid="uid://dwhv2767mvr7s" path="res://assets/audio/music/Brewery Madness - Underground Ferment - Treblo.ogg" id="6_music5"]
+[ext_resource type="AudioStream" uid="uid://crupwph86ufl5" path="res://assets/audio/sfx/kenney/coin_success.ogg" id="7_coin"]
+[ext_resource type="AudioStream" uid="uid://c7hp71ilb0dg2" path="res://assets/audio/sfx/kenney/ui_click.ogg" id="8_click"]
+[ext_resource type="AudioStream" uid="uid://cjpibn8xxn4tl" path="res://assets/audio/sfx/kenney/notification_ping.ogg" id="9_ping"]
+[ext_resource type="AudioStream" uid="uid://br0j0cwdl0lgx" path="res://assets/audio/sfx/kenney/avi_alarm.ogg" id="10_alarm"]
+[ext_resource type="AudioStream" uid="uid://wevxvnr0v5mv" path="res://assets/audio/sfx/risk_tension_drone.wav" id="11_drone"]
+[ext_resource type="AudioStream" uid="uid://dsd5v6oxpblg1" path="res://assets/audio/sfx/kenney/style_discovered.ogg" id="12_discovered"]
+[ext_resource type="AudioStream" uid="uid://dkq2ruviyo5no" path="res://assets/audio/sfx/kenney/brew_start.ogg" id="13_brewstart"]
+
+[resource]
+script = ExtResource("1_bank")
+music_tracks = Array[AudioStream]([ExtResource("2_music1"), ExtResource("3_music2"), ExtResource("4_music3"), ExtResource("5_music4"), ExtResource("6_music5")])
+sfx_coin_success = ExtResource("7_coin")
+sfx_ui_click = ExtResource("8_click")
+sfx_brew_start = ExtResource("13_brewstart")
+sfx_notification_ping = ExtResource("9_ping")
+sfx_avi_alarm = ExtResource("10_alarm")
+sfx_risk_tension_drone = ExtResource("11_drone")
+sfx_style_discovered = ExtResource("12_discovered")

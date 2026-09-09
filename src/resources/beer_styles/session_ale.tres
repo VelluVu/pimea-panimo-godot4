@@ -12,7 +12,6 @@ min_ebc = 1
 max_ebc = 3
 min_ibu = 10
 max_ibu = 20
-risk_change = 2
 shelf_life_days = 45
 aging_factor = -0.05
 metadata/_custom_type_script = "uid://qpqfdi1wacne"

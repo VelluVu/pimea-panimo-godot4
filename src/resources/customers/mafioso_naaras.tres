@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="CustomerData" format=3 uid="uid://dp1ufkaootw4e"]
+
+[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/classes/customer_data.gd" id="1_mafioso_naaras"]
+[ext_resource type="SpriteFrames" uid="uid://crgt8jnl6vhpb" path="res://src/resources/sprite_frames/mafioso_naaras_anim.tres" id="2_sprite"]
+
+[resource]
+script = ExtResource("1_mafioso_naaras")
+customer_name = "Sofia"
+title = "Mafioso"
+first_names = Array[String](["Sofia", "Rosa", "Luciana", "Bella", "Carmela", "Vera"])
+min_quality = 0.4
+budget_multiplier = 2.0
+sprite_frames = ExtResource("2_sprite")
+hair_base_color = Color(0.047059, 0.047059, 0.054902, 1)
+clothes_base_color = Color(0.086275, 0.086275, 0.109804, 1)
+shoes_base_color = Color(0.039216, 0.039216, 0.047059, 1)
+randomize_skin = false
+randomize_hair = false
+randomize_clothes = false
+randomize_shoes = false
+dialogue_intro = "Don kuulostaa kiinnostuneelta liiketoiminnastanne. Näytä mitä sulla on."
+dialogue_success = "Don pitää tästä. Homma hoidossa, ei tarvii huolehtia tarkastajista hetkeen."
+dialogue_fallback = "Käy tällä kertaa."
+dialogue_wrong_style = "Ei ollut tilattu, mutta hoidamme tämän silti."
+dialogue_reject = "Tämä oli virhe sinulta."
+multiplier_primary_style = 1.8
+rep_primary_style = 15
+min_reputation_to_appear = 50
+randomizes_preference = true
+primary_match_risk_multiplier = -1.5
+metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

@@ -4,10 +4,11 @@ extends Panel
 
 const DISPLAY_TIME_SECONDS = 3.5
 
-@onready var text_label: Label = $SpecialLabel
-@onready var accept_button: Button = $AcceptButton
-@onready var reject_button: Button = $RejectButton
-@onready var progress_bar: ProgressBar = $ProgressBar
+@onready var text_label: Label = $MarginContainer/MainVBox/SpecialLabel
+@onready var accept_button: Button = $MarginContainer/MainVBox/ButtonRow/AcceptButton
+@onready var reject_button: Button = $MarginContainer/MainVBox/ButtonRow/RejectButton
+@onready var progress_bar: ProgressBar = $MarginContainer/MainVBox/ProgressBar
+@onready var margin_container: MarginContainer = $MarginContainer
 
 var event_data: SpecialEventData
 var time_left: float = 10.0
@@ -16,12 +17,10 @@ var is_active: bool = true
 
 func _ready() -> void:
 	text_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	
-	progress_bar.max_value = 10.0
-	progress_bar.value = 10.0
+
 	accept_button.visible = true
 	reject_button.visible = true
-	
+
 	accept_button.pressed.connect(_on_accept_pressed)
 	reject_button.pressed.connect(_on_reject_pressed)
 
@@ -38,8 +37,20 @@ func _process(delta: float) -> void:
 
 func initialize_window(p_data: SpecialEventData) -> void:
 	event_data = p_data
-	time_left = SpecialEventManager.SPECIAL_EVENT_TIMEOUT_SECONDS
+	time_left = event_data.timeout_seconds
+	progress_bar.max_value = event_data.timeout_seconds
+	progress_bar.value = event_data.timeout_seconds
 	text_label.text = event_data.event_caller_name + ": " + event_data.intro_dialogue
+	_resize_to_fit_content()
+
+
+## Panel doesn't extend Container, so it never relays its children's
+## computed minimum size to the VBoxContainer that positions it — without
+## this, the window's on-screen size ignores how tall the wrapped dialogue
+## actually is. Setting custom_minimum_size is what the parent respects.
+func _resize_to_fit_content() -> void:
+	await get_tree().process_frame
+	custom_minimum_size = margin_container.get_combined_minimum_size()
 
 
 func _on_accept_pressed() -> void:
