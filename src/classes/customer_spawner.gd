@@ -78,15 +78,13 @@ func _on_walk_in_timer_timeout(forced_data: CustomerData = null) -> void:
 		_start_next_walk_in_timer()
 		return
 
-	var filename = data.resource_path.get_file()
-
 	if data.randomizes_preference:
 		data = data.duplicate()
 		data.reroll_preference()
 
 	var new_customer = CUSTOMER_SCENE.instantiate()
 	add_child(new_customer)
-	new_customer.generated_name = CustomerRegistry.generate_random_name(filename)
+	new_customer.generated_name = data.generate_display_name()
 	new_customer.global_position = global_position
 	new_customer.customer_data = data
 	new_customer.assigned_slot = free_slot

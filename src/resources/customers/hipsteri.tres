@@ -1,10 +1,14 @@
 [gd_resource type="Resource" script_class="CustomerData" format=3 uid="uid://bfck6af6h0iss"]
 
 [ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/classes/customer_data.gd" id="1_hipsteri"]
+[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/hipsteri_anim.tres" id="2_sprite"]
 
 [resource]
 script = ExtResource("1_hipsteri")
-customer_name = "Hilkka"
+customer_name = "Hugo"
+title = "Hipsteri"
+first_names = Array[String](["Hilkka", "Heka", "Hugo", "Saga", "Milo", "Luna", "Felix", "Alva", "Eno", "Noa"])
+sprite_frames = ExtResource("2_sprite")
 min_quality = 0.8
 budget_multiplier = 1.5
 primary_style = 5

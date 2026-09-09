@@ -48,6 +48,9 @@ signal mouse_entered_shop_hover_area(is_entered : bool)
 signal recipe_library_requested()
 
 @warning_ignore("unused_signal")
+signal options_requested()
+
+@warning_ignore("unused_signal")
 signal save_recipe_requested()
 @warning_ignore("unused_signal")
 signal load_recipe_requested(recipe : BrewRecipe)

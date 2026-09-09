@@ -5,7 +5,7 @@ signal day_changed(new_day : int)
 
 const BREW_BATCHES_PROPERTY_NAME = "brew_batches"
 
-@export var day_duration_seconds : float = 1440
+@export var day_duration_seconds : float = 300
 var current_day : int = 1
 var time_accumulator : float = 0.0
 var day_timer: Timer
@@ -21,6 +21,13 @@ func _ready() -> void:
 
 
 func _on_day_timeout() -> void:
+	_advance_day()
+
+
+## Public entry point for forcing a day to pass on demand (used by the dev
+## console's "day" command) instead of waiting for day_timer.
+func force_advance_day() -> void:
+	day_timer.start()
 	_advance_day()
 
 

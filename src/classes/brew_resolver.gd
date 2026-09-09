@@ -105,7 +105,6 @@ func resolve_brew_style(prep_contents : Dictionary) -> BrewResult:
 		result.final_ebc = final_ebc
 		result.final_ibu = final_ibu
 		result.original_quality = snappedf(beer_style.original_quality * quality_multiplier, 0.01)
-		result.risk_change = beer_style.risk_change
 		result.reputation_change = beer_style.reputation_change
 		result.is_matched = true
 		result.precision_score = precision_score
@@ -119,7 +118,6 @@ func resolve_brew_style(prep_contents : Dictionary) -> BrewResult:
 	failed_result.final_ebc = final_ebc
 	failed_result.final_ibu = final_ibu
 	failed_result.original_quality = 1.0
-	failed_result.risk_change = 2
 	failed_result.reputation_change = -1
 	failed_result.is_matched = false
 

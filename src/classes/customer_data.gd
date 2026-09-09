@@ -2,8 +2,13 @@ class_name CustomerData
 extends Resource
 
 
+const DEFAULT_TITLE: String = "Asiakas"
+const DEFAULT_NAMES: Array[String] = ["Matti", "Maija", "Pekka", "Liisa", "Antti"]
+
 @export_group("Customer Profile")
 @export var customer_name: String = "Anonyymi"
+@export var title: String = ""
+@export var first_names: Array[String] = []
 @export var min_quality: float = 0.5
 @export var budget_multiplier: float = 1.0
 @export var primary_style: BeerStyle.Style = BeerStyle.Style.BULKKILAGER
@@ -15,6 +20,10 @@ extends Resource
 @export var hair_base_color: Color = Color(0.722, 0.435, 0.314)
 @export var clothes_base_color: Color = Color(0.0, 0.6, 0.859)
 @export var shoes_base_color: Color = Color(0.451, 0.243, 0.224)
+@export var randomize_skin: bool = true
+@export var randomize_hair: bool = true
+@export var randomize_clothes: bool = true
+@export var randomize_shoes: bool = true
 
 @export_group("Movement Physics")
 @export var stair_step_duration: float = 0.3
@@ -58,6 +67,12 @@ extends Resource
 @export var bar_fight_risk_penalty: int = 0
 @export var bar_fight_max_bottles_broken: int = 0
 @export_multiline var dialogue_bar_fight: String = ""
+
+
+func generate_display_name() -> String:
+	if title == "" or first_names.is_empty():
+		return DEFAULT_TITLE + " " + DEFAULT_NAMES.pick_random()
+	return title + " " + first_names.pick_random()
 
 
 func get_preference_score(style: BeerStyle.Style) -> float:

@@ -69,3 +69,7 @@ func _on_brewery_button_pressed() -> void:
 	if brewery_view.visible or shop_view.visible:
 		return
 	_move_to_brewery()
+
+
+func _on_options_button_pressed() -> void:
+	GUISignals.options_requested.emit()
