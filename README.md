@@ -16,26 +16,10 @@ This project was built from scratch with a heavy focus on clean, decoupled, and 
 *   **Strongly Typed, Object-Oriented Nested Inventory**: Purity of state is protected via a custom multi-layered nested dictionary system (`items[Type][ID] = InventoryItem`). The mutable entity runtime amounts are completely decoupled from the immutable `.tres` static data resources, preventing data corruption and memory leaks.
 *   **Math-Based Crafting Resolver**: Crafting does not use strict, rigid recipes. The game calculations analyze the weighted averages of malt EBC colors, hop Alpha-acids, and yeast attenuation variables dynamically to deduce what batch style emerges from the pot.
 
----
-
-## 📂 Project Architecture
-
-```text
-📁 src/
-  📁 autoload/          # Global managers & singletons (BrewEngine.gd, BrewerySignals.gd)
-  📁 classes/           # Core object models (Inventory.gd, BrewPreparation.gd, BrewResolver.gd)
-  📁 resources/         # Immutable data resource scripts (IngredientData.gd, MaltData.gd)
-📁 data/
-  📁 ingredients/       # Organized asset sheets (.tres files) subdivided into /malts, /hops, etc.
-📁 scenes/
-  📁 ui/                # Component-based custom GUI view controls (TopPanelResources.gd, IngredientOptionButton.gd)
-```
-
----
 
 ## 📜 License
 
-Copyright (c) 2026 VeituVu. All Rights Reserved. 
+Copyright (c) 2026 VelluVu. All Rights Reserved. 
 
 This repository contains proprietary software. 
 While the source code is publicly visible for transparency, security auditing, and portfolio evaluation, no open-source rights are granted.
