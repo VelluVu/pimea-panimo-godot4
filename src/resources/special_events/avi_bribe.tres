@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="RiskBribeEventData" format=3]
+
+[ext_resource type="Script" uid="uid://bi5dk34lohryc" path="res://src/classes/risk_bribe_event_data.gd" id="1_bribe"]
+
+[resource]
+script = ExtResource("1_bribe")
+event_caller_name = "AVI-tarkastaja Virtanen"
+intro_dialogue = "Olen kuullut huolestuttavia huhuja tästä paikasta... mutta ehkä voisimme sopia asian kahden kesken?"
+success_dialogue = "Selvä homma. En ole nähnyt täällä mitään epäilyttävää."
+fail_dialogue = "Ei ollut tarpeeksi rahaa? No, sitten joudun tekemään raportin."
+reject_dialogue = "Kova moraali. Kunnioitettavaa, mutta typerää."
+timeout_seconds = 8.0
+reward_money = 0
+reward_reputation = -5
+reward_risk = 0
+clears_risk = true
+bribe_cost = 60
+metadata/_custom_type_script = "uid://bi5dk34lohryc"

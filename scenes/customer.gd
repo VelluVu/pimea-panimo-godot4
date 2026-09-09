@@ -43,10 +43,10 @@ func _apply_random_colors() -> void:
 	recolor_material.set_shader_parameter("hair_base_color", customer_data.hair_base_color)
 	recolor_material.set_shader_parameter("clothes_base_color", customer_data.clothes_base_color)
 	recolor_material.set_shader_parameter("shoes_base_color", customer_data.shoes_base_color)
-	recolor_material.set_shader_parameter("skin_target_color", _random_skin_tone())
-	recolor_material.set_shader_parameter("hair_target_color", _random_color_in_range(RECOLOR_HAIR_SATURATION_RANGE, 0.9))
-	recolor_material.set_shader_parameter("clothes_target_color", _random_color_in_range(RECOLOR_CLOTHES_SATURATION_RANGE, 0.85))
-	recolor_material.set_shader_parameter("shoes_target_color", _random_color_in_range(RECOLOR_SHOES_SATURATION_RANGE, 0.6))
+	recolor_material.set_shader_parameter("skin_target_color", _random_skin_tone() if customer_data.randomize_skin else customer_data.skin_base_color)
+	recolor_material.set_shader_parameter("hair_target_color", _random_color_in_range(RECOLOR_HAIR_SATURATION_RANGE, 0.9) if customer_data.randomize_hair else customer_data.hair_base_color)
+	recolor_material.set_shader_parameter("clothes_target_color", _random_color_in_range(RECOLOR_CLOTHES_SATURATION_RANGE, 0.85) if customer_data.randomize_clothes else customer_data.clothes_base_color)
+	recolor_material.set_shader_parameter("shoes_target_color", _random_color_in_range(RECOLOR_SHOES_SATURATION_RANGE, 0.6) if customer_data.randomize_shoes else customer_data.shoes_base_color)
 	animated_sprite.material = recolor_material
 
 

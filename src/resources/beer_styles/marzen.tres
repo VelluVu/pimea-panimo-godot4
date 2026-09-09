@@ -11,7 +11,6 @@ min_ebc = 20
 max_ebc = 27
 min_ibu = 20
 max_ibu = 28
-risk_change = 3
 reputation_change = 4
 peak_days = 21
 shelf_life_days = 300

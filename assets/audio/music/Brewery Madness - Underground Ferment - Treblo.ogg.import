@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://dwhv2767mvr7s"
+path="res://.godot/imported/Brewery Madness - Underground Ferment - Treblo.ogg-f5f8717fc1146d1f0ada3154d92be54c.oggvorbisstr"
+
+[deps]
+
+source_file="res://assets/audio/music/Brewery Madness - Underground Ferment - Treblo.ogg"
+dest_files=["res://.godot/imported/Brewery Madness - Underground Ferment - Treblo.ogg-f5f8717fc1146d1f0ada3154d92be54c.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

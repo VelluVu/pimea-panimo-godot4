@@ -27,6 +27,8 @@ CustomerManager="*uid://dlbx6ek8v84lo"
 CustomerRegistry="*uid://dacwk1mw8xwd"
 SpecialEventManager="*uid://dbhnuasgj7gqg"
 _mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"
+AudioManager="*res://src/autoload/audio_manager.gd"
+SettingsManager="*res://src/autoload/settings_manager.gd"
 
 [display]
 
@@ -38,7 +40,7 @@ window/stretch/mode="viewport"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/godot_ai/plugin.cfg")
+enabled=PackedStringArray("res://addons/godot_ai/plugin.cfg", "res://addons/pp_test_tools/plugin.cfg")
 
 [physics]
 

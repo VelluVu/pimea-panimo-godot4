@@ -12,7 +12,6 @@ min_ebc = 9
 max_ebc = 13
 min_ibu = 12
 max_ibu = 18
-risk_change = 2
 reputation_change = 3
 shelf_life_days = 30
 aging_factor = -0.08

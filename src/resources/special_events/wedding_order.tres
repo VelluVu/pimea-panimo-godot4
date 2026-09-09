@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="SpecialEventData" format=3]
+
+[ext_resource type="Script" uid="uid://cl0kqitrmb4gj" path="res://src/classes/special_event_data.gd" id="1_wedding"]
+
+[resource]
+script = ExtResource("1_wedding")
+event_caller_name = "Hääjärjestäjä Pekka"
+intro_dialogue = "Häät on tänä iltana ja kaljat loppu kesken! Hefeweizeniä olisi juhlavinta, jos vain sattuisi löytymään."
+success_dialogue = "Pelastit häät! Morsian on onnesta soikeana."
+fail_dialogue = "Ei kai teillä sentään Hefeweizeniä ole? No, keksitään jotain muuta."
+reject_dialogue = "Selvä, yritetään onneamme jossain muualla."
+timeout_seconds = 10.0
+required_style = 11
+required_bottles = 15
+reward_money = 90
+reward_reputation = 8
+reward_risk = 3
+clears_risk = false
+metadata/_custom_type_script = "uid://cl0kqitrmb4gj"

@@ -19,7 +19,6 @@
 [ext_resource type="Texture2D" uid="uid://ckr0tjvh7srsj" path="res://assets/textures/clock_bg.png" id="10_jscy8"]
 [ext_resource type="Texture2D" uid="uid://cotf62fq6mk8q" path="res://assets/textures/clockhand_32.png" id="12_pm3ni"]
 [ext_resource type="Script" uid="uid://clwrlsny0wt3b" path="res://scenes/ui/dialog_view.gd" id="13_jkv2x"]
-[ext_resource type="Script" uid="uid://otqswed5rb6a" path="res://scenes/ui/feature_tester_panel.gd" id="16_jbj1t"]
 [ext_resource type="Script" uid="uid://ctvoku3p23yqg" path="res://src/classes/warehouse_hover_area.gd" id="17_dp3eg"]
 [ext_resource type="Script" uid="uid://cabnw1tbiyona" path="res://src/classes/customer_spawner.gd" id="17_muem4"]
 [ext_resource type="Texture2D" uid="uid://cixeymlhgqlb8" path="res://assets/textures/PC_32.png" id="18_0ld40"]
@@ -28,6 +27,9 @@
 [ext_resource type="Texture2D" uid="uid://do2eqagr661lg" path="res://assets/textures/decline_button_32.png" id="26_2f3dj"]
 [ext_resource type="Script" uid="uid://dqsdc4x3gpckg" path="res://scenes/ui/recipe_library_window.gd" id="26_2wyq8"]
 [ext_resource type="Script" uid="uid://cstg3752a1yby" path="res://scenes/ui/avi_raid_window.gd" id="27_vxglm"]
+[ext_resource type="Script" uid="uid://bpjk58v23qenp" path="res://scenes/ui/options_window.gd" id="29_fv21b"]
+[ext_resource type="Script" uid="uid://b6hgtb57fueyj" path="res://scenes/ui/dev_console.gd" id="30_fv21b"]
+[ext_resource type="Texture2D" uid="uid://7npr1w4jtxms" path="res://assets/textures/gear_icon.png" id="30_tel4y"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_yf5fn"]
 blend_mode = 1
@@ -735,54 +737,6 @@ theme_override_colors/font_color = Color(0.9490196, 0.7882353, 0.41960785, 1)
 text = "Keittola"
 horizontal_alignment = 1
 
-[node name="FeatureTesterPanel" type="Panel" parent="GUI_CanvasLayer/GUI" unique_id=1015855295]
-layout_mode = 1
-anchors_preset = -1
-anchor_top = 0.9
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 0
-mouse_filter = 2
-script = ExtResource("16_jbj1t")
-metadata/_edit_use_anchors_ = true
-
-[node name="HBoxContainer" type="HBoxContainer" parent="GUI_CanvasLayer/GUI/FeatureTesterPanel" unique_id=555193852]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-alignment = 1
-
-[node name="BrewLagerButton" type="Button" parent="GUI_CanvasLayer/GUI/FeatureTesterPanel/HBoxContainer" unique_id=1520330430]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Keitä Bulkkilager"
-
-[node name="TestSpecialCustomerButton" type="Button" parent="GUI_CanvasLayer/GUI/FeatureTesterPanel/HBoxContainer" unique_id=2068403438]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Erikoisasiakas"
-
-[node name="CustomerOptionButton" type="OptionButton" parent="GUI_CanvasLayer/GUI/FeatureTesterPanel/HBoxContainer" unique_id=1714273099]
-layout_mode = 2
-size_flags_horizontal = 4
-selected = 0
-item_count = 1
-popup/item_0/text = "Satunnainen"
-popup/item_0/id = 0
-
-[node name="TestNormalCustomerButton" type="Button" parent="GUI_CanvasLayer/GUI/FeatureTesterPanel/HBoxContainer" unique_id=1714273010]
-layout_mode = 2
-text = "Tavallinen asiakas"
-
-[node name="TestAviRaidButton" type="Button" parent="GUI_CanvasLayer/GUI/FeatureTesterPanel/HBoxContainer" unique_id=1777127148]
-layout_mode = 2
-text = "Testaa AVI-ratsia"
-
 [node name="BackButton" type="Button" parent="GUI_CanvasLayer/GUI" unique_id=1869511055]
 custom_minimum_size = Vector2(22, 22)
 layout_mode = 1
@@ -895,6 +849,197 @@ layout_mode = 2
 size_flags_horizontal = 4
 text = "Selvä..."
 
+[node name="OptionsWindow" type="Panel" parent="GUI_CanvasLayer/GUI" unique_id=1966005126]
+layout_mode = 0
+offset_left = 96.0
+offset_top = 36.0
+offset_right = 544.0
+offset_bottom = 324.0
+script = ExtResource("29_fv21b")
+
+[node name="MarginContainer" type="MarginContainer" parent="GUI_CanvasLayer/GUI/OptionsWindow" unique_id=1372169463]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="MainVBox" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/OptionsWindow/MarginContainer" unique_id=1985581384]
+layout_mode = 2
+
+[node name="HeaderHBox" type="HBoxContainer" parent="GUI_CanvasLayer/GUI/OptionsWindow/MarginContainer/MainVBox" unique_id=1998468477]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="GUI_CanvasLayer/GUI/OptionsWindow/MarginContainer/MainVBox/HeaderHBox" unique_id=1243095812]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Asetukset"
+
+[node name="CloseButton" type="Button" parent="GUI_CanvasLayer/GUI/OptionsWindow/MarginContainer/MainVBox/HeaderHBox" unique_id=418700083]
+layout_mode = 2
+text = "Sulje"
+
+[node name="TabContainer" type="TabContainer" parent="GUI_CanvasLayer/GUI/OptionsWindow/MarginContainer/MainVBox" unique_id=1117111352]
+layout_mode = 2
+size_flags_vertical = 3
+current_tab = 0
+
+[node name="SoundTab" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/OptionsWindow/MarginContainer/MainVBox/TabContainer" unique_id=1133456022]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="MasterRow" type="HBoxContainer" parent="GUI_CanvasLayer/GUI/OptionsWindow/MarginContainer/MainVBox/TabContainer/SoundTab" unique_id=200429078]
+layout_mode = 2
+
+[node name="MasterLabel" type="Label" parent="GUI_CanvasLayer/GUI/OptionsWindow/MarginContainer/MainVBox/TabContainer/SoundTab/MasterRow" unique_id=562417599]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Päävolyymi"
+
+[node name="MasterSlider" type="HSlider" parent="GUI_CanvasLayer/GUI/OptionsWindow/MarginContainer/MainVBox/TabContainer/SoundTab/MasterRow" unique_id=730818244]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1.0
+step = 0.05
+
+[node name="MusicRow" type="HBoxContainer" parent="GUI_CanvasLayer/GUI/OptionsWindow/MarginContainer/MainVBox/TabContainer/SoundTab" unique_id=1865907598]
+layout_mode = 2
+
+[node name="MusicLabel" type="Label" parent="GUI_CanvasLayer/GUI/OptionsWindow/MarginContainer/MainVBox/TabContainer/SoundTab/MusicRow" unique_id=1534362942]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Musiikki"
+
+[node name="MusicSlider" type="HSlider" parent="GUI_CanvasLayer/GUI/OptionsWindow/MarginContainer/MainVBox/TabContainer/SoundTab/MusicRow" unique_id=270484109]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1.0
+step = 0.05
+
+[node name="SfxRow" type="HBoxContainer" parent="GUI_CanvasLayer/GUI/OptionsWindow/MarginContainer/MainVBox/TabContainer/SoundTab" unique_id=1906403029]
+layout_mode = 2
+
+[node name="SfxLabel" type="Label" parent="GUI_CanvasLayer/GUI/OptionsWindow/MarginContainer/MainVBox/TabContainer/SoundTab/SfxRow" unique_id=578708529]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Äänitehosteet"
+
+[node name="SfxSlider" type="HSlider" parent="GUI_CanvasLayer/GUI/OptionsWindow/MarginContainer/MainVBox/TabContainer/SoundTab/SfxRow" unique_id=1335391512]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1.0
+step = 0.05
+
+[node name="DisplayTab" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/OptionsWindow/MarginContainer/MainVBox/TabContainer" unique_id=777745648]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="FullscreenRow" type="HBoxContainer" parent="GUI_CanvasLayer/GUI/OptionsWindow/MarginContainer/MainVBox/TabContainer/DisplayTab" unique_id=786932233]
+layout_mode = 2
+
+[node name="FullscreenLabel" type="Label" parent="GUI_CanvasLayer/GUI/OptionsWindow/MarginContainer/MainVBox/TabContainer/DisplayTab/FullscreenRow" unique_id=1695544355]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Koko näyttö"
+
+[node name="FullscreenCheck" type="CheckButton" parent="GUI_CanvasLayer/GUI/OptionsWindow/MarginContainer/MainVBox/TabContainer/DisplayTab/FullscreenRow" unique_id=45351377]
+layout_mode = 2
+
+[node name="CreditsTab" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/OptionsWindow/MarginContainer/MainVBox/TabContainer" unique_id=1493479282]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 2
+
+[node name="CreditsLabel" type="Label" parent="GUI_CanvasLayer/GUI/OptionsWindow/MarginContainer/MainVBox/TabContainer/CreditsTab" unique_id=2035997804]
+layout_mode = 2
+text = "Pimeä Panimo
+
+Musiikki: Treblo
+Äänitehosteet: Kenney.nl (CC0)
+Käyttöliittymäkuvakkeet: Kenney.nl (CC0)"
+autowrap_mode = 3
+
+[node name="OptionsButton" type="Button" parent="GUI_CanvasLayer/GUI" unique_id=1306780576]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = -32.0
+offset_right = 36.0
+grow_horizontal = 0
+grow_vertical = 0
+tooltip_text = "Asetukset"
+icon = ExtResource("30_tel4y")
+icon_alignment = 1
+expand_icon = true
+
+[node name="DevConsole" type="Panel" parent="GUI_CanvasLayer/GUI" unique_id=949689171]
+clip_contents = true
+layout_mode = 0
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -260.0
+offset_top = -160.0
+offset_right = -4.0
+offset_bottom = -4.0
+script = ExtResource("30_fv21b")
+
+[node name="MarginContainer" type="MarginContainer" parent="GUI_CanvasLayer/GUI/DevConsole" unique_id=1866706840]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="MainVBox" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/DevConsole/MarginContainer" unique_id=75953943]
+layout_mode = 2
+
+[node name="HeaderHBox" type="HBoxContainer" parent="GUI_CanvasLayer/GUI/DevConsole/MarginContainer/MainVBox" unique_id=1029117539]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="GUI_CanvasLayer/GUI/DevConsole/MarginContainer/MainVBox/HeaderHBox" unique_id=909801713]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Konsoli"
+
+[node name="ToggleButton" type="Button" parent="GUI_CanvasLayer/GUI/DevConsole/MarginContainer/MainVBox/HeaderHBox" unique_id=1187000838]
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+text = "▼"
+
+[node name="BodyVBox" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/DevConsole/MarginContainer/MainVBox" unique_id=1739382531]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="LogScroll" type="ScrollContainer" parent="GUI_CanvasLayer/GUI/DevConsole/MarginContainer/MainVBox/BodyVBox" unique_id=2039757177]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="LogLabel" type="RichTextLabel" parent="GUI_CanvasLayer/GUI/DevConsole/MarginContainer/MainVBox/BodyVBox/LogScroll" unique_id=2049912140]
+layout_mode = 2
+size_flags_horizontal = 3
+bbcode_enabled = true
+fit_content = true
+scroll_following = true
+
+[node name="InputLineEdit" type="LineEdit" parent="GUI_CanvasLayer/GUI/DevConsole/MarginContainer/MainVBox/BodyVBox" unique_id=1806972520]
+layout_mode = 2
+placeholder_text = "Kirjoita komento... (help)"
+
+[node name="ResizeHandle" type="Control" parent="GUI_CanvasLayer/GUI/DevConsole" unique_id=105439551]
+anchors_preset = 0
+offset_right = 14.0
+offset_bottom = 14.0
+mouse_default_cursor_shape = 10
+
 [connection signal="pressed" from="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/IngredientSelectionPanel/AddRemoveLastModifiedButtonPanel/HBoxContainer/AddButton" to="GUI_CanvasLayer/GUI/Left_BrewingView" method="_on_add_button_pressed"]
 [connection signal="pressed" from="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/IngredientSelectionPanel/AddRemoveLastModifiedButtonPanel/HBoxContainer/RemoveButton" to="GUI_CanvasLayer/GUI/Left_BrewingView" method="_on_remove_button_pressed"]
 [connection signal="pressed" from="GUI_CanvasLayer/GUI/BrewPreparationPanel/ButtonPanel/HBoxContainer/VBoxContainer/SaveRecipeButton" to="GUI_CanvasLayer/GUI/BrewPreparationPanel" method="_on_save_recipe_button_pressed"]
@@ -904,3 +1049,4 @@ text = "Selvä..."
 [connection signal="pressed" from="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer/IngredientSelectionElementList/BuySellLastModifiedButtonPanel/HBoxContainer/BuyButton" to="GUI_CanvasLayer/GUI/Left_ShopView" method="_on_buy_button_pressed"]
 [connection signal="pressed" from="GUI_CanvasLayer/GUI/ShopEntrancePanel/ShopButton" to="GUI_CanvasLayer/GUI" method="_on_shop_button_pressed"]
 [connection signal="pressed" from="GUI_CanvasLayer/GUI/BackButton" to="GUI_CanvasLayer/GUI" method="_on_back_button_pressed"]
+[connection signal="pressed" from="GUI_CanvasLayer/GUI/OptionsButton" to="GUI_CanvasLayer/GUI" method="_on_options_button_pressed"]

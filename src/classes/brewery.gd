@@ -201,7 +201,6 @@ func start_brew() -> void:
 	new_batch.flavor_matched = brew_report.flavor_matched
 
 	inventory.brew_batches.append(new_batch)
-	add_risk(brew_report.risk_change)
 
 	if brew_report.is_matched:
 		discover_style(brew_report.beer_style.style)
