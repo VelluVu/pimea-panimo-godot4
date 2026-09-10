@@ -8,8 +8,12 @@ const AVI_RAID_REPUTATION_PENALTY_PERCENT : float = 0.25
 
 @export var inventory : Inventory
 @export var current_day : int = 1
-@export var bottles_sold_today : int = 0
-@export var bottles_goal_rewarded_today : bool = false
+## Toward the bottles daily-goal target — deliberately NOT reset on day
+## change (see TimeManager._advance_day()): a slow day's progress carries
+## into the next one instead of being wiped, and only resets (with any
+## overflow preserved) once the goal is actually reached and rewarded, in
+## CustomerManager._check_bottles_goal_reward().
+@export var bottles_sold_toward_goal : int = 0
 @export var money: int = 100
 @export var risk: int = 0
 @export var reputation: int = 0

@@ -106,9 +106,9 @@ func _update_tutorial_goals(brewery : Brewery) -> void:
 
 
 func _update_daily_goals(brewery : Brewery) -> void:
-	var bottles_remaining : int = BOTTLES_TARGET - brewery.bottles_sold_today
+	var bottles_remaining : int = BOTTLES_TARGET - brewery.bottles_sold_toward_goal
 	var bottles_met : bool = bottles_remaining <= 0
-	bottles_goal_label.text = BOTTLES_GOAL_FORMAT % [brewery.bottles_sold_today, BOTTLES_TARGET]
+	bottles_goal_label.text = BOTTLES_GOAL_FORMAT % [brewery.bottles_sold_toward_goal, BOTTLES_TARGET]
 	bottles_goal_label.add_theme_color_override("font_color", GOAL_MET_COLOR if bottles_met else GOAL_PENDING_COLOR)
 
 	var is_near_miss : bool = not bottles_met and bottles_remaining <= NEAR_MISS_BOTTLES_THRESHOLD
