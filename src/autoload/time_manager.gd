@@ -42,8 +42,10 @@ func _advance_day() -> void:
 	_process_cellar_aging(brewery.inventory)
 	_check_risk_goal_reward(brewery)
 
-	brewery.bottles_sold_today = 0
-	brewery.bottles_goal_rewarded_today = false
+	# bottles_sold_toward_goal deliberately does NOT reset here — a slow
+	# day's progress carries into the next one instead of being wiped; it
+	# only resets (with overflow preserved) when the goal is actually
+	# reached, in CustomerManager._check_bottles_goal_reward().
 
 	SaveManager.save_game()
 	day_changed.emit(brewery.current_day)

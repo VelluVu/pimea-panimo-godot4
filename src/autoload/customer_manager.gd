@@ -113,7 +113,7 @@ func process_auto_sale(data: CustomerData) -> String:
 	if best_batch.amount_bottles <= 0:
 		brewery.inventory.brew_batches.erase(best_batch)
 
-	brewery.bottles_sold_today += bottles_sold
+	brewery.bottles_sold_toward_goal += bottles_sold
 	BrewerySignals.bottles_sold.emit(bottles_sold)
 	_check_bottles_goal_reward(brewery)
 
@@ -128,19 +128,24 @@ func process_auto_sale(data: CustomerData) -> String:
 
 const BOTTLES_GOAL_REWARD_NAME : String = "Pullotavoite"
 
-## Instant payout the moment the daily bottles-sold target is crossed —
-## rewarding "reach X" goals right when they happen (rather than batching
-## them into the end-of-day recap) keeps the feedback close to the action
-## that earned it. The risk goal is the opposite case (a "stay under X"
-## goal that can only be confirmed at day's end) and is rewarded from
+## Instant payout the moment the bottles-sold target is crossed — rewarding
+## "reach X" goals right when they happen (rather than batching them into
+## the end-of-day recap) keeps the feedback close to the action that earned
+## it. The risk goal is the opposite case (a "stay under X" goal that can
+## only be confirmed at day's end) and is rewarded from
 ## TimeManager._advance_day() instead.
+##
+## bottles_sold_toward_goal carries over across days (see Brewery), so
+## crossing the target here rolls it back down by the target amount rather
+## than to zero — any overflow from a multi-bottle sale still counts
+## toward the next cycle instead of being discarded.
 func _check_bottles_goal_reward(brewery: Brewery) -> void:
-	if not brewery.tutorial_complete() or brewery.bottles_goal_rewarded_today:
+	if not brewery.tutorial_complete():
 		return
-	if brewery.bottles_sold_today < DailyGoalsPanel.BOTTLES_TARGET:
+	if brewery.bottles_sold_toward_goal < DailyGoalsPanel.BOTTLES_TARGET:
 		return
 
-	brewery.bottles_goal_rewarded_today = true
+	brewery.bottles_sold_toward_goal -= DailyGoalsPanel.BOTTLES_TARGET
 	brewery.money += DailyGoalsPanel.BOTTLES_GOAL_REWARD_MONEY
 	brewery.reputation += DailyGoalsPanel.BOTTLES_GOAL_REWARD_REPUTATION
 	BrewerySignals.daily_goal_reward_granted.emit(BOTTLES_GOAL_REWARD_NAME, DailyGoalsPanel.BOTTLES_GOAL_REWARD_MONEY, DailyGoalsPanel.BOTTLES_GOAL_REWARD_REPUTATION)
