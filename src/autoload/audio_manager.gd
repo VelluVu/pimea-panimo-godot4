@@ -74,6 +74,8 @@ func _connect_signals() -> void:
 	GUISignals.warehouse_view_opened.connect(_on_ui_action)
 	GUISignals.recipe_library_requested.connect(_on_ui_action)
 	GUISignals.options_requested.connect(_on_ui_action)
+	GUISignals.options_closed.connect(_on_ui_action)
+	GUISignals.menu_button_pressed.connect(_on_ui_action)
 
 
 ## Public API: fire-and-forget one-shot playback, round-robin across a small

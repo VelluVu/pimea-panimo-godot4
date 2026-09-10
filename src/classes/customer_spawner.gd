@@ -18,9 +18,9 @@ var counter_markers: Array[Node2D] = []
 
 
 func _ready() -> void:
-	CustomerManager.register_spawner(self)
 	_setup_timer()
 	_setup_positions()
+	CustomerManager.register_spawner(self)
 
 
 func _setup_timer() -> void:

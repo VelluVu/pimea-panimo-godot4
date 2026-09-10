@@ -18,6 +18,7 @@ func _ready() -> void:
 	
 	if BrewEngine.current_brewery != null:
 		BrewEngine.current_brewery.emit_initial_values()
+		_update_day_display(BrewEngine.current_brewery.current_day)
 
 
 func _on_day_changed(new_day: int) -> void:

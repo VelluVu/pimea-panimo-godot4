@@ -7,6 +7,11 @@ const BASE_DISPLAY_TIME_SECONDS : float = 5.0
 const PER_CHARACTER_DISPLAY_TIME_SECONDS : float = 0.05
 const MAX_DISPLAY_TIME_SECONDS : float = 12.0
 
+const PREVIEW_DELAY_SECONDS : float = 2.0
+const PREVIEW_DISPLAY_SECONDS : float = 1.8
+const BATCH_PREVIEW_FORMAT : String = "%s: Tuo %s kiinnostaisi..."
+const NOTHING_AVAILABLE_TEXT_FORMAT : String = "%s: Eipä taida olla mitään sopivaa..."
+
 const ANIM_IDLE : StringName = &"idle"
 const ANIM_IDLE_UP : StringName = &"idle_up"
 const ANIM_WALK_TOWARDS : StringName = &"walk_towards"
@@ -114,7 +119,27 @@ func _on_reached_counter() -> void:
 	var intro_text = generated_name + ": " + customer_data.dialogue_intro
 	var display_time = _get_display_time_for_text(intro_text)
 	BrewerySignals.dialogue_pushed.emit(intro_text, false, assigned_slot, global_position, display_time, FADE_TIME_SECONDS)
-	var sale_timer = get_tree().create_timer(2.0)
+	var preview_timer = get_tree().create_timer(PREVIEW_DELAY_SECONDS)
+	preview_timer.timeout.connect(_on_preview_timeout)
+
+
+## Makes the customer's already-automatic batch choice visible before it
+## resolves, instead of process_auto_sale() deciding and reporting the
+## result in the same instant — the pick itself is still entirely the
+## customer's (find_best_batch_for mirrors what process_auto_sale will
+## actually choose), this just surfaces it as a beat the player can see.
+func _on_preview_timeout() -> void:
+	var previewed_batch : BrewBatch = CustomerManager.find_best_batch_for(customer_data)
+	var preview_text : String
+
+	if previewed_batch != null:
+		preview_text = BATCH_PREVIEW_FORMAT % [generated_name, previewed_batch.get_style_name()]
+	else:
+		preview_text = NOTHING_AVAILABLE_TEXT_FORMAT % generated_name
+
+	BrewerySignals.dialogue_pushed.emit(preview_text, false, assigned_slot, global_position, PREVIEW_DISPLAY_SECONDS, FADE_TIME_SECONDS)
+
+	var sale_timer = get_tree().create_timer(PREVIEW_DISPLAY_SECONDS)
 	sale_timer.timeout.connect(_on_sale_timeout)
 
 

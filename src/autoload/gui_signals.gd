@@ -51,6 +51,18 @@ signal recipe_library_requested()
 signal options_requested()
 
 @warning_ignore("unused_signal")
+signal options_closed()
+
+@warning_ignore("unused_signal")
+signal menu_button_pressed()
+
+@warning_ignore("unused_signal")
+signal close_day_requested()
+
+@warning_ignore("unused_signal")
+signal clear_brew_preparation_requested()
+
+@warning_ignore("unused_signal")
 signal save_recipe_requested()
 @warning_ignore("unused_signal")
 signal load_recipe_requested(recipe : BrewRecipe)

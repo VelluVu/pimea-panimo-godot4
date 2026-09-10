@@ -5,7 +5,7 @@ extends Resource
 @export var brew_batches : Array[BrewBatch] = []
 
 # Sisäkkäinen sanakirja: Key: Script (MaltData/HopData) -> Value: Dictionary (Key: int (ID) -> Value: InventoryItem)
-var items : Dictionary = {}
+@export var items : Dictionary = {}
 
 
 func add_amount(ingredient : IngredientData, amount : int) -> void:
