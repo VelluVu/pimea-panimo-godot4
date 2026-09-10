@@ -28,6 +28,14 @@ func _ready() -> void:
 
 func register_spawner(spawner: CustomerSpawner) -> void:
 	active_spawner = spawner
+
+	# A fresh CustomerSpawner means a fresh main.tscn — any customer nodes
+	# from a previous session are already gone (freed with the old scene),
+	# so slots they never got to vacate (e.g. the player left mid-visit via
+	# the main menu) must not stay marked occupied forever.
+	occupied_slots = [false, false, false, false, false]
+	active_customers.clear()
+
 	if BrewEngine.current_brewery and not BrewEngine.current_brewery.inventory.brew_batches.is_empty():
 		active_spawner.start_spawning()
 
@@ -59,15 +67,23 @@ func _on_brewery_state_changed(brewery: Brewery) -> void:
 		active_spawner.start_spawning()
 	
 
-func process_auto_sale(data: CustomerData) -> String:
+## Public so a customer can preview what it's about to pick (shown as a
+## dialogue beat) before process_auto_sale() actually resolves the sale —
+## the decision itself stays entirely the customer's, this just makes it
+## visible instead of an invisible dice roll.
+func find_best_batch_for(data: CustomerData) -> BrewBatch:
 	if BrewEngine.current_brewery == null:
-		return ""
+		return null
+	return _find_best_batch(BrewEngine.current_brewery.inventory.brew_batches, data)
 
-	var brewery = BrewEngine.current_brewery
-	var best_batch = _find_best_batch(brewery.inventory.brew_batches, data)
+
+func process_auto_sale(data: CustomerData) -> String:
+	var best_batch = find_best_batch_for(data)
 
 	if best_batch == null or best_batch.amount_bottles < BOTTLES_SOLD_PER_TRANSACTION:
 		return ""
+
+	var brewery = BrewEngine.current_brewery
 
 	var results: Dictionary = data.evaluate_brew_batch(best_batch)
 
@@ -81,6 +97,8 @@ func process_auto_sale(data: CustomerData) -> String:
 	best_batch.amount_bottles -= bottles_sold
 	if best_batch.amount_bottles <= 0:
 		brewery.inventory.brew_batches.erase(best_batch)
+
+	BrewerySignals.bottles_sold.emit(bottles_sold)
 
 	var response_text : String = results[KEY_RESPONSE]
 

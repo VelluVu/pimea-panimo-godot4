@@ -7,10 +7,12 @@ extends Resource
 
 # Avain: int (Ingredient ID) -> Arvo: int (Ladatun reseptin vaatima määrä), tyhjä jos reseptiä ei ole ladattu
 @export var active_recipe_target: Dictionary = {}
+@export var active_recipe_style_name: String = "" # Beer style display name only — panel space is tight, the recipe's own name (e.g. "#1", "(perusresepti)") doesn't fit.
 
 func clear_preparation() -> void:
 	selected_contents.clear()
 	active_recipe_target.clear()
+	active_recipe_style_name = ""
 
 
 func has_item(ingredient_id: int, amount: int) -> bool:
