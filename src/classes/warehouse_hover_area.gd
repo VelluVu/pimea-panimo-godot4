@@ -14,47 +14,32 @@ var current_tween: Tween
 func _ready() -> void:
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
-	GUISignals.warehouse_view_opened.connect(_on_warehouse_view_opened)
-	GUISignals.warehouse_view_closed.connect(_on_warehouse_view_closed)
+	input_event.connect(_on_input_event)
 
 	if is_instance_valid(overlay_glow_sprite):
 		overlay_glow_sprite.modulate = BASE_COLOR
 
 
-func _on_warehouse_view_opened() -> void:
-	input_pickable = false
-
-	if current_tween and current_tween.is_running():
-		current_tween.kill()
-
-	if is_instance_valid(overlay_glow_sprite):
-		overlay_glow_sprite.modulate = BASE_COLOR
-
-
-func _on_warehouse_view_closed() -> void:
-	input_pickable = true
+func _on_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		GUISignals.warehouse_door_clicked.emit()
 
 
 func _on_mouse_entered() -> void:
-	GUISignals.warehouse_hovered.emit(true)
-
 	if not is_instance_valid(overlay_glow_sprite): return
-	
+
 	if current_tween and current_tween.is_running():
 		current_tween.kill()
-		
+
 	current_tween = create_tween()
 	current_tween.tween_property(overlay_glow_sprite, "modulate", HOVER_GLOW_COLOR, TWEEN_DURATION_SECONDS).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 
 
-
 func _on_mouse_exited() -> void:
-	GUISignals.warehouse_hovered.emit(false)
-
 	if not is_instance_valid(overlay_glow_sprite): return
-	
+
 	if current_tween and current_tween.is_running():
 		current_tween.kill()
-		
+
 	current_tween = create_tween()
 	current_tween.tween_property(overlay_glow_sprite, "modulate", BASE_COLOR, TWEEN_DURATION_SECONDS).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)

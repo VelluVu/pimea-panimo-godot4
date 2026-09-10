@@ -32,13 +32,6 @@ const SLASH : String = "/"
 const RESOURCE_END : String = ".tres"
 const REMAP_END : String = ".remap"
 
-const MALT_ITEM_SELECTION_STRING : String = "%s %s kg"
-const HOP_ITEM_SELECTION_STRING : String = "%s %s g"
-const YEAST_ITEM_SELECTION_STRING : String = "%s %s kpl"
-const MALT_ITEM_SHOP_SELECTION_STRING : String = "%s %s kg Hinta: %s €"
-const HOP_ITEM_SHOP_SELECTION_STRING : String = "%s %s g Hinta: %s €"
-const YEAST_ITEM_SHOP_SELECTION_STRING : String = "%s %s kpl Hinta: %s €"
-
 const MALT_STAT_STRING : String = "EBC: %s"
 const HOP_STAT_STRING : String = "Alfahapot: %s%% / Beetahapot: %s%%"
 const YEAST_STAT_STRING : String = "Käymisaste: %s%%"
