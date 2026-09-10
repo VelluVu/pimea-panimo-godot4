@@ -1,0 +1,119 @@
+[gd_scene format=3 uid="uid://cvfiooeo4kwdt"]
+
+[ext_resource type="Script" uid="uid://bpjk58v23qenp" path="res://scenes/ui/options_window.gd" id="1_options"]
+
+[node name="OptionsWindow" type="Panel" unique_id=1845724609]
+offset_left = 96.0
+offset_top = 36.0
+offset_right = 544.0
+offset_bottom = 324.0
+script = ExtResource("1_options")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=27572247]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="MainVBox" type="VBoxContainer" parent="MarginContainer" unique_id=35933806]
+layout_mode = 2
+
+[node name="HeaderHBox" type="HBoxContainer" parent="MarginContainer/MainVBox" unique_id=2070057611]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="MarginContainer/MainVBox/HeaderHBox" unique_id=388569182]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Asetukset"
+
+[node name="MainMenuButton" type="Button" parent="MarginContainer/MainVBox/HeaderHBox" unique_id=1325463149]
+layout_mode = 2
+text = "Päävalikkoon"
+
+[node name="CloseButton" type="Button" parent="MarginContainer/MainVBox/HeaderHBox" unique_id=1012844202]
+layout_mode = 2
+text = "Sulje"
+
+[node name="TabContainer" type="TabContainer" parent="MarginContainer/MainVBox" unique_id=447287]
+layout_mode = 2
+size_flags_vertical = 3
+current_tab = 0
+
+[node name="SoundTab" type="VBoxContainer" parent="MarginContainer/MainVBox/TabContainer" unique_id=1236797525]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="MasterRow" type="HBoxContainer" parent="MarginContainer/MainVBox/TabContainer/SoundTab" unique_id=1004777626]
+layout_mode = 2
+
+[node name="MasterLabel" type="Label" parent="MarginContainer/MainVBox/TabContainer/SoundTab/MasterRow" unique_id=1022736786]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Päävolyymi"
+
+[node name="MasterSlider" type="HSlider" parent="MarginContainer/MainVBox/TabContainer/SoundTab/MasterRow" unique_id=1745301064]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1.0
+step = 0.05
+
+[node name="MusicRow" type="HBoxContainer" parent="MarginContainer/MainVBox/TabContainer/SoundTab" unique_id=323540108]
+layout_mode = 2
+
+[node name="MusicLabel" type="Label" parent="MarginContainer/MainVBox/TabContainer/SoundTab/MusicRow" unique_id=1066208381]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Musiikki"
+
+[node name="MusicSlider" type="HSlider" parent="MarginContainer/MainVBox/TabContainer/SoundTab/MusicRow" unique_id=1247428563]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1.0
+step = 0.05
+
+[node name="SfxRow" type="HBoxContainer" parent="MarginContainer/MainVBox/TabContainer/SoundTab" unique_id=608562062]
+layout_mode = 2
+
+[node name="SfxLabel" type="Label" parent="MarginContainer/MainVBox/TabContainer/SoundTab/SfxRow" unique_id=554244063]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Äänitehosteet"
+
+[node name="SfxSlider" type="HSlider" parent="MarginContainer/MainVBox/TabContainer/SoundTab/SfxRow" unique_id=590069669]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1.0
+step = 0.05
+
+[node name="DisplayTab" type="VBoxContainer" parent="MarginContainer/MainVBox/TabContainer" unique_id=1026833400]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="FullscreenRow" type="HBoxContainer" parent="MarginContainer/MainVBox/TabContainer/DisplayTab" unique_id=860987757]
+layout_mode = 2
+
+[node name="FullscreenLabel" type="Label" parent="MarginContainer/MainVBox/TabContainer/DisplayTab/FullscreenRow" unique_id=1723292219]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Koko näyttö"
+
+[node name="FullscreenCheck" type="CheckButton" parent="MarginContainer/MainVBox/TabContainer/DisplayTab/FullscreenRow" unique_id=1561462531]
+layout_mode = 2
+
+[node name="CreditsTab" type="VBoxContainer" parent="MarginContainer/MainVBox/TabContainer" unique_id=1018113520]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 2
+
+[node name="CreditsLabel" type="Label" parent="MarginContainer/MainVBox/TabContainer/CreditsTab" unique_id=1773061743]
+layout_mode = 2
+text = "Pimeä Panimo
+
+Musiikki: Treblo
+Äänitehosteet: Kenney.nl (CC0)
+Käyttöliittymäkuvakkeet: Kenney.nl (CC0)"
+autowrap_mode = 3

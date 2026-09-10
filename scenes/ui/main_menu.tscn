@@ -1,0 +1,100 @@
+[gd_scene format=3 uid="uid://cl1kk7j6c0pnq"]
+
+[ext_resource type="Theme" uid="uid://dkmfe4a5nvvcd" path="res://src/resources/themes/main_theme.tres" id="1_m1kxf"]
+[ext_resource type="Script" uid="uid://blvng2ex11ydp" path="res://scenes/ui/main_menu.gd" id="2_x2yvf"]
+[ext_resource type="Texture2D" uid="uid://o6vh3frtnlhf" path="res://assets/textures/underground_brewery_fixed-0001.png" id="3_uhagc"]
+[ext_resource type="PackedScene" uid="uid://cvfiooeo4kwdt" path="res://scenes/ui/options_window.tscn" id="4_btxxm"]
+
+[node name="MainMenu" type="Control" unique_id=1468878832]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_m1kxf")
+script = ExtResource("2_x2yvf")
+
+[node name="Background" type="TextureRect" parent="." unique_id=1218426399]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("3_uhagc")
+stretch_mode = 6
+
+[node name="DarkOverlay" type="ColorRect" parent="." unique_id=1465203277]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.45)
+
+[node name="TitleLabel" type="Label" parent="." unique_id=1133990385]
+layout_mode = 0
+anchor_right = 1.0
+offset_top = 28.0
+offset_bottom = 72.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.9490196, 0.7882353, 0.41960785, 1)
+theme_override_colors/font_outline_color = Color(0.08235294, 0.0627451, 0.039215688, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 32
+text = "Pimeä Panimo"
+horizontal_alignment = 1
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=433273737]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RootMenuView" type="VBoxContainer" parent="CenterContainer" unique_id=973884429]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="StartButton" type="Button" parent="CenterContainer/RootMenuView" unique_id=1282741896]
+custom_minimum_size = Vector2(200, 28)
+layout_mode = 2
+text = "Aloita Peli"
+
+[node name="OptionsButton" type="Button" parent="CenterContainer/RootMenuView" unique_id=814579638]
+custom_minimum_size = Vector2(200, 28)
+layout_mode = 2
+text = "Asetukset"
+
+[node name="QuitButton" type="Button" parent="CenterContainer/RootMenuView" unique_id=1777599417]
+custom_minimum_size = Vector2(200, 28)
+layout_mode = 2
+text = "Lopeta Peli"
+
+[node name="StartGameView" type="VBoxContainer" parent="CenterContainer" unique_id=96498033]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="ContinueButton" type="Button" parent="CenterContainer/StartGameView" unique_id=1451946887]
+visible = false
+custom_minimum_size = Vector2(200, 28)
+layout_mode = 2
+text = "Jatka Peliä"
+
+[node name="NewGameButton" type="Button" parent="CenterContainer/StartGameView" unique_id=1256502717]
+custom_minimum_size = Vector2(200, 28)
+layout_mode = 2
+text = "Aloita uusi peli"
+
+[node name="BackButton" type="Button" parent="CenterContainer/StartGameView" unique_id=2134506846]
+custom_minimum_size = Vector2(200, 28)
+layout_mode = 2
+text = "Takaisin"
+
+[node name="OptionsWindow" parent="." unique_id=646598751 instance=ExtResource("4_btxxm")]
+layout_mode = 0
+show_main_menu_button = false

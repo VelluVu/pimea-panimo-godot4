@@ -27,9 +27,10 @@
 [ext_resource type="Texture2D" uid="uid://do2eqagr661lg" path="res://assets/textures/decline_button_32.png" id="26_2f3dj"]
 [ext_resource type="Script" uid="uid://dqsdc4x3gpckg" path="res://scenes/ui/recipe_library_window.gd" id="26_2wyq8"]
 [ext_resource type="Script" uid="uid://cstg3752a1yby" path="res://scenes/ui/avi_raid_window.gd" id="27_vxglm"]
-[ext_resource type="Script" uid="uid://bpjk58v23qenp" path="res://scenes/ui/options_window.gd" id="29_fv21b"]
 [ext_resource type="Script" uid="uid://b6hgtb57fueyj" path="res://scenes/ui/dev_console.gd" id="30_fv21b"]
+[ext_resource type="PackedScene" uid="uid://cvfiooeo4kwdt" path="res://scenes/ui/options_window.tscn" id="30_qkpxi"]
 [ext_resource type="Texture2D" uid="uid://7npr1w4jtxms" path="res://assets/textures/gear_icon.png" id="30_tel4y"]
+[ext_resource type="Script" uid="uid://0ew6w27o2tba" path="res://scenes/ui/day_recap_window.gd" id="31_tel4y"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_yf5fn"]
 blend_mode = 1
@@ -153,6 +154,7 @@ theme = ExtResource("7_y6deb")
 script = ExtResource("1_o5qli")
 
 [node name="DialogView" type="Control" parent="GUI_CanvasLayer/GUI" unique_id=1731748201]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -179,6 +181,7 @@ mouse_filter = 2
 theme_override_constants/separation = 6
 
 [node name="TopPanelBackground" type="Panel" parent="GUI_CanvasLayer/GUI" unique_id=1793007884]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -187,6 +190,7 @@ grow_horizontal = 2
 mouse_filter = 2
 
 [node name="TopPanel_Resources" type="HBoxContainer" parent="GUI_CanvasLayer/GUI" unique_id=1849355740]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -241,7 +245,13 @@ pivot_offset = Vector2(16, 16)
 offset_transform_enabled = true
 texture = ExtResource("12_pm3ni")
 
+[node name="CloseDayButton" type="Button" parent="GUI_CanvasLayer/GUI/TopPanel_Resources" unique_id=1208766186]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Sulje ovet"
+
 [node name="Right_WarehouseView" type="VBoxContainer" parent="GUI_CanvasLayer/GUI" unique_id=1128246563]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.4453125
@@ -330,6 +340,7 @@ size_flags_vertical = 3
 mouse_filter = 2
 
 [node name="Left_BrewingView" type="Control" parent="GUI_CanvasLayer/GUI" unique_id=198294845 node_paths=PackedStringArray("current_item_label", "stat_label", "malt_option_button", "hop_option_button", "yeast_option_button", "main_slider", "add_button", "remove_button")]
+visible = false
 layout_mode = 1
 anchor_top = 0.1
 anchor_right = 1.0
@@ -471,34 +482,80 @@ size_flags_vertical = 1
 rounded = true
 
 [node name="BrewPreparationPanel" type="PanelContainer" parent="GUI_CanvasLayer/GUI" unique_id=2025673696]
+visible = false
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.2234375
+anchor_left = 0.2203125
 anchor_top = 0.09166667
-anchor_right = 0.4390625
-anchor_bottom = 0.5888889
+anchor_right = 0.44375
+anchor_bottom = 0.76944447
 grow_vertical = 2
 size_flags_vertical = 3
 mouse_filter = 2
 script = ExtResource("7_tipki")
 metadata/_edit_use_anchors_ = true
 
-[node name="TableScrollContainer" type="ScrollContainer" parent="GUI_CanvasLayer/GUI/BrewPreparationPanel" unique_id=898673407]
+[node name="VBoxContainer" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/BrewPreparationPanel" unique_id=642889113]
 layout_mode = 2
 
-[node name="IngredientListVBox" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/BrewPreparationPanel/TableScrollContainer" unique_id=1463224705]
+[node name="CurrentRecipeBar" type="Panel" parent="GUI_CanvasLayer/GUI/BrewPreparationPanel/VBoxContainer" unique_id=1325025093]
+custom_minimum_size = Vector2(0, 20)
+custom_maximum_size = Vector2(-1, 45)
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GUI_CanvasLayer/GUI/BrewPreparationPanel/VBoxContainer/CurrentRecipeBar" unique_id=50009364]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.03846154
+anchor_right = 1.0384616
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="CurrentRecipeLabel" type="Label" parent="GUI_CanvasLayer/GUI/BrewPreparationPanel/VBoxContainer/CurrentRecipeBar/HBoxContainer" unique_id=1741949111]
+custom_minimum_size = Vector2(100, 20)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 14
+text = "Resepti:"
+horizontal_alignment = 1
+vertical_alignment = 1
+clip_text = true
+text_overrun_behavior = 3
+
+[node name="EraseButton" type="Button" parent="GUI_CanvasLayer/GUI/BrewPreparationPanel/VBoxContainer/CurrentRecipeBar/HBoxContainer" unique_id=1313314109]
+custom_minimum_size = Vector2(12, 12)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+tooltip_text = "Tyhjennä valmistelu"
+theme_override_font_sizes/font_size = 14
+text = "Tyhjää"
+icon_alignment = 1
+expand_icon = true
+
+[node name="TableScrollContainer" type="ScrollContainer" parent="GUI_CanvasLayer/GUI/BrewPreparationPanel/VBoxContainer" unique_id=898673407]
+custom_minimum_size = Vector2(130, 100)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="IngredientListVBox" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/BrewPreparationPanel/VBoxContainer/TableScrollContainer" unique_id=1463224705]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
 theme_override_constants/separation = 1
 
-[node name="ButtonPanel" type="Panel" parent="GUI_CanvasLayer/GUI/BrewPreparationPanel" unique_id=1947074259]
+[node name="ButtonPanel" type="Panel" parent="GUI_CanvasLayer/GUI/BrewPreparationPanel/VBoxContainer" unique_id=1947074259]
 custom_minimum_size = Vector2(0, 45)
 layout_mode = 2
 size_flags_vertical = 8
 
-[node name="HBoxContainer" type="HBoxContainer" parent="GUI_CanvasLayer/GUI/BrewPreparationPanel/ButtonPanel" unique_id=1687128019]
+[node name="HBoxContainer" type="HBoxContainer" parent="GUI_CanvasLayer/GUI/BrewPreparationPanel/VBoxContainer/ButtonPanel" unique_id=1687128019]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -507,31 +564,31 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/BrewPreparationPanel/ButtonPanel/HBoxContainer" unique_id=308896811]
+[node name="VBoxContainer" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/BrewPreparationPanel/VBoxContainer/ButtonPanel/HBoxContainer" unique_id=308896811]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 1
 
-[node name="SaveRecipeButton" type="Button" parent="GUI_CanvasLayer/GUI/BrewPreparationPanel/ButtonPanel/HBoxContainer/VBoxContainer" unique_id=397344710]
+[node name="SaveRecipeButton" type="Button" parent="GUI_CanvasLayer/GUI/BrewPreparationPanel/VBoxContainer/ButtonPanel/HBoxContainer/VBoxContainer" unique_id=397344710]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 2
 text = "Tallenna resepti"
 
-[node name="RecipeLibraryButton" type="Button" parent="GUI_CanvasLayer/GUI/BrewPreparationPanel/ButtonPanel/HBoxContainer/VBoxContainer" unique_id=397344709]
+[node name="RecipeLibraryButton" type="Button" parent="GUI_CanvasLayer/GUI/BrewPreparationPanel/VBoxContainer/ButtonPanel/HBoxContainer/VBoxContainer" unique_id=397344709]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 10
 text = "Reseptikirja"
 
-[node name="StartBrewButton" type="Button" parent="GUI_CanvasLayer/GUI/BrewPreparationPanel/ButtonPanel/HBoxContainer" unique_id=2072042436]
+[node name="StartBrewButton" type="Button" parent="GUI_CanvasLayer/GUI/BrewPreparationPanel/VBoxContainer/ButtonPanel/HBoxContainer" unique_id=2072042436]
 custom_minimum_size = Vector2(32, 16)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
 text = "Pane"
 
-[node name="SaveRecipeToast" type="Label" parent="GUI_CanvasLayer/GUI/BrewPreparationPanel/ButtonPanel" unique_id=1947074300]
+[node name="SaveRecipeToast" type="Label" parent="GUI_CanvasLayer/GUI/BrewPreparationPanel/VBoxContainer/ButtonPanel" unique_id=1947074300]
 modulate = Color(1, 1, 1, 0)
 layout_mode = 1
 anchors_preset = 15
@@ -547,6 +604,7 @@ vertical_alignment = 1
 autowrap_mode = 2
 
 [node name="Left_ShopView" type="VBoxContainer" parent="GUI_CanvasLayer/GUI" unique_id=578953931 node_paths=PackedStringArray("current_item_label", "stat_label", "malt_option_button", "hop_option_button", "yeast_option_button", "main_slider", "buy_button", "sell_button")]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.1
@@ -678,6 +736,7 @@ size_flags_vertical = 1
 rounded = true
 
 [node name="ShopEntrancePanel" type="Panel" parent="GUI_CanvasLayer/GUI" unique_id=53121703]
+visible = false
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 1
 anchors_preset = -1
@@ -715,6 +774,7 @@ flat = true
 icon_alignment = 1
 
 [node name="BreweryEntrancePanel" type="Panel" parent="GUI_CanvasLayer/GUI" unique_id=896089069]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.196875
@@ -738,6 +798,7 @@ text = "Keittola"
 horizontal_alignment = 1
 
 [node name="BackButton" type="Button" parent="GUI_CanvasLayer/GUI" unique_id=1869511055]
+visible = false
 custom_minimum_size = Vector2(22, 22)
 layout_mode = 1
 offset_left = 122.0
@@ -849,120 +910,8 @@ layout_mode = 2
 size_flags_horizontal = 4
 text = "Selvä..."
 
-[node name="OptionsWindow" type="Panel" parent="GUI_CanvasLayer/GUI" unique_id=1966005126]
-layout_mode = 0
-offset_left = 96.0
-offset_top = 36.0
-offset_right = 544.0
-offset_bottom = 324.0
-script = ExtResource("29_fv21b")
-
-[node name="MarginContainer" type="MarginContainer" parent="GUI_CanvasLayer/GUI/OptionsWindow" unique_id=1372169463]
-layout_mode = 0
-anchor_right = 1.0
-anchor_bottom = 1.0
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
-
-[node name="MainVBox" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/OptionsWindow/MarginContainer" unique_id=1985581384]
-layout_mode = 2
-
-[node name="HeaderHBox" type="HBoxContainer" parent="GUI_CanvasLayer/GUI/OptionsWindow/MarginContainer/MainVBox" unique_id=1998468477]
-layout_mode = 2
-
-[node name="TitleLabel" type="Label" parent="GUI_CanvasLayer/GUI/OptionsWindow/MarginContainer/MainVBox/HeaderHBox" unique_id=1243095812]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Asetukset"
-
-[node name="CloseButton" type="Button" parent="GUI_CanvasLayer/GUI/OptionsWindow/MarginContainer/MainVBox/HeaderHBox" unique_id=418700083]
-layout_mode = 2
-text = "Sulje"
-
-[node name="TabContainer" type="TabContainer" parent="GUI_CanvasLayer/GUI/OptionsWindow/MarginContainer/MainVBox" unique_id=1117111352]
-layout_mode = 2
-size_flags_vertical = 3
-current_tab = 0
-
-[node name="SoundTab" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/OptionsWindow/MarginContainer/MainVBox/TabContainer" unique_id=1133456022]
-layout_mode = 2
-metadata/_tab_index = 0
-
-[node name="MasterRow" type="HBoxContainer" parent="GUI_CanvasLayer/GUI/OptionsWindow/MarginContainer/MainVBox/TabContainer/SoundTab" unique_id=200429078]
-layout_mode = 2
-
-[node name="MasterLabel" type="Label" parent="GUI_CanvasLayer/GUI/OptionsWindow/MarginContainer/MainVBox/TabContainer/SoundTab/MasterRow" unique_id=562417599]
-custom_minimum_size = Vector2(120, 0)
-layout_mode = 2
-text = "Päävolyymi"
-
-[node name="MasterSlider" type="HSlider" parent="GUI_CanvasLayer/GUI/OptionsWindow/MarginContainer/MainVBox/TabContainer/SoundTab/MasterRow" unique_id=730818244]
-layout_mode = 2
-size_flags_horizontal = 3
-max_value = 1.0
-step = 0.05
-
-[node name="MusicRow" type="HBoxContainer" parent="GUI_CanvasLayer/GUI/OptionsWindow/MarginContainer/MainVBox/TabContainer/SoundTab" unique_id=1865907598]
-layout_mode = 2
-
-[node name="MusicLabel" type="Label" parent="GUI_CanvasLayer/GUI/OptionsWindow/MarginContainer/MainVBox/TabContainer/SoundTab/MusicRow" unique_id=1534362942]
-custom_minimum_size = Vector2(120, 0)
-layout_mode = 2
-text = "Musiikki"
-
-[node name="MusicSlider" type="HSlider" parent="GUI_CanvasLayer/GUI/OptionsWindow/MarginContainer/MainVBox/TabContainer/SoundTab/MusicRow" unique_id=270484109]
-layout_mode = 2
-size_flags_horizontal = 3
-max_value = 1.0
-step = 0.05
-
-[node name="SfxRow" type="HBoxContainer" parent="GUI_CanvasLayer/GUI/OptionsWindow/MarginContainer/MainVBox/TabContainer/SoundTab" unique_id=1906403029]
-layout_mode = 2
-
-[node name="SfxLabel" type="Label" parent="GUI_CanvasLayer/GUI/OptionsWindow/MarginContainer/MainVBox/TabContainer/SoundTab/SfxRow" unique_id=578708529]
-custom_minimum_size = Vector2(120, 0)
-layout_mode = 2
-text = "Äänitehosteet"
-
-[node name="SfxSlider" type="HSlider" parent="GUI_CanvasLayer/GUI/OptionsWindow/MarginContainer/MainVBox/TabContainer/SoundTab/SfxRow" unique_id=1335391512]
-layout_mode = 2
-size_flags_horizontal = 3
-max_value = 1.0
-step = 0.05
-
-[node name="DisplayTab" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/OptionsWindow/MarginContainer/MainVBox/TabContainer" unique_id=777745648]
-visible = false
-layout_mode = 2
-metadata/_tab_index = 1
-
-[node name="FullscreenRow" type="HBoxContainer" parent="GUI_CanvasLayer/GUI/OptionsWindow/MarginContainer/MainVBox/TabContainer/DisplayTab" unique_id=786932233]
-layout_mode = 2
-
-[node name="FullscreenLabel" type="Label" parent="GUI_CanvasLayer/GUI/OptionsWindow/MarginContainer/MainVBox/TabContainer/DisplayTab/FullscreenRow" unique_id=1695544355]
-custom_minimum_size = Vector2(120, 0)
-layout_mode = 2
-text = "Koko näyttö"
-
-[node name="FullscreenCheck" type="CheckButton" parent="GUI_CanvasLayer/GUI/OptionsWindow/MarginContainer/MainVBox/TabContainer/DisplayTab/FullscreenRow" unique_id=45351377]
-layout_mode = 2
-
-[node name="CreditsTab" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/OptionsWindow/MarginContainer/MainVBox/TabContainer" unique_id=1493479282]
-visible = false
-layout_mode = 2
-metadata/_tab_index = 2
-
-[node name="CreditsLabel" type="Label" parent="GUI_CanvasLayer/GUI/OptionsWindow/MarginContainer/MainVBox/TabContainer/CreditsTab" unique_id=2035997804]
-layout_mode = 2
-text = "Pimeä Panimo
-
-Musiikki: Treblo
-Äänitehosteet: Kenney.nl (CC0)
-Käyttöliittymäkuvakkeet: Kenney.nl (CC0)"
-autowrap_mode = 3
-
 [node name="OptionsButton" type="Button" parent="GUI_CanvasLayer/GUI" unique_id=1306780576]
+visible = false
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
@@ -978,16 +927,20 @@ icon_alignment = 1
 expand_icon = true
 
 [node name="DevConsole" type="Panel" parent="GUI_CanvasLayer/GUI" unique_id=949689171]
+visible = false
 clip_contents = true
-layout_mode = 0
+layout_mode = 1
+anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -260.0
-offset_top = -160.0
+offset_top = -109.0
 offset_right = -4.0
 offset_bottom = -4.0
+grow_horizontal = 0
+grow_vertical = 0
 script = ExtResource("30_fv21b")
 
 [node name="MarginContainer" type="MarginContainer" parent="GUI_CanvasLayer/GUI/DevConsole" unique_id=1866706840]
@@ -1040,11 +993,78 @@ offset_right = 14.0
 offset_bottom = 14.0
 mouse_default_cursor_shape = 10
 
+[node name="OptionsWindow" parent="GUI_CanvasLayer/GUI" unique_id=259503196 instance=ExtResource("30_qkpxi")]
+visible = false
+layout_mode = 0
+
+[node name="DiscoveryToast" type="Label" parent="GUI_CanvasLayer/GUI" unique_id=1184602969]
+visible = false
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.15
+anchor_right = 0.85
+offset_top = 42.0
+offset_bottom = 68.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.9490196, 0.7882353, 0.41960785, 1)
+theme_override_colors/font_outline_color = Color(0.08235294, 0.0627451, 0.039215688, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 18
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DayRecapWindow" type="Panel" parent="GUI_CanvasLayer/GUI" unique_id=281126804]
+visible = false
+layout_mode = 0
+anchor_left = 0.25
+anchor_top = 0.22
+anchor_right = 0.75
+anchor_bottom = 0.78
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("31_tel4y")
+
+[node name="MarginContainer" type="MarginContainer" parent="GUI_CanvasLayer/GUI/DayRecapWindow" unique_id=831989335]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 14
+
+[node name="MainVBox" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/DayRecapWindow/MarginContainer" unique_id=4510322]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="GUI_CanvasLayer/GUI/DayRecapWindow/MarginContainer/MainVBox" unique_id=1097606484]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9490196, 0.7882353, 0.41960785, 1)
+theme_override_font_sizes/font_size = 20
+text = "Päivän yhteenveto"
+horizontal_alignment = 1
+
+[node name="MessageLabel" type="Label" parent="GUI_CanvasLayer/GUI/DayRecapWindow/MarginContainer/MainVBox" unique_id=1207439012]
+custom_maximum_size = Vector2(316, 150)
+layout_mode = 2
+size_flags_vertical = 3
+text = " "
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="CloseButton" type="Button" parent="GUI_CanvasLayer/GUI/DayRecapWindow/MarginContainer/MainVBox" unique_id=939761496]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Jatka"
+
 [connection signal="pressed" from="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/IngredientSelectionPanel/AddRemoveLastModifiedButtonPanel/HBoxContainer/AddButton" to="GUI_CanvasLayer/GUI/Left_BrewingView" method="_on_add_button_pressed"]
 [connection signal="pressed" from="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/IngredientSelectionPanel/AddRemoveLastModifiedButtonPanel/HBoxContainer/RemoveButton" to="GUI_CanvasLayer/GUI/Left_BrewingView" method="_on_remove_button_pressed"]
-[connection signal="pressed" from="GUI_CanvasLayer/GUI/BrewPreparationPanel/ButtonPanel/HBoxContainer/VBoxContainer/SaveRecipeButton" to="GUI_CanvasLayer/GUI/BrewPreparationPanel" method="_on_save_recipe_button_pressed"]
-[connection signal="pressed" from="GUI_CanvasLayer/GUI/BrewPreparationPanel/ButtonPanel/HBoxContainer/VBoxContainer/RecipeLibraryButton" to="GUI_CanvasLayer/GUI/BrewPreparationPanel" method="_on_recipe_library_button_pressed"]
-[connection signal="pressed" from="GUI_CanvasLayer/GUI/BrewPreparationPanel/ButtonPanel/HBoxContainer/StartBrewButton" to="GUI_CanvasLayer/GUI/Left_BrewingView" method="_on_start_brew_button_pressed"]
+[connection signal="pressed" from="GUI_CanvasLayer/GUI/BrewPreparationPanel/VBoxContainer/ButtonPanel/HBoxContainer/VBoxContainer/SaveRecipeButton" to="GUI_CanvasLayer/GUI/BrewPreparationPanel" method="_on_save_recipe_button_pressed"]
+[connection signal="pressed" from="GUI_CanvasLayer/GUI/BrewPreparationPanel/VBoxContainer/ButtonPanel/HBoxContainer/VBoxContainer/RecipeLibraryButton" to="GUI_CanvasLayer/GUI/BrewPreparationPanel" method="_on_recipe_library_button_pressed"]
+[connection signal="pressed" from="GUI_CanvasLayer/GUI/BrewPreparationPanel/VBoxContainer/ButtonPanel/HBoxContainer/StartBrewButton" to="GUI_CanvasLayer/GUI/Left_BrewingView" method="_on_start_brew_button_pressed"]
 [connection signal="pressed" from="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer/IngredientSelectionElementList/BuySellLastModifiedButtonPanel/HBoxContainer/SellButton" to="GUI_CanvasLayer/GUI/Left_ShopView" method="_on_sell_button_pressed"]
 [connection signal="pressed" from="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer/IngredientSelectionElementList/BuySellLastModifiedButtonPanel/HBoxContainer/BuyButton" to="GUI_CanvasLayer/GUI/Left_ShopView" method="_on_buy_button_pressed"]
 [connection signal="pressed" from="GUI_CanvasLayer/GUI/ShopEntrancePanel/ShopButton" to="GUI_CanvasLayer/GUI" method="_on_shop_button_pressed"]

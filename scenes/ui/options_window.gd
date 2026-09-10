@@ -7,9 +7,16 @@ const TAB_TITLE_DISPLAY: String = "Näyttö"
 const TAB_TITLE_CREDITS: String = "Tietoja"
 const WINDOW_TITLE: String = "Asetukset"
 const CLOSE_BUTTON_TEXT: String = "Sulje"
+const MAIN_MENU_BUTTON_TEXT: String = "Päävalikkoon"
+const MAIN_MENU_SCENE_PATH: String = "res://scenes/ui/main_menu.tscn"
+
+## False on the instance that already lives inside the main menu itself —
+## there's nothing to "return to" from there.
+@export var show_main_menu_button: bool = true
 
 @onready var title_label: Label = $MarginContainer/MainVBox/HeaderHBox/TitleLabel
 @onready var close_button: Button = $MarginContainer/MainVBox/HeaderHBox/CloseButton
+@onready var main_menu_button: Button = $MarginContainer/MainVBox/HeaderHBox/MainMenuButton
 @onready var tab_container: TabContainer = $MarginContainer/MainVBox/TabContainer
 
 @onready var master_slider: HSlider = $MarginContainer/MainVBox/TabContainer/SoundTab/MasterRow/MasterSlider
@@ -22,6 +29,8 @@ const CLOSE_BUTTON_TEXT: String = "Sulje"
 func _ready() -> void:
 	title_label.text = WINDOW_TITLE
 	close_button.text = CLOSE_BUTTON_TEXT
+	main_menu_button.text = MAIN_MENU_BUTTON_TEXT
+	main_menu_button.visible = show_main_menu_button
 	tab_container.set_tab_title(0, TAB_TITLE_SOUND)
 	tab_container.set_tab_title(1, TAB_TITLE_DISPLAY)
 	tab_container.set_tab_title(2, TAB_TITLE_CREDITS)
@@ -29,6 +38,7 @@ func _ready() -> void:
 	_load_current_values()
 
 	close_button.pressed.connect(_on_close_button_pressed)
+	main_menu_button.pressed.connect(_on_main_menu_button_pressed)
 	master_slider.value_changed.connect(_on_master_slider_changed)
 	music_slider.value_changed.connect(_on_music_slider_changed)
 	sfx_slider.value_changed.connect(_on_sfx_slider_changed)
@@ -55,7 +65,14 @@ func _on_options_requested() -> void:
 
 
 func _on_close_button_pressed() -> void:
+	GUISignals.options_closed.emit()
 	hide()
+
+
+func _on_main_menu_button_pressed() -> void:
+	GUISignals.menu_button_pressed.emit()
+	SaveManager.save_game()
+	get_tree().change_scene_to_file(MAIN_MENU_SCENE_PATH)
 
 
 func _on_master_slider_changed(value: float) -> void:

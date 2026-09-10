@@ -141,3 +141,128 @@ func get_beer_style(style : BeerStyle.Style) -> BeerStyle:
 			return beer_Style
 	
 	return null
+
+
+## Computes a bare-minimum ingredient combination that actually brews the
+## given style — used to seed every unlocked style's default recipe.
+## Returns {} if no valid combination could be found. Every result is
+## re-checked against resolve_brew_style() itself before being returned,
+## since active_styles is matched in load order and a combo built purely
+## from beer_style's own ranges could otherwise land inside an earlier,
+## wider-ranged style instead of the one it was built for.
+func compute_minimum_ingredients(beer_style : BeerStyle) -> Dictionary:
+	var combo : Dictionary = _find_malt_combo(beer_style.min_ebc, beer_style.max_ebc, beer_style.min_malt_weight)
+	if combo.is_empty():
+		return {}
+
+	combo[beer_style.required_yeast_id] = 1
+
+	if beer_style.min_ibu > 0:
+		var hop_dose : Dictionary = _find_hop_dose(beer_style.min_ibu, beer_style.max_ibu, beer_style.preferred_hop_profile)
+		if hop_dose.is_empty():
+			return {}
+		for hop_id in hop_dose:
+			combo[hop_id] = hop_dose[hop_id]
+
+	var result : BrewResult = resolve_brew_style(combo)
+	if result == null or not result.is_matched or result.beer_style.style != beer_style.style:
+		return {}
+
+	return combo
+
+
+func _get_all_malts() -> Array[MaltData]:
+	var malts : Array[MaltData] = []
+	for id in IngredientDatabase.sorted_ids:
+		var data : IngredientData = IngredientDatabase.database[id]
+		if data is MaltData:
+			malts.append(data)
+	return malts
+
+
+func _get_all_hops() -> Array[HopData]:
+	var hops : Array[HopData] = []
+	for id in IngredientDatabase.sorted_ids:
+		var data : IngredientData = IngredientDatabase.database[id]
+		if data is HopData:
+			hops.append(data)
+	return hops
+
+
+## Single malt first (cheapest, truest "bare minimum"); falls back to a
+## brute-force two-malt blend search when no single malt's EBC lands in
+## range — several styles in this project's data have no single-malt
+## solution at all (e.g. Doppelbock's [71,95] EBC window sits strictly
+## between the two closest malts), so the blend path is load-bearing,
+## not an edge case.
+func _find_malt_combo(min_ebc : int, max_ebc : int, min_weight : int) -> Dictionary:
+	var malts := _get_all_malts()
+
+	for malt in malts:
+		if malt.ebc >= min_ebc and malt.ebc <= max_ebc:
+			return {malt.id: min_weight}
+
+	var target_ebc := (min_ebc + max_ebc) / 2.0
+	var best_combo : Dictionary = {}
+	var best_distance := INF
+	var amount_cap := min_weight + 6
+
+	for i in range(malts.size()):
+		for j in range(malts.size()):
+			if i == j:
+				continue
+
+			var malt_a : MaltData = malts[i]
+			var malt_b : MaltData = malts[j]
+			if malt_a.ebc >= malt_b.ebc:
+				continue
+
+			for amount_a in range(1, amount_cap):
+				for amount_b in range(1, amount_cap):
+					var total := amount_a + amount_b
+					if total < min_weight:
+						continue
+
+					var avg := float(malt_a.ebc * amount_a + malt_b.ebc * amount_b) / total
+					if avg < min_ebc or avg > max_ebc:
+						continue
+
+					var distance := absf(avg - target_ebc)
+					if distance < best_distance:
+						best_distance = distance
+						best_combo = {malt_a.id: amount_a, malt_b.id: amount_b}
+
+	return best_combo
+
+
+## Single hop dose targeting the center of the style's IBU window,
+## preferring one matching the style's flavor profile (falls back to any
+## hop). Nudges the amount by up to 2g either way to land inside range
+## when the center-target rounding falls just outside it.
+func _find_hop_dose(min_ibu : int, max_ibu : int, preferred_profile : HopData.FlavorProfile) -> Dictionary:
+	var hops := _get_all_hops()
+	if hops.is_empty():
+		return {}
+
+	var preferred : Array[HopData] = []
+	for hop in hops:
+		if hop.flavor_profile == preferred_profile:
+			preferred.append(hop)
+
+	var candidates := preferred if not preferred.is_empty() else hops
+	var target_ibu := (min_ibu + max_ibu) / 2.0
+
+	var deltas : Array[int] = [0, 1, -1, 2, -2]
+
+	for hop in candidates:
+		var base_amount : int = max(1, roundi(target_ibu * 10.0 / hop.alpha_acids))
+		for delta in deltas:
+			var try_amount : int = base_amount + delta
+			if try_amount < 1:
+				continue
+
+			var final_ibu := roundi(hop.alpha_acids * try_amount / 10.0)
+			if final_ibu >= min_ibu and final_ibu <= max_ibu:
+				return {hop.id: try_amount}
+
+	return {}

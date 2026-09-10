@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Pimea Panimo"
-run/main_scene="uid://ccmro4v7bveuo"
+run/main_scene="res://scenes/ui/main_menu.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://assets/textures/icon.svg"
 
@@ -29,6 +29,7 @@ SpecialEventManager="*uid://dbhnuasgj7gqg"
 _mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"
 AudioManager="*res://src/autoload/audio_manager.gd"
 SettingsManager="*res://src/autoload/settings_manager.gd"
+SaveManager="*res://src/autoload/save_manager.gd"
 
 [display]
 
