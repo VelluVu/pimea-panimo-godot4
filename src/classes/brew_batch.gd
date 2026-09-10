@@ -46,6 +46,20 @@ func get_quality_breakdown_tooltip() -> String:
 	]
 
 
+const FULL_INFO_TOOLTIP_HEADER_FORMAT : String = "Laatu: %s%% (%s)\nEBC: %s | IBU: %s\n"
+
+## Combines the header stats (quality/EBC/IBU) that used to sit in the
+## batch row's visible text with the existing breakdown tooltip, so the
+## row itself can stay to a single compact line.
+func get_full_info_tooltip() -> String:
+	return FULL_INFO_TOOLTIP_HEADER_FORMAT % [
+		roundi(current_quality * 100),
+		get_quality_tier_string(),
+		final_ebc,
+		final_ibu
+	] + get_quality_breakdown_tooltip()
+
+
 func age_one_day() -> void:
 	age_in_days += 1
 	_calculate_current_quality()

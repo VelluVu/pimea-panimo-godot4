@@ -23,14 +23,19 @@
 [ext_resource type="Script" uid="uid://cabnw1tbiyona" path="res://src/classes/customer_spawner.gd" id="17_muem4"]
 [ext_resource type="Texture2D" uid="uid://cixeymlhgqlb8" path="res://assets/textures/PC_32.png" id="18_0ld40"]
 [ext_resource type="Script" uid="uid://dudbw5vh3wgaw" path="res://scenes/ui/shop_entrance_panel.gd" id="18_gqmmt"]
+[ext_resource type="Script" uid="uid://cmgecu0vu375p" path="res://scenes/ui/ingredient_type_selector.gd" id="20_5q0nq"]
+[ext_resource type="Texture2D" uid="uid://jrgb4nvjfajq" path="res://src/resources/ui_icons/malt_tab_icon.tres" id="21_j8jky"]
+[ext_resource type="Texture2D" uid="uid://c0lcte85g2qnn" path="res://src/resources/ui_icons/hop_tab_icon.tres" id="22_kmb1v"]
 [ext_resource type="Script" uid="uid://l45qnjtgdirk" path="res://scenes/ui/brewery_entrance_panel.gd" id="22_pm3ni"]
-[ext_resource type="Texture2D" uid="uid://do2eqagr661lg" path="res://assets/textures/decline_button_32.png" id="26_2f3dj"]
+[ext_resource type="Texture2D" uid="uid://20gx2dqe81g8" path="res://src/resources/ui_icons/yeast_tab_icon.tres" id="23_fuf3a"]
 [ext_resource type="Script" uid="uid://dqsdc4x3gpckg" path="res://scenes/ui/recipe_library_window.gd" id="26_2wyq8"]
 [ext_resource type="Script" uid="uid://cstg3752a1yby" path="res://scenes/ui/avi_raid_window.gd" id="27_vxglm"]
 [ext_resource type="Script" uid="uid://b6hgtb57fueyj" path="res://scenes/ui/dev_console.gd" id="30_fv21b"]
 [ext_resource type="PackedScene" uid="uid://cvfiooeo4kwdt" path="res://scenes/ui/options_window.tscn" id="30_qkpxi"]
 [ext_resource type="Texture2D" uid="uid://7npr1w4jtxms" path="res://assets/textures/gear_icon.png" id="30_tel4y"]
 [ext_resource type="Script" uid="uid://0ew6w27o2tba" path="res://scenes/ui/day_recap_window.gd" id="31_tel4y"]
+[ext_resource type="Script" uid="uid://l7dtc2itv83e" path="res://scenes/ui/daily_goals_panel.gd" id="32_qkpxi"]
+[ext_resource type="Script" uid="uid://diu15ohj42xw" path="res://scenes/ui/close_day_confirm_window.gd" id="36_kmb1v"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_yf5fn"]
 blend_mode = 1
@@ -254,10 +259,10 @@ text = "Sulje ovet"
 visible = false
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.4453125
-anchor_top = 0.094444446
-anchor_right = 0.8765625
-anchor_bottom = 0.46388888
+anchor_left = 0.596875
+anchor_top = 0.08888889
+anchor_right = 0.83125
+anchor_bottom = 0.3555556
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
@@ -283,38 +288,45 @@ theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 4
 
-[node name="ContentVBox" type="HBoxContainer" parent="GUI_CanvasLayer/GUI/Right_WarehouseView/Panel/MarginContainer" unique_id=1126557767]
+[node name="MainVBox" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/Right_WarehouseView/Panel/MarginContainer" unique_id=1704222980]
 layout_mode = 2
+
+[node name="TabBar" type="TabBar" parent="GUI_CanvasLayer/GUI/Right_WarehouseView/Panel/MarginContainer/MainVBox" unique_id=1089975088]
+layout_mode = 2
+current_tab = 0
+tab_count = 2
+tab_0/title = "Varasto"
+tab_1/title = "Pullot"
+
+[node name="ContentVBox" type="HBoxContainer" parent="GUI_CanvasLayer/GUI/Right_WarehouseView/Panel/MarginContainer/MainVBox" unique_id=1126557767]
+layout_mode = 2
+size_flags_vertical = 3
 theme_override_constants/separation = 6
 
-[node name="IngredientInventoryPanel" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/Right_WarehouseView/Panel/MarginContainer/ContentVBox" unique_id=192853891]
+[node name="IngredientInventoryPanel" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/Right_WarehouseView/Panel/MarginContainer/MainVBox/ContentVBox" unique_id=192853891]
 layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
 theme_override_constants/separation = 1
 script = ExtResource("4_85g3d")
 
-[node name="IngredientInventoryHeaderLabel" type="Label" parent="GUI_CanvasLayer/GUI/Right_WarehouseView/Panel/MarginContainer/ContentVBox/IngredientInventoryPanel" unique_id=90981999]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.9490196, 0.7882353, 0.41960785, 1)
-text = "Raaka-aine varasto:"
-horizontal_alignment = 1
-
-[node name="IngredientInventoryScrollContainer" type="ScrollContainer" parent="GUI_CanvasLayer/GUI/Right_WarehouseView/Panel/MarginContainer/ContentVBox/IngredientInventoryPanel" unique_id=1001546049]
+[node name="IngredientInventoryScrollContainer" type="ScrollContainer" parent="GUI_CanvasLayer/GUI/Right_WarehouseView/Panel/MarginContainer/MainVBox/ContentVBox/IngredientInventoryPanel" unique_id=1001546049]
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
 
-[node name="IngredientListVBox" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/Right_WarehouseView/Panel/MarginContainer/ContentVBox/IngredientInventoryPanel/IngredientInventoryScrollContainer" unique_id=1624316205]
+[node name="IngredientListVBox" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/Right_WarehouseView/Panel/MarginContainer/MainVBox/ContentVBox/IngredientInventoryPanel/IngredientInventoryScrollContainer" unique_id=1624316205]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
 
-[node name="Separator" type="VSeparator" parent="GUI_CanvasLayer/GUI/Right_WarehouseView/Panel/MarginContainer/ContentVBox" unique_id=344013386]
+[node name="Separator" type="VSeparator" parent="GUI_CanvasLayer/GUI/Right_WarehouseView/Panel/MarginContainer/MainVBox/ContentVBox" unique_id=344013386]
+visible = false
 layout_mode = 2
 
-[node name="BeerBatchPanel" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/Right_WarehouseView/Panel/MarginContainer/ContentVBox" unique_id=1674197645]
+[node name="BeerBatchPanel" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/Right_WarehouseView/Panel/MarginContainer/MainVBox/ContentVBox" unique_id=1674197645]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -322,24 +334,18 @@ mouse_filter = 2
 theme_override_constants/separation = 1
 script = ExtResource("5_choun")
 
-[node name="BeerBatchHeaderLabel" type="Label" parent="GUI_CanvasLayer/GUI/Right_WarehouseView/Panel/MarginContainer/ContentVBox/BeerBatchPanel" unique_id=262175860]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.9490196, 0.7882353, 0.41960785, 1)
-text = "Pullovarasto (0.5L):"
-horizontal_alignment = 1
-
-[node name="BeerBatchScrollContainer" type="ScrollContainer" parent="GUI_CanvasLayer/GUI/Right_WarehouseView/Panel/MarginContainer/ContentVBox/BeerBatchPanel" unique_id=1019617282]
+[node name="BeerBatchScrollContainer" type="ScrollContainer" parent="GUI_CanvasLayer/GUI/Right_WarehouseView/Panel/MarginContainer/MainVBox/ContentVBox/BeerBatchPanel" unique_id=1019617282]
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
 
-[node name="BeerBatchListVBox" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/Right_WarehouseView/Panel/MarginContainer/ContentVBox/BeerBatchPanel/BeerBatchScrollContainer" unique_id=681395783]
+[node name="BeerBatchListVBox" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/Right_WarehouseView/Panel/MarginContainer/MainVBox/ContentVBox/BeerBatchPanel/BeerBatchScrollContainer" unique_id=681395783]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
 
-[node name="Left_BrewingView" type="Control" parent="GUI_CanvasLayer/GUI" unique_id=198294845 node_paths=PackedStringArray("current_item_label", "stat_label", "malt_option_button", "hop_option_button", "yeast_option_button", "main_slider", "add_button", "remove_button")]
+[node name="Left_BrewingView" type="Control" parent="GUI_CanvasLayer/GUI" unique_id=198294845 node_paths=PackedStringArray("main_slider", "add_button", "remove_button")]
 visible = false
 layout_mode = 1
 anchor_top = 0.1
@@ -350,11 +356,6 @@ grow_vertical = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 script = ExtResource("4_jyhfs")
-current_item_label = NodePath("Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/CurrentItemLabel")
-stat_label = NodePath("Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/StatLabel")
-malt_option_button = NodePath("Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/MaltSelectionElement/MaltSelection/MaltOptionButton")
-hop_option_button = NodePath("Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/HopSelectionElement/HopSelection/HopOptionButton")
-yeast_option_button = NodePath("Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/YeastSelection/YeastOptionButton")
 main_slider = NodePath("Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/IngredientSelectionPanel/AddRemoveLastModifiedButtonPanel/MainSlider")
 add_button = NodePath("Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/IngredientSelectionPanel/AddRemoveLastModifiedButtonPanel/HBoxContainer/AddButton")
 remove_button = NodePath("Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/IngredientSelectionPanel/AddRemoveLastModifiedButtonPanel/HBoxContainer/RemoveButton")
@@ -364,8 +365,7 @@ custom_minimum_size = Vector2(140, 0)
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 0.21875
-anchor_bottom = 1.0
-offset_right = -140.0
+anchor_bottom = 0.41666666
 grow_vertical = 2
 metadata/_edit_use_anchors_ = true
 
@@ -387,69 +387,40 @@ layout_mode = 2
 [node name="MaltAndHopVBoxContainer" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer" unique_id=125395658]
 layout_mode = 2
 
-[node name="MaltSelectionElement" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer" unique_id=1396491948]
+[node name="IngredientTypeSelector" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer" unique_id=849594383]
 layout_mode = 2
-theme_override_constants/separation = 0
+size_flags_vertical = 3
+script = ExtResource("20_5q0nq")
 
-[node name="MaltSelection" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/MaltSelectionElement" unique_id=336319326]
+[node name="TabBar" type="TabBar" parent="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/IngredientTypeSelector" unique_id=397359994]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+current_tab = 0
+tab_count = 3
+tab_0/tooltip = "Mallas"
+tab_0/icon = ExtResource("21_j8jky")
+tab_1/tooltip = "Humala"
+tab_1/icon = ExtResource("22_kmb1v")
+tab_2/tooltip = "Hiiva"
+tab_2/icon = ExtResource("23_fuf3a")
+
+[node name="IngredientRow" type="HBoxContainer" parent="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/IngredientTypeSelector" unique_id=1291288684]
+layout_mode = 2
+
+[node name="IngredientOptionButton" type="OptionButton" parent="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/IngredientTypeSelector/IngredientRow" unique_id=1466153152]
 layout_mode = 2
 size_flags_horizontal = 3
-
-[node name="MaltSelectionHeader" type="Label" parent="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/MaltSelectionElement/MaltSelection" unique_id=453415180]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.9490196, 0.7882353, 0.41960785, 1)
-text = "Maltaat"
-
-[node name="MaltOptionButton" type="OptionButton" parent="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/MaltSelectionElement/MaltSelection" unique_id=1466153152]
-layout_mode = 2
 script = ExtResource("5_tipki")
 
-[node name="HopSelectionElement" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer" unique_id=1284252196]
-layout_mode = 2
-theme_override_constants/separation = 0
-
-[node name="HopSelection" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/HopSelectionElement" unique_id=134158833]
+[node name="CurrentItemLabel" type="Label" parent="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/IngredientTypeSelector/IngredientRow" unique_id=490371421]
+custom_minimum_size = Vector2(46, 0)
 layout_mode = 2
 size_flags_horizontal = 3
-
-[node name="HopSelectionHeader" type="Label" parent="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/HopSelectionElement/HopSelection" unique_id=196314318]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.9490196, 0.7882353, 0.41960785, 1)
-text = "Humalat"
-
-[node name="HopOptionButton" type="OptionButton" parent="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/HopSelectionElement/HopSelection" unique_id=1674880709]
-layout_mode = 2
-script = ExtResource("5_tipki")
-target_type = 1
-
-[node name="YeastSelection" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer" unique_id=127164263]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="YeastSelectionHeader" type="Label" parent="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/YeastSelection" unique_id=1249181807]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.9490196, 0.7882353, 0.41960785, 1)
-text = "Hiivat"
-
-[node name="YeastOptionButton" type="OptionButton" parent="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/YeastSelection" unique_id=967225361]
-layout_mode = 2
-script = ExtResource("5_tipki")
-target_type = 2
-
-[node name="CurrentItemLabel" type="Label" parent="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer" unique_id=490371421]
-custom_maximum_size = Vector2(132, 100)
-layout_mode = 2
 size_flags_vertical = 1
 text = "ju"
-autowrap_mode = 3
-
-[node name="StatLabel" type="Label" parent="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer" unique_id=1844572853]
-custom_maximum_size = Vector2(132, 100)
-layout_mode = 2
-size_flags_vertical = 1
-theme_override_font_sizes/font_size = 16
-text = " "
-autowrap_mode = 3
+horizontal_alignment = 2
+vertical_alignment = 1
+clip_text = true
 
 [node name="IngredientSelectionPanel" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer" unique_id=462787298]
 layout_mode = 2
@@ -480,6 +451,12 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 rounded = true
+
+[node name="BackButton" type="Button" parent="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer" unique_id=1985203723]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+text = "Sulje"
 
 [node name="BrewPreparationPanel" type="PanelContainer" parent="GUI_CanvasLayer/GUI" unique_id=2025673696]
 visible = false
@@ -520,7 +497,8 @@ custom_minimum_size = Vector2(100, 20)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
-theme_override_font_sizes/font_size = 14
+mouse_filter = 0
+theme_override_font_sizes/font_size = 16
 text = "Resepti:"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -533,7 +511,7 @@ layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
 tooltip_text = "Tyhjennä valmistelu"
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 16
 text = "Tyhjää"
 icon_alignment = 1
 expand_icon = true
@@ -603,25 +581,22 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="Left_ShopView" type="VBoxContainer" parent="GUI_CanvasLayer/GUI" unique_id=578953931 node_paths=PackedStringArray("current_item_label", "stat_label", "malt_option_button", "hop_option_button", "yeast_option_button", "main_slider", "buy_button", "sell_button")]
+[node name="Left_ShopView" type="VBoxContainer" parent="GUI_CanvasLayer/GUI" unique_id=578953931 node_paths=PackedStringArray("main_slider", "buy_button", "sell_button")]
 visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.1
 anchor_right = 0.21875
-anchor_bottom = 0.9
+anchor_bottom = 0.425
+offset_bottom = 3.0
 size_flags_horizontal = 3
 mouse_filter = 2
 theme_override_constants/separation = 1
 script = ExtResource("5_tbgi4")
-current_item_label = NodePath("Panel/MarginContainer/IngredientSelectionElementList/CurrentItemLabel")
-stat_label = NodePath("Panel/MarginContainer/IngredientSelectionElementList/StatLabel")
-malt_option_button = NodePath("Panel/MarginContainer/IngredientSelectionElementList/MaltSelectionElement/MaltSelection/MaltOptionButton")
-hop_option_button = NodePath("Panel/MarginContainer/IngredientSelectionElementList/HopSelectionElement/HopSelection/HopOptionButton")
-yeast_option_button = NodePath("Panel/MarginContainer/IngredientSelectionElementList/YeastSelectionElement/YeastSelection/YeastOptionButton")
 main_slider = NodePath("Panel/MarginContainer/IngredientSelectionElementList/BuySellLastModifiedButtonPanel/MainSlider")
 buy_button = NodePath("Panel/MarginContainer/IngredientSelectionElementList/BuySellLastModifiedButtonPanel/HBoxContainer/BuyButton")
 sell_button = NodePath("Panel/MarginContainer/IngredientSelectionElementList/BuySellLastModifiedButtonPanel/HBoxContainer/SellButton")
+metadata/_edit_use_anchors_ = true
 
 [node name="Panel" type="Panel" parent="GUI_CanvasLayer/GUI/Left_ShopView" unique_id=1149439888]
 layout_mode = 2
@@ -645,70 +620,37 @@ layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 1
 
-[node name="MaltSelectionElement" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer/IngredientSelectionElementList" unique_id=1003098758]
+[node name="IngredientTypeSelector" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer/IngredientSelectionElementList" unique_id=1354188737]
 layout_mode = 2
-theme_override_constants/separation = 1
+script = ExtResource("20_5q0nq")
 
-[node name="MaltSelection" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer/IngredientSelectionElementList/MaltSelectionElement" unique_id=969378542]
+[node name="TabBar" type="TabBar" parent="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer/IngredientSelectionElementList/IngredientTypeSelector" unique_id=465448606]
+layout_mode = 2
+current_tab = 0
+tab_count = 3
+tab_0/tooltip = "Mallas"
+tab_0/icon = ExtResource("21_j8jky")
+tab_1/tooltip = "Humala"
+tab_1/icon = ExtResource("22_kmb1v")
+tab_2/tooltip = "Hiiva"
+tab_2/icon = ExtResource("23_fuf3a")
+
+[node name="IngredientRow" type="HBoxContainer" parent="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer/IngredientSelectionElementList/IngredientTypeSelector" unique_id=795210333]
+layout_mode = 2
+
+[node name="IngredientOptionButton" type="OptionButton" parent="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer/IngredientSelectionElementList/IngredientTypeSelector/IngredientRow" unique_id=337315106]
 layout_mode = 2
 size_flags_horizontal = 3
-
-[node name="MaltSelectionHeader" type="Label" parent="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer/IngredientSelectionElementList/MaltSelectionElement/MaltSelection" unique_id=909010579]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.9490196, 0.7882353, 0.41960785, 1)
-text = "Maltaat"
-
-[node name="MaltOptionButton" type="OptionButton" parent="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer/IngredientSelectionElementList/MaltSelectionElement/MaltSelection" unique_id=337315106]
-layout_mode = 2
 script = ExtResource("5_tipki")
 
-[node name="HopSelectionElement" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer/IngredientSelectionElementList" unique_id=2105210495]
-layout_mode = 2
-theme_override_constants/separation = 1
-
-[node name="HopSelection" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer/IngredientSelectionElementList/HopSelectionElement" unique_id=633775391]
+[node name="CurrentItemLabel" type="Label" parent="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer/IngredientSelectionElementList/IngredientTypeSelector/IngredientRow" unique_id=344108055]
+custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
 size_flags_horizontal = 3
-
-[node name="HopSelectionHeader" type="Label" parent="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer/IngredientSelectionElementList/HopSelectionElement/HopSelection" unique_id=1099268520]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.9490196, 0.7882353, 0.41960785, 1)
-text = "Humalat"
-
-[node name="HopOptionButton" type="OptionButton" parent="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer/IngredientSelectionElementList/HopSelectionElement/HopSelection" unique_id=1669807594]
-layout_mode = 2
-script = ExtResource("5_tipki")
-target_type = 1
-
-[node name="YeastSelectionElement" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer/IngredientSelectionElementList" unique_id=1316832927]
-layout_mode = 2
-theme_override_constants/separation = 1
-
-[node name="YeastSelection" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer/IngredientSelectionElementList/YeastSelectionElement" unique_id=73526125]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="YeastSelectionHeader" type="Label" parent="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer/IngredientSelectionElementList/YeastSelectionElement/YeastSelection" unique_id=134490927]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.9490196, 0.7882353, 0.41960785, 1)
-text = "Hiivat"
-
-[node name="YeastOptionButton" type="OptionButton" parent="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer/IngredientSelectionElementList/YeastSelectionElement/YeastSelection" unique_id=1931664817]
-layout_mode = 2
-script = ExtResource("5_tipki")
-target_type = 2
-
-[node name="CurrentItemLabel" type="Label" parent="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer/IngredientSelectionElementList" unique_id=344108055]
-custom_maximum_size = Vector2(132, 100)
-layout_mode = 2
-autowrap_mode = 3
-
-[node name="StatLabel" type="Label" parent="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer/IngredientSelectionElementList" unique_id=2140407420]
-custom_maximum_size = Vector2(132, 100)
-layout_mode = 2
-theme_override_font_sizes/font_size = 16
-text = " "
-autowrap_mode = 3
+size_flags_vertical = 1
+horizontal_alignment = 2
+vertical_alignment = 1
+clip_text = true
 
 [node name="BuySellLastModifiedButtonPanel" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer/IngredientSelectionElementList" unique_id=809090564]
 layout_mode = 2
@@ -734,6 +676,12 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 rounded = true
+
+[node name="BackButton" type="Button" parent="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer" unique_id=123854584]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+text = "Sulje"
 
 [node name="ShopEntrancePanel" type="Panel" parent="GUI_CanvasLayer/GUI" unique_id=53121703]
 visible = false
@@ -796,20 +744,6 @@ grow_horizontal = 2
 theme_override_colors/font_color = Color(0.9490196, 0.7882353, 0.41960785, 1)
 text = "Keittola"
 horizontal_alignment = 1
-
-[node name="BackButton" type="Button" parent="GUI_CanvasLayer/GUI" unique_id=1869511055]
-visible = false
-custom_minimum_size = Vector2(22, 22)
-layout_mode = 1
-offset_left = 122.0
-offset_top = 36.0
-offset_right = 144.0
-offset_bottom = 58.0
-scale = Vector2(0.8, 0.8)
-text = " "
-icon = ExtResource("26_2f3dj")
-icon_alignment = 1
-expand_icon = true
 
 [node name="RecipeLibraryWindow" type="Panel" parent="GUI_CanvasLayer/GUI" unique_id=209127793]
 visible = false
@@ -1060,13 +994,145 @@ layout_mode = 2
 size_flags_horizontal = 4
 text = "Jatka"
 
+[node name="DailyGoalsPanel" type="VBoxContainer" parent="GUI_CanvasLayer/GUI" unique_id=1450512574]
+layout_mode = 0
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -170.0
+offset_top = 38.0
+offset_right = -4.0
+grow_horizontal = 0
+mouse_filter = 2
+theme_override_constants/separation = 1
+script = ExtResource("32_qkpxi")
+
+[node name="HeaderHBox" type="HBoxContainer" parent="GUI_CanvasLayer/GUI/DailyGoalsPanel" unique_id=1613248134]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="TitleLabel" type="Label" parent="GUI_CanvasLayer/GUI/DailyGoalsPanel/HeaderHBox" unique_id=1480512935]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.9490196, 0.7882353, 0.41960785, 1)
+theme_override_colors/font_outline_color = Color(0.08235294, 0.0627451, 0.039215688, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+text = "Tavoitteet"
+horizontal_alignment = 2
+
+[node name="ToggleButton" type="Button" parent="GUI_CanvasLayer/GUI/DailyGoalsPanel/HeaderHBox" unique_id=1568885538]
+custom_minimum_size = Vector2(16, 12)
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "▼"
+flat = true
+
+[node name="GoalsVBox" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/DailyGoalsPanel" unique_id=1312812580]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="BottlesGoalLabel" type="Label" parent="GUI_CanvasLayer/GUI/DailyGoalsPanel/GoalsVBox" unique_id=348612511]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0.08235294, 0.0627451, 0.039215688, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+horizontal_alignment = 2
+autowrap_mode = 3
+
+[node name="RiskGoalLabel" type="Label" parent="GUI_CanvasLayer/GUI/DailyGoalsPanel/GoalsVBox" unique_id=947663723]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0.08235294, 0.0627451, 0.039215688, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+horizontal_alignment = 2
+autowrap_mode = 3
+
+[node name="TutorialMaltLabel" type="Label" parent="GUI_CanvasLayer/GUI/DailyGoalsPanel/GoalsVBox" unique_id=1353138456]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0.08235294, 0.0627451, 0.039215688, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+horizontal_alignment = 2
+autowrap_mode = 3
+
+[node name="TutorialYeastLabel" type="Label" parent="GUI_CanvasLayer/GUI/DailyGoalsPanel/GoalsVBox" unique_id=89024864]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0.08235294, 0.0627451, 0.039215688, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+horizontal_alignment = 2
+autowrap_mode = 3
+
+[node name="TutorialBrewLabel" type="Label" parent="GUI_CanvasLayer/GUI/DailyGoalsPanel/GoalsVBox" unique_id=413594206]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0.08235294, 0.0627451, 0.039215688, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+horizontal_alignment = 2
+autowrap_mode = 3
+
+[node name="CloseDayConfirmWindow" type="Panel" parent="GUI_CanvasLayer/GUI" unique_id=85113912]
+visible = false
+layout_mode = 0
+anchor_left = 0.25
+anchor_top = 0.28
+anchor_right = 0.75
+anchor_bottom = 0.72
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("36_kmb1v")
+
+[node name="MarginContainer" type="MarginContainer" parent="GUI_CanvasLayer/GUI/CloseDayConfirmWindow" unique_id=1731968306]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 14
+
+[node name="MainVBox" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/CloseDayConfirmWindow/MarginContainer" unique_id=28906708]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="GUI_CanvasLayer/GUI/CloseDayConfirmWindow/MarginContainer/MainVBox" unique_id=1162409376]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8784314, 0.3529412, 0.23529412, 1)
+theme_override_font_sizes/font_size = 20
+text = "AVI-TARKASTUS!"
+horizontal_alignment = 1
+
+[node name="MessageLabel" type="Label" parent="GUI_CanvasLayer/GUI/CloseDayConfirmWindow/MarginContainer/MainVBox" unique_id=1013161278]
+layout_mode = 2
+size_flags_vertical = 3
+text = " "
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="ButtonsHBox" type="HBoxContainer" parent="GUI_CanvasLayer/GUI/CloseDayConfirmWindow/MarginContainer/MainVBox" unique_id=1935433091]
+layout_mode = 2
+
+[node name="CancelButton" type="Button" parent="GUI_CanvasLayer/GUI/CloseDayConfirmWindow/MarginContainer/MainVBox/ButtonsHBox" unique_id=376138114]
+layout_mode = 2
+
+[node name="ConfirmButton" type="Button" parent="GUI_CanvasLayer/GUI/CloseDayConfirmWindow/MarginContainer/MainVBox/ButtonsHBox" unique_id=905853506]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Selvä..."
+
 [connection signal="pressed" from="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/IngredientSelectionPanel/AddRemoveLastModifiedButtonPanel/HBoxContainer/AddButton" to="GUI_CanvasLayer/GUI/Left_BrewingView" method="_on_add_button_pressed"]
 [connection signal="pressed" from="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/IngredientSelectionPanel/AddRemoveLastModifiedButtonPanel/HBoxContainer/RemoveButton" to="GUI_CanvasLayer/GUI/Left_BrewingView" method="_on_remove_button_pressed"]
+[connection signal="pressed" from="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/BackButton" to="GUI_CanvasLayer/GUI" method="_on_back_button_pressed"]
 [connection signal="pressed" from="GUI_CanvasLayer/GUI/BrewPreparationPanel/VBoxContainer/ButtonPanel/HBoxContainer/VBoxContainer/SaveRecipeButton" to="GUI_CanvasLayer/GUI/BrewPreparationPanel" method="_on_save_recipe_button_pressed"]
 [connection signal="pressed" from="GUI_CanvasLayer/GUI/BrewPreparationPanel/VBoxContainer/ButtonPanel/HBoxContainer/VBoxContainer/RecipeLibraryButton" to="GUI_CanvasLayer/GUI/BrewPreparationPanel" method="_on_recipe_library_button_pressed"]
 [connection signal="pressed" from="GUI_CanvasLayer/GUI/BrewPreparationPanel/VBoxContainer/ButtonPanel/HBoxContainer/StartBrewButton" to="GUI_CanvasLayer/GUI/Left_BrewingView" method="_on_start_brew_button_pressed"]
 [connection signal="pressed" from="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer/IngredientSelectionElementList/BuySellLastModifiedButtonPanel/HBoxContainer/SellButton" to="GUI_CanvasLayer/GUI/Left_ShopView" method="_on_sell_button_pressed"]
 [connection signal="pressed" from="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer/IngredientSelectionElementList/BuySellLastModifiedButtonPanel/HBoxContainer/BuyButton" to="GUI_CanvasLayer/GUI/Left_ShopView" method="_on_buy_button_pressed"]
+[connection signal="pressed" from="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer/BackButton" to="GUI_CanvasLayer/GUI" method="_on_back_button_pressed"]
 [connection signal="pressed" from="GUI_CanvasLayer/GUI/ShopEntrancePanel/ShopButton" to="GUI_CanvasLayer/GUI" method="_on_shop_button_pressed"]
-[connection signal="pressed" from="GUI_CanvasLayer/GUI/BackButton" to="GUI_CanvasLayer/GUI" method="_on_back_button_pressed"]
 [connection signal="pressed" from="GUI_CanvasLayer/GUI/OptionsButton" to="GUI_CanvasLayer/GUI" method="_on_options_button_pressed"]

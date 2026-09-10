@@ -1,6 +1,7 @@
 class_name IngredientInventoryPanel
 extends VBoxContainer
 
+const AMOUNT_FORMAT : String = "%s: %s %s"
 
 @onready var ingredient_list_vbox = $IngredientInventoryScrollContainer/IngredientListVBox
 var storage_labels: Dictionary = {} # Avain: int (ID) -> Arvo: Label
@@ -18,9 +19,10 @@ func _initialize_storage_nodes() -> void:
 		
 		var new_label := Label.new()
 		new_label.visible = false
+		new_label.mouse_filter = Control.MOUSE_FILTER_STOP
 		new_label.modulate = ingredient.get_color()
 		new_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		new_label.add_theme_font_size_override("font_size", 12)
+		new_label.add_theme_font_size_override("font_size", 16)
 			
 		ingredient_list_vbox.add_child(new_label)
 		storage_labels[id] = new_label 
@@ -47,8 +49,8 @@ func _update_ingredient_list() -> void:
 		if item != null:
 			var current_amount: int = inventory.items[ingredient.type][ingredient.id].amount
 			
-			label.text = StringContainer.INGREDIENT_LABEL_WITH_STAT_STRING % [ingredient.name, current_amount, ingredient.get_unit_string(), ingredient.get_stat_string()]
-			label.tooltip_text = ingredient.description
+			label.text = AMOUNT_FORMAT % [ingredient.name, current_amount, ingredient.get_unit_string()]
+			label.tooltip_text = ingredient.description + "\n" + ingredient.get_stat_string()
 			label.visible = true
 		else:
 			label.visible = false

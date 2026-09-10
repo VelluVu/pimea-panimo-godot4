@@ -40,9 +40,27 @@ func _advance_day() -> void:
 	print(StringContainer.DAY_CHANGED_MESSAGE % brewery.current_day)
 
 	_process_cellar_aging(brewery.inventory)
+	_check_risk_goal_reward(brewery)
+
+	brewery.bottles_sold_today = 0
+	brewery.bottles_goal_rewarded_today = false
 
 	SaveManager.save_game()
 	day_changed.emit(brewery.current_day)
+
+
+const RISK_GOAL_REWARD_NAME : String = "Riskitavoite"
+
+## The risk goal is a "stay under X" goal, unlike bottles' "reach X" — it can
+## only be confirmed met once the day is actually over (risk could still have
+## climbed past the limit later), so it pays out here instead of instantly.
+func _check_risk_goal_reward(brewery : Brewery) -> void:
+	if not brewery.tutorial_complete() or brewery.risk >= DailyGoalsPanel.RISK_LIMIT:
+		return
+
+	brewery.money += DailyGoalsPanel.RISK_GOAL_REWARD_MONEY
+	brewery.reputation += DailyGoalsPanel.RISK_GOAL_REWARD_REPUTATION
+	BrewerySignals.daily_goal_reward_granted.emit(RISK_GOAL_REWARD_NAME, DailyGoalsPanel.RISK_GOAL_REWARD_MONEY, DailyGoalsPanel.RISK_GOAL_REWARD_REPUTATION)
 
 
 func get_day_progress() -> float:

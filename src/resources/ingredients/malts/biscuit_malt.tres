@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="MaltData" format=3]
+[gd_resource type="Resource" script_class="MaltData" format=3 uid="uid://b7ofcjivag2vc"]
 
 [ext_resource type="Script" uid="uid://glh0u5xmw6sx" path="res://src/classes/malt_data.gd" id="1_biscuit"]
 
@@ -6,7 +6,7 @@
 script = ExtResource("1_biscuit")
 ebc = 55
 id = 106
-name = "Biskviittimallas"
+name = "keksimallas"
 description = "Paahdettu erikoismallas joka tuo olueen keksimäistä makua"
 base_price = 4
 metadata/_custom_type_script = "uid://dniwiyu5ynp71"

@@ -13,9 +13,13 @@ enum UnitType { KILOGRAM, GRAM, PIECE }
 
 
 func get_color() -> Color:
-	if type == IngredientType.MALT: return Color.WHEAT
-	if type == IngredientType.HOP: return Color.GREEN_YELLOW
-	if type == IngredientType.YEAST: return Color.DARK_GOLDENROD
+	return get_color_for_type(type)
+
+
+static func get_color_for_type(ingredient_type : IngredientType) -> Color:
+	if ingredient_type == IngredientType.MALT: return Color.WHEAT
+	if ingredient_type == IngredientType.HOP: return Color.GREEN_YELLOW
+	if ingredient_type == IngredientType.YEAST: return Color.DARK_GOLDENROD
 	return Color.BLACK
 
 

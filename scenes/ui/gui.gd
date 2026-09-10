@@ -3,12 +3,14 @@ extends Control
 
 
 const DISCOVERY_TOAST_FORMAT: String = "Uusi oluttyyli löydetty: %s!"
+const GOAL_REWARD_TOAST_FORMAT: String = "%s saavutettu: +%d € / +%d maine!"
 const DISCOVERY_TOAST_FLASH_SECONDS: float = 0.15
 const DISCOVERY_TOAST_HOLD_SECONDS: float = 2.0
 const DISCOVERY_TOAST_FADE_SECONDS: float = 0.6
 
 @onready var discovery_toast : Label = $DiscoveryToast
 @onready var close_day_button : Button = $TopPanel_Resources/CloseDayButton
+@onready var close_day_confirm_window : CloseDayConfirmWindow = $CloseDayConfirmWindow
 @onready var dialog_view : Control = $DialogView
 @onready var top_panel_background : Panel = $TopPanelBackground
 @onready var top_panel_resources : Control = $TopPanel_Resources
@@ -24,7 +26,6 @@ var _discovery_toast_tween : Tween
 @onready var shop_entrance_panel : ShopEntrancePanel = $ShopEntrancePanel
 @onready var recipe_library_window : Control = $RecipeLibraryWindow
 @onready var AVI_raid_window : Control = $AviRaidWindow
-@onready var back_button : Control = $BackButton
 
 
 func _ready() -> void:
@@ -36,6 +37,7 @@ func _ready() -> void:
 	recipe_library_window.hide()
 	close_day_button.pressed.connect(_on_close_day_button_pressed)
 	BrewerySignals.style_discovered.connect(_on_style_discovered)
+	BrewerySignals.daily_goal_reward_granted.connect(_on_daily_goal_reward_granted)
 
 
 ## The Scene dock's per-node "eye" visibility toggle is a real property
@@ -56,38 +58,29 @@ func _assert_default_visibility() -> void:
 
 
 func _move_to_shop() -> void:
-	back_button.show()
 	brewery_view.hide()
 	brew_preparation_panel.hide()
 	shop_entrance_panel.deactivate_shop_panel()
 	brewery_entrance_panel.hide()
 	shop_view.show()
-	warehouse_view.show_warehouse_view()
-	GUISignals.warehouse_view_opened.emit()
 	GUISignals.bar_view_exited.emit()
 
 
 func _move_to_brewery() -> void:
-	back_button.show()
 	shop_view.hide()
 	shop_entrance_panel.deactivate_shop_panel()
 	brewery_entrance_panel.hide()
 	brewery_view.show()
 	brew_preparation_panel.show()
-	warehouse_view.show_warehouse_view()
-	GUISignals.warehouse_view_opened.emit()
 	GUISignals.bar_view_exited.emit()
 
 
 func _move_to_bar() -> void:
-	back_button.hide()
 	shop_view.hide()
 	brewery_view.hide()
 	brew_preparation_panel.hide()
-	warehouse_view.hide_warehouse_view()
 	shop_entrance_panel.activate_shop_panel()
 	brewery_entrance_panel.show()
-	GUISignals.warehouse_view_closed.emit()
 	GUISignals.bar_view_entered.emit()
 
 
@@ -110,11 +103,22 @@ func _on_options_button_pressed() -> void:
 
 
 func _on_close_day_button_pressed() -> void:
-	GUISignals.close_day_requested.emit()
+	if CustomerManager.has_active_customers():
+		close_day_confirm_window.show()
+	else:
+		GUISignals.close_day_requested.emit()
 
 
 func _on_style_discovered(style : int) -> void:
-	discovery_toast.text = DISCOVERY_TOAST_FORMAT % BeerStyle.get_style_string_from_style(style)
+	_show_toast(DISCOVERY_TOAST_FORMAT % BeerStyle.get_style_string_from_style(style))
+
+
+func _on_daily_goal_reward_granted(goal_name : String, money : int, reputation : int) -> void:
+	_show_toast(GOAL_REWARD_TOAST_FORMAT % [goal_name, money, reputation])
+
+
+func _show_toast(text : String) -> void:
+	discovery_toast.text = text
 
 	if _discovery_toast_tween:
 		_discovery_toast_tween.kill()

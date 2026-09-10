@@ -3,9 +3,14 @@ extends Panel
 
 ## Bottom-right dev/user console: shows a running log of recent game events
 ## (built from the existing signal bus, not raw prints) and a command line
-## for quick "macros" that replace the old FeatureTesterPanel debug buttons.
-## Commands only execute when BrewEngine.DEVELOPER_MODE is on, matching the
-## gating that panel used to have — the log itself stays visible to everyone.
+## with two tiers of commands:
+##  - player commands (osta, myy, keitä, ...) are always available — thin
+##    text shortcuts for actions the UI already allows, wrapping the exact
+##    same GUISignals a button click would fire. No economy/unlock rule is
+##    ever bypassed; this only skips clicking through menus.
+##  - dev/cheat commands (brew, money, raid, ...) stay gated behind
+##    BrewEngine.DEVELOPER_MODE, matching the old FeatureTesterPanel's gating.
+## The log itself is always visible regardless of either tier.
 
 const TITLE_TEXT: String = "Konsoli"
 const COLLAPSE_ICON: String = "▼"
@@ -36,7 +41,8 @@ var _resize_start_offset_left: float
 var _resize_start_offset_top: float
 
 var _command_history: PackedStringArray = []
-var _commands: Dictionary = {}
+var _player_commands: Dictionary = {}
+var _dev_commands: Dictionary = {}
 
 
 func _ready() -> void:
@@ -168,24 +174,39 @@ func _on_command_submitted(raw_text: String) -> void:
 
 	_log("[color=gray]> %s[/color]" % text)
 
-	if not BrewEngine.DEVELOPER_MODE:
-		_log(DEV_MODE_OFF_MESSAGE)
-		return
-
 	var parts := text.split(" ", false)
 	var command_name := parts[0].to_lower()
 	var args := parts.slice(1)
 
-	if _commands.has(command_name):
-		_commands[command_name].call(args)
-	else:
-		_log(UNKNOWN_COMMAND_MESSAGE % command_name)
+	if _player_commands.has(command_name):
+		_player_commands[command_name].call(args)
+		return
+
+	if _dev_commands.has(command_name):
+		if not BrewEngine.DEVELOPER_MODE:
+			_log(DEV_MODE_OFF_MESSAGE)
+			return
+		_dev_commands[command_name].call(args)
+		return
+
+	_log(UNKNOWN_COMMAND_MESSAGE % command_name)
 
 
 func _register_commands() -> void:
-	_commands = {
+	_player_commands = {
 		"help": _cmd_help,
 		"clear": _cmd_clear,
+		"osta": _cmd_osta,
+		"myy": _cmd_myy,
+		"pöytään": _cmd_poytaan,
+		"poista": _cmd_poista_poydalta,
+		"tyhjennä": _cmd_tyhjenna,
+		"tallenna": _cmd_tallenna,
+		"pane": _cmd_pane,
+		"keitä": _cmd_keita,
+	}
+
+	_dev_commands = {
 		"brew": _cmd_brew,
 		"customer": _cmd_customer,
 		"special": _cmd_special,
@@ -198,12 +219,133 @@ func _register_commands() -> void:
 
 
 func _cmd_help(_args: PackedStringArray) -> void:
-	_log("Komennot: help, clear, brew <tyyli>, customer [nimi], special, raid, money <n>, rep <n>, risk <n>, day")
+	_log("Komennot: osta <ainesosa> <määrä>, myy <ainesosa> <määrä>, pöytään <ainesosa> <määrä>, poista <ainesosa> <määrä>, tyhjennä, tallenna, pane, keitä <resepti>, clear")
+	if BrewEngine.DEVELOPER_MODE:
+		_log("[color=orange]Kehittäjäkomennot: brew <tyyli>, customer [nimi], special, raid, money <n>, rep <n>, risk <n>, day[/color]")
 
 
 func _cmd_clear(_args: PackedStringArray) -> void:
 	log_label.clear()
 	_command_history.clear()
+
+
+# ----- player commands: text shortcuts for actions the UI already allows,
+# wrapping the exact GUISignals a button click would fire. No economy or
+# unlock rule is ever bypassed — this only skips clicking through menus.
+
+func _cmd_osta(args: PackedStringArray) -> void:
+	var parsed := _parse_ingredient_amount(args)
+	if parsed.is_empty():
+		return
+	GUISignals.buy_ingredient.emit(parsed.id, parsed.amount)
+	_log("Ostettu: %s x%d" % [parsed.ingredient.name, parsed.amount])
+
+
+func _cmd_myy(args: PackedStringArray) -> void:
+	var parsed := _parse_ingredient_amount(args)
+	if parsed.is_empty():
+		return
+	GUISignals.sell_ingredient.emit(parsed.id, parsed.amount)
+	_log("Myyty: %s x%d" % [parsed.ingredient.name, parsed.amount])
+
+
+func _cmd_poytaan(args: PackedStringArray) -> void:
+	var parsed := _parse_ingredient_amount(args)
+	if parsed.is_empty():
+		return
+	GUISignals.add_ingredient_to_brew_preparation.emit(parsed.id, parsed.amount)
+	_log("Pöydälle lisätty: %s x%d" % [parsed.ingredient.name, parsed.amount])
+
+
+func _cmd_poista_poydalta(args: PackedStringArray) -> void:
+	var parsed := _parse_ingredient_amount(args)
+	if parsed.is_empty():
+		return
+	GUISignals.remove_ingredients_from_brew_preparation.emit(parsed.id, parsed.amount)
+	_log("Poistettu pöydältä: %s x%d" % [parsed.ingredient.name, parsed.amount])
+
+
+func _cmd_tyhjenna(_args: PackedStringArray) -> void:
+	GUISignals.clear_brew_preparation_requested.emit()
+	_log("Valmistelu tyhjennetty, ainekset palautettu varastoon.")
+
+
+func _cmd_tallenna(_args: PackedStringArray) -> void:
+	GUISignals.save_recipe_requested.emit()
+
+
+func _cmd_pane(_args: PackedStringArray) -> void:
+	GUISignals.start_brewing.emit()
+
+
+func _cmd_keita(args: PackedStringArray) -> void:
+	var brewery := BrewEngine.current_brewery
+	if brewery == null:
+		_log("Ei aktiivista panimoa.")
+		return
+
+	if args.is_empty():
+		_log("Käyttö: keitä <resepti>. Tallennetut: %s" % _saved_recipe_names(brewery))
+		return
+
+	var wanted := " ".join(Array(args)).to_lower()
+	var matched : BrewRecipe = null
+	for recipe : BrewRecipe in brewery.saved_recipes:
+		if recipe.recipe_name.to_lower().contains(wanted):
+			matched = recipe
+			break
+
+	if matched == null:
+		_log("Reseptiä ei löytynyt: %s. Tallennetut: %s" % [" ".join(Array(args)), _saved_recipe_names(brewery)])
+		return
+
+	GUISignals.load_recipe_requested.emit(matched)
+	GUISignals.start_brewing.emit()
+	_log("Keitetään: %s" % matched.recipe_name)
+
+
+func _saved_recipe_names(brewery : Brewery) -> String:
+	var names : Array[String] = []
+	for recipe : BrewRecipe in brewery.saved_recipes:
+		names.append(recipe.recipe_name)
+	return ", ".join(names) if not names.is_empty() else "(ei tallennettuja reseptejä)"
+
+
+## Takes the trailing token as the amount and everything before it (joined)
+## as an ingredient name search — matched by prefix first, then substring,
+## against IngredientDatabase, so "osta pilsner 5" or "osta citra humala 20"
+## both work without needing the ingredient's exact full name.
+func _parse_ingredient_amount(args: PackedStringArray) -> Dictionary:
+	if args.size() < 2 or not args[args.size() - 1].is_valid_int():
+		_log("Käyttö: <komento> <ainesosa> <määrä>")
+		return {}
+
+	var amount : int = args[args.size() - 1].to_int()
+	if amount <= 0:
+		_log("Määrän täytyy olla suurempi kuin 0.")
+		return {}
+
+	var query := " ".join(Array(args.slice(0, args.size() - 1))).to_lower()
+	var ingredient : IngredientData = _find_ingredient_by_name(query)
+	if ingredient == null:
+		_log("Ainesosaa ei löytynyt: %s" % query)
+		return {}
+
+	return {"id": ingredient.id, "amount": amount, "ingredient": ingredient}
+
+
+func _find_ingredient_by_name(query : String) -> IngredientData:
+	for id in IngredientDatabase.sorted_ids:
+		var data : IngredientData = IngredientDatabase.database[id]
+		if data.name.to_lower().begins_with(query):
+			return data
+
+	for id in IngredientDatabase.sorted_ids:
+		var data : IngredientData = IngredientDatabase.database[id]
+		if data.name.to_lower().contains(query):
+			return data
+
+	return null
 
 
 func _cmd_brew(args: PackedStringArray) -> void:

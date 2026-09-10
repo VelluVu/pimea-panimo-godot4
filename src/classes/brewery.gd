@@ -8,6 +8,8 @@ const AVI_RAID_REPUTATION_PENALTY_PERCENT : float = 0.25
 
 @export var inventory : Inventory
 @export var current_day : int = 1
+@export var bottles_sold_today : int = 0
+@export var bottles_goal_rewarded_today : bool = false
 @export var money: int = 100
 @export var risk: int = 0
 @export var reputation: int = 0
@@ -15,6 +17,16 @@ const AVI_RAID_REPUTATION_PENALTY_PERCENT : float = 0.25
 @export var saved_recipes : Array[BrewRecipe] = []
 var resolver : BrewResolver = null
 @export var discovered_styles : Dictionary = {} # Avain: BeerStyle.Style -> Arvo: true
+
+# First-brew tutorial tracking — one-time latches, not daily resets, so
+# completing a later step never un-checks an earlier one just because the
+# ingredients it used got consumed. tutorial_complete() derives from these
+# rather than a separate flag, so there's a single source of truth.
+@export var lifetime_malt_kg_bought : int = 0
+@export var tutorial_bought_yeast : bool = false
+@export var tutorial_brewed_kotikalja : bool = false
+
+const TUTORIAL_MALT_TARGET_KG : int = 3
 
 
 func _init() -> void:
@@ -35,6 +47,10 @@ func _init() -> void:
 
 func is_style_known(style : BeerStyle.Style) -> bool:
 	return BrewEngine.DEVELOPER_MODE or discovered_styles.has(style)
+
+
+func tutorial_complete() -> bool:
+	return lifetime_malt_kg_bought >= TUTORIAL_MALT_TARGET_KG and tutorial_bought_yeast and tutorial_brewed_kotikalja
 
 
 func discover_style(style : BeerStyle.Style) -> void:
@@ -172,7 +188,18 @@ func _on_buy_ingredient(ingredient_id : int, amount : int) -> void:
 
 	money -= buy_price
 	inventory.add_amount(ingredient, amount)
+	_track_tutorial_purchase(ingredient, amount)
 	BrewerySignals.brewery_state_changed.emit(self)
+
+
+func _track_tutorial_purchase(ingredient : IngredientData, amount : int) -> void:
+	if ingredient.type == IngredientData.IngredientType.MALT:
+		lifetime_malt_kg_bought += amount
+		return
+
+	var kotikalja : BeerStyle = resolver.get_beer_style(BeerStyle.Style.KOTIKALJA)
+	if kotikalja != null and ingredient.id == kotikalja.required_yeast_id:
+		tutorial_bought_yeast = true
 
 
 func _on_sell_ingredient(ingredient_id : int, amount : int) -> void:
@@ -287,6 +314,9 @@ func start_brew() -> void:
 		discover_style(brew_report.beer_style.style)
 		if is_new_discovery:
 			_save_recipe(brew_report.beer_style, brew_preparation.selected_contents.duplicate())
+		if brew_report.beer_style.style == BeerStyle.Style.KOTIKALJA:
+			tutorial_brewed_kotikalja = true
+		BrewerySignals.beer_brewed.emit(brew_report.beer_style.style)
 
 	brew_preparation.clear_preparation()
 	print(StringContainer.SUCCESFULL_BREW_MESSAGE, BeerStyle.get_style_string_from_style(brew_report.beer_style.style))

@@ -24,6 +24,14 @@ var active_spawner: CustomerSpawner = null
 func _ready() -> void:
 
 	BrewerySignals.brewery_state_changed.connect(_on_brewery_state_changed)
+	BrewerySignals.beer_brewed.connect(_on_beer_brewed)
+
+
+## A matching brew just finished — reward the player with an immediate
+## walk-in who specifically wants that style, instead of waiting on the
+## ambient spawn timer to eventually roll one who happens to want it.
+func _on_beer_brewed(style: int) -> void:
+	spawn_normal_customer(CustomerRegistry.get_customer_for_style(style))
 
 
 func register_spawner(spawner: CustomerSpawner) -> void:
@@ -38,6 +46,13 @@ func register_spawner(spawner: CustomerSpawner) -> void:
 
 	if BrewEngine.current_brewery and not BrewEngine.current_brewery.inventory.brew_batches.is_empty():
 		active_spawner.start_spawning()
+
+
+## Used to warn before closing the day — a customer who's walked in but
+## hasn't finished their interaction yet would otherwise lose their sale
+## with no feedback when the day advances out from under them.
+func has_active_customers() -> bool:
+	return not active_customers.is_empty()
 
 
 func get_free_slot_index() -> int:
@@ -98,7 +113,9 @@ func process_auto_sale(data: CustomerData) -> String:
 	if best_batch.amount_bottles <= 0:
 		brewery.inventory.brew_batches.erase(best_batch)
 
+	brewery.bottles_sold_today += bottles_sold
 	BrewerySignals.bottles_sold.emit(bottles_sold)
+	_check_bottles_goal_reward(brewery)
 
 	var response_text : String = results[KEY_RESPONSE]
 
@@ -107,6 +124,26 @@ func process_auto_sale(data: CustomerData) -> String:
 
 	BrewerySignals.brewery_state_changed.emit(brewery)
 	return response_text
+
+
+const BOTTLES_GOAL_REWARD_NAME : String = "Pullotavoite"
+
+## Instant payout the moment the daily bottles-sold target is crossed —
+## rewarding "reach X" goals right when they happen (rather than batching
+## them into the end-of-day recap) keeps the feedback close to the action
+## that earned it. The risk goal is the opposite case (a "stay under X"
+## goal that can only be confirmed at day's end) and is rewarded from
+## TimeManager._advance_day() instead.
+func _check_bottles_goal_reward(brewery: Brewery) -> void:
+	if not brewery.tutorial_complete() or brewery.bottles_goal_rewarded_today:
+		return
+	if brewery.bottles_sold_today < DailyGoalsPanel.BOTTLES_TARGET:
+		return
+
+	brewery.bottles_goal_rewarded_today = true
+	brewery.money += DailyGoalsPanel.BOTTLES_GOAL_REWARD_MONEY
+	brewery.reputation += DailyGoalsPanel.BOTTLES_GOAL_REWARD_REPUTATION
+	BrewerySignals.daily_goal_reward_granted.emit(BOTTLES_GOAL_REWARD_NAME, DailyGoalsPanel.BOTTLES_GOAL_REWARD_MONEY, DailyGoalsPanel.BOTTLES_GOAL_REWARD_REPUTATION)
 
 
 func _trigger_bar_fight(brewery: Brewery, data: CustomerData, batch: BrewBatch) -> String:
