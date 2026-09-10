@@ -67,6 +67,8 @@ func _connect_signals() -> void:
 
 	GUISignals.buy_ingredient.connect(_on_ui_action.unbind(2))
 	GUISignals.sell_ingredient.connect(_on_ui_action.unbind(2))
+	GUISignals.add_ingredient_to_brew_preparation.connect(_on_ui_action.unbind(2))
+	GUISignals.remove_ingredients_from_brew_preparation.connect(_on_ui_action.unbind(2))
 	GUISignals.start_brewing.connect(_on_start_brewing)
 	GUISignals.save_recipe_requested.connect(_on_ui_action)
 	GUISignals.load_recipe_requested.connect(_on_ui_action.unbind(1))

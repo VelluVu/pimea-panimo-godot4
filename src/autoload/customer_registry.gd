@@ -36,6 +36,37 @@ func get_random_customer_data() -> CustomerData:
 	return eligible_customers.pick_random()
 
 
+## Picks a customer who genuinely wants the given style (primary preferred,
+## secondary as fallback), for the instant walk-in triggered right after a
+## matching brew completes. Customers with randomizes_preference are
+## excluded — their preference gets rerolled on spawn, so picking them here
+## wouldn't guarantee they actually want this style. Falls back to any
+## random customer if no static fan of this style exists.
+func get_customer_for_style(style: BeerStyle.Style) -> CustomerData:
+	var current_reputation : int = 0
+	if BrewEngine.current_brewery != null:
+		current_reputation = BrewEngine.current_brewery.reputation
+
+	var primary_matches : Array[CustomerData] = []
+	var secondary_matches : Array[CustomerData] = []
+
+	for customer in customer_pool:
+		if customer.randomizes_preference:
+			continue
+		if current_reputation < customer.min_reputation_to_appear:
+			continue
+		if customer.primary_style == style:
+			primary_matches.append(customer)
+		elif customer.secondary_style == style:
+			secondary_matches.append(customer)
+
+	if not primary_matches.is_empty():
+		return primary_matches.pick_random()
+	if not secondary_matches.is_empty():
+		return secondary_matches.pick_random()
+	return get_random_customer_data()
+
+
 func get_random_special_event() -> SpecialEventData:
 	if special_events_pool.is_empty(): 
 		return null

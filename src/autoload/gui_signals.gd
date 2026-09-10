@@ -18,7 +18,7 @@ signal sell_ingredient(ingredient_id : int, amount : int)
 signal start_brewing()
 
 @warning_ignore("unused_signal")
-signal warehouse_hovered(is_hovered : bool)
+signal warehouse_door_clicked()
 
 @warning_ignore("unused_signal")
 signal brewery_view_requested()

@@ -43,23 +43,39 @@ func populate_ingredient_option_menu() -> void:
 
 	if get_item_count() > 0:
 		select(0)
-		item_selected.emit(0) 
+		# Deferred: this can run during _ready(), before ancestor views
+		# (BrewingView/ShopView) have connected active_ingredient_changed —
+		# emitting synchronously here would fire into the void and leave
+		# their slider/label stuck uninitialized until the player manually
+		# reselects. Deferring pushes it past the whole tree's _ready() pass.
+		_on_item_selected.call_deferred(0)
 
 
 func _on_item_selected(index: int) -> void:
 	var selected_id = get_item_id(index)
-	
+
 	if selected_id != -1:
+		_sync_own_tooltip(selected_id)
 		GUISignals.active_ingredient_changed.emit(selected_id)
 
 
 func _on_global_ingredient_changed(ingredient_id: int) -> void:
 	var ingredient = IngredientDatabase.get_item_by_id(ingredient_id)
-	
+
 	if ingredient and ingredient.type == target_type:
 		for i in range(item_count):
 			if get_item_id(i) == ingredient_id:
 				select(i)
+				_sync_own_tooltip(ingredient_id)
 				return
 	else:
 		select(0)
+
+
+## Mirrors the popup's per-item tooltip onto the closed button itself, so
+## hovering the collapsed dropdown (not just an open popup item) still shows
+## ingredient info instead of requiring a click.
+func _sync_own_tooltip(ingredient_id : int) -> void:
+	var ingredient : IngredientData = IngredientDatabase.get_item_by_id(ingredient_id)
+	if ingredient:
+		tooltip_text = ingredient.description + "\n" + ingredient.get_stat_string()

@@ -3,7 +3,7 @@ extends VBoxContainer
 
 
 @onready var beer_batch_list_vbox : VBoxContainer = $BeerBatchScrollContainer/BeerBatchListVBox
-const LABEL_STRING : String = "🍺 %s (Laatu: %s / %s) - %s pulloa - ebc %s - ibu %s"
+const LABEL_STRING : String = "🍺 %s - %s pulloa (%s)"
 
 
 func _ready() -> void:
@@ -29,18 +29,16 @@ func _update_beer_batches_ui() -> void:
 		if batch.amount_bottles > 0:
 			
 			var row_label := Label.new()
+			row_label.mouse_filter = Control.MOUSE_FILTER_STOP
 			row_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-			row_label.add_theme_font_size_override("font_size", 12)
+			row_label.add_theme_font_size_override("font_size", 16)
 
 			row_label.text = LABEL_STRING % [
 				batch.get_style_name(),
-				"%.2f" % batch.current_quality,
-				batch.get_quality_tier_string(),
 				str(batch.amount_bottles),
-				str(batch.final_ebc),
-				str(batch.final_ibu)
+				batch.get_quality_tier_string()
 			]
-			row_label.tooltip_text = batch.get_quality_breakdown_tooltip()
+			row_label.tooltip_text = batch.get_full_info_tooltip()
 
 			if batch.beer_style.style == BeerStyle.Style.KOTIKALJA:
 				row_label.modulate = Color.DARK_GRAY
