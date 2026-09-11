@@ -1,0 +1,96 @@
+Pimeä Panimo — Playtest Notes
+Date: 2026-09-11
+Method: scripted playthrough via dev console commands (temp _ready() hooks in
+gui.gd, reverted afterward), run through the godot-ai MCP session. Covered:
+tutorial brewing, real ingredient-based brewing, dev-shortcut brewing, solo
+customer sales, special events (accept path), group visits (crowd formation,
+shared dialogue, shared order), AVI raids, close-day confirmation, and
+day-to-day rollover. No crashes or script errors encountered.
+
+
+CONFIRMED BUGS
+==============
+
+1. Every beer style sells at the same base price
+   File: src/classes/customer_data.gd, lines 135-137
+
+       var style_base_price = 3.0
+       if "base_price" in batch.beer_style:
+           style_base_price = batch.beer_style.base_price
+
+   BeerStyle (src/classes/beer_style.gd) has no `base_price` property at
+   all — only IngredientData does. So this check is always false, and
+   style_base_price silently stays at the hardcoded fallback of 3.0 for
+   EVERY sale, regardless of style. Kotikalja and Imperial Stout earn
+   identical base income; only quality/multiplier/budget factor into
+   price.
+   Fix: either add a real `base_price` export to BeerStyle and set it per
+   style resource, or remove the dead check and decide on an explicit
+   per-style value.
+
+
+2. Risk goal label shows numbers swapped
+   File: scenes/ui/daily_goals_panel.gd, line 121
+
+       risk_goal_label.text = RISK_GOAL_FORMAT % [RISK_LIMIT, brewery.risk]
+
+   RISK_GOAL_FORMAT is "Riski: %d/%d". The bottles goal line right above
+   it correctly orders args as [current, target]. This line reverses it,
+   so at risk=23/limit=50 it displays "Riski: 50/23" instead of
+   "Riski: 23/50" — backwards and confusing at a glance.
+   Fix: swap to [brewery.risk, RISK_LIMIT].
+
+
+DESIGN-CONSISTENCY GAPS (worth a decision, not clear-cut bugs)
+===============================================================
+
+3. Empty dialogue bubble when a customer's beer sells out mid-visit
+   Files: scenes/customer.gd lines 172-176 vs the group-order code in
+   src/classes/customer_spawner.gd
+
+   If CustomerManager.process_auto_sale() finds no matching batch (e.g.
+   another concurrent customer just emptied it between this customer's
+   preview and their actual sale), it returns "". Solo customers then
+   display a bubble reading literally "Name: " — blank, no rejection
+   line. The group-visit code hit this exact case and explicitly patched
+   it:
+       if response_text == "":
+           response_text = order_data.dialogue_reject
+   The same fix was never applied to the solo customer path.
+   Fix: add the same dialogue_reject fallback in Customer._on_sale_timeout().
+
+
+4. Manual "close day" warns about active customers; the automatic day
+   timer doesn't
+   Files: scenes/ui/gui.gd (_on_close_day_button_pressed) vs
+   src/autoload/time_manager.gd (_on_day_timeout / _advance_day)
+
+   Clicking "Sulje ovet" while a customer is mid-sale correctly shows a
+   confirmation window ("closing now cancels their order"). But the
+   background day timer (default 300s) advances the day the same way
+   with zero warning, silently cancelling any in-progress sale. May be
+   intentional (deadline pressure is part of the game's tension), but it
+   undercuts the point of the manual guard. Flagging for a design call.
+
+
+THINGS THAT WORKED CORRECTLY (no action needed)
+================================================
+- Tutorial gating (malt/yeast/kotikalja tracking) and default-recipe
+  seeding.
+- Real ingredient buy -> brew table -> resolve_brew_style -> brew batch
+  flow, including quality/precision scoring.
+- Dev console commands (osta, pöytään, pane, keitä, brew, customer,
+  special, raid, money, rep, risk, day, iddqd).
+- Solo customer walk-in, intro/preview/sale dialogue sequence, and slot
+  cleanup on leave.
+- Special event accept/reject flow and window cleanup.
+- Group visit event: crowd formation offsets, shared dialogue slot,
+  staggered walk-in, shared chant, shared order resolution, synchronized
+  departure — no crashes, no dialogue-slot races (the customer_spawner.gd
+  comments mention this crashed once before; it did not reproduce here).
+- AVI raid trigger, bottle confiscation, fine/reputation penalty, risk
+  reset.
+- Close-day confirmation dialog appearing correctly when customers are
+  still active.
+- Day rollover, cellar aging, save-on-day-change, day recap window
+  contents.
