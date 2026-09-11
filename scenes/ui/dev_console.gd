@@ -9,7 +9,9 @@ extends Panel
 ##    same GUISignals a button click would fire. No economy/unlock rule is
 ##    ever bypassed; this only skips clicking through menus.
 ##  - dev/cheat commands (brew, money, raid, ...) stay gated behind
-##    BrewEngine.DEVELOPER_MODE, matching the old FeatureTesterPanel's gating.
+##    BrewEngine.is_developer_mode(), matching the old FeatureTesterPanel's
+##    gating. Toggled at runtime by the secret "iddqd" command (a player
+##    command, so it works even while developer mode is off).
 ## The log itself is always visible regardless of either tier.
 
 const TITLE_TEXT: String = "Konsoli"
@@ -29,6 +31,7 @@ const FOCUS_STYLE_BORDER_COLOR: Color = Color(0.85, 0.65, 0.25)
 @onready var toggle_button: Button = $MarginContainer/MainVBox/HeaderHBox/ToggleButton
 @onready var title_label: Label = $MarginContainer/MainVBox/HeaderHBox/TitleLabel
 @onready var body_vbox: VBoxContainer = $MarginContainer/MainVBox/BodyVBox
+@onready var log_scroll: ScrollContainer = $MarginContainer/MainVBox/BodyVBox/LogScroll
 @onready var log_label: RichTextLabel = $MarginContainer/MainVBox/BodyVBox/LogScroll/LogLabel
 @onready var input_line_edit: LineEdit = $MarginContainer/MainVBox/BodyVBox/InputLineEdit
 
@@ -162,6 +165,19 @@ func _log(bbcode_line: String) -> void:
 		_command_history.remove_at(0)
 		log_label.clear()
 		log_label.append_text("\n".join(_command_history) + "\n")
+	_scroll_log_to_bottom()
+
+
+## fit_content on LogLabel makes it grow to full content height with no
+## scrollbar of its own — LogScroll (the outer ScrollContainer) is what
+## actually scrolls. Its scrollbar max only reflects the new content size
+## after layout recalculates next frame, so this waits a frame before
+## snapping down — jumping to bottom on every new line (terminal-style),
+## while still leaving the user free to scroll up and read older lines
+## in between.
+func _scroll_log_to_bottom() -> void:
+	await get_tree().process_frame
+	log_scroll.scroll_vertical = int(log_scroll.get_v_scroll_bar().max_value)
 
 
 # ----- command / macro dispatch -----
@@ -183,7 +199,7 @@ func _on_command_submitted(raw_text: String) -> void:
 		return
 
 	if _dev_commands.has(command_name):
-		if not BrewEngine.DEVELOPER_MODE:
+		if not BrewEngine.is_developer_mode():
 			_log(DEV_MODE_OFF_MESSAGE)
 			return
 		_dev_commands[command_name].call(args)
@@ -204,11 +220,13 @@ func _register_commands() -> void:
 		"tallenna": _cmd_tallenna,
 		"pane": _cmd_pane,
 		"keitä": _cmd_keita,
+		"iddqd": _cmd_iddqd,
 	}
 
 	_dev_commands = {
 		"brew": _cmd_brew,
 		"customer": _cmd_customer,
+		"group": _cmd_group,
 		"special": _cmd_special,
 		"raid": _cmd_raid,
 		"money": _cmd_money,
@@ -220,8 +238,8 @@ func _register_commands() -> void:
 
 func _cmd_help(_args: PackedStringArray) -> void:
 	_log("Komennot: osta <ainesosa> <määrä>, myy <ainesosa> <määrä>, pöytään <ainesosa> <määrä>, poista <ainesosa> <määrä>, tyhjennä, tallenna, pane, keitä <resepti>, clear")
-	if BrewEngine.DEVELOPER_MODE:
-		_log("[color=orange]Kehittäjäkomennot: brew <tyyli>, customer [nimi], special, raid, money <n>, rep <n>, risk <n>, day[/color]")
+	if BrewEngine.is_developer_mode():
+		_log("[color=orange]Kehittäjäkomennot: brew <tyyli>, customer [nimi], group [nimi], special, raid, money <n>, rep <n>, risk <n>, day[/color]")
 
 
 func _cmd_clear(_args: PackedStringArray) -> void:
@@ -302,6 +320,19 @@ func _cmd_keita(args: PackedStringArray) -> void:
 	GUISignals.load_recipe_requested.emit(matched)
 	GUISignals.start_brewing.emit()
 	_log("Keitetään: %s" % matched.recipe_name)
+
+
+## Secret cheat code (classic Doom god-mode toggle) that flips developer
+## mode on/off right from the console. Deliberately a player command, not a
+## dev command — it must work even while developer mode is off, since
+## that's the whole point of it — and deliberately left out of _cmd_help,
+## since a cheat code that's listed in the help text isn't much of one.
+func _cmd_iddqd(_args: PackedStringArray) -> void:
+	var enabled = BrewEngine.toggle_developer_mode()
+	if enabled:
+		_log("[color=lightgreen]Kehittäjätila käytössä.[/color]")
+	else:
+		_log("[color=orange]Kehittäjätila pois käytöstä.[/color]")
 
 
 func _saved_recipe_names(brewery : Brewery) -> String:
@@ -406,6 +437,21 @@ func _cmd_customer(args: PackedStringArray) -> void:
 			return
 	CustomerManager.spawn_normal_customer(forced_data)
 	_log("Asiakas kutsuttu.")
+
+
+func _cmd_group(args: PackedStringArray) -> void:
+	var forced_event: GroupVisitEventData = null
+	if not args.is_empty():
+		var wanted := args[0].to_lower()
+		for event_data: GroupVisitEventData in CustomerRegistry.group_events_pool:
+			if event_data.resource_path.get_file().to_lower().begins_with(wanted):
+				forced_event = event_data
+				break
+		if forced_event == null:
+			_log("Ryhmätapahtumaa ei löytynyt: %s" % args[0])
+			return
+	CustomerManager.spawn_group_event(forced_event)
+	_log("Ryhmä kutsuttu.")
 
 
 func _cmd_special(_args: PackedStringArray) -> void:

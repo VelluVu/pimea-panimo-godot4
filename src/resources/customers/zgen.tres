@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="CustomerData" format=3 uid="uid://be7oshavrwqmr"]
+
+[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/classes/customer_data.gd" id="1_zgen"]
+[ext_resource type="SpriteFrames" uid="uid://cpgsiaxn5b2cg" path="res://src/resources/sprite_frames/zgen_anim.tres" id="2_sprite"]
+
+[resource]
+script = ExtResource("1_zgen")
+customer_name = "Peetu"
+title = "Zgen"
+first_names = Array[String](["Peetu", "Roope", "Eemeli", "Valtteri", "Aatu", "Konsta"])
+min_quality = 0.3
+budget_multiplier = 0.6
+primary_style = 20
+secondary_style = 21
+sprite_frames = ExtResource("2_sprite")
+randomize_skin = false
+randomize_hair = false
+randomize_clothes = false
+randomize_shoes = false
+dialogue_intro = "Yo bro, onks teil alkoholitonta IPA:a? En jaksa sitä cap-elämää, tarviin sigma-juoman fr fr."
+dialogue_success = "Bro tää on ihan gyat-tasoista, respect, aito W tähän kuppilaan."
+dialogue_fallback = "Meh, ihan mid mut ok, ei L eikä W, käyköön."
+dialogue_wrong_style = "Bro tää on ihan cap, ei tää ollu se mitä tilasin, skibidi fail."
+dialogue_reject = "Bro tää on niin sus, total L, en koske tähän edes rizzillä."
+multiplier_primary_style = 0.9
+multiplier_secondary_style = 0.7
+rep_primary_style = 2
+rep_secondary_style = 1
+risk_primary_style = -2
+risk_secondary_style = -1
+metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

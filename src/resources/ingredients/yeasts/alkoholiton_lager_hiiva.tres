@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="YeastData" format=3]
+
+[ext_resource type="Script" uid="uid://fq1bgyegsftk" path="res://src/classes/yeast_data.gd" id="1_alklager"]
+
+[resource]
+script = ExtResource("1_alklager")
+attentuation_percent = 15
+id = 304
+name = "Alkoholiton lager hiiva"
+description = "Erikoishiiva, joka pysäyttää käymisen ennen kuin alkoholia ehtii syntyä juuri lainkaan"
+base_price = 7
+unit = 2
+type = 2
+metadata/_custom_type_script = "uid://dniwiyu5ynp71"

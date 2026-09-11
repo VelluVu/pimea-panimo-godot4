@@ -22,7 +22,9 @@ enum Style {
 	BELGIAN_STRONG_DARK,
 	SCOTCH_ALE,
 	BARLEYWINE,
-	IMPERIAL_STOUT
+	IMPERIAL_STOUT,
+	ALKOHOLITON_IPA,
+	ALKOHOLITON_LAGER
 }
 
 @export var style_name: String = "Uusi oluttyyli"
@@ -77,4 +79,6 @@ static func get_style_string_from_style(new_style : BeerStyle.Style) -> String:
 		Style.SCOTCH_ALE: return StringContainer.SCOTCHALE
 		Style.BARLEYWINE: return StringContainer.BARLEYWINE
 		Style.IMPERIAL_STOUT: return StringContainer.IMPERIALSTOUT
+		Style.ALKOHOLITON_IPA: return StringContainer.ALKOHOLITONIPA
+		Style.ALKOHOLITON_LAGER: return StringContainer.ALKOHOLITONLAGER
 		_: return StringContainer.TUNTEMATON

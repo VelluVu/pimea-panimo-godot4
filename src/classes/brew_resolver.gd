@@ -2,7 +2,12 @@ class_name BrewResolver
 extends Resource
 
 
+const BASE_STYLE_PRICE : float = 3.0
+const STYLE_PRICE_COST_WEIGHT : float = 0.4
+const MAX_STYLE_PRICE_BONUS : float = 4.0
+
 var active_styles: Array[BeerStyle] = []
+var _style_base_price_cache : Dictionary = {}
 
 
 func _ready() -> void:
@@ -133,6 +138,32 @@ func _range_precision(value: float, min_v: float, max_v: float) -> float:
 	var distance := absf(value - center)
 
 	return clampf(1.0 - (distance / half_range), 0.0, 1.0)
+
+
+## Small per-style price differentiator derived from how much its own
+## minimum recipe costs in raw ingredients — a hop-heavy style ends up
+## priced a bit above a bare-bones malt+yeast one. Square-root dampened
+## and capped (MAX_STYLE_PRICE_BONUS) so a style needing many grams of
+## an expensive hop doesn't linearly dominate: this is meant to be a
+## small nudge on top of BASE_STYLE_PRICE, not a second quality
+## multiplier, and the whole sale economy runs on small rounded integers
+## (see CustomerData.evaluate_brew_batch's roundi(income)). Cached per
+## style since compute_minimum_ingredients() does a brute-force search.
+func get_style_base_price(beer_style : BeerStyle) -> float:
+	if _style_base_price_cache.has(beer_style.style):
+		return _style_base_price_cache[beer_style.style]
+
+	var ingredients : Dictionary = compute_minimum_ingredients(beer_style)
+	var raw_cost : int = 0
+	for ingredient_id : int in ingredients:
+		var data : IngredientData = IngredientDatabase.database[ingredient_id]
+		raw_cost += data.base_price * ingredients[ingredient_id]
+
+	var bonus : float = clampf(sqrt(float(raw_cost)) * STYLE_PRICE_COST_WEIGHT, 0.0, MAX_STYLE_PRICE_BONUS)
+	var price : float = BASE_STYLE_PRICE + bonus
+
+	_style_base_price_cache[beer_style.style] = price
+	return price
 
 
 func get_beer_style(style : BeerStyle.Style) -> BeerStyle:

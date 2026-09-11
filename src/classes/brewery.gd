@@ -50,7 +50,7 @@ func _init() -> void:
 
 
 func is_style_known(style : BeerStyle.Style) -> bool:
-	return BrewEngine.DEVELOPER_MODE or discovered_styles.has(style)
+	return BrewEngine.is_developer_mode() or discovered_styles.has(style)
 
 
 func tutorial_complete() -> bool:

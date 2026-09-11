@@ -47,12 +47,22 @@ const DEFAULT_NAMES: Array[String] = ["Matti", "Maija", "Pekka", "Liisa", "Antti
 @export var rep_primary_style: int = 10
 @export var rep_secondary_style: int = 0
 @export var rep_wrong_style: int = -1
+## Extra reputation per quality point above this customer's own min_quality
+## bar (and extra penalty per point below it) — see evaluate_brew_batch's
+## quality_margin. A connoisseur-type customer can be given a higher value
+## here to react more strongly to a masterfully brewed batch.
+@export var quality_reputation_sensitivity: float = 4.0
 
 @export_group("Risk Changes")
 @export var risk_bad_quality: int = 1
 @export var risk_primary_style: int = 3
 @export var risk_secondary_style: int = 1
 @export var risk_wrong_style: int = 2
+## Risk reduction per quality point above min_quality (and extra risk per
+## point below it) — same quality_margin as quality_reputation_sensitivity,
+## just scaled separately since risk and reputation shouldn't necessarily
+## move at the same rate.
+@export var quality_risk_sensitivity: float = 2.0
 
 @export_group("Saatavuus")
 @export var min_reputation_to_appear: int = 0
@@ -101,7 +111,11 @@ func reroll_preference() -> void:
 	secondary_style = shuffled_styles[1].style
 
 
-func evaluate_brew_batch(batch: BrewBatch) -> Dictionary:
+## style_base_price is resolved by the caller (BrewResolver.get_style_base_price,
+## reached via BrewEngine.current_brewery in CustomerManager) rather than
+## looked up here, so this stays pure per-CustomerData logic that doesn't
+## reach into any autoload — see test_customer_data.gd's suite docstring.
+func evaluate_brew_batch(batch: BrewBatch, style_base_price: float = 3.0) -> Dictionary:
 	var style = batch.beer_style.style
 	var quality = batch.current_quality
 	var score = get_preference_score(style)
@@ -131,11 +145,18 @@ func evaluate_brew_batch(batch: BrewBatch) -> Dictionary:
 		rep_change = rep_wrong_style
 		avi_change = risk_wrong_style
 		response_text = dialogue_wrong_style
-		
-	var style_base_price = 3.0
-	if "base_price" in batch.beer_style:
-		style_base_price = batch.beer_style.base_price
-		
+
+	# Continuous quality effect on top of the branch above: distance from
+	# THIS customer's own min_quality bar, in either direction. Zero right
+	# at the bar (matches the old all-or-nothing behavior exactly at the
+	# threshold), positive above it in every non-bad-quality branch (a
+	# masterful batch earns extra reputation and a bit less risk even from
+	# a picky customer), negative in the bad-quality branch (the worse the
+	# miss, the harsher the penalty, instead of a single flat number).
+	var quality_margin : float = quality - min_quality
+	rep_change += roundi(quality_margin * quality_reputation_sensitivity)
+	avi_change = maxi(0, avi_change - roundi(quality_margin * quality_risk_sensitivity))
+
 	var income = roundi(1 * style_base_price * quality * budget_multiplier * price_modifier)
 	
 	return {
