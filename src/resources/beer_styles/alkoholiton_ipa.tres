@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="BeerStyle" format=3]
+
+[ext_resource type="Script" uid="uid://qpqfdi1wacne" path="res://src/classes/beer_style.gd" id="1_alkipa"]
+
+[resource]
+script = ExtResource("1_alkipa")
+style_name = "Alkoholiton IPA"
+style = 20
+required_yeast_id = 303
+min_malt_weight = 4
+preferred_hop_profile = 1
+min_ebc = 12
+max_ebc = 28
+min_ibu = 40
+max_ibu = 200
+reputation_change = 2
+peak_days = 0
+shelf_life_days = 30
+aging_factor = 0.15
+metadata/_custom_type_script = "uid://qpqfdi1wacne"

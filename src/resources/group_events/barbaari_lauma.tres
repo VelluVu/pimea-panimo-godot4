@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="GroupVisitEventData" format=3 uid="uid://b43bgfdhusu26"]
+
+[ext_resource type="Script" uid="uid://cnkqeqeaug3gu" path="res://src/classes/group_visit_event_data.gd" id="1_event"]
+[ext_resource type="Resource" uid="uid://d0bdfj1kmtktr" path="res://src/resources/customers/barbaari.tres" id="2_customer"]
+
+[resource]
+script = ExtResource("1_event")
+banner_text = "Raivokas barbaarilauma mahtuu juuri ja juuri panimon ovesta sisään.
+Nyt on paha riski tappelulle!"
+customer_data = ExtResource("2_customer")
+max_group_size = 8
+formation_spacing_px = 12.0

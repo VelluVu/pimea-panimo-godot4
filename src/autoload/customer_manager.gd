@@ -10,6 +10,13 @@ const KEY_RESPONSE = "response"
 const BOTTLES_SOLD_PER_TRANSACTION = 1
 const QUALITY_BONUS_WEIGHT = 0.2
 
+## Finnish alkoholivero joke: even a hidden cellar brewery doesn't escape it —
+## a flat cut off every sale's gross income, taken before it reaches
+## brewery.money. Applies equally to solo and group-visit sales since both
+## paths go through process_auto_sale().
+const ALCOHOL_TAX_RATE : float = 0.6
+const ALCOHOL_TAX_MESSAGE_FORMAT : String = "(Verottaja vei %d€)"
+
 const DELAY_AUTO_SALE_SECONDS = 2.0
 const DELAY_CLEAR_REFS_SECONDS = 3.5
 
@@ -17,6 +24,7 @@ const WARNING_TIME_MANAGER_NOT_FOUND = "CustomerManager: TimeManager Autoload no
 const WARNING_DIALOG_VIEW_NOT_FOUND = "CustomerManager: DialogView not found for positioning!"
 
 var occupied_slots: Array[bool] = [false, false, false, false, false]
+var slot_occupant_counts: Array[int] = [0, 0, 0, 0, 0]
 var active_customers: Dictionary = {}
 var active_spawner: CustomerSpawner = null
 
@@ -42,6 +50,7 @@ func register_spawner(spawner: CustomerSpawner) -> void:
 	# so slots they never got to vacate (e.g. the player left mid-visit via
 	# the main menu) must not stay marked occupied forever.
 	occupied_slots = [false, false, false, false, false]
+	slot_occupant_counts = [0, 0, 0, 0, 0]
 	active_customers.clear()
 
 	if BrewEngine.current_brewery and not BrewEngine.current_brewery.inventory.brew_batches.is_empty():
@@ -66,12 +75,21 @@ func get_random_customer_data() -> CustomerData:
 	return CustomerRegistry.get_random_customer_data()
 
 
+## A slot's occupant count is normally 1 (one customer). A group visit
+## registers every member of the crowd against the same shared slot, so
+## the count can exceed 1 while several of them are standing there at
+## once — free_slot_index() only truly frees it once the last one leaves.
 func register_active_customer(slot: int, node: Node2D) -> void:
 	occupied_slots[slot] = true
+	slot_occupant_counts[slot] += 1
 	active_customers[slot] = node
 
 
 func free_slot_index(slot: int) -> void:
+	slot_occupant_counts[slot] = maxi(0, slot_occupant_counts[slot] - 1)
+	if slot_occupant_counts[slot] > 0:
+		return
+
 	if active_customers.has(slot):
 		active_customers.erase(slot)
 	occupied_slots[slot] = false
@@ -100,12 +118,17 @@ func process_auto_sale(data: CustomerData) -> String:
 
 	var brewery = BrewEngine.current_brewery
 
-	var results: Dictionary = data.evaluate_brew_batch(best_batch)
+	var style_base_price : float = brewery.resolver.get_style_base_price(best_batch.beer_style)
+	var results: Dictionary = data.evaluate_brew_batch(best_batch, style_base_price)
 
 	var bottles_sold : int = randi_range(data.min_bottles_per_visit, data.max_bottles_per_visit)
 	bottles_sold = min(bottles_sold, best_batch.amount_bottles)
 
-	brewery.money += results[KEY_INCOME] * bottles_sold
+	var gross_income : int = results[KEY_INCOME] * bottles_sold
+	var tax_amount : int = roundi(gross_income * ALCOHOL_TAX_RATE)
+	var net_income : int = gross_income - tax_amount
+
+	brewery.money += net_income
 	brewery.reputation = max(0, brewery.reputation + results[KEY_REPUTATION])
 	brewery.add_risk(results[KEY_RISK])
 
@@ -118,6 +141,9 @@ func process_auto_sale(data: CustomerData) -> String:
 	_check_bottles_goal_reward(brewery)
 
 	var response_text : String = results[KEY_RESPONSE]
+
+	if tax_amount > 0:
+		response_text += "\n" + ALCOHOL_TAX_MESSAGE_FORMAT % tax_amount
 
 	if data.bar_fight_chance > 0.0 and randf() < data.bar_fight_chance:
 		response_text += "\n" + _trigger_bar_fight(brewery, data, best_batch)
@@ -182,3 +208,7 @@ func _find_best_batch(batches: Array[BrewBatch], data: CustomerData) -> BrewBatc
 
 func spawn_normal_customer(forced_data: CustomerData = null) -> void:
 	active_spawner._on_walk_in_timer_timeout(forced_data)
+
+
+func spawn_group_event(forced_event_data: GroupVisitEventData = null) -> void:
+	active_spawner._on_group_event_timer_timeout(forced_event_data)

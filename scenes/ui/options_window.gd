@@ -22,6 +22,8 @@ const MAIN_MENU_SCENE_PATH: String = "res://scenes/ui/main_menu.tscn"
 @onready var master_slider: HSlider = $MarginContainer/MainVBox/TabContainer/SoundTab/MasterRow/MasterSlider
 @onready var music_slider: HSlider = $MarginContainer/MainVBox/TabContainer/SoundTab/MusicRow/MusicSlider
 @onready var sfx_slider: HSlider = $MarginContainer/MainVBox/TabContainer/SoundTab/SfxRow/SfxSlider
+@onready var music_mute_check: CheckButton = $MarginContainer/MainVBox/TabContainer/SoundTab/MusicRow/MusicMuteCheck
+@onready var sfx_mute_check: CheckButton = $MarginContainer/MainVBox/TabContainer/SoundTab/SfxRow/SfxMuteCheck
 
 @onready var fullscreen_check: CheckButton = $MarginContainer/MainVBox/TabContainer/DisplayTab/FullscreenRow/FullscreenCheck
 
@@ -45,6 +47,8 @@ func _ready() -> void:
 	master_slider.drag_ended.connect(_on_slider_drag_ended)
 	music_slider.drag_ended.connect(_on_slider_drag_ended)
 	sfx_slider.drag_ended.connect(_on_slider_drag_ended)
+	music_mute_check.toggled.connect(_on_music_mute_toggled)
+	sfx_mute_check.toggled.connect(_on_sfx_mute_toggled)
 	fullscreen_check.toggled.connect(_on_fullscreen_toggled)
 
 	GUISignals.options_requested.connect(_on_options_requested)
@@ -56,6 +60,8 @@ func _load_current_values() -> void:
 	master_slider.value = SettingsManager.master_volume
 	music_slider.value = SettingsManager.music_volume
 	sfx_slider.value = SettingsManager.sfx_volume
+	music_mute_check.button_pressed = SettingsManager.music_muted
+	sfx_mute_check.button_pressed = SettingsManager.sfx_muted
 	fullscreen_check.button_pressed = SettingsManager.fullscreen
 
 
@@ -89,6 +95,14 @@ func _on_sfx_slider_changed(value: float) -> void:
 
 func _on_slider_drag_ended(_value_changed: bool) -> void:
 	SettingsManager.save_settings()
+
+
+func _on_music_mute_toggled(pressed: bool) -> void:
+	SettingsManager.set_music_muted(pressed)
+
+
+func _on_sfx_mute_toggled(pressed: bool) -> void:
+	SettingsManager.set_sfx_muted(pressed)
 
 
 func _on_fullscreen_toggled(pressed: bool) -> void:

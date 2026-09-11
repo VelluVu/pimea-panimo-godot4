@@ -2,13 +2,18 @@ class_name Customer
 extends Node2D
 
 
+## Fired once walk_complex_route's tween finishes, regardless of
+## skip_interaction — lets an external controller (a group visit's shared
+## chant/order) know precisely when this customer has actually arrived,
+## instead of guessing the walk's duration from distance and speed.
+signal walk_route_finished
+
 const FADE_TIME_SECONDS : float = 1.0
 const BASE_DISPLAY_TIME_SECONDS : float = 5.0
 const PER_CHARACTER_DISPLAY_TIME_SECONDS : float = 0.05
 const MAX_DISPLAY_TIME_SECONDS : float = 12.0
 
 const PREVIEW_DELAY_SECONDS : float = 2.0
-const PREVIEW_DISPLAY_SECONDS : float = 1.8
 const BATCH_PREVIEW_FORMAT : String = "%s: Tuo %s kiinnostaisi..."
 const NOTHING_AVAILABLE_TEXT_FORMAT : String = "%s: Eipä taida olla mitään sopivaa..."
 
@@ -32,6 +37,18 @@ var customer_data: CustomerData:
 		customer_data = value
 		_apply_visuals()
 var assigned_slot: int = -1
+
+## Speech-bubble identity for DialogView, separate from assigned_slot.
+## A group visit puts several customers on the same assigned_slot (they
+## share one counter position and one CustomerManager occupancy slot), but
+## DialogView keys its per-slot bubble/hide-timer bookkeeping by this value
+## — reusing assigned_slot there would let two group members race each
+## other's hide timers on the same bubble and crash on a freed reference.
+## CustomerSpawner sets this explicitly for every customer (solo customers
+## get the same value as assigned_slot, preserving their existing bubble
+## behavior unchanged; group members each get a distinct value).
+var dialogue_slot: int = -1
+
 var generated_name: String = "Asiakas"
 
 
@@ -73,7 +90,7 @@ func _play_animation(anim_name: StringName, flip_horizontally: bool = false) -> 
 	animated_sprite.play(anim_name)
 
 
-func _get_display_time_for_text(text: String) -> float:
+static func _get_display_time_for_text(text: String) -> float:
 	return clampf(
 		BASE_DISPLAY_TIME_SECONDS + text.length() * PER_CHARACTER_DISPLAY_TIME_SECONDS,
 		BASE_DISPLAY_TIME_SECONDS,
@@ -85,7 +102,11 @@ func get_customer_name() -> String:
 	return generated_name
 
 
-func walk_complex_route(stairs_pos: Vector2, center_pos: Vector2, target_pos: Vector2) -> void:
+## skip_interaction is true for a group visit's members: they still walk and
+## idle at the counter like any customer, but the group's shared controller
+## drives the dialogue/order/departure for all of them at once instead of
+## each one independently triggering its own (see CustomerSpawner).
+func walk_complex_route(stairs_pos: Vector2, center_pos: Vector2, target_pos: Vector2, skip_interaction: bool = false) -> void:
 	var tween = create_tween()
 	var start_pos = global_position
 	var stair_steps = 15
@@ -111,15 +132,19 @@ func walk_complex_route(stairs_pos: Vector2, center_pos: Vector2, target_pos: Ve
 	var duration_to_target = dist_to_target / customer_data.floor_walk_speed
 	tween.tween_property(self, "global_position", target_pos, duration_to_target).set_trans(Tween.TRANS_LINEAR)
 
-	tween.tween_callback(_on_reached_counter)
+	if skip_interaction:
+		tween.tween_callback(_play_animation.bind(ANIM_IDLE_UP, false))
+	else:
+		tween.tween_callback(_on_reached_counter)
+	tween.tween_callback(walk_route_finished.emit)
 
 
 func _on_reached_counter() -> void:
 	_play_animation(ANIM_IDLE_UP)
 	var intro_text = generated_name + ": " + customer_data.dialogue_intro
 	var display_time = _get_display_time_for_text(intro_text)
-	BrewerySignals.dialogue_pushed.emit(intro_text, false, assigned_slot, global_position, display_time, FADE_TIME_SECONDS)
-	var preview_timer = get_tree().create_timer(PREVIEW_DELAY_SECONDS)
+	BrewerySignals.dialogue_pushed.emit(intro_text, false, dialogue_slot, global_position, display_time, FADE_TIME_SECONDS)
+	var preview_timer = get_tree().create_timer(display_time)
 	preview_timer.timeout.connect(_on_preview_timeout)
 
 
@@ -137,9 +162,10 @@ func _on_preview_timeout() -> void:
 	else:
 		preview_text = NOTHING_AVAILABLE_TEXT_FORMAT % generated_name
 
-	BrewerySignals.dialogue_pushed.emit(preview_text, false, assigned_slot, global_position, PREVIEW_DISPLAY_SECONDS, FADE_TIME_SECONDS)
+	var preview_display_time = _get_display_time_for_text(preview_text)
+	BrewerySignals.dialogue_pushed.emit(preview_text, false, dialogue_slot, global_position, preview_display_time, FADE_TIME_SECONDS)
 
-	var sale_timer = get_tree().create_timer(PREVIEW_DISPLAY_SECONDS)
+	var sale_timer = get_tree().create_timer(preview_display_time)
 	sale_timer.timeout.connect(_on_sale_timeout)
 
 
@@ -147,7 +173,7 @@ func _on_sale_timeout() -> void:
 	var response_text = CustomerManager.process_auto_sale(customer_data)
 	var final_text = generated_name + ": " + response_text
 	var display_time = _get_display_time_for_text(final_text)
-	BrewerySignals.dialogue_pushed.emit(final_text, false, assigned_slot, global_position, display_time, FADE_TIME_SECONDS)
+	BrewerySignals.dialogue_pushed.emit(final_text, false, dialogue_slot, global_position, display_time, FADE_TIME_SECONDS)
 
 	var leave_timer = get_tree().create_timer(display_time + FADE_TIME_SECONDS)
 	leave_timer.timeout.connect(leave_counter)

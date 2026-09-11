@@ -24,6 +24,8 @@ const BELGIANSTRONGDARK : String = "Belgian Strong Dark Ale"
 const SCOTCHALE : String = "Scotch Ale"
 const BARLEYWINE : String = "Barleywine"
 const IMPERIALSTOUT : String = "Imperial Stout"
+const ALKOHOLITONIPA : String = "Alkoholiton IPA"
+const ALKOHOLITONLAGER : String = "Alkoholiton Lager"
 
 const KG : String = "kg"
 const G : String = "g"
