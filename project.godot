@@ -41,7 +41,7 @@ window/stretch/mode="viewport"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/godot_ai/plugin.cfg", "res://addons/pp_test_tools/plugin.cfg")
+enabled=PackedStringArray("res://addons/dev_resource_tools/plugin.cfg", "res://addons/godot_ai/plugin.cfg", "res://addons/pp_test_tools/plugin.cfg")
 
 [gui]
 

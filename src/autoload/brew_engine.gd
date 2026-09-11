@@ -2,7 +2,18 @@
 extends Node
 
 var current_brewery: Brewery = null
-const DEVELOPER_MODE : bool = false
+var _developer_mode : bool = false
+
+
+func is_developer_mode() -> bool:
+	return _developer_mode
+
+
+## Flipped by the "iddqd" console cheat code — returns the new state so the
+## caller can report it without a separate is_developer_mode() round trip.
+func toggle_developer_mode() -> bool:
+	_developer_mode = not _developer_mode
+	return _developer_mode
 
 
 func _init() -> void:

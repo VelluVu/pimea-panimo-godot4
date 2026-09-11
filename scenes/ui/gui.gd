@@ -8,7 +8,12 @@ const DISCOVERY_TOAST_FLASH_SECONDS: float = 0.15
 const DISCOVERY_TOAST_HOLD_SECONDS: float = 2.0
 const DISCOVERY_TOAST_FADE_SECONDS: float = 0.6
 
+const GROUP_VISIT_BANNER_FLASH_SECONDS: float = 0.2
+const GROUP_VISIT_BANNER_HOLD_SECONDS: float = 4.0
+const GROUP_VISIT_BANNER_FADE_SECONDS: float = 0.8
+
 @onready var discovery_toast : Label = $DiscoveryToast
+@onready var group_visit_banner : Label = $GroupVisitBanner
 @onready var close_day_button : Button = $TopPanel_Resources/CloseDayButton
 @onready var close_day_confirm_window : CloseDayConfirmWindow = $CloseDayConfirmWindow
 @onready var dialog_view : Control = $DialogView
@@ -17,6 +22,7 @@ const DISCOVERY_TOAST_FADE_SECONDS: float = 0.6
 @onready var options_button : Button = $OptionsButton
 @onready var dev_console : Control = $DevConsole
 var _discovery_toast_tween : Tween
+var _group_visit_banner_tween : Tween
 
 @onready var shop_view : ShopView = $Left_ShopView
 @onready var brewery_view : BrewingView = $Left_BrewingView
@@ -38,6 +44,7 @@ func _ready() -> void:
 	close_day_button.pressed.connect(_on_close_day_button_pressed)
 	BrewerySignals.style_discovered.connect(_on_style_discovered)
 	BrewerySignals.daily_goal_reward_granted.connect(_on_daily_goal_reward_granted)
+	BrewerySignals.group_visit_announced.connect(_on_group_visit_announced)
 
 
 ## The Scene dock's per-node "eye" visibility toggle is a real property
@@ -55,6 +62,7 @@ func _assert_default_visibility() -> void:
 	options_button.show()
 	dev_console.show()
 	discovery_toast.show()
+	group_visit_banner.show()
 
 
 func _move_to_shop() -> void:
@@ -115,6 +123,21 @@ func _on_style_discovered(style : int) -> void:
 
 func _on_daily_goal_reward_granted(goal_name : String, money : int, reputation : int) -> void:
 	_show_toast(GOAL_REWARD_TOAST_FORMAT % [goal_name, money, reputation])
+
+
+func _on_group_visit_announced(banner_text : String) -> void:
+	group_visit_banner.text = banner_text
+
+	if _group_visit_banner_tween:
+		_group_visit_banner_tween.kill()
+
+	group_visit_banner.modulate = Color(1.4, 1.4, 1.0, 0.0)
+
+	_group_visit_banner_tween = create_tween()
+	_group_visit_banner_tween.tween_property(group_visit_banner, "modulate", Color(1.4, 1.4, 1.0, 1.0), GROUP_VISIT_BANNER_FLASH_SECONDS)
+	_group_visit_banner_tween.tween_property(group_visit_banner, "modulate", Color(1.0, 1.0, 1.0, 1.0), GROUP_VISIT_BANNER_FLASH_SECONDS)
+	_group_visit_banner_tween.tween_interval(GROUP_VISIT_BANNER_HOLD_SECONDS)
+	_group_visit_banner_tween.tween_property(group_visit_banner, "modulate:a", 0.0, GROUP_VISIT_BANNER_FADE_SECONDS)
 
 
 func _show_toast(text : String) -> void:

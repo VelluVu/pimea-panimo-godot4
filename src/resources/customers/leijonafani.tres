@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="CustomerData" format=3 uid="uid://2vhh2hm3epxt"]
+
+[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/classes/customer_data.gd" id="1_leijonafani"]
+[ext_resource type="SpriteFrames" uid="uid://bhorgiowd3rgd" path="res://src/resources/sprite_frames/leijonafani_anim.tres" id="2_sprite"]
+
+[resource]
+script = ExtResource("1_leijonafani")
+customer_name = "Jorma"
+title = "Leijonafani"
+first_names = Array[String](["Jorma", "Reijo", "Pertti", "Ile", "Jerry", "Aki"])
+min_quality = 0.05
+budget_multiplier = 1.2
+sprite_frames = ExtResource("2_sprite")
+randomize_skin = false
+randomize_hair = false
+randomize_clothes = false
+randomize_shoes = false
+dialogue_intro = "LEIJONAT ON UUSI MAAILMAN MESTARI! ANNA TÄNNE KALJAA TAI TULEE TAPPELU!"
+dialogue_success = "TÄÄ MENEE KURKUSTA ALAS KUIN VOITTOMAALI VIIMEISELLÄ MINUUTILLA!"
+dialogue_fallback = "EI PAHA, JUODAAN SILTI LEIJONIEN KUNNIAKSI!"
+dialogue_wrong_style = "EI TÄTÄ HAETTU MUT MENEE SE SILTI!"
+dialogue_reject = "TÄMÄ ON HÄVETTÄVÄÄ! EI EDES LEIJONAFANI JOISI TÄTÄ VESILITKUA!"
+min_reputation_to_appear = 15
+randomizes_preference = true
+max_bottles_per_visit = 3
+bar_fight_chance = 0.25
+bar_fight_reputation_penalty = 8
+bar_fight_risk_penalty = 18
+bar_fight_max_bottles_broken = 4
+dialogue_bar_fight = "Leijonafanit alkavat laulaa täysin äänin ja heittelevät tyhjiä pulloja - syntyy täysi kaaos!"
+metadata/_custom_type_script = "uid://b2vqc8lkfjwic"
