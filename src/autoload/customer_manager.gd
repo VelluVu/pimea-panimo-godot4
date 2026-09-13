@@ -11,6 +11,13 @@ const KEY_RESPONSE = "response"
 const BOTTLES_SOLD_PER_TRANSACTION = 1
 const QUALITY_BONUS_WEIGHT = 0.2
 
+## Small cost for turning a customer away with nothing to sell them at all
+## (see process_auto_sale()'s no-match branch) — they complain loudly on
+## the way out, so it's not the fully free non-event it used to be, just
+## much smaller than an actual bad-quality or wrong-style sale.
+const NO_MATCH_REPUTATION_PENALTY : int = 1
+const NO_MATCH_RISK_PENALTY : int = 1
+
 const DELAY_AUTO_SALE_SECONDS = 2.0
 const DELAY_CLEAR_REFS_SECONDS = 3.5
 
@@ -109,8 +116,16 @@ func process_auto_sale(data: CustomerData) -> String:
 
 	# Nothing in stock at all, or nothing that clears this customer's
 	# strict requirements (see CustomerData.meets_strict_requirements) —
-	# either way they leave without buying, no money/reputation/risk change.
+	# either way they leave without buying. Still a small reputation/risk
+	# cost, not the fully free non-event this used to be: a customer turned
+	# away empty-handed complains loudly on the way out.
 	if best_batch == null or best_batch.amount_bottles < BOTTLES_SOLD_PER_TRANSACTION:
+		var no_match_brewery := BrewEngine.current_brewery
+		if no_match_brewery != null:
+			no_match_brewery.reputation = max(0, no_match_brewery.reputation - NO_MATCH_REPUTATION_PENALTY)
+			no_match_brewery.add_risk(NO_MATCH_RISK_PENALTY)
+			BrewerySignals.sale_reputation_gained.emit(-NO_MATCH_REPUTATION_PENALTY)
+			BrewerySignals.brewery_state_changed.emit(no_match_brewery)
 		return data.dialogue_no_match
 
 	var brewery = BrewEngine.current_brewery

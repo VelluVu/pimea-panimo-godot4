@@ -24,3 +24,17 @@ extends Resource
 ## per style (BeerStyle.fixed_price_per_bottle), a higher multiplier directly
 ## squeezes profit margin rather than just being flavor text.
 @export var ingredient_price_multiplier: float = 1.0
+
+
+## Same purpose as RunPerk.get_stat_summary() — a short, signed stat line
+## per non-neutral field, so ModifierSelectWindow's cards and
+## RunEffectsWindow show the real percentages instead of only flavor text.
+func get_stat_summary() -> String:
+	var lines : PackedStringArray = []
+
+	if avi_threshold_multiplier != 1.0:
+		lines.append(StringContainer.MODIFIER_RAID_THRESHOLD_STAT_STRING % roundi((avi_threshold_multiplier - 1.0) * 100))
+	if ingredient_price_multiplier != 1.0:
+		lines.append(StringContainer.MODIFIER_INGREDIENT_PRICE_STAT_STRING % roundi((ingredient_price_multiplier - 1.0) * 100))
+
+	return "\n".join(lines)

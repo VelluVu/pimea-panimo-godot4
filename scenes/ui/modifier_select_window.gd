@@ -59,7 +59,9 @@ func open() -> void:
 		var modifier : RunModifier = _offered_modifiers[i]
 		_card_icon_labels[i].text = modifier.icon_placeholder
 		_card_header_labels[i].text = modifier.modifier_name
-		_card_description_labels[i].text = modifier.description
+
+		var stat_summary : String = modifier.get_stat_summary()
+		_card_description_labels[i].text = modifier.description if stat_summary.is_empty() else modifier.description + "\n" + stat_summary
 
 	show()
 

@@ -51,6 +51,9 @@ signal recipe_library_requested()
 signal receipt_log_requested()
 
 @warning_ignore("unused_signal")
+signal run_effects_requested()
+
+@warning_ignore("unused_signal")
 signal options_requested()
 
 @warning_ignore("unused_signal")
