@@ -20,23 +20,25 @@ config/icon="res://assets/textures/icon.svg"
 GUISignals="*uid://blglgg64fcgx6"
 BrewerySignals="*uid://c7qf7wkp1jef8"
 IngredientDatabase="*uid://dexbsgkyojbsd"
+RunModifierRegistry="*res://src/autoload/run_modifier_registry.gd"
 BrewEngine="*uid://v1ldxk71j6xp"
 StringContainer="*uid://dpid4q4x5pp7w"
 TimeManager="*uid://bt32vf1r28xyy"
 CustomerManager="*uid://dlbx6ek8v84lo"
 CustomerRegistry="*uid://dacwk1mw8xwd"
 SpecialEventManager="*uid://dbhnuasgj7gqg"
-_mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"
 AudioManager="*res://src/autoload/audio_manager.gd"
 SettingsManager="*res://src/autoload/settings_manager.gd"
 SaveManager="*res://src/autoload/save_manager.gd"
+LeaderboardManager="*res://src/autoload/leaderboard_manager.gd"
+_mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"
 
 [display]
 
 window/size/viewport_width=640
 window/size/viewport_height=360
-window/size/window_width_override=1920
-window/size/window_height_override=1080
+window/size/window_width_override=1280
+window/size/window_height_override=720
 window/stretch/mode="viewport"
 
 [editor_plugins]

@@ -7,8 +7,16 @@ const WALK_IN_INTERVAL_MAX_SECONDS = 90.0
 const WALK_IN_INTERVAL_FLOOR_SECONDS = 10.0
 const REPUTATION_SPAWN_SOFT_CAP = 100.0
 
-const GROUP_EVENT_INTERVAL_MIN_SECONDS = 240.0
-const GROUP_EVENT_INTERVAL_MAX_SECONDS = 480.0
+## Halved from the original 240-480s: against the default 300s day, that
+## average (360s) meant most days saw zero group visits by pure chance —
+## see playtest_notes_2.txt. Now reputation-scaled the same way walk-ins
+## already are (GROUP_EVENT_FLOOR_SECONDS keeps it meaningfully rarer than
+## a walk-in even at high reputation), so the feature stays visible at day
+## one and keeps paying off as reputation climbs past the point where the
+## customer roster is fully unlocked.
+const GROUP_EVENT_INTERVAL_MIN_SECONDS = 150.0
+const GROUP_EVENT_INTERVAL_MAX_SECONDS = 300.0
+const GROUP_EVENT_FLOOR_SECONDS = 120.0
 const GROUP_DIALOGUE_SLOT_BASE = 10
 const GROUP_DIALOGUE_SLOT_RANGE = 90
 
@@ -70,7 +78,10 @@ func _start_next_walk_in_timer() -> void:
 
 
 func _start_next_group_event_timer() -> void:
-	var next_time = randf_range(GROUP_EVENT_INTERVAL_MIN_SECONDS, GROUP_EVENT_INTERVAL_MAX_SECONDS)
+	var factor := _get_reputation_spawn_factor()
+	var min_time := maxf(GROUP_EVENT_FLOOR_SECONDS, GROUP_EVENT_INTERVAL_MIN_SECONDS * factor)
+	var max_time := maxf(min_time, GROUP_EVENT_INTERVAL_MAX_SECONDS * factor)
+	var next_time = randf_range(min_time, max_time)
 	group_event_timer.start(next_time)
 
 
@@ -240,8 +251,6 @@ func _run_shared_group_order(event_data: GroupVisitEventData, members: Array[Nod
 	await get_tree().create_timer(Customer.PREVIEW_DELAY_SECONDS).timeout
 
 	var response_text : String = CustomerManager.process_auto_sale(order_data)
-	if response_text == "":
-		response_text = order_data.dialogue_reject
 
 	var final_text := "%s: %s" % [group_label, response_text]
 	var display_time := Customer._get_display_time_for_text(final_text)

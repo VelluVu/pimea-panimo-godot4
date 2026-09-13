@@ -6,6 +6,9 @@
 script = ExtResource("1_witbier")
 style_name = "Witbier"
 style = 12
+abv = 4.8
+profit_margin_multiplier = 1.1
+fixed_price_per_bottle = 2.0
 required_yeast_id = 302
 preferred_hop_profile = 4
 min_ebc = 9

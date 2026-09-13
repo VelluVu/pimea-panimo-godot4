@@ -24,7 +24,7 @@ var _music_track_index: int = 0
 
 var _tension_player: AudioStreamPlayer
 
-var _last_money: int = -1
+var _last_money: float = -1.0
 var _last_risk: int = -1
 
 
@@ -77,6 +77,8 @@ func _connect_signals() -> void:
 	GUISignals.recipe_library_requested.connect(_on_ui_action)
 	GUISignals.options_requested.connect(_on_ui_action)
 	GUISignals.options_closed.connect(_on_ui_action)
+	GUISignals.leaderboard_requested.connect(_on_ui_action)
+	GUISignals.leaderboard_closed.connect(_on_ui_action)
 	GUISignals.menu_button_pressed.connect(_on_ui_action)
 
 
@@ -110,7 +112,7 @@ func _on_style_discovered(_style: int) -> void:
 	play_sfx(bank.sfx_style_discovered)
 
 
-func _on_avi_raid_triggered(_confiscated_bottles: int, _fine_amount: int, _reputation_lost: int) -> void:
+func _on_avi_raid_triggered(_confiscated_bottles: int, _fine_amount: float, _reputation_lost: int) -> void:
 	play_sfx(bank.sfx_avi_alarm)
 
 
@@ -131,7 +133,11 @@ func _update_tension(risk: int) -> void:
 		return
 	_last_risk = risk
 
-	var ratio := clampf(float(risk) / float(Brewery.AVI_RAID_THRESHOLD), 0.0, 1.0)
+	var raid_threshold : int = Brewery.AVI_RAID_THRESHOLD
+	var brewery := BrewEngine.current_brewery
+	if brewery != null:
+		raid_threshold = brewery.get_effective_raid_threshold()
+	var ratio := clampf(float(risk) / float(raid_threshold), 0.0, 1.0)
 	_tension_player.volume_db = lerpf(TENSION_DRONE_MIN_VOLUME_DB, TENSION_DRONE_MAX_VOLUME_DB, ratio)
 
 	if ratio > 0.0 and not _tension_player.playing:

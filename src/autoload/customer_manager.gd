@@ -3,19 +3,13 @@ extends Node
 
 
 const KEY_INCOME = "income"
+const KEY_TIP = "tip"
 const KEY_REPUTATION = "reputation"
 const KEY_RISK = "risk"
 const KEY_RESPONSE = "response"
 
 const BOTTLES_SOLD_PER_TRANSACTION = 1
 const QUALITY_BONUS_WEIGHT = 0.2
-
-## Finnish alkoholivero joke: even a hidden cellar brewery doesn't escape it —
-## a flat cut off every sale's gross income, taken before it reaches
-## brewery.money. Applies equally to solo and group-visit sales since both
-## paths go through process_auto_sale().
-const ALCOHOL_TAX_RATE : float = 0.6
-const ALCOHOL_TAX_MESSAGE_FORMAT : String = "(Verottaja vei %d€)"
 
 const DELAY_AUTO_SALE_SECONDS = 2.0
 const DELAY_CLEAR_REFS_SECONDS = 3.5
@@ -113,37 +107,54 @@ func find_best_batch_for(data: CustomerData) -> BrewBatch:
 func process_auto_sale(data: CustomerData) -> String:
 	var best_batch = find_best_batch_for(data)
 
+	# Nothing in stock at all, or nothing that clears this customer's
+	# strict requirements (see CustomerData.meets_strict_requirements) —
+	# either way they leave without buying, no money/reputation/risk change.
 	if best_batch == null or best_batch.amount_bottles < BOTTLES_SOLD_PER_TRANSACTION:
-		return ""
+		return data.dialogue_no_match
 
 	var brewery = BrewEngine.current_brewery
 
-	var style_base_price : float = brewery.resolver.get_style_base_price(best_batch.beer_style)
-	var results: Dictionary = data.evaluate_brew_batch(best_batch, style_base_price)
+	var breakdown : SaleBreakdown = brewery.resolver.get_price_breakdown(best_batch.beer_style)
+	var results: Dictionary = data.evaluate_brew_batch(best_batch, breakdown.price_per_bottle)
 
 	var bottles_sold : int = randi_range(data.min_bottles_per_visit, data.max_bottles_per_visit)
 	bottles_sold = min(bottles_sold, best_batch.amount_bottles)
 
-	var gross_income : int = results[KEY_INCOME] * bottles_sold
-	var tax_amount : int = roundi(gross_income * ALCOHOL_TAX_RATE)
-	var net_income : int = gross_income - tax_amount
+	# snappedf re-flattens the float drift that repeated multiplication/
+	# addition can introduce (e.g. 0.1 * 3 != 0.3 in IEEE 754) so money
+	# stays on a clean one-decimal grid instead of accumulating noise.
+	var gross_income : float = snappedf(results[KEY_INCOME] * bottles_sold, 0.1)
+	# No tax deduction — nothing gets remitted to the state here. Gross
+	# income (the fixed, style-based price) plus any tip is exactly what
+	# lands in the till.
+	var tip_income : float = snappedf(results[KEY_TIP] * bottles_sold, 0.1)
+	var net_income : float = snappedf(gross_income + tip_income, 0.1)
 
 	brewery.money += net_income
 	brewery.reputation = max(0, brewery.reputation + results[KEY_REPUTATION])
 	brewery.add_risk(results[KEY_RISK])
+
+	var receipt_entry := SaleReceiptEntry.new()
+	receipt_entry.breakdown = breakdown
+	receipt_entry.bottles_sold = bottles_sold
+	receipt_entry.gross_income = gross_income
+	receipt_entry.tip_income = tip_income
+	receipt_entry.net_income = net_income
+	brewery.today_sale_receipts.append(receipt_entry)
+
+	BrewerySignals.beer_sale_breakdown.emit(receipt_entry)
 
 	best_batch.amount_bottles -= bottles_sold
 	if best_batch.amount_bottles <= 0:
 		brewery.inventory.brew_batches.erase(best_batch)
 
 	brewery.bottles_sold_toward_goal += bottles_sold
+	brewery.lifetime_bottles_sold += bottles_sold
 	BrewerySignals.bottles_sold.emit(bottles_sold)
 	_check_bottles_goal_reward(brewery)
 
 	var response_text : String = results[KEY_RESPONSE]
-
-	if tax_amount > 0:
-		response_text += "\n" + ALCOHOL_TAX_MESSAGE_FORMAT % tax_amount
 
 	if data.bar_fight_chance > 0.0 and randf() < data.bar_fight_chance:
 		response_text += "\n" + _trigger_bar_fight(brewery, data, best_batch)
@@ -194,9 +205,13 @@ func _trigger_bar_fight(brewery: Brewery, data: CustomerData, batch: BrewBatch) 
 func _find_best_batch(batches: Array[BrewBatch], data: CustomerData) -> BrewBatch:
 	var best_batch: BrewBatch = null
 	var best_score: float = -1.0
-	
+
 	for batch in batches:
 		if batch.amount_bottles <= 0: continue
+		# A strict requirement (e.g. Barbaari's minimum ABV, Zgen's
+		# alcohol-free-only) makes an out-of-range batch invisible to this
+		# customer — not just a worse option, never a candidate at all.
+		if not data.meets_strict_requirements(batch.beer_style): continue
 		var score = data.get_preference_score(batch.beer_style.style)
 		if batch.current_quality >= data.min_quality:
 			score += QUALITY_BONUS_WEIGHT

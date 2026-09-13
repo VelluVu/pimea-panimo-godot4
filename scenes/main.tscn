@@ -36,6 +36,9 @@
 [ext_resource type="Script" uid="uid://0ew6w27o2tba" path="res://scenes/ui/day_recap_window.gd" id="31_tel4y"]
 [ext_resource type="Script" uid="uid://l7dtc2itv83e" path="res://scenes/ui/daily_goals_panel.gd" id="32_qkpxi"]
 [ext_resource type="Script" uid="uid://diu15ohj42xw" path="res://scenes/ui/close_day_confirm_window.gd" id="36_kmb1v"]
+[ext_resource type="Script" uid="uid://dxw7jcfhxobkb" path="res://scenes/ui/sale_flash_stack.gd" id="37_fuf3a"]
+[ext_resource type="PackedScene" uid="uid://di8en5fvrwrkk" path="res://scenes/ui/sale_receipt_log_window.tscn" id="38_pibwh"]
+[ext_resource type="Script" uid="uid://4sopxxh57qng" path="res://scenes/ui/game_end_window.gd" id="39_c6pm6"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_yf5fn"]
 blend_mode = 1
@@ -217,6 +220,11 @@ size_flags_horizontal = 2
 theme_override_colors/font_color = Color(0.9490196, 0.7882353, 0.41960785, 1)
 text = "Raha: 500€"
 
+[node name="ReceiptLogButton" type="Button" parent="GUI_CanvasLayer/GUI/TopPanel_Resources" unique_id=1007509009]
+layout_mode = 2
+tooltip_text = "Päivän kuitit"
+text = "Kuitit"
+
 [node name="ReputationLabel" type="Label" parent="GUI_CanvasLayer/GUI/TopPanel_Resources" unique_id=1789414113]
 layout_mode = 2
 size_flags_horizontal = 2
@@ -233,6 +241,9 @@ text = "AVI Riski: 0%"
 layout_mode = 2
 size_flags_horizontal = 4
 text = "päivä: 1"
+
+[node name="ModifierTagLabel" type="Label" parent="GUI_CanvasLayer/GUI/TopPanel_Resources" unique_id=1048168889]
+layout_mode = 2
 
 [node name="ClockUITextureRect" type="TextureRect" parent="GUI_CanvasLayer/GUI/TopPanel_Resources" unique_id=586740352]
 layout_mode = 2
@@ -1149,6 +1160,74 @@ theme_override_font_sizes/font_size = 28
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
+
+[node name="SaleFlashStack" type="VBoxContainer" parent="GUI_CanvasLayer/GUI" unique_id=1927716171]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.68
+anchor_top = 0.12
+anchor_right = 0.98
+anchor_bottom = 0.66
+theme_override_constants/separation = 6
+script = ExtResource("37_fuf3a")
+
+[node name="SaleReceiptLogWindow" parent="GUI_CanvasLayer/GUI" unique_id=1720379376 instance=ExtResource("38_pibwh")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.02
+anchor_top = 0.1
+anchor_right = 0.38
+anchor_bottom = 0.75
+
+[node name="GameEndWindow" type="Panel" parent="GUI_CanvasLayer/GUI" unique_id=590660075]
+process_mode = 3
+visible = false
+layout_mode = 0
+anchor_left = 0.15
+anchor_top = 0.15
+anchor_right = 0.85
+anchor_bottom = 0.85
+script = ExtResource("39_c6pm6")
+
+[node name="MarginContainer" type="MarginContainer" parent="GUI_CanvasLayer/GUI/GameEndWindow" unique_id=1553198153]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 14
+
+[node name="MainVBox" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/GameEndWindow/MarginContainer" unique_id=1812994514]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="TitleLabel" type="Label" parent="GUI_CanvasLayer/GUI/GameEndWindow/MarginContainer/MainVBox" unique_id=1123261075]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8784314, 0.3529412, 0.23529412, 1)
+theme_override_font_sizes/font_size = 22
+text = " "
+horizontal_alignment = 1
+
+[node name="MessageLabel" type="Label" parent="GUI_CanvasLayer/GUI/GameEndWindow/MarginContainer/MainVBox" unique_id=2000688165]
+layout_mode = 2
+size_flags_vertical = 3
+text = " "
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="RestartButton" type="Button" parent="GUI_CanvasLayer/GUI/GameEndWindow/MarginContainer/MainVBox" unique_id=1265983207]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Uusi yritys"
+
+[node name="ContinueButton" type="Button" parent="GUI_CanvasLayer/GUI/GameEndWindow/MarginContainer/MainVBox" unique_id=267428475]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Jatka pelaamista (ei tilastoihin)"
 
 [connection signal="pressed" from="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/IngredientSelectionPanel/AddRemoveLastModifiedButtonPanel/HBoxContainer/AddButton" to="GUI_CanvasLayer/GUI/Left_BrewingView" method="_on_add_button_pressed"]
 [connection signal="pressed" from="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/IngredientSelectionPanel/AddRemoveLastModifiedButtonPanel/HBoxContainer/RemoveButton" to="GUI_CanvasLayer/GUI/Left_BrewingView" method="_on_remove_button_pressed"]

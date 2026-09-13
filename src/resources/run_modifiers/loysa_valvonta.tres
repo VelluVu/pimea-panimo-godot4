@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RunModifier" format=3]
+
+[ext_resource type="Script" uid="uid://dka80d13fropj" path="res://src/classes/run_modifier.gd" id="1_loysa"]
+
+[resource]
+script = ExtResource("1_loysa")
+modifier_name = "Löysä valvonta"
+description = "AVI on kiireinen muualla tänä kautena — ratsiakynnys huomattavasti korkeampi."
+avi_threshold_multiplier = 1.5
+ingredient_price_multiplier = 1.0
+metadata/_custom_type_script = "uid://dka80d13fropj"

@@ -6,6 +6,8 @@
 script = ExtResource("1_tohk6")
 style_name = "Amber Ale"
 style = 4
+abv = 5.5
+fixed_price_per_bottle = 3.0
 required_yeast_id = 302
 preferred_hop_profile = 3
 min_ebc = 20

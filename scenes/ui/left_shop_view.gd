@@ -39,7 +39,7 @@ func _update_slider() -> void:
 	if ingredient == null:
 		return
 	
-	var player_money : int = BrewEngine.current_brewery.money
+	var player_money : float = BrewEngine.current_brewery.money
 	
 	var max_affordable : int = 0
 	if ingredient.base_price > 0:

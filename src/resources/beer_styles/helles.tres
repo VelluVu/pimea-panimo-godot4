@@ -6,6 +6,8 @@
 script = ExtResource("1_helles")
 style_name = "Helles"
 style = 6
+abv = 4.9
+fixed_price_per_bottle = 2.5
 preferred_hop_profile = 4
 min_ebc = 11
 max_ebc = 14

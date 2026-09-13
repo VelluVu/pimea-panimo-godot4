@@ -6,6 +6,8 @@
 script = ExtResource("1_vienna")
 style_name = "Vienna Lager"
 style = 7
+abv = 5.2
+fixed_price_per_bottle = 3.0
 preferred_hop_profile = 4
 min_ebc = 15
 max_ebc = 19

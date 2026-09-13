@@ -6,6 +6,8 @@
 script = ExtResource("1_alkipa")
 style_name = "Alkoholiton IPA"
 style = 20
+abv = 0.3
+fixed_price_per_bottle = 3.5
 required_yeast_id = 303
 min_malt_weight = 4
 preferred_hop_profile = 1

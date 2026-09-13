@@ -6,6 +6,9 @@
 script = ExtResource("1_barleywine")
 style_name = "Barleywine"
 style = 18
+abv = 10.0
+profit_margin_multiplier = 1.5
+fixed_price_per_bottle = 5.0
 required_yeast_id = 302
 preferred_hop_profile = 3
 min_malt_weight = 5

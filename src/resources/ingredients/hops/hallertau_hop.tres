@@ -13,4 +13,5 @@ base_price = 3
 unit = 1
 type = 1
 flavor_profile = 4
+min_reputation = 15
 metadata/_custom_type_script = "uid://dniwiyu5ynp71"

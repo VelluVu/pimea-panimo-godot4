@@ -1,11 +1,17 @@
 @tool
 extends McpTestSuite
 
-## Unit tests for CustomerData's pure logic: price/reputation/risk outcomes
-## from evaluate_brew_batch(), the generate_display_name() fallback, and the
-## reroll_preference() guard clauses. All cases rely on CustomerData's
-## default export values so a regression in the defaults themselves would
-## also be caught here.
+## Unit tests for CustomerData's pure logic: price/tip/reputation/risk
+## outcomes from evaluate_brew_batch(), the generate_display_name()
+## fallback, and the reroll_preference() guard clauses. All cases rely on
+## CustomerData's default export values so a regression in the defaults
+## themselves would also be caught here.
+##
+## Income is now always the fixed style_base_price (floored at 1) — style
+## match and quality no longer change what a customer pays, only their
+## reputation/risk reaction and, when quality exceeds this customer's own
+## min_quality bar (quality_margin > 0), a tip on top. See
+## evaluate_brew_batch's own docstring for why.
 ##
 ## evaluate_brew_batch() adds a continuous quality_margin adjustment (quality
 ## minus this customer's min_quality, times quality_reputation_sensitivity /
@@ -16,6 +22,35 @@ extends McpTestSuite
 
 func suite_name() -> String:
 	return "customer_data"
+
+
+func test_meets_strict_requirements_respects_min_abv() -> void:
+	var customer := CustomerData.new()
+	customer.min_required_abv = 5.0
+	var weak_style := BeerStyle.new()
+	weak_style.abv = 4.5
+	var strong_style := BeerStyle.new()
+	strong_style.abv = 5.0
+	assert_false(customer.meets_strict_requirements(weak_style), "below min_required_abv should fail")
+	assert_true(customer.meets_strict_requirements(strong_style), "exactly at min_required_abv should pass")
+
+
+func test_meets_strict_requirements_respects_max_abv() -> void:
+	var customer := CustomerData.new()
+	customer.max_required_abv = 0.5
+	var alcohol_free_style := BeerStyle.new()
+	alcohol_free_style.abv = 0.3
+	var regular_style := BeerStyle.new()
+	regular_style.abv = 4.5
+	assert_true(customer.meets_strict_requirements(alcohol_free_style), "within max_required_abv should pass")
+	assert_false(customer.meets_strict_requirements(regular_style), "above max_required_abv should fail")
+
+
+func test_meets_strict_requirements_no_constraint_by_default() -> void:
+	var customer := CustomerData.new()
+	var any_style := BeerStyle.new()
+	any_style.abv = 50.0
+	assert_true(customer.meets_strict_requirements(any_style), "default -1 sentinels mean no constraint")
 
 
 func _make_batch(style: BeerStyle.Style, quality: float) -> BrewBatch:
@@ -31,7 +66,8 @@ func test_evaluate_brew_batch_rejects_below_min_quality() -> void:
 	var customer := CustomerData.new()
 	var batch := _make_batch(BeerStyle.Style.BULKKILAGER, 0.3)
 	var result := customer.evaluate_brew_batch(batch)
-	assert_eq(result[CustomerManager.KEY_INCOME], 0, "income")
+	assert_eq(result[CustomerManager.KEY_INCOME], 3, "income") # fixed price, unaffected by bad quality
+	assert_eq(result[CustomerManager.KEY_TIP], 0, "tip") # quality below the bar -> no tip
 	assert_eq(result[CustomerManager.KEY_REPUTATION], -4, "reputation") # -3 flat, margin -0.2 * 4.0 -> -1 extra
 	assert_eq(result[CustomerManager.KEY_RISK], 1, "risk") # margin -0.2 * 2.0 rounds to 0 extra
 	assert_eq(result[CustomerManager.KEY_RESPONSE], customer.dialogue_reject, "response")
@@ -41,7 +77,8 @@ func test_evaluate_brew_batch_rewards_primary_style_match() -> void:
 	var customer := CustomerData.new()
 	var batch := _make_batch(BeerStyle.Style.BULKKILAGER, 1.0)
 	var result := customer.evaluate_brew_batch(batch)
-	assert_eq(result[CustomerManager.KEY_INCOME], 4, "income")
+	assert_eq(result[CustomerManager.KEY_INCOME], 3, "income") # fixed price, style match doesn't change it
+	assert_eq(result[CustomerManager.KEY_TIP], 0.5, "tip") # proportional 3*0.5*0.3=0.45 loses to the MIN_TIP_PER_QUALITY_POINT floor (0.5*1.0=0.5)
 	assert_eq(result[CustomerManager.KEY_REPUTATION], 12, "reputation") # 10 flat, margin 0.5 * 4.0 -> +2
 	assert_eq(result[CustomerManager.KEY_RISK], 2, "risk") # 3 flat, margin 0.5 * 2.0 -> -1
 	assert_eq(result[CustomerManager.KEY_RESPONSE], customer.dialogue_success, "response")
@@ -51,7 +88,8 @@ func test_evaluate_brew_batch_gives_smaller_reward_for_secondary_style() -> void
 	var customer := CustomerData.new()
 	var batch := _make_batch(BeerStyle.Style.KOTIKALJA, 1.0)
 	var result := customer.evaluate_brew_batch(batch)
-	assert_eq(result[CustomerManager.KEY_INCOME], 3, "income")
+	assert_eq(result[CustomerManager.KEY_INCOME], 3, "income") # same fixed price as any other style
+	assert_eq(result[CustomerManager.KEY_TIP], 0.5, "tip") # same tip floor as above (tip is quality-driven, not style-driven)
 	assert_eq(result[CustomerManager.KEY_REPUTATION], 2, "reputation") # 0 flat, margin 0.5 * 4.0 -> +2
 	assert_eq(result[CustomerManager.KEY_RISK], 0, "risk") # 1 flat, margin 0.5 * 2.0 -> -1
 	assert_eq(result[CustomerManager.KEY_RESPONSE], customer.dialogue_fallback, "response")
@@ -61,7 +99,8 @@ func test_evaluate_brew_batch_penalizes_wrong_style() -> void:
 	var customer := CustomerData.new()
 	var batch := _make_batch(BeerStyle.Style.IPA, 1.0)
 	var result := customer.evaluate_brew_batch(batch)
-	assert_eq(result[CustomerManager.KEY_INCOME], 2, "income")
+	assert_eq(result[CustomerManager.KEY_INCOME], 3, "income") # fixed price even for a wrong-style sale
+	assert_eq(result[CustomerManager.KEY_TIP], 0.5, "tip") # same tip floor as above (tip is quality-driven, not style-driven)
 	assert_eq(result[CustomerManager.KEY_REPUTATION], 1, "reputation") # -1 flat, margin 0.5 * 4.0 -> +2
 	assert_eq(result[CustomerManager.KEY_RISK], 1, "risk") # 2 flat, margin 0.5 * 2.0 -> -1
 	assert_eq(result[CustomerManager.KEY_RESPONSE], customer.dialogue_wrong_style, "response")
@@ -71,22 +110,44 @@ func test_evaluate_brew_batch_quality_at_min_quality_matches_flat_baseline() -> 
 	# quality exactly at the min_quality bar -> margin is 0, so the result
 	# should equal the old pre-quality-margin flat numbers exactly, proving
 	# the new continuous adjustment doesn't shift behavior at the boundary.
+	# Also proves no tip at exactly the bar — the customer got what they
+	# expected, nothing more.
 	var customer := CustomerData.new()
 	var batch := _make_batch(BeerStyle.Style.BULKKILAGER, customer.min_quality)
 	var result := customer.evaluate_brew_batch(batch)
+	assert_eq(result[CustomerManager.KEY_TIP], 0, "tip")
 	assert_eq(result[CustomerManager.KEY_REPUTATION], customer.rep_primary_style, "reputation")
 	assert_eq(result[CustomerManager.KEY_RISK], customer.risk_primary_style, "risk")
 
 
-func test_evaluate_brew_batch_masterful_quality_boosts_reputation_and_cuts_risk_further() -> void:
+func test_evaluate_brew_batch_masterful_quality_boosts_reputation_cuts_risk_and_pays_a_tip() -> void:
 	# Well above min_quality should keep compounding the bonus/reduction,
 	# not cap out at whatever the first threshold step gave.
 	var customer := CustomerData.new()
 	var batch := _make_batch(BeerStyle.Style.BULKKILAGER, 1.5)
 	var result := customer.evaluate_brew_batch(batch)
 	var margin : float = 1.5 - customer.min_quality
+	var expected_income : float = maxf(0.1, snappedf(3.0, 0.1))
+	var expected_proportional_tip : float = expected_income * margin * customer.quality_tip_sensitivity
+	var expected_floor_tip : float = margin * CustomerData.MIN_TIP_PER_QUALITY_POINT
+	var expected_tip : float = maxf(0.0, snappedf(max(expected_proportional_tip, expected_floor_tip) * customer.budget_multiplier, 0.1))
+	assert_eq(result[CustomerManager.KEY_INCOME], expected_income, "income")
+	assert_eq(result[CustomerManager.KEY_TIP], expected_tip, "tip")
 	assert_eq(result[CustomerManager.KEY_REPUTATION], customer.rep_primary_style + roundi(margin * customer.quality_reputation_sensitivity), "reputation")
 	assert_eq(result[CustomerManager.KEY_RISK], maxi(0, customer.risk_primary_style - roundi(margin * customer.quality_risk_sensitivity)), "risk")
+
+
+## Demonstrates the fix for playtest_notes_2.txt's "tips round to 0 on
+## cheap styles" finding: a modest margin (0.5) that the pure proportional
+## formula alone would round down to 0 on a 1 EUR style now clears
+## MIN_TIP_PER_QUALITY_POINT's flat floor instead.
+func test_evaluate_brew_batch_tip_has_a_minimum_floor_on_cheap_styles() -> void:
+	var customer := CustomerData.new()
+	var batch := _make_batch(BeerStyle.Style.BULKKILAGER, 1.0)
+	var result := customer.evaluate_brew_batch(batch, 1.0)
+	# proportional tip = 1 * 0.5 * 0.3 = 0.15 -> would round to 0.1 (barely
+	# felt) alone; floor = 0.5 * MIN_TIP_PER_QUALITY_POINT(1.0) = 0.5 wins
+	assert_eq(result[CustomerManager.KEY_TIP], 0.5, "tip")
 
 
 func test_generate_display_name_uses_title_and_first_names_when_set() -> void:

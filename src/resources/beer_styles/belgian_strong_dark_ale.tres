@@ -6,6 +6,9 @@
 script = ExtResource("1_strongdark")
 style_name = "Belgian Strong Dark Ale"
 style = 16
+abv = 9.0
+profit_margin_multiplier = 1.4
+fixed_price_per_bottle = 5.0
 required_yeast_id = 302
 min_malt_weight = 4
 min_ebc = 36

@@ -134,6 +134,8 @@ func _connect_log_sources() -> void:
 	BrewerySignals.style_discovered.connect(_on_style_discovered)
 	BrewerySignals.avi_raid_triggered.connect(_on_avi_raid_triggered)
 	BrewerySignals.recipe_saved.connect(_on_recipe_saved)
+	BrewerySignals.batch_bottled.connect(_on_batch_bottled)
+	BrewerySignals.daily_bills_paid.connect(_on_daily_bills_paid)
 	SpecialEventManager.special_event_triggered.connect(_on_special_event_triggered)
 	TimeManager.day_changed.connect(_on_day_changed)
 
@@ -142,12 +144,22 @@ func _on_style_discovered(style: int) -> void:
 	_log("[color=lightgreen]Uusi oluttyyli löydetty: %s[/color]" % BeerStyle.get_style_string_from_style(style))
 
 
-func _on_avi_raid_triggered(confiscated_bottles: int, fine_amount: int, reputation_lost: int) -> void:
-	_log("[color=red]AVI-RATSIA! Takavarikoitu %d pulloa, sakko %d €, mainetta -%d[/color]" % [confiscated_bottles, fine_amount, reputation_lost])
+func _on_avi_raid_triggered(confiscated_bottles: int, fine_amount: float, reputation_lost: int) -> void:
+	_log("[color=red]AVI-RATSIA! Takavarikoitu %d pulloa, sakko %.1f €, mainetta -%d[/color]" % [confiscated_bottles, fine_amount, reputation_lost])
 
 
 func _on_recipe_saved(recipe_name: String) -> void:
 	_log("Resepti tallennettu: %s" % recipe_name)
+
+
+func _on_batch_bottled(bottles_lost: int, label_cost: float, style_name: String) -> void:
+	if bottles_lost <= 0 and label_cost <= 0.0:
+		return
+	_log("Pullotus (%s): %d pulloa hukkui, etiketit/markkinointi -%.1f €" % [style_name, bottles_lost, label_cost])
+
+
+func _on_daily_bills_paid(electricity: int, water: int, total: int) -> void:
+	_log("[color=orange]Laskut: sähkö -%d €, vesi -%d € (yhteensä -%d €)[/color]" % [electricity, water, total])
 
 
 func _on_special_event_triggered(event_data: SpecialEventData) -> void:
@@ -225,6 +237,7 @@ func _register_commands() -> void:
 
 	_dev_commands = {
 		"brew": _cmd_brew,
+		"sell": _cmd_sell,
 		"customer": _cmd_customer,
 		"group": _cmd_group,
 		"special": _cmd_special,
@@ -239,7 +252,7 @@ func _register_commands() -> void:
 func _cmd_help(_args: PackedStringArray) -> void:
 	_log("Komennot: osta <ainesosa> <määrä>, myy <ainesosa> <määrä>, pöytään <ainesosa> <määrä>, poista <ainesosa> <määrä>, tyhjennä, tallenna, pane, keitä <resepti>, clear")
 	if BrewEngine.is_developer_mode():
-		_log("[color=orange]Kehittäjäkomennot: brew <tyyli>, customer [nimi], group [nimi], special, raid, money <n>, rep <n>, risk <n>, day[/color]")
+		_log("[color=orange]Kehittäjäkomennot: brew <tyyli>, sell [määrä] <tyyli> (myy oikeasti, luo pulloja tarvittaessa), customer [nimi], group [nimi], special, raid, money <n>, rep <n>, risk <n>, day[/color]")
 
 
 func _cmd_clear(_args: PackedStringArray) -> void:
@@ -424,6 +437,128 @@ func _available_style_names(brewery: Brewery) -> String:
 	return ", ".join(names)
 
 
+## Forces a real sale through the actual game path — "sell 1 ipa", "sell 3
+## imperial stout" — instead of a hypothetical preview. Tops up (or
+## conjures, if none exists yet) enough real inventory of the requested
+## style, then calls CustomerManager.process_auto_sale() with a throwaway
+## CustomerData whose preference is rigged to want exactly that style, so
+## the sale runs through the same code a real customer's visit would: real
+## money/reputation/risk changes, real inventory decrement, and the real
+## breakdown popup (BrewerySignals.beer_sale_breakdown). Logs the listed
+## price plus a myynti/tippi/tuotantokulut/käteinen breakdown, listening in
+## on BrewerySignals.batch_bottled and .beer_sale_breakdown (the same
+## signals driving the real UI) rather than recomputing any of the numbers
+## itself, so this can never drift from what actually happened.
+func _cmd_sell(args: PackedStringArray) -> void:
+	var brewery := BrewEngine.current_brewery
+	if brewery == null:
+		_log("Ei aktiivista panimoa.")
+		return
+
+	if args.is_empty():
+		_log("Käyttö: sell [määrä] <tyyli> — esim. 'sell 1 ipa'. Saatavilla: %s" % _available_style_names(brewery))
+		return
+
+	var quantity : int = 1
+	var style_args := args
+	if args[0].is_valid_int():
+		quantity = maxi(1, args[0].to_int())
+		style_args = args.slice(1)
+
+	if style_args.is_empty():
+		_log("Käyttö: sell [määrä] <tyyli>.")
+		return
+
+	var wanted := " ".join(Array(style_args)).to_upper().replace(" ", "_")
+	var matched_style: BeerStyle = null
+	for beer_style: BeerStyle in brewery.resolver.active_styles:
+		if BeerStyle.Style.keys()[beer_style.style] == wanted:
+			matched_style = beer_style
+			break
+
+	if matched_style == null:
+		_log("Tyyliä ei löytynyt: %s. Saatavilla: %s" % [" ".join(Array(style_args)), _available_style_names(brewery)])
+		return
+
+	# Dictionaries are reference types, so mutating keys in place (rather
+	# than reassigning the captured variable itself, which a GDScript
+	# lambda captures by value and can't rebind in the outer scope) lets
+	# these lambdas report back to this function.
+	var production_fee : Dictionary = {"total": 0.0}
+	var track_production_fee := func(_bottles_lost: int, label_cost: float, _style_name: String) -> void:
+		production_fee.total += label_cost
+	BrewerySignals.batch_bottled.connect(track_production_fee)
+	_ensure_batch_stock(brewery, matched_style, quantity)
+	BrewerySignals.batch_bottled.disconnect(track_production_fee)
+
+	var sale_result : Dictionary = {}
+	var capture_sale := func(receipt_entry: SaleReceiptEntry) -> void:
+		sale_result.entry = receipt_entry
+		sale_result.gross = receipt_entry.gross_income
+		sale_result.net = receipt_entry.net_income
+	BrewerySignals.beer_sale_breakdown.connect(capture_sale)
+
+	var customer := CustomerData.new()
+	customer.primary_style = matched_style.style
+	customer.min_bottles_per_visit = quantity
+	customer.max_bottles_per_visit = quantity
+	var response : String = CustomerManager.process_auto_sale(customer)
+
+	BrewerySignals.beer_sale_breakdown.disconnect(capture_sale)
+
+	if sale_result.is_empty():
+		_log("Myynti epäonnistui: %s (ei tarpeeksi varastoa?)" % matched_style.style_name)
+		return
+
+	var breakdown : SaleBreakdown = sale_result.entry.breakdown
+	var final_cash : float = sale_result.net - production_fee.total
+
+	_log("[b]%s x%d[/b] (%.1f%% ABV) — listahinta %.2f €/pullo" % [matched_style.style_name, quantity, breakdown.abv, breakdown.price_per_bottle])
+	_log("  Raaka-ainekulut: %.2f €/pullo | Kate: %.2f €/pullo" % [breakdown.raw_cost_per_bottle, breakdown.profit_per_bottle])
+	_log("  Myynti: +%.1f €" % sale_result.gross)
+	_log("  Tippi: +%.1f €" % sale_result.entry.tip_income)
+	_log("  Tuotantokulut: -%.1f €" % production_fee.total)
+	_log("  = Käteinen: %+.1f €" % final_cash)
+	_log("\"%s\"" % response)
+
+
+## Tops up beer_style's stock to at least `quantity` bottles by conjuring
+## standard-yield test batches (same approach as _cmd_brew) as needed — so
+## "sell 50 ipa" with an empty warehouse "brews" as many as it takes.
+## Charges the same bottle-loss/label-cost production fees a real brew
+## would (via Brewery.apply_bottling_costs) instead of handing out bottles
+## for free, so testing sales via this shortcut doesn't skip the very
+## production costs it's meant to help verify.
+func _ensure_batch_stock(brewery: Brewery, beer_style: BeerStyle, quantity: int) -> void:
+	while _total_stock_for_style(brewery, beer_style) < quantity:
+		_conjure_batch(brewery, beer_style)
+
+
+func _total_stock_for_style(brewery: Brewery, beer_style: BeerStyle) -> int:
+	var total : int = 0
+	for batch : BrewBatch in brewery.inventory.brew_batches:
+		if batch.beer_style.style == beer_style.style:
+			total += batch.amount_bottles
+	return total
+
+
+func _conjure_batch(brewery: Brewery, beer_style: BeerStyle) -> void:
+	var raw_yield : int = BrewResult.new().bottle_yield
+	var bottling : Dictionary = brewery.apply_bottling_costs(raw_yield)
+
+	var new_batch := BrewBatch.new()
+	new_batch.beer_style = beer_style
+	new_batch.amount_bottles = bottling.effective_yield
+	new_batch.original_quality = beer_style.original_quality
+	new_batch.current_quality = beer_style.original_quality
+	new_batch.final_ebc = int((beer_style.min_ebc + beer_style.max_ebc) / 2.0)
+	new_batch.final_ibu = int((beer_style.min_ibu + beer_style.max_ibu) / 2.0)
+
+	brewery.inventory.brew_batches.append(new_batch)
+	brewery.discover_style(beer_style.style)
+	BrewerySignals.batch_bottled.emit(bottling.bottles_lost, bottling.label_cost, beer_style.style_name)
+
+
 func _cmd_customer(args: PackedStringArray) -> void:
 	var forced_data: CustomerData = null
 	if not args.is_empty():
@@ -464,15 +599,15 @@ func _cmd_raid(_args: PackedStringArray) -> void:
 	if brewery == null:
 		_log("Ei aktiivista panimoa.")
 		return
-	brewery.add_risk(Brewery.AVI_RAID_THRESHOLD)
+	brewery.add_risk(brewery.get_effective_raid_threshold())
 
 
 func _cmd_money(args: PackedStringArray) -> void:
 	var brewery := BrewEngine.current_brewery
-	if brewery == null or args.is_empty() or not args[0].is_valid_int():
+	if brewery == null or args.is_empty() or not args[0].is_valid_float():
 		_log("Käyttö: money <määrä>")
 		return
-	brewery.money = args[0].to_int()
+	brewery.money = args[0].to_float()
 	BrewerySignals.brewery_state_changed.emit(brewery)
 
 

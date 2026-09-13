@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RunModifier" format=3]
+
+[ext_resource type="Script" uid="uid://dka80d13fropj" path="res://src/classes/run_modifier.gd" id="1_kallis"]
+
+[resource]
+script = ExtResource("1_kallis")
+modifier_name = "Kallis tori"
+description = "Ratsiakynnys korkeampi, mutta raaka-aineiden hinnat ovat nousseet."
+avi_threshold_multiplier = 1.3
+ingredient_price_multiplier = 1.4
+metadata/_custom_type_script = "uid://dka80d13fropj"

@@ -5,6 +5,15 @@ extends Resource
 const AVI_RAID_THRESHOLD : int = 100
 const AVI_RAID_FINE_PERCENT : float = 0.3
 const AVI_RAID_REPUTATION_PENALTY_PERCENT : float = 0.25
+## Three strikes: the raid that pushes raid_count to this becomes
+## permanent instead of just another costly setback — see
+## _check_for_avi_raid() and BrewerySignals.game_ended.
+const BUSTED_RAID_COUNT : int = 3
+## A run only ends in the "survived" ending if it's not currently on the
+## ropes — reaching the day target with 1 reputation and a completely
+## empty warehouse shouldn't read as a triumphant ending. See
+## TimeManager._advance_day().
+const SURVIVAL_MIN_REPUTATION : int = 20
 
 @export var inventory : Inventory
 @export var current_day : int = 1
@@ -14,13 +23,55 @@ const AVI_RAID_REPUTATION_PENALTY_PERCENT : float = 0.25
 ## overflow preserved) once the goal is actually reached and rewarded, in
 ## CustomerManager._check_bottles_goal_reward().
 @export var bottles_sold_toward_goal : int = 0
-@export var money: int = 100
+## Never resets (unlike bottles_sold_toward_goal above) — purely a stat
+## for the end-of-run summary screen, see GameEndWindow.
+@export var lifetime_bottles_sold : int = 0
+## One decimal of real precision (10-cent steps) — beer prices aren't all
+## whole euros (see BeerStyle.fixed_price_per_bottle), so money has to
+## carry fractions too. See CustomerManager.process_auto_sale() and
+## CustomerData.evaluate_brew_batch() for where amounts get snapped to the
+## 0.1 grid before landing here.
+##
+## Deliberately tight (not the old 100) — the tutorial's guaranteed recipe
+## only costs 8 EUR, so a much larger cushion made the first several days
+## consequence-free. 20 EUR clears the tutorial with a little room to
+## experiment, without eliminating the early "can I actually afford my
+## next brew" tension that the bankruptcy ending now depends on.
+@export var money: float = 20.0
 @export var risk: int = 0
 @export var reputation: int = 0
+## How many AVI raids this run has survived — see _check_for_avi_raid()
+## and BUSTED_RAID_COUNT. Never resets.
+@export var raid_count : int = 0
+## Latched true the instant any ending fires (busted/bankrupt/survived) so
+## a second condition met on the same tick (e.g. a raid that both busts
+## you and would also read as bankrupt) can't emit a second, contradictory
+## game_ended signal. See trigger_ending(). Not persisted — it's only ever
+## true while the (paused, blocking) end screen is up; GameEndWindow's
+## continue path clears it back to false before play resumes.
+var game_has_ended : bool = false
+## Set once the player chooses "Jatka pelaamista" on the survived ending
+## (GameEndWindow) — permanently exempts this run from re-triggering the
+## survived ending on every later day close. Exported: a continued run
+## gets saved/loaded like any other, so this has to stick across that.
+## Continued play is intentionally unbounded and NOT meant to feed any
+## future leaderboard/best-run tracking — this flag is what that tracking
+## should check to exclude it.
+@export var has_continued_past_survival : bool = false
+## Rolled once per run in _init() (see RunModifierRegistry.get_random_modifier())
+## and never changes for the rest of the run. Read by
+## get_effective_raid_threshold() and the ingredient buy/sell price
+## calculations below — see run_modifier.gd for what each field does.
+@export var run_modifier : RunModifier
 @export var brew_preparation : BrewPreparation
 @export var saved_recipes : Array[BrewRecipe] = []
 var resolver : BrewResolver = null
 @export var discovered_styles : Dictionary = {} # Avain: BeerStyle.Style -> Arvo: true
+
+## Today's completed sales, for the receipt library dropdown
+## (SaleReceiptLogWindow) — cleared each day in TimeManager._advance_day().
+## Not persisted: a same-day UI convenience, like `resolver` above.
+var today_sale_receipts : Array[SaleReceiptEntry] = []
 
 # First-brew tutorial tracking — one-time latches, not daily resets, so
 # completing a later step never un-checks an earlier one just because the
@@ -36,8 +87,10 @@ const TUTORIAL_MALT_TARGET_KG : int = 3
 func _init() -> void:
 	inventory = Inventory.new()
 	brew_preparation = BrewPreparation.new()
+	run_modifier = RunModifierRegistry.get_random_modifier()
 	resolver = BrewResolver.new()
 	resolver._ready()
+	resolver.ingredient_price_multiplier = run_modifier.ingredient_price_multiplier
 	discovered_styles[BeerStyle.Style.KOTIKALJA] = true
 
 	# Zero-click first-brew hint: Kotikalja is known from the start without
@@ -105,22 +158,39 @@ func clear_risk() -> void:
 	risk = 0
 
 
+## AVI_RAID_THRESHOLD scaled by this run's modifier — see RunModifier.
+## avi_threshold_multiplier. Kept separate from the raw constant since that
+## constant is also read by call sites with no Brewery instance in scope
+## (audio_manager.gd's ambient tension scaling, the dev console's "raid"
+## cheat) — both of those now call this instead so they stay accurate
+## under any modifier.
+func get_effective_raid_threshold() -> int:
+	return roundi(AVI_RAID_THRESHOLD * run_modifier.avi_threshold_multiplier)
+
+
 func _check_for_avi_raid() -> void:
-	if risk < AVI_RAID_THRESHOLD:
+	if risk < get_effective_raid_threshold():
 		return
 
 	var confiscated_bottles : int = _count_total_bottles()
 	inventory.brew_batches.clear()
 
-	var fine_amount : int = roundi(money * AVI_RAID_FINE_PERCENT)
+	var fine_amount : float = snappedf(money * AVI_RAID_FINE_PERCENT, 0.1)
 	var reputation_penalty : int = roundi(reputation * AVI_RAID_REPUTATION_PENALTY_PERCENT)
 
 	money -= fine_amount
 	reputation = max(0, reputation - reputation_penalty)
 	risk = 0
+	raid_count += 1
 
 	BrewerySignals.avi_raid_triggered.emit(confiscated_bottles, fine_amount, reputation_penalty)
 	BrewerySignals.brewery_state_changed.emit(self)
+
+	if raid_count >= BUSTED_RAID_COUNT:
+		trigger_ending("busted")
+		return
+
+	check_bankruptcy()
 
 
 func _count_total_bottles() -> int:
@@ -130,6 +200,28 @@ func _count_total_bottles() -> int:
 		total += batch.amount_bottles
 
 	return total
+
+
+## Called after anything that can push money to (or toward) zero — the
+## AVI fine above, a purchase, or the daily utility bill
+## (TimeManager._charge_daily_utility_bills) — since any of those can be
+## the final straw. A truly dead end: no cash AND nothing left to sell
+## that could raise any.
+func check_bankruptcy() -> void:
+	if money > 0.0 or _count_total_bottles() > 0:
+		return
+	trigger_ending("bankrupt")
+
+
+## Latches game_has_ended so only the first ending condition met in a run
+## actually fires — see that flag's own docstring. ending_type is one of
+## "busted", "bankrupt", "survived"; GameEndWindow reads it to pick the
+## right title/flavor text.
+func trigger_ending(ending_type : String) -> void:
+	if game_has_ended:
+		return
+	game_has_ended = true
+	BrewerySignals.game_ended.emit(ending_type)
 
 
 func _ready() -> void:
@@ -183,9 +275,13 @@ func _on_buy_ingredient(ingredient_id : int, amount : int) -> void:
 	var ingredient: IngredientData = IngredientDatabase.get_item_by_id(ingredient_id)
 	if ingredient == null:
 		return
-	
-	var buy_price : int = roundi(ingredient.base_price * amount)
-	
+
+	if reputation < ingredient.min_reputation:
+		print(StringContainer.INGREDIENT_LOCKED_ERROR % [ingredient.name, ingredient.min_reputation])
+		return
+
+	var buy_price : int = roundi(ingredient.base_price * amount * run_modifier.ingredient_price_multiplier)
+
 	if money < buy_price:
 		print(StringContainer.RESOURCE_ERROR % [money, buy_price, StringContainer.MONEY_STRING])
 		return
@@ -194,6 +290,7 @@ func _on_buy_ingredient(ingredient_id : int, amount : int) -> void:
 	inventory.add_amount(ingredient, amount)
 	_track_tutorial_purchase(ingredient, amount)
 	BrewerySignals.brewery_state_changed.emit(self)
+	check_bankruptcy()
 
 
 func _track_tutorial_purchase(ingredient : IngredientData, amount : int) -> void:
@@ -216,7 +313,7 @@ func _on_sell_ingredient(ingredient_id : int, amount : int) -> void:
 	if final_amount <= 0:
 		return
 		
-	var sell_price : int = roundi(final_amount * ingredient.base_price * 0.75)
+	var sell_price : float = snappedf(final_amount * ingredient.base_price * run_modifier.ingredient_price_multiplier * 0.75, 0.1)
 	money += sell_price #ei saa ihan samaa hintaa takas millä joskus osti...
 	print(StringContainer.SELL_MESSAGE % [final_amount, sell_price])
 	BrewerySignals.brewery_state_changed.emit(self)
@@ -287,6 +384,28 @@ func _on_load_recipe_requested(recipe : BrewRecipe) -> void:
 	BrewerySignals.brewery_state_changed.emit(self)
 
 
+## Bottling always costs something, win or lose (even a failed/kotikalja
+## fallback batch still gets bottled, and a dev-conjured test batch is no
+## exception either — see dev_console.gd's "sell" command) — a slice of
+## the raw yield breaks or spills (BrewResolver.BOTTLE_LOSS_RATE), and
+## every bottle produced needs a printed label
+## (BrewResolver.LABEL_ART_COST_PER_BOTTLE), paid up front here regardless
+## of whether the batch ends up profitable to sell. Shared by start_brew()
+## and dev_console._ensure_batch_stock() so both charge identically
+## instead of the dev shortcut producing bottles for free.
+func apply_bottling_costs(raw_yield : int) -> Dictionary:
+	var effective_yield : int = BrewResolver.get_effective_bottle_yield(raw_yield)
+	var bottles_lost : int = raw_yield - effective_yield
+	var label_cost : float = snappedf(raw_yield * BrewResolver.LABEL_ART_COST_PER_BOTTLE, 0.1)
+	money -= label_cost
+
+	return {
+		"effective_yield": effective_yield,
+		"bottles_lost": bottles_lost,
+		"label_cost": label_cost,
+	}
+
+
 func start_brew() -> void:
 	if brew_preparation.selected_contents.is_empty():
 		print(StringContainer.TABLE_EMPTY_ERROR)
@@ -297,11 +416,16 @@ func start_brew() -> void:
 	if brew_report == null:
 		brew_preparation.clear_preparation()
 		BrewerySignals.brewery_state_changed.emit(self)
-		return 
-	
+		return
+
+	var bottling : Dictionary = apply_bottling_costs(brew_report.bottle_yield)
+	var effective_yield : int = bottling.effective_yield
+	var bottles_lost : int = bottling.bottles_lost
+	var label_cost : float = bottling.label_cost
+
 	var new_batch := BrewBatch.new()
 	new_batch.beer_style = brew_report.beer_style
-	new_batch.amount_bottles = brew_report.bottle_yield
+	new_batch.amount_bottles = effective_yield
 	new_batch.original_quality = brew_report.original_quality
 	new_batch.current_quality = brew_report.original_quality
 	new_batch.final_ebc = brew_report.final_ebc
@@ -324,4 +448,5 @@ func start_brew() -> void:
 
 	brew_preparation.clear_preparation()
 	print(StringContainer.SUCCESFULL_BREW_MESSAGE, BeerStyle.get_style_string_from_style(brew_report.beer_style.style))
+	BrewerySignals.batch_bottled.emit(bottles_lost, label_cost, brew_report.beer_style.style_name)
 	BrewerySignals.brewery_state_changed.emit(self)
