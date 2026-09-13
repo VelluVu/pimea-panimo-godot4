@@ -1,0 +1,255 @@
+Pimeä Panimo — Run Modifier & Leaderboard Playtest Notes
+Date: 2026-09-13
+Method: live playthrough via the godot-ai MCP session, driven through
+editor_manage(game_eval) rather than mouse/keyboard input simulation (per
+prior sessions' finding that OS/engine-level click simulation is
+unreliable here) — game_eval executes real GDScript against the running
+game, so every action below (buying ingredients, brewing, forcing sales,
+raids, day advances, button-press handlers) runs through the same
+GUISignals/BrewerySignals/method calls a real player action would, just
+without a mouse in the loop. Cross-referenced against source for the
+handful of things only checked structurally. This is a follow-up to
+playtest_notes.txt/_2/_3 (2026-09-11/12) — this pass focuses on what's
+new since: the RunModifier system, LeaderboardManager + the main-menu
+leaderboard window, SaleFlashStack/SaleReceiptLogWindow, and the
+GameEndWindow rank/"UUSI ENNÄTYS!" display, all of which were still
+mid-wiring or entirely unwired going into this session. No unaddressed
+crashes or script errors were produced by any real player-reachable
+action; one dead file was found and removed (details below).
+
+
+CONFIRMED WORKING — RUN MODIFIER SYSTEM (the "roguelike" per-run variance)
+============================================================================
+File: src/classes/run_modifier.gd, src/autoload/run_modifier_registry.gd,
+src/classes/brewery.gd (run_modifier, get_effective_raid_threshold(),
+_on_buy_ingredient/_on_sell_ingredient), src/classes/brew_resolver.gd
+(ingredient_price_multiplier).
+
+Sampled all 5 modifier resources directly and verified
+get_effective_raid_threshold() = roundi(100 * avi_threshold_multiplier)
+for each:
+
+  Modifier            avi_mult   price_mult   effective_raid_threshold
+  Tavallinen keikka   1.0        1.0          100
+  Kallis tori         1.3        1.4          130
+  Kireä AVI           0.7        0.8          70
+  Löysä valvonta      1.5        1.0          150
+  Ainepula            1.0        1.5          100
+
+All five compute correctly — no off-by-one or rounding surprises at any
+of the five multiplier values in play.
+
+Verified the price multiplier live, not just as arithmetic: forced fresh
+runs until landing on "Kireä AVI" (0.8x), then bought 2kg Pilsner malt
+(base_price 2 €/kg) through the real GUISignals.buy_ingredient path.
+Charged exactly 3 € (roundi(2*2*0.8) = 3.2 -> 3), money went 20 -> 17.
+Also confirmed BrewResolver.resolver.ingredient_price_multiplier (the
+cached copy the cost-preview UI reads) stayed in sync with the live
+run_modifier's value, as its own docstring promises.
+
+Verified the AVI threshold isn't just cosmetic: with the same "Kireä
+AVI" run, pushed risk to 69 (no raid) then to 70 — the raid fired
+exactly at the modifier-adjusted threshold, not the hardcoded 100. This
+is new behavior since the modifier system was wired into
+_check_for_avi_raid() by way of get_effective_raid_threshold(), and it
+holds up correctly under real play.
+
+No design issues found here — the modifier system does exactly what its
+own docstrings claim, at every value it can roll.
+
+
+CONFIRMED WORKING — LEADERBOARD, END SCREEN RANK, AND MAIN-MENU WINDOW
+==========================================================================
+File: src/autoload/leaderboard_manager.gd, scenes/ui/game_end_window.gd,
+scenes/ui/leaderboard_window.gd, scenes/ui/main_menu.gd/.tscn.
+
+This is the feature this session's earlier work (same day) finished
+wiring up — the main-menu "Ennätykset" button, the LeaderboardWindow
+scene tree, and the rank/"UUSI ENNÄTYS!" line on GameEndWindow all
+needed to be built from scratch or completed. This playtest is the first
+time any of it has been exercised end-to-end in a running game rather
+than a static screenshot.
+
+Busted ending (3rd raid): forced three raids on a fresh run. Third raid
+correctly set game_has_ended, paused the tree, and showed "BUSTED!" with
+correct stats (Päiviä selvitty: 1, Mainetta lopussa: 0, Pulloja myyty
+yhteensä: 0 — see caveat below on why bottles read 0) plus, newly, "Sijoitus
+ennätyslistalla: #1" and "UUSI ENNÄTYS!" beneath the stats block. Only
+"Uusi yritys" shown, no continue button — correct for a dead-end ending.
+Confirmed LeaderboardManager.get_entries() recorded exactly one entry
+with the correct ending_type, score, and modifier_name ("Kireä AVI").
+
+Survived ending (day 15, reputation 50, money 50): TimeManager.
+force_advance_day() correctly fired "LEGENDA!" with both stat lines and
+the rank line (this run's score of 2000 beat the prior busted run's 100,
+so rank #1 / "UUSI ENNÄTYS!" showed again, correctly). Both "Uusi
+yritys" and "Jatka pelaamista (ei tilastoihin)" shown, as expected only
+for this ending type.
+
+Continue-past-survival: pressed continue programmatically
+(_on_continue_button_pressed()) — has_continued_past_survival flipped to
+true, game_has_ended cleared, tree unpaused, run kept its existing
+state. Then forced the same continued run into bankruptcy (money=0,
+inventory cleared, check_bankruptcy()) — "KONKURSSI!" fired correctly,
+but LeaderboardManager.get_entries().size() stayed at 2 (not 3): the
+continued-run ending was correctly excluded from the leaderboard, and
+critically, GameEndWindow's own new rank line was ALSO correctly
+suppressed on that screen (no "Sijoitus" line at all) rather than
+showing a rank for an entry that doesn't actually exist on the list.
+This confirms the has_continued_past_survival guard added to
+GameEndWindow this session stays honest with what LeaderboardManager
+actually records, instead of drifting into a display bug of its own.
+
+Main-menu leaderboard window: opened via the real button handler,
+screenshotted with both recorded entries present. Displayed:
+
+  #1  Selvisi — 15 pv, 50 mainetta, 0 pulloa (2026-09-13T10:27:33)
+      Kireä AVI — pisteet: 2000
+  #2  Jäi kiinni — 1 pv, 0 mainetta, 0 pulloa (2026-09-13T10:26:09)
+      Kireä AVI — pisteet: 100
+
+Correctly sorted by score descending, correct Finnish ending labels
+("Selvisi" / "Jäi kiinni"), correct modifier_name per entry, close
+button correctly hides the window (verified via _on_close_button_pressed
+directly). No layout overflow or clipping at 2 entries; not tested at
+the MAX_ENTRIES=20 cap since reaching that would need 20 real runs, but
+the row-building code has no obvious per-row state that would break
+under more entries.
+
+Minor polish nit, not a bug: the date field is Godot's raw
+Time.get_datetime_string_from_system() output ("2026-09-13T10:27:33")
+sitting inside an otherwise fully Finnish, stylized row of text. Every
+other player-facing string in the game goes through StringContainer/
+custom formatting; this one line reads like a debug timestamp. Worth a
+pass to show just a date (or "tänään"/"eilen") if this list is meant to
+feel like a trophy case rather than a log.
+
+
+CONFIRMED WORKING — SALE FLASH TOASTS & RECEIPT LOG (previously unplayed)
+==============================================================================
+File: scenes/ui/sale_flash_stack.gd/toast.gd, scenes/ui/
+sale_receipt_log_window.gd, src/classes/sale_receipt_entry.gd/
+sale_breakdown.gd.
+
+These were new, untested-by-a-human files going into this session (built
+alongside the ending/leaderboard work, never exercised). Forced a real
+3-bottle Kotikalja sale via CustomerManager.process_auto_sale() (same
+path the dev console's "sell" command and real customer AI use) and
+confirmed via screenshot: a SaleFlashToast appeared top-right reading
+"Myyty: Kotikalja x3 +4.5 €", sized to fit its text, and (per source
+read, consistent with the 1.5s hold + 1.0s fade constants) was gone by
+the next screenshot ~5s later.
+
+A real walk-in customer ("Opiskelija Onni") also sold during the same
+window purely from the background spawn timer — confirming toasts stack
+correctly for concurrent/near-concurrent sales rather than one
+overwriting the other, since the log then correctly showed two separate
+receipts.
+
+Opened the receipt log window (GUISignals.receipt_log_requested) and
+confirmed both sales listed, newest-first, with the right per-bottle
+totals ("Kotikalja x1 +1.9 €" then "Kotikalja x3 +4.5 €" below it).
+Queried SaleReceiptEntry.get_breakdown_text()/get_totals_text() directly
+for the 3-bottle entry — "Raaka-aineet: 0.36 €", "Kate: 0.64 €", "=
+Hinta/pullo: 1.00 €", "Myynti: +3.0 €", "Tippi: +1.5 €", "TILILLE: +4.5
+€" — all internally consistent (3 bottles x 1.00 €/pullo + 1.5 € tip =
+4.5 €). No issues found in either the flash toast or the receipt log.
+
+
+FOUND AND FIXED: DEAD ORPHANED SCENE FILE
+=============================================
+File: scenes/ui/sale_breakdown_popup.tscn (deleted this session)
+
+While reading editor error logs during the playthrough, found a
+standing (pre-existing, not caused by this session's play) editor error:
+"Attempt to open script 'res://scenes/ui/sale_breakdown_popup.tscn'
+resulted in error 'File not found'" — sale_breakdown_popup.tscn
+referenced res://scenes/ui/sale_breakdown_popup.gd, which does not exist
+anywhere in the project. Grepped the whole repo: nothing else references
+sale_breakdown_popup.tscn at all — it's leftover scaffolding from before
+SaleReceiptLogWindow/SaleFlashToast replaced whatever "transient popup"
+design sale_receipt_log_window.gd's own docstring alludes to
+("...minus any expiry, the old transient popup used"). It was never
+instantiated at runtime (no preload/instantiate call anywhere), so it
+never affected a real player — but it threw a real load error on every
+editor filesystem scan. Deleted the file; confirmed via a clean
+project_run afterward (current_run_errors: []) that nothing depended on
+it.
+
+
+REGRESSION CHECKS (all still hold, no changes needed)
+=========================================================
+- Tutorial's guaranteed recipe (3kg Pilsner malt + 1 baking yeast) still
+  brews Kotikalja at quality 1.0, 38 bottles, for the expected 8 €
+  ingredient cost + 2 € label cost (money 20 -> 10). Unchanged since
+  playtest_notes_3.
+- DailyGoalsPanel's risk goal label still reads "Riski: 23/50" (current/
+  target order), not swapped — the fix from playtest_notes.txt/_2 is
+  intact. (Had to manually flip the brewery into "tutorial complete"
+  state to see this label at all — it's hidden behind the tutorial
+  checklist otherwise, which is correct, expected behavior, not a bug.)
+- TopPanel's RISK_WARNING_THRESHOLD=75 red tint still applies correctly
+  at risk=77 (confirmed the actual font_color override, not just visual
+  guesswork).
+- Special event trigger (SpecialEventManager.spawn_special_customer())
+  still fires cleanly with correct dialogue and no script errors.
+
+
+DEFENSIVE CHECK: SIGNAL CONNECTIONS ACROSS SCENE RELOADS
+============================================================
+Worth calling out since this session alone triggered ~6 full main.tscn
+reloads in quick succession (restart-after-busted, restart-after-
+bankrupt, "Aloita uusi peli" from the menu, etc.) — exactly the kind of
+repeated churn that could reveal a leaked signal connection if any
+per-scene node connected to a project-lifetime autoload signal without
+ever disconnecting. Directly inspected
+BrewerySignals.get_signal_connection_list("brewery_state_changed") after
+all that churn: 11 connections, a plausible count for one live scene's
+worth of listeners (top panel, daily goals, gui.gd, brewery/shop/
+warehouse views, audio manager, etc.), not an accumulating count from
+old freed scenes. Also checked
+SpecialEventManager.get_signal_connection_list("special_event_triggered")
+directly by object identity: exactly one connection each to
+AudioManager, DialogView, and DevConsole — no duplicates. (A duplicate
+"Erikoistapahtuma: ..." console log line during testing briefly looked
+like a leaked connection; it wasn't — real session wall-clock time had
+just crossed the real 300s automatic special-event timer interval at
+almost the same moment as a manually forced one, producing two genuine,
+separate events.) No leak found. Godot's automatic connection cleanup on
+node free appears to be working as expected for this codebase's signal-
+heavy architecture.
+
+
+TESTING METHODOLOGY CAVEATS (not gameplay bugs)
+===================================================
+- BrewEngine.start_new_game() was called directly via game_eval once
+  (to reroll the run modifier without waiting on randomness) without
+  the scene reload that always accompanies it in real code (main_menu.gd
+  and game_end_window.gd both immediately follow it with
+  change_scene_to_file()). Doing so left the still-open
+  SaleReceiptLogWindow showing the previous (now-discarded) run's
+  receipts, since nothing about start_new_game() itself tells that
+  window to refresh. This is unreachable through any real player action
+  — every real code path pairs start_new_game() with an immediate scene
+  reload, which would recreate that window empty — so it is not being
+  filed as a bug, just documented so it isn't mistaken for one later if
+  someone reads this in isolation.
+- All unit tests (42, across 6 suites including the new
+  test_leaderboard_manager.gd) were confirmed green earlier in this same
+  session, before this playthrough began; nothing touched during the
+  playthrough itself edited any .gd/test file (only live game state via
+  game_eval, plus the one dead .tscn deletion above), so that result
+  should still hold, but a fresh test_run was not re-executed at the very
+  end of this session to confirm it directly.
+
+
+VERDICT
+==========
+Everything this pass targeted — the RunModifier system's actual
+gameplay effect on prices and raid risk, the full leaderboard record/
+rank/display loop (including the trickier continue-past-survival
+exclusion case), and the previously-unplayed sale flash toast/receipt
+log UI — works exactly as designed, end to end, under real game_eval-
+driven play. One pre-existing dead file with a standing load error was
+found and removed. No new bugs were introduced by, or found in, any of
+the features built earlier this session.

@@ -7,14 +7,14 @@ extends Panel
 
 const RECAP_TITLE: String = "Päivän yhteenveto"
 const CLOSE_BUTTON_TEXT: String = "Jatka"
-const RECAP_MESSAGE_FORMAT: String = "Päivä %d alkoi.\n\nRahaa: %+d €\nMainetta: %+d\nAVI-riski nyt: %d\nPulloja myyty: %d\nUusia oluttyylejä: %s\nTavoitteet: %d/2 saavutettu"
+const RECAP_MESSAGE_FORMAT: String = "Päivä %d alkoi.\n\nRahaa: %+.1f €\nMainetta: %+d\nAVI-riski nyt: %d\nPulloja myyty: %d\nUusia oluttyylejä: %s\nTavoitteet: %d/2 saavutettu"
 const NO_NEW_STYLES_TEXT: String = "ei uusia"
 
 @onready var title_label: Label = $MarginContainer/MainVBox/TitleLabel
 @onready var message_label: Label = $MarginContainer/MainVBox/MessageLabel
 @onready var close_button: Button = $MarginContainer/MainVBox/CloseButton
 
-var _day_start_money: int = 0
+var _day_start_money: float = 0.0
 var _day_start_reputation: int = 0
 var _bottles_sold_today: int = 0
 var _goals_rewarded_today: int = 0
@@ -58,7 +58,7 @@ func _on_day_changed(new_day: int) -> void:
 	if brewery == null:
 		return
 
-	var money_delta := brewery.money - _day_start_money
+	var money_delta := snappedf(brewery.money - _day_start_money, 0.1)
 	var reputation_delta := brewery.reputation - _day_start_reputation
 	var discovered_text := ", ".join(_styles_discovered_today) if not _styles_discovered_today.is_empty() else NO_NEW_STYLES_TEXT
 

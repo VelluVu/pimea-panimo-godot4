@@ -6,6 +6,9 @@
 script = ExtResource("1_saison")
 style_name = "Saison"
 style = 14
+abv = 6.0
+profit_margin_multiplier = 1.15
+fixed_price_per_bottle = 3.0
 required_yeast_id = 302
 preferred_hop_profile = 5
 min_ebc = 14

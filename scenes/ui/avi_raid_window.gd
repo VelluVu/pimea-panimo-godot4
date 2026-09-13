@@ -15,7 +15,7 @@ func _ready() -> void:
 	BrewerySignals.avi_raid_triggered.connect(_on_avi_raid_triggered)
 
 
-func _on_avi_raid_triggered(confiscated_bottles : int, fine_amount : int, reputation_lost : int) -> void:
+func _on_avi_raid_triggered(confiscated_bottles : int, fine_amount : float, reputation_lost : int) -> void:
 	message_label.text = StringContainer.AVI_RAID_MESSAGE % [confiscated_bottles, fine_amount, reputation_lost]
 	show()
 

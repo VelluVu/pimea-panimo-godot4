@@ -6,6 +6,9 @@
 script = ExtResource("1_dubbel")
 style_name = "Belgian Dubbel"
 style = 15
+abv = 7.0
+profit_margin_multiplier = 1.3
+fixed_price_per_bottle = 4.0
 required_yeast_id = 302
 min_malt_weight = 4
 min_ebc = 31

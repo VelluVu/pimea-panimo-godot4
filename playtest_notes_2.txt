@@ -1,0 +1,386 @@
+Pimeä Panimo — Balance & Addictiveness Playtest Notes
+Date: 2026-09-12
+Method: live playthrough via the godot-ai MCP session — dev console commands
+(osta/pöytään/pane for the real tutorial brew flow) plus direct game_eval
+calls to inspect live economy numbers, trigger a real sale, force a day
+advance, and force an AVI raid, since OS-level click simulation is
+unreliable in this environment (per prior sessions). Cross-referenced
+against static data pulled from every BeerStyle/CustomerData/ingredient
+resource and the relevant autoload scripts. No crashes or script errors
+encountered. This is a follow-up to playtest_notes.txt (2026-09-11) — see
+that file for the original bug-hunting pass; three of its findings are
+re-checked below since they're still relevant to the loop's feel.
+
+
+STILL-OPEN ISSUES FROM THE LAST REPORT
+=======================================
+
+1. [FIXED 2026-09-12] Risk goal label still shows numbers swapped
+   File: scenes/ui/daily_goals_panel.gd, line 121
+
+       risk_goal_label.text = RISK_GOAL_FORMAT % [RISK_LIMIT, brewery.risk]
+
+   RISK_GOAL_FORMAT is "Riski: %d/%d". This still prints as "Riski:
+   50/23" instead of "Riski: 23/50" at risk=23. Confirmed still present,
+   unchanged since the last report. Small thing, but it's a visible
+   glitch on an always-partially-open panel (the goal tracker is meant to
+   be glanced at constantly) — worth a one-line fix: swap to
+   [brewery.risk, RISK_LIMIT].
+
+   Fixed: swapped to [brewery.risk, RISK_LIMIT].
+
+2. [FIXED 2026-09-12] Empty dialogue bubble race condition
+   File: scenes/customer.gd, lines 172-176. No dialogue_reject fallback
+   when CustomerManager.process_auto_sale() returns "" (e.g. another
+   customer emptied the batch first). The group-visit path already has
+   this fix; the solo path doesn't.
+
+   Fixed as a side effect of adding strict-preference customers (Zgen/
+   Barbaari refusing to buy outside their requirements, see below):
+   process_auto_sale() no longer has an empty-string return path at all —
+   when no batch is found (or none clears a customer's strict
+   requirement), it now returns CustomerData.dialogue_no_match, a real
+   per-customer line, instead of "". src/autoload/customer_manager.gd:
+   107-114. The group-order code's `if response_text == "": ...` patch
+   became dead code once the source was fixed and has been removed
+   (src/classes/customer_spawner.gd).
+
+3. [FIXED 2026-09-12] Day timer silently cancels an active sale with no
+   warning
+   Manual "Sulje ovet" warns if a customer is mid-sale
+   (CustomerManager.has_active_customers(), scenes/ui/gui.gd:113-117); the
+   automatic 300s day timer (src/autoload/time_manager.gd) does the exact
+   same day-advance with zero warning. Flagging again since it directly
+   affects how "fair" a lost sale feels to the player.
+
+   Fixed: TimeManager._on_day_timeout() now checks
+   CustomerManager.has_active_customers() before advancing — since the
+   automatic timer has no player to show a confirmation to, it instead
+   waits a short beat (DAY_END_CUSTOMER_RETRY_SECONDS = 5s) and rechecks,
+   repeating until the customer's done, then advances normally with the
+   timer restored to its full day_duration_seconds cycle. The manual
+   "Sulje ovet" path is untouched. Verified live: an active customer held
+   the day at its current value with the timer shortened to a 5s retry;
+   freeing the customer let the next check advance correctly.
+   src/autoload/time_manager.gd:17-41.
+
+
+[FIXED 2026-09-12] THE TUTORIAL'S FIRST BREW SCORED MEDIOCRE QUALITY
+================================================================
+File: src/classes/brew_resolver.gd (resolve_brew_style / _range_precision),
+src/resources/beer_styles/kotikalja.tres
+
+Played the tutorial exactly as designed: bought 3kg Pilsner malt + 1
+baking yeast (the pre-seeded Kotikalja default recipe), put them on the
+table, brewed. Result: 38 bottles at quality 0.8 — NOT the 1.0
+"original_quality" a new player would reasonably expect from following
+the game's own guidance.
+
+Why: Kotikalja intentionally has no real EBC/IBU bounds (it's the
+catch-all fallback style), so it falls back to the BeerStyle class
+defaults of min_ebc=0/max_ebc=999 and min_ibu=0/max_ibu=999. That's NOT
+treated as "wide open, so score it as perfect" — _range_precision() scores
+distance from the range's CENTER (~500 EBC, ~500 IBU), and a real minimal
+Kotikalja batch resolves to ~2 EBC / 0 IBU. That's about as far from 500
+as you can get, so precision_score comes out near 0, dragging the
+quality_multiplier down to ~0.8.
+
+This means literally every new player's first, safest, most
+by-the-book brew comes out looking like a mistake. First impressions
+matter most for hooking a player — I'd either give Kotikalja tight
+EBC/IBU bounds of its own (matching what its default recipe actually
+produces), or special-case the fallback style's precision scoring.
+
+Fixed: gave Kotikalja a tight max_ebc=4 (min_ebc stays 0), centered
+exactly on the default recipe's real output (Pilsner malt, EBC 2) —
+EBC precision now scores 1.0, landing the overall quality_multiplier at
+exactly 1.0 (IBU precision still scores 0 at the min_ibu=0 edge for a
+hop-free brew, but that's now the neutral point of the formula, not a
+penalty). IBU bounds deliberately left untouched (still 0-999) so
+Kotikalja keeps its role as the catch-all fallback for odd ingredient
+combos — a combo whose EBC now falls outside the tightened window just
+routes through the hardcoded is_matched=false fallback instead, which
+already flatly quality=1.0. Verified live: the exact tutorial recipe (3kg
+Pilsner malt + 1 baking yeast) now brews at quality 1.0.
+src/resources/beer_styles/kotikalja.tres.
+
+
+ECONOMY BALANCE (post pricing/tax/tip rework)
+===============================================
+[NOTE 2026-09-12] Excise duty and VAT were removed from pricing entirely
+after this report — a hidden cellar operation doesn't remit anything to
+the state, so there was never a real "tax" to model (see
+src/classes/brew_resolver.gd's calculate_price_breakdown()). Price is
+now just raw_cost + profit margin, no markup for tax, and
+CustomerManager no longer deducts anything at sale time (gross_income +
+tip = net_income, full stop). The specific EUR figures and the tip
+rounding-floor numbers below are now stale (prices dropped roughly
+40-55%) — the qualitative shape (cheap styles cost little, complex
+styles earn proportionally more via profit_margin_multiplier) still
+holds, the absolute numbers don't.
+
+Verified live via BrewResolver.get_price_breakdown() for 6 representative
+styles (price assumes cheapest valid recipe; batch = 38 bottles after the
+5% bottling loss) — figures below are from BEFORE the tax removal, kept
+for the qualitative comparison, see note above:
+
+  Style            Price/bottle   Batch ingredient cost   Batch gross revenue
+  Kotikalja        1.16 EUR       13.70 EUR                44.17 EUR
+  Bulkkilager      2.10 EUR       26.70 EUR                79.81 EUR
+  Pale Ale         2.98 EUR       42.70 EUR               113.21 EUR
+  IPA              5.20 EUR       72.70 EUR               197.48 EUR
+  Imperial Stout   7.21 EUR       91.70 EUR               274.16 EUR
+  Barleywine       7.26 EUR       90.70 EUR               275.79 EUR
+
+Observations:
+- Starting money is 100 EUR (src/classes/brewery.gd:17). Nothing gates a
+  brand-new player from immediately dumping ~90% of it into one Imperial
+  Stout or Barleywine batch turn one — no reputation/discovery lock on
+  ingredients or brewing, only on which CUSTOMERS will buy it (see below).
+  That's a real, interesting risk/reward choice right at the start of the
+  game (go safe with Kotikalja, or gamble the whole bankroll on a
+  high-value style you can't yet reliably sell) — I'd call this a
+  strength, not a gap, as long as it's intentional.
+- Daily overhead (electricity+water = 8 EUR/day, src/autoload/
+  time_manager.gd:14-15, gated behind tutorial_complete()) is trivial
+  next to even a single Kotikalja batch's ~11-12 EUR margin. It never
+  becomes a real threat once the player is brewing at all — right now
+  it's flavor rather than a lever. Could scale with reputation/day count
+  if you want upkeep to matter later game.
+- The new profit_margin_multiplier (1.0x base styles up to 1.5x for
+  Imperial Stout/Barleywine) plus the ABV-driven excise math means
+  higher-effort styles are unambiguously more profitable per bottle AND
+  per euro of ingredients invested (Kotikalja ~3.2x markup on cost vs.
+  Barleywine's built-in 1.5x profit multiplier on top of that same
+  ratio). Clean, legible progression incentive — a player who tastes
+  Barleywine's economics once has an obvious reason to keep pushing into
+  harder styles.
+
+Tip mechanic (new): verified with a manually-quality-controlled IPA sale
+— masterful quality (1.8, customer bar 0.5, margin 1.3) produced a 2 EUR
+tip on a 5 EUR sale (a real, felt bonus); the identical batch sold at bad
+quality (0.2) produced 0 EUR tip, same 5 EUR base price either way (price
+truly doesn't move — confirmed the "same style, same price" rule holds
+regardless of who's buying or how good the batch is). Also confirmed
+price is identical for a matched-primary-style customer and a
+wrong-style customer buying the exact same batch — style-match no longer
+touches price.
+
+However: at cheap styles' price points (Kotikalja ~1 EUR, Bulkkilager ~2
+EUR), a "clearly exceeds expectations" quality margin of 0.5 with the
+default customer's quality_tip_sensitivity (0.3) rounds the tip down to
+0 EUR every time (roundi(1 * 0.5 * 0.3) = 0). Verified directly — three
+separate test sales at quality margin 0.5 on a ~1-3 EUR base price all
+tipped 0. Tips only become visible once quality margin and/or price get
+large enough to clear the rounding floor (my masterful-quality IPA test
+did; a merely-good Kotikalja sale won't). Since most of a new player's
+early sales ARE cheap styles, "you might get more tip" as a felt
+mechanic is effectively invisible for the first stretch of play. Worth
+either giving tip a small minimum floor when margin > 0, or accepting
+it's meant to read as a late-game/high-value-style reward only.
+
+[FIXED 2026-09-12] Added CustomerData.MIN_TIP_PER_QUALITY_POINT (1 EUR
+per full quality point of margin) as a price-independent floor under the
+proportional formula: tip = max(income*margin*sensitivity,
+margin*MIN_TIP_PER_QUALITY_POINT) * budget_multiplier. The proportional
+term still wins (and keeps scaling with price) once income is high enough
+to clear the flat floor on its own, so expensive styles aren't
+undercut — verified a masterful IPA sale still tips proportionally to
+price, not just the flat floor. Verified live: a Kotikalja sale at
+quality margin 0.5 (previously 0 EUR tip) now tips 1 EUR.
+src/classes/customer_data.gd.
+
+
+RISK / AVI RAID
+================
+Raid trigger: src/classes/brewery.gd:113-128 — risk >= 100
+(AVI_RAID_THRESHOLD) confiscates the ENTIRE current inventory, takes a
+30% cash fine (AVI_RAID_FINE_PERCENT) and a 25% reputation cut
+(AVI_RAID_REPUTATION_PENALTY_PERCENT), then resets risk to 0. Triggered
+inline every time Brewery.add_risk() is called — i.e. it can fire
+mid-sale, not just at day boundaries.
+
+Verified live: with a fresh 20-bottle batch in inventory (real ingredient
+investment) and risk pushed to 100, the raid took 29 EUR, 5 reputation,
+and all 20 bottles in one instant. There is no player-facing warning
+beyond src/autoload/audio_manager.gd's tension drone, which scales
+volume by risk/100 — a nice diegetic touch, but it's the ONLY signal; no
+UI alert, no "last chance" moment, no confirmation. For a first-time
+player who hasn't connected "the ambient audio is getting worse" to "I'm
+about to lose everything," this will land as a sudden, unexplained
+gut-punch rather than earned tension.
+
+DailyGoalsPanel's own risk goal sits well below the actual cliff
+(RISK_LIMIT=50 vs. raid at 100) with a modest reward (10 EUR/2
+reputation) for staying under it — a sensible soft-warning layer in
+principle, but nothing in the UI communicates that crossing 100 isn't
+"a bit worse than missing the goal," it's "lose your entire stock
+instantly." I'd add an explicit threshold warning (a color change, an
+icon, a one-time toast) somewhere around risk 75-90, on top of the audio.
+
+[FIXED 2026-09-12] Added a RISK_WARNING_THRESHOLD=75 in
+top_panel_resources.gd, between the 50 goal and the 100 cliff: the "AVI
+Riski" label tints to the same failing-red used elsewhere in the UI for
+as long as risk stays at or above it, and pulses once on the moment it
+first crosses upward (not on every subsequent update, and not looping —
+a one-time "heads up" beat, not a nag). Clears back to normal the moment
+risk drops back under 75. Verified live: pushing risk to 77 applied the
+tint and pulsed once; dropping it to 10 cleared the tint.
+
+Per-sale risk varies meaningfully by which customer you're serving —
+worth calling out since it's a nice, currently-invisible bit of depth:
+Agentti (the AVI-inspector-as-customer archetype, unlocks at 50
+reputation) carries primary_match_risk_multiplier=2.5 — serving their
+preferred style is riskier than almost anything else in the game.
+Mafioso carries -1.5 on the same field, actively REDUCING risk on a
+primary-style match — thematically it reads as "protection," and
+mechanically it makes Mafioso sales a genuine risk-management tool once
+unlocked. Neither of these is explained anywhere in the UI; a player
+would have to infer it from repeated play.
+
+
+CUSTOMER / REPUTATION UNLOCK CURVE
+====================================
+  Min. reputation   Archetypes unlocked         Notes
+  0 (start)         Opiskelija, Raksamies, Zgen  Forgiving quality bars (0.05-0.3)
+  15                Leijonafani                  Still forgiving (0.05), randomized preference
+  20                Barbaari, Hipsteri           Hipsteri is the first real quality test (bar 0.8)
+  50                Agentti, Mafioso             Agentti = risk-heavy; Mafioso = big tipper/spender, risk-reducer
+
+A single well-matched sale grants roughly +11 to +15 reputation in my
+tests (default customer, decent-quality Kotikalja). At that rate the
+ENTIRE customer roster — all 8 archetypes — can unlock inside one
+session well under an hour, often much faster once the reputation-spawn
+feedback loop below kicks in. For a short/casual session that's fine;
+for anyone who plays longer, there's currently nothing left to unlock
+past 50 reputation — no new mechanic, no new customer tier, nothing.
+That's the single biggest lever I'd pull for long-session
+addictiveness: stretch the curve further (a 100+ tier) or attach
+something else to reputation milestones (new ingredients, a shop
+upgrade, a cosmetic) so late-game still has a "just a bit more" pull.
+
+[PARTIALLY ADDRESSED 2026-09-12] Did not add a new discrete unlock tier
+(new customer archetypes need new art/sprites — out of scope for a
+balance pass) or a new milestone-reward system. Instead, made sure the
+mechanics that already scale continuously with reputation don't quietly
+cap out: group-visit frequency is now reputation-scaled (see PACING
+below) alongside the walk-in curve, so reputation past 50 keeps paying
+off in busier days even with the full roster already unlocked. A real
+new discrete tier is still a bigger, separate design decision — flagging
+that this is a partial answer, not a full one.
+
+The walk-in spawn-rate curve, on the other hand, is genuinely the best
+hook in the game: src/classes/customer_spawner.gd:77-81 computes
+factor = 100 / (100 + reputation), shrinking the walk-in interval
+(30-90s baseline) as reputation climbs, floored at 10s. This is a clean,
+textbook compounding loop — more fame -> busier bar -> more sales -> more
+fame — and it's already well-tuned (verified the formula directly, and
+felt the effect in the earlier eval-driven sales). I'd protect this
+mechanic specifically in any future rebalancing; it's doing a lot of the
+game's "just one more sale" work.
+
+
+PACING / SESSION STRUCTURE
+=============================
+Day length defaults to 300s (5 minutes) real time
+(src/autoload/time_manager.gd:17). Against that:
+
+- Walk-in customers every 30-90s at 0 reputation (faster as reputation
+  rises) — roughly 3-10 visits per day early, busier later. Feels
+  appropriately busy for a 5-minute day.
+- Group visits fire every 240-480s (src/classes/customer_spawner.gd:10-11)
+  and are NOT reputation-scaled. The average interval (360s) is longer
+  than a full default day (300s) — meaning most days will see zero group
+  visits by pure chance, and the feature (confirmed working well,
+  crowd-formation and all, in the last report) is statistically
+  under-exposed relative to how polished it is. I'd either shorten this
+  interval or scale it down with reputation the way walk-ins already are.
+
+  [FIXED 2026-09-12] Halved the base interval to 150-300s (avg 225s, now
+  under the default day length) and applied the exact same
+  reputation-scaling factor walk-ins already use, floored at a still-rarer
+  120s (vs. walk-ins' 10s floor) so groups stay a "special" event even at
+  high reputation. This also directly helps the "nothing scales past 50
+  reputation" finding below — group-visit frequency keeps improving well
+  past that point. Verified: factor/interval computed correctly at
+  reputation 0 (150-300s), 50 (120-200s), and 100 (120-150s, floor
+  reached). src/classes/customer_spawner.gd.
+
+- Both walk-in and group-visit timers silently skip and reschedule if
+  brewery.inventory.brew_batches is empty — there's no "the bar is empty,
+  come back later" signal for the player, customers just... stop coming.
+  Combined with the day timer, a player who spends too long fiddling with
+  the brew screen on a given day can burn most of it with nobody walking
+  in at all, with no feedback explaining why. A simple "no beer to sell!"
+  indicator would close this gap cheaply.
+
+  [FIXED 2026-09-12] BeerBatchPanel now shows "Ei olutta myytävänä — keitä
+  lisää!" in place of the (previously just empty) batch list whenever
+  inventory.brew_batches has nothing left to sell. Verified live.
+  scenes/ui/beer_batch_panel.gd.
+
+
+BEER STYLE / SHELF-LIFE DESIGN
+=================================
+Complexity scales sensibly across three axes at once: min_malt_weight
+(3kg -> 5kg), ABV (2.8% -> 10%), and profit_margin_multiplier (1.0x ->
+1.5x) all climb together from Kotikalja up through Imperial
+Stout/Barleywine. That's a clear, well-communicated "invest more, earn
+proportionally more (and then some)" ladder.
+
+Shelf life runs the opposite direction from what I'd have guessed: the
+priciest, biggest-investment styles (Barleywine, Imperial Stout) also
+get the longest shelf life (900 days, 60-day peak) — so the styles with
+the most money on the line are also the safest to hold unsold. Cheaper
+styles (Pale Ale, IPA, Hefeweizen, Witbier, Session Ale) spoil faster
+(14-45 days) with negative aging factors. In practice, though, 14 days =
+about 70 minutes of real play at the default day length, so spoilage
+essentially never becomes a felt concern within a normal session — it's
+a mechanic that's present and internally consistent, but not currently
+pulling any weight in day-to-day decisions. Worth knowing it's inert
+rather than assuming it's tuning pressure.
+
+
+ADDICTIVENESS VERDICT
+========================
+Strengths:
+- The reputation -> spawn-rate feedback loop (customer_spawner.gd) is a
+  genuine, well-tuned compounding hook — the single strongest piece of
+  the loop.
+- Reputation-gated customer tiers reward early progress on a fast,
+  satisfying cadence (0/15/20/50).
+- The new pricing engine gives real, legible stakes to the
+  cheap-and-safe vs. expensive-and-ambitious brewing choice, and the new
+  per-customer risk multipliers (Agentti/Mafioso) add depth that rewards
+  paying attention to who you're serving.
+- DailyGoalsPanel's near-miss pulse animation on the bottles goal is
+  exactly the kind of "just one more sale" nudge that makes a loop
+  compulsive, and it's already implemented well.
+- The tip mechanic adds a small unexpected-reward moment on top of
+  expected income — good dopamine shape, pending the cheap-style
+  rounding-to-zero issue noted above.
+
+Friction that worked against the loop (status as of 2026-09-12):
+- [FIXED] No explicit AVI raid warning beyond ambient audio — a first
+  raid was likely to feel like an unfair surprise rather than earned
+  tension. Now tints/pulses the risk label at risk >= 75.
+- [FIXED] Group visits were statistically under-exposed relative to day
+  length. Now reputation-scaled and a shorter baseline interval.
+- [PARTIALLY ADDRESSED] The full customer roster unlocks inside a single
+  session; group-visit frequency now keeps scaling past that point, but
+  no new discrete content tier was added — see the unlock-curve section
+  above.
+- [FIXED] The tutorial's own default recipe produced a mediocre-quality
+  first brew. Now scores a clean 1.0.
+- [FIXED] Silent customer-spawn starvation when inventory is empty, with
+  no player-facing explanation. BeerBatchPanel now says so directly.
+
+None of the above were severe — the moment-to-moment loop (serve, earn,
+watch reputation tick up, get busier, get ambitious) was already solid,
+and this pass closed out four of the five friction points plus all three
+carried-over bugs from the original report, without touching the
+mechanics that were already working well (the reputation->spawn-rate
+loop, the fixed-price economy, the daily-goal near-miss pulse). The one
+remaining open item is a genuine new-content decision, not a tuning fix:
+whether/how to extend progression with something past 50 reputation
+beyond what group-visit scaling already covers.

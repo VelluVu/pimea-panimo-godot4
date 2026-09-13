@@ -23,6 +23,10 @@ const GROUP_VISIT_BANNER_FADE_SECONDS: float = 0.8
 @onready var dev_console : Control = $DevConsole
 var _discovery_toast_tween : Tween
 var _group_visit_banner_tween : Tween
+## Tracked purely to detect an ingredient-unlock-worthy reputation increase
+## in _on_brewery_state_changed() — separate from any similar cache
+## top_panel_resources.gd keeps for its own money/reputation delta popups.
+var _last_reputation_seen : int = -1
 
 @onready var shop_view : ShopView = $Left_ShopView
 @onready var brewery_view : BrewingView = $Left_BrewingView
@@ -45,6 +49,10 @@ func _ready() -> void:
 	BrewerySignals.style_discovered.connect(_on_style_discovered)
 	BrewerySignals.daily_goal_reward_granted.connect(_on_daily_goal_reward_granted)
 	BrewerySignals.group_visit_announced.connect(_on_group_visit_announced)
+	BrewerySignals.brewery_state_changed.connect(_on_brewery_state_changed)
+
+	var brewery := BrewEngine.current_brewery
+	_last_reputation_seen = brewery.reputation if brewery != null else 0
 
 
 ## The Scene dock's per-node "eye" visibility toggle is a real property
@@ -115,6 +123,23 @@ func _on_close_day_button_pressed() -> void:
 		close_day_confirm_window.show()
 	else:
 		GUISignals.close_day_requested.emit()
+
+
+## Only reputation is checked (ingredient min_reputation is the only
+## unlock condition), and only for a genuine increase — an AVI raid's
+## reputation penalty should never announce a "newly unlocked" hop that
+## was actually already available before the drop.
+func _on_brewery_state_changed(brewery : Brewery) -> void:
+	var new_reputation : int = brewery.reputation
+	if new_reputation <= _last_reputation_seen:
+		_last_reputation_seen = new_reputation
+		return
+
+	for ingredient : IngredientData in IngredientDatabase.database.values():
+		if ingredient.min_reputation > _last_reputation_seen and ingredient.min_reputation <= new_reputation:
+			_show_toast(StringContainer.INGREDIENT_UNLOCKED_TOAST_FORMAT % ingredient.name)
+
+	_last_reputation_seen = new_reputation
 
 
 func _on_style_discovered(style : int) -> void:

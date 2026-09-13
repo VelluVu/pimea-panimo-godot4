@@ -2,12 +2,54 @@ class_name BrewResolver
 extends Resource
 
 
-const BASE_STYLE_PRICE : float = 3.0
-const STYLE_PRICE_COST_WEIGHT : float = 0.4
-const MAX_STYLE_PRICE_BONUS : float = 4.0
+## Fraction of a batch's raw bottle_yield that never makes it to sellable
+## inventory — breakage/spillage during bottling. Applied for real in
+## Brewery.start_brew() (fewer bottles actually land in inventory) and
+## folded into get_style_cost_per_bottle() below (the same ingredient
+## spend divided across fewer bottles costs more per bottle), so the two
+## never drift apart.
+const BOTTLE_LOSS_RATE : float = 0.05
+## Label design/printing cost per bottle produced (before loss) — a real
+## cash cost Brewery.start_brew() deducts from money, and also folded into
+## the cost basis get_price_breakdown() marks up from, same reasoning as
+## BOTTLE_LOSS_RATE above.
+const LABEL_ART_COST_PER_BOTTLE : float = 0.05
+## Bottle, cap, and cleaning-solution cost per bottle — the other
+## production consumable besides label art, folded into the same cost
+## basis for the same reason.
+const CONSUMABLES_COST_PER_BOTTLE : float = 0.10
+
+## Target profit margin: a markup on top of raw ingredient cost. No excise
+## duty or VAT anywhere in this pricing model — a hidden cellar operation
+## isn't remitting anything to the state, so there's nothing to mark up
+## for or split off at sale time (see calculate_price_breakdown() and
+## SaleBreakdown). Tunable balance constant.
+const PROFIT_MARKUP_RATE : float = 0.5
+## Absolute floor under PROFIT_MARKUP_RATE's proportional cut — on a cheap
+## style like Kotikalja (raw cost ~0.36 EUR) the proportional margin alone
+## is a few cents, which doesn't read as a real "kate" even though the
+## actual sale rounds up to at least 1 EUR. Multiplied by
+## profit_margin_multiplier same as the proportional term below (though
+## that term already dominates for anything but the very cheapest styles).
+const MIN_PROFIT_PER_BOTTLE : float = 0.5
 
 var active_styles: Array[BeerStyle] = []
-var _style_base_price_cache : Dictionary = {}
+var _style_cost_per_bottle_cache : Dictionary = {}
+var _sale_breakdown_cache : Dictionary = {}
+
+## Set once by Brewery._init() right after this resolver is created, from
+## this run's RunModifier.ingredient_price_multiplier — kept in sync with
+## what Brewery._on_buy_ingredient() actually charges so get_style_cost_per_bottle()
+## and the sale receipt's raw_cost_per_bottle never drift from what the
+## player is really paying under a pricier/cheaper-ingredients modifier.
+var ingredient_price_multiplier : float = 1.0
+
+
+## Shared by Brewery.start_brew() (actually shrinking a real batch) and
+## get_style_cost_per_bottle() (pricing off the same shrinkage) so
+## BOTTLE_LOSS_RATE is applied identically in both places.
+static func get_effective_bottle_yield(raw_yield : int) -> int:
+	return maxi(1, raw_yield - roundi(raw_yield * BOTTLE_LOSS_RATE))
 
 
 func _ready() -> void:
@@ -140,30 +182,131 @@ func _range_precision(value: float, min_v: float, max_v: float) -> float:
 	return clampf(1.0 - (distance / half_range), 0.0, 1.0)
 
 
-## Small per-style price differentiator derived from how much its own
-## minimum recipe costs in raw ingredients — a hop-heavy style ends up
-## priced a bit above a bare-bones malt+yeast one. Square-root dampened
-## and capped (MAX_STYLE_PRICE_BONUS) so a style needing many grams of
-## an expensive hop doesn't linearly dominate: this is meant to be a
-## small nudge on top of BASE_STYLE_PRICE, not a second quality
-## multiplier, and the whole sale economy runs on small rounded integers
-## (see CustomerData.evaluate_brew_batch's roundi(income)). Cached per
-## style since compute_minimum_ingredients() does a brute-force search.
-func get_style_base_price(beer_style : BeerStyle) -> float:
-	if _style_base_price_cache.has(beer_style.style):
-		return _style_base_price_cache[beer_style.style]
+## Per-bottle production cost floor for a style: the cheapest malt combo
+## that clears its EBC/weight requirement, its required yeast, and the
+## cheapest hop dose that clears its min_ibu (see _find_cheapest_hop_dose),
+## amortized over one batch's bottle yield, plus the flat per-bottle
+## consumables (label art, bottle/cap/cleaner). Deliberately NOT
+## compute_minimum_ingredients() (which targets the *center* of the style's
+## EBC/IBU windows for the best brew precision/flavor-match bonus — great
+## for seeding a default recipe, but a style with a wide IBU window like
+## IPA [40,200] would then cost itself off a huge, unrealistic hop dose
+## meant for a precision score, not a shopping list). Exposed separately
+## from get_price_breakdown() (which marks this up with tax and profit) so
+## both the dev console's "sell" preview and the price formula share one
+## cost source instead of drifting apart. Cached per style since the hop
+## search is brute-force.
+func get_style_cost_per_bottle(beer_style : BeerStyle) -> float:
+	if _style_cost_per_bottle_cache.has(beer_style.style):
+		return _style_cost_per_bottle_cache[beer_style.style]
 
-	var ingredients : Dictionary = compute_minimum_ingredients(beer_style)
+	var malt_combo : Dictionary = _find_malt_combo(beer_style.min_ebc, beer_style.max_ebc, beer_style.min_malt_weight)
 	var raw_cost : int = 0
-	for ingredient_id : int in ingredients:
-		var data : IngredientData = IngredientDatabase.database[ingredient_id]
-		raw_cost += data.base_price * ingredients[ingredient_id]
+	for malt_id : int in malt_combo:
+		raw_cost += IngredientDatabase.database[malt_id].base_price * malt_combo[malt_id]
 
-	var bonus : float = clampf(sqrt(float(raw_cost)) * STYLE_PRICE_COST_WEIGHT, 0.0, MAX_STYLE_PRICE_BONUS)
-	var price : float = BASE_STYLE_PRICE + bonus
+	var yeast_data : IngredientData = IngredientDatabase.database.get(beer_style.required_yeast_id)
+	if yeast_data != null:
+		raw_cost += yeast_data.base_price
 
-	_style_base_price_cache[beer_style.style] = price
-	return price
+	if beer_style.min_ibu > 0:
+		var hop_dose : Dictionary = _find_cheapest_hop_dose(beer_style.min_ibu, beer_style.max_ibu)
+		for hop_id : int in hop_dose:
+			raw_cost += IngredientDatabase.database[hop_id].base_price * hop_dose[hop_id]
+
+	var raw_yield : int = BrewResult.new().bottle_yield
+	var effective_yield : int = get_effective_bottle_yield(raw_yield)
+	var cost_per_bottle : float = ((float(raw_cost) * ingredient_price_multiplier) / float(effective_yield)) + LABEL_ART_COST_PER_BOTTLE + CONSUMABLES_COST_PER_BOTTLE
+
+	_style_cost_per_bottle_cache[beer_style.style] = cost_per_bottle
+	return cost_per_bottle
+
+
+## Pure math, deliberately independent of IngredientDatabase (unlike
+## get_style_cost_per_bottle) so it's unit-testable on its own — see
+## tests/test_brew_resolver.gd. No excise duty or VAT: this cellar
+## operation doesn't remit anything to the state, so the price is exactly
+## what it costs to make plus a profit margin, full stop:
+##   profit           = max(raw_cost * PROFIT_MARKUP_RATE, MIN_PROFIT_PER_BOTTLE) * profit_margin_multiplier
+##   price_per_bottle = raw_cost + profit
+## abv is carried through purely for display (batch labels, receipts) —
+## it no longer affects price at all. profit_margin_multiplier is
+## BeerStyle.profit_margin_multiplier (defaults to 1.0) — lets fussier,
+## more complex styles like IPA or Imperial Stout still earn a fatter
+## margin than a plain Kotikalja; the proportional term already dominates
+## there, MIN_PROFIT_PER_BOTTLE only rescues the cheapest styles.
+static func calculate_price_breakdown(style_name : String, abv : float, raw_cost_per_bottle : float, profit_margin_multiplier : float = 1.0) -> SaleBreakdown:
+	var breakdown := SaleBreakdown.new()
+	breakdown.style_name = style_name
+	breakdown.abv = abv
+	breakdown.raw_cost_per_bottle = raw_cost_per_bottle
+
+	var proportional_profit : float = raw_cost_per_bottle * PROFIT_MARKUP_RATE
+	breakdown.profit_per_bottle = max(proportional_profit, MIN_PROFIT_PER_BOTTLE) * profit_margin_multiplier
+	breakdown.price_per_bottle = breakdown.raw_cost_per_bottle + breakdown.profit_per_bottle
+
+	return breakdown
+
+
+## Full per-bottle price breakdown for a style — raw ingredient cost (see
+## get_style_cost_per_bottle) marked up with a target profit margin (see
+## calculate_price_breakdown), UNLESS BeerStyle.fixed_price_per_bottle is
+## set, in which case that hand-tuned price wins outright and "kate" is
+## whatever's left after raw cost — price is the designed anchor here, not
+## a formula output. Cached per style, same reasoning as
+## get_style_cost_per_bottle.
+func get_price_breakdown(beer_style : BeerStyle) -> SaleBreakdown:
+	if _sale_breakdown_cache.has(beer_style.style):
+		return _sale_breakdown_cache[beer_style.style]
+
+	var raw_cost_per_bottle : float = get_style_cost_per_bottle(beer_style)
+	var breakdown := calculate_price_breakdown(beer_style.style_name, beer_style.abv, raw_cost_per_bottle, beer_style.profit_margin_multiplier)
+
+	if beer_style.fixed_price_per_bottle > 0.0:
+		breakdown.price_per_bottle = beer_style.fixed_price_per_bottle
+		breakdown.profit_per_bottle = breakdown.price_per_bottle - breakdown.raw_cost_per_bottle
+
+	_sale_breakdown_cache[beer_style.style] = breakdown
+	return breakdown
+
+
+## Per-style list price a customer's evaluate_brew_batch() multiplies by
+## quality/budget/preference — see CustomerManager.process_auto_sale() and
+## CustomerData.evaluate_brew_batch's price_modifier branches for how this
+## turns into what a customer actually pays.
+func get_style_base_price(beer_style : BeerStyle) -> float:
+	return get_price_breakdown(beer_style).price_per_bottle
+
+
+## Cost-only hop pick used solely by get_style_base_price — unlike
+## _find_hop_dose (which targets the center of [min_ibu, max_ibu] for the
+## best precision score and prefers preferred_hop_profile for the flavor
+## bonus), this ignores flavor profile entirely and searches every hop for
+## whichever one clears min_ibu for the lowest gram cost, since that's the
+## real floor cost to brew a style at all.
+func _find_cheapest_hop_dose(min_ibu : int, max_ibu : int) -> Dictionary:
+	var hops := _get_all_hops()
+	var deltas : Array[int] = [0, 1, 2, -1, 3, -2, 4, 5]
+
+	var best_cost : int = -1
+	var best_dose : Dictionary = {}
+
+	for hop in hops:
+		var base_amount : int = max(1, roundi(min_ibu * 10.0 / hop.alpha_acids))
+		for delta in deltas:
+			var try_amount : int = base_amount + delta
+			if try_amount < 1:
+				continue
+
+			var final_ibu := roundi(hop.alpha_acids * try_amount / 10.0)
+			if final_ibu >= min_ibu and final_ibu <= max_ibu:
+				var cost : int = hop.base_price * try_amount
+				if best_cost == -1 or cost < best_cost:
+					best_cost = cost
+					best_dose = {hop.id: try_amount}
+				break
+
+	return best_dose
 
 
 func get_beer_style(style : BeerStyle.Style) -> BeerStyle:

@@ -48,10 +48,19 @@ signal mouse_entered_shop_hover_area(is_entered : bool)
 signal recipe_library_requested()
 
 @warning_ignore("unused_signal")
+signal receipt_log_requested()
+
+@warning_ignore("unused_signal")
 signal options_requested()
 
 @warning_ignore("unused_signal")
 signal options_closed()
+
+@warning_ignore("unused_signal")
+signal leaderboard_requested()
+
+@warning_ignore("unused_signal")
+signal leaderboard_closed()
 
 @warning_ignore("unused_signal")
 signal menu_button_pressed()

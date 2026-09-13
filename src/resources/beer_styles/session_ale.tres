@@ -6,6 +6,8 @@
 script = ExtResource("1_sessionale")
 style_name = "Session Ale"
 style = 13
+abv = 3.8
+fixed_price_per_bottle = 1.5
 required_yeast_id = 302
 preferred_hop_profile = 1
 min_ebc = 1

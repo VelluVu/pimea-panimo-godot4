@@ -44,7 +44,8 @@ CONFIRMED BUGS
 DESIGN-CONSISTENCY GAPS (worth a decision, not clear-cut bugs)
 ===============================================================
 
-3. Empty dialogue bubble when a customer's beer sells out mid-visit
+3. [FIXED 2026-09-12] Empty dialogue bubble when a customer's beer sells
+   out mid-visit
    Files: scenes/customer.gd lines 172-176 vs the group-order code in
    src/classes/customer_spawner.gd
 
@@ -57,20 +58,41 @@ DESIGN-CONSISTENCY GAPS (worth a decision, not clear-cut bugs)
        if response_text == "":
            response_text = order_data.dialogue_reject
    The same fix was never applied to the solo customer path.
-   Fix: add the same dialogue_reject fallback in Customer._on_sale_timeout().
+
+   Fixed as a side effect of adding strict-preference customers (Zgen/
+   Barbaari refusing to buy outside their requirements): process_auto_sale()
+   no longer has an empty-string return path at all — when no batch is
+   found (or none clears a customer's strict requirement), it now returns
+   CustomerData.dialogue_no_match, a real per-customer line, instead of
+   "". src/autoload/customer_manager.gd:107-114. The group-order code's
+   `if response_text == "": ...` patch became dead code once the source
+   was fixed and has been removed (src/classes/customer_spawner.gd).
 
 
-4. Manual "close day" warns about active customers; the automatic day
-   timer doesn't
+4. [FIXED 2026-09-12] Manual "close day" warns about active customers;
+   the automatic day timer doesn't
    Files: scenes/ui/gui.gd (_on_close_day_button_pressed) vs
    src/autoload/time_manager.gd (_on_day_timeout / _advance_day)
 
    Clicking "Sulje ovet" while a customer is mid-sale correctly shows a
    confirmation window ("closing now cancels their order"). But the
-   background day timer (default 300s) advances the day the same way
+   background day timer (default 300s) advanced the day the same way
    with zero warning, silently cancelling any in-progress sale. May be
    intentional (deadline pressure is part of the game's tension), but it
    undercuts the point of the manual guard. Flagging for a design call.
+
+   Fixed: TimeManager._on_day_timeout() now checks
+   CustomerManager.has_active_customers() before advancing — the
+   automatic timer has no player to show a confirmation to, so instead of
+   cancelling an in-progress sale it waits a short beat
+   (DAY_END_CUSTOMER_RETRY_SECONDS = 5s) and rechecks, repeating until the
+   customer's done, then advances normally. The manual "Sulje ovet" path
+   is untouched (force_advance_day() still advances immediately once the
+   player has confirmed). Verified live: with an active customer
+   registered, _on_day_timeout() left current_day unchanged and shortened
+   day_timer to a 5s retry; once the customer's slot was freed, the next
+   timeout correctly advanced the day and restored the normal
+   day_duration_seconds cycle. src/autoload/time_manager.gd:17-41.
 
 
 THINGS THAT WORKED CORRECTLY (no action needed)
