@@ -1,0 +1,205 @@
+Pimeä Panimo — XP/Perk Loop Playtest + Addictiveness Proposals
+Date: 2026-09-13
+Method: live playthrough via the godot-ai MCP session, driven through
+editor_manage(game_eval) executing real GDScript against the running
+game (same methodology as playtest_notes_4, for the same reason: OS/
+engine-level input simulation is unreliable here). Every action below
+runs through the real GUISignals/BrewerySignals/method calls a player
+action would. This is a follow-up to playtest_notes.txt/_2/_3/_4
+(2026-09-11/12/13) — this pass is the first time PerkRegistry/RunPerk/
+LevelUpWindow (all new, uncommitted files going into this session) have
+been exercised end-to-end in a running game rather than read
+structurally, plus a regression pass on everything _4 already verified,
+plus the addictiveness proposals requested for this session.
+
+
+TESTING METHODOLOGY CAVEATS (not gameplay bugs, but worth recording)
+=========================================================================
+- A game_eval snippet that mixed tabs and spaces for indentation didn't
+  just fail to compile — it parked the entire running game in an
+  unrecoverable debugger break ("Parser Error: Mixed use of tabs and
+  spaces for indentation", can_debug=false, helper_live=false). Required
+  a full project_manage(stop) + project_run to recover; game_manage
+  resume() did not clear it. Same outcome for a genuine runtime error
+  thrown from eval code (a bad get_node() path) — also broke the game,
+  also needed a full stop/relaunch. Neither is a bug in the shipped
+  game (nothing a real player does can throw a GDScript parse/runtime
+  error through the debugger this way), but it's a sharp edge worth
+  remembering for future MCP-driven sessions: keep eval snippets tab-only
+  and defensive (null-check every get_node()), and expect to need a
+  clean relaunch, not just resume(), after either failure mode.
+- Confirms and extends [[godot_mcp_testing_workflow]]'s finding that this
+  project's MCP testing loop is workable but fragile around raw eval
+  code — screenshots + game_eval remain the right approach, just with
+  tighter discipline on the eval snippets themselves.
+
+
+CONFIRMED WORKING — XP / LEVEL-UP / PERK LOOP (first real playtest)
+=========================================================================
+File: src/classes/brewery.gd (add_xp/apply_perk/get_quality_bonus/
+get_reputation_gain_multiplier/get_tip_income_multiplier), src/classes/
+run_perk.gd, src/classes/perk_registry.gd, scenes/ui/level_up_window.gd,
+scenes/ui/top_panel_resources.gd (level_label).
+
+Played through the real tutorial brew (3kg Pilsner malt + 1 baking
+yeast -> Kotikalja, money 20 -> 10, 38 bottles — unchanged from
+playtest_notes_3/4, still holds), then forced two real sales through
+CustomerManager.process_auto_sale() large enough to cross the level-1
+threshold (xp_required_for_level(1) = 40). Level flipped 1 -> 2 exactly
+at the threshold, LevelUpWindow appeared automatically (BrewerySignals.
+level_up_reached), showing three real perk cards with correct icons/
+names/descriptions. Picked "Anteliaat asiakkaat" via the real card
+handler; confirmed brewery.active_perks grew to size 1 and
+get_tip_income_multiplier() immediately read back 1.5, exactly matching
+that perk's tip_income_multiplier — the stacking math documented in
+RunPerk's own docstring works correctly in live play, not just in
+isolation.
+
+No script errors from any of this. The level-up popup correctly does
+NOT pause the tree (per its own docstring) — customers kept walking in
+behind it during testing.
+
+
+DESIGN GAP: THE PERK POOL HAS EXACTLY 3 PERKS, AND CARD_COUNT IS 3
+=========================================================================
+File: src/resources/perks/ (3 .tres files total), scenes/ui/
+level_up_window.gd (CARD_COUNT = 3), src/classes/perk_registry.gd.
+
+This is the one finding from this session I'd call closer to a bug than
+a bug — it's a content gap that breaks the mechanic's own premise.
+PerkRegistry.get_random_perks(3) shuffles the pool and slices the first
+3, but the pool only has 3 perks in it at all (tarkka_kasiala.tres,
+suosittu_paikka.tres, anteliaat_asiakkaat.tres). Every single level-up,
+for the entire game, shows all three perks that exist, just in a
+random order — there is no actual choice being made, only a coin-flip
+over which order three guaranteed picks appear in. Confirmed live:
+leveled up once, was offered all three by name; nothing about a second
+level-up (not tested to completion this session, but the math is
+exhaustive — get_random_perks() can never return fewer than
+min(3, pool.size()) distinct entries from a 3-entry pool) could ever
+show anything different. RunModifier's equivalent pick (3 of 5, see
+playtest_notes_4) at least withholds two-fifths of the pool per offer;
+the perk system withholds nothing. This directly undercuts the
+"roguelike growth" half of the loop the code's own docstrings describe
+run_perk.gd as implementing.
+
+
+CONFIRMED BUG: REPUTATION POPUP IS LABELED IN EUROS
+=========================================================================
+File: scenes/ui/top_panel_resources.gd:97
+
+_on_brewery_state_changed() creates the floating "+N"/"-N" popup for a
+reputation change with the literal string " €" as its suffix:
+
+    _create_popup_effect(reputation_label, change, " €", false)
+
+compare to the risk popup two lines below it, which correctly passes
+"%", and the money popup above it, which correctly passes " €" for an
+actual currency value. This reads as a copy-paste artifact from the
+money popup line. Confirmed by reading the exact call rather than by
+screenshot (the popup's 1.8s fade window is shorter than this session's
+tool round-trip time, so it faded before a screenshot could catch it
+mid-flight — same timing issue would apply to any future MCP-driven
+verification of a transient popup like this one). Every reputation
+change in the game — every sale, every AVI raid penalty — currently
+shows something like "+12 €" or "-8 €" next to the Maine stat, which
+reads as free money the player didn't get. One-line fix: change the
+suffix argument to "" (or a short unit label) on that call.
+
+
+REGRESSION CHECKS (all still hold, no changes needed)
+=========================================================================
+- Tutorial's guaranteed recipe still brews Kotikalja at 38 bottles for
+  money 20 -> 10. Unchanged since playtest_notes_3/4.
+- RunModifier's effective raid threshold still gates real AVI raids
+  correctly — forced three raids in sequence via
+  brewery.add_risk(brewery.get_effective_raid_threshold()) and got a
+  real AVI-TARKASTUS popup each time, correct fine/reputation penalty
+  math, and the third raid correctly fired "BUSTED!" with
+  game_has_ended latched true.
+- Leaderboard integration still holds across a full engine restart, not
+  just across in-session runs like _4 tested: this session's busted run
+  (fresh project_run, fresh leaderboard.cfg load) correctly showed
+  "Sijoitus ennätyslistalla: #2", ranked below the higher-scoring
+  "survived" run _4's session had recorded to the same on-disk
+  leaderboard.cfg in an earlier session. Persistence across engine
+  restarts (not just scene reloads) works as designed.
+- The leaderboard date-formatting fix and the playtest_notes_4 caveat
+  fix made earlier this session are both still in place and didn't
+  regress anything above.
+
+
+ADDICTIVENESS PROPOSALS (using only what's already built)
+=========================================================================
+Everything below builds on systems that already exist and already work
+— RunModifier, RunPerk/XP/levels, the daily goals panel, AVI risk
+tension, and the leaderboard — rather than proposing new systems.
+
+1. Fix the perk pool before anything else. The level-up moment is
+   structurally the game's best "dopamine beat" (a full-screen stop-and-
+   choose popup with icons, mid-run growth, the works) and right now
+   it's decorative — the player is choosing the display order of a fixed
+   set. Getting this pool to even 8-10 perks (still tiny, still cheap to
+   author as more .tres resources under src/resources/perks/, no code
+   change needed beyond authoring content) turns get_random_perks(3)
+   into a real "pick 1 of 3 you didn't see coming" decision, which is
+   the entire point of the roguelike-perk genre convention this system
+   is already visually borrowing from ModifierSelectWindow. This is the
+   single highest-leverage change available, because the plumbing
+   (registry, stacking math, popup UI) is already done and already
+   correct — it's purely a content gap.
+
+2. Give the level number a visible progress bar toward the next one.
+   Right now TopPanelResources.level_label just flips from "Taso: 1" to
+   "Taso: 2" with no warning — brewery.run_xp and
+   Brewery.xp_required_for_level(run_level) are both already tracked and
+   public, so a thin ProgressBar under/behind the level label (fill =
+   run_xp / xp_required_for_level(run_level)) costs one small scene
+   change and zero new game-state, but gives the player constant
+   "almost there" visual feedback every single sale — the single most
+   standard extra-session-length hook in this genre of game, and the
+   only piece of it (a bar, not the underlying math) that's currently
+   missing.
+
+3. Surface "beat your own record" at run start, not just at run end.
+   LeaderboardManager.get_rank_for_stats() and get_entries() already
+   compute everything needed — ModifierSelectWindow (shown at the start
+   of every run) could show the current #1 score/day-count right on that
+   same screen ("Ennätys: 2000 pistettä, päivä 15") so the player picks
+   their run's difficulty with a concrete target already in mind, instead
+   of only finding out how they did relative to their best at the very
+   end. Same data, same window, just shown at the other end of the run.
+
+4. Turn the daily goals into a streak, not just a pass/fail per day.
+   DailyGoalsPanel already tracks two independent daily goals (10
+   bottles sold, staying under 50 risk) and CustomerManager/TimeManager
+   already emit daily_goal_reward_granted the moment each is hit. A
+   small persisted streak counter (consecutive days both goals were met)
+   with an escalating money/reputation bonus every few days would give
+   the "just one more day" pull that daily-goal systems are built for,
+   using signals that already fire at exactly the right moments — no new
+   trigger points needed, just a counter and a bigger payout on top of
+   the existing daily_goal_reward_granted flow.
+
+5. Fix the reputation popup bug (see above) as part of this pass
+   regardless of the addictiveness angle — a stat's every visible change
+   currently looks like a currency amount, which muddies the read on
+   reputation as its own distinct resource (Money/Maine/AVI-riski per
+   the project's own resource model) exactly when a clean, distinct
+   popup per resource is what makes each one legible enough to chase.
+
+
+VERDICT
+==========
+The XP/level/perk loop this session focused on is mechanically sound —
+add_xp(), apply_perk(), and every perk's stacking math all work exactly
+as documented, live, under real sales and real brews. The one real bug
+found (reputation popup mislabeled in euros) is a one-line fix. The
+bigger finding is a content gap, not a code bug: the perk pool is
+exactly as large as the number of cards shown per level-up, so the
+mechanic currently can't produce a real choice. Combined with a visible
+XP progress bar and a persisted daily-goal streak, expanding that pool
+is the most direct path from "the systems all work" (true today) to
+"the loop is actually addictive" (not yet, because there's no variance
+left for the player to react to) using nothing but content authoring and
+small, additive UI on top of code that's already correct.

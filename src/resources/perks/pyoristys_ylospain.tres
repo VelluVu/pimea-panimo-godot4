@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="RunPerk" format=3]
+
+[ext_resource type="Script" path="res://src/classes/run_perk.gd" id="1_pyoristys"]
+
+[resource]
+script = ExtResource("1_pyoristys")
+perk_name = "Pyöristys ylöspäin"
+description = "Opit jättämään vaihtorahat ottamatta huomiota — asiakkaat pyöristävät tipit ylöspäin."
+icon_placeholder = "🪙"
+tip_income_multiplier = 1.2

@@ -44,6 +44,21 @@ func _on_tab_changed(tab_index : int) -> void:
 	option_button.populate_ingredient_option_menu()
 
 
+## Called by BrewingView/ShopView whenever their view is actually opened
+## (see gui.gd's _move_to_brewery()/_move_to_shop()) — without this, the
+## malt/hop/yeast tab and the selected ingredient both just carry over
+## from whatever GUISignals.active_ingredient_changed last touched
+## globally (which the OTHER view's own selector also listens to and
+## fires), rather than resetting to a known, predictable starting point
+## every time the view is (re)entered. Calling _on_tab_changed(0)
+## directly instead of just setting current_tab (TabBar only emits
+## tab_changed on an actual change, so re-selecting an already-0 tab
+## would otherwise silently skip the reset).
+func reset_to_first_tab() -> void:
+	tab_bar.current_tab = 0
+	_on_tab_changed(0)
+
+
 func _make_swatch_texture(color : Color) -> ImageTexture:
 	var image : Image = Image.create(TAB_ICON_SIZE, TAB_ICON_SIZE, false, Image.FORMAT_RGBA8)
 	image.fill(color)

@@ -21,15 +21,23 @@ const RISK_WARNING_PULSE_SECONDS : float = 0.3
 
 const MODIFIER_TAG_FORMAT : String = "🎲 %s"
 
+const LEVEL_FORMAT : String = "Taso: %d"
+
 @onready var money_label : Label = $MoneyLabel
 @onready var receipt_log_button : Button = $ReceiptLogButton
 @onready var reputation_label : Label = $ReputationLabel
+@onready var level_label : Label = $LevelLabel
 @onready var risk_label : Label = $RiskLabel
 @onready var day_label : Label = $DayLabel
 @onready var modifier_tag_label : Label = $ModifierTagLabel
 var last_money: float = -1.0
 var last_reputation : int = -1
 var last_risk: int = -1
+## Unlike reputation/risk, level only ever goes up (see Brewery.add_xp())
+## and there's no popup-worthy "+1" moment here — LevelUpWindow's own
+## perk-pick popup already is that moment. Just tracked to skip a
+## redundant label-text write when nothing changed.
+var _last_level : int = -1
 ## Set once per run the first time _on_brewery_state_changed sees a
 ## Brewery — this run's modifier never changes after that, so there's
 ## nothing to keep updating (unlike money/reputation/risk above).
@@ -86,11 +94,15 @@ func _on_brewery_state_changed(brewery : Brewery) -> void:
 	if last_reputation != -1:
 		var change = new_reputation - last_reputation
 		if change != 0:
-			_create_popup_effect(reputation_label, change, " €", false)
+			_create_popup_effect(reputation_label, change, "", false)
 	
 	reputation_label.text = "Maine: " + str(new_reputation)
 	last_reputation = new_reputation
-	
+
+	if brewery.run_level != _last_level:
+		_last_level = brewery.run_level
+		level_label.text = LEVEL_FORMAT % brewery.run_level
+
 	var new_risk: int = brewery.risk
 	if last_risk != -1:
 		var change = new_risk - last_risk
@@ -134,7 +146,7 @@ func _create_popup_effect(target_label: Label, amount: float, suffix: String, is
 	else:
 		popup.text = "-" + magnitude_text + suffix
 		popup.modulate = Color.GREEN if is_risk else Color.RED
-		
+
 	target_label.add_child(popup)
 	popup.position = Vector2(80, 0)
 	

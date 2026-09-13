@@ -50,3 +50,16 @@ func get_random_modifier() -> RunModifier:
 	if pool.is_empty():
 		return RunModifier.new()
 	return pool.pick_random()
+
+
+## Rolls up to `count` distinct modifiers (no repeats) for the player to
+## choose from at run start — see ModifierSelectWindow. Clamped to pool
+## size rather than padding with duplicates or nulls: offering fewer
+## choices than asked for is a smaller surprise than offering the same
+## modifier twice.
+func get_random_modifiers(count : int) -> Array[RunModifier]:
+	if pool.is_empty():
+		return [RunModifier.new()]
+	var shuffled := pool.duplicate()
+	shuffled.shuffle()
+	return shuffled.slice(0, mini(count, shuffled.size()))

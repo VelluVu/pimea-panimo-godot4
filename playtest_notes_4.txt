@@ -73,8 +73,9 @@ than a static screenshot.
 Busted ending (3rd raid): forced three raids on a fresh run. Third raid
 correctly set game_has_ended, paused the tree, and showed "BUSTED!" with
 correct stats (Päiviä selvitty: 1, Mainetta lopussa: 0, Pulloja myyty
-yhteensä: 0 — see caveat below on why bottles read 0) plus, newly, "Sijoitus
-ennätyslistalla: #1" and "UUSI ENNÄTYS!" beneath the stats block. Only
+yhteensä: 0 — expected, since the run was forced straight into 3 rapid
+raids with no brewing/selling in between, not a display bug) plus, newly,
+"Sijoitus ennätyslistalla: #1" and "UUSI ENNÄTYS!" beneath the stats block. Only
 "Uusi yritys" shown, no continue button — correct for a dead-end ending.
 Confirmed LeaderboardManager.get_entries() recorded exactly one entry
 with the correct ending_type, score, and modifier_name ("Kireä AVI").

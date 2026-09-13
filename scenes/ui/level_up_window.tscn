@@ -1,0 +1,142 @@
+[gd_scene format=3 uid="uid://4pjyebwj4isb"]
+
+[ext_resource type="Script" uid="uid://bmdq3qdanc7sv" path="res://scenes/ui/level_up_window.gd" id="1_j0sgq"]
+
+[node name="LevelUpWindow" type="Panel" unique_id=1956261132]
+visible = false
+anchors_preset = -1
+anchor_left = 0.05
+anchor_top = 0.08
+anchor_right = 0.95
+anchor_bottom = 0.92
+script = ExtResource("1_j0sgq")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=101155603]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="MainVBox" type="VBoxContainer" parent="MarginContainer" unique_id=2058474436]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="TitleLabel" type="Label" parent="MarginContainer/MainVBox" unique_id=1388340709]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Taso 2!"
+horizontal_alignment = 1
+
+[node name="CardsHBox" type="HBoxContainer" parent="MarginContainer/MainVBox" unique_id=929566088]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="Card1" type="Button" parent="MarginContainer/MainVBox/CardsHBox" unique_id=1791850212]
+custom_minimum_size = Vector2(180, 230)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CardVBox" type="VBoxContainer" parent="MarginContainer/MainVBox/CardsHBox/Card1" unique_id=869696550]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+theme_override_constants/separation = 8
+
+[node name="IconLabel" type="Label" parent="MarginContainer/MainVBox/CardsHBox/Card1/CardVBox" unique_id=10971647]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "⭐"
+horizontal_alignment = 1
+
+[node name="HeaderLabel" type="Label" parent="MarginContainer/MainVBox/CardsHBox/Card1/CardVBox" unique_id=1177732622]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.949, 0.788, 0.42, 1)
+theme_override_font_sizes/font_size = 18
+text = "Perk"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="DescriptionLabel" type="Label" parent="MarginContainer/MainVBox/CardsHBox/Card1/CardVBox" unique_id=239924254]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 13
+text = "Kuvaus"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Card2" type="Button" parent="MarginContainer/MainVBox/CardsHBox" unique_id=2139159083]
+custom_minimum_size = Vector2(180, 230)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CardVBox" type="VBoxContainer" parent="MarginContainer/MainVBox/CardsHBox/Card2" unique_id=1702978186]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+theme_override_constants/separation = 8
+
+[node name="IconLabel" type="Label" parent="MarginContainer/MainVBox/CardsHBox/Card2/CardVBox" unique_id=591585221]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "⭐"
+horizontal_alignment = 1
+
+[node name="HeaderLabel" type="Label" parent="MarginContainer/MainVBox/CardsHBox/Card2/CardVBox" unique_id=2017644362]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.949, 0.788, 0.42, 1)
+theme_override_font_sizes/font_size = 18
+text = "Perk"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="DescriptionLabel" type="Label" parent="MarginContainer/MainVBox/CardsHBox/Card2/CardVBox" unique_id=1419907551]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 13
+text = "Kuvaus"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Card3" type="Button" parent="MarginContainer/MainVBox/CardsHBox" unique_id=1638596450]
+custom_minimum_size = Vector2(180, 230)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CardVBox" type="VBoxContainer" parent="MarginContainer/MainVBox/CardsHBox/Card3" unique_id=306554124]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+theme_override_constants/separation = 8
+
+[node name="IconLabel" type="Label" parent="MarginContainer/MainVBox/CardsHBox/Card3/CardVBox" unique_id=1095298585]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "⭐"
+horizontal_alignment = 1
+
+[node name="HeaderLabel" type="Label" parent="MarginContainer/MainVBox/CardsHBox/Card3/CardVBox" unique_id=1353602869]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.949, 0.788, 0.42, 1)
+theme_override_font_sizes/font_size = 18
+text = "Perk"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="DescriptionLabel" type="Label" parent="MarginContainer/MainVBox/CardsHBox/Card3/CardVBox" unique_id=468747951]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 13
+text = "Kuvaus"
+horizontal_alignment = 1
+autowrap_mode = 3

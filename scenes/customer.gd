@@ -9,9 +9,9 @@ extends Node2D
 signal walk_route_finished
 
 const FADE_TIME_SECONDS : float = 1.0
-const BASE_DISPLAY_TIME_SECONDS : float = 5.0
-const PER_CHARACTER_DISPLAY_TIME_SECONDS : float = 0.05
-const MAX_DISPLAY_TIME_SECONDS : float = 12.0
+const BASE_DISPLAY_TIME_SECONDS : float = 4.0
+const PER_CHARACTER_DISPLAY_TIME_SECONDS : float = 0.04
+const MAX_DISPLAY_TIME_SECONDS : float = 9.0
 
 const PREVIEW_DELAY_SECONDS : float = 2.0
 const BATCH_PREVIEW_FORMAT : String = "%s: Tuo %s kiinnostaisi..."
@@ -170,7 +170,36 @@ func _on_preview_timeout() -> void:
 
 
 func _on_sale_timeout() -> void:
+	# Captured around the call, same pattern dev_console.gd's "sell"
+	# command already uses for beer_sale_breakdown — process_auto_sale()
+	# is a single synchronous call, so whatever sale_xp_gained fires
+	# during it is unambiguously this sale's, not some other customer's.
+	# A Dictionary, not a plain local: a lambda captures locals by value,
+	# so reassigning a captured int inside it can't ever reach back out
+	# to this scope — mutating a key on a captured Dictionary (a
+	# reference type) can.
+	var xp_capture : Dictionary = {"amount": 0}
+	var capture_xp := func(amount : int) -> void: xp_capture.amount = amount
+	var reputation_capture : Dictionary = {"amount": 0}
+	var capture_reputation := func(amount : int) -> void: reputation_capture.amount = amount
+	var tip_capture : Dictionary = {"amount": 0.0}
+	var capture_tip := func(amount : float) -> void: tip_capture.amount = amount
+
+	BrewerySignals.sale_xp_gained.connect(capture_xp)
+	BrewerySignals.sale_reputation_gained.connect(capture_reputation)
+	BrewerySignals.sale_tip_gained.connect(capture_tip)
 	var response_text = CustomerManager.process_auto_sale(customer_data)
+	BrewerySignals.sale_xp_gained.disconnect(capture_xp)
+	BrewerySignals.sale_reputation_gained.disconnect(capture_reputation)
+	BrewerySignals.sale_tip_gained.disconnect(capture_tip)
+
+	if xp_capture.amount > 0:
+		BrewerySignals.xp_popup_requested.emit(xp_capture.amount, global_position)
+	if reputation_capture.amount != 0:
+		BrewerySignals.reputation_popup_requested.emit(reputation_capture.amount, global_position)
+	if tip_capture.amount > 0:
+		BrewerySignals.tip_popup_requested.emit(tip_capture.amount, global_position)
+
 	var final_text = generated_name + ": " + response_text
 	var display_time = _get_display_time_for_text(final_text)
 	BrewerySignals.dialogue_pushed.emit(final_text, false, dialogue_slot, global_position, display_time, FADE_TIME_SECONDS)

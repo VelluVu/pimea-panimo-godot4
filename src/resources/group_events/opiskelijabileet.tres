@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="GroupVisitEventData" format=3]
+
+[ext_resource type="Script" path="res://src/classes/group_visit_event_data.gd" id="1_event"]
+[ext_resource type="Resource" path="res://src/resources/customers/opiskelija.tres" id="2_customer"]
+[ext_resource type="Resource" path="res://src/resources/customers/opiskelija_naaras.tres" id="3_customer_naaras"]
+
+[resource]
+script = ExtResource("1_event")
+banner_text = "Fuksivuosikurssi ryntää ovesta sisään haalarit päällä —
+halvinta kaljaa heti tiskiin!"
+customer_data_options = [ExtResource("2_customer"), ExtResource("3_customer_naaras")]
+min_group_size = 7
+max_group_size = 12
+walk_in_stagger_seconds = 0.3
+chant_text = "HALPAA KALJAA! HALPAA KALJAA!"
+chant_interval_seconds = 2.0

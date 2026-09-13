@@ -196,7 +196,20 @@ func evaluate_brew_batch(batch: BrewBatch, style_base_price: float = 3.0) -> Dic
 	# miss, the harsher the penalty, instead of a single flat number).
 	var quality_margin : float = quality - min_quality
 	rep_change += roundi(quality_margin * quality_reputation_sensitivity)
-	avi_change = maxi(0, avi_change - roundi(quality_margin * quality_risk_sensitivity))
+
+	var risk_adjustment : int = roundi(quality_margin * quality_risk_sensitivity)
+	# The floor-at-0 only applies starting from a normally-risky flat value
+	# (risk_bad_quality/risk_primary_style/etc default positive) so quality
+	# can cancel a sale's own risk out but never flip it into a reward. A
+	# customer deliberately given a NEGATIVE flat risk (e.g. Zgen's
+	# risk_primary_style/risk_secondary_style — selling them their
+	# alcohol-free favorite is meant to actively de-risk the AVI meter, see
+	# max_required_abv's docstring) must keep working past 0 instead of
+	# being floored right back to it.
+	if avi_change > 0:
+		avi_change = maxi(0, avi_change - risk_adjustment)
+	else:
+		avi_change -= risk_adjustment
 
 	# Fixed price, snapped to the nearest 10 cents (money is tracked to one
 	# decimal, not whole euros — see Brewery.money) and floored at 0.1 so a
