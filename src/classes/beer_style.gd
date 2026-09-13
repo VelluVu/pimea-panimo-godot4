@@ -35,6 +35,24 @@ enum Style {
 @export var min_malt_weight: int = 3
 @export var preferred_hop_profile: HopData.FlavorProfile = HopData.FlavorProfile.NONE
 
+@export_group("Alkoholi")
+## Prosentteina, esim. 5.2 = 5.2 %. Kiinteä tyylikohtainen arvo, näytetään
+## pulloissa/kuiteissa — ei enää vaikuta hintaan (ks.
+## BrewResolver.calculate_price_breakdown, jossa ei ole valmisteveroa).
+@export var abv: float = 5.0
+
+@export_group("Talous")
+## Kerroin BrewResolver.PROFIT_MARKUP_RATE:lle — monimutkaisemmat,
+## työläämmät tyylit (IPA, Imperial Stout, Barleywine...) kannattavat
+## enemmän per pullo kuin perusoluet. 1.0 = ei muutosta. Ei vaikuta jos
+## fixed_price_per_bottle on asetettu.
+@export var profit_margin_multiplier: float = 1.0
+## Jos > 0, ohittaa raw_cost+kate-kaavan kokonaan ja tätä käytetään
+## suoraan pullon listahintana (käsin tasapainotettu arvo). "Kate"
+## lasketaan silloin suoraan tästä miinus raaka-ainekulut, ei toisin
+## päin. 0 = käytä normaalia kaavaa (ks. BrewResolver.get_price_breakdown).
+@export var fixed_price_per_bottle: float = 0.0
+
 @export_group("EBC (Väri) Rajat")
 @export var min_ebc: int = 0
 @export var max_ebc: int = 999

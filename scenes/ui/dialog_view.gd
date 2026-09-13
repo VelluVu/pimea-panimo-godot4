@@ -28,7 +28,7 @@ var slot_display_tokens: Dictionary = {} # Avain: int (slot) -> Arvo: int (kasva
 func _ready() -> void:
 	BrewerySignals.dialogue_pushed.connect(_on_dialogue_pushed)
 	SpecialEventManager.special_event_triggered.connect(_on_special_event_triggered)
-	
+
 
 func _on_customer_ready_at_counter(_customer: CustomerData, _character_global_pos: Vector2, _slot: int) -> void:
 	pass

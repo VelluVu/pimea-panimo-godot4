@@ -118,7 +118,7 @@ func _update_daily_goals(brewery : Brewery) -> void:
 		_stop_bottles_pulse()
 
 	var risk_met : bool = brewery.risk < RISK_LIMIT
-	risk_goal_label.text = RISK_GOAL_FORMAT % [RISK_LIMIT, brewery.risk]
+	risk_goal_label.text = RISK_GOAL_FORMAT % [brewery.risk, RISK_LIMIT]
 	risk_goal_label.add_theme_color_override("font_color", GOAL_MET_COLOR if risk_met else GOAL_FAILING_COLOR)
 
 

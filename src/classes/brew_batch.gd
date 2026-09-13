@@ -46,9 +46,9 @@ func get_quality_breakdown_tooltip() -> String:
 	]
 
 
-const FULL_INFO_TOOLTIP_HEADER_FORMAT : String = "Laatu: %s%% (%s)\nEBC: %s | IBU: %s\n"
+const FULL_INFO_TOOLTIP_HEADER_FORMAT : String = "Laatu: %s%% (%s)\nEBC: %s | IBU: %s | ABV: %.1f%%\n"
 
-## Combines the header stats (quality/EBC/IBU) that used to sit in the
+## Combines the header stats (quality/EBC/IBU/ABV) that used to sit in the
 ## batch row's visible text with the existing breakdown tooltip, so the
 ## row itself can stay to a single compact line.
 func get_full_info_tooltip() -> String:
@@ -56,7 +56,8 @@ func get_full_info_tooltip() -> String:
 		roundi(current_quality * 100),
 		get_quality_tier_string(),
 		final_ebc,
-		final_ibu
+		final_ibu,
+		beer_style.abv
 	] + get_quality_breakdown_tooltip()
 
 

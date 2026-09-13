@@ -5,11 +5,20 @@ extends Resource
 const DEFAULT_TITLE: String = "Asiakas"
 const DEFAULT_NAMES: Array[String] = ["Matti", "Maija", "Pekka", "Liisa", "Antti"]
 
+## Flat EUR-per-full-quality-point floor under the proportional tip
+## formula (see evaluate_brew_batch) — keeps a clear overshoot felt on
+## cheap styles, where price*margin*sensitivity alone rounds to nothing.
+const MIN_TIP_PER_QUALITY_POINT : float = 1.0
+
 @export_group("Customer Profile")
 @export var customer_name: String = "Anonyymi"
 @export var title: String = ""
 @export var first_names: Array[String] = []
 @export var min_quality: float = 0.5
+## No longer affects what this customer pays for a bottle — every customer
+## pays the same fixed, style-based price (see evaluate_brew_batch). Now
+## purely a tip-generosity trait: how big a tipper this customer is when
+## the quality genuinely exceeds their expectations (see quality_tip_sensitivity).
 @export var budget_multiplier: float = 1.0
 @export var primary_style: BeerStyle.Style = BeerStyle.Style.BULKKILAGER
 @export var secondary_style: BeerStyle.Style = BeerStyle.Style.KOTIKALJA
@@ -35,12 +44,31 @@ const DEFAULT_NAMES: Array[String] = ["Matti", "Maija", "Pekka", "Liisa", "Antti
 @export_multiline var dialogue_fallback: String = "No, tämäkin käy paremman puutteessa."
 @export_multiline var dialogue_wrong_style: String = "Ei tää sitäkään ollu, mut menköön..."
 @export_multiline var dialogue_reject: String = "Mitä helvettiä sä mulle myyt? Pitää tunkkis."
+## Shown when this customer leaves WITHOUT buying anything — either there's
+## no beer in stock at all, or (see Tiukat vaatimukset below) nothing on
+## offer clears a hard requirement they won't compromise on.
+@export_multiline var dialogue_no_match: String = "Ei täällä ollu mitään minulle. Ehkä ensi kerralla."
 
-@export_group("Price Multipliers")
-@export var multiplier_bad_quality: float = 0.4
-@export var multiplier_primary_style: float = 1.2
-@export var multiplier_secondary_style: float = 0.9
-@export var multiplier_wrong_style: float = 0.5
+## A hard gate, not a preference — unlike primary/secondary_style (which
+## only affect reputation/risk/dialogue, never whether a sale happens at
+## all), a customer with either bound set refuses to buy ANY batch outside
+## it, no matter how good the quality or how badly the brewery needs the
+## sale. Checked in CustomerManager._find_best_batch before scoring, so an
+## out-of-range batch isn't just deprioritized, it's invisible to this
+## customer.
+@export_group("Tiukat vaatimukset")
+## -1 = ei rajoitusta. Esim. 5.0 hylkää kaiken alle 5% ABV:n (ks. Barbaari).
+@export var min_required_abv: float = -1.0
+## -1 = ei rajoitusta. Esim. 0.5 hyväksyy vain alkoholittomat (ks. Zgen).
+@export var max_required_abv: float = -1.0
+
+@export_group("Tippaus")
+## Extra money on top of the fixed price, per quality point above
+## min_quality (zero or below it — no tip for merely meeting expectations,
+## let alone missing them). Scaled by budget_multiplier, so a big-spender
+## customer's tip is more generous than a broke one's for the same
+## over-delivery. See evaluate_brew_batch's quality_margin.
+@export var quality_tip_sensitivity: float = 0.3
 
 @export_group("Reputation Changes")
 @export var rep_bad_quality: int = -3
@@ -93,6 +121,17 @@ func get_preference_score(style: BeerStyle.Style) -> float:
 	return 0.0
 
 
+## See min_required_abv/max_required_abv's docstring — a batch that fails
+## this is never considered for this customer at all, regardless of style
+## match or quality.
+func meets_strict_requirements(beer_style: BeerStyle) -> bool:
+	if min_required_abv >= 0.0 and beer_style.abv < min_required_abv:
+		return false
+	if max_required_abv >= 0.0 and beer_style.abv > max_required_abv:
+		return false
+	return true
+
+
 func reroll_preference() -> void:
 	if not randomizes_preference:
 		return
@@ -111,37 +150,39 @@ func reroll_preference() -> void:
 	secondary_style = shuffled_styles[1].style
 
 
-## style_base_price is resolved by the caller (BrewResolver.get_style_base_price,
+## style_base_price is resolved by the caller (BrewResolver.get_price_breakdown,
 ## reached via BrewEngine.current_brewery in CustomerManager) rather than
 ## looked up here, so this stays pure per-CustomerData logic that doesn't
 ## reach into any autoload — see test_customer_data.gd's suite docstring.
+##
+## The price itself never moves — every customer pays the same fixed,
+## style-based price for the same beer, full stop. Style match and quality
+## only affect reputation/risk (as before) and, new, a tip: extra money on
+## top, but only when quality genuinely exceeds this customer's own bar
+## (quality_margin > 0) — meeting expectations earns no bonus, missing them
+## earns no discount either.
 func evaluate_brew_batch(batch: BrewBatch, style_base_price: float = 3.0) -> Dictionary:
 	var style = batch.beer_style.style
 	var quality = batch.current_quality
 	var score = get_preference_score(style)
-	
-	var price_modifier = 1.0
+
 	var rep_change = 0
 	var avi_change = 1
 	var response_text = ""
-	
+
 	if quality < min_quality:
-		price_modifier = multiplier_bad_quality
 		rep_change = rep_bad_quality
 		avi_change = risk_bad_quality
 		response_text = dialogue_reject
 	elif score >= 1.0:
-		price_modifier = multiplier_primary_style
 		rep_change = rep_primary_style
 		avi_change = roundi(risk_primary_style * primary_match_risk_multiplier)
 		response_text = dialogue_success
 	elif score >= 0.5:
-		price_modifier = multiplier_secondary_style
 		rep_change = rep_secondary_style
 		avi_change = risk_secondary_style
 		response_text = dialogue_fallback
 	else:
-		price_modifier = multiplier_wrong_style
 		rep_change = rep_wrong_style
 		avi_change = risk_wrong_style
 		response_text = dialogue_wrong_style
@@ -157,10 +198,31 @@ func evaluate_brew_batch(batch: BrewBatch, style_base_price: float = 3.0) -> Dic
 	rep_change += roundi(quality_margin * quality_reputation_sensitivity)
 	avi_change = maxi(0, avi_change - roundi(quality_margin * quality_risk_sensitivity))
 
-	var income = roundi(1 * style_base_price * quality * budget_multiplier * price_modifier)
-	
+	# Fixed price, snapped to the nearest 10 cents (money is tracked to one
+	# decimal, not whole euros — see Brewery.money) and floored at 0.1 so a
+	# sale never reads as a broken free/zero-cost transaction.
+	var income : float = maxf(0.1, snappedf(style_base_price, 0.1))
+
+	# Tip only fires above the bar (quality_margin > 0) — see the function
+	# docstring. Scaled by budget_multiplier so a big-spender customer tips
+	# more generously than a broke one for the same over-delivery.
+	#
+	# Pure income*margin*sensitivity rounds down to 0 on cheap styles even
+	# at a clearly-exceeds margin (e.g. a 1 EUR Kotikalja at margin 0.5
+	# gives 0.15) — the mechanic would never be felt on early-game beers.
+	# MIN_TIP_PER_QUALITY_POINT is a price-independent floor so a real
+	# overshoot is never silently invisible; the proportional formula
+	# still wins (and keeps scaling with price) once income is high enough
+	# for it to exceed the flat floor.
+	var tip : float = 0.0
+	if quality_margin > 0.0:
+		var proportional_tip : float = income * quality_margin * quality_tip_sensitivity
+		var floor_tip : float = quality_margin * MIN_TIP_PER_QUALITY_POINT
+		tip = maxf(0.0, snappedf(max(proportional_tip, floor_tip) * budget_multiplier, 0.1))
+
 	return {
 		CustomerManager.KEY_INCOME: income,
+		CustomerManager.KEY_TIP: tip,
 		CustomerManager.KEY_REPUTATION: rep_change,
 		CustomerManager.KEY_RISK: avi_change,
 		CustomerManager.KEY_RESPONSE: response_text

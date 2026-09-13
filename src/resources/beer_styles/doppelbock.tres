@@ -6,6 +6,9 @@
 script = ExtResource("1_doppelbock")
 style_name = "Doppelbock"
 style = 10
+abv = 8.0
+profit_margin_multiplier = 1.4
+fixed_price_per_bottle = 4.5
 required_yeast_id = 301
 min_malt_weight = 4
 min_ebc = 71

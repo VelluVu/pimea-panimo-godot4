@@ -8,11 +8,13 @@ signal dialogue_pushed(text: String, is_special: bool, slot_index: int, characte
 @warning_ignore("unused_signal")
 signal style_discovered(style: int)
 @warning_ignore("unused_signal")
-signal avi_raid_triggered(confiscated_bottles: int, fine_amount: int, reputation_lost: int)
+signal avi_raid_triggered(confiscated_bottles: int, fine_amount: float, reputation_lost: int)
 @warning_ignore("unused_signal")
 signal recipe_saved(recipe_name: String)
 @warning_ignore("unused_signal")
 signal bottles_sold(amount: int)
+@warning_ignore("unused_signal")
+signal beer_sale_breakdown(entry: SaleReceiptEntry)
 @warning_ignore("unused_signal")
 signal recipe_save_rejected()
 @warning_ignore("unused_signal")
@@ -21,3 +23,13 @@ signal beer_brewed(style: int)
 signal daily_goal_reward_granted(goal_name: String, money: int, reputation: int)
 @warning_ignore("unused_signal")
 signal group_visit_announced(banner_text: String)
+@warning_ignore("unused_signal")
+signal batch_bottled(bottles_lost: int, label_cost: float, style_name: String)
+@warning_ignore("unused_signal")
+signal daily_bills_paid(electricity: int, water: int, total: int)
+## Fired exactly once per run by Brewery.trigger_ending() — ending_type is
+## one of "busted" (BUSTED_RAID_COUNT reached), "bankrupt"
+## (check_bankruptcy()), or "survived" (TimeManager reaching the day
+## target with the run not on the ropes). See GameEndWindow.
+@warning_ignore("unused_signal")
+signal game_ended(ending_type: String)

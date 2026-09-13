@@ -79,6 +79,7 @@ func _build_style_list_rows() -> void:
 			row_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 			row_button.text = StringContainer.RECIPE_LIBRARY_ROW_STRING % [
 				beer_style.style_name,
+				beer_style.abv,
 				beer_style.min_ebc,
 				beer_style.max_ebc,
 				beer_style.min_ibu,
