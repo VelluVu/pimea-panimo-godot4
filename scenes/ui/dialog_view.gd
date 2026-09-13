@@ -12,6 +12,29 @@ const BUBBLE_STAIR_STEP : float = 34.0
 const BUBBLE_MIN_VISIBLE_Y : float = 38.0
 const BUBBLE_X_PROXIMITY_PX : float = 60.0
 
+## Well below BUBBLE_OFFSET_Y (-180) so the "+X XP" popup reads as coming
+## from the customer themselves, distinct from their speech bubble
+## further up — see _on_xp_popup_requested().
+const XP_POPUP_OFFSET_Y : float = -50.0
+const XP_POPUP_FLOAT_DISTANCE : float = 35.0
+const XP_POPUP_DURATION_SECONDS : float = 1.8
+## Same gold accent BrewPreparationPanel uses for the brewing-side XP
+## popup — one consistent color for "that was an XP gain" everywhere.
+const XP_POPUP_COLOR : Color = Color(0.949, 0.788, 0.42, 1)
+const XP_POPUP_FORMAT : String = "+%d XP"
+
+## Sits between the XP popup (-50) and the customer sprite itself, so it
+## reads as appearing "under" the XP popup rather than overlapping it.
+const REPUTATION_POPUP_OFFSET_Y : float = -25.0
+const REPUTATION_POPUP_FORMAT : String = "%+d Mainetta"
+
+## Offset sideways instead of stacked, so a tip (money, not growth) reads
+## as its own distinct beat next to the customer rather than part of the
+## XP/reputation stack.
+const TIP_POPUP_OFFSET : Vector2 = Vector2(40.0, -50.0)
+const TIP_POPUP_COLOR : Color = Color.GREEN
+const TIP_POPUP_FORMAT : String = "Tippi +%.1f €"
+
 @onready var bubble_spawn_point: Control = $BubbleSpawnPoint
 @onready var special_events_container: VBoxContainer = $SpecialEventsContainer
 
@@ -28,6 +51,77 @@ var slot_display_tokens: Dictionary = {} # Avain: int (slot) -> Arvo: int (kasva
 func _ready() -> void:
 	BrewerySignals.dialogue_pushed.connect(_on_dialogue_pushed)
 	SpecialEventManager.special_event_triggered.connect(_on_special_event_triggered)
+	BrewerySignals.xp_popup_requested.connect(_on_xp_popup_requested)
+	BrewerySignals.reputation_popup_requested.connect(_on_reputation_popup_requested)
+	BrewerySignals.tip_popup_requested.connect(_on_tip_popup_requested)
+
+
+## Emitted by Customer/CustomerSpawner once they've paired a captured
+## sale_xp_gained amount with their own known position — see those
+## files. Deliberately not routed through the speech-bubble machinery
+## above (no slot tracking, no stacking): this is a brief, independent
+## flourish, not a piece of dialogue.
+func _on_xp_popup_requested(amount : int, character_global_pos : Vector2) -> void:
+	var popup := Label.new()
+	popup.text = XP_POPUP_FORMAT % amount
+	popup.modulate = XP_POPUP_COLOR
+
+	bubble_spawn_point.add_child(popup)
+	popup.global_position = character_global_pos + Vector2(0, XP_POPUP_OFFSET_Y)
+
+	var tween := create_tween().set_parallel(true)
+	var target_pos := popup.global_position + Vector2(0, -XP_POPUP_FLOAT_DISTANCE)
+	var target_color := popup.modulate
+	target_color.a = 0.0
+
+	tween.tween_property(popup, "global_position", target_pos, XP_POPUP_DURATION_SECONDS)
+	tween.tween_property(popup, "modulate", target_color, XP_POPUP_DURATION_SECONDS)
+
+	tween.chain().tween_callback(popup.queue_free)
+
+
+## Same flourish as _on_xp_popup_requested(), positioned just below it so
+## a sale's reputation change reads as paired with its XP gain rather than
+## competing with the top panel's own reputation popup.
+func _on_reputation_popup_requested(amount : int, character_global_pos : Vector2) -> void:
+	var popup := Label.new()
+	popup.text = REPUTATION_POPUP_FORMAT % amount
+	popup.modulate = Color.GREEN if amount > 0 else Color.RED
+
+	bubble_spawn_point.add_child(popup)
+	popup.global_position = character_global_pos + Vector2(0, REPUTATION_POPUP_OFFSET_Y)
+
+	var tween := create_tween().set_parallel(true)
+	var target_pos := popup.global_position + Vector2(0, -XP_POPUP_FLOAT_DISTANCE)
+	var target_color := popup.modulate
+	target_color.a = 0.0
+
+	tween.tween_property(popup, "global_position", target_pos, XP_POPUP_DURATION_SECONDS)
+	tween.tween_property(popup, "modulate", target_color, XP_POPUP_DURATION_SECONDS)
+
+	tween.chain().tween_callback(popup.queue_free)
+
+
+## Same flourish as _on_xp_popup_requested(), offset sideways instead of
+## stacked — a tip is money, not run growth, so it reads as its own beat
+## next to the customer rather than part of the XP/reputation stack.
+func _on_tip_popup_requested(amount : float, character_global_pos : Vector2) -> void:
+	var popup := Label.new()
+	popup.text = TIP_POPUP_FORMAT % amount
+	popup.modulate = TIP_POPUP_COLOR
+
+	bubble_spawn_point.add_child(popup)
+	popup.global_position = character_global_pos + TIP_POPUP_OFFSET
+
+	var tween := create_tween().set_parallel(true)
+	var target_pos := popup.global_position + Vector2(0, -XP_POPUP_FLOAT_DISTANCE)
+	var target_color := popup.modulate
+	target_color.a = 0.0
+
+	tween.tween_property(popup, "global_position", target_pos, XP_POPUP_DURATION_SECONDS)
+	tween.tween_property(popup, "modulate", target_color, XP_POPUP_DURATION_SECONDS)
+
+	tween.chain().tween_callback(popup.queue_free)
 
 
 func _on_customer_ready_at_counter(_customer: CustomerData, _character_global_pos: Vector2, _slot: int) -> void:

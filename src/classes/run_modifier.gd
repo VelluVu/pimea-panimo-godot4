@@ -9,6 +9,11 @@ extends Resource
 @export var modifier_name: String = ""
 @export var description: String = ""
 
+## Emoji placeholder shown on ModifierSelectWindow's cards until real icon
+## art exists for each modifier — swap this for an @export var icon:
+## Texture2D once art is ready, no other code should need to change.
+@export var icon_placeholder: String = "🎲"
+
 ## Multiplies Brewery.AVI_RAID_THRESHOLD — see Brewery.get_effective_raid_threshold().
 ## Below 1.0 means raids trigger sooner (more dangerous); above 1.0 means later.
 @export var avi_threshold_multiplier: float = 1.0

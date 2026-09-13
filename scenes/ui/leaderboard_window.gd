@@ -59,11 +59,21 @@ func _build_row(rank : int, entry : Dictionary) -> Label:
 		entry.get("days_survived", 0),
 		entry.get("reputation", 0),
 		entry.get("lifetime_bottles_sold", 0),
-		entry.get("date", ""),
+		_format_date(entry.get("date", "")),
 		entry.get("modifier_name", ""),
 		entry.get("score", 0),
 	]
 	return row_label
+
+
+## Reformats LeaderboardManager's stored ISO 8601 timestamp
+## ("2026-09-13T10:27:33") into a Finnish "pp.kk.vvvv" date for display,
+## dropping the time-of-day a trophy list has no use for.
+func _format_date(iso_datetime : String) -> String:
+	if iso_datetime.is_empty():
+		return ""
+	var parts : Dictionary = Time.get_datetime_dict_from_datetime_string(iso_datetime, false)
+	return "%02d.%02d.%04d" % [parts["day"], parts["month"], parts["year"]]
 
 
 func _ending_type_label(ending_type : String) -> String:

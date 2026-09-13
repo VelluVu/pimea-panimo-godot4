@@ -12,7 +12,15 @@ extends Resource
 
 
 @export_multiline var banner_text: String = ""
-@export var customer_data: CustomerData = null
+## Interchangeable archetype variants for this crowd (e.g. an archetype's
+## male and naaras CustomerData) — each member picks one at random when
+## spawned (see CustomerSpawner._spawn_group_members()), so a group reads
+## as a mixed crowd instead of every member sharing one identical sprite.
+## The shared order itself (see CustomerSpawner._run_shared_group_order())
+## also picks one at random to duplicate — safe because sibling variants
+## are expected to share the same title/stats and only differ in sprite,
+## name, and flavor dialogue.
+@export var customer_data_options: Array[CustomerData] = []
 
 @export_group("Ryhmän koko")
 @export var min_group_size: int = 6

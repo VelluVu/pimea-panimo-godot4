@@ -10,10 +10,20 @@ const SAVE_TOAST_HOLD_SECONDS : float = 1.2
 const SAVE_TOAST_FADE_SECONDS : float = 0.4
 const NO_ACTIVE_RECIPE_TEXT : String = "resepti:"
 
+## Same gold accent used for perk/modifier names (LevelUpWindow,
+## ModifierSelectWindow) — ties this popup visually to that same
+## "growth" system instead of reading as a plain success/failure color.
+const XP_POPUP_COLOR : Color = Color(0.949, 0.788, 0.42, 1)
+const XP_POPUP_FORMAT : String = "+%d XP"
+const XP_POPUP_DURATION_SECONDS : float = 1.8
+const XP_POPUP_OFFSET : Vector2 = Vector2(6, 0)
+const XP_POPUP_FLOAT_DISTANCE : float = 35.0
+
 @onready var table_list_vbox : VBoxContainer = $VBoxContainer/TableScrollContainer/IngredientListVBox
 @onready var save_recipe_toast : Label = $VBoxContainer/ButtonPanel/SaveRecipeToast
 @onready var current_recipe_label : Label = $VBoxContainer/CurrentRecipeBar/HBoxContainer/CurrentRecipeLabel
 @onready var erase_button : Button = $VBoxContainer/CurrentRecipeBar/HBoxContainer/EraseButton
+@onready var start_brew_button : Button = $VBoxContainer/ButtonPanel/HBoxContainer/StartBrewButton
 
 var table_labels: Dictionary = {} # Key: int (ID) -> Value: Label
 var _toast_tween : Tween
@@ -24,8 +34,31 @@ func _ready() -> void:
 	BrewerySignals.brewery_state_changed.connect(_on_brewery_state_changed)
 	BrewerySignals.recipe_saved.connect(_on_recipe_saved)
 	BrewerySignals.recipe_save_rejected.connect(_on_recipe_save_rejected)
+	BrewerySignals.brew_xp_gained.connect(_on_brew_xp_gained)
 	erase_button.pressed.connect(_on_erase_button_pressed)
 	_update_table_list_ui()
+
+
+## Floats a "+X XP" popup off the right edge of the "Pane" (start brew)
+## button — the brewing counterpart to CustomerManager's sale XP popup,
+## which appears on the customer instead (see DialogView).
+func _on_brew_xp_gained(amount : int) -> void:
+	var popup := Label.new()
+	popup.text = XP_POPUP_FORMAT % amount
+	popup.modulate = XP_POPUP_COLOR
+
+	start_brew_button.add_child(popup)
+	popup.position = Vector2(start_brew_button.size.x, 0) + XP_POPUP_OFFSET
+
+	var tween := create_tween().set_parallel(true)
+	var target_pos := popup.position + Vector2(0, -XP_POPUP_FLOAT_DISTANCE)
+	var target_color := popup.modulate
+	target_color.a = 0.0
+
+	tween.tween_property(popup, "position", target_pos, XP_POPUP_DURATION_SECONDS)
+	tween.tween_property(popup, "modulate", target_color, XP_POPUP_DURATION_SECONDS)
+
+	tween.chain().tween_callback(popup.queue_free)
 
 
 func _on_erase_button_pressed() -> void:

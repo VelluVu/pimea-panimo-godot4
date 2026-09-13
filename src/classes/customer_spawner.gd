@@ -153,7 +153,7 @@ func _on_group_event_timer_timeout(forced_event_data: GroupVisitEventData = null
 		return
 
 	var event_data = forced_event_data if forced_event_data != null else CustomerRegistry.get_random_group_event()
-	if event_data == null or event_data.customer_data == null:
+	if event_data == null or event_data.customer_data_options.is_empty():
 		_start_next_group_event_timer()
 		return
 
@@ -187,7 +187,7 @@ func _spawn_group_members(event_data: GroupVisitEventData, slot: int) -> void:
 		var new_customer = CUSTOMER_SCENE.instantiate()
 		add_child(new_customer)
 		new_customer.global_position = global_position
-		new_customer.customer_data = event_data.customer_data
+		new_customer.customer_data = event_data.customer_data_options.pick_random()
 		new_customer.assigned_slot = slot
 
 		CustomerManager.register_active_customer(slot, new_customer)
@@ -236,7 +236,7 @@ func _wait_for_group_arrival(event_data: GroupVisitEventData, last_member: Node2
 ## sized for "this many people ordered at once" instead of running it once
 ## per member. All members leave together once the result has been shown.
 func _run_shared_group_order(event_data: GroupVisitEventData, members: Array[Node2D], dialogue_slot: int, group_position: Vector2) -> void:
-	var order_data : CustomerData = event_data.customer_data.duplicate()
+	var order_data : CustomerData = event_data.customer_data_options.pick_random().duplicate()
 	if order_data.randomizes_preference:
 		order_data.reroll_preference()
 	order_data.min_bottles_per_visit *= members.size()
@@ -250,7 +250,29 @@ func _run_shared_group_order(event_data: GroupVisitEventData, members: Array[Nod
 
 	await get_tree().create_timer(Customer.PREVIEW_DELAY_SECONDS).timeout
 
+	# Same capture pattern as Customer._on_sale_timeout() — see its
+	# comment for why this needs a Dictionary, not a plain captured int.
+	var xp_capture : Dictionary = {"amount": 0}
+	var capture_xp := func(amount : int) -> void: xp_capture.amount = amount
+	var reputation_capture : Dictionary = {"amount": 0}
+	var capture_reputation := func(amount : int) -> void: reputation_capture.amount = amount
+	var tip_capture : Dictionary = {"amount": 0.0}
+	var capture_tip := func(amount : float) -> void: tip_capture.amount = amount
+
+	BrewerySignals.sale_xp_gained.connect(capture_xp)
+	BrewerySignals.sale_reputation_gained.connect(capture_reputation)
+	BrewerySignals.sale_tip_gained.connect(capture_tip)
 	var response_text : String = CustomerManager.process_auto_sale(order_data)
+	BrewerySignals.sale_xp_gained.disconnect(capture_xp)
+	BrewerySignals.sale_reputation_gained.disconnect(capture_reputation)
+	BrewerySignals.sale_tip_gained.disconnect(capture_tip)
+
+	if xp_capture.amount > 0:
+		BrewerySignals.xp_popup_requested.emit(xp_capture.amount, group_position)
+	if reputation_capture.amount != 0:
+		BrewerySignals.reputation_popup_requested.emit(reputation_capture.amount, group_position)
+	if tip_capture.amount > 0:
+		BrewerySignals.tip_popup_requested.emit(tip_capture.amount, group_position)
 
 	var final_text := "%s: %s" % [group_label, response_text]
 	var display_time := Customer._get_display_time_for_text(final_text)
