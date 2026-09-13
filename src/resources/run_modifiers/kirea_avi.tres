@@ -8,4 +8,5 @@ modifier_name = "Kireä AVI"
 description = "Tarkastajat ovat hereillä — ratsiakynnys on matalampi. Ainekset sentään halvempia."
 avi_threshold_multiplier = 0.7
 ingredient_price_multiplier = 0.8
+icon_placeholder = "🚨"
 metadata/_custom_type_script = "uid://dka80d13fropj"

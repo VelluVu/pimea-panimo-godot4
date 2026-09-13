@@ -22,9 +22,13 @@ func _init() -> void:
 
 ## Public so the main menu's "Aloita uusi peli" can force a fresh Brewery
 ## explicitly instead of relying on the one created at process boot.
-func start_new_game() -> void:
+## chosen_modifier carries the player's pick from ModifierSelectWindow;
+## left null wherever no choice was made (e.g. the very first Brewery
+## created at process boot, before any menu exists to choose from) so
+## Brewery._init() falls back to its own random roll.
+func start_new_game(chosen_modifier : RunModifier = null) -> void:
 	if current_brewery != null:
 		current_brewery.disconnect_signals()
-	current_brewery = Brewery.new()
+	current_brewery = Brewery.new(chosen_modifier)
 	current_brewery._ready()
 	print(StringContainer.NEW_GAME_MESSAGE)

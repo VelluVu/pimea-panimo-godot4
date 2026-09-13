@@ -35,6 +35,7 @@ const CONTINUE_BUTTON_TEXT : String = "Jatka pelaamista (ei tilastoihin)"
 @onready var message_label : Label = $MarginContainer/MainVBox/MessageLabel
 @onready var restart_button : Button = $MarginContainer/MainVBox/RestartButton
 @onready var continue_button : Button = $MarginContainer/MainVBox/ContinueButton
+@onready var modifier_select_window : ModifierSelectWindow = $"../ModifierSelectWindow"
 
 
 func _ready() -> void:
@@ -42,6 +43,7 @@ func _ready() -> void:
 	restart_button.pressed.connect(_on_restart_button_pressed)
 	continue_button.text = CONTINUE_BUTTON_TEXT
 	continue_button.pressed.connect(_on_continue_button_pressed)
+	modifier_select_window.modifier_chosen.connect(_on_modifier_chosen)
 	BrewerySignals.game_ended.connect(_on_game_ended)
 	hide()
 
@@ -86,10 +88,18 @@ func _on_game_ended(ending_type : String) -> void:
 	show()
 
 
+## Stays paused (unlike the old direct-restart flow) while
+## ModifierSelectWindow is up — the run is still "over" until the player
+## has actually picked what comes next; see that window's own
+## PROCESS_MODE_ALWAYS for why its buttons still work while paused.
 func _on_restart_button_pressed() -> void:
 	hide()
+	modifier_select_window.open()
+
+
+func _on_modifier_chosen(modifier : RunModifier) -> void:
 	get_tree().paused = false
-	BrewEngine.start_new_game()
+	BrewEngine.start_new_game(modifier)
 	TimeManager.resume_time()
 	get_tree().change_scene_to_file(GAME_SCENE_PATH)
 

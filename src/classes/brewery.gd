@@ -63,6 +63,13 @@ var game_has_ended : bool = false
 ## get_effective_raid_threshold() and the ingredient buy/sell price
 ## calculations below — see run_modifier.gd for what each field does.
 @export var run_modifier : RunModifier
+## XP/level/perks are the "growth" half of the run — unlike run_modifier
+## (fixed at run start), these accumulate through play via add_xp() and
+## reset with the rest of the run on a new game. See RunPerk and
+## LevelUpWindow.
+@export var run_xp : int = 0
+@export var run_level : int = 1
+@export var active_perks : Array[RunPerk] = []
 @export var brew_preparation : BrewPreparation
 @export var saved_recipes : Array[BrewRecipe] = []
 var resolver : BrewResolver = null
@@ -83,11 +90,27 @@ var today_sale_receipts : Array[SaleReceiptEntry] = []
 
 const TUTORIAL_MALT_TARGET_KG : int = 3
 
+const XP_PER_SUCCESSFUL_BREW : int = 20
+const XP_PER_NEW_STYLE_DISCOVERY_BONUS : int = 20
+const XP_PER_BOTTLE_SOLD : int = 3
+## level_required_xp(1) -> 40, (2) -> 60, (3) -> 80, ... — an easy, quick
+## first level-up (achievable from ~2-3 brews or sales) that gradually
+## slows down over a long run rather than either stalling early game or
+## trivializing late game.
+const XP_LEVEL_BASE : int = 40
+const XP_LEVEL_GROWTH_PER_LEVEL : int = 20
 
-func _init() -> void:
+
+## preset_modifier lets the caller hand in a specific RunModifier (the
+## player's pick from ModifierSelectWindow) instead of rolling a random
+## one — see BrewEngine.start_new_game(). Left null for a fresh random
+## roll wherever the choice doesn't apply (loading a save reconstructs
+## run_modifier from the saved data instead of going through _init() at
+## all — see SaveManager).
+func _init(preset_modifier : RunModifier = null) -> void:
 	inventory = Inventory.new()
 	brew_preparation = BrewPreparation.new()
-	run_modifier = RunModifierRegistry.get_random_modifier()
+	run_modifier = preset_modifier if preset_modifier != null else RunModifierRegistry.get_random_modifier()
 	resolver = BrewResolver.new()
 	resolver._ready()
 	resolver.ingredient_price_multiplier = run_modifier.ingredient_price_multiplier
@@ -158,6 +181,66 @@ func clear_risk() -> void:
 	risk = 0
 
 
+## Pure and static so the curve itself is directly unit-testable without
+## constructing a Brewery (which needs live autoloads — see _init()) —
+## same reasoning as BrewResolver.calculate_price_breakdown().
+static func xp_required_for_level(level : int) -> int:
+	return XP_LEVEL_BASE + (level - 1) * XP_LEVEL_GROWTH_PER_LEVEL
+
+
+## Central XP/leveling math for both brewing (start_brew()) and selling
+## (CustomerManager.process_auto_sale()) — those two call sites emit
+## their own popup-facing signal (brew_xp_gained/sale_xp_gained) with the
+## same raw amount they pass in here, since each knows exactly where its
+## own popup should appear (a fixed button vs. a customer's position) and
+## this method has no business knowing either. A while loop (not an if)
+## so a single large XP grant can still only ever cross one level at a
+## time in practice, but won't get stuck mid-level-up if it somehow
+## crossed two thresholds at once. Each level gained fires its own
+## BrewerySignals.level_up_reached so LevelUpWindow shows one perk choice
+## per level, never silently skipping one.
+func add_xp(amount : int) -> void:
+	if amount <= 0:
+		return
+
+	run_xp += amount
+	while run_xp >= xp_required_for_level(run_level):
+		run_xp -= xp_required_for_level(run_level)
+		run_level += 1
+		BrewerySignals.level_up_reached.emit(run_level)
+
+	BrewerySignals.brewery_state_changed.emit(self)
+
+
+## Called by LevelUpWindow once the player picks one of PerkRegistry's
+## rolled choices. Perks only ever accumulate — see RunPerk's own
+## docstring for why repeats are fine and expected.
+func apply_perk(perk : RunPerk) -> void:
+	active_perks.append(perk)
+	BrewerySignals.brewery_state_changed.emit(self)
+
+
+func get_quality_bonus() -> float:
+	var total : float = 0.0
+	for perk : RunPerk in active_perks:
+		total += perk.quality_bonus
+	return total
+
+
+func get_reputation_gain_multiplier() -> float:
+	var multiplier : float = 1.0
+	for perk : RunPerk in active_perks:
+		multiplier *= perk.reputation_gain_multiplier
+	return multiplier
+
+
+func get_tip_income_multiplier() -> float:
+	var multiplier : float = 1.0
+	for perk : RunPerk in active_perks:
+		multiplier *= perk.tip_income_multiplier
+	return multiplier
+
+
 ## AVI_RAID_THRESHOLD scaled by this run's modifier — see RunModifier.
 ## avi_threshold_multiplier. Kept separate from the raw constant since that
 ## constant is also read by call sites with no Brewery instance in scope
@@ -225,6 +308,14 @@ func trigger_ending(ending_type : String) -> void:
 
 
 func _ready() -> void:
+	# Re-sync in case run_modifier was overwritten after _init() ran (e.g.
+	# ResourceLoader loading a save: _init() always rolls/receives a
+	# run_modifier first, then the loader applies the saved @export value
+	# on top of it — resolver isn't @export, so without this line it would
+	# keep pricing by whatever run_modifier happened to be current at
+	# construction time instead of the one actually loaded).
+	resolver.ingredient_price_multiplier = run_modifier.ingredient_price_multiplier
+
 	GUISignals.add_ingredient_to_brew_preparation.connect(_on_add_ingredient_to_brew_preparation)
 	GUISignals.remove_ingredients_from_brew_preparation.connect(_on_remove_ingredient_from_brew_preparation)
 	GUISignals.buy_ingredient.connect(_on_buy_ingredient)
@@ -289,6 +380,7 @@ func _on_buy_ingredient(ingredient_id : int, amount : int) -> void:
 	money -= buy_price
 	inventory.add_amount(ingredient, amount)
 	_track_tutorial_purchase(ingredient, amount)
+	BrewerySignals.ingredient_purchased.emit(buy_price)
 	BrewerySignals.brewery_state_changed.emit(self)
 	check_bankruptcy()
 
@@ -426,8 +518,8 @@ func start_brew() -> void:
 	var new_batch := BrewBatch.new()
 	new_batch.beer_style = brew_report.beer_style
 	new_batch.amount_bottles = effective_yield
-	new_batch.original_quality = brew_report.original_quality
-	new_batch.current_quality = brew_report.original_quality
+	new_batch.original_quality = brew_report.original_quality + get_quality_bonus()
+	new_batch.current_quality = new_batch.original_quality
 	new_batch.final_ebc = brew_report.final_ebc
 	new_batch.final_ibu = brew_report.final_ibu
 	new_batch.precision_score = brew_report.precision_score
@@ -445,6 +537,12 @@ func start_brew() -> void:
 		if brew_report.beer_style.style == BeerStyle.Style.KOTIKALJA:
 			tutorial_brewed_kotikalja = true
 		BrewerySignals.beer_brewed.emit(brew_report.beer_style.style)
+
+		var brew_xp : int = XP_PER_SUCCESSFUL_BREW
+		if is_new_discovery:
+			brew_xp += XP_PER_NEW_STYLE_DISCOVERY_BONUS
+		add_xp(brew_xp)
+		BrewerySignals.brew_xp_gained.emit(brew_xp)
 
 	brew_preparation.clear_preparation()
 	print(StringContainer.SUCCESFULL_BREW_MESSAGE, BeerStyle.get_style_string_from_style(brew_report.beer_style.style))

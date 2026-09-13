@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="GroupVisitEventData" format=3]
+
+[ext_resource type="Script" path="res://src/classes/group_visit_event_data.gd" id="1_event"]
+[ext_resource type="Resource" path="res://src/resources/customers/hipsteri.tres" id="2_hipsteri"]
+[ext_resource type="Resource" path="res://src/resources/customers/hipsteri_naaras.tres" id="3_hipsteri_naaras"]
+[ext_resource type="Resource" path="res://src/resources/customers/agentti.tres" id="4_agentti"]
+[ext_resource type="Resource" path="res://src/resources/customers/agentti_naaras.tres" id="5_agentti_naaras"]
+[ext_resource type="Resource" path="res://src/resources/customers/mafioso.tres" id="6_mafioso"]
+[ext_resource type="Resource" path="res://src/resources/customers/mafioso_naaras.tres" id="7_mafioso_naaras"]
+[ext_resource type="Resource" path="res://src/resources/customers/raksamies.tres" id="8_raksamies"]
+[ext_resource type="Resource" path="res://src/resources/customers/raksamies_naaras.tres" id="9_raksamies_naaras"]
+
+[resource]
+script = ExtResource("1_event")
+banner_text = "Oudoin remmi ikinä ilmestyy portaille yhtä aikaa —
+hipsteri, agentti, kummisetä ja remonttimies samassa jonossa.
+Kukaan ei kysy miksi."
+customer_data_options = [ExtResource("2_hipsteri"), ExtResource("3_hipsteri_naaras"), ExtResource("4_agentti"), ExtResource("5_agentti_naaras"), ExtResource("6_mafioso"), ExtResource("7_mafioso_naaras"), ExtResource("8_raksamies"), ExtResource("9_raksamies_naaras")]
+min_group_size = 5
+max_group_size = 9
+walk_in_stagger_seconds = 0.45
+formation_spacing_px = 13.0

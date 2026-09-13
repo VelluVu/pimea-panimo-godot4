@@ -114,6 +114,10 @@ func process_auto_sale(data: CustomerData) -> String:
 		return data.dialogue_no_match
 
 	var brewery = BrewEngine.current_brewery
+	# Snapshot so the net reputation change (including any bar-fight
+	# penalty further down) can be reported as a single popup-friendly
+	# delta at the end, instead of the mid-function reputation_gain alone.
+	var reputation_before : int = brewery.reputation
 
 	var breakdown : SaleBreakdown = brewery.resolver.get_price_breakdown(best_batch.beer_style)
 	var results: Dictionary = data.evaluate_brew_batch(best_batch, breakdown.price_per_bottle)
@@ -127,13 +131,21 @@ func process_auto_sale(data: CustomerData) -> String:
 	var gross_income : float = snappedf(results[KEY_INCOME] * bottles_sold, 0.1)
 	# No tax deduction — nothing gets remitted to the state here. Gross
 	# income (the fixed, style-based price) plus any tip is exactly what
-	# lands in the till.
-	var tip_income : float = snappedf(results[KEY_TIP] * bottles_sold, 0.1)
+	# lands in the till. tip_income_multiplier is a RunPerk bonus (see
+	# Brewery.get_tip_income_multiplier()), neutral 1.0 until one's picked.
+	var tip_income : float = snappedf(results[KEY_TIP] * bottles_sold * brewery.get_tip_income_multiplier(), 0.1)
 	var net_income : float = snappedf(gross_income + tip_income, 0.1)
 
 	brewery.money += net_income
-	brewery.reputation = max(0, brewery.reputation + results[KEY_REPUTATION])
+	# reputation_gain_multiplier is the same RunPerk-driven bonus applied
+	# to reputation instead of tip — see Brewery.get_reputation_gain_multiplier().
+	var reputation_gain : int = roundi(results[KEY_REPUTATION] * brewery.get_reputation_gain_multiplier())
+	brewery.reputation = max(0, brewery.reputation + reputation_gain)
 	brewery.add_risk(results[KEY_RISK])
+	var sale_xp : int = Brewery.XP_PER_BOTTLE_SOLD * bottles_sold
+	brewery.add_xp(sale_xp)
+	BrewerySignals.sale_xp_gained.emit(sale_xp)
+	BrewerySignals.sale_tip_gained.emit(tip_income)
 
 	var receipt_entry := SaleReceiptEntry.new()
 	receipt_entry.breakdown = breakdown
@@ -159,6 +171,7 @@ func process_auto_sale(data: CustomerData) -> String:
 	if data.bar_fight_chance > 0.0 and randf() < data.bar_fight_chance:
 		response_text += "\n" + _trigger_bar_fight(brewery, data, best_batch)
 
+	BrewerySignals.sale_reputation_gained.emit(brewery.reputation - reputation_before)
 	BrewerySignals.brewery_state_changed.emit(brewery)
 	return response_text
 

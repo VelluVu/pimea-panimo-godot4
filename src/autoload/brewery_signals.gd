@@ -33,3 +33,55 @@ signal daily_bills_paid(electricity: int, water: int, total: int)
 ## target with the run not on the ropes). See GameEndWindow.
 @warning_ignore("unused_signal")
 signal game_ended(ending_type: String)
+## Fired once per level gained by Brewery.add_xp() — see LevelUpWindow,
+## which rolls its own perk choices via PerkRegistry when it hears this
+## rather than the signal carrying pre-rolled choices itself.
+@warning_ignore("unused_signal")
+signal level_up_reached(new_level: int)
+## Fired by Brewery.start_brew() with the exact XP that brew just granted
+## (see Brewery.add_xp() — run_xp itself isn't safe to diff, it wraps
+## around on a level-up). BrewPreparationPanel shows a "+X XP" popup at
+## the "Pane" (start brew) button for this.
+@warning_ignore("unused_signal")
+signal brew_xp_gained(amount: int)
+## Fired by CustomerManager.process_auto_sale() with the exact XP that
+## sale just granted — same "don't diff run_xp" reasoning as
+## brew_xp_gained. Carries no position: it's a synchronous bookkeeping
+## signal callers who know their own customer position (Customer,
+## CustomerSpawner's group-order path) capture around their own
+## process_auto_sale() call, mirroring dev_console.gd's "sell" command
+## capturing beer_sale_breakdown the same way — then those callers emit
+## xp_popup_requested themselves with the position attached.
+@warning_ignore("unused_signal")
+signal sale_xp_gained(amount: int)
+## Emitted by whoever actually knows where to show an XP popup (Customer,
+## CustomerSpawner) once they've paired a captured sale_xp_gained amount
+## with their own known position. DialogView listens for this since it
+## already owns "how to place something at a customer's position".
+@warning_ignore("unused_signal")
+signal xp_popup_requested(amount: int, position: Vector2)
+## Fired by CustomerManager.process_auto_sale() with this sale's net
+## reputation change (post any bar-fight penalty) — same "synchronous
+## bookkeeping signal, caller pairs it with a known position" pattern as
+## sale_xp_gained/xp_popup_requested.
+@warning_ignore("unused_signal")
+signal sale_reputation_gained(amount: int)
+## Fired by CustomerManager.process_auto_sale() with this sale's tip
+## income — same pattern as sale_reputation_gained.
+@warning_ignore("unused_signal")
+signal sale_tip_gained(amount: float)
+## Emitted by whoever knows where to show a reputation popup (Customer,
+## CustomerSpawner) once they've paired a captured sale_reputation_gained
+## amount with their own known position. DialogView shows it just below
+## the "+X XP" popup at that same position.
+@warning_ignore("unused_signal")
+signal reputation_popup_requested(amount: int, position: Vector2)
+## Emitted the same way as reputation_popup_requested, for a sale's tip
+## income — shown next to the customer alongside the XP/reputation popups.
+@warning_ignore("unused_signal")
+signal tip_popup_requested(amount: float, position: Vector2)
+## Fired by Brewery._on_buy_ingredient() with the exact amount charged —
+## ShopView shows a "-X €" popup at the "Osta" (buy) button for this,
+## mirroring BrewPreparationPanel's brew_xp_gained popup at "Pane".
+@warning_ignore("unused_signal")
+signal ingredient_purchased(cost: float)

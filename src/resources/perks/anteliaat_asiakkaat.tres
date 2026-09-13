@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="RunPerk" format=3]
+
+[ext_resource type="Script" path="res://src/classes/run_perk.gd" id="1_anteliaat"]
+
+[resource]
+script = ExtResource("1_anteliaat")
+perk_name = "Anteliaat asiakkaat"
+description = "Sana kiirii hyvästä palvelusta — tyytyväiset asiakkaat jättävät nyt anteliaampia tippejä."
+icon_placeholder = "💝"
+tip_income_multiplier = 1.5

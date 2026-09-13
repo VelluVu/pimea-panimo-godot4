@@ -26,6 +26,8 @@ const GAME_SCENE_PATH: String = "res://scenes/main.tscn"
 @onready var new_game_button: Button = $CenterContainer/StartGameView/NewGameButton
 @onready var back_button: Button = $CenterContainer/StartGameView/BackButton
 
+@onready var modifier_select_window: ModifierSelectWindow = $ModifierSelectWindow
+
 
 func _ready() -> void:
 	title_label.text = TITLE_TEXT
@@ -44,6 +46,7 @@ func _ready() -> void:
 	new_game_button.pressed.connect(_on_new_game_button_pressed)
 	continue_button.pressed.connect(_on_continue_button_pressed)
 	back_button.pressed.connect(_on_back_button_pressed)
+	modifier_select_window.modifier_chosen.connect(_on_modifier_chosen)
 
 	continue_button.visible = SaveManager.has_save()
 
@@ -78,7 +81,11 @@ func _on_back_button_pressed() -> void:
 
 func _on_new_game_button_pressed() -> void:
 	GUISignals.menu_button_pressed.emit()
-	BrewEngine.start_new_game()
+	modifier_select_window.open()
+
+
+func _on_modifier_chosen(modifier : RunModifier) -> void:
+	BrewEngine.start_new_game(modifier)
 	TimeManager.resume_time()
 	get_tree().change_scene_to_file(GAME_SCENE_PATH)
 
