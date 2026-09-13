@@ -115,3 +115,29 @@ const WRONG_STYLE_DIALOGUE_STRING : String = "Ei tää sitä ollu mitä hain, mu
 const AVI_RAID_TITLE : String = "AVI-TARKASTUS!"
 const AVI_RAID_MESSAGE : String = "Alkoholitarkastajat ryntäsivät kellariin ja takavarikoivat %s pulloa valmista olutta! Lisäksi kirjoittivat sakon: %.1f €, ja maineesi laski %s pistettä."
 const AVI_RAID_CLOSE_TEXT : String = "Selvä..."
+
+## RunPerk.get_stat_summary() lines — only the non-neutral fields are ever
+## shown (see that function), so every perk's numbers are always positive.
+const PERK_QUALITY_STAT_STRING : String = "Laatu: +%d %%"
+const PERK_REPUTATION_STAT_STRING : String = "Maineen kertymä: +%d %%"
+const PERK_TIP_STAT_STRING : String = "Tipit: +%d %%"
+
+## RunModifier.get_stat_summary() lines — signed (%+d) since a modifier can
+## push either direction (see e.g. Kireä AVI's lower raid threshold).
+const MODIFIER_RAID_THRESHOLD_STAT_STRING : String = "Ratsiakynnys: %+d %%"
+const MODIFIER_INGREDIENT_PRICE_STAT_STRING : String = "Ainehinnat: %+d %%"
+
+const RUN_EFFECTS_BUTTON_TOOLTIP : String = "Kierroksen tilastot"
+const RUN_EFFECTS_TITLE : String = "Kierroksen tilastot"
+const RUN_EFFECTS_CLOSE_TEXT : String = "Sulje"
+const RUN_EFFECTS_MODIFIER_HEADER : String = "Olosuhteet: %s"
+const RUN_EFFECTS_RAID_THRESHOLD_STRING : String = "Ratsiakynnys tällä kierroksella: %d riskiä"
+const RUN_EFFECTS_NO_MODIFIER_STRING : String = "Ei aktiivista kierrosta."
+const RUN_EFFECTS_PERKS_HEADER : String = "Aktiiviset perkit (%d):"
+const RUN_EFFECTS_NO_PERKS_STRING : String = "Ei vielä perkkejä — nouse tasolle 2 saadaksesi ensimmäisen."
+const RUN_EFFECTS_PERK_ROW_FORMAT : String = "%s %s%s"
+const RUN_EFFECTS_PERK_ROW_COUNT_SUFFIX : String = " ×%d"
+const RUN_EFFECTS_TOTALS_HEADER : String = "Yhteisvaikutus:"
+const RUN_EFFECTS_TOTALS_QUALITY : String = "Laatubonus jokaiseen erään: +%d %%"
+const RUN_EFFECTS_TOTALS_REPUTATION : String = "Maineen kertymä: +%d %%"
+const RUN_EFFECTS_TOTALS_TIP : String = "Tipit: +%d %%"

@@ -32,3 +32,20 @@ extends Resource
 ## Multiplies the tip earned from a sale (see CustomerManager.
 ## process_auto_sale()).
 @export var tip_income_multiplier: float = 1.0
+
+
+## Formats this perk's own numeric fields as a short stat line, one per
+## non-neutral field — used to put real numbers next to the flavor text on
+## LevelUpWindow's cards and in RunEffectsWindow, instead of leaving the
+## player to guess what e.g. "hieman laadukkaampi" actually means.
+func get_stat_summary() -> String:
+	var lines : PackedStringArray = []
+
+	if quality_bonus != 0.0:
+		lines.append(StringContainer.PERK_QUALITY_STAT_STRING % roundi(quality_bonus * 100))
+	if reputation_gain_multiplier != 1.0:
+		lines.append(StringContainer.PERK_REPUTATION_STAT_STRING % roundi((reputation_gain_multiplier - 1.0) * 100))
+	if tip_income_multiplier != 1.0:
+		lines.append(StringContainer.PERK_TIP_STAT_STRING % roundi((tip_income_multiplier - 1.0) * 100))
+
+	return "\n".join(lines)

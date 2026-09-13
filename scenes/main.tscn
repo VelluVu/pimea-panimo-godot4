@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://ccmro4v7bveuo"]
 
+[ext_resource type="Script" path="res://scenes/main.gd" id="1_cjqg0"]
 [ext_resource type="Script" uid="uid://dcx0ivwno5nl2" path="res://scenes/ui/gui.gd" id="1_o5qli"]
 [ext_resource type="Texture2D" uid="uid://o6vh3frtnlhf" path="res://assets/textures/underground_brewery_fixed-0001.png" id="2_85g3d"]
 [ext_resource type="Texture2D" uid="uid://d0i6obt1bcke0" path="res://assets/textures/bar_table_wide.png" id="2_dp3eg"]
@@ -41,6 +42,8 @@
 [ext_resource type="Script" uid="uid://4sopxxh57qng" path="res://scenes/ui/game_end_window.gd" id="39_c6pm6"]
 [ext_resource type="PackedScene" uid="uid://2ddvq1esbm4f" path="res://scenes/ui/modifier_select_window.tscn" id="40_5he1u"]
 [ext_resource type="PackedScene" uid="uid://4pjyebwj4isb" path="res://scenes/ui/level_up_window.tscn" id="41_5poiv"]
+[ext_resource type="PackedScene" path="res://scenes/ui/run_effects_window.tscn" id="42_2cjbq"]
+[ext_resource type="PackedScene" uid="uid://kttjbp45s274" path="res://scenes/bartender.tscn" id="43_chjal"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_yf5fn"]
 blend_mode = 1
@@ -72,6 +75,7 @@ bg_color = Color(0.6, 0.6, 0.6, 0)
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [node name="Main" type="Node" unique_id=1659433080]
+script = ExtResource("1_cjqg0")
 
 [node name="BG_Sprite2D" type="Sprite2D" parent="." unique_id=2145408726]
 position = Vector2(320, 180)
@@ -110,45 +114,6 @@ z_index = 2
 material = SubResource("CanvasItemMaterial_pm3ni")
 texture = ExtResource("2_85g3d")
 polygon = PackedVector2Array(91.00314, 177.12683, 121, 176, 121, 123, 155, 92, 158, 61, 158, 25, 0.1542387, 24.524673, 0.028835297, 43.784214, 80.578766, 44.011307, 90.77697, 54.397774)
-
-[node name="BarTable_Sprite2D" type="Sprite2D" parent="." unique_id=834465169]
-position = Vector2(399, 249)
-texture = ExtResource("2_dp3eg")
-
-[node name="PC_Prop" type="Sprite2D" parent="." unique_id=119017108]
-position = Vector2(501, 220)
-texture = ExtResource("18_0ld40")
-script = ExtResource("7_og1vs")
-
-[node name="CustomerSpawner" type="Node2D" parent="." unique_id=82506958]
-z_index = 1
-y_sort_enabled = true
-position = Vector2(93, 98)
-script = ExtResource("17_muem4")
-
-[node name="CounterPositionsParent" type="Node2D" parent="CustomerSpawner" unique_id=2107604814]
-position = Vector2(306, 159)
-
-[node name="CounterMarker1" type="Marker2D" parent="CustomerSpawner/CounterPositionsParent" unique_id=1548923890]
-position = Vector2(-98, 35)
-
-[node name="CounterMarker2" type="Marker2D" parent="CustomerSpawner/CounterPositionsParent" unique_id=1665718045]
-position = Vector2(-55, 35)
-
-[node name="CounterMarker3" type="Marker2D" parent="CustomerSpawner/CounterPositionsParent" unique_id=922537437]
-position = Vector2(-9, 36)
-
-[node name="CounterMarker4" type="Marker2D" parent="CustomerSpawner/CounterPositionsParent" unique_id=2025945167]
-position = Vector2(37, 35)
-
-[node name="CounterMarker5" type="Marker2D" parent="CustomerSpawner/CounterPositionsParent" unique_id=498340080]
-position = Vector2(85, 36)
-
-[node name="StairsBottomMarker" type="Marker2D" parent="CustomerSpawner" unique_id=1346504694]
-position = Vector2(-89, 235)
-
-[node name="RoomCenterMarker" type="Marker2D" parent="CustomerSpawner" unique_id=683741727]
-position = Vector2(291, 238)
 
 [node name="GUI_CanvasLayer" type="CanvasLayer" parent="." unique_id=1651647138]
 
@@ -272,6 +237,11 @@ texture = ExtResource("12_pm3ni")
 layout_mode = 2
 size_flags_horizontal = 8
 text = "Sulje ovet"
+
+[node name="EffectsButton" type="Button" parent="GUI_CanvasLayer/GUI/TopPanel_Resources" unique_id=912448575]
+layout_mode = 2
+tooltip_text = "Kierroksen tilastot"
+text = "Tilastot"
 
 [node name="Right_WarehouseView" type="VBoxContainer" parent="GUI_CanvasLayer/GUI" unique_id=1128246563]
 visible = false
@@ -1242,6 +1212,59 @@ layout_mode = 1
 
 [node name="LevelUpWindow" parent="GUI_CanvasLayer/GUI" unique_id=1956261132 instance=ExtResource("41_5poiv")]
 layout_mode = 1
+
+[node name="RunEffectsWindow" parent="GUI_CanvasLayer/GUI" unique_id=426620948 instance=ExtResource("42_2cjbq")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.6
+anchor_top = 0.1
+anchor_right = 0.98
+anchor_bottom = 0.85
+
+[node name="WorldYSort" type="Node2D" parent="." unique_id=1587711243]
+y_sort_enabled = true
+
+[node name="CustomerSpawner" type="Node2D" parent="WorldYSort" unique_id=82506958]
+z_index = 1
+y_sort_enabled = true
+position = Vector2(93, 98)
+script = ExtResource("17_muem4")
+
+[node name="CounterPositionsParent" type="Node2D" parent="WorldYSort/CustomerSpawner" unique_id=2107604814]
+position = Vector2(306, 159)
+
+[node name="CounterMarker1" type="Marker2D" parent="WorldYSort/CustomerSpawner/CounterPositionsParent" unique_id=1548923890]
+position = Vector2(-98, 35)
+
+[node name="CounterMarker2" type="Marker2D" parent="WorldYSort/CustomerSpawner/CounterPositionsParent" unique_id=1665718045]
+position = Vector2(-55, 35)
+
+[node name="CounterMarker3" type="Marker2D" parent="WorldYSort/CustomerSpawner/CounterPositionsParent" unique_id=922537437]
+position = Vector2(-9, 36)
+
+[node name="CounterMarker4" type="Marker2D" parent="WorldYSort/CustomerSpawner/CounterPositionsParent" unique_id=2025945167]
+position = Vector2(37, 35)
+
+[node name="CounterMarker5" type="Marker2D" parent="WorldYSort/CustomerSpawner/CounterPositionsParent" unique_id=498340080]
+position = Vector2(85, 36)
+
+[node name="StairsBottomMarker" type="Marker2D" parent="WorldYSort/CustomerSpawner" unique_id=1346504694]
+position = Vector2(-89, 235)
+
+[node name="RoomCenterMarker" type="Marker2D" parent="WorldYSort/CustomerSpawner" unique_id=683741727]
+position = Vector2(291, 238)
+
+[node name="BarTable_Sprite2D" type="Sprite2D" parent="WorldYSort" unique_id=834465169]
+position = Vector2(399, 249)
+texture = ExtResource("2_dp3eg")
+
+[node name="PC_Prop" type="Sprite2D" parent="WorldYSort/BarTable_Sprite2D" unique_id=119017108]
+position = Vector2(102, -29)
+texture = ExtResource("18_0ld40")
+script = ExtResource("7_og1vs")
+
+[node name="Bartender" parent="WorldYSort" unique_id=1865937119 instance=ExtResource("43_chjal")]
+position = Vector2(399, 181)
 
 [connection signal="pressed" from="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/IngredientSelectionPanel/AddRemoveLastModifiedButtonPanel/HBoxContainer/AddButton" to="GUI_CanvasLayer/GUI/Left_BrewingView" method="_on_add_button_pressed"]
 [connection signal="pressed" from="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/IngredientSelectionPanel/AddRemoveLastModifiedButtonPanel/HBoxContainer/RemoveButton" to="GUI_CanvasLayer/GUI/Left_BrewingView" method="_on_remove_button_pressed"]
