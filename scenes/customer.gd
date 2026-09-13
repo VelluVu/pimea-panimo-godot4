@@ -22,6 +22,29 @@ const ANIM_IDLE_UP : StringName = &"idle_up"
 const ANIM_WALK_TOWARDS : StringName = &"walk_towards"
 const ANIM_WALK_RIGHT : StringName = &"walk_right"
 
+## Per-frame hand position for ANIM_WALK_TOWARDS (Customer-local space,
+## matching AnimatedSprite2D's centered=false/offset=(-16,-32)/scale=4
+## transform), sampled from the sprite's actual walking hand pixels rather
+## than guessed — the bottle is only ever shown while walking away (see
+## leave_counter/made_purchase), so no other animation needs an entry here.
+const WALK_TOWARDS_HAND_OFFSETS : Array[Vector2] = [
+	Vector2(32, -46),
+	Vector2(16, -46),
+	Vector2(32, -46),
+	Vector2(34, -50),
+]
+
+## Zgen's walk_towards frames keep both arms crossed at the chest the whole
+## cycle (no swinging hand to track — see Zgen_32.png), so instead of a
+## hand position this is a small hand-authored sway around chest height.
+const ZGEN_TITLE : String = "Zgen"
+const ZGEN_CHEST_BOTTLE_OFFSETS : Array[Vector2] = [
+	Vector2(-4, -68),
+	Vector2(0, -66),
+	Vector2(4, -68),
+	Vector2(0, -66),
+]
+
 const RECOLOR_SHADER : Shader = preload("res://assets/shaders/customer_recolor.gdshader")
 const RECOLOR_HAIR_SATURATION_RANGE : Vector2 = Vector2(0.55, 0.9)
 const RECOLOR_CLOTHES_SATURATION_RANGE : Vector2 = Vector2(0.55, 0.9)
@@ -31,12 +54,20 @@ const RECOLOR_SKIN_SATURATION_RANGE : Vector2 = Vector2(0.35, 0.6)
 const RECOLOR_SKIN_VALUE_RANGE : Vector2 = Vector2(0.6, 0.95)
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var bottle_hand_marker: Marker2D = $BottleHandMarker
+@onready var beer_bottle_sprite: Sprite2D = $BottleHandMarker/BeerBottleSprite
 
 var customer_data: CustomerData:
 	set(value):
 		customer_data = value
 		_apply_visuals()
 var assigned_slot: int = -1
+
+## Set when process_auto_sale() actually sold this customer a beer — gates
+## show_beer_bottle() at leave_counter() so the bottle only ever appears
+## while walking away (see WALK_TOWARDS_HAND_OFFSETS: the only pose it's
+## positioned for), never during the counter-facing idle_up wait.
+var made_purchase: bool = false
 
 ## Speech-bubble identity for DialogView, separate from assigned_slot.
 ## A group visit puts several customers on the same assigned_slot (they
@@ -50,6 +81,15 @@ var assigned_slot: int = -1
 var dialogue_slot: int = -1
 
 var generated_name: String = "Asiakas"
+
+
+func _ready() -> void:
+	animated_sprite.frame_changed.connect(_on_animated_sprite_frame_changed)
+
+
+func _on_animated_sprite_frame_changed() -> void:
+	var offsets := ZGEN_CHEST_BOTTLE_OFFSETS if customer_data != null and customer_data.title == ZGEN_TITLE else WALK_TOWARDS_HAND_OFFSETS
+	bottle_hand_marker.position = offsets[animated_sprite.frame % offsets.size()]
 
 
 func _apply_visuals() -> void:
@@ -194,6 +234,7 @@ func _on_sale_timeout() -> void:
 	BrewerySignals.sale_tip_gained.disconnect(capture_tip)
 
 	if xp_capture.amount > 0:
+		made_purchase = true
 		BrewerySignals.xp_popup_requested.emit(xp_capture.amount, global_position)
 	if reputation_capture.amount != 0:
 		BrewerySignals.reputation_popup_requested.emit(reputation_capture.amount, global_position)
@@ -208,11 +249,18 @@ func _on_sale_timeout() -> void:
 	leave_timer.timeout.connect(leave_counter)
 
 
+func show_beer_bottle() -> void:
+	_on_animated_sprite_frame_changed()
+	beer_bottle_sprite.show()
+
+
 func leave_counter() -> void:
 	var exit_pos = global_position + Vector2(0.0, 150.0)
 	var duration = 150.0 / customer_data.floor_walk_speed
 
 	_play_animation(ANIM_WALK_TOWARDS)
+	if made_purchase:
+		show_beer_bottle()
 	var tween = create_tween()
 	tween.tween_property(self, "global_position", exit_pos, duration).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 	tween.tween_callback(queue_free)

@@ -268,6 +268,9 @@ func _run_shared_group_order(event_data: GroupVisitEventData, members: Array[Nod
 	BrewerySignals.sale_tip_gained.disconnect(capture_tip)
 
 	if xp_capture.amount > 0:
+		for member in members:
+			if is_instance_valid(member):
+				member.made_purchase = true
 		BrewerySignals.xp_popup_requested.emit(xp_capture.amount, group_position)
 	if reputation_capture.amount != 0:
 		BrewerySignals.reputation_popup_requested.emit(reputation_capture.amount, group_position)

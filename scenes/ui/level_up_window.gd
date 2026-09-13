@@ -71,7 +71,9 @@ func _show_next_pending_level() -> void:
 		var perk : RunPerk = _offered_perks[i]
 		_card_icon_labels[i].text = perk.icon_placeholder
 		_card_header_labels[i].text = perk.perk_name
-		_card_description_labels[i].text = perk.description
+
+		var stat_summary : String = perk.get_stat_summary()
+		_card_description_labels[i].text = perk.description if stat_summary.is_empty() else perk.description + "\n" + stat_summary
 
 	show()
 

@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://kttjbp45s274"]
+
+[ext_resource type="Script" uid="uid://bdkjioo848uw6" path="res://scenes/bartender.gd" id="1_bartender"]
+[ext_resource type="SpriteFrames" uid="uid://dmny30qxclveo" path="res://src/resources/sprite_frames/baarimikko_anim.tres" id="2_sprite"]
+
+[node name="Bartender" type="Node2D" unique_id=1780134628]
+script = ExtResource("1_bartender")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=420348245]
+texture_filter = 1
+position = Vector2(0, 94)
+scale = Vector2(2.6666667, 2.6666667)
+sprite_frames = ExtResource("2_sprite")
+animation = &"idle"
+centered = false
+offset = Vector2(-24, -48)

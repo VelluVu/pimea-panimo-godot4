@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cw8uqmorifcpm" path="res://scenes/customer.gd" id="1_ktfjk"]
 [ext_resource type="SpriteFrames" uid="uid://xbg47c0gkylu" path="res://src/resources/sprite_frames/default_customer.tres" id="2_xss0h"]
+[ext_resource type="Texture2D" uid="uid://ui42kael5n56" path="res://assets/textures/beer_bottle_8x8.png" id="3_8qg4y"]
 
 [node name="Customer" type="Node2D" unique_id=348033307]
 script = ExtResource("1_ktfjk")
@@ -13,3 +14,11 @@ sprite_frames = ExtResource("2_xss0h")
 animation = &"idle"
 centered = false
 offset = Vector2(-16, -32)
+
+[node name="BottleHandMarker" type="Marker2D" parent="." unique_id=720355714]
+
+[node name="BeerBottleSprite" type="Sprite2D" parent="BottleHandMarker" unique_id=1935198091]
+visible = false
+texture_filter = 1
+scale = Vector2(3, 3)
+texture = ExtResource("3_8qg4y")

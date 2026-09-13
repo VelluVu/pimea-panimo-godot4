@@ -25,6 +25,7 @@ const LEVEL_FORMAT : String = "Taso: %d"
 
 @onready var money_label : Label = $MoneyLabel
 @onready var receipt_log_button : Button = $ReceiptLogButton
+@onready var effects_button : Button = $EffectsButton
 @onready var reputation_label : Label = $ReputationLabel
 @onready var level_label : Label = $LevelLabel
 @onready var risk_label : Label = $RiskLabel
@@ -52,6 +53,7 @@ func _ready() -> void:
 	BrewerySignals.brewery_state_changed.connect(_on_brewery_state_changed)
 	TimeManager.day_changed.connect(_on_day_changed)
 	receipt_log_button.pressed.connect(_on_receipt_log_button_pressed)
+	effects_button.pressed.connect(_on_effects_button_pressed)
 
 	if BrewEngine.current_brewery != null:
 		BrewEngine.current_brewery.emit_initial_values()
@@ -66,6 +68,10 @@ func _on_receipt_log_button_pressed() -> void:
 	GUISignals.receipt_log_requested.emit()
 
 
+func _on_effects_button_pressed() -> void:
+	GUISignals.run_effects_requested.emit()
+
+
 func _update_day_display(day_num: int) -> void:
 	if day_label:
 		day_label.text = DAY_STRING % str(day_num)
@@ -75,7 +81,9 @@ func _on_brewery_state_changed(brewery : Brewery) -> void:
 	if not _modifier_tag_shown and brewery.run_modifier != null:
 		_modifier_tag_shown = true
 		modifier_tag_label.text = MODIFIER_TAG_FORMAT % brewery.run_modifier.modifier_name
-		modifier_tag_label.tooltip_text = brewery.run_modifier.description
+
+		var stat_summary : String = brewery.run_modifier.get_stat_summary()
+		modifier_tag_label.tooltip_text = brewery.run_modifier.description if stat_summary.is_empty() else brewery.run_modifier.description + "\n" + stat_summary
 
 	var new_money: float = brewery.money
 
