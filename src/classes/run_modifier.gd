@@ -8,6 +8,13 @@ extends Resource
 
 @export var modifier_name: String = ""
 @export var description: String = ""
+## True on exactly one modifier resource (tavallinen_keikka.tres) — the
+## neutral, all-multipliers-1.0 baseline. RunModifierRegistry.
+## get_random_modifiers() guarantees this one a slot among the offered
+## cards rather than leaving it to the same shuffle as every other
+## modifier, so a player who doesn't want a run-altering condition always
+## has that option on the table.
+@export var is_default: bool = false
 
 ## Emoji placeholder shown on ModifierSelectWindow's cards until real icon
 ## art exists for each modifier — swap this for an @export var icon:

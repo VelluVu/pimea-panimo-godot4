@@ -22,12 +22,12 @@ const RISK_WARNING_PULSE_SECONDS : float = 0.3
 const MODIFIER_TAG_FORMAT : String = "🎲 %s"
 
 const LEVEL_FORMAT : String = "Taso: %d"
+const LEVEL_PROGRESS_TOOLTIP_FORMAT : String = "%d / %d XP seuraavaan tasoon"
 
 @onready var money_label : Label = $MoneyLabel
-@onready var receipt_log_button : Button = $ReceiptLogButton
-@onready var effects_button : Button = $EffectsButton
 @onready var reputation_label : Label = $ReputationLabel
-@onready var level_label : Label = $LevelLabel
+@onready var level_label : Label = $LevelBox/LevelLabel
+@onready var level_progress_bar : ProgressBar = $LevelBox/LevelProgressBar
 @onready var risk_label : Label = $RiskLabel
 @onready var day_label : Label = $DayLabel
 @onready var modifier_tag_label : Label = $ModifierTagLabel
@@ -52,8 +52,6 @@ var _risk_warning_active: bool = false
 func _ready() -> void:
 	BrewerySignals.brewery_state_changed.connect(_on_brewery_state_changed)
 	TimeManager.day_changed.connect(_on_day_changed)
-	receipt_log_button.pressed.connect(_on_receipt_log_button_pressed)
-	effects_button.pressed.connect(_on_effects_button_pressed)
 
 	if BrewEngine.current_brewery != null:
 		BrewEngine.current_brewery.emit_initial_values()
@@ -62,14 +60,6 @@ func _ready() -> void:
 
 func _on_day_changed(new_day: int) -> void:
 	_update_day_display(new_day)
-
-
-func _on_receipt_log_button_pressed() -> void:
-	GUISignals.receipt_log_requested.emit()
-
-
-func _on_effects_button_pressed() -> void:
-	GUISignals.run_effects_requested.emit()
 
 
 func _update_day_display(day_num: int) -> void:
@@ -110,6 +100,14 @@ func _on_brewery_state_changed(brewery : Brewery) -> void:
 	if brewery.run_level != _last_level:
 		_last_level = brewery.run_level
 		level_label.text = LEVEL_FORMAT % brewery.run_level
+
+	# Unlike the level label above, this updates on every state change (not
+	# just on a level-up) — XP itself ticks up on every sale/brew, and the
+	# whole point of the bar is the constant "almost there" read between
+	# level-ups, not just a snap the moment one happens.
+	var xp_needed : int = Brewery.xp_required_for_level(brewery.run_level)
+	level_progress_bar.value = float(brewery.run_xp) / float(xp_needed) if xp_needed > 0 else 0.0
+	level_progress_bar.tooltip_text = LEVEL_PROGRESS_TOOLTIP_FORMAT % [brewery.run_xp, xp_needed]
 
 	var new_risk: int = brewery.risk
 	if last_risk != -1:

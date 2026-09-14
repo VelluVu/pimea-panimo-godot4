@@ -57,9 +57,34 @@ func get_random_modifier() -> RunModifier:
 ## size rather than padding with duplicates or nulls: offering fewer
 ## choices than asked for is a smaller surprise than offering the same
 ## modifier twice.
+##
+## The pool's one RunModifier.is_default entry (Tavallinen keikka) is
+## guaranteed a slot rather than being left to the same shuffle as every
+## other modifier — a player who just wants a plain run without any
+## condition attached should always have that option on the table, not
+## have it come and go at 3-of-5 odds like everything else. Its position
+## among the offered cards is still randomized (the final shuffle below),
+## just not whether it's offered at all.
 func get_random_modifiers(count : int) -> Array[RunModifier]:
 	if pool.is_empty():
 		return [RunModifier.new()]
-	var shuffled := pool.duplicate()
-	shuffled.shuffle()
-	return shuffled.slice(0, mini(count, shuffled.size()))
+
+	var default_modifier : RunModifier = _get_default_modifier()
+	var rest : Array[RunModifier] = pool.duplicate()
+	if default_modifier != null:
+		rest.erase(default_modifier)
+	rest.shuffle()
+
+	var result : Array[RunModifier] = []
+	if default_modifier != null:
+		result.append(default_modifier)
+	result.append_array(rest.slice(0, maxi(0, count - result.size())))
+	result.shuffle()
+	return result
+
+
+func _get_default_modifier() -> RunModifier:
+	for modifier : RunModifier in pool:
+		if modifier.is_default:
+			return modifier
+	return null

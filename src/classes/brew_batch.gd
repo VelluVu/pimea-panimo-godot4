@@ -22,6 +22,43 @@ func get_style_name() -> String:
 	return BeerStyle.get_style_string_from_style(beer_style.style)
 
 
+const AGING_TREND_RISING : String = "↑"
+const AGING_TREND_PLATEAU : String = "→"
+const AGING_TREND_DECLINING : String = "↓"
+
+## Whether quality is still rising toward peak, holding at its plateau, or
+## has moved into post-shelf-life decline — mirrors the three phases in
+## _calculate_current_quality() below. Purely presentational: lets
+## BeerBatchPanel show players "hold this" vs. "sell this now" at a glance
+## instead of the trend only being inferable by watching the quality
+## number change over several aging ticks.
+func get_aging_trend_icon() -> String:
+	if age_in_days < beer_style.peak_days:
+		return AGING_TREND_RISING
+
+	var days_past_peak : int = age_in_days - beer_style.peak_days
+	if days_past_peak > beer_style.shelf_life_days:
+		return AGING_TREND_DECLINING
+
+	return AGING_TREND_PLATEAU
+
+
+const AGING_TREND_RISING_LABEL : String = "kypsyy vielä"
+const AGING_TREND_PLATEAU_LABEL : String = "parhaimmillaan"
+const AGING_TREND_DECLINING_LABEL : String = "heikkenee"
+
+## Plain-language counterpart to get_aging_trend_icon() for the tooltip —
+## the row itself only has room for the bare arrow.
+func get_aging_trend_label() -> String:
+	match get_aging_trend_icon():
+		AGING_TREND_RISING:
+			return AGING_TREND_RISING_LABEL
+		AGING_TREND_DECLINING:
+			return AGING_TREND_DECLINING_LABEL
+		_:
+			return AGING_TREND_PLATEAU_LABEL
+
+
 func get_quality_tier_string() -> String:
 	if current_quality < 0.7:
 		return StringContainer.QUALITY_TIER_POOR
@@ -46,21 +83,28 @@ func get_quality_breakdown_tooltip() -> String:
 	]
 
 
-const FULL_INFO_TOOLTIP_HEADER_FORMAT : String = "Laatu: %s%% (%s)\nEBC: %s | IBU: %s | ABV: %.1f%%\n"
+const FULL_INFO_TOOLTIP_HEADER_FORMAT : String = "Laatu: %s%% (%s %s, %s)\nEBC: %s | IBU: %s | ABV: %.1f%%\n"
 
 ## Combines the header stats (quality/EBC/IBU/ABV) that used to sit in the
 ## batch row's visible text with the existing breakdown tooltip, so the
-## row itself can stay to a single compact line.
+## row itself can stay to a single compact line. Spells out the aging
+## trend arrow in words here since the row has no room to.
 func get_full_info_tooltip() -> String:
 	return FULL_INFO_TOOLTIP_HEADER_FORMAT % [
 		roundi(current_quality * 100),
 		get_quality_tier_string(),
+		get_aging_trend_icon(),
+		get_aging_trend_label(),
 		final_ebc,
 		final_ibu,
 		beer_style.abv
 	] + get_quality_breakdown_tooltip()
 
 
+## Called once per TimeManager aging tick (TimeManager.AGING_TICK_SECONDS,
+## currently every 30s of real time) rather than once per in-game day — see
+## BeerStyle.peak_days' docstring for why the "_days" naming stuck around
+## anyway.
 func age_one_day() -> void:
 	age_in_days += 1
 	_calculate_current_quality()

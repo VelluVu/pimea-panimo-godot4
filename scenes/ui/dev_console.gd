@@ -66,6 +66,36 @@ func _ready() -> void:
 	_log("Konsoli valmis. Kirjoita 'help' nähdäksesi komennot.")
 
 
+# ----- "c" hotkey: expand and focus the input field -----
+
+## Deliberately _input(), not _unhandled_input(): the latter only fires for
+## events nothing already consumed as GUI input, which made this depend on
+## Godot's internal focus/consumption bookkeeping around the moment
+## input_line_edit loses focus (e.g. via its own submit-then-release-focus
+## behavior on Enter) — fragile, and the actual bug this replaces: "c"
+## stopped reopening the console after a command was submitted once.
+## Checking has_focus() explicitly here instead means the input field's
+## current focus state is re-read fresh on every keypress, not inferred
+## from event-propagation history. While it already has focus, just return
+## without consuming the event so the "c" still types normally (letting
+## commands like "clear" or "customer" work); otherwise open/focus it and
+## consume the event. No InputMap action needed for a single hardcoded key.
+func _input(event: InputEvent) -> void:
+	if not (event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_C):
+		return
+	if input_line_edit.has_focus():
+		return
+
+	_open_and_focus_input()
+	get_viewport().set_input_as_handled()
+
+
+func _open_and_focus_input() -> void:
+	if _is_collapsed:
+		_on_toggle_pressed()
+	input_line_edit.grab_focus()
+
+
 # ----- collapse / expand -----
 
 func _on_toggle_pressed() -> void:
@@ -136,6 +166,7 @@ func _connect_log_sources() -> void:
 	BrewerySignals.recipe_saved.connect(_on_recipe_saved)
 	BrewerySignals.batch_bottled.connect(_on_batch_bottled)
 	BrewerySignals.daily_bills_paid.connect(_on_daily_bills_paid)
+	BrewerySignals.early_day_close_applied.connect(_on_early_day_close_applied)
 	SpecialEventManager.special_event_triggered.connect(_on_special_event_triggered)
 	TimeManager.day_changed.connect(_on_day_changed)
 
@@ -160,6 +191,12 @@ func _on_batch_bottled(bottles_lost: int, label_cost: float, style_name: String)
 
 func _on_daily_bills_paid(electricity: int, water: int, total: int) -> void:
 	_log("[color=orange]Laskut: sähkö -%d €, vesi -%d € (yhteensä -%d €)[/color]" % [electricity, water, total])
+
+
+func _on_early_day_close_applied(money_cost: float, reputation_cost: int, risk_relief: int, close_count: int) -> void:
+	if money_cost <= 0.0 and reputation_cost <= 0 and risk_relief <= 0:
+		return
+	_log("[color=orange]Ovet suljettu aikaisin (%d. kerta): -%.1f €, mainetta -%d, AVI-riski -%d[/color]" % [close_count, money_cost, reputation_cost, risk_relief])
 
 
 func _on_special_event_triggered(event_data: SpecialEventData) -> void:
