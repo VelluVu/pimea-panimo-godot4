@@ -33,6 +33,14 @@ enum Style {
 @export_group("Vaatimukset")
 @export var required_yeast_id: int = 301 # Esim. 301=Lager, 302=Ale
 @export var min_malt_weight: int = 3
+## -1 = no specific malt required (matches purely on EBC/IBU/yeast/weight,
+## the original behavior). Set on styles where a real-world recipe is
+## defined by one specific malt, not just by the resulting color/bitterness
+## it happens to produce — e.g. Hefeweizen/Witbier genuinely require wheat
+## malt; brewing the right EBC/IBU with plain pale-ale malt and calling it
+## a wheat beer isn't a real recipe, just a numeric coincidence. See
+## BrewResolver.resolve_brew_style()'s malt_ids_used check.
+@export var required_malt_id: int = -1
 @export var preferred_hop_profile: HopData.FlavorProfile = HopData.FlavorProfile.NONE
 
 @export_group("Alkoholi")
@@ -65,10 +73,38 @@ enum Style {
 @export var original_quality: float = 1.0
 @export var reputation_change: int = 2
 
+## Despite the "_days" naming (kept to avoid a mass rename across every
+## beer style .tres file), these count TimeManager aging ticks, not
+## calendar days — see TimeManager.AGING_TICK_SECONDS and _on_aging_tick().
+## One tick is a fixed real-time interval, independent of in-game day
+## length, so cellar aging progresses continuously instead of jumping once
+## per day close.
 @export_group("Kellarointi & Kypsytys")
-@export var peak_days: int = 0 
-@export var shelf_life_days: int = 14 
-@export var aging_factor: float = 0.05 
+@export var peak_days: int = 0
+@export var shelf_life_days: int = 14
+@export var aging_factor: float = 0.05
+
+
+## Coarse, bucketed color hint for RecipeLibraryWindow's locked-style rows
+## — bucketed on the style's own EBC midpoint so a player gets a real
+## signal ("vaalea"/"tumma"/...) without the exact min_ebc/max_ebc numbers
+## the brewing puzzle is meant to withhold until discovery.
+static func get_color_hint(ebc_low : int, ebc_high : int) -> String:
+	var midpoint : float = (ebc_low + ebc_high) / 2.0
+	if midpoint < 8.0: return StringContainer.COLOR_HINT_PALE
+	if midpoint < 16.0: return StringContainer.COLOR_HINT_GOLDEN
+	if midpoint < 30.0: return StringContainer.COLOR_HINT_AMBER
+	if midpoint < 70.0: return StringContainer.COLOR_HINT_BROWN
+	return StringContainer.COLOR_HINT_BLACK
+
+
+## Same idea as get_color_hint(), bucketed on IBU midpoint instead.
+static func get_bitterness_hint(ibu_low : int, ibu_high : int) -> String:
+	var midpoint : float = (ibu_low + ibu_high) / 2.0
+	if midpoint < 15.0: return StringContainer.BITTERNESS_HINT_MILD
+	if midpoint < 30.0: return StringContainer.BITTERNESS_HINT_BALANCED
+	if midpoint < 50.0: return StringContainer.BITTERNESS_HINT_BITTER
+	return StringContainer.BITTERNESS_HINT_VERY_BITTER
 
 
 func get_style_string() -> String:
