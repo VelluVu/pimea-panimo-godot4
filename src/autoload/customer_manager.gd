@@ -65,6 +65,35 @@ func has_active_customers() -> bool:
 	return not active_customers.is_empty()
 
 
+## Called by TimeManager.force_advance_day() when the day is force-closed
+## anyway (the player confirmed CloseDayConfirmWindow's warning, or the dev
+## console's "day" cheat) — anyone still being served gets thrown out
+## instead of finishing their purchase. queue_free() alone is what actually
+## cancels a solo customer's in-progress sale: their whole
+## intro/preview/sale/leave sequence is a chain of
+## get_tree().create_timer(...).timeout.connect(self.method) calls (see
+## Customer.gd), and a SceneTreeTimer whose target has been freed simply
+## never fires — no separate "cancel" flag needed. Their walk/leave Tween
+## is bound to the node the same way and dies with it. A group visit's
+## shared order is the one exception (it runs as a single coroutine on
+## CustomerSpawner, not a per-member timer chain) — see
+## CustomerSpawner._run_shared_group_order()'s own member-validity guard
+## for how that path is cancelled instead.
+func evict_active_customers() -> void:
+	if active_customers.is_empty():
+		return
+
+	for slot : int in active_customers.keys():
+		var customer : Node2D = active_customers[slot]
+		if is_instance_valid(customer):
+			BrewerySignals.customer_evicted.emit(customer.dialogue_slot)
+			customer.queue_free()
+
+	occupied_slots = [false, false, false, false, false]
+	slot_occupant_counts = [0, 0, 0, 0, 0]
+	active_customers.clear()
+
+
 func get_free_slot_index() -> int:
 	for i in range(occupied_slots.size()):
 		if not occupied_slots[i]:
@@ -213,6 +242,10 @@ func _check_bottles_goal_reward(brewery: Brewery) -> void:
 	brewery.bottles_sold_toward_goal -= DailyGoalsPanel.BOTTLES_TARGET
 	brewery.money += DailyGoalsPanel.BOTTLES_GOAL_REWARD_MONEY
 	brewery.reputation += DailyGoalsPanel.BOTTLES_GOAL_REWARD_REPUTATION
+	# See Brewery.bottles_goal_met_today's own docstring — this is the one
+	# place that can set it true; TimeManager resets it false at the start
+	# of the next day.
+	brewery.bottles_goal_met_today = true
 	BrewerySignals.daily_goal_reward_granted.emit(BOTTLES_GOAL_REWARD_NAME, DailyGoalsPanel.BOTTLES_GOAL_REWARD_MONEY, DailyGoalsPanel.BOTTLES_GOAL_REWARD_REPUTATION)
 
 
@@ -250,8 +283,12 @@ func _find_best_batch(batches: Array[BrewBatch], data: CustomerData) -> BrewBatc
 
 
 func spawn_normal_customer(forced_data: CustomerData = null) -> void:
+	if active_spawner == null:
+		return
 	active_spawner._on_walk_in_timer_timeout(forced_data)
 
 
 func spawn_group_event(forced_event_data: GroupVisitEventData = null) -> void:
+	if active_spawner == null:
+		return
 	active_spawner._on_group_event_timer_timeout(forced_event_data)

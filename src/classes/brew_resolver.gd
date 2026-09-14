@@ -79,9 +79,31 @@ func _load_all_beer_styles() -> void:
 					
 			file_name = dir.get_next()
 		dir.list_dir_end()
+		_prioritize_required_malt_styles()
 		print(StringContainer.LOADED_BEER_STYLES_MESSAGE % str(active_styles.size()))
 		for current_style in active_styles:
 			print(current_style.get_style_string())
+
+
+## resolve_brew_style() is first-match-wins over active_styles, which loads
+## in filename/alphabetical order — arbitrary with respect to style
+## design. A style defined by a specific malt (required_malt_id != -1,
+## e.g. Hefeweizen/Witbier/Saison) is a more specific match than a
+## malt-agnostic catch-all like Pale Ale, whose wide EBC/IBU window would
+## otherwise swallow any narrower style that happens to sort after it
+## alphabetically (e.g. "saison.tres"/"witbier.tres" after "pale_ale.tres")
+## even when the combo was built specifically for the narrower style. So
+## every required-malt style gets first look, regardless of filename;
+## relative order is preserved within each group.
+func _prioritize_required_malt_styles() -> void:
+	var with_required_malt : Array[BeerStyle] = []
+	var without_required_malt : Array[BeerStyle] = []
+	for style in active_styles:
+		if style.required_malt_id != -1:
+			with_required_malt.append(style)
+		else:
+			without_required_malt.append(style)
+	active_styles = with_required_malt + without_required_malt
 
 
 func resolve_brew_style(prep_contents : Dictionary) -> BrewResult:
@@ -93,6 +115,10 @@ func resolve_brew_style(prep_contents : Dictionary) -> BrewResult:
 	var yeast_type: int = -1
 	var distinct_hop_ids: Dictionary = {}
 	var hop_profiles_used: Dictionary = {}
+	## Which malt ingredient IDs are actually on the table, regardless of
+	## amount — see BeerStyle.required_malt_id's docstring for why this
+	## needs to be checked on top of the aggregate weight/EBC numbers.
+	var malt_ids_used: Dictionary = {}
 
 	for id in prep_contents.keys():
 		var amount: int = prep_contents[id]
@@ -102,6 +128,8 @@ func resolve_brew_style(prep_contents : Dictionary) -> BrewResult:
 			IngredientData.IngredientType.MALT:
 				total_malt_weight += amount
 				weighted_ebc_sum += data.ebc * amount
+				if amount > 0:
+					malt_ids_used[id] = true
 			IngredientData.IngredientType.HOP:
 				total_hop_amount += amount
 				total_alpha_acids += (data.alpha_acids * amount)
@@ -123,6 +151,8 @@ func resolve_brew_style(prep_contents : Dictionary) -> BrewResult:
 
 	for beer_style in active_styles:
 		if yeast_type != beer_style.required_yeast_id:
+			continue
+		if beer_style.required_malt_id != -1 and not malt_ids_used.has(beer_style.required_malt_id):
 			continue
 		if total_malt_weight < beer_style.min_malt_weight:
 			continue
@@ -200,7 +230,7 @@ func get_style_cost_per_bottle(beer_style : BeerStyle) -> float:
 	if _style_cost_per_bottle_cache.has(beer_style.style):
 		return _style_cost_per_bottle_cache[beer_style.style]
 
-	var malt_combo : Dictionary = _find_malt_combo(beer_style.min_ebc, beer_style.max_ebc, beer_style.min_malt_weight)
+	var malt_combo : Dictionary = _find_malt_combo(beer_style.min_ebc, beer_style.max_ebc, beer_style.min_malt_weight, beer_style.required_malt_id)
 	var raw_cost : int = 0
 	for malt_id : int in malt_combo:
 		raw_cost += IngredientDatabase.database[malt_id].base_price * malt_combo[malt_id]
@@ -325,7 +355,7 @@ func get_beer_style(style : BeerStyle.Style) -> BeerStyle:
 ## from beer_style's own ranges could otherwise land inside an earlier,
 ## wider-ranged style instead of the one it was built for.
 func compute_minimum_ingredients(beer_style : BeerStyle) -> Dictionary:
-	var combo : Dictionary = _find_malt_combo(beer_style.min_ebc, beer_style.max_ebc, beer_style.min_malt_weight)
+	var combo : Dictionary = _find_malt_combo(beer_style.min_ebc, beer_style.max_ebc, beer_style.min_malt_weight, beer_style.required_malt_id)
 	if combo.is_empty():
 		return {}
 
@@ -343,6 +373,22 @@ func compute_minimum_ingredients(beer_style : BeerStyle) -> Dictionary:
 		return {}
 
 	return combo
+
+
+## Whether beer_style's own minimum-ingredient combo needs more than one
+## malt to hit its EBC window — used by RecipeLibraryWindow's locked-style
+## hint so a player knows up front to expect a blend, not just a single
+## malt purchase, before they've discovered the style. Reuses
+## compute_minimum_ingredients() rather than re-deriving the answer
+## separately, so it can never disagree with what actually gets seeded as
+## the style's default recipe.
+func style_needs_malt_blend(beer_style : BeerStyle) -> bool:
+	var combo : Dictionary = compute_minimum_ingredients(beer_style)
+	var malt_count : int = 0
+	for id in combo:
+		if IngredientDatabase.database[id].type == IngredientData.IngredientType.MALT:
+			malt_count += 1
+	return malt_count > 1
 
 
 func _get_all_malts() -> Array[MaltData]:
@@ -369,8 +415,15 @@ func _get_all_hops() -> Array[HopData]:
 ## solution at all (e.g. Doppelbock's [71,95] EBC window sits strictly
 ## between the two closest malts), so the blend path is load-bearing,
 ## not an edge case.
-func _find_malt_combo(min_ebc : int, max_ebc : int, min_weight : int) -> Dictionary:
+## required_malt_id, when set (-1 = none), constrains every branch below to
+## combos that actually include that malt — see BeerStyle.required_malt_id's
+## docstring for why a style like Hefeweizen can't be satisfied by whichever
+## malt happens to land on the right EBC.
+func _find_malt_combo(min_ebc : int, max_ebc : int, min_weight : int, required_malt_id : int = -1) -> Dictionary:
 	var malts := _get_all_malts()
+
+	if required_malt_id != -1:
+		return _find_malt_combo_with_required(malts, min_ebc, max_ebc, min_weight, required_malt_id)
 
 	for malt in malts:
 		if malt.ebc >= min_ebc and malt.ebc <= max_ebc:
@@ -405,6 +458,51 @@ func _find_malt_combo(min_ebc : int, max_ebc : int, min_weight : int) -> Diction
 					if distance < best_distance:
 						best_distance = distance
 						best_combo = {malt_a.id: amount_a, malt_b.id: amount_b}
+
+	return best_combo
+
+
+## Same shape as the unrestricted search above, just always keeping
+## required_malt_id as one side of the blend instead of trying every pair —
+## a single-malt fast path first (required malt alone, if its own EBC
+## already fits), then the required malt blended against every other malt
+## in turn to hit the target EBC.
+func _find_malt_combo_with_required(malts : Array[MaltData], min_ebc : int, max_ebc : int, min_weight : int, required_malt_id : int) -> Dictionary:
+	var required_malt : MaltData = null
+	for malt in malts:
+		if malt.id == required_malt_id:
+			required_malt = malt
+			break
+
+	if required_malt == null:
+		return {}
+
+	if required_malt.ebc >= min_ebc and required_malt.ebc <= max_ebc:
+		return {required_malt.id: min_weight}
+
+	var target_ebc := (min_ebc + max_ebc) / 2.0
+	var best_combo : Dictionary = {}
+	var best_distance := INF
+	var amount_cap := min_weight + 6
+
+	for other_malt in malts:
+		if other_malt.id == required_malt.id:
+			continue
+
+		for amount_required in range(1, amount_cap):
+			for amount_other in range(1, amount_cap):
+				var total := amount_required + amount_other
+				if total < min_weight:
+					continue
+
+				var avg := float(required_malt.ebc * amount_required + other_malt.ebc * amount_other) / total
+				if avg < min_ebc or avg > max_ebc:
+					continue
+
+				var distance := absf(avg - target_ebc)
+				if distance < best_distance:
+					best_distance = distance
+					best_combo = {required_malt.id: amount_required, other_malt.id: amount_other}
 
 	return best_combo
 

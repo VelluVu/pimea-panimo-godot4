@@ -10,6 +10,6 @@ fixed_price_per_bottle = 1.0
 required_yeast_id = 300
 max_ebc = 4
 reputation_change = -1
-shelf_life_days = 360
+shelf_life_days = 40
 aging_factor = 0.01
 metadata/_custom_type_script = "uid://qpqfdi1wacne"
