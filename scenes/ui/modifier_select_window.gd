@@ -17,7 +17,17 @@ const TITLE_TEXT : String = "Valitse tämän kierroksen olosuhteet"
 const ICON_FONT_SIZE : int = 40
 const HEADER_FONT_SIZE : int = 18
 
+## LeaderboardManager.get_entries() is already sorted best-score-first (see
+## its own _insert_entry() docstring), so index 0 is always the current
+## record — shown here at run *start* instead of only at run end, so a run
+## has a concrete target from its first decision. Days-survived-from-a-
+## busted/bankrupt run still reads fine here ("record" is just the best
+## score on file, not necessarily a "survived" run).
+const RECORD_FORMAT : String = "Ennätys: %d pistettä (päivä %d, %d pulloa)"
+const NO_RECORD_TEXT : String = "Ei vielä ennätystä — tästä se lähtee."
+
 @onready var title_label : Label = $MarginContainer/MainVBox/TitleLabel
+@onready var record_label : Label = $MarginContainer/MainVBox/RecordLabel
 @onready var cards_hbox : HBoxContainer = $MarginContainer/MainVBox/CardsHBox
 
 ## Populated by open(); index matches _card_buttons/cards_hbox children —
@@ -48,6 +58,7 @@ func _ready() -> void:
 ## picker. Called by the host in place of what used to be a direct
 ## BrewEngine.start_new_game() call.
 func open() -> void:
+	_show_record()
 	_offered_modifiers = RunModifierRegistry.get_random_modifiers(CARD_COUNT)
 
 	for i in range(_card_buttons.size()):
@@ -64,6 +75,16 @@ func open() -> void:
 		_card_description_labels[i].text = modifier.description if stat_summary.is_empty() else modifier.description + "\n" + stat_summary
 
 	show()
+
+
+func _show_record() -> void:
+	var entries : Array = LeaderboardManager.get_entries()
+	if entries.is_empty():
+		record_label.text = NO_RECORD_TEXT
+		return
+
+	var best : Dictionary = entries[0]
+	record_label.text = RECORD_FORMAT % [best.get("score", 0), best.get("days_survived", 0), best.get("lifetime_bottles_sold", 0)]
 
 
 func _on_card_pressed(index : int) -> void:

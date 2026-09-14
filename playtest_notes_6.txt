@@ -1,0 +1,236 @@
+Pimeä Panimo — Onboarding/Economy/Immersive-Props Session Playtest
+Date: 2026-09-14
+Method: live playthrough via the godot-ai MCP session, driven through
+editor_manage(game_eval) executing real GDScript against the running
+game — same methodology as playtest_notes_4/_5, for the same reason
+(OS/engine-level input simulation is unreliable in this environment).
+Every action below runs through the real GUISignals/BrewerySignals/
+method calls a player action would (buy_ingredient, add_ingredient_to_
+brew_preparation, start_brewing, force_advance_day, toggle_developer_
+mode, etc.), not hand-set state. This is a follow-up to playtest_notes.
+txt/_2/_3/_4/_5 (2026-09-11 through -13) — this pass covers everything
+built since _5: the day-timer/tutorial-gating rework, the first-brew
+hint banner, the DailyGoalsPanel visibility fix, faster cellar aging,
+the early-close cost/customer-eviction mechanic, run-modifier
+rebalancing, and the four new in-world hover props (recipe shelf,
+receipt machine, chalkboard, warehouse label).
+
+
+TESTING METHODOLOGY CAVEATS (not gameplay bugs, but worth recording)
+=========================================================================
+- A game_eval call that tried to read a non-existent property
+  (end_window.get("_current_ending_type") on a node with no such member)
+  just returned null, not an error — game_eval is more forgiving of
+  missing properties than of the crash below. Good to know: a null
+  result from a property probe isn't proof the probe was well-formed,
+  only that nothing threw.
+- One eval snippet genuinely crashed the running game into an
+  unrecoverable debugger break (see the bug report below) — confirms
+  playtest_notes_5's finding again: project_manage(stop) + a fresh
+  project_run was required, game_manage resume() would not have cleared
+  it. Not a new caveat, just a second data point for [[godot_mcp_eval_fragility]].
+
+
+CONFIRMED BUG, FOUND AND FIXED THIS SESSION: DialogView CRASHES THE
+WHOLE GAME WHEN A CUSTOMER IS EVICTED WHILE THEIR BUBBLE IS MID-FADE
+=========================================================================
+File: scenes/ui/dialog_view.gd (_hide_bubble_after_delay,
+_bubble_still_current), src/autoload/customer_manager.gd
+(evict_active_customers).
+
+This is the headline finding of this session, and it's a real crash,
+not a design nit. Repro: push a dialogue bubble onto a slot, then emit
+BrewerySignals.customer_evicted for that same slot shortly after (this
+is exactly what happens whenever the player force-closes the day while
+a customer's bubble is still animating — see TimeManager.
+force_advance_day() -> CustomerManager.evict_active_customers()). Live
+in this session it threw:
+
+    Invalid type in function '_bubble_still_current' in base
+    'Control (DialogView)'. The Object-derived class of argument 1
+    (previously freed) is not a subclass of the expected argument class.
+
+...and parked the entire running game in an unrecoverable debugger
+break, exactly like the parse-error case playtest_notes_5 already
+documented for bad eval indentation — except this one is reachable by
+a real player doing a completely ordinary thing (closing the day early
+while someone's still being served).
+
+Root cause: _on_customer_evicted() (added this session, for the
+"throw out anyone still being served when the day force-closes" fix)
+calls bubble.queue_free() directly on a bubble that _hide_bubble_after_
+delay() may *already* be sitting on an await for (its own display timer
+or fade tween). When that coroutine resumes, its local `bubble`
+variable is now a truly-freed Object, and it passes that stale
+reference into _bubble_still_current(bubble: Node, ...) — a statically
+typed parameter. GDScript checks a typed argument's class at the call
+site, before the callee's own body (and its own is_instance_valid()
+check) ever runs; passing a freed Object into that check is what
+throws, not anything _bubble_still_current() itself does wrong.
+
+Fix applied: guard with `is_instance_valid(bubble)` in
+_hide_bubble_after_delay() at both points where it calls
+_bubble_still_current(bubble, ...), using short-circuiting `or` so the
+unsafe call is never made once bubble is invalid:
+
+    if not is_instance_valid(bubble) or not _bubble_still_current(bubble, slot, token):
+        return
+
+Re-tested live after the fix: pushed and evicted the same slot five
+times back-to-back with only 0.1s between push and evict (deliberately
+worse timing than real play, to land squarely inside the fade-tween
+await window) — no crash, active_bubbles left in a clean state
+afterward (one unrelated real customer's bubble, still valid). This
+bug would have hit any real player who closes the day early with an
+active customer on screen, which is the exact scenario
+CloseDayConfirmWindow's whole warning exists for — so it was a
+near-certainty to be hit in normal play, not an edge case.
+
+
+CONFIRMED WORKING — EVERYTHING BUILT SINCE PLAYTEST_NOTES_5
+=========================================================================
+File: src/autoload/time_manager.gd, src/autoload/brew_engine.gd,
+scenes/ui/gui.gd, scenes/ui/daily_goals_panel.gd,
+src/classes/brew_batch.gd, src/classes/brewery.gd (apply_early_close_cost),
+src/resources/run_modifiers/*.
+
+- Day-timer/tutorial gating: fresh brewery has day_timer.is_stopped() ==
+  true and tutorial_complete() == false at day 1. Bought 3kg malt + 1
+  yeast via GUISignals.buy_ingredient (money 20 -> 8, matches every
+  prior session), loaded them onto the table and fired start_brewing —
+  tutorial_complete() flipped true, day_timer started
+  (is_stopped() == false) in the same frame the brew completed. Gating
+  behaves exactly as designed.
+- First-brew hint banner + DailyGoalsPanel handoff: banner was visible
+  with the correct Finnish text and mid-fade-in alpha at boot. After
+  the tutorial brew, banner alpha dropped to 0 and DailyGoalsPanel had
+  auto-expanded (_is_collapsed == false, goals_vbox.visible == true) —
+  the hand-off from "here's why nothing's happening" to "here's what to
+  do about it" fires correctly and in the right order.
+- Cellar aging speed: aged a fresh Kotikalja batch (peak_days 0,
+  shelf_life_days 40, aging_factor 0.01) through 46 ticks via direct
+  age_one_day() calls. Quality read 1.0 (flat, correct — no ramp phase
+  for this style) through the plateau, then 0.88 at age 46 (6 ticks past
+  the 40-tick shelf life), matching the spoilage formula exactly
+  (1.0 - 0.02*6 = 0.88) and flipping the trend icon to "↓". At 30s/tick
+  this is reachable in about 23 real minutes — well inside a single
+  run's budget, confirming the rescale actually solved the "aging never
+  visibly happens" problem instead of just moving the numbers around.
+- Run-modifier rebalance, confirmed with real money on the line: this
+  run happened to roll "Löysä valvonta" (avi 1.5 / price 1.5, post-
+  rebalance). The tutorial buy cost 12 (20 -> 8) instead of the roughly
+  8 a neutral run costs — the "free win" from before the rebalance is
+  gone in actual play, not just in the .tres numbers.
+- Early-close cost + customer eviction, together: force-closed the day
+  while a customer was actively on the counter. active_customers
+  dropped from 1 to 0 in the same call, early_closes_count incremented
+  to 1, and current_day advanced — matching apply_early_close_cost()
+  and evict_active_customers() both firing from force_advance_day() as
+  designed. (The DialogView crash above was found while chasing exactly
+  this interaction under worse timing than this specific test hit.)
+- Developer-mode skip: toggle_developer_mode() on a fresh, tutorial-
+  incomplete run flipped tutorial_complete() to true and started
+  day_timer in the same call, with no signal-ordering issues.
+- Survived ending: set current_day to SURVIVAL_DAY_TARGET - 1,
+  reputation above SURVIVAL_MIN_REPUTATION, money positive, then called
+  _advance_day() directly — game_has_ended flipped true, GameEndWindow
+  became visible, and get_tree().paused flipped true, all in the same
+  frame. Ending flow still correct post-rebalance.
+
+
+REGRESSION CHECKS — PLAYTEST_NOTES_5 FINDINGS, BOTH CONFIRMED FIXED
+=========================================================================
+- The 3-perk-pool-with-3-cards-shown non-choice is gone: src/resources/
+  perks/ now has 9 .tres files, LevelUpWindow.CARD_COUNT is still 3 —
+  every level-up now genuinely withholds 6 of 9 perks, matching (and
+  slightly bettering) RunModifier's own 3-of-5 ratio. This was flagged
+  as the single highest-leverage fix in _5; it's done.
+- The reputation popup mislabeled in euros is gone: top_panel_
+  resources.gd's reputation popup call now passes "" as the suffix
+  instead of " €" (line still exists as a single call, easy to confirm
+  by reading it directly rather than catching the fast-fading popup in
+  a screenshot, same caveat _5 noted).
+
+
+MINOR POLISH NOTED IN PASSING (not bugs)
+=========================================================================
+- FirstBrewHintBanner never calls hide() once its fade-out tween
+  finishes — it sits at visible == true, modulate.a == 0. Harmless
+  (mouse_filter is IGNORE, it's fully transparent, GroupVisitBanner does
+  the same thing), but worth a one-line tween_callback(hide) for
+  hygiene if anyone's ever debugging visibility state by eye.
+
+
+IMPROVEMENTS WORTH MAKING NEXT — USING ONLY WHAT'S ALREADY BUILT
+=========================================================================
+Every item below reuses signals, data, or UI patterns that already
+exist and already work — no new mechanic, autoload, or resource type
+required, just wiring and small additive UI on top of code already
+proven correct above.
+
+1. Give the early-close cost a real in-game popup, not just a dev-
+   console log line. BrewerySignals.early_day_close_applied already
+   carries the exact money/reputation/risk numbers (see dev_console.gd's
+   own handler for proof the data's all there), but nothing calls
+   GUI._show_toast() for it the way ingredient_purchased,
+   daily_goal_reward_granted, and style_discovered already do. Right
+   now a player who closes the day early just sees their money/
+   reputation numbers change with no on-screen explanation of why —
+   exactly the kind of unexplained resource shift the reputation-popup
+   bug fix in _5 was about avoiding for a different stat. One connect()
+   call and a formatted string, reusing a helper that already exists.
+
+2. Still true from _5, still not done: an XP progress bar under/behind
+   TopPanelResources.level_label. brewery.run_xp and
+   Brewery.xp_required_for_level(run_level) are both already public and
+   already updated every sale/brew — a thin ProgressBar bound to that
+   ratio is the single missing piece of "constant almost-there feedback"
+   this session's other systems (aging trend arrows, daily-goal pulse,
+   risk-warning tint) all already lean on. This remains the most direct
+   lever not yet pulled.
+
+3. Still true from _5, still not done: show the player's own best run
+   (LeaderboardManager.get_entries()/get_rank_for_stats(), both already
+   used at run end) on ModifierSelectWindow at run *start* instead of
+   only at the end — "Ennätys: X pistettä, päivä Y" right next to the
+   modifier picks, so a run has a concrete target from its first
+   decision instead of only learning the comparison after it's over.
+
+4. Still true from _5, still not done: a persisted streak counter for
+   "both daily goals met" (DailyGoalsPanel already tracks both,
+   CustomerManager/TimeManager already emit daily_goal_reward_granted
+   at exactly the right moments) with an escalating bonus every few
+   consecutive days. No new trigger points needed.
+
+5. New this session: the survival ending's actual target (day 15,
+   reputation >= 20, money > 0 — TimeManager.SURVIVAL_DAY_TARGET /
+   Brewery.SURVIVAL_MIN_REPUTATION) is invisible to the player for the
+   entire run. Nothing on screen states it; a player only discovers the
+   bar by clearing it or falling short of it. DailyGoalsPanel is already
+   the natural home for this — it already renders goal lines with the
+   same met/pending/failing color convention (GOAL_MET_COLOR /
+   GOAL_PENDING_COLOR / GOAL_FAILING_COLOR) this would need, so a
+   persistent (not daily-reset) "run goal" line reusing that exact
+   pattern is pure UI, no new state to track that isn't already on
+   Brewery/TimeManager.
+
+
+VERDICT
+==========
+The systems built this session are all mechanically sound under real
+play — day-timer gating, the hint banner's hand-off, faster aging,
+the rebalanced modifiers, early-close cost, customer eviction, and dev-
+mode skip all did exactly what their code says they should, live,
+under real signal traffic. The one real bug is a genuine crash
+(DialogView, freed-object argument), not a nitpick, and it was
+reachable by completely ordinary play — closing the day early with a
+customer still on screen, which is the specific scenario
+CloseDayConfirmWindow's own warning exists to cover. It's fixed and
+re-verified under harsher timing than a real player would produce.
+Past that, the loop itself doesn't need new systems — playtest_notes_5
+already called this correctly and two of its five findings are now
+done (perk pool, reputation popup). The remaining three (XP bar, run-
+start record, goal streak) are still sitting there unclaimed, and this
+session adds one more of the same shape: telling the player what the
+survival finish line actually is, using a panel and a color convention
+that already exist.

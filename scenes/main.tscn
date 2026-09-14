@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://ccmro4v7bveuo"]
 
-[ext_resource type="Script" path="res://scenes/main.gd" id="1_cjqg0"]
+[ext_resource type="Script" uid="uid://dujpot668v2ig" path="res://scenes/main.gd" id="1_cjqg0"]
 [ext_resource type="Script" uid="uid://dcx0ivwno5nl2" path="res://scenes/ui/gui.gd" id="1_o5qli"]
 [ext_resource type="Texture2D" uid="uid://o6vh3frtnlhf" path="res://assets/textures/underground_brewery_fixed-0001.png" id="2_85g3d"]
 [ext_resource type="Texture2D" uid="uid://d0i6obt1bcke0" path="res://assets/textures/bar_table_wide.png" id="2_dp3eg"]
@@ -41,9 +41,17 @@
 [ext_resource type="PackedScene" uid="uid://di8en5fvrwrkk" path="res://scenes/ui/sale_receipt_log_window.tscn" id="38_pibwh"]
 [ext_resource type="Script" uid="uid://4sopxxh57qng" path="res://scenes/ui/game_end_window.gd" id="39_c6pm6"]
 [ext_resource type="PackedScene" uid="uid://2ddvq1esbm4f" path="res://scenes/ui/modifier_select_window.tscn" id="40_5he1u"]
+[ext_resource type="Script" uid="uid://bdvg8mgx0ohsg" path="res://scenes/ui/recipe_shelf_label.gd" id="40_vc5cj"]
 [ext_resource type="PackedScene" uid="uid://4pjyebwj4isb" path="res://scenes/ui/level_up_window.tscn" id="41_5poiv"]
+[ext_resource type="Script" uid="uid://boq14pdk2ukfv" path="res://scenes/ui/receipt_machine_label.gd" id="41_ty1g6"]
 [ext_resource type="PackedScene" path="res://scenes/ui/run_effects_window.tscn" id="42_2cjbq"]
+[ext_resource type="Script" uid="uid://wlyaagmxb0io" path="res://scenes/ui/chalkboard_label.gd" id="42_bjg73"]
+[ext_resource type="Script" uid="uid://cwvam2qbvgbk3" path="res://scenes/ui/warehouse_label.gd" id="43_bu4jf"]
 [ext_resource type="PackedScene" uid="uid://kttjbp45s274" path="res://scenes/bartender.tscn" id="43_chjal"]
+[ext_resource type="Script" uid="uid://b78ix8nmmshyf" path="res://src/classes/recipe_shelf_hover_area.gd" id="45_txyw0"]
+[ext_resource type="Texture2D" uid="uid://ui42kael5n56" path="res://assets/textures/beer_bottle_8x8.png" id="46_vc5cj"]
+[ext_resource type="Script" uid="uid://dwc72b5x4eaw3" path="res://src/classes/receipt_machine_hover_area.gd" id="49_j2jfr"]
+[ext_resource type="Script" uid="uid://dihcrv1yno5x5" path="res://src/classes/chalkboard_hover_area.gd" id="51_bu4jf"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_yf5fn"]
 blend_mode = 1
@@ -54,6 +62,25 @@ blend_mode = 1
 size = Vector2(43, 209)
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_pm3ni"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bu4jf"]
+bg_color = Color(0.32, 0.24, 0.16, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.12, 0.08, 0.05, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o7ddy"]
+bg_color = Color(0.949, 0.788, 0.42, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_savetoast"]
 bg_color = Color(0.09019608, 0.05882353, 0.03529412, 0.92)
@@ -73,6 +100,15 @@ bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jscy8"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_txyw0"]
+size = Vector2(104, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bjg73"]
+size = Vector2(20, 30)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o7ddy"]
+size = Vector2(44, 32)
 
 [node name="Main" type="Node" unique_id=1659433080]
 script = ExtResource("1_cjqg0")
@@ -187,16 +223,6 @@ size_flags_horizontal = 2
 theme_override_colors/font_color = Color(0.9490196, 0.7882353, 0.41960785, 1)
 text = "Raha: 500€"
 
-[node name="ReceiptLogButton" type="Button" parent="GUI_CanvasLayer/GUI/TopPanel_Resources" unique_id=1007509009]
-layout_mode = 2
-tooltip_text = "Päivän kuitit"
-text = "Kuitit"
-
-[node name="LevelLabel" type="Label" parent="GUI_CanvasLayer/GUI/TopPanel_Resources" unique_id=212272449]
-layout_mode = 2
-size_flags_horizontal = 2
-text = "Taso: 1"
-
 [node name="ReputationLabel" type="Label" parent="GUI_CanvasLayer/GUI/TopPanel_Resources" unique_id=1789414113]
 layout_mode = 2
 size_flags_horizontal = 2
@@ -208,6 +234,26 @@ layout_mode = 2
 size_flags_horizontal = 2
 theme_override_colors/font_color = Color(0.75686276, 0.3137255, 0.22745098, 1)
 text = "AVI Riski: 0%"
+
+[node name="LevelBox" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/TopPanel_Resources" unique_id=2009149021]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+alignment = 1
+
+[node name="LevelLabel" type="Label" parent="GUI_CanvasLayer/GUI/TopPanel_Resources/LevelBox" unique_id=212272449]
+layout_mode = 2
+size_flags_horizontal = 6
+text = "Taso: 1"
+horizontal_alignment = 1
+
+[node name="LevelProgressBar" type="ProgressBar" parent="GUI_CanvasLayer/GUI/TopPanel_Resources/LevelBox" unique_id=932778489]
+custom_minimum_size = Vector2(34, 6)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_bu4jf")
+theme_override_styles/fill = SubResource("StyleBoxFlat_o7ddy")
+max_value = 1.0
+show_percentage = false
 
 [node name="DayLabel" type="Label" parent="GUI_CanvasLayer/GUI/TopPanel_Resources" unique_id=1287966115]
 layout_mode = 2
@@ -236,12 +282,8 @@ texture = ExtResource("12_pm3ni")
 [node name="CloseDayButton" type="Button" parent="GUI_CanvasLayer/GUI/TopPanel_Resources" unique_id=1208766186]
 layout_mode = 2
 size_flags_horizontal = 8
+tooltip_text = "Häädä asiakkaat, ja aloita uusi päivä"
 text = "Sulje ovet"
-
-[node name="EffectsButton" type="Button" parent="GUI_CanvasLayer/GUI/TopPanel_Resources" unique_id=912448575]
-layout_mode = 2
-tooltip_text = "Kierroksen tilastot"
-text = "Tilastot"
 
 [node name="Right_WarehouseView" type="VBoxContainer" parent="GUI_CanvasLayer/GUI" unique_id=1128246563]
 visible = false
@@ -504,6 +546,12 @@ text = "Tyhjää"
 icon_alignment = 1
 expand_icon = true
 
+[node name="PreviewLabel" type="Label" parent="GUI_CanvasLayer/GUI/BrewPreparationPanel/VBoxContainer" unique_id=1373895704]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.949, 0.788, 0.42, 1)
+theme_override_font_sizes/font_size = 14
+autowrap_mode = 3
+
 [node name="TableScrollContainer" type="ScrollContainer" parent="GUI_CanvasLayer/GUI/BrewPreparationPanel/VBoxContainer" unique_id=898673407]
 custom_minimum_size = Vector2(130, 100)
 layout_mode = 2
@@ -540,12 +588,6 @@ layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 2
 text = "Tallenna resepti"
-
-[node name="RecipeLibraryButton" type="Button" parent="GUI_CanvasLayer/GUI/BrewPreparationPanel/VBoxContainer/ButtonPanel/HBoxContainer/VBoxContainer" unique_id=397344709]
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 10
-text = "Reseptikirja"
 
 [node name="StartBrewButton" type="Button" parent="GUI_CanvasLayer/GUI/BrewPreparationPanel/VBoxContainer/ButtonPanel/HBoxContainer" unique_id=2072042436]
 custom_minimum_size = Vector2(32, 16)
@@ -733,60 +775,6 @@ theme_override_colors/font_color = Color(0.9490196, 0.7882353, 0.41960785, 1)
 text = "Keittola"
 horizontal_alignment = 1
 
-[node name="RecipeLibraryWindow" type="Panel" parent="GUI_CanvasLayer/GUI" unique_id=209127793]
-visible = false
-layout_mode = 0
-anchor_left = 0.15
-anchor_top = 0.1
-anchor_right = 0.85
-anchor_bottom = 0.9
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("26_2wyq8")
-
-[node name="MarginContainer" type="MarginContainer" parent="GUI_CanvasLayer/GUI/RecipeLibraryWindow" unique_id=1877503695]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 12
-theme_override_constants/margin_top = 12
-theme_override_constants/margin_right = 12
-theme_override_constants/margin_bottom = 12
-
-[node name="MainVBox" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/RecipeLibraryWindow/MarginContainer" unique_id=1863963231]
-layout_mode = 2
-
-[node name="HeaderHBox" type="HBoxContainer" parent="GUI_CanvasLayer/GUI/RecipeLibraryWindow/MarginContainer/MainVBox" unique_id=641351890]
-layout_mode = 2
-
-[node name="BackButton" type="Button" parent="GUI_CanvasLayer/GUI/RecipeLibraryWindow/MarginContainer/MainVBox/HeaderHBox" unique_id=641351891]
-visible = false
-layout_mode = 2
-text = "< Takaisin"
-
-[node name="TitleLabel" type="Label" parent="GUI_CanvasLayer/GUI/RecipeLibraryWindow/MarginContainer/MainVBox/HeaderHBox" unique_id=756339535]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 20
-text = "Reseptikirja"
-
-[node name="CloseButton" type="Button" parent="GUI_CanvasLayer/GUI/RecipeLibraryWindow/MarginContainer/MainVBox/HeaderHBox" unique_id=1140883821]
-layout_mode = 2
-text = "Sulje"
-
-[node name="ScrollContainer" type="ScrollContainer" parent="GUI_CanvasLayer/GUI/RecipeLibraryWindow/MarginContainer/MainVBox" unique_id=2136368252]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="RowsVBox" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/RecipeLibraryWindow/MarginContainer/MainVBox/ScrollContainer" unique_id=2147114991]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 6
-
 [node name="AviRaidWindow" type="Panel" parent="GUI_CanvasLayer/GUI" unique_id=1450580871]
 visible = false
 layout_mode = 0
@@ -833,14 +821,14 @@ size_flags_horizontal = 4
 text = "Selvä..."
 
 [node name="OptionsButton" type="Button" parent="GUI_CanvasLayer/GUI" unique_id=1306780576]
-visible = false
 layout_mode = 1
-anchors_preset = 2
+anchors_preset = 3
+anchor_left = 1.0
 anchor_top = 1.0
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 4.0
+offset_left = -32.0
 offset_top = -32.0
-offset_right = 36.0
 grow_horizontal = 0
 grow_vertical = 0
 tooltip_text = "Asetukset"
@@ -987,6 +975,7 @@ size_flags_horizontal = 4
 text = "Jatka"
 
 [node name="DailyGoalsPanel" type="VBoxContainer" parent="GUI_CanvasLayer/GUI" unique_id=1450512574]
+visible = false
 layout_mode = 0
 anchor_left = 1.0
 anchor_right = 1.0
@@ -1023,6 +1012,34 @@ flat = true
 layout_mode = 2
 mouse_filter = 2
 
+[node name="MainGoalHeaderLabel" type="Label" parent="GUI_CanvasLayer/GUI/DailyGoalsPanel/GoalsVBox" unique_id=944856975]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.949, 0.788, 0.42, 1)
+theme_override_colors/font_outline_color = Color(0.1, 0.06, 0.03, 1)
+theme_override_constants/outline_size = 1
+theme_override_font_sizes/font_size = 14
+horizontal_alignment = 2
+
+[node name="DayGoalLabel" type="Label" parent="GUI_CanvasLayer/GUI/DailyGoalsPanel/GoalsVBox" unique_id=525455466]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+horizontal_alignment = 2
+autowrap_mode = 3
+
+[node name="ReputationGoalLabel" type="Label" parent="GUI_CanvasLayer/GUI/DailyGoalsPanel/GoalsVBox" unique_id=1433717066]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+horizontal_alignment = 2
+autowrap_mode = 3
+
+[node name="DailyGoalsHeaderLabel" type="Label" parent="GUI_CanvasLayer/GUI/DailyGoalsPanel/GoalsVBox" unique_id=349963273]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.949, 0.788, 0.42, 1)
+theme_override_colors/font_outline_color = Color(0.1, 0.06, 0.03, 1)
+theme_override_constants/outline_size = 1
+theme_override_font_sizes/font_size = 14
+horizontal_alignment = 2
+
 [node name="BottlesGoalLabel" type="Label" parent="GUI_CanvasLayer/GUI/DailyGoalsPanel/GoalsVBox" unique_id=348612511]
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0.08235294, 0.0627451, 0.039215688, 1)
@@ -1035,6 +1052,12 @@ autowrap_mode = 3
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0.08235294, 0.0627451, 0.039215688, 1)
 theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+horizontal_alignment = 2
+autowrap_mode = 3
+
+[node name="StreakLabel" type="Label" parent="GUI_CanvasLayer/GUI/DailyGoalsPanel/GoalsVBox" unique_id=1782139456]
+layout_mode = 2
 theme_override_font_sizes/font_size = 16
 horizontal_alignment = 2
 autowrap_mode = 3
@@ -1082,6 +1105,9 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = -16.0
+offset_right = -2.0
+offset_bottom = -71.40001
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 14
@@ -1100,9 +1126,9 @@ text = "AVI-TARKASTUS!"
 horizontal_alignment = 1
 
 [node name="MessageLabel" type="Label" parent="GUI_CanvasLayer/GUI/CloseDayConfirmWindow/MarginContainer/MainVBox" unique_id=1013161278]
+custom_maximum_size = Vector2(290, -1)
 layout_mode = 2
 size_flags_vertical = 3
-text = " "
 horizontal_alignment = 1
 autowrap_mode = 3
 
@@ -1120,6 +1146,7 @@ text = "Selvä..."
 [node name="GroupVisitBanner" type="Label" parent="GUI_CanvasLayer/GUI" unique_id=1540158140]
 visible = false
 modulate = Color(1, 1, 1, 0)
+custom_maximum_size = Vector2(540, -1)
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.1
@@ -1190,6 +1217,7 @@ text = " "
 horizontal_alignment = 1
 
 [node name="MessageLabel" type="Label" parent="GUI_CanvasLayer/GUI/GameEndWindow/MarginContainer/MainVBox" unique_id=2000688165]
+custom_maximum_size = Vector2(430, -1)
 layout_mode = 2
 size_flags_vertical = 3
 text = " "
@@ -1221,8 +1249,171 @@ anchor_top = 0.1
 anchor_right = 0.98
 anchor_bottom = 0.85
 
+[node name="FirstBrewHintBanner" type="Label" parent="GUI_CanvasLayer/GUI" unique_id=1039613027]
+visible = false
+modulate = Color(1, 1, 1, 0)
+custom_maximum_size = Vector2(540, -1)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.1
+anchor_top = 0.5
+anchor_right = 0.9
+anchor_bottom = 0.5
+offset_top = -50.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.8392157, 0.2, 1)
+theme_override_colors/font_outline_color = Color(0.08235294, 0.0627451, 0.039215688, 1)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 28
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="RecipeLibraryWindow" type="Panel" parent="GUI_CanvasLayer/GUI" unique_id=209127793]
+visible = false
+layout_mode = 0
+anchor_left = 0.15
+anchor_top = 0.1
+anchor_right = 0.85
+anchor_bottom = 0.9
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("26_2wyq8")
+
+[node name="MarginContainer" type="MarginContainer" parent="GUI_CanvasLayer/GUI/RecipeLibraryWindow" unique_id=1877503695]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="MainVBox" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/RecipeLibraryWindow/MarginContainer" unique_id=1863963231]
+layout_mode = 2
+
+[node name="HeaderHBox" type="HBoxContainer" parent="GUI_CanvasLayer/GUI/RecipeLibraryWindow/MarginContainer/MainVBox" unique_id=641351890]
+layout_mode = 2
+
+[node name="BackButton" type="Button" parent="GUI_CanvasLayer/GUI/RecipeLibraryWindow/MarginContainer/MainVBox/HeaderHBox" unique_id=641351891]
+visible = false
+layout_mode = 2
+text = "< Takaisin"
+
+[node name="TitleLabel" type="Label" parent="GUI_CanvasLayer/GUI/RecipeLibraryWindow/MarginContainer/MainVBox/HeaderHBox" unique_id=756339535]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 20
+text = "Reseptikirja"
+
+[node name="CloseButton" type="Button" parent="GUI_CanvasLayer/GUI/RecipeLibraryWindow/MarginContainer/MainVBox/HeaderHBox" unique_id=1140883821]
+layout_mode = 2
+text = "Sulje"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="GUI_CanvasLayer/GUI/RecipeLibraryWindow/MarginContainer/MainVBox" unique_id=2136368252]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="RowsVBox" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/RecipeLibraryWindow/MarginContainer/MainVBox/ScrollContainer" unique_id=2147114991]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="RecipeShelfLabel" type="Label" parent="GUI_CanvasLayer/GUI" unique_id=997152250]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.6640625
+anchor_top = 0.22777778
+anchor_right = 0.8046875
+anchor_bottom = 0.2777778
+offset_top = 14.0
+offset_bottom = 14.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(0.949, 0.788, 0.42, 1)
+horizontal_alignment = 1
+script = ExtResource("40_vc5cj")
+
+[node name="ReceiptMachineLabel" type="Label" parent="GUI_CanvasLayer/GUI" unique_id=280416718]
+layout_mode = 0
+offset_left = 269.0
+offset_top = 182.0
+offset_right = 339.0
+offset_bottom = 200.0
+theme_override_colors/font_color = Color(0.949, 0.788, 0.42, 1)
+horizontal_alignment = 1
+script = ExtResource("41_ty1g6")
+
+[node name="ChalkboardLabel" type="Label" parent="GUI_CanvasLayer/GUI" unique_id=888619514]
+layout_mode = 0
+offset_left = 273.0
+offset_top = 98.0
+offset_right = 343.0
+offset_bottom = 116.0
+theme_override_colors/font_color = Color(0.949, 0.788, 0.42, 1)
+horizontal_alignment = 1
+script = ExtResource("42_bjg73")
+
+[node name="WarehouseLabel" type="Label" parent="GUI_CanvasLayer/GUI" unique_id=1067647347]
+layout_mode = 0
+offset_left = 550.0
+offset_top = 71.0
+offset_right = 630.0
+offset_bottom = 89.0
+theme_override_colors/font_color = Color(0.949, 0.788, 0.42, 1)
+horizontal_alignment = 1
+script = ExtResource("43_bu4jf")
+
 [node name="WorldYSort" type="Node2D" parent="." unique_id=1587711243]
 y_sort_enabled = true
+
+[node name="RecipeShelfHoverArea" type="Area2D" parent="WorldYSort" unique_id=1747378298]
+position = Vector2(462, 148)
+script = ExtResource("45_txyw0")
+
+[node name="ShelfPlank" type="Polygon2D" parent="WorldYSort/RecipeShelfHoverArea" unique_id=1577786727]
+color = Color(0.29, 0.185, 0.094, 1)
+polygon = PackedVector2Array(-38, -4, 50, -4, 50, 4, -38, 4)
+
+[node name="Bottle1" type="Sprite2D" parent="WorldYSort/RecipeShelfHoverArea" unique_id=636098985]
+position = Vector2(-28, -16)
+scale = Vector2(3, 3)
+texture = ExtResource("46_vc5cj")
+
+[node name="Bottle2" type="Sprite2D" parent="WorldYSort/RecipeShelfHoverArea" unique_id=1934625695]
+position = Vector2(-9, -16)
+scale = Vector2(3, 3)
+texture = ExtResource("46_vc5cj")
+
+[node name="Bottle3" type="Sprite2D" parent="WorldYSort/RecipeShelfHoverArea" unique_id=1543532177]
+position = Vector2(10, -16)
+scale = Vector2(3, 3)
+texture = ExtResource("46_vc5cj")
+
+[node name="Bottle4" type="Sprite2D" parent="WorldYSort/RecipeShelfHoverArea" unique_id=1972066686]
+position = Vector2(29, -16)
+scale = Vector2(3, 3)
+texture = ExtResource("46_vc5cj")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldYSort/RecipeShelfHoverArea" unique_id=1974005850]
+position = Vector2(6, -10)
+shape = SubResource("RectangleShape2D_txyw0")
+
+[node name="Book1" type="Polygon2D" parent="WorldYSort/RecipeShelfHoverArea" unique_id=43582109]
+position = Vector2(44, -7)
+color = Color(0.42, 0.11, 0.09, 1)
+polygon = PackedVector2Array(-13, -3, 13, -3, 13, 3, -13, 3)
+
+[node name="Book2" type="Polygon2D" parent="WorldYSort/RecipeShelfHoverArea" unique_id=1057484171]
+position = Vector2(45, -12)
+rotation = -0.1
+color = Color(0.13, 0.28, 0.16, 1)
+polygon = PackedVector2Array(-11, -2.5, 11, -2.5, 11, 2.5, -11, 2.5)
 
 [node name="CustomerSpawner" type="Node2D" parent="WorldYSort" unique_id=82506958]
 z_index = 1
@@ -1263,14 +1454,65 @@ position = Vector2(102, -29)
 texture = ExtResource("18_0ld40")
 script = ExtResource("7_og1vs")
 
+[node name="ReceiptMachineHoverArea" type="Area2D" parent="WorldYSort/BarTable_Sprite2D" unique_id=1649942093]
+position = Vector2(-96, -23)
+script = ExtResource("49_j2jfr")
+
+[node name="MachineBody" type="Polygon2D" parent="WorldYSort/BarTable_Sprite2D/ReceiptMachineHoverArea" unique_id=102274119]
+color = Color(0.07, 0.07, 0.08, 1)
+polygon = PackedVector2Array(-7, -6, 7, -6, 7, 6, -7, 6)
+
+[node name="ReceiptStrip" type="Polygon2D" parent="WorldYSort/BarTable_Sprite2D/ReceiptMachineHoverArea" unique_id=592415226]
+position = Vector2(0, -13)
+color = Color(0.92, 0.9, 0.82, 1)
+polygon = PackedVector2Array(-4, -7, 4, -7, 4, 4, 2, 7, 0, 4, -2, 7, -4, 4)
+
+[node name="MachineButton" type="Polygon2D" parent="WorldYSort/BarTable_Sprite2D/ReceiptMachineHoverArea" unique_id=1293168157]
+position = Vector2(3, -2)
+color = Color(0.75, 0.2, 0.15, 1)
+polygon = PackedVector2Array(-1.5, -1, 1.5, -1, 1.5, 1, -1.5, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldYSort/BarTable_Sprite2D/ReceiptMachineHoverArea" unique_id=1999034065]
+position = Vector2(0, -7)
+shape = SubResource("RectangleShape2D_bjg73")
+
 [node name="Bartender" parent="WorldYSort" unique_id=1865937119 instance=ExtResource("43_chjal")]
 position = Vector2(399, 181)
+
+[node name="ChalkboardHoverArea" type="Area2D" parent="WorldYSort" unique_id=1198858937]
+position = Vector2(306, 139)
+script = ExtResource("51_bu4jf")
+
+[node name="BoardFrame" type="Polygon2D" parent="WorldYSort/ChalkboardHoverArea" unique_id=1310630279]
+color = Color(0.35, 0.22, 0.13, 1)
+polygon = PackedVector2Array(-20, -14, 20, -14, 20, 14, -20, 14)
+
+[node name="BoardSurface" type="Polygon2D" parent="WorldYSort/ChalkboardHoverArea" unique_id=1613701525]
+color = Color(0.08, 0.16, 0.11, 1)
+polygon = PackedVector2Array(-17, -11, 17, -11, 17, 11, -17, 11)
+
+[node name="ChalkLine1" type="Polygon2D" parent="WorldYSort/ChalkboardHoverArea" unique_id=1614701542]
+position = Vector2(-2, -6)
+color = Color(0.92, 0.92, 0.88, 0.9)
+polygon = PackedVector2Array(-10, -1, 10, -1, 10, 1, -10, 1)
+
+[node name="ChalkLine2" type="Polygon2D" parent="WorldYSort/ChalkboardHoverArea" unique_id=1390976140]
+position = Vector2(-4, 0)
+color = Color(0.92, 0.92, 0.88, 0.9)
+polygon = PackedVector2Array(-8, -1, 8, -1, 8, 1, -8, 1)
+
+[node name="ChalkLine3" type="Polygon2D" parent="WorldYSort/ChalkboardHoverArea" unique_id=614603749]
+position = Vector2(-7, 6)
+color = Color(0.92, 0.92, 0.88, 0.9)
+polygon = PackedVector2Array(-6, -1, 6, -1, 6, 1, -6, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldYSort/ChalkboardHoverArea" unique_id=1239359706]
+shape = SubResource("RectangleShape2D_o7ddy")
 
 [connection signal="pressed" from="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/IngredientSelectionPanel/AddRemoveLastModifiedButtonPanel/HBoxContainer/AddButton" to="GUI_CanvasLayer/GUI/Left_BrewingView" method="_on_add_button_pressed"]
 [connection signal="pressed" from="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/IngredientSelectionPanel/AddRemoveLastModifiedButtonPanel/HBoxContainer/RemoveButton" to="GUI_CanvasLayer/GUI/Left_BrewingView" method="_on_remove_button_pressed"]
 [connection signal="pressed" from="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/BackButton" to="GUI_CanvasLayer/GUI" method="_on_back_button_pressed"]
 [connection signal="pressed" from="GUI_CanvasLayer/GUI/BrewPreparationPanel/VBoxContainer/ButtonPanel/HBoxContainer/VBoxContainer/SaveRecipeButton" to="GUI_CanvasLayer/GUI/BrewPreparationPanel" method="_on_save_recipe_button_pressed"]
-[connection signal="pressed" from="GUI_CanvasLayer/GUI/BrewPreparationPanel/VBoxContainer/ButtonPanel/HBoxContainer/VBoxContainer/RecipeLibraryButton" to="GUI_CanvasLayer/GUI/BrewPreparationPanel" method="_on_recipe_library_button_pressed"]
 [connection signal="pressed" from="GUI_CanvasLayer/GUI/BrewPreparationPanel/VBoxContainer/ButtonPanel/HBoxContainer/StartBrewButton" to="GUI_CanvasLayer/GUI/Left_BrewingView" method="_on_start_brew_button_pressed"]
 [connection signal="pressed" from="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer/IngredientSelectionElementList/BuySellLastModifiedButtonPanel/HBoxContainer/SellButton" to="GUI_CanvasLayer/GUI/Left_ShopView" method="_on_sell_button_pressed"]
 [connection signal="pressed" from="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer/IngredientSelectionElementList/BuySellLastModifiedButtonPanel/HBoxContainer/BuyButton" to="GUI_CanvasLayer/GUI/Left_ShopView" method="_on_buy_button_pressed"]

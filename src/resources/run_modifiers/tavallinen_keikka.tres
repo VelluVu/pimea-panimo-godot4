@@ -9,4 +9,5 @@ description = "Ei yllätyksiä tällä kertaa — perustaso kaikessa."
 avi_threshold_multiplier = 1.0
 ingredient_price_multiplier = 1.0
 icon_placeholder = "🎲"
+is_default = true
 metadata/_custom_type_script = "uid://dka80d13fropj"

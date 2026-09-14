@@ -92,13 +92,16 @@ func _get_reputation_spawn_factor() -> float:
 	return REPUTATION_SPAWN_SOFT_CAP / (REPUTATION_SPAWN_SOFT_CAP + brewery.reputation)
 
 
+## Deliberately does NOT check for empty inventory — that gate only applies
+## to the very first spawn ever (see CustomerManager.register_spawner() /
+## _on_brewery_state_changed(), which withhold start_spawning() until the
+## player's first brew). Once spawning has begun, running out of stock
+## later is on the player: customers keep walking in and simply get turned
+## away (Customer._on_preview_timeout()'s NOTHING_AVAILABLE_TEXT_FORMAT,
+## then CustomerManager.process_auto_sale()'s no-match branch), costing
+## reputation and risk same as any other bad visit.
 func _on_walk_in_timer_timeout(forced_data: CustomerData = null) -> void:
 	if BrewEngine.current_brewery == null or counter_markers.is_empty():
-		_start_next_walk_in_timer()
-		return
-
-	var brewery = BrewEngine.current_brewery
-	if brewery.inventory.brew_batches.is_empty():
 		_start_next_walk_in_timer()
 		return
 
@@ -137,13 +140,12 @@ func _on_walk_in_timer_timeout(forced_data: CustomerData = null) -> void:
 ## clustering with a small jitter around one marker instead of each member
 ## claiming their own spot. Members are spawned on a stagger so the crowd
 ## visibly floods in rather than popping in all at once.
+## See _on_walk_in_timer_timeout()'s docstring — same reasoning, no empty-
+## inventory check here either. A group that finds nothing to buy still
+## runs the normal shared order through process_auto_sale()'s no-match
+## branch (_run_shared_group_order() below), it just leaves empty-handed.
 func _on_group_event_timer_timeout(forced_event_data: GroupVisitEventData = null) -> void:
 	if BrewEngine.current_brewery == null or counter_markers.is_empty():
-		_start_next_group_event_timer()
-		return
-
-	var brewery = BrewEngine.current_brewery
-	if brewery.inventory.brew_batches.is_empty():
 		_start_next_group_event_timer()
 		return
 
@@ -189,6 +191,12 @@ func _spawn_group_members(event_data: GroupVisitEventData, slot: int) -> void:
 		new_customer.global_position = global_position
 		new_customer.customer_data = event_data.customer_data_options.pick_random()
 		new_customer.assigned_slot = slot
+		# The group's one shared bubble slot, not a personal one — stored on
+		# each member anyway so CustomerManager.evict_active_customers() has
+		# something to pass to DialogView when throwing this member out;
+		# every member pointing at the same shared slot is exactly right,
+		# since clearing it once covers the whole group's bubble.
+		new_customer.dialogue_slot = dialogue_slot
 
 		CustomerManager.register_active_customer(slot, new_customer)
 		members.append(new_customer)
@@ -236,6 +244,14 @@ func _wait_for_group_arrival(event_data: GroupVisitEventData, last_member: Node2
 ## sized for "this many people ordered at once" instead of running it once
 ## per member. All members leave together once the result has been shown.
 func _run_shared_group_order(event_data: GroupVisitEventData, members: Array[Node2D], dialogue_slot: int, group_position: Vector2) -> void:
+	# This whole order is one coroutine, not a per-member timer chain like a
+	# solo customer's (see CustomerManager.evict_active_customers()'s
+	# docstring) — evicting the group by freeing its member nodes doesn't
+	# stop this from still running and completing process_auto_sale() below
+	# on its own. Bail out up front if every member is already gone instead.
+	if not members.any(func(member : Node2D) -> bool: return is_instance_valid(member)):
+		return
+
 	var order_data : CustomerData = event_data.customer_data_options.pick_random().duplicate()
 	if order_data.randomizes_preference:
 		order_data.reroll_preference()
