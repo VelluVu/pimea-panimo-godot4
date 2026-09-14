@@ -17,5 +17,6 @@ max_ebc = 28
 min_ibu = 40
 max_ibu = 200
 reputation_change = 5
+shelf_life_days = 6
 aging_factor = -0.1
 metadata/_custom_type_script = "uid://qpqfdi1wacne"

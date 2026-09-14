@@ -1,0 +1,227 @@
+PIMEA PANIMO — BEER STYLE REFERENCE
+Compiled after the 2026-09-14 realism/duplicate audit against real-world
+(BJCP-style) brewing guidelines, scaled for this game's simplified formulas.
+
+HOW THE GAME COMPUTES A BREW (src/classes/brew_resolver.gd)
+  final_ebc = round(weighted_ebc_sum / total_malt_weight_kg)
+  final_ibu = round(total_alpha_acids / 10), where
+              total_alpha_acids = sum(hop.alpha_acids * grams_used)
+  A style matches when ALL of these hold:
+    - yeast on the table == required_yeast_id
+    - required_malt_id (if set, -1 = none) is present among the malts used
+    - total malt weight >= min_malt_weight
+    - final_ebc is inside [min_ebc, max_ebc]
+    - final_ibu is inside [min_ibu, max_ibu]
+  Matching is first-match-wins. Styles with a required_malt_id are checked
+  BEFORE malt-agnostic styles (see _prioritize_required_malt_styles()), so a
+  style defined by a specific malt always gets first look over a generic
+  catch-all like Pale Ale — this is what keeps Hefeweizen/Witbier/Saison from
+  being swallowed by wider ale ranges that happen to overlap them.
+
+YEAST IDS
+  300 = Kotikalja yeast (baking yeast)      304 = Alkoholiton Lager yeast
+  301 = Lager yeast                          303 = Alkoholiton Ale yeast
+  302 = Ale yeast
+
+MALT IDS (EBC color)
+  100 Pilsner mallas    EBC 2      104 Münchenin mallas   EBC 30
+  101 Pale-Ale mallas    EBC 4      105 Ruskea mallas      EBC 45
+  102 Karamelli mallas   EBC 20     106 Keksimallas        EBC 55
+  103 Vehnämallas        EBC 4      107 Tumma karamelli    EBC 140
+                                     108 Savumallas         EBC 6
+
+HOP IDS (alpha/beta acid %, flavor profile)
+  200 Magnum      a16 b6   profile: none (clean bittering)
+  201 Tettnanger  a5  b4   Noble
+  202 Citra       a13 b4   Tropical
+  203 Cascade     a6  b6   Citrus
+  204 Centennial  a10 b4   Citrus
+  205 Saaz        a4  b5   Noble
+  206 Hallertau   a4  b4   Noble
+  207 Fuggle      a5  b3   Earthy
+  208 East Kent Golding a5 b2  Earthy
+  209 Chinook     a13 b4   Pine
+  210 Simcoe      a13 b5   Pine
+  211 Mosaic      a12 b4   Tropical
+
+
+===============================================================================
+STYLE-BY-STYLE
+===============================================================================
+
+Each entry: game values, then the real-world reference it was checked
+against and any note on what changed / why it's scaled the way it is.
+
+--- Kotikalja (home-brewed "small beer", not a BJCP style) -------------------
+  yeast 300 (Kotikalja) | EBC <=4 | ABV 2.8%
+  Traditional Finnish low-alcohol table drink, not a real brewing style —
+  intentionally the trivial always-available starter recipe. No change.
+
+--- Bulkkilager (mass-market macro lager) -------------------------------------
+  yeast 301 (default) | EBC 1-10 | IBU 8-20 | ABV 4.5%
+  Real: American Light/Standard Lager, SRM 2-3.5 (~EBC 4-7), IBU 8-18.
+  CHANGED: max_ibu 40 -> 20 (was unrealistically bitter for a macro lager).
+
+--- Tumma Lager (dark lager, Dunkel/Schwarzbier) ------------------------------
+  yeast 301 (default) | EBC 28-70 | IBU 8-34 | ABV 4.8%
+  Real: Munich Dunkel SRM 14-28 (~EBC 28-55), IBU 18-28. Left as-is —
+  window sits close enough to real and is needed as the "generic dark
+  lager" catch-all; disambiguated from Doppelbock by malt weight, from
+  Baltic Portteri by IBU (no overlap: 34 vs 35).
+
+--- Pale Ale (American Pale Ale) ----------------------------------------------
+  yeast 302 (Ale) | EBC 4-30 | IBU 12-40 | ABV 5.0%
+  Real: SRM 5-10 (~EBC 10-20), IBU 30-50. min_ibu deliberately compressed
+  to 12 (real IBU 30 needs unrealistic hop amounts under this game's
+  formula) — this was the original reported bug: 3kg pale-ale malt + 8g
+  Cascade + 8g Centennial (IBU 13) was misresolving as Hefeweizen before
+  the fix. Verified live: now resolves to Pale Ale at 103% quality.
+
+--- Amber Ale (American Amber Ale) --------------------------------------------
+  yeast 302 (Ale) | EBC 20-40 | IBU 25-40 | ABV 5.5%
+  Real: SRM 10-17 (~EBC 20-33), IBU 25-40. Already closely matches.
+
+--- IPA (American IPA) ---------------------------------------------------------
+  yeast 302 (Ale) | min 4kg malt | EBC 12-28 | IBU 40-200 | ABV 6.5%
+  Real: SRM 6-14 (~EBC 12-28), IBU 40-70. EBC matches almost exactly; IBU
+  ceiling left generously high (200) since the compressed formula makes
+  very high IBU hard to reach with sane hop amounts anyway.
+
+--- Vienna Lager -----------------------------------------------------------
+  yeast 301 (default) | EBC 15-19 | IBU 18-26 | ABV 5.2%
+  Real: SRM 7-14 (~EBC 14-28), IBU 18-30. Game window sits inside the real
+  range, fine.
+
+--- Helles (Munich Helles) ------------------------------------------------
+  yeast 301 (default) | EBC 11-14 | IBU 14-20 | ABV 4.9%
+  Real: SRM 3-5 (~EBC 6-10), IBU 16-22 — real Helles is paler than the
+  current game window. Left as-is: raising it would collide with Bulkki-
+  lager's EBC ceiling (10) and it's already disambiguated fine from
+  Alkoholiton Lager (identical EBC window, different required yeast).
+
+--- Märzen / Oktoberfest ----------------------------------------------------
+  yeast 301 (default) | EBC 20-27 | IBU 20-28 | ABV 5.8%
+  Real: SRM 7-14 (~EBC 14-28), IBU 18-24. Reasonably matches.
+
+--- Baltic Portteri (Baltic Porter) -----------------------------------------
+  yeast 301 (default) | min 4kg malt | EBC 28-70 | IBU 35-48 | ABV 7.5%
+  Real: SRM 17-30 (~EBC 34-59), IBU 20-40. Broadly fine; IBU floor is a
+  touch high vs real but keeps a clean gap from Tumma Lager.
+
+--- Doppelbock ----------------------------------------------------------------
+  yeast 301 (default) | min 6kg malt | EBC 20-50 | IBU 16-26 | ABV 8.0%
+  Real: SRM 6-25 (~EBC 12-49), IBU 16-26.
+  CHANGED (was clearly wrong): EBC was 71-95 — that's Imperial Stout
+  territory, far darker than any real Doppelbock. Corrected to 20-50 to
+  match reality. min_malt_weight raised 4 -> 6 kg: realistic (a
+  Doppelbock's 7-10% ABV genuinely needs a much bigger grain bill than a
+  Dunkel's 4.5-5.6%) and it doubles as the disambiguator against Märzen's
+  overlapping EBC/IBU window — a big-enough batch reads as Doppelbock, a
+  normal-sized one stays Märzen/Tumma Lager.
+
+--- Hefeweizen ------------------------------------------------------------
+  yeast 302 (Ale) | required malt: Vehnämallas (103, wheat)
+  EBC 4-8 | IBU 8-15 | ABV 5.2%
+  Real: SRM 2-6 (~EBC 4-12), IBU 8-15. Matches well.
+  CHANGED (original bug fix): added required_malt_id so a wheat beer must
+  actually contain wheat malt — previously any malt landing in the right
+  EBC/IBU window could produce "Hefeweizen," which is how 3kg pale-ale
+  malt + hops was misresolving.
+
+--- Witbier -----------------------------------------------------------------
+  yeast 302 (Ale) | required malt: Vehnämallas (103, wheat)
+  EBC 9-13 | IBU 12-18 | ABV 4.8%
+  Real: SRM 2-4 (~EBC 4-8), IBU 10-20 — real Witbier is a touch paler than
+  the game window, but 9-13 was kept because dropping it to 4-8 would
+  collide with Hefeweizen's identical wheat requirement and EBC 4-8 window.
+  Also required_malt_id added (same reasoning as Hefeweizen).
+  BUG FOUND & FIXED: Witbier's own minimum-ingredient combo was resolving
+  to "Pale Ale" (Pale Ale's wide EBC 4-30/IBU 12-40 window with no malt
+  requirement caught it first, since "pale_ale.tres" sorts alphabetically
+  before "witbier.tres"). Fixed via the required-malt-priority resolver
+  change described above. Verified: now resolves to Witbier correctly.
+
+--- Session Ale (English Ordinary/Session Bitter analog) --------------------
+  yeast 302 (Ale) | required malt: Karamelli mallas (102, caramell)
+  EBC 6-12 | IBU 10-20 | ABV 3.8%
+  Real: SRM 4-14 (~EBC 8-28), IBU 25-35.
+  CHANGED: was EBC 1-3 — unrealistically pale even for a session beer.
+  Real English Ordinary/Session Bitter commonly includes a portion of
+  crystal/caramel malt for color and character, so required_malt_id =
+  Karamelli mallas is a realistic, defensible fix (same reasoning as
+  Hefeweizen/Witbier's wheat requirement). EBC raised to 6-12 — closer to
+  real without reaching the full SRM14 (~EBC28) ceiling, which would
+  collide with Amber Ale's window (20-40). Because it now has a
+  required_malt_id, it's protected from the Pale Ale collision class by
+  the same _prioritize_required_malt_styles() resolver fix as Witbier/
+  Saison. Verified live via the real brew-button signal chain: resolves
+  to itself at 140% quality, no regression on Pale Ale's own combo.
+
+--- Saison -------------------------------------------------------------------
+  yeast 302 (Ale) | required malt: Pilsner mallas (100)
+  EBC 14-18 | IBU 16-19 | ABV 6.0%
+  Real: SRM 5-14 (~EBC 10-28), IBU 20-35. Window sits inside the real
+  range.
+  CHANGED: added required_malt_id = Pilsner malt — realistic (Saison is
+  classically brewed on a pale Pilsner base) and fixes a real bug: Saison's
+  own minimum combo was resolving to "Pale Ale" for the same reason as
+  Witbier above (no malt requirement previously, alphabetically after
+  pale_ale.tres). Verified fixed.
+
+--- Belgian Dubbel -------------------------------------------------------------
+  yeast 302 (Ale) | min 4kg malt | EBC 31-35 | IBU 15-19 | ABV 7.0%
+  Real: SRM 10-17 (~EBC 20-33) though often brewed darker with dark candi
+  sugar (effectively higher), IBU 15-25, ABV 6-7.6%. Reasonable match.
+
+--- Belgian Strong Dark Ale -----------------------------------------------------
+  yeast 302 (Ale) | min 4kg malt | EBC 36-40 | IBU 20-24 | ABV 9.0%
+  Real: SRM 12-22 nominal but commonly much darker with candi sugar/dark
+  malts in practice, IBU 20-35, ABV 8-12%. In range.
+
+--- Scotch Ale / Wee Heavy --------------------------------------------------
+  yeast 302 (Ale) | min 4kg malt | EBC 41-55 | IBU 15-25 | ABV 7.5%
+  Real: SRM 17-25 (~EBC 33-49), IBU 17-35, ABV 6.5-10%. Close match.
+
+--- Barleywine (American/English Barleywine) --------------------------------
+  yeast 302 (Ale) | min 5kg malt | EBC 56-70 | IBU 35-60 | ABV 10.0%
+  Real: SRM 8-22 (English) to 14-22 (American) nominal (~EBC 16-44), but
+  real barleywines often read darker in the glass than their SRM suggests
+  due to intense malt concentration; IBU 35-70 (American) matches well.
+  min_malt_weight=5 reflects the very high OG.
+
+--- Imperial Stout (Russian Imperial Stout) ----------------------------------
+  yeast 302 (Ale) | min 5kg malt | EBC 96-140 | IBU 45-75 | ABV 9.5%
+  Real: SRM 30-40+ (effectively opaque/off-the-chart, ~EBC 60+), IBU
+  50-90. Matches the "as dark as this game's malt data goes" ceiling
+  (Tumma karamelli malt tops out at EBC 140) and IBU range is realistic.
+
+--- Alkoholiton IPA (non-alcoholic IPA) --------------------------------------
+  yeast 303 | min 4kg malt | EBC 12-28 | IBU 40-200 | ABV 0.3%
+  Same EBC/IBU shape as regular IPA, just the alcohol-free yeast — correct
+  approach (modern NA IPAs target full IPA hop character at near-zero ABV).
+
+--- Alkoholiton Lager (non-alcoholic lager) ----------------------------------
+  yeast 304 | min 3kg malt | EBC 11-14 | IBU 14-20 | ABV 0.3%
+  Same EBC/IBU shape as Helles, non-alcoholic yeast — same reasoning as
+  above, matches real NA lager conventions (usually a Helles-style base).
+
+
+===============================================================================
+DUPLICATE / AMBIGUITY CHECK
+===============================================================================
+Verified live (game_eval) after every change: looped all 22 styles through
+compute_minimum_ingredients() -> resolve_brew_style() and confirmed every
+single one resolves back to itself, with zero ambiguous matches.
+
+Two real collisions were found and fixed during this pass:
+  1. Witbier's own minimum recipe was resolving to "Pale Ale".
+  2. Saison's own minimum recipe was resolving to "Pale Ale".
+Both caused by Pale Ale's wide, malt-agnostic window plus alphabetical
+file-load order beating them to the match. Fixed structurally (required-
+malt styles now always checked first) rather than by narrowing Pale Ale's
+already-tight, bug-tested window.
+
+Session Ale's unrealistic paleness (flagged above as a known gap) was
+fixed in a follow-up pass: given required_malt_id = Karamelli mallas and
+raised to EBC 6-12, verified with zero new collisions across all 22
+styles and confirmed live through the real brew-button flow.
