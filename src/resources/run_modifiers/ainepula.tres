@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_ainepula")
 modifier_name = "Ainepula"
-description = "Raaka-aineista on pulaa ja hinnat ovat korkealla. Ratsiakynnys normaali."
-avi_threshold_multiplier = 1.0
-ingredient_price_multiplier = 1.5
+description = "Raaka-aineista on pulaa ja hinnat ovat pilvissä. Kaaoksen keskellä tarkastajatkin ovat muualla kiireisiä — ratsiakynnys ennätyskorkealla."
+avi_threshold_multiplier = 1.55
+ingredient_price_multiplier = 1.7
 icon_placeholder = "📦"
 metadata/_custom_type_script = "uid://dka80d13fropj"

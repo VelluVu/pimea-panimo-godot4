@@ -3,10 +3,14 @@ extends VBoxContainer
 
 
 @onready var beer_batch_list_vbox : VBoxContainer = $BeerBatchScrollContainer/BeerBatchListVBox
-const LABEL_STRING : String = "🍺 %s (%.1f%%) - %s pulloa (%s)"
-## Shown when there's nothing left to sell — without this the panel (and
-## customer traffic, which silently stops spawning on an empty inventory)
-## just goes quiet with no explanation. See playtest_notes_2.txt.
+const LABEL_STRING : String = "🍺 %s (%.1f%%) - %s pulloa (%s %s)"
+## Shown when there's nothing left to sell — without this the panel just
+## goes quiet with no explanation. Customer traffic keeps arriving even
+## now (CustomerSpawner no longer withholds spawning on empty inventory
+## past the player's first brew — see its _on_walk_in_timer_timeout()
+## docstring), it just gets turned away, costing reputation/risk, so this
+## label is the only warning the player gets before that starts happening.
+## See playtest_notes_2.txt.
 const EMPTY_INVENTORY_TEXT : String = "Ei olutta myytävänä — keitä lisää!"
 const EMPTY_INVENTORY_COLOR : Color = Color(0.9490196, 0.7882353, 0.41960785, 1) # matches DailyGoalsPanel.GOAL_PENDING_COLOR
 
@@ -44,7 +48,8 @@ func _update_beer_batches_ui() -> void:
 				batch.get_style_name(),
 				batch.beer_style.abv,
 				str(batch.amount_bottles),
-				batch.get_quality_tier_string()
+				batch.get_quality_tier_string(),
+				batch.get_aging_trend_icon()
 			]
 			row_label.tooltip_text = batch.get_full_info_tooltip()
 

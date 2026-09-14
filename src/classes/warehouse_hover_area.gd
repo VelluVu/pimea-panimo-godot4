@@ -26,6 +26,8 @@ func _on_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> voi
 
 
 func _on_mouse_entered() -> void:
+	GUISignals.mouse_entered_warehouse_hover_area.emit(true)
+
 	if not is_instance_valid(overlay_glow_sprite): return
 
 	if current_tween and current_tween.is_running():
@@ -36,6 +38,8 @@ func _on_mouse_entered() -> void:
 
 
 func _on_mouse_exited() -> void:
+	GUISignals.mouse_entered_warehouse_hover_area.emit(false)
+
 	if not is_instance_valid(overlay_glow_sprite): return
 
 	if current_tween and current_tween.is_running():

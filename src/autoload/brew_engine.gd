@@ -11,9 +11,29 @@ func is_developer_mode() -> bool:
 
 ## Flipped by the "iddqd" console cheat code — returns the new state so the
 ## caller can report it without a separate is_developer_mode() round trip.
+## Turning it ON also skips the beginner tutorial outright and starts the
+## day clock immediately if it hadn't already (see _skip_tutorial_and_start_clock())
+## — the whole point of dev mode is testing the real game, not re-doing the
+## tutorial gate every time. Turning it back OFF deliberately leaves both
+## alone: un-completing the tutorial or stopping a clock that's already
+## running would be destructive, not a real "off" state.
 func toggle_developer_mode() -> bool:
 	_developer_mode = not _developer_mode
+	if _developer_mode:
+		_skip_tutorial_and_start_clock()
 	return _developer_mode
+
+
+func _skip_tutorial_and_start_clock() -> void:
+	if current_brewery == null:
+		return
+
+	current_brewery.lifetime_malt_kg_bought = Brewery.TUTORIAL_MALT_TARGET_KG
+	current_brewery.tutorial_bought_yeast = true
+	current_brewery.tutorial_brewed_kotikalja = true
+
+	TimeManager.start_clock_immediately()
+	BrewerySignals.brewery_state_changed.emit(current_brewery)
 
 
 func _init() -> void:

@@ -45,6 +45,18 @@ signal mouse_entered_brewery_hover_area(is_entered : bool)
 signal mouse_entered_shop_hover_area(is_entered : bool)
 
 @warning_ignore("unused_signal")
+signal mouse_entered_recipe_shelf_hover_area(is_entered : bool)
+
+@warning_ignore("unused_signal")
+signal mouse_entered_receipt_machine_hover_area(is_entered : bool)
+
+@warning_ignore("unused_signal")
+signal mouse_entered_chalkboard_hover_area(is_entered : bool)
+
+@warning_ignore("unused_signal")
+signal mouse_entered_warehouse_hover_area(is_entered : bool)
+
+@warning_ignore("unused_signal")
 signal recipe_library_requested()
 
 @warning_ignore("unused_signal")

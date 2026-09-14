@@ -15,6 +15,24 @@ const BUSTED_RAID_COUNT : int = 3
 ## TimeManager._advance_day().
 const SURVIVAL_MIN_REPUTATION : int = 20
 
+## Manually closing the day (TimeManager.force_advance_day()) at earliness
+## 1.0 (right as the day began) costs this much money/reputation before
+## escalation — see apply_early_close_cost(). Scales down to 0 at earliness
+## 0.0 (closed right as the timer would have ended anyway, i.e. no real
+## early-close at all).
+const EARLY_CLOSE_BASE_MONEY_COST : float = 5.0
+const EARLY_CLOSE_BASE_REPUTATION_COST : int = 1
+## How much EARLY_CLOSE_BASE_*_COST grows per prior manual close this run —
+## 0.5 means the 2nd close's base cost is 1.5x, the 3rd is 2.0x, etc. Keeps
+## spamming Close Day from staying a flat, repeatable freebie. See
+## early_closes_count.
+const EARLY_CLOSE_ESCALATION_PER_CLOSE : float = 0.5
+## AVI risk relief for closing at earliness 1.0, scaling down to 0 at
+## earliness 0.0 — the trade-off side of the same mechanic (deliberately
+## NOT escalated by early_closes_count: the cost gets steeper with repeat
+## use, but the risk relief it buys stays consistent).
+const EARLY_CLOSE_MAX_RISK_RELIEF : int = 10
+
 @export var inventory : Inventory
 @export var current_day : int = 1
 ## Toward the bottles daily-goal target — deliberately NOT reset on day
@@ -26,6 +44,20 @@ const SURVIVAL_MIN_REPUTATION : int = 20
 ## Never resets (unlike bottles_sold_toward_goal above) — purely a stat
 ## for the end-of-run summary screen, see GameEndWindow.
 @export var lifetime_bottles_sold : int = 0
+## Consecutive days both daily goals (bottles + risk) were met — see
+## TimeManager._check_daily_goal_streak(). Exported since it persists
+## across day boundaries same as the goals it's built from; resets to 0
+## the moment either goal is missed on a given day.
+@export var daily_goal_streak : int = 0
+## Set true the instant CustomerManager._check_bottles_goal_reward() pays
+## out on a given day, reset false at the start of the NEXT day in
+## TimeManager._advance_day() — this is what lets _check_daily_goal_streak()
+## know "was the bottles goal met at any point today", since
+## bottles_sold_toward_goal itself only resets on reward, not daily, so it
+## can't answer that question by itself. Not exported: same "same-day-only,
+## re-derived every day" lifetime as today_sale_receipts below, no reason
+## to survive a save/load.
+var bottles_goal_met_today : bool = false
 ## One decimal of real precision (10-cent steps) — beer prices aren't all
 ## whole euros (see BeerStyle.fixed_price_per_bottle), so money has to
 ## carry fractions too. See CustomerManager.process_auto_sale() and
@@ -43,6 +75,10 @@ const SURVIVAL_MIN_REPUTATION : int = 20
 ## How many AVI raids this run has survived — see _check_for_avi_raid()
 ## and BUSTED_RAID_COUNT. Never resets.
 @export var raid_count : int = 0
+## How many times the player has manually closed the day this run — see
+## apply_early_close_cost() and EARLY_CLOSE_ESCALATION_PER_CLOSE. Never
+## resets; letting the day timer run out naturally never increments this.
+@export var early_closes_count : int = 0
 ## Latched true the instant any ending fires (busted/bankrupt/survived) so
 ## a second condition met on the same tick (e.g. a raid that both busts
 ## you and would also read as bankrupt) can't emit a second, contradictory
@@ -294,6 +330,34 @@ func check_bankruptcy() -> void:
 	if money > 0.0 or _count_total_bottles() > 0:
 		return
 	trigger_ending("bankrupt")
+
+
+## Called by TimeManager.force_advance_day() before the day actually
+## advances, whenever the player shuts the doors manually instead of
+## waiting out the timer. earliness is 0.0 (closed right as the timer
+## would have ended anyway — no real cost or relief) to 1.0 (closed the
+## instant the day began). Trades a lost sales window for a bit of safety:
+## AVI risk drops, but money/reputation take a hit that gets steeper with
+## every prior manual close this run (EARLY_CLOSE_ESCALATION_PER_CLOSE) —
+## without that escalation, spamming this at earliness ~0 would still cost
+## nothing while resetting nothing either, so it has to bite even on a
+## late, "harmless-looking" close to actually discourage habitual use.
+func apply_early_close_cost(earliness : float) -> void:
+	earliness = clampf(earliness, 0.0, 1.0)
+	var escalation : float = 1.0 + early_closes_count * EARLY_CLOSE_ESCALATION_PER_CLOSE
+
+	var money_cost : float = snappedf(EARLY_CLOSE_BASE_MONEY_COST * escalation * earliness, 0.1)
+	var reputation_cost : int = roundi(EARLY_CLOSE_BASE_REPUTATION_COST * escalation * earliness)
+	var risk_relief : int = roundi(EARLY_CLOSE_MAX_RISK_RELIEF * earliness)
+
+	money -= money_cost
+	reputation = max(0, reputation - reputation_cost)
+	risk = max(0, risk - risk_relief)
+	early_closes_count += 1
+
+	BrewerySignals.early_day_close_applied.emit(money_cost, reputation_cost, risk_relief, early_closes_count)
+	BrewerySignals.brewery_state_changed.emit(self)
+	check_bankruptcy()
 
 
 ## Latches game_has_ended so only the first ending condition met in a run

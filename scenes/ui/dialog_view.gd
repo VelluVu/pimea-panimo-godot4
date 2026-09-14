@@ -54,6 +54,28 @@ func _ready() -> void:
 	BrewerySignals.xp_popup_requested.connect(_on_xp_popup_requested)
 	BrewerySignals.reputation_popup_requested.connect(_on_reputation_popup_requested)
 	BrewerySignals.tip_popup_requested.connect(_on_tip_popup_requested)
+	BrewerySignals.customer_evicted.connect(_on_customer_evicted)
+
+
+## A thrown-out customer's bubble shouldn't sit there finishing its normal
+## display/fade timing — close it immediately instead. Erasing the token
+## (rather than just the bubble) also makes any already-in-flight
+## _hide_bubble_after_delay() for this slot a safe no-op via
+## _bubble_still_current()'s mismatch check, instead of it double-freeing
+## the bubble this clears.
+func _on_customer_evicted(slot: int) -> void:
+	if not active_bubbles.has(slot):
+		return
+
+	var entry : Dictionary = active_bubbles[slot]
+	var fade_tween : Tween = entry.get("fade_tween")
+	if fade_tween != null and is_instance_valid(fade_tween):
+		fade_tween.kill()
+	if is_instance_valid(entry.get("bubble")):
+		entry.bubble.queue_free()
+
+	active_bubbles.erase(slot)
+	slot_display_tokens.erase(slot)
 
 
 ## Emitted by Customer/CustomerSpawner once they've paired a captured
@@ -210,10 +232,21 @@ func _set_bubble_text(bubble: Node, text: String) -> void:
 		label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 
 
+## is_instance_valid(bubble) is checked BEFORE every _bubble_still_current()
+## call, not just inside it — a bubble freed elsewhere while this coroutine
+## is parked on an await (e.g. DialogView._on_customer_evicted(), which can
+## queue_free() the same bubble out from under an in-flight hide-after-
+## delay) leaves `bubble` a stale reference. Passing a truly-freed Object
+## into ANY typed parameter, including _bubble_still_current(bubble: Node,
+## ...)'s own, throws a hard runtime error ("previously freed... not a
+## subclass of the expected argument class") at the call site itself,
+## before that function's own is_instance_valid() check ever gets to run —
+## so the guard has to happen here, one level up, via short-circuiting
+## `or` so the unsafe call never executes at all once bubble is invalid.
 func _hide_bubble_after_delay(bubble: Node, slot: int, token: int, display_time: float, fade_time: float) -> void:
 	await get_tree().create_timer(display_time).timeout
 
-	if not _bubble_still_current(bubble, slot, token):
+	if not is_instance_valid(bubble) or not _bubble_still_current(bubble, slot, token):
 		return
 
 	if fade_time > 0.0 and bubble is CanvasItem:
@@ -223,7 +256,7 @@ func _hide_bubble_after_delay(bubble: Node, slot: int, token: int, display_time:
 			active_bubbles[slot].fade_tween = tween
 		await tween.finished
 
-	if not _bubble_still_current(bubble, slot, token):
+	if not is_instance_valid(bubble) or not _bubble_still_current(bubble, slot, token):
 		return
 
 	bubble.queue_free()

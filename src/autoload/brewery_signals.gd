@@ -85,3 +85,18 @@ signal tip_popup_requested(amount: float, position: Vector2)
 ## mirroring BrewPreparationPanel's brew_xp_gained popup at "Pane".
 @warning_ignore("unused_signal")
 signal ingredient_purchased(cost: float)
+## Fired by Brewery.apply_early_close_cost() whenever the player manually
+## closes the day before the timer runs out — see that method's docstring
+## for why this costs money/reputation but relieves some AVI risk, and
+## TimeManager.force_advance_day() for where earliness is measured.
+@warning_ignore("unused_signal")
+signal early_day_close_applied(money_cost: float, reputation_cost: int, risk_relief: int, close_count: int)
+## Fired by CustomerManager.evict_active_customers() for every customer
+## thrown out when the day is force-closed while they were still on the
+## counter — carries dialogue_slot (not assigned_slot: a group visit puts
+## several customers on one assigned_slot but each keeps a distinct
+## dialogue_slot) so DialogView can immediately clear that customer's
+## speech bubble instead of leaving it to finish its normal display/fade
+## timing for a customer who is already gone.
+@warning_ignore("unused_signal")
+signal customer_evicted(dialogue_slot: int)

@@ -22,11 +22,26 @@ const RISK_GOAL_REWARD_REPUTATION : int = 2
 const NEAR_MISS_BOTTLES_THRESHOLD : int = 2
 const NEAR_MISS_PULSE_SECONDS : float = 0.6
 
+const ATTENTION_PULSE_SECONDS : float = 0.5
+const ATTENTION_PULSE_COUNT : int = 3
+const ATTENTION_PULSE_SCALE : Vector2 = Vector2(1.12, 1.12)
+
 const COLLAPSE_ICON : String = "▼"
 const EXPAND_ICON : String = "▲"
 
 const BOTTLES_GOAL_FORMAT : String = "Pulloja: %d/%d"
 const RISK_GOAL_FORMAT : String = "Riski: %d/%d"
+## Persistent across the whole run, unlike everything else in this panel —
+## deliberately shown regardless of tutorial state (see _update_goals())
+## so the win condition is visible from the very first day, not just once
+## daily goals kick in. Two separate lines (day count, reputation), same
+## "one stat per line" shape as BOTTLES_GOAL_FORMAT/RISK_GOAL_FORMAT below.
+const DAY_GOAL_FORMAT : String = "Päivät: %d/%d"
+const REPUTATION_GOAL_FORMAT : String = "Maine: %d/%d"
+const STREAK_FORMAT : String = "Putki: %d pv"
+
+const MAIN_GOAL_HEADER_TEXT : String = "Päätavoite:"
+const DAILY_GOALS_HEADER_TEXT : String = "Päivätavoitteet:"
 
 const TUTORIAL_MALT_FORMAT : String = "Mallasta: %d/%d kg"
 const TUTORIAL_YEAST_FORMAT : String = "Hiivaa: %d/1"
@@ -38,8 +53,13 @@ const GOAL_FAILING_COLOR : Color = Color(0.75686276, 0.3137255, 0.22745098, 1) #
 
 @onready var toggle_button : Button = $HeaderHBox/ToggleButton
 @onready var goals_vbox : VBoxContainer = $GoalsVBox
+@onready var main_goal_header_label : Label = $GoalsVBox/MainGoalHeaderLabel
+@onready var day_goal_label : Label = $GoalsVBox/DayGoalLabel
+@onready var reputation_goal_label : Label = $GoalsVBox/ReputationGoalLabel
+@onready var daily_goals_header_label : Label = $GoalsVBox/DailyGoalsHeaderLabel
 @onready var bottles_goal_label : Label = $GoalsVBox/BottlesGoalLabel
 @onready var risk_goal_label : Label = $GoalsVBox/RiskGoalLabel
+@onready var streak_label : Label = $GoalsVBox/StreakLabel
 @onready var tutorial_malt_label : Label = $GoalsVBox/TutorialMaltLabel
 @onready var tutorial_yeast_label : Label = $GoalsVBox/TutorialYeastLabel
 @onready var tutorial_brew_label : Label = $GoalsVBox/TutorialBrewLabel
@@ -49,6 +69,9 @@ var _bottles_pulse_tween : Tween
 
 
 func _ready() -> void:
+	main_goal_header_label.text = MAIN_GOAL_HEADER_TEXT
+	daily_goals_header_label.text = DAILY_GOALS_HEADER_TEXT
+
 	toggle_button.pressed.connect(_on_toggle_pressed)
 	BrewerySignals.brewery_state_changed.connect(_on_brewery_state_changed)
 	TimeManager.day_changed.connect(_on_day_changed)
@@ -68,6 +91,32 @@ func _on_toggle_pressed() -> void:
 	toggle_button.text = EXPAND_ICON if _is_collapsed else COLLAPSE_ICON
 
 
+## Called once from GUI._show_first_brew_hint()/_on_first_brew_hint_state_changed()
+## right as the first-brew hint banner finishes — this panel starts
+## collapsed and opt-in (see _ready()'s comment above), which is fine once
+## a player already knows it's there, but a brand-new player has no reason
+## to have found the toggle arrow yet, and this is exactly where their
+## tutorial checklist lives. Expands it if needed and pulses it a few
+## times so the eye actually lands here instead of just being told
+## verbally to go look for it.
+func draw_attention() -> void:
+	if _is_collapsed:
+		_on_toggle_pressed()
+
+	await get_tree().process_frame
+	# Pivot on the right edge (size.x), not the center — this panel is
+	# right-anchored flush against the edge of the game window (see
+	# anchor_left/anchor_right = 1 in the scene), so a centered pivot would
+	# push its right half past the window boundary every pulse. Pivoting on
+	# the right edge instead keeps that edge fixed and grows only leftward,
+	# into the middle of the screen.
+	pivot_offset = Vector2(size.x, size.y / 2.0)
+
+	var attention_tween := create_tween().set_loops(ATTENTION_PULSE_COUNT)
+	attention_tween.tween_property(self, "scale", ATTENTION_PULSE_SCALE, ATTENTION_PULSE_SECONDS).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	attention_tween.tween_property(self, "scale", Vector2.ONE, ATTENTION_PULSE_SECONDS).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+
+
 func _on_brewery_state_changed(brewery : Brewery) -> void:
 	_update_goals(brewery)
 
@@ -80,16 +129,56 @@ func _on_day_changed(_new_day : int) -> void:
 func _update_goals(brewery : Brewery) -> void:
 	var show_tutorial : bool = not brewery.tutorial_complete()
 
+	_update_run_goal(brewery)
+
 	tutorial_malt_label.visible = show_tutorial
 	tutorial_yeast_label.visible = show_tutorial
 	tutorial_brew_label.visible = show_tutorial
 	bottles_goal_label.visible = not show_tutorial
 	risk_goal_label.visible = not show_tutorial
+	streak_label.visible = not show_tutorial and brewery.daily_goal_streak > 0
+
+	# Always on, unlike the section it introduces — the tutorial checklist
+	# (malt/yeast/brew) is itself this run's "today's goals" before the
+	# bottles/risk goals exist yet, so the header belongs above it too, not
+	# just once tutorial_complete() flips true.
 
 	if show_tutorial:
 		_update_tutorial_goals(brewery)
 	else:
 		_update_daily_goals(brewery)
+		if streak_label.visible:
+			streak_label.text = STREAK_FORMAT % brewery.daily_goal_streak
+			streak_label.add_theme_color_override("font_color", GOAL_MET_COLOR)
+
+
+## Shown from day one regardless of tutorial state — this is the run's
+## actual win condition (TimeManager.SURVIVAL_DAY_TARGET / Brewery.
+## SURVIVAL_MIN_REPUTATION, see TimeManager._check_survival_ending()),
+## which previously had nothing on screen telling the player it existed
+## until they cleared or missed it. Two independently-colored lines, same
+## "each stat judges itself" shape _update_daily_goals() already uses for
+## bottles/risk, rather than one line sharing a single combined color.
+func _update_run_goal(brewery : Brewery) -> void:
+	var target_day : int = TimeManager.SURVIVAL_DAY_TARGET
+	var min_reputation : int = Brewery.SURVIVAL_MIN_REPUTATION
+	var money_in_danger : bool = brewery.money <= 0.0
+
+	day_goal_label.text = DAY_GOAL_FORMAT % [brewery.current_day, target_day]
+	if brewery.current_day >= target_day:
+		day_goal_label.add_theme_color_override("font_color", GOAL_MET_COLOR)
+	elif money_in_danger:
+		day_goal_label.add_theme_color_override("font_color", GOAL_FAILING_COLOR)
+	else:
+		day_goal_label.add_theme_color_override("font_color", GOAL_PENDING_COLOR)
+
+	reputation_goal_label.text = REPUTATION_GOAL_FORMAT % [brewery.reputation, min_reputation]
+	if money_in_danger:
+		reputation_goal_label.add_theme_color_override("font_color", GOAL_FAILING_COLOR)
+	elif brewery.reputation >= min_reputation:
+		reputation_goal_label.add_theme_color_override("font_color", GOAL_MET_COLOR)
+	else:
+		reputation_goal_label.add_theme_color_override("font_color", GOAL_PENDING_COLOR)
 
 
 func _update_tutorial_goals(brewery : Brewery) -> void:
