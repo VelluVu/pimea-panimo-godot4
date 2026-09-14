@@ -84,11 +84,13 @@ func _build_style_list_rows() -> void:
 				beer_style.max_ebc,
 				beer_style.min_ibu,
 				beer_style.max_ibu,
-				_get_yeast_name(beer_style.required_yeast_id)
+				_get_ingredient_name(beer_style.required_yeast_id)
 			]
 
 			if beer_style.preferred_hop_profile != HopData.FlavorProfile.NONE:
 				row_button.text += StringContainer.RECIPE_LIBRARY_HOP_HINT_STRING % HopData.get_flavor_profile_display_name(beer_style.preferred_hop_profile)
+			if beer_style.required_malt_id != -1:
+				row_button.text += StringContainer.RECIPE_LIBRARY_MALT_HINT_STRING % _get_ingredient_name(beer_style.required_malt_id)
 
 			row_button.pressed.connect(_on_style_row_pressed.bind(beer_style.style))
 			rows_vbox.add_child(row_button)
@@ -96,7 +98,22 @@ func _build_style_list_rows() -> void:
 			var row_label := Label.new()
 			row_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 			row_label.add_theme_font_size_override("font_size", 14)
-			row_label.text = StringContainer.RECIPE_LIBRARY_LOCKED_STRING % _get_yeast_name(beer_style.required_yeast_id)
+			row_label.text = StringContainer.RECIPE_LIBRARY_LOCKED_STRING % [
+				beer_style.abv,
+				_get_ingredient_name(beer_style.required_yeast_id),
+				beer_style.min_malt_weight
+			]
+
+			row_label.text += StringContainer.RECIPE_LIBRARY_COLOR_HINT_STRING % BeerStyle.get_color_hint(beer_style.min_ebc, beer_style.max_ebc)
+			row_label.text += StringContainer.RECIPE_LIBRARY_BITTERNESS_HINT_STRING % BeerStyle.get_bitterness_hint(beer_style.min_ibu, beer_style.max_ibu)
+
+			if beer_style.preferred_hop_profile != HopData.FlavorProfile.NONE:
+				row_label.text += StringContainer.RECIPE_LIBRARY_HOP_HINT_STRING % HopData.get_flavor_profile_display_name(beer_style.preferred_hop_profile)
+			if beer_style.required_malt_id != -1:
+				row_label.text += StringContainer.RECIPE_LIBRARY_MALT_HINT_STRING % _get_ingredient_name(beer_style.required_malt_id)
+			elif brewery.resolver.style_needs_malt_blend(beer_style):
+				row_label.text += StringContainer.RECIPE_LIBRARY_MALT_BLEND_HINT_STRING
+
 			row_label.modulate = Color.DIM_GRAY
 			rows_vbox.add_child(row_label)
 
@@ -172,10 +189,10 @@ func _recipe_is_brewable(recipe : BrewRecipe) -> bool:
 	return true
 
 
-func _get_yeast_name(yeast_id : int) -> String:
-	var yeast : IngredientData = IngredientDatabase.get_item_by_id(yeast_id)
+func _get_ingredient_name(ingredient_id : int) -> String:
+	var ingredient : IngredientData = IngredientDatabase.get_item_by_id(ingredient_id)
 
-	if yeast == null:
+	if ingredient == null:
 		return StringContainer.TUNTEMATON
 
-	return yeast.name
+	return ingredient.name

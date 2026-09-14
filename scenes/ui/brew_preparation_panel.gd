@@ -10,6 +10,28 @@ const SAVE_TOAST_HOLD_SECONDS : float = 1.2
 const SAVE_TOAST_FADE_SECONDS : float = 0.4
 const NO_ACTIVE_RECIPE_TEXT : String = "resepti:"
 
+## Live, no-cost preview of what the table's current contents would
+## actually brew — computed from the exact same BrewResolver.
+## resolve_brew_style() a real brew uses (it's a pure function, no side
+## effects on the dictionary passed in, same trick CustomerManager.
+## find_best_batch_for() already relies on for its own preview), so this
+## can never drift from what pressing "Pane" would really produce. Turns
+## a failed/undiscovered brew from "spend real ingredients, get a
+## Kotikalja-shaped dud with zero explanation" into "watch the numbers
+## while you're still deciding" — see the chat discussion this was built
+## from on why blind trial-and-error was the actual problem, not the
+## fixed recipe thresholds themselves.
+const PREVIEW_EMPTY_TEXT : String = "Lisää ainesosia nähdäksesi arvion."
+const PREVIEW_NOT_ENOUGH_TEXT : String = "Tarvitset ainakin 3 kg mallasta ja hiivan."
+const PREVIEW_NO_MATCH_FORMAT : String = "Ei täsmää vielä mihinkään tyyliin. (EBC %d, IBU %d)"
+## Style name deliberately withheld here even on a match — same reasoning
+## _on_save_recipe_requested()'s reject path already uses to stop a save
+## from name-peeking an undiscovered style: the whole point of "brew it to
+## find out" is that the name is the reward, not something the preview
+## should spoil before the player has actually brewed it once.
+const PREVIEW_UNKNOWN_MATCH_FORMAT : String = "Arvio: tuntematon tyyli täsmää! (EBC %d, IBU %d)"
+const PREVIEW_KNOWN_MATCH_FORMAT : String = "Arvio: %s — EBC %d, IBU %d, laatu %d%%"
+
 ## Same gold accent used for perk/modifier names (LevelUpWindow,
 ## ModifierSelectWindow) — ties this popup visually to that same
 ## "growth" system instead of reading as a plain success/failure color.
@@ -20,6 +42,7 @@ const XP_POPUP_OFFSET : Vector2 = Vector2(6, 0)
 const XP_POPUP_FLOAT_DISTANCE : float = 35.0
 
 @onready var table_list_vbox : VBoxContainer = $VBoxContainer/TableScrollContainer/IngredientListVBox
+@onready var preview_label : Label = $VBoxContainer/PreviewLabel
 @onready var save_recipe_toast : Label = $VBoxContainer/ButtonPanel/SaveRecipeToast
 @onready var current_recipe_label : Label = $VBoxContainer/CurrentRecipeBar/HBoxContainer/CurrentRecipeLabel
 @onready var erase_button : Button = $VBoxContainer/CurrentRecipeBar/HBoxContainer/EraseButton
@@ -110,10 +133,6 @@ func _on_brewery_state_changed(_brewery : Brewery) -> void:
 	_update_table_list_ui()
 
 
-func _on_recipe_library_button_pressed() -> void:
-	GUISignals.recipe_library_requested.emit()
-
-
 func _on_save_recipe_button_pressed() -> void:
 	GUISignals.save_recipe_requested.emit()
 
@@ -128,6 +147,8 @@ func _update_table_list_ui() -> void:
 
 	var prep_contents : Dictionary = BrewEngine.current_brewery.brew_preparation.selected_contents
 	var recipe_target : Dictionary = BrewEngine.current_brewery.brew_preparation.active_recipe_target
+
+	_update_preview(BrewEngine.current_brewery, prep_contents)
 
 	for id in IngredientDatabase.sorted_ids:
 
@@ -148,3 +169,26 @@ func _update_table_list_ui() -> void:
 			label.visible = true
 		else:
 			label.visible = false
+
+
+## See PREVIEW_EMPTY_TEXT's docstring above for why this exists. brewery
+## and prep_contents are passed in rather than re-fetched — the caller
+## (_update_table_list_ui()) already has both on hand.
+func _update_preview(brewery : Brewery, prep_contents : Dictionary) -> void:
+	if prep_contents.is_empty():
+		preview_label.text = PREVIEW_EMPTY_TEXT
+		return
+
+	var preview : BrewResult = brewery.resolver.resolve_brew_style(prep_contents)
+	if preview == null:
+		preview_label.text = PREVIEW_NOT_ENOUGH_TEXT
+		return
+
+	if not preview.is_matched:
+		preview_label.text = PREVIEW_NO_MATCH_FORMAT % [preview.final_ebc, preview.final_ibu]
+		return
+
+	if brewery.is_style_known(preview.beer_style.style):
+		preview_label.text = PREVIEW_KNOWN_MATCH_FORMAT % [preview.beer_style.style_name, preview.final_ebc, preview.final_ibu, roundi(preview.original_quality * 100)]
+	else:
+		preview_label.text = PREVIEW_UNKNOWN_MATCH_FORMAT % [preview.final_ebc, preview.final_ibu]

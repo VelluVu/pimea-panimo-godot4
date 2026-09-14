@@ -69,7 +69,17 @@ func _update_slider() -> void:
 	# the previously-selected ingredient's range was (or the editor's
 	# authored default, the first time this runs).
 	var item = BrewEngine.current_brewery.inventory.get_item_by_id(current_id)
-	var max_available : int = item.amount if item != null else 0
+	var inventory_amount : int = item.amount if item != null else 0
+
+	# The same slider drives both the Add button (bounded by how much is
+	# in inventory) and the Remove button (bounded by how much is already
+	# on the brew table) — capping it at inventory_amount alone left the
+	# slider stuck at max_value=0 whenever an ingredient had been fully
+	# moved onto the table (inventory back to 0), making it impossible to
+	# drag the slider up to remove any of it back off the table. Take
+	# whichever amount is larger so both directions stay reachable.
+	var prep_amount : int = BrewEngine.current_brewery.brew_preparation.selected_contents.get(current_id, 0)
+	var max_available : int = max(inventory_amount, prep_amount)
 
 	main_slider.max_value = max_available
 	main_slider.value = min(main_slider.value, max_available)
