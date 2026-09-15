@@ -85,6 +85,22 @@ signal tip_popup_requested(amount: float, position: Vector2)
 ## mirroring BrewPreparationPanel's brew_xp_gained popup at "Pane".
 @warning_ignore("unused_signal")
 signal ingredient_purchased(cost: float)
+## Fired by Brewery._on_buy_ingredient() when reputation locks out the
+## ingredient at its current price. Real players can't normally reach this
+## today — ingredient_option_button.gd already disables locked entries in
+## the shop dropdown (see playtest_notes_7.txt) — but this used to be a
+## silent print()-only failure, so the signal exists as the same cheap
+## insurance the CustomerManager active_spawner guard is, in case that UI
+## guard ever changes.
+@warning_ignore("unused_signal")
+signal ingredient_purchase_locked(ingredient_name: String, required_reputation: int)
+## Fired by Brewery._on_buy_ingredient() when the player can't afford
+## buy_price. Unlike the reputation lock above, the shop UI does not
+## disable this case — clicking "Osta" with an empty wallet is a real,
+## reachable path that previously only print()'d StringContainer.
+## RESOURCE_ERROR to console with no on-screen explanation.
+@warning_ignore("unused_signal")
+signal ingredient_purchase_underfunded(ingredient_name: String, price: int, money: float)
 ## Fired by Brewery.apply_early_close_cost() whenever the player manually
 ## closes the day before the timer runs out — see that method's docstring
 ## for why this costs money/reputation but relieves some AVI risk, and

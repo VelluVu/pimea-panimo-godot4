@@ -25,8 +25,8 @@ func _setup_timers() -> void:
 func _on_special_event_timer_timeout() -> void:
 	if BrewEngine.current_brewery == null:
 		return
-		
-	var event_data = CustomerRegistry.get_random_special_event()
+
+	var event_data = CustomerRegistry.get_random_special_event(BrewEngine.current_brewery)
 	if event_data == null:
 		return
 		

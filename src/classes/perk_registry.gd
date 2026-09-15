@@ -39,13 +39,40 @@ static func _static_init() -> void:
 		push_warning(WARNING_POOL_EMPTY)
 
 
+## Weight a common perk is TIER_WEIGHTS[COMMON] times as likely to be drawn
+## as a legendary one on any single pick — see RunPerk.Tier/get_tier_label().
+const TIER_WEIGHTS : Dictionary = {
+	RunPerk.Tier.COMMON: 10,
+	RunPerk.Tier.RARE: 4,
+	RunPerk.Tier.LEGENDARY: 1,
+}
+
+
 ## Rolls up to `count` distinct perks (no repeats within this one offer —
 ## repeats across separate level-ups, stacking the same perk twice over a
-## run, are fine and expected). Clamped to pool size, same reasoning as
-## RunModifierRegistry.get_random_modifiers().
+## run, are fine and expected), weighted by TIER_WEIGHTS instead of a flat
+## shuffle — legendary perks are rare draws, not evenly-odds ones. Clamped
+## to pool size, same reasoning as RunModifierRegistry.get_random_modifiers().
 static func get_random_perks(count : int) -> Array[RunPerk]:
 	if pool.is_empty():
 		return [RunPerk.new()]
-	var shuffled := pool.duplicate()
-	shuffled.shuffle()
-	return shuffled.slice(0, mini(count, shuffled.size()))
+
+	var remaining : Array[RunPerk] = pool.duplicate()
+	var result : Array[RunPerk] = []
+	var take : int = mini(count, remaining.size())
+
+	for i in range(take):
+		var total_weight : int = 0
+		for perk : RunPerk in remaining:
+			total_weight += TIER_WEIGHTS.get(perk.tier, 1)
+
+		var roll : int = randi() % total_weight
+		var cumulative : int = 0
+		for perk : RunPerk in remaining:
+			cumulative += TIER_WEIGHTS.get(perk.tier, 1)
+			if roll < cumulative:
+				result.append(perk)
+				remaining.erase(perk)
+				break
+
+	return result

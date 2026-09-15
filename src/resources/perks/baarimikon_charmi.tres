@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="RunPerk" format=3]
+[gd_resource type="Resource" script_class="RunPerk" format=3 uid="uid://cof1b6r3yu447"]
 
-[ext_resource type="Script" path="res://src/classes/run_perk.gd" id="1_baarimikon"]
+[ext_resource type="Script" uid="uid://dewmdbm4a0vst" path="res://src/classes/run_perk.gd" id="1_baarimikon"]
 
 [resource]
 script = ExtResource("1_baarimikon")
 perk_name = "Baarimikon charmi"
 description = "Opit jutustelemaan asiakkaiden kanssa tiskin yli — tipit kasvavat huomattavasti."
 icon_placeholder = "😏"
+tier = 2
 tip_income_multiplier = 1.75

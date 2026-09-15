@@ -65,19 +65,28 @@ func _load_current_values() -> void:
 	fullscreen_check.button_pressed = SettingsManager.fullscreen
 
 
+## Pauses the whole SceneTree while Options is up — same pattern as
+## GameEndWindow/ModifierSelectWindow (see their docstrings): this node
+## needs process_mode = PROCESS_MODE_ALWAYS set on its instance in
+## main.tscn/main_menu.tscn so its own buttons/sliders still work while
+## everything else (customers, timers, and every other button on screen)
+## is frozen and can't be clicked underneath this window.
 func _on_options_requested() -> void:
 	_load_current_values()
+	get_tree().paused = true
 	show()
 
 
 func _on_close_button_pressed() -> void:
 	GUISignals.options_closed.emit()
+	get_tree().paused = false
 	hide()
 
 
 func _on_main_menu_button_pressed() -> void:
 	GUISignals.menu_button_pressed.emit()
 	SaveManager.save_game()
+	get_tree().paused = false
 	get_tree().change_scene_to_file(MAIN_MENU_SCENE_PATH)
 
 

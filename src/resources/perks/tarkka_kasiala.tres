@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="RunPerk" format=3]
+[gd_resource type="Resource" script_class="RunPerk" format=3 uid="uid://b1b7slm6j4hx4"]
 
-[ext_resource type="Script" path="res://src/classes/run_perk.gd" id="1_tarkka"]
+[ext_resource type="Script" uid="uid://dewmdbm4a0vst" path="res://src/classes/run_perk.gd" id="1_tarkka"]
 
 [resource]
 script = ExtResource("1_tarkka")
 perk_name = "Tarkka käsiala"
 description = "Vuosien harjoittelu näkyy pullossa — jokainen tästä eteenpäin keitetty erä on hieman laadukkaampi."
 icon_placeholder = "🎯"
+tier = 1
 quality_bonus = 0.15
