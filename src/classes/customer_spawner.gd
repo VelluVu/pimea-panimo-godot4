@@ -288,6 +288,17 @@ func _run_shared_group_order(event_data: GroupVisitEventData, members: Array[Nod
 			if is_instance_valid(member):
 				member.made_purchase = true
 		BrewerySignals.xp_popup_requested.emit(xp_capture.amount, group_position)
+
+		# Same SERVE_BEER_WAIT_SECONDS wait as the solo-customer path (see
+		# Customer.show_counter_glass()'s docstring) — the slide itself must
+		# only start once the bartender's pour animation has finished, not
+		# while it's still playing, so this waits BEFORE calling
+		# show_counter_glass() rather than relying on the glass's own
+		# (now much shorter) slide duration to cover that gap.
+		await get_tree().create_timer(Customer.SERVE_BEER_WAIT_SECONDS).timeout
+		for member in members:
+			if is_instance_valid(member):
+				member.show_counter_glass()
 	if reputation_capture.amount != 0:
 		BrewerySignals.reputation_popup_requested.emit(reputation_capture.amount, group_position)
 	if tip_capture.amount > 0:

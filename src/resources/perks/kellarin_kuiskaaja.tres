@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="RunPerk" format=3]
+[gd_resource type="Resource" script_class="RunPerk" format=3 uid="uid://ci3e1b8wvw1bc"]
 
-[ext_resource type="Script" path="res://src/classes/run_perk.gd" id="1_kellarin"]
+[ext_resource type="Script" uid="uid://dewmdbm4a0vst" path="res://src/classes/run_perk.gd" id="1_kellarin"]
 
 [resource]
 script = ExtResource("1_kellarin")
 perk_name = "Kellarin kuiskaaja"
 description = "Kuulet, kun käyminen on juuri sopivassa pisteessä — laatu paranee huomattavasti."
 icon_placeholder = "🕯️"
+tier = 2
 quality_bonus = 0.25

@@ -5,6 +5,8 @@ extends Control
 const DISCOVERY_TOAST_FORMAT: String = "Uusi oluttyyli löydetty: %s!"
 const GOAL_REWARD_TOAST_FORMAT: String = "%s saavutettu: +%d € / +%d maine!"
 const EARLY_CLOSE_TOAST_FORMAT: String = "Ovet suljettu aikaisin: -%.1f €, mainetta -%d, AVI-riski -%d"
+const INGREDIENT_LOCKED_TOAST_FORMAT: String = "%s vaatii vähintään %d mainetta."
+const INGREDIENT_UNDERFUNDED_TOAST_FORMAT: String = "Ei varaa: %s maksaa %d €, kassassa %.1f €."
 const DISCOVERY_TOAST_FLASH_SECONDS: float = 0.15
 const DISCOVERY_TOAST_HOLD_SECONDS: float = 2.0
 const DISCOVERY_TOAST_FADE_SECONDS: float = 0.6
@@ -63,6 +65,8 @@ func _ready() -> void:
 	BrewerySignals.style_discovered.connect(_on_style_discovered)
 	BrewerySignals.daily_goal_reward_granted.connect(_on_daily_goal_reward_granted)
 	BrewerySignals.early_day_close_applied.connect(_on_early_day_close_applied)
+	BrewerySignals.ingredient_purchase_locked.connect(_on_ingredient_purchase_locked)
+	BrewerySignals.ingredient_purchase_underfunded.connect(_on_ingredient_purchase_underfunded)
 	BrewerySignals.group_visit_announced.connect(_on_group_visit_announced)
 	BrewerySignals.brewery_state_changed.connect(_on_brewery_state_changed)
 
@@ -192,6 +196,21 @@ func _on_early_day_close_applied(money_cost : float, reputation_cost : int, risk
 	_show_toast(EARLY_CLOSE_TOAST_FORMAT % [money_cost, reputation_cost, risk_relief])
 
 
+## Mirrors _on_ingredient_purchase_underfunded() below — the shop UI
+## already disables reputation-locked entries (see BrewerySignals.
+## ingredient_purchase_locked's docstring), but the toast costs nothing
+## and keeps both failure paths off Brewery consistently surfaced.
+func _on_ingredient_purchase_locked(ingredient_name : String, required_reputation : int) -> void:
+	_show_toast(INGREDIENT_LOCKED_TOAST_FORMAT % [ingredient_name, required_reputation])
+
+
+## Previously a player clicking "Osta" with too little money just saw
+## nothing happen (Brewery._on_buy_ingredient() only print()'d to console)
+## — see the ingredient_purchase_underfunded signal's docstring.
+func _on_ingredient_purchase_underfunded(ingredient_name : String, price : int, money : float) -> void:
+	_show_toast(INGREDIENT_UNDERFUNDED_TOAST_FORMAT % [ingredient_name, price, money])
+
+
 func _on_group_visit_announced(banner_text : String) -> void:
 	group_visit_banner.text = banner_text
 
@@ -228,6 +247,7 @@ func _show_first_brew_hint() -> void:
 	_first_brew_hint_tween.tween_property(first_brew_hint_banner, "modulate", Color(1.0, 1.0, 1.0, 1.0), FIRST_BREW_HINT_FLASH_SECONDS)
 	_first_brew_hint_tween.tween_interval(FIRST_BREW_HINT_HOLD_SECONDS)
 	_first_brew_hint_tween.tween_property(first_brew_hint_banner, "modulate:a", 0.0, FIRST_BREW_HINT_FADE_SECONDS)
+	_first_brew_hint_tween.tween_callback(first_brew_hint_banner.hide)
 	_first_brew_hint_tween.tween_callback(daily_goals_panel.draw_attention)
 
 
@@ -251,6 +271,7 @@ func _on_first_brew_hint_state_changed(_brewery : Brewery) -> void:
 
 	var quick_fade := create_tween()
 	quick_fade.tween_property(first_brew_hint_banner, "modulate:a", 0.0, FIRST_BREW_HINT_FADE_SECONDS)
+	quick_fade.tween_callback(first_brew_hint_banner.hide)
 	quick_fade.tween_callback(daily_goals_panel.draw_attention)
 
 

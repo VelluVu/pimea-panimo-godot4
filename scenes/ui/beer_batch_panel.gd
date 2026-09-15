@@ -3,7 +3,7 @@ extends VBoxContainer
 
 
 @onready var beer_batch_list_vbox : VBoxContainer = $BeerBatchScrollContainer/BeerBatchListVBox
-const LABEL_STRING : String = "🍺 %s (%.1f%%) - %s pulloa (%s %s)"
+const LABEL_STRING : String = "🍺 %s (%.1f%%) - %s annosta (%s %s)"
 ## Shown when there's nothing left to sell — without this the panel just
 ## goes quiet with no explanation. Customer traffic keeps arriving even
 ## now (CustomerSpawner no longer withholds spawning on empty inventory

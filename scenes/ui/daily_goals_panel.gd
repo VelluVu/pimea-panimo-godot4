@@ -29,7 +29,7 @@ const ATTENTION_PULSE_SCALE : Vector2 = Vector2(1.12, 1.12)
 const COLLAPSE_ICON : String = "▼"
 const EXPAND_ICON : String = "▲"
 
-const BOTTLES_GOAL_FORMAT : String = "Pulloja: %d/%d"
+const BOTTLES_GOAL_FORMAT : String = "Annoksia: %d/%d"
 const RISK_GOAL_FORMAT : String = "Riski: %d/%d"
 ## Persistent across the whole run, unlike everything else in this panel —
 ## deliberately shown regardless of tutorial state (see _update_goals())

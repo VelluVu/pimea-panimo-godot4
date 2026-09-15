@@ -7,7 +7,7 @@ extends Panel
 
 const RECAP_TITLE: String = "Päivän yhteenveto"
 const CLOSE_BUTTON_TEXT: String = "Jatka"
-const RECAP_MESSAGE_FORMAT: String = "Päivä %d alkoi.\n\nRahaa: %+.1f €\nMainetta: %+d\nAVI-riski nyt: %d\nPulloja myyty: %d\nUusia oluttyylejä: %s\nTavoitteet: %d/2 saavutettu"
+const RECAP_MESSAGE_FORMAT: String = "Päivä %d alkoi.\n\nRahaa: %+.1f €\nMainetta: %+d\nAVI-riski nyt: %d\nAnnoksia myyty: %d\nUusia oluttyylejä: %s\nTavoitteet: %d/2 saavutettu"
 const NO_NEW_STYLES_TEXT: String = "ei uusia"
 
 @onready var title_label: Label = $MarginContainer/MainVBox/TitleLabel

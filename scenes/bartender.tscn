@@ -14,3 +14,6 @@ sprite_frames = ExtResource("2_sprite")
 animation = &"idle"
 centered = false
 offset = Vector2(-24, -48)
+
+[node name="ServeMarker" type="Marker2D" parent="." unique_id=420348246]
+position = Vector2(0, 53)
