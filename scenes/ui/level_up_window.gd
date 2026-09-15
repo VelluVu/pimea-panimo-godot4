@@ -6,10 +6,14 @@ extends Panel
 ## shape exactly: icon + header + description, click to choose, three
 ## choices per offer.
 ##
-## Deliberately does NOT pause the tree — unlike GameEndWindow (the run
-## is over) or ModifierSelectWindow-during-restart (still "between runs"),
-## a level-up is a small mid-play beat; customers/timers keep going behind
-## it, same as AviRaidWindow/SpecialEventManager's popups.
+## Pauses the whole SceneTree while a choice is on screen — same pattern
+## as GameEndWindow/OptionsWindow (see their docstrings): needs
+## process_mode = PROCESS_MODE_ALWAYS set on this node's instance in
+## main.tscn so its own card buttons still work while paused, and a
+## z_index above any speech bubble DialogView can show (group-visit
+## bubbles alone can reach z_index ~99, see CustomerSpawner.
+## GROUP_DIALOGUE_SLOT_BASE/_RANGE) so a card offer never ends up hidden
+## behind a customer's dialogue.
 ##
 ## Applies the chosen perk directly to BrewEngine.current_brewery itself
 ## (like SaleReceiptLogWindow already reaches into brewery state
@@ -45,13 +49,30 @@ func _ready() -> void:
 		card.pressed.connect(_on_card_pressed.bind(i))
 
 	BrewerySignals.level_up_reached.connect(_on_level_up_reached)
+	BrewerySignals.game_ended.connect(_on_game_ended)
 	hide()
 
 
+## A level-up crossing the same tick as the run actually ending (the final
+## sale of the run both leveled up and cleared the survival bar) shouldn't
+## make the player click through a perk choice before they even see the
+## result — GameEndWindow always wins. Guards both possible signal orders:
+## if level_up_reached fires first, the game_has_ended check here stops it
+## from showing at all; if game_ended fires first, _on_game_ended() below
+## hides it before it can cover the end screen. Either way the level stays
+## queued in _pending_levels and resolves normally the next time a level-up
+## fires with no ending in the way (see "Jatka pelaamista").
 func _on_level_up_reached(new_level : int) -> void:
 	_pending_levels.append(new_level)
-	if not visible:
+	var brewery := BrewEngine.current_brewery
+	var run_has_ended : bool = brewery != null and brewery.game_has_ended
+	if not visible and not run_has_ended:
 		_show_next_pending_level()
+
+
+func _on_game_ended(_ending_type : String) -> void:
+	if visible:
+		hide()
 
 
 func _show_next_pending_level() -> void:
@@ -71,10 +92,13 @@ func _show_next_pending_level() -> void:
 		var perk : RunPerk = _offered_perks[i]
 		_card_icon_labels[i].text = perk.icon_placeholder
 		_card_header_labels[i].text = perk.perk_name
+		_card_header_labels[i].add_theme_color_override("font_color", perk.get_tier_color())
 
 		var stat_summary : String = perk.get_stat_summary()
-		_card_description_labels[i].text = perk.description if stat_summary.is_empty() else perk.description + "\n" + stat_summary
+		var description : String = "[%s]\n%s" % [perk.get_tier_label(), perk.description]
+		_card_description_labels[i].text = description if stat_summary.is_empty() else description + "\n" + stat_summary
 
+	get_tree().paused = true
 	show()
 
 
@@ -88,4 +112,6 @@ func _on_card_pressed(index : int) -> void:
 
 	hide()
 	_pending_levels.pop_front()
+	if _pending_levels.is_empty():
+		get_tree().paused = false
 	_show_next_pending_level()

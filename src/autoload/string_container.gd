@@ -78,7 +78,7 @@ const LEADERBOARD_BUTTON_TEXT : String = "Ennätykset"
 const LEADERBOARD_TITLE : String = "Ennätykset"
 const LEADERBOARD_CLOSE_TEXT : String = "Sulje"
 const LEADERBOARD_EMPTY_STRING : String = "Ei vielä ennätyksiä — pelaa ensimmäinen erä!"
-const LEADERBOARD_ROW_FORMAT : String = "#%d  %s — %d pv, %d mainetta, %d pulloa (%s)\n%s — pisteet: %d"
+const LEADERBOARD_ROW_FORMAT : String = "#%d  %s — %d pv, %d mainetta, %d annosta (%s)\n%s — pisteet: %d"
 const LEADERBOARD_ENDING_BUSTED : String = "Jäi kiinni"
 const LEADERBOARD_ENDING_BANKRUPT : String = "Konkurssi"
 const LEADERBOARD_ENDING_SURVIVED : String = "Selvisi"
@@ -110,7 +110,7 @@ const MONEY_STRING : String = "Money"
 
 const INVALID_ID_ERROR : String = "%s ERROR: item with ID: %s does not exist in %s"
 const WITHDRAW_NO_STOCK_ERROR : String = "%s ERROR: withdraw failed. Not enough stock for: %s"
-const WITHDRAW_INVALID_AMOUNT_ERROR : String = "%s ERROR: withraw failed. Invalid withraw amount: %s"
+const WITHDRAW_INVALID_AMOUNT_ERROR : String = "%s ERROR: withdraw failed. Invalid withdraw amount: %s"
 const RESOURCE_ERROR : String = "Resource ERROR: currently have %s, and need %s %s"
 const TABLE_EMPTY_ERROR : String = "Start Brewing ERROR: table has no ingredients"
 const NOT_ENOUGH_INGREDIENTS_ERROR : String = "Brew resolver ERROR: not enough ingredients"
@@ -124,7 +124,7 @@ const SERVING_NULL_CUSTOMER_WARNING : String = "CustomerManager: Tried to serve 
 const NOT_ENOUGH_BOTTLES_IN_BATCH_WARNING : String = "CustomerManager: Not enough bottles in batch!"
 
 const SELL_MESSAGE : String = "Sold %s amount of stuff, and you get %s€ back"
-const SUCCESFULL_BREW_MESSAGE : String = "Succesfull brew batch: "
+const SUCCESFULL_BREW_MESSAGE : String = "Successful brew batch: "
 const NEW_GAME_MESSAGE : String = "New game started! Brewery established."
 const FOLDER_SCAN_MESSAGE : String = "[IngredientDatabase] Start recursive folder scan..."
 const FOLDER_SCAN_COMPLETE_MESSAGE : String = "[IngredientDatabase] Database fully sorted! Total registered items: "
@@ -137,7 +137,7 @@ const DAY_CHANGED_MESSAGE : String = "--- DAY CHANGED: Day %s starts ---"
 const WRONG_STYLE_DIALOGUE_STRING : String = "Ei tää sitä ollu mitä hain, mut jotaki kuitenki."
 
 const AVI_RAID_TITLE : String = "AVI-TARKASTUS!"
-const AVI_RAID_MESSAGE : String = "Alkoholitarkastajat ryntäsivät kellariin ja takavarikoivat %s pulloa valmista olutta! Lisäksi kirjoittivat sakon: %.1f €, ja maineesi laski %s pistettä."
+const AVI_RAID_MESSAGE : String = "Alkoholitarkastajat ryntäsivät kellariin ja takavarikoivat %s annosta valmista olutta! Lisäksi kirjoittivat sakon: %.1f €, ja maineesi laski %s pistettä."
 const AVI_RAID_CLOSE_TEXT : String = "Selvä..."
 
 ## RunPerk.get_stat_summary() lines — only the non-neutral fields are ever
@@ -145,6 +145,13 @@ const AVI_RAID_CLOSE_TEXT : String = "Selvä..."
 const PERK_QUALITY_STAT_STRING : String = "Laatu: +%d %%"
 const PERK_REPUTATION_STAT_STRING : String = "Maineen kertymä: +%d %%"
 const PERK_TIP_STAT_STRING : String = "Tipit: +%d %%"
+
+## RunPerk.get_tier_label() — shown on LevelUpWindow's cards (color-coded
+## via RunPerk.get_tier_color()) so a level-up's rarity is actually visible
+## instead of every perk offer looking the same.
+const PERK_TIER_COMMON : String = "Tavallinen"
+const PERK_TIER_RARE : String = "Harvinainen"
+const PERK_TIER_LEGENDARY : String = "Legendaarinen"
 
 ## RunModifier.get_stat_summary() lines — signed (%+d) since a modifier can
 ## push either direction (see e.g. Kireä AVI's lower raid threshold).

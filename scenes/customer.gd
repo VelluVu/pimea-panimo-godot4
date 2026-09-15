@@ -24,26 +24,54 @@ const ANIM_WALK_RIGHT : StringName = &"walk_right"
 
 ## Per-frame hand position for ANIM_WALK_TOWARDS (Customer-local space,
 ## matching AnimatedSprite2D's centered=false/offset=(-16,-32)/scale=4
-## transform), sampled from the sprite's actual walking hand pixels rather
-## than guessed — the bottle is only ever shown while walking away (see
-## leave_counter/made_purchase), so no other animation needs an entry here.
+## transform). ANIM_WALK_TOWARDS is now always played with flip_h=true (see
+## its two _play_animation() call sites) specifically so the customer's own
+## RIGHT hand — the one that stays steady at hip height across all 4
+## frames, not the one doing leijonafani's raised fist-pump cheer on frames
+## 2/4 (checked pixel-by-pixel against leijonafani_32.png) — ends up on OUR
+## left, screen-negative-x, the correct mirror for a character facing the
+## camera. These x values are the STEADY hand's unflipped texture position
+## run back through the same mirror flip_h itself applies
+## (screen_x = 64 - 4*tx, tx sampled from the sprite), so the marker and
+## the actual (now-mirrored) rendered pixel line up. Since this table is
+## shared by every archetype, "the hand that doesn't gesture" is the only
+## choice that holds up across all of them. +9 on top of the derived x: a
+## small manual nudge back toward center so the held glass doesn't read as
+## floating too far off the body.
 const WALK_TOWARDS_HAND_OFFSETS : Array[Vector2] = [
-	Vector2(32, -46),
-	Vector2(16, -46),
-	Vector2(32, -46),
-	Vector2(34, -50),
+	Vector2(-23, -46),
+	Vector2(-7, -46),
+	Vector2(-23, -46),
+	Vector2(-25, -50),
 ]
 
 ## Zgen's walk_towards frames keep both arms crossed at the chest the whole
 ## cycle (no swinging hand to track — see Zgen_32.png), so instead of a
 ## hand position this is a small hand-authored sway around chest height.
 const ZGEN_TITLE : String = "Zgen"
-const ZGEN_CHEST_BOTTLE_OFFSETS : Array[Vector2] = [
+const ZGEN_CHEST_GLASS_OFFSETS : Array[Vector2] = [
 	Vector2(-4, -68),
 	Vector2(0, -66),
 	Vector2(4, -68),
 	Vector2(0, -66),
 ]
+
+## How long a just-served glass sits on the counter before the customer
+## picks it up and leaves — matched to Bartender's serve_beer animation
+## length (src/resources/sprite_frames/baarimikko_anim.tres, 7 frames /
+## speed 4.0 = 2.0s) so the glass visibly appears only once the bartender
+## has actually finished pouring it, not the instant the sale resolves.
+## A tuned constant rather than a live cross-node query: Bartender is a
+## single fixed-position fixture with no per-sale/per-customer identity to
+## hand back (BrewerySignals.bottles_sold carries only an amount), so
+## there's nothing here to react to directly — see show_counter_glass()'s
+## call sites.
+const SERVE_BEER_WAIT_SECONDS : float = 2.0
+## How long the counter-glass slide itself takes, once it starts — see
+## show_counter_glass()'s call sites, which wait SERVE_BEER_WAIT_SECONDS
+## first so the slide only begins once the bartender's pour animation has
+## actually finished, not while it's still playing.
+const GLASS_SLIDE_DURATION_SECONDS : float = 0.6
 
 const RECOLOR_SHADER : Shader = preload("res://assets/shaders/customer_recolor.gdshader")
 const RECOLOR_HAIR_SATURATION_RANGE : Vector2 = Vector2(0.55, 0.9)
@@ -55,7 +83,8 @@ const RECOLOR_SKIN_VALUE_RANGE : Vector2 = Vector2(0.6, 0.95)
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var bottle_hand_marker: Marker2D = $BottleHandMarker
-@onready var beer_bottle_sprite: Sprite2D = $BottleHandMarker/BeerBottleSprite
+@onready var beer_glass_sprite: Sprite2D = $BottleHandMarker/BeerGlassSprite
+@onready var counter_glass_sprite: Sprite2D = $CounterGlassSprite
 
 var customer_data: CustomerData:
 	set(value):
@@ -64,9 +93,10 @@ var customer_data: CustomerData:
 var assigned_slot: int = -1
 
 ## Set when process_auto_sale() actually sold this customer a beer — gates
-## show_beer_bottle() at leave_counter() so the bottle only ever appears
-## while walking away (see WALK_TOWARDS_HAND_OFFSETS: the only pose it's
-## positioned for), never during the counter-facing idle_up wait.
+## show_counter_glass()/show_beer_glass() so the glass only ever appears
+## once a sale actually went through, and show_beer_glass() specifically
+## only while walking away (see WALK_TOWARDS_HAND_OFFSETS: the only pose
+## it's positioned for), never during the counter-facing idle_up wait.
 var made_purchase: bool = false
 
 ## Speech-bubble identity for DialogView, separate from assigned_slot.
@@ -88,7 +118,7 @@ func _ready() -> void:
 
 
 func _on_animated_sprite_frame_changed() -> void:
-	var offsets := ZGEN_CHEST_BOTTLE_OFFSETS if customer_data != null and customer_data.title == ZGEN_TITLE else WALK_TOWARDS_HAND_OFFSETS
+	var offsets := ZGEN_CHEST_GLASS_OFFSETS if customer_data != null and customer_data.title == ZGEN_TITLE else WALK_TOWARDS_HAND_OFFSETS
 	bottle_hand_marker.position = offsets[animated_sprite.frame % offsets.size()]
 
 
@@ -151,7 +181,7 @@ func walk_complex_route(stairs_pos: Vector2, center_pos: Vector2, target_pos: Ve
 	var start_pos = global_position
 	var stair_steps = 15
 
-	tween.tween_callback(_play_animation.bind(ANIM_WALK_TOWARDS, false))
+	tween.tween_callback(_play_animation.bind(ANIM_WALK_TOWARDS, true))
 	for i in range(1, stair_steps + 1):
 		var step_pos = start_pos.lerp(stairs_pos, float(i) / stair_steps)
 		tween.tween_property(self, "global_position", step_pos, customer_data.stair_step_duration).set_trans(Tween.TRANS_LINEAR)
@@ -235,6 +265,8 @@ func _on_sale_timeout() -> void:
 
 	if xp_capture.amount > 0:
 		made_purchase = true
+		var glass_timer = get_tree().create_timer(SERVE_BEER_WAIT_SECONDS)
+		glass_timer.timeout.connect(show_counter_glass)
 		BrewerySignals.xp_popup_requested.emit(xp_capture.amount, global_position)
 	if reputation_capture.amount != 0:
 		BrewerySignals.reputation_popup_requested.emit(reputation_capture.amount, global_position)
@@ -249,18 +281,47 @@ func _on_sale_timeout() -> void:
 	leave_timer.timeout.connect(leave_counter)
 
 
-func show_beer_bottle() -> void:
+func show_beer_glass() -> void:
 	_on_animated_sprite_frame_changed()
-	beer_bottle_sprite.show()
+	beer_glass_sprite.show()
+
+
+## Called once SERVE_BEER_WAIT_SECONDS after the sale resolves (see this
+## function's call sites) — i.e. only once the bartender's pour animation
+## has actually finished, not while it's still playing. Slides the glass
+## from wherever the bartender is standing to its resting spot on the
+## counter over GLASS_SLIDE_DURATION_SECONDS. Falls back to popping in at
+## rest position directly if the Bartender can't be found (shouldn't
+## happen — main.tscn always has exactly one — but cheap insurance). Hidden
+## again the moment the customer picks it up to leave (leave_counter()), at
+## which point show_beer_glass() puts the same glass in their hand instead.
+func show_counter_glass() -> void:
+	var rest_position : Vector2 = counter_glass_sprite.position
+	var bartender := get_tree().get_first_node_in_group(Bartender.BARTENDER_GROUP) as Bartender
+
+	if bartender == null:
+		counter_glass_sprite.show()
+		return
+
+	counter_glass_sprite.position = to_local(bartender.serve_marker.global_position)
+	counter_glass_sprite.show()
+
+	var tween := create_tween()
+	tween.tween_property(counter_glass_sprite, "position", rest_position, GLASS_SLIDE_DURATION_SECONDS).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+
+
+func hide_counter_glass() -> void:
+	counter_glass_sprite.hide()
 
 
 func leave_counter() -> void:
 	var exit_pos = global_position + Vector2(0.0, 150.0)
 	var duration = 150.0 / customer_data.floor_walk_speed
 
-	_play_animation(ANIM_WALK_TOWARDS)
+	_play_animation(ANIM_WALK_TOWARDS, true)
 	if made_purchase:
-		show_beer_bottle()
+		hide_counter_glass()
+		show_beer_glass()
 	var tween = create_tween()
 	tween.tween_property(self, "global_position", exit_pos, duration).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 	tween.tween_callback(queue_free)

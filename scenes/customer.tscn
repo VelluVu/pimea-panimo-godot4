@@ -2,9 +2,10 @@
 
 [ext_resource type="Script" uid="uid://cw8uqmorifcpm" path="res://scenes/customer.gd" id="1_ktfjk"]
 [ext_resource type="SpriteFrames" uid="uid://xbg47c0gkylu" path="res://src/resources/sprite_frames/default_customer.tres" id="2_xss0h"]
-[ext_resource type="Texture2D" uid="uid://ui42kael5n56" path="res://assets/textures/beer_bottle_8x8.png" id="3_8qg4y"]
+[ext_resource type="Texture2D" uid="uid://xr3il7j0rj6q" path="res://assets/textures/beer_glass_8.png" id="3_beerglass"]
 
 [node name="Customer" type="Node2D" unique_id=348033307]
+y_sort_enabled = true
 script = ExtResource("1_ktfjk")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=701948396]
@@ -17,8 +18,16 @@ offset = Vector2(-16, -32)
 
 [node name="BottleHandMarker" type="Marker2D" parent="." unique_id=720355714]
 
-[node name="BeerBottleSprite" type="Sprite2D" parent="BottleHandMarker" unique_id=1935198091]
+[node name="BeerGlassSprite" type="Sprite2D" parent="BottleHandMarker" unique_id=1935198091]
 visible = false
+z_index = 1
 texture_filter = 1
 scale = Vector2(3, 3)
-texture = ExtResource("3_8qg4y")
+texture = ExtResource("3_beerglass")
+
+[node name="CounterGlassSprite" type="Sprite2D" parent="." unique_id=1935198092]
+visible = false
+position = Vector2(34, -76)
+texture_filter = 1
+scale = Vector2(3, 3)
+texture = ExtResource("3_beerglass")

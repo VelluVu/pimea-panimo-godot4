@@ -14,10 +14,6 @@ region = Rect2(48, 0, 48, 48)
 atlas = ExtResource("1_baarimikko")
 region = Rect2(96, 0, 48, 48)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_idle_3"]
-atlas = ExtResource("1_baarimikko")
-region = Rect2(144, 0, 48, 48)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_serve_beer_0"]
 atlas = ExtResource("1_baarimikko")
 region = Rect2(0, 48, 48, 48)
@@ -46,28 +42,17 @@ region = Rect2(240, 48, 48, 48)
 atlas = ExtResource("1_baarimikko")
 region = Rect2(288, 48, 48, 48)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_serve_beer_7"]
-atlas = ExtResource("1_baarimikko")
-region = Rect2(336, 48, 48, 48)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_serve_beer_8"]
-atlas = ExtResource("1_baarimikko")
-region = Rect2(384, 48, 48, 48)
-
 [resource]
 animations = [{
 "frames": [{
-"duration": 1.0,
+"duration": 2.0,
 "texture": SubResource("AtlasTexture_idle_0")
 }, {
-"duration": 1.0,
+"duration": 1.5,
 "texture": SubResource("AtlasTexture_idle_1")
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_idle_2")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_idle_3")
 }],
 "loop": 1,
 "name": &"idle",
@@ -92,16 +77,10 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_serve_beer_5")
 }, {
-"duration": 1.0,
+"duration": 2.0,
 "texture": SubResource("AtlasTexture_serve_beer_6")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_serve_beer_7")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_serve_beer_8")
 }],
 "loop": 0,
 "name": &"serve_beer",
-"speed": 8.0
+"speed": 4.0
 }]

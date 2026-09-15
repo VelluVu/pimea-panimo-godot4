@@ -22,7 +22,7 @@ const MESSAGE_BUSTED : String = "Kolmas ratsia oli viimeinen. AVI takavarikoi ka
 const MESSAGE_BANKRUPT : String = "Rahat loppuivat ja varasto oli tyhjä. Panimosi ajautui konkurssiin."
 const MESSAGE_SURVIVED : String = "Selvisit ratsioista ja konkurssin partaalta läpi koko uran. Kellarisi kaljasta tuli kaupunginosan legenda."
 
-const STATS_FORMAT : String = "\n\nPäiviä selvitty: %d\nMainetta lopussa: %d\nPulloja myyty yhteensä: %d"
+const STATS_FORMAT : String = "\n\nPäiviä selvitty: %d\nMainetta lopussa: %d\nAnnoksia myyty yhteensä: %d"
 const RANK_FORMAT : String = "\n\nSijoitus ennätyslistalla: #%d"
 const NEW_RECORD_TEXT : String = "\nUUSI ENNÄTYS!"
 

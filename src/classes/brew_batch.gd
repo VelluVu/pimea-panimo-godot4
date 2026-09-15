@@ -9,7 +9,10 @@ extends Resource
 
 @export var original_quality: float = 1.0
 @export var current_quality : float = 1.0
-@export var amount_bottles: int = 40
+## Schema default only — a real batch's value always comes from Brewery.
+## start_brew()'s effective_yield (see BrewResult.bottle_yield's docstring
+## for the 20L-keg/0.44L-serving math behind 45).
+@export var amount_bottles: int = 45
 @export var age_in_days: int = 0
 
 @export var precision_score : float = 1.0

@@ -22,7 +22,13 @@ const UNKNOWN_COMMAND_MESSAGE: String = "[color=orange]Tuntematon komento: %s (k
 const MAX_LOG_LINES: int = 200
 
 const MIN_SIZE: Vector2 = Vector2(180, 90)
-const MAX_SIZE: Vector2 = Vector2(440, 300)
+## Height capped well under what it takes to reach Right_WarehouseView's
+## bottom edge (anchored bottom-right same as this panel, its rect ends
+## ~228px above the screen bottom) — a console resized taller than that
+## used to sit on top of and swallow clicks meant for the warehouse view's
+## Tynnyrit tab underneath it, since Panel's default mouse_filter is STOP
+## and this node draws later in GUI's child order.
+const MAX_SIZE: Vector2 = Vector2(440, 200)
 const COLLAPSED_BODY_HEIGHT: float = 0.0
 
 const FOCUS_STYLE_BORDER_COLOR: Color = Color(0.85, 0.65, 0.25)
@@ -176,7 +182,7 @@ func _on_style_discovered(style: int) -> void:
 
 
 func _on_avi_raid_triggered(confiscated_bottles: int, fine_amount: float, reputation_lost: int) -> void:
-	_log("[color=red]AVI-RATSIA! Takavarikoitu %d pulloa, sakko %.1f €, mainetta -%d[/color]" % [confiscated_bottles, fine_amount, reputation_lost])
+	_log("[color=red]AVI-RATSIA! Takavarikoitu %d annosta, sakko %.1f €, mainetta -%d[/color]" % [confiscated_bottles, fine_amount, reputation_lost])
 
 
 func _on_recipe_saved(recipe_name: String) -> void:
@@ -186,7 +192,7 @@ func _on_recipe_saved(recipe_name: String) -> void:
 func _on_batch_bottled(bottles_lost: int, label_cost: float, style_name: String) -> void:
 	if bottles_lost <= 0 and label_cost <= 0.0:
 		return
-	_log("Pullotus (%s): %d pulloa hukkui, etiketit/markkinointi -%.1f €" % [style_name, bottles_lost, label_cost])
+	_log("Tynnyröinti (%s): %d annosta hukkui, markkinointi -%.1f €" % [style_name, bottles_lost, label_cost])
 
 
 func _on_daily_bills_paid(electricity: int, water: int, total: int) -> void:
@@ -289,7 +295,7 @@ func _register_commands() -> void:
 func _cmd_help(_args: PackedStringArray) -> void:
 	_log("Komennot: osta <ainesosa> <määrä>, myy <ainesosa> <määrä>, pöytään <ainesosa> <määrä>, poista <ainesosa> <määrä>, tyhjennä, tallenna, pane, keitä <resepti>, clear")
 	if BrewEngine.is_developer_mode():
-		_log("[color=orange]Kehittäjäkomennot: brew <tyyli>, sell [määrä] <tyyli> (myy oikeasti, luo pulloja tarvittaessa), customer [nimi], group [nimi], special, raid, money <n>, rep <n>, risk <n>, day[/color]")
+		_log("[color=orange]Kehittäjäkomennot: brew <tyyli>, sell [määrä] <tyyli> (myy oikeasti, luo annoksia tarvittaessa), customer [nimi], group [nimi], special, raid, money <n>, rep <n>, risk <n>, day[/color]")
 
 
 func _cmd_clear(_args: PackedStringArray) -> void:
@@ -367,9 +373,14 @@ func _cmd_keita(args: PackedStringArray) -> void:
 		_log("Reseptiä ei löytynyt: %s. Tallennetut: %s" % [" ".join(Array(args)), _saved_recipe_names(brewery)])
 		return
 
+	var batches_before : int = brewery.inventory.brew_batches.size()
 	GUISignals.load_recipe_requested.emit(matched)
 	GUISignals.start_brewing.emit()
-	_log("Keitetään: %s" % matched.recipe_name)
+
+	if brewery.inventory.brew_batches.size() > batches_before:
+		_log("Keitetään: %s" % matched.recipe_name)
+	else:
+		_log("Keittäminen epäonnistui: %s (ei tarpeeksi ainesosia varastossa?)" % matched.recipe_name)
 
 
 ## Secret cheat code (classic Doom god-mode toggle) that flips developer
@@ -455,7 +466,7 @@ func _cmd_brew(args: PackedStringArray) -> void:
 	# against any style, not a stand-in for real brewing.
 	var new_batch := BrewBatch.new()
 	new_batch.beer_style = matched_style
-	new_batch.amount_bottles = 40
+	new_batch.amount_bottles = 45
 	new_batch.original_quality = matched_style.original_quality
 	new_batch.current_quality = matched_style.original_quality
 	new_batch.final_ebc = int((matched_style.min_ebc + matched_style.max_ebc) / 2.0)
@@ -464,7 +475,7 @@ func _cmd_brew(args: PackedStringArray) -> void:
 	brewery.inventory.brew_batches.append(new_batch)
 	brewery.discover_style(matched_style.style)
 	BrewerySignals.brewery_state_changed.emit(brewery)
-	_log("Keitetty testierä: %s (40 pulloa)." % matched_style.style_name)
+	_log("Keitetty testierä: %s (45 annosta)." % matched_style.style_name)
 
 
 func _available_style_names(brewery: Brewery) -> String:
@@ -550,8 +561,8 @@ func _cmd_sell(args: PackedStringArray) -> void:
 	var breakdown : SaleBreakdown = sale_result.entry.breakdown
 	var final_cash : float = sale_result.net - production_fee.total
 
-	_log("[b]%s x%d[/b] (%.1f%% ABV) — listahinta %.2f €/pullo" % [matched_style.style_name, quantity, breakdown.abv, breakdown.price_per_bottle])
-	_log("  Raaka-ainekulut: %.2f €/pullo | Kate: %.2f €/pullo" % [breakdown.raw_cost_per_bottle, breakdown.profit_per_bottle])
+	_log("[b]%s x%d[/b] (%.1f%% ABV) — listahinta %.2f €/annos" % [matched_style.style_name, quantity, breakdown.abv, breakdown.price_per_bottle])
+	_log("  Raaka-ainekulut: %.2f €/annos | Kate: %.2f €/annos" % [breakdown.raw_cost_per_bottle, breakdown.profit_per_bottle])
 	_log("  Myynti: +%.1f €" % sale_result.gross)
 	_log("  Tippi: +%.1f €" % sale_result.entry.tip_income)
 	_log("  Tuotantokulut: -%.1f €" % production_fee.total)

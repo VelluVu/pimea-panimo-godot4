@@ -220,7 +220,7 @@ func process_auto_sale(data: CustomerData) -> String:
 	return response_text
 
 
-const BOTTLES_GOAL_REWARD_NAME : String = "Pullotavoite"
+const BOTTLES_GOAL_REWARD_NAME : String = "Annostavoite"
 
 ## Instant payout the moment the bottles-sold target is crossed — rewarding
 ## "reach X" goals right when they happen (rather than batching them into

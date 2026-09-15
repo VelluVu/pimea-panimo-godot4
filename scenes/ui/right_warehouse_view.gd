@@ -8,7 +8,7 @@ extends VBoxContainer
 ## instead of shown side by side, so the panel can stay narrow.
 
 const STORAGE_TAB_TEXT : String = "Varasto"
-const BOTTLES_TAB_TEXT : String = "Pullot"
+const BOTTLES_TAB_TEXT : String = "Tynnyrit"
 
 @onready var tab_bar : TabBar = $Panel/MarginContainer/MainVBox/TabBar
 @onready var ingredient_inventory_panel : Control = $Panel/MarginContainer/MainVBox/ContentVBox/IngredientInventoryPanel

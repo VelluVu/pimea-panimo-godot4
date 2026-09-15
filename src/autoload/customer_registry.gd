@@ -69,10 +69,28 @@ func get_customer_for_style(style: BeerStyle.Style) -> CustomerData:
 	return get_random_customer_data()
 
 
-func get_random_special_event() -> SpecialEventData:
+## Weighted by each event's own get_weight(brewery) instead of a flat
+## pick_random() — see SpecialEventData.get_weight()'s docstring. Every
+## event with the default weight (1.0) keeps exactly the same odds as
+## before; only an event that overrides get_weight() (currently just
+## RiskBribeEventData) shifts the distribution, and only when the state it
+## cares about actually changes.
+func get_random_special_event(brewery: Brewery) -> SpecialEventData:
 	if special_events_pool.is_empty():
 		return null
-	return special_events_pool.pick_random()
+
+	var total_weight: float = 0.0
+	for event: SpecialEventData in special_events_pool:
+		total_weight += event.get_weight(brewery)
+
+	var roll: float = randf() * total_weight
+	var cumulative: float = 0.0
+	for event: SpecialEventData in special_events_pool:
+		cumulative += event.get_weight(brewery)
+		if roll < cumulative:
+			return event
+
+	return special_events_pool.back()
 
 
 func get_random_group_event() -> GroupVisitEventData:

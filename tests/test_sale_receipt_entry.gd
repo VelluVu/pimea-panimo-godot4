@@ -36,7 +36,7 @@ func test_get_summary_text_includes_style_and_bottle_count() -> void:
 
 func test_get_breakdown_text_formats_cost_profit_and_price() -> void:
 	var entry := _make_entry()
-	assert_eq(entry.get_breakdown_text(), "Raaka-aineet: 0.36 €\nKate: 0.64 €\n= Hinta/pullo: 1.00 €")
+	assert_eq(entry.get_breakdown_text(), "Raaka-aineet: 0.36 €\nKate: 0.64 €\n= Hinta/annos: 1.00 €")
 
 
 func test_get_totals_text_formats_gross_tip_and_net() -> void:
@@ -61,5 +61,5 @@ func test_breakdown_and_totals_use_different_decimal_precision() -> void:
 	entry.tip_income = 0.0
 	entry.net_income = 2.111
 
-	assert_eq(entry.get_breakdown_text(), "Raaka-aineet: 1.23 €\nKate: 0.88 €\n= Hinta/pullo: 2.11 €")
+	assert_eq(entry.get_breakdown_text(), "Raaka-aineet: 1.23 €\nKate: 0.88 €\n= Hinta/annos: 2.11 €")
 	assert_eq(entry.get_totals_text(), "Myynti: +2.1 €\nTippi: +0.0 €\nTILILLE: +2.1 €")

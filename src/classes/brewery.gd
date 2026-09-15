@@ -256,22 +256,26 @@ func apply_perk(perk : RunPerk) -> void:
 	BrewerySignals.brewery_state_changed.emit(self)
 
 
+## Sums every active perk's quality_bonus plus this run's RunModifier's own
+## quality_bonus (see that resource's docstring) — the modifier's is a
+## fixed part of the run's starting conditions, the perks accumulate on
+## top of it as the run goes on.
 func get_quality_bonus() -> float:
-	var total : float = 0.0
+	var total : float = run_modifier.quality_bonus
 	for perk : RunPerk in active_perks:
 		total += perk.quality_bonus
 	return total
 
 
 func get_reputation_gain_multiplier() -> float:
-	var multiplier : float = 1.0
+	var multiplier : float = run_modifier.reputation_gain_multiplier
 	for perk : RunPerk in active_perks:
 		multiplier *= perk.reputation_gain_multiplier
 	return multiplier
 
 
 func get_tip_income_multiplier() -> float:
-	var multiplier : float = 1.0
+	var multiplier : float = run_modifier.tip_income_multiplier
 	for perk : RunPerk in active_perks:
 		multiplier *= perk.tip_income_multiplier
 	return multiplier
@@ -433,12 +437,14 @@ func _on_buy_ingredient(ingredient_id : int, amount : int) -> void:
 
 	if reputation < ingredient.min_reputation:
 		print(StringContainer.INGREDIENT_LOCKED_ERROR % [ingredient.name, ingredient.min_reputation])
+		BrewerySignals.ingredient_purchase_locked.emit(ingredient.name, ingredient.min_reputation)
 		return
 
 	var buy_price : int = roundi(ingredient.base_price * amount * run_modifier.ingredient_price_multiplier)
 
 	if money < buy_price:
 		print(StringContainer.RESOURCE_ERROR % [money, buy_price, StringContainer.MONEY_STRING])
+		BrewerySignals.ingredient_purchase_underfunded.emit(ingredient.name, buy_price, money)
 		return
 
 	money -= buy_price

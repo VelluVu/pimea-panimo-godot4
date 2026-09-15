@@ -20,6 +20,15 @@ extends Resource
 ## Same "no real art yet" convention as RunModifier.icon_placeholder.
 @export var icon_placeholder: String = "⭐"
 
+## Purely a weighting hint for PerkRegistry.get_random_perks() (see its
+## TIER_WEIGHTS) and a display cue on LevelUpWindow's cards — doesn't
+## change how a picked perk's own stat fields apply. Existing perks are
+## tiered by their own numeric magnitude per stat axis (e.g. the three
+## quality perks: +0.10 common, +0.15 rare, +0.25 legendary) rather than
+## anything arbitrary.
+enum Tier { COMMON, RARE, LEGENDARY }
+@export var tier: Tier = Tier.COMMON
+
 ## Flat addition to a brewed batch's original_quality (quality is already
 ## known to exceed 1.0 for a masterful batch — see BrewResolver — so this
 ## isn't clamped).
@@ -49,3 +58,27 @@ func get_stat_summary() -> String:
 		lines.append(StringContainer.PERK_TIP_STAT_STRING % roundi((tip_income_multiplier - 1.0) * 100))
 
 	return "\n".join(lines)
+
+
+func get_tier_label() -> String:
+	match tier:
+		Tier.RARE:
+			return StringContainer.PERK_TIER_RARE
+		Tier.LEGENDARY:
+			return StringContainer.PERK_TIER_LEGENDARY
+		_:
+			return StringContainer.PERK_TIER_COMMON
+
+
+const TIER_COLOR_COMMON : Color = Color.WHITE
+const TIER_COLOR_RARE : Color = Color("4fa8ff")
+const TIER_COLOR_LEGENDARY : Color = Color("ffb347")
+
+func get_tier_color() -> Color:
+	match tier:
+		Tier.RARE:
+			return TIER_COLOR_RARE
+		Tier.LEGENDARY:
+			return TIER_COLOR_LEGENDARY
+		_:
+			return TIER_COLOR_COMMON

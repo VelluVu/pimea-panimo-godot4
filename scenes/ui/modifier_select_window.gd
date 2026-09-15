@@ -23,7 +23,7 @@ const HEADER_FONT_SIZE : int = 18
 ## has a concrete target from its first decision. Days-survived-from-a-
 ## busted/bankrupt run still reads fine here ("record" is just the best
 ## score on file, not necessarily a "survived" run).
-const RECORD_FORMAT : String = "Ennätys: %d pistettä (päivä %d, %d pulloa)"
+const RECORD_FORMAT : String = "Ennätys: %d pistettä (päivä %d, %d annosta)"
 const NO_RECORD_TEXT : String = "Ei vielä ennätystä — tästä se lähtee."
 
 @onready var title_label : Label = $MarginContainer/MainVBox/TitleLabel

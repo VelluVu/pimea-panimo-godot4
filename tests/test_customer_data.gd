@@ -179,3 +179,21 @@ func test_reroll_preference_noop_when_disabled() -> void:
 	customer.reroll_preference()
 	assert_eq(customer.primary_style, BeerStyle.Style.IPA, "primary style should be untouched")
 	assert_eq(customer.secondary_style, BeerStyle.Style.HELLES, "secondary style should be untouched")
+
+
+## reroll_preference() when randomizes_preference is true reaches into
+## BrewEngine.current_brewery, same live-autoload-state limitation
+## test_brew_resolver.gd documents for resolve_brew_style() — accessing the
+## BrewEngine singleton at all from this dynamically-loaded @tool test
+## script throws ("Invalid access to property... on a base object of type
+## 'Node (brew_engine.gd)'"), not just returns null, so that branch isn't
+## testable here. Only the randomizes_preference == false no-op above is.
+
+
+func test_get_preference_score_matches_primary_secondary_and_mismatch() -> void:
+	var customer := CustomerData.new()
+	customer.primary_style = BeerStyle.Style.IPA
+	customer.secondary_style = BeerStyle.Style.HELLES
+	assert_eq(customer.get_preference_score(BeerStyle.Style.IPA), 1.0, "primary style")
+	assert_eq(customer.get_preference_score(BeerStyle.Style.HELLES), 0.5, "secondary style")
+	assert_eq(customer.get_preference_score(BeerStyle.Style.KOTIKALJA), 0.0, "unrelated style")

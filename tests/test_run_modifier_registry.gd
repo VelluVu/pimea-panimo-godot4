@@ -29,7 +29,7 @@ func _ensure_pool_populated() -> void:
 func test_get_random_modifiers_returns_requested_count() -> void:
 	_ensure_pool_populated()
 	var registry := RunModifierRegistryScript.new()
-	# The real resource pool has 5 modifiers (see src/resources/run_modifiers/) —
+	# The real resource pool has 6 modifiers (see src/resources/run_modifiers/) —
 	# asking for 3 should never come up short.
 	assert_eq(registry.get_random_modifiers(3).size(), 3)
 

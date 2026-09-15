@@ -52,6 +52,10 @@
 [ext_resource type="Texture2D" uid="uid://ui42kael5n56" path="res://assets/textures/beer_bottle_8x8.png" id="46_vc5cj"]
 [ext_resource type="Script" uid="uid://dwc72b5x4eaw3" path="res://src/classes/receipt_machine_hover_area.gd" id="49_j2jfr"]
 [ext_resource type="Script" uid="uid://dihcrv1yno5x5" path="res://src/classes/chalkboard_hover_area.gd" id="51_bu4jf"]
+[ext_resource type="Texture2D" uid="uid://dwe4ql72sptwg" path="res://assets/textures/beer_dispenser_rack_48.png" id="60_beerrack"]
+[ext_resource type="Texture2D" uid="uid://b12vj0rmwdl8y" path="res://assets/textures/light_glow_32.png" id="70_lightglow"]
+[ext_resource type="Texture2D" uid="uid://dcrobw17uonit" path="res://assets/textures/pendant_lamp_24.png" id="71_pendantlamp"]
+[ext_resource type="Texture2D" uid="uid://b3yifds2n8sqd" path="res://assets/textures/light_cone_64x120.png" id="72_lightcone"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_yf5fn"]
 blend_mode = 1
@@ -114,25 +118,27 @@ size = Vector2(44, 32)
 script = ExtResource("1_cjqg0")
 
 [node name="BG_Sprite2D" type="Sprite2D" parent="." unique_id=2145408726]
+light_mask = 3
 position = Vector2(320, 180)
 texture = ExtResource("2_85g3d")
 
 [node name="WarehouseGlow" type="Polygon2D" parent="." unique_id=1554619266]
 material = SubResource("CanvasItemMaterial_yf5fn")
 texture = ExtResource("2_85g3d")
-polygon = PackedVector2Array(564.8308, 179.48196, 565.8308, 116.48197, 609.8308, 96.481964, 609.8308, 322.482, 509.8308, 336.482, 492.8308, 291.482, 564.8308, 283.482)
+polygon = PackedVector2Array(564.8308, 179.48196, 565.8308, 116.48197, 609.8308, 96.481964, 609.8308, 322.482, 564.8308, 283.482)
 uv = PackedVector2Array(563.68976, 177.44363, 565.8308, 116.48197, 609.8308, 96.481964, 609.8308, 322.482, 509.8308, 336.482, 492.8308, 291.482, 564.8308, 283.482)
 
 [node name="BreweryHoverArea" type="Area2D" parent="." unique_id=257007580]
-position = Vector2(190, 177)
+position = Vector2(191, 169)
 script = ExtResource("2_jscy8")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="BreweryHoverArea" unique_id=386244976]
-polygon = PackedVector2Array(-52, 94, -64, 91, -63, -43, -48, -61, -32, -72, -8, -76, 23, -76, 41, -68, 54, -56, 65, -42, 64, 70, 72, 79, 50, 92, 12, 100, -24, 100)
+polygon = PackedVector2Array(-63, 73, -63, -43, -53, -58, -35, -70, -8, -76, 23, -76, 41, -68, 55, -58, 65, -42, 64, 72)
 
 [node name="Sprite2D" type="Sprite2D" parent="BreweryHoverArea" unique_id=82455851]
 material = SubResource("CanvasItemMaterial_jscy8")
 position = Vector2(2, 4)
+light_mask = 3
 texture = ExtResource("3_yc10j")
 
 [node name="WarehouseHoverArea" type="Area2D" parent="." unique_id=1295271677]
@@ -150,6 +156,60 @@ z_index = 2
 material = SubResource("CanvasItemMaterial_pm3ni")
 texture = ExtResource("2_85g3d")
 polygon = PackedVector2Array(91.00314, 177.12683, 121, 176, 121, 123, 155, 92, 158, 61, 158, 25, 0.1542387, 24.524673, 0.028835297, 43.784214, 80.578766, 44.011307, 90.77697, 54.397774)
+
+[node name="Lights" type="Node2D" parent="." unique_id=88800001]
+position = Vector2(0, -1)
+
+[node name="Light_MainDoor" type="PointLight2D" parent="Lights" unique_id=88800002]
+position = Vector2(27, 81)
+color = Color(1, 0.85, 0.6, 1)
+energy = 1.4
+texture = ExtResource("70_lightglow")
+texture_scale = 10.6
+
+[node name="Light_Wall" type="PointLight2D" parent="Lights" unique_id=445615547]
+position = Vector2(305, 139)
+color = Color(1, 0.85, 0.6, 1)
+texture = ExtResource("70_lightglow")
+texture_scale = 3.58
+
+[node name="Light_Wall2" type="PointLight2D" parent="Lights" unique_id=486106189]
+position = Vector2(495, 134)
+color = Color(1, 0.85, 0.6, 1)
+energy = 1.4
+texture = ExtResource("70_lightglow")
+texture_scale = 3.7
+
+[node name="Light_WarehouseDoor" type="PointLight2D" parent="Lights" unique_id=88800004]
+position = Vector2(601, 200)
+color = Color(1, 0.78, 0.42, 1)
+energy = 1.1
+texture = ExtResource("70_lightglow")
+texture_scale = 10.0
+
+[node name="Light_BreweryCone" type="PointLight2D" parent="Lights" unique_id=1498362605]
+position = Vector2(188, 198.00002)
+scale = Vector2(1.7, 1.1)
+color = Color(1, 0.95, 0.85, 1)
+energy = 1.1
+range_item_cull_mask = 2
+texture = ExtResource("72_lightcone")
+texture_scale = 1.46
+
+[node name="PendantLamp" type="Sprite2D" parent="Lights" unique_id=88800008]
+position = Vector2(397, 59)
+texture = ExtResource("71_pendantlamp")
+
+[node name="Light_BarCone" type="PointLight2D" parent="Lights/PendantLamp" unique_id=88800005]
+position = Vector2(0, 280)
+scale = Vector2(1.4, 1)
+color = Color(1, 0.95, 0.85, 1)
+energy = 1.2
+texture = ExtResource("72_lightcone")
+texture_scale = 4.7
+
+[node name="WorldDarkness" type="CanvasModulate" parent="." unique_id=88800007]
+color = Color(0.4, 0.38, 0.45, 1)
 
 [node name="GUI_CanvasLayer" type="CanvasLayer" parent="." unique_id=1651647138]
 
@@ -326,7 +386,7 @@ layout_mode = 2
 current_tab = 0
 tab_count = 2
 tab_0/title = "Varasto"
-tab_1/title = "Pullot"
+tab_1/title = "Tynnyrit"
 
 [node name="ContentVBox" type="HBoxContainer" parent="GUI_CanvasLayer/GUI/Right_WarehouseView/Panel/MarginContainer/MainVBox" unique_id=1126557767]
 layout_mode = 2
@@ -822,14 +882,11 @@ text = "Selvä..."
 
 [node name="OptionsButton" type="Button" parent="GUI_CanvasLayer/GUI" unique_id=1306780576]
 layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
+anchors_preset = 2
 anchor_top = 1.0
-anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -32.0
 offset_top = -32.0
-grow_horizontal = 0
+offset_right = 32.0
 grow_vertical = 0
 tooltip_text = "Asetukset"
 icon = ExtResource("30_tel4y")
@@ -904,6 +961,7 @@ offset_bottom = 14.0
 mouse_default_cursor_shape = 10
 
 [node name="OptionsWindow" parent="GUI_CanvasLayer/GUI" unique_id=259503196 instance=ExtResource("30_qkpxi")]
+process_mode = 3
 visible = false
 layout_mode = 0
 offset_left = 0.0
@@ -1239,6 +1297,8 @@ process_mode = 3
 layout_mode = 1
 
 [node name="LevelUpWindow" parent="GUI_CanvasLayer/GUI" unique_id=1956261132 instance=ExtResource("41_5poiv")]
+process_mode = 3
+z_index = 100
 layout_mode = 1
 
 [node name="RunEffectsWindow" parent="GUI_CanvasLayer/GUI" unique_id=426620948 instance=ExtResource("42_2cjbq")]
@@ -1425,19 +1485,19 @@ script = ExtResource("17_muem4")
 position = Vector2(306, 159)
 
 [node name="CounterMarker1" type="Marker2D" parent="WorldYSort/CustomerSpawner/CounterPositionsParent" unique_id=1548923890]
-position = Vector2(-98, 35)
+position = Vector2(-53, 35)
 
 [node name="CounterMarker2" type="Marker2D" parent="WorldYSort/CustomerSpawner/CounterPositionsParent" unique_id=1665718045]
-position = Vector2(-55, 35)
+position = Vector2(-98, 35)
 
 [node name="CounterMarker3" type="Marker2D" parent="WorldYSort/CustomerSpawner/CounterPositionsParent" unique_id=922537437]
-position = Vector2(-9, 36)
+position = Vector2(-5, 36)
 
 [node name="CounterMarker4" type="Marker2D" parent="WorldYSort/CustomerSpawner/CounterPositionsParent" unique_id=2025945167]
-position = Vector2(37, 35)
+position = Vector2(43, 35)
 
 [node name="CounterMarker5" type="Marker2D" parent="WorldYSort/CustomerSpawner/CounterPositionsParent" unique_id=498340080]
-position = Vector2(85, 36)
+position = Vector2(93, 36)
 
 [node name="StairsBottomMarker" type="Marker2D" parent="WorldYSort/CustomerSpawner" unique_id=1346504694]
 position = Vector2(-89, 235)
@@ -1453,6 +1513,10 @@ texture = ExtResource("2_dp3eg")
 position = Vector2(102, -29)
 texture = ExtResource("18_0ld40")
 script = ExtResource("7_og1vs")
+
+[node name="BeerDispenserRack_Prop" type="Sprite2D" parent="WorldYSort/BarTable_Sprite2D" unique_id=119017109]
+position = Vector2(31, -37)
+texture = ExtResource("60_beerrack")
 
 [node name="ReceiptMachineHoverArea" type="Area2D" parent="WorldYSort/BarTable_Sprite2D" unique_id=1649942093]
 position = Vector2(-96, -23)
@@ -1477,7 +1541,7 @@ position = Vector2(0, -7)
 shape = SubResource("RectangleShape2D_bjg73")
 
 [node name="Bartender" parent="WorldYSort" unique_id=1865937119 instance=ExtResource("43_chjal")]
-position = Vector2(399, 181)
+position = Vector2(399, 167)
 
 [node name="ChalkboardHoverArea" type="Area2D" parent="WorldYSort" unique_id=1198858937]
 position = Vector2(306, 139)
