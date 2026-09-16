@@ -69,9 +69,16 @@ func _ready() -> void:
 ## later brews/state changes never restart or interrupt an already-running
 ## timer. Mirrors the same "has anything happened yet" check
 ## CustomerManager already gates customer spawning on.
+##
+## Resumes from Brewery.day_time_remaining_seconds when a loaded save has an
+## actual snapshot (>= 0.0) instead of always starting at the full
+## day_duration_seconds — see that field's own doc comment for why a
+## continued save otherwise silently refunded whatever time was left on the
+## clock the moment it was saved.
 func _on_brewery_state_changed(brewery: Brewery) -> void:
 	if day_timer.is_stopped() and not brewery.inventory.brew_batches.is_empty():
-		day_timer.start(day_duration_seconds)
+		var remaining : float = brewery.day_time_remaining_seconds
+		day_timer.start(remaining if remaining >= 0.0 else day_duration_seconds)
 
 
 ## Called by BrewEngine when developer mode is switched on — unlike
@@ -196,6 +203,18 @@ func _charge_daily_utility_bills(brewery : Brewery) -> void:
 	BrewerySignals.daily_bills_paid.emit(DAILY_ELECTRICITY_COST, DAILY_WATER_COST, total)
 	BrewerySignals.brewery_state_changed.emit(brewery)
 	brewery.check_bankruptcy()
+
+
+## Called by SaveManager.save_game() right before it serializes the Brewery
+## resource, so whatever's actually left on the live day_timer travels with
+## the save instead of Brewery.day_time_remaining_seconds sitting stale at
+## whatever a previous save last wrote there. A stopped clock (the day
+## hasn't started yet — see _on_brewery_state_changed()'s gating) leaves the
+## -1.0 sentinel in place rather than writing a meaningless "0 seconds left".
+func sync_remaining_time_to_brewery(brewery : Brewery) -> void:
+	if day_timer.is_stopped():
+		return
+	brewery.day_time_remaining_seconds = day_timer.time_left
 
 
 func get_day_progress() -> float:

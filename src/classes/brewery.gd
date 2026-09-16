@@ -66,11 +66,34 @@ const SHIP_TO_BAR_QUALITY_CLAMP_MAX : float = 1.3
 @export var inventory : Inventory
 @export var current_day : int = 1
 ## Never resets — purely a stat for the end-of-run summary screen, see
-## GameEndWindow. Daily-goal tracking (bottles sold today and everything
-## else DailyGoalManager's goal pool covers) lives entirely in
-## DailyGoalManager itself now, re-derived fresh from signals rather than
-## stored on Brewery — see its own class docstring.
+## GameEndWindow. The active daily goals themselves (what they are, and
+## progress toward them) are tracked below instead, not here.
 @export var lifetime_bottles_sold : int = 0
+## The day's 3 active daily goals and their progress — index-aligned with
+## DailyGoalManager.ACTIVE_GOAL_COUNT slots. Ownership of the actual goal
+## logic (picking, tracking, resolving) still lives entirely in
+## DailyGoalManager; these fields exist purely so SaveManager.save_game()
+## (which only ever serializes this Brewery resource) carries that state
+## along too. Previously this genuinely lived only in DailyGoalManager's
+## own memory, "re-derived fresh" on every new Brewery instance — which in
+## practice just meant every load silently re-rolled a fresh set and threw
+## away whatever the player had been working toward. See
+## DailyGoalManager._load_from_brewery()/_sync_to_brewery().
+@export var active_daily_goals : Array[DailyGoalData] = [null, null, null]
+@export var daily_goal_progress : Array[int] = [0, 0, 0]
+@export var daily_goal_reputation_baseline : Array[int] = [0, 0, 0]
+@export var daily_goal_effective_target : Array[int] = [0, 0, 0]
+
+## Snapshot of TimeManager.day_timer.time_left, refreshed right before every
+## save (TimeManager.sync_remaining_time_to_brewery(), called from
+## SaveManager.save_game()) — -1.0 means the day clock hasn't started yet
+## (see TimeManager._on_brewery_state_changed()'s own gating), matching a
+## brand-new run or a save from before the clock's first brew. Without this,
+## a loaded save always restarted the day timer at the full
+## day_duration_seconds regardless of how much of the day had actually
+## already been spent, letting a quit-and-continue near a day's end
+## effectively refund the rest of that day for free.
+@export var day_time_remaining_seconds : float = -1.0
 ## One decimal of real precision (10-cent steps) — beer prices aren't all
 ## whole euros (see BeerStyle.fixed_price_per_bottle), so money has to
 ## carry fractions too. See CustomerManager.process_auto_sale() and
@@ -168,7 +191,7 @@ func _init(preset_modifier : RunModifier = null) -> void:
 	# Zero-click first-brew hint: Kotikalja is known from the start without
 	# ever being brewed, so it never goes through discover_style()'s
 	# default-recipe seeding below — seed it here instead.
-	var kotikalja_recipe : BrewRecipe = _ensure_default_recipe(resolver.get_beer_style(BeerStyle.Style.KOTIKALJA))
+	var kotikalja_recipe : BrewRecipe = _ensure_default_recipe(resolver.get_beer_style(BeerStyle.Style.KOTIKALJA), false)
 	if kotikalja_recipe != null:
 		brew_preparation.active_recipe_target = kotikalja_recipe.ingredient_amounts.duplicate()
 		brew_preparation.active_recipe_style_name = BeerStyle.get_style_string_from_style(kotikalja_recipe.beer_style)
@@ -196,7 +219,24 @@ func discover_style(style : BeerStyle.Style) -> void:
 ## ever being brewed (Kotikalja) or where the player's own brew used more
 ## than the minimum. Idempotent — returns the existing default recipe
 ## if this style already has one instead of adding a duplicate.
-func _ensure_default_recipe(beer_style : BeerStyle) -> BrewRecipe:
+##
+## emit_state_changed defaults to true for its real runtime call site
+## (discover_style(), below) but is passed false from _init()'s own call —
+## _init() runs during ResourceLoader deserialization too (Godot always
+## constructs the object via its script's _init() first, then applies the
+## saved @export values on top), so a Brewery being loaded from a save
+## briefly exists mid-construction with every other field still at its
+## bare _init()-time default (current_day=1, tutorial incomplete, no daily
+## goals, ...) — emitting brewery_state_changed here would broadcast that
+## bogus, about-to-be-overwritten snapshot to every listener a full frame
+## before SaveManager.load_game() gets to call the real
+## Brewery.emit_initial_values(). DailyGoalManager's own
+## _load_from_brewery() was the one that actually surfaced this: it latched
+## onto that premature emission as "the loaded save's daily goals are all
+## null", then treated the second, genuine emission as just an ordinary
+## update on an already-tracked instance instead of a fresh load — quietly
+## re-rolling a random set instead of restoring the saved one.
+func _ensure_default_recipe(beer_style : BeerStyle, emit_state_changed : bool = true) -> BrewRecipe:
 	if beer_style == null:
 		return null
 
@@ -215,7 +255,8 @@ func _ensure_default_recipe(beer_style : BeerStyle) -> BrewRecipe:
 	recipe.is_default = true
 
 	saved_recipes.append(recipe)
-	BrewerySignals.brewery_state_changed.emit(self)
+	if emit_state_changed:
+		BrewerySignals.brewery_state_changed.emit(self)
 	BrewerySignals.recipe_saved.emit(recipe.recipe_name)
 
 	return recipe
