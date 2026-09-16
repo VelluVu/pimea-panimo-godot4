@@ -1,14 +1,14 @@
 [gd_resource type="Resource" script_class="GroupVisitEventData" format=3 uid="uid://c0h2qdcnviamv"]
 
 [ext_resource type="Script" uid="uid://cnkqeqeaug3gu" path="res://src/classes/group_visit_event_data.gd" id="1_event"]
+[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/classes/customer_data.gd" id="1_sfpdh"]
 [ext_resource type="Resource" uid="uid://2vhh2hm3epxt" path="res://src/resources/customers/leijonafani.tres" id="2_customer"]
-[ext_resource type="Resource" path="res://src/resources/customers/leijonafani_naaras.tres" id="3_customer_naaras"]
+[ext_resource type="Resource" uid="uid://da280worp1s0t" path="res://src/resources/customers/leijonafani_naaras.tres" id="3_customer_naaras"]
 
 [resource]
 script = ExtResource("1_event")
 banner_text = "SUOMI VOITTI MM-KULTAA!
 Nyt tulee fanikööri sisään!"
-customer_data_options = [ExtResource("2_customer"), ExtResource("3_customer_naaras")]
-min_group_size = 8
+customer_data_options = Array[ExtResource("1_sfpdh")]([ExtResource("2_customer"), ExtResource("3_customer_naaras")])
 walk_in_stagger_seconds = 0.35
 chant_text = "SUOMI ON UUSI MAAILMANMESTARI HEI MAAILMANMESTARI HEI!"
