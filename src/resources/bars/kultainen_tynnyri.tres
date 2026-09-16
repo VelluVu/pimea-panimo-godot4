@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="BarContact" format=3]
+
+[ext_resource type="Script" uid="uid://c5tldei44pcbr" path="res://src/classes/bar_contact.gd" id="1_tynnyri"]
+
+[resource]
+script = ExtResource("1_tynnyri")
+bar_name = "Kultainen Tynnyri"
+description = "Arvostettu illallisravintola, joka maksaa parhaan hinnan laadukkaista eristä. Suuret toimitukset tänne ovat riski, jota ei kannata ottaa kevein perustein."
+price_multiplier = 1.35
+risk_per_shipment = 14
+required_reputation = 60
+metadata/_custom_type_script = "uid://c5tldei44pcbr"

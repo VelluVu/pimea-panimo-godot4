@@ -12,6 +12,7 @@ anchor_bottom = 0.92
 script = ExtResource("1_j0sgq")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=101155603]
+mouse_filter = 2
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -22,16 +23,19 @@ theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
 [node name="MainVBox" type="VBoxContainer" parent="MarginContainer" unique_id=2058474436]
+mouse_filter = 2
 layout_mode = 2
 theme_override_constants/separation = 16
 
 [node name="TitleLabel" type="Label" parent="MarginContainer/MainVBox" unique_id=1388340709]
+mouse_filter = 2
 layout_mode = 2
 theme_override_font_sizes/font_size = 22
 text = "Taso 2!"
 horizontal_alignment = 1
 
 [node name="CardsHBox" type="HBoxContainer" parent="MarginContainer/MainVBox" unique_id=929566088]
+mouse_filter = 2
 layout_mode = 2
 theme_override_constants/separation = 16
 alignment = 1
@@ -50,12 +54,14 @@ mouse_filter = 2
 theme_override_constants/separation = 8
 
 [node name="IconLabel" type="Label" parent="MarginContainer/MainVBox/CardsHBox/Card1/CardVBox" unique_id=10971647]
+mouse_filter = 2
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
 text = "⭐"
 horizontal_alignment = 1
 
 [node name="HeaderLabel" type="Label" parent="MarginContainer/MainVBox/CardsHBox/Card1/CardVBox" unique_id=1177732622]
+mouse_filter = 2
 layout_mode = 2
 theme_override_colors/font_color = Color(0.949, 0.788, 0.42, 1)
 theme_override_font_sizes/font_size = 18
@@ -64,6 +70,7 @@ horizontal_alignment = 1
 autowrap_mode = 3
 
 [node name="DescriptionLabel" type="Label" parent="MarginContainer/MainVBox/CardsHBox/Card1/CardVBox" unique_id=239924254]
+mouse_filter = 2
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_font_sizes/font_size = 13
@@ -85,12 +92,14 @@ mouse_filter = 2
 theme_override_constants/separation = 8
 
 [node name="IconLabel" type="Label" parent="MarginContainer/MainVBox/CardsHBox/Card2/CardVBox" unique_id=591585221]
+mouse_filter = 2
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
 text = "⭐"
 horizontal_alignment = 1
 
 [node name="HeaderLabel" type="Label" parent="MarginContainer/MainVBox/CardsHBox/Card2/CardVBox" unique_id=2017644362]
+mouse_filter = 2
 layout_mode = 2
 theme_override_colors/font_color = Color(0.949, 0.788, 0.42, 1)
 theme_override_font_sizes/font_size = 18
@@ -99,6 +108,7 @@ horizontal_alignment = 1
 autowrap_mode = 3
 
 [node name="DescriptionLabel" type="Label" parent="MarginContainer/MainVBox/CardsHBox/Card2/CardVBox" unique_id=1419907551]
+mouse_filter = 2
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_font_sizes/font_size = 13
@@ -120,12 +130,14 @@ mouse_filter = 2
 theme_override_constants/separation = 8
 
 [node name="IconLabel" type="Label" parent="MarginContainer/MainVBox/CardsHBox/Card3/CardVBox" unique_id=1095298585]
+mouse_filter = 2
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
 text = "⭐"
 horizontal_alignment = 1
 
 [node name="HeaderLabel" type="Label" parent="MarginContainer/MainVBox/CardsHBox/Card3/CardVBox" unique_id=1353602869]
+mouse_filter = 2
 layout_mode = 2
 theme_override_colors/font_color = Color(0.949, 0.788, 0.42, 1)
 theme_override_font_sizes/font_size = 18
@@ -134,6 +146,7 @@ horizontal_alignment = 1
 autowrap_mode = 3
 
 [node name="DescriptionLabel" type="Label" parent="MarginContainer/MainVBox/CardsHBox/Card3/CardVBox" unique_id=468747951]
+mouse_filter = 2
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_font_sizes/font_size = 13

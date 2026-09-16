@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="RunPerk" format=3 uid="uid://bh21arkgym4o1"]
+
+[ext_resource type="Script" uid="uid://dewmdbm4a0vst" path="res://src/classes/run_perk.gd" id="1_vakiintunut"]
+
+[resource]
+script = ExtResource("1_vakiintunut")
+perk_name = "Vakiintunut reitti"
+description = "Jakelureittisi vakiintuvat halpamyynnin ja baarivientien tulot kasvavat tasaisesti."
+icon_placeholder = "🗺️"
+tier = 1
+distribution_income_multiplier = 1.18
+stacks_additively = true

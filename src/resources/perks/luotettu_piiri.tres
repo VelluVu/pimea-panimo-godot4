@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RunPerk" format=3]
+
+[ext_resource type="Script" uid="uid://dewmdbm4a0vst" path="res://src/classes/run_perk.gd" id="1_luotettu"]
+
+[resource]
+script = ExtResource("1_luotettu")
+perk_name = "Luotettu piiri"
+description = "Tunnet oikeat ihmiset korttelissa — LVV:n ratsiakynnys nousee selvästi."
+icon_placeholder = "🤝"
+tier = 1
+raid_threshold_multiplier = 1.12

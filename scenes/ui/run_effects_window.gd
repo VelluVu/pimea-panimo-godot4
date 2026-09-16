@@ -5,7 +5,7 @@ extends Panel
 ## opened from a button next to ReceiptLogButton (see
 ## GUISignals.run_effects_requested). Shows the real numbers behind
 ## everything RunModifier/RunPerk only describe in flavor text: this run's
-## modifier and its stat line, the actual current AVI raid threshold, every
+## modifier and its stat line, the actual current LVV raid threshold, every
 ## active perk, and the combined totals those perks add up to (see
 ## Brewery.get_quality_bonus()/get_reputation_gain_multiplier()/
 ## get_tip_income_multiplier()) — since perks stack and a single card's own

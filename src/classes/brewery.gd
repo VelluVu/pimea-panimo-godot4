@@ -2,18 +2,31 @@ class_name Brewery
 extends Resource
 
 
-const AVI_RAID_THRESHOLD : int = 100
-const AVI_RAID_FINE_PERCENT : float = 0.3
-const AVI_RAID_REPUTATION_PENALTY_PERCENT : float = 0.25
+const LVV_RAID_THRESHOLD : int = 100
+const LVV_RAID_FINE_PERCENT : float = 0.3
+const LVV_RAID_REPUTATION_PENALTY_PERCENT : float = 0.25
+## How much steeper LVV_RAID_FINE_PERCENT/REPUTATION_PENALTY_PERCENT get per
+## prior raid this run — same escalation shape as EARLY_CLOSE_ESCALATION_
+## PER_CLOSE, just steeper, since a raid is the rarer, harsher event of the
+## two. 1.0 means each successive raid's percentages grow by a full
+## multiple of the first: raid 1 is the unescalated base (30%/25%), raid 2
+## doubles it (60%/50%), raid 3 (which also busts the run via
+## BUSTED_RAID_COUNT below) triples it — a repeat offender gets genuinely
+## wrecked instead of every raid costing the same bite. See
+## _check_for_lvv_raid().
+const LVV_RAID_ESCALATION_PER_RAID : float = 1.0
 ## Three strikes: the raid that pushes raid_count to this becomes
 ## permanent instead of just another costly setback — see
-## _check_for_avi_raid() and BrewerySignals.game_ended.
+## _check_for_lvv_raid() and BrewerySignals.game_ended.
 const BUSTED_RAID_COUNT : int = 3
 ## A run only ends in the "survived" ending if it's not currently on the
 ## ropes — reaching the day target with 1 reputation and a completely
 ## empty warehouse shouldn't read as a triumphant ending. See
-## TimeManager._advance_day().
-const SURVIVAL_MIN_REPUTATION : int = 20
+## TimeManager._advance_day(). Set well above CustomerData.
+## min_reputation_to_appear's rarer-customer tier (50, e.g. Agentti/
+## Mafioso) so clearing it takes real sustained reputation, not just a
+## couple of lucky sales.
+const SURVIVAL_MIN_REPUTATION : int = 100
 
 ## Manually closing the day (TimeManager.force_advance_day()) at earliness
 ## 1.0 (right as the day began) costs this much money/reputation before
@@ -27,37 +40,37 @@ const EARLY_CLOSE_BASE_REPUTATION_COST : int = 1
 ## spamming Close Day from staying a flat, repeatable freebie. See
 ## early_closes_count.
 const EARLY_CLOSE_ESCALATION_PER_CLOSE : float = 0.5
-## AVI risk relief for closing at earliness 1.0, scaling down to 0 at
+## LVV risk relief for closing at earliness 1.0, scaling down to 0 at
 ## earliness 0.0 — the trade-off side of the same mechanic (deliberately
 ## NOT escalated by early_closes_count: the cost gets steeper with repeat
 ## use, but the risk relief it buys stays consistent).
 const EARLY_CLOSE_MAX_RISK_RELIEF : int = 10
 
+## Per-bottle payout for bulk-selling a batch (see _on_bulk_sell_batch_
+## requested()) as a fraction of raw_cost_per_bottle — deliberately below
+## 1.0 so even a peak-quality batch nets less than it cost to brew; it's a
+## "clear the warehouse" release valve, not an alternate income source.
+## current_quality is also clamped to 1.0 before this multiplies it, so a
+## spoiled/declining batch (current_quality well under 1.0) pays out even
+## less, potentially far under ingredient cost.
+const BULK_SELL_RATE : float = 0.5
+
+## Quality clamp range applied before BarContact.price_multiplier in
+## ship_batch_to_bar() — a floor above 0.0 (unlike bulk-sell's) since a bar
+## still expects the batch to be drinkable, and a ceiling above 1.0 (unlike
+## bulk-sell's hard cap at 1.0) since a genuinely excellent batch is worth
+## a real premium to a paying venue, not just "no worse than average".
+const SHIP_TO_BAR_QUALITY_CLAMP_MIN : float = 0.3
+const SHIP_TO_BAR_QUALITY_CLAMP_MAX : float = 1.3
+
 @export var inventory : Inventory
 @export var current_day : int = 1
-## Toward the bottles daily-goal target — deliberately NOT reset on day
-## change (see TimeManager._advance_day()): a slow day's progress carries
-## into the next one instead of being wiped, and only resets (with any
-## overflow preserved) once the goal is actually reached and rewarded, in
-## CustomerManager._check_bottles_goal_reward().
-@export var bottles_sold_toward_goal : int = 0
-## Never resets (unlike bottles_sold_toward_goal above) — purely a stat
-## for the end-of-run summary screen, see GameEndWindow.
+## Never resets — purely a stat for the end-of-run summary screen, see
+## GameEndWindow. Daily-goal tracking (bottles sold today and everything
+## else DailyGoalManager's goal pool covers) lives entirely in
+## DailyGoalManager itself now, re-derived fresh from signals rather than
+## stored on Brewery — see its own class docstring.
 @export var lifetime_bottles_sold : int = 0
-## Consecutive days both daily goals (bottles + risk) were met — see
-## TimeManager._check_daily_goal_streak(). Exported since it persists
-## across day boundaries same as the goals it's built from; resets to 0
-## the moment either goal is missed on a given day.
-@export var daily_goal_streak : int = 0
-## Set true the instant CustomerManager._check_bottles_goal_reward() pays
-## out on a given day, reset false at the start of the NEXT day in
-## TimeManager._advance_day() — this is what lets _check_daily_goal_streak()
-## know "was the bottles goal met at any point today", since
-## bottles_sold_toward_goal itself only resets on reward, not daily, so it
-## can't answer that question by itself. Not exported: same "same-day-only,
-## re-derived every day" lifetime as today_sale_receipts below, no reason
-## to survive a save/load.
-var bottles_goal_met_today : bool = false
 ## One decimal of real precision (10-cent steps) — beer prices aren't all
 ## whole euros (see BeerStyle.fixed_price_per_bottle), so money has to
 ## carry fractions too. See CustomerManager.process_auto_sale() and
@@ -72,7 +85,7 @@ var bottles_goal_met_today : bool = false
 @export var money: float = 20.0
 @export var risk: int = 0
 @export var reputation: int = 0
-## How many AVI raids this run has survived — see _check_for_avi_raid()
+## How many LVV raids this run has survived — see _check_for_lvv_raid()
 ## and BUSTED_RAID_COUNT. Never resets.
 @export var raid_count : int = 0
 ## How many times the player has manually closed the day this run — see
@@ -210,7 +223,7 @@ func _ensure_default_recipe(beer_style : BeerStyle) -> BrewRecipe:
 
 func add_risk(amount : int) -> void:
 	risk = max(0, risk + amount)
-	_check_for_avi_raid()
+	_check_for_lvv_raid()
 
 
 func clear_risk() -> void:
@@ -267,46 +280,57 @@ func get_quality_bonus() -> float:
 	return total
 
 
+## Combined via RunPerk.combine_stacking() rather than a plain loop —
+## see stacks_additively's own docstring for why a perk can opt into
+## flat, non-compounding growth instead of the default multiplicative
+## stack.
 func get_reputation_gain_multiplier() -> float:
-	var multiplier : float = run_modifier.reputation_gain_multiplier
-	for perk : RunPerk in active_perks:
-		multiplier *= perk.reputation_gain_multiplier
-	return multiplier
+	return RunPerk.combine_stacking(run_modifier.reputation_gain_multiplier, active_perks, func(perk : RunPerk) -> float: return perk.reputation_gain_multiplier)
 
 
 func get_tip_income_multiplier() -> float:
-	var multiplier : float = run_modifier.tip_income_multiplier
-	for perk : RunPerk in active_perks:
-		multiplier *= perk.tip_income_multiplier
-	return multiplier
+	return RunPerk.combine_stacking(run_modifier.tip_income_multiplier, active_perks, func(perk : RunPerk) -> float: return perk.tip_income_multiplier)
 
 
-## AVI_RAID_THRESHOLD scaled by this run's modifier — see RunModifier.
-## avi_threshold_multiplier. Kept separate from the raw constant since that
+## LVV_RAID_THRESHOLD scaled by this run's modifier — see RunModifier.
+## lvv_threshold_multiplier. Kept separate from the raw constant since that
 ## constant is also read by call sites with no Brewery instance in scope
 ## (audio_manager.gd's ambient tension scaling, the dev console's "raid"
 ## cheat) — both of those now call this instead so they stay accurate
 ## under any modifier.
 func get_effective_raid_threshold() -> int:
-	return roundi(AVI_RAID_THRESHOLD * run_modifier.avi_threshold_multiplier)
+	var multiplier : float = RunPerk.combine_stacking(run_modifier.lvv_threshold_multiplier, active_perks, func(perk : RunPerk) -> float: return perk.raid_threshold_multiplier)
+	return roundi(LVV_RAID_THRESHOLD * multiplier)
 
 
-func _check_for_avi_raid() -> void:
+## No RunModifier counterpart (unlike get_reputation_gain_multiplier()/
+## get_tip_income_multiplier(), which both start from a run_modifier
+## field) — distribution income only exists as a perk axis, see
+## RunPerk.distribution_income_multiplier's docstring for why.
+func get_distribution_income_multiplier() -> float:
+	return RunPerk.combine_stacking(1.0, active_perks, func(perk : RunPerk) -> float: return perk.distribution_income_multiplier)
+
+
+func _check_for_lvv_raid() -> void:
 	if risk < get_effective_raid_threshold():
 		return
 
 	var confiscated_bottles : int = _count_total_bottles()
 	inventory.brew_batches.clear()
 
-	var fine_amount : float = snappedf(money * AVI_RAID_FINE_PERCENT, 0.1)
-	var reputation_penalty : int = roundi(reputation * AVI_RAID_REPUTATION_PENALTY_PERCENT)
+	# raid_count still reflects prior raids only — incremented below, after
+	# this raid's own escalation is locked in, same ordering
+	# apply_early_close_cost() uses for early_closes_count.
+	var escalation : float = 1.0 + raid_count * LVV_RAID_ESCALATION_PER_RAID
+	var fine_amount : float = snappedf(money * LVV_RAID_FINE_PERCENT * escalation, 0.1)
+	var reputation_penalty : int = roundi(reputation * LVV_RAID_REPUTATION_PENALTY_PERCENT * escalation)
 
 	money -= fine_amount
 	reputation = max(0, reputation - reputation_penalty)
 	risk = 0
 	raid_count += 1
 
-	BrewerySignals.avi_raid_triggered.emit(confiscated_bottles, fine_amount, reputation_penalty)
+	BrewerySignals.lvv_raid_triggered.emit(confiscated_bottles, fine_amount, reputation_penalty)
 	BrewerySignals.brewery_state_changed.emit(self)
 
 	if raid_count >= BUSTED_RAID_COUNT:
@@ -326,7 +350,7 @@ func _count_total_bottles() -> int:
 
 
 ## Called after anything that can push money to (or toward) zero — the
-## AVI fine above, a purchase, or the daily utility bill
+## LVV fine above, a purchase, or the daily utility bill
 ## (TimeManager._charge_daily_utility_bills) — since any of those can be
 ## the final straw. A truly dead end: no cash AND nothing left to sell
 ## that could raise any.
@@ -341,7 +365,7 @@ func check_bankruptcy() -> void:
 ## waiting out the timer. earliness is 0.0 (closed right as the timer
 ## would have ended anyway — no real cost or relief) to 1.0 (closed the
 ## instant the day began). Trades a lost sales window for a bit of safety:
-## AVI risk drops, but money/reputation take a hit that gets steeper with
+## LVV risk drops, but money/reputation take a hit that gets steeper with
 ## every prior manual close this run (EARLY_CLOSE_ESCALATION_PER_CLOSE) —
 ## without that escalation, spamming this at earliness ~0 would still cost
 ## nothing while resetting nothing either, so it has to bite even on a
@@ -388,9 +412,12 @@ func _ready() -> void:
 	GUISignals.remove_ingredients_from_brew_preparation.connect(_on_remove_ingredient_from_brew_preparation)
 	GUISignals.buy_ingredient.connect(_on_buy_ingredient)
 	GUISignals.sell_ingredient.connect(_on_sell_ingredient)
+	GUISignals.bulk_sell_batch_requested.connect(_on_bulk_sell_batch_requested)
+	GUISignals.ship_batch_to_bar_requested.connect(_on_ship_batch_to_bar_requested)
 	GUISignals.start_brewing.connect(start_brew)
 	GUISignals.save_recipe_requested.connect(_on_save_recipe_requested)
 	GUISignals.load_recipe_requested.connect(_on_load_recipe_requested)
+	GUISignals.fill_recipe_from_inventory_requested.connect(_on_fill_recipe_from_inventory_requested)
 	GUISignals.clear_brew_preparation_requested.connect(_on_clear_brew_preparation_requested)
 
 
@@ -404,9 +431,12 @@ func disconnect_signals() -> void:
 	GUISignals.remove_ingredients_from_brew_preparation.disconnect(_on_remove_ingredient_from_brew_preparation)
 	GUISignals.buy_ingredient.disconnect(_on_buy_ingredient)
 	GUISignals.sell_ingredient.disconnect(_on_sell_ingredient)
+	GUISignals.bulk_sell_batch_requested.disconnect(_on_bulk_sell_batch_requested)
+	GUISignals.ship_batch_to_bar_requested.disconnect(_on_ship_batch_to_bar_requested)
 	GUISignals.start_brewing.disconnect(start_brew)
 	GUISignals.save_recipe_requested.disconnect(_on_save_recipe_requested)
 	GUISignals.load_recipe_requested.disconnect(_on_load_recipe_requested)
+	GUISignals.fill_recipe_from_inventory_requested.disconnect(_on_fill_recipe_from_inventory_requested)
 	GUISignals.clear_brew_preparation_requested.disconnect(_on_clear_brew_preparation_requested)
 
 
@@ -481,6 +511,74 @@ func _on_sell_ingredient(ingredient_id : int, amount : int) -> void:
 	BrewerySignals.brewery_state_changed.emit(self)
 
 
+## Pure payout math for bulk-selling a batch, split out from
+## _on_bulk_sell_batch_requested() so it's directly unit-testable without
+## constructing a Brewery (which needs live autoloads — see _init()) —
+## same "static function, instance method wraps it" split as
+## BrewResolver.calculate_price_breakdown()/get_price_breakdown(). See
+## BULK_SELL_RATE's docstring for why the result is deliberately
+## underwater against raw_cost_per_bottle even at quality 1.0.
+static func calculate_bulk_sell_payout(raw_cost_per_bottle : float, quality : float, amount_bottles : int) -> float:
+	var quality_factor : float = clampf(quality, 0.0, 1.0)
+	return snappedf(raw_cost_per_bottle * BULK_SELL_RATE * quality_factor * amount_bottles, 0.1)
+
+
+## Dumps an entire batch for cheap warehouse-clearing cash instead of
+## waiting for customers — see BULK_SELL_RATE's docstring for why the
+## payout is deliberately underwater against what the batch cost to brew.
+## No reputation/XP/tip and no risk change: unlike a real sale
+## (CustomerManager.process_auto_sale()) this never reaches a customer at
+## all, it's just inventory leaving the warehouse for money.
+func _on_bulk_sell_batch_requested(batch : BrewBatch) -> void:
+	if batch == null or not inventory.brew_batches.has(batch) or batch.amount_bottles <= 0:
+		return
+
+	var raw_cost_per_bottle : float = resolver.get_price_breakdown(batch.beer_style).raw_cost_per_bottle
+	var payout : float = calculate_bulk_sell_payout(raw_cost_per_bottle, batch.current_quality, batch.amount_bottles)
+	payout = snappedf(payout * get_distribution_income_multiplier(), 0.1)
+
+	money += payout
+	BrewerySignals.batch_bulk_sold.emit(batch.get_style_name(), batch.amount_bottles, payout)
+
+	inventory.brew_batches.erase(batch)
+	BrewerySignals.brewery_state_changed.emit(self)
+
+
+## Pure payout math for shipping a batch to a BarContact — same "static
+## twin of the instance handler" split as calculate_bulk_sell_payout()
+## above, for the same reason (unit-testable without a live Brewery).
+static func calculate_ship_payout(raw_cost_per_bottle : float, quality : float, amount_bottles : int, price_multiplier : float) -> float:
+	var quality_factor : float = clampf(quality, SHIP_TO_BAR_QUALITY_CLAMP_MIN, SHIP_TO_BAR_QUALITY_CLAMP_MAX)
+	return snappedf(raw_cost_per_bottle * price_multiplier * quality_factor * amount_bottles, 0.1)
+
+
+## Hands an entire batch off to a BarContact instead of the counter — see
+## SHIP_TO_BAR_QUALITY_CLAMP_MIN/MAX and BarContact.price_multiplier for
+## the payout formula, and BarContact.risk_per_shipment for the trade-off:
+## unlike _on_bulk_sell_batch_requested(), this raises risk since the
+## batch is now circulating outside the player's own cellar. Silently
+## refuses a bar the player's reputation hasn't unlocked yet — mirrors
+## Brewery._on_buy_ingredient()'s locked-ingredient guard, and
+## BarContactOptionButton disables locked contacts in the picker itself so
+## a real player can't normally reach this path either.
+func _on_ship_batch_to_bar_requested(batch : BrewBatch, bar : BarContact) -> void:
+	if batch == null or bar == null or not inventory.brew_batches.has(batch) or batch.amount_bottles <= 0:
+		return
+	if reputation < bar.required_reputation:
+		return
+
+	var raw_cost_per_bottle : float = resolver.get_price_breakdown(batch.beer_style).raw_cost_per_bottle
+	var payout : float = calculate_ship_payout(raw_cost_per_bottle, batch.current_quality, batch.amount_bottles, bar.price_multiplier)
+	payout = snappedf(payout * get_distribution_income_multiplier(), 0.1)
+
+	money += payout
+	add_risk(bar.risk_per_shipment)
+	BrewerySignals.keg_shipped_to_bar.emit(batch.get_style_name(), bar.bar_name, batch.amount_bottles, payout, bar.risk_per_shipment)
+
+	inventory.brew_batches.erase(batch)
+	BrewerySignals.brewery_state_changed.emit(self)
+
+
 func _on_save_recipe_requested() -> void:
 	if brew_preparation.selected_contents.is_empty():
 		return
@@ -542,6 +640,47 @@ func _on_load_recipe_requested(recipe : BrewRecipe) -> void:
 
 		if withdrawn > 0:
 			brew_preparation.add_to_table(ingredient_id, withdrawn)
+
+	BrewerySignals.brewery_state_changed.emit(self)
+
+
+## Tops the table up to the currently active recipe's target amounts —
+## unlike _on_load_recipe_requested() above (which withdraws whatever it
+## can even if that's short of the target, since loading IS the point at
+## which a fresh target gets set), this is strictly all-or-nothing: it
+## checks every missing ingredient against inventory FIRST, and refuses
+## outright if any single one is short, rather than partially draining
+## inventory into a table that still can't brew. BrewPreparationPanel
+## mirrors this same check to keep its "Täytä" button disabled whenever
+## this would refuse, so a real player should never actually reach the
+## refusal path — same defense-in-depth reasoning as the reputation guard
+## in _on_ship_batch_to_bar_requested().
+func _on_fill_recipe_from_inventory_requested() -> void:
+	var recipe_target : Dictionary = brew_preparation.active_recipe_target
+	if recipe_target.is_empty():
+		return
+
+	var missing_amounts : Dictionary = {}
+	for ingredient_id : int in recipe_target:
+		var required : int = recipe_target[ingredient_id]
+		var on_table : int = brew_preparation.selected_contents.get(ingredient_id, 0)
+		var missing : int = required - on_table
+		if missing <= 0:
+			continue
+
+		var item : InventoryItem = inventory.get_item_by_id(ingredient_id)
+		var available : int = item.amount if item else 0
+		if available < missing:
+			return
+
+		missing_amounts[ingredient_id] = missing
+
+	if missing_amounts.is_empty():
+		return
+
+	for ingredient_id : int in missing_amounts:
+		var withdrawn : int = inventory.withdraw_item_by_id(ingredient_id, missing_amounts[ingredient_id])
+		brew_preparation.add_to_table(ingredient_id, withdrawn)
 
 	BrewerySignals.brewery_state_changed.emit(self)
 

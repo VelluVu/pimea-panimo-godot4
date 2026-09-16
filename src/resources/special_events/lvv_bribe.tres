@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_bribe")
-event_caller_name = "AVI-tarkastaja Virtanen"
+event_caller_name = "LVV-tarkastaja Virtanen"
 intro_dialogue = "Olen kuullut huolestuttavia huhuja tästä paikasta... mutta ehkä voisimme sopia asian kahden kesken?"
 success_dialogue = "Selvä homma. En ole nähnyt täällä mitään epäilyttävää."
 fail_dialogue = "Ei ollut tarpeeksi rahaa? No, sitten joudun tekemään raportin."

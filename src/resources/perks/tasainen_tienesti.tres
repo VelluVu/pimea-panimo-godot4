@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="RunPerk" format=3 uid="uid://7ogrrto2eovv"]
+
+[ext_resource type="Script" uid="uid://dewmdbm4a0vst" path="res://src/classes/run_perk.gd" id="1_tasainen_tienesti"]
+
+[resource]
+script = ExtResource("1_tasainen_tienesti")
+perk_name = "Tasainen tienesti"
+description = "Tipit kertyvät suoraviivaisesti, poiminta poiminnalta vakaa tulonlähde."
+icon_placeholder = "🪙"
+tier = 1
+tip_income_multiplier = 1.2
+stacks_additively = true

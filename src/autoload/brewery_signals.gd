@@ -8,7 +8,7 @@ signal dialogue_pushed(text: String, is_special: bool, slot_index: int, characte
 @warning_ignore("unused_signal")
 signal style_discovered(style: int)
 @warning_ignore("unused_signal")
-signal avi_raid_triggered(confiscated_bottles: int, fine_amount: float, reputation_lost: int)
+signal lvv_raid_triggered(confiscated_bottles: int, fine_amount: float, reputation_lost: int)
 @warning_ignore("unused_signal")
 signal recipe_saved(recipe_name: String)
 @warning_ignore("unused_signal")
@@ -19,8 +19,18 @@ signal beer_sale_breakdown(entry: SaleReceiptEntry)
 signal recipe_save_rejected()
 @warning_ignore("unused_signal")
 signal beer_brewed(style: int)
+## Fired by CustomerManager.process_auto_sale() whenever a sale resolves to
+## a negative outcome for the customer — rejected on quality, wrong style,
+## or nothing in stock to offer at all (see its own emit site for the exact
+## conditions). Read by DailyGoalManager for the UNHAPPY_CUSTOMERS_MAX goal
+## type; no counter of this existed anywhere before that goal needed one.
 @warning_ignore("unused_signal")
-signal daily_goal_reward_granted(goal_name: String, money: int, reputation: int)
+signal customer_unhappy()
+## Fired by SpecialEventManager.process_accept() with try_fulfill()'s own
+## result — previously discarded once it had picked a dialogue string.
+## Read by DailyGoalManager for the SPECIAL_EVENT goal type.
+@warning_ignore("unused_signal")
+signal special_event_resolved(succeeded: bool)
 @warning_ignore("unused_signal")
 signal group_visit_announced(banner_text: String)
 @warning_ignore("unused_signal")
@@ -103,7 +113,7 @@ signal ingredient_purchase_locked(ingredient_name: String, required_reputation: 
 signal ingredient_purchase_underfunded(ingredient_name: String, price: int, money: float)
 ## Fired by Brewery.apply_early_close_cost() whenever the player manually
 ## closes the day before the timer runs out — see that method's docstring
-## for why this costs money/reputation but relieves some AVI risk, and
+## for why this costs money/reputation but relieves some LVV risk, and
 ## TimeManager.force_advance_day() for where earliness is measured.
 @warning_ignore("unused_signal")
 signal early_day_close_applied(money_cost: float, reputation_cost: int, risk_relief: int, close_count: int)
@@ -116,3 +126,19 @@ signal early_day_close_applied(money_cost: float, reputation_cost: int, risk_rel
 ## timing for a customer who is already gone.
 @warning_ignore("unused_signal")
 signal customer_evicted(dialogue_slot: int)
+## Fired by Brewery._on_bulk_sell_batch_requested() once a batch is dumped
+## for cheap warehouse-clearing cash — deliberately separate from
+## bottles_sold/beer_sale_breakdown since this isn't a real customer sale
+## (no reputation/XP/tip, doesn't count toward DailyGoalManager's sales
+## goals or the sale receipt log). BeerPatchPanel listens for this to show
+## a payout popup at the sold row.
+@warning_ignore("unused_signal")
+signal batch_bulk_sold(style_name: String, bottles: int, payout: float)
+## Fired by Brewery._on_ship_batch_to_bar_requested() once a batch is
+## handed off to a BarContact — same "not a real sale" reasoning as
+## batch_bulk_sold (no bottles_sold/reputation/XP/tip), but this one also
+## carries risk_added since, unlike a bulk sale, shipping to a bar does
+## raise Brewery.risk. BeerPatchPanel listens for this to show a payout/
+## risk popup at the shipped row.
+@warning_ignore("unused_signal")
+signal keg_shipped_to_bar(style_name: String, bar_name: String, bottles: int, payout: float, risk_added: int)

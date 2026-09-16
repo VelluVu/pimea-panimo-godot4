@@ -2,14 +2,23 @@ class_name BrewingView
 extends Control
 
 const AMOUNT_FORMAT : String = "%d %s"
+const FILL_FROM_INVENTORY_BUTTON_TEXT : String = "Täytä resepti"
+const FILL_FROM_INVENTORY_BUTTON_TOOLTIP : String = "Täytä puuttuvat ainesosat pöydälle varastosta ladatun reseptin mukaan — pois käytöstä, jos varastossa ei ole tarpeeksi jotain ainesosaa."
 
 @onready var current_item_label : Label = $Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/IngredientTypeSelector/IngredientRow/CurrentItemLabel
 @onready var ingredient_type_selector : IngredientTypeSelector = $Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/IngredientTypeSelector
+@onready var main_vbox : VBoxContainer = $Panel/MarginContainer/VBoxContainer
 @export var main_slider : Slider
 @export var add_button : Button
 @export var remove_button : Button
 
 var current_id : int = -1
+## Built at runtime below MaltAndHopVBoxContainer rather than in the
+## scene — same approach as BeerPatchPanel's destination-bar row and
+## DailyGoalsPanel's section toggles — and placed here in BrewingView
+## rather than BrewPreparationPanel (where this was first built) since
+## this panel has the spare vertical room for it.
+var _fill_from_inventory_button : Button = null
 
 
 func _ready() -> void:
@@ -32,7 +41,53 @@ func _ready() -> void:
 	# every time this view is actually opened, rather than only once at
 	# scene load.
 	visibility_changed.connect(_on_visibility_changed)
+
+	_fill_from_inventory_button = Button.new()
+	_fill_from_inventory_button.text = FILL_FROM_INVENTORY_BUTTON_TEXT
+	_fill_from_inventory_button.tooltip_text = FILL_FROM_INVENTORY_BUTTON_TOOLTIP
+	_fill_from_inventory_button.disabled = true
+	_fill_from_inventory_button.pressed.connect(_on_fill_from_inventory_button_pressed)
+	main_vbox.add_child(_fill_from_inventory_button)
+
 	_update_label()
+	_update_fill_from_inventory_button()
+
+
+func _on_fill_from_inventory_button_pressed() -> void:
+	GUISignals.fill_recipe_from_inventory_requested.emit()
+
+
+## Mirrors Brewery._on_fill_recipe_from_inventory_requested()'s own
+## all-or-nothing check exactly, so the button never enables a click that
+## handler would just refuse: fillable only when a recipe is actually
+## loaded, something is still missing (an already-complete table has
+## nothing to fill), and every single missing ingredient is covered by
+## inventory.
+func _update_fill_from_inventory_button() -> void:
+	var brewery := BrewEngine.current_brewery
+	if brewery == null:
+		_fill_from_inventory_button.disabled = true
+		return
+
+	var recipe_target : Dictionary = brewery.brew_preparation.active_recipe_target
+	var prep_contents : Dictionary = brewery.brew_preparation.selected_contents
+
+	var has_shortfall : bool = false
+	var can_fill_recipe : bool = not recipe_target.is_empty()
+
+	for ingredient_id : int in recipe_target:
+		var required : int = recipe_target[ingredient_id]
+		var on_table : int = prep_contents.get(ingredient_id, 0)
+		if on_table >= required:
+			continue
+
+		has_shortfall = true
+		var item : InventoryItem = brewery.inventory.get_item_by_id(ingredient_id)
+		var available : int = item.amount if item else 0
+		if available < required - on_table:
+			can_fill_recipe = false
+
+	_fill_from_inventory_button.disabled = not (can_fill_recipe and has_shortfall)
 
 
 func _on_visibility_changed() -> void:
@@ -49,6 +104,7 @@ func _set_active_ingredient(id: int) -> void:
 func _on_brewery_state_changed(_brewery : Brewery) -> void:
 	_update_slider()
 	_update_label()
+	_update_fill_from_inventory_button()
 
 
 func _on_slider_changed(_value: float) -> void:

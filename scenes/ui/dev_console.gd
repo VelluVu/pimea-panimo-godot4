@@ -41,7 +41,7 @@ const FOCUS_STYLE_BORDER_COLOR: Color = Color(0.85, 0.65, 0.25)
 @onready var log_label: RichTextLabel = $MarginContainer/MainVBox/BodyVBox/LogScroll/LogLabel
 @onready var input_line_edit: LineEdit = $MarginContainer/MainVBox/BodyVBox/InputLineEdit
 
-var _is_collapsed: bool = false
+var _is_collapsed: bool = true
 var _expanded_size: Vector2
 
 var _is_resizing: bool = false
@@ -68,11 +68,12 @@ func _ready() -> void:
 	_register_commands()
 	_connect_log_sources()
 	_apply_focus_style(false)
+	_apply_collapsed_state()
 
 	_log("Konsoli valmis. Kirjoita 'help' nähdäksesi komennot.")
 
 
-# ----- "c" hotkey: expand and focus the input field -----
+# ----- "c" hotkey to open/focus, Esc to close -----
 
 ## Deliberately _input(), not _unhandled_input(): the latter only fires for
 ## events nothing already consumed as GUI input, which made this depend on
@@ -85,15 +86,36 @@ func _ready() -> void:
 ## from event-propagation history. While it already has focus, just return
 ## without consuming the event so the "c" still types normally (letting
 ## commands like "clear" or "customer" work); otherwise open/focus it and
-## consume the event. No InputMap action needed for a single hardcoded key.
+## consume the event. No InputMap action needed for either hardcoded key.
+##
+## Esc closes the console before GUI.gd's own global Esc handler ever sees
+## it — since _input() fires ahead of _unhandled_input() project-wide, and
+## set_input_as_handled() here stops it from propagating any further, the
+## console always gets first claim on Esc while it's open, without gui.gd
+## needing to know anything about this node's internal state.
 func _input(event: InputEvent) -> void:
-	if not (event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_C):
-		return
-	if input_line_edit.has_focus():
+	if not (event is InputEventKey and event.pressed and not event.echo):
 		return
 
-	_open_and_focus_input()
-	get_viewport().set_input_as_handled()
+	if event.keycode == KEY_C:
+		if input_line_edit.has_focus():
+			return
+		_open_and_focus_input()
+		get_viewport().set_input_as_handled()
+		return
+
+	if event.keycode == KEY_ESCAPE and is_console_active():
+		input_line_edit.release_focus()
+		if not _is_collapsed:
+			_on_toggle_pressed()
+		get_viewport().set_input_as_handled()
+
+
+## Whether Esc should treat the console as "the thing currently open" — also
+## read by gui.gd's own global Esc/view-shortcut handler so it can back off
+## instead of racing this node's _input() (see gui.gd's _unhandled_input()).
+func is_console_active() -> bool:
+	return not _is_collapsed or input_line_edit.has_focus()
 
 
 func _open_and_focus_input() -> void:
@@ -106,6 +128,10 @@ func _open_and_focus_input() -> void:
 
 func _on_toggle_pressed() -> void:
 	_is_collapsed = not _is_collapsed
+	_apply_collapsed_state()
+
+
+func _apply_collapsed_state() -> void:
 	if _is_collapsed:
 		_expanded_size = size
 		body_vbox.hide()
@@ -168,7 +194,7 @@ func _apply_focus_style(is_focused: bool) -> void:
 
 func _connect_log_sources() -> void:
 	BrewerySignals.style_discovered.connect(_on_style_discovered)
-	BrewerySignals.avi_raid_triggered.connect(_on_avi_raid_triggered)
+	BrewerySignals.lvv_raid_triggered.connect(_on_lvv_raid_triggered)
 	BrewerySignals.recipe_saved.connect(_on_recipe_saved)
 	BrewerySignals.batch_bottled.connect(_on_batch_bottled)
 	BrewerySignals.daily_bills_paid.connect(_on_daily_bills_paid)
@@ -181,8 +207,8 @@ func _on_style_discovered(style: int) -> void:
 	_log("[color=lightgreen]Uusi oluttyyli löydetty: %s[/color]" % BeerStyle.get_style_string_from_style(style))
 
 
-func _on_avi_raid_triggered(confiscated_bottles: int, fine_amount: float, reputation_lost: int) -> void:
-	_log("[color=red]AVI-RATSIA! Takavarikoitu %d annosta, sakko %.1f €, mainetta -%d[/color]" % [confiscated_bottles, fine_amount, reputation_lost])
+func _on_lvv_raid_triggered(confiscated_bottles: int, fine_amount: float, reputation_lost: int) -> void:
+	_log("[color=red]LVV-RATSIA! Takavarikoitu %d annosta, sakko %.1f €, mainetta -%d[/color]" % [confiscated_bottles, fine_amount, reputation_lost])
 
 
 func _on_recipe_saved(recipe_name: String) -> void:
@@ -202,7 +228,7 @@ func _on_daily_bills_paid(electricity: int, water: int, total: int) -> void:
 func _on_early_day_close_applied(money_cost: float, reputation_cost: int, risk_relief: int, close_count: int) -> void:
 	if money_cost <= 0.0 and reputation_cost <= 0 and risk_relief <= 0:
 		return
-	_log("[color=orange]Ovet suljettu aikaisin (%d. kerta): -%.1f €, mainetta -%d, AVI-riski -%d[/color]" % [close_count, money_cost, reputation_cost, risk_relief])
+	_log("[color=orange]Ovet suljettu aikaisin (%d. kerta): -%.1f €, mainetta -%d, LVV-riski -%d[/color]" % [close_count, money_cost, reputation_cost, risk_relief])
 
 
 func _on_special_event_triggered(event_data: SpecialEventData) -> void:
@@ -237,9 +263,14 @@ func _scroll_log_to_bottom() -> void:
 
 # ----- command / macro dispatch -----
 
+## LineEdit releases its own focus internally as part of submitting on
+## Enter, which used to leave the player having to manually click the field
+## again before typing a next command — grab_focus() right back so the
+## input stays ready to type into immediately after every submit.
 func _on_command_submitted(raw_text: String) -> void:
 	var text := raw_text.strip_edges()
 	input_line_edit.clear()
+	input_line_edit.grab_focus()
 	if text.is_empty():
 		return
 
@@ -281,6 +312,8 @@ func _register_commands() -> void:
 	_dev_commands = {
 		"brew": _cmd_brew,
 		"sell": _cmd_sell,
+		"dump": _cmd_dump,
+		"vie": _cmd_vie,
 		"customer": _cmd_customer,
 		"group": _cmd_group,
 		"special": _cmd_special,
@@ -295,7 +328,7 @@ func _register_commands() -> void:
 func _cmd_help(_args: PackedStringArray) -> void:
 	_log("Komennot: osta <ainesosa> <määrä>, myy <ainesosa> <määrä>, pöytään <ainesosa> <määrä>, poista <ainesosa> <määrä>, tyhjennä, tallenna, pane, keitä <resepti>, clear")
 	if BrewEngine.is_developer_mode():
-		_log("[color=orange]Kehittäjäkomennot: brew <tyyli>, sell [määrä] <tyyli> (myy oikeasti, luo annoksia tarvittaessa), customer [nimi], group [nimi], special, raid, money <n>, rep <n>, risk <n>, day[/color]")
+		_log("[color=orange]Kehittäjäkomennot: brew <tyyli>, sell [määrä] <tyyli> (myy oikeasti, luo annoksia tarvittaessa), dump <tyyli> (halpamyy erä), vie <tyyli> <baari> (vie erä baariin, luo tarvittaessa), customer [nimi], group [nimi], special, raid, money <n>, rep <n>, risk <n>, day[/color]")
 
 
 func _cmd_clear(_args: PackedStringArray) -> void:
@@ -605,6 +638,137 @@ func _conjure_batch(brewery: Brewery, beer_style: BeerStyle) -> void:
 	brewery.inventory.brew_batches.append(new_batch)
 	brewery.discover_style(beer_style.style)
 	BrewerySignals.batch_bottled.emit(bottling.bottles_lost, bottling.label_cost, beer_style.style_name)
+
+
+## Forces a real Brewery.bulk_sell_batch through the actual GUISignals
+## path — "dump ipa" — conjuring a batch first if none exists, same as
+## "sell" does, since this command exists specifically to let QA exercise
+## the warehouse bulk-sell action without brewing for real first. Listens
+## for BrewerySignals.batch_bulk_sold (mutate-in-place on the captured
+## dict, not reassign it — a GDScript lambda captures its outer variables
+## by value, so reassigning "sold" itself inside the lambda would never be
+## seen out here, only mutating a key on the same dict object works) the
+## same way _cmd_sell listens for beer_sale_breakdown.
+func _cmd_dump(args: PackedStringArray) -> void:
+	var brewery := BrewEngine.current_brewery
+	if brewery == null:
+		_log("Ei aktiivista panimoa.")
+		return
+
+	if args.is_empty():
+		_log("Käyttö: dump <tyyli> — esim. 'dump ipa'. Saatavilla: %s" % _available_style_names(brewery))
+		return
+
+	var matched_style := _match_style(brewery, args)
+	if matched_style == null:
+		_log("Tyyliä ei löytynyt: %s. Saatavilla: %s" % [" ".join(Array(args)), _available_style_names(brewery)])
+		return
+
+	_ensure_batch_stock(brewery, matched_style, 1)
+	var batch := _find_batch_for_style(brewery, matched_style)
+	if batch == null:
+		_log("Erää ei löytynyt tyylille: %s" % matched_style.style_name)
+		return
+
+	var sold : Dictionary = {}
+	var capture := func(style_name: String, bottles: int, payout: float) -> void:
+		sold["style_name"] = style_name
+		sold["bottles"] = bottles
+		sold["payout"] = payout
+	BrewerySignals.batch_bulk_sold.connect(capture)
+	GUISignals.bulk_sell_batch_requested.emit(batch)
+	BrewerySignals.batch_bulk_sold.disconnect(capture)
+
+	if sold.is_empty():
+		_log("Halpamyynti epäonnistui.")
+		return
+
+	_log("Halpamyynti: %s x%d  +%.1f €" % [sold.style_name, sold.bottles, sold.payout])
+
+
+## Forces a real Brewery.ship_batch_to_bar through the actual GUISignals
+## path — "vie ipa kuppila" — same conjure-if-needed approach as "dump"
+## above. The bar is matched against the LAST token only (substring, like
+## _find_ingredient_by_name) so the preceding tokens can be a multi-word
+## style name without ambiguity — mirrors how "sell" already lets a
+## leading quantity or a multi-word style share one argument list.
+func _cmd_vie(args: PackedStringArray) -> void:
+	var brewery := BrewEngine.current_brewery
+	if brewery == null:
+		_log("Ei aktiivista panimoa.")
+		return
+
+	if args.size() < 2:
+		_log("Käyttö: vie <tyyli> <baari> — esim. 'vie ipa kuppila'. Baarit: %s" % _available_bar_names())
+		return
+
+	var bar := _find_bar_contact_by_name(args[args.size() - 1])
+	if bar == null:
+		_log("Baaria ei löytynyt: %s. Baarit: %s" % [args[args.size() - 1], _available_bar_names()])
+		return
+
+	var style_args := args.slice(0, args.size() - 1)
+	var matched_style := _match_style(brewery, style_args)
+	if matched_style == null:
+		_log("Tyyliä ei löytynyt: %s. Saatavilla: %s" % [" ".join(Array(style_args)), _available_style_names(brewery)])
+		return
+
+	if brewery.reputation < bar.required_reputation:
+		_log("Maine ei riitä baariin %s (vaatii %d, on %d)." % [bar.bar_name, bar.required_reputation, brewery.reputation])
+		return
+
+	_ensure_batch_stock(brewery, matched_style, 1)
+	var batch := _find_batch_for_style(brewery, matched_style)
+	if batch == null:
+		_log("Erää ei löytynyt tyylille: %s" % matched_style.style_name)
+		return
+
+	var shipped : Dictionary = {}
+	var capture := func(style_name: String, bar_name: String, bottles: int, payout: float, risk_added: int) -> void:
+		shipped["style_name"] = style_name
+		shipped["bar_name"] = bar_name
+		shipped["bottles"] = bottles
+		shipped["payout"] = payout
+		shipped["risk_added"] = risk_added
+	BrewerySignals.keg_shipped_to_bar.connect(capture)
+	GUISignals.ship_batch_to_bar_requested.emit(batch, bar)
+	BrewerySignals.keg_shipped_to_bar.disconnect(capture)
+
+	if shipped.is_empty():
+		_log("Vienti epäonnistui.")
+		return
+
+	_log("Vienti: %s x%d -> %s  +%.1f € (LVV-riski +%d)" % [shipped.style_name, shipped.bottles, shipped.bar_name, shipped.payout, shipped.risk_added])
+
+
+func _match_style(brewery: Brewery, style_args: PackedStringArray) -> BeerStyle:
+	var wanted := " ".join(Array(style_args)).to_upper().replace(" ", "_")
+	for beer_style: BeerStyle in brewery.resolver.active_styles:
+		if BeerStyle.Style.keys()[beer_style.style] == wanted:
+			return beer_style
+	return null
+
+
+func _find_batch_for_style(brewery: Brewery, beer_style: BeerStyle) -> BrewBatch:
+	for batch: BrewBatch in brewery.inventory.brew_batches:
+		if batch.beer_style.style == beer_style.style:
+			return batch
+	return null
+
+
+func _find_bar_contact_by_name(query: String) -> BarContact:
+	var wanted := query.to_lower()
+	for bar: BarContact in CustomerRegistry.bar_contact_pool:
+		if bar.bar_name.to_lower().contains(wanted):
+			return bar
+	return null
+
+
+func _available_bar_names() -> String:
+	var names: Array[String] = []
+	for bar: BarContact in CustomerRegistry.bar_contact_pool:
+		names.append(bar.bar_name)
+	return ", ".join(names) if not names.is_empty() else "(ei baareja)"
 
 
 func _cmd_customer(args: PackedStringArray) -> void:

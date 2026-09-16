@@ -12,3 +12,4 @@ Nyt on paha riski tappelulle!"
 customer_data_options = Array[ExtResource("1_dbdgk")]([ExtResource("2_customer"), ExtResource("3_customer_naaras")])
 max_group_size = 8
 formation_spacing_px = 12.0
+chant_text = "ÖRRRrrrr! ÖÖRRRrrr!"

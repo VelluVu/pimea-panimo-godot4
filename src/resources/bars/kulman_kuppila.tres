@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="BarContact" format=3]
+
+[ext_resource type="Script" uid="uid://c5tldei44pcbr" path="res://src/classes/bar_contact.gd" id="1_kuppila"]
+
+[resource]
+script = ExtResource("1_kuppila")
+bar_name = "Kulman Kuppila"
+description = "Naapurustobaari, joka ottaa vastaan mitä tahansa kelvollista tynnyriolutta ilman kysymyksiä. Ei maksa paljon, mutta ei myöskään herätä huomiota."
+price_multiplier = 0.8
+risk_per_shipment = 4
+required_reputation = 0
+metadata/_custom_type_script = "uid://c5tldei44pcbr"

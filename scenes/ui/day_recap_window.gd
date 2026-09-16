@@ -1,13 +1,13 @@
 class_name DayRecapWindow
 extends Panel
 
-## Self-contained end-of-day summary modal, matching the AviRaidWindow
+## Self-contained end-of-day summary modal, matching the LvvRaidWindow
 ## pattern: listens to the global signal bus directly and shows/hides
 ## itself, rather than being driven by gui.gd.
 
 const RECAP_TITLE: String = "Päivän yhteenveto"
 const CLOSE_BUTTON_TEXT: String = "Jatka"
-const RECAP_MESSAGE_FORMAT: String = "Päivä %d alkoi.\n\nRahaa: %+.1f €\nMainetta: %+d\nAVI-riski nyt: %d\nAnnoksia myyty: %d\nUusia oluttyylejä: %s\nTavoitteet: %d/2 saavutettu"
+const RECAP_MESSAGE_FORMAT: String = "Päivä %d alkoi.\n\nRahaa: %+.1f €\nMainetta: %+d\nLVV-riski nyt: %d\nAnnoksia myyty: %d\nUusia oluttyylejä: %s\nPäivätavoitteita saavutettu: %d"
 const NO_NEW_STYLES_TEXT: String = "ei uusia"
 
 @onready var title_label: Label = $MarginContainer/MainVBox/TitleLabel
@@ -33,7 +33,7 @@ func _ready() -> void:
 	TimeManager.day_changed.connect(_on_day_changed)
 	BrewerySignals.bottles_sold.connect(_on_bottles_sold)
 	BrewerySignals.style_discovered.connect(_on_style_discovered)
-	BrewerySignals.daily_goal_reward_granted.connect(_on_daily_goal_reward_granted)
+	DailyGoalManager.daily_goal_resolved.connect(_on_daily_goal_resolved)
 
 
 func _on_bottles_sold(amount: int) -> void:
@@ -44,13 +44,16 @@ func _on_style_discovered(style: int) -> void:
 	_styles_discovered_today.append(BeerStyle.get_style_string_from_style(style))
 
 
-## The bottles goal now carries over across days (Brewery.bottles_sold_toward_goal
-## resets the instant it's rewarded, not at day boundary), so re-deriving
-## "was it met today" from a threshold check at day's end would miss a goal
-## that was reached and paid out earlier in the day. Counting the actual
-## reward events fired today is the correct source of truth either way.
-func _on_daily_goal_reward_granted(_goal_name : String, _money : int, _reputation : int) -> void:
-	_goals_rewarded_today += 1
+## Only successes count toward the recap line — a failed goal still fires
+## daily_goal_resolved (see DailyGoalManager), it just shouldn't read as an
+## achievement. Goals resolve continuously through the day (reactively) as
+## well as right at this same day boundary (DailyGoalManager's own
+## day_changed handler resolving whatever's still pending), so a busy day
+## can rack up more than the ACTIVE_GOAL_COUNT=3 concurrent slots by the
+## time this recap shows — no cap here, unlike the old fixed 2-goal count.
+func _on_daily_goal_resolved(_goal_name : String, succeeded : bool, _money : int, _reputation : int, _xp : int, _risk : int) -> void:
+	if succeeded:
+		_goals_rewarded_today += 1
 
 
 func _on_day_changed(new_day: int) -> void:
@@ -62,11 +65,7 @@ func _on_day_changed(new_day: int) -> void:
 	var reputation_delta := brewery.reputation - _day_start_reputation
 	var discovered_text := ", ".join(_styles_discovered_today) if not _styles_discovered_today.is_empty() else NO_NEW_STYLES_TEXT
 
-	# A very busy day can cross the bottles target more than once, but the
-	# recap only ever displays out of 2 (bottles + risk).
-	var goals_met : int = min(_goals_rewarded_today, 2)
-
-	message_label.text = RECAP_MESSAGE_FORMAT % [new_day, money_delta, reputation_delta, brewery.risk, _bottles_sold_today, discovered_text, goals_met]
+	message_label.text = RECAP_MESSAGE_FORMAT % [new_day, money_delta, reputation_delta, brewery.risk, _bottles_sold_today, discovered_text, _goals_rewarded_today]
 	show()
 
 	_day_start_money = brewery.money

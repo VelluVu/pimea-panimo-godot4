@@ -37,13 +37,20 @@ func process_accept(event_data: SpecialEventData) -> String:
 	if BrewEngine.current_brewery == null: return ""
 	var brewery = BrewEngine.current_brewery
 
-	if event_data.try_fulfill(brewery):
+	var succeeded := event_data.try_fulfill(brewery)
+	BrewerySignals.special_event_resolved.emit(succeeded)
+
+	if succeeded:
 		BrewerySignals.brewery_state_changed.emit(brewery)
 		return event_data.success_dialogue
 	else:
 		return event_data.fail_dialogue
 
 
+## Only reachable via SpecialEventWindow's timeout, not a player choice —
+## the window no longer offers a decline button (the brewery always says
+## "Joo"; see try_fulfill/fail_dialogue for how a genuine lack of stock
+## already gets handled instead).
 func process_reject(event_data: SpecialEventData) -> String:
 	return event_data.reject_dialogue
 

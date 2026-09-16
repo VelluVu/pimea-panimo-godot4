@@ -2,7 +2,7 @@ class_name SaleBreakdown
 extends Resource
 
 ## No excise duty or VAT: this cellar operation isn't remitting anything to
-## the state (that's the entire point of hiding from AVI), so the price
+## the state (that's the entire point of hiding from LVV), so the price
 ## customers pay is exactly what it costs to make plus a profit margin —
 ## no tax markup, no "tax vs. net" split at sale time. See
 ## BrewResolver.calculate_price_breakdown().

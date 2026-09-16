@@ -1,12 +1,11 @@
-[gd_resource type="Resource" script_class="RunModifier" format=3]
+[gd_resource type="Resource" script_class="RunModifier" format=3 uid="uid://qys5xgakblvm"]
 
 [ext_resource type="Script" uid="uid://dka80d13fropj" path="res://src/classes/run_modifier.gd" id="1_ainepula"]
 
 [resource]
 script = ExtResource("1_ainepula")
 modifier_name = "Ainepula"
-description = "Raaka-aineista on pulaa ja hinnat ovat pilvissä. Kaaoksen keskellä tarkastajatkin ovat muualla kiireisiä — ratsiakynnys ennätyskorkealla."
-avi_threshold_multiplier = 1.55
-ingredient_price_multiplier = 1.7
+description = "Raaka-aineista on pulaa ja hinnat ovat pilvissä. Kaaoksen keskellä tarkastajatkin ovat muualla kiireisiä ratsiakynnys ennätyskorkealla."
 icon_placeholder = "📦"
+ingredient_price_multiplier = 1.7
 metadata/_custom_type_script = "uid://dka80d13fropj"

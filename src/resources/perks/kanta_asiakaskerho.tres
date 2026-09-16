@@ -7,4 +7,4 @@ script = ExtResource("1_kanta")
 perk_name = "Kanta-asiakaskerho"
 description = "Perustit uskollisille asiakkaille oman kerhon — sana kiirii ja maine karttuu nopeammin."
 icon_placeholder = "📿"
-reputation_gain_multiplier = 1.2
+reputation_gain_multiplier = 1.1

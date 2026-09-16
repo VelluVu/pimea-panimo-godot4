@@ -3,7 +3,7 @@ extends Panel
 
 ## Modal end-of-run screen for all three endings — see
 ## Brewery.trigger_ending() and BrewerySignals.game_ended. Unlike
-## AviRaidWindow/DayRecapWindow (which just show/hide while the game keeps
+## LvvRaidWindow/DayRecapWindow (which just show/hide while the game keeps
 ## running underneath), this pauses the whole SceneTree so nothing else
 ## (customers, timers, spawners) keeps going behind it — the run is over.
 ## Needs PROCESS_MODE_ALWAYS on this root node so its buttons still
@@ -18,7 +18,7 @@ const TITLE_BUSTED : String = "BUSTED!"
 const TITLE_BANKRUPT : String = "KONKURSSI!"
 const TITLE_SURVIVED : String = "LEGENDA!"
 
-const MESSAGE_BUSTED : String = "Kolmas ratsia oli viimeinen. AVI takavarikoi kaiken ja sulki panimosi pysyvästi."
+const MESSAGE_BUSTED : String = "Kolmas ratsia oli viimeinen. LVV takavarikoi kaiken ja sulki panimosi pysyvästi."
 const MESSAGE_BANKRUPT : String = "Rahat loppuivat ja varasto oli tyhjä. Panimosi ajautui konkurssiin."
 const MESSAGE_SURVIVED : String = "Selvisit ratsioista ja konkurssin partaalta läpi koko uran. Kellarisi kaljasta tuli kaupunginosan legenda."
 

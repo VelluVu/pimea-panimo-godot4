@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RunPerk" format=3 uid="uid://cycc8ebwjq2ug"]
+
+[ext_resource type="Script" uid="uid://dewmdbm4a0vst" path="res://src/classes/run_perk.gd" id="1_tunnettu"]
+
+[resource]
+script = ExtResource("1_tunnettu")
+perk_name = "Tunnettu toimittaja"
+description = "Maineesi jakelijana kiirii kellarien välillä halpamyynnin ja baarivientien tulot selvästi paremmat."
+icon_placeholder = "📦"
+tier = 1
+distribution_income_multiplier = 1.18

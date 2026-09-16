@@ -20,6 +20,7 @@ dialogue_success = "TÄÄ MENEE KURKUSTA ALAS KUIN VOITTOMAALI VIIMEISELLÄ MINU
 dialogue_fallback = "EI PAHA, JUODAAN SILTI LEIJONIEN KUNNIAKSI!"
 dialogue_wrong_style = "EI TÄTÄ HAETTU MUT MENEE SE SILTI!"
 dialogue_reject = "TÄMÄ ON HÄVETTÄVÄÄ! EI EDES LEIJONAFANI JOISI TÄTÄ VESILITKUA!"
+dialogue_no_match = "EI PERSE, LÄHEN TOISEEN PUBIIN!"
 min_reputation_to_appear = 15
 randomizes_preference = true
 max_bottles_per_visit = 3
