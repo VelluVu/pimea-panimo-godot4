@@ -10,7 +10,7 @@ const GOAL_FAILED_TOAST_FORMAT: String = "%s epäonnistui: %d maine / +%d LVV-ri
 ## penalty-free — see DailyGoalManager._resolve_goal()'s apply_penalty
 ## param — so it gets its own toast instead of GOAL_FAILED_TOAST_FORMAT
 ## reading "0 maine / +0 LVV-riski", which would look like a formatting bug.
-const GOAL_FAILED_NO_PENALTY_TOAST_FORMAT: String = "%s epäonnistui — ei seurauksia"
+const GOAL_FAILED_NO_PENALTY_TOAST_FORMAT: String = "%s epäonnistui: ei seurauksia"
 const EARLY_CLOSE_TOAST_FORMAT: String = "Ovet suljettu aikaisin: -%.1f €, mainetta -%d, LVV-riski -%d"
 const INGREDIENT_LOCKED_TOAST_FORMAT: String = "%s vaatii vähintään %d mainetta."
 const INGREDIENT_UNDERFUNDED_TOAST_FORMAT: String = "Ei varaa: %s maksaa %d €, kassassa %.1f €."

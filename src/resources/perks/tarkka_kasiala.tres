@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_tarkka")
 perk_name = "Tarkka käsiala"
-description = "Vuosien harjoittelu näkyy pullossa — jokainen tästä eteenpäin keitetty erä on hieman laadukkaampi."
+description = "Vuosien harjoittelu näkyy pullossa. Jokainen tästä eteenpäin keitetty erä on hieman laadukkaampi."
 icon_placeholder = "🎯"
 tier = 1
 quality_bonus = 0.1

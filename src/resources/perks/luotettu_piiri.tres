@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_luotettu")
 perk_name = "Luotettu piiri"
-description = "Tunnet oikeat ihmiset korttelissa — LVV:n ratsiakynnys nousee selvästi."
+description = "Tunnet oikeat ihmiset korttelissa. LVV:n ratsiakynnys nousee selvästi."
 icon_placeholder = "🤝"
 tier = 1
 raid_threshold_multiplier = 1.12

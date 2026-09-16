@@ -4,7 +4,7 @@ extends PanelContainer
 
 const INGREDIENT_LABEL_WITH_TARGET_STRING : String = "%s: %d/%d %s"
 const SAVE_TOAST_STRING : String = "Resepti \"%s\" tallennettu!"
-const REJECT_TOAST_STRING : String = "Tuntematon oluttyyli — keitä se ensin selvittääksesi reseptin!"
+const REJECT_TOAST_STRING : String = "Tuntematon oluttyyli. Keitä se ensin selvittääksesi reseptin!"
 const SAVE_TOAST_FLASH_SECONDS : float = 0.15
 const SAVE_TOAST_HOLD_SECONDS : float = 1.2
 const SAVE_TOAST_FADE_SECONDS : float = 0.4
@@ -30,7 +30,7 @@ const PREVIEW_NO_MATCH_FORMAT : String = "Ei täsmää vielä mihinkään tyylii
 ## find out" is that the name is the reward, not something the preview
 ## should spoil before the player has actually brewed it once.
 const PREVIEW_UNKNOWN_MATCH_FORMAT : String = "Arvio: tuntematon tyyli täsmää! (EBC %d, IBU %d)"
-const PREVIEW_KNOWN_MATCH_FORMAT : String = "Arvio: %s — EBC %d, IBU %d, laatu %d%%"
+const PREVIEW_KNOWN_MATCH_FORMAT : String = "Arvio: %s, EBC %d, IBU %d, laatu %d%%"
 
 ## Same gold accent used for perk/modifier names (LevelUpWindow,
 ## ModifierSelectWindow) — ties this popup visually to that same

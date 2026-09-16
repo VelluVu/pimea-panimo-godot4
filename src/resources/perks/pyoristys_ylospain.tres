@@ -5,6 +5,6 @@
 [resource]
 script = ExtResource("1_pyoristys")
 perk_name = "Pyöristys ylöspäin"
-description = "Opit jättämään vaihtorahat ottamatta huomiota — asiakkaat pyöristävät tipit ylöspäin."
+description = "Opit jättämään vaihtorahat ottamatta huomiota. Asiakkaat pyöristävät tipit ylöspäin."
 icon_placeholder = "🪙"
 tip_income_multiplier = 1.1
