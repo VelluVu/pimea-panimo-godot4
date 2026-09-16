@@ -103,7 +103,7 @@ func _is_avoid_type(goal : DailyGoalData) -> bool:
 func _on_brewery_state_changed(brewery : Brewery) -> void:
 	if brewery != _tracked_brewery:
 		_tracked_brewery = brewery
-		_reset_all_goals()
+		_load_from_brewery(brewery)
 		return
 
 	if not brewery.tutorial_complete():
@@ -117,6 +117,7 @@ func _on_brewery_state_changed(brewery : Brewery) -> void:
 			_progress[i] = maxi(0, brewery.reputation - _reputation_baseline[i])
 			goal_progress_changed.emit()
 			_check_goal_outcome(i)
+	_sync_to_brewery()
 
 
 func _on_beer_brewed(style : int) -> void:
@@ -173,6 +174,7 @@ func _add_progress(goal_type : DailyGoalData.GoalType, amount : int, required_st
 		_progress[i] += amount
 		goal_progress_changed.emit()
 		_check_goal_outcome(i)
+	_sync_to_brewery()
 
 
 func _check_goal_outcome(slot : int) -> void:
@@ -258,12 +260,14 @@ func _assign_new_goal(slot : int) -> void:
 	if brewery == null or not brewery.tutorial_complete():
 		active_goals[slot] = null
 		goal_progress_changed.emit()
+		_sync_to_brewery()
 		return
 
 	var candidates := goal_pool.filter(func(g : DailyGoalData) -> bool: return not active_goals.has(g))
 	if candidates.is_empty():
 		active_goals[slot] = null
 		goal_progress_changed.emit()
+		_sync_to_brewery()
 		return
 
 	var new_goal : DailyGoalData = candidates.pick_random()
@@ -272,15 +276,36 @@ func _assign_new_goal(slot : int) -> void:
 	_reputation_baseline[slot] = brewery.reputation
 	_effective_target[slot] = new_goal.get_effective_target(brewery.current_day)
 	goal_progress_changed.emit()
+	_sync_to_brewery()
 
 
-func _reset_all_goals() -> void:
+## Restores this autoload's tracking arrays from whatever Brewery.
+## active_daily_goals/daily_goal_progress/... already hold — a freshly
+## constructed Brewery (BrewEngine.start_new_game()) and an old save saved
+## before this persistence existed both leave those fields at their script
+## defaults (null/0 for every slot), so this one path correctly covers both
+## "genuinely new run" and "loaded a continuing save" without needing to
+## tell them apart.
+func _load_from_brewery(brewery : Brewery) -> void:
 	for i in range(ACTIVE_GOAL_COUNT):
-		active_goals[i] = null
-		_progress[i] = 0
-		_reputation_baseline[i] = 0
-		_effective_target[i] = 0
+		active_goals[i] = brewery.active_daily_goals[i]
+		_progress[i] = brewery.daily_goal_progress[i]
+		_reputation_baseline[i] = brewery.daily_goal_reputation_baseline[i]
+		_effective_target[i] = brewery.daily_goal_effective_target[i]
 	goal_progress_changed.emit()
+
+
+## Mirror of _load_from_brewery(), written back onto the tracked Brewery
+## after every mutation so SaveManager.save_game() (which only ever
+## serializes the Brewery resource) actually carries this state along —
+## see Brewery.active_daily_goals' own doc comment.
+func _sync_to_brewery() -> void:
+	if _tracked_brewery == null:
+		return
+	_tracked_brewery.active_daily_goals = active_goals.duplicate()
+	_tracked_brewery.daily_goal_progress = _progress.duplicate()
+	_tracked_brewery.daily_goal_reputation_baseline = _reputation_baseline.duplicate()
+	_tracked_brewery.daily_goal_effective_target = _effective_target.duplicate()
 
 
 ## A surviving avoid-goal (never breached its limit) succeeds; any
