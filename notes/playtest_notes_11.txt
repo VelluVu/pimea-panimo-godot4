@@ -1,0 +1,166 @@
+Pimeä Panimo — Full-Loop Playtest (Post Em-Dash Cleanup / Receipt Font
+Bump: Brewing Flow, Shop Purchase, Daily Goals, Organic Customer Flow)
+Date: 2026-09-16
+Method: live playthrough via the godot-ai MCP session, driven through
+editor_manage(game_eval) executing real GDScript against the running
+game and real button presses (emit_signal("pressed")/slider value
+changes on the actual nodes) for every interaction under test, same
+methodology as every prior playtest note in this series. Loaded the
+player's real continuing save via "Jatka peli" rather than a fresh
+game. Covered: expanding the DailyGoalsPanel, a full shop → brewery
+ingredient/purchase/brew loop (buying yeast, filling a Kotikalja
+recipe, starting the brew), and two organic (unscripted) customer
+walk-ins — one successful sale, one turned-away unhappy customer —
+observed without any manual shortcuts.
+
+
+TESTING METHODOLOGY NOTES (not gameplay bugs, worth recording)
+=========================================================================
+- Reconfirmed the standing game_eval fragility finding repeatedly this
+  session: any compile error (bad syntax), runtime error (wrong
+  property/method name, e.g. TimeManager.current_day instead of
+  Brewery.current_day, or Inventory.owned_ingredients instead of
+  Inventory.items), or null-access from a guessed node path freezes the
+  whole game session (game_status.status="break") — stop+relaunch is
+  required every time, resume() does not help. Hit this 5 times in one
+  session from guessing property/signal/node names instead of reading
+  the source first; reading the target script before every eval call
+  (property names, signal names, exact node paths from
+  get_ui_elements) is the only reliable way to avoid it.
+- New finding this session: project_manage(op="stop") — the MCP
+  equivalent of the editor's Stop button — hard-kills the running game
+  process rather than sending it an OS-level window-close request. Since
+  SaveManager only autosaves from get_tree().root.close_requested (see
+  src/autoload/save_manager.gd _ready()), stopping the game this way
+  never triggers that autosave, so any progress made since the last
+  real save (day change, manual Options save, or an actual window
+  close) is silently discarded on the next "Jatka peli" — confirmed by
+  money/reputation reverting from a post-sale 271.6€/76 back to the
+  original continued save's 273.5€/71 after an MCP-triggered
+  relaunch. This is a testing-environment quirk, not a player-facing
+  bug (a real player closing the window normally goes through
+  close_requested and does autosave) — but it means future MCP
+  playtest sessions can't treat a post-crash "Continue" as resuming
+  the crashed session's actual state, and should re-verify brewery
+  stats via a safe eval read immediately after continuing rather than
+  assuming continuity.
+- emit_signal("pressed") on a freshly-fetched button node occasionally
+  had no visible effect when called back-to-back with a scene
+  transition on the same eval tick (the DailyGoalsPanel toggle button's
+  first press didn't expand the panel); adding `await
+  get_tree().process_frame` after the emit before reading the result
+  back made every subsequent toggle land correctly. Worth building
+  into the standard interaction pattern for this kind of test, on top
+  of the already-known input-simulation-unreliable finding.
+
+
+CONFIRMED WORKING — SHOP → BREWERY → BREW LOOP (real button presses)
+=========================================================================
+- DailyGoalsPanel's header ToggleButton correctly expands/collapses the
+  whole GoalsVBox (▲/▼ icon flips correctly), and with it expanded, the
+  always-on main-goal lines (Päivät x/15, Maine x/100) and the three
+  daily goal lines all rendered inside the panel's bounds with no
+  overlap against the top bar, DevConsole, or anything else on screen.
+- Warehouse held only loose Pilsner malt (23 kg) and zero yeast at the
+  start of this session — the brewing view's "Täytä resepti" button
+  was correctly disabled and the ingredient-selection slider's Add
+  button correctly no-ops at slider value 0 (silently, by design —
+  see BrewingView._on_add_button_pressed()'s early-return), matching
+  the FirstBrewHintBanner's "buy ingredients first" guidance for this
+  save.
+- Shop purchase: selected "Leivonta hiiva" (yeast, tab 2 of the
+  malt/hop/yeast TabBar), set the buy-amount slider to 1, pressed
+  Osta — correctly charged exactly 2 € (273.5 € → 271.5 €) and the
+  ingredient became immediately available back in the brewing view.
+- Brewing view: added 3 kg Pilsner malt and 1 unit Leivonta hiiva to
+  the table via the slider + Lisää button; both requirement rows
+  turned green (3/3 kg, 1/1 kpl) and the live preview correctly
+  resolved to "Arvio: Kotikalja, EBC 2, IBU 0, laatu 100%" — the
+  16pt-vs-13pt receipt/preview font sizing from earlier this session
+  rendered cleanly with no clipping in the narrow (135px) preview
+  panel. Pressing Pane started the brew, charged a small production
+  fee (271.5 € → 269.1 €), and correctly cleared the table back to an
+  empty "resepti:" state.
+
+
+CONFIRMED WORKING — ORGANIC CUSTOMER FLOW (no manual shortcuts)
+=========================================================================
+- A real walk-in ("Opiskelija Otto") requesting Kotikalja resolved
+  through the live dialogue → auto-sale pipeline on its own: +2.5 €
+  and +6 reputation, with the customer sprite correctly shown holding
+  a bottle afterward. All three live daily goals (Mainetta, and both
+  Rahaa tiers) ticked up in the same frame this resolved, confirming
+  DailyGoalManager's signal-driven progress tracking reacts correctly
+  to a fully organic sale.
+- A second walk-in ("Zgen Konsta") wanted a non-alcoholic style the
+  warehouse didn't have and was turned away ("ei mun tarvii cap-
+  juomaa, painun muualle") — correctly cost exactly 1 reputation and
+  added 1% LVV risk, and the live REPUTATION_GAIN goal (Mainetta)
+  correctly ticked back down by 1 in the same frame, exactly matching
+  its documented "re-derived live from brewery.reputation" behavior
+  (DailyGoalManager._on_brewery_state_changed()) rather than only ever
+  counting upward.
+- No new editor/compile errors introduced by any of this session's
+  interactions; the standing DailyGoalManager-autoload-reload /
+  AVI→LVV-rename-stale-resource editor-log artifacts from prior
+  sessions were the only entries present, unchanged. Full automated
+  suite stayed green throughout (103/103, 16 suites, both before and
+  after this session's interactions).
+
+
+BUG FOUND — DAILY GOAL PROGRESS NEVER SURVIVES A SAVE/CONTINUE
+=========================================================================
+DailyGoalManager's per-slot state (active_goals, _progress,
+_reputation_baseline, _effective_target) is held entirely in that
+autoload's own memory and is never written by SaveManager.save_game()
+(which only serializes BrewEngine.current_brewery — see
+src/autoload/save_manager.gd). SaveManager.load_game() always
+constructs a brand-new Brewery instance via
+ResourceLoader.load(..., CACHE_MODE_IGNORE); DailyGoalManager's
+_on_brewery_state_changed() treats any new Brewery instance as "a
+fresh run just started" (per its own docstring) and unconditionally
+resets and re-rolls all 3 active goals from scratch.
+
+Net effect: every time a player quits to the main menu (or fully
+closes the game — the game explicitly autosaves on window close, see
+SaveManager._on_close_requested()) and picks "Jatka Peliä", whatever
+progress they'd made on the current day's 3 daily goals is silently
+discarded and replaced with a brand-new random set at 0 progress, with
+no indication this happened. Reproduced 3 times this session across
+independent load cycles (each producing a different random goal
+trio). Money, reputation, day, risk, level, and warehouse contents all
+correctly survive the same save/load — only the daily goals reset,
+which reads as inconsistent since everything else about a day in
+progress carries over.
+
+Given a default day is 300 real-time seconds, this is very reachable
+in normal play (pause, alt-tab out and back rarely matters, but
+actually closing the app and resuming later is an explicitly supported
+flow) and undercuts the goal system's "quest tracker" framing — a
+player who checks progress, quits for a break, and resumes will find
+their tracked goals silently swapped out from under them.
+
+Suggested fix direction (not implemented, playtest-only per this
+session's scope): serialize active_goals (by id/resource path),
+_progress, _reputation_baseline, and _effective_target onto Brewery (or
+a dedicated exported sub-resource) alongside the rest of the run state,
+and have DailyGoalManager restore from it in _on_brewery_state_changed()
+instead of unconditionally re-rolling whenever brewery != _tracked_brewery
+does the load path also need to distinguish "loaded save" from "genuinely
+new run" for this to work correctly.
+
+
+VERDICT
+==========
+The shop-to-brew loop (buying yeast, filling a recipe, starting a
+brew) and the organic customer pipeline (both a successful sale and a
+turned-away unhappy customer) held up cleanly under real, unscripted
+play, with correct money/reputation/risk changes and correctly
+live-updating daily goal progress in both directions. This session's
+own earlier changes (receipt/preview font size bump, em-dash removal
+from player-facing strings) showed no regressions — the recipe preview
+label rendered its longer text cleanly at the larger size. One real
+bug was found and root-caused: daily goal progress is not part of the
+save file and is silently lost on every continue/reload, which is
+worth fixing given how reachable a mid-day quit-and-resume is in
+normal play. Automated suite held at 103/103 throughout.
