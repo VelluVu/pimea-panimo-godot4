@@ -1,10 +1,13 @@
 #SaveManager (Autoload)
 extends Node
 
-## Persists BrewEngine.current_brewery to a single savegame slot. Every
-## piece of game state (Inventory, BrewBatch, BrewRecipe, BrewPreparation)
-## is already a Resource with @export fields, so ResourceSaver/ResourceLoader
-## serialize the whole graph without any manual field mapping.
+## Persists BrewEngine.current_brewery to a single savegame slot. Almost all
+## game state (Inventory, BrewBatch, BrewRecipe, BrewPreparation) is already
+## a Resource with @export fields, so ResourceSaver/ResourceLoader serialize
+## the whole graph without any manual field mapping. The exception is live
+## state that genuinely lives in another autoload (e.g. TimeManager's day
+## countdown) — save_game() flushes each of those into a Brewery field first
+## so it isn't silently lost/reset on the next load.
 
 const SAVE_PATH: String = "user://savegame.tres"
 
@@ -18,6 +21,10 @@ func has_save() -> bool:
 
 
 func save_game() -> void:
+	# Live autoload state that Brewery's own fields don't capture on their
+	# own has to be flushed in here before serializing — see each sync
+	# method's own docstring for why it can't just be re-derived after load.
+	TimeManager.sync_remaining_time_to_brewery(BrewEngine.current_brewery)
 	ResourceSaver.save(BrewEngine.current_brewery, SAVE_PATH)
 
 
