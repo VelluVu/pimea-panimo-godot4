@@ -1,7 +1,7 @@
 class_name RiskBribeEventData
 extends SpecialEventData
 
-## The one direct, player-initiated way to bring AVI risk down: pay a bribe
+## The one direct, player-initiated way to bring LVV risk down: pay a bribe
 ## instead of handing over beer. Costs money (and typically a little
 ## reputation, via reward_reputation — bribery isn't exactly good PR) rather
 ## than requiring any bottles.

@@ -11,6 +11,6 @@ first_names = Array[String](["Oona", "Anni", "Emma", "Iida", "Aino", "Sanni"])
 min_quality = 0.1
 sprite_frames = ExtResource("2_sprite")
 dialogue_success = "Jes, kunnon oluet!"
-dialogue_fallback = "Kaikki käy."
+dialogue_fallback = "Noni."
 dialogue_reject = "Oho, melekosta litkua."
 metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="RunPerk" format=3 uid="uid://d32fci4gbvyoj"]
+
+[ext_resource type="Script" uid="uid://dewmdbm4a0vst" path="res://src/classes/run_perk.gd" id="1_hyvat"]
+
+[resource]
+script = ExtResource("1_hyvat")
+perk_name = "Hyvät suhteet"
+description = "Baarien pitäjät pitävät sinusta halpamyynnin ja baarivientien tulot hieman paremmat."
+icon_placeholder = "🍺"
+distribution_income_multiplier = 1.1

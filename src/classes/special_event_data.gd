@@ -29,7 +29,7 @@ extends Resource
 ## get_random_special_event() rolls, given the current run's state —
 ## uniform (1.0) by default. Override in a subclass to bias toward itself
 ## under specific conditions, e.g. RiskBribeEventData weighting itself up
-## as AVI risk climbs, so the one direct way to shed risk actually shows up
+## as LVV risk climbs, so the one direct way to shed risk actually shows up
 ## more often when the player needs it instead of being exactly as likely
 ## as every other event regardless of how much danger they're in.
 func get_weight(_brewery: Brewery) -> float:

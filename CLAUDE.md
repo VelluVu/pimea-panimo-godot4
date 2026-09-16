@@ -3,7 +3,7 @@ markdown# Project Instructions and Context - Pimeä Panimo
 ## Game Description and Genre
 - **Genre:** 2D Humorous, Unrealistic Management/Simulation, Casual.
 - **Theme:** The player runs a brewery in a dark cellar. Funny, unique customers arrive to buy beer or make special requests.
-- **In-Game Resources:** Money (Euros), Reputation (Maine), and AVI Risk (AVI-riski).
+- **In-Game Resources:** Money (Euros), Reputation (Maine), and LVV Risk (LVV-riski).
 - **Perspective:** Side-scrolling.
 - **Language:** Code and comments are written in **English**, but the in-game text and user interface display text are written in **Finnish**.
 

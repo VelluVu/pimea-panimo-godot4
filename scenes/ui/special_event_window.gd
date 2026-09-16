@@ -5,9 +5,8 @@ extends Panel
 const DISPLAY_TIME_SECONDS = 3.5
 
 @onready var text_label: Label = $MarginContainer/MainVBox/SpecialLabel
-@onready var accept_button: Button = $MarginContainer/MainVBox/ButtonRow/AcceptButton
-@onready var reject_button: Button = $MarginContainer/MainVBox/ButtonRow/RejectButton
-@onready var progress_bar: ProgressBar = $MarginContainer/MainVBox/ProgressBar
+@onready var joo_button: Button = $MarginContainer/MainVBox/BottomPanel/HBoxContainer/JooButton
+@onready var progress_bar: ProgressBar = $MarginContainer/MainVBox/BottomPanel/HBoxContainer/ProgressBar
 @onready var margin_container: MarginContainer = $MarginContainer
 
 var event_data: SpecialEventData
@@ -18,11 +17,8 @@ var is_active: bool = true
 func _ready() -> void:
 	text_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 
-	accept_button.visible = true
-	reject_button.visible = true
-
-	accept_button.pressed.connect(_on_accept_pressed)
-	reject_button.pressed.connect(_on_reject_pressed)
+	joo_button.visible = true
+	joo_button.pressed.connect(_on_joo_button_pressed)
 
 
 func _process(delta: float) -> void:
@@ -53,30 +49,25 @@ func _resize_to_fit_content() -> void:
 	custom_minimum_size = margin_container.get_combined_minimum_size()
 
 
-func _on_accept_pressed() -> void:
-	_hide_buttons()
+func _on_joo_button_pressed() -> void:
+	_hide_button()
 	var response = SpecialEventManager.process_accept(event_data)
 	text_label.text = event_data.event_caller_name + ": " + response
 	_start_fade_out()
 
 
-func _on_reject_pressed() -> void:
-	_hide_buttons()
-	var response = SpecialEventManager.process_reject(event_data)
-	text_label.text = event_data.event_caller_name + ": " + response
-	_start_fade_out()
-
-
+## Only reached by inaction (the player let the timer run out without
+## pressing "Joo") — there's no decline button anymore, since the brewery
+## never turns down business on purpose; see process_reject's docstring.
 func _timeout_event() -> void:
-	_hide_buttons()
+	_hide_button()
 	var response = SpecialEventManager.process_reject(event_data)
 	text_label.text = event_data.event_caller_name + ": " + response
 	_start_fade_out()
 
 
-func _hide_buttons() -> void:
-	reject_button.visible = false
-	accept_button.visible = false
+func _hide_button() -> void:
+	joo_button.visible = false
 	is_active = false
 	progress_bar.visible = false
 

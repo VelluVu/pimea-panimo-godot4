@@ -153,20 +153,13 @@ func _advance_day() -> void:
 	# Cellar aging no longer runs here — it ticks continuously on its own
 	# timer (see AGING_TICK_SECONDS / _on_aging_tick()) instead of jumping
 	# once per day close.
-	_check_risk_goal_reward(brewery)
-	_check_daily_goal_streak(brewery)
-	# bottles_goal_met_today reflects the day that's ending, read by
-	# _check_daily_goal_streak() just above — reset it now for the new day
-	# that's about to start.
-	brewery.bottles_goal_met_today = false
 	_charge_daily_utility_bills(brewery)
 
-	# bottles_sold_toward_goal deliberately does NOT reset here — a slow
-	# day's progress carries into the next one instead of being wiped; it
-	# only resets (with overflow preserved) when the goal is actually
-	# reached, in CustomerManager._check_bottles_goal_reward().
-
 	SaveManager.save_game()
+	# DailyGoalManager listens for this directly rather than being driven
+	# from here — it resolves whatever's still active (success/failure) and
+	# rolls each slot's replacement in response, same as it does reactively
+	# mid-day when a goal completes or an avoid-type one is breached.
 	day_changed.emit(brewery.current_day)
 
 	_check_survival_ending(brewery)
@@ -191,62 +184,7 @@ func _check_survival_ending(brewery : Brewery) -> void:
 	brewery.trigger_ending("survived")
 
 
-const RISK_GOAL_REWARD_NAME : String = "Riskitavoite"
-
-## The risk goal is a "stay under X" goal, unlike bottles' "reach X" — it can
-## only be confirmed met once the day is actually over (risk could still have
-## climbed past the limit later), so it pays out here instead of instantly.
-func _check_risk_goal_reward(brewery : Brewery) -> void:
-	if not brewery.tutorial_complete() or brewery.risk >= DailyGoalsPanel.RISK_LIMIT:
-		return
-
-	brewery.money += DailyGoalsPanel.RISK_GOAL_REWARD_MONEY
-	brewery.reputation += DailyGoalsPanel.RISK_GOAL_REWARD_REPUTATION
-	BrewerySignals.daily_goal_reward_granted.emit(RISK_GOAL_REWARD_NAME, DailyGoalsPanel.RISK_GOAL_REWARD_MONEY, DailyGoalsPanel.RISK_GOAL_REWARD_REPUTATION)
-
-
-const STREAK_BONUS_NAME_FORMAT : String = "Putki (%d pv)"
-## Every Nth consecutive day both daily goals are met, not every single one
-## — a flat repeat wouldn't be an "escalating" bonus, and paying out daily
-## on top of the two goals' own daily rewards would double-dip the same
-## good day three times over.
-const STREAK_BONUS_INTERVAL_DAYS : int = 3
-## Multiplied by the milestone number (1st = x1, 2nd = x2, ...) so the
-## payout actually escalates the longer the streak holds, instead of
-## paying the same flat bonus every STREAK_BONUS_INTERVAL_DAYS days.
-const STREAK_BONUS_BASE_MONEY : int = 15
-const STREAK_BONUS_BASE_REPUTATION : int = 3
-
-## Reads brewery.risk directly rather than a stored "risk goal met today"
-## flag — unlike the bottles goal (an instant, one-time crossing that needs
-## remembering, see Brewery.bottles_goal_met_today), whether risk currently
-## sits under the limit is already a live, stateless fact at the exact
-## moment this runs (right after _check_risk_goal_reward() resolves the
-## same condition for today), so there's nothing to separately track.
-## Called after _check_risk_goal_reward() specifically so both of today's
-## goal outcomes are settled before deciding whether the streak continues.
-func _check_daily_goal_streak(brewery : Brewery) -> void:
-	if not brewery.tutorial_complete():
-		return
-
-	var risk_met_today : bool = brewery.risk < DailyGoalsPanel.RISK_LIMIT
-	if not (brewery.bottles_goal_met_today and risk_met_today):
-		brewery.daily_goal_streak = 0
-		return
-
-	brewery.daily_goal_streak += 1
-	if brewery.daily_goal_streak % STREAK_BONUS_INTERVAL_DAYS != 0:
-		return
-
-	var milestone : int = brewery.daily_goal_streak / STREAK_BONUS_INTERVAL_DAYS
-	var bonus_money : int = STREAK_BONUS_BASE_MONEY * milestone
-	var bonus_reputation : int = STREAK_BONUS_BASE_REPUTATION * milestone
-	brewery.money += bonus_money
-	brewery.reputation += bonus_reputation
-	BrewerySignals.daily_goal_reward_granted.emit(STREAK_BONUS_NAME_FORMAT % brewery.daily_goal_streak, bonus_money, bonus_reputation)
-
-
-## Gated behind tutorial_complete() (same bar as the goal rewards above) so
+## Gated behind tutorial_complete() (same bar as DailyGoalManager's goals) so
 ## a brand-new player isn't billed for electricity/water before they've
 ## even bought their first ingredients.
 func _charge_daily_utility_bills(brewery : Brewery) -> void:

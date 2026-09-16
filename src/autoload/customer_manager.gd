@@ -144,16 +144,21 @@ func process_auto_sale(data: CustomerData) -> String:
 	var best_batch = find_best_batch_for(data)
 
 	# Nothing in stock at all, or nothing that clears this customer's
-	# strict requirements (see CustomerData.meets_strict_requirements) —
-	# either way they leave without buying. Still a small reputation/risk
-	# cost, not the fully free non-event this used to be: a customer turned
-	# away empty-handed complains loudly on the way out.
+	# strict requirements (see CustomerData.meets_strict_requirements,
+	# including the requires_preference_match gate) — either way they leave
+	# without buying. Penalty is per-customer (see CustomerData.
+	# no_match_reputation_penalty/no_match_risk_penalty, defaulting to the
+	# constants below): most customers still cost a little for being turned
+	# away empty-handed, but one who was never actually offered anything
+	# (e.g. Agentti's cover story not matching what's on tap) can be given
+	# zero.
 	if best_batch == null or best_batch.amount_bottles < BOTTLES_SOLD_PER_TRANSACTION:
 		var no_match_brewery := BrewEngine.current_brewery
 		if no_match_brewery != null:
-			no_match_brewery.reputation = max(0, no_match_brewery.reputation - NO_MATCH_REPUTATION_PENALTY)
-			no_match_brewery.add_risk(NO_MATCH_RISK_PENALTY)
-			BrewerySignals.sale_reputation_gained.emit(-NO_MATCH_REPUTATION_PENALTY)
+			no_match_brewery.reputation = max(0, no_match_brewery.reputation - data.no_match_reputation_penalty)
+			no_match_brewery.add_risk(data.no_match_risk_penalty)
+			BrewerySignals.sale_reputation_gained.emit(-data.no_match_reputation_penalty)
+			BrewerySignals.customer_unhappy.emit()
 			BrewerySignals.brewery_state_changed.emit(no_match_brewery)
 		return data.dialogue_no_match
 
@@ -185,6 +190,8 @@ func process_auto_sale(data: CustomerData) -> String:
 	# to reputation instead of tip — see Brewery.get_reputation_gain_multiplier().
 	var reputation_gain : int = roundi(results[KEY_REPUTATION] * brewery.get_reputation_gain_multiplier())
 	brewery.reputation = max(0, brewery.reputation + reputation_gain)
+	if reputation_gain < 0:
+		BrewerySignals.customer_unhappy.emit()
 	brewery.add_risk(results[KEY_RISK])
 	var sale_xp : int = Brewery.XP_PER_BOTTLE_SOLD * bottles_sold
 	brewery.add_xp(sale_xp)
@@ -205,10 +212,8 @@ func process_auto_sale(data: CustomerData) -> String:
 	if best_batch.amount_bottles <= 0:
 		brewery.inventory.brew_batches.erase(best_batch)
 
-	brewery.bottles_sold_toward_goal += bottles_sold
 	brewery.lifetime_bottles_sold += bottles_sold
 	BrewerySignals.bottles_sold.emit(bottles_sold)
-	_check_bottles_goal_reward(brewery)
 
 	var response_text : String = results[KEY_RESPONSE]
 
@@ -218,35 +223,6 @@ func process_auto_sale(data: CustomerData) -> String:
 	BrewerySignals.sale_reputation_gained.emit(brewery.reputation - reputation_before)
 	BrewerySignals.brewery_state_changed.emit(brewery)
 	return response_text
-
-
-const BOTTLES_GOAL_REWARD_NAME : String = "Annostavoite"
-
-## Instant payout the moment the bottles-sold target is crossed — rewarding
-## "reach X" goals right when they happen (rather than batching them into
-## the end-of-day recap) keeps the feedback close to the action that earned
-## it. The risk goal is the opposite case (a "stay under X" goal that can
-## only be confirmed at day's end) and is rewarded from
-## TimeManager._advance_day() instead.
-##
-## bottles_sold_toward_goal carries over across days (see Brewery), so
-## crossing the target here rolls it back down by the target amount rather
-## than to zero — any overflow from a multi-bottle sale still counts
-## toward the next cycle instead of being discarded.
-func _check_bottles_goal_reward(brewery: Brewery) -> void:
-	if not brewery.tutorial_complete():
-		return
-	if brewery.bottles_sold_toward_goal < DailyGoalsPanel.BOTTLES_TARGET:
-		return
-
-	brewery.bottles_sold_toward_goal -= DailyGoalsPanel.BOTTLES_TARGET
-	brewery.money += DailyGoalsPanel.BOTTLES_GOAL_REWARD_MONEY
-	brewery.reputation += DailyGoalsPanel.BOTTLES_GOAL_REWARD_REPUTATION
-	# See Brewery.bottles_goal_met_today's own docstring — this is the one
-	# place that can set it true; TimeManager resets it false at the start
-	# of the next day.
-	brewery.bottles_goal_met_today = true
-	BrewerySignals.daily_goal_reward_granted.emit(BOTTLES_GOAL_REWARD_NAME, DailyGoalsPanel.BOTTLES_GOAL_REWARD_MONEY, DailyGoalsPanel.BOTTLES_GOAL_REWARD_REPUTATION)
 
 
 func _trigger_bar_fight(brewery: Brewery, data: CustomerData, batch: BrewBatch) -> String:

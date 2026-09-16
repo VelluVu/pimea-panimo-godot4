@@ -2,7 +2,7 @@
 
 A 2D side-scrolling business management/crafting game built in **Godot 4 (GDScript)**, parodying Finnish alcohol bureaucracy and the murky world of bootleg brewing.
 
-The player buys raw ingredients from a wholesaler, hauls them from the storage cabinet to the preparation table, tunes the ratios, and brews dynamically-generated beer styles (or dark moonshine) for the cellar shelf — all while dodging AVI risk and the inspectors who come knocking. Funny, unique customers wander in with orders and special requests. In-game currencies are **Money (Euros)**, **Reputation (Maine)**, and **AVI Risk (AVI-riski)**.
+The player buys raw ingredients from a wholesaler, hauls them from the storage cabinet to the preparation table, tunes the ratios, and brews dynamically-generated beer styles (or dark moonshine) for the cellar shelf — all while dodging LVV risk and the inspectors who come knocking. Funny, unique customers wander in with orders and special requests. In-game currencies are **Money (Euros)**, **Reputation (Maine)**, and **LVV Risk (LVV-riski)**.
 
 > Code and comments are written in English; all in-game text and UI copy are in Finnish.
 
@@ -33,11 +33,11 @@ The player buys raw ingredients from a wholesaler, hauls them from the storage c
   main.tscn                # Main game scene (loads UI + world)
   📁 ui/                    # Component-based GUI scenes & controllers
 	 gui.gd                    # Top-level UI layer manager
-	 top_panel_resources.gd    # Money / Reputation / AVI Risk display
+	 top_panel_resources.gd    # Money / Reputation / LVV Risk display
 	 left_shop_view.gd, left_brewing_view.gd, right_warehouse_view.gd
 	 ingredient_inventory_panel.gd, brew_preparation_panel.gd, beer_batch_panel.gd
 	 shop_entrance_panel.gd, brewery_entrance_panel.gd
-	 recipe_library_window.gd, special_event_window.gd, avi_raid_window.gd
+	 recipe_library_window.gd, special_event_window.gd, lvv_raid_window.gd
 	 dialog_view.gd, speech_bubble.gd, clock_ui.gd, feature_tester_panel.gd
 📁 src/
   📁 autoload/              # Global singletons (orchestration & signal buses)

@@ -62,7 +62,7 @@ func _setup_tension_player() -> void:
 func _connect_signals() -> void:
 	BrewerySignals.brewery_state_changed.connect(_on_brewery_state_changed)
 	BrewerySignals.style_discovered.connect(_on_style_discovered)
-	BrewerySignals.avi_raid_triggered.connect(_on_avi_raid_triggered)
+	BrewerySignals.lvv_raid_triggered.connect(_on_lvv_raid_triggered)
 	SpecialEventManager.special_event_triggered.connect(_on_special_event_triggered)
 
 	GUISignals.buy_ingredient.connect(_on_ui_action.unbind(2))
@@ -112,8 +112,8 @@ func _on_style_discovered(_style: int) -> void:
 	play_sfx(bank.sfx_style_discovered)
 
 
-func _on_avi_raid_triggered(_confiscated_bottles: int, _fine_amount: float, _reputation_lost: int) -> void:
-	play_sfx(bank.sfx_avi_alarm)
+func _on_lvv_raid_triggered(_confiscated_bottles: int, _fine_amount: float, _reputation_lost: int) -> void:
+	play_sfx(bank.sfx_lvv_alarm)
 
 
 func _on_special_event_triggered(_event_data: SpecialEventData) -> void:
@@ -133,7 +133,7 @@ func _update_tension(risk: int) -> void:
 		return
 	_last_risk = risk
 
-	var raid_threshold : int = Brewery.AVI_RAID_THRESHOLD
+	var raid_threshold : int = Brewery.LVV_RAID_THRESHOLD
 	var brewery := BrewEngine.current_brewery
 	if brewery != null:
 		raid_threshold = brewery.get_effective_raid_threshold()

@@ -1,14 +1,14 @@
-[gd_resource type="Resource" script_class="GroupVisitEventData" format=3]
+[gd_resource type="Resource" script_class="GroupVisitEventData" format=3 uid="uid://bcube7mvdnvr7"]
 
-[ext_resource type="Script" path="res://src/classes/group_visit_event_data.gd" id="1_event"]
-[ext_resource type="Resource" path="res://src/resources/customers/zgen.tres" id="2_customer"]
+[ext_resource type="Script" uid="uid://cnkqeqeaug3gu" path="res://src/classes/group_visit_event_data.gd" id="1_event"]
+[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/classes/customer_data.gd" id="1_v3hht"]
+[ext_resource type="Resource" uid="uid://be7oshavrwqmr" path="res://src/resources/customers/zgen.tres" id="2_customer"]
 [ext_resource type="Resource" path="res://src/resources/customers/zgen_naaras.tres" id="3_customer_naaras"]
 
 [resource]
 script = ExtResource("1_event")
-banner_text = "Zgen-lauma rynnii sisään puhelimet pystyssä —
-kaikki haluaa alkoholitonta sisältöä somettaan, fr fr."
-customer_data_options = [ExtResource("2_customer"), ExtResource("3_customer_naaras")]
+banner_text = "Zgen-lauma rynnii sisään puhelimet pystyssä kaikki haluaa alkoholitonta sisältöä somettaan, fr fr."
+customer_data_options = Array[ExtResource("1_v3hht")]([ExtResource("2_customer"), ExtResource("3_customer_naaras")])
 min_group_size = 8
 max_group_size = 14
 walk_in_stagger_seconds = 0.25

@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_tunnettu")
 modifier_name = "Tunnettu nimi"
-description = "Maine karttuu nopeammin, mutta tunnettuus kiinnittää myös AVI:n huomion aiemmin."
-avi_threshold_multiplier = 0.85
+description = "Maine karttuu nopeammin, mutta tunnettuus kiinnittää myös LVV:n huomion aiemmin."
+lvv_threshold_multiplier = 0.85
 reputation_gain_multiplier = 1.25
 icon_placeholder = "📣"
 metadata/_custom_type_script = "uid://dka80d13fropj"

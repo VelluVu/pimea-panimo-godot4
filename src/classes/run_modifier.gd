@@ -2,7 +2,7 @@ class_name RunModifier
 extends Resource
 
 ## Rolled once per run in Brewery._init() (see Brewery.run_modifier) and
-## read at the handful of call sites that touch AVI raids and ingredient
+## read at the handful of call sites that touch LVV raids and ingredient
 ## pricing — never mutates shared IngredientData/Brewery constants in
 ## place, since those are reused across runs.
 
@@ -21,9 +21,9 @@ extends Resource
 ## Texture2D once art is ready, no other code should need to change.
 @export var icon_placeholder: String = "🎲"
 
-## Multiplies Brewery.AVI_RAID_THRESHOLD — see Brewery.get_effective_raid_threshold().
+## Multiplies Brewery.LVV_RAID_THRESHOLD — see Brewery.get_effective_raid_threshold().
 ## Below 1.0 means raids trigger sooner (more dangerous); above 1.0 means later.
-@export var avi_threshold_multiplier: float = 1.0
+@export var lvv_threshold_multiplier: float = 1.0
 
 ## Multiplies IngredientData.base_price wherever it's read for a real
 ## transaction or cost preview (Brewery._on_buy_ingredient/_on_sell_ingredient,
@@ -34,7 +34,7 @@ extends Resource
 
 ## Same three fields as RunPerk (see its own docstring), added so a run's
 ## starting conditions can trade against quality/reputation/tip too, not
-## just AVI risk vs. ingredient price — e.g. a modifier that boosts
+## just LVV risk vs. ingredient price — e.g. a modifier that boosts
 ## reputation gain but tightens the raid threshold, a genuinely different
 ## axis than every existing modifier's risk-vs-price shape. Folded into
 ## Brewery.get_quality_bonus()/get_reputation_gain_multiplier()/
@@ -52,8 +52,8 @@ extends Resource
 func get_stat_summary() -> String:
 	var lines : PackedStringArray = []
 
-	if avi_threshold_multiplier != 1.0:
-		lines.append(StringContainer.MODIFIER_RAID_THRESHOLD_STAT_STRING % roundi((avi_threshold_multiplier - 1.0) * 100))
+	if lvv_threshold_multiplier != 1.0:
+		lines.append(StringContainer.MODIFIER_RAID_THRESHOLD_STAT_STRING % roundi((lvv_threshold_multiplier - 1.0) * 100))
 	if ingredient_price_multiplier != 1.0:
 		lines.append(StringContainer.MODIFIER_INGREDIENT_PRICE_STAT_STRING % roundi((ingredient_price_multiplier - 1.0) * 100))
 	if quality_bonus != 0.0:

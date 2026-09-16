@@ -10,6 +10,7 @@ offset_bottom = 324.0
 script = ExtResource("1_options")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=27572247]
+mouse_filter = 2
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -19,12 +20,15 @@ theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
 [node name="MainVBox" type="VBoxContainer" parent="MarginContainer" unique_id=35933806]
+mouse_filter = 2
 layout_mode = 2
 
 [node name="HeaderHBox" type="HBoxContainer" parent="MarginContainer/MainVBox" unique_id=2070057611]
+mouse_filter = 2
 layout_mode = 2
 
 [node name="TitleLabel" type="Label" parent="MarginContainer/MainVBox/HeaderHBox" unique_id=388569182]
+mouse_filter = 2
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Asetukset"
@@ -43,13 +47,16 @@ size_flags_vertical = 3
 current_tab = 0
 
 [node name="SoundTab" type="VBoxContainer" parent="MarginContainer/MainVBox/TabContainer" unique_id=1236797525]
+mouse_filter = 2
 layout_mode = 2
 metadata/_tab_index = 0
 
 [node name="MasterRow" type="HBoxContainer" parent="MarginContainer/MainVBox/TabContainer/SoundTab" unique_id=1004777626]
+mouse_filter = 2
 layout_mode = 2
 
 [node name="MasterLabel" type="Label" parent="MarginContainer/MainVBox/TabContainer/SoundTab/MasterRow" unique_id=1022736786]
+mouse_filter = 2
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 text = "Päävolyymi"
@@ -61,9 +68,11 @@ max_value = 1.0
 step = 0.05
 
 [node name="MusicRow" type="HBoxContainer" parent="MarginContainer/MainVBox/TabContainer/SoundTab" unique_id=323540108]
+mouse_filter = 2
 layout_mode = 2
 
 [node name="MusicLabel" type="Label" parent="MarginContainer/MainVBox/TabContainer/SoundTab/MusicRow" unique_id=1066208381]
+mouse_filter = 2
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 text = "Musiikki"
@@ -79,9 +88,11 @@ layout_mode = 2
 text = "Pois"
 
 [node name="SfxRow" type="HBoxContainer" parent="MarginContainer/MainVBox/TabContainer/SoundTab" unique_id=608562062]
+mouse_filter = 2
 layout_mode = 2
 
 [node name="SfxLabel" type="Label" parent="MarginContainer/MainVBox/TabContainer/SoundTab/SfxRow" unique_id=554244063]
+mouse_filter = 2
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 text = "Äänitehosteet"
@@ -97,14 +108,17 @@ layout_mode = 2
 text = "Pois"
 
 [node name="DisplayTab" type="VBoxContainer" parent="MarginContainer/MainVBox/TabContainer" unique_id=1026833400]
+mouse_filter = 2
 visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
 [node name="FullscreenRow" type="HBoxContainer" parent="MarginContainer/MainVBox/TabContainer/DisplayTab" unique_id=860987757]
+mouse_filter = 2
 layout_mode = 2
 
 [node name="FullscreenLabel" type="Label" parent="MarginContainer/MainVBox/TabContainer/DisplayTab/FullscreenRow" unique_id=1723292219]
+mouse_filter = 2
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 text = "Koko näyttö"
@@ -113,11 +127,13 @@ text = "Koko näyttö"
 layout_mode = 2
 
 [node name="CreditsTab" type="VBoxContainer" parent="MarginContainer/MainVBox/TabContainer" unique_id=1018113520]
+mouse_filter = 2
 visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 
 [node name="CreditsLabel" type="Label" parent="MarginContainer/MainVBox/TabContainer/CreditsTab" unique_id=1773061743]
+mouse_filter = 2
 layout_mode = 2
 text = "Pimeä Panimo
 

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="RunPerk" format=3 uid="uid://bmxu63dl054xh"]
+
+[ext_resource type="Script" uid="uid://dewmdbm4a0vst" path="res://src/classes/run_perk.gd" id="1_hiljainen"]
+
+[resource]
+script = ExtResource("1_hiljainen")
+perk_name = "Hiljainen kulma"
+description = "Pidät matalaa profiilia LVV:n ratsiakynnys nousee hieman."
+icon_placeholder = "🤫"
+raid_threshold_multiplier = 1.08
