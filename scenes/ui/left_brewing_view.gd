@@ -3,7 +3,7 @@ extends Control
 
 const AMOUNT_FORMAT : String = "%d %s"
 const FILL_FROM_INVENTORY_BUTTON_TEXT : String = "Täytä resepti"
-const FILL_FROM_INVENTORY_BUTTON_TOOLTIP : String = "Täytä puuttuvat ainesosat pöydälle varastosta ladatun reseptin mukaan — pois käytöstä, jos varastossa ei ole tarpeeksi jotain ainesosaa."
+const FILL_FROM_INVENTORY_BUTTON_TOOLTIP : String = "Täytä puuttuvat ainesosat pöydälle varastosta ladatun reseptin mukaan. Pois käytöstä, jos varastossa ei ole tarpeeksi jotain ainesosaa."
 
 @onready var current_item_label : Label = $Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/IngredientTypeSelector/IngredientRow/CurrentItemLabel
 @onready var ingredient_type_selector : IngredientTypeSelector = $Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/IngredientTypeSelector

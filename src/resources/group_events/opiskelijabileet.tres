@@ -7,7 +7,7 @@
 
 [resource]
 script = ExtResource("1_event")
-banner_text = "Fuksivuosikurssi ryntää ovesta sisään haalarit päällä —
+banner_text = "Fuksivuosikurssi ryntää ovesta sisään haalarit päällä,
 halvinta kaljaa heti tiskiin!"
 customer_data_options = Array[ExtResource("1_5hgrj")]([ExtResource("2_customer"), ExtResource("3_customer_naaras")])
 min_group_size = 7

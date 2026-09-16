@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_tasainen_varovaisuus")
 perk_name = "Tasainen varovaisuus"
-description = "Opit varomaan johdonmukaisesti — LVV:n ratsiakynnys nousee tasaisesti joka poiminnalla."
+description = "Opit varomaan johdonmukaisesti. LVV:n ratsiakynnys nousee tasaisesti joka poiminnalla."
 icon_placeholder = "🛡️"
 tier = 1
 raid_threshold_multiplier = 1.12

@@ -24,7 +24,7 @@ const HEADER_FONT_SIZE : int = 18
 ## busted/bankrupt run still reads fine here ("record" is just the best
 ## score on file, not necessarily a "survived" run).
 const RECORD_FORMAT : String = "Ennätys: %d pistettä (päivä %d, %d annosta)"
-const NO_RECORD_TEXT : String = "Ei vielä ennätystä — tästä se lähtee."
+const NO_RECORD_TEXT : String = "Ei vielä ennätystä. Tästä se lähtee."
 
 @onready var title_label : Label = $MarginContainer/MainVBox/TitleLabel
 @onready var record_label : Label = $MarginContainer/MainVBox/RecordLabel

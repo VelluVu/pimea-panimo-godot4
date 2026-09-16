@@ -5,6 +5,6 @@
 [resource]
 script = ExtResource("1_mummon")
 perk_name = "Mummon resepti"
-description = "Löysit muistivihkosta vanhan niksin — jokainen erä saa siitä pienen laatupiikin."
+description = "Löysit muistivihkosta vanhan niksin. Jokainen erä saa siitä pienen laatupiikin."
 icon_placeholder = "📜"
 quality_bonus = 0.06
