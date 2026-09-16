@@ -480,7 +480,7 @@ func _cmd_brew(args: PackedStringArray) -> void:
 		return
 
 	if args.is_empty():
-		_log("Käyttö: brew <tyyli> — esim. 'brew ipa'. Saatavilla: %s" % _available_style_names(brewery))
+		_log("Käyttö: brew <tyyli>, esim. 'brew ipa'. Saatavilla: %s" % _available_style_names(brewery))
 		return
 
 	var wanted := args[0].to_upper().replace(" ", "_")
@@ -537,7 +537,7 @@ func _cmd_sell(args: PackedStringArray) -> void:
 		return
 
 	if args.is_empty():
-		_log("Käyttö: sell [määrä] <tyyli> — esim. 'sell 1 ipa'. Saatavilla: %s" % _available_style_names(brewery))
+		_log("Käyttö: sell [määrä] <tyyli>, esim. 'sell 1 ipa'. Saatavilla: %s" % _available_style_names(brewery))
 		return
 
 	var quantity : int = 1
@@ -594,7 +594,7 @@ func _cmd_sell(args: PackedStringArray) -> void:
 	var breakdown : SaleBreakdown = sale_result.entry.breakdown
 	var final_cash : float = sale_result.net - production_fee.total
 
-	_log("[b]%s x%d[/b] (%.1f%% ABV) — listahinta %.2f €/annos" % [matched_style.style_name, quantity, breakdown.abv, breakdown.price_per_bottle])
+	_log("[b]%s x%d[/b] (%.1f%% ABV), listahinta %.2f €/annos" % [matched_style.style_name, quantity, breakdown.abv, breakdown.price_per_bottle])
 	_log("  Raaka-ainekulut: %.2f €/annos | Kate: %.2f €/annos" % [breakdown.raw_cost_per_bottle, breakdown.profit_per_bottle])
 	_log("  Myynti: +%.1f €" % sale_result.gross)
 	_log("  Tippi: +%.1f €" % sale_result.entry.tip_income)
@@ -656,7 +656,7 @@ func _cmd_dump(args: PackedStringArray) -> void:
 		return
 
 	if args.is_empty():
-		_log("Käyttö: dump <tyyli> — esim. 'dump ipa'. Saatavilla: %s" % _available_style_names(brewery))
+		_log("Käyttö: dump <tyyli>, esim. 'dump ipa'. Saatavilla: %s" % _available_style_names(brewery))
 		return
 
 	var matched_style := _match_style(brewery, args)
@@ -699,7 +699,7 @@ func _cmd_vie(args: PackedStringArray) -> void:
 		return
 
 	if args.size() < 2:
-		_log("Käyttö: vie <tyyli> <baari> — esim. 'vie ipa kuppila'. Baarit: %s" % _available_bar_names())
+		_log("Käyttö: vie <tyyli> <baari>, esim. 'vie ipa kuppila'. Baarit: %s" % _available_bar_names())
 		return
 
 	var bar := _find_bar_contact_by_name(args[args.size() - 1])

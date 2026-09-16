@@ -11,7 +11,7 @@ const LABEL_STRING : String = "🍺 %s (%.1f%%) - %s annosta (%s %s)"
 ## docstring), it just gets turned away, costing reputation/risk, so this
 ## label is the only warning the player gets before that starts happening.
 ## See playtest_notes_2.txt.
-const EMPTY_INVENTORY_TEXT : String = "Ei olutta myytävänä — keitä lisää!"
+const EMPTY_INVENTORY_TEXT : String = "Ei olutta myytävänä. Keitä lisää!"
 const EMPTY_INVENTORY_COLOR : Color = Color(0.9490196, 0.7882353, 0.41960785, 1) # matches DailyGoalsPanel.GOAL_PENDING_COLOR
 
 ## Dumps the whole batch at once — see Brewery.BULK_SELL_RATE's docstring
@@ -21,11 +21,11 @@ const EMPTY_INVENTORY_COLOR : Color = Color(0.9490196, 0.7882353, 0.41960785, 1)
 ## sharing each row alongside the batch label. Full context lives in the
 ## tooltip below instead of the button face.
 const BULK_SELL_BUTTON_TEXT : String = "Myy"
-const BULK_SELL_BUTTON_TOOLTIP : String = "Myy koko erä kerralla varastosta — hinta on paljon normaalia myyntihintaa halvempi, ja heikkolaatuinen tai vanhentunut erä voi tuottaa jopa tappiota raaka-ainekuluihin nähden."
+const BULK_SELL_BUTTON_TOOLTIP : String = "Myy koko erä kerralla varastosta. Hinta on paljon normaalia myyntihintaa halvempi, ja heikkolaatuinen tai vanhentunut erä voi tuottaa jopa tappiota raaka-ainekuluihin nähden."
 
 const DESTINATION_LABEL_TEXT : String = "Kohde:"
 const SHIP_BUTTON_TEXT : String = "Vie"
-const SHIP_BUTTON_TOOLTIP : String = "Vie koko erä yllä valittuun baariin — parempi hinta kuin halpamyynti, mutta nostaa LVV-riskiä toimituksen mukana."
+const SHIP_BUTTON_TOOLTIP : String = "Vie koko erä yllä valittuun baariin. Parempi hinta kuin halpamyynti, mutta nostaa LVV-riskiä toimituksen mukana."
 
 ## Floor under the batch row label's width — without it, HBoxContainer's
 ## layout pass can hand the label (size_flags SIZE_EXPAND_FILL, sharing
