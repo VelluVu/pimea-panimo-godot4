@@ -1,35 +1,43 @@
 [gd_scene format=3 uid="uid://caf487kuhf4c6"]
 
 [ext_resource type="Script" uid="uid://c04a583fohaks" path="res://scenes/ui/special_event_window.gd" id="1_gtnj8"]
-[ext_resource type="Texture2D" uid="uid://d076wdffwlg85" path="res://assets/textures/accept_button_32.png" id="1_p7uxu"]
-[ext_resource type="Texture2D" uid="uid://do2eqagr661lg" path="res://assets/textures/decline_button_32.png" id="2_gtnj8"]
+[ext_resource type="Theme" uid="uid://dkmfe4a5nvvcd" path="res://src/resources/themes/main_theme.tres" id="1_p7uxu"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g4v7s"]
+bg_color = Color(0.60038817, 0.60038817, 0.60038817, 0)
 
 [node name="SpecialEventWindow" type="Panel" unique_id=1223569826]
-custom_minimum_size = Vector2(170, 85)
+custom_minimum_size = Vector2(180, 100)
 anchors_preset = -1
-anchor_left = 0.02
-anchor_top = 0.1
-anchor_right = 0.3
-anchor_bottom = 0.35
+anchor_left = 0.019374996
+anchor_top = 0.08611111
+anchor_right = 0.31937498
+anchor_bottom = 0.3638889
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_p7uxu")
 script = ExtResource("1_gtnj8")
+metadata/_edit_use_anchors_ = true
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=950772738]
+mouse_filter = 2
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_constants/margin_left = 8
-theme_override_constants/margin_top = 8
+theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 8
-theme_override_constants/margin_bottom = 8
+theme_override_constants/margin_bottom = 0
 
-[node name="MainVBox" type="VBoxContainer" parent="MarginContainer" unique_id=927667452]
+[node name="MainVBox" type="VBoxContainer" parent="MarginContainer" unique_id=552985050]
+mouse_filter = 2
 layout_mode = 2
-theme_override_constants/separation = 6
 
 [node name="SpecialLabel" type="Label" parent="MarginContainer/MainVBox" unique_id=570813596]
+mouse_filter = 2
 custom_minimum_size = Vector2(176, 0)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -37,32 +45,30 @@ size_flags_vertical = 1
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="ButtonRow" type="HBoxContainer" parent="MarginContainer/MainVBox" unique_id=545255657]
+[node name="BottomPanel" type="Panel" parent="MarginContainer/MainVBox" unique_id=1623310391]
+custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
-
-[node name="AcceptButton" type="Button" parent="MarginContainer/MainVBox/ButtonRow" unique_id=1172634082]
-custom_minimum_size = Vector2(28, 28)
-layout_mode = 2
-size_flags_horizontal = 0
 size_flags_vertical = 8
-icon = ExtResource("1_p7uxu")
-expand_icon = true
+theme_override_styles/panel = SubResource("StyleBoxFlat_g4v7s")
 
-[node name="Spacer" type="Control" parent="MarginContainer/MainVBox/ButtonRow" unique_id=986627182]
-layout_mode = 2
-size_flags_horizontal = 3
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/MainVBox/BottomPanel" unique_id=1290293659]
+mouse_filter = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="RejectButton" type="Button" parent="MarginContainer/MainVBox/ButtonRow" unique_id=469745695]
-custom_minimum_size = Vector2(28, 28)
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 8
-icon = ExtResource("2_gtnj8")
-icon_alignment = 1
-expand_icon = true
-
-[node name="ProgressBar" type="ProgressBar" parent="MarginContainer/MainVBox" unique_id=636685925]
+[node name="ProgressBar" type="ProgressBar" parent="MarginContainer/MainVBox/BottomPanel/HBoxContainer" unique_id=636685925]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 size_flags_horizontal = 3
-metadata/_edit_use_anchors_ = true
+size_flags_vertical = 4
+
+[node name="JooButton" type="Button" parent="MarginContainer/MainVBox/BottomPanel/HBoxContainer" unique_id=1172634082]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+text = "Joo"
+expand_icon = true

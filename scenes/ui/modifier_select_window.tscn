@@ -12,6 +12,7 @@ anchor_bottom = 0.92
 script = ExtResource("1_1diij")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=56823126]
+mouse_filter = 2
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -24,22 +25,26 @@ theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
 [node name="MainVBox" type="VBoxContainer" parent="MarginContainer" unique_id=1632794966]
+mouse_filter = 2
 layout_mode = 2
 theme_override_constants/separation = 16
 
 [node name="TitleLabel" type="Label" parent="MarginContainer/MainVBox" unique_id=608474294]
+mouse_filter = 2
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "Valitse tämän kierroksen olosuhteet"
 horizontal_alignment = 1
 
 [node name="RecordLabel" type="Label" parent="MarginContainer/MainVBox" unique_id=316842150]
+mouse_filter = 2
 layout_mode = 2
 theme_override_colors/font_color = Color(0.949, 0.788, 0.42, 1)
 theme_override_font_sizes/font_size = 14
 horizontal_alignment = 1
 
 [node name="CardsHBox" type="HBoxContainer" parent="MarginContainer/MainVBox" unique_id=130680158]
+mouse_filter = 2
 layout_mode = 2
 theme_override_constants/separation = 16
 alignment = 1
@@ -60,12 +65,14 @@ mouse_filter = 2
 theme_override_constants/separation = 8
 
 [node name="IconLabel" type="Label" parent="MarginContainer/MainVBox/CardsHBox/Card1/CardVBox" unique_id=2042384299]
+mouse_filter = 2
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
 text = "🎲"
 horizontal_alignment = 1
 
 [node name="HeaderLabel" type="Label" parent="MarginContainer/MainVBox/CardsHBox/Card1/CardVBox" unique_id=157961717]
+mouse_filter = 2
 layout_mode = 2
 theme_override_colors/font_color = Color(0.949, 0.788, 0.42, 1)
 theme_override_font_sizes/font_size = 18
@@ -74,6 +81,7 @@ horizontal_alignment = 1
 autowrap_mode = 3
 
 [node name="DescriptionLabel" type="Label" parent="MarginContainer/MainVBox/CardsHBox/Card1/CardVBox" unique_id=343014153]
+mouse_filter = 2
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_font_sizes/font_size = 13
@@ -97,12 +105,14 @@ mouse_filter = 2
 theme_override_constants/separation = 8
 
 [node name="IconLabel" type="Label" parent="MarginContainer/MainVBox/CardsHBox/Card2/CardVBox" unique_id=1928111909]
+mouse_filter = 2
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
 text = "🎲"
 horizontal_alignment = 1
 
 [node name="HeaderLabel" type="Label" parent="MarginContainer/MainVBox/CardsHBox/Card2/CardVBox" unique_id=1114213279]
+mouse_filter = 2
 layout_mode = 2
 theme_override_colors/font_color = Color(0.949, 0.788, 0.42, 1)
 theme_override_font_sizes/font_size = 18
@@ -111,6 +121,7 @@ horizontal_alignment = 1
 autowrap_mode = 3
 
 [node name="DescriptionLabel" type="Label" parent="MarginContainer/MainVBox/CardsHBox/Card2/CardVBox" unique_id=545142249]
+mouse_filter = 2
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_font_sizes/font_size = 13
@@ -134,12 +145,14 @@ mouse_filter = 2
 theme_override_constants/separation = 8
 
 [node name="IconLabel" type="Label" parent="MarginContainer/MainVBox/CardsHBox/Card3/CardVBox" unique_id=755806851]
+mouse_filter = 2
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
 text = "🎲"
 horizontal_alignment = 1
 
 [node name="HeaderLabel" type="Label" parent="MarginContainer/MainVBox/CardsHBox/Card3/CardVBox" unique_id=218066955]
+mouse_filter = 2
 layout_mode = 2
 theme_override_colors/font_color = Color(0.949, 0.788, 0.42, 1)
 theme_override_font_sizes/font_size = 18
@@ -148,6 +161,7 @@ horizontal_alignment = 1
 autowrap_mode = 3
 
 [node name="DescriptionLabel" type="Label" parent="MarginContainer/MainVBox/CardsHBox/Card3/CardVBox" unique_id=234800014]
+mouse_filter = 2
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_font_sizes/font_size = 13

@@ -37,6 +37,7 @@ mouse_filter = 2
 color = Color(0, 0, 0, 0.45)
 
 [node name="TitleLabel" type="Label" parent="." unique_id=1133990385]
+mouse_filter = 2
 layout_mode = 0
 anchor_right = 1.0
 offset_top = 28.0
@@ -50,6 +51,7 @@ text = "Pimeä Panimo"
 horizontal_alignment = 1
 
 [node name="CenterContainer" type="CenterContainer" parent="." unique_id=433273737]
+mouse_filter = 2
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -58,6 +60,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="RootMenuView" type="VBoxContainer" parent="CenterContainer" unique_id=973884429]
+mouse_filter = 2
 layout_mode = 2
 theme_override_constants/separation = 10
 
@@ -80,6 +83,7 @@ layout_mode = 2
 text = "Lopeta Peli"
 
 [node name="StartGameView" type="VBoxContainer" parent="CenterContainer" unique_id=96498033]
+mouse_filter = 2
 visible = false
 layout_mode = 2
 theme_override_constants/separation = 10
@@ -120,6 +124,7 @@ anchor_bottom = 0.9
 script = ExtResource("5_x2yvf")
 
 [node name="MarginContainer" type="MarginContainer" parent="LeaderboardWindow" unique_id=1351334473]
+mouse_filter = 2
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -132,13 +137,16 @@ theme_override_constants/margin_right = 14
 theme_override_constants/margin_bottom = 14
 
 [node name="MainVBox" type="VBoxContainer" parent="LeaderboardWindow/MarginContainer" unique_id=1185222984]
+mouse_filter = 2
 layout_mode = 2
 theme_override_constants/separation = 10
 
 [node name="HeaderHBox" type="HBoxContainer" parent="LeaderboardWindow/MarginContainer/MainVBox" unique_id=462824584]
+mouse_filter = 2
 layout_mode = 2
 
 [node name="TitleLabel" type="Label" parent="LeaderboardWindow/MarginContainer/MainVBox/HeaderHBox" unique_id=1239350010]
+mouse_filter = 2
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 20
@@ -151,6 +159,7 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="RowsVBox" type="VBoxContainer" parent="LeaderboardWindow/MarginContainer/MainVBox/ScrollContainer" unique_id=1383774915]
+mouse_filter = 2
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 6

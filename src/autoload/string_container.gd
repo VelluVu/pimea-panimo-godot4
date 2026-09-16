@@ -136,15 +136,20 @@ const DAY_CHANGED_MESSAGE : String = "--- DAY CHANGED: Day %s starts ---"
 
 const WRONG_STYLE_DIALOGUE_STRING : String = "Ei tää sitä ollu mitä hain, mut jotaki kuitenki."
 
-const AVI_RAID_TITLE : String = "AVI-TARKASTUS!"
-const AVI_RAID_MESSAGE : String = "Alkoholitarkastajat ryntäsivät kellariin ja takavarikoivat %s annosta valmista olutta! Lisäksi kirjoittivat sakon: %.1f €, ja maineesi laski %s pistettä."
-const AVI_RAID_CLOSE_TEXT : String = "Selvä..."
+const LVV_RAID_TITLE : String = "LVV-TARKASTUS!"
+const LVV_RAID_MESSAGE : String = "Alkoholitarkastajat ryntäsivät kellariin ja takavarikoivat %s annosta valmista olutta! Lisäksi kirjoittivat sakon: %.1f €, ja maineesi laski %s pistettä."
+const LVV_RAID_CLOSE_TEXT : String = "Selvä..."
 
 ## RunPerk.get_stat_summary() lines — only the non-neutral fields are ever
 ## shown (see that function), so every perk's numbers are always positive.
 const PERK_QUALITY_STAT_STRING : String = "Laatu: +%d %%"
 const PERK_REPUTATION_STAT_STRING : String = "Maineen kertymä: +%d %%"
 const PERK_TIP_STAT_STRING : String = "Tipit: +%d %%"
+const PERK_DISTRIBUTION_STAT_STRING : String = "Jakelutulot: %+d %%"
+## Appended to a perk's stat summary when RunPerk.stacks_additively is
+## true — the default (false, no hint shown) compounds with repeat
+## picks, so this only needs to call out the exception.
+const PERK_ADDITIVE_STACKING_HINT : String = "(tasainen kasvu, ei kerry)"
 
 ## RunPerk.get_tier_label() — shown on LevelUpWindow's cards (color-coded
 ## via RunPerk.get_tier_color()) so a level-up's rarity is actually visible
@@ -154,7 +159,7 @@ const PERK_TIER_RARE : String = "Harvinainen"
 const PERK_TIER_LEGENDARY : String = "Legendaarinen"
 
 ## RunModifier.get_stat_summary() lines — signed (%+d) since a modifier can
-## push either direction (see e.g. Kireä AVI's lower raid threshold).
+## push either direction (see e.g. Kireä LVV's lower raid threshold).
 const MODIFIER_RAID_THRESHOLD_STAT_STRING : String = "Ratsiakynnys: %+d %%"
 const MODIFIER_INGREDIENT_PRICE_STAT_STRING : String = "Ainehinnat: %+d %%"
 

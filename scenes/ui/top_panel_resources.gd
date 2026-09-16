@@ -9,10 +9,9 @@ const DAY_STRING : String = "Päivä: %s"
 ## read it before it's gone.
 const POPUP_EFFECT_DURATION_SECONDS : float = 1.8
 
-## Below Brewery.AVI_RAID_THRESHOLD (100, an instant full-inventory wipe +
+## Below Brewery.LVV_RAID_THRESHOLD (100, an instant full-inventory wipe +
 ## fine with no other UI warning — see playtest_notes_2.txt's "AVI raid
-## has no explicit warning" finding) but above DailyGoalsPanel.RISK_LIMIT
-## (50, the "stay under" daily goal) — a distinct "last chance" zone that
+## has no explicit warning" finding) — a distinct "last chance" zone that
 ## tints the risk label and pulses once on entry, on top of the existing
 ## audio tension drone (audio_manager.gd).
 const RISK_WARNING_THRESHOLD : int = 75
@@ -115,7 +114,7 @@ func _on_brewery_state_changed(brewery : Brewery) -> void:
 		if change != 0:
 			_create_popup_effect(risk_label, change, "%", true)
 
-	risk_label.text = "AVI Riski: " + str(new_risk) + "%"
+	risk_label.text = "LVV Riski: " + str(new_risk) + "%"
 	last_risk = new_risk
 
 	if new_risk >= RISK_WARNING_THRESHOLD:

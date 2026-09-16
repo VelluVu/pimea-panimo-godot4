@@ -3,8 +3,15 @@ extends Control
 
 
 const DISCOVERY_TOAST_FORMAT: String = "Uusi oluttyyli löydetty: %s!"
-const GOAL_REWARD_TOAST_FORMAT: String = "%s saavutettu: +%d € / +%d maine!"
-const EARLY_CLOSE_TOAST_FORMAT: String = "Ovet suljettu aikaisin: -%.1f €, mainetta -%d, AVI-riski -%d"
+const GOAL_REWARD_TOAST_FORMAT: String = "%s saavutettu: +%d € / +%d maine / +%d XP!"
+const GOAL_FAILED_TOAST_FORMAT: String = "%s epäonnistui: %d maine / +%d LVV-riski"
+## A special-event daily goal whose event actually triggered but couldn't be
+## filled (nothing was demanded of the brewery that it could refuse) fails
+## penalty-free — see DailyGoalManager._resolve_goal()'s apply_penalty
+## param — so it gets its own toast instead of GOAL_FAILED_TOAST_FORMAT
+## reading "0 maine / +0 LVV-riski", which would look like a formatting bug.
+const GOAL_FAILED_NO_PENALTY_TOAST_FORMAT: String = "%s epäonnistui — ei seurauksia"
+const EARLY_CLOSE_TOAST_FORMAT: String = "Ovet suljettu aikaisin: -%.1f €, mainetta -%d, LVV-riski -%d"
 const INGREDIENT_LOCKED_TOAST_FORMAT: String = "%s vaatii vähintään %d mainetta."
 const INGREDIENT_UNDERFUNDED_TOAST_FORMAT: String = "Ei varaa: %s maksaa %d €, kassassa %.1f €."
 const DISCOVERY_TOAST_FLASH_SECONDS: float = 0.15
@@ -34,7 +41,10 @@ const FIRST_BREW_HINT_FADE_SECONDS: float = 1.2
 @onready var top_panel_background : Panel = $TopPanelBackground
 @onready var top_panel_resources : Control = $TopPanel_Resources
 @onready var options_button : Button = $OptionsButton
-@onready var dev_console : Control = $DevConsole
+@onready var dev_console : DevConsole = $DevConsole
+@onready var options_window : OptionsWindow = $OptionsWindow
+@onready var run_effects_window : RunEffectsWindow = $RunEffectsWindow
+@onready var sale_receipt_log_window : SaleReceiptLogWindow = $SaleReceiptLogWindow
 var _discovery_toast_tween : Tween
 var _group_visit_banner_tween : Tween
 var _first_brew_hint_tween : Tween
@@ -46,11 +56,11 @@ var _last_reputation_seen : int = -1
 @onready var shop_view : ShopView = $Left_ShopView
 @onready var brewery_view : BrewingView = $Left_BrewingView
 @onready var brew_preparation_panel : BrewPreparationPanel = $BrewPreparationPanel
-@onready var warehouse_view : VBoxContainer = $Right_WarehouseView
+@onready var warehouse_view : RightWarehouseView = $Right_WarehouseView
 @onready var brewery_entrance_panel : Control = $BreweryEntrancePanel
 @onready var shop_entrance_panel : ShopEntrancePanel = $ShopEntrancePanel
 @onready var recipe_library_window : Control = $RecipeLibraryWindow
-@onready var AVI_raid_window : Control = $AviRaidWindow
+@onready var lvv_raid_window : Control = $LvvRaidWindow
 @onready var daily_goals_panel : DailyGoalsPanel = $DailyGoalsPanel
 
 
@@ -59,11 +69,11 @@ func _ready() -> void:
 	await get_tree().process_frame
 	_move_to_bar()
 	GUISignals.brewery_view_requested.connect(_on_brewery_button_pressed)
-	AVI_raid_window.hide()
+	lvv_raid_window.hide()
 	recipe_library_window.hide()
 	close_day_button.pressed.connect(_on_close_day_button_pressed)
 	BrewerySignals.style_discovered.connect(_on_style_discovered)
-	BrewerySignals.daily_goal_reward_granted.connect(_on_daily_goal_reward_granted)
+	DailyGoalManager.daily_goal_resolved.connect(_on_daily_goal_resolved)
 	BrewerySignals.early_day_close_applied.connect(_on_early_day_close_applied)
 	BrewerySignals.ingredient_purchase_locked.connect(_on_ingredient_purchase_locked)
 	BrewerySignals.ingredient_purchase_underfunded.connect(_on_ingredient_purchase_underfunded)
@@ -132,6 +142,114 @@ func _move_to_bar() -> void:
 	GUISignals.bar_view_entered.emit()
 
 
+## Global keyboard shortcuts: Esc (close whatever's open, or open Options if
+## nothing is) and the p/k/i/t/u view shortcuts below. _unhandled_input(),
+## not _input(): a focused Control (the console's LineEdit, a button, ...)
+## already consumes ordinary key events via Godot's own GUI layer before
+## they'd ever reach here, so typing in the console can't double-fire a
+## shortcut without any extra guarding — the explicit is_console_active()
+## check below is just belt-and-suspenders. While Options is open the whole
+## SceneTree is paused and this node is ordinary PROCESS_MODE_INHERIT, so
+## Godot simply never calls this at all — see options_window.gd's own
+## _input() for how Esc still reaches Options itself in that state.
+func _unhandled_input(event: InputEvent) -> void:
+	if not (event is InputEventKey and event.pressed and not event.echo):
+		return
+
+	if event.keycode == KEY_ESCAPE:
+		_handle_escape_pressed()
+		get_viewport().set_input_as_handled()
+		return
+
+	if dev_console.is_console_active():
+		return
+
+	match event.keycode:
+		KEY_P:
+			_toggle_brewery_view()
+		KEY_K:
+			_toggle_shop_view()
+		KEY_I:
+			_toggle_warehouse_view()
+		KEY_T:
+			_toggle_run_effects_window()
+		KEY_U:
+			_toggle_receipt_log_window()
+		_:
+			return
+
+	get_viewport().set_input_as_handled()
+
+
+## Closes whatever's currently open (the active brewery/shop view and any
+## popup window) in a single press; if nothing was open, opens Options
+## instead, mirroring a typical pause-menu Esc.
+func _handle_escape_pressed() -> void:
+	if not _close_any_open_views():
+		GUISignals.options_requested.emit()
+
+
+func _close_any_open_views() -> bool:
+	var closed_something := false
+
+	if brewery_view.visible or shop_view.visible:
+		_move_to_bar()
+		closed_something = true
+	if recipe_library_window.visible:
+		recipe_library_window.hide()
+		closed_something = true
+	if run_effects_window.visible:
+		run_effects_window.hide()
+		closed_something = true
+	if sale_receipt_log_window.visible:
+		sale_receipt_log_window.hide()
+		closed_something = true
+	if warehouse_view.visible:
+		warehouse_view.hide_warehouse_view()
+		closed_something = true
+
+	return closed_something
+
+
+func _toggle_brewery_view() -> void:
+	if brewery_view.visible:
+		_move_to_bar()
+	else:
+		_move_to_brewery()
+
+
+func _toggle_shop_view() -> void:
+	if shop_view.visible:
+		_move_to_bar()
+	else:
+		_move_to_shop()
+
+
+func _toggle_warehouse_view() -> void:
+	if warehouse_view.visible:
+		warehouse_view.hide_warehouse_view()
+	else:
+		warehouse_view.show_warehouse_view()
+
+
+## Routed through the same signal the button uses (not a direct .show())
+## so the window's content actually refreshes on open — see its own
+## _on_run_effects_requested().
+func _toggle_run_effects_window() -> void:
+	if run_effects_window.visible:
+		run_effects_window.hide()
+	else:
+		GUISignals.run_effects_requested.emit()
+
+
+## Same reasoning as _toggle_run_effects_window() above.
+func _toggle_receipt_log_window() -> void:
+	if sale_receipt_log_window.visible:
+		sale_receipt_log_window.hide()
+	else:
+		GUISignals.receipt_log_requested.emit()
+
+
 func _on_shop_button_pressed() -> void:
 	_move_to_shop()
 
@@ -158,7 +276,7 @@ func _on_close_day_button_pressed() -> void:
 
 
 ## Only reputation is checked (ingredient min_reputation is the only
-## unlock condition), and only for a genuine increase — an AVI raid's
+## unlock condition), and only for a genuine increase — an LVV raid's
 ## reputation penalty should never announce a "newly unlocked" hop that
 ## was actually already available before the drop.
 func _on_brewery_state_changed(brewery : Brewery) -> void:
@@ -178,8 +296,13 @@ func _on_style_discovered(style : int) -> void:
 	_show_toast(DISCOVERY_TOAST_FORMAT % BeerStyle.get_style_string_from_style(style))
 
 
-func _on_daily_goal_reward_granted(goal_name : String, money : int, reputation : int) -> void:
-	_show_toast(GOAL_REWARD_TOAST_FORMAT % [goal_name, money, reputation])
+func _on_daily_goal_resolved(goal_name : String, succeeded : bool, money : int, reputation : int, xp : int, risk : int) -> void:
+	if succeeded:
+		_show_toast(GOAL_REWARD_TOAST_FORMAT % [goal_name, money, reputation, xp])
+	elif reputation == 0 and risk == 0:
+		_show_toast(GOAL_FAILED_NO_PENALTY_TOAST_FORMAT % goal_name)
+	else:
+		_show_toast(GOAL_FAILED_TOAST_FORMAT % [goal_name, reputation, risk])
 
 
 ## Brewery.apply_early_close_cost() already computes these numbers whenever

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="DailyGoalData" format=3]
+
+[ext_resource type="Script" path="res://src/classes/daily_goal_data.gd" id="1_goal"]
+
+[resource]
+script = ExtResource("1_goal")
+goal_name = "Tyytyväiset asiakkaat"
+goal_type = 5
+target_amount = 2
+progress_format = "%d/%d"
+reward_money = 15
+reward_reputation = 4
+reward_xp = 20
+penalty_reputation = 4
+penalty_risk = 6

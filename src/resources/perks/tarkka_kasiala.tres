@@ -8,4 +8,4 @@ perk_name = "Tarkka käsiala"
 description = "Vuosien harjoittelu näkyy pullossa — jokainen tästä eteenpäin keitetty erä on hieman laadukkaampi."
 icon_placeholder = "🎯"
 tier = 1
-quality_bonus = 0.15
+quality_bonus = 0.1

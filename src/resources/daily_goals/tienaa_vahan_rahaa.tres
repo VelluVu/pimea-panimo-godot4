@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="DailyGoalData" format=3]
+
+[ext_resource type="Script" path="res://src/classes/daily_goal_data.gd" id="1_goal"]
+
+[resource]
+script = ExtResource("1_goal")
+goal_name = "Rahaa"
+goal_type = 4
+target_amount = 20
+progress_format = "%d/%d€"
+reward_money = 10
+reward_reputation = 2
+reward_xp = 10
+penalty_reputation = 1
+penalty_risk = 2
+scales_with_day = true
+target_scale_per_day = 0.08

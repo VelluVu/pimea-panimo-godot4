@@ -1,13 +1,10 @@
-[gd_resource type="Resource" script_class="RunModifier" format=3]
+[gd_resource type="Resource" script_class="RunModifier" format=3 uid="uid://j6f8m4qbf6jx"]
 
 [ext_resource type="Script" uid="uid://dka80d13fropj" path="res://src/classes/run_modifier.gd" id="1_tavallinen"]
 
 [resource]
 script = ExtResource("1_tavallinen")
 modifier_name = "Tavallinen keikka"
-description = "Ei yllätyksiä tällä kertaa — perustaso kaikessa."
-avi_threshold_multiplier = 1.0
-ingredient_price_multiplier = 1.0
-icon_placeholder = "🎲"
+description = "Ei yllätyksiä tällä kertaa perustaso kaikessa."
 is_default = true
 metadata/_custom_type_script = "uid://dka80d13fropj"

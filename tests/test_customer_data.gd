@@ -53,6 +53,22 @@ func test_meets_strict_requirements_no_constraint_by_default() -> void:
 	assert_true(customer.meets_strict_requirements(any_style), "default -1 sentinels mean no constraint")
 
 
+func test_meets_strict_requirements_respects_preference_match() -> void:
+	var customer := CustomerData.new()
+	customer.primary_style = BeerStyle.Style.IPA
+	customer.secondary_style = BeerStyle.Style.HELLES
+	customer.requires_preference_match = true
+	var primary_style := BeerStyle.new()
+	primary_style.style = BeerStyle.Style.IPA
+	var secondary_style := BeerStyle.new()
+	secondary_style.style = BeerStyle.Style.HELLES
+	var unrelated_style := BeerStyle.new()
+	unrelated_style.style = BeerStyle.Style.KOTIKALJA
+	assert_true(customer.meets_strict_requirements(primary_style), "primary style match should pass")
+	assert_true(customer.meets_strict_requirements(secondary_style), "secondary style match should pass")
+	assert_false(customer.meets_strict_requirements(unrelated_style), "unrelated style should fail when requires_preference_match is set")
+
+
 func _make_batch(style: BeerStyle.Style, quality: float) -> BrewBatch:
 	var beer_style := BeerStyle.new()
 	beer_style.style = style

@@ -83,6 +83,20 @@ func _on_close_button_pressed() -> void:
 	hide()
 
 
+## Handled here rather than in gui.gd's global Esc handler because this
+## node is PROCESS_MODE_ALWAYS (see _on_options_requested()'s docstring) —
+## it needs to keep receiving input while the tree it just paused stops
+## delivering input to every ordinary (PROCESS_MODE_INHERIT) node, gui.gd
+## included. The visible guard is what lets Esc fall through to gui.gd
+## (which opens this window) when it isn't already up.
+func _input(event: InputEvent) -> void:
+	if not visible:
+		return
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_ESCAPE:
+		_on_close_button_pressed()
+		get_viewport().set_input_as_handled()
+
+
 func _on_main_menu_button_pressed() -> void:
 	GUISignals.menu_button_pressed.emit()
 	SaveManager.save_game()

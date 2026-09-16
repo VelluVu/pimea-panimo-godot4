@@ -9,10 +9,18 @@ const WARNING_EVENTS_EMPTY = "CustomerRegistry: Special events pool is empty!"
 @export var customer_folder_path: String = "res://src/resources/customers/"
 @export var special_event_folder_path: String = "res://src/resources/special_events/"
 @export var group_event_folder_path: String = "res://src/resources/group_events/"
+@export var bar_contact_folder_path: String = "res://src/resources/bars/"
 
 var customer_pool: Array[CustomerData] = []
 var special_events_pool: Array[SpecialEventData] = []
 var group_events_pool: Array[GroupVisitEventData] = []
+## BarContact destinations for BeerPatchPanel's "ship a batch to a bar"
+## action (see Brewery.ship_batch_to_bar()) — loaded the same way as the
+## pools above. Not reputation-filtered here; BarContactOptionButton
+## mirrors IngredientOptionButton's own pattern of listing every entry and
+## disabling the locked ones in place, so the picker itself communicates
+## what's coming rather than hiding it entirely.
+var bar_contact_pool: Array[BarContact] = []
 
 
 func _ready() -> void:
@@ -141,6 +149,20 @@ func _load_resources() -> void:
 		dir_group.list_dir_end()
 	else:
 		push_warning(WARNING_FOLDER_OPEN_FAILED + group_event_folder_path)
+
+	var dir_bars = DirAccess.open(bar_contact_folder_path)
+	if dir_bars:
+		dir_bars.list_dir_begin()
+		var file_name = dir_bars.get_next()
+		while file_name != "":
+			if not dir_bars.current_is_dir() and file_name.ends_with(".tres"):
+				var res = load(bar_contact_folder_path + file_name)
+				if res is BarContact:
+					bar_contact_pool.append(res)
+			file_name = dir_bars.get_next()
+		dir_bars.list_dir_end()
+	else:
+		push_warning(WARNING_FOLDER_OPEN_FAILED + bar_contact_folder_path)
 
 	if customer_pool.is_empty():
 		push_warning(WARNING_POOL_EMPTY)

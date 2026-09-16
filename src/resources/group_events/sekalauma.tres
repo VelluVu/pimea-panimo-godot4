@@ -1,21 +1,21 @@
-[gd_resource type="Resource" script_class="GroupVisitEventData" format=3]
+[gd_resource type="Resource" script_class="GroupVisitEventData" format=3 uid="uid://c8l4xrv6fj71t"]
 
-[ext_resource type="Script" path="res://src/classes/group_visit_event_data.gd" id="1_event"]
-[ext_resource type="Resource" path="res://src/resources/customers/hipsteri.tres" id="2_hipsteri"]
-[ext_resource type="Resource" path="res://src/resources/customers/hipsteri_naaras.tres" id="3_hipsteri_naaras"]
-[ext_resource type="Resource" path="res://src/resources/customers/agentti.tres" id="4_agentti"]
-[ext_resource type="Resource" path="res://src/resources/customers/agentti_naaras.tres" id="5_agentti_naaras"]
-[ext_resource type="Resource" path="res://src/resources/customers/mafioso.tres" id="6_mafioso"]
-[ext_resource type="Resource" path="res://src/resources/customers/mafioso_naaras.tres" id="7_mafioso_naaras"]
-[ext_resource type="Resource" path="res://src/resources/customers/raksamies.tres" id="8_raksamies"]
-[ext_resource type="Resource" path="res://src/resources/customers/raksamies_naaras.tres" id="9_raksamies_naaras"]
+[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/classes/customer_data.gd" id="1_bkbi8"]
+[ext_resource type="Script" uid="uid://cnkqeqeaug3gu" path="res://src/classes/group_visit_event_data.gd" id="1_event"]
+[ext_resource type="Resource" uid="uid://bfck6af6h0iss" path="res://src/resources/customers/hipsteri.tres" id="2_hipsteri"]
+[ext_resource type="Resource" uid="uid://3qw0a6b3sk1p" path="res://src/resources/customers/hipsteri_naaras.tres" id="3_hipsteri_naaras"]
+[ext_resource type="Resource" uid="uid://dtg3fntafwt27" path="res://src/resources/customers/agentti.tres" id="4_agentti"]
+[ext_resource type="Resource" uid="uid://b4lsfw2v5efck" path="res://src/resources/customers/agentti_naaras.tres" id="5_agentti_naaras"]
+[ext_resource type="Resource" uid="uid://bq0vfi3pk6ita" path="res://src/resources/customers/mafioso.tres" id="6_mafioso"]
+[ext_resource type="Resource" uid="uid://dp1ufkaootw4e" path="res://src/resources/customers/mafioso_naaras.tres" id="7_mafioso_naaras"]
+[ext_resource type="Resource" uid="uid://bbaqaif3dmu0t" path="res://src/resources/customers/raksamies.tres" id="8_raksamies"]
+[ext_resource type="Resource" uid="uid://bji63pdea5j1k" path="res://src/resources/customers/raksamies_naaras.tres" id="9_raksamies_naaras"]
 
 [resource]
 script = ExtResource("1_event")
-banner_text = "Oudoin remmi ikinä ilmestyy portaille yhtä aikaa —
-hipsteri, agentti, kummisetä ja remonttimies samassa jonossa.
+banner_text = "Oudoin remmi ikinä ilmestyy portaille yhtä aikaa hipsteri, agentti, kummisetä ja remonttimies samassa jonossa.
 Kukaan ei kysy miksi."
-customer_data_options = [ExtResource("2_hipsteri"), ExtResource("3_hipsteri_naaras"), ExtResource("4_agentti"), ExtResource("5_agentti_naaras"), ExtResource("6_mafioso"), ExtResource("7_mafioso_naaras"), ExtResource("8_raksamies"), ExtResource("9_raksamies_naaras")]
+customer_data_options = Array[ExtResource("1_bkbi8")]([ExtResource("2_hipsteri"), ExtResource("3_hipsteri_naaras"), ExtResource("4_agentti"), ExtResource("5_agentti_naaras"), ExtResource("6_mafioso"), ExtResource("7_mafioso_naaras"), ExtResource("8_raksamies"), ExtResource("9_raksamies_naaras")])
 min_group_size = 5
 max_group_size = 9
 walk_in_stagger_seconds = 0.45

@@ -15,6 +15,11 @@ signal buy_ingredient(ingredient_id : int, amount : int)
 signal sell_ingredient(ingredient_id : int, amount : int)
 
 @warning_ignore("unused_signal")
+signal bulk_sell_batch_requested(batch : BrewBatch)
+@warning_ignore("unused_signal")
+signal ship_batch_to_bar_requested(batch : BrewBatch, bar : BarContact)
+
+@warning_ignore("unused_signal")
 signal start_brewing()
 
 @warning_ignore("unused_signal")
@@ -90,3 +95,5 @@ signal clear_brew_preparation_requested()
 signal save_recipe_requested()
 @warning_ignore("unused_signal")
 signal load_recipe_requested(recipe : BrewRecipe)
+@warning_ignore("unused_signal")
+signal fill_recipe_from_inventory_requested()

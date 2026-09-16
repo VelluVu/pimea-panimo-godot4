@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="RunPerk" format=3]
+
+[ext_resource type="Script" uid="uid://dewmdbm4a0vst" path="res://src/classes/run_perk.gd" id="1_tasainen_varovaisuus"]
+
+[resource]
+script = ExtResource("1_tasainen_varovaisuus")
+perk_name = "Tasainen varovaisuus"
+description = "Opit varomaan johdonmukaisesti — LVV:n ratsiakynnys nousee tasaisesti joka poiminnalla."
+icon_placeholder = "🛡️"
+tier = 1
+raid_threshold_multiplier = 1.12
+stacks_additively = true

@@ -49,13 +49,14 @@ const MIN_TIP_PER_QUALITY_POINT : float = 1.0
 ## offer clears a hard requirement they won't compromise on.
 @export_multiline var dialogue_no_match: String = "Ei täällä ollu mitään minulle. Ehkä ensi kerralla."
 
-## A hard gate, not a preference — unlike primary/secondary_style (which
-## only affect reputation/risk/dialogue, never whether a sale happens at
-## all), a customer with either bound set refuses to buy ANY batch outside
-## it, no matter how good the quality or how badly the brewery needs the
-## sale. Checked in CustomerManager._find_best_batch before scoring, so an
-## out-of-range batch isn't just deprioritized, it's invisible to this
-## customer.
+## A hard gate, not a preference — unlike primary/secondary_style (which by
+## default only affect reputation/risk/dialogue, never whether a sale
+## happens at all — see requires_preference_match below for the opt-in
+## exception), a customer with either bound set refuses to buy ANY batch
+## outside it, no matter how good the quality or how badly the brewery
+## needs the sale. Checked in CustomerManager._find_best_batch before
+## scoring, so an out-of-range batch isn't just deprioritized, it's
+## invisible to this customer.
 @export_group("Tiukat vaatimukset")
 ## -1 = ei rajoitusta. Esim. 5.0 hylkää kaiken alle 5% ABV:n (ks. Barbaari).
 @export var min_required_abv: float = -1.0
@@ -98,6 +99,23 @@ const MIN_TIP_PER_QUALITY_POINT : float = 1.0
 @export_group("Erikoiskäytös")
 @export var randomizes_preference: bool = false
 @export var primary_match_risk_multiplier: float = 1.0
+## Same hard-gate mechanism as min_required_abv/max_required_abv above, but
+## preference-based instead of ABV-based: when true, a batch that matches
+## neither this customer's primary nor secondary style (get_preference_score
+## == 0.0) is invisible to them, exactly as if the brewery had nothing in
+## stock at all — they never settle for an unrelated style. See Agentti: an
+## undercover LVV inspector only interested in styles that match today's
+## cover story, not just anything on tap.
+@export var requires_preference_match: bool = false
+## Per-customer override for CustomerManager's NO_MATCH_REPUTATION_PENALTY/
+## NO_MATCH_RISK_PENALTY, applied whenever this customer leaves via
+## dialogue_no_match (empty inventory, a failed Tiukat vaatimukset check, or
+## requires_preference_match above). Defaults to the same values every
+## other customer pays for being turned away empty-handed; Agentti zeroes
+## these out since, from the brewery's perspective, nothing was ever
+## actually offered to him.
+@export var no_match_reputation_penalty: int = CustomerManager.NO_MATCH_REPUTATION_PENALTY
+@export var no_match_risk_penalty: int = CustomerManager.NO_MATCH_RISK_PENALTY
 @export var min_bottles_per_visit: int = 1
 @export var max_bottles_per_visit: int = 1
 @export var bar_fight_chance: float = 0.0
@@ -128,6 +146,8 @@ func meets_strict_requirements(beer_style: BeerStyle) -> bool:
 	if min_required_abv >= 0.0 and beer_style.abv < min_required_abv:
 		return false
 	if max_required_abv >= 0.0 and beer_style.abv > max_required_abv:
+		return false
+	if requires_preference_match and get_preference_score(beer_style.style) < 0.5:
 		return false
 	return true
 
@@ -203,7 +223,7 @@ func evaluate_brew_batch(batch: BrewBatch, style_base_price: float = 3.0) -> Dic
 	# can cancel a sale's own risk out but never flip it into a reward. A
 	# customer deliberately given a NEGATIVE flat risk (e.g. Zgen's
 	# risk_primary_style/risk_secondary_style — selling them their
-	# alcohol-free favorite is meant to actively de-risk the AVI meter, see
+	# alcohol-free favorite is meant to actively de-risk the LVV meter, see
 	# max_required_abv's docstring) must keep working past 0 instead of
 	# being floored right back to it.
 	if avi_change > 0:

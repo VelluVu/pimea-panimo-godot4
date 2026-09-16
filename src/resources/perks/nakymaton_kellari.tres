@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RunPerk" format=3 uid="uid://dh4r306kquu2e"]
+
+[ext_resource type="Script" uid="uid://dewmdbm4a0vst" path="res://src/classes/run_perk.gd" id="1_nakymaton"]
+
+[resource]
+script = ExtResource("1_nakymaton")
+perk_name = "Näkymätön kellari"
+description = "Kukaan ei edes muista tätä kellaria olemassa olevaksi LVV:n ratsiakynnys nousee merkittävästi."
+icon_placeholder = "👻"
+tier = 2
+raid_threshold_multiplier = 1.18

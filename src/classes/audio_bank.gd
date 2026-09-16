@@ -21,8 +21,8 @@ extends Resource
 @export_group("Special Events")
 @export var sfx_notification_ping: AudioStream
 
-@export_group("AVI Risk")
-@export var sfx_avi_alarm: AudioStream
+@export_group("LVV Risk")
+@export var sfx_lvv_alarm: AudioStream
 @export var sfx_risk_tension_drone: AudioStream
 
 @export_group("Progression")

@@ -27,17 +27,19 @@ const ANIM_WALK_RIGHT : StringName = &"walk_right"
 ## transform). ANIM_WALK_TOWARDS is now always played with flip_h=true (see
 ## its two _play_animation() call sites) specifically so the customer's own
 ## RIGHT hand — the one that stays steady at hip height across all 4
-## frames, not the one doing leijonafani's raised fist-pump cheer on frames
-## 2/4 (checked pixel-by-pixel against leijonafani_32.png) — ends up on OUR
-## left, screen-negative-x, the correct mirror for a character facing the
-## camera. These x values are the STEADY hand's unflipped texture position
-## run back through the same mirror flip_h itself applies
-## (screen_x = 64 - 4*tx, tx sampled from the sprite), so the marker and
-## the actual (now-mirrored) rendered pixel line up. Since this table is
-## shared by every archetype, "the hand that doesn't gesture" is the only
-## choice that holds up across all of them. +9 on top of the derived x: a
-## small manual nudge back toward center so the held glass doesn't read as
-## floating too far off the body.
+## frames for a plain walk cycle — ends up on OUR left, screen-negative-x,
+## the correct mirror for a character facing the camera. These x values are
+## the STEADY hand's unflipped texture position run back through the same
+## mirror flip_h itself applies (screen_x = 64 - 4*tx, tx sampled from the
+## sprite), so the marker and the actual (now-mirrored) rendered pixel line
+## up. Since this table is shared by every archetype that doesn't get its
+## own override below, "the hand that doesn't gesture" is the only choice
+## that holds up across all of them. +9 on top of the derived x: a small
+## manual nudge back toward center so the held glass doesn't read as
+## floating too far off the body. Archetypes whose walk_towards pose
+## doesn't fit this assumption (both arms swinging, a big one-sided gesture,
+## crossed arms, ...) get a dedicated offsets table instead — see
+## RAKSAMIES_HAND_OFFSETS, LEIJONAFANI_HAND_OFFSETS, ZGEN_CHEST_GLASS_OFFSETS.
 const WALK_TOWARDS_HAND_OFFSETS : Array[Vector2] = [
 	Vector2(-23, -46),
 	Vector2(-7, -46),
@@ -54,6 +56,38 @@ const ZGEN_CHEST_GLASS_OFFSETS : Array[Vector2] = [
 	Vector2(0, -66),
 	Vector2(4, -68),
 	Vector2(0, -66),
+]
+
+## Raksamies (and raksamies_naaras, sharing the same title) swing BOTH arms
+## through walk_towards, unlike the single-swinging-hand assumption baked
+## into WALK_TOWARDS_HAND_OFFSETS — checked pixel-by-pixel against
+## raksamies_32.png's walk_towards row (y=64..95). Tracking the customer's
+## own left hand (screen-left after this animation's flip_h=true, same
+## side WALK_TOWARDS_HAND_OFFSETS uses) across all 4 frames: it rests at
+## hip height on frames 0/2, tucks in near the belt on frame 1 while the
+## other arm swings out, then swings out itself on frame 3.
+const RAKSAMIES_TITLE : String = "Raksamies"
+const RAKSAMIES_HAND_OFFSETS : Array[Vector2] = [
+	Vector2(-30, -46),
+	Vector2(-4, -51),
+	Vector2(-30, -44),
+	Vector2(-28, -58),
+]
+
+## Leijonafani (and leijonafani_naaras, sharing the same title) throws one
+## arm into a raised fist-pump cheer on walk_towards — checked pixel-by-
+## pixel against leijonafani_32.png's walk_towards row (y=64..95): the
+## customer's own left hand rests at hip height on frames 0/2, then swings
+## all the way up into the cheer on frame 1, while frame 3 catches it
+## partway back down. Tracking that actual excursion (instead of pretending
+## the hand stays put, like WALK_TOWARDS_HAND_OFFSETS does for archetypes
+## that share this array) so the held glass visibly punches the air with him.
+const LEIJONAFANI_TITLE : String = "Leijonafani"
+const LEIJONAFANI_HAND_OFFSETS : Array[Vector2] = [
+	Vector2(-30, -50),
+	Vector2(-46, -66),
+	Vector2(-30, -50),
+	Vector2(-22, -58),
 ]
 
 ## How long a just-served glass sits on the counter before the customer
@@ -118,7 +152,14 @@ func _ready() -> void:
 
 
 func _on_animated_sprite_frame_changed() -> void:
-	var offsets := ZGEN_CHEST_GLASS_OFFSETS if customer_data != null and customer_data.title == ZGEN_TITLE else WALK_TOWARDS_HAND_OFFSETS
+	var offsets := WALK_TOWARDS_HAND_OFFSETS
+	if customer_data != null:
+		if customer_data.title == ZGEN_TITLE:
+			offsets = ZGEN_CHEST_GLASS_OFFSETS
+		elif customer_data.title == RAKSAMIES_TITLE:
+			offsets = RAKSAMIES_HAND_OFFSETS
+		elif customer_data.title == LEIJONAFANI_TITLE:
+			offsets = LEIJONAFANI_HAND_OFFSETS
 	bottle_hand_marker.position = offsets[animated_sprite.frame % offsets.size()]
 
 

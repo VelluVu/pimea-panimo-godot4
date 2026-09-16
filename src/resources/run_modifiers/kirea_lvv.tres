@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="RunModifier" format=3 uid="uid://hfmsgn8aodrl"]
+
+[ext_resource type="Script" uid="uid://dka80d13fropj" path="res://src/classes/run_modifier.gd" id="1_kirea"]
+
+[resource]
+script = ExtResource("1_kirea")
+modifier_name = "Kireä LVV"
+description = "Tarkastajat ovat hereillä ratsiakynnys on matalampi. Ainekset sentään halvempia."
+icon_placeholder = "🚨"
+lvv_threshold_multiplier = 0.7
+ingredient_price_multiplier = 0.8
+metadata/_custom_type_script = "uid://dka80d13fropj"
