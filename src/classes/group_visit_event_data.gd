@@ -23,7 +23,7 @@ extends Resource
 @export var customer_data_options: Array[CustomerData] = []
 
 @export_group("Ryhmän koko")
-@export var min_group_size: int = 6
+@export var min_group_size: int = 3
 @export var max_group_size: int = 10
 
 @export_group("Ajoitus")

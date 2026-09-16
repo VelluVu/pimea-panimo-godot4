@@ -92,7 +92,7 @@ func _build_row(entry : SaleReceiptEntry) -> Control:
 	if is_expanded:
 		var detail_label := Label.new()
 		detail_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		detail_label.add_theme_font_size_override("font_size", 13)
+		detail_label.add_theme_font_size_override("font_size", 16)
 		detail_label.text = entry.get_breakdown_text() + "\n" + entry.get_totals_text()
 		row_vbox.add_child(detail_label)
 

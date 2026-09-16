@@ -336,26 +336,58 @@ func show_beer_glass() -> void:
 ## happen — main.tscn always has exactly one — but cheap insurance). Hidden
 ## again the moment the customer picks it up to leave (leave_counter()), at
 ## which point show_beer_glass() puts the same glass in their hand instead.
-func show_counter_glass() -> void:
-	var rest_position : Vector2 = counter_glass_sprite.position
+## slide_duration_seconds lets a group order's rapid one-by-one serving
+## burst (CustomerSpawner._run_shared_group_order()) slide each glass in
+## quicker than a solo customer's — defaults to the normal solo pacing.
+## rest_position_override (global space) lets that same burst rest this
+## glass in the bartender's on-counter stack (Bartender.get_stack_position())
+## instead of this customer's own resting spot — a group's now-far-back
+## members would otherwise each pull their glass all the way out to their
+## seat, which read as beers flying across the room rather than a round
+## being set down on the bar. Vector2.INF means "no override, use my own".
+##
+## Runs with top_level = true (global-space transform, ignoring this
+## Customer's own) for as long as the glass sits on the counter — a group's
+## standby members walk again before picking their glass up (see
+## leave_counter()'s pickup walk), and without this the glass, still an
+## ordinary local-space child, would drag along with them mid-walk instead
+## of staying put on the counter until they actually arrive. Reset back to
+## normal parent-relative positioning in hide_counter_glass() once the
+## glass leaves the counter.
+func show_counter_glass(slide_duration_seconds: float = GLASS_SLIDE_DURATION_SECONDS, rest_position_override: Vector2 = Vector2.INF) -> void:
+	var rest_position : Vector2 = rest_position_override if rest_position_override != Vector2.INF else to_global(counter_glass_sprite.position)
 	var bartender := get_tree().get_first_node_in_group(Bartender.BARTENDER_GROUP) as Bartender
 
+	counter_glass_sprite.top_level = true
+
 	if bartender == null:
+		counter_glass_sprite.position = rest_position
 		counter_glass_sprite.show()
 		return
 
-	counter_glass_sprite.position = to_local(bartender.serve_marker.global_position)
+	counter_glass_sprite.position = bartender.serve_marker.global_position
 	counter_glass_sprite.show()
 
 	var tween := create_tween()
-	tween.tween_property(counter_glass_sprite, "position", rest_position, GLASS_SLIDE_DURATION_SECONDS).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	tween.tween_property(counter_glass_sprite, "position", rest_position, slide_duration_seconds).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 
 
 func hide_counter_glass() -> void:
 	counter_glass_sprite.hide()
+	counter_glass_sprite.top_level = false
 
 
-func leave_counter() -> void:
+## pickup_position_override (global) lets a group order's standby members
+## (see CustomerSpawner._run_shared_group_order()) walk up to the counter
+## and grab their round from the on-bar stack (Bartender.get_stack_position())
+## before turning to leave, instead of the beer just appearing in their hand
+## from wherever they'd been standing further back — a solo customer, and
+## the group's own order-place representative, are already standing right
+## at the counter, so Vector2.INF ("no pickup walk needed") is their default.
+func leave_counter(pickup_position_override: Vector2 = Vector2.INF) -> void:
+	if pickup_position_override != Vector2.INF:
+		await _walk_to_pickup_spot(pickup_position_override)
+
 	var exit_pos = global_position + Vector2(0.0, 150.0)
 	var duration = 150.0 / customer_data.floor_walk_speed
 
@@ -368,3 +400,24 @@ func leave_counter() -> void:
 	tween.tween_callback(queue_free)
 
 	CustomerManager.free_slot_index(assigned_slot)
+
+
+## Same walk-to-a-lateral-target shape walk_complex_route() already uses for
+## its stairs-to-counter leg (ANIM_WALK_RIGHT, flip toward the target, then
+## ANIM_IDLE_UP once arrived) — reused here for the short standby-to-counter
+## hop instead of that bigger multi-leg route, since this is already
+## standing on the floor with nothing to walk around.
+func _walk_to_pickup_spot(target: Vector2) -> void:
+	var distance = global_position.distance_to(target)
+	if distance < 1.0:
+		return
+
+	var walking_left = target.x < global_position.x
+	_play_animation(ANIM_WALK_RIGHT, walking_left)
+	var duration = distance / customer_data.floor_walk_speed
+
+	var tween = create_tween()
+	tween.tween_property(self, "global_position", target, duration).set_trans(Tween.TRANS_LINEAR)
+	await tween.finished
+
+	_play_animation(ANIM_IDLE_UP)

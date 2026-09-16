@@ -20,6 +20,24 @@ const GROUP_EVENT_FLOOR_SECONDS = 120.0
 const GROUP_DIALOGUE_SLOT_BASE = 10
 const GROUP_DIALOGUE_SLOT_RANGE = 90
 
+## A group's shared order resolves as one process_auto_sale() call (see
+## _run_shared_group_order()), but the bartender still serves each member
+## individually — these three tune that serving burst to read as fast and
+## dynamic (a beer landing every GROUP_SERVE_INTERVAL_SECONDS) rather than
+## the slower, "wait for the full pour" pacing a solo customer's single
+## glass uses (Customer.SERVE_BEER_WAIT_SECONDS/GLASS_SLIDE_DURATION_SECONDS).
+const GROUP_SERVE_INTERVAL_SECONDS : float = 0.3
+const GROUP_SERVE_ANIMATION_SPEED_SCALE : float = 3.0
+const GROUP_SERVE_GLASS_SLIDE_SECONDS : float = 0.25
+
+## Pushes every group member except the order-place representative (see
+## _spawn_group_members()) this much further down-screen (away from the
+## counter, toward the room) than their formation offset alone would place
+## them — a crowd huddled right up against the counter otherwise blocks the
+## Bartender fixture standing just behind it, hiding the very pour/serve
+## burst this whole group-order flow exists to show off.
+const GROUP_STANDBY_Y_OFFSET_PX : float = 56.0
+
 const CUSTOMER_SCENE = preload("res://scenes/customer.tscn")
 
 @onready var counter_positions_parent: Node2D = $CounterPositionsParent
@@ -178,7 +196,16 @@ func _on_group_event_timer_timeout(forced_event_data: GroupVisitEventData = null
 ## dialogue_slot comment on Customer).
 func _spawn_group_members(event_data: GroupVisitEventData, slot: int) -> void:
 	var marker = counter_markers[slot]
-	var group_size = randi_range(event_data.min_group_size, event_data.max_group_size)
+	# The lower of two independent rolls, not one flat randi_range() — skews
+	# the result toward event_data.min_group_size (a small 3-5 person crowd
+	# is the common case) while still leaving the full range reachable, just
+	# increasingly unlikely near max_group_size (both rolls have to land high
+	# at once), so a big lauma stays a rare, notable event instead of the
+	# every-time norm the flat uniform roll produced.
+	var group_size = mini(
+		randi_range(event_data.min_group_size, event_data.max_group_size),
+		randi_range(event_data.min_group_size, event_data.max_group_size)
+	)
 	var dialogue_slot = GROUP_DIALOGUE_SLOT_BASE + (_group_dialogue_slot_counter % GROUP_DIALOGUE_SLOT_RANGE)
 	_group_dialogue_slot_counter += 1
 
@@ -202,12 +229,26 @@ func _spawn_group_members(event_data: GroupVisitEventData, slot: int) -> void:
 		members.append(new_customer)
 		last_member = new_customer
 
+		# Only the first-spawned member actually walks up to the counter
+		# marker itself — the group's "order place" representative, standing
+		# exactly where a solo customer would (see _run_shared_group_order(),
+		# which places the shared dialogue/popups at marker.global_position
+		# too). Everyone else in the crowd gets a formation slot (re-centered
+		# over the remaining group_size - 1 members, so there's no empty gap
+		# where the representative would have sat) pushed further down-screen
+		# by GROUP_STANDBY_Y_OFFSET_PX — clustered nearby but out of the
+		# Bartender's sightline instead of hugging the counter three-deep and
+		# hiding the pour/serve burst the player is meant to actually watch.
+		var formation_offset := Vector2.ZERO
+		if i > 0:
+			formation_offset = _get_group_formation_offset(i - 1, group_size - 1, event_data.formation_spacing_px)
+			formation_offset.y += GROUP_STANDBY_Y_OFFSET_PX
+
 		# Applied to every waypoint after the stairs (not the stairs
 		# themselves, which stay a shared single-file bottleneck), so each
 		# member's path visibly diverges the moment they step off the
 		# stairs instead of walking single-file on top of each other until
 		# snapping into place at the very end.
-		var formation_offset = _get_group_formation_offset(i, group_size, event_data.formation_spacing_px)
 		new_customer.walk_complex_route(stairs_bottom_marker.global_position, room_center_marker.global_position + formation_offset, marker.global_position + formation_offset, true)
 
 		if i < group_size - 1:
@@ -289,16 +330,27 @@ func _run_shared_group_order(event_data: GroupVisitEventData, members: Array[Nod
 				member.made_purchase = true
 		BrewerySignals.xp_popup_requested.emit(xp_capture.amount, group_position)
 
-		# Same SERVE_BEER_WAIT_SECONDS wait as the solo-customer path (see
-		# Customer.show_counter_glass()'s docstring) — the slide itself must
-		# only start once the bartender's pour animation has finished, not
-		# while it's still playing, so this waits BEFORE calling
-		# show_counter_glass() rather than relying on the glass's own
-		# (now much shorter) slide duration to cover that gap.
-		await get_tree().create_timer(Customer.SERVE_BEER_WAIT_SECONDS).timeout
+		# Deliberately NOT the solo-customer pacing (wait the full pour, then
+		# reveal): a group order is one sale but many drinks, so this instead
+		# throws one glass per member in a fast one-by-one burst — bartender
+		# sped up via GROUP_SERVE_ANIMATION_SPEED_SCALE and re-triggered every
+		# GROUP_SERVE_INTERVAL_SECONDS (restarting the pour anim from frame 0
+		# each time reads as a rapid flurry of pours, not a glitch). Each
+		# glass rests in Bartender.get_stack_position()'s on-counter stack,
+		# not out at that member's own (now far-back, see
+		# GROUP_STANDBY_Y_OFFSET_PX) seat — the round physically piles up on
+		# the bar, the way a real round of drinks would, instead of every
+		# glass individually flying out across the room to its owner.
+		var bartender := get_tree().get_first_node_in_group(Bartender.BARTENDER_GROUP) as Bartender
+		var stack_index := 0
 		for member in members:
+			await get_tree().create_timer(GROUP_SERVE_INTERVAL_SECONDS).timeout
+			if bartender != null:
+				bartender.play_serve_beer(GROUP_SERVE_ANIMATION_SPEED_SCALE)
 			if is_instance_valid(member):
-				member.show_counter_glass()
+				var stack_position := bartender.get_stack_position(stack_index) if bartender != null else Vector2.INF
+				member.show_counter_glass(GROUP_SERVE_GLASS_SLIDE_SECONDS, stack_position)
+				stack_index += 1
 	if reputation_capture.amount != 0:
 		BrewerySignals.reputation_popup_requested.emit(reputation_capture.amount, group_position)
 	if tip_capture.amount > 0:
@@ -310,9 +362,24 @@ func _run_shared_group_order(event_data: GroupVisitEventData, members: Array[Nod
 
 	await get_tree().create_timer(display_time + Customer.FADE_TIME_SECONDS).timeout
 
-	for member in members:
-		if is_instance_valid(member):
+	# Only the order-place representative (members[0], already standing right
+	# at the counter — see _spawn_group_members()) leaves straight from where
+	# they're standing. Everyone else first walks up to the counter to grab
+	# their round off the stack (Customer.leave_counter()'s pickup walk)
+	# before turning to leave, instead of the beer just appearing in their
+	# hand from their standby spot further back. Staggered by the same
+	# GROUP_SERVE_INTERVAL_SECONDS beat the serving burst used, so the crowd
+	# peels off the counter one by one instead of every standby member
+	# converging on the exact same spot at once.
+	for i in range(members.size()):
+		var member = members[i]
+		if not is_instance_valid(member):
+			continue
+		if i == 0:
 			member.leave_counter()
+		else:
+			member.leave_counter(group_position)
+			await get_tree().create_timer(GROUP_SERVE_INTERVAL_SECONDS).timeout
 
 
 ## A compact two-row huddle centered on the shared marker, rather than a

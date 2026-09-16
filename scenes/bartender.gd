@@ -25,6 +25,19 @@ const BARTENDER_GROUP : StringName = &"bartender"
 ## AnimatedSprite2D's own transform.
 @onready var serve_marker : Marker2D = $ServeMarker
 
+## A group order's whole round stacks together right on the counter (see
+## get_stack_position()) instead of each glass sliding out to its own,
+## now far-back member — STACK_ROW_SIZE wraps the stack into a new row
+## every 4 glasses so a big lauma's round grows into a compact pile
+## instead of sprawling sideways across the whole bar top. Anchored left of
+## serve_marker (camera-left, i.e. negative x) and growing further left
+## from there, so the pile sits over open counter space to the bartender's
+## own left instead of overlapping his sprite or the till further right.
+const STACK_ROW_SIZE : int = 4
+const STACK_BASE_OFFSET_PX : Vector2 = Vector2(-20, 0)
+const STACK_COLUMN_OFFSET_PX : Vector2 = Vector2(-7, 0)
+const STACK_ROW_OFFSET_PX : Vector2 = Vector2(0, -6)
+
 
 func _ready() -> void:
 	add_to_group(BARTENDER_GROUP)
@@ -33,10 +46,25 @@ func _ready() -> void:
 
 
 ## Plays the one-shot serving animation, then returns to idle on its own.
-func play_serve_beer() -> void:
+## speed_scale lets a group order (CustomerSpawner._run_shared_group_order())
+## visibly speed the pour up for its rapid-fire one-by-one serving burst
+## without that lingering into the next solo customer's pour — reset back to
+## 1.0 the moment this returns to idle, below.
+func play_serve_beer(speed_scale: float = 1.0) -> void:
+	animated_sprite.speed_scale = speed_scale
 	animated_sprite.play(ANIM_SERVE_BEER)
 
 
 func _on_animation_finished() -> void:
 	if animated_sprite.animation == ANIM_SERVE_BEER:
+		animated_sprite.speed_scale = 1.0
 		animated_sprite.play(ANIM_IDLE)
+
+
+## Global position for the Nth glass in a group order's on-counter stack —
+## see CustomerSpawner._run_shared_group_order()'s serving burst.
+func get_stack_position(index: int) -> Vector2:
+	var column := index % STACK_ROW_SIZE
+	@warning_ignore("integer_division")
+	var row := index / STACK_ROW_SIZE
+	return serve_marker.global_position + STACK_BASE_OFFSET_PX + STACK_COLUMN_OFFSET_PX * column + STACK_ROW_OFFSET_PX * row

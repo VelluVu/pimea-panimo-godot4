@@ -16,7 +16,6 @@ script = ExtResource("1_event")
 banner_text = "Oudoin remmi ikinä ilmestyy portaille yhtä aikaa hipsteri, agentti, kummisetä ja remonttimies samassa jonossa.
 Kukaan ei kysy miksi."
 customer_data_options = Array[ExtResource("1_bkbi8")]([ExtResource("2_hipsteri"), ExtResource("3_hipsteri_naaras"), ExtResource("4_agentti"), ExtResource("5_agentti_naaras"), ExtResource("6_mafioso"), ExtResource("7_mafioso_naaras"), ExtResource("8_raksamies"), ExtResource("9_raksamies_naaras")])
-min_group_size = 5
 max_group_size = 9
 walk_in_stagger_seconds = 0.45
 formation_spacing_px = 13.0
