@@ -30,5 +30,5 @@ bar_fight_chance = 0.2
 bar_fight_reputation_penalty = 6
 bar_fight_risk_penalty = 15
 bar_fight_max_bottles_broken = 3
-dialogue_bar_fight = "Yhtäkkiä syttyy tappelu! Pulloja särkyy ja muut asiakkaat hätääntyvät."
+dialogue_bar_fight = "Barbaari päätti aloittaa berserkkerin raivon! Pullot ja lasit lentelevät, tuhoja kertyy %d kappaleen verran."
 metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

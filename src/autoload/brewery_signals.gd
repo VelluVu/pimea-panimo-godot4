@@ -157,3 +157,14 @@ signal keg_shipped_to_bar(style_name: String, bar_name: String, bottles: int, pa
 ## bias is active now".
 @warning_ignore("unused_signal")
 signal day_event_announced(event: DayEventData)
+## Fired by CustomerManager._trigger_bar_fight() whenever a sale rolls into
+## a bar fight (see CustomerData.bar_fight_chance) — message is the
+## customer archetype's own dialogue_bar_fight text with the actual broken-
+## bottle count already substituted in. Third-person incident narration
+## like this used to be appended straight onto the customer's own spoken
+## dialogue bubble, which read oddly (the customer narrating their own
+## chaos in the same breath as thanking you for a beer) and could get lost
+## under the customer's own line — SaleFlashStack shows it as its own
+## stacked toast instead, same as any other "something just happened" flash.
+@warning_ignore("unused_signal")
+signal bar_fight_triggered(message: String)

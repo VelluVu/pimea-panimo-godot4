@@ -122,6 +122,12 @@ const MIN_TIP_PER_QUALITY_POINT : float = 1.0
 @export var bar_fight_reputation_penalty: int = 0
 @export var bar_fight_risk_penalty: int = 0
 @export var bar_fight_max_bottles_broken: int = 0
+## Third-person incident narration, NOT something this customer says —
+## shown as its own stacked toast via BrewerySignals.bar_fight_triggered
+## instead of the customer's own spoken dialogue bubble (see
+## CustomerManager._trigger_bar_fight()). Must contain exactly one %d
+## placeholder for the actual broken-bottle count that fight rolled
+## (0 if bar_fight_max_bottles_broken is 0 or nothing was left to break).
 @export_multiline var dialogue_bar_fight: String = ""
 
 

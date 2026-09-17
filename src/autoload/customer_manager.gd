@@ -218,25 +218,30 @@ func process_auto_sale(data: CustomerData) -> String:
 	var response_text : String = results[KEY_RESPONSE]
 
 	if data.bar_fight_chance > 0.0 and randf() < data.bar_fight_chance:
-		response_text += "\n" + _trigger_bar_fight(brewery, data, best_batch)
+		_trigger_bar_fight(brewery, data, best_batch)
 
 	BrewerySignals.sale_reputation_gained.emit(brewery.reputation - reputation_before)
 	BrewerySignals.brewery_state_changed.emit(brewery)
 	return response_text
 
 
-func _trigger_bar_fight(brewery: Brewery, data: CustomerData, batch: BrewBatch) -> String:
+## The incident itself (reputation/risk penalty, broken bottles) is
+## reported via BrewerySignals.bar_fight_triggered as its own stacked toast
+## — see that signal's own docstring for why this moved off the customer's
+## spoken dialogue bubble (process_auto_sale()'s response_text).
+func _trigger_bar_fight(brewery: Brewery, data: CustomerData, batch: BrewBatch) -> void:
 	brewery.reputation = max(0, brewery.reputation - data.bar_fight_reputation_penalty)
 	brewery.add_risk(data.bar_fight_risk_penalty)
 
+	var broken_bottles : int = 0
 	if data.bar_fight_max_bottles_broken > 0 and brewery.inventory.brew_batches.has(batch):
-		var broken_bottles : int = randi_range(1, data.bar_fight_max_bottles_broken)
+		broken_bottles = randi_range(1, data.bar_fight_max_bottles_broken)
 		batch.amount_bottles = max(0, batch.amount_bottles - broken_bottles)
 
 		if batch.amount_bottles <= 0:
 			brewery.inventory.brew_batches.erase(batch)
 
-	return data.dialogue_bar_fight
+	BrewerySignals.bar_fight_triggered.emit(data.dialogue_bar_fight % broken_bottles)
 
 
 func _find_best_batch(batches: Array[BrewBatch], data: CustomerData) -> BrewBatch:
