@@ -64,3 +64,24 @@ func get_stat_summary() -> String:
 		lines.append(StringContainer.PERK_TIP_STAT_STRING % roundi((tip_income_multiplier - 1.0) * 100))
 
 	return "\n".join(lines)
+
+
+## Net "harder than Tavallinen keikka" sum across every field's own harder/
+## easier direction (lower lvv_threshold_multiplier, higher
+## ingredient_price_multiplier, and lower quality_bonus/
+## reputation_gain_multiplier/tip_income_multiplier all read as harder) —
+## positive means net harder than baseline, negative means net easier, zero
+## for the baseline itself. Not authored per-resource: it falls out of the
+## same fields that already drive gameplay, so a new modifier's difficulty
+## can never drift out of sync with what it actually does. Used both by
+## RunModifierRegistry.get_run_start_modifiers() to bucket modifiers into a
+## medium/hard split, and by LeaderboardManager.calculate_score() to weight
+## the end-of-run score.
+func get_difficulty_score() -> float:
+	var score : float = 0.0
+	score += 1.0 - lvv_threshold_multiplier
+	score += ingredient_price_multiplier - 1.0
+	score += -quality_bonus
+	score += 1.0 - reputation_gain_multiplier
+	score += 1.0 - tip_income_multiplier
+	return score
