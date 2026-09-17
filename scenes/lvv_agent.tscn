@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://jbal1fa8630d"]
 
 [ext_resource type="Script" uid="uid://b4ay11g8ic2ch" path="res://scenes/lvv_agent.gd" id="1_1nxj6"]
-[ext_resource type="SpriteFrames" uid="uid://c0st7m7tmafe1" path="res://src/resources/sprite_frames/lvv_hazmat_agent_anim.tres" id="2_iivmg"]
+[ext_resource type="SpriteFrames" uid="uid://c0st7m7tmafe1" path="res://src/resources/sprite_frames/lvv_ratsia_suojapuvullinen_anim.tres" id="2_iivmg"]
 
 [node name="LvvAgent" type="Node2D" unique_id=513019213]
 y_sort_enabled = true
