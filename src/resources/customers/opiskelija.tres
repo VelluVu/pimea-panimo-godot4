@@ -16,5 +16,7 @@ dialogue_success = "Jes, kunnon oluet!"
 dialogue_fallback = "Noni."
 dialogue_wrong_style = "Näillä mennään."
 dialogue_reject = "Oho, melekosta litkua."
+dialogue_no_match = "Liian kallista opiskelijabudjetille, mä lähen."
 quality_tip_sensitivity = 0.0
+max_required_price = 2.5
 metadata/_custom_type_script = "uid://b2vqc8lkfjwic"
