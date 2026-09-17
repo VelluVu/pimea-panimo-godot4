@@ -12,5 +12,6 @@ min_quality = 0.1
 sprite_frames = ExtResource("2_sprite")
 dialogue_success = "Jes, kunnon oluet!"
 dialogue_fallback = "Noni."
+dialogue_wrong_style = "Näillä mennään."
 dialogue_reject = "Oho, melekosta litkua."
 metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

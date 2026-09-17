@@ -1,22 +1,22 @@
 [gd_resource type="Resource" script_class="CustomerData" format=3 uid="uid://bfck6af6h0iss"]
 
 [ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/classes/customer_data.gd" id="1_hipsteri"]
-[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/hipsteri_anim.tres" id="2_sprite"]
+[ext_resource type="SpriteFrames" uid="uid://b0jajyqo112ll" path="res://src/resources/sprite_frames/hipsteri_anim.tres" id="2_sprite"]
 
 [resource]
 script = ExtResource("1_hipsteri")
 customer_name = "Hugo"
 title = "Hipsteri"
 first_names = Array[String](["Hilkka", "Heka", "Hugo", "Saga", "Milo", "Luna", "Felix", "Alva", "Eno", "Noa"])
-sprite_frames = ExtResource("2_sprite")
 min_quality = 0.8
 budget_multiplier = 1.5
 primary_style = 5
 secondary_style = 3
+sprite_frames = ExtResource("2_sprite")
 dialogue_intro = "Onko teillä jotain käsityöläismäistä? Ei mitään massatuotantoa."
 dialogue_success = "Vihdoinkin joku joka ymmärtää humalaprofiileja."
 dialogue_fallback = "Tästä puuttuu vähän kompleksisuutta, mutta juon sen."
-dialogue_wrong_style = "Mielenkiintoinen valinta, muttei ihan sitä mitä hain."
+dialogue_wrong_style = "Mielenkiintoinen valinta."
 dialogue_reject = "Tää on ihan teollisuusjätettä. En koske tähän."
 quality_tip_sensitivity = 0.6
 rep_bad_quality = -5
