@@ -268,3 +268,15 @@ func spawn_group_event(forced_event_data: GroupVisitEventData = null) -> void:
 	if active_spawner == null:
 		return
 	active_spawner._on_group_event_timer_timeout(forced_event_data)
+
+
+## See CustomerSpawner.pause_spawning()/start_spawning() — used by
+## LvvRaidSpawner around a raid squad's walk-in/seize/walk-out sequence.
+func pause_spawning() -> void:
+	if active_spawner:
+		active_spawner.pause_spawning()
+
+
+func resume_spawning() -> void:
+	if active_spawner:
+		active_spawner.start_spawning()
