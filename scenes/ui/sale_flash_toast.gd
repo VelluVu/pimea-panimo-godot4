@@ -43,11 +43,14 @@ func initialize(entry : SaleReceiptEntry) -> void:
 
 
 ## Generic entry point for flashes that don't have a SaleReceiptEntry to
-## summarize — see SaleFlashStack's bulk-sell/ship-to-bar listeners, which
-## aren't real customer sales but still deserve the same brief "something
-## happened" notice.
-func initialize_text(text : String) -> void:
+## summarize — see SaleFlashStack's bulk-sell/ship-to-bar/bar-fight
+## listeners, which aren't real customer sales but still deserve the same
+## brief "something happened" notice. text_color defaults to the scene's
+## own theme color (a sale); pass a warmer color for a bad-news flash like
+## a bar fight so it doesn't read as identical to a payout.
+func initialize_text(text : String, text_color : Color = Color.WHITE) -> void:
 	label.text = text
+	label.modulate = text_color
 	_resize_to_fit_content()
 
 	var timer := get_tree().create_timer(HOLD_SECONDS)

@@ -28,5 +28,5 @@ bar_fight_chance = 0.25
 bar_fight_reputation_penalty = 8
 bar_fight_risk_penalty = 18
 bar_fight_max_bottles_broken = 4
-dialogue_bar_fight = "Leijonafanit alkavat laulaa täysin äänin ja heittelevät tyhjiä pulloja - syntyy täysi kaaos!"
+dialogue_bar_fight = "Leijonafanit alkavat laulaa täysin äänin ja heittelevät tyhjiä pulloja, syntyy täysi kaaos! Tuhoja kertyy %d kappaleen verran."
 metadata/_custom_type_script = "uid://b2vqc8lkfjwic"
