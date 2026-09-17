@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://cnkqeqeaug3gu" path="res://src/classes/group_visit_event_data.gd" id="1_event"]
 [ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/classes/customer_data.gd" id="1_v3hht"]
 [ext_resource type="Resource" uid="uid://be7oshavrwqmr" path="res://src/resources/customers/zgen.tres" id="2_customer"]
-[ext_resource type="Resource" path="res://src/resources/customers/zgen_naaras.tres" id="3_customer_naaras"]
+[ext_resource type="Resource" uid="uid://cx6btyi8lqfsj" path="res://src/resources/customers/zgen_naaras.tres" id="3_customer_naaras"]
 
 [resource]
 script = ExtResource("1_event")
@@ -11,5 +11,6 @@ banner_text = "Zgen-lauma rynnii sisään puhelimet pystyssä kaikki haluaa alko
 customer_data_options = Array[ExtResource("1_v3hht")]([ExtResource("2_customer"), ExtResource("3_customer_naaras")])
 max_group_size = 14
 walk_in_stagger_seconds = 0.25
-chant_text = "SIGMA SIGMA BOY, EI CAP, TÄÄ ON W-KUPPILA FR FR!"
+chant_texts = Array[String](["SIGMA SIGMA BOY, EI CAP, TÄÄ ON W-KUPPILA FR FR!", "BUSSINIS ON HYVÄ TÄÄLLÄ FR FR, NO CAP!", "ALKOHOLITONTA TAI SKIBIDI FAIL, KIITOS!", "RIZZ LEVEL MAX, TÄÄ PAIKKA ON GYAT!"])
+chant_mode = 1
 chant_interval_seconds = 2.2

@@ -44,5 +44,30 @@ func test_formation_offset_alternates_rows() -> void:
 func test_group_visit_event_data_defaults() -> void:
 	var event := GroupVisitEventData.new()
 	assert_eq(event.banner_text, "")
-	assert_eq(event.chant_text, "")
+	assert_true(event.chant_texts.is_empty())
 	assert_true(event.min_group_size <= event.max_group_size, "min_group_size should not exceed max_group_size")
+
+
+func test_get_chant_text_empty_when_no_chants() -> void:
+	var event := GroupVisitEventData.new()
+	assert_eq(event.get_chant_text(0), "")
+
+
+func test_get_chant_text_sequence_cycles_in_order() -> void:
+	var event := GroupVisitEventData.new()
+	event.chant_texts = ["one", "two", "three"]
+	event.chant_mode = GroupVisitEventData.ChantMode.SEQUENCE
+
+	assert_eq(event.get_chant_text(0), "one")
+	assert_eq(event.get_chant_text(1), "two")
+	assert_eq(event.get_chant_text(2), "three")
+	assert_eq(event.get_chant_text(3), "one", "sequence should wrap back around via modulo")
+
+
+func test_get_chant_text_random_only_returns_listed_lines() -> void:
+	var event := GroupVisitEventData.new()
+	event.chant_texts = ["one", "two", "three"]
+	event.chant_mode = GroupVisitEventData.ChantMode.RANDOM
+
+	for i in range(20):
+		assert_true(event.chant_texts.has(event.get_chant_text(i)), "RANDOM should only ever return a line from chant_texts")
