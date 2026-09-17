@@ -46,6 +46,17 @@ func test_meets_strict_requirements_respects_max_abv() -> void:
 	assert_false(customer.meets_strict_requirements(regular_style), "above max_required_abv should fail")
 
 
+func test_meets_strict_requirements_respects_max_price() -> void:
+	var customer := CustomerData.new()
+	customer.max_required_price = 2.5
+	var affordable_style := BeerStyle.new()
+	affordable_style.fixed_price_per_bottle = 2.5
+	var pricey_style := BeerStyle.new()
+	pricey_style.fixed_price_per_bottle = 3.0
+	assert_true(customer.meets_strict_requirements(affordable_style), "exactly at max_required_price should pass")
+	assert_false(customer.meets_strict_requirements(pricey_style), "above max_required_price should fail")
+
+
 func test_meets_strict_requirements_no_constraint_by_default() -> void:
 	var customer := CustomerData.new()
 	var any_style := BeerStyle.new()
