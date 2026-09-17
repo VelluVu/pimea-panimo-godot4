@@ -87,6 +87,19 @@ func start_spawning() -> void:
 		_start_next_group_event_timer()
 
 
+## Used by LvvRaidSpawner while a raid squad is walking in/out — nobody
+## should be ordering a beer while inspectors are hauling kegs out the door.
+## Only stops scheduling NEW walk-ins/group events; any customer already at
+## the counter is left alone to finish naturally, same as any other timing
+## edge case in this system. start_spawning() (called again once the raid
+## visual is done) re-rolls fresh intervals rather than resuming a paused
+## countdown — acceptably simpler given how rare/short a raid is relative to
+## the normal spawn cadence.
+func pause_spawning() -> void:
+	walk_in_timer.stop()
+	group_event_timer.stop()
+
+
 func _start_next_walk_in_timer() -> void:
 	var factor := _get_reputation_spawn_factor()
 	var min_time := maxf(WALK_IN_INTERVAL_FLOOR_SECONDS, WALK_IN_INTERVAL_MIN_SECONDS * factor)
@@ -172,7 +185,7 @@ func _on_group_event_timer_timeout(forced_event_data: GroupVisitEventData = null
 		_start_next_group_event_timer()
 		return
 
-	var event_data = forced_event_data if forced_event_data != null else CustomerRegistry.get_random_group_event()
+	var event_data = forced_event_data if forced_event_data != null else _pick_group_event()
 	if event_data == null or event_data.customer_data_options.is_empty():
 		_start_next_group_event_timer()
 		return
@@ -181,6 +194,19 @@ func _on_group_event_timer_timeout(forced_event_data: GroupVisitEventData = null
 	_spawn_group_members(event_data, free_slot)
 
 	_start_next_group_event_timer()
+
+
+## During an active DayEventData window (see DayEventManager), rolls toward
+## that event's own featured_group_event at its own featured_group_event_chance
+## instead of always using the plain random pool — same "weighted, not
+## forced" shape CustomerRegistry.get_random_customer_data() uses for solo
+## walk-ins, so a themed day's group visits skew toward its own crowd
+## without turning every single group event into a rerun of the same one.
+func _pick_group_event() -> GroupVisitEventData:
+	var day_event : DayEventData = DayEventManager.get_active_event()
+	if day_event != null and day_event.featured_group_event != null and randf() < day_event.featured_group_event_chance:
+		return day_event.featured_group_event
+	return CustomerRegistry.get_random_group_event()
 
 
 ## The crowd acts as one unit, not N independent customers: every member

@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="DayEventData" format=3]
+
+[ext_resource type="Script" uid="uid://dhlswvb7h0ba8" path="res://src/classes/day_event_data.gd" id="1_event"]
+[ext_resource type="Resource" path="res://src/resources/group_events/agentti_lauma.tres" id="2_group"]
+
+[resource]
+script = ExtResource("1_event")
+event_name = "LVV:n yllätystarkastusviikko"
+announcement_text = "LVV:n yllätystarkastusviikko alkaa tänään. Odotettavissa epäilyttävän montaa uutta kasvoa."
+weight = 1.0
+featured_group_event = ExtResource("2_group")
+featured_customer_titles = Array[String](["Agentti"])

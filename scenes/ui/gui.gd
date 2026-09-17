@@ -22,6 +22,14 @@ const GROUP_VISIT_BANNER_FLASH_SECONDS: float = 0.2
 const GROUP_VISIT_BANNER_HOLD_SECONDS: float = 4.0
 const GROUP_VISIT_BANNER_FADE_SECONDS: float = 0.8
 
+## Held longer than a group visit's one-liner (it's the day's forecast, not
+## an in-the-moment arrival) but well short of FIRST_BREW_HINT's 12s — this
+## repeats every day a named event actually lands, so it shouldn't demand
+## the same one-time attention the tutorial hint does.
+const DAY_EVENT_BANNER_FLASH_SECONDS: float = 0.25
+const DAY_EVENT_BANNER_HOLD_SECONDS: float = 6.0
+const DAY_EVENT_BANNER_FADE_SECONDS: float = 1.0
+
 ## Same flash/hold/fade banner language as group visits (see
 ## _on_group_visit_announced()) — held much longer since this has a full
 ## paragraph to read once, at the very start of a run, instead of a
@@ -32,9 +40,19 @@ const FIRST_BREW_HINT_FLASH_SECONDS: float = 0.25
 const FIRST_BREW_HINT_HOLD_SECONDS: float = 12.0
 const FIRST_BREW_HINT_FADE_SECONDS: float = 1.2
 
+## GroupVisitBanner/FirstBrewHintBanner are both anchored top=bottom=0.5 in
+## main.tscn, so offset_top/offset_bottom are a half-height around viewport
+## center rather than a real box height — see _fit_banner_height(). 50.0
+## matches their original hand-tuned scene values (a fixed 100px box sized
+## for exactly two lines of font_size 28 text), kept as the floor so a
+## short banner never shrinks smaller than the original design.
+const BANNER_MIN_HALF_HEIGHT: float = 50.0
+const BANNER_VERTICAL_PADDING: float = 6.0
+
 @onready var discovery_toast : Label = $DiscoveryToast
 @onready var group_visit_banner : Label = $GroupVisitBanner
 @onready var first_brew_hint_banner : Label = $FirstBrewHintBanner
+@onready var day_event_banner : Label = $DayEventBanner
 @onready var close_day_button : Button = $TopPanel_Resources/CloseDayButton
 @onready var close_day_confirm_window : CloseDayConfirmWindow = $CloseDayConfirmWindow
 @onready var dialog_view : Control = $DialogView
@@ -48,6 +66,7 @@ const FIRST_BREW_HINT_FADE_SECONDS: float = 1.2
 var _discovery_toast_tween : Tween
 var _group_visit_banner_tween : Tween
 var _first_brew_hint_tween : Tween
+var _day_event_banner_tween : Tween
 ## Tracked purely to detect an ingredient-unlock-worthy reputation increase
 ## in _on_brewery_state_changed() — separate from any similar cache
 ## top_panel_resources.gd keeps for its own money/reputation delta popups.
@@ -78,6 +97,7 @@ func _ready() -> void:
 	BrewerySignals.ingredient_purchase_locked.connect(_on_ingredient_purchase_locked)
 	BrewerySignals.ingredient_purchase_underfunded.connect(_on_ingredient_purchase_underfunded)
 	BrewerySignals.group_visit_announced.connect(_on_group_visit_announced)
+	BrewerySignals.day_event_announced.connect(_on_day_event_announced)
 	BrewerySignals.brewery_state_changed.connect(_on_brewery_state_changed)
 
 	var brewery := BrewEngine.current_brewery
@@ -105,6 +125,7 @@ func _assert_default_visibility() -> void:
 	discovery_toast.show()
 	group_visit_banner.show()
 	first_brew_hint_banner.show()
+	day_event_banner.show()
 	daily_goals_panel.show()
 
 
@@ -336,6 +357,7 @@ func _on_ingredient_purchase_underfunded(ingredient_name : String, price : int, 
 
 func _on_group_visit_announced(banner_text : String) -> void:
 	group_visit_banner.text = banner_text
+	_fit_banner_height(group_visit_banner)
 
 	if _group_visit_banner_tween:
 		_group_visit_banner_tween.kill()
@@ -347,6 +369,25 @@ func _on_group_visit_announced(banner_text : String) -> void:
 	_group_visit_banner_tween.tween_property(group_visit_banner, "modulate", Color(1.0, 1.0, 1.0, 1.0), GROUP_VISIT_BANNER_FLASH_SECONDS)
 	_group_visit_banner_tween.tween_interval(GROUP_VISIT_BANNER_HOLD_SECONDS)
 	_group_visit_banner_tween.tween_property(group_visit_banner, "modulate:a", 0.0, GROUP_VISIT_BANNER_FADE_SECONDS)
+
+
+## The day's secretly-rolled forecast (see DayEventManager) — same flash/
+## hold/fade shape as _on_group_visit_announced(), just its own timing/
+## color so a themed day's announcement doesn't read as an in-the-moment
+## crowd arrival.
+func _on_day_event_announced(event : DayEventData) -> void:
+	day_event_banner.text = event.announcement_text
+	_fit_banner_height(day_event_banner)
+
+	if _day_event_banner_tween:
+		_day_event_banner_tween.kill()
+
+	day_event_banner.modulate = Color(1.0, 1.0, 1.0, 0.0)
+
+	_day_event_banner_tween = create_tween()
+	_day_event_banner_tween.tween_property(day_event_banner, "modulate:a", 1.0, DAY_EVENT_BANNER_FLASH_SECONDS)
+	_day_event_banner_tween.tween_interval(DAY_EVENT_BANNER_HOLD_SECONDS)
+	_day_event_banner_tween.tween_property(day_event_banner, "modulate:a", 0.0, DAY_EVENT_BANNER_FADE_SECONDS)
 
 
 ## Shown once at the start of a fresh run, while TimeManager.day_timer is
@@ -361,8 +402,31 @@ func _on_group_visit_announced(banner_text : String) -> void:
 ## the goals panel is WHERE to look for what to actually do about it
 ## (it's where the tutorial checklist lives), so one should hand off to
 ## the other instead of leaving the player to find it on their own.
+## Both banners are anchored anchor_top == anchor_bottom == 0.5 in main.tscn
+## (a fixed-height box centered on the viewport, sized in the editor for
+## exactly two lines), so offset_top/offset_bottom are symmetric around
+## that center point. Free-authored banner_text (group-event .tres
+## resources) or a long hint can word-wrap into more lines than that box
+## was sized for — text would then overflow above/below it since Label
+## itself never clips or resizes its own rect. Re-measuring the wrapped
+## height at the banner's own (horizontally fixed) width and growing the
+## offsets to match keeps the whole block on-screen and still centered.
+func _fit_banner_height(banner: Label) -> void:
+	var font := banner.get_theme_font("font")
+	var font_size := banner.get_theme_font_size("font_size")
+	var content_width : float = banner.size.x
+	var wrapped_height : float = font.get_multiline_string_size(
+		banner.text, HORIZONTAL_ALIGNMENT_CENTER, content_width, font_size
+	).y
+
+	var half_height : float = maxf(BANNER_MIN_HALF_HEIGHT, wrapped_height * 0.5 + BANNER_VERTICAL_PADDING)
+	banner.offset_top = -half_height
+	banner.offset_bottom = half_height
+
+
 func _show_first_brew_hint() -> void:
 	first_brew_hint_banner.text = FIRST_BREW_HINT_TEXT
+	_fit_banner_height(first_brew_hint_banner)
 	first_brew_hint_banner.modulate = Color(1.4, 1.4, 1.0, 0.0)
 
 	_first_brew_hint_tween = create_tween()

@@ -27,6 +27,15 @@ func _ready() -> void:
 	_load_resources()
 
 
+## During an active DayEventData window (see DayEventManager), rerolls
+## toward featured_customer_titles at that event's own
+## solo_customer_bias_chance instead of always using the plain eligible
+## pool — same "weighted, not forced" reasoning DayEventData's own
+## featured_group_event_chance uses for group visits, so a themed day's
+## walk-ins skew toward its archetype without every single one being it.
+## Falls back to the normal eligible pool if the bias roll misses, if no
+## event is active, or if the featured titles happen to match nothing
+## currently eligible (e.g. reputation-gated out).
 func get_random_customer_data() -> CustomerData:
 	if customer_pool.is_empty():
 		return null
@@ -42,6 +51,15 @@ func get_random_customer_data() -> CustomerData:
 
 	if eligible_customers.is_empty():
 		eligible_customers = customer_pool
+
+	var day_event : DayEventData = DayEventManager.get_active_event()
+	if day_event != null and not day_event.featured_customer_titles.is_empty() and randf() < day_event.solo_customer_bias_chance:
+		var featured : Array[CustomerData] = []
+		for customer in eligible_customers:
+			if day_event.featured_customer_titles.has(customer.title):
+				featured.append(customer)
+		if not featured.is_empty():
+			return featured.pick_random()
 
 	return eligible_customers.pick_random()
 
