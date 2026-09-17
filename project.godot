@@ -33,6 +33,7 @@ SaveManager="*res://src/autoload/save_manager.gd"
 LeaderboardManager="*res://src/autoload/leaderboard_manager.gd"
 _mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"
 DailyGoalManager="*res://src/autoload/daily_goal_manager.gd"
+DayEventManager="*res://src/autoload/day_event_manager.gd"
 
 [display]
 

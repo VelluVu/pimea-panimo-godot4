@@ -9,6 +9,13 @@ signal dialogue_pushed(text: String, is_special: bool, slot_index: int, characte
 signal style_discovered(style: int)
 @warning_ignore("unused_signal")
 signal lvv_raid_triggered(confiscated_bottles: int, fine_amount: float, reputation_lost: int)
+## Fired once the raid squad (LvvRaidSpawner) has finished walking in,
+## seizing kegs, and walking back out — same payload as lvv_raid_triggered,
+## just delayed until the visual sequence is done. LvvRaidWindow listens to
+## THIS instead of the raw trigger, so the recap popup lands after the
+## player has watched the raid happen instead of covering it immediately.
+@warning_ignore("unused_signal")
+signal lvv_raid_recap_ready(confiscated_bottles: int, fine_amount: float, reputation_lost: int)
 @warning_ignore("unused_signal")
 signal recipe_saved(recipe_name: String)
 @warning_ignore("unused_signal")
@@ -142,3 +149,11 @@ signal batch_bulk_sold(style_name: String, bottles: int, payout: float)
 ## risk popup at the shipped row.
 @warning_ignore("unused_signal")
 signal keg_shipped_to_bar(style_name: String, bar_name: String, bottles: int, payout: float, risk_added: int)
+## Fired by DayEventManager once per genuine day change (never on day 1 —
+## see its own docstring) with whichever DayEventData it just rolled in
+## secret. GUI shows event.announcement_text as a held banner; the actual
+## spawn-bias window opens separately and later, per that event's own
+## timing fields — this signal is purely "here's the forecast", not "the
+## bias is active now".
+@warning_ignore("unused_signal")
+signal day_event_announced(event: DayEventData)
