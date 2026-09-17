@@ -2,8 +2,9 @@ class_name ModifierSelectWindow
 extends Panel
 
 ## Lets the player pick this run's RunModifier instead of it being purely
-## random — see RunModifierRegistry.get_random_modifiers(). Purely a
-## picker: it rolls and displays CARD_COUNT modifiers and emits
+## random — see RunModifierRegistry.get_run_start_modifiers(), which always
+## offers normal/medium/hard in that fixed order. Purely a picker: it rolls
+## and displays those modifiers and emits
 ## modifier_chosen when one is clicked, but never touches BrewEngine or
 ## scene transitions itself ("signal up, method down") — the host
 ## (MainMenu for "Aloita uusi peli", GameEndWindow for "Uusi yritys")
@@ -12,7 +13,6 @@ extends Panel
 
 signal modifier_chosen(modifier : RunModifier)
 
-const CARD_COUNT : int = 3
 const TITLE_TEXT : String = "Valitse tämän kierroksen olosuhteet"
 const ICON_FONT_SIZE : int = 40
 const HEADER_FONT_SIZE : int = 18
@@ -59,7 +59,7 @@ func _ready() -> void:
 ## BrewEngine.start_new_game() call.
 func open() -> void:
 	_show_record()
-	_offered_modifiers = RunModifierRegistry.get_random_modifiers(CARD_COUNT)
+	_offered_modifiers = RunModifierRegistry.get_run_start_modifiers()
 
 	for i in range(_card_buttons.size()):
 		var has_modifier : bool = i < _offered_modifiers.size()

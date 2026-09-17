@@ -74,7 +74,7 @@ func _on_game_ended(ending_type : String) -> void:
 	# mirror that guard here so the rank shown always matches an entry
 	# that actually made it onto the list.
 	if not brewery.has_continued_past_survival:
-		var rank := LeaderboardManager.get_rank_for_stats(brewery.current_day, brewery.reputation, brewery.lifetime_bottles_sold)
+		var rank := LeaderboardManager.get_rank_for_stats(brewery.current_day, brewery.reputation, brewery.lifetime_bottles_sold, brewery.run_modifier)
 		message_label.text += RANK_FORMAT % rank
 		if rank == 1:
 			message_label.text += NEW_RECORD_TEXT

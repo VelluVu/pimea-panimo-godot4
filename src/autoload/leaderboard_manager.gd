@@ -39,16 +39,31 @@ func _on_game_ended(ending_type : String) -> void:
 		"lifetime_bottles_sold": brewery.lifetime_bottles_sold,
 		"modifier_name": brewery.run_modifier.modifier_name if brewery.run_modifier != null else "",
 		"date": Time.get_datetime_string_from_system(),
-		"score": calculate_score(brewery.current_day, brewery.reputation, brewery.lifetime_bottles_sold),
+		"score": calculate_score(brewery.current_day, brewery.reputation, brewery.lifetime_bottles_sold, brewery.run_modifier),
 	}
 	_insert_entry(entry)
 
 
+## Modifiers whose stats trend harder than baseline (see
+## RunModifier.get_difficulty_score()) earn a proportionally higher score
+## for the same raw run stats, so picking a harder modifier and surviving
+## just as long as an easy run is rewarded instead of scored identically.
+## Kept modest so difficulty nudges the score rather than dominating it —
+## raw survival/reputation/sales still matter most. Floored at 1.0 so an
+## easier-than-baseline modifier never scores below the unweighted stats.
+const DIFFICULTY_SCORE_WEIGHT : float = 0.5
+
 ## Pure and static specifically so it's directly unit-testable, following
 ## this project's "pure-logic-only" test convention (see
 ## tests/test_leaderboard_manager.gd, tests/test_brew_resolver.gd).
-static func calculate_score(days_survived : int, reputation : int, lifetime_bottles_sold : int) -> int:
-	return days_survived * 100 + reputation * 10 + lifetime_bottles_sold
+## run_modifier defaults to null (no difficulty weighting applied) so
+## existing callers/scores from before this field existed still compute
+## the same base value.
+static func calculate_score(days_survived : int, reputation : int, lifetime_bottles_sold : int, run_modifier : RunModifier = null) -> int:
+	var base_score : int = days_survived * 100 + reputation * 10 + lifetime_bottles_sold
+	var difficulty : float = run_modifier.get_difficulty_score() if run_modifier != null else 0.0
+	var multiplier : float = maxf(1.0, 1.0 + difficulty * DIFFICULTY_SCORE_WEIGHT)
+	return roundi(base_score * multiplier)
 
 
 func _insert_entry(entry : Dictionary) -> void:
@@ -82,5 +97,5 @@ func get_rank(score : int) -> int:
 ## straight from run stats without calling the static calculate_score()
 ## through this autoload's instance, which GDScript warns on — same
 ## reasoning as get_random_modifier() above.
-func get_rank_for_stats(days_survived : int, reputation : int, lifetime_bottles_sold : int) -> int:
-	return get_rank(calculate_score(days_survived, reputation, lifetime_bottles_sold))
+func get_rank_for_stats(days_survived : int, reputation : int, lifetime_bottles_sold : int, run_modifier : RunModifier = null) -> int:
+	return get_rank(calculate_score(days_survived, reputation, lifetime_bottles_sold, run_modifier))
