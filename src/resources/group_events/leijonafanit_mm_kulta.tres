@@ -11,4 +11,4 @@ banner_text = "SUOMI VOITTI MM-KULTAA!
 Nyt tulee fanikööri sisään!"
 customer_data_options = Array[ExtResource("1_sfpdh")]([ExtResource("2_customer"), ExtResource("3_customer_naaras")])
 walk_in_stagger_seconds = 0.35
-chant_text = "SUOMI ON UUSI MAAILMANMESTARI HEI MAAILMANMESTARI HEI!"
+chant_texts = Array[String](["SUOMI ON UUSI!", "MAAILMANMESTARI HEI!", "MAAILMANMESTARI HEI!", "MAAILMANMESTARI HEI!"])

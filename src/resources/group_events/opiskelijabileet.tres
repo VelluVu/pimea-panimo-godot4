@@ -12,5 +12,5 @@ halvinta kaljaa heti tiskiin!"
 customer_data_options = Array[ExtResource("1_5hgrj")]([ExtResource("2_customer"), ExtResource("3_customer_naaras")])
 max_group_size = 12
 walk_in_stagger_seconds = 0.3
-chant_text = "HALPAA KALJAA! HALPAA KALJAA!"
+chant_texts = Array[String](["HALPAA KALJAA! HALPAA KALJAA!", "LISÄÄ VIINAA, EI RAHAA!", "FUKSIT FUKSIT, JUO POHJAAN!"])
 chant_interval_seconds = 2.0
