@@ -93,6 +93,12 @@ func _build_tooltip(bar : BarContact) -> String:
 	return TOOLTIP_FORMAT % [bar.description, bar.price_multiplier, bar.risk_per_shipment]
 
 
+## A bar's description can run long enough to overflow Godot's default
+## (non-wrapping) tooltip — see TooltipFactory.
+func _make_custom_tooltip(for_text: String) -> Object:
+	return TooltipFactory.make_wrapped_tooltip(for_text)
+
+
 func get_selected_bar() -> BarContact:
 	if selected == -1:
 		return null

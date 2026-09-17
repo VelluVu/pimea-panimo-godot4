@@ -80,7 +80,7 @@ func _update_beer_batches_ui() -> void:
 		if batch.amount_bottles > 0:
 			any_bottles_left = true
 
-			var row_label := Label.new()
+			var row_label := TooltipLabel.new()
 			row_label.mouse_filter = Control.MOUSE_FILTER_STOP
 			row_label.clip_text = true
 			row_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
@@ -102,12 +102,12 @@ func _update_beer_batches_ui() -> void:
 			elif batch.beer_style.style == BeerStyle.Style.IPA:
 				row_label.modulate = Color.GOLD
 
-			var bulk_sell_button := Button.new()
+			var bulk_sell_button := TooltipButton.new()
 			bulk_sell_button.text = BULK_SELL_BUTTON_TEXT
 			bulk_sell_button.tooltip_text = BULK_SELL_BUTTON_TOOLTIP
 			bulk_sell_button.pressed.connect(func(): GUISignals.bulk_sell_batch_requested.emit(batch))
 
-			var ship_button := Button.new()
+			var ship_button := TooltipButton.new()
 			ship_button.text = SHIP_BUTTON_TEXT
 			ship_button.tooltip_text = SHIP_BUTTON_TOOLTIP
 			ship_button.pressed.connect(func():

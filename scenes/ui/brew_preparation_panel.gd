@@ -53,6 +53,11 @@ var _toast_tween : Tween
 
 
 func _ready() -> void:
+	# CurrentRecipeLabel is a scene-defined plain Label (see this scene's
+	# .tscn) — swap its script at runtime instead of editing the .tscn, so
+	# its tooltip_text (the active recipe name) wraps via TooltipFactory
+	# instead of overflowing on a long/undiscovered style name.
+	current_recipe_label.set_script(TooltipLabel)
 	_initialize_table_nodes()
 	BrewerySignals.brewery_state_changed.connect(_on_brewery_state_changed)
 	BrewerySignals.recipe_saved.connect(_on_recipe_saved)
@@ -120,7 +125,7 @@ func _on_recipe_save_rejected() -> void:
 
 func _initialize_table_nodes() -> void:
 	for id in IngredientDatabase.sorted_ids:
-		var new_label := Label.new()
+		var new_label := TooltipLabel.new()
 		new_label.visible = false
 		new_label.mouse_filter = Control.MOUSE_FILTER_STOP
 		new_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
