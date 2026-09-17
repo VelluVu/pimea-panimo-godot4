@@ -68,7 +68,10 @@ const MIN_TIP_PER_QUALITY_POINT : float = 1.0
 ## min_quality (zero or below it — no tip for merely meeting expectations,
 ## let alone missing them). Scaled by budget_multiplier, so a big-spender
 ## customer's tip is more generous than a broke one's for the same
-## over-delivery. See evaluate_brew_batch's quality_margin.
+## over-delivery. See evaluate_brew_batch's quality_margin. 0.0 (or below)
+## means this customer never tips at all, full stop, regardless of quality
+## — see Opiskelija, who's there for the cheapest beer on tap and nothing
+## more.
 @export var quality_tip_sensitivity: float = 0.3
 
 @export_group("Reputation Changes")
@@ -253,8 +256,13 @@ func evaluate_brew_batch(batch: BrewBatch, style_base_price: float = 3.0) -> Dic
 	# overshoot is never silently invisible; the proportional formula
 	# still wins (and keeps scaling with price) once income is high enough
 	# for it to exceed the flat floor.
+	# quality_tip_sensitivity <= 0.0 means this customer never tips at all
+	# (see Opiskelija) — checked before the floor kicks in, since
+	# MIN_TIP_PER_QUALITY_POINT is otherwise a flat amount that doesn't
+	# scale with sensitivity and would otherwise tip even a customer whose
+	# sensitivity was deliberately zeroed out.
 	var tip : float = 0.0
-	if quality_margin > 0.0:
+	if quality_margin > 0.0 and quality_tip_sensitivity > 0.0:
 		var proportional_tip : float = income * quality_margin * quality_tip_sensitivity
 		var floor_tip : float = quality_margin * MIN_TIP_PER_QUALITY_POINT
 		tip = maxf(0.0, snappedf(max(proportional_tip, floor_tip) * budget_multiplier, 0.1))

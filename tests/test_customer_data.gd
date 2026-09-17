@@ -166,6 +166,18 @@ func test_evaluate_brew_batch_tip_has_a_minimum_floor_on_cheap_styles() -> void:
 	assert_eq(result[CustomerManager.KEY_TIP], 0.5, "tip")
 
 
+## A customer with quality_tip_sensitivity == 0.0 (see Opiskelija) never
+## tips at all, even well above their own min_quality bar — proves the
+## floor from the test above doesn't bypass a customer who was
+## deliberately given zero tipping sensitivity.
+func test_evaluate_brew_batch_zero_tip_sensitivity_never_tips_even_at_masterful_quality() -> void:
+	var customer := CustomerData.new()
+	customer.quality_tip_sensitivity = 0.0
+	var batch := _make_batch(BeerStyle.Style.BULKKILAGER, 1.5)
+	var result := customer.evaluate_brew_batch(batch)
+	assert_eq(result[CustomerManager.KEY_TIP], 0.0, "tip")
+
+
 func test_generate_display_name_uses_title_and_first_names_when_set() -> void:
 	var customer := CustomerData.new()
 	customer.title = "Testi"
