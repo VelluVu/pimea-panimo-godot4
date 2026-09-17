@@ -1,0 +1,195 @@
+Pimeä Panimo — Playtest (Day Events, New Group-Visit Squads, Tooltip/
+Toast Wrapping, LVV-Raid Occlusion Re-check)
+Date: 2026-09-17
+Method: live playthrough via the godot-ai MCP session. Menu navigation via
+real button emit_signal("pressed") calls as in every prior session, but
+most in-game state changes this session went through the project's own
+DevConsole ("Konsoli" panel, GUI/DevConsole) via
+dc._on_command_submitted("<command>") instead of hand-rolled game_eval
+state mutation — it wraps the exact same commands a human tester would
+type (iddqd, group, day, raid, sell, vie, customer, special, money, rep,
+risk) and proved far more crash-resistant than raw eval this session (see
+Testing Methodology Notes). Covered: the new day-event system
+(DayEventManager/DayEventData), four new group-visit squads (agentti,
+mafioso, hipsteri, raksamies laumat), the chant_text -> chant_texts
+sequence/random rework, the runtime TooltipLabel/TooltipProgressBar script
+swap on TopPanel_Resources, SaleFlashStack's toast width clamp, the new
+steel keg economy sprites, and a re-check of last session's LVV-raid
+wall-occlusion fix and the still-open AVI/LVV text bug.
+
+
+TESTING METHODOLOGY NOTES (not gameplay bugs, worth recording)
+=========================================================================
+- Hit four separate game_eval crashes this session (each recovered via the
+  established project_manage(stop) + project_run cycle, per the standing
+  eval-fragility finding), all self-inflicted testing mistakes rather than
+  game bugs:
+    1. Calling `Brewery.add_risk(...)`/`Brewery.has_method(...)` statically
+       on the class_name instead of `BrewEngine.current_brewery.add_risk(...)`
+       — a compile-time parser error that still parks the live game.
+    2. Chaining a restart button's emit_signal("pressed") with an immediate
+       node lookup on the very next line of the same eval call — the lookup
+       hit the GUI mid-teardown/rebuild and threw a null-instance error.
+       The exact same lookup worked fine as its own separate eval call
+       moments later with a fresh run, so this reads as a same-call-chaining
+       artifact, not a real restart-flow bug — not confirmed either way
+       against the actual "Uusi yritys" bankruptcy-restart path specifically,
+       since I only re-verified via a fresh main-menu start.
+    3. Assuming `TooltipFactory.make_wrapped_tooltip()` returns the Label
+       directly and reading `.autowrap_mode` off it — it actually returns a
+       PanelContainer wrapping the Label as its child. Confirmed by reading
+       tooltip_factory.gd after the crash; the function's actual behavior
+       (autowrap + 260px cap only once text needs it) is unchanged from last
+       session's already-passing verification, so this wasn't re-tested live
+       a third time — no reason to expect it broke.
+    4. (Carried from last session, not repeated) an in-eval polling loop
+       over a Tween-driven walk can EVAL_HUNG faster than the walk itself
+       resolves.
+  All four this session were caught and recovered without losing more than
+  the single triggering call. Updated the standing eval-fragility memory
+  with all of these so future sessions don't re-spend the same crash cycles.
+- DevConsole commands (iddqd, group <name>, day, raid, sell [n] <style>,
+  vie <style> <bar>, money/rep/risk <n>) ran cleanly every single time with
+  zero crashes, in sharp contrast to raw eval above — this is now the
+  preferred test surface for anything it covers.
+- A forced string of "day" advances (4 in a row via DevConsole, no real
+  play in between) drained the treasury to bankruptcy ("KONKURSSI!", day 3,
+  #7 on the leaderboard) purely from daily upkeep costs with zero income —
+  expected fallout of the test methodology (spamming day-closes with no
+  actual brewing/selling), not a discovered bug. The game-over screen itself
+  rendered correctly and the "Uusi yritys" restart flow worked.
+- get_ui_elements' polled RichTextLabel .text does NOT reflect content
+  added via append_text() (DevConsole's own log) — Godot only reflects a
+  direct assignment there. Read the node's own tracked array/state instead
+  (here, `_command_history`) when you need to see what a RichTextLabel-based
+  log actually contains.
+
+
+CONFIRMED WORKING — DAY EVENT SYSTEM (new this session's diff)
+=========================================================================
+- DevConsole "day" command reliably fires TimeManager.force_advance_day(),
+  which correctly triggers DayEventManager's roll and
+  BrewerySignals.day_event_announced -> GUI._on_day_event_announced().
+- Rolled both outcomes live: the high-weight "nothing special" default
+  (day_event_none.tres: "Tavallinen päivä kellarissa. Ei erikoisia
+  yllätyksiä luvassa tänään.") and a named event
+  (day_event_opintotuki.tres: "Opintotukien maksupäivä on tänään.
+  Odotettavissa rahaa polttavia opiskelijoita.") — both displayed correctly
+  on DayEventBanner, reusing GUI._fit_banner_height() to size the box to
+  the actual wrapped text height with no clipping.
+- Data-level check of all 9 shipped day_events/*.tres confirms the pure
+  logic (window/start-delay fractions never exceeding a full day) is also
+  covered by the new automated test_day_event.gd suite (all passing).
+- Did not live-verify the featured_group_event/featured_customer_titles
+  spawn-bias integration during an active window (it has its own randomized
+  start delay, and forcing it live risked another timing-sensitive
+  wild-goose chase) — trusted to the code read (CustomerRegistry.
+  get_random_customer_data(), CustomerSpawner._pick_group_event(), both
+  straightforward weighted-roll reads of DayEventManager.get_active_event())
+  plus the already-passing unit tests for the underlying roll math.
+
+
+CONFIRMED WORKING — FOUR NEW GROUP-VISIT SQUADS
+=========================================================================
+- agentti_lauma: force-spawned via "group agentti" — banner text rendered
+  correctly, wrapped to 2 lines, suited "agentti" customers visible walking
+  in. No chant configured for this event (chant_texts empty in the .tres,
+  by design) — correctly produced no chant bubble.
+- mafioso_lauma: force-spawned via "group mafioso" — group arrived
+  correctly (dark suits/fedoras) alongside the still-resolving agentti
+  group from moments earlier; no crossed-wire dialogue issues, matching
+  last session's finding that CustomerManager's per-slot dialogue
+  bookkeeping tolerates overlapping forced groups fine. Also no chant
+  configured, correctly silent.
+- hipsteri_lauma: force-spawned via "group hipsteri" — caught its
+  RANDOM-mode chant firing live ("ONKS TÄÄ LUOMUA?", one of its three
+  listed chant_texts) alongside its own banner text, both rendering
+  correctly at the same time as the previous mafioso group's resolving
+  dialogue bubble ("Ei täällä ollut mitään minulle. Ehkä ensi kerralla.").
+- raksamies_lauma: force-spawned via "group raksamies" — caught its
+  SEQUENCE-mode chant firing live ("HARJAKAISET! HARJAKAISET!", correctly
+  the first line in its listed order) alongside its own banner text.
+- Static check of all four new/changed .tres files confirms chant_texts
+  arrays and chant_mode values (0=SEQUENCE default, 1=RANDOM where set)
+  match GroupVisitEventData's enum correctly — consistent with the four
+  new/updated automated tests in test_group_visit.gd (sequence cycling,
+  random-only-returns-listed-lines, empty-when-no-chants), all passing.
+
+
+CONFIRMED WORKING — TOOLTIP/TOAST WRAPPING POLISH
+=========================================================================
+- TopPanel_Resources.gd's runtime script swap confirmed via direct node
+  inspection: ModifierTagLabel's script is genuinely
+  res://src/classes/tooltip_label.gd (not the scene-authored Label script)
+  with tooltip_text correctly populated from the active run modifier's
+  description; LevelProgressBar's script is genuinely
+  res://src/classes/tooltip_progress_bar.gd with tooltip_text correctly
+  showing the XP-to-next-level readout. Both swaps happen in _ready()
+  without touching the .tscn, exactly as documented.
+- SaleFlashStack toast width clamp confirmed live: sold 12x "Belgian
+  Strong Dark Ale" (the longest style_name in the game) to trigger the
+  longest realistic toast string. The resulting SaleFlashToast panel
+  clamped to custom_minimum_size.x=192 (MAX_WIDTH 180 + margins) instead
+  of growing past the ~180px column budget, with its Label's
+  autowrap_mode correctly engaged and the text ("Myyty: Belgian Strong
+  Dark Ale x12  +69.6 €") wrapping to 2 lines inside that width — matches
+  the fix's intent exactly.
+- bar_contact_option_button.gd's new _make_custom_tooltip() hookup wasn't
+  re-exercised live this session (see Testing Methodology Notes — a wrong
+  assumption about make_wrapped_tooltip()'s return shape burned the eval
+  attempt), but the underlying TooltipFactory.make_wrapped_tooltip()
+  function itself is unchanged from last session's already-confirmed
+  long/short-text behavior, and the new hookup is a one-line delegation to
+  it — low risk, but flagging as not independently re-verified this pass.
+
+
+CONFIRMED WORKING — KEG ECONOMY VISUALS
+=========================================================================
+- All four world Keg/Keg2/Keg3/Keg4 Sprite2D nodes confirmed wired to the
+  new res://assets/textures/steel_keg_24l_32.png texture (previously a
+  different/placeholder texture), visible=true, rendering correctly in the
+  warehouse/bar area in-game.
+
+
+CARRIED FORWARD — LVV-RAID WALL OCCLUSION (last session's open item)
+=========================================================================
+- Re-verified earlier this same session, before the group/day-event work:
+  WarehouseWallOverlay (z_index=2, Polygon2D) correctly occludes an
+  LvvAgent (z_index=0) positioned inside its polygon band. Verified with a
+  proper null test — killed the agent's active Tween, placed it directly
+  inside the overlay's polygon, screenshotted (agent invisible), then
+  toggled the overlay's visible off and re-screenshotted (agent's hazmat
+  sprite now visible in the same spot) — closes out the one item left open
+  in playtest_notes_12.txt.
+
+
+STILL OPEN — LEFTOVER "AVI" TEXT (flagged last session, not yet fixed)
+=========================================================================
+- The "Löysä valvonta" modifier card's DescriptionLabel still reads "AVI on
+  kiireinen muualla tänä kautena..." instead of "LVV", left over from the
+  AVI->LVV rename in commit a5a0a24. Reconfirmed present this session
+  (seen on both a fresh game and the post-bankruptcy restart's modifier
+  select screen). Not fixed yet — awaiting the user's go-ahead from last
+  session's flag.
+
+
+VERDICT
+==========
+Every piece of this session's uncommitted diff that could be reached
+through the DevConsole test surface behaved correctly: the day-event
+banner/window system (both the "nothing special" and a named event
+outcome), all four new group-visit squads (including the chant_texts
+SEQUENCE/RANDOM rework, live-caught for both modes), the TopPanel_Resources
+tooltip script swaps, the SaleFlashStack width clamp against the longest
+real style name in the game, and the new steel-keg sprite wiring. Last
+session's LVV-raid wall-occlusion fix was independently re-confirmed with a
+proper visible-toggle null test. The AVI/LVV leftover text bug from last
+session is still unfixed and still present. No new gameplay bugs were
+found this session — every rough edge encountered (four eval crashes, one
+self-inflicted bankruptcy) was a testing-methodology artifact of driving
+the game this way, not a defect in the game itself, and all four crash
+patterns plus the DevConsole-over-raw-eval preference are now written into
+the standing MCP testing memory so they don't cost another session's worth
+of crash-recovery cycles. Automated suite held at 110/110 throughout
+(110, not 106 — the new day_event and group_visit tests from this
+session's diff).
