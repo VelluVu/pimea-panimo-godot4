@@ -62,6 +62,14 @@ const MIN_TIP_PER_QUALITY_POINT : float = 1.0
 @export var min_required_abv: float = -1.0
 ## -1 = ei rajoitusta. Esim. 0.5 hyväksyy vain alkoholittomat (ks. Zgen).
 @export var max_required_abv: float = -1.0
+## -1 = ei rajoitusta. Same hard-gate mechanism as min/max_required_abv,
+## checked against BeerStyle.fixed_price_per_bottle — a style priced above
+## this is invisible to this customer no matter how well it otherwise
+## matches their preference, same as an out-of-range ABV. See Opiskelija: a
+## broke student won't even consider the fancy stuff, and leaves via
+## dialogue_no_match (same path as any other failed strict requirement) if
+## everything in stock is priced above their budget.
+@export var max_required_price: float = -1.0
 
 @export_group("Tippaus")
 ## Extra money on top of the fixed price, per quality point above
@@ -155,6 +163,8 @@ func meets_strict_requirements(beer_style: BeerStyle) -> bool:
 	if min_required_abv >= 0.0 and beer_style.abv < min_required_abv:
 		return false
 	if max_required_abv >= 0.0 and beer_style.abv > max_required_abv:
+		return false
+	if max_required_price >= 0.0 and beer_style.fixed_price_per_bottle > max_required_price:
 		return false
 	if requires_preference_match and get_preference_score(beer_style.style) < 0.5:
 		return false
