@@ -219,7 +219,18 @@ func _place_bubble(entry: Dictionary, slot: int, character_global_pos: Vector2) 
 
 	var target_y : float = base_y - step * BUBBLE_STAIR_STEP
 	var bubble_size : Vector2 = entry.bubble.get_size()
-	entry.bubble.global_position = Vector2(character_global_pos.x - bubble_size.x * 0.5, target_y)
+
+	# Bubble width grows with text length (see SpeechBubble's own MIN/MAX_WIDTH
+	# clamp) and character_global_pos can sit right at a screen edge (e.g. a
+	# group chant fired mid-walk near StairsBottomMarker) — clamp the final
+	# rect fully inside the viewport instead of just centering on the speaker,
+	# same idea for Y so a very high step/offset can't push it above the top.
+	var viewport_size : Vector2 = get_viewport_rect().size
+	var target_x : float = character_global_pos.x - bubble_size.x * 0.5
+	target_x = clampf(target_x, 0.0, maxf(0.0, viewport_size.x - bubble_size.x))
+	target_y = clampf(target_y, 0.0, maxf(0.0, viewport_size.y - bubble_size.y))
+
+	entry.bubble.global_position = Vector2(target_x, target_y)
 	entry.bubble.z_index = slot
 
 
