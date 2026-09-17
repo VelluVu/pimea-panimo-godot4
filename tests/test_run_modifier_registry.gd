@@ -57,3 +57,17 @@ func test_get_random_modifiers_every_result_comes_from_the_pool() -> void:
 	var picked : Array[RunModifier] = registry.get_random_modifiers(3)
 	for modifier : RunModifier in picked:
 		assert_true(RunModifierRegistryScript.pool.has(modifier), "offered modifier not found in pool: %s" % modifier.modifier_name)
+
+
+## get_run_start_modifiers() (always [default, medium, hard] — see
+## ModifierSelectWindow) is NOT unit-tested here: its tier split calls
+## RunModifier.get_difficulty_score() on resources loaded from the real
+## pool via _static_init()'s load() calls, and a non-@tool Resource script's
+## methods aren't invokable on those instances inside this @tool test
+## harness (they load as placeholders) — same limitation documented in
+## test_brew_resolver.gd for resolve_brew_style() reaching into
+## IngredientDatabase.database. get_difficulty_score() itself is fully
+## covered in test_run_modifier.gd (called on RunModifier.new() instances,
+## which are real script instances, not placeholders); the tier-split
+## integration was verified live instead this session via the running
+## game's dev console.

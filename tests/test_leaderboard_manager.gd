@@ -28,6 +28,28 @@ func test_calculate_score_zero_stats_is_zero() -> void:
 	assert_eq(LeaderboardManagerScript.calculate_score(0, 0, 0), 0)
 
 
+func test_calculate_score_with_no_modifier_matches_unweighted_base() -> void:
+	assert_eq(LeaderboardManagerScript.calculate_score(10, 20, 30, null), 1230)
+
+
+func test_calculate_score_with_neutral_modifier_matches_unweighted_base() -> void:
+	assert_eq(LeaderboardManagerScript.calculate_score(10, 20, 30, RunModifier.new()), 1230)
+
+
+func test_calculate_score_scales_up_for_a_harder_modifier() -> void:
+	var harder := RunModifier.new()
+	harder.ingredient_price_multiplier = 1.7 # difficulty_score == 0.7
+	var expected := roundi(1230 * (1.0 + 0.7 * LeaderboardManagerScript.DIFFICULTY_SCORE_WEIGHT))
+	assert_eq(LeaderboardManagerScript.calculate_score(10, 20, 30, harder), expected)
+	assert_true(LeaderboardManagerScript.calculate_score(10, 20, 30, harder) > 1230, "a harder modifier should score higher than the same stats with none")
+
+
+func test_calculate_score_never_drops_below_unweighted_base_for_an_easier_modifier() -> void:
+	var easier := RunModifier.new()
+	easier.reputation_gain_multiplier = 1.25 # difficulty_score == -0.25
+	assert_eq(LeaderboardManagerScript.calculate_score(10, 20, 30, easier), 1230)
+
+
 func test_get_rank_is_one_when_no_entries_exist() -> void:
 	var leaderboard := LeaderboardManagerScript.new()
 	assert_eq(leaderboard.get_rank(500), 1)

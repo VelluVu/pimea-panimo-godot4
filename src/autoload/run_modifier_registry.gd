@@ -83,6 +83,48 @@ func get_random_modifiers(count : int) -> Array[RunModifier]:
 	return result
 
 
+## Always [default, medium pick, hard pick] in that fixed order — see
+## ModifierSelectWindow, which presents "normal, then a medium modifier,
+## then a hard one" instead of a fully random spread. Non-default modifiers
+## are ranked by RunModifier.get_difficulty_score() and split at the median
+## into a medium (lower) half and a hard (upper) half, so the split stays
+## balanced automatically as modifiers are added/removed instead of a
+## hand-tuned difficulty cutoff going stale. Falls back to the same
+## clamped-to-pool-size spirit as get_random_modifiers() when the pool is
+## too small for three distinct roles.
+func get_run_start_modifiers() -> Array[RunModifier]:
+	if pool.is_empty():
+		return [RunModifier.new()]
+
+	var default_modifier : RunModifier = _get_default_modifier()
+	var rest : Array[RunModifier] = pool.duplicate()
+	if default_modifier != null:
+		rest.erase(default_modifier)
+
+	var result : Array[RunModifier] = []
+	if default_modifier != null:
+		result.append(default_modifier)
+	if rest.is_empty():
+		return result
+
+	rest.sort_custom(func(a : RunModifier, b : RunModifier) -> bool: return a.get_difficulty_score() < b.get_difficulty_score())
+	var split : int = ceili(rest.size() / 2.0)
+	var medium_pool : Array[RunModifier] = rest.slice(0, split)
+	var hard_pool : Array[RunModifier] = rest.slice(split)
+	if hard_pool.is_empty():
+		hard_pool = medium_pool
+
+	var medium_choice : RunModifier = medium_pool.pick_random()
+	result.append(medium_choice)
+
+	var hard_candidates : Array[RunModifier] = hard_pool.duplicate()
+	if hard_candidates.size() > 1:
+		hard_candidates.erase(medium_choice)
+	result.append(hard_candidates.pick_random())
+
+	return result
+
+
 func _get_default_modifier() -> RunModifier:
 	for modifier : RunModifier in pool:
 		if modifier.is_default:
