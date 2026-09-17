@@ -272,9 +272,12 @@ func _wait_for_group_arrival(event_data: GroupVisitEventData, last_member: Node2
 	var state := {"walking": true}
 	last_member.walk_route_finished.connect(func(): state.walking = false, CONNECT_ONE_SHOT)
 
+	var chant_index : int = 0
 	while state.walking and is_instance_valid(last_member):
-		if not event_data.chant_text.is_empty():
-			BrewerySignals.dialogue_pushed.emit(event_data.chant_text, false, dialogue_slot, last_member.global_position, event_data.chant_interval_seconds + 0.3, 0.3)
+		var chant_text : String = event_data.get_chant_text(chant_index)
+		chant_index += 1
+		if not chant_text.is_empty():
+			BrewerySignals.dialogue_pushed.emit(chant_text, false, dialogue_slot, last_member.global_position, event_data.chant_interval_seconds + 0.3, 0.3)
 		await get_tree().create_timer(event_data.chant_interval_seconds).timeout
 
 
