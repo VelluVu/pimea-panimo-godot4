@@ -49,6 +49,13 @@ var _risk_warning_active: bool = false
 
 
 func _ready() -> void:
+	# Both are scene-defined nodes (see this scene's .tscn) — swap their
+	# script at runtime instead of editing the .tscn, so their tooltip_text
+	# (a run modifier's full description, or the XP-to-next-level readout)
+	# wraps via TooltipFactory instead of overflowing on a long description.
+	modifier_tag_label.set_script(TooltipLabel)
+	level_progress_bar.set_script(TooltipProgressBar)
+
 	BrewerySignals.brewery_state_changed.connect(_on_brewery_state_changed)
 	TimeManager.day_changed.connect(_on_day_changed)
 

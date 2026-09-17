@@ -17,7 +17,7 @@ func _initialize_storage_nodes() -> void:
 	for id in IngredientDatabase.sorted_ids:
 		var ingredient: IngredientData = IngredientDatabase.database[id]
 		
-		var new_label := Label.new()
+		var new_label := TooltipLabel.new()
 		new_label.visible = false
 		new_label.mouse_filter = Control.MOUSE_FILTER_STOP
 		new_label.modulate = ingredient.get_color()

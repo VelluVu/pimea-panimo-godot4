@@ -11,6 +11,12 @@ const FADE_OUT_SECONDS : float = 1.0
 
 const LABEL_FORMAT : String = "Myyty: %s  +%.1f €"
 
+## Same clamp idea as SpeechBubble's own MIN/MAX_WIDTH (see speech_bubble.gd)
+## — SaleFlashStack's toast column only has ~13px of margin to the actual
+## right screen edge, so an uncapped long string (a long style/bar name)
+## would grow past it instead of wrapping onto another line.
+const MAX_WIDTH : float = 180.0
+
 @onready var label : Label = $MarginContainer/Label
 @onready var margin_container : MarginContainer = $MarginContainer
 
@@ -52,8 +58,22 @@ func initialize_text(text : String) -> void:
 ## minimum size to the VBoxContainer that stacks these toasts.
 func _resize_to_fit_content() -> void:
 	await get_tree().process_frame
+	if not is_instance_valid(self):
+		return
+
+	var natural_size : Vector2 = margin_container.get_combined_minimum_size()
+	if natural_size.x <= MAX_WIDTH:
+		custom_minimum_size = natural_size
+		return
+
+	# Wider than the column allows — fix the width at MAX_WIDTH so the
+	# Label's existing autowrap (WORD_SMART, see sale_flash_toast.tscn)
+	# actually has a rect to wrap against, then re-measure height once
+	# that width has taken effect for a frame.
+	custom_minimum_size = Vector2(MAX_WIDTH, natural_size.y)
+	await get_tree().process_frame
 	if is_instance_valid(self):
-		custom_minimum_size = margin_container.get_combined_minimum_size()
+		custom_minimum_size.y = margin_container.get_combined_minimum_size().y
 
 
 func _start_fade_out() -> void:

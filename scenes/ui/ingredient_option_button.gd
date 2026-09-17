@@ -151,3 +151,10 @@ func _sync_own_tooltip(ingredient_id : int) -> void:
 	var ingredient : IngredientData = IngredientDatabase.get_item_by_id(ingredient_id)
 	if ingredient:
 		tooltip_text = ingredient.description + "\n" + ingredient.get_stat_string()
+
+
+## Some ingredient descriptions run long enough to render wider than the
+## game's 640px base viewport under Godot's default (non-wrapping) tooltip —
+## see TooltipFactory.
+func _make_custom_tooltip(for_text: String) -> Object:
+	return TooltipFactory.make_wrapped_tooltip(for_text)
