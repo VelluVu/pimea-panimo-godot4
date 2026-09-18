@@ -20,6 +20,24 @@ extends Resource
 @export var hop_balance_bonus : float = 0.0
 @export var flavor_matched : bool = false
 
+## Snapshotted once from Brewery.get_peak_speed_multiplier()/
+## get_decline_rate_multiplier() when this batch is brewed (see
+## RunPerk.peak_speed_multiplier's docstring for why these are captured
+## here instead of read from active_perks continuously) — neutral 1.0
+## defaults mean an untouched batch (or a save from before this field
+## existed) ages exactly as it always did.
+@export var peak_days_multiplier : float = 1.0
+@export var decline_rate_multiplier : float = 1.0
+
+
+## BeerStyle.peak_days scaled by this batch's own peak_days_multiplier —
+## the actual number of days this specific batch takes to reach peak
+## quality, used by both _calculate_current_quality() and
+## get_aging_trend_icon() so the visible trend arrow always agrees with
+## the quality number actually being shown.
+func get_effective_peak_days() -> int:
+	return roundi(beer_style.peak_days * peak_days_multiplier)
+
 
 func get_style_name() -> String:
 	return BeerStyle.get_style_string_from_style(beer_style.style)
@@ -36,10 +54,11 @@ const AGING_TREND_DECLINING : String = "↓"
 ## instead of the trend only being inferable by watching the quality
 ## number change over several aging ticks.
 func get_aging_trend_icon() -> String:
-	if age_in_days < beer_style.peak_days:
+	var effective_peak_days : int = get_effective_peak_days()
+	if age_in_days < effective_peak_days:
 		return AGING_TREND_RISING
 
-	var days_past_peak : int = age_in_days - beer_style.peak_days
+	var days_past_peak : int = age_in_days - effective_peak_days
 	if days_past_peak > beer_style.shelf_life_days:
 		return AGING_TREND_DECLINING
 
@@ -114,17 +133,19 @@ func age_one_day() -> void:
 
 
 func _calculate_current_quality() -> void:
-	if age_in_days <= beer_style.peak_days:
-		if beer_style.peak_days > 0:
-			var progress = float(age_in_days) / float(beer_style.peak_days)
+	var effective_peak_days : int = get_effective_peak_days()
+
+	if age_in_days <= effective_peak_days:
+		if effective_peak_days > 0:
+			var progress = float(age_in_days) / float(effective_peak_days)
 			current_quality = original_quality + (beer_style.aging_factor * progress)
 	else:
-		var days_past_peak = age_in_days - beer_style.peak_days
+		var days_past_peak = age_in_days - effective_peak_days
 		if days_past_peak > beer_style.shelf_life_days:
 			var spoilage_days = days_past_peak - beer_style.shelf_life_days
 			if beer_style.aging_factor < 0:
-				current_quality = original_quality + (beer_style.aging_factor * spoilage_days)
+				current_quality = original_quality + (beer_style.aging_factor * spoilage_days * decline_rate_multiplier)
 			else:
-				current_quality = original_quality - (0.02 * spoilage_days)
-				
+				current_quality = original_quality - (0.02 * spoilage_days * decline_rate_multiplier)
+
 	current_quality = snappedf(clampf(current_quality, 0.1, 2.5), 0.01)

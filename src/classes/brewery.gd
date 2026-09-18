@@ -15,6 +15,18 @@ const LVV_RAID_REPUTATION_PENALTY_PERCENT : float = 0.25
 ## wrecked instead of every raid costing the same bite. See
 ## _check_for_lvv_raid().
 const LVV_RAID_ESCALATION_PER_RAID : float = 1.0
+## Clamp on the escalation above — matches its value at raid 3
+## (BUSTED_RAID_COUNT), the highest raid the formula was ever tuned to
+## reach in a normal run. Without this, a RunPerk.extra_raid_strikes perk
+## (e.g. MetaUnlockData's "Piilokätkö") that grants a 4th+ raid past the
+## normal bust point runs into an escalation that keeps climbing past
+## 3.0 — at raid 4 the fine alone hits 120% of current money (0.3 * 4.0),
+## which guarantees bankruptcy on its own regardless of how much the
+## player recovered beforehand, silently defeating the whole point of
+## surviving that extra raid. Capping here means a 4th+ raid still hurts
+## exactly as much as the 3rd (the worst the game was ever designed to
+## throw at once), not more.
+const LVV_RAID_MAX_ESCALATION : float = 3.0
 ## Three strikes: the raid that pushes raid_count to this becomes
 ## permanent instead of just another costly setback — see
 ## _check_for_lvv_raid() and BrewerySignals.game_ended.
@@ -185,7 +197,7 @@ func _init(preset_modifier : RunModifier = null) -> void:
 	run_modifier = preset_modifier if preset_modifier != null else RunModifierRegistry.get_random_modifier()
 	resolver = BrewResolver.new()
 	resolver._ready()
-	resolver.ingredient_price_multiplier = run_modifier.ingredient_price_multiplier
+	resolver.ingredient_price_multiplier = get_ingredient_price_multiplier()
 	discovered_styles[BeerStyle.Style.KOTIKALJA] = true
 
 	# Zero-click first-brew hint: Kotikalja is known from the start without
@@ -195,6 +207,58 @@ func _init(preset_modifier : RunModifier = null) -> void:
 	if kotikalja_recipe != null:
 		brew_preparation.active_recipe_target = kotikalja_recipe.ingredient_amounts.duplicate()
 		brew_preparation.active_recipe_style_name = BeerStyle.get_style_string_from_style(kotikalja_recipe.beer_style)
+
+	_seed_meta_discovered_styles()
+	_seed_meta_perks()
+
+
+## Pre-seeds every style ever discovered in a past run (MetaProgressManager,
+## written by discover_style() below) so a brand new run doesn't start
+## knowing less than the player already does — the "cheap first step" of
+## meta-progression, short of a full spendable-currency unlock tree. Not
+## called with emit_state_changed (discover_style() proper handles that
+## path for a genuinely new discovery) since this only ever recalls
+## already-known ground, and MetaProgressManager itself already has the
+## record — re-writing it here would be a no-op anyway (see its own
+## has_style() guard).
+##
+## Harmless no-op when a save is being deserialized instead of a fresh run
+## started: ResourceLoader overwrites discovered_styles/saved_recipes with
+## the save's own values right after _init() returns (same ordering
+## _ensure_default_recipe()'s docstring already documents for
+## active_daily_goals et al.), so this pre-seeding never lingers into a
+## resumed run's actual state.
+##
+## MetaProgressManager can be null here: BrewEngine._init() constructs a
+## throwaway boot-time Brewery before every autoload listed after it
+## (MetaProgressManager included) has been added to the tree yet — see
+## BrewEngine.start_new_game()'s own docstring on that first instance being
+## replaced. Every real "Aloita uusi peli" call happens long after full
+## engine boot, where MetaProgressManager is always live.
+func _seed_meta_discovered_styles() -> void:
+	if MetaProgressManager == null:
+		return
+	for style : int in MetaProgressManager.get_discovered_styles():
+		if discovered_styles.has(style):
+			continue
+		discovered_styles[style] = true
+		_ensure_default_recipe(resolver.get_beer_style(style), false)
+
+
+## Folds every renown-bought node's current level, already scaled into a
+## plain RunPerk (MetaProgressManager.get_active_perks() ->
+## MetaUnlockData.get_scaled_perk()), straight into active_perks so it's
+## live from day 1 of this run — no separate aggregation path needed on
+## top of the existing get_quality_bonus()/get_reputation_gain_multiplier()/
+## get_tip_income_multiplier()/etc. Same "can be null at process-boot"
+## MetaProgressManager caveat as _seed_meta_discovered_styles() above, and
+## the same "overwritten by a loaded save's own active_perks right after
+## _init() returns, never lingers into a resumed run" non-issue.
+func _seed_meta_perks() -> void:
+	if MetaProgressManager == null:
+		return
+	for perk : RunPerk in MetaProgressManager.get_active_perks():
+		active_perks.append(perk)
 
 
 func is_style_known(style : BeerStyle.Style) -> bool:
@@ -352,17 +416,151 @@ func get_distribution_income_multiplier() -> float:
 	return RunPerk.combine_stacking(1.0, active_perks, func(perk : RunPerk) -> float: return perk.distribution_income_multiplier)
 
 
+## Same combine_stacking() shape as get_reputation_gain_multiplier() —
+## starts from this run's RunModifier.ingredient_price_multiplier (the
+## run's fixed structural pricing environment) and layers active_perks'
+## own ingredient_price_multiplier on top (a MetaUnlockData's permanent
+## negotiation skill, or a future mid-run perk). Read at the two sites
+## that actually charge/refund money (_on_buy_ingredient()/
+## _on_sell_ingredient()) and to keep resolver.ingredient_price_multiplier
+## in sync — deliberately NOT meant to also discount BrewResolver's
+## brew-cost-basis/bulk-sell/ship-to-bar payout math beyond that resync,
+## since those already read resolver.ingredient_price_multiplier as the
+## run's own cost basis, not a per-transaction skill bonus.
+func get_ingredient_price_multiplier() -> float:
+	return RunPerk.combine_stacking(run_modifier.ingredient_price_multiplier, active_perks, func(perk : RunPerk) -> float: return perk.ingredient_price_multiplier)
+
+
+## No RunModifier counterpart, same reasoning as get_distribution_income_
+## multiplier() — bonus brew yield only exists as a perk axis. Read once
+## per brew in start_brew(), before apply_bottling_costs() subtracts the
+## usual bottling loss.
+func get_brew_yield_multiplier() -> float:
+	return RunPerk.combine_stacking(1.0, active_perks, func(perk : RunPerk) -> float: return perk.brew_yield_multiplier)
+
+
+## Plain-loop sum, not combine_stacking() — a 0.0-neutral probability has
+## no sensible multiplicative stacking mode, same reasoning as
+## get_quality_bonus() above. Clamped to 1.0 so several stacked refund
+## perks can't exceed a guaranteed refund.
+func get_ingredient_refund_chance() -> float:
+	var total : float = 0.0
+	for perk : RunPerk in active_perks:
+		total += perk.ingredient_refund_chance
+	return clampf(total, 0.0, 1.0)
+
+
+## Read exactly once per brew (start_brew()) to snapshot onto the new
+## BrewBatch's own peak_days_multiplier — see RunPerk.peak_speed_
+## multiplier's docstring for why this isn't read continuously like every
+## other get_X_multiplier() here.
+func get_peak_speed_multiplier() -> float:
+	return RunPerk.combine_stacking(1.0, active_perks, func(perk : RunPerk) -> float: return perk.peak_speed_multiplier)
+
+
+## Same brew-time-snapshot reasoning as get_peak_speed_multiplier().
+func get_decline_rate_multiplier() -> float:
+	return RunPerk.combine_stacking(1.0, active_perks, func(perk : RunPerk) -> float: return perk.decline_rate_multiplier)
+
+
+## No RunModifier counterpart — read by CustomerSpawner on top of its own
+## reputation-based spawn-interval factor. Below 1.0 shortens the
+## randf_range() window a walk-in/group visit's next delay is rolled from.
+func get_spawn_interval_multiplier() -> float:
+	return RunPerk.combine_stacking(1.0, active_perks, func(perk : RunPerk) -> float: return perk.spawn_interval_multiplier)
+
+
+## No RunModifier counterpart, same reasoning as get_distribution_income_
+## multiplier() above. Read by CustomerManager.process_auto_sale() to mark
+## up a normal counter sale's listed price BEFORE CustomerData.
+## evaluate_brew_batch() computes income/tip off it — see RunPerk.
+## counter_price_multiplier's own docstring for why this is kept separate
+## from get_distribution_income_multiplier(), which never touches a
+## counter sale at all.
+func get_counter_price_multiplier() -> float:
+	return RunPerk.combine_stacking(1.0, active_perks, func(perk : RunPerk) -> float: return perk.counter_price_multiplier)
+
+
+## No RunModifier counterpart — read by CustomerSpawner._start_next_group_
+## event_timer() ONLY, layered on top of both the reputation factor and
+## get_spawn_interval_multiplier() above. Below 1.0 shortens the group-visit
+## roll specifically, without touching how often a solo walk-in appears —
+## see RunPerk.group_event_interval_multiplier's own docstring.
+func get_group_event_interval_multiplier() -> float:
+	return RunPerk.combine_stacking(1.0, active_perks, func(perk : RunPerk) -> float: return perk.group_event_interval_multiplier)
+
+
+## Read by CustomerRegistry.get_random_customer_data()'s weighted pick —
+## below 1.0 makes an "Agentti" customer less likely to be the one chosen.
+func get_agentti_appearance_multiplier() -> float:
+	return RunPerk.combine_stacking(1.0, active_perks, func(perk : RunPerk) -> float: return perk.agentti_appearance_multiplier)
+
+
+## Same mechanism as get_agentti_appearance_multiplier(), for "Mafioso".
+func get_mafioso_appearance_multiplier() -> float:
+	return RunPerk.combine_stacking(1.0, active_perks, func(perk : RunPerk) -> float: return perk.mafioso_appearance_multiplier)
+
+
+## Plain-loop sum, not combine_stacking() — same 0.0-neutral-probability
+## reasoning as get_ingredient_refund_chance(). Read by CustomerManager.
+## process_auto_sale() right where a sale's tip is applied.
+func get_tip_double_chance() -> float:
+	var total : float = 0.0
+	for perk : RunPerk in active_perks:
+		total += perk.tip_double_chance
+	return clampf(total, 0.0, 1.0)
+
+
+## Multiplies CustomerData.bar_fight_chance right before CustomerManager.
+## process_auto_sale() rolls it — below 1.0 means fewer bar fights.
+func get_bar_fight_chance_multiplier() -> float:
+	return RunPerk.combine_stacking(1.0, active_perks, func(perk : RunPerk) -> float: return perk.bar_fight_chance_multiplier)
+
+
+## Flat sum, not combine_stacking() — see RunPerk.extra_raid_strikes'
+## docstring. Read by _check_for_lvv_raid() to raise the effective busted
+## threshold above the base BUSTED_RAID_COUNT.
+func get_extra_raid_tolerance() -> int:
+	var total : int = 0
+	for perk : RunPerk in active_perks:
+		total += perk.extra_raid_strikes
+	return total
+
+
+## Flat sum, same shape as get_extra_raid_tolerance() above. Read by
+## _check_for_lvv_raid() to spare this many random batches from
+## confiscation.
+func get_raid_hidden_batch_count() -> int:
+	var total : int = 0
+	for perk : RunPerk in active_perks:
+		total += perk.raid_hidden_batch_count
+	return total
+
+
 func _check_for_lvv_raid() -> void:
 	if risk < get_effective_raid_threshold():
 		return
 
+	# A "Piilokätkö"-style perk (RunPerk.raid_hidden_batch_count) spares up
+	# to that many random batches from confiscation entirely — picked fresh
+	# per raid via shuffle(), not always the same batches, so this can't be
+	# gamed by always keeping the same one style safe.
+	var spared_batches : Array[BrewBatch] = []
+	var hidden_count : int = mini(get_raid_hidden_batch_count(), inventory.brew_batches.size())
+	if hidden_count > 0:
+		var shuffled : Array[BrewBatch] = inventory.brew_batches.duplicate()
+		shuffled.shuffle()
+		spared_batches = shuffled.slice(0, hidden_count)
+
 	var confiscated_bottles : int = _count_total_bottles()
-	inventory.brew_batches.clear()
+	for spared : BrewBatch in spared_batches:
+		confiscated_bottles -= spared.amount_bottles
+	inventory.brew_batches = spared_batches
 
 	# raid_count still reflects prior raids only — incremented below, after
 	# this raid's own escalation is locked in, same ordering
 	# apply_early_close_cost() uses for early_closes_count.
-	var escalation : float = 1.0 + raid_count * LVV_RAID_ESCALATION_PER_RAID
+	var escalation : float = minf(LVV_RAID_MAX_ESCALATION, 1.0 + raid_count * LVV_RAID_ESCALATION_PER_RAID)
 	var fine_amount : float = snappedf(money * LVV_RAID_FINE_PERCENT * escalation, 0.1)
 	var reputation_penalty : int = roundi(reputation * LVV_RAID_REPUTATION_PENALTY_PERCENT * escalation)
 
@@ -374,7 +572,9 @@ func _check_for_lvv_raid() -> void:
 	BrewerySignals.lvv_raid_triggered.emit(confiscated_bottles, fine_amount, reputation_penalty)
 	BrewerySignals.brewery_state_changed.emit(self)
 
-	if raid_count >= BUSTED_RAID_COUNT:
+	# A "Piilokätkö"-style perk (RunPerk.extra_raid_strikes) raises this
+	# threshold above the base three strikes — see get_extra_raid_tolerance().
+	if raid_count >= BUSTED_RAID_COUNT + get_extra_raid_tolerance():
 		trigger_ending("busted")
 		return
 
@@ -447,7 +647,7 @@ func _ready() -> void:
 	# on top of it — resolver isn't @export, so without this line it would
 	# keep pricing by whatever run_modifier happened to be current at
 	# construction time instead of the one actually loaded).
-	resolver.ingredient_price_multiplier = run_modifier.ingredient_price_multiplier
+	resolver.ingredient_price_multiplier = get_ingredient_price_multiplier()
 
 	GUISignals.add_ingredient_to_brew_preparation.connect(_on_add_ingredient_to_brew_preparation)
 	GUISignals.remove_ingredients_from_brew_preparation.connect(_on_remove_ingredient_from_brew_preparation)
@@ -511,7 +711,7 @@ func _on_buy_ingredient(ingredient_id : int, amount : int) -> void:
 		BrewerySignals.ingredient_purchase_locked.emit(ingredient.name, ingredient.min_reputation)
 		return
 
-	var buy_price : int = roundi(ingredient.base_price * amount * run_modifier.ingredient_price_multiplier)
+	var buy_price : int = roundi(ingredient.base_price * amount * get_ingredient_price_multiplier())
 
 	if money < buy_price:
 		print(StringContainer.RESOURCE_ERROR % [money, buy_price, StringContainer.MONEY_STRING])
@@ -546,7 +746,7 @@ func _on_sell_ingredient(ingredient_id : int, amount : int) -> void:
 	if final_amount <= 0:
 		return
 		
-	var sell_price : float = snappedf(final_amount * ingredient.base_price * run_modifier.ingredient_price_multiplier * 0.75, 0.1)
+	var sell_price : float = snappedf(final_amount * ingredient.base_price * get_ingredient_price_multiplier() * 0.75, 0.1)
 	money += sell_price #ei saa ihan samaa hintaa takas millä joskus osti...
 	print(StringContainer.SELL_MESSAGE % [final_amount, sell_price])
 	BrewerySignals.brewery_state_changed.emit(self)
@@ -754,13 +954,17 @@ func start_brew() -> void:
 		return
 	
 	var brew_report : BrewResult = resolver.resolve_brew_style(brew_preparation.selected_contents)
-	
+
 	if brew_report == null:
 		brew_preparation.clear_preparation()
 		BrewerySignals.brewery_state_changed.emit(self)
 		return
 
-	var bottling : Dictionary = apply_bottling_costs(brew_report.bottle_yield)
+	# Applied to the RAW yield, before bottling loss — see RunPerk.
+	# brew_yield_multiplier's docstring for why this multiplies the yield
+	# itself rather than reducing BrewResolver.BOTTLE_LOSS_RATE.
+	var raw_yield : int = roundi(brew_report.bottle_yield * get_brew_yield_multiplier())
+	var bottling : Dictionary = apply_bottling_costs(raw_yield)
 	var effective_yield : int = bottling.effective_yield
 	var bottles_lost : int = bottling.bottles_lost
 	var label_cost : float = bottling.label_cost
@@ -776,6 +980,8 @@ func start_brew() -> void:
 	new_batch.hop_diversity_count = brew_report.hop_diversity_count
 	new_batch.hop_balance_bonus = brew_report.hop_balance_bonus
 	new_batch.flavor_matched = brew_report.flavor_matched
+	new_batch.peak_days_multiplier = get_peak_speed_multiplier()
+	new_batch.decline_rate_multiplier = get_decline_rate_multiplier()
 
 	inventory.brew_batches.append(new_batch)
 
@@ -794,7 +1000,37 @@ func start_brew() -> void:
 		add_xp(brew_xp)
 		BrewerySignals.brew_xp_gained.emit(brew_xp)
 
+	_roll_ingredient_refund()
 	brew_preparation.clear_preparation()
 	print(StringContainer.SUCCESFULL_BREW_MESSAGE, BeerStyle.get_style_string_from_style(brew_report.beer_style.style))
 	BrewerySignals.batch_bottled.emit(bottles_lost, label_cost, brew_report.beer_style.style_name)
 	BrewerySignals.brewery_state_changed.emit(self)
+
+
+## Fraction of a brew's consumed ingredients returned to inventory when
+## RunPerk.ingredient_refund_chance's roll succeeds — flat regardless of
+## how many perk levels contributed to that chance (only the ODDS of a
+## refund scale with level, not its size, keeping this simple to reason
+## about: it either saves you half your materials this brew, or it
+## doesn't).
+const INGREDIENT_REFUND_FRACTION : float = 0.5
+
+## Called from start_brew() while brew_preparation.selected_contents still
+## holds what this brew actually consumed — must run before
+## clear_preparation() wipes that table.
+func _roll_ingredient_refund() -> void:
+	var chance : float = get_ingredient_refund_chance()
+	if chance <= 0.0 or randf() >= chance:
+		return
+
+	var refunded_any : bool = false
+	for ingredient_id : int in brew_preparation.selected_contents:
+		var used_amount : int = brew_preparation.selected_contents[ingredient_id]
+		var refund_amount : int = roundi(used_amount * INGREDIENT_REFUND_FRACTION)
+		if refund_amount <= 0:
+			continue
+		inventory.add_amount_by_id(ingredient_id, refund_amount)
+		refunded_any = true
+
+	if refunded_any:
+		BrewerySignals.ingredients_refunded.emit()

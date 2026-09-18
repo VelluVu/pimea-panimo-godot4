@@ -74,11 +74,12 @@ func _update_slider() -> void:
 		return
 	
 	var player_money : float = BrewEngine.current_brewery.money
-	
+	var effective_price : float = ingredient.base_price * BrewEngine.current_brewery.get_ingredient_price_multiplier()
+
 	var max_affordable : int = 0
-	if ingredient.base_price > 0:
-		max_affordable = int(player_money / ingredient.base_price)
-		
+	if effective_price > 0:
+		max_affordable = int(player_money / effective_price)
+
 	var max_limit = min(max_affordable, 99)
 	
 	main_slider.max_value = max_limit
@@ -94,7 +95,8 @@ func _update_label() -> void:
 	if ingredient == null:
 		return
 
-	var total_price : int = ingredient.base_price * main_slider.value
+	var effective_price : float = ingredient.base_price * BrewEngine.current_brewery.get_ingredient_price_multiplier()
+	var total_price : int = roundi(effective_price * main_slider.value)
 	current_item_label.text = AMOUNT_PRICE_FORMAT % [int(main_slider.value), ingredient.get_unit_string(), total_price]
 
 

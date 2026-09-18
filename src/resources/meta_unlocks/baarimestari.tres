@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="MetaUnlockData" format=3]
+
+[ext_resource type="Script" path="res://src/classes/meta_unlock_data.gd" id="1_unlock"]
+
+[resource]
+script = ExtResource("1_unlock")
+perk_name = "Baarimestari"
+description = "Vuosien kokemus tiskin takana kiteytyy todelliseksi ammattitaidoksi. Jokaisella myynnillä on pysyvä mahdollisuus tuplatippiin, ja tiskillä syttyvät riidat ovat pysyvästi harvinaisempia."
+icon_placeholder = "🎩"
+tip_double_chance = 0.08
+bar_fight_chance_multiplier = 0.75
+stacks_additively = true
+path = 0
+unlock_id = "bar_capstone_baarimestari"
+max_level = 2
+renown_cost_per_level = 60
+prerequisite_ids = Array[String](["reputation_kanta_asiakkaat", "raid_terava_silmae"])

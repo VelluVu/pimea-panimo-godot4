@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="MetaUnlockData" format=3]
+
+[ext_resource type="Script" path="res://src/classes/meta_unlock_data.gd" id="1_unlock"]
+
+[resource]
+script = ExtResource("1_unlock")
+perk_name = "Vahva brändi"
+description = "Panimosi brändi tunnetaan jo laajalti, ja asiakkaat ovat valmiita maksamaan siitä. Tiskimyynnin hinnat ovat pysyvästi korkeampia."
+icon_placeholder = "🏆"
+counter_price_multiplier = 1.025
+stacks_additively = true
+path = 2
+unlock_id = "marketing_vahva_brandi"
+max_level = 3
+renown_cost_per_level = 35
+prerequisite_ids = Array[String](["marketing_mainoskampanja"])

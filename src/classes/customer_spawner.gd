@@ -101,7 +101,7 @@ func pause_spawning() -> void:
 
 
 func _start_next_walk_in_timer() -> void:
-	var factor := _get_reputation_spawn_factor()
+	var factor := _get_reputation_spawn_factor() * _get_perk_spawn_interval_multiplier()
 	var min_time := maxf(WALK_IN_INTERVAL_FLOOR_SECONDS, WALK_IN_INTERVAL_MIN_SECONDS * factor)
 	var max_time := maxf(min_time, WALK_IN_INTERVAL_MAX_SECONDS * factor)
 	var next_time = randf_range(min_time, max_time)
@@ -109,7 +109,7 @@ func _start_next_walk_in_timer() -> void:
 
 
 func _start_next_group_event_timer() -> void:
-	var factor := _get_reputation_spawn_factor()
+	var factor := _get_reputation_spawn_factor() * _get_perk_spawn_interval_multiplier() * _get_perk_group_event_interval_multiplier()
 	var min_time := maxf(GROUP_EVENT_FLOOR_SECONDS, GROUP_EVENT_INTERVAL_MIN_SECONDS * factor)
 	var max_time := maxf(min_time, GROUP_EVENT_INTERVAL_MAX_SECONDS * factor)
 	var next_time = randf_range(min_time, max_time)
@@ -121,6 +121,30 @@ func _get_reputation_spawn_factor() -> float:
 	if brewery == null:
 		return 1.0
 	return REPUTATION_SPAWN_SOFT_CAP / (REPUTATION_SPAWN_SOFT_CAP + brewery.reputation)
+
+
+## RunPerk.spawn_interval_multiplier (e.g. MetaUnlockData's "Kanta-
+## asiakkaat" bar-work node) layered on top of the reputation factor above
+## — below 1.0 shortens both walk-in and group-event waits. Still clamped
+## by WALK_IN_INTERVAL_FLOOR_SECONDS/GROUP_EVENT_FLOOR_SECONDS via the
+## maxf() calls in both callers, so this can never make spawns instant.
+func _get_perk_spawn_interval_multiplier() -> float:
+	var brewery = BrewEngine.current_brewery
+	if brewery == null:
+		return 1.0
+	return brewery.get_spawn_interval_multiplier()
+
+
+## RunPerk.group_event_interval_multiplier (e.g. MetaUnlockData's
+## "Mainoskampanja" marketing node) — layered on top of both the reputation
+## factor and _get_perk_spawn_interval_multiplier() above, but only inside
+## _start_next_group_event_timer(). Unlike that shared multiplier, this one
+## never touches _start_next_walk_in_timer().
+func _get_perk_group_event_interval_multiplier() -> float:
+	var brewery = BrewEngine.current_brewery
+	if brewery == null:
+		return 1.0
+	return brewery.get_group_event_interval_multiplier()
 
 
 ## Deliberately does NOT check for empty inventory — that gate only applies

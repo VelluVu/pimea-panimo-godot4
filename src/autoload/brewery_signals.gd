@@ -168,3 +168,18 @@ signal day_event_announced(event: DayEventData)
 ## stacked toast instead, same as any other "something just happened" flash.
 @warning_ignore("unused_signal")
 signal bar_fight_triggered(message: String)
+## Fired by DayEventManager._apply_direct_effect() whenever the day's rolled
+## DayEventData has a non-NONE effect_type and it actually landed (some
+## stock/batch existed to take the hit) — message is that event's own
+## effect_toast_format with the actual lost amount substituted in. Same
+## "own stacked toast, not buried elsewhere" reasoning as bar_fight_triggered.
+@warning_ignore("unused_signal")
+signal day_event_effect_triggered(message: String)
+## Fired by Brewery._roll_ingredient_refund() whenever a brew's
+## RunPerk.ingredient_refund_chance roll succeeds and at least one
+## ingredient actually got refunded — no payload (the exact ingredients/
+## amounts aren't shown, just the fact that it happened), same "own
+## stacked toast" reasoning as bar_fight_triggered/day_event_effect_triggered,
+## but this one is good news rather than bad.
+@warning_ignore("unused_signal")
+signal ingredients_refunded()

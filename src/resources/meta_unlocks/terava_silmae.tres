@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="MetaUnlockData" format=3]
+
+[ext_resource type="Script" path="res://src/classes/meta_unlock_data.gd" id="1_unlock"]
+
+[resource]
+script = ExtResource("1_unlock")
+perk_name = "Terävä silmä"
+description = "Osaat tunnistaa epäilyttävät kasvot ovelta jo etukäältä ja karkottaa heidät hienovaraisesti. LVV:n agentteja näkyy pysyvästi harvemmin, ja alamaailman kontaktit löytävät tiensä kellariisi useammin."
+icon_placeholder = "👁️"
+agentti_appearance_multiplier = 0.9
+mafioso_appearance_multiplier = 1.15
+stacks_additively = true
+path = 0
+unlock_id = "raid_terava_silmae"
+max_level = 3
+renown_cost_per_level = 35
+prerequisite_ids = Array[String](["raid_rauhallinen_kellari"])

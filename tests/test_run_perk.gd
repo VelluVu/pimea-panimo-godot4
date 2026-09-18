@@ -37,6 +37,74 @@ func test_stat_summary_includes_raid_threshold_and_distribution_income() -> void
 	assert_eq(perk.get_stat_summary(), expected)
 
 
+func test_stat_summary_includes_ingredient_price() -> void:
+	var perk := RunPerk.new()
+	perk.ingredient_price_multiplier = 0.9
+	assert_eq(perk.get_stat_summary(), StringContainer.MODIFIER_INGREDIENT_PRICE_STAT_STRING % -10)
+
+
+func test_stat_summary_includes_brew_yield() -> void:
+	var perk := RunPerk.new()
+	perk.brew_yield_multiplier = 1.15
+	assert_eq(perk.get_stat_summary(), StringContainer.PERK_YIELD_STAT_STRING % 15)
+
+
+func test_stat_summary_includes_ingredient_refund_chance() -> void:
+	var perk := RunPerk.new()
+	perk.ingredient_refund_chance = 0.24
+	assert_eq(perk.get_stat_summary(), StringContainer.PERK_REFUND_CHANCE_STAT_STRING % 24)
+
+
+func test_stat_summary_includes_peak_speed_and_decline_rate() -> void:
+	var perk := RunPerk.new()
+	perk.peak_speed_multiplier = 0.7
+	perk.decline_rate_multiplier = 0.6
+	var expected := StringContainer.PERK_PEAK_SPEED_STAT_STRING % -30 + "\n" + StringContainer.PERK_DECLINE_RATE_STAT_STRING % -40
+	assert_eq(perk.get_stat_summary(), expected)
+
+
+func test_stat_summary_includes_spawn_interval() -> void:
+	var perk := RunPerk.new()
+	perk.spawn_interval_multiplier = 0.85
+	assert_eq(perk.get_stat_summary(), StringContainer.PERK_SPAWN_INTERVAL_STAT_STRING % -15)
+
+
+func test_stat_summary_includes_agentti_and_mafioso_appearance() -> void:
+	var perk := RunPerk.new()
+	perk.agentti_appearance_multiplier = 0.7
+	perk.mafioso_appearance_multiplier = 1.45
+	var expected := StringContainer.PERK_AGENTTI_APPEARANCE_STAT_STRING % -30 + "\n" + StringContainer.PERK_MAFIOSO_APPEARANCE_STAT_STRING % 45
+	assert_eq(perk.get_stat_summary(), expected)
+
+
+func test_stat_summary_includes_tip_double_chance() -> void:
+	var perk := RunPerk.new()
+	perk.tip_double_chance = 0.16
+	assert_eq(perk.get_stat_summary(), StringContainer.PERK_TIP_DOUBLE_CHANCE_STAT_STRING % 16)
+
+
+func test_stat_summary_includes_bar_fight_chance() -> void:
+	var perk := RunPerk.new()
+	perk.bar_fight_chance_multiplier = 0.5
+	assert_eq(perk.get_stat_summary(), StringContainer.PERK_BAR_FIGHT_CHANCE_STAT_STRING % -50)
+
+
+func test_stat_summary_includes_counter_price_and_group_event_interval() -> void:
+	var perk := RunPerk.new()
+	perk.counter_price_multiplier = 1.06
+	perk.group_event_interval_multiplier = 0.75
+	var expected := StringContainer.PERK_COUNTER_PRICE_STAT_STRING % 6 + "\n" + StringContainer.PERK_GROUP_EVENT_INTERVAL_STAT_STRING % -25
+	assert_eq(perk.get_stat_summary(), expected)
+
+
+func test_stat_summary_includes_extra_raid_strikes_and_hidden_batch_count() -> void:
+	var perk := RunPerk.new()
+	perk.extra_raid_strikes = 1
+	perk.raid_hidden_batch_count = 2
+	var expected := StringContainer.PERK_EXTRA_RAID_STRIKES_STAT_STRING % 1 + "\n" + StringContainer.PERK_RAID_HIDDEN_BATCH_STAT_STRING % 2
+	assert_eq(perk.get_stat_summary(), expected)
+
+
 func test_stat_summary_flags_additive_stacking() -> void:
 	var perk := RunPerk.new()
 	perk.tip_income_multiplier = 1.2

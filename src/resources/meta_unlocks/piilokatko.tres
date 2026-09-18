@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="MetaUnlockData" format=3]
+
+[ext_resource type="Script" path="res://src/classes/meta_unlock_data.gd" id="1_unlock"]
+
+[resource]
+script = ExtResource("1_unlock")
+perk_name = "Piilokätkö"
+description = "Olet oppinut piilottamaan osan varastosta ratsian varalta. LVV-ratsia jättää aina yhden satunnaisen erän löytämättä, ja panimosi kestää yhden ratsian enemmän ennen sulkemista."
+icon_placeholder = "🕳️"
+extra_raid_strikes = 1
+raid_hidden_batch_count = 1
+stacks_additively = true
+path = 0
+unlock_id = "raid_piilokatko"
+max_level = 1
+renown_cost_per_level = 80
+prerequisite_ids = Array[String](["raid_terava_silmae"])

@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="GroupVisitEventData" format=3]
+
+[ext_resource type="Script" path="res://src/classes/group_visit_event_data.gd" id="1_event"]
+[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/classes/customer_data.gd" id="1_v3hht"]
+[ext_resource type="Resource" path="res://src/resources/customers/alpha_gen.tres" id="2_customer"]
+[ext_resource type="Resource" path="res://src/resources/customers/alpha_gen_naaras.tres" id="3_customer_naaras"]
+
+[resource]
+script = ExtResource("1_event")
+banner_text = "Alfagen-lauma rynnii sisään puhelimet ja aurapointsit pystyssä, kaikki haluaa jotain alkoholitonta ja goattia."
+customer_data_options = Array[ExtResource("1_v3hht")]([ExtResource("2_customer"), ExtResource("3_customer_naaras")])
+max_group_size = 14
+walk_in_stagger_seconds = 0.25
+chant_texts = Array[String](["AURAPOINTSIT MAX, TÄÄ ON GOATED KUPPILA FR FR!", "EI OHIOTA TÄÄLLÄ, VAIN ALKOHOLITONTA KIITOS!", "NPC-ENERGIAA NOLLA, TÄÄ ON BUSSINIS FR!", "GRIMACE SHAKE TASOA TAI CHOPPED, EI VÄLIÄ!"])
+chant_mode = 1
+chant_interval_seconds = 2.2

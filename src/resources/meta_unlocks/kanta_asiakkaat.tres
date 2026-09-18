@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="MetaUnlockData" format=3]
+
+[ext_resource type="Script" path="res://src/classes/meta_unlock_data.gd" id="1_unlock"]
+
+[resource]
+script = ExtResource("1_unlock")
+perk_name = "Kanta-asiakkaat"
+description = "Tunnettu nimi tuo vakituisia kävijöitä yhä useammin. Uusia asiakkaita saapuu kellariin pysyvästi hieman tiheämmin."
+icon_placeholder = "👥"
+spawn_interval_multiplier = 0.95
+stacks_additively = true
+path = 0
+unlock_id = "reputation_kanta_asiakkaat"
+max_level = 3
+renown_cost_per_level = 35
+prerequisite_ids = Array[String](["reputation_tunnettu_nimi"])

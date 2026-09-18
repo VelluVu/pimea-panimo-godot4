@@ -169,7 +169,12 @@ func process_auto_sale(data: CustomerData) -> String:
 	var reputation_before : int = brewery.reputation
 
 	var breakdown : SaleBreakdown = brewery.resolver.get_price_breakdown(best_batch.beer_style)
-	var results: Dictionary = data.evaluate_brew_batch(best_batch, breakdown.price_per_bottle)
+	# Marketing's counter_price_multiplier marks up the listed price for THIS
+	# sale only (breakdown itself stays untouched — it's the shared style's
+	# structural cost-basis object, not this transaction's own data) before
+	# income/tip is derived from it below.
+	var counter_price : float = breakdown.price_per_bottle * brewery.get_counter_price_multiplier()
+	var results: Dictionary = data.evaluate_brew_batch(best_batch, counter_price)
 
 	var bottles_sold : int = randi_range(data.min_bottles_per_visit, data.max_bottles_per_visit)
 	bottles_sold = min(bottles_sold, best_batch.amount_bottles)
@@ -183,6 +188,10 @@ func process_auto_sale(data: CustomerData) -> String:
 	# lands in the till. tip_income_multiplier is a RunPerk bonus (see
 	# Brewery.get_tip_income_multiplier()), neutral 1.0 until one's picked.
 	var tip_income : float = snappedf(results[KEY_TIP] * bottles_sold * brewery.get_tip_income_multiplier(), 0.1)
+	# Rolled after tip_income_multiplier already applied, not instead of it —
+	# a doubled tip still respects every other tip bonus already stacked in.
+	if tip_income > 0.0 and randf() < brewery.get_tip_double_chance():
+		tip_income = snappedf(tip_income * 2.0, 0.1)
 	var net_income : float = snappedf(gross_income + tip_income, 0.1)
 
 	brewery.money += net_income
@@ -217,7 +226,8 @@ func process_auto_sale(data: CustomerData) -> String:
 
 	var response_text : String = results[KEY_RESPONSE]
 
-	if data.bar_fight_chance > 0.0 and randf() < data.bar_fight_chance:
+	var effective_bar_fight_chance : float = data.bar_fight_chance * brewery.get_bar_fight_chance_multiplier()
+	if effective_bar_fight_chance > 0.0 and randf() < effective_bar_fight_chance:
 		_trigger_bar_fight(brewery, data, best_batch)
 
 	BrewerySignals.sale_reputation_gained.emit(brewery.reputation - reputation_before)

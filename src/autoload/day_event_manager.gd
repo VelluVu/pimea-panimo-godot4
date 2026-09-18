@@ -76,6 +76,7 @@ func _on_day_changed(_new_day : int) -> void:
 		return
 
 	BrewerySignals.day_event_announced.emit(_active_event)
+	_apply_direct_effect(_active_event)
 
 	var day_duration : float = TimeManager.day_duration_seconds
 	var start_delay : float = _active_event.get_start_delay_fraction() * day_duration
@@ -95,6 +96,59 @@ func _on_window_start() -> void:
 
 func _on_window_end() -> void:
 	_window_active = false
+
+
+## Applies event.effect_type's one-off stock/batch hit, if any — separate
+## from the featured_group_event/featured_customer_titles bias, which stays
+## on its own delayed window timing (_on_window_start()/_on_window_end()).
+## No-ops silently (no signal) if there's nothing to actually take the hit,
+## same as BrewEngine.current_brewery being null on a menu/no-run state.
+func _apply_direct_effect(event : DayEventData) -> void:
+	var brewery : Brewery = BrewEngine.current_brewery
+	if brewery == null:
+		return
+
+	match event.effect_type:
+		DayEventData.EffectType.INGREDIENT_LOSS:
+			_apply_ingredient_loss(brewery, event)
+		DayEventData.EffectType.BOTTLE_SPOILAGE:
+			_apply_bottle_spoilage(brewery, event)
+
+
+func _apply_ingredient_loss(brewery : Brewery, event : DayEventData) -> void:
+	var bucket : Dictionary = brewery.inventory.items.get(event.effect_ingredient_type, {})
+	var requested : int = event.get_effect_amount()
+	var removed : int = 0
+
+	for id : int in bucket.keys():
+		if removed >= requested:
+			break
+		var item : InventoryItem = bucket[id]
+		removed += brewery.inventory.withdraw_item_by_id(id, min(item.amount, requested - removed))
+
+	if removed <= 0:
+		return
+
+	BrewerySignals.day_event_effect_triggered.emit(event.effect_toast_format % removed)
+	BrewerySignals.brewery_state_changed.emit(brewery)
+
+
+func _apply_bottle_spoilage(brewery : Brewery, event : DayEventData) -> void:
+	if brewery.inventory.brew_batches.is_empty():
+		return
+
+	var batch : BrewBatch = brewery.inventory.brew_batches.pick_random()
+	var removed : int = min(batch.amount_bottles, event.get_effect_amount())
+	batch.amount_bottles -= removed
+
+	if batch.amount_bottles <= 0:
+		brewery.inventory.brew_batches.erase(batch)
+
+	if removed <= 0:
+		return
+
+	BrewerySignals.day_event_effect_triggered.emit(event.effect_toast_format % removed)
+	BrewerySignals.brewery_state_changed.emit(brewery)
 
 
 ## Same weighted-roll shape as CustomerRegistry.get_random_special_event()

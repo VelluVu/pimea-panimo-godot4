@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="MetaUnlockData" format=3]
+
+[ext_resource type="Script" path="res://src/classes/meta_unlock_data.gd" id="1_unlock"]
+
+[resource]
+script = ExtResource("1_unlock")
+perk_name = "Kauppaneuvos"
+description = "Osaat sekä neuvotella halvat ostot että myydä kalliilla vahvan brändin turvin. Sekä ostot että tiskimyynnin hinnat ovat pysyvästi selvästi paremmat."
+icon_placeholder = "💼"
+ingredient_price_multiplier = 0.94
+counter_price_multiplier = 1.06
+stacks_additively = true
+path = 2
+unlock_id = "marketing_capstone_kauppaneuvos"
+max_level = 2
+renown_cost_per_level = 60
+prerequisite_ids = Array[String](["ingredient_price_tukkuhinnat", "marketing_vahva_brandi"])
