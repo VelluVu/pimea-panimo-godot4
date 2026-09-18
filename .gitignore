@@ -8,3 +8,5 @@ msbuild.log
 Thumbs.db
 
 .claude/settings.json
+
+notes/
