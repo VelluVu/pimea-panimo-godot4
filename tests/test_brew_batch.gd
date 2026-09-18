@@ -110,6 +110,34 @@ func test_current_quality_is_clamped_to_floor() -> void:
 	assert_eq(batch.current_quality, 0.1)
 
 
+## MetaUnlockData's brewing capstone (Panimomestari) grants exactly this:
+## a batch reaching peak sooner because peak_days is scaled down before
+## the rising-phase math ever runs.
+func test_peak_days_multiplier_speeds_up_reaching_peak() -> void:
+	var batch := _make_batch(10, 5, 0.5)
+	batch.peak_days_multiplier = 0.5 # effective peak_days = 5, not 10
+	for i in range(5):
+		batch.age_one_day()
+	assert_eq(batch.current_quality, 1.5, "5 days in should already be at full peak bonus with peak_days halved")
+	assert_eq(batch.get_aging_trend_icon(), BrewBatch.AGING_TREND_PLATEAU)
+
+
+func test_decline_rate_multiplier_slows_post_shelf_life_quality_loss() -> void:
+	var with_multiplier := _make_batch(10, 5, 0.5)
+	with_multiplier.decline_rate_multiplier = 0.5
+	var without_multiplier := _make_batch(10, 5, 0.5)
+
+	for i in range(16):
+		with_multiplier.age_one_day()
+		without_multiplier.age_one_day()
+
+	# days_past_peak=6, spoilage_days=1 -> without: original(1.0) - 0.02*1 = 0.98;
+	# with a 0.5 decline_rate_multiplier: original(1.0) - 0.02*1*0.5 = 0.99.
+	assert_eq(without_multiplier.current_quality, 0.98)
+	assert_eq(with_multiplier.current_quality, 0.99)
+	assert_true(with_multiplier.current_quality > without_multiplier.current_quality, "a slower decline rate should lose less quality over the same aging")
+
+
 func test_quality_tier_boundaries() -> void:
 	var batch := _make_batch(0, 100, 0.0)
 	batch.current_quality = 0.69

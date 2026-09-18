@@ -1,12 +1,11 @@
-[gd_resource type="Resource" script_class="DayEventData" format=3]
+[gd_resource type="Resource" script_class="DayEventData" format=3 uid="uid://dnv5y27a1xj6o"]
 
 [ext_resource type="Script" uid="uid://dhlswvb7h0ba8" path="res://src/classes/day_event_data.gd" id="1_event"]
-[ext_resource type="Resource" path="res://src/resources/group_events/zgen_lauma.tres" id="2_group"]
+[ext_resource type="Resource" uid="uid://bcube7mvdnvr7" path="res://src/resources/group_events/zgen_lauma.tres" id="2_group"]
 
 [resource]
 script = ExtResource("1_event")
 event_name = "Sukupolvi Z -festivaali"
-announcement_text = "Sukupolvi Z -festivaali käynnissä kaupungissa tänään. Odotettavissa runsaasti Zgen-asiakkaita."
-weight = 1.0
+announcement_text = "Sukupolvi Z apocalypse festivaali käynnissä kaupungissa tänään. Odotettavissa runsaasti Zgen-asiakkaita."
 featured_group_event = ExtResource("2_group")
 featured_customer_titles = Array[String](["Zgen"])

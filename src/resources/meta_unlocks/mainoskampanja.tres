@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="MetaUnlockData" format=3]
+
+[ext_resource type="Script" path="res://src/classes/meta_unlock_data.gd" id="1_unlock"]
+
+[resource]
+script = ExtResource("1_unlock")
+perk_name = "Mainoskampanja"
+description = "Mainostat panimoasi aktiivisesti ympäri kaupunkia. Ryhmäasiakkaita saapuu kellariisi pysyvästi tiheämmin."
+icon_placeholder = "📣"
+group_event_interval_multiplier = 0.92
+stacks_additively = true
+path = 2
+unlock_id = "marketing_mainoskampanja"
+max_level = 3
+renown_cost_per_level = 25
+prerequisite_ids = Array[String](["marketing_tukkukauppias"])

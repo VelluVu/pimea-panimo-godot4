@@ -21,6 +21,7 @@ func test_defaults() -> void:
 	assert_true(event.featured_customer_titles.is_empty())
 	assert_true(event.window_fraction_min <= event.window_fraction_max)
 	assert_true(event.start_delay_fraction_min <= event.start_delay_fraction_max)
+	assert_eq(event.effect_type, DayEventData.EffectType.NONE)
 
 
 func test_get_window_fraction_stays_within_configured_range() -> void:
@@ -41,6 +42,42 @@ func test_get_start_delay_fraction_stays_within_configured_range() -> void:
 	for i in range(20):
 		var fraction := event.get_start_delay_fraction()
 		assert_true(fraction >= 0.0 and fraction <= 0.25, "start delay fraction out of range: %s" % fraction)
+
+
+func test_get_effect_amount_stays_within_configured_range() -> void:
+	var event := DayEventData.new()
+	event.effect_amount_min = 2
+	event.effect_amount_max = 5
+
+	for i in range(20):
+		var amount := event.get_effect_amount()
+		assert_true(amount >= 2 and amount <= 5, "effect amount out of range: %s" % amount)
+
+
+## Every "unfortunate" event (effect_type != NONE) needs a toast format to
+## actually report what it did — an empty format would show a blank/broken
+## toast instead of silently no-opping, so this is caught here rather than
+## only at the moment such an event happens to roll live.
+func test_shipped_day_events_with_effect_have_toast_format() -> void:
+	var dir := DirAccess.open("res://src/resources/day_events/")
+	assert_true(dir != null, "day_events folder should exist")
+
+	dir.list_dir_begin()
+	var file_name := dir.get_next()
+	var checked_with_effect := 0
+	while file_name != "":
+		if not dir.current_is_dir() and file_name.ends_with(".tres"):
+			var event : DayEventData = load("res://src/resources/day_events/" + file_name)
+			if event.effect_type != DayEventData.EffectType.NONE:
+				checked_with_effect += 1
+				assert_false(event.effect_toast_format.is_empty(),
+					"%s: effect_type set but effect_toast_format is empty" % file_name)
+				assert_true(event.effect_amount_min <= event.effect_amount_max,
+					"%s: effect_amount_min > effect_amount_max" % file_name)
+		file_name = dir.get_next()
+	dir.list_dir_end()
+
+	assert_true(checked_with_effect >= 2, "expected at least the 2 shipped unfortunate day events, found %d" % checked_with_effect)
 
 
 ## A day event never covers the whole day — window_fraction_max should

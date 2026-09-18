@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="MetaUnlockData" format=3]
+
+[ext_resource type="Script" path="res://src/classes/meta_unlock_data.gd" id="1_unlock"]
+
+[resource]
+script = ExtResource("1_unlock")
+perk_name = "Tukkukauppias"
+description = "Tunnet sekä ostohinnat että hyvän myyntitavan perusteet. Ostot ovat pysyvästi hieman halvempia, ja tiskimyynnin hinnat hieman korkeampia."
+icon_placeholder = "📦"
+ingredient_price_multiplier = 0.99
+counter_price_multiplier = 1.01
+stacks_additively = true
+path = 2
+unlock_id = "marketing_tukkukauppias"
+max_level = 5
+renown_cost_per_level = 25

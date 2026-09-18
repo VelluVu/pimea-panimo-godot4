@@ -69,3 +69,29 @@ func get_window_fraction() -> float:
 
 func get_start_delay_fraction() -> float:
 	return randf_range(start_delay_fraction_min, start_delay_fraction_max)
+
+
+## A same-day misfortune (stock eaten, bottles spoiled) instead of a themed
+## rush of customers — fires once, immediately when this event is rolled
+## (see DayEventManager._apply_direct_effect()), entirely separate from the
+## featured_group_event/featured_customer_titles bias window above. NONE for
+## every existing themed/customer-bias event; only the "unfortunate" pool
+## entries set this.
+enum EffectType { NONE, INGREDIENT_LOSS, BOTTLE_SPOILAGE }
+
+@export_group("Suora vaikutus")
+@export var effect_type : EffectType = EffectType.NONE
+## Only read for EffectType.INGREDIENT_LOSS — which ingredient bucket takes
+## the hit.
+@export var effect_ingredient_type : IngredientData.IngredientType = IngredientData.IngredientType.MALT
+@export var effect_amount_min : int = 1
+@export var effect_amount_max : int = 1
+## Shown as its own stacked toast (BrewerySignals.day_event_effect_triggered)
+## the instant the effect lands — %d is substituted with however much was
+## actually lost (can be less than rolled if stock/batches run short). Left
+## empty for EffectType.NONE.
+@export_multiline var effect_toast_format : String = ""
+
+
+func get_effect_amount() -> int:
+	return randi_range(effect_amount_min, effect_amount_max)
