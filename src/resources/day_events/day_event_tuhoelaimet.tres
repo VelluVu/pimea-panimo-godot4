@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="DayEventData" format=3]
+
+[ext_resource type="Script" uid="uid://dhlswvb7h0ba8" path="res://src/classes/day_event_data.gd" id="1_event"]
+
+[resource]
+script = ExtResource("1_event")
+event_name = "Tuhoeläimet varastossa"
+announcement_text = "Aamulla löytyy puraisujälkiä säkeistä. Jokin on käynyt varastossa yöllä."
+weight = 1.0
+effect_type = 1
+effect_ingredient_type = 0
+effect_amount_min = 2
+effect_amount_max = 5
+effect_toast_format = "Tuhoeläimet söivät varastosta %d kg maltaita."

@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="MetaUnlockData" format=3]
+
+[ext_resource type="Script" path="res://src/classes/meta_unlock_data.gd" id="1_unlock"]
+
+[resource]
+script = ExtResource("1_unlock")
+perk_name = "Panimomestari"
+description = "Vuosikymmenten kokemus mallastuksesta ja annostelusta kiteytyy todelliseksi mestaruudeksi. Jokainen pano kypsyy pysyvästi nopeammin huippuunsa, ja laatu heikkenee sen jälkeen pysyvästi hitaammin."
+icon_placeholder = "🏅"
+peak_speed_multiplier = 0.85
+decline_rate_multiplier = 0.8
+stacks_additively = true
+path = 1
+unlock_id = "brewing_capstone_panimomestari"
+max_level = 2
+renown_cost_per_level = 60
+prerequisite_ids = Array[String](["quality_mallastuksen_mestari", "quality_hygieniamestari"])

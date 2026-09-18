@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="MetaUnlockData" format=3]
+
+[ext_resource type="Script" path="res://src/classes/meta_unlock_data.gd" id="1_unlock"]
+
+[resource]
+script = ExtResource("1_unlock")
+perk_name = "Tukkuhinnat"
+description = "Neuvottelutaitosi on avannut pääsyn todellisiin tukkuhintoihin. Ostot ovat pysyvästi merkittävästi halvempia."
+icon_placeholder = "📋"
+ingredient_price_multiplier = 0.97
+stacks_additively = true
+path = 2
+unlock_id = "ingredient_price_tukkuhinnat"
+max_level = 3
+renown_cost_per_level = 35
+prerequisite_ids = Array[String](["ingredient_price_neuvottelutaito"])

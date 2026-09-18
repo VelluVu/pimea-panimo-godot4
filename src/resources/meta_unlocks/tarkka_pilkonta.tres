@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="MetaUnlockData" format=3]
+
+[ext_resource type="Script" path="res://src/classes/meta_unlock_data.gd" id="1_unlock"]
+
+[resource]
+script = ExtResource("1_unlock")
+perk_name = "Tarkka pilkonta"
+description = "Maltaiden pilkkominen tuottaa vähemmän hukkaa. Jokainen pano tuottaa pysyvästi hieman enemmän pulloja."
+icon_placeholder = "🌾"
+brew_yield_multiplier = 1.03
+stacks_additively = true
+path = 1
+unlock_id = "quality_tarkka_pilkonta"
+max_level = 3
+renown_cost_per_level = 25
+prerequisite_ids = Array[String](["quality_perinnetaito"])

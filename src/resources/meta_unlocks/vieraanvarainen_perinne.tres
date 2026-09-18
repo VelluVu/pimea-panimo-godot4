@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MetaUnlockData" format=3]
+
+[ext_resource type="Script" path="res://src/classes/meta_unlock_data.gd" id="1_unlock"]
+
+[resource]
+script = ExtResource("1_unlock")
+perk_name = "Vieraanvarainen perinne"
+description = "Kellarilla on jo valmiiksi hyvä maine tiskijuomana entisiltä pelikerroilta. Asiakkaat tippaavat pysyvästi hieman anteliaammin."
+icon_placeholder = "💶"
+tip_income_multiplier = 1.02
+stacks_additively = true
+path = 0
+unlock_id = "tip_vieraanvarainen_perinne"
+max_level = 5
+renown_cost_per_level = 25

@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="MetaUnlockData" format=3]
+
+[ext_resource type="Script" path="res://src/classes/meta_unlock_data.gd" id="1_unlock"]
+
+[resource]
+script = ExtResource("1_unlock")
+perk_name = "Rauhallinen kellari"
+description = "Osaat pitää baaritiskin rauhallisena ja huomaamattomana. LVV-riskin sietokykysi on pysyvästi hieman parempi."
+icon_placeholder = "🕯️"
+raid_threshold_multiplier = 1.04
+stacks_additively = true
+path = 0
+unlock_id = "raid_rauhallinen_kellari"
+max_level = 3
+renown_cost_per_level = 30
+prerequisite_ids = Array[String](["tip_vieraanvarainen_perinne"])

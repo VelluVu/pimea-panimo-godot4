@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="MetaUnlockData" format=3]
+
+[ext_resource type="Script" path="res://src/classes/meta_unlock_data.gd" id="1_unlock"]
+
+[resource]
+script = ExtResource("1_unlock")
+perk_name = "Säästäväinen käsiala"
+description = "Osaat arvioida raaka-ainemäärät tarkasti. Jokaisella panolla on pysyvä mahdollisuus saada osa raaka-aineista takaisin varastoon."
+icon_placeholder = "♻️"
+ingredient_refund_chance = 0.08
+stacks_additively = true
+path = 1
+unlock_id = "quality_kaymisen_hallinta"
+max_level = 3
+renown_cost_per_level = 25
+prerequisite_ids = Array[String](["quality_perinnetaito"])

@@ -22,6 +22,9 @@ var group_events_pool: Array[GroupVisitEventData] = []
 ## what's coming rather than hiding it entirely.
 var bar_contact_pool: Array[BarContact] = []
 
+const TITLE_AGENTTI : String = "Agentti"
+const TITLE_MAFIOSO : String = "Mafioso"
+
 
 func _ready() -> void:
 	_load_resources()
@@ -46,7 +49,7 @@ func get_random_customer_data() -> CustomerData:
 
 	var eligible_customers : Array[CustomerData] = []
 	for customer in customer_pool:
-		if current_reputation >= customer.min_reputation_to_appear:
+		if current_reputation >= customer.min_reputation_to_appear and _meets_style_discovery_requirement(customer):
 			eligible_customers.append(customer)
 
 	if eligible_customers.is_empty():
@@ -61,7 +64,41 @@ func get_random_customer_data() -> CustomerData:
 		if not featured.is_empty():
 			return featured.pick_random()
 
-	return eligible_customers.pick_random()
+	return _pick_weighted_customer(eligible_customers)
+
+
+## Flat pick_random() weighted by Brewery.get_agentti_appearance_multiplier()/
+## get_mafioso_appearance_multiplier() when a customer's title matches — see
+## MetaUnlockData's "Terävä silmä" bar-work node. Every other title stays
+## weight 1.0, so this is identical to a plain pick_random() whenever
+## neither perk is active (or no run is in progress at all).
+func _pick_weighted_customer(customers : Array[CustomerData]) -> CustomerData:
+	var brewery : Brewery = BrewEngine.current_brewery
+	if brewery == null:
+		return customers.pick_random()
+
+	var weights : Array[float] = []
+	var total_weight : float = 0.0
+	for customer : CustomerData in customers:
+		var weight : float = 1.0
+		if customer.title == TITLE_AGENTTI:
+			weight = brewery.get_agentti_appearance_multiplier()
+		elif customer.title == TITLE_MAFIOSO:
+			weight = brewery.get_mafioso_appearance_multiplier()
+		weights.append(weight)
+		total_weight += weight
+
+	if total_weight <= 0.0:
+		return customers.pick_random()
+
+	var roll : float = randf() * total_weight
+	var cumulative : float = 0.0
+	for i in range(customers.size()):
+		cumulative += weights[i]
+		if roll < cumulative:
+			return customers[i]
+
+	return customers.back()
 
 
 ## Picks a customer who genuinely wants the given style (primary preferred,
@@ -82,6 +119,8 @@ func get_customer_for_style(style: BeerStyle.Style) -> CustomerData:
 		if customer.randomizes_preference:
 			continue
 		if current_reputation < customer.min_reputation_to_appear:
+			continue
+		if not _meets_style_discovery_requirement(customer):
 			continue
 		if customer.primary_style == style:
 			primary_matches.append(customer)
@@ -123,6 +162,16 @@ func get_random_group_event() -> GroupVisitEventData:
 	if group_events_pool.is_empty():
 		return null
 	return group_events_pool.pick_random()
+
+
+## -1 (no requirement, the default) always passes. See CustomerData.
+## required_discovered_style's own docstring — MetaProgressManager persists
+## style discovery across runs, so this gate is permanent progress, not
+## something reset at the start of a new run.
+func _meets_style_discovery_requirement(customer : CustomerData) -> bool:
+	if customer.required_discovered_style < 0:
+		return true
+	return MetaProgressManager.has_style(customer.required_discovered_style)
 
 
 func _load_resources() -> void:

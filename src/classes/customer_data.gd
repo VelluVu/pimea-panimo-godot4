@@ -106,6 +106,18 @@ const MIN_TIP_PER_QUALITY_POINT : float = 1.0
 
 @export_group("Saatavuus")
 @export var min_reputation_to_appear: int = 0
+## -1 = ei rajoitusta. Gates this customer's appearance behind having ever
+## brewed the given BeerStyle.Style in ANY past run, not just this one — see
+## MetaProgressManager.has_style(), the same permanent-across-runs
+## discovery tracking Brewery._seed_meta_discovered_styles() already reads
+## from. Checked alongside min_reputation_to_appear in
+## CustomerRegistry.get_random_customer_data()/get_customer_for_style(), so
+## a customer can require both a reputation floor AND a prior style
+## discovery. Lets a style with no in-run economic pull of its own (see the
+## 12 BeerStyle.Style values with zero primary_style/secondary_style
+## customers as of 2026-09-18) still motivate brewing it once, since doing
+## so permanently unlocks a new customer archetype for every future run.
+@export var required_discovered_style: int = -1
 
 @export_group("Erikoiskäytös")
 @export var randomizes_preference: bool = false

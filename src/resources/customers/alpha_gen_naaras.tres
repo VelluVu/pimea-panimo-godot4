@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="CustomerData" format=3]
+
+[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/classes/customer_data.gd" id="1_alpha_gen"]
+[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/alpha_gen_naaras_anim.tres" id="2_sprite"]
+
+[resource]
+script = ExtResource("1_alpha_gen")
+customer_name = "Helmi"
+title = "Alfagen"
+first_names = Array[String](["Helmi", "Venla", "Siiri", "Pihla", "Elsa", "Lumi"])
+min_quality = 0.3
+budget_multiplier = 0.5
+primary_style = 21
+secondary_style = 20
+sprite_frames = ExtResource("2_sprite")
+randomize_skin = false
+randomize_hair = false
+randomize_clothes = false
+randomize_shoes = false
+dialogue_intro = "Heyy, onks teil alkoholitonta lageria? En oo mikään NPC joka juo mitä sattuu, tarviin aurapointsit kasaan."
+dialogue_success = "Ohmygod tää on ihan grimace shake -tasoista, aurapointsit nyt max, tää kuppila on goated fr fr."
+dialogue_fallback = "Ihan okei, ei nyt mitään 67-tasoa mut ei tää chopattukaan ollu."
+dialogue_wrong_style = "Bestie tää oli ihan Ohio, ei ollenkaan sitä mitä pyysin, aura meni suoraan negatiiviseks."
+dialogue_reject = "Et voi tarjota mulle tota, se on täysin chopped, koko kuppila on npc-energiaa."
+dialogue_no_match = "Ei ollu yhtään alkoholitonta, en oo mikään delulu joka pakolla jotain juo, painun Ohioon takas."
+max_required_abv = 0.5
+quality_tip_sensitivity = 0.15
+rep_primary_style = 2
+rep_secondary_style = 1
+risk_primary_style = -2
+risk_secondary_style = -1
+metadata/_custom_type_script = "uid://b2vqc8lkfjwic"
