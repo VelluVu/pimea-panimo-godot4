@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_nakymaton")
 perk_name = "Näkymätön kellari"
-description = "Kukaan ei edes muista tätä kellaria olemassa olevaksi LVV:n ratsiakynnys nousee merkittävästi."
+description = "Kukaan ei edes muista tätä kellaria olemassa olevaksi, joten LVV:n ratsiakynnys nousee merkittävästi."
 icon_placeholder = "👻"
 tier = 2
 raid_threshold_multiplier = 1.18

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_oinen")
 perk_name = "Öinen legenda"
-description = "Tarinat kellarin salaisesta panimosta leviävät baarien takahuoneissa maine karttuu tuntuvasti."
+description = "Tarinat kellarin salaisesta panimosta leviävät baarien takahuoneissa, ja maine karttuu tuntuvasti."
 icon_placeholder = "🌙"
 tier = 2
 reputation_gain_multiplier = 1.4

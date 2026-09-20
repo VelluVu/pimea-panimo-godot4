@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="CustomerData" format=3]
+
+[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/classes/customer_data.gd" id="1_turisti"]
+[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/saksalainen_turisti_anim.tres" id="2_sprite"]
+
+[resource]
+script = ExtResource("1_turisti")
+customer_name = "Hans"
+title = "Saksalainen turisti"
+first_names = Array[String](["Hans", "Klaus", "Jürgen", "Dieter", "Wolfgang", "Uwe"])
+min_quality = 0.55
+budget_multiplier = 1.4
+primary_style = 8
+secondary_style = 6
+sprite_frames = ExtResource("2_sprite")
+randomize_skin = false
+randomize_hair = false
+randomize_clothes = false
+randomize_shoes = false
+dialogue_intro = "Guten Tag! Onko teillä oikeaa saksalaista olutta? Märzen olisi ihanaa."
+dialogue_success = "Wunderbar! Tämä on melkein kuin Münchenissä. Prost!"
+dialogue_fallback = "Ganz gut, ganz gut. Ei ihan Oktoberfest, mutta kelpaa."
+dialogue_wrong_style = "Hmm, tämä ei ole sitä mitä odotin, mutta kokeillaan."
+dialogue_reject = "Nein, nein, nein! Tämä ei ole olutta, tämä on vahinko."
+dialogue_no_match = "Ei täällä ole mitään kunnollista. Auf Wiedersehen!"
+quality_tip_sensitivity = 0.5
+rep_primary_style = 10
+rep_secondary_style = 3
+quality_reputation_sensitivity = 4.5
+min_reputation_to_appear = 10
+max_bottles_per_visit = 3
+metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

@@ -5,6 +5,6 @@
 [resource]
 script = ExtResource("1_tavallinen")
 modifier_name = "Tavallinen keikka"
-description = "Ei yllätyksiä tällä kertaa perustaso kaikessa."
+description = "Ei yllätyksiä tällä kertaa: perustaso kaikessa."
 is_default = true
 metadata/_custom_type_script = "uid://dka80d13fropj"

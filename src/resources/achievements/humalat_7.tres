@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="AchievementData" format=3]
+
+[ext_resource type="Script" path="res://src/classes/achievement_data.gd" id="1_achievement"]
+
+[resource]
+script = ExtResource("1_achievement")
+achievement_id = "humalat_7"
+title = "Humalapuutarhuri"
+description = "Avaa 7 humalalajiketta reputaation kautta."
+stat_key = &"hops_unlocked"
+target_value = 7
+metadata/_custom_type_script = "res://src/classes/achievement_data.gd"

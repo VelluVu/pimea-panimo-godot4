@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_vakiintunut")
 perk_name = "Vakiintunut reitti"
-description = "Jakelureittisi vakiintuvat halpamyynnin ja baarivientien tulot kasvavat tasaisesti."
+description = "Jakelureittisi vakiintuu: halpamyynnin ja baarivientien tulot kasvavat tasaisesti."
 icon_placeholder = "🗺️"
 tier = 1
 distribution_income_multiplier = 1.18

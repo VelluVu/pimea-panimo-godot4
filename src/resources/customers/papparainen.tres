@@ -1,0 +1,33 @@
+[gd_resource type="Resource" script_class="CustomerData" format=3]
+
+[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/classes/customer_data.gd" id="1_papparainen"]
+[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/papparainen_anim.tres" id="2_sprite"]
+
+[resource]
+script = ExtResource("1_papparainen")
+customer_name = "Aarne"
+title = "Papparainen"
+first_names = Array[String](["Aarne", "Eino", "Toivo", "Väinö", "Onni", "Yrjö"])
+min_quality = 0.75
+budget_multiplier = 1.0
+primary_style = 7
+secondary_style = 10
+sprite_frames = ExtResource("2_sprite")
+randomize_skin = false
+randomize_hair = false
+randomize_clothes = false
+randomize_shoes = false
+dialogue_intro = "No niin, onkos teillä täällä mitään kunnon olutta, ei mitään nykyajan vesikeitosta."
+dialogue_success = "No sentään, tässä on edes vähän selkärankaa. Ei tää nyt ihan hassumpaa ole."
+dialogue_fallback = "No juu, kelpaa tää hätätilassa, vaikkei kehuttavaa oo."
+dialogue_wrong_style = "Ei tää sitä ollut mitä pyysin, mutta eiköhän tästäkin jotain irtoa."
+dialogue_reject = "Tätä laimeata löpöä en ota edes lahjaksi. Ennen olut oli olutta."
+dialogue_no_match = "Ei täällä ollu mitään kunnon miehen juomaa. Palaan kun ootte oppineet jotain."
+quality_tip_sensitivity = 0.0
+rep_bad_quality = -5
+rep_primary_style = 10
+rep_secondary_style = 3
+quality_reputation_sensitivity = 5.0
+min_reputation_to_appear = 10
+required_discovered_style = 7
+metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

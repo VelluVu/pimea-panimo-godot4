@@ -1,0 +1,33 @@
+[gd_resource type="Resource" script_class="CustomerData" format=3]
+
+[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/classes/customer_data.gd" id="1_metalli"]
+[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/mustanmetallinmies_naaras_anim.tres" id="2_sprite"]
+
+[resource]
+script = ExtResource("1_metalli")
+customer_name = "Kuolema"
+title = "Mustanmetallinnainen"
+first_names = Array[String](["Kuolema", "Häive", "Sini", "Ilona", "Minea", "Hilla"])
+min_quality = 0.7
+budget_multiplier = 0.9
+primary_style = 9
+secondary_style = 19
+sprite_frames = ExtResource("2_sprite")
+randomize_skin = false
+randomize_hair = false
+randomize_clothes = false
+randomize_shoes = false
+dialogue_intro = "Terve. Etsin olutta, joka on yhtä musta kuin sieluni."
+dialogue_success = "Tämä on pimeyttä pullossa. Kaunista. Kiitos."
+dialogue_fallback = "Riittävän synkkää. Ei täydellistä, mutta ei se ole maailmakaan."
+dialogue_wrong_style = "Liian valoisaa minulle, mutta juon sen kylmänä ja vihaisena."
+dialogue_reject = "Tämä ei ole pimeyttä, tämä on hukkaan heitettyä yötä."
+dialogue_no_match = "Ei täällä ole mitään mustaa. Palaan, kun varjot ovat pidempiä."
+quality_tip_sensitivity = 0.2
+rep_bad_quality = -4
+rep_primary_style = 12
+rep_secondary_style = 4
+quality_reputation_sensitivity = 5.0
+min_reputation_to_appear = 15
+required_discovered_style = 9
+metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

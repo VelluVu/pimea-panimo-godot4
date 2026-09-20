@@ -70,6 +70,7 @@ layout_mode = 2
 text = "Aloita Peli"
 
 [node name="LeaderboardButton" type="Button" parent="CenterContainer/RootMenuView" unique_id=1437759141]
+custom_minimum_size = Vector2(200, 28)
 layout_mode = 2
 
 [node name="OlutoppiButton" type="Button" parent="CenterContainer/RootMenuView" unique_id=1689554938]
@@ -112,10 +113,10 @@ text = "Takaisin"
 [node name="OptionsWindow" parent="." unique_id=646598751 instance=ExtResource("4_btxxm")]
 process_mode = 3
 layout_mode = 0
-offset_left = 0.0
-offset_top = 0.0
-offset_right = 448.0
-offset_bottom = 288.0
+offset_left = 96.0
+offset_top = 36.0
+offset_right = 544.0
+offset_bottom = 324.0
 show_main_menu_button = false
 
 [node name="LeaderboardWindow" type="Panel" parent="." unique_id=123817196]

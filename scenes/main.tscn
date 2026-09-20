@@ -54,6 +54,7 @@
 [ext_resource type="Script" uid="uid://dwc72b5x4eaw3" path="res://src/classes/receipt_machine_hover_area.gd" id="49_j2jfr"]
 [ext_resource type="Script" uid="uid://dihcrv1yno5x5" path="res://src/classes/chalkboard_hover_area.gd" id="51_bu4jf"]
 [ext_resource type="Script" uid="uid://cbbayr0gg5kb5" path="res://src/classes/lvv_raid_spawner.gd" id="58_augu2"]
+[ext_resource type="Script" uid="uid://c1fy2446074o0" path="res://src/classes/immersion_event_spawner.gd" id="59_t5ykj"]
 [ext_resource type="Texture2D" uid="uid://dwe4ql72sptwg" path="res://assets/textures/beer_dispenser_rack_48.png" id="60_beerrack"]
 [ext_resource type="Texture2D" uid="uid://b12vj0rmwdl8y" path="res://assets/textures/light_glow_32.png" id="70_lightglow"]
 [ext_resource type="Texture2D" uid="uid://dcrobw17uonit" path="res://assets/textures/pendant_lamp_24.png" id="71_pendantlamp"]
@@ -994,10 +995,6 @@ mouse_default_cursor_shape = 10
 process_mode = 3
 visible = false
 layout_mode = 0
-offset_left = 0.0
-offset_top = 0.0
-offset_right = 448.0
-offset_bottom = 288.0
 
 [node name="DiscoveryToast" type="Label" parent="GUI_CanvasLayer/GUI" unique_id=1184602969]
 visible = false
@@ -1244,7 +1241,7 @@ layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.1
 anchor_top = 0.5
-anchor_right = 0.9
+anchor_right = 0.72
 anchor_bottom = 0.5
 offset_top = -50.0
 offset_bottom = 50.0
@@ -1479,7 +1476,7 @@ layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.1
 anchor_top = 0.5
-anchor_right = 0.9
+anchor_right = 0.72
 anchor_bottom = 0.5
 offset_top = -50.0
 offset_bottom = 50.0
@@ -1492,15 +1489,6 @@ theme_override_font_sizes/font_size = 28
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
-
-[node name="Keg" parent="." unique_id=1939711803 instance=ExtResource("47_1v6qk")]
-position = Vector2(522, 256)
-
-[node name="Keg2" parent="." unique_id=414387128 instance=ExtResource("47_1v6qk")]
-position = Vector2(490, 256)
-
-[node name="Keg3" parent="." unique_id=111073066 instance=ExtResource("47_1v6qk")]
-position = Vector2(460, 256)
 
 [node name="WorldYSort" type="Node2D" parent="." unique_id=1587711243]
 y_sort_enabled = true
@@ -1578,38 +1566,41 @@ position = Vector2(-89, 235)
 [node name="RoomCenterMarker" type="Marker2D" parent="WorldYSort/CustomerSpawner" unique_id=683741727]
 position = Vector2(291, 238)
 
-[node name="BarTable_Sprite2D" type="Sprite2D" parent="WorldYSort" unique_id=834465169]
-position = Vector2(399, 249)
+[node name="BarTable" type="Node2D" parent="WorldYSort" unique_id=95310036]
+position = Vector2(399, 282)
+
+[node name="BarTable_Sprite2D" type="Sprite2D" parent="WorldYSort/BarTable" unique_id=834465169]
+position = Vector2(1, -31)
 texture = ExtResource("2_dp3eg")
 
-[node name="PC_Prop" type="Sprite2D" parent="WorldYSort/BarTable_Sprite2D" unique_id=119017108]
+[node name="PC_Prop" type="Sprite2D" parent="WorldYSort/BarTable/BarTable_Sprite2D" unique_id=119017108]
 position = Vector2(102, -29)
 texture = ExtResource("18_0ld40")
 script = ExtResource("7_og1vs")
 
-[node name="BeerDispenserRack_Prop" type="Sprite2D" parent="WorldYSort/BarTable_Sprite2D" unique_id=119017109]
+[node name="BeerDispenserRack_Prop" type="Sprite2D" parent="WorldYSort/BarTable/BarTable_Sprite2D" unique_id=119017109]
 position = Vector2(31, -37)
 texture = ExtResource("60_beerrack")
 
-[node name="ReceiptMachineHoverArea" type="Area2D" parent="WorldYSort/BarTable_Sprite2D" unique_id=1649942093]
+[node name="ReceiptMachineHoverArea" type="Area2D" parent="WorldYSort/BarTable/BarTable_Sprite2D" unique_id=1649942093]
 position = Vector2(-96, -23)
 script = ExtResource("49_j2jfr")
 
-[node name="MachineBody" type="Polygon2D" parent="WorldYSort/BarTable_Sprite2D/ReceiptMachineHoverArea" unique_id=102274119]
+[node name="MachineBody" type="Polygon2D" parent="WorldYSort/BarTable/BarTable_Sprite2D/ReceiptMachineHoverArea" unique_id=102274119]
 color = Color(0.07, 0.07, 0.08, 1)
 polygon = PackedVector2Array(-7, -6, 7, -6, 7, 6, -7, 6)
 
-[node name="ReceiptStrip" type="Polygon2D" parent="WorldYSort/BarTable_Sprite2D/ReceiptMachineHoverArea" unique_id=592415226]
+[node name="ReceiptStrip" type="Polygon2D" parent="WorldYSort/BarTable/BarTable_Sprite2D/ReceiptMachineHoverArea" unique_id=592415226]
 position = Vector2(0, -13)
 color = Color(0.92, 0.9, 0.82, 1)
 polygon = PackedVector2Array(-4, -7, 4, -7, 4, 4, 2, 7, 0, 4, -2, 7, -4, 4)
 
-[node name="MachineButton" type="Polygon2D" parent="WorldYSort/BarTable_Sprite2D/ReceiptMachineHoverArea" unique_id=1293168157]
+[node name="MachineButton" type="Polygon2D" parent="WorldYSort/BarTable/BarTable_Sprite2D/ReceiptMachineHoverArea" unique_id=1293168157]
 position = Vector2(3, -2)
 color = Color(0.75, 0.2, 0.15, 1)
 polygon = PackedVector2Array(-1.5, -1, 1.5, -1, 1.5, 1, -1.5, 1)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldYSort/BarTable_Sprite2D/ReceiptMachineHoverArea" unique_id=1999034065]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldYSort/BarTable/BarTable_Sprite2D/ReceiptMachineHoverArea" unique_id=1999034065]
 position = Vector2(0, -7)
 shape = SubResource("RectangleShape2D_bjg73")
 
@@ -1646,6 +1637,15 @@ polygon = PackedVector2Array(-6, -1, 6, -1, 6, 1, -6, 1)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WorldYSort/ChalkboardHoverArea" unique_id=1239359706]
 shape = SubResource("RectangleShape2D_o7ddy")
 
+[node name="Keg" parent="WorldYSort" unique_id=1939711803 instance=ExtResource("47_1v6qk")]
+position = Vector2(523, 250)
+
+[node name="Keg2" parent="WorldYSort" unique_id=414387128 instance=ExtResource("47_1v6qk")]
+position = Vector2(491, 250)
+
+[node name="Keg3" parent="WorldYSort" unique_id=111073066 instance=ExtResource("47_1v6qk")]
+position = Vector2(461, 250)
+
 [node name="Keg4" parent="WorldYSort" unique_id=1949069283 instance=ExtResource("47_1v6qk")]
 position = Vector2(119, 259)
 
@@ -1667,6 +1667,33 @@ position = Vector2(555, 335)
 
 [node name="WarehouseDoorwayMarker" type="Marker2D" parent="WorldYSort/LvvRaidSpawner" unique_id=1310093919]
 position = Vector2(555, 310)
+
+[node name="ImmersionEventSpawner" type="Node2D" parent="WorldYSort" unique_id=1602479363]
+y_sort_enabled = true
+script = ExtResource("59_t5ykj")
+
+[node name="PathMarkers" type="Node2D" parent="WorldYSort/ImmersionEventSpawner" unique_id=1499988311]
+
+[node name="Start" type="Marker2D" parent="WorldYSort/ImmersionEventSpawner/PathMarkers" unique_id=540640949]
+position = Vector2(659, 292)
+
+[node name="Path01" type="Marker2D" parent="WorldYSort/ImmersionEventSpawner/PathMarkers" unique_id=1430666145]
+position = Vector2(320, 340)
+
+[node name="Path02" type="Marker2D" parent="WorldYSort/ImmersionEventSpawner/PathMarkers" unique_id=906080081]
+position = Vector2(134, 276)
+
+[node name="Path03" type="Marker2D" parent="WorldYSort/ImmersionEventSpawner/PathMarkers" unique_id=1954303131]
+position = Vector2(196, 226)
+
+[node name="Path04" type="Marker2D" parent="WorldYSort/ImmersionEventSpawner/PathMarkers" unique_id=467263994]
+position = Vector2(256, 342)
+
+[node name="Path05" type="Marker2D" parent="WorldYSort/ImmersionEventSpawner/PathMarkers" unique_id=452091894]
+position = Vector2(-19, 337)
+
+[node name="End" type="Marker2D" parent="WorldYSort/ImmersionEventSpawner/PathMarkers" unique_id=2019800584]
+position = Vector2(102, 79)
 
 [node name="WarehouseWallOverlay" type="Polygon2D" parent="." unique_id=1022889779]
 z_index = 2

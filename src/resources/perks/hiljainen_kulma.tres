@@ -5,6 +5,6 @@
 [resource]
 script = ExtResource("1_hiljainen")
 perk_name = "Hiljainen kulma"
-description = "Pidät matalaa profiilia LVV:n ratsiakynnys nousee hieman."
+description = "Pidät matalaa profiilia, joten LVV:n ratsiakynnys nousee hieman."
 icon_placeholder = "🤫"
 raid_threshold_multiplier = 1.08

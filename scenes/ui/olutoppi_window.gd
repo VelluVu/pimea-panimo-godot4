@@ -22,9 +22,12 @@ const LEVEL_BONUS_FORMAT : String = "%d/%d %s"
 const BONUS_NEUTRAL_TEXT : String = "-"
 const LOCKED_ICON : String = "🔒"
 const TOOLTIP_CURRENT_FORMAT : String = "Nyt:\n%s"
+const TOOLTIP_NEXT_LEVEL_EFFECT_FORMAT : String = "Tason %d jälkeen:\n%s"
 const TOOLTIP_NEXT_LEVEL_FORMAT : String = "Seuraava taso: %d maine"
 const TOOLTIP_MAXED_TEXT : String = "Taso enimmillään"
 const TOOLTIP_LOCKED_FORMAT : String = "Vaatii ensin: %s"
+const TOOLTIP_PREREQ_ALL_SEPARATOR : String = ", "
+const TOOLTIP_PREREQ_ANY_SEPARATOR : String = " tai "
 
 @onready var title_label : Label = $MarginContainer/MainVBox/HeaderHBox/TitleLabel
 @onready var renown_label : Label = $MarginContainer/MainVBox/HeaderHBox/RenownLabel
@@ -195,7 +198,13 @@ func _build_tooltip(unlock : MetaUnlockData, level : int, maxed : bool, locked :
 			var prereq : MetaUnlockData = MetaProgressManager.find_unlock(prereq_id)
 			if prereq != null and MetaProgressManager.get_node_level(prereq_id) <= 0:
 				prereq_names.append(prereq.perk_name)
-		lines.append(TOOLTIP_LOCKED_FORMAT % ", ".join(prereq_names))
+		# An any-mode capstone (see MetaUnlockData.requires_any_prerequisite)
+		# is only ever shown locked here when NONE of its branches are met
+		# yet (a single met branch already satisfies meets_prerequisites()),
+		# so prereq_names is still every branch — " tai " communicates any
+		# ONE of them unlocks it, instead of ", " which reads as needing all.
+		var separator : String = TOOLTIP_PREREQ_ANY_SEPARATOR if unlock.requires_any_prerequisite else TOOLTIP_PREREQ_ALL_SEPARATOR
+		lines.append(TOOLTIP_LOCKED_FORMAT % separator.join(prereq_names))
 		return "\n".join(lines)
 
 	if level > 0:
@@ -203,6 +212,17 @@ func _build_tooltip(unlock : MetaUnlockData, level : int, maxed : bool, locked :
 		if not current_summary.is_empty():
 			lines.append(TOOLTIP_CURRENT_FORMAT % current_summary)
 
-	lines.append(TOOLTIP_MAXED_TEXT if maxed else TOOLTIP_NEXT_LEVEL_FORMAT % unlock.renown_cost_per_level)
+	if maxed:
+		lines.append(TOOLTIP_MAXED_TEXT)
+	else:
+		# Concrete numbers for the purchase this renown would actually buy —
+		# not just "it gets better", the same %/€ stat line get_stat_summary()
+		# already renders for the CURRENT level above, just one level ahead.
+		# Also covers level == 0 (never bought yet), where this is the only
+		# preview of what a first purchase does at all.
+		var next_summary : String = unlock.get_scaled_perk(level + 1).get_stat_summary()
+		if not next_summary.is_empty():
+			lines.append(TOOLTIP_NEXT_LEVEL_EFFECT_FORMAT % [level + 1, next_summary])
+		lines.append(TOOLTIP_NEXT_LEVEL_FORMAT % unlock.renown_cost_per_level)
 
 	return "\n".join(lines)

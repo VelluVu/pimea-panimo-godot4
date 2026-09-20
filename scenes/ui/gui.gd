@@ -3,6 +3,8 @@ extends Control
 
 
 const DISCOVERY_TOAST_FORMAT: String = "Uusi oluttyyli löydetty: %s!"
+const ACHIEVEMENT_UNLOCKED_TOAST_FORMAT: String = "Saavutus avattu: %s!"
+const CUSTOMER_UNLOCKED_TOAST_FORMAT: String = "Uusi asiakas avattu: %s!"
 const GOAL_REWARD_TOAST_FORMAT: String = "%s saavutettu: +%d € / +%d maine / +%d XP!"
 const GOAL_FAILED_TOAST_FORMAT: String = "%s epäonnistui: %d maine / +%d LVV-riski"
 ## A special-event daily goal whose event actually triggered but couldn't be
@@ -40,15 +42,6 @@ const FIRST_BREW_HINT_FLASH_SECONDS: float = 0.25
 const FIRST_BREW_HINT_HOLD_SECONDS: float = 12.0
 const FIRST_BREW_HINT_FADE_SECONDS: float = 1.2
 
-## GroupVisitBanner/FirstBrewHintBanner are both anchored top=bottom=0.5 in
-## main.tscn, so offset_top/offset_bottom are a half-height around viewport
-## center rather than a real box height — see _fit_banner_height(). 50.0
-## matches their original hand-tuned scene values (a fixed 100px box sized
-## for exactly two lines of font_size 28 text), kept as the floor so a
-## short banner never shrinks smaller than the original design.
-const BANNER_MIN_HALF_HEIGHT: float = 50.0
-const BANNER_VERTICAL_PADDING: float = 6.0
-
 @onready var discovery_toast : Label = $DiscoveryToast
 @onready var group_visit_banner : Label = $GroupVisitBanner
 @onready var first_brew_hint_banner : Label = $FirstBrewHintBanner
@@ -63,10 +56,12 @@ const BANNER_VERTICAL_PADDING: float = 6.0
 @onready var options_window : OptionsWindow = $OptionsWindow
 @onready var run_effects_window : RunEffectsWindow = $RunEffectsWindow
 @onready var sale_receipt_log_window : SaleReceiptLogWindow = $SaleReceiptLogWindow
-var _discovery_toast_tween : Tween
-var _group_visit_banner_tween : Tween
-var _first_brew_hint_tween : Tween
-var _day_event_banner_tween : Tween
+## One presenter per passive Label (flash/hold/fade + height fitting live in
+## BannerPresenter); built in _ready() once the labels exist in the tree.
+var _discovery_toast : BannerPresenter
+var _group_visit_banner : BannerPresenter
+var _first_brew_hint : BannerPresenter
+var _day_event_banner : BannerPresenter
 ## Tracked purely to detect an ingredient-unlock-worthy reputation increase
 ## in _on_brewery_state_changed() — separate from any similar cache
 ## top_panel_resources.gd keeps for its own money/reputation delta popups.
@@ -81,10 +76,24 @@ var _last_reputation_seen : int = -1
 @onready var recipe_library_window : Control = $RecipeLibraryWindow
 @onready var lvv_raid_window : Control = $LvvRaidWindow
 @onready var daily_goals_panel : DailyGoalsPanel = $DailyGoalsPanel
+@onready var day_recap_window : DayRecapWindow = $DayRecapWindow
+
+## Bumped on every announcement so a banner still waiting out the recap
+## window is dropped if a newer day's announcement arrives first.
+var _day_event_announce_serial : int = 0
 
 
 func _ready() -> void:
+	_setup_banner_presenters()
 	_assert_default_visibility()
+	# The goals panel sits in the scene after the modal windows, so it drew on
+	# top of them (e.g. over LvvRaidWindow's right edge). Slot it in just below
+	# the first modal so every window covers it instead.
+	move_child(daily_goals_panel, lvv_raid_window.get_index())
+	# Same for the passive banners: an in-the-moment banner drawing over an
+	# open modal (seen over LvvRaidWindow) collides with the modal's own text.
+	for banner : Label in [group_visit_banner, first_brew_hint_banner, day_event_banner]:
+		move_child(banner, lvv_raid_window.get_index())
 	await get_tree().process_frame
 	_move_to_bar()
 	GUISignals.brewery_view_requested.connect(_on_brewery_button_pressed)
@@ -92,6 +101,8 @@ func _ready() -> void:
 	recipe_library_window.hide()
 	close_day_button.pressed.connect(_on_close_day_button_pressed)
 	BrewerySignals.style_discovered.connect(_on_style_discovered)
+	AchievementManager.achievement_unlocked.connect(_on_achievement_unlocked)
+	CustomerRegistry.customer_unlocked.connect(_on_customer_unlocked)
 	DailyGoalManager.daily_goal_resolved.connect(_on_daily_goal_resolved)
 	BrewerySignals.early_day_close_applied.connect(_on_early_day_close_applied)
 	BrewerySignals.ingredient_purchase_locked.connect(_on_ingredient_purchase_locked)
@@ -106,6 +117,16 @@ func _ready() -> void:
 	if TimeManager.day_timer.is_stopped():
 		BrewerySignals.brewery_state_changed.connect(_on_first_brew_hint_state_changed)
 		_show_first_brew_hint()
+
+
+func _setup_banner_presenters() -> void:
+	_discovery_toast = BannerPresenter.new(discovery_toast, DISCOVERY_TOAST_FLASH_SECONDS, DISCOVERY_TOAST_HOLD_SECONDS, DISCOVERY_TOAST_FADE_SECONDS, true, false)
+	_group_visit_banner = BannerPresenter.new(group_visit_banner, GROUP_VISIT_BANNER_FLASH_SECONDS, GROUP_VISIT_BANNER_HOLD_SECONDS, GROUP_VISIT_BANNER_FADE_SECONDS)
+	# Plain alpha fade-in, not the overexposed flash: it's the day's forecast,
+	# not an in-the-moment arrival.
+	_day_event_banner = BannerPresenter.new(day_event_banner, DAY_EVENT_BANNER_FLASH_SECONDS, DAY_EVENT_BANNER_HOLD_SECONDS, DAY_EVENT_BANNER_FADE_SECONDS, false)
+	# Natural end and early dismissal both hide it and hand off to the goals panel.
+	_first_brew_hint = BannerPresenter.new(first_brew_hint_banner, FIRST_BREW_HINT_FLASH_SECONDS, FIRST_BREW_HINT_HOLD_SECONDS, FIRST_BREW_HINT_FADE_SECONDS, true, true, true, daily_goals_panel.draw_attention)
 
 
 ## The Scene dock's per-node "eye" visibility toggle is a real property
@@ -317,6 +338,14 @@ func _on_style_discovered(style : int) -> void:
 	_show_toast(DISCOVERY_TOAST_FORMAT % BeerStyle.get_style_string_from_style(style))
 
 
+func _on_achievement_unlocked(_achievement_id : String, title : String) -> void:
+	_show_toast(ACHIEVEMENT_UNLOCKED_TOAST_FORMAT % title)
+
+
+func _on_customer_unlocked(title : String) -> void:
+	_show_toast(CUSTOMER_UNLOCKED_TOAST_FORMAT % title)
+
+
 func _on_daily_goal_resolved(goal_name : String, succeeded : bool, money : int, reputation : int, xp : int, risk : int) -> void:
 	if succeeded:
 		_show_toast(GOAL_REWARD_TOAST_FORMAT % [goal_name, money, reputation, xp])
@@ -356,38 +385,29 @@ func _on_ingredient_purchase_underfunded(ingredient_name : String, price : int, 
 
 
 func _on_group_visit_announced(banner_text : String) -> void:
-	group_visit_banner.text = banner_text
-	_fit_banner_height(group_visit_banner)
-
-	if _group_visit_banner_tween:
-		_group_visit_banner_tween.kill()
-
-	group_visit_banner.modulate = Color(1.4, 1.4, 1.0, 0.0)
-
-	_group_visit_banner_tween = create_tween()
-	_group_visit_banner_tween.tween_property(group_visit_banner, "modulate", Color(1.4, 1.4, 1.0, 1.0), GROUP_VISIT_BANNER_FLASH_SECONDS)
-	_group_visit_banner_tween.tween_property(group_visit_banner, "modulate", Color(1.0, 1.0, 1.0, 1.0), GROUP_VISIT_BANNER_FLASH_SECONDS)
-	_group_visit_banner_tween.tween_interval(GROUP_VISIT_BANNER_HOLD_SECONDS)
-	_group_visit_banner_tween.tween_property(group_visit_banner, "modulate:a", 0.0, GROUP_VISIT_BANNER_FADE_SECONDS)
+	_group_visit_banner.present(banner_text)
 
 
 ## The day's secretly-rolled forecast (see DayEventManager) — same flash/
 ## hold/fade shape as _on_group_visit_announced(), just its own timing/
 ## color so a themed day's announcement doesn't read as an in-the-moment
 ## crowd arrival.
+##
+## DayEventManager and DayRecapWindow both react to TimeManager.day_changed,
+## so the banner used to fade in right on top of the recap and hide its
+## lines. Wait a frame (so the recap's own handler has run), then hold the
+## banner until the recap is dismissed.
 func _on_day_event_announced(event : DayEventData) -> void:
-	day_event_banner.text = event.announcement_text
-	_fit_banner_height(day_event_banner)
+	_day_event_announce_serial += 1
+	var serial : int = _day_event_announce_serial
 
-	if _day_event_banner_tween:
-		_day_event_banner_tween.kill()
+	await get_tree().process_frame
+	if day_recap_window.visible:
+		await day_recap_window.hidden
+	if serial != _day_event_announce_serial:
+		return
 
-	day_event_banner.modulate = Color(1.0, 1.0, 1.0, 0.0)
-
-	_day_event_banner_tween = create_tween()
-	_day_event_banner_tween.tween_property(day_event_banner, "modulate:a", 1.0, DAY_EVENT_BANNER_FLASH_SECONDS)
-	_day_event_banner_tween.tween_interval(DAY_EVENT_BANNER_HOLD_SECONDS)
-	_day_event_banner_tween.tween_property(day_event_banner, "modulate:a", 0.0, DAY_EVENT_BANNER_FADE_SECONDS)
+	_day_event_banner.present(event.announcement_text)
 
 
 ## Shown once at the start of a fresh run, while TimeManager.day_timer is
@@ -402,40 +422,8 @@ func _on_day_event_announced(event : DayEventData) -> void:
 ## the goals panel is WHERE to look for what to actually do about it
 ## (it's where the tutorial checklist lives), so one should hand off to
 ## the other instead of leaving the player to find it on their own.
-## Both banners are anchored anchor_top == anchor_bottom == 0.5 in main.tscn
-## (a fixed-height box centered on the viewport, sized in the editor for
-## exactly two lines), so offset_top/offset_bottom are symmetric around
-## that center point. Free-authored banner_text (group-event .tres
-## resources) or a long hint can word-wrap into more lines than that box
-## was sized for — text would then overflow above/below it since Label
-## itself never clips or resizes its own rect. Re-measuring the wrapped
-## height at the banner's own (horizontally fixed) width and growing the
-## offsets to match keeps the whole block on-screen and still centered.
-func _fit_banner_height(banner: Label) -> void:
-	var font := banner.get_theme_font("font")
-	var font_size := banner.get_theme_font_size("font_size")
-	var content_width : float = banner.size.x
-	var wrapped_height : float = font.get_multiline_string_size(
-		banner.text, HORIZONTAL_ALIGNMENT_CENTER, content_width, font_size
-	).y
-
-	var half_height : float = maxf(BANNER_MIN_HALF_HEIGHT, wrapped_height * 0.5 + BANNER_VERTICAL_PADDING)
-	banner.offset_top = -half_height
-	banner.offset_bottom = half_height
-
-
 func _show_first_brew_hint() -> void:
-	first_brew_hint_banner.text = FIRST_BREW_HINT_TEXT
-	_fit_banner_height(first_brew_hint_banner)
-	first_brew_hint_banner.modulate = Color(1.4, 1.4, 1.0, 0.0)
-
-	_first_brew_hint_tween = create_tween()
-	_first_brew_hint_tween.tween_property(first_brew_hint_banner, "modulate", Color(1.4, 1.4, 1.0, 1.0), FIRST_BREW_HINT_FLASH_SECONDS)
-	_first_brew_hint_tween.tween_property(first_brew_hint_banner, "modulate", Color(1.0, 1.0, 1.0, 1.0), FIRST_BREW_HINT_FLASH_SECONDS)
-	_first_brew_hint_tween.tween_interval(FIRST_BREW_HINT_HOLD_SECONDS)
-	_first_brew_hint_tween.tween_property(first_brew_hint_banner, "modulate:a", 0.0, FIRST_BREW_HINT_FADE_SECONDS)
-	_first_brew_hint_tween.tween_callback(first_brew_hint_banner.hide)
-	_first_brew_hint_tween.tween_callback(daily_goals_panel.draw_attention)
+	_first_brew_hint.present(FIRST_BREW_HINT_TEXT)
 
 
 ## Cuts the hint short the moment the clock actually starts (first brew
@@ -453,25 +441,8 @@ func _on_first_brew_hint_state_changed(_brewery : Brewery) -> void:
 		return
 
 	BrewerySignals.brewery_state_changed.disconnect(_on_first_brew_hint_state_changed)
-	if _first_brew_hint_tween and _first_brew_hint_tween.is_running():
-		_first_brew_hint_tween.kill()
-
-	var quick_fade := create_tween()
-	quick_fade.tween_property(first_brew_hint_banner, "modulate:a", 0.0, FIRST_BREW_HINT_FADE_SECONDS)
-	quick_fade.tween_callback(first_brew_hint_banner.hide)
-	quick_fade.tween_callback(daily_goals_panel.draw_attention)
+	_first_brew_hint.dismiss_early()
 
 
 func _show_toast(text : String) -> void:
-	discovery_toast.text = text
-
-	if _discovery_toast_tween:
-		_discovery_toast_tween.kill()
-
-	discovery_toast.modulate = Color(1.4, 1.4, 1.0, 0.0)
-
-	_discovery_toast_tween = create_tween()
-	_discovery_toast_tween.tween_property(discovery_toast, "modulate", Color(1.4, 1.4, 1.0, 1.0), DISCOVERY_TOAST_FLASH_SECONDS)
-	_discovery_toast_tween.tween_property(discovery_toast, "modulate", Color(1.0, 1.0, 1.0, 1.0), DISCOVERY_TOAST_FLASH_SECONDS)
-	_discovery_toast_tween.tween_interval(DISCOVERY_TOAST_HOLD_SECONDS)
-	_discovery_toast_tween.tween_property(discovery_toast, "modulate:a", 0.0, DISCOVERY_TOAST_FADE_SECONDS)
+	_discovery_toast.present(text)

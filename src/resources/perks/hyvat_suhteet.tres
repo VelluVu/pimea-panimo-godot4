@@ -5,6 +5,6 @@
 [resource]
 script = ExtResource("1_hyvat")
 perk_name = "Hyvät suhteet"
-description = "Baarien pitäjät pitävät sinusta halpamyynnin ja baarivientien tulot hieman paremmat."
+description = "Baarien pitäjät pitävät sinusta: halpamyynnin ja baarivientien tulot ovat hieman paremmat."
 icon_placeholder = "🍺"
 distribution_income_multiplier = 1.1

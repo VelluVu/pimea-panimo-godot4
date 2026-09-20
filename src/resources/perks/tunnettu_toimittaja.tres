@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_tunnettu")
 perk_name = "Tunnettu toimittaja"
-description = "Maineesi jakelijana kiirii kellarien välillä halpamyynnin ja baarivientien tulot selvästi paremmat."
+description = "Maineesi jakelijana kiirii kellarien välillä: halpamyynnin ja baarivientien tulot ovat selvästi paremmat."
 icon_placeholder = "📦"
 tier = 1
 distribution_income_multiplier = 1.18

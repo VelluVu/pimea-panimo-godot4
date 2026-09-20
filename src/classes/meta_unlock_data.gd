@@ -43,10 +43,18 @@ enum Path { BAR_WORK, BREWING, MARKETING }
 ## before THIS node can be purchased at all — see
 ## MetaProgressManager.meets_prerequisites()/purchase_next_level(). Empty
 ## for a path's root node. More than one entry means a converging
-## capstone (ALL listed prerequisites required, not just one) — see
-## olutoppi_window.tscn's tree layout, where a capstone's two branches
-## merge back into it.
+## capstone; by default ALL listed prerequisites are required (see
+## olutoppi_window.tscn's tree layout, where a capstone's branches merge
+## back into it) — override with requires_any_prerequisite below for a
+## capstone reachable via any single one of its branches instead.
 @export var prerequisite_ids : Array[String] = []
+
+## When true, meets_prerequisites() only needs ONE entry in
+## prerequisite_ids invested (min level 1), not every one of them — see
+## Piilokätkö (raid_piilokatko), Markkinointi's final node, reachable
+## through either of its two feeder branches (Tukkuhinnat/Vahva brändi)
+## rather than requiring both.
+@export var requires_any_prerequisite : bool = false
 
 
 ## Every inherited RunPerk stat field on this resource (quality_bonus,

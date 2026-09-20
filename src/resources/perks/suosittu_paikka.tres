@@ -5,6 +5,6 @@
 [resource]
 script = ExtResource("1_suosittu")
 perk_name = "Suosittu paikka"
-description = "Puskaradio kiirii jokainen onnistunut myynti tuo nyt hieman enemmän mainetta."
+description = "Puskaradio kiirii: jokainen onnistunut myynti tuo nyt hieman enemmän mainetta."
 tier = 1
 reputation_gain_multiplier = 1.3

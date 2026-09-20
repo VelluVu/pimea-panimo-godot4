@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="AchievementData" format=3]
+
+[ext_resource type="Script" path="res://src/classes/achievement_data.gd" id="1_achievement"]
+
+[resource]
+script = ExtResource("1_achievement")
+achievement_id = "kolme_lvv_lahjusta"
+title = "Lahjontarutiini"
+description = "Maksa LVV:lle lahjuksia onnistuneesti kolme kertaa."
+stat_key = &"lvv_bribes_succeeded"
+target_value = 3
+metadata/_custom_type_script = "res://src/classes/achievement_data.gd"

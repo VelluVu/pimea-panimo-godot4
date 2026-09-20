@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="CustomerData" format=3]
+
+[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/classes/customer_data.gd" id="1_kesamies"]
+[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/kesamies_anim.tres" id="2_sprite"]
+
+[resource]
+script = ExtResource("1_kesamies")
+customer_name = "Ville"
+title = "Kesämies"
+first_names = Array[String](["Ville", "Jussi", "Sampsa", "Elmeri", "Tatu", "Make"])
+min_quality = 0.3
+budget_multiplier = 1.2
+primary_style = 11
+secondary_style = 12
+sprite_frames = ExtResource("2_sprite")
+randomize_skin = false
+randomize_hair = false
+randomize_clothes = false
+randomize_shoes = false
+dialogue_intro = "Moi! Onks teillä jotain kesäistä ja kuvan arvosta? Pitää saada hyvä ottos tarinaan."
+dialogue_success = "Väri on ihan täydellinen, tää menee suoraan tarinaan!"
+dialogue_fallback = "Ei ehkä ihan feed-materiaalia, mutta kyllä tän juo."
+dialogue_wrong_style = "No joo, ei ollu ihan se fiilis mitä hain, mut menköön."
+dialogue_reject = "Tää näyttää ihan tunkilta kuvissa, en voi ottaa tätä."
+dialogue_no_match = "Ei täällä ollu mitään kesäistä. Täytyy etsiä parempi valokuvapaikka."
+quality_tip_sensitivity = 0.5
+rep_primary_style = 8
+rep_secondary_style = 3
+quality_reputation_sensitivity = 2.0
+required_discovered_style = 11
+metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

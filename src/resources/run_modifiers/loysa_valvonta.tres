@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_loysa")
 modifier_name = "Löysä valvonta"
-description = "LVV on kiireinen muualla tänä kautena ratsiakynnys huomattavasti korkeampi. Rauha maksaa: tukkurit tietävät tilanteen ja hinnoittelevat sen mukaan."
+description = "LVV on kiireinen muualla tänä kautena, ratsiakynnys on huomattavasti korkeampi. Rauha maksaa: tukkurit tietävät tilanteen ja hinnoittelevat sen mukaan."
 icon_placeholder = "😌"
 lvv_threshold_multiplier = 1.5
 ingredient_price_multiplier = 1.5

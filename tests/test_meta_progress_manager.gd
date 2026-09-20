@@ -140,6 +140,26 @@ func test_meets_prerequisites_requires_every_listed_prerequisite() -> void:
 	assert_true(manager.meets_prerequisites("capstone"))
 
 
+## requires_any_prerequisite flips a capstone from "all branches" to "any
+## one branch" — see Piilokätkö (raid_piilokatko), Markkinointi's final
+## node, reachable through either of its two feeder branches.
+func test_meets_prerequisites_any_mode_needs_only_one_invested() -> void:
+	var manager := _make_manager()
+	var capstone := _make_unlock("capstone", 10, 1, ["left", "right"])
+	capstone.requires_any_prerequisite = true
+	manager.unlock_pool = [
+		_make_unlock("left", 10),
+		_make_unlock("right", 10),
+		capstone,
+	]
+	manager._config.set_value(MetaProgressManagerScript.SECTION, MetaProgressManagerScript.KEY_RENOWN, 100)
+
+	assert_false(manager.meets_prerequisites("capstone"), "no branch invested yet should not be enough")
+
+	manager.purchase_next_level("left")
+	assert_true(manager.meets_prerequisites("capstone"), "any single invested branch should be enough in any-mode")
+
+
 func test_purchase_next_level_refuses_when_prerequisite_unmet() -> void:
 	var manager := _make_manager()
 	manager.unlock_pool = [_make_unlock("root", 10), _make_unlock("child", 10, 3, ["root"])]

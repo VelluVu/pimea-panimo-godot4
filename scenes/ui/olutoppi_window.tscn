@@ -69,7 +69,7 @@ text = "Baarityöskentely"
 horizontal_alignment = 1
 
 [node name="TreeArea" type="Control" parent="MarginContainer/MainVBox/PathsHBox/BarWorkColumn" unique_id=2046909200]
-custom_minimum_size = Vector2(150, 328)
+custom_minimum_size = Vector2(150, 258)
 layout_mode = 2
 size_flags_horizontal = 4
 mouse_filter = 2
@@ -252,35 +252,6 @@ theme_override_font_sizes/font_size = 16
 horizontal_alignment = 1
 
 [node name="LevelBonusLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/BarWorkColumn/TreeArea/bar_capstone_baarimestari/VBox" unique_id=2097707576]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.949, 0.788, 0.42, 1)
-theme_override_font_sizes/font_size = 11
-horizontal_alignment = 1
-
-[node name="raid_piilokatko" type="Button" parent="MarginContainer/MainVBox/PathsHBox/BarWorkColumn/TreeArea" unique_id=839202782]
-layout_mode = 0
-offset_left = 84.0
-offset_top = 280.0
-offset_right = 148.0
-offset_bottom = 328.0
-script = ExtResource("2_tooltipbtn")
-
-[node name="VBox" type="VBoxContainer" parent="MarginContainer/MainVBox/PathsHBox/BarWorkColumn/TreeArea/raid_piilokatko" unique_id=940246284]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme_override_constants/separation = 1
-
-[node name="IconLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/BarWorkColumn/TreeArea/raid_piilokatko/VBox" unique_id=1240638454]
-layout_mode = 2
-theme_override_font_sizes/font_size = 16
-horizontal_alignment = 1
-
-[node name="LevelBonusLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/BarWorkColumn/TreeArea/raid_piilokatko/VBox" unique_id=1305929436]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.949, 0.788, 0.42, 1)
 theme_override_font_sizes/font_size = 11
@@ -601,7 +572,7 @@ theme_override_colors/font_color = Color(0.949, 0.788, 0.42, 1)
 theme_override_font_sizes/font_size = 11
 horizontal_alignment = 1
 
-[node name="ingredient_price_tukkuhinnat" type="Button" parent="MarginContainer/MainVBox/PathsHBox/MarketingColumn/TreeArea" unique_id=1465620318]
+[node name="distribution_income_tukkuhinnat" type="Button" parent="MarginContainer/MainVBox/PathsHBox/MarketingColumn/TreeArea" unique_id=1465620318]
 layout_mode = 0
 offset_left = 6.0
 offset_top = 140.0
@@ -609,7 +580,7 @@ offset_right = 70.0
 offset_bottom = 188.0
 script = ExtResource("2_tooltipbtn")
 
-[node name="VBox" type="VBoxContainer" parent="MarginContainer/MainVBox/PathsHBox/MarketingColumn/TreeArea/ingredient_price_tukkuhinnat" unique_id=33165290]
+[node name="VBox" type="VBoxContainer" parent="MarginContainer/MainVBox/PathsHBox/MarketingColumn/TreeArea/distribution_income_tukkuhinnat" unique_id=33165290]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -619,12 +590,12 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_constants/separation = 1
 
-[node name="IconLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/MarketingColumn/TreeArea/ingredient_price_tukkuhinnat/VBox" unique_id=891193208]
+[node name="IconLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/MarketingColumn/TreeArea/distribution_income_tukkuhinnat/VBox" unique_id=891193208]
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
 horizontal_alignment = 1
 
-[node name="LevelBonusLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/MarketingColumn/TreeArea/ingredient_price_tukkuhinnat/VBox" unique_id=1068691086]
+[node name="LevelBonusLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/MarketingColumn/TreeArea/distribution_income_tukkuhinnat/VBox" unique_id=1068691086]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.949, 0.788, 0.42, 1)
 theme_override_font_sizes/font_size = 11
@@ -659,7 +630,7 @@ theme_override_colors/font_color = Color(0.949, 0.788, 0.42, 1)
 theme_override_font_sizes/font_size = 11
 horizontal_alignment = 1
 
-[node name="marketing_capstone_kauppaneuvos" type="Button" parent="MarginContainer/MainVBox/PathsHBox/MarketingColumn/TreeArea" unique_id=920500219]
+[node name="raid_piilokatko" type="Button" parent="MarginContainer/MainVBox/PathsHBox/MarketingColumn/TreeArea" unique_id=839202782]
 layout_mode = 0
 offset_left = 45.0
 offset_top = 210.0
@@ -667,7 +638,7 @@ offset_right = 109.0
 offset_bottom = 258.0
 script = ExtResource("2_tooltipbtn")
 
-[node name="VBox" type="VBoxContainer" parent="MarginContainer/MainVBox/PathsHBox/MarketingColumn/TreeArea/marketing_capstone_kauppaneuvos" unique_id=410874428]
+[node name="VBox" type="VBoxContainer" parent="MarginContainer/MainVBox/PathsHBox/MarketingColumn/TreeArea/raid_piilokatko" unique_id=940246284]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -677,12 +648,12 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_constants/separation = 1
 
-[node name="IconLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/MarketingColumn/TreeArea/marketing_capstone_kauppaneuvos/VBox" unique_id=1399836799]
+[node name="IconLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/MarketingColumn/TreeArea/raid_piilokatko/VBox" unique_id=1240638454]
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
 horizontal_alignment = 1
 
-[node name="LevelBonusLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/MarketingColumn/TreeArea/marketing_capstone_kauppaneuvos/VBox" unique_id=917940231]
+[node name="LevelBonusLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/MarketingColumn/TreeArea/raid_piilokatko/VBox" unique_id=1305929436]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.949, 0.788, 0.42, 1)
 theme_override_font_sizes/font_size = 11

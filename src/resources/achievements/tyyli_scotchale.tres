@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="AchievementData" format=3]
+
+[ext_resource type="Script" path="res://src/classes/achievement_data.gd" id="1_achievement"]
+
+[resource]
+script = ExtResource("1_achievement")
+achievement_id = "tyyli_scotchale"
+title = "Tyyli löydetty: Scotch Ale"
+description = "Pane hyllyyn ensimmäinen erä tyyliä Scotch Ale."
+stat_key = &"style_discovered_17"
+target_value = 1
+metadata/_custom_type_script = "res://src/classes/achievement_data.gd"

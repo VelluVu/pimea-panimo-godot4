@@ -19,6 +19,11 @@ const COLLAPSE_ICON: String = "▼"
 const EXPAND_ICON: String = "▲"
 const DEV_MODE_OFF_MESSAGE: String = "[color=orange]Komennot ovat pois käytöstä (DEVELOPER_MODE = false).[/color]"
 const UNKNOWN_COMMAND_MESSAGE: String = "[color=orange]Tuntematon komento: %s (kokeile 'help')[/color]"
+const TRADE_FAILED_MESSAGE: String = "[color=orange]%s epäonnistui: %s[/color]"
+const PURCHASE_LOCKED_REASON: String = "%s vaatii mainetta %d"
+const PURCHASE_UNDERFUNDED_REASON: String = "%s maksaa %d €, rahaa %.1f €"
+const SALE_FAILED_REASON: String = "%s: pyydetty %d, varastossa %d"
+const RECIPE_NOT_SAVED_MESSAGE: String = "Reseptiä ei tallennettu (pöytä tyhjä tai oluttyyli ei vielä tuttu)"
 const MAX_LOG_LINES: int = 200
 
 const MIN_SIZE: Vector2 = Vector2(180, 90)
@@ -49,9 +54,36 @@ var _resize_start_mouse: Vector2
 var _resize_start_offset_left: float
 var _resize_start_offset_top: float
 
+## Set by the BrewerySignals failure handlers below while an osta/myy command
+## is in flight; the command clears it before emitting and reads it after,
+## since GUISignals.buy_ingredient/sell_ingredient are fire-and-forget.
+var _trade_failure_reason: String = ""
 var _command_history: PackedStringArray = []
-var _player_commands: Dictionary = {}
-var _dev_commands: Dictionary = {}
+## Command name -> ConsoleCommand, in registration order (which is also the
+## order `help` lists them in).
+var _commands: Dictionary = {}
+
+
+## One console command: its handler, what `help` prints for it, and whether it
+## needs developer mode. Registering everything through _register() keeps the
+## dispatch table and the help text from drifting apart.
+class ConsoleCommand:
+	var handler: Callable
+	var usage: String
+	var note: String
+	var dev_only: bool
+	## Unlisted commands still work but don't appear in `help` (help itself, iddqd).
+	var listed: bool
+
+	func _init(p_handler: Callable, p_usage: String, p_note: String, p_dev_only: bool, p_listed: bool) -> void:
+		handler = p_handler
+		usage = p_usage
+		note = p_note
+		dev_only = p_dev_only
+		listed = p_listed
+
+	func help_text() -> String:
+		return usage if note.is_empty() else "%s (%s)" % [usage, note]
 
 
 func _ready() -> void:
@@ -199,6 +231,9 @@ func _connect_log_sources() -> void:
 	BrewerySignals.batch_bottled.connect(_on_batch_bottled)
 	BrewerySignals.daily_bills_paid.connect(_on_daily_bills_paid)
 	BrewerySignals.early_day_close_applied.connect(_on_early_day_close_applied)
+	BrewerySignals.ingredient_purchase_locked.connect(_on_purchase_locked)
+	BrewerySignals.ingredient_purchase_underfunded.connect(_on_purchase_underfunded)
+	BrewerySignals.ingredient_sale_failed.connect(_on_sale_failed)
 	SpecialEventManager.special_event_triggered.connect(_on_special_event_triggered)
 	TimeManager.day_changed.connect(_on_day_changed)
 
@@ -229,6 +264,18 @@ func _on_early_day_close_applied(money_cost: float, reputation_cost: int, risk_r
 	if money_cost <= 0.0 and reputation_cost <= 0 and risk_relief <= 0:
 		return
 	_log("[color=orange]Ovet suljettu aikaisin (%d. kerta): -%.1f €, mainetta -%d, LVV-riski -%d[/color]" % [close_count, money_cost, reputation_cost, risk_relief])
+
+
+func _on_purchase_locked(ingredient_name: String, required_reputation: int) -> void:
+	_trade_failure_reason = PURCHASE_LOCKED_REASON % [ingredient_name, required_reputation]
+
+
+func _on_purchase_underfunded(ingredient_name: String, price: int, money: float) -> void:
+	_trade_failure_reason = PURCHASE_UNDERFUNDED_REASON % [ingredient_name, price, money]
+
+
+func _on_sale_failed(ingredient_name: String, requested: int, in_stock: int) -> void:
+	_trade_failure_reason = SALE_FAILED_REASON % [ingredient_name, requested, in_stock]
 
 
 func _on_special_event_triggered(event_data: SpecialEventData) -> void:
@@ -280,55 +327,66 @@ func _on_command_submitted(raw_text: String) -> void:
 	var command_name := parts[0].to_lower()
 	var args := parts.slice(1)
 
-	if _player_commands.has(command_name):
-		_player_commands[command_name].call(args)
+	var command: ConsoleCommand = _commands.get(command_name)
+	if command == null:
+		_log(UNKNOWN_COMMAND_MESSAGE % command_name)
 		return
 
-	if _dev_commands.has(command_name):
-		if not BrewEngine.is_developer_mode():
-			_log(DEV_MODE_OFF_MESSAGE)
-			return
-		_dev_commands[command_name].call(args)
+	if command.dev_only and not BrewEngine.is_developer_mode():
+		_log(DEV_MODE_OFF_MESSAGE)
 		return
 
-	_log(UNKNOWN_COMMAND_MESSAGE % command_name)
+	command.handler.call(args)
+
+
+func _register(command_name: String, handler: Callable, usage: String = "", note: String = "", dev_only: bool = false, listed: bool = true) -> void:
+	_commands[command_name] = ConsoleCommand.new(handler, usage if not usage.is_empty() else command_name, note, dev_only, listed)
 
 
 func _register_commands() -> void:
-	_player_commands = {
-		"help": _cmd_help,
-		"clear": _cmd_clear,
-		"osta": _cmd_osta,
-		"myy": _cmd_myy,
-		"pöytään": _cmd_poytaan,
-		"poista": _cmd_poista_poydalta,
-		"tyhjennä": _cmd_tyhjenna,
-		"tallenna": _cmd_tallenna,
-		"pane": _cmd_pane,
-		"keitä": _cmd_keita,
-		"iddqd": _cmd_iddqd,
-	}
+	_commands.clear()
+	# Player commands, in the order `help` lists them.
+	_register("osta", _cmd_osta, "osta <ainesosa> <määrä>")
+	_register("myy", _cmd_myy, "myy <ainesosa> <määrä>")
+	_register("pöytään", _cmd_poytaan, "pöytään <ainesosa> <määrä>")
+	_register("poista", _cmd_poista_poydalta, "poista <ainesosa> <määrä>")
+	_register("tyhjennä", _cmd_tyhjenna)
+	_register("tallenna", _cmd_tallenna)
+	_register("pane", _cmd_pane)
+	_register("keitä", _cmd_keita, "keitä <resepti>")
+	_register("clear", _cmd_clear)
+	_register("help", _cmd_help, "", "", false, false)
+	_register("iddqd", _cmd_iddqd, "", "", false, false)
 
-	_dev_commands = {
-		"brew": _cmd_brew,
-		"sell": _cmd_sell,
-		"dump": _cmd_dump,
-		"vie": _cmd_vie,
-		"customer": _cmd_customer,
-		"group": _cmd_group,
-		"special": _cmd_special,
-		"raid": _cmd_raid,
-		"money": _cmd_money,
-		"rep": _cmd_rep,
-		"risk": _cmd_risk,
-		"day": _cmd_day,
-	}
+	# Developer commands (need developer mode).
+	_register("brew", _cmd_brew, "brew <tyyli>", "", true)
+	_register("sell", _cmd_sell, "sell [määrä] <tyyli>", "myy oikeasti, luo annoksia tarvittaessa", true)
+	_register("dump", _cmd_dump, "dump <tyyli>", "halpamyy erä", true)
+	_register("vie", _cmd_vie, "vie <tyyli> <baari>", "vie erä baariin, luo tarvittaessa", true)
+	_register("customer", _cmd_customer, "customer [nimi]", "", true)
+	_register("group", _cmd_group, "group [nimi]", "", true)
+	_register("special", _cmd_special, "", "", true)
+	_register("raid", _cmd_raid, "", "", true)
+	_register("money", _cmd_money, "money <n>", "", true)
+	_register("rep", _cmd_rep, "rep <n>", "", true)
+	_register("risk", _cmd_risk, "risk <n>", "", true)
+	_register("day", _cmd_day, "", "", true)
+	_register("cat", _cmd_cat, "", "", true)
 
 
 func _cmd_help(_args: PackedStringArray) -> void:
-	_log("Komennot: osta <ainesosa> <määrä>, myy <ainesosa> <määrä>, pöytään <ainesosa> <määrä>, poista <ainesosa> <määrä>, tyhjennä, tallenna, pane, keitä <resepti>, clear")
+	_log("Komennot: %s" % ", ".join(_help_entries(false)))
 	if BrewEngine.is_developer_mode():
-		_log("[color=orange]Kehittäjäkomennot: brew <tyyli>, sell [määrä] <tyyli> (myy oikeasti, luo annoksia tarvittaessa), dump <tyyli> (halpamyy erä), vie <tyyli> <baari> (vie erä baariin, luo tarvittaessa), customer [nimi], group [nimi], special, raid, money <n>, rep <n>, risk <n>, day[/color]")
+		_log("[color=orange]Kehittäjäkomennot: %s[/color]" % ", ".join(_help_entries(true)))
+
+
+## Help lines for every listed command of one kind, in registration order.
+func _help_entries(dev_only: bool) -> PackedStringArray:
+	var entries := PackedStringArray()
+	for command: ConsoleCommand in _commands.values():
+		if command.listed and command.dev_only == dev_only:
+			entries.append(command.help_text())
+	return entries
 
 
 func _cmd_clear(_args: PackedStringArray) -> void:
@@ -344,16 +402,24 @@ func _cmd_osta(args: PackedStringArray) -> void:
 	var parsed := _parse_ingredient_amount(args)
 	if parsed.is_empty():
 		return
+	_trade_failure_reason = ""
 	GUISignals.buy_ingredient.emit(parsed.id, parsed.amount)
-	_log("Ostettu: %s x%d" % [parsed.ingredient.name, parsed.amount])
+	if _trade_failure_reason.is_empty():
+		_log("Ostettu: %s x%d" % [parsed.ingredient.name, parsed.amount])
+	else:
+		_log(TRADE_FAILED_MESSAGE % ["Ostaminen", _trade_failure_reason])
 
 
 func _cmd_myy(args: PackedStringArray) -> void:
 	var parsed := _parse_ingredient_amount(args)
 	if parsed.is_empty():
 		return
+	_trade_failure_reason = ""
 	GUISignals.sell_ingredient.emit(parsed.id, parsed.amount)
-	_log("Myyty: %s x%d" % [parsed.ingredient.name, parsed.amount])
+	if _trade_failure_reason.is_empty():
+		_log("Myyty: %s x%d" % [parsed.ingredient.name, parsed.amount])
+	else:
+		_log(TRADE_FAILED_MESSAGE % ["Myyminen", _trade_failure_reason])
 
 
 func _cmd_poytaan(args: PackedStringArray) -> void:
@@ -378,7 +444,17 @@ func _cmd_tyhjenna(_args: PackedStringArray) -> void:
 
 
 func _cmd_tallenna(_args: PackedStringArray) -> void:
+	var brewery := BrewEngine.current_brewery
+	if brewery == null:
+		_log("Ei aktiivista panimoa.")
+		return
+
+	var recipes_before : int = brewery.saved_recipes.size()
 	GUISignals.save_recipe_requested.emit()
+
+	# Success is already logged by _on_recipe_saved() via BrewerySignals.recipe_saved.
+	if brewery.saved_recipes.size() == recipes_before:
+		_log(RECIPE_NOT_SAVED_MESSAGE)
 
 
 func _cmd_pane(_args: PackedStringArray) -> void:
@@ -812,6 +888,15 @@ func _cmd_raid(_args: PackedStringArray) -> void:
 		_log("Ei aktiivista panimoa.")
 		return
 	brewery.add_risk(brewery.get_effective_raid_threshold())
+
+
+func _cmd_cat(_args: PackedStringArray) -> void:
+	var spawner := get_tree().get_first_node_in_group(ImmersionEventSpawner.IMMERSION_EVENT_SPAWNER_GROUP) as ImmersionEventSpawner
+	if spawner == null:
+		_log("Kissa-hiiri-tapahtumaa ei löytynyt.")
+		return
+	spawner.force_trigger()
+	_log("Kissa jahtaa hiirtä.")
 
 
 func _cmd_money(args: PackedStringArray) -> void:
