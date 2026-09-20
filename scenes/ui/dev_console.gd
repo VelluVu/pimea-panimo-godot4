@@ -63,30 +63,28 @@ func _ready() -> void:
 	_log("Konsoli valmis. Kirjoita 'help' nähdäksesi komennot.")
 
 
-# ----- "c" hotkey to open/focus, Esc to close -----
+# ----- open-console hotkey to open/focus, Esc to close -----
 
 ## Deliberately _input(), not _unhandled_input(): it re-reads input_line_edit's focus
-## on every keypress. "c" opens/focuses the console, or types normally while the field
-## already has focus. Esc closes it before gui.gd's global Esc handler sees the event.
+## on every keypress. The open-console key opens/focuses the console, or types
+## normally while the field already has focus. Esc closes it before InputManager
+## turns the event into a cancel signal.
 func _input(event: InputEvent) -> void:
-	if not (event is InputEventKey and event.pressed and not event.echo):
-		return
-
-	if event.keycode == KEY_C:
+	if event.is_action_pressed(InputManager.ACTION_OPEN_CONSOLE):
 		if input_line_edit.has_focus():
 			return
 		_open_and_focus_input()
 		get_viewport().set_input_as_handled()
 		return
 
-	if event.keycode == KEY_ESCAPE and is_console_active():
+	if event.is_action_pressed(InputManager.ACTION_CANCEL) and is_console_active():
 		input_line_edit.release_focus()
 		if not _is_collapsed:
 			_on_toggle_pressed()
 		get_viewport().set_input_as_handled()
 
 
-## True while the console is open or focused; gui.gd's Esc handler backs off then.
+## True while the console is open or focused; GUI's shortcut handling backs off then.
 func is_console_active() -> bool:
 	return not _is_collapsed or input_line_edit.has_focus()
 

@@ -36,6 +36,7 @@ DayEventManager="*res://src/autoload/day_event_manager.gd"
 MetaProgressManager="*res://src/autoload/meta_progress_manager.gd"
 _mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"
 AchievementManager="*res://src/autoload/achievement_manager.gd"
+InputManager="*res://src/autoload/input_manager.gd"
 
 [display]
 
