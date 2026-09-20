@@ -48,7 +48,7 @@ func check_for_raid() -> void:
 		shuffled.shuffle()
 		spared_batches = shuffled.slice(0, hidden_count)
 
-	var confiscated_bottles : int = brewery.count_total_bottles()
+	var confiscated_bottles : int = brewery.inventory.count_bottles()
 	for spared : BrewBatch in spared_batches:
 		confiscated_bottles -= spared.amount_bottles
 	brewery.inventory.brew_batches = spared_batches

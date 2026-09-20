@@ -143,7 +143,7 @@ func force_advance_day() -> void:
 
 	var brewery := BrewEngine.current_brewery
 	if brewery != null:
-		brewery.apply_early_close_cost(earliness)
+		InspectionService.new(brewery).apply_early_close_cost(earliness)
 
 	_advance_day()
 

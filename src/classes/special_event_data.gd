@@ -65,6 +65,6 @@ func _apply_rewards(brewery: Brewery) -> void:
 	brewery.money += reward_money
 	brewery.reputation = max(0, brewery.reputation + reward_reputation)
 	if clears_risk:
-		brewery.clear_risk()
+		brewery.risk = 0
 	else:
 		brewery.add_risk(reward_risk)
