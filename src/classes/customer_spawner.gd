@@ -132,7 +132,7 @@ func _get_perk_spawn_interval_multiplier() -> float:
 	var brewery = BrewEngine.current_brewery
 	if brewery == null:
 		return 1.0
-	return brewery.get_spawn_interval_multiplier()
+	return brewery.stats.multiplier(PerkStats.SPAWN_INTERVAL)
 
 
 ## RunPerk.group_event_interval_multiplier (e.g. MetaUnlockData's
@@ -144,7 +144,7 @@ func _get_perk_group_event_interval_multiplier() -> float:
 	var brewery = BrewEngine.current_brewery
 	if brewery == null:
 		return 1.0
-	return brewery.get_group_event_interval_multiplier()
+	return brewery.stats.multiplier(PerkStats.GROUP_EVENT_INTERVAL)
 
 
 ## Deliberately does NOT check for empty inventory — that gate only applies
