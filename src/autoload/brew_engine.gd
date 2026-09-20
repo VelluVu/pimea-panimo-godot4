@@ -40,6 +40,16 @@ func _init() -> void:
 	start_new_game()
 
 
+## The one place a Brewery becomes the current one (new game, load game).
+## Disconnects the outgoing instance first, otherwise it stays connected to
+## GUISignals and keeps handling player actions instead of the new one.
+func set_brewery(brewery : Brewery) -> void:
+	if current_brewery != null:
+		current_brewery.disconnect_signals()
+	current_brewery = brewery
+	current_brewery._ready()
+
+
 ## Public so the main menu's "Aloita uusi peli" can force a fresh Brewery
 ## explicitly instead of relying on the one created at process boot.
 ## chosen_modifier carries the player's pick from ModifierSelectWindow;
@@ -47,8 +57,5 @@ func _init() -> void:
 ## created at process boot, before any menu exists to choose from) so
 ## Brewery._init() falls back to its own random roll.
 func start_new_game(chosen_modifier : RunModifier = null) -> void:
-	if current_brewery != null:
-		current_brewery.disconnect_signals()
-	current_brewery = Brewery.new(chosen_modifier)
-	current_brewery._ready()
+	set_brewery(Brewery.new(chosen_modifier))
 	print(StringContainer.NEW_GAME_MESSAGE)

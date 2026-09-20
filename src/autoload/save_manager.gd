@@ -11,41 +11,77 @@ extends Node
 
 const SAVE_PATH: String = "user://savegame.tres"
 
+## Bump whenever a saved field is renamed, removed or changes meaning, and add
+## the matching step to _migrate(). Saves written before versioning existed
+## load as version 0.
+const SAVE_VERSION: int = 1
+
+## Endings that finish the run for good. "survived" is left out on purpose:
+## the player can choose to keep playing, so that run must stay saved.
+const RUN_ENDING_TYPES: PackedStringArray = ["busted", "bankrupt"]
+
 
 func _ready() -> void:
 	get_tree().root.close_requested.connect(_on_close_requested)
+	BrewerySignals.game_ended.connect(_on_game_ended)
 
 
 func has_save() -> bool:
-	return FileAccess.file_exists(SAVE_PATH)
+	return SaveFile.exists(SAVE_PATH)
 
 
-func save_game() -> void:
+## Returns false without touching the existing save when there is nothing
+## worth saving (a finished run) or the write failed.
+func save_game() -> bool:
+	var brewery: Brewery = BrewEngine.current_brewery
+	# A run that already ended must never overwrite the save, or "Jatka"
+	# would resume a dead run with its ended flag lost.
+	if brewery == null or brewery.game_has_ended:
+		return false
+
 	# Live autoload state that Brewery's own fields don't capture on their
 	# own has to be flushed in here before serializing — see each sync
 	# method's own docstring for why it can't just be re-derived after load.
-	TimeManager.sync_remaining_time_to_brewery(BrewEngine.current_brewery)
-	ResourceSaver.save(BrewEngine.current_brewery, SAVE_PATH)
+	TimeManager.sync_remaining_time_to_brewery(brewery)
+	brewery.save_version = SAVE_VERSION
+
+	var err: Error = SaveFile.write(brewery, SAVE_PATH)
+	if err != OK:
+		push_error("Saving failed: %s" % error_string(err))
+		return false
+	return true
 
 
+## False when there is no save, it can't be read (even from its backup), or
+## it comes from a newer game version. The current run is left untouched then.
 func load_game() -> bool:
-	if not has_save():
-		return false
-
-	var loaded: Brewery = ResourceLoader.load(SAVE_PATH, "", ResourceLoader.CACHE_MODE_IGNORE) as Brewery
+	var loaded: Brewery = SaveFile.read(SAVE_PATH) as Brewery
 	if loaded == null:
+		push_warning("No readable save to load")
 		return false
 
-	if BrewEngine.current_brewery != null:
-		BrewEngine.current_brewery.disconnect_signals()
+	if loaded.save_version > SAVE_VERSION:
+		push_warning("Save is from a newer game version (%d > %d), not loading" % [loaded.save_version, SAVE_VERSION])
+		return false
 
-	BrewEngine.current_brewery = loaded
-	BrewEngine.current_brewery._ready()
+	_migrate(loaded)
+	BrewEngine.set_brewery(loaded)
 	BrewEngine.current_brewery.emit_initial_values()
 	return true
 
 
+## Upgrades a loaded save one version at a time. Add a step per bump, e.g.
+## `if brewery.save_version < 2: <rename/convert fields>`, before the final
+## stamp. Version 0 -> 1 needed no changes.
+func _migrate(brewery: Brewery) -> void:
+	brewery.save_version = SAVE_VERSION
+
+
+func _on_game_ended(ending_type: String) -> void:
+	if ending_type in RUN_ENDING_TYPES:
+		SaveFile.delete(SAVE_PATH)
+
+
 func _on_close_requested() -> void:
-	if BrewEngine.current_brewery != null:
-		save_game()
+	save_game()
 	get_tree().quit()

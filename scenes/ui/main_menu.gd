@@ -96,7 +96,11 @@ func _on_modifier_chosen(modifier : RunModifier) -> void:
 
 func _on_continue_button_pressed() -> void:
 	GUISignals.menu_button_pressed.emit()
-	SaveManager.load_game()
+	# A save that can't be loaded must not silently start a fresh run as if
+	# it had been continued: stay on the menu and take the button away.
+	if not SaveManager.load_game():
+		continue_button.visible = false
+		return
 	TimeManager.resume_time()
 	get_tree().change_scene_to_file(GAME_SCENE_PATH)
 

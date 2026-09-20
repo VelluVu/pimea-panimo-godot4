@@ -15,6 +15,9 @@ const SURVIVAL_MIN_REPUTATION : int = 100
 
 
 
+## Which SaveManager.SAVE_VERSION wrote this brewery; 0 for saves that
+## predate versioning. Read on load to decide which migrations to run.
+@export var save_version : int = 0
 @export var inventory : Inventory
 @export var current_day : int = 1
 ## Never resets — purely a stat for the end-of-run summary screen, see
