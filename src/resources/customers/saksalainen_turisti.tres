@@ -28,5 +28,6 @@ rep_primary_style = 10
 rep_secondary_style = 3
 quality_reputation_sensitivity = 4.5
 min_reputation_to_appear = 10
+required_discovered_style = 6
 max_bottles_per_visit = 3
 metadata/_custom_type_script = "uid://b2vqc8lkfjwic"
