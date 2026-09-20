@@ -51,13 +51,16 @@ var _reputation_baseline : Array[int] = [0, 0, 0]
 ## captured once instead of re-derived live from brewery.current_day.
 var _effective_target : Array[int] = [0, 0, 0]
 
-var _tracked_brewery : Brewery = null
-
 
 func _ready() -> void:
 	_load_goal_pool()
 
 	BrewerySignals.brewery_state_changed.connect(_on_brewery_state_changed)
+	BrewEngine.brewery_changed.connect(_on_brewery_changed)
+	BrewEngine.brewery_about_to_save.connect(_flush_to_brewery)
+	# The boot-time Brewery was created before this autoload existed.
+	if BrewEngine.current_brewery != null:
+		_on_brewery_changed(BrewEngine.current_brewery)
 	BrewerySignals.beer_brewed.connect(_on_beer_brewed)
 	BrewerySignals.bottles_sold.connect(_on_bottles_sold)
 	BrewerySignals.beer_sale_breakdown.connect(_on_beer_sale_breakdown)
@@ -96,16 +99,14 @@ func _is_avoid_type(goal : DailyGoalData) -> bool:
 	return goal.goal_type == DailyGoalData.GoalType.UNHAPPY_CUSTOMERS_MAX
 
 
-## Also doubles as "a fresh run just started" detection: a Brewery instance
-## only ever changes when BrewEngine.start_new_game() constructs a new one,
-## so comparing against the last-seen instance is enough to know every
-## active goal belongs to a run that no longer exists.
-func _on_brewery_state_changed(brewery : Brewery) -> void:
-	if brewery != _tracked_brewery:
-		_tracked_brewery = brewery
-		_load_from_brewery(brewery)
-		return
+## Every active goal belongs to the run that was current when it was rolled,
+## so a different Brewery (new game or load) means restoring from that
+## Brewery's own saved fields instead.
+func _on_brewery_changed(brewery : Brewery) -> void:
+	_load_from_brewery(brewery)
 
+
+func _on_brewery_state_changed(brewery : Brewery) -> void:
 	if not brewery.tutorial_complete():
 		return
 
@@ -117,7 +118,6 @@ func _on_brewery_state_changed(brewery : Brewery) -> void:
 			_progress[i] = maxi(0, brewery.reputation - _reputation_baseline[i])
 			goal_progress_changed.emit()
 			_check_goal_outcome(i)
-	_sync_to_brewery()
 
 
 func _on_beer_brewed(style : int) -> void:
@@ -174,7 +174,6 @@ func _add_progress(goal_type : DailyGoalData.GoalType, amount : int, required_st
 		_progress[i] += amount
 		goal_progress_changed.emit()
 		_check_goal_outcome(i)
-	_sync_to_brewery()
 
 
 func _check_goal_outcome(slot : int) -> void:
@@ -260,14 +259,12 @@ func _assign_new_goal(slot : int) -> void:
 	if brewery == null or not brewery.tutorial_complete():
 		active_goals[slot] = null
 		goal_progress_changed.emit()
-		_sync_to_brewery()
 		return
 
 	var candidates := goal_pool.filter(func(g : DailyGoalData) -> bool: return not active_goals.has(g))
 	if candidates.is_empty():
 		active_goals[slot] = null
 		goal_progress_changed.emit()
-		_sync_to_brewery()
 		return
 
 	var new_goal : DailyGoalData = candidates.pick_random()
@@ -276,7 +273,6 @@ func _assign_new_goal(slot : int) -> void:
 	_reputation_baseline[slot] = brewery.reputation
 	_effective_target[slot] = new_goal.get_effective_target(brewery.current_day)
 	goal_progress_changed.emit()
-	_sync_to_brewery()
 
 
 ## Restores this autoload's tracking arrays from whatever Brewery.
@@ -295,17 +291,15 @@ func _load_from_brewery(brewery : Brewery) -> void:
 	goal_progress_changed.emit()
 
 
-## Mirror of _load_from_brewery(), written back onto the tracked Brewery
-## after every mutation so SaveManager.save_game() (which only ever
-## serializes the Brewery resource) actually carries this state along —
-## see Brewery.active_daily_goals' own doc comment.
-func _sync_to_brewery() -> void:
-	if _tracked_brewery == null:
-		return
-	_tracked_brewery.active_daily_goals = active_goals.duplicate()
-	_tracked_brewery.daily_goal_progress = _progress.duplicate()
-	_tracked_brewery.daily_goal_reputation_baseline = _reputation_baseline.duplicate()
-	_tracked_brewery.daily_goal_effective_target = _effective_target.duplicate()
+## Mirror of _load_from_brewery(), run right before a save (see
+## BrewEngine.brewery_about_to_save) so SaveManager, which only serializes the
+## Brewery resource, carries this state along — see Brewery.active_daily_goals'
+## own doc comment.
+func _flush_to_brewery(brewery : Brewery) -> void:
+	brewery.active_daily_goals = active_goals.duplicate()
+	brewery.daily_goal_progress = _progress.duplicate()
+	brewery.daily_goal_reputation_baseline = _reputation_baseline.duplicate()
+	brewery.daily_goal_effective_target = _effective_target.duplicate()
 
 
 ## A surviving avoid-goal (never breached its limit) succeeds; any

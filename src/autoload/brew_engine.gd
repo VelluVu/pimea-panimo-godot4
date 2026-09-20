@@ -1,6 +1,13 @@
 #class_name BrewEngine (autoload)
 extends Node
 
+## A different Brewery just became current (new game or load). Autoloads that
+## track per-run state reload it from `brewery` here.
+signal brewery_changed(brewery: Brewery)
+## SaveManager is about to serialize `brewery`. Autoloads that keep run state
+## outside Brewery write it onto `brewery` here, so it lands in the save.
+signal brewery_about_to_save(brewery: Brewery)
+
 var current_brewery: Brewery = null
 var _developer_mode : bool = false
 
@@ -48,6 +55,7 @@ func set_brewery(brewery : Brewery) -> void:
 		current_brewery.disconnect_signals()
 	current_brewery = brewery
 	current_brewery._ready()
+	brewery_changed.emit(current_brewery)
 
 
 ## Public so the main menu's "Aloita uusi peli" can force a fresh Brewery

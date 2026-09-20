@@ -60,6 +60,7 @@ func _ready() -> void:
 
 	GUISignals.close_day_requested.connect(force_advance_day)
 	BrewerySignals.brewery_state_changed.connect(_on_brewery_state_changed)
+	BrewEngine.brewery_about_to_save.connect(sync_remaining_time_to_brewery)
 
 
 ## Starts the day clock the first time there's ever a brewed batch in
