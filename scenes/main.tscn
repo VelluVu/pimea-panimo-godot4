@@ -33,8 +33,6 @@
 [ext_resource type="Script" uid="uid://cstg3752a1yby" path="res://scenes/ui/lvv_raid_window.gd" id="29_dnhof"]
 [ext_resource type="Script" uid="uid://b6hgtb57fueyj" path="res://scenes/ui/dev_console.gd" id="30_fv21b"]
 [ext_resource type="PackedScene" uid="uid://cvfiooeo4kwdt" path="res://scenes/ui/options_window.tscn" id="30_qkpxi"]
-[ext_resource type="PackedScene" path="res://scenes/ui/game_menu_window.tscn" id="99_gamemenu"]
-[ext_resource type="PackedScene" path="res://scenes/ui/achievements_window.tscn" id="99_ach"]
 [ext_resource type="Texture2D" uid="uid://7npr1w4jtxms" path="res://assets/textures/gear_icon.png" id="30_tel4y"]
 [ext_resource type="Script" uid="uid://0ew6w27o2tba" path="res://scenes/ui/day_recap_window.gd" id="31_tel4y"]
 [ext_resource type="Script" uid="uid://l7dtc2itv83e" path="res://scenes/ui/daily_goals_panel.gd" id="32_qkpxi"]
@@ -61,6 +59,8 @@
 [ext_resource type="Texture2D" uid="uid://b12vj0rmwdl8y" path="res://assets/textures/light_glow_32.png" id="70_lightglow"]
 [ext_resource type="Texture2D" uid="uid://dcrobw17uonit" path="res://assets/textures/pendant_lamp_24.png" id="71_pendantlamp"]
 [ext_resource type="Texture2D" uid="uid://b3yifds2n8sqd" path="res://assets/textures/light_cone_64x120.png" id="72_lightcone"]
+[ext_resource type="PackedScene" path="res://scenes/ui/achievements_window.tscn" id="99_ach"]
+[ext_resource type="PackedScene" path="res://scenes/ui/game_menu_window.tscn" id="99_gamemenu"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_yf5fn"]
 blend_mode = 1
@@ -917,7 +917,7 @@ anchor_bottom = 1.0
 offset_top = -32.0
 offset_right = 32.0
 grow_vertical = 0
-tooltip_text = "Asetukset"
+tooltip_text = "Pelivalikko"
 icon = ExtResource("30_tel4y")
 icon_alignment = 1
 expand_icon = true
@@ -1003,10 +1003,10 @@ offset_right = 448.0
 offset_bottom = 288.0
 show_main_menu_button = false
 
-[node name="GameMenuWindow" parent="GUI_CanvasLayer/GUI" instance=ExtResource("99_gamemenu")]
+[node name="GameMenuWindow" parent="GUI_CanvasLayer/GUI" unique_id=1114249981 instance=ExtResource("99_gamemenu")]
 layout_mode = 1
 
-[node name="AchievementsWindow" parent="GUI_CanvasLayer/GUI" instance=ExtResource("99_ach")]
+[node name="AchievementsWindow" parent="GUI_CanvasLayer/GUI" unique_id=1198131146 instance=ExtResource("99_ach")]
 layout_mode = 1
 
 [node name="DiscoveryToast" type="Label" parent="GUI_CanvasLayer/GUI" unique_id=1184602969]
