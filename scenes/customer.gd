@@ -22,74 +22,6 @@ const ANIM_IDLE_UP : StringName = &"idle_up"
 const ANIM_WALK_TOWARDS : StringName = &"walk_towards"
 const ANIM_WALK_RIGHT : StringName = &"walk_right"
 
-## Per-frame hand position for ANIM_WALK_TOWARDS (Customer-local space,
-## matching AnimatedSprite2D's centered=false/offset=(-16,-32)/scale=4
-## transform). ANIM_WALK_TOWARDS is now always played with flip_h=true (see
-## its two _play_animation() call sites) specifically so the customer's own
-## RIGHT hand — the one that stays steady at hip height across all 4
-## frames for a plain walk cycle — ends up on OUR left, screen-negative-x,
-## the correct mirror for a character facing the camera. These x values are
-## the STEADY hand's unflipped texture position run back through the same
-## mirror flip_h itself applies (screen_x = 64 - 4*tx, tx sampled from the
-## sprite), so the marker and the actual (now-mirrored) rendered pixel line
-## up. Since this table is shared by every archetype that doesn't get its
-## own override below, "the hand that doesn't gesture" is the only choice
-## that holds up across all of them. +9 on top of the derived x: a small
-## manual nudge back toward center so the held glass doesn't read as
-## floating too far off the body. Archetypes whose walk_towards pose
-## doesn't fit this assumption (both arms swinging, a big one-sided gesture,
-## crossed arms, ...) get a dedicated offsets table instead — see
-## RAKSAMIES_HAND_OFFSETS, LEIJONAFANI_HAND_OFFSETS, ZGEN_CHEST_GLASS_OFFSETS.
-const WALK_TOWARDS_HAND_OFFSETS : Array[Vector2] = [
-	Vector2(-23, -46),
-	Vector2(-7, -46),
-	Vector2(-23, -46),
-	Vector2(-25, -50),
-]
-
-## Zgen's walk_towards frames keep both arms crossed at the chest the whole
-## cycle (no swinging hand to track — see Zgen_32.png), so instead of a
-## hand position this is a small hand-authored sway around chest height.
-const ZGEN_TITLE : String = "Zgen"
-const ZGEN_CHEST_GLASS_OFFSETS : Array[Vector2] = [
-	Vector2(-4, -68),
-	Vector2(0, -66),
-	Vector2(4, -68),
-	Vector2(0, -66),
-]
-
-## Raksamies (and raksamies_naaras, sharing the same title) swing BOTH arms
-## through walk_towards, unlike the single-swinging-hand assumption baked
-## into WALK_TOWARDS_HAND_OFFSETS — checked pixel-by-pixel against
-## raksamies_32.png's walk_towards row (y=64..95). Tracking the customer's
-## own left hand (screen-left after this animation's flip_h=true, same
-## side WALK_TOWARDS_HAND_OFFSETS uses) across all 4 frames: it rests at
-## hip height on frames 0/2, tucks in near the belt on frame 1 while the
-## other arm swings out, then swings out itself on frame 3.
-const RAKSAMIES_TITLE : String = "Raksamies"
-const RAKSAMIES_HAND_OFFSETS : Array[Vector2] = [
-	Vector2(-30, -46),
-	Vector2(-4, -51),
-	Vector2(-30, -44),
-	Vector2(-28, -58),
-]
-
-## Leijonafani (and leijonafani_naaras, sharing the same title) throws one
-## arm into a raised fist-pump cheer on walk_towards — checked pixel-by-
-## pixel against leijonafani_32.png's walk_towards row (y=64..95): the
-## customer's own left hand rests at hip height on frames 0/2, then swings
-## all the way up into the cheer on frame 1, while frame 3 catches it
-## partway back down. Tracking that actual excursion (instead of pretending
-## the hand stays put, like WALK_TOWARDS_HAND_OFFSETS does for archetypes
-## that share this array) so the held glass visibly punches the air with him.
-const LEIJONAFANI_TITLE : String = "Leijonafani"
-const LEIJONAFANI_HAND_OFFSETS : Array[Vector2] = [
-	Vector2(-30, -50),
-	Vector2(-46, -66),
-	Vector2(-30, -50),
-	Vector2(-22, -58),
-]
-
 ## How long a just-served glass sits on the counter before the customer
 ## picks it up and leaves — matched to Bartender's serve_beer animation
 ## length (src/resources/sprite_frames/baarimikko_anim.tres, 7 frames /
@@ -107,14 +39,6 @@ const SERVE_BEER_WAIT_SECONDS : float = 2.0
 ## actually finished, not while it's still playing.
 const GLASS_SLIDE_DURATION_SECONDS : float = 0.6
 
-const RECOLOR_SHADER : Shader = preload("res://assets/shaders/customer_recolor.gdshader")
-const RECOLOR_HAIR_SATURATION_RANGE : Vector2 = Vector2(0.55, 0.9)
-const RECOLOR_CLOTHES_SATURATION_RANGE : Vector2 = Vector2(0.55, 0.9)
-const RECOLOR_SHOES_SATURATION_RANGE : Vector2 = Vector2(0.4, 0.75)
-const RECOLOR_SKIN_HUE_RANGE : Vector2 = Vector2(0.03, 0.09)
-const RECOLOR_SKIN_SATURATION_RANGE : Vector2 = Vector2(0.35, 0.6)
-const RECOLOR_SKIN_VALUE_RANGE : Vector2 = Vector2(0.6, 0.95)
-
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var bottle_hand_marker: Marker2D = $BottleHandMarker
 @onready var beer_glass_sprite: Sprite2D = $BottleHandMarker/BeerGlassSprite
@@ -129,7 +53,7 @@ var assigned_slot: int = -1
 ## Set when process_auto_sale() actually sold this customer a beer — gates
 ## show_counter_glass()/show_beer_glass() so the glass only ever appears
 ## once a sale actually went through, and show_beer_glass() specifically
-## only while walking away (see WALK_TOWARDS_HAND_OFFSETS: the only pose
+## only while walking away (see CustomerHandOffsets: the only pose
 ## it's positioned for), never during the counter-facing idle_up wait.
 var made_purchase: bool = false
 
@@ -152,46 +76,14 @@ func _ready() -> void:
 
 
 func _on_animated_sprite_frame_changed() -> void:
-	var offsets := WALK_TOWARDS_HAND_OFFSETS
-	if customer_data != null:
-		if customer_data.title == ZGEN_TITLE:
-			offsets = ZGEN_CHEST_GLASS_OFFSETS
-		elif customer_data.title == RAKSAMIES_TITLE:
-			offsets = RAKSAMIES_HAND_OFFSETS
-		elif customer_data.title == LEIJONAFANI_TITLE:
-			offsets = LEIJONAFANI_HAND_OFFSETS
-	bottle_hand_marker.position = offsets[animated_sprite.frame % offsets.size()]
+	var title : String = customer_data.title if customer_data != null else ""
+	bottle_hand_marker.position = CustomerHandOffsets.position_for(title, animated_sprite.frame)
 
 
 func _apply_visuals() -> void:
 	animated_sprite.sprite_frames = customer_data.sprite_frames
-	_apply_random_colors()
+	animated_sprite.material = CustomerRecolor.build_material(customer_data)
 	_play_animation(ANIM_IDLE)
-
-
-func _apply_random_colors() -> void:
-	var recolor_material : ShaderMaterial = ShaderMaterial.new()
-	recolor_material.shader = RECOLOR_SHADER
-	recolor_material.set_shader_parameter("skin_base_color", customer_data.skin_base_color)
-	recolor_material.set_shader_parameter("hair_base_color", customer_data.hair_base_color)
-	recolor_material.set_shader_parameter("clothes_base_color", customer_data.clothes_base_color)
-	recolor_material.set_shader_parameter("shoes_base_color", customer_data.shoes_base_color)
-	recolor_material.set_shader_parameter("skin_target_color", _random_skin_tone() if customer_data.randomize_skin else customer_data.skin_base_color)
-	recolor_material.set_shader_parameter("hair_target_color", _random_color_in_range(RECOLOR_HAIR_SATURATION_RANGE, 0.9) if customer_data.randomize_hair else customer_data.hair_base_color)
-	recolor_material.set_shader_parameter("clothes_target_color", _random_color_in_range(RECOLOR_CLOTHES_SATURATION_RANGE, 0.85) if customer_data.randomize_clothes else customer_data.clothes_base_color)
-	recolor_material.set_shader_parameter("shoes_target_color", _random_color_in_range(RECOLOR_SHOES_SATURATION_RANGE, 0.6) if customer_data.randomize_shoes else customer_data.shoes_base_color)
-	animated_sprite.material = recolor_material
-
-
-func _random_color_in_range(saturation_range: Vector2, value: float) -> Color:
-	return Color.from_hsv(randf(), randf_range(saturation_range.x, saturation_range.y), value)
-
-
-func _random_skin_tone() -> Color:
-	var hue : float = randf_range(RECOLOR_SKIN_HUE_RANGE.x, RECOLOR_SKIN_HUE_RANGE.y)
-	var saturation : float = randf_range(RECOLOR_SKIN_SATURATION_RANGE.x, RECOLOR_SKIN_SATURATION_RANGE.y)
-	var value : float = randf_range(RECOLOR_SKIN_VALUE_RANGE.x, RECOLOR_SKIN_VALUE_RANGE.y)
-	return Color.from_hsv(hue, saturation, value)
 
 
 func _play_animation(anim_name: StringName, flip_horizontally: bool = false) -> void:
