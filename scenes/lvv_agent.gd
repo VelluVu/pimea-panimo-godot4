@@ -1,19 +1,12 @@
 class_name LvvAgent
 extends Node2D
 
-## One member of an LVV raid squad (see LvvRaidSpawner) — walks in down the
-## stairs, then through however many waypoints LvvRaidSpawner hands it (its
-## own Marker2D chain — see route_waypoints there) to line up with and walk
-## into the warehouse doorway, grabs a keg, then reverses the exact same
-## waypoints back out and climbs the stairs back up and off-screen. Each
-## leg's animation/flip is derived from its own direction (see
-## _leg_animation_and_flip()) rather than being hardcoded per leg, so
-## LvvRaidSpawner's markers can be added, removed, or dragged around in the
-## editor without this script needing to change. Mirrors Customer.gd's
-## walk_complex_route()/leave_counter() shape (same stairs-leg tween-chain
-## style) but simpler: no dialogue, no CustomerData, and the outbound stairs
-## leg uses walk_away instead of walk_towards — the one new animation row
-## this whole feature exists for.
+## One member of an LVV raid squad (see LvvRaidSpawner): walks in down the stairs and through
+## the spawner's waypoints to the warehouse doorway, seizes a keg, then walks the same route
+## back out and up the stairs. Each leg's animation and flip come from its direction (see
+## _tween_leg()), so the markers can be moved in the editor without changing this script.
+## Simpler than Customer.walk_complex_route(): no dialogue or CustomerData, and the outbound
+## stairs leg uses walk_away.
 
 signal raid_sequence_finished
 
@@ -22,26 +15,16 @@ const ANIM_WALK_TOWARDS : StringName = &"walk_towards"
 const ANIM_WALK_RIGHT : StringName = &"walk_right"
 const ANIM_WALK_AWAY : StringName = &"walk_away"
 
-## Same defaults as CustomerData.stair_step_duration/floor_walk_speed
-## (customer_data.gd) — keeps the raid squad's pace visually consistent
-## with ordinary customer foot traffic instead of reading as oddly fast
-## or sluggish next to them.
+## Same pace as CustomerData's defaults, so the squad matches ordinary foot traffic.
 const STAIR_STEP_DURATION : float = 0.3
 const FLOOR_WALK_SPEED : float = 120.0
 const STAIR_STEPS : int = 15
 
-## How long the agent stands at the pickup spot before turning back —
-## long enough to read as "picking something up", short enough not to
-## drag out a squad of 2-3 doing this one after another.
+## How long the agent stands at the pickup spot before turning back.
 const PICKUP_PAUSE_SECONDS : float = 1.0
 
 const KEG_SCENE : PackedScene = preload("res://scenes/keg.tscn")
-## A carried keg is still the same physical prop as one sitting on the
-## ground (keg.tscn's own baked-in Sprite2D scale), so it should render at
-## the same absolute size — 1.0 here means "don't shrink it further".
-## Previously guessed at 0.6 to avoid looking oversized, but that was never
-## actually confirmed visually and just made the carried keg read as a
-## noticeably smaller toy-sized can next to the same prop on the ground.
+## A carried keg is the same prop as one on the ground, so it renders at the same size.
 const CARRIED_KEG_SCALE : float = 1.0
 
 @onready var animated_sprite : AnimatedSprite2D = $AnimatedSprite2D
@@ -58,13 +41,9 @@ func _play_animation(anim_name : StringName, flip_horizontally : bool = false) -
 	_update_carried_keg_z_index(anim_name)
 
 
-## A keg held against the chest is only actually in front of the agent from
-## the CAMERA's point of view while the agent is facing the camera
-## (walk_towards/idle) or side-on (walk_right) — turned away (walk_away/
-## idle_up, e.g. climbing back up the stairs through the warehouse doorway)
-## their own body is between the camera and the keg, so it needs to sort
-## behind them instead. z_index (not y-sort — see _show_carried_keg()'s own
-## comment) still wins here, just flipped negative for the away-facing case.
+## The keg is in front of the agent when they face the camera or are side-on, and behind
+## them when turned away (climbing back up the stairs). z_index beats y-sort here, see
+## _show_carried_keg().
 func _update_carried_keg_z_index(anim_name : StringName) -> void:
 	if not is_instance_valid(_carried_keg) or not _carried_keg.visible:
 		return
@@ -74,13 +53,9 @@ func _update_carried_keg_z_index(anim_name : StringName) -> void:
 		_carried_keg.z_index = 1
 
 
-## waypoints are global positions walked through IN ORDER after the stairs
-## descent (waypoints[0] is where the stairs bottom out) — as many as
-## LvvRaidSpawner hands over, e.g. [stairs, lateral-align, doorway, pickup].
-## Pauses at the last one to seize a keg (kept hidden — see _seize_keg()),
-## then walks every leg back in reverse and climbs the stairs back out,
-## revealing the keg the moment the return trip starts (see
-## _show_carried_keg()).
+## `waypoints` are global positions walked in order after the stairs descent (waypoints[0]
+## is where the stairs bottom out). Seizes a keg at the last one, then walks every leg back
+## in reverse and climbs out, showing the keg as the return trip starts.
 func walk_in_and_seize(waypoints : Array[Vector2]) -> void:
 	var tween := create_tween()
 	var spawn_pos := global_position
@@ -98,8 +73,7 @@ func walk_in_and_seize(waypoints : Array[Vector2]) -> void:
 	for i in range(waypoints.size() - 1, 0, -1):
 		_tween_leg(tween, waypoints[i], waypoints[i - 1])
 
-	# Back up the stairs and off-screen — walk_away, not walk_towards: this
-	# is the one leg that has no equivalent in Customer.gd at all.
+	# The return climb uses walk_away, which has no Customer equivalent.
 	tween.tween_callback(_play_animation.bind(ANIM_WALK_AWAY, false))
 	_tween_stairs(tween, waypoints[0], spawn_pos)
 
@@ -107,14 +81,10 @@ func walk_in_and_seize(waypoints : Array[Vector2]) -> void:
 	tween.tween_callback(queue_free)
 
 
-## Picks walk_towards/walk_away for a mostly-vertical leg (matching the
-## direction of travel — towards camera on increasing Y, away on
-## decreasing Y, same convention Customer.gd's stairs legs use) or
-## walk_right for a mostly-horizontal one, flipped to face the direction
-## actually being walked. Driven purely by the two positions, so it keeps
-## working correctly no matter how LvvRaidSpawner's route_waypoints get
-## reordered, added to, or dragged around — including the reverse trip,
-## which just calls this with from/to swapped.
+## walk_towards or walk_away for a mostly vertical leg (towards the camera on increasing Y,
+## as in Customer's stairs), walk_right for a mostly horizontal one, flipped to the direction
+## walked. It depends only on the two positions, so any waypoint change works, including the
+## reverse trip.
 func _tween_leg(tween : Tween, from_pos : Vector2, to_pos : Vector2) -> void:
 	var delta := to_pos - from_pos
 	var anim_name : StringName
@@ -142,10 +112,8 @@ func _tween_stairs(tween : Tween, from_pos : Vector2, to_pos : Vector2) -> void:
 		tween.tween_interval(0.05)
 
 
-## Instanced (and parented under carry_marker) here so it's already riding
-## along on this agent for the rest of the sequence, but hidden until
-## _show_carried_keg() — the keg shouldn't be visibly in-hand until the
-## agent actually turns around to walk it back out.
+## The keg is parented under carry_marker now but stays hidden until the agent turns
+## around to walk it out.
 func _seize_keg() -> void:
 	_play_animation(ANIM_IDLE_UP)
 	_carried_keg = KEG_SCENE.instantiate()
@@ -158,15 +126,7 @@ func _seize_keg() -> void:
 func _show_carried_keg() -> void:
 	if is_instance_valid(_carried_keg):
 		_carried_keg.visible = true
-		# LvvAgent has y_sort_enabled on, which sorts AnimatedSprite2D and
-		# CarryMarker (its two direct children) by node position — since
-		# CarryMarker sits well above the agent's feet (chest height), it
-		# sorts as "further back" than AnimatedSprite2D and gets drawn
-		# behind the character's own body, hiding the keg entirely despite
-		# visible being true. z_index takes priority over y-sort, so
-		# _update_carried_keg_z_index() forces it in front (or behind, while
-		# facing away) instead of leaving it to that ordering. Still facing
-		# idle_up (from _seize_keg()) at this exact moment, so this picks up
-		# the correct starting side before the first return leg's own
-		# _play_animation() call takes over.
+		# y_sort_enabled sorts CarryMarker (chest height) behind the sprite, hiding the keg even when
+		# visible. z_index beats y-sort, so _update_carried_keg_z_index() puts it in front, or behind
+		# while facing away. Still idle_up from _seize_keg() here, which gives the right starting side.
 		_update_carried_keg_z_index(animated_sprite.animation)
