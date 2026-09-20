@@ -6,6 +6,10 @@ extends Node2D
 signal walk_route_finished
 
 const STAIR_STEPS : int = 15
+const STAIR_STEP_PAUSE_SECONDS : float = 0.05
+const CENTER_PAUSE_SECONDS : float = 0.8
+const EXIT_WALK_DISTANCE : float = 150.0
+const MIN_WALK_DISTANCE : float = 1.0
 const FADE_TIME_SECONDS : float = 1.0
 const BASE_DISPLAY_TIME_SECONDS : float = 4.0
 const PER_CHARACTER_DISPLAY_TIME_SECONDS : float = 0.04
@@ -90,7 +94,7 @@ func walk_complex_route(stairs_pos: Vector2, center_pos: Vector2, target_pos: Ve
 	_queue_stair_descent(tween, global_position, stairs_pos)
 	_queue_floor_walk(tween, stairs_pos, center_pos)
 	tween.tween_callback(_play_animation.bind(ANIM_IDLE, false))
-	tween.tween_interval(0.8)
+	tween.tween_interval(CENTER_PAUSE_SECONDS)
 	_queue_floor_walk(tween, center_pos, target_pos)
 
 	if skip_interaction:
@@ -105,7 +109,7 @@ func _queue_stair_descent(tween: Tween, from_pos: Vector2, stairs_pos: Vector2) 
 	for i in range(1, STAIR_STEPS + 1):
 		var step_pos := from_pos.lerp(stairs_pos, float(i) / STAIR_STEPS)
 		tween.tween_property(self, "global_position", step_pos, customer_data.stair_step_duration).set_trans(Tween.TRANS_LINEAR)
-		tween.tween_interval(0.05)
+		tween.tween_interval(STAIR_STEP_PAUSE_SECONDS)
 
 
 func _queue_floor_walk(tween: Tween, from_pos: Vector2, to_pos: Vector2) -> void:
@@ -203,8 +207,8 @@ func leave_counter(pickup_position_override: Vector2 = Vector2.INF) -> void:
 	if pickup_position_override != Vector2.INF:
 		await _walk_to_pickup_spot(pickup_position_override)
 
-	var exit_pos = global_position + Vector2(0.0, 150.0)
-	var duration = 150.0 / customer_data.floor_walk_speed
+	var exit_pos = global_position + Vector2(0.0, EXIT_WALK_DISTANCE)
+	var duration = EXIT_WALK_DISTANCE / customer_data.floor_walk_speed
 
 	_play_animation(ANIM_WALK_TOWARDS, true)
 	if made_purchase:
@@ -220,7 +224,7 @@ func leave_counter(pickup_position_override: Vector2 = Vector2.INF) -> void:
 ## Short lateral walk to the counter, like walk_complex_route()'s last leg.
 func _walk_to_pickup_spot(target: Vector2) -> void:
 	var distance = global_position.distance_to(target)
-	if distance < 1.0:
+	if distance < MIN_WALK_DISTANCE:
 		return
 
 	var walking_left = target.x < global_position.x
