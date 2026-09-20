@@ -11,7 +11,7 @@ extends Resource
 ## except UNHAPPY_CUSTOMERS_MAX, which DailyGoalManager treats as an "avoid"
 ## goal instead: progress climbing PAST target_amount is an immediate
 ## failure, and never breaching it by day's end is the success case. See
-## DailyGoalManager._is_avoid_type().
+## DailyGoalRules.is_avoid_type().
 enum GoalType {
 	BREW_STYLE,
 	SELL_BOTTLES,

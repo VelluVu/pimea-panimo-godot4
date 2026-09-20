@@ -1,30 +1,18 @@
 #DailyGoalManager (Autoload)
 extends Node
 
-## Drives the ACTIVE_GOAL_COUNT concurrently-active daily goals. Fully
-## data-driven — the pool is every DailyGoalData .tres under
-## DAILY_GOAL_FOLDER_PATH, auto-loaded the same way RunModifierRegistry/
-## CustomerRegistry already load their own folders, so adding a new goal
-## type to the game is just dropping in another .tres.
+## Drives the ACTIVE_GOAL_COUNT concurrent daily goals. The pool is every
+## DailyGoalData .tres under DAILY_GOAL_FOLDER_PATH, so a new goal is just a new
+## file. The decisions themselves (outcomes, rewards, picking) live in
+## DailyGoalRules.
 ##
-## Every goal type is "achieve" (progress climbs toward target_amount,
-## success on reaching it, failure if the day ends first) except
-## UNHAPPY_CUSTOMERS_MAX, which is "avoid": progress climbing PAST
-## target_amount fails it immediately (mid-day), and never breaching it by
-## day's end is the success case — see _is_avoid_type()/_check_goal_outcome().
-##
-## Goals never carry progress across a day boundary — _on_day_changed()
-## resolves whatever's still active (success for a surviving avoid-goal,
-## failure for an unfinished achieve-goal) and that resolution's own
-## _assign_new_goal() call is what hands the new day a fresh set, so there's
-## no separate "reset all 3" step needed on top of resolving each slot.
+## Goals never carry progress across a day. _on_day_changed() resolves whatever
+## is still active, and resolving always rolls the slot's replacement, which is
+## what gives the new day a fresh set.
 
 signal daily_goal_resolved(goal_name: String, succeeded: bool, money: int, reputation: int, xp: int, risk: int)
-## Fired whenever active_goals or any slot's progress changes — none of the
-## signals that actually drive progress (beer_brewed, bottles_sold, ...) are
-## ones DailyGoalsPanel would otherwise have any reason to listen for
-## itself, so it just listens for this one instead of duplicating this
-## script's whole signal list.
+## Fired whenever active_goals or a slot's progress changes, so DailyGoalsPanel
+## needs only this one signal.
 signal goal_progress_changed()
 
 const DAILY_GOAL_FOLDER_PATH : String = "res://src/resources/daily_goals/"
@@ -34,21 +22,14 @@ const ACTIVE_GOAL_COUNT : int = 3
 
 var goal_pool : Array[DailyGoalData] = []
 
-## Index-aligned with _progress/_reputation_baseline. null means that slot
-## has no goal yet — either nothing has been rolled at all (pre-tutorial),
-## or the pool ran dry of distinct candidates (pool smaller than
-## ACTIVE_GOAL_COUNT).
+## Index-aligned with the arrays below. null means the slot has no goal: nothing
+## rolled yet (pre-tutorial), or the pool ran out of distinct candidates.
 var active_goals : Array[DailyGoalData] = [null, null, null]
 var _progress : Array[int] = [0, 0, 0]
-## REPUTATION_GAIN's progress is a delta against brewery.reputation as it
-## stood when the goal was rolled, not an incrementing counter like every
-## other type — reputation is a live stat that can also fall (a bad sale,
-## an LVV raid), so it has to be re-derived from this snapshot every time
-## rather than accumulated in place. See _on_brewery_state_changed().
+## REPUTATION_GAIN progress is measured from this snapshot of reputation.
 var _reputation_baseline : Array[int] = [0, 0, 0]
-## Snapshotted once per slot by _assign_new_goal() via DailyGoalData.
-## get_effective_target() — see that method's docstring for why this is
-## captured once instead of re-derived live from brewery.current_day.
+## The target captured when the goal was rolled, so a day change cannot move it
+## mid-day. See DailyGoalData.get_effective_target().
 var _effective_target : Array[int] = [0, 0, 0]
 
 
@@ -95,10 +76,6 @@ func get_effective_target(slot : int) -> int:
 	return _effective_target[slot]
 
 
-func _is_avoid_type(goal : DailyGoalData) -> bool:
-	return goal.goal_type == DailyGoalData.GoalType.UNHAPPY_CUSTOMERS_MAX
-
-
 ## Every active goal belongs to the run that was current when it was rolled,
 ## so a different Brewery (new game or load) means restoring from that
 ## Brewery's own saved fields instead.
@@ -115,7 +92,7 @@ func _on_brewery_state_changed(brewery : Brewery) -> void:
 			_assign_new_goal(i)
 			continue
 		if active_goals[i].goal_type == DailyGoalData.GoalType.REPUTATION_GAIN:
-			_progress[i] = maxi(0, brewery.reputation - _reputation_baseline[i])
+			_progress[i] = DailyGoalRules.reputation_progress(brewery.reputation, _reputation_baseline[i])
 			goal_progress_changed.emit()
 			_check_goal_outcome(i)
 
@@ -140,12 +117,8 @@ func _on_keg_shipped_to_bar(_style_name: String, _bar_name: String, bottles: int
 	_add_progress(DailyGoalData.GoalType.SHIP_TO_BAR, bottles)
 
 
-## A failed special event (the customer's demand couldn't actually be
-## filled, see SpecialEventManager.process_accept()) fails an active
-## SPECIAL_EVENT goal outright rather than leaving it pending for another
-## event to try again later — but penalty-free, since the brewery did try;
-## it just didn't have what was asked for. See _resolve_goal()'s
-## apply_penalty param.
+## A failed special event fails an active SPECIAL_EVENT goal outright, without a
+## penalty: the brewery tried, it just lacked what was asked for.
 func _on_special_event_resolved(succeeded : bool) -> void:
 	if succeeded:
 		_add_progress(DailyGoalData.GoalType.SPECIAL_EVENT, 1)
@@ -161,19 +134,11 @@ func _fail_goal_type_no_penalty(goal_type : DailyGoalData.GoalType) -> void:
 			return
 
 
-## required_style is only meaningful for BREW_STYLE (a customer_unhappy or
-## bottles_sold event never passes one) — every other type ignores it.
 func _add_progress(goal_type : DailyGoalData.GoalType, amount : int, required_style : int = -1) -> void:
-	for i in range(ACTIVE_GOAL_COUNT):
-		var goal := active_goals[i]
-		if goal == null or goal.goal_type != goal_type:
-			continue
-		if goal_type == DailyGoalData.GoalType.BREW_STYLE and goal.target_style != required_style:
-			continue
-
-		_progress[i] += amount
+	for slot : int in DailyGoalRules.matching_slots(active_goals, goal_type, required_style):
+		_progress[slot] += amount
 		goal_progress_changed.emit()
-		_check_goal_outcome(i)
+		_check_goal_outcome(slot)
 
 
 func _check_goal_outcome(slot : int) -> void:
@@ -181,107 +146,66 @@ func _check_goal_outcome(slot : int) -> void:
 	if goal == null:
 		return
 
-	if _is_avoid_type(goal):
-		if _progress[slot] > _effective_target[slot]:
+	match DailyGoalRules.check_outcome(goal, _progress[slot], _effective_target[slot]):
+		DailyGoalRules.Outcome.SUCCEEDED:
+			_resolve_goal(slot, true)
+		DailyGoalRules.Outcome.FAILED:
 			_resolve_goal(slot, false)
-	elif _progress[slot] >= _effective_target[slot]:
-		_resolve_goal(slot, true)
 
 
-## Called reactively (a goal completed, an avoid-type just breached its
-## limit, or a SPECIAL_EVENT goal's event just failed outright — see
-## _fail_goal_type_no_penalty()) and from _on_day_changed() for whatever's
-## still pending at day's end. Always ends by rolling the slot's
-## replacement — see the class docstring for why that alone is enough to
-## give every new day a fresh set of ACTIVE_GOAL_COUNT goals.
-##
-## apply_penalty=false is the "tried in good faith, just couldn't" failure
-## — a triggered special event whose required stock wasn't on hand — as
-## opposed to a genuine miss (an avoid-goal actively breached, or an
-## achieve-goal that simply ran out of time): still fails and rerolls the
-## goal, but money/reputation/xp/risk all stay exactly 0.
+## Settles a goal, applies its reward or penalty (see
+## DailyGoalRules.resolution_effects()) and always rolls the slot's replacement.
+## Called when a goal completes, an avoid-goal is breached, a special event fails,
+## and from _on_day_changed() for whatever is still pending.
 func _resolve_goal(slot : int, succeeded : bool, apply_penalty : bool = true) -> void:
 	var goal := active_goals[slot]
 	if goal == null:
 		return
 
-	var money := 0
-	var reputation := 0
-	var xp := 0
-	var risk := 0
-
 	var brewery := BrewEngine.current_brewery
+	var effects : Dictionary = {"money": 0, "reputation": 0, "xp": 0, "risk": 0}
 	if brewery != null:
+		effects = DailyGoalRules.resolution_effects(goal, succeeded, apply_penalty, brewery.current_day)
+		# Plain field changes emit nothing, so they are safe before the slot is
+		# replaced. xp and risk go after, since they emit brewery_state_changed.
+		if effects.reputation != 0:
+			brewery.reputation = max(0, brewery.reputation + effects.reputation)
 		if succeeded:
-			money = goal.get_effective_reward_money(brewery.current_day)
-			reputation = goal.get_effective_reward_reputation(brewery.current_day)
-			xp = goal.get_effective_reward_xp(brewery.current_day)
-		elif apply_penalty:
-			reputation = -goal.penalty_reputation
-			risk = goal.penalty_risk
-		# Plain field mutation only, no signal — safe to apply before the
-		# slot is replaced below. money/xp/risk are applied further down,
-		# after the reassignment, since add_xp()/add_risk() (a risk penalty
-		# can itself trigger an LVV raid) both emit brewery_state_changed.
-		if reputation != 0:
-			brewery.reputation = max(0, brewery.reputation + reputation)
-		if succeeded:
-			brewery.money += money
+			brewery.money += effects.money
 
-	# Replace the slot BEFORE anything below that can emit
-	# brewery_state_changed (add_xp(), add_risk() via a raid, and the
-	# explicit emit further down) — this script reacts to that signal by
-	# re-checking every active slot's progress, and a REPUTATION_GAIN
-	# goal's progress is derived live from brewery.reputation itself
-	# (see _on_brewery_state_changed()), not an incrementing counter. Left
-	# in place through an emit, the goal that just resolved would see its
-	# own reward immediately re-cross its own target and resolve again —
-	# infinite recursion, discovered via an actual stack overflow while
-	# stress-testing this function directly.
+	# Replace the slot BEFORE anything that emits brewery_state_changed. This
+	# script re-checks every slot on that signal, and REPUTATION_GAIN progress is
+	# derived from live reputation, so a resolved goal left in place would see
+	# its own reward re-cross its target and resolve again, recursing forever.
 	_assign_new_goal(slot)
 
 	if brewery != null:
 		if succeeded:
-			brewery.add_xp(xp)
+			brewery.add_xp(effects.xp)
 		elif apply_penalty:
-			brewery.add_risk(risk)
+			brewery.add_risk(effects.risk)
 		BrewerySignals.brewery_state_changed.emit(brewery)
 
-	daily_goal_resolved.emit(goal.goal_name, succeeded, money, reputation, xp, risk)
+	daily_goal_resolved.emit(goal.goal_name, succeeded, effects.money, effects.reputation, effects.xp, effects.risk)
 
 
-## Excludes every goal currently sitting in ANY active slot (not just this
-## one) so the 3 concurrent goals are always distinct from each other — the
-## pool can still hand back a goal this same slot held earlier today,
-## "distinct" only ever means "not one of the other two right now".
 func _assign_new_goal(slot : int) -> void:
 	var brewery := BrewEngine.current_brewery
-	if brewery == null or not brewery.tutorial_complete():
-		active_goals[slot] = null
-		goal_progress_changed.emit()
-		return
+	var new_goal : DailyGoalData = null
+	if brewery != null and brewery.tutorial_complete():
+		new_goal = DailyGoalRules.pick_new_goal(goal_pool, active_goals)
 
-	var candidates := goal_pool.filter(func(g : DailyGoalData) -> bool: return not active_goals.has(g))
-	if candidates.is_empty():
-		active_goals[slot] = null
-		goal_progress_changed.emit()
-		return
-
-	var new_goal : DailyGoalData = candidates.pick_random()
 	active_goals[slot] = new_goal
-	_progress[slot] = 0
-	_reputation_baseline[slot] = brewery.reputation
-	_effective_target[slot] = new_goal.get_effective_target(brewery.current_day)
+	if new_goal != null:
+		_progress[slot] = 0
+		_reputation_baseline[slot] = brewery.reputation
+		_effective_target[slot] = new_goal.get_effective_target(brewery.current_day)
 	goal_progress_changed.emit()
 
 
-## Restores this autoload's tracking arrays from whatever Brewery.
-## active_daily_goals/daily_goal_progress/... already hold — a freshly
-## constructed Brewery (BrewEngine.start_new_game()) and an old save saved
-## before this persistence existed both leave those fields at their script
-## defaults (null/0 for every slot), so this one path correctly covers both
-## "genuinely new run" and "loaded a continuing save" without needing to
-## tell them apart.
+## Restores the tracking arrays from the Brewery's saved fields. A new run and a
+## save from before goals were persisted both hold the defaults (null and 0), so
+## one path covers a new run and a loaded one.
 func _load_from_brewery(brewery : Brewery) -> void:
 	for i in range(ACTIVE_GOAL_COUNT):
 		active_goals[i] = brewery.active_daily_goals[i]
@@ -291,10 +215,8 @@ func _load_from_brewery(brewery : Brewery) -> void:
 	goal_progress_changed.emit()
 
 
-## Mirror of _load_from_brewery(), run right before a save (see
-## BrewEngine.brewery_about_to_save) so SaveManager, which only serializes the
-## Brewery resource, carries this state along — see Brewery.active_daily_goals'
-## own doc comment.
+## The mirror of _load_from_brewery(), run before a save (see
+## BrewEngine.brewery_about_to_save) so it is saved with the Brewery.
 func _flush_to_brewery(brewery : Brewery) -> void:
 	brewery.active_daily_goals = active_goals.duplicate()
 	brewery.daily_goal_progress = _progress.duplicate()
@@ -302,13 +224,10 @@ func _flush_to_brewery(brewery : Brewery) -> void:
 	brewery.daily_goal_effective_target = _effective_target.duplicate()
 
 
-## A surviving avoid-goal (never breached its limit) succeeds; any
-## still-unfinished achieve-goal ran out of time and fails. Both branches
-## go through _resolve_goal(), whose own _assign_new_goal() call is what
-## actually gives the new day its fresh set — see the class docstring.
+## A surviving avoid-goal succeeds; an unfinished achieve-goal ran out of time.
 func _on_day_changed(_new_day : int) -> void:
 	for i in range(ACTIVE_GOAL_COUNT):
 		var goal := active_goals[i]
 		if goal == null:
 			continue
-		_resolve_goal(i, _is_avoid_type(goal))
+		_resolve_goal(i, DailyGoalRules.is_avoid_type(goal))
