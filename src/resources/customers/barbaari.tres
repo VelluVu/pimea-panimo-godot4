@@ -25,6 +25,7 @@ dialogue_reject = "TÄÄ ON VETTÄ! EI KELPAA!"
 dialogue_no_match = "EI YHTÄÄN VAHVAA OLUTTA?! LÄHDEN MUUALLE!"
 min_required_abv = 5.0
 min_reputation_to_appear = 20
+required_discovered_style = 18
 max_bottles_per_visit = 3
 bar_fight_chance = 0.2
 bar_fight_reputation_penalty = 6

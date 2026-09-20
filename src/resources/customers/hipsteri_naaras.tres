@@ -22,4 +22,5 @@ quality_tip_sensitivity = 0.6
 rep_bad_quality = -5
 rep_primary_style = 12
 min_reputation_to_appear = 20
+required_discovered_style = 5
 metadata/_custom_type_script = "uid://b2vqc8lkfjwic"
