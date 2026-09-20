@@ -207,14 +207,14 @@ func leave_counter(pickup_position_override: Vector2 = Vector2.INF) -> void:
 	if pickup_position_override != Vector2.INF:
 		await _walk_to_pickup_spot(pickup_position_override)
 
-	var exit_pos = global_position + Vector2(0.0, EXIT_WALK_DISTANCE)
-	var duration = EXIT_WALK_DISTANCE / customer_data.floor_walk_speed
+	var exit_pos := global_position + Vector2(0.0, EXIT_WALK_DISTANCE)
+	var duration := EXIT_WALK_DISTANCE / customer_data.floor_walk_speed
 
 	_play_animation(ANIM_WALK_TOWARDS, true)
 	if made_purchase:
 		hide_counter_glass()
 		show_beer_glass()
-	var tween = create_tween()
+	var tween := create_tween()
 	tween.tween_property(self, "global_position", exit_pos, duration).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 	tween.tween_callback(queue_free)
 
@@ -223,15 +223,15 @@ func leave_counter(pickup_position_override: Vector2 = Vector2.INF) -> void:
 
 ## Short lateral walk to the counter, like walk_complex_route()'s last leg.
 func _walk_to_pickup_spot(target: Vector2) -> void:
-	var distance = global_position.distance_to(target)
+	var distance := global_position.distance_to(target)
 	if distance < MIN_WALK_DISTANCE:
 		return
 
-	var walking_left = target.x < global_position.x
+	var walking_left := target.x < global_position.x
 	_play_animation(ANIM_WALK_RIGHT, walking_left)
-	var duration = distance / customer_data.floor_walk_speed
+	var duration := distance / customer_data.floor_walk_speed
 
-	var tween = create_tween()
+	var tween := create_tween()
 	tween.tween_property(self, "global_position", target, duration).set_trans(Tween.TRANS_LINEAR)
 	await tween.finished
 
