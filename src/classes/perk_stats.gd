@@ -36,6 +36,66 @@ const COUNTER_PRICE := &"counter_price_multiplier"
 const EXTRA_RAID_STRIKES := &"extra_raid_strikes"
 const RAID_HIDDEN_BATCHES := &"raid_hidden_batch_count"
 
+## How a stat is stored and shown. MULTIPLIER is neutral at 1.0 and shown as
+## a percentage change, PERCENT_ADD is a flat fraction neutral at 0 and shown
+## as a percentage, COUNT is a whole number neutral at 0.
+enum Kind { MULTIPLIER, PERCENT_ADD, COUNT }
+
+
+## Every perk stat in display order, with the Finnish line that shows it.
+## The one place a new stat is registered besides its RunPerk field.
+static func definitions() -> Array[Dictionary]:
+	return [
+		{"stat": QUALITY_BONUS, "kind": Kind.PERCENT_ADD, "text": StringContainer.PERK_QUALITY_STAT_STRING},
+		{"stat": REPUTATION_GAIN, "kind": Kind.MULTIPLIER, "text": StringContainer.PERK_REPUTATION_STAT_STRING},
+		{"stat": TIP_INCOME, "kind": Kind.MULTIPLIER, "text": StringContainer.PERK_TIP_STAT_STRING},
+		{"stat": RAID_THRESHOLD, "kind": Kind.MULTIPLIER, "text": StringContainer.MODIFIER_RAID_THRESHOLD_STAT_STRING},
+		{"stat": DISTRIBUTION_INCOME, "kind": Kind.MULTIPLIER, "text": StringContainer.PERK_DISTRIBUTION_STAT_STRING},
+		{"stat": INGREDIENT_PRICE, "kind": Kind.MULTIPLIER, "text": StringContainer.MODIFIER_INGREDIENT_PRICE_STAT_STRING},
+		{"stat": BREW_YIELD, "kind": Kind.MULTIPLIER, "text": StringContainer.PERK_YIELD_STAT_STRING},
+		{"stat": INGREDIENT_REFUND_CHANCE, "kind": Kind.PERCENT_ADD, "text": StringContainer.PERK_REFUND_CHANCE_STAT_STRING},
+		{"stat": PEAK_SPEED, "kind": Kind.MULTIPLIER, "text": StringContainer.PERK_PEAK_SPEED_STAT_STRING},
+		{"stat": DECLINE_RATE, "kind": Kind.MULTIPLIER, "text": StringContainer.PERK_DECLINE_RATE_STAT_STRING},
+		{"stat": SPAWN_INTERVAL, "kind": Kind.MULTIPLIER, "text": StringContainer.PERK_SPAWN_INTERVAL_STAT_STRING},
+		{"stat": AGENTTI_APPEARANCE, "kind": Kind.MULTIPLIER, "text": StringContainer.PERK_AGENTTI_APPEARANCE_STAT_STRING},
+		{"stat": MAFIOSO_APPEARANCE, "kind": Kind.MULTIPLIER, "text": StringContainer.PERK_MAFIOSO_APPEARANCE_STAT_STRING},
+		{"stat": TIP_DOUBLE_CHANCE, "kind": Kind.PERCENT_ADD, "text": StringContainer.PERK_TIP_DOUBLE_CHANCE_STAT_STRING},
+		{"stat": BAR_FIGHT_CHANCE, "kind": Kind.MULTIPLIER, "text": StringContainer.PERK_BAR_FIGHT_CHANCE_STAT_STRING},
+		{"stat": COUNTER_PRICE, "kind": Kind.MULTIPLIER, "text": StringContainer.PERK_COUNTER_PRICE_STAT_STRING},
+		{"stat": GROUP_EVENT_INTERVAL, "kind": Kind.MULTIPLIER, "text": StringContainer.PERK_GROUP_EVENT_INTERVAL_STAT_STRING},
+		{"stat": EXTRA_RAID_STRIKES, "kind": Kind.COUNT, "text": StringContainer.PERK_EXTRA_RAID_STRIKES_STAT_STRING},
+		{"stat": RAID_HIDDEN_BATCHES, "kind": Kind.COUNT, "text": StringContainer.PERK_RAID_HIDDEN_BATCH_STAT_STRING},
+	]
+
+
+static func neutral_value(kind : Kind) -> float:
+	return 1.0 if kind == Kind.MULTIPLIER else 0.0
+
+
+## The whole number a stat line shows: the percentage change, the percentage,
+## or the count.
+static func display_number(kind : Kind, value : float) -> int:
+	match kind:
+		Kind.MULTIPLIER:
+			return roundi((value - 1.0) * 100)
+		Kind.PERCENT_ADD:
+			return roundi(value * 100)
+		_:
+			return roundi(value)
+
+
+## A per-level authored value scaled to `level`: multipliers are re-based from
+## neutral, flat values and counts multiply straight through.
+static func scale_per_level(kind : Kind, per_level : float, level : int) -> Variant:
+	match kind:
+		Kind.MULTIPLIER:
+			return 1.0 + (per_level - 1.0) * level
+		Kind.PERCENT_ADD:
+			return per_level * level
+		_:
+			return roundi(per_level) * level
+
+
 var _modifier : RunModifier
 var _perks : Array[RunPerk]
 
