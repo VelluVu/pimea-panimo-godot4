@@ -1,10 +1,8 @@
 #CustomerRegistry (Autoload)
 extends Node
 
-## Fired once per customer title, the first time all of its appearance gates are
-## met, across every run ever played. Gendered variants sharing a title count as one.
-## Persisted like AchievementManager/MetaProgressManager, since the gates' underlying
-## availability resets each run but the announcement must never repeat.
+## Fired once per customer title, the first time all of its appearance gates are met,
+## across every run ever played. See CustomerUnlockTracker.
 signal customer_unlocked(title : String)
 
 const WARNING_POOL_EMPTY = "CustomerRegistry: Customer pool is empty!"
@@ -25,36 +23,18 @@ var bar_contact_pool: Array[BarContact] = []
 const TITLE_AGENTTI : String = "Agentti"
 const TITLE_MAFIOSO : String = "Mafioso"
 
-const SAVE_PATH : String = "user://customer_unlocks.cfg"
-const SECTION : String = "customer_unlocks"
-const KEY_ANNOUNCED_TITLES : String = "announced_titles"
-
-var _config : ConfigFile = ConfigFile.new()
-## Overridable so tests never touch the real user://customer_unlocks.cfg.
-var _save_path : String = SAVE_PATH
+var _unlocks : CustomerUnlockTracker = CustomerUnlockTracker.new()
 
 
 func _ready() -> void:
-	_config.load(_save_path) # missing file just leaves _config empty, fine
 	_load_resources()
-	BrewerySignals.brewery_state_changed.connect(_on_customer_unlock_trigger)
-	BrewerySignals.style_discovered.connect(_on_style_discovered_for_customer_unlocks)
-	AchievementManager.achievement_unlocked.connect(_on_achievement_unlocked_for_customer_unlocks)
-	_check_for_newly_unlocked_customers()
-
-
-## Reputation change, style discovery and achievement unlock can each satisfy a
-## customer's gate, so all three trigger the same re-scan.
-func _on_customer_unlock_trigger(_brewery : Brewery) -> void:
-	_check_for_newly_unlocked_customers()
-
-
-func _on_style_discovered_for_customer_unlocks(_style : int) -> void:
-	_check_for_newly_unlocked_customers()
-
-
-func _on_achievement_unlocked_for_customer_unlocks(_achievement_id : String, _title : String) -> void:
-	_check_for_newly_unlocked_customers()
+	_unlocks.customer_unlocked.connect(_on_customer_unlocked)
+	# Reputation change, style discovery and achievement unlock can each satisfy a
+	# customer's gate, so all three trigger the same re-scan.
+	BrewerySignals.brewery_state_changed.connect(_rescan_unlocks.unbind(1))
+	BrewerySignals.style_discovered.connect(_rescan_unlocks.unbind(1))
+	AchievementManager.achievement_unlocked.connect(_rescan_unlocks.unbind(2))
+	_rescan_unlocks()
 
 
 ## During an active day event, rerolls toward its featured titles at the event's own
@@ -141,53 +121,18 @@ func get_random_group_event() -> GroupVisitEventData:
 	return group_events_pool.pick_random()
 
 
-## True once all appearance gates pass: reputation (per run), style discovery and
-## achievement unlock (both permanent). The single source of truth for "can this
-## customer appear".
+## See CustomerUnlockTracker.is_eligible().
 func is_eligible(customer : CustomerData) -> bool:
-	var current_reputation : int = 0
-	if BrewEngine.current_brewery != null:
-		current_reputation = BrewEngine.current_brewery.reputation
-
-	return current_reputation >= customer.min_reputation_to_appear \
-		and _meets_style_discovery_requirement(customer) \
-		and _meets_achievement_requirement(customer)
+	return _unlocks.is_eligible(customer)
 
 
-## -1 (the default) means no requirement. Style discovery is permanent progress.
-func _meets_style_discovery_requirement(customer : CustomerData) -> bool:
-	if customer.required_discovered_style < 0:
-		return true
-	return MetaProgressManager.has_style(customer.required_discovered_style)
+func _rescan_unlocks() -> void:
+	_unlocks.announce_newly_unlocked(customer_pool)
 
 
-## An empty id (the default) means no requirement.
-func _meets_achievement_requirement(customer : CustomerData) -> bool:
-	if customer.required_achievement_id == "":
-		return true
-	return AchievementManager.is_unlocked(customer.required_achievement_id)
-
-
-## Announces each customer title once, ever, the first time is_eligible() is true for
-## it. In-run availability still resets each run; only the announcement is permanent.
-func _check_for_newly_unlocked_customers() -> void:
-	var announced := _get_announced_titles()
-	for customer : CustomerData in customer_pool:
-		if announced.has(customer.title):
-			continue
-		if not is_eligible(customer):
-			continue
-
-		announced.append(customer.title)
-		_config.set_value(SECTION, KEY_ANNOUNCED_TITLES, announced)
-		_config.save(_save_path)
-
-		AchievementManager.report_customer_unlocked()
-		customer_unlocked.emit(customer.title)
-
-
-func _get_announced_titles() -> Array:
-	return _config.get_value(SECTION, KEY_ANNOUNCED_TITLES, [])
+func _on_customer_unlocked(title : String) -> void:
+	AchievementManager.report_customer_unlocked()
+	customer_unlocked.emit(title)
 
 
 func _load_resources() -> void:
@@ -204,5 +149,4 @@ func _load_resources() -> void:
 
 ## Forgets which customers were announced as unlocked, in memory and on disk.
 func reset_progress() -> void:
-	_config.clear()
-	_config.save(_save_path)
+	_unlocks.reset()

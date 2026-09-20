@@ -6,7 +6,7 @@ extends McpTestSuite
 
 const MetaProgressManagerScript := preload("res://src/autoload/meta_progress_manager.gd")
 const AchievementManagerScript := preload("res://src/autoload/achievement_manager.gd")
-const CustomerRegistryScript := preload("res://src/autoload/customer_registry.gd")
+const CustomerUnlockTrackerScript := preload("res://src/customers/customer_unlock_tracker.gd")
 const TEST_PATH_FORMAT : String = "user://test_reset_progress_%s.cfg"
 
 
@@ -48,13 +48,13 @@ func test_achievement_reset_clears_stats() -> void:
 	_cleanup(path)
 
 
-func test_customer_registry_reset_forgets_announced_titles() -> void:
+func test_customer_unlock_tracker_reset_forgets_announced_titles() -> void:
 	var path : String = TEST_PATH_FORMAT % "customers"
-	var registry := CustomerRegistryScript.new()
-	registry._save_path = path
-	registry._config.set_value(registry.SECTION, registry.KEY_ANNOUNCED_TITLES, ["Testi"])
+	var tracker := CustomerUnlockTrackerScript.new(path)
+	tracker._config.set_value(tracker.SECTION, tracker.KEY_ANNOUNCED_TITLES, ["Testi"])
+	assert_eq(tracker.get_announced_titles().size(), 1)
 
-	registry.reset_progress()
+	tracker.reset()
 
-	assert_eq(registry._get_announced_titles().size(), 0)
+	assert_eq(tracker.get_announced_titles().size(), 0)
 	_cleanup(path)
