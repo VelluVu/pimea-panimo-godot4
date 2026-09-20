@@ -214,14 +214,14 @@ func _update_goals(brewery : Brewery) -> void:
 
 
 ## Shown from day one regardless of tutorial state — this is the run's
-## actual win condition (TimeManager.SURVIVAL_DAY_TARGET / Brewery.
-## SURVIVAL_MIN_REPUTATION, see TimeManager._check_survival_ending()),
+## actual win condition (DayRules.SURVIVAL_DAY_TARGET / Brewery.
+## SURVIVAL_MIN_REPUTATION, see DayRules.survival_reached()),
 ## which previously had nothing on screen telling the player it existed
 ## until they cleared or missed it. Two independently-colored lines, same
 ## "each stat judges itself" shape _update_daily_goals() already uses for
 ## bottles/risk, rather than one line sharing a single combined color.
 func _update_run_goal(brewery : Brewery) -> void:
-	var target_day : int = TimeManager.SURVIVAL_DAY_TARGET
+	var target_day : int = DayRules.SURVIVAL_DAY_TARGET
 	var min_reputation : int = Brewery.SURVIVAL_MIN_REPUTATION
 	var money_in_danger : bool = brewery.money <= 0.0
 

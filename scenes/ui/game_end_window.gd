@@ -108,7 +108,7 @@ func _on_modifier_chosen(modifier : RunModifier) -> void:
 ## off-the-record epilogue. Clears game_has_ended so busted/bankrupt can
 ## still end things later, but latches has_continued_past_survival so the
 ## survived ending itself can never fire again this run (see
-## TimeManager._check_survival_ending()).
+## DayRules.survival_reached()).
 func _on_continue_button_pressed() -> void:
 	var brewery := BrewEngine.current_brewery
 	if brewery == null:

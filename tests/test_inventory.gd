@@ -122,3 +122,22 @@ func test_count_bottles_sums_every_batch() -> void:
 		batch.amount_bottles = amount
 		inventory.brew_batches.append(batch)
 	assert_eq(inventory.count_bottles(), 22)
+
+
+func test_age_batches_ages_every_batch_by_one_day() -> void:
+	var inventory := Inventory.new()
+	for i : int in range(2):
+		var batch := BrewBatch.new()
+		batch.beer_style = BeerStyle.new()
+		inventory.brew_batches.append(batch)
+	inventory.age_batches()
+	for batch : BrewBatch in inventory.brew_batches:
+		assert_eq(batch.age_in_days, 1)
+	inventory.age_batches()
+	assert_eq(inventory.brew_batches[0].age_in_days, 2)
+
+
+func test_age_batches_on_an_empty_cellar_does_nothing() -> void:
+	Inventory.new().age_batches()
+	assert_true(true)
+
