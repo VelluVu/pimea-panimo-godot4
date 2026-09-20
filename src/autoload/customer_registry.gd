@@ -11,7 +11,6 @@ extends Node
 ## announcement must never repeat.
 signal customer_unlocked(title : String)
 
-const WARNING_FOLDER_OPEN_FAILED = "CustomerRegistry: Failed to open path: "
 const WARNING_POOL_EMPTY = "CustomerRegistry: Customer pool is empty!"
 const WARNING_EVENTS_EMPTY = "CustomerRegistry: Special events pool is empty!"
 
@@ -102,18 +101,15 @@ func get_random_customer_data() -> CustomerData:
 	return _pick_weighted_customer(eligible_customers)
 
 
-## Flat pick_random() weighted by Brewery.get_agentti_appearance_multiplier()/
-## get_mafioso_appearance_multiplier() when a customer's title matches — see
-## MetaUnlockData's "Terävä silmä" bar-work node. Every other title stays
-## weight 1.0, so this is identical to a plain pick_random() whenever
-## neither perk is active (or no run is in progress at all).
+## Weighted by Brewery's agentti/mafioso appearance multipliers when a customer's
+## title matches (see MetaUnlockData's "Terävä silmä" node). Every other title
+## weighs 1.0, so with neither perk active this is a plain uniform pick.
 func _pick_weighted_customer(customers : Array[CustomerData]) -> CustomerData:
 	var brewery : Brewery = BrewEngine.current_brewery
 	if brewery == null:
 		return customers.pick_random()
 
 	var weights : Array[float] = []
-	var total_weight : float = 0.0
 	for customer : CustomerData in customers:
 		var weight : float = 1.0
 		if customer.title == TITLE_AGENTTI:
@@ -121,19 +117,8 @@ func _pick_weighted_customer(customers : Array[CustomerData]) -> CustomerData:
 		elif customer.title == TITLE_MAFIOSO:
 			weight = brewery.stats.multiplier(PerkStats.MAFIOSO_APPEARANCE)
 		weights.append(weight)
-		total_weight += weight
 
-	if total_weight <= 0.0:
-		return customers.pick_random()
-
-	var roll : float = randf() * total_weight
-	var cumulative : float = 0.0
-	for i in range(customers.size()):
-		cumulative += weights[i]
-		if roll < cumulative:
-			return customers[i]
-
-	return customers.back()
+	return WeightedPicker.pick(customers, weights) as CustomerData
 
 
 ## Picks a customer who genuinely wants the given style (primary preferred,
@@ -163,28 +148,14 @@ func get_customer_for_style(style: BeerStyle.Style) -> CustomerData:
 	return get_random_customer_data()
 
 
-## Weighted by each event's own get_weight(brewery) instead of a flat
-## pick_random() — see SpecialEventData.get_weight()'s docstring. Every
-## event with the default weight (1.0) keeps exactly the same odds as
-## before; only an event that overrides get_weight() (currently just
-## RiskBribeEventData) shifts the distribution, and only when the state it
-## cares about actually changes.
+## Weighted by each event's own get_weight(brewery) (see SpecialEventData). Events
+## with the default weight of 1.0 keep flat odds; only an override such as
+## RiskBribeEventData shifts them, and only when the state it watches changes.
 func get_random_special_event(brewery: Brewery) -> SpecialEventData:
-	if special_events_pool.is_empty():
-		return null
-
-	var total_weight: float = 0.0
+	var weights: Array[float] = []
 	for event: SpecialEventData in special_events_pool:
-		total_weight += event.get_weight(brewery)
-
-	var roll: float = randf() * total_weight
-	var cumulative: float = 0.0
-	for event: SpecialEventData in special_events_pool:
-		cumulative += event.get_weight(brewery)
-		if roll < cumulative:
-			return event
-
-	return special_events_pool.back()
+		weights.append(event.get_weight(brewery))
+	return WeightedPicker.pick(special_events_pool, weights) as SpecialEventData
 
 
 func get_random_group_event() -> GroupVisitEventData:
@@ -255,66 +226,16 @@ func _get_announced_titles() -> Array:
 
 
 func _load_resources() -> void:
-	var dir_cust = DirAccess.open(customer_folder_path)
-	if dir_cust:
-		dir_cust.list_dir_begin()
-		var file_name = dir_cust.get_next()
-		while file_name != "":
-			if not dir_cust.current_is_dir() and file_name.ends_with(".tres"):
-				var res = load(customer_folder_path + file_name)
-				if res is CustomerData:
-					customer_pool.append(res)
-			file_name = dir_cust.get_next()
-		dir_cust.list_dir_end()
-	else:
-		push_warning(WARNING_FOLDER_OPEN_FAILED + customer_folder_path)
-		
-	var dir_ev = DirAccess.open(special_event_folder_path)
-	if dir_ev:
-		dir_ev.list_dir_begin()
-		var file_name = dir_ev.get_next()
-		while file_name != "":
-			if not dir_ev.current_is_dir() and file_name.ends_with(".tres"):
-				var res = load(special_event_folder_path + file_name)
-				if res is SpecialEventData:
-					special_events_pool.append(res)
-			file_name = dir_ev.get_next()
-		dir_ev.list_dir_end()
-	else:
-		push_warning(WARNING_FOLDER_OPEN_FAILED + special_event_folder_path)
-
-	var dir_group = DirAccess.open(group_event_folder_path)
-	if dir_group:
-		dir_group.list_dir_begin()
-		var file_name = dir_group.get_next()
-		while file_name != "":
-			if not dir_group.current_is_dir() and file_name.ends_with(".tres"):
-				var res = load(group_event_folder_path + file_name)
-				if res is GroupVisitEventData:
-					group_events_pool.append(res)
-			file_name = dir_group.get_next()
-		dir_group.list_dir_end()
-	else:
-		push_warning(WARNING_FOLDER_OPEN_FAILED + group_event_folder_path)
-
-	var dir_bars = DirAccess.open(bar_contact_folder_path)
-	if dir_bars:
-		dir_bars.list_dir_begin()
-		var file_name = dir_bars.get_next()
-		while file_name != "":
-			if not dir_bars.current_is_dir() and file_name.ends_with(".tres"):
-				var res = load(bar_contact_folder_path + file_name)
-				if res is BarContact:
-					bar_contact_pool.append(res)
-			file_name = dir_bars.get_next()
-		dir_bars.list_dir_end()
-	else:
-		push_warning(WARNING_FOLDER_OPEN_FAILED + bar_contact_folder_path)
+	customer_pool.assign(ResourceFolder.load_all(customer_folder_path, CustomerData))
+	special_events_pool.assign(ResourceFolder.load_all(special_event_folder_path, SpecialEventData))
+	group_events_pool.assign(ResourceFolder.load_all(group_event_folder_path, GroupVisitEventData))
+	bar_contact_pool.assign(ResourceFolder.load_all(bar_contact_folder_path, BarContact))
 
 	if customer_pool.is_empty():
 		push_warning(WARNING_POOL_EMPTY)
 	if special_events_pool.is_empty():
 		push_warning(WARNING_EVENTS_EMPTY)
+
 
 ## Forgets which customers were announced as unlocked, in memory and on disk.
 func reset_progress() -> void:
