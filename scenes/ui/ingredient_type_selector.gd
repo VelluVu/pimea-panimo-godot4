@@ -45,7 +45,7 @@ func _on_tab_changed(tab_index : int) -> void:
 
 
 ## Called by BrewingView/ShopView whenever their view is actually opened
-## (see gui.gd's _move_to_brewery()/_move_to_shop()) — without this, the
+## (see GuiViewSwitcher) — without this, the
 ## malt/hop/yeast tab and the selected ingredient both just carry over
 ## from whatever GUISignals.active_ingredient_changed last touched
 ## globally (which the OTHER view's own selector also listens to and
