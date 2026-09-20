@@ -159,7 +159,7 @@ enum Tier { COMMON, RARE, LEGENDARY }
 @export var group_event_interval_multiplier: float = 1.0
 
 ## Flat extra strikes tolerated on top of Brewery.BUSTED_RAID_COUNT before
-## the "busted" ending fires — see Brewery._check_for_lvv_raid() and
+## the "busted" ending fires — see Brewery.check_for_raid() and
 ## get_extra_raid_tolerance(). Neutral at 0, summed by a plain loop across
 ## active_perks (same shape as ingredient_refund_chance above), not
 ## combine_stacking() — an extra-strikes count has no sensible
@@ -167,7 +167,7 @@ enum Tier { COMMON, RARE, LEGENDARY }
 @export var extra_raid_strikes: int = 0
 
 ## Flat number of this brewery's own brew batches spared from confiscation
-## each time an LVV raid fires — see Brewery._check_for_lvv_raid() and
+## each time an LVV raid fires — see Brewery.check_for_raid() and
 ## get_raid_hidden_batch_count(). Neutral at 0, same plain-sum-not-
 ## combine_stacking() reasoning as extra_raid_strikes above.
 @export var raid_hidden_batch_count: int = 0
