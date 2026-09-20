@@ -181,3 +181,8 @@ func _unlock(achievement : AchievementData) -> void:
 	_config.set_value(SECTION_UNLOCKS, KEY_UNLOCKED_IDS, unlocked)
 	_config.save(_save_path)
 	achievement_unlocked.emit(achievement.achievement_id, achievement.title)
+
+## Forgets every stat and unlocked achievement, in memory and on disk.
+func reset_progress() -> void:
+	_config.clear()
+	_config.save(_save_path)

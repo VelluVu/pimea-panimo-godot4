@@ -84,3 +84,7 @@ func _on_game_ended(ending_type: String) -> void:
 func _on_close_requested() -> void:
 	save_game()
 	get_tree().quit()
+
+## Deletes the saved run, if any.
+func delete_save() -> void:
+	SaveFile.delete(SAVE_PATH)
