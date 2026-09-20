@@ -189,14 +189,12 @@ func meets_strict_requirements(beer_style: BeerStyle) -> bool:
 	return true
 
 
-func reroll_preference() -> void:
+## `styles` is the pool to draw from (the current run's active styles), passed
+## in so this stays pure and unit-testable without any autoload.
+func reroll_preference(styles : Array[BeerStyle]) -> void:
 	if not randomizes_preference:
 		return
 
-	if BrewEngine.current_brewery == null:
-		return
-
-	var styles : Array[BeerStyle] = BrewEngine.current_brewery.resolver.active_styles
 	if styles.size() < 2:
 		return
 
