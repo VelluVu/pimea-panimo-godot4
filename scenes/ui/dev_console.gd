@@ -19,11 +19,6 @@ const COLLAPSE_ICON: String = "▼"
 const EXPAND_ICON: String = "▲"
 const DEV_MODE_OFF_MESSAGE: String = "[color=orange]Komennot ovat pois käytöstä (DEVELOPER_MODE = false).[/color]"
 const UNKNOWN_COMMAND_MESSAGE: String = "[color=orange]Tuntematon komento: %s (kokeile 'help')[/color]"
-const TRADE_FAILED_MESSAGE: String = "[color=orange]%s epäonnistui: %s[/color]"
-const PURCHASE_LOCKED_REASON: String = "%s vaatii mainetta %d"
-const PURCHASE_UNDERFUNDED_REASON: String = "%s maksaa %d €, rahaa %.1f €"
-const SALE_FAILED_REASON: String = "%s: pyydetty %d, varastossa %d"
-const RECIPE_NOT_SAVED_MESSAGE: String = "Reseptiä ei tallennettu (pöytä tyhjä tai oluttyyli ei vielä tuttu)"
 const MAX_LOG_LINES: int = 200
 
 const MIN_SIZE: Vector2 = Vector2(180, 90)
@@ -54,14 +49,12 @@ var _resize_start_mouse: Vector2
 var _resize_start_offset_left: float
 var _resize_start_offset_top: float
 
-## Set by the BrewerySignals failure handlers below while an osta/myy command
-## is in flight; the command clears it before emitting and reads it after,
-## since GUISignals.buy_ingredient/sell_ingredient are fire-and-forget.
-var _trade_failure_reason: String = ""
 var _command_history: PackedStringArray = []
 ## Command name -> ConsoleCommand, in registration order (which is also the
 ## order `help` lists them in).
 var _commands: Dictionary = {}
+## Kept so the sets (and their signal connections) live as long as the console.
+var _command_sets: Array[ConsoleCommandSet] = []
 
 
 ## One console command: its handler, what `help` prints for it, and whether it
@@ -231,9 +224,6 @@ func _connect_log_sources() -> void:
 	BrewerySignals.batch_bottled.connect(_on_batch_bottled)
 	BrewerySignals.daily_bills_paid.connect(_on_daily_bills_paid)
 	BrewerySignals.early_day_close_applied.connect(_on_early_day_close_applied)
-	BrewerySignals.ingredient_purchase_locked.connect(_on_purchase_locked)
-	BrewerySignals.ingredient_purchase_underfunded.connect(_on_purchase_underfunded)
-	BrewerySignals.ingredient_sale_failed.connect(_on_sale_failed)
 	SpecialEventManager.special_event_triggered.connect(_on_special_event_triggered)
 	TimeManager.day_changed.connect(_on_day_changed)
 
@@ -266,16 +256,10 @@ func _on_early_day_close_applied(money_cost: float, reputation_cost: int, risk_r
 	_log("[color=orange]Ovet suljettu aikaisin (%d. kerta): -%.1f €, mainetta -%d, LVV-riski -%d[/color]" % [close_count, money_cost, reputation_cost, risk_relief])
 
 
-func _on_purchase_locked(ingredient_name: String, required_reputation: int) -> void:
-	_trade_failure_reason = PURCHASE_LOCKED_REASON % [ingredient_name, required_reputation]
 
 
-func _on_purchase_underfunded(ingredient_name: String, price: int, money: float) -> void:
-	_trade_failure_reason = PURCHASE_UNDERFUNDED_REASON % [ingredient_name, price, money]
 
 
-func _on_sale_failed(ingredient_name: String, requested: int, in_stock: int) -> void:
-	_trade_failure_reason = SALE_FAILED_REASON % [ingredient_name, requested, in_stock]
 
 
 func _on_special_event_triggered(event_data: SpecialEventData) -> void:
@@ -345,33 +329,21 @@ func _register(command_name: String, handler: Callable, usage: String = "", note
 
 func _register_commands() -> void:
 	_commands.clear()
-	# Player commands, in the order `help` lists them.
-	_register("osta", _cmd_osta, "osta <ainesosa> <määrä>")
-	_register("myy", _cmd_myy, "myy <ainesosa> <määrä>")
-	_register("pöytään", _cmd_poytaan, "pöytään <ainesosa> <määrä>")
-	_register("poista", _cmd_poista_poydalta, "poista <ainesosa> <määrä>")
-	_register("tyhjennä", _cmd_tyhjenna)
-	_register("tallenna", _cmd_tallenna)
-	_register("pane", _cmd_pane)
-	_register("keitä", _cmd_keita, "keitä <resepti>")
+	_command_sets.clear()
+
+	# Registration order is the order `help` lists commands in: player
+	# commands first, then the console's own, then developer commands.
+	_add_command_set(PlayerCommands.new(_log))
 	_register("clear", _cmd_clear)
 	_register("help", _cmd_help, "", "", false, false)
 	_register("iddqd", _cmd_iddqd, "", "", false, false)
+	_add_command_set(BatchCheatCommands.new(_log))
+	_add_command_set(WorldCheatCommands.new(_log))
 
-	# Developer commands (need developer mode).
-	_register("brew", _cmd_brew, "brew <tyyli>", "", true)
-	_register("sell", _cmd_sell, "sell [määrä] <tyyli>", "myy oikeasti, luo annoksia tarvittaessa", true)
-	_register("dump", _cmd_dump, "dump <tyyli>", "halpamyy erä", true)
-	_register("vie", _cmd_vie, "vie <tyyli> <baari>", "vie erä baariin, luo tarvittaessa", true)
-	_register("customer", _cmd_customer, "customer [nimi]", "", true)
-	_register("group", _cmd_group, "group [nimi]", "", true)
-	_register("special", _cmd_special, "", "", true)
-	_register("raid", _cmd_raid, "", "", true)
-	_register("money", _cmd_money, "money <n>", "", true)
-	_register("rep", _cmd_rep, "rep <n>", "", true)
-	_register("risk", _cmd_risk, "risk <n>", "", true)
-	_register("day", _cmd_day, "", "", true)
-	_register("cat", _cmd_cat, "", "", true)
+
+func _add_command_set(command_set: ConsoleCommandSet) -> void:
+	_command_sets.append(command_set)
+	command_set.register(_register)
 
 
 func _cmd_help(_args: PackedStringArray) -> void:
@@ -398,98 +370,20 @@ func _cmd_clear(_args: PackedStringArray) -> void:
 # wrapping the exact GUISignals a button click would fire. No economy or
 # unlock rule is ever bypassed — this only skips clicking through menus.
 
-func _cmd_osta(args: PackedStringArray) -> void:
-	var parsed := _parse_ingredient_amount(args)
-	if parsed.is_empty():
-		return
-	_trade_failure_reason = ""
-	GUISignals.buy_ingredient.emit(parsed.id, parsed.amount)
-	if _trade_failure_reason.is_empty():
-		_log("Ostettu: %s x%d" % [parsed.ingredient.name, parsed.amount])
-	else:
-		_log(TRADE_FAILED_MESSAGE % ["Ostaminen", _trade_failure_reason])
 
 
-func _cmd_myy(args: PackedStringArray) -> void:
-	var parsed := _parse_ingredient_amount(args)
-	if parsed.is_empty():
-		return
-	_trade_failure_reason = ""
-	GUISignals.sell_ingredient.emit(parsed.id, parsed.amount)
-	if _trade_failure_reason.is_empty():
-		_log("Myyty: %s x%d" % [parsed.ingredient.name, parsed.amount])
-	else:
-		_log(TRADE_FAILED_MESSAGE % ["Myyminen", _trade_failure_reason])
 
 
-func _cmd_poytaan(args: PackedStringArray) -> void:
-	var parsed := _parse_ingredient_amount(args)
-	if parsed.is_empty():
-		return
-	GUISignals.add_ingredient_to_brew_preparation.emit(parsed.id, parsed.amount)
-	_log("Pöydälle lisätty: %s x%d" % [parsed.ingredient.name, parsed.amount])
 
 
-func _cmd_poista_poydalta(args: PackedStringArray) -> void:
-	var parsed := _parse_ingredient_amount(args)
-	if parsed.is_empty():
-		return
-	GUISignals.remove_ingredients_from_brew_preparation.emit(parsed.id, parsed.amount)
-	_log("Poistettu pöydältä: %s x%d" % [parsed.ingredient.name, parsed.amount])
 
 
-func _cmd_tyhjenna(_args: PackedStringArray) -> void:
-	GUISignals.clear_brew_preparation_requested.emit()
-	_log("Valmistelu tyhjennetty, ainekset palautettu varastoon.")
 
 
-func _cmd_tallenna(_args: PackedStringArray) -> void:
-	var brewery := BrewEngine.current_brewery
-	if brewery == null:
-		_log("Ei aktiivista panimoa.")
-		return
-
-	var recipes_before : int = brewery.saved_recipes.size()
-	GUISignals.save_recipe_requested.emit()
-
-	# Success is already logged by _on_recipe_saved() via BrewerySignals.recipe_saved.
-	if brewery.saved_recipes.size() == recipes_before:
-		_log(RECIPE_NOT_SAVED_MESSAGE)
 
 
-func _cmd_pane(_args: PackedStringArray) -> void:
-	GUISignals.start_brewing.emit()
 
 
-func _cmd_keita(args: PackedStringArray) -> void:
-	var brewery := BrewEngine.current_brewery
-	if brewery == null:
-		_log("Ei aktiivista panimoa.")
-		return
-
-	if args.is_empty():
-		_log("Käyttö: keitä <resepti>. Tallennetut: %s" % _saved_recipe_names(brewery))
-		return
-
-	var wanted := " ".join(Array(args)).to_lower()
-	var matched : BrewRecipe = null
-	for recipe : BrewRecipe in brewery.saved_recipes:
-		if recipe.recipe_name.to_lower().contains(wanted):
-			matched = recipe
-			break
-
-	if matched == null:
-		_log("Reseptiä ei löytynyt: %s. Tallennetut: %s" % [" ".join(Array(args)), _saved_recipe_names(brewery)])
-		return
-
-	var batches_before : int = brewery.inventory.brew_batches.size()
-	GUISignals.load_recipe_requested.emit(matched)
-	GUISignals.start_brewing.emit()
-
-	if brewery.inventory.brew_batches.size() > batches_before:
-		_log("Keitetään: %s" % matched.recipe_name)
-	else:
-		_log("Keittäminen epäonnistui: %s (ei tarpeeksi ainesosia varastossa?)" % matched.recipe_name)
 
 
 ## Secret cheat code (classic Doom god-mode toggle) that flips developer
@@ -505,426 +399,49 @@ func _cmd_iddqd(_args: PackedStringArray) -> void:
 		_log("[color=orange]Kehittäjätila pois käytöstä.[/color]")
 
 
-func _saved_recipe_names(brewery : Brewery) -> String:
-	var names : Array[String] = []
-	for recipe : BrewRecipe in brewery.saved_recipes:
-		names.append(recipe.recipe_name)
-	return ", ".join(names) if not names.is_empty() else "(ei tallennettuja reseptejä)"
-
-
-## Takes the trailing token as the amount and everything before it (joined)
-## as an ingredient name search — matched by prefix first, then substring,
-## against IngredientDatabase, so "osta pilsner 5" or "osta citra humala 20"
-## both work without needing the ingredient's exact full name.
-func _parse_ingredient_amount(args: PackedStringArray) -> Dictionary:
-	if args.size() < 2 or not args[args.size() - 1].is_valid_int():
-		_log("Käyttö: <komento> <ainesosa> <määrä>")
-		return {}
-
-	var amount : int = args[args.size() - 1].to_int()
-	if amount <= 0:
-		_log("Määrän täytyy olla suurempi kuin 0.")
-		return {}
-
-	var query := " ".join(Array(args.slice(0, args.size() - 1))).to_lower()
-	var ingredient : IngredientData = _find_ingredient_by_name(query)
-	if ingredient == null:
-		_log("Ainesosaa ei löytynyt: %s" % query)
-		return {}
-
-	return {"id": ingredient.id, "amount": amount, "ingredient": ingredient}
-
-
-func _find_ingredient_by_name(query : String) -> IngredientData:
-	for id in IngredientDatabase.sorted_ids:
-		var data : IngredientData = IngredientDatabase.database[id]
-		if data.name.to_lower().begins_with(query):
-			return data
-
-	for id in IngredientDatabase.sorted_ids:
-		var data : IngredientData = IngredientDatabase.database[id]
-		if data.name.to_lower().contains(query):
-			return data
-
-	return null
-
-
-func _cmd_brew(args: PackedStringArray) -> void:
-	var brewery := BrewEngine.current_brewery
-	if brewery == null:
-		_log("Ei aktiivista panimoa.")
-		return
-
-	if args.is_empty():
-		_log("Käyttö: brew <tyyli>, esim. 'brew ipa'. Saatavilla: %s" % _available_style_names(brewery))
-		return
-
-	var wanted := args[0].to_upper().replace(" ", "_")
-	var matched_style: BeerStyle = null
-	for beer_style: BeerStyle in brewery.resolver.active_styles:
-		if BeerStyle.Style.keys()[beer_style.style] == wanted:
-			matched_style = beer_style
-			break
-
-	if matched_style == null:
-		_log("Tyyliä ei löytynyt: %s. Saatavilla: %s" % [args[0], _available_style_names(brewery)])
-		return
-
-	# Skips the ingredient simulation entirely and drops in a good-quality
-	# batch directly — this is a dev shortcut for testing sales/events
-	# against any style, not a stand-in for real brewing.
-	var new_batch := BrewBatch.new()
-	new_batch.beer_style = matched_style
-	new_batch.amount_bottles = 45
-	new_batch.original_quality = matched_style.original_quality
-	new_batch.current_quality = matched_style.original_quality
-	new_batch.final_ebc = int((matched_style.min_ebc + matched_style.max_ebc) / 2.0)
-	new_batch.final_ibu = int((matched_style.min_ibu + matched_style.max_ibu) / 2.0)
-
-	brewery.inventory.brew_batches.append(new_batch)
-	brewery.discover_style(matched_style.style)
-	BrewerySignals.brewery_state_changed.emit(brewery)
-	_log("Keitetty testierä: %s (45 annosta)." % matched_style.style_name)
-
-
-func _available_style_names(brewery: Brewery) -> String:
-	var names: Array[String] = []
-	for beer_style: BeerStyle in brewery.resolver.active_styles:
-		names.append(BeerStyle.Style.keys()[beer_style.style].to_lower())
-	return ", ".join(names)
-
-
-## Forces a real sale through the actual game path — "sell 1 ipa", "sell 3
-## imperial stout" — instead of a hypothetical preview. Tops up (or
-## conjures, if none exists yet) enough real inventory of the requested
-## style, then calls CustomerManager.process_auto_sale() with a throwaway
-## CustomerData whose preference is rigged to want exactly that style, so
-## the sale runs through the same code a real customer's visit would: real
-## money/reputation/risk changes, real inventory decrement, and the real
-## breakdown popup (BrewerySignals.beer_sale_breakdown). Logs the listed
-## price plus a myynti/tippi/tuotantokulut/käteinen breakdown, listening in
-## on BrewerySignals.batch_bottled and .beer_sale_breakdown (the same
-## signals driving the real UI) rather than recomputing any of the numbers
-## itself, so this can never drift from what actually happened.
-func _cmd_sell(args: PackedStringArray) -> void:
-	var brewery := BrewEngine.current_brewery
-	if brewery == null:
-		_log("Ei aktiivista panimoa.")
-		return
-
-	if args.is_empty():
-		_log("Käyttö: sell [määrä] <tyyli>, esim. 'sell 1 ipa'. Saatavilla: %s" % _available_style_names(brewery))
-		return
-
-	var quantity : int = 1
-	var style_args := args
-	if args[0].is_valid_int():
-		quantity = maxi(1, args[0].to_int())
-		style_args = args.slice(1)
-
-	if style_args.is_empty():
-		_log("Käyttö: sell [määrä] <tyyli>.")
-		return
-
-	var wanted := " ".join(Array(style_args)).to_upper().replace(" ", "_")
-	var matched_style: BeerStyle = null
-	for beer_style: BeerStyle in brewery.resolver.active_styles:
-		if BeerStyle.Style.keys()[beer_style.style] == wanted:
-			matched_style = beer_style
-			break
-
-	if matched_style == null:
-		_log("Tyyliä ei löytynyt: %s. Saatavilla: %s" % [" ".join(Array(style_args)), _available_style_names(brewery)])
-		return
-
-	# Dictionaries are reference types, so mutating keys in place (rather
-	# than reassigning the captured variable itself, which a GDScript
-	# lambda captures by value and can't rebind in the outer scope) lets
-	# these lambdas report back to this function.
-	var production_fee : Dictionary = {"total": 0.0}
-	var track_production_fee := func(_bottles_lost: int, label_cost: float, _style_name: String) -> void:
-		production_fee.total += label_cost
-	BrewerySignals.batch_bottled.connect(track_production_fee)
-	_ensure_batch_stock(brewery, matched_style, quantity)
-	BrewerySignals.batch_bottled.disconnect(track_production_fee)
-
-	var sale_result : Dictionary = {}
-	var capture_sale := func(receipt_entry: SaleReceiptEntry) -> void:
-		sale_result.entry = receipt_entry
-		sale_result.gross = receipt_entry.gross_income
-		sale_result.net = receipt_entry.net_income
-	BrewerySignals.beer_sale_breakdown.connect(capture_sale)
-
-	var customer := CustomerData.new()
-	customer.primary_style = matched_style.style
-	customer.min_bottles_per_visit = quantity
-	customer.max_bottles_per_visit = quantity
-	var response : String = CustomerManager.process_auto_sale(customer)
-
-	BrewerySignals.beer_sale_breakdown.disconnect(capture_sale)
-
-	if sale_result.is_empty():
-		_log("Myynti epäonnistui: %s (ei tarpeeksi varastoa?)" % matched_style.style_name)
-		return
-
-	var breakdown : SaleBreakdown = sale_result.entry.breakdown
-	var final_cash : float = sale_result.net - production_fee.total
-
-	_log("[b]%s x%d[/b] (%.1f%% ABV), listahinta %.2f €/annos" % [matched_style.style_name, quantity, breakdown.abv, breakdown.price_per_bottle])
-	_log("  Raaka-ainekulut: %.2f €/annos | Kate: %.2f €/annos" % [breakdown.raw_cost_per_bottle, breakdown.profit_per_bottle])
-	_log("  Myynti: +%.1f €" % sale_result.gross)
-	_log("  Tippi: +%.1f €" % sale_result.entry.tip_income)
-	_log("  Tuotantokulut: -%.1f €" % production_fee.total)
-	_log("  = Käteinen: %+.1f €" % final_cash)
-	_log("\"%s\"" % response)
-
-
-## Tops up beer_style's stock to at least `quantity` bottles by conjuring
-## standard-yield test batches (same approach as _cmd_brew) as needed — so
-## "sell 50 ipa" with an empty warehouse "brews" as many as it takes.
-## Charges the same bottle-loss/label-cost production fees a real brew
-## would (via Brewery.apply_bottling_costs) instead of handing out bottles
-## for free, so testing sales via this shortcut doesn't skip the very
-## production costs it's meant to help verify.
-func _ensure_batch_stock(brewery: Brewery, beer_style: BeerStyle, quantity: int) -> void:
-	while _total_stock_for_style(brewery, beer_style) < quantity:
-		_conjure_batch(brewery, beer_style)
-
-
-func _total_stock_for_style(brewery: Brewery, beer_style: BeerStyle) -> int:
-	var total : int = 0
-	for batch : BrewBatch in brewery.inventory.brew_batches:
-		if batch.beer_style.style == beer_style.style:
-			total += batch.amount_bottles
-	return total
-
-
-func _conjure_batch(brewery: Brewery, beer_style: BeerStyle) -> void:
-	var raw_yield : int = BrewResult.new().bottle_yield
-	var bottling : Dictionary = brewery.apply_bottling_costs(raw_yield)
-
-	var new_batch := BrewBatch.new()
-	new_batch.beer_style = beer_style
-	new_batch.amount_bottles = bottling.effective_yield
-	new_batch.original_quality = beer_style.original_quality
-	new_batch.current_quality = beer_style.original_quality
-	new_batch.final_ebc = int((beer_style.min_ebc + beer_style.max_ebc) / 2.0)
-	new_batch.final_ibu = int((beer_style.min_ibu + beer_style.max_ibu) / 2.0)
-
-	brewery.inventory.brew_batches.append(new_batch)
-	brewery.discover_style(beer_style.style)
-	BrewerySignals.batch_bottled.emit(bottling.bottles_lost, bottling.label_cost, beer_style.style_name)
-
-
-## Forces a real Brewery.bulk_sell_batch through the actual GUISignals
-## path — "dump ipa" — conjuring a batch first if none exists, same as
-## "sell" does, since this command exists specifically to let QA exercise
-## the warehouse bulk-sell action without brewing for real first. Listens
-## for BrewerySignals.batch_bulk_sold (mutate-in-place on the captured
-## dict, not reassign it — a GDScript lambda captures its outer variables
-## by value, so reassigning "sold" itself inside the lambda would never be
-## seen out here, only mutating a key on the same dict object works) the
-## same way _cmd_sell listens for beer_sale_breakdown.
-func _cmd_dump(args: PackedStringArray) -> void:
-	var brewery := BrewEngine.current_brewery
-	if brewery == null:
-		_log("Ei aktiivista panimoa.")
-		return
-
-	if args.is_empty():
-		_log("Käyttö: dump <tyyli>, esim. 'dump ipa'. Saatavilla: %s" % _available_style_names(brewery))
-		return
-
-	var matched_style := _match_style(brewery, args)
-	if matched_style == null:
-		_log("Tyyliä ei löytynyt: %s. Saatavilla: %s" % [" ".join(Array(args)), _available_style_names(brewery)])
-		return
-
-	_ensure_batch_stock(brewery, matched_style, 1)
-	var batch := _find_batch_for_style(brewery, matched_style)
-	if batch == null:
-		_log("Erää ei löytynyt tyylille: %s" % matched_style.style_name)
-		return
-
-	var sold : Dictionary = {}
-	var capture := func(style_name: String, bottles: int, payout: float) -> void:
-		sold["style_name"] = style_name
-		sold["bottles"] = bottles
-		sold["payout"] = payout
-	BrewerySignals.batch_bulk_sold.connect(capture)
-	GUISignals.bulk_sell_batch_requested.emit(batch)
-	BrewerySignals.batch_bulk_sold.disconnect(capture)
-
-	if sold.is_empty():
-		_log("Halpamyynti epäonnistui.")
-		return
-
-	_log("Halpamyynti: %s x%d  +%.1f €" % [sold.style_name, sold.bottles, sold.payout])
-
-
-## Forces a real Brewery.ship_batch_to_bar through the actual GUISignals
-## path — "vie ipa kuppila" — same conjure-if-needed approach as "dump"
-## above. The bar is matched against the LAST token only (substring, like
-## _find_ingredient_by_name) so the preceding tokens can be a multi-word
-## style name without ambiguity — mirrors how "sell" already lets a
-## leading quantity or a multi-word style share one argument list.
-func _cmd_vie(args: PackedStringArray) -> void:
-	var brewery := BrewEngine.current_brewery
-	if brewery == null:
-		_log("Ei aktiivista panimoa.")
-		return
-
-	if args.size() < 2:
-		_log("Käyttö: vie <tyyli> <baari>, esim. 'vie ipa kuppila'. Baarit: %s" % _available_bar_names())
-		return
-
-	var bar := _find_bar_contact_by_name(args[args.size() - 1])
-	if bar == null:
-		_log("Baaria ei löytynyt: %s. Baarit: %s" % [args[args.size() - 1], _available_bar_names()])
-		return
-
-	var style_args := args.slice(0, args.size() - 1)
-	var matched_style := _match_style(brewery, style_args)
-	if matched_style == null:
-		_log("Tyyliä ei löytynyt: %s. Saatavilla: %s" % [" ".join(Array(style_args)), _available_style_names(brewery)])
-		return
-
-	if brewery.reputation < bar.required_reputation:
-		_log("Maine ei riitä baariin %s (vaatii %d, on %d)." % [bar.bar_name, bar.required_reputation, brewery.reputation])
-		return
-
-	_ensure_batch_stock(brewery, matched_style, 1)
-	var batch := _find_batch_for_style(brewery, matched_style)
-	if batch == null:
-		_log("Erää ei löytynyt tyylille: %s" % matched_style.style_name)
-		return
-
-	var shipped : Dictionary = {}
-	var capture := func(style_name: String, bar_name: String, bottles: int, payout: float, risk_added: int) -> void:
-		shipped["style_name"] = style_name
-		shipped["bar_name"] = bar_name
-		shipped["bottles"] = bottles
-		shipped["payout"] = payout
-		shipped["risk_added"] = risk_added
-	BrewerySignals.keg_shipped_to_bar.connect(capture)
-	GUISignals.ship_batch_to_bar_requested.emit(batch, bar)
-	BrewerySignals.keg_shipped_to_bar.disconnect(capture)
-
-	if shipped.is_empty():
-		_log("Vienti epäonnistui.")
-		return
-
-	_log("Vienti: %s x%d -> %s  +%.1f € (LVV-riski +%d)" % [shipped.style_name, shipped.bottles, shipped.bar_name, shipped.payout, shipped.risk_added])
-
-
-func _match_style(brewery: Brewery, style_args: PackedStringArray) -> BeerStyle:
-	var wanted := " ".join(Array(style_args)).to_upper().replace(" ", "_")
-	for beer_style: BeerStyle in brewery.resolver.active_styles:
-		if BeerStyle.Style.keys()[beer_style.style] == wanted:
-			return beer_style
-	return null
-
-
-func _find_batch_for_style(brewery: Brewery, beer_style: BeerStyle) -> BrewBatch:
-	for batch: BrewBatch in brewery.inventory.brew_batches:
-		if batch.beer_style.style == beer_style.style:
-			return batch
-	return null
-
-
-func _find_bar_contact_by_name(query: String) -> BarContact:
-	var wanted := query.to_lower()
-	for bar: BarContact in CustomerRegistry.bar_contact_pool:
-		if bar.bar_name.to_lower().contains(wanted):
-			return bar
-	return null
-
-
-func _available_bar_names() -> String:
-	var names: Array[String] = []
-	for bar: BarContact in CustomerRegistry.bar_contact_pool:
-		names.append(bar.bar_name)
-	return ", ".join(names) if not names.is_empty() else "(ei baareja)"
-
-
-func _cmd_customer(args: PackedStringArray) -> void:
-	var forced_data: CustomerData = null
-	if not args.is_empty():
-		var wanted := args[0].to_lower()
-		for customer_data: CustomerData in CustomerRegistry.customer_pool:
-			if customer_data.resource_path.get_file().to_lower().begins_with(wanted):
-				forced_data = customer_data
-				break
-		if forced_data == null:
-			_log("Asiakastyyppiä ei löytynyt: %s" % args[0])
-			return
-	CustomerManager.spawn_normal_customer(forced_data)
-	_log("Asiakas kutsuttu.")
-
-
-func _cmd_group(args: PackedStringArray) -> void:
-	var forced_event: GroupVisitEventData = null
-	if not args.is_empty():
-		var wanted := args[0].to_lower()
-		for event_data: GroupVisitEventData in CustomerRegistry.group_events_pool:
-			if event_data.resource_path.get_file().to_lower().begins_with(wanted):
-				forced_event = event_data
-				break
-		if forced_event == null:
-			_log("Ryhmätapahtumaa ei löytynyt: %s" % args[0])
-			return
-	CustomerManager.spawn_group_event(forced_event)
-	_log("Ryhmä kutsuttu.")
-
-
-func _cmd_special(_args: PackedStringArray) -> void:
-	SpecialEventManager.spawn_special_customer()
-	_log("Erikoistapahtuma laukaistu.")
-
-
-func _cmd_raid(_args: PackedStringArray) -> void:
-	var brewery := BrewEngine.current_brewery
-	if brewery == null:
-		_log("Ei aktiivista panimoa.")
-		return
-	brewery.add_risk(brewery.get_effective_raid_threshold())
-
-
-func _cmd_cat(_args: PackedStringArray) -> void:
-	var spawner := get_tree().get_first_node_in_group(ImmersionEventSpawner.IMMERSION_EVENT_SPAWNER_GROUP) as ImmersionEventSpawner
-	if spawner == null:
-		_log("Kissa-hiiri-tapahtumaa ei löytynyt.")
-		return
-	spawner.force_trigger()
-	_log("Kissa jahtaa hiirtä.")
-
-
-func _cmd_money(args: PackedStringArray) -> void:
-	var brewery := BrewEngine.current_brewery
-	if brewery == null or args.is_empty() or not args[0].is_valid_float():
-		_log("Käyttö: money <määrä>")
-		return
-	brewery.money = args[0].to_float()
-	BrewerySignals.brewery_state_changed.emit(brewery)
-
-
-func _cmd_rep(args: PackedStringArray) -> void:
-	var brewery := BrewEngine.current_brewery
-	if brewery == null or args.is_empty() or not args[0].is_valid_int():
-		_log("Käyttö: rep <määrä>")
-		return
-	brewery.reputation = args[0].to_int()
-	BrewerySignals.brewery_state_changed.emit(brewery)
-
-
-func _cmd_risk(args: PackedStringArray) -> void:
-	var brewery := BrewEngine.current_brewery
-	if brewery == null or args.is_empty() or not args[0].is_valid_int():
-		_log("Käyttö: risk <määrä>")
-		return
-	brewery.risk = 0
-	brewery.add_risk(args[0].to_int())
-
-
-func _cmd_day(_args: PackedStringArray) -> void:
-	TimeManager.force_advance_day()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
