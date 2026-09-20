@@ -29,4 +29,5 @@ rep_primary_style = 2
 rep_secondary_style = 1
 risk_primary_style = -2
 risk_secondary_style = -1
+required_discovered_style = 20
 metadata/_custom_type_script = "uid://b2vqc8lkfjwic"
