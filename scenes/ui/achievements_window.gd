@@ -38,7 +38,7 @@ func _on_close_button_pressed() -> void:
 func _input(event: InputEvent) -> void:
 	if not visible:
 		return
-	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_ESCAPE:
+	if event.is_action_pressed(InputManager.ACTION_CANCEL):
 		_on_close_button_pressed()
 		get_viewport().set_input_as_handled()
 

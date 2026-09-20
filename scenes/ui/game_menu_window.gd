@@ -77,7 +77,7 @@ func _close() -> void:
 func _input(event: InputEvent) -> void:
 	if not visible:
 		return
-	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_ESCAPE:
+	if event.is_action_pressed(InputManager.ACTION_CANCEL):
 		if confirm_vbox.visible:
 			_show_confirm(false)
 		else:

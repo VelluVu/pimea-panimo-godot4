@@ -50,6 +50,8 @@ func _ready() -> void:
 	recipe_library_window.hide()
 	close_day_button.pressed.connect(_on_close_day_button_pressed)
 	_announcer.start()
+	InputManager.shortcut_pressed.connect(_on_shortcut_pressed)
+	InputManager.cancel_pressed.connect(_on_cancel_pressed)
 
 
 ## The Scene dock's eye toggle is saved into the .tscn, so never trust the saved
@@ -67,41 +69,27 @@ func _assert_default_visibility() -> void:
 	daily_goals_panel.show()
 
 
-## Global shortcuts: Esc (close whatever is open, else open the game menu) and the
-## p/k/i/t/u view keys. _unhandled_input() so a focused Control (the console's
-## LineEdit) consumes typing first. While Options is open the tree is paused and
-## this is never called; see game_menu_window.gd's _input() for Esc there.
-func _unhandled_input(event: InputEvent) -> void:
-	if not (event is InputEventKey and event.pressed and not event.echo):
-		return
-
-	if event.keycode == KEY_ESCAPE:
-		_handle_escape_pressed()
-		get_viewport().set_input_as_handled()
-		return
-
+## Shortcut and Esc presses arrive as InputManager signals. While Options or
+## the game menu is open the tree is paused and this is never called.
+func _on_shortcut_pressed(action: StringName) -> void:
 	if dev_console.is_console_active():
 		return
 
-	match event.keycode:
-		KEY_P:
+	match action:
+		InputManager.ACTION_TOGGLE_BREWERY:
 			_views.toggle_brewery()
-		KEY_K:
+		InputManager.ACTION_TOGGLE_SHOP:
 			_views.toggle_shop()
-		KEY_I:
+		InputManager.ACTION_TOGGLE_WAREHOUSE:
 			_toggle_warehouse_view()
-		KEY_T:
+		InputManager.ACTION_TOGGLE_RUN_EFFECTS:
 			_toggle_run_effects_window()
-		KEY_U:
+		InputManager.ACTION_TOGGLE_RECEIPT_LOG:
 			_toggle_receipt_log_window()
-		_:
-			return
-
-	get_viewport().set_input_as_handled()
 
 
 ## Closes every open view and popup in one press; if none was open, opens the game menu.
-func _handle_escape_pressed() -> void:
+func _on_cancel_pressed() -> void:
 	if not _close_any_open_views():
 		GUISignals.game_menu_requested.emit()
 
