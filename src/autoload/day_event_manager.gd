@@ -3,7 +3,7 @@ extends Node
 
 ## Rolls a DayEventData in secret whenever TimeManager.day_changed fires,
 ## announces it immediately (BrewerySignals.day_event_announced — see
-## GUI._on_day_event_announced()), then activates its bias for a randomized
+## GuiAnnouncer._on_day_event_announced()), then activates its bias for a randomized
 ## window that's only PART of the day (see DayEventData's own docstring for
 ## why), read via is_event_active()/get_active_event() by
 ## CustomerSpawner._on_group_event_timer_timeout() and
@@ -23,7 +23,7 @@ extends Node
 ## No event roll on day 1: day_changed never fires for it (nothing "changes
 ## into" the first day — see TimeManager._advance_day()'s own call sites),
 ## which conveniently also keeps this from competing with
-## GUI._show_first_brew_hint()'s own banner on a brand new run.
+## GuiAnnouncer's first-brew hint banner on a brand new run.
 
 @export var day_event_folder_path : String = "res://src/resources/day_events/"
 

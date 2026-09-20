@@ -147,7 +147,7 @@ func _on_daily_goals_section_toggle_pressed() -> void:
 		_update_goals(BrewEngine.current_brewery)
 
 
-## Called once from GUI._show_first_brew_hint()/_on_first_brew_hint_state_changed()
+## Called once from GuiAnnouncer
 ## right as the first-brew hint banner finishes — this panel starts
 ## collapsed and opt-in (see _ready()'s comment above), which is fine once
 ## a player already knows it's there, but a brand-new player has no reason
