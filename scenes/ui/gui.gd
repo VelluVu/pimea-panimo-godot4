@@ -61,7 +61,6 @@ func _assert_default_visibility() -> void:
 	shop_entrance_panel.show()
 	options_button.show()
 	dev_console.show()
-	discovery_toast.show()
 	group_visit_banner.show()
 	first_brew_hint_banner.show()
 	day_event_banner.show()
