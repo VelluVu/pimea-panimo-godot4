@@ -67,10 +67,10 @@ func _assert_default_visibility() -> void:
 	daily_goals_panel.show()
 
 
-## Global shortcuts: Esc (close whatever is open, else open Options) and the
+## Global shortcuts: Esc (close whatever is open, else open the game menu) and the
 ## p/k/i/t/u view keys. _unhandled_input() so a focused Control (the console's
 ## LineEdit) consumes typing first. While Options is open the tree is paused and
-## this is never called; see options_window.gd's _input() for Esc there.
+## this is never called; see game_menu_window.gd's _input() for Esc there.
 func _unhandled_input(event: InputEvent) -> void:
 	if not (event is InputEventKey and event.pressed and not event.echo):
 		return
@@ -100,10 +100,10 @@ func _unhandled_input(event: InputEvent) -> void:
 	get_viewport().set_input_as_handled()
 
 
-## Closes every open view and popup in one press; if none was open, opens Options.
+## Closes every open view and popup in one press; if none was open, opens the game menu.
 func _handle_escape_pressed() -> void:
 	if not _close_any_open_views():
-		GUISignals.options_requested.emit()
+		GUISignals.game_menu_requested.emit()
 
 
 func _close_any_open_views() -> bool:
@@ -165,7 +165,7 @@ func _on_brewery_button_pressed() -> void:
 
 
 func _on_options_button_pressed() -> void:
-	GUISignals.options_requested.emit()
+	GUISignals.game_menu_requested.emit()
 
 
 func _on_close_day_button_pressed() -> void:
