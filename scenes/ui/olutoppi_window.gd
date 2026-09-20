@@ -146,45 +146,27 @@ func _refresh_node(id : String, renown : int) -> void:
 	button.tooltip_text = _build_tooltip(unlock, level, maxed, locked)
 
 
-## A short "current total effect" number for the square itself (the full
-## sentence-form stat line already lives in RunPerk.get_stat_summary(),
-## used in the tooltip below instead — too long to fit here). Every
-## shipped non-capstone MetaUnlockData only sets ONE axis, and a capstone
-## setting two just shows the first — acceptable for a square this small.
+## A short number for the square itself: the first non-neutral stat of the
+## scaled perk. The full stat lines are in the tooltip. A node that sets several
+## stats shows only the first, which is fine for a square this small.
 func _format_bonus_short(unlock : MetaUnlockData, level : int) -> String:
 	if level <= 0:
 		return BONUS_NEUTRAL_TEXT
 
-	if unlock.quality_bonus != 0.0:
-		return "+%.2f" % (unlock.quality_bonus * level)
-	if unlock.ingredient_refund_chance != 0.0:
-		return "%d%%" % roundi(unlock.ingredient_refund_chance * level * 100)
-	if unlock.tip_double_chance != 0.0:
-		return "%d%%" % roundi(unlock.tip_double_chance * level * 100)
-	if unlock.extra_raid_strikes != 0:
-		return "+%d" % (unlock.extra_raid_strikes * level)
-	if unlock.raid_hidden_batch_count != 0:
-		return "%d" % (unlock.raid_hidden_batch_count * level)
-
 	var scaled : RunPerk = unlock.get_scaled_perk(level)
-	for value : float in [
-		scaled.reputation_gain_multiplier,
-		scaled.tip_income_multiplier,
-		scaled.raid_threshold_multiplier,
-		scaled.distribution_income_multiplier,
-		scaled.ingredient_price_multiplier,
-		scaled.brew_yield_multiplier,
-		scaled.peak_speed_multiplier,
-		scaled.decline_rate_multiplier,
-		scaled.spawn_interval_multiplier,
-		scaled.agentti_appearance_multiplier,
-		scaled.mafioso_appearance_multiplier,
-		scaled.bar_fight_chance_multiplier,
-		scaled.counter_price_multiplier,
-		scaled.group_event_interval_multiplier,
-	]:
-		if value != 1.0:
-			return "%+d%%" % roundi((value - 1.0) * 100)
+	for entry : Dictionary in PerkStats.definitions():
+		var kind : PerkStats.Kind = entry.kind
+		var value : float = scaled.get(entry.stat)
+		if value == PerkStats.neutral_value(kind):
+			continue
+		var number : int = PerkStats.display_number(kind, value)
+		match kind:
+			PerkStats.Kind.MULTIPLIER:
+				return "%+d%%" % number
+			PerkStats.Kind.PERCENT_ADD:
+				return "%d%%" % number
+			_:
+				return "+%d" % number
 
 	return BONUS_NEUTRAL_TEXT
 
