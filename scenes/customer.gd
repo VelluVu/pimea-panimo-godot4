@@ -5,6 +5,7 @@ extends Node2D
 ## Fired when walk_complex_route's tween finishes, whether or not skip_interaction is set.
 signal walk_route_finished
 
+const STAIR_STEPS : int = 15
 const FADE_TIME_SECONDS : float = 1.0
 const BASE_DISPLAY_TIME_SECONDS : float = 4.0
 const PER_CHARACTER_DISPLAY_TIME_SECONDS : float = 0.04
@@ -84,30 +85,13 @@ func get_customer_name() -> String:
 ## skip_interaction is true for group members: the group's controller drives their
 ## dialogue, order and departure instead (see CustomerSpawner).
 func walk_complex_route(stairs_pos: Vector2, center_pos: Vector2, target_pos: Vector2, skip_interaction: bool = false) -> void:
-	var tween = create_tween()
-	var start_pos = global_position
-	var stair_steps = 15
+	var tween := create_tween()
 
-	tween.tween_callback(_play_animation.bind(ANIM_WALK_TOWARDS, true))
-	for i in range(1, stair_steps + 1):
-		var step_pos = start_pos.lerp(stairs_pos, float(i) / stair_steps)
-		tween.tween_property(self, "global_position", step_pos, customer_data.stair_step_duration).set_trans(Tween.TRANS_LINEAR)
-		tween.tween_interval(0.05)
-
-	var walking_left_to_center = center_pos.x < stairs_pos.x
-	tween.tween_callback(_play_animation.bind(ANIM_WALK_RIGHT, walking_left_to_center))
-	var dist_to_center = stairs_pos.distance_to(center_pos)
-	var duration_to_center = dist_to_center / customer_data.floor_walk_speed
-	tween.tween_property(self, "global_position", center_pos, duration_to_center).set_trans(Tween.TRANS_LINEAR)
-
+	_queue_stair_descent(tween, global_position, stairs_pos)
+	_queue_floor_walk(tween, stairs_pos, center_pos)
 	tween.tween_callback(_play_animation.bind(ANIM_IDLE, false))
 	tween.tween_interval(0.8)
-
-	var walking_left_to_target = target_pos.x < center_pos.x
-	tween.tween_callback(_play_animation.bind(ANIM_WALK_RIGHT, walking_left_to_target))
-	var dist_to_target = center_pos.distance_to(target_pos)
-	var duration_to_target = dist_to_target / customer_data.floor_walk_speed
-	tween.tween_property(self, "global_position", target_pos, duration_to_target).set_trans(Tween.TRANS_LINEAR)
+	_queue_floor_walk(tween, center_pos, target_pos)
 
 	if skip_interaction:
 		tween.tween_callback(_play_animation.bind(ANIM_IDLE_UP, false))
@@ -116,66 +100,68 @@ func walk_complex_route(stairs_pos: Vector2, center_pos: Vector2, target_pos: Ve
 	tween.tween_callback(walk_route_finished.emit)
 
 
+func _queue_stair_descent(tween: Tween, from_pos: Vector2, stairs_pos: Vector2) -> void:
+	tween.tween_callback(_play_animation.bind(ANIM_WALK_TOWARDS, true))
+	for i in range(1, STAIR_STEPS + 1):
+		var step_pos := from_pos.lerp(stairs_pos, float(i) / STAIR_STEPS)
+		tween.tween_property(self, "global_position", step_pos, customer_data.stair_step_duration).set_trans(Tween.TRANS_LINEAR)
+		tween.tween_interval(0.05)
+
+
+func _queue_floor_walk(tween: Tween, from_pos: Vector2, to_pos: Vector2) -> void:
+	tween.tween_callback(_play_animation.bind(ANIM_WALK_RIGHT, to_pos.x < from_pos.x))
+	var duration := from_pos.distance_to(to_pos) / customer_data.floor_walk_speed
+	tween.tween_property(self, "global_position", to_pos, duration).set_trans(Tween.TRANS_LINEAR)
+
+
 func _on_reached_counter() -> void:
 	_play_animation(ANIM_IDLE_UP)
-	var intro_text = generated_name + ": " + customer_data.dialogue_intro
-	var display_time = _get_display_time_for_text(intro_text)
-	BrewerySignals.dialogue_pushed.emit(intro_text, false, dialogue_slot, global_position, display_time, FADE_TIME_SECONDS)
-	var preview_timer = get_tree().create_timer(display_time)
-	preview_timer.timeout.connect(_on_preview_timeout)
+	var display_time := _say(generated_name + ": " + customer_data.dialogue_intro)
+	get_tree().create_timer(display_time).timeout.connect(_on_preview_timeout)
 
 
 ## Shows the batch the customer will pick before the sale resolves.
 func _on_preview_timeout() -> void:
 	var previewed_batch : BrewBatch = CustomerManager.find_best_batch_for(customer_data)
 	var preview_text : String
-
 	if previewed_batch != null:
 		preview_text = BATCH_PREVIEW_FORMAT % [generated_name, previewed_batch.get_style_name()]
 	else:
 		preview_text = NOTHING_AVAILABLE_TEXT_FORMAT % generated_name
 
-	var preview_display_time = _get_display_time_for_text(preview_text)
-	BrewerySignals.dialogue_pushed.emit(preview_text, false, dialogue_slot, global_position, preview_display_time, FADE_TIME_SECONDS)
-
-	var sale_timer = get_tree().create_timer(preview_display_time)
-	sale_timer.timeout.connect(_on_sale_timeout)
+	var display_time := _say(preview_text)
+	get_tree().create_timer(display_time).timeout.connect(_on_sale_timeout)
 
 
 func _on_sale_timeout() -> void:
 	# process_auto_sale() is synchronous, so signals fired during it belong to this sale.
-	# Dictionaries because lambdas capture locals by value.
-	var xp_capture : Dictionary = {"amount": 0}
-	var capture_xp := func(amount : int) -> void: xp_capture.amount = amount
-	var reputation_capture : Dictionary = {"amount": 0}
-	var capture_reputation := func(amount : int) -> void: reputation_capture.amount = amount
-	var tip_capture : Dictionary = {"amount": 0.0}
-	var capture_tip := func(amount : float) -> void: tip_capture.amount = amount
+	var outcome := SaleOutcomeCapture.new()
+	outcome.start()
+	var response_text := CustomerManager.process_auto_sale(customer_data)
+	outcome.stop()
 
-	BrewerySignals.sale_xp_gained.connect(capture_xp)
-	BrewerySignals.sale_reputation_gained.connect(capture_reputation)
-	BrewerySignals.sale_tip_gained.connect(capture_tip)
-	var response_text = CustomerManager.process_auto_sale(customer_data)
-	BrewerySignals.sale_xp_gained.disconnect(capture_xp)
-	BrewerySignals.sale_reputation_gained.disconnect(capture_reputation)
-	BrewerySignals.sale_tip_gained.disconnect(capture_tip)
+	_show_sale_popups(outcome)
 
-	if xp_capture.amount > 0:
+	var display_time := _say(generated_name + ": " + response_text)
+	get_tree().create_timer(display_time + FADE_TIME_SECONDS).timeout.connect(leave_counter)
+
+
+func _show_sale_popups(outcome: SaleOutcomeCapture) -> void:
+	if outcome.xp > 0:
 		made_purchase = true
-		var glass_timer = get_tree().create_timer(SERVE_BEER_WAIT_SECONDS)
-		glass_timer.timeout.connect(show_counter_glass)
-		BrewerySignals.xp_popup_requested.emit(xp_capture.amount, global_position)
-	if reputation_capture.amount != 0:
-		BrewerySignals.reputation_popup_requested.emit(reputation_capture.amount, global_position)
-	if tip_capture.amount > 0:
-		BrewerySignals.tip_popup_requested.emit(tip_capture.amount, global_position)
+		get_tree().create_timer(SERVE_BEER_WAIT_SECONDS).timeout.connect(show_counter_glass)
+		BrewerySignals.xp_popup_requested.emit(outcome.xp, global_position)
+	if outcome.reputation != 0:
+		BrewerySignals.reputation_popup_requested.emit(outcome.reputation, global_position)
+	if outcome.tip > 0:
+		BrewerySignals.tip_popup_requested.emit(outcome.tip, global_position)
 
-	var final_text = generated_name + ": " + response_text
-	var display_time = _get_display_time_for_text(final_text)
-	BrewerySignals.dialogue_pushed.emit(final_text, false, dialogue_slot, global_position, display_time, FADE_TIME_SECONDS)
 
-	var leave_timer = get_tree().create_timer(display_time + FADE_TIME_SECONDS)
-	leave_timer.timeout.connect(leave_counter)
+## Pushes a speech bubble for this customer and returns how long it stays up.
+func _say(text: String) -> float:
+	var display_time := _get_display_time_for_text(text)
+	BrewerySignals.dialogue_pushed.emit(text, false, dialogue_slot, global_position, display_time, FADE_TIME_SECONDS)
+	return display_time
 
 
 func show_beer_glass() -> void:
