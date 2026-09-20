@@ -5,6 +5,7 @@ extends Control
 const TITLE_TEXT: String = "Pimeä Panimo"
 const START_BUTTON_TEXT: String = "Aloita Peli"
 const OLUTOPPI_BUTTON_TEXT: String = "Olutoppi"
+const ACHIEVEMENTS_BUTTON_TEXT: String = "Saavutukset"
 const OPTIONS_BUTTON_TEXT: String = "Asetukset"
 const QUIT_BUTTON_TEXT: String = "Lopeta Peli"
 const CONTINUE_BUTTON_TEXT: String = "Jatka Peliä"
@@ -20,6 +21,7 @@ const GAME_SCENE_PATH: String = "res://scenes/main.tscn"
 
 @onready var start_button: Button = $CenterContainer/RootMenuView/StartButton
 @onready var leaderboard_button: Button = $CenterContainer/RootMenuView/LeaderboardButton
+@onready var achievements_button: Button = $CenterContainer/RootMenuView/AchievementsButton
 @onready var olutoppi_button: Button = $CenterContainer/RootMenuView/OlutoppiButton
 @onready var options_button: Button = $CenterContainer/RootMenuView/OptionsButton
 @onready var quit_button: Button = $CenterContainer/RootMenuView/QuitButton
@@ -35,6 +37,7 @@ func _ready() -> void:
 	title_label.text = TITLE_TEXT
 	start_button.text = START_BUTTON_TEXT
 	leaderboard_button.text = StringContainer.LEADERBOARD_BUTTON_TEXT
+	achievements_button.text = ACHIEVEMENTS_BUTTON_TEXT
 	olutoppi_button.text = OLUTOPPI_BUTTON_TEXT
 	options_button.text = OPTIONS_BUTTON_TEXT
 	quit_button.text = QUIT_BUTTON_TEXT
@@ -44,6 +47,7 @@ func _ready() -> void:
 
 	start_button.pressed.connect(_on_start_button_pressed)
 	leaderboard_button.pressed.connect(_on_leaderboard_button_pressed)
+	achievements_button.pressed.connect(_on_achievements_button_pressed)
 	olutoppi_button.pressed.connect(_on_olutoppi_button_pressed)
 	options_button.pressed.connect(_on_options_button_pressed)
 	quit_button.pressed.connect(_on_quit_button_pressed)
@@ -107,6 +111,10 @@ func _on_continue_button_pressed() -> void:
 
 func _on_leaderboard_button_pressed() -> void:
 	GUISignals.leaderboard_requested.emit()
+
+
+func _on_achievements_button_pressed() -> void:
+	GUISignals.achievements_requested.emit()
 
 
 func _on_olutoppi_button_pressed() -> void:
