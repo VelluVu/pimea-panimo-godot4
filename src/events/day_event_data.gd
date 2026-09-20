@@ -15,7 +15,7 @@ extends Resource
 
 
 @export var event_name : String = ""
-## Shown once via a held banner at day start (see GUI._on_day_event_announced()).
+## Shown once via a held banner at day start (see GuiAnnouncer._on_day_event_announced()).
 @export_multiline var announcement_text : String = "Tavallinen päivä kellarissa."
 
 @export_group("Painotus")
