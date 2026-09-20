@@ -71,6 +71,12 @@ signal receipt_log_requested()
 signal run_effects_requested()
 
 @warning_ignore("unused_signal")
+signal game_menu_requested()
+
+@warning_ignore("unused_signal")
+signal game_menu_closed()
+
+@warning_ignore("unused_signal")
 signal options_requested()
 
 @warning_ignore("unused_signal")

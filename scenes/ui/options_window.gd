@@ -14,6 +14,10 @@ const MAIN_MENU_SCENE_PATH: String = "res://scenes/ui/main_menu.tscn"
 ## there's nothing to "return to" from there.
 @export var show_main_menu_button: bool = true
 
+## Whether the tree was already paused (by the game menu) when this opened,
+## so closing restores that instead of always unpausing.
+var _was_paused_before: bool = false
+
 @onready var title_label: Label = $MarginContainer/MainVBox/HeaderHBox/TitleLabel
 @onready var close_button: Button = $MarginContainer/MainVBox/HeaderHBox/CloseButton
 @onready var main_menu_button: Button = $MarginContainer/MainVBox/HeaderHBox/MainMenuButton
@@ -73,13 +77,14 @@ func _load_current_values() -> void:
 ## is frozen and can't be clicked underneath this window.
 func _on_options_requested() -> void:
 	_load_current_values()
+	_was_paused_before = get_tree().paused
 	get_tree().paused = true
 	show()
 
 
 func _on_close_button_pressed() -> void:
 	GUISignals.options_closed.emit()
-	get_tree().paused = false
+	get_tree().paused = _was_paused_before
 	hide()
 
 
