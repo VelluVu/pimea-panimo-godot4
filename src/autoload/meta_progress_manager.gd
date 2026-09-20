@@ -197,3 +197,8 @@ func purchase_next_level(unlock_id : String) -> bool:
 	_config.set_value(SECTION, KEY_UNLOCKED_LEVELS, levels)
 	_config.save(_save_path)
 	return true
+
+## Wipes renown, purchased talents and discovered styles, in memory and on disk.
+func reset_progress() -> void:
+	_config.clear()
+	_config.save(_save_path)

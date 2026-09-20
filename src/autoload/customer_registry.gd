@@ -315,3 +315,8 @@ func _load_resources() -> void:
 		push_warning(WARNING_POOL_EMPTY)
 	if special_events_pool.is_empty():
 		push_warning(WARNING_EVENTS_EMPTY)
+
+## Forgets which customers were announced as unlocked, in memory and on disk.
+func reset_progress() -> void:
+	_config.clear()
+	_config.save(_save_path)
