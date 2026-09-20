@@ -1,17 +1,10 @@
 class_name DevConsole
 extends Panel
 
-## Bottom-right dev/user console: shows a running log of recent game events
-## (built from the existing signal bus, not raw prints) and a command line
-## with two tiers of commands:
-##  - player commands (osta, myy, keitä, ...) are always available — thin
-##    text shortcuts for actions the UI already allows, wrapping the exact
-##    same GUISignals a button click would fire. No economy/unlock rule is
-##    ever bypassed; this only skips clicking through menus.
-##  - dev commands stay gated behind
-##    BrewEngine.is_developer_mode(). Toggled at runtime by a secret command
-##    that lives in a gitignored command set.
-## The log itself is always visible regardless of either tier.
+## Bottom-right console: a running event log (fed by the signal bus) and a command
+## line with two tiers. Player commands are always available and only wrap actions
+## the UI already allows. Dev commands stay gated behind
+## BrewEngine.is_developer_mode(), toggled by a secret command in a gitignored set.
 
 const CHEAT_SET_PATHS: Array[String] = [
 	"res://src/console/dev_mode_commands.gd",
@@ -24,12 +17,8 @@ const EXPAND_ICON: String = "▲"
 const MAX_LOG_LINES: int = 200
 
 const MIN_SIZE: Vector2 = Vector2(180, 90)
-## Height capped well under what it takes to reach Right_WarehouseView's
-## bottom edge (anchored bottom-right same as this panel, its rect ends
-## ~228px above the screen bottom) — a console resized taller than that
-## used to sit on top of and swallow clicks meant for the warehouse view's
-## Tynnyrit tab underneath it, since Panel's default mouse_filter is STOP
-## and this node draws later in GUI's child order.
+## Height capped so the console can't cover Right_WarehouseView's Tynnyrit tab
+## (same bottom-right anchor, and this Panel's mouse_filter is STOP).
 const MAX_SIZE: Vector2 = Vector2(440, 200)
 const COLLAPSED_BODY_HEIGHT: float = 0.0
 
@@ -55,7 +44,6 @@ var _command_history: PackedStringArray = []
 var _registry: ConsoleCommandRegistry
 
 
-
 func _ready() -> void:
 	title_label.text = TITLE_TEXT
 	_expanded_size = size
@@ -77,24 +65,9 @@ func _ready() -> void:
 
 # ----- "c" hotkey to open/focus, Esc to close -----
 
-## Deliberately _input(), not _unhandled_input(): the latter only fires for
-## events nothing already consumed as GUI input, which made this depend on
-## Godot's internal focus/consumption bookkeeping around the moment
-## input_line_edit loses focus (e.g. via its own submit-then-release-focus
-## behavior on Enter) — fragile, and the actual bug this replaces: "c"
-## stopped reopening the console after a command was submitted once.
-## Checking has_focus() explicitly here instead means the input field's
-## current focus state is re-read fresh on every keypress, not inferred
-## from event-propagation history. While it already has focus, just return
-## without consuming the event so the "c" still types normally (letting
-## commands like "clear" or "customer" work); otherwise open/focus it and
-## consume the event. No InputMap action needed for either hardcoded key.
-##
-## Esc closes the console before GUI.gd's own global Esc handler ever sees
-## it — since _input() fires ahead of _unhandled_input() project-wide, and
-## set_input_as_handled() here stops it from propagating any further, the
-## console always gets first claim on Esc while it's open, without gui.gd
-## needing to know anything about this node's internal state.
+## Deliberately _input(), not _unhandled_input(): it re-reads input_line_edit's focus
+## on every keypress. "c" opens/focuses the console, or types normally while the field
+## already has focus. Esc closes it before gui.gd's global Esc handler sees the event.
 func _input(event: InputEvent) -> void:
 	if not (event is InputEventKey and event.pressed and not event.echo):
 		return
@@ -113,9 +86,7 @@ func _input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 
-## Whether Esc should treat the console as "the thing currently open" — also
-## read by gui.gd's own global Esc/view-shortcut handler so it can back off
-## instead of racing this node's _input() (see gui.gd's _unhandled_input()).
+## True while the console is open or focused; gui.gd's Esc handler backs off then.
 func is_console_active() -> bool:
 	return not _is_collapsed or input_line_edit.has_focus()
 
@@ -251,13 +222,8 @@ func _log(bbcode_line: String) -> void:
 	_scroll_log_to_bottom()
 
 
-## fit_content on LogLabel makes it grow to full content height with no
-## scrollbar of its own — LogScroll (the outer ScrollContainer) is what
-## actually scrolls. Its scrollbar max only reflects the new content size
-## after layout recalculates next frame, so this waits a frame before
-## snapping down — jumping to bottom on every new line (terminal-style),
-## while still leaving the user free to scroll up and read older lines
-## in between.
+## LogScroll does the scrolling (LogLabel just fits its content). Its max_value only
+## updates after layout, so wait a frame before snapping to the bottom.
 func _scroll_log_to_bottom() -> void:
 	await get_tree().process_frame
 	log_scroll.scroll_vertical = int(log_scroll.get_v_scroll_bar().max_value)
@@ -265,10 +231,7 @@ func _scroll_log_to_bottom() -> void:
 
 # ----- command dispatch, handled by ConsoleCommandRegistry -----
 
-## LineEdit releases its own focus internally as part of submitting on
-## Enter, which used to leave the player having to manually click the field
-## again before typing a next command — grab_focus() right back so the
-## input stays ready to type into immediately after every submit.
+## LineEdit drops focus on Enter, so grab it back to keep the input ready.
 func _on_command_submitted(raw_text: String) -> void:
 	var text := raw_text.strip_edges()
 	input_line_edit.clear()
@@ -290,7 +253,6 @@ func _register_commands() -> void:
 	# Cheat sets are gitignored and absent from public clones, so load them by path.
 	for path: String in CHEAT_SET_PATHS:
 		_registry.add_optional_command_set(path)
-
 
 
 func _cmd_clear(_args: PackedStringArray) -> void:
