@@ -123,6 +123,15 @@ func _get_reputation_spawn_factor() -> float:
 	return REPUTATION_SPAWN_SOFT_CAP / (REPUTATION_SPAWN_SOFT_CAP + brewery.reputation)
 
 
+## The current run's beer styles, for customers that roll a random preference.
+## Empty when no run is active, which makes reroll_preference() a no-op.
+func _active_styles() -> Array[BeerStyle]:
+	var brewery : Brewery = BrewEngine.current_brewery
+	if brewery == null:
+		return []
+	return brewery.resolver.active_styles
+
+
 ## RunPerk.spawn_interval_multiplier (e.g. MetaUnlockData's "Kanta-
 ## asiakkaat" bar-work node) layered on top of the reputation factor above
 ## — below 1.0 shortens both walk-in and group-event waits. Still clamped
@@ -172,7 +181,7 @@ func _on_walk_in_timer_timeout(forced_data: CustomerData = null) -> void:
 
 	if data.randomizes_preference:
 		data = data.duplicate()
-		data.reroll_preference()
+		data.reroll_preference(_active_styles())
 
 	var new_customer = CUSTOMER_SCENE.instantiate()
 	add_child(new_customer)
@@ -348,7 +357,7 @@ func _run_shared_group_order(event_data: GroupVisitEventData, members: Array[Nod
 
 	var order_data : CustomerData = event_data.customer_data_options.pick_random().duplicate()
 	if order_data.randomizes_preference:
-		order_data.reroll_preference()
+		order_data.reroll_preference(_active_styles())
 	order_data.min_bottles_per_visit *= members.size()
 	order_data.max_bottles_per_visit *= members.size()
 

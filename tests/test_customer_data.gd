@@ -215,18 +215,38 @@ func test_reroll_preference_noop_when_disabled() -> void:
 	customer.randomizes_preference = false
 	customer.primary_style = BeerStyle.Style.IPA
 	customer.secondary_style = BeerStyle.Style.HELLES
-	customer.reroll_preference()
+	customer.reroll_preference([])
 	assert_eq(customer.primary_style, BeerStyle.Style.IPA, "primary style should be untouched")
 	assert_eq(customer.secondary_style, BeerStyle.Style.HELLES, "secondary style should be untouched")
 
 
-## reroll_preference() when randomizes_preference is true reaches into
-## BrewEngine.current_brewery, same live-autoload-state limitation
-## test_brew_resolver.gd documents for resolve_brew_style() — accessing the
-## BrewEngine singleton at all from this dynamically-loaded @tool test
-## script throws ("Invalid access to property... on a base object of type
-## 'Node (brew_engine.gd)'"), not just returns null, so that branch isn't
-## testable here. Only the randomizes_preference == false no-op above is.
+func _make_style(style : BeerStyle.Style) -> BeerStyle:
+	var beer_style := BeerStyle.new()
+	beer_style.style = style
+	return beer_style
+
+
+func test_reroll_preference_picks_two_different_styles_from_the_pool() -> void:
+	var customer := CustomerData.new()
+	customer.randomizes_preference = true
+	customer.primary_style = BeerStyle.Style.KOTIKALJA
+	customer.secondary_style = BeerStyle.Style.KOTIKALJA
+	var pool : Array[BeerStyle] = [_make_style(BeerStyle.Style.IPA), _make_style(BeerStyle.Style.HELLES)]
+	customer.reroll_preference(pool)
+	assert_ne(customer.primary_style, customer.secondary_style)
+	assert_true(customer.primary_style in [BeerStyle.Style.IPA, BeerStyle.Style.HELLES])
+	assert_true(customer.secondary_style in [BeerStyle.Style.IPA, BeerStyle.Style.HELLES])
+
+
+func test_reroll_preference_keeps_styles_when_pool_is_too_small() -> void:
+	var customer := CustomerData.new()
+	customer.randomizes_preference = true
+	customer.primary_style = BeerStyle.Style.IPA
+	customer.secondary_style = BeerStyle.Style.HELLES
+	var pool : Array[BeerStyle] = [_make_style(BeerStyle.Style.KOTIKALJA)]
+	customer.reroll_preference(pool)
+	assert_eq(customer.primary_style, BeerStyle.Style.IPA)
+	assert_eq(customer.secondary_style, BeerStyle.Style.HELLES)
 
 
 func test_get_preference_score_matches_primary_secondary_and_mismatch() -> void:
