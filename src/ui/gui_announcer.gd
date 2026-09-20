@@ -2,9 +2,10 @@ class_name GuiAnnouncer
 extends Node
 
 ## Turns game events into on-screen text: short toasts (unlocks, goal results,
-## purchase failures) and the passive flash/hold/fade banners (group visit, day
-## event forecast, first-brew hint). GUI owns the labels and calls start() once
-## the tree is ready; presentation itself lives in BannerPresenter.
+## purchase failures), stacked by ToastStack, and the passive flash/hold/fade
+## banners (group visit, day event forecast, first-brew hint). GUI owns the
+## labels and calls start() once the tree is ready; the banners' presentation
+## lives in BannerPresenter.
 
 const DISCOVERY_TOAST_FORMAT: String = "Uusi oluttyyli löydetty: %s!"
 const ACHIEVEMENT_UNLOCKED_TOAST_FORMAT: String = "Saavutus avattu: %s!"
@@ -38,7 +39,7 @@ const FIRST_BREW_HINT_FLASH_SECONDS: float = 0.25
 const FIRST_BREW_HINT_HOLD_SECONDS: float = 12.0
 const FIRST_BREW_HINT_FADE_SECONDS: float = 1.2
 
-var _toast: BannerPresenter
+var _toasts: ToastStack
 var _group_visit_banner: BannerPresenter
 var _day_event_banner: BannerPresenter
 var _first_brew_hint: BannerPresenter
@@ -53,7 +54,7 @@ var _day_event_announce_serial: int = 0
 ## Builds the presenters. `goals_panel` is pointed at when the first-brew hint ends.
 func setup(toast_label: Label, group_visit_label: Label, day_event_label: Label, first_brew_hint_label: Label, goals_panel: DailyGoalsPanel, day_recap_window: DayRecapWindow) -> void:
 	_day_recap_window = day_recap_window
-	_toast = BannerPresenter.new(toast_label, DISCOVERY_TOAST_FLASH_SECONDS, DISCOVERY_TOAST_HOLD_SECONDS, DISCOVERY_TOAST_FADE_SECONDS, true, false)
+	_toasts = ToastStack.new(toast_label, DISCOVERY_TOAST_FLASH_SECONDS, DISCOVERY_TOAST_HOLD_SECONDS, DISCOVERY_TOAST_FADE_SECONDS)
 	_group_visit_banner = BannerPresenter.new(group_visit_label, GROUP_VISIT_BANNER_FLASH_SECONDS, GROUP_VISIT_BANNER_HOLD_SECONDS, GROUP_VISIT_BANNER_FADE_SECONDS)
 	# Plain alpha fade-in, not the overexposed flash: it's the day's forecast,
 	# not an in-the-moment arrival.
@@ -159,4 +160,4 @@ func _on_first_brew_hint_state_changed(_brewery: Brewery) -> void:
 
 
 func _show_toast(text: String) -> void:
-	_toast.present(text)
+	_toasts.show_toast(text)
