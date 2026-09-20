@@ -464,7 +464,7 @@ func _on_remove_ingredient_from_brew_preparation(ingredient_id : int, amount : i
 ## every bottle produced needs a printed label
 ## (BrewResolver.LABEL_ART_COST_PER_BOTTLE), paid up front here regardless
 ## of whether the batch ends up profitable to sell. Shared by start_brew()
-## and dev_console._ensure_batch_stock() so both charge identically
+## and BatchCheatCommands._ensure_batch_stock() so both charge identically
 ## instead of the dev shortcut producing bottles for free.
 func apply_bottling_costs(raw_yield : int) -> Dictionary:
 	var effective_yield : int = BrewResolver.get_effective_bottle_yield(raw_yield)
