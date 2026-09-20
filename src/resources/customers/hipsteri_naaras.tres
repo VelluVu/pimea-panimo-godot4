@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="CustomerData" format=3 uid="uid://3qw0a6b3sk1p"]
 
-[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/classes/customer_data.gd" id="1_hipsteri_naaras"]
+[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_hipsteri_naaras"]
 [ext_resource type="SpriteFrames" uid="uid://2asnxmmvclak" path="res://src/resources/sprite_frames/hipsteri_naaras_anim.tres" id="2_sprite"]
 
 [resource]

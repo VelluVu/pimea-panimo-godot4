@@ -5,7 +5,7 @@ extends McpTestSuite
 ## CustomerManager. Loaded by path so the suite always runs the script as it is
 ## on disk.
 
-const CounterSlotsScript := preload("res://src/classes/counter_slots.gd")
+const CounterSlotsScript := preload("res://src/customers/counter_slots.gd")
 
 
 func suite_name() -> String:

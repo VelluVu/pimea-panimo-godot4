@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="BarContact" format=3]
 
-[ext_resource type="Script" uid="uid://c5tldei44pcbr" path="res://src/classes/bar_contact.gd" id="1_varjo"]
+[ext_resource type="Script" uid="uid://c5tldei44pcbr" path="res://src/customers/bar_contact.gd" id="1_varjo"]
 
 [resource]
 script = ExtResource("1_varjo")

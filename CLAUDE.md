@@ -14,7 +14,15 @@ markdown# Project Instructions and Context - Pimeä Panimo
 - `res://scenes/` — UI layouts and spatial scenes (e.g., `scenes/ui/`, `customer.tscn`, `main.tscn`)
 - `res://src/` — Pure architecture and code logic:
   - `src/autoload/` — Global singleton orchestrators (e.g., `EventBus.gd`)
-  - `src/classes/` — Instantiable custom data components and global nodes
+  - One folder per gameplay system for its scripts (data classes, services, pure rules). New scripts go in the folder of the system they belong to:
+    - `src/brewing/` — recipes, ingredients, `BrewResolver`/`RecipeSearch`, brewing, inventory
+    - `src/brewery/` — the `Brewery` run state and its services (raids, distribution, day rules)
+    - `src/customers/` — customers, spawning, group visits, sales
+    - `src/events/` — special, day and immersion events
+    - `src/progression/` — perks, run modifiers, meta unlocks, achievements, daily goals
+    - `src/ui/` — tooltip and hover-area helpers
+    - `src/console/` — dev console command sets
+    - `src/save/`, `src/audio/` — save file handling, audio bank
   - `src/resources/` — Layout definitions and raw custom `.tres` files
 
 ## Architecture

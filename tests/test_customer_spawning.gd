@@ -5,7 +5,7 @@ extends McpTestSuite
 ## CustomerSpawner. Loaded by path so the suite always runs the script as it is
 ## on disk. Crowd formation is covered in test_group_visit.gd.
 
-const CustomerSpawnerScript := preload("res://src/classes/customer_spawner.gd")
+const CustomerSpawnerScript := preload("res://src/customers/customer_spawner.gd")
 
 
 func suite_name() -> String:

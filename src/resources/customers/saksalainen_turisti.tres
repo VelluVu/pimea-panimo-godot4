@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="CustomerData" format=3]
 
-[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/classes/customer_data.gd" id="1_turisti"]
+[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_turisti"]
 [ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/saksalainen_turisti_anim.tres" id="2_sprite"]
 
 [resource]

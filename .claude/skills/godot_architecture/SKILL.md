@@ -50,7 +50,7 @@ Enforces the structural rules from the project's CLAUDE.md. This skill is the au
 ## Project Structure Placement
 
 - `src/autoload/` — only global orchestration singletons (`EventBus.gd`, `BrewEngine.gd`, `TimeManager.gd`, etc.), registered in `project.godot` autoload list. Never put per-instance scene logic here.
-- `src/classes/` — instantiable custom data components and reusable global-purpose nodes.
+- `src/<system>/` (`brewing`, `brewery`, `customers`, `events`, `progression`, `ui`, `console`, `save`, `audio`) — instantiable custom data components, services and pure rules, one folder per gameplay system.
 - `src/resources/` — `.tres` resource definitions and the `Resource`-derived scripts that define their schema (e.g. `RecipeData.gd`, `CustomerData.gd`).
 - `data/` — the actual `.tres` data files (recipes, events) loaded by the corresponding `*Database.gd` / `*Registry.gd` autoload at startup.
 - `scenes/` — `.tscn` files and the script directly bound to that unique scene node (e.g. `customer.gd` beside `customer.tscn`). Business logic that isn't scene-specific still belongs in `src/`, called from the scene script.

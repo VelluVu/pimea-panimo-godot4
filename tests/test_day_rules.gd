@@ -5,7 +5,7 @@ extends McpTestSuite
 ## survival ending, day progress and the clock's restart time. Loaded by path so
 ## the suite always runs the script as it is on disk.
 
-const DayRulesScript := preload("res://src/classes/day_rules.gd")
+const DayRulesScript := preload("res://src/brewery/day_rules.gd")
 
 const ENOUGH_REPUTATION : int = 100
 

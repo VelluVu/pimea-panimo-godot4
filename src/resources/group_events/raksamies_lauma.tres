@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="GroupVisitEventData" format=3]
 
-[ext_resource type="Script" uid="uid://cnkqeqeaug3gu" path="res://src/classes/group_visit_event_data.gd" id="1_event"]
-[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/classes/customer_data.gd" id="1_v3hht"]
+[ext_resource type="Script" uid="uid://cnkqeqeaug3gu" path="res://src/customers/group_visit_event_data.gd" id="1_event"]
+[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_v3hht"]
 [ext_resource type="Resource" uid="uid://bbaqaif3dmu0t" path="res://src/resources/customers/raksamies.tres" id="2_customer"]
 [ext_resource type="Resource" uid="uid://bji63pdea5j1k" path="res://src/resources/customers/raksamies_naaras.tres" id="3_customer_naaras"]
 

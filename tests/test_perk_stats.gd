@@ -5,7 +5,7 @@ extends McpTestSuite
 ## get_X_multiplier() getters. Loaded by path so the suite always runs the
 ## script as it is on disk.
 
-const PerkStatsScript := preload("res://src/classes/perk_stats.gd")
+const PerkStatsScript := preload("res://src/progression/perk_stats.gd")
 
 
 func suite_name() -> String:

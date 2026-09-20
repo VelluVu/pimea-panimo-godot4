@@ -7,7 +7,7 @@ extends McpTestSuite
 ## game instead. Loaded by path so the suite always runs the script as it is on
 ## disk.
 
-const SaleProcessorScript := preload("res://src/classes/sale_processor.gd")
+const SaleProcessorScript := preload("res://src/customers/sale_processor.gd")
 
 
 func suite_name() -> String:

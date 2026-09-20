@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="RunPerk" format=3 uid="uid://3060g6nq47qg"]
 
-[ext_resource type="Script" uid="uid://dewmdbm4a0vst" path="res://src/classes/run_perk.gd" id="1_alueen"]
+[ext_resource type="Script" uid="uid://dewmdbm4a0vst" path="res://src/progression/run_perk.gd" id="1_alueen"]
 
 [resource]
 script = ExtResource("1_alueen")

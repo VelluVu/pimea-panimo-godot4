@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="BeerStyle" format=3 uid="uid://b7npu6lu4t1cs"]
 
-[ext_resource type="Script" uid="uid://qpqfdi1wacne" path="res://src/classes/beer_style.gd" id="1_sessionale"]
+[ext_resource type="Script" uid="uid://qpqfdi1wacne" path="res://src/brewing/beer_style.gd" id="1_sessionale"]
 
 [resource]
 script = ExtResource("1_sessionale")

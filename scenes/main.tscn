@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://dcx0ivwno5nl2" path="res://scenes/ui/gui.gd" id="1_o5qli"]
 [ext_resource type="Texture2D" uid="uid://o6vh3frtnlhf" path="res://assets/textures/underground_brewery_fixed-0001.png" id="2_85g3d"]
 [ext_resource type="Texture2D" uid="uid://d0i6obt1bcke0" path="res://assets/textures/bar_table_wide.png" id="2_dp3eg"]
-[ext_resource type="Script" uid="uid://ekalkeu2fx4m" path="res://src/classes/brewery_hover_area.gd" id="2_jscy8"]
+[ext_resource type="Script" uid="uid://ekalkeu2fx4m" path="res://src/ui/brewery_hover_area.gd" id="2_jscy8"]
 [ext_resource type="Script" uid="uid://bvpo7jgusrd3q" path="res://scenes/ui/top_panel_resources.gd" id="2_tipki"]
 [ext_resource type="Texture2D" uid="uid://dfmm71s24x2ju" path="res://assets/textures/brewery_view.png" id="3_yc10j"]
 [ext_resource type="Script" uid="uid://v0858wg1wksr" path="res://scenes/ui/ingredient_inventory_panel.gd" id="4_85g3d"]
@@ -13,15 +13,15 @@
 [ext_resource type="Script" uid="uid://dbsgu6mke0d4q" path="res://scenes/ui/left_shop_view.gd" id="5_tbgi4"]
 [ext_resource type="Script" uid="uid://bh2cqv03r8t8o" path="res://scenes/ui/ingredient_option_button.gd" id="5_tipki"]
 [ext_resource type="Script" uid="uid://cx0sfer400res" path="res://scenes/ui/clock_ui.gd" id="5_trceg"]
-[ext_resource type="Script" uid="uid://hp2u8nuqjsu6" path="res://src/classes/pc_prop.gd" id="7_og1vs"]
+[ext_resource type="Script" uid="uid://hp2u8nuqjsu6" path="res://src/ui/pc_prop.gd" id="7_og1vs"]
 [ext_resource type="Script" uid="uid://be6oyi80fbyom" path="res://scenes/ui/brew_preparation_panel.gd" id="7_tipki"]
 [ext_resource type="Theme" uid="uid://dkmfe4a5nvvcd" path="res://src/resources/themes/main_theme.tres" id="7_y6deb"]
 [ext_resource type="Script" uid="uid://4stpknptq7nv" path="res://scenes/ui/right_warehouse_view.gd" id="9_muem4"]
 [ext_resource type="Texture2D" uid="uid://ckr0tjvh7srsj" path="res://assets/textures/clock_bg.png" id="10_jscy8"]
 [ext_resource type="Texture2D" uid="uid://cotf62fq6mk8q" path="res://assets/textures/clockhand_32.png" id="12_pm3ni"]
 [ext_resource type="Script" uid="uid://clwrlsny0wt3b" path="res://scenes/ui/dialog_view.gd" id="13_jkv2x"]
-[ext_resource type="Script" uid="uid://ctvoku3p23yqg" path="res://src/classes/warehouse_hover_area.gd" id="17_dp3eg"]
-[ext_resource type="Script" uid="uid://cabnw1tbiyona" path="res://src/classes/customer_spawner.gd" id="17_muem4"]
+[ext_resource type="Script" uid="uid://ctvoku3p23yqg" path="res://src/ui/warehouse_hover_area.gd" id="17_dp3eg"]
+[ext_resource type="Script" uid="uid://cabnw1tbiyona" path="res://src/customers/customer_spawner.gd" id="17_muem4"]
 [ext_resource type="Texture2D" uid="uid://cixeymlhgqlb8" path="res://assets/textures/PC_32.png" id="18_0ld40"]
 [ext_resource type="Script" uid="uid://dudbw5vh3wgaw" path="res://scenes/ui/shop_entrance_panel.gd" id="18_gqmmt"]
 [ext_resource type="Script" uid="uid://cmgecu0vu375p" path="res://scenes/ui/ingredient_type_selector.gd" id="20_5q0nq"]
@@ -48,13 +48,13 @@
 [ext_resource type="Script" uid="uid://wlyaagmxb0io" path="res://scenes/ui/chalkboard_label.gd" id="42_bjg73"]
 [ext_resource type="Script" uid="uid://cwvam2qbvgbk3" path="res://scenes/ui/warehouse_label.gd" id="43_bu4jf"]
 [ext_resource type="PackedScene" uid="uid://kttjbp45s274" path="res://scenes/bartender.tscn" id="43_chjal"]
-[ext_resource type="Script" uid="uid://b78ix8nmmshyf" path="res://src/classes/recipe_shelf_hover_area.gd" id="45_txyw0"]
+[ext_resource type="Script" uid="uid://b78ix8nmmshyf" path="res://src/ui/recipe_shelf_hover_area.gd" id="45_txyw0"]
 [ext_resource type="Texture2D" uid="uid://ui42kael5n56" path="res://assets/textures/beer_bottle_8x8.png" id="46_vc5cj"]
 [ext_resource type="PackedScene" uid="uid://c8a7pb7q0ho8t" path="res://scenes/keg.tscn" id="47_1v6qk"]
-[ext_resource type="Script" uid="uid://dwc72b5x4eaw3" path="res://src/classes/receipt_machine_hover_area.gd" id="49_j2jfr"]
-[ext_resource type="Script" uid="uid://dihcrv1yno5x5" path="res://src/classes/chalkboard_hover_area.gd" id="51_bu4jf"]
-[ext_resource type="Script" uid="uid://cbbayr0gg5kb5" path="res://src/classes/lvv_raid_spawner.gd" id="58_augu2"]
-[ext_resource type="Script" uid="uid://c1fy2446074o0" path="res://src/classes/immersion_event_spawner.gd" id="59_t5ykj"]
+[ext_resource type="Script" uid="uid://dwc72b5x4eaw3" path="res://src/ui/receipt_machine_hover_area.gd" id="49_j2jfr"]
+[ext_resource type="Script" uid="uid://dihcrv1yno5x5" path="res://src/ui/chalkboard_hover_area.gd" id="51_bu4jf"]
+[ext_resource type="Script" uid="uid://cbbayr0gg5kb5" path="res://src/customers/lvv_raid_spawner.gd" id="58_augu2"]
+[ext_resource type="Script" uid="uid://c1fy2446074o0" path="res://src/events/immersion_event_spawner.gd" id="59_t5ykj"]
 [ext_resource type="Texture2D" uid="uid://dwe4ql72sptwg" path="res://assets/textures/beer_dispenser_rack_48.png" id="60_beerrack"]
 [ext_resource type="Texture2D" uid="uid://b12vj0rmwdl8y" path="res://assets/textures/light_glow_32.png" id="70_lightglow"]
 [ext_resource type="Texture2D" uid="uid://dcrobw17uonit" path="res://assets/textures/pendant_lamp_24.png" id="71_pendantlamp"]
@@ -995,6 +995,10 @@ mouse_default_cursor_shape = 10
 process_mode = 3
 visible = false
 layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 448.0
+offset_bottom = 288.0
 
 [node name="DiscoveryToast" type="Label" parent="GUI_CanvasLayer/GUI" unique_id=1184602969]
 visible = false

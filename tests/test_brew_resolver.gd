@@ -12,7 +12,7 @@ extends McpTestSuite
 ## Loaded by path (not through the BrewResolver class_name) like
 ## test_achievement_manager.gd does, so the suite always instantiates the
 ## script as it is on disk instead of the editor's cached global class.
-const BrewResolverScript := preload("res://src/classes/brew_resolver.gd")
+const BrewResolverScript := preload("res://src/brewing/brew_resolver.gd")
 
 
 func suite_name() -> String:
