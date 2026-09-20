@@ -1,14 +1,10 @@
 #CustomerRegistry (Autoload)
 extends Node
 
-## Fired the first moment ANY CustomerData's appearance gates (reputation,
-## style discovery, achievement) are ALL met, once per distinct title
-## across every run ever played — see _check_for_newly_unlocked_customers().
-## Gendered variants sharing one title (e.g. Saksalainen turisti/_naaras)
-## count as a single reveal. Persisted the same ConfigFile way as
-## AchievementManager/MetaProgressManager, since a reputation-gated
-## customer's underlying availability resets every run but this
-## announcement must never repeat.
+## Fired once per customer title, the first time all of its appearance gates are
+## met, across every run ever played. Gendered variants sharing a title count as one.
+## Persisted like AchievementManager/MetaProgressManager, since the gates' underlying
+## availability resets each run but the announcement must never repeat.
 signal customer_unlocked(title : String)
 
 const WARNING_POOL_EMPTY = "CustomerRegistry: Customer pool is empty!"
@@ -22,12 +18,8 @@ const WARNING_EVENTS_EMPTY = "CustomerRegistry: Special events pool is empty!"
 var customer_pool: Array[CustomerData] = []
 var special_events_pool: Array[SpecialEventData] = []
 var group_events_pool: Array[GroupVisitEventData] = []
-## BarContact destinations for BeerPatchPanel's "ship a batch to a bar"
-## action (see Brewery.ship_batch_to_bar()) — loaded the same way as the
-## pools above. Not reputation-filtered here; BarContactOptionButton
-## mirrors IngredientOptionButton's own pattern of listing every entry and
-## disabling the locked ones in place, so the picker itself communicates
-## what's coming rather than hiding it entirely.
+## Destinations for shipping a batch to a bar. Not reputation-filtered here: the
+## picker lists every entry and disables the locked ones, like the ingredient picker.
 var bar_contact_pool: Array[BarContact] = []
 
 const TITLE_AGENTTI : String = "Agentti"
@@ -38,9 +30,7 @@ const SECTION : String = "customer_unlocks"
 const KEY_ANNOUNCED_TITLES : String = "announced_titles"
 
 var _config : ConfigFile = ConfigFile.new()
-## Overridable so tests can redirect persistence to a throwaway path
-## instead of the real user://customer_unlocks.cfg — same reasoning as
-## AchievementManager._save_path/MetaProgressManager._save_path.
+## Overridable so tests never touch the real user://customer_unlocks.cfg.
 var _save_path : String = SAVE_PATH
 
 
@@ -53,9 +43,8 @@ func _ready() -> void:
 	_check_for_newly_unlocked_customers()
 
 
-## Three independent triggers, one shared re-scan — any of a reputation
-## change, a style discovery, or an achievement unlock could newly satisfy
-## a customer's gate (see is_eligible()'s three conditions).
+## Reputation change, style discovery and achievement unlock can each satisfy a
+## customer's gate, so all three trigger the same re-scan.
 func _on_customer_unlock_trigger(_brewery : Brewery) -> void:
 	_check_for_newly_unlocked_customers()
 
@@ -68,15 +57,9 @@ func _on_achievement_unlocked_for_customer_unlocks(_achievement_id : String, _ti
 	_check_for_newly_unlocked_customers()
 
 
-## During an active DayEventData window (see DayEventManager), rerolls
-## toward featured_customer_titles at that event's own
-## solo_customer_bias_chance instead of always using the plain eligible
-## pool — same "weighted, not forced" reasoning DayEventData's own
-## featured_group_event_chance uses for group visits, so a themed day's
-## walk-ins skew toward its archetype without every single one being it.
-## Falls back to the normal eligible pool if the bias roll misses, if no
-## event is active, or if the featured titles happen to match nothing
-## currently eligible (e.g. reputation-gated out).
+## During an active day event, rerolls toward its featured titles at the event's own
+## bias chance. Falls back to the normal eligible pool if the roll misses, no event is
+## active, or no featured title is currently eligible.
 func get_random_customer_data() -> CustomerData:
 	if customer_pool.is_empty():
 		return null
@@ -101,9 +84,8 @@ func get_random_customer_data() -> CustomerData:
 	return _pick_weighted_customer(eligible_customers)
 
 
-## Weighted by Brewery's agentti/mafioso appearance multipliers when a customer's
-## title matches (see MetaUnlockData's "Terävä silmä" node). Every other title
-## weighs 1.0, so with neither perk active this is a plain uniform pick.
+## Weighted by the agentti/mafioso appearance perks ("Terävä silmä"); every other
+## title weighs 1.0, so without those perks this is a plain uniform pick.
 func _pick_weighted_customer(customers : Array[CustomerData]) -> CustomerData:
 	var brewery : Brewery = BrewEngine.current_brewery
 	if brewery == null:
@@ -121,12 +103,9 @@ func _pick_weighted_customer(customers : Array[CustomerData]) -> CustomerData:
 	return WeightedPicker.pick(customers, weights) as CustomerData
 
 
-## Picks a customer who genuinely wants the given style (primary preferred,
-## secondary as fallback), for the instant walk-in triggered right after a
-## matching brew completes. Customers with randomizes_preference are
-## excluded — their preference gets rerolled on spawn, so picking them here
-## wouldn't guarantee they actually want this style. Falls back to any
-## random customer if no static fan of this style exists.
+## Picks a customer who wants this style (primary preferred, then secondary) for the
+## instant walk-in after a matching brew. Skips randomizes_preference customers, whose
+## preference is rerolled on spawn. Falls back to any random customer.
 func get_customer_for_style(style: BeerStyle.Style) -> CustomerData:
 	var primary_matches : Array[CustomerData] = []
 	var secondary_matches : Array[CustomerData] = []
@@ -148,9 +127,7 @@ func get_customer_for_style(style: BeerStyle.Style) -> CustomerData:
 	return get_random_customer_data()
 
 
-## Weighted by each event's own get_weight(brewery) (see SpecialEventData). Events
-## with the default weight of 1.0 keep flat odds; only an override such as
-## RiskBribeEventData shifts them, and only when the state it watches changes.
+## Weighted by each event's get_weight(brewery); the default 1.0 keeps flat odds.
 func get_random_special_event(brewery: Brewery) -> SpecialEventData:
 	var weights: Array[float] = []
 	for event: SpecialEventData in special_events_pool:
@@ -164,12 +141,9 @@ func get_random_group_event() -> GroupVisitEventData:
 	return group_events_pool.pick_random()
 
 
-## True only once ALL of a customer's appearance gates are satisfied —
-## reputation (resets every run), permanent style discovery, and permanent
-## achievement unlock. The single source of truth for "can this customer
-## currently appear", shared by get_random_customer_data(),
-## get_customer_for_style(), and _check_for_newly_unlocked_customers()
-## below, so the three gates are never checked three slightly different ways.
+## True once all appearance gates pass: reputation (per run), style discovery and
+## achievement unlock (both permanent). The single source of truth for "can this
+## customer appear".
 func is_eligible(customer : CustomerData) -> bool:
 	var current_reputation : int = 0
 	if BrewEngine.current_brewery != null:
@@ -180,31 +154,22 @@ func is_eligible(customer : CustomerData) -> bool:
 		and _meets_achievement_requirement(customer)
 
 
-## -1 (no requirement, the default) always passes. See CustomerData.
-## required_discovered_style's own docstring — MetaProgressManager persists
-## style discovery across runs, so this gate is permanent progress, not
-## something reset at the start of a new run.
+## -1 (the default) means no requirement. Style discovery is permanent progress.
 func _meets_style_discovery_requirement(customer : CustomerData) -> bool:
 	if customer.required_discovered_style < 0:
 		return true
 	return MetaProgressManager.has_style(customer.required_discovered_style)
 
 
-## Empty (no requirement, the default) always passes — see
-## CustomerData.required_achievement_id's own docstring.
+## An empty id (the default) means no requirement.
 func _meets_achievement_requirement(customer : CustomerData) -> bool:
 	if customer.required_achievement_id == "":
 		return true
 	return AchievementManager.is_unlocked(customer.required_achievement_id)
 
 
-## Permanently announces each customer archetype (keyed by title, so
-## gendered variants sharing one title — e.g. Saksalainen turisti/_naaras —
-## count as a single reveal) the first moment is_eligible() is true for it,
-## exactly once across every run ever played. A reputation-gated customer's
-## actual in-run availability still resets every run like normal; only this
-## announcement is permanent, so the player is celebrated for reaching a
-## reputation threshold once, not re-congratulated every single run.
+## Announces each customer title once, ever, the first time is_eligible() is true for
+## it. In-run availability still resets each run; only the announcement is permanent.
 func _check_for_newly_unlocked_customers() -> void:
 	var announced := _get_announced_titles()
 	for customer : CustomerData in customer_pool:
