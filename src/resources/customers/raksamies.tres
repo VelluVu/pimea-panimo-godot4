@@ -26,4 +26,5 @@ min_required_abv = 1.0
 rep_primary_style = 8
 risk_primary_style = 2
 max_bottles_per_visit = 4
+required_discovered_style = 1
 metadata/_custom_type_script = "uid://b2vqc8lkfjwic"
