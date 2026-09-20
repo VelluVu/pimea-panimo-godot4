@@ -125,3 +125,9 @@ func count_bottles() -> int:
 	for batch : BrewBatch in brew_batches:
 		total += batch.amount_bottles
 	return total
+
+
+## One aging tick for every batch in the cellar.
+func age_batches() -> void:
+	for batch : BrewBatch in brew_batches:
+		batch.age_one_day()
