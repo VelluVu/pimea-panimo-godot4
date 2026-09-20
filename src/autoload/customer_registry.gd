@@ -117,9 +117,9 @@ func _pick_weighted_customer(customers : Array[CustomerData]) -> CustomerData:
 	for customer : CustomerData in customers:
 		var weight : float = 1.0
 		if customer.title == TITLE_AGENTTI:
-			weight = brewery.get_agentti_appearance_multiplier()
+			weight = brewery.stats.multiplier(PerkStats.AGENTTI_APPEARANCE)
 		elif customer.title == TITLE_MAFIOSO:
-			weight = brewery.get_mafioso_appearance_multiplier()
+			weight = brewery.stats.multiplier(PerkStats.MAFIOSO_APPEARANCE)
 		weights.append(weight)
 		total_weight += weight
 
