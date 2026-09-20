@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="QualityChallengeEventData" format=3]
 
-[ext_resource type="Script" uid="uid://ctrwas4g08sal" path="res://src/classes/quality_challenge_event_data.gd" id="1_critic"]
+[ext_resource type="Script" uid="uid://ctrwas4g08sal" path="res://src/events/quality_challenge_event_data.gd" id="1_critic"]
 
 [resource]
 script = ExtResource("1_critic")

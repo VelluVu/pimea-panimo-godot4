@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="RunModifier" format=3 uid="uid://qys5xgakblvm"]
 
-[ext_resource type="Script" uid="uid://dka80d13fropj" path="res://src/classes/run_modifier.gd" id="1_ainepula"]
+[ext_resource type="Script" uid="uid://dka80d13fropj" path="res://src/progression/run_modifier.gd" id="1_ainepula"]
 
 [resource]
 script = ExtResource("1_ainepula")

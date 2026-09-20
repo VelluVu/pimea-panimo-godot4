@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="HopData" format=3]
 
-[ext_resource type="Script" uid="uid://ccv8ohajnmhif" path="res://src/classes/hop_data.gd" id="1_centennial"]
+[ext_resource type="Script" uid="uid://ccv8ohajnmhif" path="res://src/brewing/hop_data.gd" id="1_centennial"]
 
 [resource]
 script = ExtResource("1_centennial")

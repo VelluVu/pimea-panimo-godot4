@@ -2,7 +2,7 @@ PIMEA PANIMO — BEER STYLE REFERENCE
 Compiled after the 2026-09-14 realism/duplicate audit against real-world
 (BJCP-style) brewing guidelines, scaled for this game's simplified formulas.
 
-HOW THE GAME COMPUTES A BREW (src/classes/brew_resolver.gd)
+HOW THE GAME COMPUTES A BREW (src/brewing/brew_resolver.gd)
   final_ebc = round(weighted_ebc_sum / total_malt_weight_kg)
   final_ibu = round(total_alpha_acids / 10), where
               total_alpha_acids = sum(hop.alpha_acids * grams_used)

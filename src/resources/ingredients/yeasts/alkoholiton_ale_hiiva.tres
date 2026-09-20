@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="YeastData" format=3]
 
-[ext_resource type="Script" uid="uid://fq1bgyegsftk" path="res://src/classes/yeast_data.gd" id="1_alkale"]
+[ext_resource type="Script" uid="uid://fq1bgyegsftk" path="res://src/brewing/yeast_data.gd" id="1_alkale"]
 
 [resource]
 script = ExtResource("1_alkale")

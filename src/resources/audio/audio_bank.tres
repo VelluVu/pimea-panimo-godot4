@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="AudioBank" format=3]
 
-[ext_resource type="Script" path="res://src/classes/audio_bank.gd" id="1_bank"]
+[ext_resource type="Script" path="res://src/audio/audio_bank.gd" id="1_bank"]
 [ext_resource type="AudioStream" uid="uid://d3hu7ob8luc58" path="res://assets/audio/music/Brewery Madness - Ale Behind the Pixel Door - Treblo.ogg" id="2_music1"]
 [ext_resource type="AudioStream" uid="uid://bb56ygfoi443n" path="res://assets/audio/music/Brewery Madness - Basement Screens - Treblo.ogg" id="3_music2"]
 [ext_resource type="AudioStream" uid="uid://d3pibgknueur6" path="res://assets/audio/music/Brewery Madness - Cellar Ferment Loop - Treblo.ogg" id="4_music3"]

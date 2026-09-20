@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="ImmersionActorData" format=3]
 
-[ext_resource type="Script" path="res://src/classes/immersion_actor_data.gd" id="1_script"]
+[ext_resource type="Script" path="res://src/events/immersion_actor_data.gd" id="1_script"]
 [ext_resource type="SpriteFrames" uid="uid://c8ldm8b7chbew" path="res://src/resources/sprite_frames/mouse_anim.tres" id="2_frames"]
 
 [resource]

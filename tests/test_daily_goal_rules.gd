@@ -6,7 +6,7 @@ extends McpTestSuite
 ## effects and replacement picking. Loaded by path so the suite always runs the
 ## script as it is on disk.
 
-const RulesScript := preload("res://src/classes/daily_goal_rules.gd")
+const RulesScript := preload("res://src/progression/daily_goal_rules.gd")
 
 
 func suite_name() -> String:

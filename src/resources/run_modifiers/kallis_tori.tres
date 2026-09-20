@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="RunModifier" format=3]
 
-[ext_resource type="Script" uid="uid://dka80d13fropj" path="res://src/classes/run_modifier.gd" id="1_kallis"]
+[ext_resource type="Script" uid="uid://dka80d13fropj" path="res://src/progression/run_modifier.gd" id="1_kallis"]
 
 [resource]
 script = ExtResource("1_kallis")

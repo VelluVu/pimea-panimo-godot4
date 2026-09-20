@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="IngredientDonationEventData" format=3]
 
-[ext_resource type="Script" uid="uid://bucd3sgymdlc4" path="res://src/classes/ingredient_donation_event_data.gd" id="1_loan"]
+[ext_resource type="Script" uid="uid://bucd3sgymdlc4" path="res://src/events/ingredient_donation_event_data.gd" id="1_loan"]
 
 [resource]
 script = ExtResource("1_loan")

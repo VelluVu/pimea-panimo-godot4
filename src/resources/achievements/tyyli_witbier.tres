@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="AchievementData" format=3]
 
-[ext_resource type="Script" path="res://src/classes/achievement_data.gd" id="1_achievement"]
+[ext_resource type="Script" path="res://src/progression/achievement_data.gd" id="1_achievement"]
 
 [resource]
 script = ExtResource("1_achievement")
@@ -9,4 +9,4 @@ title = "Tyyli löydetty: Witbier"
 description = "Pane hyllyyn ensimmäinen erä tyyliä Witbier."
 stat_key = &"style_discovered_12"
 target_value = 1
-metadata/_custom_type_script = "res://src/classes/achievement_data.gd"
+metadata/_custom_type_script = "res://src/progression/achievement_data.gd"

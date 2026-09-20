@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="HopData" format=3 uid="uid://bx6ee8qbfnoui"]
 
-[ext_resource type="Script" uid="uid://ccv8ohajnmhif" path="res://src/classes/hop_data.gd" id="1_p3cxr"]
+[ext_resource type="Script" uid="uid://ccv8ohajnmhif" path="res://src/brewing/hop_data.gd" id="1_p3cxr"]
 
 [resource]
 script = ExtResource("1_p3cxr")

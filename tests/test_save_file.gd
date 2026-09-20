@@ -6,7 +6,7 @@ extends McpTestSuite
 ## never the real savegame.tres. Loaded by path so the suite always runs the
 ## script as it is on disk.
 
-const SaveFileScript := preload("res://src/classes/save_file.gd")
+const SaveFileScript := preload("res://src/save/save_file.gd")
 const TEST_PATH : String = "user://_test_save_file.tres"
 
 

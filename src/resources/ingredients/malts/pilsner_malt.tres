@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="MaltData" format=3 uid="uid://dtuqebl4vdhv8"]
 
-[ext_resource type="Script" uid="uid://glh0u5xmw6sx" path="res://src/classes/malt_data.gd" id="1_qgu0j"]
+[ext_resource type="Script" uid="uid://glh0u5xmw6sx" path="res://src/brewing/malt_data.gd" id="1_qgu0j"]
 
 [resource]
 script = ExtResource("1_qgu0j")

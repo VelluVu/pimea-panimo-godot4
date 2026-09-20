@@ -5,7 +5,7 @@ extends McpTestSuite
 ## ingredients with no autoload involved. Loaded by path so the suite always
 ## runs the script as it is on disk.
 
-const RecipeSearchScript := preload("res://src/classes/recipe_search.gd")
+const RecipeSearchScript := preload("res://src/brewing/recipe_search.gd")
 
 
 func suite_name() -> String:
