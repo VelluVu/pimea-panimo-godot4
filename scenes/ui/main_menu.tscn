@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://d0w7kjqp2gem1" path="res://scenes/ui/leaderboard_window.gd" id="5_x2yvf"]
 [ext_resource type="PackedScene" uid="uid://2ddvq1esbm4f" path="res://scenes/ui/modifier_select_window.tscn" id="6_uhagc"]
 [ext_resource type="PackedScene" path="res://scenes/ui/olutoppi_window.tscn" id="7_olutoppi"]
+[ext_resource type="PackedScene" path="res://scenes/ui/achievements_window.tscn" id="8_ach"]
 
 [node name="MainMenu" type="Control" unique_id=1468878832]
 layout_mode = 3
@@ -70,6 +71,10 @@ layout_mode = 2
 text = "Aloita Peli"
 
 [node name="LeaderboardButton" type="Button" parent="CenterContainer/RootMenuView" unique_id=1437759141]
+custom_minimum_size = Vector2(200, 28)
+layout_mode = 2
+
+[node name="AchievementsButton" type="Button" parent="CenterContainer/RootMenuView"]
 custom_minimum_size = Vector2(200, 28)
 layout_mode = 2
 
@@ -173,4 +178,7 @@ theme_override_constants/separation = 6
 layout_mode = 1
 
 [node name="ModifierSelectWindow" parent="." unique_id=1067175277 instance=ExtResource("6_uhagc")]
+layout_mode = 1
+
+[node name="AchievementsWindow" parent="." instance=ExtResource("8_ach")]
 layout_mode = 1

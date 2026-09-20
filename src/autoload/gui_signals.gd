@@ -83,6 +83,12 @@ signal leaderboard_requested()
 signal leaderboard_closed()
 
 @warning_ignore("unused_signal")
+signal achievements_requested()
+
+@warning_ignore("unused_signal")
+signal achievements_closed()
+
+@warning_ignore("unused_signal")
 signal olutoppi_requested()
 
 @warning_ignore("unused_signal")
