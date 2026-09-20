@@ -2,61 +2,37 @@ class_name BrewResolver
 extends Resource
 
 
-## Fraction of a batch's raw bottle_yield that never makes it to sellable
-## inventory — breakage/spillage during bottling. Applied for real in
-## Brewery.start_brew() (fewer bottles actually land in inventory) and
-## folded into get_style_cost_per_bottle() below (the same ingredient
-## spend divided across fewer bottles costs more per bottle), so the two
-## never drift apart.
+## Share of a batch's raw bottles lost to breakage. Applied to real batches and to
+## the per-bottle cost, so the two agree.
 const BOTTLE_LOSS_RATE : float = 0.05
-## Label design/printing cost per bottle produced (before loss) — a real
-## cash cost Brewery.start_brew() deducts from money, and also folded into
-## the cost basis get_price_breakdown() marks up from, same reasoning as
-## BOTTLE_LOSS_RATE above.
+## Label cost per bottle produced (before loss): paid when brewing and part of the cost basis.
 const LABEL_ART_COST_PER_BOTTLE : float = 0.05
-## Bottle, cap, and cleaning-solution cost per bottle — the other
-## production consumable besides label art, folded into the same cost
-## basis for the same reason.
+## Bottle, cap and cleaner cost per bottle, in the same cost basis.
 const CONSUMABLES_COST_PER_BOTTLE : float = 0.10
 
-## Target profit margin: a markup on top of raw ingredient cost. No excise
-## duty or VAT anywhere in this pricing model — a hidden cellar operation
-## isn't remitting anything to the state, so there's nothing to mark up
-## for or split off at sale time (see calculate_price_breakdown() and
-## SaleBreakdown). Tunable balance constant.
+## Profit margin as a markup on raw cost. There is no tax in this model: a hidden
+## cellar remits nothing.
 const PROFIT_MARKUP_RATE : float = 0.5
-## Absolute floor under PROFIT_MARKUP_RATE's proportional cut — on a cheap
-## style like Kotikalja (raw cost ~0.36 EUR) the proportional margin alone
-## is a few cents, which doesn't read as a real "kate" even though the
-## actual sale rounds up to at least 1 EUR. Multiplied by
-## profit_margin_multiplier same as the proportional term below (though
-## that term already dominates for anything but the very cheapest styles).
+## Floor under the proportional margin, so cheap styles like Kotikalja still show a
+## real profit.
 const MIN_PROFIT_PER_BOTTLE : float = 0.5
 
 var active_styles: Array[BeerStyle] = []
 var _style_cost_per_bottle_cache : Dictionary = {}
 var _sale_breakdown_cache : Dictionary = {}
 
-## Set once by Brewery._init() right after this resolver is created, from
-## this run's RunModifier.ingredient_price_multiplier — kept in sync with
-## what Brewery._on_buy_ingredient() actually charges so get_style_cost_per_bottle()
-## and the sale receipt's raw_cost_per_bottle never drift from what the
-## player is really paying under a pricier/cheaper-ingredients modifier.
+## This run's ingredient price multiplier, set by Brewery so per-bottle costs match
+## what the player actually pays.
 var ingredient_price_multiplier : float = 1.0
 
-## Optional ingredient table (id -> IngredientData) handed in by a caller
-## instead of the live IngredientDatabase autoload — see use_ingredients().
-## Left unset in the game itself; exists so resolve_brew_style() and the cost
-## search can be unit-tested with hand-built ingredients, since the autoload
-## isn't reachable from the @tool test runner.
+## Optional ingredient table (id -> IngredientData) used instead of the
+## IngredientDatabase autoload, which the test runner cannot reach. See use_ingredients().
 var _injected_ingredients : Dictionary = {}
 var _injected_ingredient_ids : Array[int] = []
 var _has_injected_ingredients : bool = false
 
 
-## Shared by Brewery.start_brew() (actually shrinking a real batch) and
-## get_style_cost_per_bottle() (pricing off the same shrinkage) so
-## BOTTLE_LOSS_RATE is applied identically in both places.
+## Applies BOTTLE_LOSS_RATE; shared by brewing and the cost calculation.
 static func get_effective_bottle_yield(raw_yield : int) -> int:
 	return maxi(1, raw_yield - roundi(raw_yield * BOTTLE_LOSS_RATE))
 
@@ -114,16 +90,9 @@ func _load_all_beer_styles() -> void:
 			print(current_style.get_style_string())
 
 
-## resolve_brew_style() is first-match-wins over active_styles, which loads
-## in filename/alphabetical order — arbitrary with respect to style
-## design. A style defined by a specific malt (required_malt_id != -1,
-## e.g. Hefeweizen/Witbier/Saison) is a more specific match than a
-## malt-agnostic catch-all like Pale Ale, whose wide EBC/IBU window would
-## otherwise swallow any narrower style that happens to sort after it
-## alphabetically (e.g. "saison.tres"/"witbier.tres" after "pale_ale.tres")
-## even when the combo was built specifically for the narrower style. So
-## every required-malt style gets first look, regardless of filename;
-## relative order is preserved within each group.
+## resolve_brew_style() is first-match-wins, so styles that require a specific malt go
+## first: a wide catch-all like Pale Ale would otherwise swallow them by filename order.
+## Order within each group is kept.
 func _prioritize_required_malt_styles() -> void:
 	var with_required_malt : Array[BeerStyle] = []
 	var without_required_malt : Array[BeerStyle] = []
@@ -144,9 +113,7 @@ func resolve_brew_style(prep_contents : Dictionary) -> BrewResult:
 	var yeast_type: int = -1
 	var distinct_hop_ids: Dictionary = {}
 	var hop_profiles_used: Dictionary = {}
-	## Which malt ingredient IDs are actually on the table, regardless of
-	## amount — see BeerStyle.required_malt_id's docstring for why this
-	## needs to be checked on top of the aggregate weight/EBC numbers.
+	## Malt ids on the table, regardless of amount (see BeerStyle.required_malt_id).
 	var malt_ids_used: Dictionary = {}
 
 	for id in prep_contents.keys():
@@ -241,25 +208,16 @@ func _range_precision(value: float, min_v: float, max_v: float) -> float:
 	return clampf(1.0 - (distance / half_range), 0.0, 1.0)
 
 
-## Per-bottle production cost floor for a style: the cheapest malt combo
-## that clears its EBC/weight requirement, its required yeast, and the
-## cheapest hop dose that clears its min_ibu (see _find_cheapest_hop_dose),
-## amortized over one batch's bottle yield, plus the flat per-bottle
-## consumables (label art, bottle/cap/cleaner). Deliberately NOT
-## compute_minimum_ingredients() (which targets the *center* of the style's
-## EBC/IBU windows for the best brew precision/flavor-match bonus — great
-## for seeding a default recipe, but a style with a wide IBU window like
-## IPA [40,200] would then cost itself off a huge, unrealistic hop dose
-## meant for a precision score, not a shopping list). Exposed separately
-## from get_price_breakdown() (which marks this up with tax and profit) so
-## both the dev console's "sell" preview and the price formula share one
-## cost source instead of drifting apart. Cached per style since the hop
-## search is brute-force.
+## Cost floor per bottle: the cheapest malt combo, the required yeast and the
+## cheapest hop dose that clear the style's ranges, spread over one batch's yield,
+## plus consumables. Deliberately not compute_minimum_ingredients(), which aims at
+## the middle of the ranges and would price a wide-window style like IPA off an
+## unrealistic hop dose. Cached per style, because the hop search is brute force.
 func get_style_cost_per_bottle(beer_style : BeerStyle) -> float:
 	if _style_cost_per_bottle_cache.has(beer_style.style):
 		return _style_cost_per_bottle_cache[beer_style.style]
 
-	var malt_combo : Dictionary = _find_malt_combo(beer_style.min_ebc, beer_style.max_ebc, beer_style.min_malt_weight, beer_style.required_malt_id)
+	var malt_combo : Dictionary = RecipeSearch.find_malt_combo(_get_all_malts(), beer_style.min_ebc, beer_style.max_ebc, beer_style.min_malt_weight, beer_style.required_malt_id)
 	var raw_cost : int = 0
 	for malt_id : int in malt_combo:
 		raw_cost += _ingredient_table()[malt_id].base_price * malt_combo[malt_id]
@@ -269,7 +227,7 @@ func get_style_cost_per_bottle(beer_style : BeerStyle) -> float:
 		raw_cost += yeast_data.base_price
 
 	if beer_style.min_ibu > 0:
-		var hop_dose : Dictionary = _find_cheapest_hop_dose(beer_style.min_ibu, beer_style.max_ibu)
+		var hop_dose : Dictionary = RecipeSearch.find_cheapest_hop_dose(_get_all_hops(), beer_style.min_ibu, beer_style.max_ibu)
 		for hop_id : int in hop_dose:
 			raw_cost += _ingredient_table()[hop_id].base_price * hop_dose[hop_id]
 
@@ -281,19 +239,9 @@ func get_style_cost_per_bottle(beer_style : BeerStyle) -> float:
 	return cost_per_bottle
 
 
-## Pure math, deliberately independent of IngredientDatabase (unlike
-## get_style_cost_per_bottle) so it's unit-testable on its own — see
-## tests/test_brew_resolver.gd. No excise duty or VAT: this cellar
-## operation doesn't remit anything to the state, so the price is exactly
-## what it costs to make plus a profit margin, full stop:
-##   profit           = max(raw_cost * PROFIT_MARKUP_RATE, MIN_PROFIT_PER_BOTTLE) * profit_margin_multiplier
-##   price_per_bottle = raw_cost + profit
-## abv is carried through purely for display (batch labels, receipts) —
-## it no longer affects price at all. profit_margin_multiplier is
-## BeerStyle.profit_margin_multiplier (defaults to 1.0) — lets fussier,
-## more complex styles like IPA or Imperial Stout still earn a fatter
-## margin than a plain Kotikalja; the proportional term already dominates
-## there, MIN_PROFIT_PER_BOTTLE only rescues the cheapest styles.
+## price = raw cost + max(raw cost * PROFIT_MARKUP_RATE, MIN_PROFIT_PER_BOTTLE)
+## * profit_margin_multiplier. Static and independent of IngredientDatabase so it can
+## be unit-tested. `abv` is for display only.
 static func calculate_price_breakdown(style_name : String, abv : float, raw_cost_per_bottle : float, profit_margin_multiplier : float = 1.0) -> SaleBreakdown:
 	var breakdown := SaleBreakdown.new()
 	breakdown.style_name = style_name
@@ -307,13 +255,8 @@ static func calculate_price_breakdown(style_name : String, abv : float, raw_cost
 	return breakdown
 
 
-## Full per-bottle price breakdown for a style — raw ingredient cost (see
-## get_style_cost_per_bottle) marked up with a target profit margin (see
-## calculate_price_breakdown), UNLESS BeerStyle.fixed_price_per_bottle is
-## set, in which case that hand-tuned price wins outright and "kate" is
-## whatever's left after raw cost — price is the designed anchor here, not
-## a formula output. Cached per style, same reasoning as
-## get_style_cost_per_bottle.
+## Cost plus margin, unless BeerStyle.fixed_price_per_bottle is set: then that price
+## wins and the profit is whatever is left after cost. Cached per style.
 func get_price_breakdown(beer_style : BeerStyle) -> SaleBreakdown:
 	if _sale_breakdown_cache.has(beer_style.style):
 		return _sale_breakdown_cache[beer_style.style]
@@ -329,43 +272,10 @@ func get_price_breakdown(beer_style : BeerStyle) -> SaleBreakdown:
 	return breakdown
 
 
-## Per-style list price a customer's evaluate_brew_batch() multiplies by
-## quality/budget/preference — see CustomerManager.process_auto_sale() and
-## CustomerData.evaluate_brew_batch's price_modifier branches for how this
-## turns into what a customer actually pays.
+## The list price that a customer's evaluate_brew_batch() scales by quality, budget
+## and preference.
 func get_style_base_price(beer_style : BeerStyle) -> float:
 	return get_price_breakdown(beer_style).price_per_bottle
-
-
-## Cost-only hop pick used solely by get_style_base_price — unlike
-## _find_hop_dose (which targets the center of [min_ibu, max_ibu] for the
-## best precision score and prefers preferred_hop_profile for the flavor
-## bonus), this ignores flavor profile entirely and searches every hop for
-## whichever one clears min_ibu for the lowest gram cost, since that's the
-## real floor cost to brew a style at all.
-func _find_cheapest_hop_dose(min_ibu : int, max_ibu : int) -> Dictionary:
-	var hops := _get_all_hops()
-	var deltas : Array[int] = [0, 1, 2, -1, 3, -2, 4, 5]
-
-	var best_cost : int = -1
-	var best_dose : Dictionary = {}
-
-	for hop in hops:
-		var base_amount : int = max(1, roundi(min_ibu * 10.0 / hop.alpha_acids))
-		for delta in deltas:
-			var try_amount : int = base_amount + delta
-			if try_amount < 1:
-				continue
-
-			var final_ibu := roundi(hop.alpha_acids * try_amount / 10.0)
-			if final_ibu >= min_ibu and final_ibu <= max_ibu:
-				var cost : int = hop.base_price * try_amount
-				if best_cost == -1 or cost < best_cost:
-					best_cost = cost
-					best_dose = {hop.id: try_amount}
-				break
-
-	return best_dose
 
 
 func get_beer_style(style : BeerStyle.Style) -> BeerStyle:
@@ -376,22 +286,18 @@ func get_beer_style(style : BeerStyle.Style) -> BeerStyle:
 	return null
 
 
-## Computes a bare-minimum ingredient combination that actually brews the
-## given style — used to seed every unlocked style's default recipe.
-## Returns {} if no valid combination could be found. Every result is
-## re-checked against resolve_brew_style() itself before being returned,
-## since active_styles is matched in load order and a combo built purely
-## from beer_style's own ranges could otherwise land inside an earlier,
-## wider-ranged style instead of the one it was built for.
+## A bare-minimum combo that brews `beer_style`, used to seed default recipes; {} if
+## none exists. Re-checked through resolve_brew_style(): styles match in load order,
+## so a combo could land in an earlier, wider style instead.
 func compute_minimum_ingredients(beer_style : BeerStyle) -> Dictionary:
-	var combo : Dictionary = _find_malt_combo(beer_style.min_ebc, beer_style.max_ebc, beer_style.min_malt_weight, beer_style.required_malt_id)
+	var combo : Dictionary = RecipeSearch.find_malt_combo(_get_all_malts(), beer_style.min_ebc, beer_style.max_ebc, beer_style.min_malt_weight, beer_style.required_malt_id)
 	if combo.is_empty():
 		return {}
 
 	combo[beer_style.required_yeast_id] = 1
 
 	if beer_style.min_ibu > 0:
-		var hop_dose : Dictionary = _find_hop_dose(beer_style.min_ibu, beer_style.max_ibu, beer_style.preferred_hop_profile)
+		var hop_dose : Dictionary = RecipeSearch.find_hop_dose(_get_all_hops(), beer_style.min_ibu, beer_style.max_ibu, beer_style.preferred_hop_profile)
 		if hop_dose.is_empty():
 			return {}
 		for hop_id in hop_dose:
@@ -404,13 +310,8 @@ func compute_minimum_ingredients(beer_style : BeerStyle) -> Dictionary:
 	return combo
 
 
-## Whether beer_style's own minimum-ingredient combo needs more than one
-## malt to hit its EBC window — used by RecipeLibraryWindow's locked-style
-## hint so a player knows up front to expect a blend, not just a single
-## malt purchase, before they've discovered the style. Reuses
-## compute_minimum_ingredients() rather than re-deriving the answer
-## separately, so it can never disagree with what actually gets seeded as
-## the style's default recipe.
+## Whether the style's minimum combo needs a malt blend. Reuses
+## compute_minimum_ingredients() so it always agrees with the seeded default recipe.
 func style_needs_malt_blend(beer_style : BeerStyle) -> bool:
 	var combo : Dictionary = compute_minimum_ingredients(beer_style)
 	var malt_count : int = 0
@@ -436,134 +337,3 @@ func _get_all_hops() -> Array[HopData]:
 		if data is HopData:
 			hops.append(data)
 	return hops
-
-
-## Single malt first (cheapest, truest "bare minimum"); falls back to a
-## brute-force two-malt blend search when no single malt's EBC lands in
-## range — several styles in this project's data have no single-malt
-## solution at all (e.g. Doppelbock's [71,95] EBC window sits strictly
-## between the two closest malts), so the blend path is load-bearing,
-## not an edge case.
-## required_malt_id, when set (-1 = none), constrains every branch below to
-## combos that actually include that malt — see BeerStyle.required_malt_id's
-## docstring for why a style like Hefeweizen can't be satisfied by whichever
-## malt happens to land on the right EBC.
-func _find_malt_combo(min_ebc : int, max_ebc : int, min_weight : int, required_malt_id : int = -1) -> Dictionary:
-	var malts := _get_all_malts()
-
-	if required_malt_id != -1:
-		return _find_malt_combo_with_required(malts, min_ebc, max_ebc, min_weight, required_malt_id)
-
-	for malt in malts:
-		if malt.ebc >= min_ebc and malt.ebc <= max_ebc:
-			return {malt.id: min_weight}
-
-	var target_ebc := (min_ebc + max_ebc) / 2.0
-	var best_combo : Dictionary = {}
-	var best_distance := INF
-	var amount_cap := min_weight + 6
-
-	for i in range(malts.size()):
-		for j in range(malts.size()):
-			if i == j:
-				continue
-
-			var malt_a : MaltData = malts[i]
-			var malt_b : MaltData = malts[j]
-			if malt_a.ebc >= malt_b.ebc:
-				continue
-
-			for amount_a in range(1, amount_cap):
-				for amount_b in range(1, amount_cap):
-					var total := amount_a + amount_b
-					if total < min_weight:
-						continue
-
-					var avg := float(malt_a.ebc * amount_a + malt_b.ebc * amount_b) / total
-					if avg < min_ebc or avg > max_ebc:
-						continue
-
-					var distance := absf(avg - target_ebc)
-					if distance < best_distance:
-						best_distance = distance
-						best_combo = {malt_a.id: amount_a, malt_b.id: amount_b}
-
-	return best_combo
-
-
-## Same shape as the unrestricted search above, just always keeping
-## required_malt_id as one side of the blend instead of trying every pair —
-## a single-malt fast path first (required malt alone, if its own EBC
-## already fits), then the required malt blended against every other malt
-## in turn to hit the target EBC.
-func _find_malt_combo_with_required(malts : Array[MaltData], min_ebc : int, max_ebc : int, min_weight : int, required_malt_id : int) -> Dictionary:
-	var required_malt : MaltData = null
-	for malt in malts:
-		if malt.id == required_malt_id:
-			required_malt = malt
-			break
-
-	if required_malt == null:
-		return {}
-
-	if required_malt.ebc >= min_ebc and required_malt.ebc <= max_ebc:
-		return {required_malt.id: min_weight}
-
-	var target_ebc := (min_ebc + max_ebc) / 2.0
-	var best_combo : Dictionary = {}
-	var best_distance := INF
-	var amount_cap := min_weight + 6
-
-	for other_malt in malts:
-		if other_malt.id == required_malt.id:
-			continue
-
-		for amount_required in range(1, amount_cap):
-			for amount_other in range(1, amount_cap):
-				var total := amount_required + amount_other
-				if total < min_weight:
-					continue
-
-				var avg := float(required_malt.ebc * amount_required + other_malt.ebc * amount_other) / total
-				if avg < min_ebc or avg > max_ebc:
-					continue
-
-				var distance := absf(avg - target_ebc)
-				if distance < best_distance:
-					best_distance = distance
-					best_combo = {required_malt.id: amount_required, other_malt.id: amount_other}
-
-	return best_combo
-
-
-## Single hop dose targeting the center of the style's IBU window,
-## preferring one matching the style's flavor profile (falls back to any
-## hop). Nudges the amount by up to 2g either way to land inside range
-## when the center-target rounding falls just outside it.
-func _find_hop_dose(min_ibu : int, max_ibu : int, preferred_profile : HopData.FlavorProfile) -> Dictionary:
-	var hops := _get_all_hops()
-	if hops.is_empty():
-		return {}
-
-	var preferred : Array[HopData] = []
-	for hop in hops:
-		if hop.flavor_profile == preferred_profile:
-			preferred.append(hop)
-
-	var candidates := preferred if not preferred.is_empty() else hops
-	var target_ibu := (min_ibu + max_ibu) / 2.0
-
-	var deltas : Array[int] = [0, 1, -1, 2, -2]
-
-	for hop in candidates:
-		var base_amount : int = max(1, roundi(target_ibu * 10.0 / hop.alpha_acids))
-		for delta in deltas:
-			var try_amount : int = base_amount + delta
-			if try_amount < 1:
-				continue
-
-			var final_ibu := roundi(hop.alpha_acids * try_amount / 10.0)
-			if final_ibu >= min_ibu and final_ibu <= max_ibu:
-				return {hop.id: try_amount}
-
-	return {}
