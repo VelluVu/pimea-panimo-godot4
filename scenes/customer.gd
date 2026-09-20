@@ -2,10 +2,7 @@ class_name Customer
 extends Node2D
 
 
-## Fired once walk_complex_route's tween finishes, regardless of
-## skip_interaction — lets an external controller (a group visit's shared
-## chant/order) know precisely when this customer has actually arrived,
-## instead of guessing the walk's duration from distance and speed.
+## Fired when walk_complex_route's tween finishes, whether or not skip_interaction is set.
 signal walk_route_finished
 
 const FADE_TIME_SECONDS : float = 1.0
@@ -22,21 +19,10 @@ const ANIM_IDLE_UP : StringName = &"idle_up"
 const ANIM_WALK_TOWARDS : StringName = &"walk_towards"
 const ANIM_WALK_RIGHT : StringName = &"walk_right"
 
-## How long a just-served glass sits on the counter before the customer
-## picks it up and leaves — matched to Bartender's serve_beer animation
-## length (src/resources/sprite_frames/baarimikko_anim.tres, 7 frames /
-## speed 4.0 = 2.0s) so the glass visibly appears only once the bartender
-## has actually finished pouring it, not the instant the sale resolves.
-## A tuned constant rather than a live cross-node query: Bartender is a
-## single fixed-position fixture with no per-sale/per-customer identity to
-## hand back (BrewerySignals.bottles_sold carries only an amount), so
-## there's nothing here to react to directly — see show_counter_glass()'s
-## call sites.
+## How long a just-served glass sits on the counter before pickup; matches Bartender's
+## serve_beer animation (2.0s) so the glass appears once the pour has finished.
 const SERVE_BEER_WAIT_SECONDS : float = 2.0
-## How long the counter-glass slide itself takes, once it starts — see
-## show_counter_glass()'s call sites, which wait SERVE_BEER_WAIT_SECONDS
-## first so the slide only begins once the bartender's pour animation has
-## actually finished, not while it's still playing.
+## Duration of the counter-glass slide, which starts after SERVE_BEER_WAIT_SECONDS.
 const GLASS_SLIDE_DURATION_SECONDS : float = 0.6
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
@@ -50,22 +36,12 @@ var customer_data: CustomerData:
 		_apply_visuals()
 var assigned_slot: int = -1
 
-## Set when process_auto_sale() actually sold this customer a beer — gates
-## show_counter_glass()/show_beer_glass() so the glass only ever appears
-## once a sale actually went through, and show_beer_glass() specifically
-## only while walking away (see CustomerHandOffsets: the only pose
-## it's positioned for), never during the counter-facing idle_up wait.
+## Set when a sale went through. Gates the counter glass and the walk-away beer glass.
 var made_purchase: bool = false
 
-## Speech-bubble identity for DialogView, separate from assigned_slot.
-## A group visit puts several customers on the same assigned_slot (they
-## share one counter position and one CustomerManager occupancy slot), but
-## DialogView keys its per-slot bubble/hide-timer bookkeeping by this value
-## — reusing assigned_slot there would let two group members race each
-## other's hide timers on the same bubble and crash on a freed reference.
-## CustomerSpawner sets this explicitly for every customer (solo customers
-## get the same value as assigned_slot, preserving their existing bubble
-## behavior unchanged; group members each get a distinct value).
+## Speech-bubble identity for DialogView, separate from assigned_slot: group members
+## share one assigned_slot but need distinct bubbles, or their hide timers race.
+## CustomerSpawner sets it (solo customers get the same value as assigned_slot).
 var dialogue_slot: int = -1
 
 var generated_name: String = "Asiakas"
@@ -105,10 +81,8 @@ func get_customer_name() -> String:
 	return generated_name
 
 
-## skip_interaction is true for a group visit's members: they still walk and
-## idle at the counter like any customer, but the group's shared controller
-## drives the dialogue/order/departure for all of them at once instead of
-## each one independently triggering its own (see CustomerSpawner).
+## skip_interaction is true for group members: the group's controller drives their
+## dialogue, order and departure instead (see CustomerSpawner).
 func walk_complex_route(stairs_pos: Vector2, center_pos: Vector2, target_pos: Vector2, skip_interaction: bool = false) -> void:
 	var tween = create_tween()
 	var start_pos = global_position
@@ -151,11 +125,7 @@ func _on_reached_counter() -> void:
 	preview_timer.timeout.connect(_on_preview_timeout)
 
 
-## Makes the customer's already-automatic batch choice visible before it
-## resolves, instead of process_auto_sale() deciding and reporting the
-## result in the same instant — the pick itself is still entirely the
-## customer's (find_best_batch_for mirrors what process_auto_sale will
-## actually choose), this just surfaces it as a beat the player can see.
+## Shows the batch the customer will pick before the sale resolves.
 func _on_preview_timeout() -> void:
 	var previewed_batch : BrewBatch = CustomerManager.find_best_batch_for(customer_data)
 	var preview_text : String
@@ -173,14 +143,8 @@ func _on_preview_timeout() -> void:
 
 
 func _on_sale_timeout() -> void:
-	# Captured around the call, same pattern dev_console.gd's "sell"
-	# command already uses for beer_sale_breakdown — process_auto_sale()
-	# is a single synchronous call, so whatever sale_xp_gained fires
-	# during it is unambiguously this sale's, not some other customer's.
-	# A Dictionary, not a plain local: a lambda captures locals by value,
-	# so reassigning a captured int inside it can't ever reach back out
-	# to this scope — mutating a key on a captured Dictionary (a
-	# reference type) can.
+	# process_auto_sale() is synchronous, so signals fired during it belong to this sale.
+	# Dictionaries because lambdas capture locals by value.
 	var xp_capture : Dictionary = {"amount": 0}
 	var capture_xp := func(amount : int) -> void: xp_capture.amount = amount
 	var reputation_capture : Dictionary = {"amount": 0}
@@ -219,33 +183,11 @@ func show_beer_glass() -> void:
 	beer_glass_sprite.show()
 
 
-## Called once SERVE_BEER_WAIT_SECONDS after the sale resolves (see this
-## function's call sites) — i.e. only once the bartender's pour animation
-## has actually finished, not while it's still playing. Slides the glass
-## from wherever the bartender is standing to its resting spot on the
-## counter over GLASS_SLIDE_DURATION_SECONDS. Falls back to popping in at
-## rest position directly if the Bartender can't be found (shouldn't
-## happen — main.tscn always has exactly one — but cheap insurance). Hidden
-## again the moment the customer picks it up to leave (leave_counter()), at
-## which point show_beer_glass() puts the same glass in their hand instead.
-## slide_duration_seconds lets a group order's rapid one-by-one serving
-## burst (GroupVisitDirector._run_shared_group_order()) slide each glass in
-## quicker than a solo customer's — defaults to the normal solo pacing.
-## rest_position_override (global space) lets that same burst rest this
-## glass in the bartender's on-counter stack (Bartender.get_stack_position())
-## instead of this customer's own resting spot — a group's now-far-back
-## members would otherwise each pull their glass all the way out to their
-## seat, which read as beers flying across the room rather than a round
-## being set down on the bar. Vector2.INF means "no override, use my own".
-##
-## Runs with top_level = true (global-space transform, ignoring this
-## Customer's own) for as long as the glass sits on the counter — a group's
-## standby members walk again before picking their glass up (see
-## leave_counter()'s pickup walk), and without this the glass, still an
-## ordinary local-space child, would drag along with them mid-walk instead
-## of staying put on the counter until they actually arrive. Reset back to
-## normal parent-relative positioning in hide_counter_glass() once the
-## glass leaves the counter.
+## Slides the glass from the bartender to its resting spot on the counter. Pops in at
+## rest position if there is no Bartender. Runs top_level so it stays put if the
+## customer walks (undone in hide_counter_glass()).
+## rest_position_override (global) rests it in the bartender's stack instead; group
+## orders use this, and a shorter slide_duration_seconds. Vector2.INF means no override.
 func show_counter_glass(slide_duration_seconds: float = GLASS_SLIDE_DURATION_SECONDS, rest_position_override: Vector2 = Vector2.INF) -> void:
 	var rest_position : Vector2 = rest_position_override if rest_position_override != Vector2.INF else to_global(counter_glass_sprite.position)
 	var bartender := get_tree().get_first_node_in_group(Bartender.BARTENDER_GROUP) as Bartender
@@ -269,13 +211,8 @@ func hide_counter_glass() -> void:
 	counter_glass_sprite.top_level = false
 
 
-## pickup_position_override (global) lets a group order's standby members
-## (see GroupVisitDirector._run_shared_group_order()) walk up to the counter
-## and grab their round from the on-bar stack (Bartender.get_stack_position())
-## before turning to leave, instead of the beer just appearing in their hand
-## from wherever they'd been standing further back — a solo customer, and
-## the group's own order-place representative, are already standing right
-## at the counter, so Vector2.INF ("no pickup walk needed") is their default.
+## pickup_position_override (global) makes a group's standby member walk to the
+## bar stack and grab their round first. Vector2.INF means no pickup walk.
 func leave_counter(pickup_position_override: Vector2 = Vector2.INF) -> void:
 	if pickup_position_override != Vector2.INF:
 		await _walk_to_pickup_spot(pickup_position_override)
@@ -294,11 +231,7 @@ func leave_counter(pickup_position_override: Vector2 = Vector2.INF) -> void:
 	CustomerManager.free_slot_index(assigned_slot)
 
 
-## Same walk-to-a-lateral-target shape walk_complex_route() already uses for
-## its stairs-to-counter leg (ANIM_WALK_RIGHT, flip toward the target, then
-## ANIM_IDLE_UP once arrived) — reused here for the short standby-to-counter
-## hop instead of that bigger multi-leg route, since this is already
-## standing on the floor with nothing to walk around.
+## Short lateral walk to the counter, like walk_complex_route()'s last leg.
 func _walk_to_pickup_spot(target: Vector2) -> void:
 	var distance = global_position.distance_to(target)
 	if distance < 1.0:
