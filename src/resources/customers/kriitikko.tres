@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="CustomerData" format=3]
+
+[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/classes/customer_data.gd" id="1_kriitikko"]
+[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/kriitikko_anim.tres" id="2_sprite"]
+
+[resource]
+script = ExtResource("1_kriitikko")
+customer_name = "Olavi"
+title = "Kriitikko"
+first_names = Array[String](["Olavi", "Kaarlo", "Eino", "Aleksis", "Gunnar", "Vilhelm"])
+min_quality = 0.85
+budget_multiplier = 1.5
+primary_style = 16
+secondary_style = 5
+sprite_frames = ExtResource("2_sprite")
+randomize_skin = false
+randomize_hair = false
+randomize_clothes = false
+randomize_shoes = false
+dialogue_intro = "Hyvää päivää. Olen kirjoittamassa arvostelua. Yllättäkää minut, jos osaatte."
+dialogue_success = "Kompleksinen, tasapainoinen, lähes runollinen. Neljä tähteä viidestä, viides on varattu kirjoittajalle itselleen."
+dialogue_fallback = "Kelvollinen, mutta ei yllätä. Arvosteluni jää harmittoman keskinkertaiseksi."
+dialogue_wrong_style = "Tyyli on kyseenalainen, mutta käsityö puhuu puolestaan. Kirjoitan siitä varovasti."
+dialogue_reject = "Tämä on arvosteluni kannalta ongelma. Ja teidän kannaltanne vielä isompi."
+dialogue_no_match = "Ei mitään arvostelemisen arvoista. Kirjoitan siitä kolumnin."
+quality_tip_sensitivity = 0.8
+rep_bad_quality = -8
+rep_primary_style = 10
+rep_secondary_style = 4
+rep_wrong_style = -2
+quality_reputation_sensitivity = 8.0
+risk_primary_style = 1
+min_reputation_to_appear = 25
+randomizes_preference = true
+metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

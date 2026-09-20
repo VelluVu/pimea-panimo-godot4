@@ -5,6 +5,7 @@ extends PanelContainer
 const INGREDIENT_LABEL_WITH_TARGET_STRING : String = "%s: %d/%d %s"
 const SAVE_TOAST_STRING : String = "Resepti \"%s\" tallennettu!"
 const REJECT_TOAST_STRING : String = "Tuntematon oluttyyli. Keitä se ensin selvittääksesi reseptin!"
+const REJECT_TOAST_FLASH_COLOR : Color = Color(1.4, 0.6, 0.6, 1.0)
 const SAVE_TOAST_FLASH_SECONDS : float = 0.15
 const SAVE_TOAST_HOLD_SECONDS : float = 1.2
 const SAVE_TOAST_FADE_SECONDS : float = 0.4
@@ -49,10 +50,11 @@ const XP_POPUP_FLOAT_DISTANCE : float = 35.0
 @onready var start_brew_button : Button = $VBoxContainer/ButtonPanel/HBoxContainer/StartBrewButton
 
 var table_labels: Dictionary = {} # Key: int (ID) -> Value: Label
-var _toast_tween : Tween
+var _toast : BannerPresenter
 
 
 func _ready() -> void:
+	_toast = BannerPresenter.new(save_recipe_toast, SAVE_TOAST_FLASH_SECONDS, SAVE_TOAST_HOLD_SECONDS, SAVE_TOAST_FADE_SECONDS, true, false)
 	# CurrentRecipeLabel is a scene-defined plain Label (see this scene's
 	# .tscn) — swap its script at runtime instead of editing the .tscn, so
 	# its tooltip_text (the active recipe name) wraps via TooltipFactory
@@ -94,33 +96,11 @@ func _on_erase_button_pressed() -> void:
 
 
 func _on_recipe_saved(recipe_name : String) -> void:
-	save_recipe_toast.text = SAVE_TOAST_STRING % recipe_name
-
-	if _toast_tween:
-		_toast_tween.kill()
-
-	save_recipe_toast.modulate = Color(1.4, 1.4, 1.0, 0.0)
-
-	_toast_tween = create_tween()
-	_toast_tween.tween_property(save_recipe_toast, "modulate", Color(1.4, 1.4, 1.0, 1.0), SAVE_TOAST_FLASH_SECONDS)
-	_toast_tween.tween_property(save_recipe_toast, "modulate", Color(1.0, 1.0, 1.0, 1.0), SAVE_TOAST_FLASH_SECONDS)
-	_toast_tween.tween_interval(SAVE_TOAST_HOLD_SECONDS)
-	_toast_tween.tween_property(save_recipe_toast, "modulate:a", 0.0, SAVE_TOAST_FADE_SECONDS)
+	_toast.present(SAVE_TOAST_STRING % recipe_name)
 
 
 func _on_recipe_save_rejected() -> void:
-	save_recipe_toast.text = REJECT_TOAST_STRING
-
-	if _toast_tween:
-		_toast_tween.kill()
-
-	save_recipe_toast.modulate = Color(1.4, 0.6, 0.6, 0.0)
-
-	_toast_tween = create_tween()
-	_toast_tween.tween_property(save_recipe_toast, "modulate", Color(1.4, 0.6, 0.6, 1.0), SAVE_TOAST_FLASH_SECONDS)
-	_toast_tween.tween_property(save_recipe_toast, "modulate", Color(1.0, 1.0, 1.0, 1.0), SAVE_TOAST_FLASH_SECONDS)
-	_toast_tween.tween_interval(SAVE_TOAST_HOLD_SECONDS)
-	_toast_tween.tween_property(save_recipe_toast, "modulate:a", 0.0, SAVE_TOAST_FADE_SECONDS)
+	_toast.present(REJECT_TOAST_STRING, REJECT_TOAST_FLASH_COLOR)
 
 
 func _initialize_table_nodes() -> void:

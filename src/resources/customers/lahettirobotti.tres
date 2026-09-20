@@ -1,0 +1,33 @@
+[gd_resource type="Resource" script_class="CustomerData" format=3]
+
+[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/classes/customer_data.gd" id="1_lahettirobotti"]
+[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/lahettirobotti_anim.tres" id="2_sprite"]
+
+[resource]
+script = ExtResource("1_lahettirobotti")
+customer_name = "Yksikkö-7"
+title = "Lähettirobotti"
+first_names = Array[String](["Yksikkö-7", "DLVR-3", "Botti-2", "R-9", "Kuriiri-5"])
+min_quality = 0.1
+budget_multiplier = 0.8
+primary_style = 1
+secondary_style = 0
+sprite_frames = ExtResource("2_sprite")
+randomize_skin = false
+randomize_hair = false
+randomize_clothes = false
+randomize_shoes = false
+dialogue_intro = "SKANNAUS KÄYNNISSÄ. Toimitustehtävä vaatii yhden pullon halvinta saatavilla olevaa olutta."
+dialogue_success = "TEHTÄVÄ SUORITETTU. Kiitos, biologinen yhteistyökumppani."
+dialogue_fallback = "Hyväksyttävissä rajoissa. Jatkan toimitusreittiäni."
+dialogue_wrong_style = "Tuotekoodi ei täsmää tilaukseen, mutta prosessoin poikkeaman."
+dialogue_reject = "VIRHEILMOITUS. Laatu alittaa toleranssin. Lasti hylätty."
+dialogue_no_match = "Ei yhteensopivaa tuotetta varastossa. Palaan seuraavalla kierroksella."
+quality_tip_sensitivity = 0.1
+rep_bad_quality = -2
+rep_primary_style = 6
+rep_secondary_style = 2
+rep_wrong_style = -1
+quality_reputation_sensitivity = 1.0
+required_achievement_id = "kolme_vientieraa"
+metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

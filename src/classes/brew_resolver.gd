@@ -44,6 +44,15 @@ var _sale_breakdown_cache : Dictionary = {}
 ## player is really paying under a pricier/cheaper-ingredients modifier.
 var ingredient_price_multiplier : float = 1.0
 
+## Optional ingredient table (id -> IngredientData) handed in by a caller
+## instead of the live IngredientDatabase autoload — see use_ingredients().
+## Left unset in the game itself; exists so resolve_brew_style() and the cost
+## search can be unit-tested with hand-built ingredients, since the autoload
+## isn't reachable from the @tool test runner.
+var _injected_ingredients : Dictionary = {}
+var _injected_ingredient_ids : Array[int] = []
+var _has_injected_ingredients : bool = false
+
 
 ## Shared by Brewery.start_brew() (actually shrinking a real batch) and
 ## get_style_cost_per_bottle() (pricing off the same shrinkage) so
@@ -54,6 +63,26 @@ static func get_effective_bottle_yield(raw_yield : int) -> int:
 
 func _ready() -> void:
 	_load_all_beer_styles()
+
+
+## Makes this resolver read ingredients from `table` (id -> IngredientData)
+## instead of IngredientDatabase. Ids are iterated in ascending order, the
+## same order IngredientDatabase.sorted_ids gives.
+func use_ingredients(table : Dictionary) -> void:
+	_injected_ingredients = table
+	_injected_ingredient_ids.clear()
+	for id : int in table.keys():
+		_injected_ingredient_ids.append(id)
+	_injected_ingredient_ids.sort()
+	_has_injected_ingredients = true
+
+
+func _ingredient_table() -> Dictionary:
+	return _injected_ingredients if _has_injected_ingredients else IngredientDatabase.database
+
+
+func _ingredient_ids() -> Array[int]:
+	return _injected_ingredient_ids if _has_injected_ingredients else IngredientDatabase.sorted_ids
 
 
 func _load_all_beer_styles() -> void:
@@ -122,7 +151,7 @@ func resolve_brew_style(prep_contents : Dictionary) -> BrewResult:
 
 	for id in prep_contents.keys():
 		var amount: int = prep_contents[id]
-		var data: IngredientData = IngredientDatabase.database[id]
+		var data: IngredientData = _ingredient_table()[id]
 
 		match data.type:
 			IngredientData.IngredientType.MALT:
@@ -233,16 +262,16 @@ func get_style_cost_per_bottle(beer_style : BeerStyle) -> float:
 	var malt_combo : Dictionary = _find_malt_combo(beer_style.min_ebc, beer_style.max_ebc, beer_style.min_malt_weight, beer_style.required_malt_id)
 	var raw_cost : int = 0
 	for malt_id : int in malt_combo:
-		raw_cost += IngredientDatabase.database[malt_id].base_price * malt_combo[malt_id]
+		raw_cost += _ingredient_table()[malt_id].base_price * malt_combo[malt_id]
 
-	var yeast_data : IngredientData = IngredientDatabase.database.get(beer_style.required_yeast_id)
+	var yeast_data : IngredientData = _ingredient_table().get(beer_style.required_yeast_id)
 	if yeast_data != null:
 		raw_cost += yeast_data.base_price
 
 	if beer_style.min_ibu > 0:
 		var hop_dose : Dictionary = _find_cheapest_hop_dose(beer_style.min_ibu, beer_style.max_ibu)
 		for hop_id : int in hop_dose:
-			raw_cost += IngredientDatabase.database[hop_id].base_price * hop_dose[hop_id]
+			raw_cost += _ingredient_table()[hop_id].base_price * hop_dose[hop_id]
 
 	var raw_yield : int = BrewResult.new().bottle_yield
 	var effective_yield : int = get_effective_bottle_yield(raw_yield)
@@ -386,15 +415,15 @@ func style_needs_malt_blend(beer_style : BeerStyle) -> bool:
 	var combo : Dictionary = compute_minimum_ingredients(beer_style)
 	var malt_count : int = 0
 	for id in combo:
-		if IngredientDatabase.database[id].type == IngredientData.IngredientType.MALT:
+		if _ingredient_table()[id].type == IngredientData.IngredientType.MALT:
 			malt_count += 1
 	return malt_count > 1
 
 
 func _get_all_malts() -> Array[MaltData]:
 	var malts : Array[MaltData] = []
-	for id in IngredientDatabase.sorted_ids:
-		var data : IngredientData = IngredientDatabase.database[id]
+	for id in _ingredient_ids():
+		var data : IngredientData = _ingredient_table()[id]
 		if data is MaltData:
 			malts.append(data)
 	return malts
@@ -402,8 +431,8 @@ func _get_all_malts() -> Array[MaltData]:
 
 func _get_all_hops() -> Array[HopData]:
 	var hops : Array[HopData] = []
-	for id in IngredientDatabase.sorted_ids:
-		var data : IngredientData = IngredientDatabase.database[id]
+	for id in _ingredient_ids():
+		var data : IngredientData = _ingredient_table()[id]
 		if data is HopData:
 			hops.append(data)
 	return hops

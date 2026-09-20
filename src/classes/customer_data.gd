@@ -118,6 +118,12 @@ const MIN_TIP_PER_QUALITY_POINT : float = 1.0
 ## customers as of 2026-09-18) still motivate brewing it once, since doing
 ## so permanently unlocks a new customer archetype for every future run.
 @export var required_discovered_style: int = -1
+## Empty = ei rajoitusta. Gates this customer's appearance behind
+## AchievementManager.is_unlocked(required_achievement_id) — same
+## permanent-across-runs shape as required_discovered_style above, just
+## keyed to a lifetime stat threshold (see AchievementData) instead of a
+## brewed style. See Lähettirobotti, unlocked after 3 bar shipments.
+@export var required_achievement_id: String = ""
 
 @export_group("Erikoiskäytös")
 @export var randomizes_preference: bool = false

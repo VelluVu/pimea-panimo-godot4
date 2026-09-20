@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="AchievementData" format=3]
+
+[ext_resource type="Script" path="res://src/classes/achievement_data.gd" id="1_achievement"]
+
+[resource]
+script = ExtResource("1_achievement")
+achievement_id = "tyyli_doppelbock"
+title = "Tyyli löydetty: Doppelbock"
+description = "Pane hyllyyn ensimmäinen erä tyyliä Doppelbock."
+stat_key = &"style_discovered_10"
+target_value = 1
+metadata/_custom_type_script = "res://src/classes/achievement_data.gd"

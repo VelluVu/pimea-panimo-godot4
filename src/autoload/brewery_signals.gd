@@ -35,9 +35,14 @@ signal beer_brewed(style: int)
 signal customer_unhappy()
 ## Fired by SpecialEventManager.process_accept() with try_fulfill()'s own
 ## result — previously discarded once it had picked a dialogue string.
-## Read by DailyGoalManager for the SPECIAL_EVENT goal type.
+## Read by DailyGoalManager for the SPECIAL_EVENT goal type (which only
+## needs succeeded, hence its handler declaring just that one param — a
+## connected method may take fewer params than the signal emits).
+## event_data identifies WHICH event resolved, added for AchievementManager
+## to tell a RiskBribeEventData success apart from any other special event
+## type without needing its own signal.
 @warning_ignore("unused_signal")
-signal special_event_resolved(succeeded: bool)
+signal special_event_resolved(succeeded: bool, event_data: SpecialEventData)
 @warning_ignore("unused_signal")
 signal group_visit_announced(banner_text: String)
 @warning_ignore("unused_signal")
@@ -118,6 +123,13 @@ signal ingredient_purchase_locked(ingredient_name: String, required_reputation: 
 ## RESOURCE_ERROR to console with no on-screen explanation.
 @warning_ignore("unused_signal")
 signal ingredient_purchase_underfunded(ingredient_name: String, price: int, money: float)
+## Fired by Brewery._on_sell_ingredient() when the requested amount can't be
+## withdrawn (stock is all-or-nothing, see Inventory.withdraw_item()). The
+## sell counterpart of the purchase failure signals above, so any listener
+## (today only DevConsole) can report why nothing was sold instead of
+## inferring it from an unchanged inventory.
+@warning_ignore("unused_signal")
+signal ingredient_sale_failed(ingredient_name: String, requested: int, in_stock: int)
 ## Fired by Brewery.apply_early_close_cost() whenever the player manually
 ## closes the day before the timer runs out — see that method's docstring
 ## for why this costs money/reputation but relieves some LVV risk, and

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ImmersionVignetteData" format=3]
+
+[ext_resource type="Script" path="res://src/classes/immersion_vignette_data.gd" id="1_script"]
+[ext_resource type="Script" path="res://src/classes/immersion_actor_data.gd" id="2_actor_script"]
+[ext_resource type="Resource" path="res://src/resources/immersion_vignettes/actors/mouse.tres" id="3_mouse"]
+[ext_resource type="Resource" path="res://src/resources/immersion_vignettes/actors/cat.tres" id="4_cat"]
+
+[resource]
+script = ExtResource("1_script")
+vignette_name = "Hiiri ja kissa"
+path_node_name = &"PathMarkers"
+actors = Array[ExtResource("2_actor_script")]([ExtResource("3_mouse"), ExtResource("4_cat")])
+weight = 1.0

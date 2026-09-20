@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_anteliaat")
 perk_name = "Anteliaat asiakkaat"
-description = "Sana kiirii hyvästä palvelusta tyytyväiset asiakkaat jättävät nyt anteliaampia tippejä."
+description = "Sana kiirii hyvästä palvelusta: tyytyväiset asiakkaat jättävät nyt anteliaampia tippejä."
 icon_placeholder = "💝"
 tier = 1
 tip_income_multiplier = 1.5

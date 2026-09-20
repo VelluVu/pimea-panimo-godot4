@@ -1,0 +1,33 @@
+[gd_resource type="Resource" script_class="CustomerData" format=3]
+
+[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/classes/customer_data.gd" id="1_munkki"]
+[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/munkki_anim.tres" id="2_sprite"]
+
+[resource]
+script = ExtResource("1_munkki")
+customer_name = "Ambrosius"
+title = "Munkki"
+first_names = Array[String](["Ambrosius", "Bernhard", "Gregorius", "Anselm", "Serafim", "Kolumban"])
+min_quality = 0.75
+budget_multiplier = 1.1
+primary_style = 14
+secondary_style = 15
+sprite_frames = ExtResource("2_sprite")
+randomize_skin = false
+randomize_hair = false
+randomize_clothes = false
+randomize_shoes = false
+dialogue_intro = "Rauha kanssasi. Etsin olutta, jossa kuuluu villihiivan ja kärsivällisyyden ääni."
+dialogue_success = "Tässä on totista hurskautta pullossa. Villihiiva on tehnyt ihmeensä, siunattu olkoon panija."
+dialogue_fallback = "Kelvollista käsityötä, vaikka hiivan luonne jäi vielä vaisuksi."
+dialogue_wrong_style = "Toinen polku kuin toivoin, mutta otan sen vastaan nöyrästi."
+dialogue_reject = "Tässä ei ole hiivan sielua lainkaan. En voi ottaa vastaan tällaista maljaa."
+dialogue_no_match = "Ei täällä ollut mitään, jossa kärsivällisyys näkyisi. Palaan, kun aika on kypsempi."
+quality_tip_sensitivity = 0.6
+rep_bad_quality = -5
+rep_primary_style = 12
+rep_secondary_style = 4
+quality_reputation_sensitivity = 5.0
+min_reputation_to_appear = 15
+required_discovered_style = 14
+metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

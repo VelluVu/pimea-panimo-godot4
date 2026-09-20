@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ImmersionActorData" format=3]
+
+[ext_resource type="Script" path="res://src/classes/immersion_actor_data.gd" id="1_script"]
+[ext_resource type="SpriteFrames" uid="uid://c8ldm8b7chbew" path="res://src/resources/sprite_frames/mouse_anim.tres" id="2_frames"]
+
+[resource]
+script = ExtResource("1_script")
+sprite_frames = ExtResource("2_frames")
+animation = &"walk_left"
+base_scale = Vector2(4, 4)
+start_delay_seconds = 0.0
+crossing_seconds = 6.0

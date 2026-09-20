@@ -742,8 +742,10 @@ func _on_sell_ingredient(ingredient_id : int, amount : int) -> void:
 		return
 	
 	var final_amount : int = inventory.withdraw_item_by_id(ingredient_id, amount)
-	
+
 	if final_amount <= 0:
+		var held : InventoryItem = inventory.get_item_by_id(ingredient_id)
+		BrewerySignals.ingredient_sale_failed.emit(ingredient.name, amount, held.amount if held != null else 0)
 		return
 		
 	var sell_price : float = snappedf(final_amount * ingredient.base_price * get_ingredient_price_multiplier() * 0.75, 0.1)

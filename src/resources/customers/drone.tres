@@ -1,0 +1,33 @@
+[gd_resource type="Resource" script_class="CustomerData" format=3]
+
+[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/classes/customer_data.gd" id="1_drone"]
+[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/drone_anim.tres" id="2_sprite"]
+
+[resource]
+script = ExtResource("1_drone")
+customer_name = "QA-4"
+title = "Tarkastusdrooni"
+first_names = Array[String](["QA-4", "Skanneri-2", "Tutka-6", "Auditori-1", "Valvoja-3"])
+min_quality = 0.6
+budget_multiplier = 1.0
+primary_style = 3
+secondary_style = 6
+sprite_frames = ExtResource("2_sprite")
+randomize_skin = false
+randomize_hair = false
+randomize_clothes = false
+randomize_shoes = false
+dialogue_intro = "LAATUTARKASTUS ALOITETTU. Pyydän näytteen korkeimman saatavilla olevan laadun oluesta."
+dialogue_success = "ANALYYSI HYVÄKSYTTY. Laatuarvo ylittää raja-arvon."
+dialogue_fallback = "ANALYYSI: RAJATAPAUS. Kirjataan lievä poikkeama raporttiin."
+dialogue_wrong_style = "Tuoteluokka ei vastaa auditoinnin kohdetta, mutta arvo kirjataan silti."
+dialogue_reject = "HYLÄTTY. Laatuarvo alittaa sallitun toleranssin selvästi."
+dialogue_no_match = "Ei auditoitavaa näytettä saatavilla. Palaan myöhemmin uudella kierroksella."
+quality_tip_sensitivity = 0.0
+rep_bad_quality = -4
+rep_primary_style = 8
+rep_secondary_style = 3
+rep_wrong_style = -1
+quality_reputation_sensitivity = 3.0
+required_achievement_id = "kolme_lvv_lahjusta"
+metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

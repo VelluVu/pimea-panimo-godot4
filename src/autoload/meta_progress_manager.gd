@@ -144,6 +144,13 @@ func meets_prerequisites(unlock_id : String) -> bool:
 	var unlock : MetaUnlockData = find_unlock(unlock_id)
 	if unlock == null:
 		return false
+
+	if unlock.requires_any_prerequisite:
+		for prereq_id : String in unlock.prerequisite_ids:
+			if get_node_level(prereq_id) > 0:
+				return true
+		return unlock.prerequisite_ids.is_empty()
+
 	for prereq_id : String in unlock.prerequisite_ids:
 		if get_node_level(prereq_id) <= 0:
 			return false

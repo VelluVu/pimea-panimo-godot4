@@ -38,7 +38,7 @@ func process_accept(event_data: SpecialEventData) -> String:
 	var brewery = BrewEngine.current_brewery
 
 	var succeeded := event_data.try_fulfill(brewery)
-	BrewerySignals.special_event_resolved.emit(succeeded)
+	BrewerySignals.special_event_resolved.emit(succeeded, event_data)
 
 	if succeeded:
 		BrewerySignals.brewery_state_changed.emit(brewery)
