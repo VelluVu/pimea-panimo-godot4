@@ -1,10 +1,7 @@
 class_name RecipeBook
 extends RefCounted
 
-## Owns the saved-recipe and brewing-table player actions (save, load, fill,
-## clear) that used to live on Brewery. Signal handlers only: the state itself
-## (saved_recipes, brew_preparation, inventory) stays on the Brewery resource so
-## saves keep working.
+## The brewing table and saved recipes: add, remove, save, load, fill and clear.
 
 var brewery : Brewery
 
@@ -14,14 +11,17 @@ func _init(owner : Brewery) -> void:
 
 
 func connect_signals() -> void:
+	GUISignals.add_ingredient_to_brew_preparation.connect(_on_add_ingredient_to_brew_preparation)
+	GUISignals.remove_ingredients_from_brew_preparation.connect(_on_remove_ingredient_from_brew_preparation)
 	GUISignals.save_recipe_requested.connect(_on_save_recipe_requested)
 	GUISignals.load_recipe_requested.connect(_on_load_recipe_requested)
 	GUISignals.fill_recipe_from_inventory_requested.connect(_on_fill_recipe_from_inventory_requested)
 	GUISignals.clear_brew_preparation_requested.connect(_on_clear_brew_preparation_requested)
 
 
-## Must run before the owning Brewery is replaced, see Brewery.disconnect_signals().
 func disconnect_signals() -> void:
+	GUISignals.add_ingredient_to_brew_preparation.disconnect(_on_add_ingredient_to_brew_preparation)
+	GUISignals.remove_ingredients_from_brew_preparation.disconnect(_on_remove_ingredient_from_brew_preparation)
 	GUISignals.save_recipe_requested.disconnect(_on_save_recipe_requested)
 	GUISignals.load_recipe_requested.disconnect(_on_load_recipe_requested)
 	GUISignals.fill_recipe_from_inventory_requested.disconnect(_on_fill_recipe_from_inventory_requested)
@@ -36,9 +36,8 @@ func _on_save_recipe_requested() -> void:
 	if preview == null:
 		return
 
-	# Don't let the player name-peek an undiscovered style just by saving the
-	# recipe — that would spoil the "brew it to find out" surprise. Styles
-	# save themselves automatically the moment they're actually discovered.
+	# Saving would reveal an undiscovered style's name. Styles save themselves
+	# when discovered.
 	if not brewery.is_style_known(preview.beer_style.style):
 		BrewerySignals.recipe_save_rejected.emit()
 		return
@@ -63,8 +62,7 @@ func save_recipe(beer_style : BeerStyle, ingredient_amounts : Dictionary) -> voi
 	BrewerySignals.recipe_saved.emit(recipe.recipe_name)
 
 
-## Clears whatever's currently on the brewing table, refunding it to
-## inventory first — used by the brew preparation panel's erase button.
+## Clears the table, refunding its contents to inventory.
 func _on_clear_brew_preparation_requested() -> void:
 	for ingredient_id : int in brewery.brew_preparation.selected_contents:
 		var amount : int = brewery.brew_preparation.selected_contents[ingredient_id]
@@ -93,17 +91,8 @@ func _on_load_recipe_requested(recipe : BrewRecipe) -> void:
 	BrewerySignals.brewery_state_changed.emit(brewery)
 
 
-## Tops the table up to the currently active recipe's target amounts —
-## unlike _on_load_recipe_requested() above (which withdraws whatever it
-## can even if that's short of the target, since loading IS the point at
-## which a fresh target gets set), this is strictly all-or-nothing: it
-## checks every missing ingredient against inventory FIRST, and refuses
-## outright if any single one is short, rather than partially draining
-## inventory into a table that still can't brew. BrewPreparationPanel
-## mirrors this same check to keep its "Täytä" button disabled whenever
-## this would refuse, so a real player should never actually reach the
-## refusal path — same defense-in-depth reasoning as the reputation guard
-## in _on_ship_batch_to_bar_requested().
+## Tops the table up to the active recipe, all or nothing: if any ingredient is
+## short nothing is withdrawn. The UI disables its button in that case too.
 func _on_fill_recipe_from_inventory_requested() -> void:
 	var recipe_target : Dictionary = brewery.brew_preparation.active_recipe_target
 	if recipe_target.is_empty():
@@ -131,4 +120,20 @@ func _on_fill_recipe_from_inventory_requested() -> void:
 		var withdrawn : int = brewery.inventory.withdraw_item_by_id(ingredient_id, missing_amounts[ingredient_id])
 		brewery.brew_preparation.add_to_table(ingredient_id, withdrawn)
 
+	BrewerySignals.brewery_state_changed.emit(brewery)
+
+
+func _on_add_ingredient_to_brew_preparation(ingredient_id : int, amount : int) -> void:
+	var final_amount : int =  brewery.inventory.withdraw_item_by_id(ingredient_id, amount)
+	
+	if final_amount <= 0:
+		return
+	
+	brewery.brew_preparation.add_to_table(ingredient_id, final_amount)
+	BrewerySignals.brewery_state_changed.emit(brewery)
+
+
+func _on_remove_ingredient_from_brew_preparation(ingredient_id : int, amount : int) -> void:
+	var exact_amount : int = brewery.brew_preparation.remove_from_table(ingredient_id, amount)
+	brewery.inventory.add_amount_by_id(ingredient_id, exact_amount)
 	BrewerySignals.brewery_state_changed.emit(brewery)

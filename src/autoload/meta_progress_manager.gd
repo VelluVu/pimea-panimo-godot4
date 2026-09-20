@@ -10,7 +10,7 @@ extends Node
 ##
 ## Style discovery was the cheap first step of the larger meta-progression
 ## idea; renown + MetaUnlockData is the second step, the actual spendable
-## "talent tree" — see Brewery._seed_meta_discovered_styles()/
+## "talent tree" — see StyleDiscovery.seed_from_meta()/
 ## _seed_meta_perks() for how both feed into a brand new run.
 
 const SAVE_PATH : String = "user://meta_progress.cfg"

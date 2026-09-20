@@ -109,7 +109,7 @@ const MIN_TIP_PER_QUALITY_POINT : float = 1.0
 ## -1 = ei rajoitusta. Gates this customer's appearance behind having ever
 ## brewed the given BeerStyle.Style in ANY past run, not just this one — see
 ## MetaProgressManager.has_style(), the same permanent-across-runs
-## discovery tracking Brewery._seed_meta_discovered_styles() already reads
+## discovery tracking StyleDiscovery.seed_from_meta() already reads
 ## from. Checked alongside min_reputation_to_appear in
 ## CustomerRegistry.get_random_customer_data()/get_customer_for_style(), so
 ## a customer can require both a reputation floor AND a prior style

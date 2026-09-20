@@ -1,8 +1,7 @@
 class_name IngredientTrader
 extends RefCounted
 
-## Buying and selling raw ingredients at the shop counter, plus the tutorial
-## purchase tracking that rides along with it. Moved off Brewery; state stays there.
+## Buying and selling raw ingredients, plus the tutorial purchase tracking.
 
 var brewery : Brewery
 
@@ -16,7 +15,6 @@ func connect_signals() -> void:
 	GUISignals.sell_ingredient.connect(_on_sell_ingredient)
 
 
-## Must run before the owning Brewery is replaced, see Brewery.disconnect_signals().
 func disconnect_signals() -> void:
 	GUISignals.buy_ingredient.disconnect(_on_buy_ingredient)
 	GUISignals.sell_ingredient.disconnect(_on_sell_ingredient)

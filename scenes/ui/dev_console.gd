@@ -386,6 +386,18 @@ func _cmd_clear(_args: PackedStringArray) -> void:
 
 
 
+## Turning dev mode on skips the beginner tutorial and starts the day clock.
+## Turning it off leaves both alone: un-completing the tutorial or stopping a
+## running clock would be destructive.
+func _skip_tutorial_and_start_clock() -> void:
+	var brewery := BrewEngine.current_brewery
+	if brewery == null:
+		return
+	brewery.skip_tutorial()
+	TimeManager.start_clock_immediately()
+	BrewerySignals.brewery_state_changed.emit(brewery)
+
+
 ## Secret cheat code (classic Doom god-mode toggle) that flips developer
 ## mode on/off right from the console. Deliberately a player command, not a
 ## dev command — it must work even while developer mode is off, since
@@ -394,6 +406,7 @@ func _cmd_clear(_args: PackedStringArray) -> void:
 func _cmd_iddqd(_args: PackedStringArray) -> void:
 	var enabled = BrewEngine.toggle_developer_mode()
 	if enabled:
+		_skip_tutorial_and_start_clock()
 		_log("[color=lightgreen]Kehittäjätila käytössä.[/color]")
 	else:
 		_log("[color=orange]Kehittäjätila pois käytöstä.[/color]")
