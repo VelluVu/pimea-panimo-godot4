@@ -109,3 +109,16 @@ func test_withdraw_item_on_unknown_ingredient_returns_zero() -> void:
 	var yeast := _make_ingredient(300, IngredientData.IngredientType.YEAST)
 
 	assert_eq(inventory.withdraw_item(yeast, 1), 0)
+
+
+func test_count_bottles_is_zero_for_an_empty_cellar() -> void:
+	assert_eq(Inventory.new().count_bottles(), 0)
+
+
+func test_count_bottles_sums_every_batch() -> void:
+	var inventory := Inventory.new()
+	for amount : int in [10, 5, 7]:
+		var batch := BrewBatch.new()
+		batch.amount_bottles = amount
+		inventory.brew_batches.append(batch)
+	assert_eq(inventory.count_bottles(), 22)

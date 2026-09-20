@@ -117,3 +117,11 @@ func add_amount_by_id(id: int, amount: int) -> void:
 		return
 		
 	add_amount(ingredient, amount)
+
+
+## Bottles across every batch in the cellar.
+func count_bottles() -> int:
+	var total : int = 0
+	for batch : BrewBatch in brew_batches:
+		total += batch.amount_bottles
+	return total

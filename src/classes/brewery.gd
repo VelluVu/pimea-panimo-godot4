@@ -63,9 +63,16 @@ var game_has_ended : bool = false
 @export var active_perks : Array[RunPerk] = []
 @export var brew_preparation : BrewPreparation
 @export var saved_recipes : Array[BrewRecipe] = []
-## Runtime only, rebuilt on load.
-var resolver : BrewResolver = null
 @export var discovered_styles : Dictionary = {} # Avain: BeerStyle.Style -> Arvo: true
+
+## First-brew tutorial progress. One-way latches, so a step stays done after
+## its ingredients are used up. tutorial_complete() derives from these.
+@export var lifetime_malt_kg_bought : int = 0
+@export var tutorial_bought_yeast : bool = false
+@export var tutorial_brewed_kotikalja : bool = false
+
+## Runtime only, not saved.
+var resolver : BrewResolver = null
 
 ## Today's sales for the receipt log window; cleared each day, not saved.
 var today_sale_receipts : Array[SaleReceiptEntry] = []
@@ -79,12 +86,6 @@ var stats : PerkStats:
 ## Services holding the Brewery's behaviour. They connect their own GUISignals
 ## handlers in _ready() and release them in disconnect_signals().
 var _services : Array = []
-
-## First-brew tutorial progress. One-way latches, so a step stays done after
-## its ingredients are used up. tutorial_complete() derives from these.
-@export var lifetime_malt_kg_bought : int = 0
-@export var tutorial_bought_yeast : bool = false
-@export var tutorial_brewed_kotikalja : bool = false
 
 
 ## Godot also calls _init() when loading a save, then overwrites the exported
@@ -137,10 +138,6 @@ func add_risk(amount : int) -> void:
 	InspectionService.new(self).check_for_raid()
 
 
-func clear_risk() -> void:
-	risk = 0
-
-
 ## Static so the curve can be unit-tested without a live Brewery.
 static func xp_required_for_level(level : int) -> int:
 	return XP_LEVEL_BASE + (level - 1) * XP_LEVEL_GROWTH_PER_LEVEL
@@ -171,23 +168,10 @@ func get_effective_raid_threshold() -> int:
 	return stats.raid_threshold(LVV_RAID_THRESHOLD)
 
 
-func apply_early_close_cost(earliness : float) -> void:
-	InspectionService.new(self).apply_early_close_cost(earliness)
-
-
-func count_total_bottles() -> int:
-	var total : int = 0
-
-	for batch : BrewBatch in inventory.brew_batches:
-		total += batch.amount_bottles
-
-	return total
-
-
 ## Call after anything that can drain money: no cash and nothing left to
 ## sell is a dead end.
 func check_bankruptcy() -> void:
-	if money > 0.0 or count_total_bottles() > 0:
+	if money > 0.0 or inventory.count_bottles() > 0:
 		return
 	trigger_ending("bankrupt")
 
