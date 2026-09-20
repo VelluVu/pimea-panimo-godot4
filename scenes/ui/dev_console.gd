@@ -8,21 +8,19 @@ extends Panel
 ##    text shortcuts for actions the UI already allows, wrapping the exact
 ##    same GUISignals a button click would fire. No economy/unlock rule is
 ##    ever bypassed; this only skips clicking through menus.
-##  - dev/cheat commands (brew, money, raid, ...) stay gated behind
-##    BrewEngine.is_developer_mode(), matching the old FeatureTesterPanel's
-##    gating. Toggled at runtime by the secret "iddqd" command (a player
-##    command, so it works even while developer mode is off).
+##  - dev commands stay gated behind
+##    BrewEngine.is_developer_mode(). Toggled at runtime by a secret command
+##    that lives in a gitignored command set.
 ## The log itself is always visible regardless of either tier.
 
 const CHEAT_SET_PATHS: Array[String] = [
+	"res://src/console/dev_mode_commands.gd",
 	"res://src/console/batch_cheat_commands.gd",
 	"res://src/console/world_cheat_commands.gd",
 ]
 const TITLE_TEXT: String = "Konsoli"
 const COLLAPSE_ICON: String = "▼"
 const EXPAND_ICON: String = "▲"
-const DEV_MODE_OFF_MESSAGE: String = "[color=orange]Komennot ovat pois käytöstä (DEVELOPER_MODE = false).[/color]"
-const UNKNOWN_COMMAND_MESSAGE: String = "[color=orange]Tuntematon komento: %s (kokeile 'help')[/color]"
 const MAX_LOG_LINES: int = 200
 
 const MIN_SIZE: Vector2 = Vector2(180, 90)
@@ -54,33 +52,8 @@ var _resize_start_offset_left: float
 var _resize_start_offset_top: float
 
 var _command_history: PackedStringArray = []
-## Command name -> ConsoleCommand, in registration order (which is also the
-## order `help` lists them in).
-var _commands: Dictionary = {}
-## Kept so the sets (and their signal connections) live as long as the console.
-var _command_sets: Array[ConsoleCommandSet] = []
+var _registry: ConsoleCommandRegistry
 
-
-## One console command: its handler, what `help` prints for it, and whether it
-## needs developer mode. Registering everything through _register() keeps the
-## dispatch table and the help text from drifting apart.
-class ConsoleCommand:
-	var handler: Callable
-	var usage: String
-	var note: String
-	var dev_only: bool
-	## Unlisted commands still work but don't appear in `help` (help itself, iddqd).
-	var listed: bool
-
-	func _init(p_handler: Callable, p_usage: String, p_note: String, p_dev_only: bool, p_listed: bool) -> void:
-		handler = p_handler
-		usage = p_usage
-		note = p_note
-		dev_only = p_dev_only
-		listed = p_listed
-
-	func help_text() -> String:
-		return usage if note.is_empty() else "%s (%s)" % [usage, note]
 
 
 func _ready() -> void:
@@ -260,12 +233,6 @@ func _on_early_day_close_applied(money_cost: float, reputation_cost: int, risk_r
 	_log("[color=orange]Ovet suljettu aikaisin (%d. kerta): -%.1f €, mainetta -%d, LVV-riski -%d[/color]" % [close_count, money_cost, reputation_cost, risk_relief])
 
 
-
-
-
-
-
-
 func _on_special_event_triggered(event_data: SpecialEventData) -> void:
 	_log("[color=yellow]Erikoistapahtuma: %s[/color]" % event_data.event_caller_name)
 
@@ -296,7 +263,7 @@ func _scroll_log_to_bottom() -> void:
 	log_scroll.scroll_vertical = int(log_scroll.get_v_scroll_bar().max_value)
 
 
-# ----- command / macro dispatch -----
+# ----- command dispatch, handled by ConsoleCommandRegistry -----
 
 ## LineEdit releases its own focus internally as part of submitting on
 ## Enter, which used to leave the player having to manually click the field
@@ -310,157 +277,22 @@ func _on_command_submitted(raw_text: String) -> void:
 		return
 
 	_log("[color=gray]> %s[/color]" % text)
-
-	var parts := text.split(" ", false)
-	var command_name := parts[0].to_lower()
-	var args := parts.slice(1)
-
-	var command: ConsoleCommand = _commands.get(command_name)
-	if command == null:
-		_log(UNKNOWN_COMMAND_MESSAGE % command_name)
-		return
-
-	if command.dev_only and not BrewEngine.is_developer_mode():
-		_log(DEV_MODE_OFF_MESSAGE)
-		return
-
-	command.handler.call(args)
-
-
-func _register(command_name: String, handler: Callable, usage: String = "", note: String = "", dev_only: bool = false, listed: bool = true) -> void:
-	_commands[command_name] = ConsoleCommand.new(handler, usage if not usage.is_empty() else command_name, note, dev_only, listed)
+	_registry.execute(text)
 
 
 func _register_commands() -> void:
-	_commands.clear()
-	_command_sets.clear()
-
+	_registry = ConsoleCommandRegistry.new(_log)
 	# Registration order is the order `help` lists commands in: player
 	# commands first, then the console's own, then developer commands.
-	_add_command_set(PlayerCommands.new(_log))
-	_register("clear", _cmd_clear)
-	_register("help", _cmd_help, "", "", false, false)
-	_register("iddqd", _cmd_iddqd, "", "", false, false)
+	_registry.add_command_set(PlayerCommands.new(_log))
+	_registry.register("clear", _cmd_clear)
+	_registry.register("help", _registry.print_help, "", "", false, false)
 	# Cheat sets are gitignored and absent from public clones, so load them by path.
 	for path: String in CHEAT_SET_PATHS:
-		if ResourceLoader.exists(path):
-			_add_command_set((load(path) as GDScript).new(_log))
+		_registry.add_optional_command_set(path)
 
-
-func _add_command_set(command_set: ConsoleCommandSet) -> void:
-	_command_sets.append(command_set)
-	command_set.register(_register)
-
-
-func _cmd_help(_args: PackedStringArray) -> void:
-	_log("Komennot: %s" % ", ".join(_help_entries(false)))
-	if BrewEngine.is_developer_mode():
-		_log("[color=orange]Kehittäjäkomennot: %s[/color]" % ", ".join(_help_entries(true)))
-
-
-## Help lines for every listed command of one kind, in registration order.
-func _help_entries(dev_only: bool) -> PackedStringArray:
-	var entries := PackedStringArray()
-	for command: ConsoleCommand in _commands.values():
-		if command.listed and command.dev_only == dev_only:
-			entries.append(command.help_text())
-	return entries
 
 
 func _cmd_clear(_args: PackedStringArray) -> void:
 	log_label.clear()
 	_command_history.clear()
-
-
-# ----- player commands: text shortcuts for actions the UI already allows,
-# wrapping the exact GUISignals a button click would fire. No economy or
-# unlock rule is ever bypassed — this only skips clicking through menus.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## Turning dev mode on skips the beginner tutorial and starts the day clock.
-## Turning it off leaves both alone: un-completing the tutorial or stopping a
-## running clock would be destructive.
-func _skip_tutorial_and_start_clock() -> void:
-	var brewery := BrewEngine.current_brewery
-	if brewery == null:
-		return
-	brewery.skip_tutorial()
-	TimeManager.start_clock_immediately()
-	BrewerySignals.brewery_state_changed.emit(brewery)
-
-
-## Secret cheat code (classic Doom god-mode toggle) that flips developer
-## mode on/off right from the console. Deliberately a player command, not a
-## dev command — it must work even while developer mode is off, since
-## that's the whole point of it — and deliberately left out of _cmd_help,
-## since a cheat code that's listed in the help text isn't much of one.
-func _cmd_iddqd(_args: PackedStringArray) -> void:
-	var enabled = BrewEngine.toggle_developer_mode()
-	if enabled:
-		_skip_tutorial_and_start_clock()
-		_log("[color=lightgreen]Kehittäjätila käytössä.[/color]")
-	else:
-		_log("[color=orange]Kehittäjätila pois käytöstä.[/color]")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
