@@ -14,6 +14,10 @@ extends Panel
 ##    command, so it works even while developer mode is off).
 ## The log itself is always visible regardless of either tier.
 
+const CHEAT_SET_PATHS: Array[String] = [
+	"res://src/console/batch_cheat_commands.gd",
+	"res://src/console/world_cheat_commands.gd",
+]
 const TITLE_TEXT: String = "Konsoli"
 const COLLAPSE_ICON: String = "▼"
 const EXPAND_ICON: String = "▲"
@@ -337,8 +341,10 @@ func _register_commands() -> void:
 	_register("clear", _cmd_clear)
 	_register("help", _cmd_help, "", "", false, false)
 	_register("iddqd", _cmd_iddqd, "", "", false, false)
-	_add_command_set(BatchCheatCommands.new(_log))
-	_add_command_set(WorldCheatCommands.new(_log))
+	# Cheat sets are gitignored and absent from public clones, so load them by path.
+	for path: String in CHEAT_SET_PATHS:
+		if ResourceLoader.exists(path):
+			_add_command_set((load(path) as GDScript).new(_log))
 
 
 func _add_command_set(command_set: ConsoleCommandSet) -> void:

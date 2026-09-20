@@ -10,3 +10,6 @@ Thumbs.db
 .claude/settings.json
 
 notes/
+# Cheat command sets stay local (see dev_console.gd)
+src/console/batch_cheat_commands.gd*
+src/console/world_cheat_commands.gd*
