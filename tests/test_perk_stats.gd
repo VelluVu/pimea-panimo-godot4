@@ -84,5 +84,40 @@ func test_every_stat_constant_names_a_real_perk_field() -> void:
 	var constants : Dictionary = script.get_script_constant_map()
 	assert_gt(constants.size(), 0)
 	for constant : String in constants:
+		if typeof(constants[constant]) != TYPE_STRING_NAME:
+			continue
 		var stat : StringName = constants[constant]
 		assert_true(stat in perk, "RunPerk has no field %s" % stat)
+
+
+func test_every_numeric_perk_field_is_in_the_definitions_table() -> void:
+	var registered : Array = PerkStatsScript.definitions().map(func(entry : Dictionary) -> StringName: return entry.stat)
+	for property : Dictionary in RunPerk.new().get_property_list():
+		if not (property.usage & PROPERTY_USAGE_SCRIPT_VARIABLE):
+			continue
+		if property.type != TYPE_FLOAT and property.type != TYPE_INT:
+			continue
+		if property.name == "tier":
+			continue
+		assert_true(StringName(property.name) in registered, "%s is a RunPerk stat missing from PerkStats.definitions()" % property.name)
+
+
+func test_definitions_have_no_duplicate_stats() -> void:
+	var seen : Dictionary = {}
+	for entry : Dictionary in PerkStatsScript.definitions():
+		assert_false(seen.has(entry.stat), "%s is listed twice" % entry.stat)
+		seen[entry.stat] = true
+
+
+func test_display_number_per_kind() -> void:
+	assert_eq(PerkStatsScript.display_number(PerkStatsScript.Kind.MULTIPLIER, 1.15), 15)
+	assert_eq(PerkStatsScript.display_number(PerkStatsScript.Kind.MULTIPLIER, 0.85), -15)
+	assert_eq(PerkStatsScript.display_number(PerkStatsScript.Kind.PERCENT_ADD, 0.24), 24)
+	assert_eq(PerkStatsScript.display_number(PerkStatsScript.Kind.COUNT, 2.0), 2)
+
+
+func test_scale_per_level_per_kind() -> void:
+	assert_true(is_equal_approx(PerkStatsScript.scale_per_level(PerkStatsScript.Kind.MULTIPLIER, 1.03, 2), 1.06))
+	assert_true(is_equal_approx(PerkStatsScript.scale_per_level(PerkStatsScript.Kind.PERCENT_ADD, 0.02, 2), 0.04))
+	assert_eq(PerkStatsScript.scale_per_level(PerkStatsScript.Kind.COUNT, 1.0, 3), 3)
+

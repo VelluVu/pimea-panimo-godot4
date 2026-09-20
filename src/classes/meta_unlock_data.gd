@@ -57,52 +57,20 @@ enum Path { BAR_WORK, BREWING, MARKETING }
 @export var requires_any_prerequisite : bool = false
 
 
-## Every inherited RunPerk stat field on this resource (quality_bonus,
-## reputation_gain_multiplier, etc.) is authored as its PER-LEVEL
-## increment, not a total — e.g. quality_bonus = 0.01 means +0.01 per
-## invested level. Returns a fresh RunPerk with those increments scaled by
-## level: additive fields multiply straight through (level * increment),
-## multiplicative fields are re-based from neutral (1.0 + (increment -
-## 1.0) * level). Never mutates self — unlock_pool entries are shared
-## singleton resources loaded once by MetaProgressManager, reused by
-## every run; scaling has to produce a new instance instead.
+## Every inherited RunPerk stat on this resource is authored as its PER-LEVEL
+## increment, not a total. Returns a fresh RunPerk scaled to `level` (see
+## PerkStats.scale_per_level()). Never mutates self: unlock_pool entries are
+## shared resources reused by every run.
 ##
-## This formula always grows a node's OWN levels linearly, regardless of
-## stacks_additively — that flag only ends up controlling how this node's
-## already-scaled total then combines with *other* perks/modifiers in
-## RunPerk.combine_stacking() (Brewery.get_reputation_gain_multiplier()
-## and its siblings), not how this node's levels accumulate internally.
-## A genuinely compounding node (levels multiplying against each other)
-## would need a different formula (pow(increment, level)) — not supported
-## here, every shipped node is linear-per-level by design.
+## Levels always grow linearly, whatever stacks_additively says; that flag only
+## controls how the scaled total combines with other perks.
 func get_scaled_perk(level : int) -> RunPerk:
 	var scaled := RunPerk.new()
 	scaled.perk_name = perk_name
 	scaled.description = description
 	scaled.icon_placeholder = icon_placeholder
 	scaled.tier = tier
-	scaled.quality_bonus = quality_bonus * level
-	scaled.reputation_gain_multiplier = _scale_multiplier(reputation_gain_multiplier, level)
-	scaled.tip_income_multiplier = _scale_multiplier(tip_income_multiplier, level)
-	scaled.raid_threshold_multiplier = _scale_multiplier(raid_threshold_multiplier, level)
-	scaled.distribution_income_multiplier = _scale_multiplier(distribution_income_multiplier, level)
-	scaled.ingredient_price_multiplier = _scale_multiplier(ingredient_price_multiplier, level)
-	scaled.brew_yield_multiplier = _scale_multiplier(brew_yield_multiplier, level)
-	scaled.ingredient_refund_chance = ingredient_refund_chance * level
-	scaled.peak_speed_multiplier = _scale_multiplier(peak_speed_multiplier, level)
-	scaled.decline_rate_multiplier = _scale_multiplier(decline_rate_multiplier, level)
-	scaled.spawn_interval_multiplier = _scale_multiplier(spawn_interval_multiplier, level)
-	scaled.agentti_appearance_multiplier = _scale_multiplier(agentti_appearance_multiplier, level)
-	scaled.mafioso_appearance_multiplier = _scale_multiplier(mafioso_appearance_multiplier, level)
-	scaled.tip_double_chance = tip_double_chance * level
-	scaled.bar_fight_chance_multiplier = _scale_multiplier(bar_fight_chance_multiplier, level)
-	scaled.counter_price_multiplier = _scale_multiplier(counter_price_multiplier, level)
-	scaled.group_event_interval_multiplier = _scale_multiplier(group_event_interval_multiplier, level)
-	scaled.extra_raid_strikes = extra_raid_strikes * level
-	scaled.raid_hidden_batch_count = raid_hidden_batch_count * level
 	scaled.stacks_additively = stacks_additively
+	for entry : Dictionary in PerkStats.definitions():
+		scaled.set(entry.stat, PerkStats.scale_per_level(entry.kind, get(entry.stat), level))
 	return scaled
-
-
-static func _scale_multiplier(per_level_value : float, level : int) -> float:
-	return 1.0 + (per_level_value - 1.0) * level
