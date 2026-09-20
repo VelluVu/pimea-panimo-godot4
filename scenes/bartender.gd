@@ -46,7 +46,7 @@ func _ready() -> void:
 
 
 ## Plays the one-shot serving animation, then returns to idle on its own.
-## speed_scale lets a group order (CustomerSpawner._run_shared_group_order())
+## speed_scale lets a group order (GroupVisitDirector._run_shared_group_order())
 ## visibly speed the pour up for its rapid-fire one-by-one serving burst
 ## without that lingering into the next solo customer's pour — reset back to
 ## 1.0 the moment this returns to idle, below.
@@ -62,7 +62,7 @@ func _on_animation_finished() -> void:
 
 
 ## Global position for the Nth glass in a group order's on-counter stack —
-## see CustomerSpawner._run_shared_group_order()'s serving burst.
+## see GroupVisitDirector._run_shared_group_order()'s serving burst.
 func get_stack_position(index: int) -> Vector2:
 	var column := index % STACK_ROW_SIZE
 	@warning_ignore("integer_division")

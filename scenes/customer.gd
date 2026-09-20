@@ -337,7 +337,7 @@ func show_beer_glass() -> void:
 ## again the moment the customer picks it up to leave (leave_counter()), at
 ## which point show_beer_glass() puts the same glass in their hand instead.
 ## slide_duration_seconds lets a group order's rapid one-by-one serving
-## burst (CustomerSpawner._run_shared_group_order()) slide each glass in
+## burst (GroupVisitDirector._run_shared_group_order()) slide each glass in
 ## quicker than a solo customer's — defaults to the normal solo pacing.
 ## rest_position_override (global space) lets that same burst rest this
 ## glass in the bartender's on-counter stack (Bartender.get_stack_position())
@@ -378,7 +378,7 @@ func hide_counter_glass() -> void:
 
 
 ## pickup_position_override (global) lets a group order's standby members
-## (see CustomerSpawner._run_shared_group_order()) walk up to the counter
+## (see GroupVisitDirector._run_shared_group_order()) walk up to the counter
 ## and grab their round from the on-bar stack (Bartender.get_stack_position())
 ## before turning to leave, instead of the beer just appearing in their hand
 ## from wherever they'd been standing further back — a solo customer, and

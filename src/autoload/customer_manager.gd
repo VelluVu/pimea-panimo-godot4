@@ -77,7 +77,7 @@ func has_active_customers() -> bool:
 ## is bound to the node the same way and dies with it. A group visit's
 ## shared order is the one exception (it runs as a single coroutine on
 ## CustomerSpawner, not a per-member timer chain) — see
-## CustomerSpawner._run_shared_group_order()'s own member-validity guard
+## GroupVisitDirector._run_shared_group_order()'s own member-validity guard
 ## for how that path is cancelled instead.
 func evict_active_customers() -> void:
 	if active_customers.is_empty():
