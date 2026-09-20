@@ -6,8 +6,8 @@ extends Node
 ## a Resource with @export fields, so ResourceSaver/ResourceLoader serialize
 ## the whole graph without any manual field mapping. The exception is live
 ## state that genuinely lives in another autoload (e.g. TimeManager's day
-## countdown) — save_game() flushes each of those into a Brewery field first
-## so it isn't silently lost/reset on the next load.
+## countdown): those listen to BrewEngine.brewery_about_to_save and write it
+## onto the Brewery before it is serialized.
 
 const SAVE_PATH: String = "user://savegame.tres"
 
@@ -39,10 +39,9 @@ func save_game() -> bool:
 	if brewery == null or brewery.game_has_ended:
 		return false
 
-	# Live autoload state that Brewery's own fields don't capture on their
-	# own has to be flushed in here before serializing — see each sync
-	# method's own docstring for why it can't just be re-derived after load.
-	TimeManager.sync_remaining_time_to_brewery(brewery)
+	# Autoloads that keep run state outside Brewery flush it onto it now,
+	# so it can't be silently lost or reset on the next load.
+	BrewEngine.brewery_about_to_save.emit(brewery)
 	brewery.save_version = SAVE_VERSION
 
 	var err: Error = SaveFile.write(brewery, SAVE_PATH)
