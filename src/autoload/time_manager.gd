@@ -35,6 +35,15 @@ func _ready() -> void:
 	GUISignals.close_day_requested.connect(force_advance_day)
 	BrewerySignals.brewery_state_changed.connect(_on_brewery_state_changed)
 	BrewEngine.brewery_about_to_save.connect(sync_remaining_time_to_brewery)
+	BrewEngine.brewery_changed.connect(_on_brewery_changed)
+
+
+## A different run became current. The autoload's clock outlives the run, so stop
+## the previous one's and re-derive it: a new game stays stopped (free practice
+## time, first-brew hint) while a loaded save with a batch resumes.
+func _on_brewery_changed(brewery: Brewery) -> void:
+	day_timer.stop()
+	_on_brewery_state_changed(brewery)
 
 
 ## Starts the day clock once there is a brewed batch: a fresh run's first brew, or
