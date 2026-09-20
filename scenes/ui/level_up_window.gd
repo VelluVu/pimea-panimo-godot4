@@ -11,7 +11,7 @@ extends Panel
 ## process_mode = PROCESS_MODE_ALWAYS set on this node's instance in
 ## main.tscn so its own card buttons still work while paused, and a
 ## z_index above any speech bubble DialogView can show (group-visit
-## bubbles alone can reach z_index ~99, see CustomerSpawner.
+## bubbles alone can reach z_index ~99, see GroupVisitDirector.
 ## GROUP_DIALOGUE_SLOT_BASE/_RANGE) so a card offer never ends up hidden
 ## behind a customer's dialogue.
 ##

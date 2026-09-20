@@ -1,44 +1,42 @@
 @tool
 extends McpTestSuite
 
-## Unit tests for the group-visit crowd math added this session:
-## CustomerSpawner's formation offset (keeps a crowd of customers from
-## stacking on a single point) and GroupVisitEventData's plain resource
-## defaults. The shared-order/chant flow itself needs a running game
-## (CustomerManager, BrewEngine.current_brewery, real Customer nodes) and
-## isn't covered here — see the class-level note in test_brew_resolver.gd
-## for why that reach-into-autoload-state category isn't testable this way.
+## Unit tests for the group-visit crowd math: GroupVisitDirector's formation
+## offset (keeps a crowd from stacking on one point) and GroupVisitEventData's
+## plain resource defaults. The shared order and chant flow needs a running game
+## (real Customer nodes and autoloads), so it is checked there instead.
 
 
 func suite_name() -> String:
 	return "group_visit"
 
 
-func _make_spawner() -> CustomerSpawner:
-	return track(CustomerSpawner.new())
-
-
 func test_formation_offset_centers_on_zero_for_odd_group() -> void:
-	var spawner := _make_spawner()
 	var total := 0.0
 	for i in range(5):
-		total += spawner._get_group_formation_offset(i, 5, 10.0).x
+		total += GroupVisitDirector.formation_offset(i, 5, 10.0).x
 	assert_true(is_equal_approx(total, 0.0), "offsets should be symmetric around 0, sum=%s" % total)
 
 
 func test_formation_offset_scales_with_spacing() -> void:
-	var spawner := _make_spawner()
-	var narrow := spawner._get_group_formation_offset(4, 5, 10.0).x
-	var wide := spawner._get_group_formation_offset(4, 5, 20.0).x
+	var narrow := GroupVisitDirector.formation_offset(4, 5, 10.0).x
+	var wide := GroupVisitDirector.formation_offset(4, 5, 20.0).x
 	assert_true(is_equal_approx(wide, narrow * 2.0), "doubling spacing should double the offset, got %s vs %s" % [wide, narrow])
 
 
 func test_formation_offset_alternates_rows() -> void:
-	var spawner := _make_spawner()
-	var even_row := spawner._get_group_formation_offset(0, 4, 10.0).y
-	var odd_row := spawner._get_group_formation_offset(1, 4, 10.0).y
+	var even_row := GroupVisitDirector.formation_offset(0, 4, 10.0).y
+	var odd_row := GroupVisitDirector.formation_offset(1, 4, 10.0).y
 	assert_eq(even_row, 0.0, "even indices should sit on the front row")
 	assert_ne(odd_row, 0.0, "odd indices should sit on a different row")
+
+
+func test_formation_members_never_share_a_spot() -> void:
+	var seen : Dictionary = {}
+	for index : int in range(10):
+		var offset : Vector2 = GroupVisitDirector.formation_offset(index, 10, 30.0)
+		assert_false(seen.has(offset), "members share the spot %s" % offset)
+		seen[offset] = true
 
 
 func test_group_visit_event_data_defaults() -> void:

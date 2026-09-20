@@ -14,9 +14,9 @@ extends Resource
 @export_multiline var banner_text: String = ""
 ## Interchangeable archetype variants for this crowd (e.g. an archetype's
 ## male and naaras CustomerData) — each member picks one at random when
-## spawned (see CustomerSpawner._spawn_group_members()), so a group reads
+## spawned (see GroupVisitDirector.run()), so a group reads
 ## as a mixed crowd instead of every member sharing one identical sprite.
-## The shared order itself (see CustomerSpawner._run_shared_group_order())
+## The shared order itself (see GroupVisitDirector._run_shared_group_order())
 ## also picks one at random to duplicate — safe because sibling variants
 ## are expected to share the same title/stats and only differ in sprite,
 ## name, and flavor dialogue.
@@ -46,7 +46,7 @@ enum ChantMode { SEQUENCE, RANDOM }
 
 
 ## sequence_index is an ever-increasing counter the caller owns (see
-## CustomerSpawner._wait_for_group_arrival) — SEQUENCE wraps it via modulo
+## GroupVisitDirector._wait_for_group_arrival) — SEQUENCE wraps it via modulo
 ## instead of the caller needing to know chant_texts.size() itself; RANDOM
 ## ignores it entirely.
 func get_chant_text(sequence_index: int) -> String:
