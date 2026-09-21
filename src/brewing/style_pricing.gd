@@ -4,23 +4,18 @@ extends RefCounted
 ## What a style costs to make and what it sells for. Results are cached per style,
 ## because the hop search behind the cost is brute force.
 
-## Share of a batch's raw bottles lost to breakage. Applied to real batches and to
-## the per-bottle cost, so the two agree.
+## Share of a batch's raw bottles lost to breakage, in real batches and in the cost.
 const BOTTLE_LOSS_RATE : float = 0.05
-## Label cost per bottle produced (before loss): paid when brewing and part of the cost basis.
+## Per bottle produced (before loss): paid when brewing and part of the cost basis.
 const LABEL_ART_COST_PER_BOTTLE : float = 0.05
-## Bottle, cap and cleaner cost per bottle, in the same cost basis.
 const CONSUMABLES_COST_PER_BOTTLE : float = 0.10
 
-## Profit margin as a markup on raw cost. There is no tax in this model: a hidden
-## cellar remits nothing.
+## Profit as a markup on raw cost. No tax: a hidden cellar remits nothing.
 const PROFIT_MARKUP_RATE : float = 0.5
-## Floor under the proportional margin, so cheap styles like Kotikalja still show a
-## real profit.
+## Floor under the markup, so cheap styles like Kotikalja still show a real profit.
 const MIN_PROFIT_PER_BOTTLE : float = 0.5
 
-## This run's ingredient price multiplier, set by Brewery so per-bottle costs match
-## what the player actually pays.
+## Set by Brewery per run, so costs match what the player pays.
 var ingredient_price_multiplier : float = 1.0
 
 var _ingredients : IngredientSource
