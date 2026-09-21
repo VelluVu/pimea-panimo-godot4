@@ -41,22 +41,6 @@ const INGREDIENT_LABEL_WITH_STAT_STRING : String = "%s: %s %s (%s)"
 const RECIPE_LIBRARY_BUTTON_TEXT : String = "Reseptikirja"
 const RECIPE_LIBRARY_TITLE : String = "Reseptikirja"
 const RECIPE_LIBRARY_CLOSE_TEXT : String = "Sulje"
-## Deliberately still withholds the exact EBC/IBU ranges (that's the "brew
-## it to find out" part) but gives more to go on than yeast alone — ABV
-## isn't derived from the player's ingredient choices at all (it's a fixed
-## style property, see BeerStyle.abv), so revealing it doesn't spoil
-## anything about the actual brewing puzzle; the malt-weight minimum is a
-## coarse hint (a floor, not the target), not the precise EBC math.
-const RECIPE_LIBRARY_LOCKED_STRING : String = "??? (%.1f%% ABV) – vaatii: hiiva %s, vähintään %d kg mallasta"
-const RECIPE_LIBRARY_ROW_STRING : String = "%s (%.1f%% ABV), EBC %s-%s, IBU %s-%s (hiiva: %s)"
-const RECIPE_LIBRARY_HOP_HINT_STRING : String = "\nSuosikkihumala: %s"
-const RECIPE_LIBRARY_MALT_HINT_STRING : String = "\nVaadittu mallas: %s"
-## Coarse, bucketed hints (see BeerStyle.get_color_hint/get_bitterness_hint)
-## — locked-row only, deliberately still withholding the exact EBC/IBU
-## numbers those buckets are derived from.
-const RECIPE_LIBRARY_COLOR_HINT_STRING : String = "\nVäri: %s"
-const RECIPE_LIBRARY_BITTERNESS_HINT_STRING : String = "\nKatkeruus: %s"
-const RECIPE_LIBRARY_MALT_BLEND_HINT_STRING : String = "\nVaatii mallasseoksen"
 
 const COLOR_HINT_PALE : String = "vaalea"
 const COLOR_HINT_GOLDEN : String = "kultainen"
