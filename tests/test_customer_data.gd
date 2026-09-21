@@ -80,6 +80,17 @@ func test_meets_strict_requirements_respects_preference_match() -> void:
 	assert_false(customer.meets_strict_requirements(unrelated_style), "unrelated style should fail when requires_preference_match is set")
 
 
+func test_meets_strict_requirements_respects_accepted_styles() -> void:
+	var customer := CustomerData.new()
+	customer.accepted_styles = [BeerStyle.Style.HELLES, BeerStyle.Style.BULKKILAGER]
+	var listed_style := BeerStyle.new()
+	listed_style.style = BeerStyle.Style.BULKKILAGER
+	var unlisted_style := BeerStyle.new()
+	unlisted_style.style = BeerStyle.Style.KOTIKALJA
+	assert_true(customer.meets_strict_requirements(listed_style), "listed style should pass")
+	assert_false(customer.meets_strict_requirements(unlisted_style), "unlisted style should fail")
+
+
 func _make_batch(style: BeerStyle.Style, quality: float) -> BrewBatch:
 	var beer_style := BeerStyle.new()
 	beer_style.style = style
