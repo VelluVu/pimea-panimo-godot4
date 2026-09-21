@@ -31,7 +31,7 @@
 [ext_resource type="Texture2D" uid="uid://20gx2dqe81g8" path="res://src/resources/ui_icons/yeast_tab_icon.tres" id="23_fuf3a"]
 [ext_resource type="Script" uid="uid://dqsdc4x3gpckg" path="res://scenes/ui/recipe_library_window.gd" id="26_2wyq8"]
 [ext_resource type="Script" uid="uid://cstg3752a1yby" path="res://scenes/ui/lvv_raid_window.gd" id="29_dnhof"]
-[ext_resource type="Script" uid="uid://b6hgtb57fueyj" path="res://scenes/ui/dev_console.gd" id="30_fv21b"]
+[ext_resource type="PackedScene" path="res://systems/console/console_panel.tscn" id="30_fv21b"]
 [ext_resource type="PackedScene" uid="uid://cvfiooeo4kwdt" path="res://scenes/ui/options_window.tscn" id="30_qkpxi"]
 [ext_resource type="Texture2D" uid="uid://7npr1w4jtxms" path="res://assets/textures/gear_icon.png" id="30_tel4y"]
 [ext_resource type="Script" uid="uid://0ew6w27o2tba" path="res://scenes/ui/day_recap_window.gd" id="31_tel4y"]
@@ -922,9 +922,8 @@ icon = ExtResource("30_tel4y")
 icon_alignment = 1
 expand_icon = true
 
-[node name="DevConsole" type="Panel" parent="GUI_CanvasLayer/GUI" unique_id=949689171]
+[node name="DevConsole" parent="GUI_CanvasLayer/GUI" unique_id=949689171 instance=ExtResource("30_fv21b")]
 visible = false
-clip_contents = true
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -937,61 +936,6 @@ offset_right = -4.0
 offset_bottom = -4.0
 grow_horizontal = 0
 grow_vertical = 0
-script = ExtResource("30_fv21b")
-
-[node name="MarginContainer" type="MarginContainer" parent="GUI_CanvasLayer/GUI/DevConsole" unique_id=1866706840]
-layout_mode = 0
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-theme_override_constants/margin_left = 6
-theme_override_constants/margin_top = 4
-theme_override_constants/margin_right = 6
-theme_override_constants/margin_bottom = 6
-
-[node name="MainVBox" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/DevConsole/MarginContainer" unique_id=75953943]
-layout_mode = 2
-mouse_filter = 2
-
-[node name="HeaderHBox" type="HBoxContainer" parent="GUI_CanvasLayer/GUI/DevConsole/MarginContainer/MainVBox" unique_id=1029117539]
-layout_mode = 2
-mouse_filter = 2
-
-[node name="TitleLabel" type="Label" parent="GUI_CanvasLayer/GUI/DevConsole/MarginContainer/MainVBox/HeaderHBox" unique_id=909801713]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Konsoli"
-
-[node name="ToggleButton" type="Button" parent="GUI_CanvasLayer/GUI/DevConsole/MarginContainer/MainVBox/HeaderHBox" unique_id=1187000838]
-custom_minimum_size = Vector2(24, 0)
-layout_mode = 2
-text = "▼"
-
-[node name="BodyVBox" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/DevConsole/MarginContainer/MainVBox" unique_id=1739382531]
-layout_mode = 2
-size_flags_vertical = 3
-mouse_filter = 2
-
-[node name="LogScroll" type="ScrollContainer" parent="GUI_CanvasLayer/GUI/DevConsole/MarginContainer/MainVBox/BodyVBox" unique_id=2039757177]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="LogLabel" type="RichTextLabel" parent="GUI_CanvasLayer/GUI/DevConsole/MarginContainer/MainVBox/BodyVBox/LogScroll" unique_id=2049912140]
-layout_mode = 2
-size_flags_horizontal = 3
-bbcode_enabled = true
-fit_content = true
-scroll_following = true
-
-[node name="InputLineEdit" type="LineEdit" parent="GUI_CanvasLayer/GUI/DevConsole/MarginContainer/MainVBox/BodyVBox" unique_id=1806972520]
-layout_mode = 2
-placeholder_text = "Kirjoita komento... (help)"
-
-[node name="ResizeHandle" type="Control" parent="GUI_CanvasLayer/GUI/DevConsole" unique_id=105439551]
-anchors_preset = 0
-offset_right = 14.0
-offset_bottom = 14.0
-mouse_default_cursor_shape = 10
 
 [node name="OptionsWindow" parent="GUI_CanvasLayer/GUI" unique_id=259503196 instance=ExtResource("30_qkpxi")]
 process_mode = 3

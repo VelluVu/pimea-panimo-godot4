@@ -1,12 +1,17 @@
 class_name ConsoleCommandRegistry
 extends RefCounted
 
-## Dispatch table for DevConsole: registers commands, parses a typed line and
-## runs the matching handler. The console keeps only the UI. Registering
-## everything through register() keeps dispatch and the help text in sync.
+## Dispatch table for DevConsole: registers commands, parses a typed line and runs the
+## matching handler. Registering everything through register() keeps dispatch and the help
+## text in sync.
 
-const DEV_MODE_OFF_MESSAGE: String = "[color=orange]Komennot ovat pois käytöstä (DEVELOPER_MODE = false).[/color]"
-const UNKNOWN_COMMAND_MESSAGE: String = "[color=orange]Tuntematon komento: %s (kokeile 'help')[/color]"
+## Decides whether dev-only commands may run. The project sets it (ConsoleWiring).
+var developer_mode_check: Callable = func() -> bool: return true
+## Wording, English by default; the project replaces it (ConsoleWiring).
+var dev_mode_off_message: String = "[color=orange]Developer commands are off.[/color]"
+var unknown_command_format: String = "[color=orange]Unknown command: %s (try 'help')[/color]"
+var help_format: String = "Commands: %s"
+var dev_help_format: String = "[color=orange]Developer commands: %s[/color]"
 
 ## Command name -> ConsoleCommand, in registration order (which is also the
 ## order `help` lists them in).
@@ -42,20 +47,22 @@ func execute(text: String) -> void:
 	var command_name := parts[0].to_lower()
 	var command: ConsoleCommand = _commands.get(command_name)
 	if command == null:
-		_log.call(UNKNOWN_COMMAND_MESSAGE % command_name)
+		_log.call(unknown_command_format % command_name)
 		return
 
-	if command.dev_only and not BrewEngine.is_developer_mode():
-		_log.call(DEV_MODE_OFF_MESSAGE)
+	if command.dev_only and not developer_mode_check.call():
+		_log.call(dev_mode_off_message)
 		return
 
 	command.handler.call(parts.slice(1))
 
 
-func print_help() -> void:
-	_log.call("Komennot: %s" % ", ".join(_help_entries(false)))
-	if BrewEngine.is_developer_mode():
-		_log.call("[color=orange]Kehittäjäkomennot: %s[/color]" % ", ".join(_help_entries(true)))
+## Takes and ignores the argument list, because execute() passes one to every handler.
+func print_help(_args: PackedStringArray = PackedStringArray()) -> void:
+	_log.call(help_format % ", ".join(_help_entries(false)))
+	var dev_entries := _help_entries(true)
+	if developer_mode_check.call() and not dev_entries.is_empty():
+		_log.call(dev_help_format % ", ".join(dev_entries))
 
 
 ## Help lines for every listed command of one kind, in registration order.
