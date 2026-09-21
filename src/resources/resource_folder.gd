@@ -5,6 +5,8 @@ extends RefCounted
 ## (customers, events, bar contacts, ...) all populate their pools this way.
 
 const WARNING_FOLDER_OPEN_FAILED: String = "ResourceFolder: Failed to open path: "
+## Exported builds list resources as "<name>.tres.remap".
+const REMAP_SUFFIX: String = ".remap"
 
 
 ## Returns the untyped array of loaded resources; callers copy it into their
@@ -19,8 +21,8 @@ static func load_all(folder_path: String, resource_type: Script) -> Array:
 	dir.list_dir_begin()
 	var file_name := dir.get_next()
 	while file_name != "":
-		if not dir.current_is_dir() and file_name.ends_with(".tres"):
-			var resource: Resource = load(folder_path + file_name)
+		if not dir.current_is_dir() and (file_name.ends_with(".tres") or file_name.ends_with(REMAP_SUFFIX)):
+			var resource: Resource = load(folder_path + file_name.trim_suffix(REMAP_SUFFIX))
 			if resource != null and is_instance_of(resource, resource_type):
 				loaded.append(resource)
 		file_name = dir.get_next()

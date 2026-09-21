@@ -1,8 +1,7 @@
 @tool
 extends McpTestSuite
 
-## Unit tests for BrewResolver: the pure _range_precision() math, and
-## resolve_brew_style() / the cost search run against hand-built ingredients
+## Unit tests for BrewResolver: resolve_brew_style() and the cost search run against hand-built ingredients
 ## and styles. The resolver normally reads IngredientDatabase (an autoload
 ## this @tool-context test harness can't reach), so these tests inject their
 ## own table through BrewResolver.use_ingredients() and assign active_styles
@@ -128,27 +127,6 @@ func test_hoppy_style_costs_more_than_hopless_style() -> void:
 func test_style_needs_malt_blend_is_false_when_one_malt_fits() -> void:
 	var resolver := _make_resolver()
 	assert_false(resolver.style_needs_malt_blend(resolver.get_beer_style(BeerStyle.Style.KOTIKALJA)))
-
-
-func test_range_precision_is_perfect_at_center() -> void:
-	var resolver := BrewResolver.new()
-	assert_eq(resolver._range_precision(20, 10, 30), 1.0)
-
-
-func test_range_precision_is_zero_at_edges() -> void:
-	var resolver := BrewResolver.new()
-	assert_eq(resolver._range_precision(10, 10, 30), 0.0)
-	assert_eq(resolver._range_precision(30, 10, 30), 0.0)
-
-
-func test_range_precision_is_clamped_outside_range() -> void:
-	var resolver := BrewResolver.new()
-	assert_eq(resolver._range_precision(5, 10, 30), 0.0)
-
-
-func test_range_precision_handles_degenerate_range() -> void:
-	var resolver := BrewResolver.new()
-	assert_eq(resolver._range_precision(999, 10, 10), 1.0)
 
 
 ## Unit tests for BrewResolver.calculate_price_breakdown() — the pure
