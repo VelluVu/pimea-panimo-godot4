@@ -147,13 +147,10 @@ func _run_shared_order(visit : GroupVisit) -> void:
 
 	if outcome.xp > 0:
 		visit.mark_purchased()
-		BrewerySignals.xp_popup_requested.emit(outcome.xp, visit.counter_position)
+		outcome.emit_xp_popup(visit.counter_position)
 		if not await _serve_burst(visit):
 			return
-	if outcome.reputation != 0:
-		BrewerySignals.reputation_popup_requested.emit(outcome.reputation, visit.counter_position)
-	if outcome.tip > 0:
-		BrewerySignals.tip_popup_requested.emit(outcome.tip, visit.counter_position)
+	outcome.emit_reputation_and_tip_popups(visit.counter_position)
 
 	var display_time : float = _say(visit, SPEECH_FORMAT % [group_label, response_text])
 	if await _wait(display_time + Customer.FADE_TIME_SECONDS):

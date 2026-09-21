@@ -154,11 +154,8 @@ func _show_sale_popups(outcome: SaleOutcomeCapture) -> void:
 	if outcome.xp > 0:
 		made_purchase = true
 		get_tree().create_timer(SERVE_BEER_WAIT_SECONDS).timeout.connect(show_counter_glass)
-		BrewerySignals.xp_popup_requested.emit(outcome.xp, global_position)
-	if outcome.reputation != 0:
-		BrewerySignals.reputation_popup_requested.emit(outcome.reputation, global_position)
-	if outcome.tip > 0:
-		BrewerySignals.tip_popup_requested.emit(outcome.tip, global_position)
+		outcome.emit_xp_popup(global_position)
+	outcome.emit_reputation_and_tip_popups(global_position)
 
 
 ## Pushes a speech bubble for this customer and returns how long it stays up.
