@@ -74,7 +74,7 @@ func _play_animation(anim_name: StringName, flip_horizontally: bool = false) -> 
 	animated_sprite.play(anim_name)
 
 
-static func _get_display_time_for_text(text: String) -> float:
+static func get_display_time_for_text(text: String) -> float:
 	return clampf(
 		BASE_DISPLAY_TIME_SECONDS + text.length() * PER_CHARACTER_DISPLAY_TIME_SECONDS,
 		BASE_DISPLAY_TIME_SECONDS,
@@ -163,7 +163,7 @@ func _show_sale_popups(outcome: SaleOutcomeCapture) -> void:
 
 ## Pushes a speech bubble for this customer and returns how long it stays up.
 func _say(text: String) -> float:
-	var display_time := _get_display_time_for_text(text)
+	var display_time := get_display_time_for_text(text)
 	BrewerySignals.dialogue_pushed.emit(text, false, dialogue_slot, global_position, display_time, FADE_TIME_SECONDS)
 	return display_time
 
