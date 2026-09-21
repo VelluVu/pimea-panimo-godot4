@@ -10,14 +10,6 @@ const BOTTLES_SOLD_PER_TRANSACTION : int = 1
 const QUALITY_BONUS_WEIGHT : float = 0.2
 
 
-## What a sale is worth, before it is applied to the Brewery.
-class Outcome:
-	var gross_income : float = 0.0
-	var tip_income : float = 0.0
-	var net_income : float = 0.0
-	var reputation_gain : int = 0
-
-
 var brewery : Brewery
 
 
@@ -51,8 +43,8 @@ static func find_best_batch(batches : Array[BrewBatch], data : CustomerData) -> 
 ## to 0.1 so repeated float maths cannot leave noise in the till. There is no
 ## tax: the fixed price plus any tip is exactly what lands in the till. A
 ## doubled tip is rolled after the tip multiplier, so it keeps every other bonus.
-static func calculate_sale(results : Dictionary, bottles_sold : int, tip_multiplier : float, tip_double_chance : float, reputation_multiplier : float) -> Outcome:
-	var outcome := Outcome.new()
+static func calculate_sale(results : Dictionary, bottles_sold : int, tip_multiplier : float, tip_double_chance : float, reputation_multiplier : float) -> SaleOutcome:
+	var outcome := SaleOutcome.new()
 	outcome.gross_income = snappedf(results[CustomerManager.KEY_INCOME] * bottles_sold, 0.1)
 
 	var tip : float = snappedf(results[CustomerManager.KEY_TIP] * bottles_sold * tip_multiplier, 0.1)
@@ -91,7 +83,7 @@ func process(data : CustomerData) -> String:
 	var bottles_sold : int = randi_range(data.min_bottles_per_visit, data.max_bottles_per_visit)
 	bottles_sold = mini(bottles_sold, best_batch.amount_bottles)
 
-	var outcome : Outcome = calculate_sale(
+	var outcome : SaleOutcome = calculate_sale(
 		results,
 		bottles_sold,
 		brewery.stats.multiplier(PerkStats.TIP_INCOME),

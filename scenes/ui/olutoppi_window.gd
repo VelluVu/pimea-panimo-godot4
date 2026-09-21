@@ -12,32 +12,6 @@ const RENOWN_FORMAT : String = "Maine: %d"
 const LEVEL_BONUS_FORMAT : String = "%d/%d %s"
 const LOCKED_ICON : String = "🔒"
 
-
-## The labels inside one node square.
-class NodeView:
-	var button : Button
-	var icon_label : Label
-	var level_bonus_label : Label
-
-	func _init(node_button : Button) -> void:
-		button = node_button
-		icon_label = node_button.get_node("VBox/IconLabel")
-		level_bonus_label = node_button.get_node("VBox/LevelBonusLabel")
-
-
-## Static geometry of one connector line and the node that gates it. Whether it is
-## unlocked is recomputed on every refresh.
-class Edge:
-	var from : Vector2
-	var to : Vector2
-	var prerequisite_id : String
-
-	func _init(from_center : Vector2, to_center : Vector2, prerequisite : String) -> void:
-		from = from_center
-		to = to_center
-		prerequisite_id = prerequisite
-
-
 @onready var title_label : Label = $MarginContainer/MainVBox/HeaderHBox/TitleLabel
 @onready var renown_label : Label = $MarginContainer/MainVBox/HeaderHBox/RenownLabel
 @onready var close_button : Button = $MarginContainer/MainVBox/HeaderHBox/CloseButton
@@ -47,8 +21,8 @@ class Edge:
 	$MarginContainer/MainVBox/PathsHBox/MarketingColumn/TreeArea,
 ]
 
-var _node_views : Dictionary = {} # unlock_id -> NodeView
-var _connector_edges : Dictionary = {} # TreeConnectorLayer -> Array[Edge]
+var _node_views : Dictionary = {} # unlock_id -> OlutoppiNodeView
+var _connector_edges : Dictionary = {} # TreeConnectorLayer -> Array[OlutoppiEdge]
 
 
 func _ready() -> void:
@@ -88,7 +62,7 @@ func _setup_tree_area(tree_area : Control) -> void:
 	var centers : Dictionary = {}
 	for button : Button in buttons:
 		var id : String = button.name
-		_node_views[id] = NodeView.new(button)
+		_node_views[id] = OlutoppiNodeView.new(button)
 		centers[id] = button.position + button.size * 0.5
 		button.pressed.connect(_on_node_pressed.bind(id))
 
@@ -96,8 +70,8 @@ func _setup_tree_area(tree_area : Control) -> void:
 	_connector_edges[connector] = _build_edges(buttons, centers)
 
 
-func _build_edges(buttons : Array[Button], centers : Dictionary) -> Array[Edge]:
-	var edges : Array[Edge] = []
+func _build_edges(buttons : Array[Button], centers : Dictionary) -> Array[OlutoppiEdge]:
+	var edges : Array[OlutoppiEdge] = []
 	for button : Button in buttons:
 		var id : String = button.name
 		var unlock : MetaUnlockData = MetaProgressManager.find_unlock(id)
@@ -105,7 +79,7 @@ func _build_edges(buttons : Array[Button], centers : Dictionary) -> Array[Edge]:
 			continue
 		for prerequisite_id : String in unlock.prerequisite_ids:
 			if centers.has(prerequisite_id):
-				edges.append(Edge.new(centers[prerequisite_id], centers[id], prerequisite_id))
+				edges.append(OlutoppiEdge.new(centers[prerequisite_id], centers[id], prerequisite_id))
 	return edges
 
 
@@ -119,16 +93,16 @@ func _refresh() -> void:
 		connector.set_connections(_connections_for(_connector_edges[connector]))
 
 
-func _connections_for(edges : Array[Edge]) -> Array[Dictionary]:
+func _connections_for(edges : Array[OlutoppiEdge]) -> Array[Dictionary]:
 	var connections : Array[Dictionary] = []
-	for edge : Edge in edges:
+	for edge : OlutoppiEdge in edges:
 		var unlocked : bool = MetaProgressManager.get_node_level(edge.prerequisite_id) > 0
 		connections.append({"from": edge.from, "to": edge.to, "unlocked": unlocked})
 	return connections
 
 
 func _refresh_node(id : String, renown : int) -> void:
-	var view : NodeView = _node_views[id]
+	var view : OlutoppiNodeView = _node_views[id]
 	var unlock : MetaUnlockData = MetaProgressManager.find_unlock(id)
 	if unlock == null:
 		view.button.visible = false
