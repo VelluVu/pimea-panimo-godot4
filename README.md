@@ -38,7 +38,9 @@ The player buys raw ingredients from a wholesaler, hauls them from the storage c
 	 ingredient_inventory_panel.gd, brew_preparation_panel.gd, beer_batch_panel.gd
 	 shop_entrance_panel.gd, brewery_entrance_panel.gd
 	 recipe_library_window.gd, special_event_window.gd, lvv_raid_window.gd
-	 dialog_view.gd, speech_bubble.gd, clock_ui.gd, feature_tester_panel.gd
+	 clock_ui.gd, feature_tester_panel.gd
+📁 systems/                 # Self-contained systems you can copy to another project (see systems/README.md)
+	 dialog/                   # Speech bubbles and floating popups; dialog_wiring.gd is the only project-specific file
 📁 src/
   📁 autoload/              # Global singletons (orchestration & signal buses)
 	 brew_engine.gd            # Core game-state references
