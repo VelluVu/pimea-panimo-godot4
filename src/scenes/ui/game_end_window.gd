@@ -12,7 +12,7 @@ extends Panel
 ## The "survived" ending alone offers a continue option — see
 ## _on_continue_button_pressed() and Brewery.has_continued_past_survival.
 
-const GAME_SCENE_PATH : String = "res://scenes/main.tscn"
+const GAME_SCENE_PATH : String = "res://src/scenes/main.tscn"
 
 const TITLE_BUSTED : String = "BUSTED!"
 const TITLE_BANKRUPT : String = "KONKURSSI!"

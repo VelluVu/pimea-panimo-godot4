@@ -1,6 +1,6 @@
 ---
 name: godot_architecture
-description: Use when writing, reviewing, or refactoring GDScript in this project — enforces Godot 4.x static typing, signal-based decoupling, node lifecycle rules, and the project's src/scenes/data structure. Load before touching any .gd file.
+description: Use when writing, reviewing, or refactoring GDScript in this project — enforces Godot 4.x static typing, signal-based decoupling, node lifecycle rules, and the project's folder structure. Load before touching any .gd file.
 ---
 
 # Godot Architecture (Godot 4.x, Pimeä Panimo)
@@ -43,18 +43,18 @@ Enforces the structural rules from the project's CLAUDE.md. This skill is the au
 ## Node Lifecycle Rules
 
 - `_ready()` only sets up this node's own state and connects to signals it owns or subscribes to — it must not assume sibling/parent nodes are already initialized unless order is guaranteed by scene tree position or `@onready` deferred call chains.
-- Disconnect signals in `_exit_tree()` (or rely on Godot's automatic disconnect-on-free for object-to-object connections) when a node connects to a long-lived autoload — a short-lived node (e.g. a spawned `customer.tscn` instance) connecting to `EventBus` must not leak a dangling connection after `queue_free()`.
+- Disconnect signals in `_exit_tree()` (or rely on Godot's automatic disconnect-on-free for object-to-object connections) when a node connects to a long-lived autoload — a short-lived node (e.g. a spawned `customer.tscn` instance) connecting to a signal bus autoload (`BrewerySignals`, `GUISignals`) must not leak a dangling connection after `queue_free()`.
 - Prefer `queue_free()` over `free()` for any node that might still be mid-signal-emission.
 - One-shot timers for delayed logic: use a `Timer` node with `one_shot = true`, not manual `await get_tree().create_timer(...).timeout` sprinkled ad hoc, when the delay is a reusable/tunable gameplay value (e.g. customer patience timeout) — that value belongs in a data Resource, not a magic number in the script.
 
 ## Project Structure Placement
 
-- `src/autoload/` — only global orchestration singletons (`EventBus.gd`, `BrewEngine.gd`, `TimeManager.gd`, etc.), registered in `project.godot` autoload list. Never put per-instance scene logic here.
+- `src/autoload/` — global singletons only: the signal buses (`BrewerySignals`, `GUISignals`), registries and managers of cross-run state, registered in the `project.godot` autoload list. Never put per-instance scene logic here.
 - `src/<system>/` (`brewing`, `brewery`, `customers`, `events`, `progression`, `ui`, `console`, `save`, `audio`) — instantiable custom data components, services and pure rules, one folder per gameplay system.
-- `src/resources/` — `.tres` resource definitions and the `Resource`-derived scripts that define their schema (e.g. `RecipeData.gd`, `CustomerData.gd`).
-- `data/` — the actual `.tres` data files (recipes, events) loaded by the corresponding `*Database.gd` / `*Registry.gd` autoload at startup.
-- `scenes/` — `.tscn` files and the script directly bound to that unique scene node (e.g. `customer.gd` beside `customer.tscn`). Business logic that isn't scene-specific still belongs in `src/`, called from the scene script.
-- Never hardcode a raw list of items/stats/recipes inline in a script — it belongs as a `Resource` under `data/` or `src/resources/`.
+- `src/systems/<name>/` — reusable, self-contained systems (`dialog`, `console`, `toast`, `tooltip`, `toolkit`) that reference only their own folder; the game's signals are connected in the one `*_wiring.gd` file. Check with `python dev/tools/check_systems.py`.
+- `src/resources/` — the game's content as `.tres` files, one folder per type, loaded by the registries through `ResourceFolder`.
+- `src/scenes/` — `.tscn` files and the script directly bound to that unique scene node (e.g. `customer.gd` beside `customer.tscn`). Business logic that isn't scene-specific still belongs in the system folders, called from the scene script.
+- Never hardcode a raw list of items/stats/recipes inline in a script — it belongs as a `Resource` under `src/resources/`.
 
 ## Naming
 

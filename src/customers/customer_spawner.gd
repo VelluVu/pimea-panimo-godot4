@@ -14,7 +14,7 @@ const GROUP_EVENT_INTERVAL_MAX_SECONDS = 300.0
 const GROUP_EVENT_FLOOR_SECONDS = 120.0
 
 
-const CUSTOMER_SCENE = preload("res://scenes/customer.tscn")
+const CUSTOMER_SCENE = preload("res://src/scenes/customer.tscn")
 
 @onready var counter_positions_parent: Node2D = $CounterPositionsParent
 @onready var stairs_bottom_marker: Marker2D = $StairsBottomMarker

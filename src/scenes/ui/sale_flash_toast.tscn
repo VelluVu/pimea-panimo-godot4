@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://mdllhvorshsg"]
 
-[ext_resource type="Script" path="res://scenes/ui/sale_flash_toast.gd" id="1_x21hy"]
+[ext_resource type="Script" path="res://src/scenes/ui/sale_flash_toast.gd" id="1_x21hy"]
 
 [node name="SaleFlashToast" type="Panel" unique_id=71855573]
 custom_minimum_size = Vector2(180, 30)

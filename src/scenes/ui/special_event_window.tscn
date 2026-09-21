@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://caf487kuhf4c6"]
 
-[ext_resource type="Script" uid="uid://c04a583fohaks" path="res://scenes/ui/special_event_window.gd" id="1_gtnj8"]
+[ext_resource type="Script" uid="uid://c04a583fohaks" path="res://src/scenes/ui/special_event_window.gd" id="1_gtnj8"]
 [ext_resource type="Theme" uid="uid://dkmfe4a5nvvcd" path="res://src/resources/themes/main_theme.tres" id="1_p7uxu"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g4v7s"]

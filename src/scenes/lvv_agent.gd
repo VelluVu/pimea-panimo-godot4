@@ -23,7 +23,7 @@ const STAIR_STEPS : int = 15
 ## How long the agent stands at the pickup spot before turning back.
 const PICKUP_PAUSE_SECONDS : float = 1.0
 
-const KEG_SCENE : PackedScene = preload("res://scenes/keg.tscn")
+const KEG_SCENE : PackedScene = preload("res://src/scenes/keg.tscn")
 ## A carried keg is the same prop as one on the ground, so it renders at the same size.
 const CARRIED_KEG_SCALE : float = 1.0
 

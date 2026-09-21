@@ -8,10 +8,11 @@
 - **Language:** Code and comments are written in **English**, but the in-game text and user interface display text are written in **Finnish**.
 
 ## Project Structure
+Five top-level folders: `addons/`, `assets/`, `src/`, `tests/` and `dev/`. Everything of the game is under `src/`.
 - `res://addons/godot_ai/` — Live Godot AI MCP plugin infrastructure
 - `res://assets/` — Binary resources, split into `fonts/` and `textures/`
-- `res://scenes/` — Scenes and the scripts bound to their nodes (`main.tscn`, `customer.tscn`, `scenes/ui/` windows and panels). Keep these scripts thin; logic lives in `src/`.
-- `res://src/` — Code logic:
+- `res://src/` — The game:
+  - `src/scenes/` — Scenes and the scripts bound to their nodes (`main.tscn`, `customer.tscn`, `ui/` windows and panels). Keep these scripts thin; the logic lives in the folders below.
   - `src/autoload/` — Autoloads: the signal buses (`BrewerySignals`, `GUISignals`), registries and managers of cross-run state
   - One folder per gameplay system for its scripts (data classes, services, pure rules). New scripts go in the folder of the system they belong to:
     - `src/brewing/` — recipes, ingredients, `BrewResolver` and its parts (`BrewMixture`, `BrewQuality`, `StylePricing`, `IngredientSource`), `RecipeSearch`, brewing, inventory
@@ -33,7 +34,7 @@
 - **Autoload Pattern:** Use `src/autoload/` for cross-run state, registries and the signal buses. State that belongs to one run lives on `Brewery` and its services, which are passed in rather than read from `BrewEngine.current_brewery`; prefer that for new code.
 - **Decoupling:** Nodes must communicate upstream using **Signals** and downstream via **Methods** ("Signal up, method down"). Avoid hardcoded node paths like `get_node("../../Customer")`.
 - **Data-Driven Design:** Configuration tables and item properties (like recipes and events) must live inside custom `Resource` scripts and `.tres` files in `res://src/resources/`. Never hardcode raw lists directly into components.
-- **Scene Scripts:** Scripts directly tied to unique scene nodes can sit inside `res://scenes/` (like `customer.gd` next to `customer.tscn`), but underlying logic should live in `src/`.
+- **Scene Scripts:** Scripts directly tied to unique scene nodes can sit inside `res://src/scenes/` (like `customer.gd` next to `customer.tscn`), but underlying logic should live in the system folders under `src/`.
 - **Systems:** Anything meant to be reused lives in `src/systems/<name>/` and references only its own folder: no game classes, autoloads or outside `res://` paths (use relative paths for its own files). It exposes a small interface (methods and signals). A single `<name>_wiring.gd` file inside the folder connects the game's signals (for example `BrewerySignals`) to that interface and holds the game's wording; that is the only file allowed to touch the game and the one to edit when the system moves. Run `python dev/tools/check_systems.py` after changing a system. When a new reusable piece is needed, build it as a system; migrate existing pieces one at a time.
 - **Small Classes:** Pure logic (rules, formatting, layout, maths) goes into small `RefCounted` classes with static functions, one class per file, and gets a test. Do not nest classes inside another script.
 
@@ -54,14 +55,14 @@
 
 ## Useful CLI Commands
 * **Run Project:** `godot --path .`
-* **Run Scene directly:** `godot res://scenes/main.tscn`
+* **Run Scene directly:** `godot res://src/scenes/main.tscn`
 * **Headless load check:** `godot --headless --quit` (only checks that the project loads; it does not run the tests)
 
 ## Core Nodes and Scenes (Autoloads & Scripts)
 - `Main.tscn`: Main game scene that loads the UI and world.
 - `BrewEngine` (autoload): holds `current_brewery` and the save/load hooks.
 - `Brewery` (`src/brewery/`): the run state (money, reputation, LVV risk, inventory, recipes) and the services that act on it.
-- `GUI` (`scenes/ui/gui.gd`): the UI layer; `GuiViewSwitcher` and `GuiAnnouncer` hold its view switching and toasts.
+- `GUI` (`src/scenes/ui/gui.gd`): the UI layer; `GuiViewSwitcher` and `GuiAnnouncer` hold its view switching and toasts.
 - `IngredientDatabase`, `CustomerRegistry` (autoloads): load all ingredient and customer resources from their folders at startup. `CustomerUnlockTracker` decides which customers are unlocked.
 - `Inventory`, `BrewPreparation` (`src/brewing/`): owned ingredients, and the ingredients selected for the active brew.
 - `BrewResolver` (`src/brewing/`): loads the beer styles and resolves a brew to a style, with `BrewMixture` (the totals), `BrewQuality` (the quality maths) and `StylePricing` (cost and price).

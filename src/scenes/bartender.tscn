@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://kttjbp45s274"]
 
-[ext_resource type="Script" uid="uid://bdkjioo848uw6" path="res://scenes/bartender.gd" id="1_bartender"]
+[ext_resource type="Script" uid="uid://bdkjioo848uw6" path="res://src/scenes/bartender.gd" id="1_bartender"]
 [ext_resource type="SpriteFrames" uid="uid://dmny30qxclveo" path="res://src/resources/sprite_frames/baarimikko_anim.tres" id="2_sprite"]
 
 [node name="Bartender" type="Node2D" unique_id=1780134628]

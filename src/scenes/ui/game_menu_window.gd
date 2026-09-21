@@ -6,7 +6,7 @@ extends Panel
 ## instance needs process_mode = ALWAYS. While the settings or achievements
 ## window is up this menu hides itself and comes back when that window closes.
 
-const MAIN_MENU_SCENE_PATH: String = "res://scenes/ui/main_menu.tscn"
+const MAIN_MENU_SCENE_PATH: String = "res://src/scenes/ui/main_menu.tscn"
 const TITLE_TEXT: String = "Valikko"
 const RESUME_BUTTON_TEXT: String = "Jatka"
 const OPTIONS_BUTTON_TEXT: String = "Asetukset"
