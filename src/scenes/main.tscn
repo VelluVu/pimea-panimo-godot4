@@ -924,18 +924,6 @@ expand_icon = true
 
 [node name="DevConsole" parent="GUI_CanvasLayer/GUI" unique_id=949689171 instance=ExtResource("30_fv21b")]
 visible = false
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -260.0
-offset_top = -109.0
-offset_right = -4.0
-offset_bottom = -4.0
-grow_horizontal = 0
-grow_vertical = 0
 
 [node name="OptionsWindow" parent="GUI_CanvasLayer/GUI" unique_id=259503196 instance=ExtResource("30_qkpxi")]
 process_mode = 3
