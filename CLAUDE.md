@@ -1,4 +1,4 @@
-markdown# Project Instructions and Context - Pimeä Panimo
+# Project Instructions and Context - Pimeä Panimo
 
 ## Game Description and Genre
 - **Genre:** 2D Humorous, Unrealistic Management/Simulation, Casual.
@@ -10,28 +10,31 @@ markdown# Project Instructions and Context - Pimeä Panimo
 ## Project Structure
 - `res://addons/godot_ai/` — Live Godot AI MCP plugin infrastructure
 - `res://assets/` — Binary resources, split into `fonts/` and `textures/`
-- `res://data/` — Static databases and game definitions (`events/`, `recipes/`)
-- `res://scenes/` — UI layouts and spatial scenes (e.g., `scenes/ui/`, `customer.tscn`, `main.tscn`)
-- `res://src/` — Pure architecture and code logic:
-  - `src/autoload/` — Global singleton orchestrators (e.g., `EventBus.gd`)
+- `res://scenes/` — Scenes and the scripts bound to their nodes (`main.tscn`, `customer.tscn`, `scenes/ui/` windows and panels). Keep these scripts thin; logic lives in `src/`.
+- `res://src/` — Code logic:
+  - `src/autoload/` — Autoloads: the signal buses (`BrewerySignals`, `GUISignals`), registries and managers of cross-run state
   - One folder per gameplay system for its scripts (data classes, services, pure rules). New scripts go in the folder of the system they belong to:
-    - `src/brewing/` — recipes, ingredients, `BrewResolver`/`RecipeSearch`, brewing, inventory
+    - `src/brewing/` — recipes, ingredients, `BrewResolver` and its parts (`BrewMixture`, `BrewQuality`, `StylePricing`, `IngredientSource`), `RecipeSearch`, brewing, inventory
     - `src/brewery/` — the `Brewery` run state and its services (raids, distribution, day rules)
     - `src/customers/` — customers, spawning, group visits, sales
     - `src/events/` — special, day and immersion events
-    - `src/progression/` — perks, run modifiers, meta unlocks, achievements, daily goals
-    - `src/ui/` — tooltip and hover-area helpers
+    - `src/progression/` — perks, run modifiers, meta unlocks and their rules, achievements, daily goals
+    - `src/ui/` — UI helper classes: pure text and layout logic (`BubbleLayout`, `OlutoppiText`), small view helpers (`LabelPulse`, `CollapsibleSection`) and tooltip/hover-area nodes
     - `src/console/` — dev console command sets
     - `src/save/`, `src/audio/` — save file handling, audio bank
-  - `src/resources/` — Layout definitions and raw custom `.tres` files
+  - `src/resources/` — All game content as custom `.tres` resources, one folder per type (`customers/`, `beer_styles/`, `ingredients/`, `perks/`, `daily_goals/`, ...), plus the `ResourceFolder` loader
+- `res://tests/` — Unit tests, one `test_<class>.gd` per class
+- `res://tools/` — Developer scripts outside the game (see Tools)
+- `res://docs/` — Design references, e.g. `beer_styles_reference.txt`
 
 ## Architecture
 - **Architecture:** Component-based architecture. The UI (GUI) must remain decoupled from game logic; use local and global Signals to communicate between them. 
-- **Data Management:** Heavily relies on custom Resources (`.tres`). These are automatically loaded from their respective directories at game launch.
-- **Autoload Pattern:** Use `src/autoload/` strictly for global game state orchestration and decoupled communications (e.g., `EventBus.gd`).
+- **Data Management:** Heavily relies on custom Resources (`.tres`). Registries load them from their folders at launch through `ResourceFolder.load_all()`.
+- **Autoload Pattern:** Use `src/autoload/` for cross-run state, registries and the signal buses. State that belongs to one run lives on `Brewery` and its services, which are passed in rather than read from `BrewEngine.current_brewery`; prefer that for new code.
 - **Decoupling:** Nodes must communicate upstream using **Signals** and downstream via **Methods** ("Signal up, method down"). Avoid hardcoded node paths like `get_node("../../Customer")`.
-- **Data-Driven Design:** Configuration tables and item properties (like recipes and events) must live inside custom `Resource` scripts inside `res://data/` or `res://src/resources/`. Never hardcode raw lists directly into components.
+- **Data-Driven Design:** Configuration tables and item properties (like recipes and events) must live inside custom `Resource` scripts and `.tres` files in `res://src/resources/`. Never hardcode raw lists directly into components.
 - **Scene Scripts:** Scripts directly tied to unique scene nodes can sit inside `res://scenes/` (like `customer.gd` next to `customer.tscn`), but underlying logic should live in `src/`.
+- **Small Classes:** Pure logic (rules, formatting, layout, maths) goes into small `RefCounted` classes with static functions, one class per file, and gets a test. Do not nest classes inside another script.
 
 ## Code Style Rules (Godot 4.x / GDScript)
 - **Godot 4 Syntax Only:** Do NOT mix up old Godot 3 logic.
@@ -45,27 +48,38 @@ markdown# Project Instructions and Context - Pimeä Panimo
   - snake_case for methods, inner properties, custom signals, and directories.
   - UPPER_CASE for structural constants.
 - **Signals:** Declare all custom signals at the very top of files: `signal customer_served(order_type: String)`.
+- **Comments:** Short. Say why, not what; one to four lines. Names and small functions carry the rest.
+- **Strings:** Only strings used in several places go into `StringContainer`; a string used once is a local `const` in its script. Player-facing text is Finnish and never contains an em dash (—); use periods, commas or colons.
 
 ## Useful CLI Commands
 * **Run Project:** `godot --path .`
 * **Run Scene directly:** `godot res://scenes/main.tscn`
-* **Headless execution (Testing):** `godot --headless --quit`
+* **Headless load check:** `godot --headless --quit` (only checks that the project loads; it does not run the tests)
 
 ## Core Nodes and Scenes (Autoloads & Scripts)
 - `Main.tscn`: Main game scene that loads the UI and world.
-- `BrewEngine.gd`: Autoload (Singleton) class containing core references and state.
-- `GUI.gd`: Manages the user interface layer.
-- `Brewery.gd`: Core logic for managing the brewery operations.
-- `IngredientDatabase.gd`: Loads all raw ingredient resources (e.g., `HopData.tres`, `MaltData.tres`, `YeastData.tres`) automatically from folders at startup.
-- `CustomerRegistry.gd`: Loads all customer data resources (`CustomerData.tres`) from folders at startup. Includes a name generator for customers.
-- `Inventory.gd`: Tracks currently owned raw ingredients.
-- `BrewPreparation.gd`: Tracks ingredients selected for the active brewing process.
-- `BrewResolver.gd`: Loads all beer style resources (`BeerStyle.tres`) at startup. Determines the resulting beer style based on chosen ingredients and brewing formulas.
-- `DialogView.gd`: Runtime creates dialog UI-elements, like chat bubbles.
-- `CustomerSpawner.gd`: Loads Customer.tscn and instantiates random customers.
-- `CustomerManager.gd`: Handles the customer interaction.
-- `SpecialEventManager.gd`: Handles the special event customer interaction.
-- `TimeManager.gd`: Handles the in game time.
+- `BrewEngine` (autoload): holds `current_brewery` and the save/load hooks.
+- `Brewery` (`src/brewery/`): the run state (money, reputation, LVV risk, inventory, recipes) and the services that act on it.
+- `GUI` (`scenes/ui/gui.gd`): the UI layer; `GuiViewSwitcher` and `GuiAnnouncer` hold its view switching and toasts.
+- `IngredientDatabase`, `CustomerRegistry` (autoloads): load all ingredient and customer resources from their folders at startup. `CustomerUnlockTracker` decides which customers are unlocked.
+- `Inventory`, `BrewPreparation` (`src/brewing/`): owned ingredients, and the ingredients selected for the active brew.
+- `BrewResolver` (`src/brewing/`): loads the beer styles and resolves a brew to a style, with `BrewMixture` (the totals), `BrewQuality` (the quality maths) and `StylePricing` (cost and price).
+- `DialogView` (`scenes/ui/`): speech bubbles and floating popups. `BubbleLayout` places them, `BubbleEntry` owns one bubble.
+- `CustomerSpawner` (`src/customers/`): spawns customers and group visits (`GroupVisitDirector`).
+- `CustomerManager` (autoload): counter slots and sales (`SaleProcessor`). `SpecialEventManager` and `DayEventManager` handle special customers and day events.
+- `TimeManager` (autoload): in-game time, with `DayRules`.
+- `DailyGoalManager`, `MetaProgressManager`, `AchievementManager`, `LeaderboardManager` (autoloads): daily goals (`DailyGoalRules`, `GoalSlot`), the Olutoppi talent tree (`MetaUnlockRules`), achievements and the leaderboard; the last three keep their own `ConfigFile`.
+- `SettingsManager`, `InputManager`, `SaveManager`, `AudioManager` (autoloads): settings, rebindable input actions, the run save, and audio.
+
+## Testing and Verification
+- Tests are in `tests/`, extend `McpTestSuite` and are run through the MCP `test_run` tool with the editor open. Each run prints about 10 errors and 2 warnings from the save-file tests; those are expected.
+- Autoloads are not reachable from tests: preload the script by path (`const XScript := preload(...)`) and inject dependencies, as `test_brew_resolver.gd` does.
+- The editor caches preloaded scripts. After editing a script a test preloads, failures that look like the old behavior may be stale; restart the editor before believing them.
+- After a change, run the game through MCP and read the game log (`logs_read` with `source="game"`): some errors, like a failed lookup, only show up there. For UI changes take a screenshot too.
+- Playtests and `game_eval` can write the real user data in `%APPDATA%/Godot/app_userdata/Pimea Panimo/` (saves, `meta_progress.cfg`, leaderboard). Back it up first and restore it afterwards.
+
+## Tools
+- `tools/sheets.py` exports the customers and beer styles to spreadsheets (`export`) and reads edited sheets back into the `.tres` files (`import`, a dry run unless `--apply` is given). Needs `pip install openpyxl`. Output goes to `tools/sheets/`, which is gitignored.
 
 ## Model Context Protocol (MCP) Live Usage Rules
 You are connected to the live Godot Editor via the `godot_ai` MCP plugin. Always utilize your toolsets before guessing or making structural assumptions:
