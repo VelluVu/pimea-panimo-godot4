@@ -4,8 +4,8 @@ extends McpTestSuite
 ## WeightedPicker's odds, using the injectable roll instead of real randomness,
 ## and ResourceFolder's type filtering over a real shipped folder.
 
-const WeightedPickerScript := preload("res://src/customers/weighted_picker.gd")
-const ResourceFolderScript := preload("res://src/resources/resource_folder.gd")
+const WeightedPickerScript := preload("res://systems/toolkit/weighted_picker.gd")
+const ResourceFolderScript := preload("res://systems/toolkit/resource_folder.gd")
 
 
 func suite_name() -> String:

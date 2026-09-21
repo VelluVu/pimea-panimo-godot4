@@ -3,7 +3,7 @@ extends McpTestSuite
 
 ## Unit tests for CollapsibleSection: header rewrap and the toggle state.
 
-const CollapsibleSectionScript := preload("res://src/ui/collapsible_section.gd")
+const CollapsibleSectionScript := preload("res://systems/toolkit/collapsible_section.gd")
 
 
 func suite_name() -> String:

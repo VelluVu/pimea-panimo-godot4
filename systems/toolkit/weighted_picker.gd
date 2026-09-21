@@ -1,8 +1,7 @@
 class_name WeightedPicker
 extends RefCounted
 
-## Weighted random choice. Used for customers (perk-boosted archetypes) and
-## special events (per-event weights).
+## Weighted random choice.
 
 
 ## Picks one of `items` with probability proportional to its weight in
