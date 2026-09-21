@@ -6,11 +6,11 @@ extends RefCounted
 var event_data : GroupVisitEventData
 ## Counter slot the crowd was sent to.
 var slot : int
-## Speech-bubble slot shared by every member, so evicting any of them clears the group's bubble.
+## Shared by every member, so evicting any of them clears the group's bubble.
 var dialogue_slot : int
 var counter_position : Vector2
-## Every member spawned, in walk-in order; index 0 is the order-place representative. A
-## member can be freed mid-visit (eviction), so check is_instance_valid() before use.
+## In walk-in order; index 0 is the representative. Members can be freed mid-visit, so
+## check is_instance_valid() before use.
 var members : Array = []
 
 

@@ -1,11 +1,9 @@
 class_name GroupVisitDirector
 extends RefCounted
 
-## Runs one crowd visit: members walk in, chant while the last one arrives, then place a
-## single shared order, get served and leave together. Owned by CustomerSpawner, which
-## decides when a visit happens and hands over the node the members are spawned under.
-## The phases run strictly in sequence: two things pushing to one dialogue slot would
-## race each other's hide timers.
+## Runs one crowd visit for CustomerSpawner: members walk in and chant, place one shared
+## order, get served and leave together. The phases run in sequence: two pushes to one
+## dialogue slot would race each other's hide timers.
 
 const CUSTOMER_SCENE : PackedScene = preload("res://scenes/customer.tscn")
 
@@ -18,13 +16,11 @@ const DIALOGUE_SLOT_RANGE : int = 90
 const CHANT_BUBBLE_EXTRA_SECONDS : float = 0.3
 const CHANT_BUBBLE_FADE_SECONDS : float = 0.3
 
-## Serving burst: a glass every SERVE_INTERVAL_SECONDS, faster than a solo customer's pacing.
 const SERVE_INTERVAL_SECONDS : float = 0.3
 const SERVE_ANIMATION_SPEED_SCALE : float = 3.0
 const SERVE_GLASS_SLIDE_SECONDS : float = 0.25
 
-## Extra distance every member except the representative stands from the counter, so the
-## crowd does not hide the bartender.
+## Everyone but the representative stands this far back, so the crowd hides no pouring.
 const STANDBY_Y_OFFSET_PX : float = 56.0
 
 var _host : Node2D
@@ -42,21 +38,19 @@ func _init(host : Node2D, stairs_marker : Marker2D, room_center_marker : Marker2
 	_active_styles = active_styles
 
 
-## The lower of two rolls skews toward min_size, keeping big crowds rare.
+## The lower of two rolls, so big crowds stay rare.
 static func roll_group_size(min_size : int, max_size : int) -> int:
 	return mini(randi_range(min_size, max_size), randi_range(min_size, max_size))
 
 
-## A compact two-row huddle around the shared marker: counter markers are only about 43px
-## apart, so one wide line would sprawl over the neighbouring positions.
+## A compact two-row huddle: counter markers are only ~43px apart.
 static func formation_offset(index : int, group_size : int, spacing : float) -> Vector2:
 	var centered_index : float = float(index) - (float(group_size - 1) / 2.0)
 	var row : int = index % 2
 	return Vector2(centered_index * spacing, row * spacing * 0.7)
 
 
-## One copy of a random member's data for the whole crowd's order, its bottle range scaled
-## by crowd size. A copy, so the shared resource is never mutated.
+## The crowd's order: a copy (the shared resource stays untouched) scaled by crowd size.
 static func build_order_data(options : Array[CustomerData], member_count : int, styles : Array[BeerStyle]) -> CustomerData:
 	var order_data : CustomerData = options.pick_random().duplicate()
 	if order_data.randomizes_preference:
@@ -75,14 +69,12 @@ func run(event_data : GroupVisitEventData, slot : int, counter_position : Vector
 		if i < group_size - 1 and not await _wait(event_data.walk_in_stagger_seconds):
 			return
 
-	# Wait for the last member specifically: an earlier order could overlap the chant on
-	# the shared bubble.
+	# The last member specifically: an earlier order could overlap the chant.
 	await _chant_until_arrival(visit)
 	_run_shared_order(visit)
 
 
-## Waits on the host's tree. False when the host was freed meanwhile (scene change), so
-## the visit can stop instead of touching freed nodes.
+## False when the host was freed meanwhile (scene change): the visit must stop.
 func _wait(seconds : float) -> bool:
 	if not is_instance_valid(_host):
 		return false
@@ -105,15 +97,13 @@ func _spawn_member(visit : GroupVisit, index : int, group_size : int) -> Custome
 	member.dialogue_slot = visit.dialogue_slot
 	CustomerManager.register_active_customer(visit.slot, member)
 
-	# The offset applies after the stairs (a shared bottleneck), so paths diverge as soon as
-	# members step off them.
+	# Applied after the stairs, a shared bottleneck, so paths diverge only past them.
 	var offset : Vector2 = _formation_offset_for(index, group_size, visit.event_data.formation_spacing_px)
 	member.walk_complex_route(_stairs_marker.global_position, _room_center_marker.global_position + offset, visit.counter_position + offset, true)
 	return member
 
 
-## Only the first member walks to the counter marker itself; the rest take a formation slot
-## pushed down-screen, so the crowd does not hide the bartender's pour.
+## Only the first member walks to the marker itself; the rest stand down-screen.
 func _formation_offset_for(index : int, group_size : int, spacing : float) -> Vector2:
 	if index == 0:
 		return Vector2.ZERO
@@ -122,8 +112,6 @@ func _formation_offset_for(index : int, group_size : int, spacing : float) -> Ve
 	return offset
 
 
-## Waits for the last-spawned member's walk to finish, chanting into the shared bubble
-## meanwhile if the event has a chant.
 func _chant_until_arrival(visit : GroupVisit) -> void:
 	var last_member : Customer = visit.members.back()
 	var state : Dictionary = {"walking": true}
@@ -140,9 +128,7 @@ func _chant_until_arrival(visit : GroupVisit) -> void:
 			return
 
 
-## One intro line, then one process_auto_sale() for the whole crowd, then everyone leaves
-## together. It is one coroutine, so evicting the group does not stop it: it bails out if
-## every member is already gone.
+## One coroutine, so evicting the group does not stop it: it bails out if every member is gone.
 func _run_shared_order(visit : GroupVisit) -> void:
 	if not visit.has_anyone_here():
 		return
@@ -153,7 +139,7 @@ func _run_shared_order(visit : GroupVisit) -> void:
 	if not await _wait(Customer.PREVIEW_DELAY_SECONDS):
 		return
 
-	# process_auto_sale() is synchronous, so signals fired during it belong to this sale.
+	# Synchronous, so signals fired during it belong to this sale.
 	var outcome := SaleOutcomeCapture.new()
 	outcome.start()
 	var response_text : String = CustomerManager.process_auto_sale(order_data)
@@ -174,8 +160,7 @@ func _run_shared_order(visit : GroupVisit) -> void:
 		await _dismiss(visit)
 
 
-## One sale but many drinks: a sped-up bartender pours one glass per member, each landing
-## on the counter stack. False when the host was freed meanwhile.
+## One sale, many drinks: a sped-up pour per member. False when the host was freed meanwhile.
 func _serve_burst(visit : GroupVisit) -> bool:
 	var bartender := _host.get_tree().get_first_node_in_group(Bartender.BARTENDER_GROUP) as Bartender
 	var stack_index : int = 0
@@ -191,8 +176,7 @@ func _serve_burst(visit : GroupVisit) -> bool:
 	return true
 
 
-## Only the representative leaves from where they stand; the others first collect their
-## round from the counter, staggered so the crowd peels off one by one.
+## The representative leaves in place; the rest collect their round first, staggered.
 func _dismiss(visit : GroupVisit) -> void:
 	for i : int in visit.size():
 		var member : Variant = visit.members[i]
@@ -206,7 +190,7 @@ func _dismiss(visit : GroupVisit) -> void:
 			return
 
 
-## Pushes a line into the group's shared bubble and returns how long it stays up.
+## Returns how long the line stays up in the shared bubble.
 func _say(visit : GroupVisit, text : String) -> float:
 	var display_time : float = Customer.get_display_time_for_text(text)
 	BrewerySignals.dialogue_pushed.emit(text, false, visit.dialogue_slot, visit.counter_position, display_time, Customer.FADE_TIME_SECONDS)
