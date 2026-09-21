@@ -1,33 +1,42 @@
 class_name OlutoppiWindow
 extends Panel
 
-## Main-menu "talent tree" screen for MetaProgressManager's renown
-## currency — see that autoload and MetaUnlockData for the backing data.
-## Self-subscribes to GUISignals.olutoppi_requested (emitted by
-## main_menu.gd's OlutoppiButton), same "who owns the window, not who
-## asks" decoupling as LeaderboardWindow.
-##
-## Node discovery is fully dynamic: every Button child of a TreeArea IS a
-## node square, named after its MetaUnlockData.unlock_id (see
-## olutoppi_window.tscn) — no separate hardcoded id list to keep in sync
-## with the scene. Connector lines (TreeConnectorLayer) are derived the
-## same way, straight from each node's own MetaUnlockData.prerequisite_ids,
-## not a separately authored edge list — a node with 2+ prerequisite_ids
-## (a capstone) just gets 2+ lines converging on it.
+## Main-menu talent tree for MetaProgressManager's renown currency. Every Button child of
+## a TreeArea is a node square named after its MetaUnlockData.unlock_id, and the connector
+## lines come from each node's prerequisite_ids, so the scene needs no id or edge list.
+## Self-subscribes to GUISignals.olutoppi_requested, like LeaderboardWindow.
 
 const TITLE_TEXT : String = "Olutoppi"
 const CLOSE_BUTTON_TEXT : String = "Sulje"
 const RENOWN_FORMAT : String = "Maine: %d"
 const LEVEL_BONUS_FORMAT : String = "%d/%d %s"
-const BONUS_NEUTRAL_TEXT : String = "-"
 const LOCKED_ICON : String = "🔒"
-const TOOLTIP_CURRENT_FORMAT : String = "Nyt:\n%s"
-const TOOLTIP_NEXT_LEVEL_EFFECT_FORMAT : String = "Tason %d jälkeen:\n%s"
-const TOOLTIP_NEXT_LEVEL_FORMAT : String = "Seuraava taso: %d maine"
-const TOOLTIP_MAXED_TEXT : String = "Taso enimmillään"
-const TOOLTIP_LOCKED_FORMAT : String = "Vaatii ensin: %s"
-const TOOLTIP_PREREQ_ALL_SEPARATOR : String = ", "
-const TOOLTIP_PREREQ_ANY_SEPARATOR : String = " tai "
+
+
+## The labels inside one node square.
+class NodeView:
+	var button : Button
+	var icon_label : Label
+	var level_bonus_label : Label
+
+	func _init(node_button : Button) -> void:
+		button = node_button
+		icon_label = node_button.get_node("VBox/IconLabel")
+		level_bonus_label = node_button.get_node("VBox/LevelBonusLabel")
+
+
+## Static geometry of one connector line and the node that gates it. Whether it is
+## unlocked is recomputed on every refresh.
+class Edge:
+	var from : Vector2
+	var to : Vector2
+	var prerequisite_id : String
+
+	func _init(from_center : Vector2, to_center : Vector2, prerequisite : String) -> void:
+		from = from_center
+		to = to_center
+		prerequisite_id = prerequisite
+
 
 @onready var title_label : Label = $MarginContainer/MainVBox/HeaderHBox/TitleLabel
 @onready var renown_label : Label = $MarginContainer/MainVBox/HeaderHBox/RenownLabel
@@ -38,62 +47,19 @@ const TOOLTIP_PREREQ_ANY_SEPARATOR : String = " tai "
 	$MarginContainer/MainVBox/PathsHBox/MarketingColumn/TreeArea,
 ]
 
-## unlock_id : String -> {button, icon_label, level_bonus_label}
-var _node_refs : Dictionary = {}
-## TreeConnectorLayer -> Array[{from: Vector2, to: Vector2, prereq_id: String}]
-## (static geometry + which node gates each line — "unlocked" is
-## recomputed fresh every _refresh(), not stored here).
-var _connector_edges : Dictionary = {}
+var _node_views : Dictionary = {} # unlock_id -> NodeView
+var _connector_edges : Dictionary = {} # TreeConnectorLayer -> Array[Edge]
 
 
 func _ready() -> void:
 	title_label.text = TITLE_TEXT
 	close_button.text = CLOSE_BUTTON_TEXT
-
 	for tree_area : Control in tree_areas:
 		_setup_tree_area(tree_area)
 
 	close_button.pressed.connect(_on_close_button_pressed)
 	GUISignals.olutoppi_requested.connect(_on_olutoppi_requested)
 	hide()
-
-
-## Discovers every Button child as a node square (caching its refs and
-## connecting its press), then derives that path's connector edges from
-## each discovered node's own prerequisite_ids — two passes so a node
-## whose prerequisite happens to be declared later in the scene tree
-## still resolves correctly (centers are all known before edges are built).
-func _setup_tree_area(tree_area : Control) -> void:
-	var connector : TreeConnectorLayer = tree_area.get_node("ConnectorLayer")
-	var centers : Dictionary = {}
-
-	for child : Node in tree_area.get_children():
-		if not child is Button:
-			continue
-		var button : Button = child
-		var id : String = button.name
-		_node_refs[id] = {
-			"button": button,
-			"icon_label": button.get_node("VBox/IconLabel"),
-			"level_bonus_label": button.get_node("VBox/LevelBonusLabel"),
-		}
-		centers[id] = button.position + button.size * 0.5
-		button.pressed.connect(_on_node_pressed.bind(id))
-
-	var edges : Array[Dictionary] = []
-	for child : Node in tree_area.get_children():
-		if not child is Button:
-			continue
-		var id : String = child.name
-		var unlock : MetaUnlockData = MetaProgressManager.find_unlock(id)
-		if unlock == null:
-			continue
-		for prereq_id : String in unlock.prerequisite_ids:
-			if not centers.has(prereq_id):
-				continue
-			edges.append({"from": centers[prereq_id], "to": centers[id], "prereq_id": prereq_id})
-
-	_connector_edges[connector] = edges
 
 
 func _on_olutoppi_requested() -> void:
@@ -111,100 +77,77 @@ func _on_node_pressed(unlock_id : String) -> void:
 	_refresh()
 
 
+## Two passes: every node center is known before edges are built, so a prerequisite
+## declared later in the scene tree still resolves.
+func _setup_tree_area(tree_area : Control) -> void:
+	var buttons : Array[Button] = []
+	for child : Node in tree_area.get_children():
+		if child is Button:
+			buttons.append(child)
+
+	var centers : Dictionary = {}
+	for button : Button in buttons:
+		var id : String = button.name
+		_node_views[id] = NodeView.new(button)
+		centers[id] = button.position + button.size * 0.5
+		button.pressed.connect(_on_node_pressed.bind(id))
+
+	var connector : TreeConnectorLayer = tree_area.get_node("ConnectorLayer")
+	_connector_edges[connector] = _build_edges(buttons, centers)
+
+
+func _build_edges(buttons : Array[Button], centers : Dictionary) -> Array[Edge]:
+	var edges : Array[Edge] = []
+	for button : Button in buttons:
+		var id : String = button.name
+		var unlock : MetaUnlockData = MetaProgressManager.find_unlock(id)
+		if unlock == null:
+			continue
+		for prerequisite_id : String in unlock.prerequisite_ids:
+			if centers.has(prerequisite_id):
+				edges.append(Edge.new(centers[prerequisite_id], centers[id], prerequisite_id))
+	return edges
+
+
 func _refresh() -> void:
 	var renown : int = MetaProgressManager.get_renown()
 	renown_label.text = RENOWN_FORMAT % renown
 
-	for id : String in _node_refs:
+	for id : String in _node_views:
 		_refresh_node(id, renown)
-
 	for connector : TreeConnectorLayer in _connector_edges:
-		var edges : Array[Dictionary] = []
-		for edge : Dictionary in _connector_edges[connector]:
-			var unlocked : bool = MetaProgressManager.get_node_level(edge["prereq_id"]) > 0
-			edges.append({"from": edge["from"], "to": edge["to"], "unlocked": unlocked})
-		connector.set_connections(edges)
+		connector.set_connections(_connections_for(_connector_edges[connector]))
+
+
+func _connections_for(edges : Array[Edge]) -> Array[Dictionary]:
+	var connections : Array[Dictionary] = []
+	for edge : Edge in edges:
+		var unlocked : bool = MetaProgressManager.get_node_level(edge.prerequisite_id) > 0
+		connections.append({"from": edge.from, "to": edge.to, "unlocked": unlocked})
+	return connections
 
 
 func _refresh_node(id : String, renown : int) -> void:
+	var view : NodeView = _node_views[id]
 	var unlock : MetaUnlockData = MetaProgressManager.find_unlock(id)
-	var refs : Dictionary = _node_refs[id]
-	var button : Button = refs["button"]
 	if unlock == null:
-		button.visible = false
+		view.button.visible = false
 		return
 
 	var level : int = MetaProgressManager.get_node_level(id)
 	var maxed : bool = MetaProgressManager.is_maxed(id)
-	var unlockable : bool = MetaProgressManager.meets_prerequisites(id)
-	var locked : bool = not unlockable and level <= 0
+	var locked : bool = not MetaProgressManager.meets_prerequisites(id) and level <= 0
 
-	refs["icon_label"].text = LOCKED_ICON if locked else unlock.icon_placeholder
-	refs["level_bonus_label"].text = "" if locked else LEVEL_BONUS_FORMAT % [level, unlock.max_level, _format_bonus_short(unlock, level)]
-
-	button.disabled = locked or maxed or renown < unlock.renown_cost_per_level
-	button.tooltip_text = _build_tooltip(unlock, level, maxed, locked)
+	view.icon_label.text = LOCKED_ICON if locked else unlock.icon_placeholder
+	view.level_bonus_label.text = "" if locked else LEVEL_BONUS_FORMAT % [level, unlock.max_level, OlutoppiText.short_bonus(unlock, level)]
+	view.button.disabled = locked or maxed or renown < unlock.renown_cost_per_level
+	view.button.tooltip_text = OlutoppiText.locked_tooltip(unlock, _unmet_prerequisite_names(unlock)) if locked else OlutoppiText.tooltip(unlock, level, maxed)
 
 
-## A short number for the square itself: the first non-neutral stat of the
-## scaled perk. The full stat lines are in the tooltip. A node that sets several
-## stats shows only the first, which is fine for a square this small.
-func _format_bonus_short(unlock : MetaUnlockData, level : int) -> String:
-	if level <= 0:
-		return BONUS_NEUTRAL_TEXT
-
-	var scaled : RunPerk = unlock.get_scaled_perk(level)
-	for entry : Dictionary in PerkStats.definitions():
-		var kind : PerkStats.Kind = entry.kind
-		var value : float = scaled.get(entry.stat)
-		if value == PerkStats.neutral_value(kind):
-			continue
-		var number : int = PerkStats.display_number(kind, value)
-		match kind:
-			PerkStats.Kind.MULTIPLIER:
-				return "%+d%%" % number
-			PerkStats.Kind.PERCENT_ADD:
-				return "%d%%" % number
-			_:
-				return "+%d" % number
-
-	return BONUS_NEUTRAL_TEXT
-
-
-func _build_tooltip(unlock : MetaUnlockData, level : int, maxed : bool, locked : bool) -> String:
-	var lines : PackedStringArray = [unlock.perk_name, unlock.description]
-
-	if locked:
-		var prereq_names : PackedStringArray = []
-		for prereq_id : String in unlock.prerequisite_ids:
-			var prereq : MetaUnlockData = MetaProgressManager.find_unlock(prereq_id)
-			if prereq != null and MetaProgressManager.get_node_level(prereq_id) <= 0:
-				prereq_names.append(prereq.perk_name)
-		# An any-mode capstone (see MetaUnlockData.requires_any_prerequisite)
-		# is only ever shown locked here when NONE of its branches are met
-		# yet (a single met branch already satisfies meets_prerequisites()),
-		# so prereq_names is still every branch — " tai " communicates any
-		# ONE of them unlocks it, instead of ", " which reads as needing all.
-		var separator : String = TOOLTIP_PREREQ_ANY_SEPARATOR if unlock.requires_any_prerequisite else TOOLTIP_PREREQ_ALL_SEPARATOR
-		lines.append(TOOLTIP_LOCKED_FORMAT % separator.join(prereq_names))
-		return "\n".join(lines)
-
-	if level > 0:
-		var current_summary : String = unlock.get_scaled_perk(level).get_stat_summary()
-		if not current_summary.is_empty():
-			lines.append(TOOLTIP_CURRENT_FORMAT % current_summary)
-
-	if maxed:
-		lines.append(TOOLTIP_MAXED_TEXT)
-	else:
-		# Concrete numbers for the purchase this renown would actually buy —
-		# not just "it gets better", the same %/€ stat line get_stat_summary()
-		# already renders for the CURRENT level above, just one level ahead.
-		# Also covers level == 0 (never bought yet), where this is the only
-		# preview of what a first purchase does at all.
-		var next_summary : String = unlock.get_scaled_perk(level + 1).get_stat_summary()
-		if not next_summary.is_empty():
-			lines.append(TOOLTIP_NEXT_LEVEL_EFFECT_FORMAT % [level + 1, next_summary])
-		lines.append(TOOLTIP_NEXT_LEVEL_FORMAT % unlock.renown_cost_per_level)
-
-	return "\n".join(lines)
+func _unmet_prerequisite_names(unlock : MetaUnlockData) -> PackedStringArray:
+	var names : PackedStringArray = []
+	for prerequisite_id : String in unlock.prerequisite_ids:
+		var prerequisite : MetaUnlockData = MetaProgressManager.find_unlock(prerequisite_id)
+		if prerequisite != null and MetaProgressManager.get_node_level(prerequisite_id) <= 0:
+			names.append(prerequisite.perk_name)
+	return names
