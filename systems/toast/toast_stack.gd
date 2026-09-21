@@ -1,10 +1,8 @@
 class_name ToastStack
 extends RefCounted
 
-## Shows toasts stacked under each other so a burst (a style discovery, an
-## achievement and a customer unlock in the same moment) is never overwritten.
-## Every toast is its own copy of the template label, presented by its own
-## BannerPresenter and freed once it has faded out.
+## Shows toasts stacked under each other so a burst is never overwritten. Every toast is its
+## own copy of the template label, presented by its own BannerPresenter and freed once faded.
 
 const STACK_SEPARATION: int = 2
 
@@ -15,8 +13,8 @@ var _hold_seconds: float
 var _fade_seconds: float
 
 
-## The template label supplies the look (font, colors, outline) and the stack's
-## screen rect; it is hidden and stays as the prototype. Must be in the tree.
+## The template label supplies the look and the stack's screen rect; it is hidden and stays
+## as the prototype. Must be in the tree.
 func _init(template: Label, flash_seconds: float, hold_seconds: float, fade_seconds: float) -> void:
 	_template = template
 	_flash_seconds = flash_seconds

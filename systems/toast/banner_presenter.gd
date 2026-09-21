@@ -1,24 +1,16 @@
 class_name BannerPresenter
 extends RefCounted
 
-## Flash / hold / fade presentation for one passive Label (group-visit banner,
-## day-event banner, first-brew hint, discovery toast). GUI used to carry a
-## hand-copied version of this tween sequence per banner; each banner is now
-## one presenter configured with its own timing and look, so a new banner is
-## one constructor call instead of another copy of the sequence.
-##
-## Purely visual: no input, no gameplay state. The label must already be in
-## the scene tree when present() is called (its tween is created on it).
+## Flash, hold and fade presentation for one passive Label (a banner, hint or toast).
+## Each banner is one presenter configured with its own timing and look. Purely visual:
+## no input, no game state. The label must be in the scene tree when present() is called.
 
 const FLASH_COLOR : Color = Color(1.4, 1.4, 1.0, 1.0)
 const SETTLED_COLOR : Color = Color(1.0, 1.0, 1.0, 1.0)
 const TRANSPARENT_COLOR : Color = Color(1.0, 1.0, 1.0, 0.0)
 
-## Banners are anchored top == bottom == 0.5 in main.tscn, so
-## offset_top/offset_bottom are a half-height around the anchor rather than a
-## real box height (see _fit_height()). 50.0 matches the original hand-tuned
-## two-line box and is kept as the floor so a short banner never shrinks
-## below the original design.
+## The label is anchored top == bottom == 0.5, so its offsets are a half-height around the
+## anchor (see _fit_height()). The floor keeps a short banner from shrinking below a two-line box.
 const MIN_HALF_HEIGHT : float = 50.0
 const VERTICAL_PADDING : float = 6.0
 
@@ -33,11 +25,9 @@ var _on_finished : Callable
 var _tween : Tween
 
 
-## bright_flash: overexposed FLASH_COLOR flash that settles to normal (group
-## banner, toast, hint) versus a plain alpha fade-in (day-event banner).
-## fit_to_text: grow the label's offsets to its wrapped text height (banners
-## only, not the toast). hide_when_done: also hide() the label at the end.
-## on_finished runs after the fade, and after dismiss_early()'s fade too.
+## bright_flash: an overexposed flash that settles to normal, versus a plain alpha fade-in.
+## fit_to_text: grow the label's offsets to its wrapped text height. hide_when_done: also
+## hide() the label at the end. on_finished runs after the fade, dismiss_early()'s included.
 func _init(label : Label, flash_seconds : float, hold_seconds : float, fade_seconds : float, bright_flash : bool = true, fit_to_text : bool = true, hide_when_done : bool = false, on_finished : Callable = Callable()) -> void:
 	_label = label
 	_flash_seconds = flash_seconds
@@ -70,8 +60,7 @@ func present(text : String, flash_color : Color = FLASH_COLOR) -> void:
 	_append_fade_out(_tween)
 
 
-## Cuts the hold short and fades out now (e.g. the hint that explains "doors
-## are closed" once the doors open). No-op if nothing is showing.
+## Cuts the hold short and fades out now. No-op if nothing is showing.
 func dismiss_early() -> void:
 	if _tween == null or not _tween.is_running():
 		return
@@ -98,10 +87,8 @@ func _kill_tween() -> void:
 		_tween = null
 
 
-## Free-authored text (group-event .tres, long hints) can word-wrap into more
-## lines than the editor-sized box holds, and a Label never clips or resizes
-## its own rect. Re-measure the wrapped height at the label's fixed width and
-## grow the symmetric offsets to match, keeping the block on-screen and centered.
+## Long text can wrap into more lines than the box holds, and a Label never resizes its own
+## rect: re-measure the wrapped height and grow the symmetric offsets to match.
 func _fit_height() -> void:
 	var font : Font = _label.get_theme_font("font")
 	var font_size : int = _label.get_theme_font_size("font_size")

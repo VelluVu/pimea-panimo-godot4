@@ -1,8 +1,8 @@
 class_name ResourceFolder
 extends RefCounted
 
-## Loads every .tres Resource of one script type from a folder. The registries
-## (customers, events, bar contacts, ...) all populate their pools this way.
+## Loads every .tres Resource of one script type from a folder, for registries that fill a
+## pool from a content folder.
 
 const WARNING_FOLDER_OPEN_FAILED: String = "ResourceFolder: Failed to open path: "
 ## Exported builds list resources as "<name>.tres.remap".
