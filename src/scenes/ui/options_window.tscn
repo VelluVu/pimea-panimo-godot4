@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cvfiooeo4kwdt"]
 
-[ext_resource type="Script" uid="uid://bpjk58v23qenp" path="res://scenes/ui/options_window.gd" id="1_options"]
+[ext_resource type="Script" uid="uid://bpjk58v23qenp" path="res://src/scenes/ui/options_window.gd" id="1_options"]
 
 [node name="OptionsWindow" type="Panel" unique_id=1845724609]
 offset_left = 96.0

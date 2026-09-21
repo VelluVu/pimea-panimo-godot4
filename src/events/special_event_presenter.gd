@@ -4,7 +4,7 @@ extends RefCounted
 ## Opens a special event window in `container` whenever SpecialEventManager triggers one.
 ## Game-side: this used to live in DialogView, which is now project-independent.
 
-const SPECIAL_EVENT_WINDOW_SCENE : PackedScene = preload("res://scenes/ui/special_event_window.tscn")
+const SPECIAL_EVENT_WINDOW_SCENE : PackedScene = preload("res://src/scenes/ui/special_event_window.tscn")
 
 var _container : Control
 

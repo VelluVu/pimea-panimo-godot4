@@ -13,7 +13,7 @@ extends Node2D
 ## dramatization, ending in lvv_raid_recap_ready once the squad has fully
 ## left, which is what LvvRaidWindow actually shows the recap on.
 
-const LVV_AGENT_SCENE : PackedScene = preload("res://scenes/lvv_agent.tscn")
+const LVV_AGENT_SCENE : PackedScene = preload("res://src/scenes/lvv_agent.tscn")
 
 const MIN_AGENTS : int = 2
 const MAX_AGENTS : int = 3

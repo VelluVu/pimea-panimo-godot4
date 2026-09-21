@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://2ddvq1esbm4f"]
 
-[ext_resource type="Script" uid="uid://dtkt58osnv2ik" path="res://scenes/ui/modifier_select_window.gd" id="1_1diij"]
+[ext_resource type="Script" uid="uid://dtkt58osnv2ik" path="res://src/scenes/ui/modifier_select_window.gd" id="1_1diij"]
 
 [node name="ModifierSelectWindow" type="Panel" unique_id=1067175277]
 visible = false

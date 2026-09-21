@@ -4,7 +4,7 @@ extends Panel
 ## Mirrors RecipeLibraryWindow's shape: a Panel with a header (title +
 ## close), a ScrollContainer/RowsVBox rebuilt in code from
 ## LeaderboardManager.get_entries() each time the window opens. Only
-## instanced in main_menu.tscn — GameEndWindow (scenes/main.tscn) shows
+## instanced in main_menu.tscn — GameEndWindow (src/scenes/main.tscn) shows
 ## just an inline rank line instead of the full browsable list.
 
 @onready var title_label : Label = $MarginContainer/MainVBox/HeaderHBox/TitleLabel

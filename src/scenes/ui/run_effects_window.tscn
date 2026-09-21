@@ -1,6 +1,6 @@
 [gd_scene format=3]
 
-[ext_resource type="Script" path="res://scenes/ui/run_effects_window.gd" id="1_effects"]
+[ext_resource type="Script" path="res://src/scenes/ui/run_effects_window.gd" id="1_effects"]
 
 [node name="RunEffectsWindow" type="Panel"]
 visible = false

@@ -12,7 +12,7 @@ const CONTINUE_BUTTON_TEXT: String = "Jatka Peliä"
 const NEW_GAME_BUTTON_TEXT: String = "Aloita uusi peli"
 const BACK_BUTTON_TEXT: String = "Takaisin"
 
-const GAME_SCENE_PATH: String = "res://scenes/main.tscn"
+const GAME_SCENE_PATH: String = "res://src/scenes/main.tscn"
 
 @onready var title_label: Label = $TitleLabel
 

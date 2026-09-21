@@ -12,7 +12,7 @@ extends VBoxContainer
 ## separate stacked toasts instead of one clobbering the other.
 
 
-const SALE_FLASH_TOAST_SCENE : PackedScene = preload("res://scenes/ui/sale_flash_toast.tscn")
+const SALE_FLASH_TOAST_SCENE : PackedScene = preload("res://src/scenes/ui/sale_flash_toast.tscn")
 
 const BULK_SELL_FLASH_FORMAT : String = "Halpamyynti: %s x%d  +%.1f €"
 const SHIP_FLASH_FORMAT : String = "Vienti (%s): %s x%d  +%.1f € (LVV-riski +%d)"

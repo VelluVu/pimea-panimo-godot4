@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://4pjyebwj4isb"]
 
-[ext_resource type="Script" uid="uid://bmdq3qdanc7sv" path="res://scenes/ui/level_up_window.gd" id="1_j0sgq"]
+[ext_resource type="Script" uid="uid://bmdq3qdanc7sv" path="res://src/scenes/ui/level_up_window.gd" id="1_j0sgq"]
 
 [node name="LevelUpWindow" type="Panel" unique_id=1956261132]
 visible = false

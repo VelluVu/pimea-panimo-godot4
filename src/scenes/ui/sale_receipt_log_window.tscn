@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://di8en5fvrwrkk"]
 
-[ext_resource type="Script" path="res://scenes/ui/sale_receipt_log_window.gd" id="1_1ctmr"]
+[ext_resource type="Script" path="res://src/scenes/ui/sale_receipt_log_window.gd" id="1_1ctmr"]
 
 [node name="SaleReceiptLogWindow" type="Panel" unique_id=1720379376]
 visible = false

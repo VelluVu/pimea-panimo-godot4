@@ -5,7 +5,7 @@ extends RefCounted
 ## order, get served and leave together. The phases run in sequence: two pushes to one
 ## dialogue slot would race each other's hide timers.
 
-const CUSTOMER_SCENE : PackedScene = preload("res://scenes/customer.tscn")
+const CUSTOMER_SCENE : PackedScene = preload("res://src/scenes/customer.tscn")
 
 const GROUP_LABEL_FORMAT : String = "%s-lauma (%d hlöä)"
 const SPEECH_FORMAT : String = "%s: %s"

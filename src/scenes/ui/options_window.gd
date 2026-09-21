@@ -7,7 +7,7 @@ extends Panel
 const WINDOW_TITLE : String = "Asetukset"
 const CLOSE_BUTTON_TEXT : String = "Sulje"
 const MAIN_MENU_BUTTON_TEXT : String = "Päävalikkoon"
-const MAIN_MENU_SCENE_PATH : String = "res://scenes/ui/main_menu.tscn"
+const MAIN_MENU_SCENE_PATH : String = "res://src/scenes/ui/main_menu.tscn"
 
 const TAB_TITLES : Array[String] = ["Ääni", "Näyttö", "Ohjaus", "Tietoja"]
 const INPUT_TAB_INDEX : int = 2
