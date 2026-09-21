@@ -14,7 +14,7 @@ extends Node
 ## on brewery_state_changed/a swapped Brewery instance — that's exactly the
 ## detection DailyGoalManager historically got bitten by (a loaded/continued
 ## save's Brewery instance read as "a fresh run", silently re-rolling
-## progress that should have carried over — see notes/playtest_notes_11.txt).
+## progress that should have carried over — see dev/notes/playtest_notes_11.txt).
 ## A day event has no persisted state to protect the same way, so the
 ## simplest correct behavior falls out for free: continuing a save mid-day
 ## just has no active event until the next genuine day change, rather than

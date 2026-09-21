@@ -20,13 +20,12 @@
     - `src/events/` — special, day and immersion events
     - `src/progression/` — perks, run modifiers, meta unlocks and their rules, achievements, daily goals
     - `src/ui/` — UI helper classes: pure text and layout logic (`OlutoppiText`, `RecipeLibraryText`), small view helpers (`LabelPulse`, `CollapsibleSection`) and tooltip/hover-area nodes
-    - `src/console/` — the game's console commands (`PlayerCommands`, the gitignored cheat sets); the console itself is in `systems/console/`
+    - `src/console/` — the game's console commands (`PlayerCommands`, the gitignored cheat sets); the console itself is in `src/systems/console/`
     - `src/save/`, `src/audio/` — save file handling, audio bank
+  - `src/systems/` — Reusable systems, one self-contained folder each (`dialog/`, `console/`, `toast/`, `tooltip/`, `toolkit/`). Copy a folder to another project and edit its `*_wiring.gd`. See the rule under Architecture.
   - `src/resources/` — All game content as custom `.tres` resources, one folder per type (`customers/`, `beer_styles/`, `ingredients/`, `perks/`, `daily_goals/`, ...), plus the `ResourceFolder` loader
-- `res://systems/` — Reusable systems, one self-contained folder each (`dialog/`, `console/`, `toast/`, `tooltip/`, `toolkit/`). Copy a folder to another project and edit its `*_wiring.gd`. See the rule under Architecture.
-- `res://tests/` — Unit tests, one `test_<class>.gd` per class
-- `res://tools/` — Developer scripts outside the game (see Tools)
-- `res://docs/` — Design references, e.g. `beer_styles_reference.txt`
+- `res://tests/` — Unit tests, one `test_<class>.gd` per class (the test runner only looks here)
+- `res://dev/` — Everything for developing, not shipped: `tools/` (scripts, see Tools), `docs/` (design references such as `beer_styles_reference.txt`) and `notes/` (local playtest notes, gitignored)
 
 ## Architecture
 - **Architecture:** Component-based architecture. The UI (GUI) must remain decoupled from game logic; use local and global Signals to communicate between them. 
@@ -35,7 +34,7 @@
 - **Decoupling:** Nodes must communicate upstream using **Signals** and downstream via **Methods** ("Signal up, method down"). Avoid hardcoded node paths like `get_node("../../Customer")`.
 - **Data-Driven Design:** Configuration tables and item properties (like recipes and events) must live inside custom `Resource` scripts and `.tres` files in `res://src/resources/`. Never hardcode raw lists directly into components.
 - **Scene Scripts:** Scripts directly tied to unique scene nodes can sit inside `res://scenes/` (like `customer.gd` next to `customer.tscn`), but underlying logic should live in `src/`.
-- **Systems:** Anything meant to be reused lives in `systems/<name>/` and references only its own folder: no game classes, autoloads or outside `res://` paths (use relative paths for its own files). It exposes a small interface (methods and signals). A single `<name>_wiring.gd` file inside the folder connects the game's signals (for example `BrewerySignals`) to that interface and holds the game's wording; that is the only file allowed to touch the game and the one to edit when the system moves. Run `python tools/check_systems.py` after changing a system. When a new reusable piece is needed, build it as a system; migrate existing pieces one at a time.
+- **Systems:** Anything meant to be reused lives in `src/systems/<name>/` and references only its own folder: no game classes, autoloads or outside `res://` paths (use relative paths for its own files). It exposes a small interface (methods and signals). A single `<name>_wiring.gd` file inside the folder connects the game's signals (for example `BrewerySignals`) to that interface and holds the game's wording; that is the only file allowed to touch the game and the one to edit when the system moves. Run `python dev/tools/check_systems.py` after changing a system. When a new reusable piece is needed, build it as a system; migrate existing pieces one at a time.
 - **Small Classes:** Pure logic (rules, formatting, layout, maths) goes into small `RefCounted` classes with static functions, one class per file, and gets a test. Do not nest classes inside another script.
 
 ## Code Style Rules (Godot 4.x / GDScript)
@@ -66,8 +65,8 @@
 - `IngredientDatabase`, `CustomerRegistry` (autoloads): load all ingredient and customer resources from their folders at startup. `CustomerUnlockTracker` decides which customers are unlocked.
 - `Inventory`, `BrewPreparation` (`src/brewing/`): owned ingredients, and the ingredients selected for the active brew.
 - `BrewResolver` (`src/brewing/`): loads the beer styles and resolves a brew to a style, with `BrewMixture` (the totals), `BrewQuality` (the quality maths) and `StylePricing` (cost and price).
-- `DevConsole` (`systems/console/`): the console panel and command registry; `ConsoleWiring` adds the game's commands and log sources.
-- `DialogView` (`systems/dialog/`): speech bubbles and floating popups, project-independent; `DialogWiring` connects `BrewerySignals` to it. `SpecialEventPresenter` (`src/events/`) opens the special event windows.
+- `DevConsole` (`src/systems/console/`): the console panel and command registry; `ConsoleWiring` adds the game's commands and log sources.
+- `DialogView` (`src/systems/dialog/`): speech bubbles and floating popups, project-independent; `DialogWiring` connects `BrewerySignals` to it. `SpecialEventPresenter` (`src/events/`) opens the special event windows.
 - `CustomerSpawner` (`src/customers/`): spawns customers and group visits (`GroupVisitDirector`).
 - `CustomerManager` (autoload): counter slots and sales (`SaleProcessor`). `SpecialEventManager` and `DayEventManager` handle special customers and day events.
 - `TimeManager` (autoload): in-game time, with `DayRules`.
@@ -82,8 +81,8 @@
 - Playtests and `game_eval` can write the real user data in `%APPDATA%/Godot/app_userdata/Pimea Panimo/` (saves, `meta_progress.cfg`, leaderboard). Back it up first and restore it afterwards.
 
 ## Tools
-- `tools/check_systems.py` checks that every folder in `systems/` is self-contained (exit code 1 on a violation).
-- `tools/sheets.py` exports the customers and beer styles to spreadsheets (`export`) and reads edited sheets back into the `.tres` files (`import`, a dry run unless `--apply` is given). Needs `pip install openpyxl`. Output goes to `tools/sheets/`, which is gitignored.
+- `dev/tools/check_systems.py` checks that every folder in `src/systems/` is self-contained (exit code 1 on a violation).
+- `dev/tools/sheets.py` exports the customers and beer styles to spreadsheets (`export`) and reads edited sheets back into the `.tres` files (`import`, a dry run unless `--apply` is given). Needs `pip install openpyxl`. Output goes to `dev/tools/sheets/`, which is gitignored.
 
 ## Model Context Protocol (MCP) Live Usage Rules
 You are connected to the live Godot Editor via the `godot_ai` MCP plugin. Always utilize your toolsets before guessing or making structural assumptions:

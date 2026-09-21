@@ -1,6 +1,6 @@
 [gd_scene format=3]
 
-[ext_resource type="Script" path="res://systems/console/dev_console.gd" id="1_console"]
+[ext_resource type="Script" uid="uid://b6hgtb57fueyj" path="res://src/systems/console/dev_console.gd" id="1_console"]
 
 [node name="DevConsole" type="Panel"]
 clip_contents = true

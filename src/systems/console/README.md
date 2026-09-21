@@ -19,14 +19,14 @@ registry, developer-only commands, and command sets that group commands by domai
 
 ## Use it in a new project
 
-1. Copy this folder to `res://systems/console/`.
+1. Copy this folder to your project (keep the `.uid` files, so scene references still resolve).
 2. Instance `console_panel.tscn` in your UI (it anchors to the bottom-right corner).
 3. Edit **`console_wiring.gd`**, the only project-specific file: register your commands and
    command sets, set the developer-mode check and the two input actions, connect the signals you
    want in the log, and replace the wording. In this game it also loads the gitignored cheat sets
    and listens to `BrewerySignals`.
 
-Run `python tools/check_systems.py` in the game project to see exactly which project things the
+Run `python dev/tools/check_systems.py` in the game project to see exactly which project things the
 wiring file uses.
 
 ## Files

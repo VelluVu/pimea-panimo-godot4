@@ -12,6 +12,6 @@ tooltip that wraps at `TooltipFactory.MAX_WIDTH`.
 
 ## Use it in a new project
 
-Copy this folder to `res://systems/tooltip/`. It is styled by the theme type variations
+Copy this folder to your project (keep the `.uid` files, so scene references still resolve). It is styled by the theme type variations
 `TooltipPanel` and `TooltipLabel` if your theme defines them, and works without them.
 No wiring file is needed.

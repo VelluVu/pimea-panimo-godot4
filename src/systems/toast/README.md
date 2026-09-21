@@ -11,6 +11,6 @@ Passive text that flashes in, holds and fades out, with no input and no game sta
 
 ## Use it in a new project
 
-Copy this folder to `res://systems/toast/` and construct the classes from your own UI code.
+Copy this folder to your project (keep the `.uid` files, so scene references still resolve) and construct the classes from your own UI code.
 The label passed in must already be in the scene tree, and anchored with top and bottom at
 0.5 if you use `fit_to_text`. No wiring file is needed: nothing here listens to any signal.

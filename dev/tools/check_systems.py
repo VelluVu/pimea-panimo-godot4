@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Checks that every folder in systems/ is self-contained and can be copied to another project.
+"""Checks that every folder in src/systems/ is self-contained and can be copied to another project.
 
-  python tools/check_systems.py
+  python dev/tools/check_systems.py
 
-Inside systems/<name>/ a script or scene may only reference what lives in that same folder,
+Inside src/systems/<name>/ a script or scene may only reference what lives in that same folder,
 plus the engine. The one exception is a `*_wiring.gd` file: it is the single place allowed to
 touch the project (its signals, autoloads, wording), and is what you edit after copying the
 system. The check lists the project things each wiring file uses, so you can see what to
@@ -13,8 +13,8 @@ import re
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
-SYSTEMS = ROOT / "systems"
+ROOT = Path(__file__).resolve().parents[2]
+SYSTEMS = ROOT / "src" / "systems"
 SKIPPED_TOP_FOLDERS = {"addons", ".godot"}
 
 
@@ -59,7 +59,7 @@ def scan_script(path: Path, names: set, folder: Path):
     for number, line in enumerate(raw.split("\n"), 1):
         code = line.split("#")[0] if line.strip().startswith("#") else line
         for target in re.findall(r'"(res://[^"]+)"', code):
-            if not target.startswith("res://systems/" + folder.name + "/") and not line.strip().startswith("#"):
+            if not target.startswith("res://src/systems/" + folder.name + "/") and not line.strip().startswith("#"):
                 found.append((number, target))
     return found
 
@@ -68,7 +68,7 @@ def scan_scene(path: Path, folder: Path):
     found = []
     for number, line in enumerate(path.read_text(encoding="utf-8").split("\n"), 1):
         for target in re.findall(r'path="(res://[^"]+)"', line):
-            if not target.startswith("res://systems/" + folder.name + "/"):
+            if not target.startswith("res://src/systems/" + folder.name + "/"):
                 found.append((number, target))
     return found
 
@@ -76,7 +76,7 @@ def scan_scene(path: Path, folder: Path):
 def main() -> int:
     sys.stdout.reconfigure(encoding="utf-8")
     if not SYSTEMS.is_dir():
-        print("No systems/ folder.")
+        print("No src/systems/ folder.")
         return 0
 
     violations = 0
@@ -92,7 +92,7 @@ def main() -> int:
                 problems.extend((rel, n, w) for n, w in scan_scene(path, folder))
 
         status = "OK" if not problems else f"{len(problems)} problem(s)"
-        print(f"systems/{folder.name}: {status}")
+        print(f"src/systems/{folder.name}: {status}")
         for rel, number, what in problems:
             print(f"  ! {rel}:{number} references {what}")
         if wiring:

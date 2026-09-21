@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """Round-trip the game's tunable data through spreadsheets.
 
-  python tools/sheets.py export [--out tools/sheets]
+  python dev/tools/sheets.py export [--out dev/tools/sheets]
       Writes customers_sheet.xlsx and beer_styles_sheet.xlsx from the .tres files.
       Open them in Excel or Google Sheets (File > Import) and edit the light-headed columns.
 
-  python tools/sheets.py import FILE.xlsx [--apply] [--resources src/resources]
+  python dev/tools/sheets.py import FILE.xlsx [--apply] [--resources src/resources]
       Compares an edited sheet with the .tres files and prints every difference.
       Nothing is written without --apply. Only the editable columns are read.
 
@@ -22,9 +22,9 @@ from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Alignment, Font, PatternFill
 from openpyxl.utils import get_column_letter
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_RESOURCES = ROOT / "src" / "resources"
-DEFAULT_OUT = ROOT / "tools" / "sheets"
+DEFAULT_OUT = ROOT / "dev" / "tools" / "sheets"
 
 HEADER_FILL_READONLY = "4A3B2A"
 HEADER_FILL_EDITABLE = "8A6D3B"
@@ -310,7 +310,7 @@ def export_customers(data: GameData, out: Path) -> Path:
     add_help_sheet(wb, [
         "Muokkaa vain vaaleampia otsikkosarakkeita. Tumman otsikon sarakkeet ovat vain luettavia.",
         "Tyylit kirjoitetaan nimillä (esim. Märzen), useampi pilkulla eroteltuna. Tyhjä = ei rajoitusta.",
-        "Tuo muutokset peliin: python tools/sheets.py import tiedosto.xlsx  (lisää --apply kirjoittaaksesi).",
+        "Tuo muutokset peliin: python dev/tools/sheets.py import tiedosto.xlsx  (lisää --apply kirjoittaaksesi).",
     ])
     path = out / "customers_sheet.xlsx"
     wb.save(path)
@@ -354,7 +354,7 @@ def export_styles(data: GameData, out: Path) -> Path:
     add_help_sheet(wb, [
         "Muokkaa vain 'Oluttyylit'-välilehden vaaleampia otsikkosarakkeita (ABV, hinta, EBC, IBU, maltaiden määrä).",
         "Hiiva, mallas ja humalaprofiili ovat vain luettavia. Muut välilehdet ovat viitetietoja.",
-        "Tuo muutokset peliin: python tools/sheets.py import tiedosto.xlsx  (lisää --apply kirjoittaaksesi).",
+        "Tuo muutokset peliin: python dev/tools/sheets.py import tiedosto.xlsx  (lisää --apply kirjoittaaksesi).",
     ])
     path = out / "beer_styles_sheet.xlsx"
     wb.save(path)

@@ -9,4 +9,4 @@ Small independent helpers that need nothing else.
 | `LabelPulse.new(label)` | A looping grow-and-shrink pulse; `set_active(bool)` |
 | `CollapsibleSection.new(container, header_label)` | An arrow button beside a header; `collapsed` and a `toggled` signal |
 
-Copy the folder to `res://systems/toolkit/`. No wiring file is needed.
+Copy the folder to your project (keep the `.uid` files, so scene references still resolve). No wiring file is needed.
