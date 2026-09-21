@@ -60,13 +60,19 @@ static func resolution_effects(goal : DailyGoalData, succeeded : bool, apply_pen
 	return effects
 
 
-## A random pool goal that is not already in any active slot, so concurrent goals
-## stay distinct (a slot may still get a goal it held earlier today). Null when
-## the pool has nothing left.
+## A random pool goal whose type no active slot already has, so concurrent goals differ
+## in kind and tiers of one goal never show together. `active_goals` includes the slot
+## being replaced, so its replacement is a different type too. Null when the pool has
+## nothing left.
 static func pick_new_goal(pool : Array[DailyGoalData], active_goals : Array[DailyGoalData]) -> DailyGoalData:
+	var active_types : Dictionary = {}
+	for goal : DailyGoalData in active_goals:
+		if goal != null:
+			active_types[goal.goal_type] = true
+
 	var candidates : Array[DailyGoalData] = []
 	for goal : DailyGoalData in pool:
-		if not active_goals.has(goal):
+		if not active_types.has(goal.goal_type):
 			candidates.append(goal)
 	if candidates.is_empty():
 		return null
