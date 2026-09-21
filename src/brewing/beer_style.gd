@@ -46,11 +46,11 @@ enum Style {
 @export_group("Alkoholi")
 ## Prosentteina, esim. 5.2 = 5.2 %. Kiinteä tyylikohtainen arvo, näytetään
 ## pulloissa/kuiteissa — ei enää vaikuta hintaan (ks.
-## BrewResolver.calculate_price_breakdown, jossa ei ole valmisteveroa).
+## StylePricing.calculate_price_breakdown, jossa ei ole valmisteveroa).
 @export var abv: float = 5.0
 
 @export_group("Talous")
-## Kerroin BrewResolver.PROFIT_MARKUP_RATE:lle — monimutkaisemmat,
+## Kerroin StylePricing.PROFIT_MARKUP_RATE:lle — monimutkaisemmat,
 ## työläämmät tyylit (IPA, Imperial Stout, Barleywine...) kannattavat
 ## enemmän per pullo kuin perusoluet. 1.0 = ei muutosta. Ei vaikuta jos
 ## fixed_price_per_bottle on asetettu.

@@ -5,7 +5,7 @@ extends Resource
 ## the state (that's the entire point of hiding from LVV), so the price
 ## customers pay is exactly what it costs to make plus a profit margin —
 ## no tax markup, no "tax vs. net" split at sale time. See
-## BrewResolver.calculate_price_breakdown().
+## StylePricing.calculate_price_breakdown().
 
 @export var style_name: String = ""
 ## Still tracked (and still shown on labels/receipts) even though it no
