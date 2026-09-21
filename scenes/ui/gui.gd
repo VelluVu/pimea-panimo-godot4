@@ -9,6 +9,7 @@ extends Control
 @onready var close_day_button : Button = $TopPanel_Resources/CloseDayButton
 @onready var close_day_confirm_window : CloseDayConfirmWindow = $CloseDayConfirmWindow
 @onready var dialog_view : Control = $DialogView
+@onready var special_events_container : VBoxContainer = $DialogView/SpecialEventsContainer
 @onready var top_panel_background : Panel = $TopPanelBackground
 @onready var top_panel_resources : Control = $TopPanel_Resources
 @onready var options_button : Button = $OptionsButton
@@ -19,6 +20,7 @@ extends Control
 
 var _views : GuiViewSwitcher
 var _announcer : GuiAnnouncer
+var _special_events : SpecialEventPresenter
 
 @onready var shop_view : ShopView = $Left_ShopView
 @onready var brewery_view : BrewingView = $Left_BrewingView
@@ -36,6 +38,7 @@ func _ready() -> void:
 	_announcer = GuiAnnouncer.new()
 	add_child(_announcer)
 	_announcer.setup(discovery_toast, group_visit_banner, day_event_banner, first_brew_hint_banner, daily_goals_panel, day_recap_window)
+	_special_events = SpecialEventPresenter.new(special_events_container)
 	_views = GuiViewSwitcher.new(shop_view, brewery_view, brew_preparation_panel, shop_entrance_panel, brewery_entrance_panel)
 	_assert_default_visibility()
 	# Slot the goals panel and the passive banners just below the first modal so open

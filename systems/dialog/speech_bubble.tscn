@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dnuaxo2ht57wi"]
 
-[ext_resource type="Script" path="res://scenes/ui/speech_bubble.gd" id="1_bubble"]
+[ext_resource type="Script" path="res://systems/dialog/speech_bubble.gd" id="1_bubble"]
 
 [node name="SpeechBubble" type="Control" unique_id=1801976959]
 anchors_preset = 8

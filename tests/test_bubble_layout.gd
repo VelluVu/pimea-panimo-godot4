@@ -3,8 +3,8 @@ extends McpTestSuite
 
 ## Unit tests for BubbleLayout: stacking of nearby speakers and viewport clamping.
 
-const BubbleLayoutScript := preload("res://src/ui/bubble_layout.gd")
-const BubbleEntryScript := preload("res://src/ui/bubble_entry.gd")
+const BubbleLayoutScript := preload("res://systems/dialog/bubble_layout.gd")
+const BubbleEntryScript := preload("res://systems/dialog/bubble_entry.gd")
 
 const SPEAKER : Vector2 = Vector2(300.0, 300.0)
 const VIEWPORT : Vector2 = Vector2(640.0, 360.0)

@@ -19,7 +19,7 @@
 [ext_resource type="Script" uid="uid://4stpknptq7nv" path="res://scenes/ui/right_warehouse_view.gd" id="9_muem4"]
 [ext_resource type="Texture2D" uid="uid://ckr0tjvh7srsj" path="res://assets/textures/clock_bg.png" id="10_jscy8"]
 [ext_resource type="Texture2D" uid="uid://cotf62fq6mk8q" path="res://assets/textures/clockhand_32.png" id="12_pm3ni"]
-[ext_resource type="Script" uid="uid://clwrlsny0wt3b" path="res://scenes/ui/dialog_view.gd" id="13_jkv2x"]
+[ext_resource type="Script" uid="uid://clwrlsny0wt3b" path="res://systems/dialog/dialog_view.gd" id="13_jkv2x"]
 [ext_resource type="Script" uid="uid://ctvoku3p23yqg" path="res://src/ui/warehouse_hover_area.gd" id="17_dp3eg"]
 [ext_resource type="Script" uid="uid://cabnw1tbiyona" path="res://src/customers/customer_spawner.gd" id="17_muem4"]
 [ext_resource type="Texture2D" uid="uid://cixeymlhgqlb8" path="res://assets/textures/PC_32.png" id="18_0ld40"]
