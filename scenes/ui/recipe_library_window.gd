@@ -1,10 +1,17 @@
 class_name RecipeLibraryWindow
 extends Panel
 
+## The recipe book: a list of styles (known ones open their saved recipes, locked ones
+## only hint) and, per known style, its saved recipes with a button to load each.
 
 const NO_RECIPES_FOR_STYLE_STRING : String = "Ei tallennettuja reseptejä tälle tyylille."
 const RECIPE_ROW_LOAD_BUTTON_TEXT : String = "Lataa"
 const BACK_BUTTON_TEXT : String = "< Takaisin"
+
+const NO_STYLE_SELECTED : int = -1
+const ROW_FONT_SIZE : int = 14
+const RECIPE_BORDER_WIDTH : int = 2
+const RECIPE_CORNER_RADIUS : int = 4
 const RECIPE_BREWABLE_BORDER_COLOR : Color = Color(0.3, 0.85, 0.35)
 const RECIPE_MISSING_BORDER_COLOR : Color = Color(0.5, 0.5, 0.5)
 
@@ -13,7 +20,7 @@ const RECIPE_MISSING_BORDER_COLOR : Color = Color(0.5, 0.5, 0.5)
 @onready var back_button : Button = $MarginContainer/MainVBox/HeaderHBox/BackButton
 @onready var rows_vbox : VBoxContainer = $MarginContainer/MainVBox/ScrollContainer/RowsVBox
 
-var selected_style : int = -1
+var selected_style : int = NO_STYLE_SELECTED
 
 
 func _ready() -> void:
@@ -21,136 +28,106 @@ func _ready() -> void:
 	close_button.text = StringContainer.RECIPE_LIBRARY_CLOSE_TEXT
 	back_button.text = BACK_BUTTON_TEXT
 
-	close_button.pressed.connect(_on_close_button_pressed)
-	back_button.pressed.connect(_on_back_button_pressed)
+	close_button.pressed.connect(hide)
+	back_button.pressed.connect(_select_style.bind(NO_STYLE_SELECTED))
 	GUISignals.recipe_library_requested.connect(_on_recipe_library_requested)
-	BrewerySignals.brewery_state_changed.connect(_on_brewery_state_changed)
-	BrewerySignals.style_discovered.connect(_on_style_discovered)
+	BrewerySignals.brewery_state_changed.connect(_on_state_changed)
+	BrewerySignals.style_discovered.connect(_on_state_changed)
 
 
 func _on_recipe_library_requested() -> void:
-	selected_style = -1
+	selected_style = NO_STYLE_SELECTED
 	_refresh_rows()
 	show()
 
 
-func _on_close_button_pressed() -> void:
-	hide()
-
-
-func _on_back_button_pressed() -> void:
-	selected_style = -1
-	_refresh_rows()
-
-
-func _on_brewery_state_changed(_brewery : Brewery) -> void:
+## Bound to two signals with different arguments, so it takes none of them.
+func _on_state_changed(_ignored : Variant = null) -> void:
 	if visible:
 		_refresh_rows()
 
 
-func _on_style_discovered(_style : int) -> void:
-	if visible:
-		_refresh_rows()
-
-
-func _refresh_rows() -> void:
-	for child in rows_vbox.get_children():
-		child.queue_free()
-
-	if BrewEngine.current_brewery == null:
-		return
-
-	back_button.visible = selected_style != -1
-
-	if selected_style == -1:
-		_build_style_list_rows()
-	else:
-		_build_recipe_detail_rows()
-
-
-func _build_style_list_rows() -> void:
-	var brewery : Brewery = BrewEngine.current_brewery
-
-	for beer_style : BeerStyle in brewery.resolver.active_styles:
-		if brewery.is_style_known(beer_style.style):
-			var row_button := Button.new()
-			row_button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-			row_button.add_theme_font_size_override("font_size", 14)
-			row_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-			row_button.text = StringContainer.RECIPE_LIBRARY_ROW_STRING % [
-				beer_style.style_name,
-				beer_style.abv,
-				beer_style.min_ebc,
-				beer_style.max_ebc,
-				beer_style.min_ibu,
-				beer_style.max_ibu,
-				_get_ingredient_name(beer_style.required_yeast_id)
-			]
-
-			if beer_style.preferred_hop_profile != HopData.FlavorProfile.NONE:
-				row_button.text += StringContainer.RECIPE_LIBRARY_HOP_HINT_STRING % HopData.get_flavor_profile_display_name(beer_style.preferred_hop_profile)
-			if beer_style.required_malt_id != -1:
-				row_button.text += StringContainer.RECIPE_LIBRARY_MALT_HINT_STRING % _get_ingredient_name(beer_style.required_malt_id)
-
-			row_button.pressed.connect(_on_style_row_pressed.bind(beer_style.style))
-			rows_vbox.add_child(row_button)
-		else:
-			var row_label := Label.new()
-			row_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-			row_label.add_theme_font_size_override("font_size", 14)
-			row_label.text = StringContainer.RECIPE_LIBRARY_LOCKED_STRING % [
-				beer_style.abv,
-				_get_ingredient_name(beer_style.required_yeast_id),
-				beer_style.min_malt_weight
-			]
-
-			row_label.text += StringContainer.RECIPE_LIBRARY_COLOR_HINT_STRING % BeerStyle.get_color_hint(beer_style.min_ebc, beer_style.max_ebc)
-			row_label.text += StringContainer.RECIPE_LIBRARY_BITTERNESS_HINT_STRING % BeerStyle.get_bitterness_hint(beer_style.min_ibu, beer_style.max_ibu)
-
-			if beer_style.preferred_hop_profile != HopData.FlavorProfile.NONE:
-				row_label.text += StringContainer.RECIPE_LIBRARY_HOP_HINT_STRING % HopData.get_flavor_profile_display_name(beer_style.preferred_hop_profile)
-			if beer_style.required_malt_id != -1:
-				row_label.text += StringContainer.RECIPE_LIBRARY_MALT_HINT_STRING % _get_ingredient_name(beer_style.required_malt_id)
-			elif brewery.resolver.style_needs_malt_blend(beer_style):
-				row_label.text += StringContainer.RECIPE_LIBRARY_MALT_BLEND_HINT_STRING
-
-			row_label.modulate = Color.DIM_GRAY
-			rows_vbox.add_child(row_label)
-
-
-func _on_style_row_pressed(style : BeerStyle.Style) -> void:
+func _select_style(style : int) -> void:
 	selected_style = style
 	_refresh_rows()
 
 
-func _build_recipe_detail_rows() -> void:
-	var brewery : Brewery = BrewEngine.current_brewery
+func _on_recipe_load_button_pressed(recipe : BrewRecipe) -> void:
+	GUISignals.load_recipe_requested.emit(recipe)
+	selected_style = NO_STYLE_SELECTED
+	hide()
 
-	var recipes_for_style : Array[BrewRecipe] = []
+
+func _refresh_rows() -> void:
+	for child : Node in rows_vbox.get_children():
+		child.queue_free()
+
+	var brewery : Brewery = BrewEngine.current_brewery
+	if brewery == null:
+		return
+
+	back_button.visible = selected_style != NO_STYLE_SELECTED
+	if selected_style == NO_STYLE_SELECTED:
+		_build_style_list_rows(brewery)
+	else:
+		_build_recipe_detail_rows(brewery)
+
+
+func _build_style_list_rows(brewery : Brewery) -> void:
+	for beer_style : BeerStyle in brewery.resolver.active_styles:
+		if brewery.is_style_known(beer_style.style):
+			rows_vbox.add_child(_build_known_style_row(beer_style))
+		else:
+			rows_vbox.add_child(_build_locked_style_row(brewery, beer_style))
+
+
+func _build_known_style_row(beer_style : BeerStyle) -> Button:
+	var row := Button.new()
+	row.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	row.add_theme_font_size_override("font_size", ROW_FONT_SIZE)
+	row.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	row.text = RecipeLibraryText.known_row(beer_style, _ingredient_name(beer_style.required_yeast_id), _required_malt_name(beer_style))
+	row.pressed.connect(_select_style.bind(beer_style.style))
+	return row
+
+
+func _build_locked_style_row(brewery : Brewery, beer_style : BeerStyle) -> Label:
+	var needs_malt_blend : bool = beer_style.required_malt_id == BrewMixture.NO_REQUIRED_MALT and brewery.resolver.style_needs_malt_blend(beer_style)
+	var row := Label.new()
+	row.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	row.add_theme_font_size_override("font_size", ROW_FONT_SIZE)
+	row.text = RecipeLibraryText.locked_row(beer_style, _ingredient_name(beer_style.required_yeast_id), _required_malt_name(beer_style), needs_malt_blend)
+	row.modulate = Color.DIM_GRAY
+	return row
+
+
+func _build_recipe_detail_rows(brewery : Brewery) -> void:
+	var recipes : Array[BrewRecipe] = []
 	for recipe : BrewRecipe in brewery.saved_recipes:
 		if recipe.beer_style == selected_style:
-			recipes_for_style.append(recipe)
+			recipes.append(recipe)
 
-	if recipes_for_style.is_empty():
+	if recipes.is_empty():
 		var empty_label := Label.new()
 		empty_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		empty_label.text = NO_RECIPES_FOR_STYLE_STRING
 		rows_vbox.add_child(empty_label)
 		return
 
-	for recipe : BrewRecipe in recipes_for_style:
-		rows_vbox.add_child(_build_recipe_row(recipe))
+	for recipe : BrewRecipe in recipes:
+		rows_vbox.add_child(_build_recipe_row(recipe, recipe.is_covered_by(brewery.inventory)))
 
 
-func _build_recipe_row(recipe : BrewRecipe) -> Control:
+## The border is green when the inventory covers the recipe, grey when something is missing.
+func _build_recipe_row(recipe : BrewRecipe, brewable : bool) -> Control:
+	var border := StyleBoxFlat.new()
+	border.bg_color = Color(0, 0, 0, 0)
+	border.set_border_width_all(RECIPE_BORDER_WIDTH)
+	border.set_corner_radius_all(RECIPE_CORNER_RADIUS)
+	border.border_color = RECIPE_BREWABLE_BORDER_COLOR if brewable else RECIPE_MISSING_BORDER_COLOR
+
 	var row := PanelContainer.new()
-	var box := StyleBoxFlat.new()
-	box.bg_color = Color(0, 0, 0, 0)
-	box.set_border_width_all(2)
-	box.border_color = RECIPE_BREWABLE_BORDER_COLOR if _recipe_is_brewable(recipe) else RECIPE_MISSING_BORDER_COLOR
-	box.set_corner_radius_all(4)
-	row.add_theme_stylebox_override("panel", box)
-
+	row.add_theme_stylebox_override("panel", border)
 	var row_hbox := HBoxContainer.new()
 	row.add_child(row_hbox)
 
@@ -163,36 +140,16 @@ func _build_recipe_row(recipe : BrewRecipe) -> Control:
 	load_button.text = RECIPE_ROW_LOAD_BUTTON_TEXT
 	load_button.pressed.connect(_on_recipe_load_button_pressed.bind(recipe))
 	row_hbox.add_child(load_button)
-
 	return row
 
 
-func _on_recipe_load_button_pressed(recipe : BrewRecipe) -> void:
-	GUISignals.load_recipe_requested.emit(recipe)
-	selected_style = -1
-	hide()
+## Empty for a style with no single required malt, which the row text ignores.
+func _required_malt_name(beer_style : BeerStyle) -> String:
+	if beer_style.required_malt_id == BrewMixture.NO_REQUIRED_MALT:
+		return ""
+	return _ingredient_name(beer_style.required_malt_id)
 
 
-func _recipe_is_brewable(recipe : BrewRecipe) -> bool:
-	var brewery : Brewery = BrewEngine.current_brewery
-	if brewery == null:
-		return false
-
-	for ingredient_id : int in recipe.ingredient_amounts:
-		var needed : int = recipe.ingredient_amounts[ingredient_id]
-		var item : InventoryItem = brewery.inventory.get_item_by_id(ingredient_id)
-		var owned : int = item.amount if item else 0
-
-		if owned < needed:
-			return false
-
-	return true
-
-
-func _get_ingredient_name(ingredient_id : int) -> String:
+func _ingredient_name(ingredient_id : int) -> String:
 	var ingredient : IngredientData = IngredientDatabase.get_item_by_id(ingredient_id)
-
-	if ingredient == null:
-		return StringContainer.TUNTEMATON
-
-	return ingredient.name
+	return ingredient.name if ingredient != null else StringContainer.TUNTEMATON
