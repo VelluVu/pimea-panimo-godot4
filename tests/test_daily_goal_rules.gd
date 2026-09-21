@@ -120,7 +120,7 @@ func test_success_rewards_scale_with_the_day() -> void:
 	assert_eq(effects, {"money": 40, "reputation": 10, "xp": 60, "risk": 0})
 
 
-func test_a_new_goal_is_never_one_already_active() -> void:
+func test_a_new_goal_never_shares_a_type_with_an_active_one() -> void:
 	var a := _goal(DailyGoalData.GoalType.SELL_BOTTLES)
 	var b := _goal(DailyGoalData.GoalType.EARN_MONEY)
 	var c := _goal(DailyGoalData.GoalType.SHIP_TO_BAR)
@@ -129,9 +129,25 @@ func test_a_new_goal_is_never_one_already_active() -> void:
 		assert_eq(RulesScript.pick_new_goal(pool, _goals([a, b])), c)
 
 
-func test_no_new_goal_when_every_pool_goal_is_active() -> void:
+func test_tiers_of_the_same_goal_never_show_together() -> void:
+	var easy := _goal(DailyGoalData.GoalType.EARN_MONEY)
+	var hard := _goal(DailyGoalData.GoalType.EARN_MONEY)
+	var other := _goal(DailyGoalData.GoalType.SELL_BOTTLES)
+	var pool := _goals([easy, hard, other])
+	for attempt : int in range(20):
+		assert_eq(RulesScript.pick_new_goal(pool, _goals([easy])), other)
+
+
+func test_empty_slots_do_not_block_any_type() -> void:
 	var a := _goal(DailyGoalData.GoalType.SELL_BOTTLES)
-	assert_eq(RulesScript.pick_new_goal(_goals([a]), _goals([a])), null)
+	var no_goal : Array[DailyGoalData] = [null, null, null]
+	assert_eq(RulesScript.pick_new_goal(_goals([a]), no_goal), a)
+
+
+func test_no_new_goal_when_every_pool_type_is_active() -> void:
+	var a := _goal(DailyGoalData.GoalType.SELL_BOTTLES)
+	var same_type := _goal(DailyGoalData.GoalType.SELL_BOTTLES)
+	assert_eq(RulesScript.pick_new_goal(_goals([a, same_type]), _goals([a])), null)
 
 
 func test_no_new_goal_from_an_empty_pool() -> void:
