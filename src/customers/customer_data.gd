@@ -55,6 +55,9 @@ const MIN_TIP_PER_QUALITY_POINT : float = 1.0
 ## -1 = no limit. Rejects styles with a fixed price above this (see Opiskelija, a broke
 ## student who leaves if everything in stock is over budget).
 @export var max_required_price: float = -1.0
+## Empty = no limit. Otherwise only these styles are visible to this customer (see the
+## German tourists, who take any lager). Broader than requires_preference_match.
+@export var accepted_styles: Array[BeerStyle.Style] = []
 
 @export_group("Tippaus")
 ## Tip per quality point above min_quality, scaled by budget_multiplier. Zero or below
@@ -133,6 +136,8 @@ func meets_strict_requirements(beer_style: BeerStyle) -> bool:
 	if max_required_abv >= 0.0 and beer_style.abv > max_required_abv:
 		return false
 	if max_required_price >= 0.0 and beer_style.fixed_price_per_bottle > max_required_price:
+		return false
+	if not accepted_styles.is_empty() and not accepted_styles.has(beer_style.style):
 		return false
 	if requires_preference_match and get_preference_score(beer_style.style) < 0.5:
 		return false
