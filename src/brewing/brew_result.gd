@@ -8,7 +8,7 @@ extends Resource
 @export var original_quality : float = 1.0
 @export var reputation_change : int = 0
 ## A batch is one 20L keg; at 0.44L per serving that's ~45 servings once
-## BrewResolver.BOTTLE_LOSS_RATE's loss is applied — see
+## StylePricing.BOTTLE_LOSS_RATE's loss is applied — see
 ## get_effective_bottle_yield(). 47 raw so the after-loss number lands on
 ## 45, not the raw figure itself.
 @export var bottle_yield : int = 47

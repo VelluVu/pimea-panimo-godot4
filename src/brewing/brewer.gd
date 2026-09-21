@@ -28,9 +28,9 @@ func disconnect_signals() -> void:
 ## (BOTTLE_LOSS_RATE) and every bottle needs a label. Shared with the dev
 ## console's batch cheats so both charge the same.
 func apply_bottling_costs(raw_yield : int) -> Dictionary:
-	var effective_yield : int = BrewResolver.get_effective_bottle_yield(raw_yield)
+	var effective_yield : int = StylePricing.get_effective_bottle_yield(raw_yield)
 	var bottles_lost : int = raw_yield - effective_yield
-	var label_cost : float = snappedf(raw_yield * BrewResolver.LABEL_ART_COST_PER_BOTTLE, 0.1)
+	var label_cost : float = snappedf(raw_yield * StylePricing.LABEL_ART_COST_PER_BOTTLE, 0.1)
 	brewery.money -= label_cost
 
 	return {

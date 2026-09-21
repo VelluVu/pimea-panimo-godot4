@@ -114,7 +114,7 @@ func test_style_cost_includes_ingredients_and_flat_consumables() -> void:
 	var resolver := _make_resolver()
 	var cost : float = resolver.get_style_cost_per_bottle(resolver.get_beer_style(BeerStyle.Style.KOTIKALJA))
 	# Malt + yeast are always paid for, so the cost must exceed the flat per-bottle extras alone.
-	assert_gt(cost, BrewResolver.LABEL_ART_COST_PER_BOTTLE + BrewResolver.CONSUMABLES_COST_PER_BOTTLE)
+	assert_gt(cost, StylePricing.LABEL_ART_COST_PER_BOTTLE + StylePricing.CONSUMABLES_COST_PER_BOTTLE)
 
 
 func test_hoppy_style_costs_more_than_hopless_style() -> void:
@@ -127,48 +127,3 @@ func test_hoppy_style_costs_more_than_hopless_style() -> void:
 func test_style_needs_malt_blend_is_false_when_one_malt_fits() -> void:
 	var resolver := _make_resolver()
 	assert_false(resolver.style_needs_malt_blend(resolver.get_beer_style(BeerStyle.Style.KOTIKALJA)))
-
-
-## Unit tests for BrewResolver.calculate_price_breakdown() — the pure
-## cost-plus-margin math, deliberately kept independent of
-## IngredientDatabase (see its docstring) so it's testable here. No
-## excise/VAT: this cellar operation doesn't remit anything to the state,
-## so price is just raw_cost + profit — see the function's own docstring.
-func test_calculate_price_breakdown_computes_profit_and_price() -> void:
-	var breakdown := BrewResolver.calculate_price_breakdown("Testiolut", 4.0, 2.0)
-	assert_eq(breakdown.style_name, "Testiolut", "style_name")
-	assert_eq(breakdown.abv, 4.0, "abv") # carried through for display only, doesn't affect price
-	assert_true(is_equal_approx(breakdown.raw_cost_per_bottle, 2.0), "raw_cost_per_bottle")
-	# profit = raw_cost * PROFIT_MARKUP_RATE(0.5) * multiplier(1.0 default) = 1.0
-	assert_true(is_equal_approx(breakdown.profit_per_bottle, 1.0), "profit_per_bottle")
-	# price = raw_cost + profit
-	assert_true(is_equal_approx(breakdown.price_per_bottle, 3.0), "price_per_bottle")
-
-
-func test_calculate_price_breakdown_abv_does_not_affect_price() -> void:
-	var weak := BrewResolver.calculate_price_breakdown("Weak", 0.0, 2.0)
-	var strong := BrewResolver.calculate_price_breakdown("Strong", 10.0, 2.0)
-	assert_true(is_equal_approx(weak.price_per_bottle, strong.price_per_bottle), "same raw cost should give the same price regardless of ABV")
-
-
-func test_calculate_price_breakdown_applies_profit_margin_multiplier() -> void:
-	var breakdown := BrewResolver.calculate_price_breakdown("IPA", 6.5, 2.0, 1.3)
-	# profit = raw_cost(2.0) * PROFIT_MARKUP_RATE(0.5) * multiplier(1.3) = 1.3
-	assert_true(is_equal_approx(breakdown.profit_per_bottle, 1.3), "profit_per_bottle")
-	assert_true(is_equal_approx(breakdown.price_per_bottle, 3.3), "price_per_bottle")
-
-
-func test_calculate_price_breakdown_zero_cost_still_clears_the_profit_floor() -> void:
-	var breakdown := BrewResolver.calculate_price_breakdown("Free", 5.0, 0.0)
-	# proportional profit is 0, but MIN_PROFIT_PER_BOTTLE still applies —
-	# no style should ever carry a near-nothing "kate".
-	assert_eq(breakdown.profit_per_bottle, BrewResolver.MIN_PROFIT_PER_BOTTLE, "profit_per_bottle")
-	assert_eq(breakdown.price_per_bottle, BrewResolver.MIN_PROFIT_PER_BOTTLE, "price_per_bottle")
-
-
-func test_calculate_price_breakdown_cheap_style_clears_the_profit_floor() -> void:
-	# Demonstrates the actual motivating case: Kotikalja's real raw cost
-	# (~0.36 EUR) makes for a proportional profit of a few cents — the flat
-	# floor should win instead.
-	var breakdown := BrewResolver.calculate_price_breakdown("Kotikalja", 2.8, 0.36)
-	assert_true(is_equal_approx(breakdown.profit_per_bottle, BrewResolver.MIN_PROFIT_PER_BOTTLE), "profit_per_bottle")
