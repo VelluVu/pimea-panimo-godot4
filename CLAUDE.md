@@ -20,10 +20,10 @@
     - `src/events/` — special, day and immersion events
     - `src/progression/` — perks, run modifiers, meta unlocks and their rules, achievements, daily goals
     - `src/ui/` — UI helper classes: pure text and layout logic (`OlutoppiText`, `RecipeLibraryText`), small view helpers (`LabelPulse`, `CollapsibleSection`) and tooltip/hover-area nodes
-    - `src/console/` — dev console command sets
+    - `src/console/` — the game's console commands (`PlayerCommands`, the gitignored cheat sets); the console itself is in `systems/console/`
     - `src/save/`, `src/audio/` — save file handling, audio bank
   - `src/resources/` — All game content as custom `.tres` resources, one folder per type (`customers/`, `beer_styles/`, `ingredients/`, `perks/`, `daily_goals/`, ...), plus the `ResourceFolder` loader
-- `res://systems/` — Reusable systems, one self-contained folder each (`dialog/`). Copy a folder to another project and edit its `*_wiring.gd`. See the rule under Architecture.
+- `res://systems/` — Reusable systems, one self-contained folder each (`dialog/`, `console/`, `toast/`, `tooltip/`, `toolkit/`). Copy a folder to another project and edit its `*_wiring.gd`. See the rule under Architecture.
 - `res://tests/` — Unit tests, one `test_<class>.gd` per class
 - `res://tools/` — Developer scripts outside the game (see Tools)
 - `res://docs/` — Design references, e.g. `beer_styles_reference.txt`
@@ -66,6 +66,7 @@
 - `IngredientDatabase`, `CustomerRegistry` (autoloads): load all ingredient and customer resources from their folders at startup. `CustomerUnlockTracker` decides which customers are unlocked.
 - `Inventory`, `BrewPreparation` (`src/brewing/`): owned ingredients, and the ingredients selected for the active brew.
 - `BrewResolver` (`src/brewing/`): loads the beer styles and resolves a brew to a style, with `BrewMixture` (the totals), `BrewQuality` (the quality maths) and `StylePricing` (cost and price).
+- `DevConsole` (`systems/console/`): the console panel and command registry; `ConsoleWiring` adds the game's commands and log sources.
 - `DialogView` (`systems/dialog/`): speech bubbles and floating popups, project-independent; `DialogWiring` connects `BrewerySignals` to it. `SpecialEventPresenter` (`src/events/`) opens the special event windows.
 - `CustomerSpawner` (`src/customers/`): spawns customers and group visits (`GroupVisitDirector`).
 - `CustomerManager` (autoload): counter slots and sales (`SaleProcessor`). `SpecialEventManager` and `DayEventManager` handle special customers and day events.
