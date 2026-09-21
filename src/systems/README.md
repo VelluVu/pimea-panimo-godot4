@@ -7,7 +7,7 @@ Its interface is a few methods and signals. The one place that knows the project
 `*_wiring.gd` file, which connects the project's own signals to that interface. That file is
 what you edit after copying the system.
 
-`python tools/check_systems.py` enforces the rule.
+`python dev/tools/check_systems.py` enforces the rule.
 
 | System | What it is |
 |---|---|

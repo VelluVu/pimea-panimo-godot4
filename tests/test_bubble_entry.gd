@@ -3,7 +3,7 @@ extends McpTestSuite
 
 ## Unit tests for BubbleEntry: token validity and safety around a freed bubble.
 
-const BubbleEntryScript := preload("res://systems/dialog/bubble_entry.gd")
+const BubbleEntryScript := preload("res://src/systems/dialog/bubble_entry.gd")
 
 
 func suite_name() -> String:

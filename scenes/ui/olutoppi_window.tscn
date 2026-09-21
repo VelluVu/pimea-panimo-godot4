@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://l06vc07u2qk7"]
 
 [ext_resource type="Script" uid="uid://bh3f55pc5cugx" path="res://scenes/ui/olutoppi_window.gd" id="1_script"]
-[ext_resource type="Script" uid="uid://cjby48yno4186" path="res://systems/tooltip/tooltip_button.gd" id="2_tooltipbtn"]
+[ext_resource type="Script" uid="uid://cjby48yno4186" path="res://src/systems/tooltip/tooltip_button.gd" id="2_tooltipbtn"]
 [ext_resource type="Script" uid="uid://8polygbffil3" path="res://scenes/ui/tree_connector_layer.gd" id="3_connector"]
 
 [node name="OlutoppiWindow" type="Panel" unique_id=1895529654]

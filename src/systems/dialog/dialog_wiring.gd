@@ -2,7 +2,7 @@ class_name DialogWiring
 extends Node
 
 ## THE FILE TO EDIT WHEN THIS SYSTEM MOVES TO ANOTHER PROJECT. It is the only place in
-## systems/dialog/ that knows the project: it connects the project's own signals to
+## this folder that knows the project: it connects the project's own signals to
 ## DialogView's interface and holds the project's popup wording. Everything else in the
 ## folder works unchanged. DialogView adds this as a child, so the connections go away
 ## with it.

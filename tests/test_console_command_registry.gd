@@ -3,7 +3,7 @@ extends McpTestSuite
 
 ## Unit tests for ConsoleCommandRegistry: dispatch, the developer-mode gate and the help lists.
 
-const RegistryScript := preload("res://systems/console/console_command_registry.gd")
+const RegistryScript := preload("res://src/systems/console/console_command_registry.gd")
 
 
 func suite_name() -> String:

@@ -2,7 +2,7 @@ class_name ConsoleWiring
 extends Node
 
 ## THE FILE TO EDIT WHEN THIS SYSTEM MOVES TO ANOTHER PROJECT. It is the only place in
-## systems/console/ that knows the project: the command sets, the developer-mode check, the
+## this folder that knows the project: the command sets, the developer-mode check, the
 ## input actions, the signals that feed the log, and all the wording. DevConsole adds this as
 ## a child, so the connections go away with it.
 

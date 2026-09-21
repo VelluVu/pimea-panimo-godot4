@@ -14,13 +14,13 @@ folders needed.
 
 ## Use it in a new project
 
-1. Copy this folder to `res://systems/dialog/`.
+1. Copy this folder to your project (keep the `.uid` files, so scene references still resolve).
 2. Put a full-screen `Control` in your UI and attach `dialog_view.gd` (or `DialogView` as a class).
 3. Edit **`dialog_wiring.gd`**, the only project-specific file: connect your own signals to the
    three calls above, and change the popup wording and colors. In this game it listens to
    `BrewerySignals` (`dialogue_pushed`, `customer_evicted`, `xp_popup_requested`, ...).
 
-Everything else works unchanged. Run `python tools/check_systems.py` in the game project to
+Everything else works unchanged. Run `python dev/tools/check_systems.py` in the game project to
 confirm nothing but the wiring file touches the project.
 
 ## Files
