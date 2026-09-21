@@ -33,32 +33,22 @@ enum Style {
 @export_group("Vaatimukset")
 @export var required_yeast_id: int = 301 # Esim. 301=Lager, 302=Ale
 @export var min_malt_weight: int = 3
-## -1 = no specific malt required (matches purely on EBC/IBU/yeast/weight,
-## the original behavior). Set on styles where a real-world recipe is
-## defined by one specific malt, not just by the resulting color/bitterness
-## it happens to produce — e.g. Hefeweizen/Witbier genuinely require wheat
-## malt; brewing the right EBC/IBU with plain pale-ale malt and calling it
-## a wheat beer isn't a real recipe, just a numeric coincidence. See
-## BrewResolver.resolve_brew_style()'s malt_ids_used check.
+## -1 = no specific malt; the style matches on EBC/IBU/yeast/weight alone. Set where a
+## real recipe is defined by one malt (Hefeweizen and Witbier need wheat malt). See
+## BrewMixture.fits().
 @export var required_malt_id: int = -1
 @export var preferred_hop_profile: HopData.FlavorProfile = HopData.FlavorProfile.NONE
 
 @export_group("Alkoholi")
-## Prosentteina, esim. 5.2 = 5.2 %. Kiinteä tyylikohtainen arvo, näytetään
-## pulloissa/kuiteissa — ei enää vaikuta hintaan (ks.
-## StylePricing.calculate_price_breakdown, jossa ei ole valmisteveroa).
+## Percent, e.g. 5.2 = 5.2 %. Shown on bottles and receipts; does not affect price.
 @export var abv: float = 5.0
 
 @export_group("Talous")
-## Kerroin StylePricing.PROFIT_MARKUP_RATE:lle — monimutkaisemmat,
-## työläämmät tyylit (IPA, Imperial Stout, Barleywine...) kannattavat
-## enemmän per pullo kuin perusoluet. 1.0 = ei muutosta. Ei vaikuta jos
-## fixed_price_per_bottle on asetettu.
+## Scales StylePricing.PROFIT_MARKUP_RATE, so laborious styles (IPA, Imperial Stout,
+## Barleywine) earn more per bottle. Ignored when fixed_price_per_bottle is set.
 @export var profit_margin_multiplier: float = 1.0
-## Jos > 0, ohittaa raw_cost+kate-kaavan kokonaan ja tätä käytetään
-## suoraan pullon listahintana (käsin tasapainotettu arvo). "Kate"
-## lasketaan silloin suoraan tästä miinus raaka-ainekulut, ei toisin
-## päin. 0 = käytä normaalia kaavaa (ks. BrewResolver.get_price_breakdown).
+## If > 0, replaces the cost-plus-margin formula as the hand-balanced list price; profit
+## is then price minus cost. 0 = use the formula (see StylePricing.price_breakdown).
 @export var fixed_price_per_bottle: float = 0.0
 
 @export_group("EBC (Väri) Rajat")

@@ -1,16 +1,11 @@
 @tool
 extends McpTestSuite
 
-## Unit tests for BrewResolver: resolve_brew_style() and the cost search run against hand-built ingredients
-## and styles. The resolver normally reads IngredientDatabase (an autoload
-## this @tool-context test harness can't reach), so these tests inject their
-## own table through BrewResolver.use_ingredients() and assign active_styles
-## directly instead of going through _ready()'s load-from-disk step.
+## Unit tests for BrewResolver against hand-built ingredients and styles. The
+## IngredientDatabase autoload is out of reach here, so they go through use_ingredients()
+## and assign active_styles directly.
 
-
-## Loaded by path (not through the BrewResolver class_name) like
-## test_achievement_manager.gd does, so the suite always instantiates the
-## script as it is on disk instead of the editor's cached global class.
+## Loaded by path so the suite uses the script on disk, not the editor's cached class.
 const BrewResolverScript := preload("res://src/brewing/brew_resolver.gd")
 
 
