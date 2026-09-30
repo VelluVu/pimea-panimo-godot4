@@ -27,7 +27,7 @@ extends Resource
 
 @export_group("Kohdistus")
 ## The group-visit event heavily favored while this day event's window is
-## active — see CustomerSpawner._on_group_event_timer_timeout(). Left null
+## active — see CustomerSpawner._pick_group_event(). Left null
 ## for a "nothing special" entry, which simply never overrides the normal
 ## random group-event roll.
 @export var featured_group_event : GroupVisitEventData = null
@@ -42,7 +42,7 @@ extends Resource
 @export_range(0.0, 1.0) var solo_customer_bias_chance : float = 0.55
 ## Chance the group-visit timer's roll uses featured_group_event instead of
 ## the normal random pool pick, while the window is active — see
-## CustomerSpawner._on_group_event_timer_timeout(). Not 1.0: even a themed
+## CustomerSpawner._pick_group_event(). Not 1.0: even a themed
 ## day should occasionally surprise the player with an unrelated group
 ## instead of reading as 100% on-rails.
 @export_range(0.0, 1.0) var featured_group_event_chance : float = 0.75
