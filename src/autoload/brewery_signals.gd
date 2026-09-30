@@ -123,6 +123,13 @@ signal day_event_announced(event: DayEventData)
 ## shows it as its own toast, not in the customer's speech bubble.
 @warning_ignore("unused_signal")
 signal bar_fight_triggered(message: String)
+## Emitted by SaleProcessor next to bar_fight_triggered, so the customer who started it can
+## play the rampage with one thrown glass per broken bottle.
+@warning_ignore("unused_signal")
+signal bar_fight_started(broken_bottles: int)
+## A glass thrown in a bar fight hit the floor, for the shatter sound.
+@warning_ignore("unused_signal")
+signal glass_shattered()
 ## Emitted by DayEventManager when the day's event has a direct effect that actually
 ## landed. `message` is its effect_toast_format with the lost amount filled in,
 ## shown as its own toast.

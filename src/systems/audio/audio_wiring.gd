@@ -7,6 +7,8 @@ extends AudioPlayback
 
 const TENSION_DRONE_MAX_VOLUME_DB: float = -6.0
 const TENSION_DRONE_MIN_VOLUME_DB: float = -80.0
+## Varied pitch so several glasses breaking in a row don't sound identical.
+const SHATTER_PITCH_RANGE: Vector2 = Vector2(0.6, 0.85)
 
 var bank: AudioBank = preload("res://src/resources/audio/audio_bank.tres")
 
@@ -54,6 +56,7 @@ func _connect_signals() -> void:
 	SpecialEventManager.special_event_triggered.connect(play_sfx.bind(bank.sfx_notification_ping).unbind(1))
 	MetaProgressManager.talent_purchased.connect(play_sfx.bind(bank.sfx_talent_purchased).unbind(1))
 	GUISignals.start_brewing.connect(play_sfx.bind(bank.sfx_brew_start))
+	BrewerySignals.glass_shattered.connect(func() -> void: play_sfx(bank.sfx_glass_shatter, 0.0, randf_range(SHATTER_PITCH_RANGE.x, SHATTER_PITCH_RANGE.y)))
 
 	# Buttons click on their own; these also cover keyboard shortcuts that open things.
 	for ui_signal: Signal in [

@@ -8,18 +8,22 @@ extends RefCounted
 var xp: int = 0
 var reputation: int = 0
 var tip: float = 0.0
+## Bottles broken in a bar fight during the sale, or -1 when none broke out.
+var bar_fight_bottles: int = -1
 
 
 func start() -> void:
 	BrewerySignals.sale_xp_gained.connect(_on_xp)
 	BrewerySignals.sale_reputation_gained.connect(_on_reputation)
 	BrewerySignals.sale_tip_gained.connect(_on_tip)
+	BrewerySignals.bar_fight_started.connect(_on_bar_fight)
 
 
 func stop() -> void:
 	BrewerySignals.sale_xp_gained.disconnect(_on_xp)
 	BrewerySignals.sale_reputation_gained.disconnect(_on_reputation)
 	BrewerySignals.sale_tip_gained.disconnect(_on_tip)
+	BrewerySignals.bar_fight_started.disconnect(_on_bar_fight)
 
 
 func emit_xp_popup(position: Vector2) -> void:
@@ -44,3 +48,7 @@ func _on_reputation(amount: int) -> void:
 
 func _on_tip(amount: float) -> void:
 	tip = amount
+
+
+func _on_bar_fight(broken_bottles: int) -> void:
+	bar_fight_bottles = broken_bottles
