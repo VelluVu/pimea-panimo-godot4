@@ -73,7 +73,7 @@ func get_start_delay_fraction() -> float:
 
 ## A same-day misfortune (stock eaten, bottles spoiled) instead of a themed
 ## rush of customers — fires once, immediately when this event is rolled
-## (see DayEventManager._apply_direct_effect()), entirely separate from the
+## (see DayEventEffects), entirely separate from the
 ## featured_group_event/featured_customer_titles bias window above. NONE for
 ## every existing themed/customer-bias event; only the "unfortunate" pool
 ## entries set this.
