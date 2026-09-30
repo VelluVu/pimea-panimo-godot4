@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="AchievementData" format=3]
+
+[ext_resource type="Script" path="res://src/progression/achievement_data.gd" id="1_achievement"]
+
+[resource]
+script = ExtResource("1_achievement")
+achievement_id = "rahasampo"
+title = "Rahasampo"
+description = "Omista kerralla 1000 €."
+stat_key = &"highest_money"
+target_value = 1000
+metadata/_custom_type_script = "res://src/progression/achievement_data.gd"

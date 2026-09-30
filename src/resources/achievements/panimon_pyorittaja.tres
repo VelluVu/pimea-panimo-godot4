@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="AchievementData" format=3]
+
+[ext_resource type="Script" path="res://src/progression/achievement_data.gd" id="1_achievement"]
+
+[resource]
+script = ExtResource("1_achievement")
+achievement_id = "panimon_pyorittaja"
+title = "Panimon pyörittäjä"
+description = "Keitä 50 olutsatsia."
+stat_key = &"batches_brewed"
+target_value = 50
+metadata/_custom_type_script = "res://src/progression/achievement_data.gd"
