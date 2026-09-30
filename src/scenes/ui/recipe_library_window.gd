@@ -28,7 +28,7 @@ func _ready() -> void:
 	close_button.text = StringContainer.RECIPE_LIBRARY_CLOSE_TEXT
 	back_button.text = BACK_BUTTON_TEXT
 
-	close_button.pressed.connect(hide)
+	close_button.pressed.connect(_on_close_button_pressed)
 	back_button.pressed.connect(_select_style.bind(NO_STYLE_SELECTED))
 	GUISignals.recipe_library_requested.connect(_on_recipe_library_requested)
 	BrewerySignals.brewery_state_changed.connect(_on_state_changed)
@@ -50,6 +50,11 @@ func _on_state_changed(_ignored : Variant = null) -> void:
 func _select_style(style : int) -> void:
 	selected_style = style
 	_refresh_rows()
+
+
+func _on_close_button_pressed() -> void:
+	GUISignals.window_closed.emit()
+	hide()
 
 
 func _on_recipe_load_button_pressed(recipe : BrewRecipe) -> void:

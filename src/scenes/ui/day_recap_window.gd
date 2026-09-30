@@ -76,4 +76,5 @@ func _on_day_changed(new_day: int) -> void:
 
 
 func _on_close_button_pressed() -> void:
+	GUISignals.window_closed.emit()
 	hide()

@@ -36,6 +36,7 @@ func _on_run_effects_requested() -> void:
 
 
 func _on_close_button_pressed() -> void:
+	GUISignals.window_closed.emit()
 	hide()
 
 

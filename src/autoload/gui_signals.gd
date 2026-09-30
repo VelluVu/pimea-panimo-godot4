@@ -103,6 +103,10 @@ signal olutoppi_closed()
 @warning_ignore("unused_signal")
 signal menu_button_pressed()
 
+## A window without its own *_closed signal was closed, so the click sound can play.
+@warning_ignore("unused_signal")
+signal window_closed()
+
 @warning_ignore("unused_signal")
 signal close_day_requested()
 

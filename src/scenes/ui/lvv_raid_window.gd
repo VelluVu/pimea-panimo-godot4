@@ -24,4 +24,5 @@ func _on_lvv_raid_recap_ready(confiscated_bottles : int, fine_amount : float, re
 
 
 func _on_close_button_pressed() -> void:
+	GUISignals.window_closed.emit()
 	hide()
