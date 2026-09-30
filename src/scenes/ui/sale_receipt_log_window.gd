@@ -42,6 +42,7 @@ func _on_receipt_log_requested() -> void:
 
 
 func _on_close_button_pressed() -> void:
+	GUISignals.window_closed.emit()
 	hide()
 
 

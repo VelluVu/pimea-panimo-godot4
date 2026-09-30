@@ -32,4 +32,5 @@ func _on_confirm_button_pressed() -> void:
 
 
 func _on_cancel_button_pressed() -> void:
+	GUISignals.window_closed.emit()
 	hide()

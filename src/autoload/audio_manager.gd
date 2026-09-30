@@ -86,6 +86,15 @@ func _connect_signals() -> void:
 	GUISignals.leaderboard_requested.connect(_on_ui_action)
 	GUISignals.leaderboard_closed.connect(_on_ui_action)
 	GUISignals.menu_button_pressed.connect(_on_ui_action)
+	GUISignals.olutoppi_requested.connect(_on_ui_action)
+	GUISignals.olutoppi_closed.connect(_on_ui_action)
+	GUISignals.achievements_requested.connect(_on_ui_action)
+	GUISignals.achievements_closed.connect(_on_ui_action)
+	GUISignals.game_menu_requested.connect(_on_ui_action)
+	GUISignals.game_menu_closed.connect(_on_ui_action)
+	GUISignals.run_effects_requested.connect(_on_ui_action)
+	GUISignals.receipt_log_requested.connect(_on_ui_action)
+	GUISignals.window_closed.connect(_on_ui_action)
 
 
 ## Public API: fire-and-forget one-shot playback, round-robin across a small
