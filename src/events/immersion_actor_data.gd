@@ -8,7 +8,7 @@ extends Resource
 ## Animation played for the whole crossing. The art is drawn facing left, so
 ## ImmersionEventSpawner mirrors the sprite on legs that head right.
 @export var animation : StringName = &"walk_left"
-## Scale at the depth-reference line (see ImmersionEventSpawner's DEPTH_*
+## Scale at the depth-reference line (see VignettePath's DEPTH_*
 ## constants); the spawner shrinks/grows it from here by screen y.
 @export var base_scale : Vector2 = Vector2(4, 4)
 ## Seconds after the vignette starts before this actor appears. Two actors
