@@ -16,9 +16,9 @@ extends Panel
 const HEADER_FONT_SIZE : int = 15
 const SECTION_SPACING : float = 10.0
 
-@onready var title_label : Label = $MarginContainer/MainVBox/HeaderHBox/TitleLabel
-@onready var close_button : Button = $MarginContainer/MainVBox/HeaderHBox/CloseButton
-@onready var rows_vbox : VBoxContainer = $MarginContainer/MainVBox/ScrollContainer/RowsVBox
+@onready var title_label : Label = %TitleLabel
+@onready var close_button : Button = %CloseButton
+@onready var rows_vbox : VBoxContainer = %RowsVBox
 
 
 func _ready() -> void:

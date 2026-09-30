@@ -12,8 +12,8 @@ const CANCEL_TEXT : String = "Peruuta"
 
 @onready var title_label : Label = $MarginContainer/MainVBox/TitleLabel
 @onready var message_label : Label = $MarginContainer/MainVBox/MessageLabel
-@onready var confirm_button : Button = $MarginContainer/MainVBox/ButtonsHBox/ConfirmButton
-@onready var cancel_button : Button = $MarginContainer/MainVBox/ButtonsHBox/CancelButton
+@onready var confirm_button : Button = %ConfirmButton
+@onready var cancel_button : Button = %CancelButton
 
 
 func _ready() -> void:

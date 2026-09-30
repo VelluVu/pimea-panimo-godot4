@@ -7,7 +7,7 @@ const FILL_FROM_INVENTORY_BUTTON_TOOLTIP : String = "Täytä puuttuvat ainesosat
 
 @onready var current_item_label : Label = $Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/IngredientTypeSelector/IngredientRow/CurrentItemLabel
 @onready var ingredient_type_selector : IngredientTypeSelector = $Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/IngredientTypeSelector
-@onready var main_vbox : VBoxContainer = $Panel/MarginContainer/VBoxContainer
+@onready var main_vbox : VBoxContainer = %VBoxContainer
 @export var main_slider : Slider
 @export var add_button : Button
 @export var remove_button : Button

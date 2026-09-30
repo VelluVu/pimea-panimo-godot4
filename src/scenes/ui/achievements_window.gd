@@ -11,9 +11,9 @@ extends Panel
 const TITLE_FORMAT: String = "Saavutukset (%d/%d)"
 const CLOSE_BUTTON_TEXT: String = "Sulje"
 
-@onready var title_label: Label = $MarginContainer/MainVBox/HeaderHBox/TitleLabel
-@onready var close_button: Button = $MarginContainer/MainVBox/HeaderHBox/CloseButton
-@onready var tiles_grid: GridContainer = $MarginContainer/MainVBox/ScrollContainer/TilesGrid
+@onready var title_label: Label = %TitleLabel
+@onready var close_button: Button = %CloseButton
+@onready var tiles_grid: GridContainer = %TilesGrid
 
 
 func _ready() -> void:

@@ -66,29 +66,35 @@ mouse_filter = 2
 theme_override_constants/separation = 10
 
 [node name="StartButton" type="Button" parent="CenterContainer/RootMenuView" unique_id=1282741896]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 28)
 layout_mode = 2
 text = "Aloita Peli"
 
 [node name="LeaderboardButton" type="Button" parent="CenterContainer/RootMenuView" unique_id=1437759141]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 28)
 layout_mode = 2
 
 [node name="AchievementsButton" type="Button" parent="CenterContainer/RootMenuView"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 28)
 layout_mode = 2
 
 [node name="OlutoppiButton" type="Button" parent="CenterContainer/RootMenuView" unique_id=1689554938]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 28)
 layout_mode = 2
 text = "Olutoppi"
 
 [node name="OptionsButton" type="Button" parent="CenterContainer/RootMenuView" unique_id=814579638]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 28)
 layout_mode = 2
 text = "Asetukset"
 
 [node name="QuitButton" type="Button" parent="CenterContainer/RootMenuView" unique_id=1777599417]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 28)
 layout_mode = 2
 text = "Lopeta Peli"
@@ -100,17 +106,20 @@ mouse_filter = 2
 theme_override_constants/separation = 10
 
 [node name="ContinueButton" type="Button" parent="CenterContainer/StartGameView" unique_id=1451946887]
+unique_name_in_owner = true
 visible = false
 custom_minimum_size = Vector2(200, 28)
 layout_mode = 2
 text = "Jatka Peliä"
 
 [node name="NewGameButton" type="Button" parent="CenterContainer/StartGameView" unique_id=1256502717]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 28)
 layout_mode = 2
 text = "Aloita uusi peli"
 
 [node name="BackButton" type="Button" parent="CenterContainer/StartGameView" unique_id=2134506846]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 28)
 layout_mode = 2
 text = "Takaisin"
@@ -157,11 +166,13 @@ layout_mode = 2
 mouse_filter = 2
 
 [node name="TitleLabel" type="Label" parent="LeaderboardWindow/MarginContainer/MainVBox/HeaderHBox" unique_id=1239350010]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 20
 
 [node name="CloseButton" type="Button" parent="LeaderboardWindow/MarginContainer/MainVBox/HeaderHBox" unique_id=293551198]
+unique_name_in_owner = true
 layout_mode = 2
 
 [node name="ScrollContainer" type="ScrollContainer" parent="LeaderboardWindow/MarginContainer/MainVBox" unique_id=1147991106]
@@ -169,6 +180,7 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="RowsVBox" type="VBoxContainer" parent="LeaderboardWindow/MarginContainer/MainVBox/ScrollContainer" unique_id=1383774915]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2

@@ -24,8 +24,8 @@ extends Panel
 const CARD_COUNT : int = 3
 const TITLE_FORMAT : String = "Taso %d!"
 
-@onready var title_label : Label = $MarginContainer/MainVBox/TitleLabel
-@onready var cards_hbox : HBoxContainer = $MarginContainer/MainVBox/CardsHBox
+@onready var title_label : Label = %TitleLabel
+@onready var cards_hbox : HBoxContainer = %CardsHBox
 
 ## Queued level-ups that arrived while a choice was already on screen —
 ## add_xp()'s while-loop can in principle fire level_up_reached more than

@@ -16,16 +16,16 @@ const CONFIRM_TEXT: String = "Palataanko päävalikkoon? Peli tallennetaan."
 const CONFIRM_YES_TEXT: String = "Kyllä"
 const CONFIRM_NO_TEXT: String = "Ei"
 
-@onready var title_label: Label = $MarginContainer/MainVBox/TitleLabel
-@onready var buttons_vbox: VBoxContainer = $MarginContainer/MainVBox/ButtonsVBox
-@onready var resume_button: Button = $MarginContainer/MainVBox/ButtonsVBox/ResumeButton
-@onready var options_button: Button = $MarginContainer/MainVBox/ButtonsVBox/OptionsButton
-@onready var achievements_button: Button = $MarginContainer/MainVBox/ButtonsVBox/AchievementsButton
-@onready var main_menu_button: Button = $MarginContainer/MainVBox/ButtonsVBox/MainMenuButton
-@onready var confirm_vbox: VBoxContainer = $MarginContainer/MainVBox/ConfirmVBox
-@onready var confirm_label: Label = $MarginContainer/MainVBox/ConfirmVBox/ConfirmLabel
-@onready var yes_button: Button = $MarginContainer/MainVBox/ConfirmVBox/ConfirmButtonsHBox/YesButton
-@onready var no_button: Button = $MarginContainer/MainVBox/ConfirmVBox/ConfirmButtonsHBox/NoButton
+@onready var title_label: Label = %TitleLabel
+@onready var buttons_vbox: VBoxContainer = %ButtonsVBox
+@onready var resume_button: Button = %ResumeButton
+@onready var options_button: Button = %OptionsButton
+@onready var achievements_button: Button = %AchievementsButton
+@onready var main_menu_button: Button = %MainMenuButton
+@onready var confirm_vbox: VBoxContainer = %ConfirmVBox
+@onready var confirm_label: Label = %ConfirmLabel
+@onready var yes_button: Button = %YesButton
+@onready var no_button: Button = %NoButton
 
 ## True from opening until resuming or leaving, including while a sub-window
 ## (settings, achievements) has this menu hidden.

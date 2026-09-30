@@ -17,8 +17,8 @@ const RECIPE_MISSING_BORDER_COLOR : Color = Color(0.5, 0.5, 0.5)
 
 @onready var title_label : Label = $MarginContainer/MainVBox/HeaderHBox/TitleLabel
 @onready var close_button : Button = $MarginContainer/MainVBox/HeaderHBox/CloseButton
-@onready var back_button : Button = $MarginContainer/MainVBox/HeaderHBox/BackButton
-@onready var rows_vbox : VBoxContainer = $MarginContainer/MainVBox/ScrollContainer/RowsVBox
+@onready var back_button : Button = %BackButton
+@onready var rows_vbox : VBoxContainer = %RowsVBox
 
 var selected_style : int = NO_STYLE_SELECTED
 

@@ -16,9 +16,9 @@ const ROW_SUMMARY_FORMAT : String = "%s  %s  +%.1f €"
 const COLLAPSED_ICON : String = "▶"
 const EXPANDED_ICON : String = "▼"
 
-@onready var title_label : Label = $MarginContainer/MainVBox/HeaderHBox/TitleLabel
-@onready var close_button : Button = $MarginContainer/MainVBox/HeaderHBox/CloseButton
-@onready var rows_vbox : VBoxContainer = $MarginContainer/MainVBox/ScrollContainer/RowsVBox
+@onready var title_label : Label = %TitleLabel
+@onready var close_button : Button = %CloseButton
+@onready var rows_vbox : VBoxContainer = %RowsVBox
 
 ## Entry -> true for every receipt currently toggled open. Keyed by the
 ## SaleReceiptEntry Resource itself (reference identity), reset on day

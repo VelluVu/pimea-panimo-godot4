@@ -28,20 +28,24 @@ mouse_filter = 2
 layout_mode = 2
 
 [node name="TitleLabel" type="Label" parent="MarginContainer/MainVBox/HeaderHBox" unique_id=388569182]
+unique_name_in_owner = true
 mouse_filter = 2
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Asetukset"
 
 [node name="MainMenuButton" type="Button" parent="MarginContainer/MainVBox/HeaderHBox" unique_id=1325463149]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Päävalikkoon"
 
 [node name="CloseButton" type="Button" parent="MarginContainer/MainVBox/HeaderHBox" unique_id=1012844202]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Sulje"
 
 [node name="TabContainer" type="TabContainer" parent="MarginContainer/MainVBox" unique_id=447287]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 current_tab = 0
@@ -62,6 +66,7 @@ layout_mode = 2
 text = "Päävolyymi"
 
 [node name="MasterSlider" type="HSlider" parent="MarginContainer/MainVBox/TabContainer/SoundTab/MasterRow" unique_id=1745301064]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 max_value = 1.0
@@ -78,12 +83,14 @@ layout_mode = 2
 text = "Musiikki"
 
 [node name="MusicSlider" type="HSlider" parent="MarginContainer/MainVBox/TabContainer/SoundTab/MusicRow" unique_id=1247428563]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 max_value = 1.0
 step = 0.05
 
 [node name="MusicMuteCheck" type="CheckButton" parent="MarginContainer/MainVBox/TabContainer/SoundTab/MusicRow" unique_id=1370343611]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Pois"
 
@@ -98,12 +105,14 @@ layout_mode = 2
 text = "Äänitehosteet"
 
 [node name="SfxSlider" type="HSlider" parent="MarginContainer/MainVBox/TabContainer/SoundTab/SfxRow" unique_id=590069669]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 max_value = 1.0
 step = 0.05
 
 [node name="SfxMuteCheck" type="CheckButton" parent="MarginContainer/MainVBox/TabContainer/SoundTab/SfxRow" unique_id=896449934]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Pois"
 
@@ -124,6 +133,7 @@ layout_mode = 2
 text = "Koko näyttö"
 
 [node name="FullscreenCheck" type="CheckButton" parent="MarginContainer/MainVBox/TabContainer/DisplayTab/FullscreenRow" unique_id=1561462531]
+unique_name_in_owner = true
 layout_mode = 2
 
 [node name="CreditsTab" type="VBoxContainer" parent="MarginContainer/MainVBox/TabContainer" unique_id=1018113520]

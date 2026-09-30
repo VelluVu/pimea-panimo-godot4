@@ -4,9 +4,9 @@ extends Panel
 
 const DISPLAY_TIME_SECONDS = 3.5
 
-@onready var text_label: Label = $MarginContainer/MainVBox/SpecialLabel
-@onready var joo_button: Button = $MarginContainer/MainVBox/BottomPanel/HBoxContainer/JooButton
-@onready var progress_bar: ProgressBar = $MarginContainer/MainVBox/BottomPanel/HBoxContainer/ProgressBar
+@onready var text_label: Label = %SpecialLabel
+@onready var joo_button: Button = %JooButton
+@onready var progress_bar: ProgressBar = %ProgressBar
 @onready var margin_container: MarginContainer = $MarginContainer
 
 var event_data: SpecialEventData

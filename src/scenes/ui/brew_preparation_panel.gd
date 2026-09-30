@@ -42,12 +42,12 @@ const XP_POPUP_DURATION_SECONDS : float = 1.8
 const XP_POPUP_OFFSET : Vector2 = Vector2(6, 0)
 const XP_POPUP_FLOAT_DISTANCE : float = 35.0
 
-@onready var table_list_vbox : VBoxContainer = $VBoxContainer/TableScrollContainer/IngredientListVBox
+@onready var table_list_vbox : VBoxContainer = %IngredientListVBox
 @onready var preview_label : Label = $VBoxContainer/PreviewLabel
-@onready var save_recipe_toast : Label = $VBoxContainer/ButtonPanel/SaveRecipeToast
-@onready var current_recipe_label : Label = $VBoxContainer/CurrentRecipeBar/HBoxContainer/CurrentRecipeLabel
-@onready var erase_button : Button = $VBoxContainer/CurrentRecipeBar/HBoxContainer/EraseButton
-@onready var start_brew_button : Button = $VBoxContainer/ButtonPanel/HBoxContainer/StartBrewButton
+@onready var save_recipe_toast : Label = %SaveRecipeToast
+@onready var current_recipe_label : Label = %CurrentRecipeLabel
+@onready var erase_button : Button = %EraseButton
+@onready var start_brew_button : Button = %StartBrewButton
 
 var table_labels: Dictionary = {} # Key: int (ID) -> Value: Label
 var _toast : BannerPresenter
