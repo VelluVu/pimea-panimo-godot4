@@ -38,9 +38,9 @@ func _ready() -> void:
 
 
 ## One-shot sound. A click requested in the same frame gives way to it.
-func play_sfx(stream: AudioStream, volume_db: float = 0.0) -> void:
+func play_sfx(stream: AudioStream, volume_db: float = 0.0, pitch_scale: float = 1.0) -> void:
 	_specific_sfx_frame = Engine.get_process_frames()
-	_play_stream(stream, volume_db)
+	_play_stream(stream, volume_db, pitch_scale)
 
 
 ## Deferred to the end of the frame: one press can ask twice (the button and the signal
@@ -82,13 +82,14 @@ func _add_player(bus: StringName) -> AudioStreamPlayer:
 	return player
 
 
-func _play_stream(stream: AudioStream, volume_db: float = 0.0) -> void:
+func _play_stream(stream: AudioStream, volume_db: float = 0.0, pitch_scale: float = 1.0) -> void:
 	if stream == null:
 		return
 	var player := _sfx_pool[_next_sfx_player_index]
 	_next_sfx_player_index = (_next_sfx_player_index + 1) % _sfx_pool.size()
 	player.stream = stream
 	player.volume_db = volume_db
+	player.pitch_scale = pitch_scale
 	player.play()
 
 

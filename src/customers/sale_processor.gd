@@ -156,3 +156,4 @@ func _trigger_bar_fight(data : CustomerData, batch : BrewBatch) -> void:
 			brewery.inventory.brew_batches.erase(batch)
 
 	BrewerySignals.bar_fight_triggered.emit(data.dialogue_bar_fight % broken_bottles)
+	BrewerySignals.bar_fight_started.emit(broken_bottles)
