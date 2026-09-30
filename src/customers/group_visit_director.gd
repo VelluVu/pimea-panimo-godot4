@@ -57,6 +57,7 @@ static func build_order_data(options : Array[CustomerData], member_count : int, 
 		order_data.reroll_preference(styles)
 	order_data.min_bottles_per_visit *= member_count
 	order_data.max_bottles_per_visit *= member_count
+	order_data.bar_fight_min_bottles_bought *= member_count
 	return order_data
 
 
@@ -153,8 +154,21 @@ func _run_shared_order(visit : GroupVisit) -> void:
 	outcome.emit_reputation_and_tip_popups(visit.counter_position)
 
 	var display_time : float = _say(visit, SPEECH_FORMAT % [group_label, response_text])
-	if await _wait(display_time + Customer.FADE_TIME_SECONDS):
+	var wait_seconds : float = display_time + Customer.FADE_TIME_SECONDS
+	if outcome.bar_fight_bottles >= 0:
+		_start_group_rampage(visit, outcome.bar_fight_bottles)
+		wait_seconds = maxf(wait_seconds, BarFightRampage.DURATION_SECONDS)
+	if await _wait(wait_seconds):
 		await _dismiss(visit)
+
+
+## The whole group rampages, but the broken glasses are shared out, not multiplied:
+## the sale already charged the fight once.
+func _start_group_rampage(visit : GroupVisit, broken_bottles : int) -> void:
+	for i : int in visit.size():
+		var member : Variant = visit.members[i]
+		if is_instance_valid(member):
+			BarFightRampage.play(member, member.animated_sprite, member.beer_glass_sprite.texture, BarFightRampage.share_of(i, broken_bottles, visit.size()))
 
 
 ## One sale, many drinks: a sped-up pour per member. False when the host was freed meanwhile.

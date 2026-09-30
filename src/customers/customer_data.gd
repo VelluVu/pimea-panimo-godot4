@@ -2,6 +2,8 @@ class_name CustomerData
 extends Resource
 
 
+enum BarFightTrigger { RANDOM, NOT_ENOUGH_BEER, BOUGHT_MANY }
+
 const DEFAULT_TITLE: String = "Asiakas"
 const DEFAULT_NAMES: Array[String] = ["Matti", "Maija", "Pekka", "Liisa", "Antti"]
 
@@ -110,7 +112,12 @@ const MIN_TIP_PER_QUALITY_POINT : float = 1.0
 @export var no_match_risk_penalty: int = CustomerManager.NO_MATCH_RISK_PENALTY
 @export var min_bottles_per_visit: int = 1
 @export var max_bottles_per_visit: int = 1
+## What can start this customer's bar fight (see BarFightRules): any sale, not getting
+## all the beer they came for, or buying at least bar_fight_min_bottles_bought.
+@export var bar_fight_trigger: BarFightTrigger = BarFightTrigger.RANDOM
+## For RANDOM, the chance per sale; otherwise the chance once the trigger is met.
 @export var bar_fight_chance: float = 0.0
+@export var bar_fight_min_bottles_bought: int = 0
 @export var bar_fight_reputation_penalty: int = 0
 @export var bar_fight_risk_penalty: int = 0
 @export var bar_fight_max_bottles_broken: int = 0

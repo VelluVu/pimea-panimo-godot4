@@ -115,3 +115,11 @@ func test_group_visit_knows_when_nobody_is_left() -> void:
 	member.free()
 	assert_false(visit.has_anyone_here(), "a freed member must not count or throw")
 	assert_eq(visit.size(), 1, "the roster keeps its size, as the order scales by it")
+
+
+## A crowd buys crowd-sized rounds, so "bought many" must scale too, or every group fights.
+func test_build_order_data_scales_the_bought_many_fight_threshold() -> void:
+	var options := _make_options()
+	options[0].bar_fight_min_bottles_bought = 3
+	var order : CustomerData = GroupVisitDirector.build_order_data(options, 4, [])
+	assert_eq(order.bar_fight_min_bottles_bought, 12)
