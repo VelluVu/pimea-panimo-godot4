@@ -119,20 +119,13 @@ func _run_vignette() -> void:
 		_run_actor(actor, points)
 
 
-## Weighted random pick; null when nothing is loaded.
+## Weighted random pick (WeightedPicker, same as CustomerRegistry); null when
+## nothing is loaded.
 func _pick_vignette() -> ImmersionVignetteData:
-	var total_weight : float = 0.0
+	var weights : Array[float] = []
 	for vignette : ImmersionVignetteData in vignettes:
-		total_weight += maxf(vignette.weight, 0.0)
-	if total_weight <= 0.0:
-		return null
-
-	var roll : float = randf() * total_weight
-	for vignette : ImmersionVignetteData in vignettes:
-		roll -= maxf(vignette.weight, 0.0)
-		if roll <= 0.0:
-			return vignette
-	return vignettes.back()
+		weights.append(maxf(vignette.weight, 0.0))
+	return WeightedPicker.pick(vignettes, weights) as ImmersionVignetteData
 
 
 func _get_waypoints(path_root : Node2D) -> PackedVector2Array:
