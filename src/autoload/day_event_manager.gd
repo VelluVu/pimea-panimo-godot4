@@ -23,6 +23,8 @@ func _ready() -> void:
 	_load_resources()
 	_setup_timers()
 	TimeManager.day_changed.connect(_on_day_changed)
+	# The autoload outlives a run: an event still running must not follow into the next one.
+	BrewEngine.brewery_changed.connect(_clear_event.unbind(1))
 
 
 func _setup_timers() -> void:
@@ -47,11 +49,15 @@ func get_active_event() -> DayEventData:
 	return _active_event if _window_active else null
 
 
-func _on_day_changed(_new_day : int) -> void:
+func _clear_event() -> void:
 	_start_delay_timer.stop()
 	_window_timer.stop()
 	_window_active = false
+	_active_event = null
 
+
+func _on_day_changed(_new_day : int) -> void:
+	_clear_event()
 	_active_event = _pick_weighted_event()
 	if _active_event == null:
 		return
