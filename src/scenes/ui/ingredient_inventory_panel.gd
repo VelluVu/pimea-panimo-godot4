@@ -3,7 +3,7 @@ extends VBoxContainer
 
 const AMOUNT_FORMAT : String = "%s: %s %s"
 
-@onready var ingredient_list_vbox = $IngredientInventoryScrollContainer/IngredientListVBox
+@onready var ingredient_list_vbox: VBoxContainer = $IngredientInventoryScrollContainer/IngredientListVBox
 var storage_labels: Dictionary = {} # Avain: int (ID) -> Arvo: Label
 
 

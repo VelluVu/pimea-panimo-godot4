@@ -51,7 +51,7 @@ func _resize_to_fit_content() -> void:
 
 func _on_joo_button_pressed() -> void:
 	_hide_button()
-	var response = SpecialEventManager.process_accept(event_data)
+	var response: String = SpecialEventManager.process_accept(event_data)
 	text_label.text = event_data.event_caller_name + ": " + response
 	_start_fade_out()
 
@@ -61,7 +61,7 @@ func _on_joo_button_pressed() -> void:
 ## never turns down business on purpose; see process_reject's docstring.
 func _timeout_event() -> void:
 	_hide_button()
-	var response = SpecialEventManager.process_reject(event_data)
+	var response: String = SpecialEventManager.process_reject(event_data)
 	text_label.text = event_data.event_caller_name + ": " + response
 	_start_fade_out()
 
@@ -73,6 +73,6 @@ func _hide_button() -> void:
 
 
 func _start_fade_out() -> void:
-	var fade_timer = get_tree().create_timer(DISPLAY_TIME_SECONDS)
+	var fade_timer: SceneTreeTimer = get_tree().create_timer(DISPLAY_TIME_SECONDS)
 	await fade_timer.timeout
 	queue_free()

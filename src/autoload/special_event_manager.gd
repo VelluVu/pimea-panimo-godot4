@@ -13,7 +13,7 @@ func _ready() -> void:
 
 
 func _setup_timers() -> void:
-	var special_event_timer = Timer.new()
+	var special_event_timer := Timer.new()
 	special_event_timer.process_callback = Timer.TIMER_PROCESS_IDLE
 	special_event_timer.wait_time = SPECIAL_EVENT_INTERVAL_SECONDS
 	special_event_timer.autostart = true
@@ -26,7 +26,7 @@ func _on_special_event_timer_timeout() -> void:
 	if BrewEngine.current_brewery == null:
 		return
 
-	var event_data = CustomerRegistry.get_random_special_event(BrewEngine.current_brewery)
+	var event_data: SpecialEventData = CustomerRegistry.get_random_special_event(BrewEngine.current_brewery)
 	if event_data == null:
 		return
 		
@@ -35,7 +35,7 @@ func _on_special_event_timer_timeout() -> void:
 
 func process_accept(event_data: SpecialEventData) -> String:
 	if BrewEngine.current_brewery == null: return ""
-	var brewery = BrewEngine.current_brewery
+	var brewery: Brewery = BrewEngine.current_brewery
 
 	var succeeded := event_data.try_fulfill(brewery)
 	BrewerySignals.special_event_resolved.emit(succeeded, event_data)

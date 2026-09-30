@@ -21,15 +21,15 @@ static func _static_init() -> void:
 
 
 static func build_ingredient_database_recursive(folder_path: String) -> void:
-	var directory_items = ResourceLoader.list_directory(folder_path)
+	var directory_items: PackedStringArray = ResourceLoader.list_directory(folder_path)
 	
-	for item in directory_items:
+	for item: String in directory_items:
 		if item.ends_with(StringContainer.SLASH):
-			var sub_folder_path = folder_path.path_join(item)
+			var sub_folder_path: String = folder_path.path_join(item)
 			build_ingredient_database_recursive(sub_folder_path)
 			
 		elif item.ends_with(StringContainer.RESOURCE_END):
-			var file_path = folder_path.path_join(item)
+			var file_path: String = folder_path.path_join(item)
 			var raw_res: IngredientData = load(file_path)
 			
 			if raw_res:

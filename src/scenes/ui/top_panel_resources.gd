@@ -96,7 +96,7 @@ func _on_brewery_state_changed(brewery : Brewery) -> void:
 	var new_reputation : int = brewery.reputation
 	
 	if last_reputation != -1:
-		var change = new_reputation - last_reputation
+		var change: int = new_reputation - last_reputation
 		if change != 0:
 			_create_popup_effect(reputation_label, change, "", false)
 	
@@ -117,7 +117,7 @@ func _on_brewery_state_changed(brewery : Brewery) -> void:
 
 	var new_risk: int = brewery.risk
 	if last_risk != -1:
-		var change = new_risk - last_risk
+		var change: int = new_risk - last_risk
 		if change != 0:
 			_create_popup_effect(risk_label, change, "%", true)
 

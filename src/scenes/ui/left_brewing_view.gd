@@ -124,7 +124,7 @@ func _update_slider() -> void:
 	# so it must still zero the slider rather than leave it at whatever
 	# the previously-selected ingredient's range was (or the editor's
 	# authored default, the first time this runs).
-	var item = BrewEngine.current_brewery.inventory.get_item_by_id(current_id)
+	var item: InventoryItem = BrewEngine.current_brewery.inventory.get_item_by_id(current_id)
 	var inventory_amount : int = item.amount if item != null else 0
 
 	# The same slider drives both the Add button (bounded by how much is
@@ -146,7 +146,7 @@ func _update_label() -> void:
 		current_item_label.text = ""
 		return
 
-	var ingredient = IngredientDatabase.get_item_by_id(current_id)
+	var ingredient: IngredientData = IngredientDatabase.get_item_by_id(current_id)
 	if ingredient == null:
 		return
 
