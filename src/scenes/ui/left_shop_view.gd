@@ -12,8 +12,8 @@ const MONEY_POPUP_DURATION_SECONDS : float = 1.8
 const MONEY_POPUP_OFFSET : Vector2 = Vector2(6, 0)
 const MONEY_POPUP_FLOAT_DISTANCE : float = 35.0
 
-@onready var current_item_label : Label = $Panel/MarginContainer/IngredientSelectionElementList/IngredientTypeSelector/IngredientRow/CurrentItemLabel
-@onready var ingredient_type_selector : IngredientTypeSelector = $Panel/MarginContainer/IngredientSelectionElementList/IngredientTypeSelector
+@onready var current_item_label : Label = %ShopItemLabel
+@onready var ingredient_type_selector : IngredientTypeSelector = %ShopTypeSelector
 @export var main_slider : Slider
 @export var buy_button : Button
 @export var sell_button : Button

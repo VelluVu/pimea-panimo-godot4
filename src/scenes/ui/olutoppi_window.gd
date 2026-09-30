@@ -16,9 +16,9 @@ const LOCKED_ICON : String = "🔒"
 @onready var renown_label : Label = %RenownLabel
 @onready var close_button : Button = %CloseButton
 @onready var tree_areas : Array[Control] = [
-	$MarginContainer/MainVBox/PathsHBox/BarWorkColumn/TreeArea,
-	$MarginContainer/MainVBox/PathsHBox/BrewingColumn/TreeArea,
-	$MarginContainer/MainVBox/PathsHBox/MarketingColumn/TreeArea,
+	%BarWorkTreeArea,
+	%BrewingTreeArea,
+	%MarketingTreeArea,
 ]
 
 var _node_views : Dictionary = {} # unlock_id -> OlutoppiNodeView

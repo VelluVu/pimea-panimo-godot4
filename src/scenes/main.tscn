@@ -495,13 +495,14 @@ mouse_filter = 2
 layout_mode = 2
 mouse_filter = 2
 
-[node name="IngredientTypeSelector" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer" unique_id=849594383]
+[node name="BrewingTypeSelector" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer" unique_id=849594383]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
 script = ExtResource("20_5q0nq")
 
-[node name="TabBar" type="TabBar" parent="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/IngredientTypeSelector" unique_id=397359994]
+[node name="TabBar" type="TabBar" parent="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/BrewingTypeSelector" unique_id=397359994]
 custom_minimum_size = Vector2(0, 16)
 layout_mode = 2
 current_tab = 0
@@ -513,16 +514,17 @@ tab_1/icon = ExtResource("22_kmb1v")
 tab_2/tooltip = "Hiiva"
 tab_2/icon = ExtResource("23_fuf3a")
 
-[node name="IngredientRow" type="HBoxContainer" parent="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/IngredientTypeSelector" unique_id=1291288684]
+[node name="IngredientRow" type="HBoxContainer" parent="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/BrewingTypeSelector" unique_id=1291288684]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="IngredientOptionButton" type="OptionButton" parent="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/IngredientTypeSelector/IngredientRow" unique_id=1466153152]
+[node name="IngredientOptionButton" type="OptionButton" parent="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/BrewingTypeSelector/IngredientRow" unique_id=1466153152]
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("5_tipki")
 
-[node name="CurrentItemLabel" type="Label" parent="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/IngredientTypeSelector/IngredientRow" unique_id=490371421]
+[node name="BrewingItemLabel" type="Label" parent="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/BrewingTypeSelector/IngredientRow" unique_id=490371421]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(46, 0)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -742,12 +744,13 @@ layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 1
 
-[node name="IngredientTypeSelector" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer/IngredientSelectionElementList" unique_id=1354188737]
+[node name="ShopTypeSelector" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer/IngredientSelectionElementList" unique_id=1354188737]
+unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
 script = ExtResource("20_5q0nq")
 
-[node name="TabBar" type="TabBar" parent="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer/IngredientSelectionElementList/IngredientTypeSelector" unique_id=465448606]
+[node name="TabBar" type="TabBar" parent="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer/IngredientSelectionElementList/ShopTypeSelector" unique_id=465448606]
 layout_mode = 2
 current_tab = 0
 tab_count = 3
@@ -758,16 +761,17 @@ tab_1/icon = ExtResource("22_kmb1v")
 tab_2/tooltip = "Hiiva"
 tab_2/icon = ExtResource("23_fuf3a")
 
-[node name="IngredientRow" type="HBoxContainer" parent="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer/IngredientSelectionElementList/IngredientTypeSelector" unique_id=795210333]
+[node name="IngredientRow" type="HBoxContainer" parent="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer/IngredientSelectionElementList/ShopTypeSelector" unique_id=795210333]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="IngredientOptionButton" type="OptionButton" parent="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer/IngredientSelectionElementList/IngredientTypeSelector/IngredientRow" unique_id=337315106]
+[node name="IngredientOptionButton" type="OptionButton" parent="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer/IngredientSelectionElementList/ShopTypeSelector/IngredientRow" unique_id=337315106]
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("5_tipki")
 
-[node name="CurrentItemLabel" type="Label" parent="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer/IngredientSelectionElementList/IngredientTypeSelector/IngredientRow" unique_id=344108055]
+[node name="ShopItemLabel" type="Label" parent="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer/IngredientSelectionElementList/ShopTypeSelector/IngredientRow" unique_id=344108055]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
 size_flags_horizontal = 3
