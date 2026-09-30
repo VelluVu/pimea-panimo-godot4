@@ -28,12 +28,17 @@ var _tension_player: AudioStreamPlayer
 var _last_money: float = -1.0
 var _last_risk: int = -1
 
+var _click_pending: bool = false
+## The frame a sound other than the click last played, so the click can give way to it.
+var _specific_sfx_frame: int = -1
+
 
 func _ready() -> void:
 	_setup_sfx_pool()
 	_setup_music_player()
 	_setup_tension_player()
 	_connect_signals()
+	get_tree().node_added.connect(_on_node_added)
 	get_tree().scene_changed.connect(_on_scene_changed)
 	# The first scene is not current yet while autoloads run _ready().
 	_on_scene_changed.call_deferred()
@@ -105,6 +110,11 @@ func _connect_signals() -> void:
 ## pool so overlapping sounds (e.g. two sales resolving close together)
 ## don't cut each other off the way a single shared AudioStreamPlayer would.
 func play_sfx(stream: AudioStream, volume_db: float = 0.0) -> void:
+	_specific_sfx_frame = Engine.get_process_frames()
+	_play_stream(stream, volume_db)
+
+
+func _play_stream(stream: AudioStream, volume_db: float = 0.0) -> void:
 	if stream == null:
 		return
 	var player := _acquire_sfx_player()
@@ -119,8 +129,27 @@ func _acquire_sfx_player() -> AudioStreamPlayer:
 	return player
 
 
+## Every button clicks, so a new one can never be left silent. The GUISignals clicks
+## stay for keyboard shortcuts that open things without a button.
+func _on_node_added(node: Node) -> void:
+	if node is BaseButton:
+		(node as BaseButton).pressed.connect(_on_ui_action)
+
+
+## Deferred to the end of the frame: one press can reach here twice (the button and
+## the signal it sends), and a more specific sound in the same frame, like the
+## purchase clink, replaces the click instead of stacking on it.
 func _on_ui_action() -> void:
-	play_sfx(bank.sfx_ui_click)
+	if _click_pending:
+		return
+	_click_pending = true
+	_flush_click.call_deferred()
+
+
+func _flush_click() -> void:
+	_click_pending = false
+	if _specific_sfx_frame != Engine.get_process_frames():
+		_play_stream(bank.sfx_ui_click)
 
 
 func _on_start_brewing() -> void:
