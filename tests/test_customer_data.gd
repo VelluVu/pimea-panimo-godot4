@@ -267,3 +267,13 @@ func test_get_preference_score_matches_primary_secondary_and_mismatch() -> void:
 	assert_eq(customer.get_preference_score(BeerStyle.Style.IPA), 1.0, "primary style")
 	assert_eq(customer.get_preference_score(BeerStyle.Style.HELLES), 0.5, "secondary style")
 	assert_eq(customer.get_preference_score(BeerStyle.Style.KOTIKALJA), 0.0, "unrelated style")
+
+
+## customer.gd formats the preview line with one style name, so a missing or extra %s
+## would break the counter dialogue of that customer.
+func test_shipped_preview_lines_take_exactly_one_style_name() -> void:
+	var customers : Array = ResourceFolder.load_all("res://src/resources/customers/", CustomerData)
+	assert_true(customers.size() > 0, "no customers loaded")
+	for customer : CustomerData in customers:
+		assert_eq(customer.dialogue_preview_format.count("%s"), 1, "%s: dialogue_preview_format needs one %%s" % customer.customer_name)
+		assert_false(customer.dialogue_nothing_available.is_empty(), "%s: dialogue_nothing_available is empty" % customer.customer_name)
