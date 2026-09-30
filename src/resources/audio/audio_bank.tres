@@ -16,7 +16,8 @@
 
 [resource]
 script = ExtResource("1_bank")
-music_tracks = Array[AudioStream]([ExtResource("2_music1"), ExtResource("3_music2"), ExtResource("4_music3"), ExtResource("5_music4"), ExtResource("6_music5")])
+menu_music = ExtResource("2_music1")
+music_tracks = Array[AudioStream]([ExtResource("3_music2"), ExtResource("4_music3"), ExtResource("5_music4"), ExtResource("6_music5")])
 sfx_coin_success = ExtResource("7_coin")
 sfx_ui_click = ExtResource("8_click")
 sfx_brew_start = ExtResource("13_brewstart")
