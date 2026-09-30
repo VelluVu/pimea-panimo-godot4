@@ -1,0 +1,65 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" uid="uid://dqsdc4x3gpckg" path="res://src/scenes/ui/recipe_library_window.gd" id="26_2wyq8"]
+
+[node name="RecipeLibraryWindow" type="Panel" unique_id=209127793]
+visible = false
+layout_mode = 0
+anchor_left = 0.15
+anchor_top = 0.1
+anchor_right = 0.85
+anchor_bottom = 0.9
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("26_2wyq8")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1877503695]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="MainVBox" type="VBoxContainer" parent="MarginContainer" unique_id=1863963231]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="HeaderHBox" type="HBoxContainer" parent="MarginContainer/MainVBox" unique_id=641351890]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="BackButton" type="Button" parent="MarginContainer/MainVBox/HeaderHBox" unique_id=641351891]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+text = "< Takaisin"
+
+[node name="TitleLabel" type="Label" parent="MarginContainer/MainVBox/HeaderHBox" unique_id=756339535]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 20
+text = "Reseptikirja"
+
+[node name="CloseButton" type="Button" parent="MarginContainer/MainVBox/HeaderHBox" unique_id=1140883821]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Sulje"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/MainVBox" unique_id=2136368252]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="RowsVBox" type="VBoxContainer" parent="MarginContainer/MainVBox/ScrollContainer" unique_id=2147114991]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_constants/separation = 6

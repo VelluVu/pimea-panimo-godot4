@@ -2,9 +2,9 @@ class_name LvvRaidWindow
 extends Panel
 
 
-@onready var title_label : Label = $MarginContainer/MainVBox/TitleLabel
-@onready var message_label : Label = $MarginContainer/MainVBox/MessageLabel
-@onready var close_button : Button = $MarginContainer/MainVBox/CloseButton
+@onready var title_label : Label = %TitleLabel
+@onready var message_label : Label = %MessageLabel
+@onready var close_button : Button = %CloseButton
 
 
 func _ready() -> void:

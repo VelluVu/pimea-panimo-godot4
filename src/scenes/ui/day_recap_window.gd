@@ -10,9 +10,9 @@ const CLOSE_BUTTON_TEXT: String = "Jatka"
 const RECAP_MESSAGE_FORMAT: String = "Päivä %d alkoi.\n\nRahaa: %+.1f €\nMainetta: %+d\nLVV-riski nyt: %d\nAnnoksia myyty: %d\nUusia oluttyylejä: %s\nPäivätavoitteita saavutettu: %d"
 const NO_NEW_STYLES_TEXT: String = "ei uusia"
 
-@onready var title_label: Label = $MarginContainer/MainVBox/TitleLabel
-@onready var message_label: Label = $MarginContainer/MainVBox/MessageLabel
-@onready var close_button: Button = $MarginContainer/MainVBox/CloseButton
+@onready var title_label: Label = %TitleLabel
+@onready var message_label: Label = %MessageLabel
+@onready var close_button: Button = %CloseButton
 
 var _day_start_money: float = 0.0
 var _day_start_reputation: int = 0

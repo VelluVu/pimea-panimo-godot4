@@ -15,8 +15,8 @@ const RECIPE_CORNER_RADIUS : int = 4
 const RECIPE_BREWABLE_BORDER_COLOR : Color = Color(0.3, 0.85, 0.35)
 const RECIPE_MISSING_BORDER_COLOR : Color = Color(0.5, 0.5, 0.5)
 
-@onready var title_label : Label = $MarginContainer/MainVBox/HeaderHBox/TitleLabel
-@onready var close_button : Button = $MarginContainer/MainVBox/HeaderHBox/CloseButton
+@onready var title_label : Label = %TitleLabel
+@onready var close_button : Button = %CloseButton
 @onready var back_button : Button = %BackButton
 @onready var rows_vbox : VBoxContainer = %RowsVBox
 
