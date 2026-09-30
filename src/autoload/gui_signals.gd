@@ -107,6 +107,10 @@ signal menu_button_pressed()
 @warning_ignore("unused_signal")
 signal window_closed()
 
+## A settings or view tab was switched, for the click sound.
+@warning_ignore("unused_signal")
+signal tab_switched()
+
 @warning_ignore("unused_signal")
 signal close_day_requested()
 

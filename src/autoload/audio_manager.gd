@@ -43,6 +43,9 @@ func _setup_sfx_pool() -> void:
 	for i in range(SFX_POOL_SIZE):
 		var player := AudioStreamPlayer.new()
 		player.bus = SFX_BUS_NAME
+		# A sound that is playing when a window pauses the tree would freeze until it
+		# closes, which silences the click of every button that opens one.
+		player.process_mode = Node.PROCESS_MODE_ALWAYS
 		add_child(player)
 		_sfx_pool.append(player)
 
@@ -95,6 +98,7 @@ func _connect_signals() -> void:
 	GUISignals.run_effects_requested.connect(_on_ui_action)
 	GUISignals.receipt_log_requested.connect(_on_ui_action)
 	GUISignals.window_closed.connect(_on_ui_action)
+	GUISignals.tab_switched.connect(_on_ui_action)
 
 
 ## Public API: fire-and-forget one-shot playback, round-robin across a small

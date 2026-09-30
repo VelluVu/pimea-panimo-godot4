@@ -80,6 +80,7 @@ func _connect_signals() -> void:
 	sfx_mute_check.toggled.connect(func(muted : bool) -> void: SettingsManager.set_muted(SettingsManager.BUS_SFX, muted))
 	fullscreen_check.toggled.connect(SettingsManager.set_fullscreen)
 	GUISignals.options_requested.connect(_on_options_requested)
+	tab_container.tab_changed.connect(GUISignals.tab_switched.emit.unbind(1))
 
 
 func _load_current_values() -> void:
