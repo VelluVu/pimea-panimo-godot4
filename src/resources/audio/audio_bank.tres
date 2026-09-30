@@ -13,6 +13,7 @@
 [ext_resource type="AudioStream" uid="uid://wevxvnr0v5mv" path="res://assets/audio/sfx/risk_tension_drone.wav" id="11_drone"]
 [ext_resource type="AudioStream" uid="uid://dsd5v6oxpblg1" path="res://assets/audio/sfx/kenney/style_discovered.ogg" id="12_discovered"]
 [ext_resource type="AudioStream" uid="uid://dkq2ruviyo5no" path="res://assets/audio/sfx/kenney/brew_start.ogg" id="13_brewstart"]
+[ext_resource type="AudioStream" uid="uid://em3q71r5rxgy" path="res://assets/audio/sfx/kenney/glass_clink.ogg" id="14_clink"]
 
 [resource]
 script = ExtResource("1_bank")
@@ -25,3 +26,4 @@ sfx_notification_ping = ExtResource("9_ping")
 sfx_lvv_alarm = ExtResource("10_alarm")
 sfx_risk_tension_drone = ExtResource("11_drone")
 sfx_style_discovered = ExtResource("12_discovered")
+sfx_talent_purchased = ExtResource("14_clink")

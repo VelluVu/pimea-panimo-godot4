@@ -30,3 +30,5 @@ extends Resource
 
 @export_group("Progression")
 @export var sfx_style_discovered: AudioStream
+## An Olutoppi talent level was bought.
+@export var sfx_talent_purchased: AudioStream
