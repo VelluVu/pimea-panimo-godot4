@@ -99,13 +99,13 @@ func process_auto_sale(data: CustomerData) -> String:
 func spawn_normal_customer(forced_data: CustomerData = null) -> void:
 	if active_spawner == null:
 		return
-	active_spawner._on_walk_in_timer_timeout(forced_data)
+	active_spawner.spawn_walk_in(forced_data)
 
 
 func spawn_group_event(forced_event_data: GroupVisitEventData = null) -> void:
 	if active_spawner == null:
 		return
-	active_spawner._on_group_event_timer_timeout(forced_event_data)
+	active_spawner.spawn_group_visit(forced_event_data)
 
 
 ## Used by LvvRaidSpawner around a raid squad's walk-in and walk-out.

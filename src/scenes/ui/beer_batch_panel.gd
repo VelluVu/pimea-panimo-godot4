@@ -7,7 +7,7 @@ const LABEL_STRING : String = "🍺 %s (%.1f%%) - %s annosta (%s %s)"
 ## Shown when there's nothing left to sell — without this the panel just
 ## goes quiet with no explanation. Customer traffic keeps arriving even
 ## now (CustomerSpawner no longer withholds spawning on empty inventory
-## past the player's first brew — see its _on_walk_in_timer_timeout()
+## past the player's first brew — see its spawn_walk_in()
 ## docstring), it just gets turned away, costing reputation/risk, so this
 ## label is the only warning the player gets before that starts happening.
 ## See playtest_notes_2.txt.
