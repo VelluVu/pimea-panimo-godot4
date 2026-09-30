@@ -1,9 +1,8 @@
 class_name AudioBank
 extends Resource
 
-## Data-driven catalogue of every sound the game can play. AudioManager
-## (autoload) holds one of these and never hardcodes asset paths itself —
-## swapping or re-recording a sound is a matter of reassigning it here.
+## Every sound the game plays. AudioWiring (the AudioManager autoload) holds one and
+## never hardcodes asset paths, so swapping a sound is a matter of reassigning it here.
 
 
 @export_group("Music")

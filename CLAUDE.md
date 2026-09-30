@@ -23,7 +23,7 @@ Five top-level folders: `addons/`, `assets/`, `src/`, `tests/` and `dev/`. Every
     - `src/ui/` — UI helper classes: pure text and layout logic (`OlutoppiText`, `RecipeLibraryText`), small view helpers (`LabelPulse`, `CollapsibleSection`) and tooltip/hover-area nodes
     - `src/console/` — the game's console commands (`PlayerCommands`, the gitignored cheat sets); the console itself is in `src/systems/console/`
     - `src/save/`, `src/audio/` — save file handling, audio bank
-  - `src/systems/` — Reusable systems, one self-contained folder each (`dialog/`, `console/`, `input/`, `settings/`, `toast/`, `tooltip/`, `toolkit/`). Copy a folder to another project and edit its `*_wiring.gd`. See the rule under Architecture.
+  - `src/systems/` — Reusable systems, one self-contained folder each (`audio/`, `dialog/`, `console/`, `input/`, `settings/`, `toast/`, `tooltip/`, `toolkit/`). Copy a folder to another project and edit its `*_wiring.gd`. See the rule under Architecture.
   - `src/resources/` — All game content as custom `.tres` resources, one folder per type (`customers/`, `beer_styles/`, `ingredients/`, `perks/`, `daily_goals/`, ...), plus the `ResourceFolder` loader
 - `res://tests/` — Unit tests, one `test_<class>.gd` per class (the test runner only looks here)
 - `res://dev/` — Everything for developing, not shipped: `tools/` (scripts, see Tools), `docs/` (design references such as `beer_styles_reference.txt`) and `notes/` (local playtest notes, gitignored)
@@ -73,7 +73,8 @@ Five top-level folders: `addons/`, `assets/`, `src/`, `tests/` and `dev/`. Every
 - `TimeManager` (autoload): in-game time, with `DayRules`.
 - `DailyGoalManager`, `MetaProgressManager`, `AchievementManager`, `LeaderboardManager` (autoloads): daily goals (`DailyGoalRules`, `GoalSlot`), the Olutoppi talent tree (`MetaUnlockRules`), achievements and the leaderboard; the last three keep their own `ConfigFile`.
 - `SettingsManager`, `InputManager` (autoloads): two-line scripts extending `SettingsWiring` and `InputWiring` from `src/systems/settings/` and `src/systems/input/`; the buses and actions live in those wiring files.
-- `SaveManager`, `AudioManager` (autoloads): the run save, and audio.
+- `AudioManager` (autoload): extends `AudioWiring` from `src/systems/audio/`, which maps the game's signals to the sounds in `AudioBank` (`src/audio/`).
+- `SaveManager` (autoload): the run save.
 
 ## Testing and Verification
 - Tests are in `tests/`, extend `McpTestSuite` and are run through the MCP `test_run` tool with the editor open. Each run prints about 10 errors and 2 warnings from the save-file tests; those are expected.

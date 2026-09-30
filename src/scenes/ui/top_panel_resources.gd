@@ -13,7 +13,7 @@ const POPUP_EFFECT_DURATION_SECONDS : float = 1.8
 ## fine with no other UI warning — see playtest_notes_2.txt's "AVI raid
 ## has no explicit warning" finding) — a distinct "last chance" zone that
 ## tints the risk label and pulses once on entry, on top of the existing
-## audio tension drone (audio_manager.gd).
+## audio tension drone (audio_wiring.gd).
 const RISK_WARNING_THRESHOLD : int = 75
 const RISK_WARNING_COLOR : Color = Color(0.75686276, 0.3137255, 0.22745098, 1) # matches DailyGoalsPanel.GOAL_FAILING_COLOR
 const RISK_WARNING_PULSE_SECONDS : float = 0.3

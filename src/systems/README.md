@@ -12,6 +12,7 @@ what you edit after copying the system.
 | System | What it is |
 |---|---|
 | `dialog/` | Speech bubbles and floating popups (has a wiring file) |
+| `audio/` | Sound effect pool, looping music or playlist, a click on every button (has a wiring file) |
 | `console/` | Dev console: log, command line, command registry (has a wiring file) |
 | `input/` | Rebindable shortcuts, their save file and a rebinding tab (has a wiring file) |
 | `settings/` | Volume per audio bus, mutes and fullscreen, saved to a file (has a wiring file) |
