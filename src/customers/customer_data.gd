@@ -125,10 +125,12 @@ func generate_display_name() -> String:
 	return title + " " + first_names.pick_random()
 
 
+## An accepted style that is not a favourite scores like the secondary one: a customer
+## who only ever buys from accepted_styles should not call any of them the wrong style.
 func get_preference_score(style: BeerStyle.Style) -> float:
 	if style == primary_style:
 		return 1.0
-	elif style == secondary_style:
+	elif style == secondary_style or accepted_styles.has(style):
 		return 0.5
 	return 0.0
 

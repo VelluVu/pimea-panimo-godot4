@@ -277,3 +277,22 @@ func test_shipped_preview_lines_take_exactly_one_style_name() -> void:
 	for customer : CustomerData in customers:
 		assert_eq(customer.dialogue_preview_format.count("%s"), 1, "%s: dialogue_preview_format needs one %%s" % customer.customer_name)
 		assert_false(customer.dialogue_nothing_available.is_empty(), "%s: dialogue_nothing_available is empty" % customer.customer_name)
+
+
+func test_accepted_non_favourite_style_scores_like_the_secondary() -> void:
+	var customer := CustomerData.new()
+	customer.primary_style = BeerStyle.Style.MARZEN
+	customer.secondary_style = BeerStyle.Style.HELLES
+	customer.accepted_styles = [BeerStyle.Style.MARZEN, BeerStyle.Style.HELLES, BeerStyle.Style.HEFEWEIZEN]
+	assert_eq(customer.get_preference_score(BeerStyle.Style.HEFEWEIZEN), 0.5)
+	assert_eq(customer.get_preference_score(BeerStyle.Style.IPA), 0.0, "not accepted")
+
+
+func test_accepted_non_favourite_style_gets_the_fallback_reaction() -> void:
+	var customer := CustomerData.new()
+	customer.primary_style = BeerStyle.Style.MARZEN
+	customer.secondary_style = BeerStyle.Style.HELLES
+	customer.accepted_styles = [BeerStyle.Style.MARZEN, BeerStyle.Style.HELLES, BeerStyle.Style.HEFEWEIZEN]
+	var batch := _make_batch(BeerStyle.Style.HEFEWEIZEN, customer.min_quality)
+	var results : Dictionary = customer.evaluate_brew_batch(batch)
+	assert_eq(results[CustomerManager.KEY_RESPONSE], customer.dialogue_fallback)
