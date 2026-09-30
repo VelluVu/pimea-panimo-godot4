@@ -12,6 +12,16 @@ var _flash_seconds: float
 var _hold_seconds: float
 var _fade_seconds: float
 
+## Longer text stays up longer: hold = hold_seconds + this per character, clamped to
+## min/max_hold_seconds. Zero keeps every toast at the same hold_seconds.
+var hold_per_character: float = 0.0
+var min_hold_seconds: float = 0.0
+var max_hold_seconds: float = INF
+## At most this many toasts on screen; a new one makes the oldest fade out early. 0 = no cap.
+var max_visible: int = 0
+
+var _showing: Array[BannerPresenter] = []
+
 
 ## The template label supplies the look and the stack's screen rect; it is hidden and stays
 ## as the prototype. Must be in the tree.
@@ -40,6 +50,19 @@ func show_toast(text: String) -> void:
 	label.custom_minimum_size.y = _template.offset_bottom - _template.offset_top
 	_stack.add_child(label)
 
-	var presenter := BannerPresenter.new(label, _flash_seconds, _hold_seconds, _fade_seconds, true, false, false, label.queue_free)
+	_make_room()
+	var hold: float = hold_seconds_for(text.length(), _hold_seconds, hold_per_character, min_hold_seconds, max_hold_seconds)
+	var presenter := BannerPresenter.new(label, _flash_seconds, hold, _fade_seconds, true, false, false, label.queue_free)
 	presenter.present(text)
+	_showing.append(presenter)
+
+
+func _make_room() -> void:
+	_showing = _showing.filter(func(presenter: BannerPresenter) -> bool: return presenter.is_running())
+	while max_visible > 0 and _showing.size() >= max_visible:
+		_showing.pop_front().dismiss_early()
+
+
+static func hold_seconds_for(text_length: int, base_seconds: float, per_character: float, min_seconds: float, max_seconds: float) -> float:
+	return clampf(base_seconds + text_length * per_character, min_seconds, max_seconds)
 

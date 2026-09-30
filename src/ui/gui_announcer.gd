@@ -20,6 +20,12 @@ const INGREDIENT_LOCKED_TOAST_FORMAT: String = "%s vaatii vähintään %d mainet
 const INGREDIENT_UNDERFUNDED_TOAST_FORMAT: String = "Ei varaa: %s maksaa %d €, kassassa %.1f €."
 const DISCOVERY_TOAST_FLASH_SECONDS: float = 0.15
 const DISCOVERY_TOAST_HOLD_SECONDS: float = 2.0
+## Long toasts (a daily goal's reward line) stay up long enough to read.
+const TOAST_HOLD_PER_CHARACTER_SECONDS: float = 0.05
+const TOAST_MIN_HOLD_SECONDS: float = 3.0
+const TOAST_MAX_HOLD_SECONDS: float = 7.0
+## A burst of unlocks at once would otherwise stack down the whole screen.
+const TOAST_MAX_VISIBLE: int = 3
 const DISCOVERY_TOAST_FADE_SECONDS: float = 0.6
 
 const GROUP_VISIT_BANNER_FLASH_SECONDS: float = 0.2
@@ -55,6 +61,10 @@ var _day_event_announce_serial: int = 0
 func setup(toast_label: Label, group_visit_label: Label, day_event_label: Label, first_brew_hint_label: Label, goals_panel: DailyGoalsPanel, day_recap_window: DayRecapWindow) -> void:
 	_day_recap_window = day_recap_window
 	_toasts = ToastStack.new(toast_label, DISCOVERY_TOAST_FLASH_SECONDS, DISCOVERY_TOAST_HOLD_SECONDS, DISCOVERY_TOAST_FADE_SECONDS)
+	_toasts.hold_per_character = TOAST_HOLD_PER_CHARACTER_SECONDS
+	_toasts.min_hold_seconds = TOAST_MIN_HOLD_SECONDS
+	_toasts.max_hold_seconds = TOAST_MAX_HOLD_SECONDS
+	_toasts.max_visible = TOAST_MAX_VISIBLE
 	_group_visit_banner = BannerPresenter.new(group_visit_label, GROUP_VISIT_BANNER_FLASH_SECONDS, GROUP_VISIT_BANNER_HOLD_SECONDS, GROUP_VISIT_BANNER_FADE_SECONDS)
 	# Plain alpha fade-in, not the overexposed flash: it's the day's forecast,
 	# not an in-the-moment arrival.
