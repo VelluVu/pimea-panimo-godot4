@@ -31,6 +31,7 @@ func _ready() -> void:
 	_add_icon_tab(YEAST_TAB_TEXT, IngredientData.IngredientType.YEAST)
 	tab_bar.current_tab = 0
 	tab_bar.tab_changed.connect(_on_tab_changed)
+	tab_bar.tab_changed.connect(GUISignals.tab_switched.emit.unbind(1))
 	_on_tab_changed(0)
 
 
