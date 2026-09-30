@@ -13,6 +13,8 @@ what you edit after copying the system.
 |---|---|
 | `dialog/` | Speech bubbles and floating popups (has a wiring file) |
 | `console/` | Dev console: log, command line, command registry (has a wiring file) |
+| `input/` | Rebindable shortcuts, their save file and a rebinding tab (has a wiring file) |
+| `settings/` | Volume per audio bus, mutes and fullscreen, saved to a file (has a wiring file) |
 | `toast/` | Banner and toast presentation: flash, hold, fade, stacking |
 | `tooltip/` | Tooltips that wrap instead of clipping off-screen |
 | `toolkit/` | Small helpers: resource folder loading, weighted picker, label pulse, collapsible section |

@@ -1,31 +1,34 @@
 class_name KeyBindingsTab
 extends VBoxContainer
 
-## The options window's Input tab. Built from InputManager's action list, so a new
-## rebindable action shows up without touching the scene.
+## A settings tab that lists every rebindable action with its key. Built from the
+## InputBindings passed to setup(), so a new action shows up without touching a scene.
+## The owner forwards key presses to try_capture() from its _input().
 
-const RESET_BINDINGS_TEXT : String = "Palauta oletukset"
-const PRESS_KEY_TEXT : String = "Paina näppäintä..."
-const INPUT_HINT_TEXT : String = "Valitse toiminto ja paina uutta näppäintä. Esc peruu."
-const KEY_IN_USE_FORMAT : String = "Näppäin on jo käytössä: %s"
 const BINDING_BUTTON_MIN_WIDTH : float = 110.0
 
 var _binding_buttons : Dictionary = {} # action -> Button
 var _capturing_action : StringName = &""
 var _status_label : Label
+var _bindings : InputBindings
+
+
+## Call before adding the tab to the tree.
+func setup(bindings : InputBindings) -> void:
+	_bindings = bindings
 
 
 func _ready() -> void:
-	_add_wrapping_label(INPUT_HINT_TEXT)
+	_add_wrapping_label(_bindings.ui_text["hint"])
 	_add_binding_rows()
 	_status_label = _add_wrapping_label("")
 
 	var reset_button := Button.new()
-	reset_button.text = RESET_BINDINGS_TEXT
+	reset_button.text = _bindings.ui_text["reset"]
 	reset_button.pressed.connect(_on_reset_pressed)
 	add_child(reset_button)
 
-	InputManager.bindings_changed.connect(_refresh_buttons)
+	_bindings.bindings_changed.connect(_refresh_buttons)
 	_refresh_buttons()
 
 
@@ -61,12 +64,12 @@ func _add_binding_rows() -> void:
 	rows.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.add_child(rows)
 
-	for action : StringName in InputManager.REBINDABLE_ACTIONS:
+	for action : StringName in _bindings.rebindable_actions:
 		var row := HBoxContainer.new()
 		rows.add_child(row)
 
 		var name_label := Label.new()
-		name_label.text = InputManager.get_action_label(action)
+		name_label.text = _bindings.get_action_label(action)
 		name_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		row.add_child(name_label)
 
@@ -80,7 +83,7 @@ func _add_binding_rows() -> void:
 func _refresh_buttons() -> void:
 	for action : StringName in _binding_buttons:
 		var key_button : Button = _binding_buttons[action]
-		key_button.text = PRESS_KEY_TEXT if action == _capturing_action else InputManager.get_binding_text(action)
+		key_button.text = _bindings.ui_text["press_key"] if action == _capturing_action else _bindings.get_binding_text(action)
 
 
 func _on_binding_pressed(action : StringName) -> void:
@@ -89,20 +92,20 @@ func _on_binding_pressed(action : StringName) -> void:
 	_refresh_buttons()
 
 
-## Esc cancels; any other key is offered to InputManager, which refuses keys already
+## Esc cancels; any other key is offered to the bindings, which refuse keys already
 ## bound to another action.
 func _finish_capture(keycode : Key) -> void:
 	var action : StringName = _capturing_action
 	_capturing_action = &""
 	_status_label.text = ""
 	if keycode != KEY_ESCAPE:
-		var conflict : StringName = InputManager.rebind(action, keycode)
+		var conflict : StringName = _bindings.rebind(action, keycode)
 		if conflict != &"":
-			_status_label.text = KEY_IN_USE_FORMAT % InputManager.get_action_label(conflict)
+			_status_label.text = _bindings.ui_text["key_in_use"] % _bindings.get_action_label(conflict)
 	_refresh_buttons()
 
 
 func _on_reset_pressed() -> void:
 	_capturing_action = &""
 	_status_label.text = ""
-	InputManager.reset_to_defaults()
+	_bindings.reset_to_defaults()
