@@ -8,6 +8,7 @@ extends Node
 
 ## Renown went up or was spent, so open views can redraw.
 signal renown_changed(renown : int)
+signal talent_purchased(unlock_id : String)
 
 const SAVE_PATH : String = "user://meta_progress.cfg"
 const SECTION : String = "meta_progress"
@@ -118,6 +119,7 @@ func purchase_next_level(unlock_id : String) -> bool:
 	_config.set_value(SECTION, KEY_RENOWN, get_renown() - unlock.renown_cost_per_level)
 	_config.set_value(SECTION, KEY_UNLOCKED_LEVELS, levels)
 	_save()
+	talent_purchased.emit(unlock_id)
 	renown_changed.emit(get_renown())
 	return true
 

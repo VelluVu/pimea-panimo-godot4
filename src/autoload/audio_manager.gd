@@ -69,6 +69,7 @@ func _connect_signals() -> void:
 	BrewerySignals.style_discovered.connect(_on_style_discovered)
 	BrewerySignals.lvv_raid_triggered.connect(_on_lvv_raid_triggered)
 	SpecialEventManager.special_event_triggered.connect(_on_special_event_triggered)
+	MetaProgressManager.talent_purchased.connect(_on_talent_purchased.unbind(1))
 
 	GUISignals.buy_ingredient.connect(_on_ui_action.unbind(2))
 	GUISignals.sell_ingredient.connect(_on_ui_action.unbind(2))
@@ -119,6 +120,10 @@ func _on_style_discovered(_style: int) -> void:
 
 func _on_lvv_raid_triggered(_confiscated_bottles: int, _fine_amount: float, _reputation_lost: int) -> void:
 	play_sfx(bank.sfx_lvv_alarm)
+
+
+func _on_talent_purchased() -> void:
+	play_sfx(bank.sfx_talent_purchased)
 
 
 func _on_special_event_triggered(_event_data: SpecialEventData) -> void:
