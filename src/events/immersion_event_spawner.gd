@@ -85,7 +85,7 @@ func _run_vignette() -> void:
 		return
 
 	for actor : ImmersionActorData in vignette.actors:
-		_run_actor(actor, points)
+		_cross(actor, points)
 
 
 ## Null when nothing is loaded.
@@ -104,14 +104,6 @@ func _get_waypoints(path_root : Node2D) -> PackedVector2Array:
 	return points
 
 
-func _run_actor(actor : ImmersionActorData, points : PackedVector2Array) -> void:
-	if actor.start_delay_seconds > 0.0:
-		await get_tree().create_timer(actor.start_delay_seconds).timeout
-	if not is_inside_tree():
-		return
-	_cross(actor, points)
-
-
 func _cross(actor : ImmersionActorData, points : PackedVector2Array) -> void:
 	var sprite := AnimatedSprite2D.new()
 	sprite.sprite_frames = actor.sprite_frames
@@ -127,6 +119,12 @@ func _cross(actor : ImmersionActorData, points : PackedVector2Array) -> void:
 
 	var durations : PackedFloat32Array = VignettePath.segment_durations(points, actor.crossing_seconds)
 	var tween := sprite.create_tween()
+	# The start delay lives in the sprite's own tween, so a scene change mid-wait just
+	# frees it instead of resuming a coroutine on a freed spawner.
+	if actor.start_delay_seconds > 0.0:
+		sprite.hide()
+		tween.tween_interval(actor.start_delay_seconds)
+		tween.tween_callback(sprite.show)
 	for i : int in range(1, points.size()):
 		# Art faces left, so mirror it on legs heading right; vertical legs keep facing.
 		var dx : float = points[i].x - points[i - 1].x
