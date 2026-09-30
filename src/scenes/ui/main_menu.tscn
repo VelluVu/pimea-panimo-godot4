@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://2ddvq1esbm4f" path="res://src/scenes/ui/modifier_select_window.tscn" id="6_uhagc"]
 [ext_resource type="PackedScene" path="res://src/scenes/ui/olutoppi_window.tscn" id="7_olutoppi"]
 [ext_resource type="PackedScene" path="res://src/scenes/ui/achievements_window.tscn" id="8_ach"]
+[ext_resource type="PackedScene" path="res://src/systems/console/console_panel.tscn" id="9_console"]
 
 [node name="MainMenu" type="Control" unique_id=1468878832]
 layout_mode = 3
@@ -194,3 +195,5 @@ layout_mode = 1
 
 [node name="AchievementsWindow" parent="." instance=ExtResource("8_ach")]
 layout_mode = 1
+
+[node name="DevConsole" parent="." instance=ExtResource("9_console")]

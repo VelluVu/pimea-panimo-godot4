@@ -6,6 +6,9 @@ extends Node
 ## Brewery._seed_meta_perks() for how it feeds a new run. The tree's rules are in
 ## MetaUnlockRules.
 
+## Renown went up or was spent, so open views can redraw.
+signal renown_changed(renown : int)
+
 const SAVE_PATH : String = "user://meta_progress.cfg"
 const SECTION : String = "meta_progress"
 const KEY_DISCOVERED_STYLES : String = "discovered_styles"
@@ -60,6 +63,7 @@ func add_renown(amount : int) -> void:
 	if amount > 0:
 		_config.set_value(SECTION, KEY_RENOWN, get_renown() + amount)
 		_save()
+		renown_changed.emit(get_renown())
 
 
 func get_unlocked_levels() -> Dictionary:
@@ -114,6 +118,7 @@ func purchase_next_level(unlock_id : String) -> bool:
 	_config.set_value(SECTION, KEY_RENOWN, get_renown() - unlock.renown_cost_per_level)
 	_config.set_value(SECTION, KEY_UNLOCKED_LEVELS, levels)
 	_save()
+	renown_changed.emit(get_renown())
 	return true
 
 
