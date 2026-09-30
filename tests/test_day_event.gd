@@ -1,7 +1,7 @@
 @tool
 extends McpTestSuite
 
-## Unit tests for DayEventData's pure logic (see src/classes/day_event_data.gd).
+## Unit tests for DayEventData's pure logic (see src/events/day_event_data.gd).
 ## The actual roll/window-timing/bias integration (DayEventManager,
 ## CustomerRegistry.get_random_customer_data(), CustomerSpawner._pick_group_event())
 ## needs a running game with live autoload state and isn't covered here —
