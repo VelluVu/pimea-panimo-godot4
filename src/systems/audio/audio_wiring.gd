@@ -7,6 +7,10 @@ extends AudioPlayback
 
 const TENSION_DRONE_MAX_VOLUME_DB: float = -6.0
 const TENSION_DRONE_MIN_VOLUME_DB: float = -80.0
+## Automated test runs create this (gitignored) file to play silently. Players never have it.
+const TEST_MUTE_FLAG_PATH: String = "res://dev/mute_audio.flag"
+const MASTER_BUS: StringName = &"Master"
+
 ## Varied pitch so several glasses breaking in a row don't sound identical.
 const SHATTER_PITCH_RANGE: Vector2 = Vector2(0.6, 0.85)
 
@@ -30,6 +34,9 @@ func _ready() -> void:
 	get_tree().scene_changed.connect(_on_scene_changed)
 	# The first scene is not current yet while autoloads run _ready().
 	_on_scene_changed.call_deferred()
+	if FileAccess.file_exists(TEST_MUTE_FLAG_PATH):
+		# Deferred: SettingsManager starts after this autoload and applies the saved volumes.
+		AudioServer.set_bus_mute.call_deferred(AudioServer.get_bus_index(MASTER_BUS), true)
 
 
 ## The main menu always loops its own track. Entering a run switches to the shuffled
