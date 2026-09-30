@@ -44,6 +44,11 @@ const MIN_TIP_PER_QUALITY_POINT : float = 1.0
 ## Shown when this customer leaves without buying: nothing in stock, or nothing that
 ## clears a strict requirement.
 @export_multiline var dialogue_no_match: String = "Ei täällä ollu mitään minulle. Ehkä ensi kerralla."
+## Said at the counter before the sale, naming the batch this customer will pick (%s is
+## the style name).
+@export_multiline var dialogue_preview_format: String = "Tuo %s kiinnostaisi..."
+## Said at the counter before the sale when nothing suits this customer.
+@export_multiline var dialogue_nothing_available: String = "Eipä taida olla mitään sopivaa..."
 
 ## A hard gate, not a preference. A batch outside a set bound is invisible to this
 ## customer however good it is, see SaleProcessor.find_best_batch().

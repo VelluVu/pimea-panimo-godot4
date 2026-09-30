@@ -16,8 +16,6 @@ const PER_CHARACTER_DISPLAY_TIME_SECONDS : float = 0.04
 const MAX_DISPLAY_TIME_SECONDS : float = 9.0
 
 const PREVIEW_DELAY_SECONDS : float = 2.0
-const BATCH_PREVIEW_FORMAT : String = "%s: Tuo %s kiinnostaisi..."
-const NOTHING_AVAILABLE_TEXT_FORMAT : String = "%s: Eipä taida olla mitään sopivaa..."
 
 const ANIM_IDLE : StringName = &"idle"
 const ANIM_IDLE_UP : StringName = &"idle_up"
@@ -129,11 +127,11 @@ func _on_preview_timeout() -> void:
 	var previewed_batch : BrewBatch = CustomerManager.find_best_batch_for(customer_data)
 	var preview_text : String
 	if previewed_batch != null:
-		preview_text = BATCH_PREVIEW_FORMAT % [generated_name, previewed_batch.get_style_name()]
+		preview_text = customer_data.dialogue_preview_format % previewed_batch.get_style_name()
 	else:
-		preview_text = NOTHING_AVAILABLE_TEXT_FORMAT % generated_name
+		preview_text = customer_data.dialogue_nothing_available
 
-	var display_time := _say(preview_text)
+	var display_time := _say(generated_name + ": " + preview_text)
 	get_tree().create_timer(display_time).timeout.connect(_on_sale_timeout)
 
 
