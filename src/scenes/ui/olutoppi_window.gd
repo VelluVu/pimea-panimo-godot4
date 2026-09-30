@@ -33,12 +33,18 @@ func _ready() -> void:
 
 	close_button.pressed.connect(_on_close_button_pressed)
 	GUISignals.olutoppi_requested.connect(_on_olutoppi_requested)
+	MetaProgressManager.renown_changed.connect(_on_renown_changed)
 	hide()
 
 
 func _on_olutoppi_requested() -> void:
 	_refresh()
 	show()
+
+
+func _on_renown_changed(_renown : int) -> void:
+	if visible:
+		_refresh()
 
 
 func _on_close_button_pressed() -> void:
