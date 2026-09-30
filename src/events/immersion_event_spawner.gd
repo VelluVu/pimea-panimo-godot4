@@ -1,16 +1,10 @@
 class_name ImmersionEventSpawner
 extends Node2D
 
-## Purely decorative background flavor: every so often a vignette (e.g. a
-## mouse scurrying across the floor with a cat in chase) plays. Zero gameplay
-## effect: nothing here reads or writes Brewery state, reputation, risk, or
-## any BrewerySignals.
-##
-## Vignettes are data: every ImmersionVignetteData .tres in VIGNETTE_DIR is
-## loaded at startup (same auto-load-from-folder pattern as the project's other
-## registries), naming its actors and which PathMarkers-style child node
-## supplies the route. Actor sprites are created per run and freed when they
-## reach the end of the path.
+## Decorative background vignettes (a mouse chased by a cat, ...) played every few
+## minutes. No gameplay effect: nothing here touches Brewery state or BrewerySignals.
+## Each ImmersionVignetteData names its actors and the child node whose Marker2Ds
+## form the route.
 
 const MIN_INTERVAL_SECONDS : float = 240.0
 const MAX_INTERVAL_SECONDS : float = 480.0
@@ -21,29 +15,13 @@ const VIGNETTE_DIR : String = "res://src/resources/immersion_vignettes/"
 ## the sprite's feet, so y-sorting against kegs and customers reads correctly.
 const SPRITE_OFFSET : Vector2 = Vector2(-16, -32)
 
-## Fake depth: every DEPTH_Y_STEP pixels a sprite is above DEPTH_REFERENCE_Y
-## (further from the camera) it shrinks by DEPTH_SCALE_PER_STEP of its base
-## scale, and grows by the same amount when below it. Clamped so a stray
-## marker can't make it vanish or balloon.
-const DEPTH_REFERENCE_Y : float = 330.0
-const DEPTH_Y_STEP : float = 20.0
-const DEPTH_SCALE_PER_STEP : float = 0.05
-const DEPTH_SCALE_MIN_FACTOR : float = 0.4
-const DEPTH_SCALE_MAX_FACTOR : float = 1.5
-
-## Lets DevConsole's "cat" command reach this instance via
-## get_tree().get_first_node_in_group() — same lightweight lookup
-## Bartender.BARTENDER_GROUP already uses elsewhere, instead of routing
-## through a dedicated autoload that would otherwise exist purely to
-## relay one debug command (there's no other gameplay state here for an
-## autoload to own).
+## Lets the console's "cat" command find this node without an autoload.
 const IMMERSION_EVENT_SPAWNER_GROUP : String = "immersion_event_spawner"
 
 var vignettes : Array[ImmersionVignetteData] = []
 
 var _timer : Timer
-## Live actor sprites -> their base scale, so _process() can apply the depth
-## scale without any per-actor bookkeeping node.
+## Live actor sprite -> its base scale, rescaled for depth every frame.
 var _active_sprites : Dictionary = {}
 
 
@@ -59,24 +37,15 @@ func _process(_delta: float) -> void:
 
 
 func _load_vignettes() -> void:
-	vignettes.clear()
-	for file_name : String in ResourceLoader.list_directory(VIGNETTE_DIR):
-		if not file_name.ends_with(".tres"):
-			continue
-		var vignette : ImmersionVignetteData = load(VIGNETTE_DIR + file_name) as ImmersionVignetteData
-		if vignette != null:
-			vignettes.append(vignette)
+	vignettes.assign(ResourceFolder.load_all(VIGNETTE_DIR, ImmersionVignetteData))
 
 
 func _apply_depth_scale(sprite : AnimatedSprite2D, base_scale : Vector2) -> void:
-	var steps : float = (sprite.global_position.y - DEPTH_REFERENCE_Y) / DEPTH_Y_STEP
-	var factor : float = clampf(1.0 + steps * DEPTH_SCALE_PER_STEP, DEPTH_SCALE_MIN_FACTOR, DEPTH_SCALE_MAX_FACTOR)
-	sprite.scale = base_scale * factor
+	sprite.scale = base_scale * VignettePath.depth_scale_factor(sprite.global_position.y)
 
 
-## DevConsole's "cat" command — fires a vignette immediately instead of
-## waiting for the timer, and re-rolls that timer so it doesn't also fire
-## again moments later on top of this forced one.
+## The console's "cat" command. Re-rolls the timer so a second vignette does not
+## follow moments later.
 func force_trigger() -> void:
 	_run_vignette()
 	_start_next_timer()
@@ -119,8 +88,7 @@ func _run_vignette() -> void:
 		_run_actor(actor, points)
 
 
-## Weighted random pick (WeightedPicker, same as CustomerRegistry); null when
-## nothing is loaded.
+## Null when nothing is loaded.
 func _pick_vignette() -> ImmersionVignetteData:
 	var weights : Array[float] = []
 	for vignette : ImmersionVignetteData in vignettes:
@@ -157,22 +125,15 @@ func _cross(actor : ImmersionActorData, points : PackedVector2Array) -> void:
 	# Set the depth scale before the first frame draws, not one frame later.
 	_apply_depth_scale(sprite, actor.base_scale)
 
-	var total_length : float = 0.0
-	for i : int in range(1, points.size()):
-		total_length += points[i - 1].distance_to(points[i])
-
-	# Segment durations are proportional to length so speed stays constant
-	# and the total stays actor.crossing_seconds (keeps a chaser's gap steady).
+	var durations : PackedFloat32Array = VignettePath.segment_durations(points, actor.crossing_seconds)
 	var tween := sprite.create_tween()
 	for i : int in range(1, points.size()):
-		var seg_duration : float = actor.crossing_seconds * points[i - 1].distance_to(points[i]) / maxf(total_length, 0.001)
-		# Art is drawn facing left, so mirror it on legs heading right.
-		# Purely vertical legs keep the previous facing.
+		# Art faces left, so mirror it on legs heading right; vertical legs keep facing.
 		var dx : float = points[i].x - points[i - 1].x
 		if not is_zero_approx(dx):
 			var facing_right : bool = dx > 0.0
 			tween.tween_callback(func() -> void: sprite.flip_h = facing_right)
-		tween.tween_property(sprite, "global_position", points[i], seg_duration)
+		tween.tween_property(sprite, "global_position", points[i], durations[i - 1])
 	tween.tween_callback(_finish_actor.bind(sprite))
 
 
