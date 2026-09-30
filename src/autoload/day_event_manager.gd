@@ -151,26 +151,15 @@ func _apply_bottle_spoilage(brewery : Brewery, event : DayEventData) -> void:
 	BrewerySignals.brewery_state_changed.emit(brewery)
 
 
-## Same weighted-roll shape as CustomerRegistry.get_random_special_event()
-## — every entry at the default weight (1.0) keeps flat odds against each
-## other; day_event_none.tres's much higher weight is what actually makes
-## "nothing special" the common case.
+## Same WeightedPicker CustomerRegistry.get_random_special_event() uses — every
+## entry at the default weight (1.0) keeps flat odds against each other;
+## day_event_none.tres's much higher weight is what actually makes "nothing
+## special" the common case.
 func _pick_weighted_event() -> DayEventData:
-	if day_event_pool.is_empty():
-		return null
-
-	var total_weight : float = 0.0
+	var weights : Array[float] = []
 	for event : DayEventData in day_event_pool:
-		total_weight += event.weight
-
-	var roll : float = randf() * total_weight
-	var cumulative : float = 0.0
-	for event : DayEventData in day_event_pool:
-		cumulative += event.weight
-		if roll < cumulative:
-			return event
-
-	return day_event_pool.back()
+		weights.append(event.weight)
+	return WeightedPicker.pick(day_event_pool, weights) as DayEventData
 
 
 func _load_resources() -> void:
