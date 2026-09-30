@@ -43,13 +43,28 @@ const STAT_HOPS_UNLOCKED : StringName = &"hops_unlocked"
 ## played — see CustomerRegistry._check_for_newly_unlocked_customers().
 const STAT_CUSTOMERS_UNLOCKED : StringName = &"customers_unlocked"
 
+## Lifetime counters fed straight from BrewerySignals, one per event.
+const STAT_BATCHES_BREWED : StringName = &"batches_brewed"
+const STAT_BOTTLES_SOLD : StringName = &"bottles_sold"
+## In cents, since tips arrive as fractions of a euro.
+const STAT_TIPS_CENTS : StringName = &"tips_cents"
+const STAT_GROUP_VISITS : StringName = &"group_visits"
+const STAT_BAR_FIGHTS : StringName = &"bar_fights"
+const STAT_RAIDS_EXPERIENCED : StringName = &"raids_experienced"
+const STAT_RUNS_SURVIVED : StringName = &"runs_survived"
+## Ratchets (highest ever seen), like STAT_HOPS_UNLOCKED.
+const STAT_HIGHEST_MONEY : StringName = &"highest_money"
+const STAT_HIGHEST_REPUTATION : StringName = &"highest_reputation"
+const STAT_HIGHEST_LEVEL : StringName = &"highest_level"
+
+const ENDING_SURVIVED : String = "survived"
+
 const SAVE_PATH : String = "user://achievements.cfg"
 const SECTION_STATS : String = "stats"
 const SECTION_UNLOCKS : String = "unlocks"
 const KEY_UNLOCKED_IDS : String = "unlocked_ids"
 
 const ACHIEVEMENT_FOLDER_PATH : String = "res://src/resources/achievements/"
-const WARNING_FOLDER_OPEN_FAILED : String = "AchievementManager: Failed to open path: "
 
 var _config : ConfigFile = ConfigFile.new()
 ## Overridable so tests can redirect persistence to a throwaway path
@@ -66,23 +81,18 @@ func _ready() -> void:
 	BrewerySignals.style_discovered.connect(_on_style_discovered)
 	BrewerySignals.special_event_resolved.connect(_on_special_event_resolved)
 	BrewerySignals.brewery_state_changed.connect(_on_brewery_state_changed)
+	BrewerySignals.beer_brewed.connect(_increment_stat.bind(STAT_BATCHES_BREWED, 1).unbind(1))
+	BrewerySignals.bottles_sold.connect(func(amount : int) -> void: _increment_stat(STAT_BOTTLES_SOLD, amount))
+	BrewerySignals.sale_tip_gained.connect(_on_sale_tip_gained)
+	BrewerySignals.group_visit_announced.connect(_increment_stat.bind(STAT_GROUP_VISITS, 1).unbind(1))
+	BrewerySignals.bar_fight_triggered.connect(_increment_stat.bind(STAT_BAR_FIGHTS, 1).unbind(1))
+	BrewerySignals.lvv_raid_triggered.connect(_increment_stat.bind(STAT_RAIDS_EXPERIENCED, 1).unbind(3))
+	BrewerySignals.level_up_reached.connect(func(level : int) -> void: _set_stat_if_higher(STAT_HIGHEST_LEVEL, level))
+	BrewerySignals.game_ended.connect(_on_game_ended)
 
 
 func _load_achievement_pool() -> void:
-	var dir := DirAccess.open(ACHIEVEMENT_FOLDER_PATH)
-	if dir == null:
-		push_warning(WARNING_FOLDER_OPEN_FAILED + ACHIEVEMENT_FOLDER_PATH)
-		return
-
-	dir.list_dir_begin()
-	var file_name := dir.get_next()
-	while file_name != "":
-		if not dir.current_is_dir() and file_name.ends_with(".tres"):
-			var res := load(ACHIEVEMENT_FOLDER_PATH + file_name)
-			if res is AchievementData:
-				achievement_pool.append(res)
-		file_name = dir.get_next()
-	dir.list_dir_end()
+	achievement_pool.assign(ResourceFolder.load_all(ACHIEVEMENT_FOLDER_PATH, AchievementData))
 
 
 func _on_keg_shipped_to_bar(_style_name : String, _bar_name : String, _bottles : int, _payout : float, _risk_added : int) -> void:
@@ -109,6 +119,19 @@ func _on_special_event_resolved(succeeded : bool, event_data : SpecialEventData)
 func _on_brewery_state_changed(brewery : Brewery) -> void:
 	var unlocked_hop_count : int = count_unlocked_hops(IngredientDatabase.database.values(), brewery.reputation)
 	_set_stat_if_higher(STAT_HOPS_UNLOCKED, unlocked_hop_count)
+	_set_stat_if_higher(STAT_HIGHEST_MONEY, floori(brewery.money))
+	_set_stat_if_higher(STAT_HIGHEST_REPUTATION, brewery.reputation)
+
+
+func _on_sale_tip_gained(amount : float) -> void:
+	var cents : int = roundi(amount * 100.0)
+	if cents > 0:
+		_increment_stat(STAT_TIPS_CENTS, cents)
+
+
+func _on_game_ended(ending_type : String) -> void:
+	if ending_type == ENDING_SURVIVED:
+		_increment_stat(STAT_RUNS_SURVIVED)
 
 
 ## Pure counting rule split out of _on_brewery_state_changed() so it can be

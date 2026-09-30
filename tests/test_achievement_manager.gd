@@ -190,3 +190,36 @@ func test_shipped_achievements_have_unique_nonempty_ids() -> void:
 	dir.list_dir_end()
 
 	assert_true(seen_ids.size() >= 29, "expected at least the 29 shipped achievements, found %d" % seen_ids.size())
+
+
+## A stat_key nothing feeds would leave its achievement impossible to unlock, with no error.
+func test_shipped_achievements_watch_a_stat_the_manager_feeds() -> void:
+	var fed : Array[StringName] = []
+	var script : Script = AchievementManagerScript
+	var constants : Dictionary = script.get_script_constant_map()
+	for constant_name : String in constants:
+		if constant_name.begins_with("STAT_"):
+			fed.append(constants[constant_name])
+	var ids : Dictionary = {}
+	for achievement : AchievementData in ResourceFolder.load_all("res://src/resources/achievements/", AchievementData):
+		var style_stat : bool = String(achievement.stat_key).begins_with("style_discovered_")
+		assert_true(style_stat or fed.has(achievement.stat_key), "%s watches unfed stat %s" % [achievement.achievement_id, achievement.stat_key])
+		assert_false(ids.has(achievement.achievement_id), "duplicate id %s" % achievement.achievement_id)
+		ids[achievement.achievement_id] = true
+	assert_true(ids.size() >= 41, "expected every shipped achievement, found %d" % ids.size())
+
+
+func test_tips_are_counted_in_cents() -> void:
+	var manager : AchievementManagerScript = track(_make_manager())
+	manager._on_sale_tip_gained(1.25)
+	manager._on_sale_tip_gained(0.0)
+	assert_eq(manager.get_stat(AchievementManagerScript.STAT_TIPS_CENTS), 125)
+
+
+func test_only_a_survived_ending_counts_as_a_survived_run() -> void:
+	var manager : AchievementManagerScript = track(_make_manager())
+	manager._on_game_ended("busted")
+	manager._on_game_ended("bankrupt")
+	assert_eq(manager.get_stat(AchievementManagerScript.STAT_RUNS_SURVIVED), 0)
+	manager._on_game_ended(AchievementManagerScript.ENDING_SURVIVED)
+	assert_eq(manager.get_stat(AchievementManagerScript.STAT_RUNS_SURVIVED), 1)

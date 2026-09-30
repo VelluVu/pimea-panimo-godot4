@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="AchievementData" format=3]
+
+[ext_resource type="Script" path="res://src/progression/achievement_data.gd" id="1_achievement"]
+
+[resource]
+script = ExtResource("1_achievement")
+achievement_id = "kylan_puheenaihe"
+title = "Kylän puheenaihe"
+description = "Nosta maine 100:aan yhden pelin aikana."
+stat_key = &"highest_reputation"
+target_value = 100
+metadata/_custom_type_script = "res://src/progression/achievement_data.gd"
