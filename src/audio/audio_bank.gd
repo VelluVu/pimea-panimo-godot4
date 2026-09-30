@@ -7,6 +7,9 @@ extends Resource
 
 
 @export_group("Music")
+## Always this one track, looping, in the main menu.
+@export var menu_music: AudioStream
+## Shuffled playlist during a run.
 @export var music_tracks: Array[AudioStream] = []
 
 @export_group("Economy")

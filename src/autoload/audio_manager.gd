@@ -21,6 +21,7 @@ var _next_sfx_player_index: int = 0
 var _music_player: AudioStreamPlayer
 var _music_playlist: Array[AudioStream] = []
 var _music_track_index: int = 0
+var _playing_menu_music: bool = false
 
 var _tension_player: AudioStreamPlayer
 
@@ -33,7 +34,9 @@ func _ready() -> void:
 	_setup_music_player()
 	_setup_tension_player()
 	_connect_signals()
-	_start_music()
+	get_tree().scene_changed.connect(_on_scene_changed)
+	# The first scene is not current yet while autoloads run _ready().
+	_on_scene_changed.call_deferred()
 
 
 func _setup_sfx_pool() -> void:
@@ -47,6 +50,8 @@ func _setup_sfx_pool() -> void:
 func _setup_music_player() -> void:
 	_music_player = AudioStreamPlayer.new()
 	_music_player.bus = MUSIC_BUS_NAME
+	# Menus pause the tree; the music keeps playing through them.
+	_music_player.process_mode = Node.PROCESS_MODE_ALWAYS
 	add_child(_music_player)
 	_music_player.finished.connect(_on_music_track_finished)
 
@@ -146,7 +151,24 @@ func _update_tension(risk: int) -> void:
 		_tension_player.stop()
 
 
+## The main menu always plays its own track. Entering a run switches to the shuffled
+## playlist, which keeps going across a restart from the game end window.
+func _on_scene_changed() -> void:
+	if get_tree().current_scene is MainMenu:
+		if not (_playing_menu_music and _music_player.playing):
+			_play_menu_music()
+	elif _playing_menu_music or not _music_player.playing:
+		_start_music()
+
+
+func _play_menu_music() -> void:
+	_playing_menu_music = true
+	_music_player.stream = bank.menu_music
+	_music_player.play()
+
+
 func _start_music() -> void:
+	_playing_menu_music = false
 	_music_playlist = bank.music_tracks.duplicate()
 	_music_playlist.shuffle()
 	_music_track_index = 0
@@ -161,6 +183,9 @@ func _play_current_track() -> void:
 
 
 func _on_music_track_finished() -> void:
+	if _playing_menu_music:
+		_music_player.play()
+		return
 	if _music_playlist.is_empty():
 		return
 	_music_track_index = (_music_track_index + 1) % _music_playlist.size()
