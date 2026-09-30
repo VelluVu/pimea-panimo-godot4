@@ -115,6 +115,7 @@ func _refresh_node(id : String, renown : int) -> void:
 	view.icon_label.text = LOCKED_ICON if locked else unlock.icon_placeholder
 	view.level_bonus_label.text = "" if locked else LEVEL_BONUS_FORMAT % [level, unlock.max_level, OlutoppiText.short_bonus(unlock, level)]
 	view.button.disabled = locked or maxed or renown < unlock.renown_cost_per_level
+	view.refresh_availability()
 	view.button.tooltip_text = OlutoppiText.locked_tooltip(unlock, _unmet_prerequisite_names(unlock)) if locked else OlutoppiText.tooltip(unlock, level, maxed)
 
 
