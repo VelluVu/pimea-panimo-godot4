@@ -116,4 +116,4 @@ func pause_spawning() -> void:
 
 func resume_spawning() -> void:
 	if active_spawner:
-		active_spawner.start_spawning()
+		active_spawner.resume_spawning()

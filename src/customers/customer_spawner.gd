@@ -1,6 +1,8 @@
 class_name CustomerSpawner
 extends Node2D
 
+## Schedules walk-ins and group visits on two timers and sends each new customer to a
+## free counter slot. The sales themselves happen in CustomerManager.
 
 const CUSTOMER_SCENE: PackedScene = preload("res://src/scenes/customer.tscn")
 
@@ -12,6 +14,9 @@ var walk_in_timer: Timer
 var group_event_timer: Timer
 var counter_markers: Array[Node2D] = []
 var _group_visit: GroupVisitDirector
+## Set during a raid. Brewery state changes call start_spawning() all the time, so the
+## timers alone cannot hold a pause.
+var _paused: bool = false
 
 
 func _ready() -> void:
@@ -39,23 +44,33 @@ func _setup_positions() -> void:
 
 
 func start_spawning() -> void:
+	if _paused:
+		return
 	if walk_in_timer.is_stopped():
 		_start_next_walk_in_timer()
 	if group_event_timer.is_stopped():
 		_start_next_group_event_timer()
 
 
-## Stops scheduling new visits (used while a raid squad walks through). Customers
-## already at the counter finish; start_spawning() rolls fresh intervals.
+## Stops new visits, forced ones too, while a raid squad walks through. Customers
+## already at the counter finish; resume_spawning() rolls fresh intervals.
 func pause_spawning() -> void:
+	_paused = true
 	walk_in_timer.stop()
 	group_event_timer.stop()
+
+
+func resume_spawning() -> void:
+	_paused = false
+	start_spawning()
 
 
 ## No empty-inventory check on purpose: the first-brew gate lives in CustomerManager.
 ## Later, running out of stock means customers are turned away, costing reputation and
 ## risk.
 func spawn_walk_in(forced_data: CustomerData = null) -> void:
+	if _paused:
+		return
 	_try_spawn_walk_in(forced_data)
 	_start_next_walk_in_timer()
 
@@ -63,6 +78,8 @@ func spawn_walk_in(forced_data: CustomerData = null) -> void:
 ## A crowd shares one counter slot and spawns staggered so it floods in. Like a
 ## walk-in there is no stock check: a group that finds nothing leaves empty-handed.
 func spawn_group_visit(forced_event_data: GroupVisitEventData = null) -> void:
+	if _paused:
+		return
 	_try_spawn_group_visit(forced_event_data)
 	_start_next_group_event_timer()
 
