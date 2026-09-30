@@ -392,6 +392,7 @@ layout_mode = 2
 mouse_filter = 2
 
 [node name="TabBar" type="TabBar" parent="GUI_CanvasLayer/GUI/Right_WarehouseView/Panel/MarginContainer/MainVBox" unique_id=1089975088]
+unique_name_in_owner = true
 layout_mode = 2
 current_tab = 0
 tab_count = 2
@@ -405,6 +406,7 @@ mouse_filter = 2
 theme_override_constants/separation = 6
 
 [node name="IngredientInventoryPanel" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/Right_WarehouseView/Panel/MarginContainer/MainVBox/ContentVBox" unique_id=192853891]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -428,6 +430,7 @@ visible = false
 layout_mode = 2
 
 [node name="BeerBatchPanel" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/Right_WarehouseView/Panel/MarginContainer/MainVBox/ContentVBox" unique_id=1674197645]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -484,6 +487,7 @@ theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 4
 
 [node name="VBoxContainer" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer" unique_id=1594439677]
+unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
 
@@ -603,6 +607,7 @@ theme_override_constants/separation = 2
 metadata/_edit_use_anchors_ = true
 
 [node name="CurrentRecipeLabel" type="Label" parent="GUI_CanvasLayer/GUI/BrewPreparationPanel/VBoxContainer/CurrentRecipeBar/HBoxContainer" unique_id=1741949111]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 20)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -616,6 +621,7 @@ clip_text = true
 text_overrun_behavior = 3
 
 [node name="EraseButton" type="Button" parent="GUI_CanvasLayer/GUI/BrewPreparationPanel/VBoxContainer/CurrentRecipeBar/HBoxContainer" unique_id=1313314109]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(12, 12)
 layout_mode = 2
 size_flags_horizontal = 8
@@ -638,6 +644,7 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="IngredientListVBox" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/BrewPreparationPanel/VBoxContainer/TableScrollContainer" unique_id=1463224705]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -672,6 +679,7 @@ size_flags_vertical = 2
 text = "Tallenna resepti"
 
 [node name="StartBrewButton" type="Button" parent="GUI_CanvasLayer/GUI/BrewPreparationPanel/VBoxContainer/ButtonPanel/HBoxContainer" unique_id=2072042436]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(32, 16)
 layout_mode = 2
 size_flags_horizontal = 8
@@ -679,6 +687,7 @@ size_flags_vertical = 8
 text = "Pane"
 
 [node name="SaveRecipeToast" type="Label" parent="GUI_CanvasLayer/GUI/BrewPreparationPanel/VBoxContainer/ButtonPanel" unique_id=1947074300]
+unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0)
 layout_mode = 1
 anchors_preset = 15
@@ -1171,9 +1180,11 @@ layout_mode = 2
 mouse_filter = 2
 
 [node name="CancelButton" type="Button" parent="GUI_CanvasLayer/GUI/CloseDayConfirmWindow/MarginContainer/MainVBox/ButtonsHBox" unique_id=376138114]
+unique_name_in_owner = true
 layout_mode = 2
 
 [node name="ConfirmButton" type="Button" parent="GUI_CanvasLayer/GUI/CloseDayConfirmWindow/MarginContainer/MainVBox/ButtonsHBox" unique_id=905853506]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Selvä..."
@@ -1263,11 +1274,13 @@ horizontal_alignment = 1
 autowrap_mode = 3
 
 [node name="RestartButton" type="Button" parent="GUI_CanvasLayer/GUI/GameEndWindow/MarginContainer/MainVBox" unique_id=1265983207]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Uusi yritys"
 
 [node name="ContinueButton" type="Button" parent="GUI_CanvasLayer/GUI/GameEndWindow/MarginContainer/MainVBox" unique_id=267428475]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Jatka pelaamista (ei tilastoihin)"
@@ -1344,6 +1357,7 @@ layout_mode = 2
 mouse_filter = 2
 
 [node name="BackButton" type="Button" parent="GUI_CanvasLayer/GUI/RecipeLibraryWindow/MarginContainer/MainVBox/HeaderHBox" unique_id=641351891]
+unique_name_in_owner = true
 visible = false
 layout_mode = 2
 text = "< Takaisin"
@@ -1364,6 +1378,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="RowsVBox" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/RecipeLibraryWindow/MarginContainer/MainVBox/ScrollContainer" unique_id=2147114991]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2

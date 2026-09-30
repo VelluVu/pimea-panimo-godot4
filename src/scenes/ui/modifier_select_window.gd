@@ -26,9 +26,9 @@ const HEADER_FONT_SIZE : int = 18
 const RECORD_FORMAT : String = "Ennätys: %d pistettä (päivä %d, %d annosta)"
 const NO_RECORD_TEXT : String = "Ei vielä ennätystä. Tästä se lähtee."
 
-@onready var title_label : Label = $MarginContainer/MainVBox/TitleLabel
-@onready var record_label : Label = $MarginContainer/MainVBox/RecordLabel
-@onready var cards_hbox : HBoxContainer = $MarginContainer/MainVBox/CardsHBox
+@onready var title_label : Label = %TitleLabel
+@onready var record_label : Label = %RecordLabel
+@onready var cards_hbox : HBoxContainer = %CardsHBox
 
 ## Populated by open(); index matches _card_buttons/cards_hbox children —
 ## _on_card_pressed(index) reads straight back into this, so the exact

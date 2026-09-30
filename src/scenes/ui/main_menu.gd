@@ -19,16 +19,16 @@ const GAME_SCENE_PATH: String = "res://src/scenes/main.tscn"
 @onready var root_menu_view: VBoxContainer = $CenterContainer/RootMenuView
 @onready var start_game_view: VBoxContainer = $CenterContainer/StartGameView
 
-@onready var start_button: Button = $CenterContainer/RootMenuView/StartButton
-@onready var leaderboard_button: Button = $CenterContainer/RootMenuView/LeaderboardButton
-@onready var achievements_button: Button = $CenterContainer/RootMenuView/AchievementsButton
-@onready var olutoppi_button: Button = $CenterContainer/RootMenuView/OlutoppiButton
-@onready var options_button: Button = $CenterContainer/RootMenuView/OptionsButton
-@onready var quit_button: Button = $CenterContainer/RootMenuView/QuitButton
+@onready var start_button: Button = %StartButton
+@onready var leaderboard_button: Button = %LeaderboardButton
+@onready var achievements_button: Button = %AchievementsButton
+@onready var olutoppi_button: Button = %OlutoppiButton
+@onready var options_button: Button = %OptionsButton
+@onready var quit_button: Button = %QuitButton
 
-@onready var continue_button: Button = $CenterContainer/StartGameView/ContinueButton
-@onready var new_game_button: Button = $CenterContainer/StartGameView/NewGameButton
-@onready var back_button: Button = $CenterContainer/StartGameView/BackButton
+@onready var continue_button: Button = %ContinueButton
+@onready var new_game_button: Button = %NewGameButton
+@onready var back_button: Button = %BackButton
 
 @onready var modifier_select_window: ModifierSelectWindow = $ModifierSelectWindow
 

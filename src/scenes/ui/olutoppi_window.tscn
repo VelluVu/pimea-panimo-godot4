@@ -37,16 +37,19 @@ mouse_filter = 2
 theme_override_constants/separation = 10
 
 [node name="TitleLabel" type="Label" parent="MarginContainer/MainVBox/HeaderHBox" unique_id=1164324102]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 20
 
 [node name="RenownLabel" type="Label" parent="MarginContainer/MainVBox/HeaderHBox" unique_id=1264584885]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
 horizontal_alignment = 2
 
 [node name="CloseButton" type="Button" parent="MarginContainer/MainVBox/HeaderHBox" unique_id=1278573255]
+unique_name_in_owner = true
 layout_mode = 2
 
 [node name="PathsHBox" type="HBoxContainer" parent="MarginContainer/MainVBox" unique_id=1575371521]

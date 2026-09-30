@@ -12,9 +12,9 @@ const RENOWN_FORMAT : String = "Maine: %d"
 const LEVEL_BONUS_FORMAT : String = "%d/%d %s"
 const LOCKED_ICON : String = "🔒"
 
-@onready var title_label : Label = $MarginContainer/MainVBox/HeaderHBox/TitleLabel
-@onready var renown_label : Label = $MarginContainer/MainVBox/HeaderHBox/RenownLabel
-@onready var close_button : Button = $MarginContainer/MainVBox/HeaderHBox/CloseButton
+@onready var title_label : Label = %TitleLabel
+@onready var renown_label : Label = %RenownLabel
+@onready var close_button : Button = %CloseButton
 @onready var tree_areas : Array[Control] = [
 	$MarginContainer/MainVBox/PathsHBox/BarWorkColumn/TreeArea,
 	$MarginContainer/MainVBox/PathsHBox/BrewingColumn/TreeArea,

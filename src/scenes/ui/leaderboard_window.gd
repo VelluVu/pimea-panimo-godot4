@@ -7,9 +7,9 @@ extends Panel
 ## instanced in main_menu.tscn — GameEndWindow (src/scenes/main.tscn) shows
 ## just an inline rank line instead of the full browsable list.
 
-@onready var title_label : Label = $MarginContainer/MainVBox/HeaderHBox/TitleLabel
-@onready var close_button : Button = $MarginContainer/MainVBox/HeaderHBox/CloseButton
-@onready var rows_vbox : VBoxContainer = $MarginContainer/MainVBox/ScrollContainer/RowsVBox
+@onready var title_label : Label = %TitleLabel
+@onready var close_button : Button = %CloseButton
+@onready var rows_vbox : VBoxContainer = %RowsVBox
 
 
 func _ready() -> void:

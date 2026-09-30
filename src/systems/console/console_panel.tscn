@@ -33,29 +33,35 @@ layout_mode = 2
 mouse_filter = 2
 
 [node name="HeaderHBox" type="HBoxContainer" parent="MarginContainer/MainVBox"]
+unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
 
 [node name="TitleLabel" type="Label" parent="MarginContainer/MainVBox/HeaderHBox"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Console"
 
 [node name="ToggleButton" type="Button" parent="MarginContainer/MainVBox/HeaderHBox"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(24, 0)
 layout_mode = 2
 text = "▼"
 
 [node name="BodyVBox" type="VBoxContainer" parent="MarginContainer/MainVBox"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
 
 [node name="LogScroll" type="ScrollContainer" parent="MarginContainer/MainVBox/BodyVBox"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 
 [node name="LogLabel" type="RichTextLabel" parent="MarginContainer/MainVBox/BodyVBox/LogScroll"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 bbcode_enabled = true
@@ -63,6 +69,7 @@ fit_content = true
 scroll_following = true
 
 [node name="InputLineEdit" type="LineEdit" parent="MarginContainer/MainVBox/BodyVBox"]
+unique_name_in_owner = true
 layout_mode = 2
 placeholder_text = "Type a command... (help)"
 

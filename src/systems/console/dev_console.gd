@@ -17,12 +17,12 @@ const MAX_SIZE: Vector2 = Vector2(440, 200)
 const FOCUS_STYLE_BORDER_COLOR: Color = Color(0.85, 0.65, 0.25)
 
 @onready var resize_handle: Control = $ResizeHandle
-@onready var toggle_button: Button = $MarginContainer/MainVBox/HeaderHBox/ToggleButton
-@onready var title_label: Label = $MarginContainer/MainVBox/HeaderHBox/TitleLabel
-@onready var body_vbox: VBoxContainer = $MarginContainer/MainVBox/BodyVBox
-@onready var log_scroll: ScrollContainer = $MarginContainer/MainVBox/BodyVBox/LogScroll
-@onready var log_label: RichTextLabel = $MarginContainer/MainVBox/BodyVBox/LogScroll/LogLabel
-@onready var input_line_edit: LineEdit = $MarginContainer/MainVBox/BodyVBox/InputLineEdit
+@onready var toggle_button: Button = %ToggleButton
+@onready var title_label: Label = %TitleLabel
+@onready var body_vbox: VBoxContainer = %BodyVBox
+@onready var log_scroll: ScrollContainer = %LogScroll
+@onready var log_label: RichTextLabel = %LogLabel
+@onready var input_line_edit: LineEdit = %InputLineEdit
 
 ## The dispatch table. Register commands on it, or add a ConsoleCommandSet.
 var registry: ConsoleCommandRegistry
@@ -120,7 +120,7 @@ func _apply_collapsed_state() -> void:
 
 
 func _header_height() -> float:
-	return $MarginContainer/MainVBox/HeaderHBox.size.y + 10.0
+	return %HeaderHBox.size.y + 10.0
 
 
 ## Drag-resize from the top-left corner; the bottom-right corner stays anchored.

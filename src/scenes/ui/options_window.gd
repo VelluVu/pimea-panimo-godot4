@@ -15,17 +15,17 @@ const INPUT_TAB_INDEX : int = 2
 ## False on the instance inside the main menu itself: there is nothing to return to.
 @export var show_main_menu_button : bool = true
 
-@onready var title_label : Label = $MarginContainer/MainVBox/HeaderHBox/TitleLabel
-@onready var close_button : Button = $MarginContainer/MainVBox/HeaderHBox/CloseButton
-@onready var main_menu_button : Button = $MarginContainer/MainVBox/HeaderHBox/MainMenuButton
-@onready var tab_container : TabContainer = $MarginContainer/MainVBox/TabContainer
+@onready var title_label : Label = %TitleLabel
+@onready var close_button : Button = %CloseButton
+@onready var main_menu_button : Button = %MainMenuButton
+@onready var tab_container : TabContainer = %TabContainer
 
-@onready var master_slider : HSlider = $MarginContainer/MainVBox/TabContainer/SoundTab/MasterRow/MasterSlider
-@onready var music_slider : HSlider = $MarginContainer/MainVBox/TabContainer/SoundTab/MusicRow/MusicSlider
-@onready var sfx_slider : HSlider = $MarginContainer/MainVBox/TabContainer/SoundTab/SfxRow/SfxSlider
-@onready var music_mute_check : CheckButton = $MarginContainer/MainVBox/TabContainer/SoundTab/MusicRow/MusicMuteCheck
-@onready var sfx_mute_check : CheckButton = $MarginContainer/MainVBox/TabContainer/SoundTab/SfxRow/SfxMuteCheck
-@onready var fullscreen_check : CheckButton = $MarginContainer/MainVBox/TabContainer/DisplayTab/FullscreenRow/FullscreenCheck
+@onready var master_slider : HSlider = %MasterSlider
+@onready var music_slider : HSlider = %MusicSlider
+@onready var sfx_slider : HSlider = %SfxSlider
+@onready var music_mute_check : CheckButton = %MusicMuteCheck
+@onready var sfx_mute_check : CheckButton = %SfxMuteCheck
+@onready var fullscreen_check : CheckButton = %FullscreenCheck
 
 ## Whether the tree was already paused (by the game menu) when this opened, so closing
 ## restores that instead of always unpausing.
