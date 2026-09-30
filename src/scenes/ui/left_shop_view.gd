@@ -69,7 +69,7 @@ func _update_slider() -> void:
 	if current_id == -1:
 		return
 	
-	var ingredient = IngredientDatabase.get_item_by_id(current_id)
+	var ingredient: IngredientData = IngredientDatabase.get_item_by_id(current_id)
 	if ingredient == null:
 		return
 	
@@ -80,7 +80,7 @@ func _update_slider() -> void:
 	if effective_price > 0:
 		max_affordable = int(player_money / effective_price)
 
-	var max_limit = min(max_affordable, 99)
+	var max_limit: int = mini(max_affordable, 99)
 	
 	main_slider.max_value = max_limit
 	main_slider.value = min(main_slider.value, max_limit)
@@ -91,7 +91,7 @@ func _update_label() -> void:
 		current_item_label.text = ""
 		return
 
-	var ingredient = IngredientDatabase.get_item_by_id(current_id)
+	var ingredient: IngredientData = IngredientDatabase.get_item_by_id(current_id)
 	if ingredient == null:
 		return
 

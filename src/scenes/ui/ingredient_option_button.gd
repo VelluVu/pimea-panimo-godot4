@@ -70,7 +70,7 @@ func _on_menu_opened() -> void:
 	var popup: PopupMenu = get_popup()
 	popup.set_focused_item(first_index)
 	select(first_index)
-	var first_id = get_item_id(first_index)
+	var first_id: int = get_item_id(first_index)
 
 	if first_id != -1:
 		GUISignals.active_ingredient_changed.emit(first_id)
@@ -107,7 +107,7 @@ func _rebuild_items() -> void:
 		if ingredient.type == target_type:
 			var is_locked : bool = reputation < ingredient.min_reputation
 			add_item(StringContainer.INGREDIENT_LOCKED_LABEL % ingredient.min_reputation if is_locked else ingredient.name)
-			var new_item_index = get_item_count() - 1
+			var new_item_index: int = get_item_count() - 1
 			set_item_id(new_item_index, ingredient.id)
 			set_item_disabled(new_item_index, is_locked)
 			var tooltip : String = ingredient.description + "\n" + ingredient.get_stat_string() if not is_locked else StringContainer.INGREDIENT_LOCKED_LABEL % ingredient.min_reputation
@@ -122,7 +122,7 @@ func _first_enabled_index() -> int:
 
 
 func _on_item_selected(index: int) -> void:
-	var selected_id = get_item_id(index)
+	var selected_id: int = get_item_id(index)
 
 	if selected_id != -1:
 		_sync_own_tooltip(selected_id)
@@ -130,7 +130,7 @@ func _on_item_selected(index: int) -> void:
 
 
 func _on_global_ingredient_changed(ingredient_id: int) -> void:
-	var ingredient = IngredientDatabase.get_item_by_id(ingredient_id)
+	var ingredient: IngredientData = IngredientDatabase.get_item_by_id(ingredient_id)
 
 	if ingredient and ingredient.type == target_type:
 		for i in range(item_count):

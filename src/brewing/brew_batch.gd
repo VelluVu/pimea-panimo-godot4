@@ -137,12 +137,12 @@ func _calculate_current_quality() -> void:
 
 	if age_in_days <= effective_peak_days:
 		if effective_peak_days > 0:
-			var progress = float(age_in_days) / float(effective_peak_days)
+			var progress : float = float(age_in_days) / float(effective_peak_days)
 			current_quality = original_quality + (beer_style.aging_factor * progress)
 	else:
-		var days_past_peak = age_in_days - effective_peak_days
+		var days_past_peak : int = age_in_days - effective_peak_days
 		if days_past_peak > beer_style.shelf_life_days:
-			var spoilage_days = days_past_peak - beer_style.shelf_life_days
+			var spoilage_days : int = days_past_peak - beer_style.shelf_life_days
 			if beer_style.aging_factor < 0:
 				current_quality = original_quality + (beer_style.aging_factor * spoilage_days * decline_rate_multiplier)
 			else:

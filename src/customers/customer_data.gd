@@ -165,13 +165,13 @@ func reroll_preference(styles : Array[BeerStyle]) -> void:
 ## pays the same fixed price for a style: match and quality only move reputation and risk,
 ## plus a tip when quality exceeds this customer's own bar.
 func evaluate_brew_batch(batch: BrewBatch, style_base_price: float = 3.0) -> Dictionary:
-	var style = batch.beer_style.style
-	var quality = batch.current_quality
-	var score = get_preference_score(style)
+	var style: BeerStyle.Style = batch.beer_style.style
+	var quality: float = batch.current_quality
+	var score: float = get_preference_score(style)
 
-	var rep_change = 0
-	var avi_change = 1
-	var response_text = ""
+	var rep_change: int = 0
+	var avi_change: int = 1
+	var response_text: String = ""
 
 	if quality < min_quality:
 		rep_change = rep_bad_quality
