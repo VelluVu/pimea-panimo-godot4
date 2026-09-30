@@ -36,7 +36,6 @@
 [ext_resource type="Texture2D" uid="uid://7npr1w4jtxms" path="res://assets/textures/gear_icon.png" id="30_tel4y"]
 [ext_resource type="Script" uid="uid://0ew6w27o2tba" path="res://src/scenes/ui/day_recap_window.gd" id="31_tel4y"]
 [ext_resource type="Script" uid="uid://l7dtc2itv83e" path="res://src/scenes/ui/daily_goals_panel.gd" id="32_qkpxi"]
-[ext_resource type="Script" uid="uid://diu15ohj42xw" path="res://src/scenes/ui/close_day_confirm_window.gd" id="36_kmb1v"]
 [ext_resource type="Script" uid="uid://dxw7jcfhxobkb" path="res://src/scenes/ui/sale_flash_stack.gd" id="37_fuf3a"]
 [ext_resource type="PackedScene" uid="uid://di8en5fvrwrkk" path="res://src/scenes/ui/sale_receipt_log_window.tscn" id="38_pibwh"]
 [ext_resource type="Script" uid="uid://4sopxxh57qng" path="res://src/scenes/ui/game_end_window.gd" id="39_c6pm6"]
@@ -61,6 +60,7 @@
 [ext_resource type="Texture2D" uid="uid://b3yifds2n8sqd" path="res://assets/textures/light_cone_64x120.png" id="72_lightcone"]
 [ext_resource type="PackedScene" path="res://src/scenes/ui/achievements_window.tscn" id="99_ach"]
 [ext_resource type="PackedScene" path="res://src/scenes/ui/game_menu_window.tscn" id="99_gamemenu"]
+[ext_resource type="PackedScene" path="res://src/scenes/ui/close_day_confirm_window.tscn" id="x_closedayconfirmwindow"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_yf5fn"]
 blend_mode = 1
@@ -1130,64 +1130,7 @@ theme_override_font_sizes/font_size = 16
 horizontal_alignment = 2
 autowrap_mode = 3
 
-[node name="CloseDayConfirmWindow" type="Panel" parent="GUI_CanvasLayer/GUI" unique_id=85113912]
-visible = false
-layout_mode = 0
-anchor_left = 0.25
-anchor_top = 0.28
-anchor_right = 0.75
-anchor_bottom = 0.72
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("36_kmb1v")
-
-[node name="MarginContainer" type="MarginContainer" parent="GUI_CanvasLayer/GUI/CloseDayConfirmWindow" unique_id=1731968306]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -16.0
-offset_right = -2.0
-offset_bottom = -71.40001
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme_override_constants/margin_left = 14
-theme_override_constants/margin_top = 14
-theme_override_constants/margin_right = 14
-theme_override_constants/margin_bottom = 14
-
-[node name="MainVBox" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/CloseDayConfirmWindow/MarginContainer" unique_id=28906708]
-layout_mode = 2
-mouse_filter = 2
-
-[node name="TitleLabel" type="Label" parent="GUI_CanvasLayer/GUI/CloseDayConfirmWindow/MarginContainer/MainVBox" unique_id=1162409376]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.8784314, 0.3529412, 0.23529412, 1)
-theme_override_font_sizes/font_size = 20
-text = "LVV-TARKASTUS!"
-horizontal_alignment = 1
-
-[node name="MessageLabel" type="Label" parent="GUI_CanvasLayer/GUI/CloseDayConfirmWindow/MarginContainer/MainVBox" unique_id=1013161278]
-custom_maximum_size = Vector2(290, -1)
-layout_mode = 2
-size_flags_vertical = 3
-horizontal_alignment = 1
-autowrap_mode = 3
-
-[node name="ButtonsHBox" type="HBoxContainer" parent="GUI_CanvasLayer/GUI/CloseDayConfirmWindow/MarginContainer/MainVBox" unique_id=1935433091]
-layout_mode = 2
-mouse_filter = 2
-
-[node name="CancelButton" type="Button" parent="GUI_CanvasLayer/GUI/CloseDayConfirmWindow/MarginContainer/MainVBox/ButtonsHBox" unique_id=376138114]
-unique_name_in_owner = true
-layout_mode = 2
-
-[node name="ConfirmButton" type="Button" parent="GUI_CanvasLayer/GUI/CloseDayConfirmWindow/MarginContainer/MainVBox/ButtonsHBox" unique_id=905853506]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Selvä..."
+[node name="CloseDayConfirmWindow" parent="GUI_CanvasLayer/GUI" unique_id=85113912 instance=ExtResource("x_closedayconfirmwindow")]
 
 [node name="GroupVisitBanner" type="Label" parent="GUI_CanvasLayer/GUI" unique_id=1540158140]
 visible = false

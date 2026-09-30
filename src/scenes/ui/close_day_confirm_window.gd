@@ -10,8 +10,8 @@ const MESSAGE_TEXT : String = "Jos suljet nyt, asiakkaan kesken jäänyt kauppa 
 const CONFIRM_TEXT : String = "Sulje silti"
 const CANCEL_TEXT : String = "Peruuta"
 
-@onready var title_label : Label = $MarginContainer/MainVBox/TitleLabel
-@onready var message_label : Label = $MarginContainer/MainVBox/MessageLabel
+@onready var title_label : Label = %TitleLabel
+@onready var message_label : Label = %MessageLabel
 @onready var confirm_button : Button = %ConfirmButton
 @onready var cancel_button : Button = %CancelButton
 
