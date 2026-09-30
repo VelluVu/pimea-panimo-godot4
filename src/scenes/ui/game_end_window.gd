@@ -31,8 +31,8 @@ const RESTART_BUTTON_TEXT : String = "Uusi yritys"
 ## an off-the-record epilogue, not a second attempt at the same goal.
 const CONTINUE_BUTTON_TEXT : String = "Jatka pelaamista (ei tilastoihin)"
 
-@onready var title_label : Label = $MarginContainer/MainVBox/TitleLabel
-@onready var message_label : Label = $MarginContainer/MainVBox/MessageLabel
+@onready var title_label : Label = %TitleLabel
+@onready var message_label : Label = %MessageLabel
 @onready var restart_button : Button = %RestartButton
 @onready var continue_button : Button = %ContinueButton
 @onready var modifier_select_window : ModifierSelectWindow = $"../ModifierSelectWindow"

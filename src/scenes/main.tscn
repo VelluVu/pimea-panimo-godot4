@@ -29,16 +29,12 @@
 [ext_resource type="Texture2D" uid="uid://c0lcte85g2qnn" path="res://src/resources/ui_icons/hop_tab_icon.tres" id="22_kmb1v"]
 [ext_resource type="Script" uid="uid://l45qnjtgdirk" path="res://src/scenes/ui/brewery_entrance_panel.gd" id="22_pm3ni"]
 [ext_resource type="Texture2D" uid="uid://20gx2dqe81g8" path="res://src/resources/ui_icons/yeast_tab_icon.tres" id="23_fuf3a"]
-[ext_resource type="Script" uid="uid://dqsdc4x3gpckg" path="res://src/scenes/ui/recipe_library_window.gd" id="26_2wyq8"]
-[ext_resource type="Script" uid="uid://cstg3752a1yby" path="res://src/scenes/ui/lvv_raid_window.gd" id="29_dnhof"]
 [ext_resource type="PackedScene" path="res://src/systems/console/console_panel.tscn" id="30_fv21b"]
 [ext_resource type="PackedScene" uid="uid://cvfiooeo4kwdt" path="res://src/scenes/ui/options_window.tscn" id="30_qkpxi"]
 [ext_resource type="Texture2D" uid="uid://7npr1w4jtxms" path="res://assets/textures/gear_icon.png" id="30_tel4y"]
-[ext_resource type="Script" uid="uid://0ew6w27o2tba" path="res://src/scenes/ui/day_recap_window.gd" id="31_tel4y"]
 [ext_resource type="Script" uid="uid://l7dtc2itv83e" path="res://src/scenes/ui/daily_goals_panel.gd" id="32_qkpxi"]
 [ext_resource type="Script" uid="uid://dxw7jcfhxobkb" path="res://src/scenes/ui/sale_flash_stack.gd" id="37_fuf3a"]
 [ext_resource type="PackedScene" uid="uid://di8en5fvrwrkk" path="res://src/scenes/ui/sale_receipt_log_window.tscn" id="38_pibwh"]
-[ext_resource type="Script" uid="uid://4sopxxh57qng" path="res://src/scenes/ui/game_end_window.gd" id="39_c6pm6"]
 [ext_resource type="PackedScene" uid="uid://2ddvq1esbm4f" path="res://src/scenes/ui/modifier_select_window.tscn" id="40_5he1u"]
 [ext_resource type="Script" uid="uid://bdvg8mgx0ohsg" path="res://src/scenes/ui/recipe_shelf_label.gd" id="40_vc5cj"]
 [ext_resource type="PackedScene" uid="uid://4pjyebwj4isb" path="res://src/scenes/ui/level_up_window.tscn" id="41_5poiv"]
@@ -61,6 +57,10 @@
 [ext_resource type="PackedScene" path="res://src/scenes/ui/achievements_window.tscn" id="99_ach"]
 [ext_resource type="PackedScene" path="res://src/scenes/ui/game_menu_window.tscn" id="99_gamemenu"]
 [ext_resource type="PackedScene" path="res://src/scenes/ui/close_day_confirm_window.tscn" id="x_closedayconfirmwindow"]
+[ext_resource type="PackedScene" path="res://src/scenes/ui/day_recap_window.tscn" id="x_dayrecapwindow"]
+[ext_resource type="PackedScene" path="res://src/scenes/ui/game_end_window.tscn" id="x_gameendwindow"]
+[ext_resource type="PackedScene" path="res://src/scenes/ui/lvv_raid_window.tscn" id="x_lvvraidwindow"]
+[ext_resource type="PackedScene" path="res://src/scenes/ui/recipe_library_window.tscn" id="x_recipelibrarywindow"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_yf5fn"]
 blend_mode = 1
@@ -871,52 +871,7 @@ theme_override_colors/font_color = Color(0.9490196, 0.7882353, 0.41960785, 1)
 text = "Keittola"
 horizontal_alignment = 1
 
-[node name="LvvRaidWindow" type="Panel" parent="GUI_CanvasLayer/GUI" unique_id=1450580871]
-visible = false
-layout_mode = 0
-anchor_left = 0.25
-anchor_top = 0.28
-anchor_right = 0.75
-anchor_bottom = 0.72
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("29_dnhof")
-
-[node name="MarginContainer" type="MarginContainer" parent="GUI_CanvasLayer/GUI/LvvRaidWindow" unique_id=1436779246]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme_override_constants/margin_left = 14
-theme_override_constants/margin_top = 14
-theme_override_constants/margin_right = 14
-theme_override_constants/margin_bottom = 14
-
-[node name="MainVBox" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/LvvRaidWindow/MarginContainer" unique_id=1121755008]
-layout_mode = 2
-mouse_filter = 2
-
-[node name="TitleLabel" type="Label" parent="GUI_CanvasLayer/GUI/LvvRaidWindow/MarginContainer/MainVBox" unique_id=1763327457]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.8784314, 0.3529412, 0.23529412, 1)
-theme_override_font_sizes/font_size = 20
-text = "LVV-TARKASTUS!"
-horizontal_alignment = 1
-
-[node name="MessageLabel" type="Label" parent="GUI_CanvasLayer/GUI/LvvRaidWindow/MarginContainer/MainVBox" unique_id=435525610]
-layout_mode = 2
-size_flags_vertical = 3
-text = " "
-horizontal_alignment = 1
-autowrap_mode = 3
-
-[node name="CloseButton" type="Button" parent="GUI_CanvasLayer/GUI/LvvRaidWindow/MarginContainer/MainVBox" unique_id=1187118114]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Selvä..."
+[node name="LvvRaidWindow" parent="GUI_CanvasLayer/GUI" unique_id=1450580871 instance=ExtResource("x_lvvraidwindow")]
 
 [node name="OptionsButton" type="Button" parent="GUI_CanvasLayer/GUI" unique_id=1306780576]
 layout_mode = 1
@@ -967,53 +922,7 @@ theme_override_font_sizes/font_size = 18
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="DayRecapWindow" type="Panel" parent="GUI_CanvasLayer/GUI" unique_id=281126804]
-visible = false
-layout_mode = 0
-anchor_left = 0.25
-anchor_top = 0.22
-anchor_right = 0.75
-anchor_bottom = 0.78
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("31_tel4y")
-
-[node name="MarginContainer" type="MarginContainer" parent="GUI_CanvasLayer/GUI/DayRecapWindow" unique_id=831989335]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme_override_constants/margin_left = 14
-theme_override_constants/margin_top = 14
-theme_override_constants/margin_right = 14
-theme_override_constants/margin_bottom = 14
-
-[node name="MainVBox" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/DayRecapWindow/MarginContainer" unique_id=4510322]
-layout_mode = 2
-mouse_filter = 2
-
-[node name="TitleLabel" type="Label" parent="GUI_CanvasLayer/GUI/DayRecapWindow/MarginContainer/MainVBox" unique_id=1097606484]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.9490196, 0.7882353, 0.41960785, 1)
-theme_override_font_sizes/font_size = 20
-text = "Päivän yhteenveto"
-horizontal_alignment = 1
-
-[node name="MessageLabel" type="Label" parent="GUI_CanvasLayer/GUI/DayRecapWindow/MarginContainer/MainVBox" unique_id=1207439012]
-custom_maximum_size = Vector2(316, 150)
-layout_mode = 2
-size_flags_vertical = 3
-text = " "
-horizontal_alignment = 1
-autowrap_mode = 3
-
-[node name="CloseButton" type="Button" parent="GUI_CanvasLayer/GUI/DayRecapWindow/MarginContainer/MainVBox" unique_id=939761496]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Jatka"
+[node name="DayRecapWindow" parent="GUI_CanvasLayer/GUI" unique_id=281126804 instance=ExtResource("x_dayrecapwindow")]
 
 [node name="DailyGoalsPanel" type="VBoxContainer" parent="GUI_CanvasLayer/GUI" unique_id=1450512574]
 visible = false
@@ -1173,60 +1082,7 @@ anchor_top = 0.1
 anchor_right = 0.38
 anchor_bottom = 0.75
 
-[node name="GameEndWindow" type="Panel" parent="GUI_CanvasLayer/GUI" unique_id=590660075]
-process_mode = 3
-visible = false
-layout_mode = 0
-anchor_left = 0.15
-anchor_top = 0.15
-anchor_right = 0.85
-anchor_bottom = 0.85
-script = ExtResource("39_c6pm6")
-
-[node name="MarginContainer" type="MarginContainer" parent="GUI_CanvasLayer/GUI/GameEndWindow" unique_id=1553198153]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme_override_constants/margin_left = 14
-theme_override_constants/margin_top = 14
-theme_override_constants/margin_right = 14
-theme_override_constants/margin_bottom = 14
-
-[node name="MainVBox" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/GameEndWindow/MarginContainer" unique_id=1812994514]
-layout_mode = 2
-mouse_filter = 2
-theme_override_constants/separation = 10
-
-[node name="TitleLabel" type="Label" parent="GUI_CanvasLayer/GUI/GameEndWindow/MarginContainer/MainVBox" unique_id=1123261075]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.8784314, 0.3529412, 0.23529412, 1)
-theme_override_font_sizes/font_size = 22
-text = " "
-horizontal_alignment = 1
-
-[node name="MessageLabel" type="Label" parent="GUI_CanvasLayer/GUI/GameEndWindow/MarginContainer/MainVBox" unique_id=2000688165]
-custom_maximum_size = Vector2(430, -1)
-layout_mode = 2
-size_flags_vertical = 3
-text = " "
-horizontal_alignment = 1
-autowrap_mode = 3
-
-[node name="RestartButton" type="Button" parent="GUI_CanvasLayer/GUI/GameEndWindow/MarginContainer/MainVBox" unique_id=1265983207]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Uusi yritys"
-
-[node name="ContinueButton" type="Button" parent="GUI_CanvasLayer/GUI/GameEndWindow/MarginContainer/MainVBox" unique_id=267428475]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Jatka pelaamista (ei tilastoihin)"
+[node name="GameEndWindow" parent="GUI_CanvasLayer/GUI" unique_id=590660075 instance=ExtResource("x_gameendwindow")]
 
 [node name="ModifierSelectWindow" parent="GUI_CanvasLayer/GUI" unique_id=1067175277 instance=ExtResource("40_5he1u")]
 process_mode = 3
@@ -1267,65 +1123,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
-[node name="RecipeLibraryWindow" type="Panel" parent="GUI_CanvasLayer/GUI" unique_id=209127793]
-visible = false
-layout_mode = 0
-anchor_left = 0.15
-anchor_top = 0.1
-anchor_right = 0.85
-anchor_bottom = 0.9
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("26_2wyq8")
-
-[node name="MarginContainer" type="MarginContainer" parent="GUI_CanvasLayer/GUI/RecipeLibraryWindow" unique_id=1877503695]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme_override_constants/margin_left = 12
-theme_override_constants/margin_top = 12
-theme_override_constants/margin_right = 12
-theme_override_constants/margin_bottom = 12
-
-[node name="MainVBox" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/RecipeLibraryWindow/MarginContainer" unique_id=1863963231]
-layout_mode = 2
-mouse_filter = 2
-
-[node name="HeaderHBox" type="HBoxContainer" parent="GUI_CanvasLayer/GUI/RecipeLibraryWindow/MarginContainer/MainVBox" unique_id=641351890]
-layout_mode = 2
-mouse_filter = 2
-
-[node name="BackButton" type="Button" parent="GUI_CanvasLayer/GUI/RecipeLibraryWindow/MarginContainer/MainVBox/HeaderHBox" unique_id=641351891]
-unique_name_in_owner = true
-visible = false
-layout_mode = 2
-text = "< Takaisin"
-
-[node name="TitleLabel" type="Label" parent="GUI_CanvasLayer/GUI/RecipeLibraryWindow/MarginContainer/MainVBox/HeaderHBox" unique_id=756339535]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 20
-text = "Reseptikirja"
-
-[node name="CloseButton" type="Button" parent="GUI_CanvasLayer/GUI/RecipeLibraryWindow/MarginContainer/MainVBox/HeaderHBox" unique_id=1140883821]
-layout_mode = 2
-text = "Sulje"
-
-[node name="ScrollContainer" type="ScrollContainer" parent="GUI_CanvasLayer/GUI/RecipeLibraryWindow/MarginContainer/MainVBox" unique_id=2136368252]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="RowsVBox" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/RecipeLibraryWindow/MarginContainer/MainVBox/ScrollContainer" unique_id=2147114991]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-mouse_filter = 2
-theme_override_constants/separation = 6
+[node name="RecipeLibraryWindow" parent="GUI_CanvasLayer/GUI" unique_id=209127793 instance=ExtResource("x_recipelibrarywindow")]
 
 [node name="RecipeShelfLabel" type="Label" parent="GUI_CanvasLayer/GUI" unique_id=997152250]
 layout_mode = 1
