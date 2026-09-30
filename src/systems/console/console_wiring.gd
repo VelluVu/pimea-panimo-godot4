@@ -7,8 +7,11 @@ extends Node
 ## a child, so the connections go away with it.
 
 ## Cheat sets are gitignored and absent from public clones, so they load by path if present.
-const CHEAT_SET_PATHS: Array[String] = [
+## Only these work without a run, so the main menu's console gets just them.
+const MENU_CHEAT_SET_PATHS: Array[String] = [
 	"res://src/console/dev_mode_commands.gd",
+]
+const GAME_CHEAT_SET_PATHS: Array[String] = [
 	"res://src/console/batch_cheat_commands.gd",
 	"res://src/console/world_cheat_commands.gd",
 ]
@@ -38,9 +41,14 @@ func _ready() -> void:
 	registry.help_format = HELP_FORMAT
 	registry.dev_help_format = DEV_HELP_FORMAT
 	# Registration order is the order `help` lists commands in: player commands first.
-	registry.add_command_set(PlayerCommands.new(_console.log_line))
-	for path: String in CHEAT_SET_PATHS:
+	var in_game: bool = not _console.owner is MainMenu
+	if in_game:
+		registry.add_command_set(PlayerCommands.new(_console.log_line))
+	for path: String in MENU_CHEAT_SET_PATHS:
 		registry.add_optional_command_set(path)
+	if in_game:
+		for path: String in GAME_CHEAT_SET_PATHS:
+			registry.add_optional_command_set(path)
 
 	_connect_log_sources()
 	_console.log_line(READY_MESSAGE)
