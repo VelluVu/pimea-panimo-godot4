@@ -71,6 +71,7 @@ func get_scaled_perk(level : int) -> RunPerk:
 	scaled.icon_placeholder = icon_placeholder
 	scaled.tier = tier
 	scaled.stacks_additively = stacks_additively
+	scaled.is_permanent = true
 	for entry : Dictionary in PerkStats.definitions():
 		scaled.set(entry.stat, PerkStats.scale_per_level(entry.kind, get(entry.stat), level))
 	return scaled

@@ -15,6 +15,7 @@ extends Panel
 
 const HEADER_FONT_SIZE : int = 15
 const SECTION_SPACING : float = 10.0
+const PERMANENT_PERKS_HEADER : String = "Olutopin pysyvät bonukset (%d):"
 
 @onready var title_label : Label = %TitleLabel
 @onready var close_button : Button = %CloseButton
@@ -73,32 +74,24 @@ func _add_modifier_section(brewery : Brewery) -> void:
 
 
 func _add_perks_section(brewery : Brewery) -> void:
-	rows_vbox.add_child(_make_header(StringContainer.RUN_EFFECTS_PERKS_HEADER % brewery.active_perks.size()))
+	# Olutoppi perks come first and apart, so they are not mistaken for this run's picks.
+	var permanent_rows : Array[Dictionary] = PerkStack.rows(brewery.active_perks, true)
+	if not permanent_rows.is_empty():
+		rows_vbox.add_child(_make_header(PERMANENT_PERKS_HEADER % permanent_rows.size()))
+		_add_perk_rows(permanent_rows)
+		_add_spacer()
+
+	var run_rows : Array[Dictionary] = PerkStack.rows(brewery.active_perks, false)
+	var run_pick_count : int = 0
+	for row : Dictionary in run_rows:
+		run_pick_count += row[PerkStack.KEY_COUNT]
+	rows_vbox.add_child(_make_header(StringContainer.RUN_EFFECTS_PERKS_HEADER % run_pick_count))
+	if run_rows.is_empty():
+		rows_vbox.add_child(_make_label(StringContainer.RUN_EFFECTS_NO_PERKS_STRING))
+	_add_perk_rows(run_rows)
 
 	if brewery.active_perks.is_empty():
-		rows_vbox.add_child(_make_label(StringContainer.RUN_EFFECTS_NO_PERKS_STRING))
 		return
-
-	var seen_names : Dictionary = {} # Avain: String (perk_name) -> Arvo: true, säilyttää ensimmäisen esiintymän järjestyksen
-	var counts : Dictionary = {} # Avain: String (perk_name) -> Arvo: int
-	var representative : Dictionary = {} # Avain: String (perk_name) -> Arvo: RunPerk
-
-	for perk : RunPerk in brewery.active_perks:
-		if not seen_names.has(perk.perk_name):
-			seen_names[perk.perk_name] = true
-			representative[perk.perk_name] = perk
-		counts[perk.perk_name] = counts.get(perk.perk_name, 0) + 1
-
-	for perk_name : String in seen_names.keys():
-		var perk : RunPerk = representative[perk_name]
-		var count : int = counts[perk_name]
-		var count_suffix : String = StringContainer.RUN_EFFECTS_PERK_ROW_COUNT_SUFFIX % count if count > 1 else ""
-		rows_vbox.add_child(_make_label(StringContainer.RUN_EFFECTS_PERK_ROW_FORMAT % [perk.icon_placeholder, perk_name, count_suffix]))
-
-		var stat_summary : String = perk.get_stat_summary()
-		if not stat_summary.is_empty():
-			rows_vbox.add_child(_make_label(stat_summary))
-
 	_add_spacer()
 	rows_vbox.add_child(_make_header(StringContainer.RUN_EFFECTS_TOTALS_HEADER))
 
@@ -113,6 +106,18 @@ func _add_perks_section(brewery : Brewery) -> void:
 	var tip_multiplier := brewery.stats.multiplier(PerkStats.TIP_INCOME)
 	if tip_multiplier != 1.0:
 		rows_vbox.add_child(_make_label(StringContainer.RUN_EFFECTS_TOTALS_TIP % roundi((tip_multiplier - 1.0) * 100)))
+
+
+func _add_perk_rows(perk_rows : Array[Dictionary]) -> void:
+	for row : Dictionary in perk_rows:
+		var perk : RunPerk = row[PerkStack.KEY_PERK]
+		var count : int = row[PerkStack.KEY_COUNT]
+		var count_suffix : String = StringContainer.RUN_EFFECTS_PERK_ROW_COUNT_SUFFIX % count if count > 1 else ""
+		rows_vbox.add_child(_make_label(StringContainer.RUN_EFFECTS_PERK_ROW_FORMAT % [perk.icon_placeholder, perk.perk_name, count_suffix]))
+
+		var stat_summary : String = perk.get_stat_summary()
+		if not stat_summary.is_empty():
+			rows_vbox.add_child(_make_label(stat_summary))
 
 
 func _make_header(text : String) -> Label:

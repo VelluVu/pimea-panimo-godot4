@@ -61,6 +61,10 @@ enum Tier { COMMON, RARE, LEGENDARY }
 ## multiplying, so repeat picks grow in a straight line.
 @export var stacks_additively: bool = false
 
+## Set on the copies MetaUnlockData makes of Olutoppi nodes. Exported so a loaded run
+## still tells them apart from level-up picks.
+@export var is_permanent: bool = false
+
 
 ## Combines one stat over a list of perks: multiplicative by default, additive
 ## for perks with stacks_additively. `base` is the starting value (a
