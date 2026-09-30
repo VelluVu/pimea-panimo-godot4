@@ -84,5 +84,6 @@ void fragment() {
 	result = apply_region_recolor(result, hair_base_hsv, hair_target_hsv, hue_tolerance, saturation_tolerance, consumed);
 	result = apply_region_recolor(result, clothes_base_hsv, clothes_target_hsv, hue_tolerance, saturation_tolerance, consumed);
 	result = apply_region_recolor(result, shoes_base_hsv, shoes_target_hsv, hue_tolerance, saturation_tolerance, consumed);
-	COLOR = vec4(result, tex_color.a);
+	// Times the incoming COLOR, which carries modulate (fades, the bar fight flash).
+	COLOR = vec4(result, tex_color.a) * COLOR;
 }

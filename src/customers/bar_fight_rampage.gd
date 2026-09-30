@@ -6,9 +6,9 @@ extends RefCounted
 ## floor. Purely visual; SaleProcessor already applied the fight's costs.
 
 const RAGE_COLOR: Color = Color(1.0, 0.3, 0.25)
-const FLASH_SECONDS: float = 0.12
+const FLASH_SECONDS: float = 0.24
 const STOMPS: int = 6
-const STOMP_SECONDS: float = 0.28
+const STOMP_SECONDS: float = 0.48
 const STOMP_DISTANCE: float = 26.0
 const STOMP_HOP: float = 8.0
 const RETURN_SECONDS: float = 0.15
@@ -23,7 +23,7 @@ const THROW_MAX_DISTANCE: float = 170.0
 ## Landing spots scatter in depth too, on the floor in front of the counter.
 const THROW_DEPTH_SCATTER: Vector2 = Vector2(5.0, 40.0)
 const THROW_ARC_HEIGHT: float = 28.0
-const THROW_SECONDS: float = 0.55
+const THROW_SECONDS: float = 0.75
 const THROW_SPIN: float = TAU * 2.0
 const GLASS_SCALE: Vector2 = Vector2(3.0, 3.0)
 ## Above the y-sorted world: a glass in the air sorts by its height and would slip
