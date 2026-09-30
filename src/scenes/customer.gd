@@ -147,9 +147,8 @@ func _on_sale_timeout() -> void:
 	var display_time := _say(generated_name + ": " + response_text)
 	var leave_after: float = display_time + FADE_TIME_SECONDS
 	if outcome.bar_fight_bottles >= 0:
-		var started_msec: int = Time.get_ticks_msec()
-		await BarFightRampage.play(self, animated_sprite, beer_glass_sprite.texture, outcome.bar_fight_bottles)
-		leave_after = maxf(0.0, leave_after - (Time.get_ticks_msec() - started_msec) / 1000.0)
+		BarFightRampage.play(self, animated_sprite, beer_glass_sprite.texture, outcome.bar_fight_bottles)
+		leave_after = maxf(leave_after, BarFightRampage.DURATION_SECONDS)
 	get_tree().create_timer(leave_after).timeout.connect(leave_counter)
 
 

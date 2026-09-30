@@ -12,6 +12,8 @@ const STOMP_SECONDS: float = 0.28
 const STOMP_DISTANCE: float = 26.0
 const STOMP_HOP: float = 8.0
 const RETURN_SECONDS: float = 0.15
+## How long play() runs, for callers that start it without awaiting.
+const DURATION_SECONDS: float = STOMPS * STOMP_SECONDS + RETURN_SECONDS
 
 ## Where the glass leaves the customer's hand, relative to their feet. Low and flat on
 ## purpose: the customer's speech bubble sits above their head and would hide a high arc.
@@ -51,7 +53,7 @@ static func play(actor: Node2D, sprite: AnimatedSprite2D, glass_texture: Texture
 		var stomp := actor.create_tween()
 		stomp.tween_property(actor, "position", home + Vector2(STOMP_DISTANCE * direction, -STOMP_HOP), STOMP_SECONDS * 0.5)
 		stomp.tween_property(actor, "position", home + Vector2(STOMP_DISTANCE * direction, 0.0), STOMP_SECONDS * 0.5)
-		for throw in throws_on_stomp(i, glass_count, STOMPS):
+		for throw in share_of(i, glass_count, STOMPS):
 			_throw_glass(actor, glass_texture, direction)
 		await stomp.finished
 
@@ -64,9 +66,10 @@ static func play(actor: Node2D, sprite: AnimatedSprite2D, glass_texture: Texture
 		sprite.play(Customer.ANIM_IDLE_UP)
 
 
-## Spreads the glasses over the stomps, earlier stomps first, so any count is thrown.
-static func throws_on_stomp(stomp_index: int, glass_count: int, stomps: int) -> int:
-	return glass_count / stomps + (1 if stomp_index < glass_count % stomps else 0)
+## Part `index` of `total` split into `parts` near-equal shares, earlier parts first:
+## glasses over the stomps, and over the members of a fighting group.
+static func share_of(index: int, total: int, parts: int) -> int:
+	return total / parts + (1 if index < total % parts else 0)
 
 
 ## A point on a parabola from `from` to `to` peaking `height` above the straight line.

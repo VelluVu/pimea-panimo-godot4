@@ -67,9 +67,10 @@ func find_best_batch_for(data : CustomerData) -> BrewBatch:
 
 ## Returns the customer's spoken response.
 func process(data : CustomerData) -> String:
+	var wanted : int = randi_range(data.min_bottles_per_visit, data.max_bottles_per_visit)
 	var best_batch : BrewBatch = find_best_batch_for(data)
 	if best_batch == null or best_batch.amount_bottles < BOTTLES_SOLD_PER_TRANSACTION:
-		return _turn_away(data)
+		return _turn_away(data, wanted)
 
 	# The net reputation change, including any bar fight below, is reported as
 	# one popup-friendly delta at the end.
@@ -80,8 +81,7 @@ func process(data : CustomerData) -> String:
 	var counter_price : float = breakdown.price_per_bottle * brewery.stats.multiplier(PerkStats.COUNTER_PRICE)
 	var results : Dictionary = data.evaluate_brew_batch(best_batch, counter_price)
 
-	var bottles_sold : int = randi_range(data.min_bottles_per_visit, data.max_bottles_per_visit)
-	bottles_sold = mini(bottles_sold, best_batch.amount_bottles)
+	var bottles_sold : int = mini(wanted, best_batch.amount_bottles)
 
 	var outcome : SaleOutcome = calculate_sale(
 		results,
@@ -118,8 +118,7 @@ func process(data : CustomerData) -> String:
 
 	var response_text : String = results[CustomerManager.KEY_RESPONSE]
 
-	var bar_fight_chance : float = data.bar_fight_chance * brewery.stats.multiplier(PerkStats.BAR_FIGHT_CHANCE)
-	if bar_fight_chance > 0.0 and randf() < bar_fight_chance:
+	if BarFightRules.breaks_out(data, wanted, bottles_sold, brewery.stats.multiplier(PerkStats.BAR_FIGHT_CHANCE), randf()):
 		_trigger_bar_fight(data, best_batch)
 
 	BrewerySignals.sale_reputation_gained.emit(brewery.reputation - reputation_before)
@@ -131,25 +130,32 @@ func process(data : CustomerData) -> String:
 ## they leave without buying. The penalty is per customer, and can be zero for
 ## one who was never offered anything, like an Agentti whose cover story did not
 ## match what is on tap.
-func _turn_away(data : CustomerData) -> String:
+func _turn_away(data : CustomerData, wanted : int) -> String:
 	if brewery != null:
+		var reputation_before : int = brewery.reputation
 		brewery.reputation = max(0, brewery.reputation - data.no_match_reputation_penalty)
 		brewery.add_risk(data.no_match_risk_penalty)
-		BrewerySignals.sale_reputation_gained.emit(-data.no_match_reputation_penalty)
 		BrewerySignals.customer_unhappy.emit()
+		# A customer who fights over missing beer does it right here, before leaving.
+		if BarFightRules.breaks_out(data, wanted, 0, brewery.stats.multiplier(PerkStats.BAR_FIGHT_CHANCE), randf()):
+			_trigger_bar_fight(data, null)
+		BrewerySignals.sale_reputation_gained.emit(brewery.reputation - reputation_before)
 		BrewerySignals.brewery_state_changed.emit(brewery)
 	return data.dialogue_no_match
 
 
-## Reported through bar_fight_triggered as its own toast, not the customer's
-## spoken line.
+## Reported through bar_fight_triggered as its own toast, not the customer's spoken
+## line. `batch` is the one just sold from, or null when the customer was turned away;
+## then the broken bottles come from a random batch in the cellar, if there is any.
 func _trigger_bar_fight(data : CustomerData, batch : BrewBatch) -> void:
 	brewery.reputation = max(0, brewery.reputation - data.bar_fight_reputation_penalty)
 	brewery.add_risk(data.bar_fight_risk_penalty)
+	if batch == null and not brewery.inventory.brew_batches.is_empty():
+		batch = brewery.inventory.brew_batches.pick_random()
 
 	var broken_bottles : int = 0
 	if data.bar_fight_max_bottles_broken > 0 and brewery.inventory.brew_batches.has(batch):
-		broken_bottles = randi_range(1, data.bar_fight_max_bottles_broken)
+		broken_bottles = mini(randi_range(1, data.bar_fight_max_bottles_broken), batch.amount_bottles)
 		batch.amount_bottles = max(0, batch.amount_bottles - broken_bottles)
 
 		if batch.amount_bottles <= 0:

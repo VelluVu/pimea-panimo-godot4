@@ -22,11 +22,11 @@ func test_every_glass_is_thrown() -> void:
 	for glasses in [0, 1, 3, 6, 9]:
 		var thrown := 0
 		for stomp in 6:
-			thrown += BarFightRampage.throws_on_stomp(stomp, glasses, 6)
+			thrown += BarFightRampage.share_of(stomp, glasses, 6)
 		assert_eq(thrown, glasses, "%d glasses" % glasses)
 
 
 func test_glasses_go_on_the_earliest_stomps() -> void:
-	assert_eq(BarFightRampage.throws_on_stomp(0, 2, 6), 1)
-	assert_eq(BarFightRampage.throws_on_stomp(1, 2, 6), 1)
-	assert_eq(BarFightRampage.throws_on_stomp(2, 2, 6), 0)
+	assert_eq(BarFightRampage.share_of(0, 2, 6), 1)
+	assert_eq(BarFightRampage.share_of(1, 2, 6), 1)
+	assert_eq(BarFightRampage.share_of(2, 2, 6), 0)
