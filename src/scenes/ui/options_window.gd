@@ -62,6 +62,7 @@ func _input(event : InputEvent) -> void:
 
 func _build_input_tab() -> void:
 	_key_bindings = KeyBindingsTab.new()
+	_key_bindings.setup(InputManager)
 	_key_bindings.name = "InputTab"
 	tab_container.add_child(_key_bindings)
 	tab_container.move_child(_key_bindings, INPUT_TAB_INDEX)
@@ -70,23 +71,23 @@ func _build_input_tab() -> void:
 func _connect_signals() -> void:
 	close_button.pressed.connect(_on_close_button_pressed)
 	main_menu_button.pressed.connect(_on_main_menu_button_pressed)
-	master_slider.value_changed.connect(SettingsManager.set_master_volume)
-	music_slider.value_changed.connect(SettingsManager.set_music_volume)
-	sfx_slider.value_changed.connect(SettingsManager.set_sfx_volume)
+	master_slider.value_changed.connect(func(value : float) -> void: SettingsManager.set_volume(SettingsManager.BUS_MASTER, value))
+	music_slider.value_changed.connect(func(value : float) -> void: SettingsManager.set_volume(SettingsManager.BUS_MUSIC, value))
+	sfx_slider.value_changed.connect(func(value : float) -> void: SettingsManager.set_volume(SettingsManager.BUS_SFX, value))
 	for slider : HSlider in [master_slider, music_slider, sfx_slider]:
 		slider.drag_ended.connect(_on_slider_drag_ended)
-	music_mute_check.toggled.connect(SettingsManager.set_music_muted)
-	sfx_mute_check.toggled.connect(SettingsManager.set_sfx_muted)
+	music_mute_check.toggled.connect(func(muted : bool) -> void: SettingsManager.set_muted(SettingsManager.BUS_MUSIC, muted))
+	sfx_mute_check.toggled.connect(func(muted : bool) -> void: SettingsManager.set_muted(SettingsManager.BUS_SFX, muted))
 	fullscreen_check.toggled.connect(SettingsManager.set_fullscreen)
 	GUISignals.options_requested.connect(_on_options_requested)
 
 
 func _load_current_values() -> void:
-	master_slider.value = SettingsManager.master_volume
-	music_slider.value = SettingsManager.music_volume
-	sfx_slider.value = SettingsManager.sfx_volume
-	music_mute_check.button_pressed = SettingsManager.music_muted
-	sfx_mute_check.button_pressed = SettingsManager.sfx_muted
+	master_slider.value = SettingsManager.get_volume(SettingsManager.BUS_MASTER)
+	music_slider.value = SettingsManager.get_volume(SettingsManager.BUS_MUSIC)
+	sfx_slider.value = SettingsManager.get_volume(SettingsManager.BUS_SFX)
+	music_mute_check.button_pressed = SettingsManager.is_muted(SettingsManager.BUS_MUSIC)
+	sfx_mute_check.button_pressed = SettingsManager.is_muted(SettingsManager.BUS_SFX)
 	fullscreen_check.button_pressed = SettingsManager.fullscreen
 
 
