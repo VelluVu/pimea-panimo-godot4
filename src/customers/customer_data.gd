@@ -36,6 +36,9 @@ const MIN_TIP_PER_QUALITY_POINT : float = 1.0
 @export_group("Movement Physics")
 @export var stair_step_duration: float = 0.3
 @export var floor_walk_speed: float = 120.0
+## False for customers who stow the beer inside themselves (Lähettirobotti):
+## the counter glass just vanishes when they leave.
+@export var carries_glass_out: bool = true
 
 @export_group("Dialogues")
 @export_multiline var dialogue_intro: String = "Moro. Oisko jotain juotavaa?"

@@ -51,6 +51,16 @@ const LEIJONAFANI_OFFSETS : Array[Vector2] = [
 ]
 
 
+## Tarkastusdrooni flies off with the glass hanging just under its belly. The
+## body bobs a pixel per frame (bottom rows 17, 16, 18), and the glass follows.
+const DRONE_TITLE : String = "Tarkastusdrooni"
+const DRONE_OFFSETS : Array[Vector2] = [
+	Vector2(3, -45),
+	Vector2(3, -49),
+	Vector2(3, -41),
+]
+
+
 ## Hand position for one walk_towards frame of the archetype with this title.
 static func position_for(title: String, frame: int) -> Vector2:
 	var offsets : Array[Vector2] = DEFAULT_OFFSETS
@@ -61,4 +71,6 @@ static func position_for(title: String, frame: int) -> Vector2:
 			offsets = RAKSAMIES_OFFSETS
 		LEIJONAFANI_TITLE:
 			offsets = LEIJONAFANI_OFFSETS
+		DRONE_TITLE:
+			offsets = DRONE_OFFSETS
 	return offsets[frame % offsets.size()]

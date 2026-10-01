@@ -17,6 +17,7 @@ randomize_skin = false
 randomize_hair = false
 randomize_clothes = false
 randomize_shoes = false
+carries_glass_out = false
 dialogue_intro = "SKANNAUS KÄYNNISSÄ. Toimitustehtävä vaatii useita pulloja tämän päivän tilauskoodin mukaan."
 dialogue_success = "TEHTÄVÄ SUORITETTU. Kiitos, biologinen yhteistyökumppani."
 dialogue_fallback = "Hyväksyttävissä rajoissa. Jatkan toimitusreittiäni."
