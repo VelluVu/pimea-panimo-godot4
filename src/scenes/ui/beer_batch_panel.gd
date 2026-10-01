@@ -3,7 +3,12 @@ extends VBoxContainer
 
 
 @onready var beer_batch_list_vbox : VBoxContainer = $BeerBatchScrollContainer/BeerBatchListVBox
-const LABEL_STRING : String = "🍺 %s (%.1f%%) - %s annosta (%s %s)"
+## Name and stock sit on separate lines: on one clipped line the long style
+## names pushed the bottle count past the ellipsis. The count never clips;
+## the quality label next to it gives way instead.
+const NAME_LABEL_STRING : String = "🍺 %s (%.1f%%)"
+const AMOUNT_LABEL_STRING : String = "%d kpl"
+const QUALITY_LABEL_STRING : String = "%s %s"
 ## Shown when there's nothing left to sell — without this the panel just
 ## goes quiet with no explanation. Customer traffic keeps arriving even
 ## now (CustomerSpawner no longer withholds spawning on empty inventory
@@ -80,27 +85,28 @@ func _update_beer_batches_ui() -> void:
 		if batch.amount_bottles > 0:
 			any_bottles_left = true
 
-			var row_label := TooltipLabel.new()
-			row_label.mouse_filter = Control.MOUSE_FILTER_STOP
-			row_label.clip_text = true
-			row_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-			row_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-			row_label.custom_minimum_size = Vector2(ROW_LABEL_MIN_WIDTH, 0)
-			row_label.add_theme_font_size_override("font_size", 16)
+			var name_label := _make_batch_label(batch)
+			name_label.text = NAME_LABEL_STRING % [batch.get_style_name(), batch.beer_style.abv]
 
-			row_label.text = LABEL_STRING % [
-				batch.get_style_name(),
-				batch.beer_style.abv,
-				str(batch.amount_bottles),
+			if batch.beer_style.style == BeerStyle.Style.KOTIKALJA:
+				name_label.modulate = Color.DARK_GRAY
+			elif batch.beer_style.style == BeerStyle.Style.IPA:
+				name_label.modulate = Color.GOLD
+
+			var amount_label := _make_batch_label(batch)
+			amount_label.clip_text = false
+			amount_label.text_overrun_behavior = TextServer.OVERRUN_NO_TRIMMING
+			amount_label.size_flags_horizontal = Control.SIZE_FILL
+			amount_label.custom_minimum_size = Vector2.ZERO
+			amount_label.text = AMOUNT_LABEL_STRING % batch.amount_bottles
+
+			var quality_label := _make_batch_label(batch)
+			quality_label.custom_minimum_size = Vector2.ZERO
+			quality_label.modulate = Color(1, 1, 1, 0.7)
+			quality_label.text = QUALITY_LABEL_STRING % [
 				batch.get_quality_tier_string(),
 				batch.get_aging_trend_icon()
 			]
-			row_label.tooltip_text = batch.get_full_info_tooltip()
-
-			if batch.beer_style.style == BeerStyle.Style.KOTIKALJA:
-				row_label.modulate = Color.DARK_GRAY
-			elif batch.beer_style.style == BeerStyle.Style.IPA:
-				row_label.modulate = Color.GOLD
 
 			var bulk_sell_button := TooltipButton.new()
 			bulk_sell_button.text = BULK_SELL_BUTTON_TEXT
@@ -116,12 +122,19 @@ func _update_beer_batches_ui() -> void:
 					GUISignals.ship_batch_to_bar_requested.emit(batch, bar)
 			)
 
-			var row := HBoxContainer.new()
-			row.mouse_filter = Control.MOUSE_FILTER_IGNORE
-			row.add_child(row_label)
-			row.add_child(bulk_sell_button)
-			row.add_child(ship_button)
-			beer_batch_list_vbox.add_child(row)
+			var action_row := HBoxContainer.new()
+			action_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			action_row.add_child(amount_label)
+			action_row.add_child(quality_label)
+			action_row.add_child(bulk_sell_button)
+			action_row.add_child(ship_button)
+
+			var batch_box := VBoxContainer.new()
+			batch_box.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			batch_box.add_theme_constant_override("separation", 0)
+			batch_box.add_child(name_label)
+			batch_box.add_child(action_row)
+			beer_batch_list_vbox.add_child(batch_box)
 
 	if not any_bottles_left:
 		var empty_label := Label.new()
@@ -130,3 +143,15 @@ func _update_beer_batches_ui() -> void:
 		empty_label.text = EMPTY_INVENTORY_TEXT
 		empty_label.modulate = EMPTY_INVENTORY_COLOR
 		beer_batch_list_vbox.add_child(empty_label)
+
+
+func _make_batch_label(batch: BrewBatch) -> TooltipLabel:
+	var label := TooltipLabel.new()
+	label.mouse_filter = Control.MOUSE_FILTER_STOP
+	label.clip_text = true
+	label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	label.custom_minimum_size = Vector2(ROW_LABEL_MIN_WIDTH, 0)
+	label.add_theme_font_size_override("font_size", 16)
+	label.tooltip_text = batch.get_full_info_tooltip()
+	return label
