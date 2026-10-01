@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ReputationFavourEventData" format=3]
+
+[ext_resource type="Script" path="res://src/events/reputation_favour_event_data.gd" id="1_favour"]
+
+[resource]
+script = ExtResource("1_favour")
+event_caller_name = "Mainostoimiston Pirjo"
+intro_dialogue = "Haluamme kasvosi energiajuomamainokseen! Maksamme 80 €, mutta maineesi kärsii: 15 mainetta."
+success_dialogue = "Loistavaa! Kuvaukset ovat huomenna. Älä aja partaa."
+fail_dialogue = "Kukaan ei vielä tunnista sinua. Ehkä myöhemmin."
+reject_dialogue = "Taiteellinen integriteetti. Kunnioitan."
+timeout_seconds = 10.0
+reward_money = 80
+reward_reputation = 0
+reward_risk = 0
+reputation_cost = 15

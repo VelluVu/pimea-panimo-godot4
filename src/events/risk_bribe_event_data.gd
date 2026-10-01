@@ -20,6 +20,11 @@ const MAX_WEIGHT_MULTIPLIER: float = 5.0
 ## weighted roll, not a forced pick), so a player under pressure sees the
 ## bribe offer meaningfully more often without it becoming a sure thing.
 func get_weight(brewery: Brewery) -> float:
+	return risk_weight(brewery)
+
+
+## Shared with ReputationFavourEventData, which also gets likelier as risk climbs.
+static func risk_weight(brewery: Brewery) -> float:
 	var threshold: int = brewery.get_effective_raid_threshold()
 	if threshold <= 0:
 		return MAX_WEIGHT_MULTIPLIER
