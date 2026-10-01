@@ -158,7 +158,12 @@ func _apply_focus_style(is_focused: bool) -> void:
 ## LogScroll does the scrolling (LogLabel just fits its content). Its max_value only
 ## updates after layout, so wait a frame before snapping to the bottom.
 func _scroll_log_to_bottom() -> void:
+	# A line logged while the menu's console is being freed has no tree to wait on.
+	if not is_inside_tree():
+		return
 	await get_tree().process_frame
+	if not is_inside_tree():
+		return
 	log_scroll.scroll_vertical = int(log_scroll.get_v_scroll_bar().max_value)
 
 
