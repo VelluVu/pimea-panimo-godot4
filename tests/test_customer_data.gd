@@ -117,7 +117,7 @@ func test_evaluate_brew_batch_rewards_primary_style_match() -> void:
 	var result := customer.evaluate_brew_batch(batch)
 	assert_eq(result[CustomerManager.KEY_INCOME], 3, "income") # fixed price, style match doesn't change it
 	assert_eq(result[CustomerManager.KEY_TIP], 0.5, "tip") # proportional 3*0.5*0.3=0.45 loses to the MIN_TIP_PER_QUALITY_POINT floor (0.5*1.0=0.5)
-	assert_eq(result[CustomerManager.KEY_REPUTATION], 12, "reputation") # 10 flat, margin 0.5 * 4.0 -> +2
+	assert_eq(result[CustomerManager.KEY_REPUTATION], 7, "reputation") # 5 flat, margin 0.5 * 4.0 -> +2
 	assert_eq(result[CustomerManager.KEY_RISK], 2, "risk") # 3 flat, margin 0.5 * 2.0 -> -1
 	assert_eq(result[CustomerManager.KEY_RESPONSE], customer.dialogue_success, "response")
 

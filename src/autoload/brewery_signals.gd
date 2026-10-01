@@ -53,6 +53,10 @@ signal level_up_reached(new_level: int)
 ## brew button.
 @warning_ignore("unused_signal")
 signal brew_xp_gained(amount: int)
+## Emitted by Brewer.start_brew() with the reputation a first brew of a style (or a
+## failed brew) changed. BrewPreparationPanel shows it beside the XP popup.
+@warning_ignore("unused_signal")
+signal brew_reputation_gained(amount: int)
 ## Emitted by SaleProcessor with the exact XP a sale granted. It carries no position:
 ## callers that know their customer (Customer, GroupVisitDirector) capture it around their
 ## own process_auto_sale() call, then emit xp_popup_requested with a position.
