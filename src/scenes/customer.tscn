@@ -27,7 +27,7 @@ texture = ExtResource("3_beerglass")
 
 [node name="CounterGlassSprite" type="Sprite2D" parent="." unique_id=1935198092]
 visible = false
-position = Vector2(34, -76)
+position = Vector2(34, -71)
 texture_filter = 1
 scale = Vector2(3, 3)
 texture = ExtResource("3_beerglass")

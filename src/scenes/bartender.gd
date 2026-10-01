@@ -34,7 +34,7 @@ const BARTENDER_GROUP : StringName = &"bartender"
 ## from there, so the pile sits over open counter space to the bartender's
 ## own left instead of overlapping his sprite or the till further right.
 const STACK_ROW_SIZE : int = 4
-const STACK_BASE_OFFSET_PX : Vector2 = Vector2(-20, 0)
+const STACK_BASE_OFFSET_PX : Vector2 = Vector2(-20, 5)
 const STACK_COLUMN_OFFSET_PX : Vector2 = Vector2(-7, 0)
 const STACK_ROW_OFFSET_PX : Vector2 = Vector2(0, -6)
 
