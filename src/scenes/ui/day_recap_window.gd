@@ -7,7 +7,7 @@ extends Panel
 
 const RECAP_TITLE: String = "Päivän yhteenveto"
 const CLOSE_BUTTON_TEXT: String = "Jatka"
-const RECAP_MESSAGE_FORMAT: String = "Päivä %d alkoi.\n\nRahaa: %+.1f €\nMainetta: %+d\nLVV-riski nyt: %d\nAnnoksia myyty: %d\nUusia oluttyylejä: %s\nPäivätavoitteita saavutettu: %d"
+const RECAP_MESSAGE_FORMAT: String = "Päivä %d alkoi.\n\nRahaa: %+.1f €\nMainetta: %+d%s\nLVV-riski nyt: %d\nAnnoksia myyty: %d\nUusia oluttyylejä: %s\nPäivätavoitteita saavutettu: %d"
 const NO_NEW_STYLES_TEXT: String = "ei uusia"
 
 @onready var title_label: Label = %TitleLabel
@@ -19,6 +19,8 @@ var _day_start_reputation: int = 0
 var _bottles_sold_today: int = 0
 var _goals_rewarded_today: int = 0
 var _styles_discovered_today: Array[String] = []
+## ReputationRules.Source -> today's summed change, for the breakdown suffix.
+var _reputation_by_source: Dictionary = {}
 
 
 func _ready() -> void:
@@ -34,10 +36,15 @@ func _ready() -> void:
 	BrewerySignals.bottles_sold.connect(_on_bottles_sold)
 	BrewerySignals.style_discovered.connect(_on_style_discovered)
 	DailyGoalManager.daily_goal_resolved.connect(_on_daily_goal_resolved)
+	BrewerySignals.reputation_changed.connect(_on_reputation_changed)
 
 
 func _on_bottles_sold(amount: int) -> void:
 	_bottles_sold_today += amount
+
+
+func _on_reputation_changed(amount: int, source: ReputationRules.Source) -> void:
+	_reputation_by_source[source] = _reputation_by_source.get(source, 0) + amount
 
 
 func _on_style_discovered(style: int) -> void:
@@ -65,7 +72,7 @@ func _on_day_changed(new_day: int) -> void:
 	var reputation_delta := brewery.reputation - _day_start_reputation
 	var discovered_text := ", ".join(_styles_discovered_today) if not _styles_discovered_today.is_empty() else NO_NEW_STYLES_TEXT
 
-	message_label.text = RECAP_MESSAGE_FORMAT % [new_day, money_delta, reputation_delta, brewery.risk, _bottles_sold_today, discovered_text, _goals_rewarded_today]
+	message_label.text = RECAP_MESSAGE_FORMAT % [new_day, money_delta, reputation_delta, ReputationBreakdownText.format(_reputation_by_source), brewery.risk, _bottles_sold_today, discovered_text, _goals_rewarded_today]
 	show()
 
 	_day_start_money = brewery.money
@@ -73,6 +80,7 @@ func _on_day_changed(new_day: int) -> void:
 	_bottles_sold_today = 0
 	_goals_rewarded_today = 0
 	_styles_discovered_today.clear()
+	_reputation_by_source.clear()
 
 
 func _on_close_button_pressed() -> void:

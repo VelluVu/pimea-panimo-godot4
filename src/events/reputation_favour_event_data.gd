@@ -23,6 +23,6 @@ func try_fulfill(brewery: Brewery) -> bool:
 	if brewery.reputation < reputation_cost:
 		return false
 
-	brewery.change_reputation(-reputation_cost)
+	brewery.change_reputation(-reputation_cost, ReputationRules.Source.EVENTS)
 	_apply_rewards(brewery)
 	return true

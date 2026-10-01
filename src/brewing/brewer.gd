@@ -79,10 +79,10 @@ func start_brew() -> void:
 	# it, and a discovery never costs any; a failed brew costs its value every time.
 	var brew_reputation : int = 0
 	if not brew_report.is_matched:
-		brew_reputation = brewery.change_reputation(brew_report.reputation_change)
+		brew_reputation = brewery.change_reputation(brew_report.reputation_change, ReputationRules.Source.BREWING)
 	elif not brewery.brewed_styles.has(brew_report.beer_style.style):
 		brewery.brewed_styles[brew_report.beer_style.style] = true
-		brew_reputation = brewery.change_reputation(maxi(0, brew_report.reputation_change))
+		brew_reputation = brewery.change_reputation(maxi(0, brew_report.reputation_change), ReputationRules.Source.BREWING)
 	if brew_reputation != 0:
 		BrewerySignals.brew_reputation_gained.emit(brew_reputation)
 

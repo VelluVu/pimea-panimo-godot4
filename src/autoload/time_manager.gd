@@ -136,7 +136,7 @@ func _apply_reputation_decay(brewery : Brewery) -> void:
 	if decay <= 0:
 		return
 
-	brewery.change_reputation(-decay)
+	brewery.change_reputation(-decay, ReputationRules.Source.DECAY)
 	BrewerySignals.reputation_decayed.emit(decay, tier)
 	BrewerySignals.brewery_state_changed.emit(brewery)
 
