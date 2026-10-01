@@ -5,7 +5,7 @@ extends Resource
 const LVV_RAID_THRESHOLD : int = 100
 ## Reputation needed for the "survived" ending, so scraping through the last
 ## day on the ropes doesn't read as a win. Set above the rarer-customer tier
-## (CustomerData.min_reputation_to_appear = 50) to take sustained reputation.
+## (CustomerData.min_reputation_to_appear = 70) to take sustained reputation.
 const SURVIVAL_MIN_REPUTATION : int = 100
 
 const TUTORIAL_MALT_TARGET_KG : int = 3
