@@ -51,7 +51,7 @@ Enforces the structural rules from the project's CLAUDE.md. This skill is the au
 
 - `src/autoload/` — global singletons only: the signal buses (`BrewerySignals`, `GUISignals`), registries and managers of cross-run state, registered in the `project.godot` autoload list. Never put per-instance scene logic here.
 - `src/<system>/` (`brewing`, `brewery`, `customers`, `events`, `progression`, `ui`, `console`, `audio`) — instantiable custom data components, services and pure rules, one folder per gameplay system.
-- `src/systems/<name>/` — reusable, self-contained systems (`audio`, `dialog`, `console`, `input`, `save`, `settings`, `toast`, `tooltip`, `toolkit`) that reference only their own folder; the game's signals are connected in the one `*_wiring.gd` file. Check with `python dev/tools/check_systems.py`.
+- `src/systems/<name>/` — reusable, self-contained systems (`achievements`, `audio`, `dialog`, `console`, `input`, `save`, `settings`, `toast`, `tooltip`, `toolkit`) that reference only their own folder; the game's signals are connected in the one `*_wiring.gd` file. Check with `python dev/tools/check_systems.py`.
 - `src/resources/` — the game's content as `.tres` files, one folder per type, loaded by the registries through `ResourceFolder`.
 - `src/scenes/` — `.tscn` files and the script directly bound to that unique scene node (e.g. `customer.gd` beside `customer.tscn`). Business logic that isn't scene-specific still belongs in the system folders, called from the scene script.
 - Never hardcode a raw list of items/stats/recipes inline in a script — it belongs as a `Resource` under `src/resources/`.

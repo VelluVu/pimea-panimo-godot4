@@ -38,8 +38,8 @@ func test_meta_progress_reset_clears_renown_and_file() -> void:
 func test_achievement_reset_clears_stats() -> void:
 	var path : String = TEST_PATH_FORMAT % "achievements"
 	var manager := AchievementManagerScript.new()
-	manager._save_path = path
-	manager._increment_stat(&"test_stat", 3)
+	manager.save_path = path
+	manager.increment_stat(&"test_stat", 3)
 	assert_eq(manager.get_stat(&"test_stat"), 3)
 
 	manager.reset_progress()
