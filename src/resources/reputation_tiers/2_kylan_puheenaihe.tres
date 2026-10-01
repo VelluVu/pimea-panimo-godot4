@@ -8,3 +8,4 @@ tier_name = "Kylän puheenaihe"
 min_reputation = 30
 description = "Mummotkin puhuvat panimostasi kaupan kassajonossa."
 raid_threshold_penalty = 5
+daily_decay_percent = 0.02

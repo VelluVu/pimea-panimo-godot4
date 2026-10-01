@@ -42,6 +42,22 @@ func test_next_tier_is_null_at_the_top() -> void:
 	assert_eq(TiersScript.next_tier(30, _tiers()), null)
 
 
+func test_a_rise_is_announced_at_once() -> void:
+	var tiers := _tiers()
+	assert_eq(TiersScript.announced_tier(tiers[0], 15, tiers), tiers[1])
+
+
+func test_a_small_dip_below_a_tier_keeps_it_announced() -> void:
+	var tiers := _tiers()
+	assert_eq(TiersScript.announced_tier(tiers[2], 30 - TiersScript.DROP_MARGIN + 1, tiers), tiers[2])
+
+
+func test_a_drop_past_the_margin_is_announced() -> void:
+	var tiers := _tiers()
+	assert_eq(TiersScript.announced_tier(tiers[2], 30 - TiersScript.DROP_MARGIN, tiers), tiers[1])
+	assert_eq(TiersScript.announced_tier(tiers[2], 3, tiers), tiers[0])
+
+
 func test_shipped_tiers_start_at_zero_and_are_sorted() -> void:
 	var tiers: Array[ReputationTier] = TiersScript.all()
 	assert_true(tiers.size() >= 2, "tier files found")

@@ -5,6 +5,8 @@ extends RefCounted
 ## list as a parameter so tests can pass their own.
 
 const FOLDER_PATH: String = "res://src/resources/reputation_tiers/"
+## How far below a tier's start reputation must fall before the drop is announced.
+const DROP_MARGIN: int = 5
 
 static var _loaded: Array[ReputationTier] = []
 
@@ -24,6 +26,20 @@ static func tier_for(reputation: int, tiers: Array[ReputationTier]) -> Reputatio
 		if reputation >= tier.min_reputation:
 			reached = tier
 	return reached
+
+
+## The tier to announce after a change, given the one announced last. A rise is
+## announced at once; a drop only once reputation is DROP_MARGIN below the announced
+## tier's start, so hovering at a boundary does not toast up and down all day.
+static func announced_tier(announced: ReputationTier, reputation: int, tiers: Array[ReputationTier]) -> ReputationTier:
+	var actual: ReputationTier = tier_for(reputation, tiers)
+	if announced == null or actual == null:
+		return actual
+	if actual.min_reputation >= announced.min_reputation:
+		return actual
+	if reputation <= announced.min_reputation - DROP_MARGIN:
+		return actual
+	return announced
 
 
 ## The first tier above `reputation`, or null at the top. `tiers` is lowest first.
