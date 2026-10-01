@@ -212,7 +212,8 @@ func leave_counter(pickup_position_override: Vector2 = Vector2.INF) -> void:
 	_play_animation(ANIM_WALK_TOWARDS, true)
 	if made_purchase:
 		hide_counter_glass()
-		show_beer_glass()
+		if customer_data.carries_glass_out:
+			show_beer_glass()
 	var tween := create_tween()
 	tween.tween_property(self, "global_position", exit_pos, duration).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 	tween.tween_callback(queue_free)
