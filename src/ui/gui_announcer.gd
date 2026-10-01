@@ -19,6 +19,8 @@ const EARLY_CLOSE_TOAST_FORMAT: String = "Ovet suljettu aikaisin: -%.1f €, mai
 const INGREDIENT_LOCKED_TOAST_FORMAT: String = "%s vaatii vähintään %d mainetta."
 const REPUTATION_TIER_ROSE_TOAST_FORMAT: String = "Maineesi nousi: %s!"
 const REPUTATION_TIER_FELL_TOAST_FORMAT: String = "Maineesi laski: %s."
+const FRIEND_RECOMMENDED_TOAST: String = "Tyytyväinen asiakas suositteli panimoa kaverilleen!"
+const BAD_REVIEW_TOAST: String = "Huono arvio kiertää. Asiakkaat viipyvät hetken."
 const REPUTATION_DECAY_TOAST_FORMAT: String = "Maine hiipui yön aikana: -%d (%s)"
 const INGREDIENT_UNDERFUNDED_TOAST_FORMAT: String = "Ei varaa: %s maksaa %d €, kassassa %.1f €."
 const DISCOVERY_TOAST_FLASH_SECONDS: float = 0.15
@@ -87,6 +89,8 @@ func start() -> void:
 	BrewerySignals.ingredient_purchase_underfunded.connect(_on_ingredient_purchase_underfunded)
 	BrewerySignals.reputation_tier_changed.connect(_on_reputation_tier_changed)
 	BrewerySignals.reputation_decayed.connect(_on_reputation_decayed)
+	BrewerySignals.friend_recommended.connect(func(_data: CustomerData) -> void: _show_toast(FRIEND_RECOMMENDED_TOAST))
+	BrewerySignals.bad_review_spread.connect(func() -> void: _show_toast(BAD_REVIEW_TOAST))
 	BrewerySignals.group_visit_announced.connect(_on_group_visit_announced)
 	BrewerySignals.day_event_announced.connect(_on_day_event_announced)
 

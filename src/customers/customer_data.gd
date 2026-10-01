@@ -189,12 +189,14 @@ func evaluate_brew_batch(batch: BrewBatch, style_base_price: float = 3.0) -> Dic
 	var rep_change: int = 0
 	var avi_change: int = 1
 	var response_text: String = ""
+	var delighted: bool = false
 
 	if quality < min_quality:
 		rep_change = rep_bad_quality
 		avi_change = risk_bad_quality
 		response_text = dialogue_reject
 	elif score >= 1.0:
+		delighted = true
 		rep_change = rep_primary_style
 		avi_change = roundi(risk_primary_style * primary_match_risk_multiplier)
 		response_text = dialogue_success
@@ -241,5 +243,6 @@ func evaluate_brew_batch(batch: BrewBatch, style_base_price: float = 3.0) -> Dic
 		CustomerManager.KEY_TIP: tip,
 		CustomerManager.KEY_REPUTATION: rep_change,
 		CustomerManager.KEY_RISK: avi_change,
-		CustomerManager.KEY_RESPONSE: response_text
+		CustomerManager.KEY_RESPONSE: response_text,
+		CustomerManager.KEY_DELIGHTED: delighted
 	}

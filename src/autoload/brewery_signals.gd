@@ -77,6 +77,14 @@ signal reputation_tier_changed(tier: ReputationTier, rose: bool)
 ## Emitted by TimeManager at a day change with the reputation that `tier`'s daily decay took.
 @warning_ignore("unused_signal")
 signal reputation_decayed(amount: int, tier: ReputationTier)
+## Emitted by SaleProcessor when a delighted customer recommends the cellar; the
+## spawner sends in a friend of the same kind (WordOfMouthRules).
+@warning_ignore("unused_signal")
+signal friend_recommended(data: CustomerData)
+## Emitted by SaleProcessor when an unhappy customer spreads a bad review; the
+## spawner delays the next walk-in.
+@warning_ignore("unused_signal")
+signal bad_review_spread()
 ## Emitted by SaleProcessor with a sale's tip income. Same pattern as sale_reputation_gained.
 @warning_ignore("unused_signal")
 signal sale_tip_gained(amount: float)

@@ -109,6 +109,7 @@ func test_evaluate_brew_batch_rejects_below_min_quality() -> void:
 	assert_eq(result[CustomerManager.KEY_REPUTATION], -4, "reputation") # -3 flat, margin -0.2 * 4.0 -> -1 extra
 	assert_eq(result[CustomerManager.KEY_RISK], 1, "risk") # margin -0.2 * 2.0 rounds to 0 extra
 	assert_eq(result[CustomerManager.KEY_RESPONSE], customer.dialogue_reject, "response")
+	assert_false(result[CustomerManager.KEY_DELIGHTED], "delighted")
 
 
 func test_evaluate_brew_batch_rewards_primary_style_match() -> void:
@@ -120,6 +121,7 @@ func test_evaluate_brew_batch_rewards_primary_style_match() -> void:
 	assert_eq(result[CustomerManager.KEY_REPUTATION], 7, "reputation") # 5 flat, margin 0.5 * 4.0 -> +2
 	assert_eq(result[CustomerManager.KEY_RISK], 2, "risk") # 3 flat, margin 0.5 * 2.0 -> -1
 	assert_eq(result[CustomerManager.KEY_RESPONSE], customer.dialogue_success, "response")
+	assert_true(result[CustomerManager.KEY_DELIGHTED], "delighted")
 
 
 func test_evaluate_brew_batch_gives_smaller_reward_for_secondary_style() -> void:
@@ -131,6 +133,7 @@ func test_evaluate_brew_batch_gives_smaller_reward_for_secondary_style() -> void
 	assert_eq(result[CustomerManager.KEY_REPUTATION], 2, "reputation") # 0 flat, margin 0.5 * 4.0 -> +2
 	assert_eq(result[CustomerManager.KEY_RISK], 0, "risk") # 1 flat, margin 0.5 * 2.0 -> -1
 	assert_eq(result[CustomerManager.KEY_RESPONSE], customer.dialogue_fallback, "response")
+	assert_false(result[CustomerManager.KEY_DELIGHTED], "delighted")
 
 
 func test_evaluate_brew_batch_penalizes_wrong_style() -> void:

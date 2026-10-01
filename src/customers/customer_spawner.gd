@@ -25,6 +25,8 @@ func _ready() -> void:
 	_setup_positions()
 	_group_visit = GroupVisitDirector.new(self, stairs_bottom_marker, room_center_marker, _active_styles)
 	CustomerManager.register_spawner(self)
+	BrewerySignals.friend_recommended.connect(_on_friend_recommended)
+	BrewerySignals.bad_review_spread.connect(_on_bad_review_spread)
 
 
 func _make_timer(on_timeout: Callable) -> Timer:
@@ -82,6 +84,20 @@ func spawn_group_visit(forced_event_data: GroupVisitEventData = null) -> void:
 		return
 	_try_spawn_group_visit(forced_event_data)
 	_start_next_group_event_timer()
+
+
+## The friend comes on its own clock, so the regular walk-in timer is untouched. The
+## timer pauses with the tree, so no friend walks in behind a level-up window.
+func _on_friend_recommended(data: CustomerData) -> void:
+	var delay: float = randf_range(WordOfMouthRules.FRIEND_DELAY_MIN_SECONDS, WordOfMouthRules.FRIEND_DELAY_MAX_SECONDS)
+	await get_tree().create_timer(delay, false).timeout
+	if not _paused:
+		_try_spawn_walk_in(data)
+
+
+func _on_bad_review_spread() -> void:
+	if not walk_in_timer.is_stopped():
+		walk_in_timer.start(walk_in_timer.time_left + WordOfMouthRules.BAD_REVIEW_DELAY_SECONDS)
 
 
 func _try_spawn_walk_in(forced_data: CustomerData) -> void:
