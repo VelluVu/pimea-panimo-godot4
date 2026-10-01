@@ -146,6 +146,11 @@ func add_risk(amount : int) -> void:
 func change_reputation(amount : int) -> int:
 	var before : int = reputation
 	reputation = ReputationRules.apply(reputation, amount)
+
+	var tiers : Array[ReputationTier] = ReputationTiers.all()
+	var tier : ReputationTier = ReputationTiers.tier_for(reputation, tiers)
+	if tier != null and tier != ReputationTiers.tier_for(before, tiers):
+		BrewerySignals.reputation_tier_changed.emit(tier, reputation > before)
 	return reputation - before
 
 

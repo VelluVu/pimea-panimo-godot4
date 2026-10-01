@@ -22,6 +22,11 @@ const MODIFIER_TAG_FORMAT : String = "🎲 %s"
 
 const LEVEL_FORMAT : String = "Taso: %d"
 const LEVEL_PROGRESS_TOOLTIP_FORMAT : String = "%d / %d XP seuraavaan tasoon"
+const REPUTATION_TOOLTIP_FORMAT : String = "%s
+%s
+%s"
+const NEXT_TIER_FORMAT : String = "Seuraava: %s (%d mainetta)"
+const TOP_TIER_TEXT : String = "Korkein maine saavutettu."
 
 @onready var money_label : Label = $MoneyLabel
 @onready var reputation_label : Label = $ReputationLabel
@@ -55,6 +60,8 @@ func _ready() -> void:
 	# wraps via TooltipFactory instead of overflowing on a long description.
 	modifier_tag_label.set_script(TooltipLabel)
 	level_progress_bar.set_script(TooltipProgressBar)
+	reputation_label.set_script(TooltipLabel)
+	reputation_label.mouse_filter = Control.MOUSE_FILTER_PASS
 
 	BrewerySignals.brewery_state_changed.connect(_on_brewery_state_changed)
 	TimeManager.day_changed.connect(_on_day_changed)
@@ -101,6 +108,7 @@ func _on_brewery_state_changed(brewery : Brewery) -> void:
 			_create_popup_effect(reputation_label, change, "", false)
 	
 	reputation_label.text = "Maine: " + str(new_reputation)
+	reputation_label.tooltip_text = _reputation_tooltip(new_reputation)
 	last_reputation = new_reputation
 
 	if brewery.run_level != _last_level:
@@ -132,6 +140,16 @@ func _on_brewery_state_changed(brewery : Brewery) -> void:
 	else:
 		risk_label.remove_theme_color_override("font_color")
 		_risk_warning_active = false
+
+
+func _reputation_tooltip(reputation : int) -> String:
+	var tiers : Array[ReputationTier] = ReputationTiers.all()
+	var tier : ReputationTier = ReputationTiers.tier_for(reputation, tiers)
+	if tier == null:
+		return ""
+	var next : ReputationTier = ReputationTiers.next_tier(reputation, tiers)
+	var next_text : String = TOP_TIER_TEXT if next == null else NEXT_TIER_FORMAT % [next.tier_name, next.min_reputation]
+	return REPUTATION_TOOLTIP_FORMAT % [tier.tier_name, tier.description, next_text]
 
 
 ## One-shot attention pulse the moment risk crosses into the warning
