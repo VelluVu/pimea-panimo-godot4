@@ -8,4 +8,4 @@ tier_name = "Kaupungin kuuluisuus"
 min_reputation = 60
 description = "Oluesi tunnetaan kaupungilla. Niin myös osoitteesi."
 raid_threshold_penalty = 10
-daily_decay_percent = 0.02
+daily_decay_percent = 0.04

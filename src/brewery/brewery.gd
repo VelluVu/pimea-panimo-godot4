@@ -78,6 +78,9 @@ var game_has_ended : bool = false
 
 ## Runtime only, not saved.
 var resolver : BrewResolver = null
+## The tier last toasted, see ReputationTiers.announced_tier(). Runtime only: after a
+## load it starts from the current tier.
+var _announced_tier : ReputationTier = null
 
 ## Today's sales for the receipt log window; cleared each day, not saved.
 var today_sale_receipts : Array[SaleReceiptEntry] = []
@@ -153,9 +156,12 @@ func change_reputation(amount : int, source : ReputationRules.Source = Reputatio
 		BrewerySignals.reputation_changed.emit(applied, source)
 
 	var tiers : Array[ReputationTier] = ReputationTiers.all()
-	var tier : ReputationTier = ReputationTiers.tier_for(reputation, tiers)
-	if tier != null and tier != ReputationTiers.tier_for(before, tiers):
-		BrewerySignals.reputation_tier_changed.emit(tier, reputation > before)
+	if _announced_tier == null:
+		_announced_tier = ReputationTiers.tier_for(before, tiers)
+	var tier : ReputationTier = ReputationTiers.announced_tier(_announced_tier, reputation, tiers)
+	if tier != null and tier != _announced_tier:
+		BrewerySignals.reputation_tier_changed.emit(tier, tier.min_reputation > _announced_tier.min_reputation)
+	_announced_tier = tier
 	return applied
 
 
