@@ -123,6 +123,7 @@ func process(data : CustomerData) -> String:
 
 	BrewerySignals.sale_reputation_gained.emit(brewery.reputation - reputation_before)
 	BrewerySignals.brewery_state_changed.emit(brewery)
+	_spread_word(data, results[CustomerManager.KEY_DELIGHTED], outcome.reputation_gain)
 	return response_text
 
 
@@ -141,7 +142,16 @@ func _turn_away(data : CustomerData, wanted : int) -> String:
 			_trigger_bar_fight(data, null)
 		BrewerySignals.sale_reputation_gained.emit(brewery.reputation - reputation_before)
 		BrewerySignals.brewery_state_changed.emit(brewery)
+		_spread_word(data, false, -data.no_match_reputation_penalty)
 	return data.dialogue_no_match
+
+
+func _spread_word(data : CustomerData, delighted : bool, reputation_gain : int) -> void:
+	match WordOfMouthRules.outcome(delighted, reputation_gain, randf()):
+		WordOfMouthRules.Outcome.FRIEND:
+			BrewerySignals.friend_recommended.emit(data)
+		WordOfMouthRules.Outcome.BAD_REVIEW:
+			BrewerySignals.bad_review_spread.emit()
 
 
 ## Reported through bar_fight_triggered as its own toast, not the customer's spoken

@@ -7,6 +7,8 @@ const KEY_TIP = "tip"
 const KEY_REPUTATION = "reputation"
 const KEY_RISK = "risk"
 const KEY_RESPONSE = "response"
+## True when the customer got their primary style at or above their quality bar.
+const KEY_DELIGHTED = "delighted"
 
 ## Default cost of turning a customer away with nothing to sell them: small,
 ## but not free, since they complain on the way out.
