@@ -22,8 +22,8 @@ Five top-level folders: `addons/`, `assets/`, `src/`, `tests/` and `dev/`. Every
     - `src/progression/` — perks, run modifiers, meta unlocks and their rules, achievements, daily goals
     - `src/ui/` — UI helper classes: pure text and layout logic (`OlutoppiText`, `RecipeLibraryText`), small view helpers (`LabelPulse`, `CollapsibleSection`) and tooltip/hover-area nodes
     - `src/console/` — the game's console commands (`PlayerCommands`, the gitignored cheat sets); the console itself is in `src/systems/console/`
-    - `src/save/`, `src/audio/` — save file handling, audio bank
-  - `src/systems/` — Reusable systems, one self-contained folder each (`audio/`, `dialog/`, `console/`, `input/`, `settings/`, `toast/`, `tooltip/`, `toolkit/`). Copy a folder to another project and edit its `*_wiring.gd`. See the rule under Architecture.
+    - `src/audio/` — audio bank
+  - `src/systems/` — Reusable systems, one self-contained folder each (`audio/`, `dialog/`, `console/`, `input/`, `save/`, `settings/`, `toast/`, `tooltip/`, `toolkit/`). Copy a folder to another project and edit its `*_wiring.gd`. See the rule under Architecture.
   - `src/resources/` — All game content as custom `.tres` resources, one folder per type (`customers/`, `beer_styles/`, `ingredients/`, `perks/`, `daily_goals/`, ...), plus the `ResourceFolder` loader
 - `res://tests/` — Unit tests, one `test_<class>.gd` per class (the test runner only looks here)
 - `res://dev/` — Everything for developing, not shipped: `tools/` (scripts, see Tools), `docs/` (design references such as `beer_styles_reference.txt`) and `notes/` (local playtest notes, gitignored)
@@ -74,10 +74,10 @@ Five top-level folders: `addons/`, `assets/`, `src/`, `tests/` and `dev/`. Every
 - `DailyGoalManager`, `MetaProgressManager`, `AchievementManager`, `LeaderboardManager` (autoloads): daily goals (`DailyGoalRules`, `GoalSlot`), the Olutoppi talent tree (`MetaUnlockRules`), achievements and the leaderboard; the last three keep their own `ConfigFile`.
 - `SettingsManager`, `InputManager` (autoloads): two-line scripts extending `SettingsWiring` and `InputWiring` from `src/systems/settings/` and `src/systems/input/`; the buses and actions live in those wiring files.
 - `AudioManager` (autoload): extends `AudioWiring` from `src/systems/audio/`, which maps the game's signals to the sounds in `AudioBank` (`src/audio/`).
-- `SaveManager` (autoload): the run save.
+- `SaveManager` (autoload): the run save; extends `SaveWiring` from `src/systems/save/`.
 
 ## Testing and Verification
-- Tests are in `tests/`, extend `McpTestSuite` and are run through the MCP `test_run` tool with the editor open. Each run prints about 10 errors and 2 warnings from the save-file tests; those are expected.
+- Tests are in `tests/`, extend `McpTestSuite` and are run through the MCP `test_run` tool with the editor open. Each run prints about 10 errors and 4 warnings from the save tests; those are expected.
 - Autoloads are not reachable from tests: preload the script by path (`const XScript := preload(...)`) and inject dependencies, as `test_brew_resolver.gd` does.
 - The editor caches preloaded scripts. After editing a script a test preloads, failures that look like the old behavior may be stale; restart the editor before believing them.
 - After a change, run the game through MCP and read the game log (`logs_read` with `source="game"`): some errors, like a failed lookup, only show up there. For UI changes take a screenshot too.
