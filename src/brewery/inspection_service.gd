@@ -4,6 +4,9 @@ extends RefCounted
 ## LVV raids and the manual early-close penalty. Stateless: Brewery creates one per call.
 
 const LVV_RAID_FINE_PERCENT : float = 0.3
+## One raid never fines more than this. A share of money alone grew to 800+ EUR late
+## in a run, which no other cost comes near.
+const LVV_RAID_FINE_MAX : float = 200.0
 
 ## Each prior raid adds this multiple of the base fine and reputation penalty
 ## (raid 2 doubles it, raid 3 triples it).
@@ -53,7 +56,7 @@ func check_for_raid() -> void:
 
 	# raid_count still counts prior raids, so this raid escalates from the earlier count.
 	var escalation : float = minf(LVV_RAID_MAX_ESCALATION, 1.0 + brewery.raid_count * LVV_RAID_ESCALATION_PER_RAID)
-	var fine_amount : float = snappedf(brewery.money * LVV_RAID_FINE_PERCENT * escalation, 0.1)
+	var fine_amount : float = raid_fine(brewery.money, escalation)
 	var reputation_penalty : int = ReputationRules.raid_penalty(brewery.reputation, escalation)
 
 	brewery.money -= fine_amount
@@ -70,6 +73,10 @@ func check_for_raid() -> void:
 		return
 
 	brewery.check_bankruptcy()
+
+
+static func raid_fine(money : float, escalation : float) -> float:
+	return minf(LVV_RAID_FINE_MAX, snappedf(maxf(0.0, money) * LVV_RAID_FINE_PERCENT * escalation, 0.1))
 
 
 ## `earliness` runs from 0 (closed as the timer would have ended anyway) to 1
