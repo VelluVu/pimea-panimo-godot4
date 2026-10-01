@@ -23,17 +23,34 @@ extends Resource
 @export var reward_reputation: int = 10
 @export var reward_risk: int = 5
 @export var clears_risk: bool = false
+## Grows likelier as LVV risk climbs (see risk_weight()). Set on events that lower risk,
+## so a player close to a raid sees a way out more often.
+@export var weighs_by_risk: bool = false
+
+## How many times as likely a weighs_by_risk event is at the raid threshold as at risk 0.
+const MAX_RISK_WEIGHT_MULTIPLIER: float = 5.0
 
 
 ## Relative odds of this event being the one CustomerRegistry.
-## get_random_special_event() rolls, given the current run's state —
-## uniform (1.0) by default. Override in a subclass to bias toward itself
-## under specific conditions, e.g. RiskBribeEventData weighting itself up
-## as LVV risk climbs, so the one direct way to shed risk actually shows up
-## more often when the player needs it instead of being exactly as likely
-## as every other event regardless of how much danger they're in.
-func get_weight(_brewery: Brewery) -> float:
-	return 1.0
+## get_random_special_event() rolls: 1.0, or risk_weight() for a weighs_by_risk
+## event. Override in a subclass to bias it further (ReputationFavourEventData
+## drops to 0 when the player cannot pay).
+func get_weight(brewery: Brewery) -> float:
+	return risk_weight(brewery) if weighs_by_risk else 1.0
+
+
+## 1.0 at no risk, rising linearly to MAX_RISK_WEIGHT_MULTIPLIER at the effective raid
+## threshold and capped there. Still a weighted roll, never a sure thing.
+static func risk_weight(brewery: Brewery) -> float:
+	return 1.0 + risk_fraction(brewery) * (MAX_RISK_WEIGHT_MULTIPLIER - 1.0)
+
+
+## LVV risk as a share of the effective raid threshold, 0 to 1.
+static func risk_fraction(brewery: Brewery) -> float:
+	var threshold: int = brewery.get_effective_raid_threshold()
+	if threshold <= 0:
+		return 1.0
+	return clampf(float(brewery.risk) / float(threshold), 0.0, 1.0)
 
 
 ## Attempts to satisfy this event against the given brewery, applying its

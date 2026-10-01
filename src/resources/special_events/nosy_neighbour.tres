@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="SpecialEventData" format=3]
+
+[ext_resource type="Script" uid="uid://cl0kqitrmb4gj" path="res://src/events/special_event_data.gd" id="1_neighbour"]
+
+[resource]
+script = ExtResource("1_neighbour")
+event_caller_name = "Naapurin Irma"
+intro_dialogue = "Teidän kellarista kuuluu kaikenlaista kolinaa... Mutta jos minulle tuotaisiin 10 pulloa kotikaljaa, en ehkä muistaisi mitään. LVV-riski laskee 20."
+success_dialogue = "Kotikaljaa! Mitä kolinaa? En minä kuullut mitään."
+fail_dialogue = "Ei kotikaljaa? No, ehkä soitan sittenkin sille tarkastajalle."
+reject_dialogue = "Vai niin. Minä tästä sitten soittelen..."
+timeout_seconds = 10.0
+required_style = 0
+required_bottles = 10
+reward_money = 0
+reward_reputation = 0
+reward_risk = -20
+clears_risk = false
+weighs_by_risk = true
+metadata/_custom_type_script = "uid://cl0kqitrmb4gj"

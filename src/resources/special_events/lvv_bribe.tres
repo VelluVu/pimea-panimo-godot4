@@ -14,5 +14,6 @@ reward_money = 0
 reward_reputation = -5
 reward_risk = 0
 clears_risk = true
+weighs_by_risk = true
 bribe_cost = 60
 metadata/_custom_type_script = "uid://bi5dk34lohryc"
