@@ -21,6 +21,8 @@ const REPUTATION_TIER_ROSE_TOAST_FORMAT: String = "Maineesi nousi: %s!"
 const REPUTATION_TIER_FELL_TOAST_FORMAT: String = "Maineesi laski: %s."
 const FRIEND_RECOMMENDED_TOAST: String = "Tyytyväinen asiakas suositteli panimoa kaverilleen!"
 const BAD_REVIEW_TOAST: String = "Huono arvio kiertää. Asiakkaat viipyvät hetken."
+const REGULAR_GAINED_TOAST_FORMAT: String = "%s on nyt kanta-asiakas! Ostaa enemmän ja tippaa paremmin."
+const REGULAR_LOST_TOAST_FORMAT: String = "%s ei ole enää kanta-asiakas."
 const REPUTATION_DECAY_TOAST_FORMAT: String = "Maine hiipui yön aikana: -%d (%s)"
 const INGREDIENT_UNDERFUNDED_TOAST_FORMAT: String = "Ei varaa: %s maksaa %d €, kassassa %.1f €."
 const DISCOVERY_TOAST_FLASH_SECONDS: float = 0.15
@@ -91,6 +93,7 @@ func start() -> void:
 	BrewerySignals.reputation_decayed.connect(_on_reputation_decayed)
 	BrewerySignals.friend_recommended.connect(func(_data: CustomerData) -> void: _show_toast(FRIEND_RECOMMENDED_TOAST))
 	BrewerySignals.bad_review_spread.connect(func() -> void: _show_toast(BAD_REVIEW_TOAST))
+	BrewerySignals.regular_status_changed.connect(_on_regular_status_changed)
 	BrewerySignals.group_visit_announced.connect(_on_group_visit_announced)
 	BrewerySignals.day_event_announced.connect(_on_day_event_announced)
 
@@ -155,6 +158,10 @@ func _on_reputation_tier_changed(tier: ReputationTier, rose: bool) -> void:
 
 func _on_reputation_decayed(amount: int, tier: ReputationTier) -> void:
 	_show_toast(REPUTATION_DECAY_TOAST_FORMAT % [amount, tier.tier_name])
+
+
+func _on_regular_status_changed(customer_title: String, is_regular: bool) -> void:
+	_show_toast((REGULAR_GAINED_TOAST_FORMAT if is_regular else REGULAR_LOST_TOAST_FORMAT) % customer_title)
 
 
 func _on_group_visit_announced(banner_text: String) -> void:

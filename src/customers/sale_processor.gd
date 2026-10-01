@@ -8,6 +8,7 @@ extends RefCounted
 
 const BOTTLES_SOLD_PER_TRANSACTION : int = 1
 const QUALITY_BONUS_WEIGHT : float = 0.2
+const REGULAR_RESPONSE_FORMAT : String = "Taas täällä! %s"
 
 
 var brewery : Brewery
@@ -67,7 +68,10 @@ func find_best_batch_for(data : CustomerData) -> BrewBatch:
 
 ## Returns the customer's spoken response.
 func process(data : CustomerData) -> String:
+	var is_regular : bool = RegularRules.is_regular(brewery.customer_standing.get(data.title, 0)) if brewery != null else false
 	var wanted : int = randi_range(data.min_bottles_per_visit, data.max_bottles_per_visit)
+	if is_regular:
+		wanted += RegularRules.EXTRA_BOTTLES
 	var best_batch : BrewBatch = find_best_batch_for(data)
 	if best_batch == null or best_batch.amount_bottles < BOTTLES_SOLD_PER_TRANSACTION:
 		return _turn_away(data, wanted)
@@ -86,7 +90,7 @@ func process(data : CustomerData) -> String:
 	var outcome : SaleOutcome = calculate_sale(
 		results,
 		bottles_sold,
-		brewery.stats.multiplier(PerkStats.TIP_INCOME),
+		brewery.stats.multiplier(PerkStats.TIP_INCOME) * (RegularRules.TIP_MULTIPLIER if is_regular else 1.0),
 		brewery.stats.chance(PerkStats.TIP_DOUBLE_CHANCE),
 		brewery.stats.multiplier(PerkStats.REPUTATION_GAIN))
 
@@ -117,6 +121,8 @@ func process(data : CustomerData) -> String:
 	BrewerySignals.bottles_sold.emit(bottles_sold)
 
 	var response_text : String = results[CustomerManager.KEY_RESPONSE]
+	if is_regular and results[CustomerManager.KEY_DELIGHTED]:
+		response_text = REGULAR_RESPONSE_FORMAT % response_text
 
 	if BarFightRules.breaks_out(data, wanted, bottles_sold, brewery.stats.multiplier(PerkStats.BAR_FIGHT_CHANCE), randf()):
 		_trigger_bar_fight(data, best_batch)
@@ -124,6 +130,7 @@ func process(data : CustomerData) -> String:
 	BrewerySignals.sale_reputation_gained.emit(brewery.reputation - reputation_before)
 	BrewerySignals.brewery_state_changed.emit(brewery)
 	_spread_word(data, results[CustomerManager.KEY_DELIGHTED], outcome.reputation_gain)
+	_update_standing(data, results[CustomerManager.KEY_DELIGHTED], outcome.reputation_gain)
 	return response_text
 
 
@@ -143,7 +150,18 @@ func _turn_away(data : CustomerData, wanted : int) -> String:
 		BrewerySignals.sale_reputation_gained.emit(brewery.reputation - reputation_before)
 		BrewerySignals.brewery_state_changed.emit(brewery)
 		_spread_word(data, false, -data.no_match_reputation_penalty)
+		_update_standing(data, false, -data.no_match_reputation_penalty)
 	return data.dialogue_no_match
+
+
+func _update_standing(data : CustomerData, delighted : bool, reputation_gain : int) -> void:
+	if data.title.is_empty():
+		return
+	var before : int = brewery.customer_standing.get(data.title, 0)
+	var after : int = RegularRules.next_standing(before, delighted, reputation_gain)
+	brewery.customer_standing[data.title] = after
+	if RegularRules.is_regular(after) != RegularRules.is_regular(before):
+		BrewerySignals.regular_status_changed.emit(data.title, RegularRules.is_regular(after))
 
 
 func _spread_word(data : CustomerData, delighted : bool, reputation_gain : int) -> void:

@@ -85,6 +85,10 @@ signal friend_recommended(data: CustomerData)
 ## spawner delays the next walk-in.
 @warning_ignore("unused_signal")
 signal bad_review_spread()
+## Emitted by SaleProcessor when a customer type becomes a regular or stops being
+## one (RegularRules).
+@warning_ignore("unused_signal")
+signal regular_status_changed(customer_title: String, is_regular: bool)
 ## Emitted by SaleProcessor with a sale's tip income. Same pattern as sale_reputation_gained.
 @warning_ignore("unused_signal")
 signal sale_tip_gained(amount: float)
