@@ -17,6 +17,8 @@ const GOAL_FAILED_TOAST_FORMAT: String = "%s epäonnistui: %d maine / +%d LVV-ri
 const GOAL_FAILED_NO_PENALTY_TOAST_FORMAT: String = "%s epäonnistui: ei seurauksia"
 const EARLY_CLOSE_TOAST_FORMAT: String = "Ovet suljettu aikaisin: -%.1f €, mainetta -%d, LVV-riski -%d"
 const INGREDIENT_LOCKED_TOAST_FORMAT: String = "%s vaatii vähintään %d mainetta."
+const REPUTATION_TIER_ROSE_TOAST_FORMAT: String = "Maineesi nousi: %s!"
+const REPUTATION_TIER_FELL_TOAST_FORMAT: String = "Maineesi laski: %s."
 const INGREDIENT_UNDERFUNDED_TOAST_FORMAT: String = "Ei varaa: %s maksaa %d €, kassassa %.1f €."
 const DISCOVERY_TOAST_FLASH_SECONDS: float = 0.15
 const DISCOVERY_TOAST_HOLD_SECONDS: float = 2.0
@@ -82,6 +84,7 @@ func start() -> void:
 	BrewerySignals.early_day_close_applied.connect(_on_early_day_close_applied)
 	BrewerySignals.ingredient_purchase_locked.connect(_on_ingredient_purchase_locked)
 	BrewerySignals.ingredient_purchase_underfunded.connect(_on_ingredient_purchase_underfunded)
+	BrewerySignals.reputation_tier_changed.connect(_on_reputation_tier_changed)
 	BrewerySignals.group_visit_announced.connect(_on_group_visit_announced)
 	BrewerySignals.day_event_announced.connect(_on_day_event_announced)
 
@@ -138,6 +141,10 @@ func _on_ingredient_purchase_locked(ingredient_name: String, required_reputation
 ## Tells a player who clicked "Osta" without enough money why nothing happened.
 func _on_ingredient_purchase_underfunded(ingredient_name: String, price: int, money: float) -> void:
 	_show_toast(INGREDIENT_UNDERFUNDED_TOAST_FORMAT % [ingredient_name, price, money])
+
+
+func _on_reputation_tier_changed(tier: ReputationTier, rose: bool) -> void:
+	_show_toast((REPUTATION_TIER_ROSE_TOAST_FORMAT if rose else REPUTATION_TIER_FELL_TOAST_FORMAT) % tier.tier_name)
 
 
 func _on_group_visit_announced(banner_text: String) -> void:

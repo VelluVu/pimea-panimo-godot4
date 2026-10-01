@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="ReputationTier" format=3]
+
+[ext_resource type="Script" path="res://src/brewery/reputation_tier.gd" id="1_tier"]
+
+[resource]
+script = ExtResource("1_tier")
+tier_name = "Kellarin salaisuus"
+min_reputation = 15
+description = "Muutama tietää oikean oven. Kuiskaukset kulkevat."
