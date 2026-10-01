@@ -3,9 +3,10 @@ extends Node
 
 signal special_event_triggered(event_data: SpecialEventData)
 
-const SPECIAL_EVENT_INTERVAL_SECONDS = 300.0
-
 const WARNING_SPECIAL_INVALID_STATE = "SpecialEventManager: Cannot accept special request, invalid state!"
+
+
+var _special_event_timer: Timer
 
 
 func _ready() -> void:
@@ -13,17 +14,21 @@ func _ready() -> void:
 
 
 func _setup_timers() -> void:
-	var special_event_timer := Timer.new()
-	special_event_timer.process_callback = Timer.TIMER_PROCESS_IDLE
-	special_event_timer.wait_time = SPECIAL_EVENT_INTERVAL_SECONDS
-	special_event_timer.autostart = true
-	special_event_timer.one_shot = false
-	special_event_timer.timeout.connect(_on_special_event_timer_timeout)
-	add_child(special_event_timer)
+	_special_event_timer = Timer.new()
+	_special_event_timer.process_callback = Timer.TIMER_PROCESS_IDLE
+	_special_event_timer.wait_time = SpecialEventPacing.BASE_INTERVAL_SECONDS
+	_special_event_timer.autostart = true
+	_special_event_timer.one_shot = true
+	_special_event_timer.timeout.connect(_on_special_event_timer_timeout)
+	add_child(_special_event_timer)
 
 
+## Re-armed each time with a wait that shrinks as LVV risk climbs (SpecialEventPacing).
 func _on_special_event_timer_timeout() -> void:
-	if BrewEngine.current_brewery == null:
+	var brewery: Brewery = BrewEngine.current_brewery
+	var risk_fraction: float = SpecialEventData.risk_fraction(brewery) if brewery != null else 0.0
+	_special_event_timer.start(SpecialEventPacing.interval(risk_fraction))
+	if brewery == null:
 		return
 
 	var event_data: SpecialEventData = CustomerRegistry.get_random_special_event(BrewEngine.current_brewery)
