@@ -1,7 +1,7 @@
 class_name ToastStack
 extends RefCounted
 
-## Shows toasts stacked under each other so a burst is never overwritten. Every toast is its
+## Shows toasts stacked, newest on top, so a burst is never overwritten. Every toast is its
 ## own copy of the template label, presented by its own BannerPresenter and freed once faded.
 
 const STACK_SEPARATION: int = 2
@@ -49,6 +49,9 @@ func show_toast(text: String) -> void:
 	label.show()
 	label.custom_minimum_size.y = _template.offset_bottom - _template.offset_top
 	_stack.add_child(label)
+	# Newest on top: toasts dismissed early keep their slot while they fade, so a burst
+	# appended at the bottom would creep down the screen over other UI.
+	_stack.move_child(label, 0)
 
 	_make_room()
 	var hold: float = hold_seconds_for(text.length(), _hold_seconds, hold_per_character, min_hold_seconds, max_hold_seconds)
