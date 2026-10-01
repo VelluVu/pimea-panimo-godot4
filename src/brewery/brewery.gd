@@ -67,6 +67,8 @@ var game_has_ended : bool = false
 ## Styles brewed this run. Unlike discovered_styles it is not seeded from earlier
 ## runs, so each run's first brew of a style can still earn reputation.
 @export var brewed_styles : Dictionary = {} # BeerStyle.Style -> true
+## How each customer type (CustomerData.title) has been treated this run, see RegularRules.
+@export var customer_standing : Dictionary = {} # String -> int
 
 ## First-brew tutorial progress. One-way latches, so a step stays done after
 ## its ingredients are used up. tutorial_complete() derives from these.
