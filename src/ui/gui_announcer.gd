@@ -17,6 +17,9 @@ const GOAL_FAILED_TOAST_FORMAT: String = "%s epäonnistui: %d maine / +%d LVV-ri
 const GOAL_FAILED_NO_PENALTY_TOAST_FORMAT: String = "%s epäonnistui: ei seurauksia"
 const EARLY_CLOSE_TOAST_FORMAT: String = "Ovet suljettu aikaisin: -%.1f €, mainetta -%d, LVV-riski -%d"
 const INGREDIENT_LOCKED_TOAST_FORMAT: String = "%s vaatii vähintään %d mainetta."
+const INGREDIENTS_UNLOCKED_TOAST_FORMAT: String = "Uusia humalia saatavilla: %s!"
+## Dropped from each name in the merged toast; the toast already says they are hops.
+const HOP_NAME_SUFFIX: String = " Humala"
 const REPUTATION_TIER_ROSE_TOAST_FORMAT: String = "Maineesi nousi: %s!"
 const REPUTATION_TIER_FELL_TOAST_FORMAT: String = "Maineesi laski: %s."
 const FRIEND_RECOMMENDED_TOAST: String = "Tyytyväinen asiakas suositteli panimoa kaverilleen!"
@@ -67,6 +70,8 @@ var _day_event_announce_serial: int = 0
 ## Builds the presenters. `goals_panel` is pointed at when the first-brew hint ends.
 func setup(toast_label: Label, group_visit_label: Label, day_event_label: Label, first_brew_hint_label: Label, goals_panel: DailyGoalsPanel, day_recap_window: DayRecapWindow) -> void:
 	_day_recap_window = day_recap_window
+	# A long toast (several unlocks at once) wraps instead of running off the screen.
+	toast_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_toasts = ToastStack.new(toast_label, DISCOVERY_TOAST_FLASH_SECONDS, DISCOVERY_TOAST_HOLD_SECONDS, DISCOVERY_TOAST_FADE_SECONDS)
 	_toasts.hold_per_character = TOAST_HOLD_PER_CHARACTER_SECONDS
 	_toasts.min_hold_seconds = TOAST_MIN_HOLD_SECONDS
@@ -109,8 +114,15 @@ func start() -> void:
 
 
 func _on_brewery_state_changed(brewery: Brewery) -> void:
-	for ingredient: IngredientData in _reputation_tracker.update(brewery.reputation):
-		_show_toast(StringContainer.INGREDIENT_UNLOCKED_TOAST_FORMAT % ingredient.name)
+	# One toast per reputation jump, however many hops it unlocked.
+	var unlocked : Array[IngredientData] = _reputation_tracker.update(brewery.reputation)
+	if unlocked.size() == 1:
+		_show_toast(StringContainer.INGREDIENT_UNLOCKED_TOAST_FORMAT % unlocked[0].name)
+	elif unlocked.size() > 1:
+		var names : PackedStringArray = []
+		for ingredient: IngredientData in unlocked:
+			names.append(ingredient.name.trim_suffix(HOP_NAME_SUFFIX))
+		_show_toast(INGREDIENTS_UNLOCKED_TOAST_FORMAT % ", ".join(names))
 
 
 func _on_style_discovered(style: int) -> void:
