@@ -94,34 +94,64 @@ static func _find_malt_combo_with_required(malts : Array[MaltData], min_ebc : in
 	return best_combo
 
 
-## One hop dose aimed at the middle of the IBU window, preferring the style's
-## flavour profile. Nudges the amount by up to 2 to land inside the window.
+## Units of the flavour hop in a default recipe: the flavour bonus only needs the
+## profile present, so a small dose keeps a low-alpha aroma hop affordable.
+const FLAVOR_HOP_DOSE : int = 2
+## Caps the IBU target for wide windows (IPA is 40-200), which would otherwise
+## aim at a needlessly large and expensive dose.
+const MAX_TARGET_ABOVE_MIN_IBU : float = 20.0
+
+
+## A default recipe's hops, brewed the way a real brewer would: a small dose of the
+## style's flavour hop plus the cheapest bittering hop (lowest price per alpha) to reach
+## the IBU target. Only hops that need no reputation are picked for flavour, so the
+## recipe can always be bought; without one the recipe simply skips the flavour bonus.
 static func find_hop_dose(hops : Array[HopData], min_ibu : int, max_ibu : int, preferred_profile : HopData.FlavorProfile) -> Dictionary:
-	if hops.is_empty():
+	var bittering : HopData = _cheapest_per_alpha(hops)
+	if bittering == null:
 		return {}
 
-	var preferred : Array[HopData] = []
-	for hop in hops:
-		if hop.flavor_profile == preferred_profile:
-			preferred.append(hop)
+	var dose : Dictionary = {}
+	var flavor_alpha : int = 0
+	var flavor : HopData = _cheapest_unlocked_with_profile(hops, preferred_profile)
+	if flavor != null:
+		dose[flavor.id] = FLAVOR_HOP_DOSE
+		flavor_alpha = flavor.alpha_acids * FLAVOR_HOP_DOSE
 
-	var candidates := preferred if not preferred.is_empty() else hops
-	var target_ibu := (min_ibu + max_ibu) / 2.0
-
-	var deltas : Array[int] = [0, 1, -1, 2, -2]
-
-	for hop in candidates:
-		var base_amount : int = max(1, roundi(target_ibu * 10.0 / hop.alpha_acids))
-		for delta in deltas:
-			var try_amount : int = base_amount + delta
-			if try_amount < 1:
-				continue
-
-			var final_ibu := roundi(hop.alpha_acids * try_amount / 10.0)
-			if final_ibu >= min_ibu and final_ibu <= max_ibu:
-				return {hop.id: try_amount}
-
+	var target_ibu : float = minf((min_ibu + max_ibu) / 2.0, min_ibu + MAX_TARGET_ABOVE_MIN_IBU)
+	var base_amount : int = maxi(0, roundi((target_ibu * 10.0 - flavor_alpha) / bittering.alpha_acids))
+	for delta : int in [0, 1, -1, 2, -2]:
+		var try_amount : int = base_amount + delta
+		if try_amount < 0 or (try_amount == 0 and dose.is_empty()):
+			continue
+		var final_ibu : int = roundi((flavor_alpha + bittering.alpha_acids * try_amount) / 10.0)
+		if final_ibu >= min_ibu and final_ibu <= max_ibu:
+			if try_amount > 0:
+				dose[bittering.id] = dose.get(bittering.id, 0) + try_amount
+			return dose
 	return {}
+
+
+static func _cheapest_per_alpha(hops : Array[HopData]) -> HopData:
+	var best : HopData = null
+	for hop in hops:
+		if hop.alpha_acids <= 0 or hop.min_reputation > 0:
+			continue
+		if best == null or float(hop.base_price) / hop.alpha_acids < float(best.base_price) / best.alpha_acids:
+			best = hop
+	return best
+
+
+static func _cheapest_unlocked_with_profile(hops : Array[HopData], profile : HopData.FlavorProfile) -> HopData:
+	if profile == HopData.FlavorProfile.NONE:
+		return null
+	var best : HopData = null
+	for hop in hops:
+		if hop.flavor_profile != profile or hop.min_reputation > 0:
+			continue
+		if best == null or hop.base_price < best.base_price:
+			best = hop
+	return best
 
 
 ## The cheapest single hop dose that clears min_ibu, ignoring flavour: the real
