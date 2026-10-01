@@ -84,7 +84,7 @@ func _before_replace(goal : GoalData, succeeded : bool, apply_penalty : bool) ->
 		return NO_EFFECTS
 	var effects : Dictionary = DailyGoalRules.resolution_effects(goal as DailyGoalData, succeeded, apply_penalty, brewery.current_day)
 	if effects.reputation != 0:
-		brewery.reputation = maxi(0, brewery.reputation + effects.reputation)
+		brewery.change_reputation(effects.reputation)
 	if succeeded:
 		brewery.money += effects.money
 	return effects

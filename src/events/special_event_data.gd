@@ -63,7 +63,7 @@ func _find_batch_by_style(brewery: Brewery, style: BeerStyle.Style) -> BrewBatch
 
 func _apply_rewards(brewery: Brewery) -> void:
 	brewery.money += reward_money
-	brewery.reputation = max(0, brewery.reputation + reward_reputation)
+	brewery.change_reputation(reward_reputation)
 	if clears_risk:
 		brewery.risk = 0
 	else:

@@ -64,6 +64,9 @@ var game_has_ended : bool = false
 @export var brew_preparation : BrewPreparation
 @export var saved_recipes : Array[BrewRecipe] = []
 @export var discovered_styles : Dictionary = {} # Avain: BeerStyle.Style -> Arvo: true
+## Styles brewed this run. Unlike discovered_styles it is not seeded from earlier
+## runs, so each run's first brew of a style can still earn reputation.
+@export var brewed_styles : Dictionary = {} # BeerStyle.Style -> true
 
 ## First-brew tutorial progress. One-way latches, so a step stays done after
 ## its ingredients are used up. tutorial_complete() derives from these.
@@ -136,6 +139,14 @@ func skip_tutorial() -> void:
 func add_risk(amount : int) -> void:
 	risk = max(0, risk + amount)
 	InspectionService.new(self).check_for_raid()
+
+
+## Gains shrink as reputation grows (ReputationRules); losses apply in full.
+## Returns the change actually applied.
+func change_reputation(amount : int) -> int:
+	var before : int = reputation
+	reputation = ReputationRules.apply(reputation, amount)
+	return reputation - before
 
 
 ## Static so the curve can be unit-tested without a live Brewery.

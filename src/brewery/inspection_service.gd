@@ -5,8 +5,6 @@ extends RefCounted
 
 const LVV_RAID_FINE_PERCENT : float = 0.3
 
-const LVV_RAID_REPUTATION_PENALTY_PERCENT : float = 0.25
-
 ## Each prior raid adds this multiple of the base fine and reputation penalty
 ## (raid 2 doubles it, raid 3 triples it).
 const LVV_RAID_ESCALATION_PER_RAID : float = 1.0
@@ -56,10 +54,10 @@ func check_for_raid() -> void:
 	# raid_count still counts prior raids, so this raid escalates from the earlier count.
 	var escalation : float = minf(LVV_RAID_MAX_ESCALATION, 1.0 + brewery.raid_count * LVV_RAID_ESCALATION_PER_RAID)
 	var fine_amount : float = snappedf(brewery.money * LVV_RAID_FINE_PERCENT * escalation, 0.1)
-	var reputation_penalty : int = roundi(brewery.reputation * LVV_RAID_REPUTATION_PENALTY_PERCENT * escalation)
+	var reputation_penalty : int = ReputationRules.raid_penalty(brewery.reputation, escalation)
 
 	brewery.money -= fine_amount
-	brewery.reputation = max(0, brewery.reputation - reputation_penalty)
+	brewery.change_reputation(-reputation_penalty)
 	brewery.risk = 0
 	brewery.raid_count += 1
 
@@ -86,7 +84,7 @@ func apply_early_close_cost(earliness : float) -> void:
 	var risk_relief : int = roundi(EARLY_CLOSE_MAX_RISK_RELIEF * earliness)
 
 	brewery.money -= money_cost
-	brewery.reputation = max(0, brewery.reputation - reputation_cost)
+	brewery.change_reputation(-reputation_cost)
 	brewery.risk = max(0, brewery.risk - risk_relief)
 	brewery.early_closes_count += 1
 

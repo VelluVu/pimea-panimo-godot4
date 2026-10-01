@@ -41,6 +41,9 @@ const XP_POPUP_FORMAT : String = "+%d XP"
 const XP_POPUP_DURATION_SECONDS : float = 1.8
 const XP_POPUP_OFFSET : Vector2 = Vector2(6, 0)
 const XP_POPUP_FLOAT_DISTANCE : float = 35.0
+const REPUTATION_POPUP_FORMAT : String = "%+d Mainetta"
+## Below the XP popup, so the two do not overlap.
+const REPUTATION_POPUP_STEP : Vector2 = Vector2(0, 20)
 
 @onready var table_list_vbox : VBoxContainer = %IngredientListVBox
 @onready var preview_label : Label = $VBoxContainer/PreviewLabel
@@ -65,6 +68,7 @@ func _ready() -> void:
 	BrewerySignals.recipe_saved.connect(_on_recipe_saved)
 	BrewerySignals.recipe_save_rejected.connect(_on_recipe_save_rejected)
 	BrewerySignals.brew_xp_gained.connect(_on_brew_xp_gained)
+	BrewerySignals.brew_reputation_gained.connect(_on_brew_reputation_gained)
 	erase_button.pressed.connect(_on_erase_button_pressed)
 	_update_table_list_ui()
 
@@ -73,12 +77,21 @@ func _ready() -> void:
 ## button — the brewing counterpart to CustomerManager's sale XP popup,
 ## which appears on the customer instead (see DialogView).
 func _on_brew_xp_gained(amount : int) -> void:
+	_float_popup(XP_POPUP_FORMAT % amount, XP_POPUP_COLOR, XP_POPUP_OFFSET)
+
+
+func _on_brew_reputation_gained(amount : int) -> void:
+	var color : Color = Color.GREEN if amount > 0 else Color.RED
+	_float_popup(REPUTATION_POPUP_FORMAT % amount, color, XP_POPUP_OFFSET + REPUTATION_POPUP_STEP)
+
+
+func _float_popup(text : String, color : Color, offset : Vector2) -> void:
 	var popup := Label.new()
-	popup.text = XP_POPUP_FORMAT % amount
-	popup.modulate = XP_POPUP_COLOR
+	popup.text = text
+	popup.modulate = color
 
 	start_brew_button.add_child(popup)
-	popup.position = Vector2(start_brew_button.size.x, 0) + XP_POPUP_OFFSET
+	popup.position = Vector2(start_brew_button.size.x, 0) + offset
 
 	var tween := create_tween().set_parallel(true)
 	var target_pos := popup.position + Vector2(0, -XP_POPUP_FLOAT_DISTANCE)

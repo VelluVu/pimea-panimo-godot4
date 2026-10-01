@@ -76,7 +76,7 @@ const MIN_TIP_PER_QUALITY_POINT : float = 1.0
 
 @export_group("Reputation Changes")
 @export var rep_bad_quality: int = -3
-@export var rep_primary_style: int = 10
+@export var rep_primary_style: int = 5
 @export var rep_secondary_style: int = 0
 @export var rep_wrong_style: int = -1
 ## Reputation per quality point above min_quality, and a penalty per point below it.

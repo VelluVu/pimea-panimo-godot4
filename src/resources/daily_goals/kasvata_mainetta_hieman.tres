@@ -6,12 +6,12 @@
 script = ExtResource("1_goal")
 goal_name = "Mainetta"
 goal_type = 3
-target_amount = 15
+target_amount = 6
 progress_format = "%d/%d"
 reward_money = 12
 reward_reputation = 3
 reward_xp = 12
 penalty_reputation = 2
 penalty_risk = 3
-scales_with_day = true
+scales_with_day = false
 target_scale_per_day = 0.08

@@ -75,6 +75,17 @@ func start_brew() -> void:
 
 	brewery.inventory.brew_batches.append(new_batch)
 
+	# Reputation comes only from a run's first brew of a style, so repeat brews cannot farm
+	# it, and a discovery never costs any; a failed brew costs its value every time.
+	var brew_reputation : int = 0
+	if not brew_report.is_matched:
+		brew_reputation = brewery.change_reputation(brew_report.reputation_change)
+	elif not brewery.brewed_styles.has(brew_report.beer_style.style):
+		brewery.brewed_styles[brew_report.beer_style.style] = true
+		brew_reputation = brewery.change_reputation(maxi(0, brew_report.reputation_change))
+	if brew_reputation != 0:
+		BrewerySignals.brew_reputation_gained.emit(brew_reputation)
+
 	if brew_report.is_matched:
 		var is_new_discovery : bool = not brewery.discovered_styles.has(brew_report.beer_style.style)
 		StyleDiscovery.new(brewery).discover_style(brew_report.beer_style.style)

@@ -91,7 +91,7 @@ func process(data : CustomerData) -> String:
 		brewery.stats.multiplier(PerkStats.REPUTATION_GAIN))
 
 	brewery.money += outcome.net_income
-	brewery.reputation = max(0, brewery.reputation + outcome.reputation_gain)
+	brewery.change_reputation(outcome.reputation_gain)
 	if outcome.reputation_gain < 0:
 		BrewerySignals.customer_unhappy.emit()
 	brewery.add_risk(results[CustomerManager.KEY_RISK])
@@ -133,7 +133,7 @@ func process(data : CustomerData) -> String:
 func _turn_away(data : CustomerData, wanted : int) -> String:
 	if brewery != null:
 		var reputation_before : int = brewery.reputation
-		brewery.reputation = max(0, brewery.reputation - data.no_match_reputation_penalty)
+		brewery.change_reputation(-data.no_match_reputation_penalty)
 		brewery.add_risk(data.no_match_risk_penalty)
 		BrewerySignals.customer_unhappy.emit()
 		# A customer who fights over missing beer does it right here, before leaving.
@@ -148,7 +148,7 @@ func _turn_away(data : CustomerData, wanted : int) -> String:
 ## line. `batch` is the one just sold from, or null when the customer was turned away;
 ## then the broken bottles come from a random batch in the cellar, if there is any.
 func _trigger_bar_fight(data : CustomerData, batch : BrewBatch) -> void:
-	brewery.reputation = max(0, brewery.reputation - data.bar_fight_reputation_penalty)
+	brewery.change_reputation(-data.bar_fight_reputation_penalty)
 	brewery.add_risk(data.bar_fight_risk_penalty)
 	if batch == null and not brewery.inventory.brew_batches.is_empty():
 		batch = brewery.inventory.brew_batches.pick_random()
