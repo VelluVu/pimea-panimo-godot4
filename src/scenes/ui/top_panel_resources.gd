@@ -23,6 +23,7 @@ const MODIFIER_TAG_FORMAT : String = "🎲 %s"
 const LEVEL_FORMAT : String = "Taso: %d"
 const LEVEL_PROGRESS_TOOLTIP_FORMAT : String = "%d / %d XP seuraavaan tasoon"
 const REPUTATION_TOOLTIP_FORMAT : String = "%s\n%s\n%s"
+const REPUTATION_VALUE_FORMAT : String = "Maine: %d"
 const NEXT_TIER_FORMAT : String = "Seuraava: %s (%d mainetta)"
 const TOP_TIER_TEXT : String = "Korkein maine saavutettu."
 const FAME_RAID_FORMAT : String = "\nKuuluisuus houkuttelee tarkastajia: ratsiakynnys -%d"
@@ -107,8 +108,7 @@ func _on_brewery_state_changed(brewery : Brewery) -> void:
 		if change != 0:
 			_create_popup_effect(reputation_label, change, "", false)
 	
-	reputation_label.text = "Maine: " + str(new_reputation)
-	reputation_label.tooltip_text = _reputation_tooltip(new_reputation)
+	_update_reputation_display(new_reputation)
 	last_reputation = new_reputation
 
 	if brewery.run_level != _last_level:
@@ -142,19 +142,24 @@ func _on_brewery_state_changed(brewery : Brewery) -> void:
 		_risk_warning_active = false
 
 
-func _reputation_tooltip(reputation : int) -> String:
+## The bar shows the tier name; the exact value and the tier's details are in the tooltip.
+func _update_reputation_display(reputation : int) -> void:
 	var tiers : Array[ReputationTier] = ReputationTiers.all()
 	var tier : ReputationTier = ReputationTiers.tier_for(reputation, tiers)
 	if tier == null:
-		return ""
+		reputation_label.text = REPUTATION_VALUE_FORMAT % reputation
+		reputation_label.tooltip_text = ""
+		return
+
+	reputation_label.text = tier.tier_name
 	var next : ReputationTier = ReputationTiers.next_tier(reputation, tiers)
 	var next_text : String = TOP_TIER_TEXT if next == null else NEXT_TIER_FORMAT % [next.tier_name, next.min_reputation]
-	var text : String = REPUTATION_TOOLTIP_FORMAT % [tier.tier_name, tier.description, next_text]
+	var text : String = REPUTATION_TOOLTIP_FORMAT % [REPUTATION_VALUE_FORMAT % reputation, tier.description, next_text]
 	if tier.raid_threshold_penalty > 0:
 		text += FAME_RAID_FORMAT % tier.raid_threshold_penalty
 	if tier.daily_decay_percent > 0.0:
 		text += FAME_DECAY_FORMAT % roundi(tier.daily_decay_percent * 100.0)
-	return text
+	reputation_label.tooltip_text = text
 
 
 ## One-shot attention pulse the moment risk crosses into the warning
