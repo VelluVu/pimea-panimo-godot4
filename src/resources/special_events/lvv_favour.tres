@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ReputationFavourEventData" format=3]
+
+[ext_resource type="Script" path="res://src/events/reputation_favour_event_data.gd" id="1_favour"]
+
+[resource]
+script = ExtResource("1_favour")
+event_caller_name = "Valtuutettu Kettunen"
+intro_dialogue = "Tunnen LVV:n tarkastajan. Hän unohtaa paperisi, jos panimosi nimi komeilee vaalimainoksessani. Hinta: 25 mainetta, LVV-riski laskee 40."
+success_dialogue = "Sovittu. Nimesi kampanjaan, paperisi silppuriin."
+fail_dialogue = "Nimesi ei vielä paina tarpeeksi. Palataan asiaan."
+reject_dialogue = "Ymmärrän. Kaikki eivät halua politiikkaan."
+timeout_seconds = 10.0
+reward_money = 0
+reward_reputation = 0
+reward_risk = -40
+reputation_cost = 25
+weighs_by_risk = true
