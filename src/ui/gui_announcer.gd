@@ -19,6 +19,7 @@ const EARLY_CLOSE_TOAST_FORMAT: String = "Ovet suljettu aikaisin: -%.1f €, mai
 const INGREDIENT_LOCKED_TOAST_FORMAT: String = "%s vaatii vähintään %d mainetta."
 const REPUTATION_TIER_ROSE_TOAST_FORMAT: String = "Maineesi nousi: %s!"
 const REPUTATION_TIER_FELL_TOAST_FORMAT: String = "Maineesi laski: %s."
+const REPUTATION_DECAY_TOAST_FORMAT: String = "Maine hiipui yön aikana: -%d (%s)"
 const INGREDIENT_UNDERFUNDED_TOAST_FORMAT: String = "Ei varaa: %s maksaa %d €, kassassa %.1f €."
 const DISCOVERY_TOAST_FLASH_SECONDS: float = 0.15
 const DISCOVERY_TOAST_HOLD_SECONDS: float = 2.0
@@ -85,6 +86,7 @@ func start() -> void:
 	BrewerySignals.ingredient_purchase_locked.connect(_on_ingredient_purchase_locked)
 	BrewerySignals.ingredient_purchase_underfunded.connect(_on_ingredient_purchase_underfunded)
 	BrewerySignals.reputation_tier_changed.connect(_on_reputation_tier_changed)
+	BrewerySignals.reputation_decayed.connect(_on_reputation_decayed)
 	BrewerySignals.group_visit_announced.connect(_on_group_visit_announced)
 	BrewerySignals.day_event_announced.connect(_on_day_event_announced)
 
@@ -145,6 +147,10 @@ func _on_ingredient_purchase_underfunded(ingredient_name: String, price: int, mo
 
 func _on_reputation_tier_changed(tier: ReputationTier, rose: bool) -> void:
 	_show_toast((REPUTATION_TIER_ROSE_TOAST_FORMAT if rose else REPUTATION_TIER_FELL_TOAST_FORMAT) % tier.tier_name)
+
+
+func _on_reputation_decayed(amount: int, tier: ReputationTier) -> void:
+	_show_toast(REPUTATION_DECAY_TOAST_FORMAT % [amount, tier.tier_name])
 
 
 func _on_group_visit_announced(banner_text: String) -> void:

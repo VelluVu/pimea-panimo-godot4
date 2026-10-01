@@ -115,6 +115,7 @@ func _advance_day() -> void:
 	brewery.today_sale_receipts.clear()
 
 	_charge_daily_utility_bills(brewery)
+	_apply_reputation_decay(brewery)
 
 	SaveManager.save_game()
 	# DailyGoalManager, DayEventManager and the UI react to this themselves.
@@ -126,6 +127,18 @@ func _advance_day() -> void:
 func _check_survival_ending(brewery : Brewery) -> void:
 	if DayRules.survival_reached(brewery.current_day, brewery.reputation, brewery.money, brewery.game_has_ended, brewery.has_continued_past_survival):
 		brewery.trigger_ending("survived")
+
+
+## Before day_changed, so the day recap's reputation change includes it.
+func _apply_reputation_decay(brewery : Brewery) -> void:
+	var tier : ReputationTier = brewery.get_reputation_tier()
+	var decay : int = ReputationRules.daily_decay(brewery.reputation, tier)
+	if decay <= 0:
+		return
+
+	brewery.change_reputation(-decay)
+	BrewerySignals.reputation_decayed.emit(decay, tier)
+	BrewerySignals.brewery_state_changed.emit(brewery)
 
 
 ## Skipped until the tutorial is complete, see DayRules.DAILY_ELECTRICITY_COST.

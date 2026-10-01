@@ -7,3 +7,5 @@ script = ExtResource("1_tier")
 tier_name = "Legendaarinen"
 min_reputation = 100
 description = "Pimeästä panimosta kerrotaan tarinoita. Osa niistä on jopa totta."
+raid_threshold_penalty = 15
+daily_decay_percent = 0.04

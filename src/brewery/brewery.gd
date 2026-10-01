@@ -181,7 +181,11 @@ func apply_perk(perk : RunPerk) -> void:
 
 ## The raid threshold after this run's modifier and perks.
 func get_effective_raid_threshold() -> int:
-	return stats.raid_threshold(LVV_RAID_THRESHOLD)
+	return ReputationRules.raid_threshold(stats.raid_threshold(LVV_RAID_THRESHOLD), get_reputation_tier())
+
+
+func get_reputation_tier() -> ReputationTier:
+	return ReputationTiers.tier_for(reputation, ReputationTiers.all())
 
 
 ## Call after anything that can drain money: no cash and nothing left to
