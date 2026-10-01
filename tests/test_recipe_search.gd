@@ -101,6 +101,25 @@ func test_hop_dose_falls_back_to_any_hop_without_a_profile_match() -> void:
 	assert_true(dose.has(1))
 
 
+func test_hop_dose_bitters_with_the_cheapest_alpha_and_adds_a_little_flavour() -> void:
+	# Noble flavour hop: 2 units = 1 IBU; the 16-alpha hop brings it to the window centre 24.
+	var hops : Array[HopData] = [_hop(1, 16, 2), _hop(2, 5, 2, HopData.FlavorProfile.NOBLE)]
+	assert_eq(RecipeSearchScript.find_hop_dose(hops, 20, 28, HopData.FlavorProfile.NOBLE), {2: 2, 1: 14})
+
+
+func test_hop_dose_skips_a_flavour_hop_that_needs_reputation() -> void:
+	var locked := _hop(2, 5, 2, HopData.FlavorProfile.CITRUS)
+	locked.min_reputation = 15
+	var hops : Array[HopData] = [_hop(1, 16, 2), locked]
+	assert_false(RecipeSearchScript.find_hop_dose(hops, 20, 28, HopData.FlavorProfile.CITRUS).has(2))
+
+
+func test_hop_dose_caps_the_target_for_a_wide_window() -> void:
+	# Centre of 40-200 is 120; the target is capped at 40 + 20 = 60.
+	var hops : Array[HopData] = [_hop(1, 10, 1)]
+	assert_eq(RecipeSearchScript.find_hop_dose(hops, 40, 200, HopData.FlavorProfile.NONE), {1: 60})
+
+
 func test_hop_dose_is_empty_without_hops() -> void:
 	var hops : Array[HopData] = []
 	assert_eq(RecipeSearchScript.find_hop_dose(hops, 20, 40, HopData.FlavorProfile.NONE), {})

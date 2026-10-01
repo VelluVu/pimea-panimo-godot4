@@ -73,8 +73,7 @@ func price_breakdown(beer_style : BeerStyle) -> SaleBreakdown:
 
 ## The cheapest malt combo, the required yeast and the cheapest hop dose that clear the
 ## style's ranges. Deliberately not BrewResolver.compute_minimum_ingredients(), which
-## aims at the middle of the ranges and would price a wide-window style like IPA off an
-## unrealistic hop dose.
+## aims further into the IBU window and adds a flavour hop, so it costs a little more.
 func _cheapest_recipe_cost(beer_style : BeerStyle) -> int:
 	var cost : int = _ingredients.combo_cost(_ingredients.find_malt_combo(beer_style))
 
