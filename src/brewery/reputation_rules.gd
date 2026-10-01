@@ -4,6 +4,9 @@ extends RefCounted
 ## Gains shrink as reputation grows, so the higher tiers take sustained play.
 ## Losses always apply in full.
 
+## Where a reputation change came from, for the day recap's breakdown.
+enum Source { OTHER, CUSTOMERS, GOALS, EVENTS, BREWING, DECAY, LVV, EARLY_CLOSE }
+
 ## Reputation at which a gain is halved; gains keep shrinking past it, ever slower.
 const GAIN_SOFT_CAP: float = 100.0
 const RAID_PENALTY_PERCENT: float = 0.25

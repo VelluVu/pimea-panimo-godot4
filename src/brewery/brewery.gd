@@ -144,16 +144,19 @@ func add_risk(amount : int) -> void:
 
 
 ## Gains shrink as reputation grows (ReputationRules); losses apply in full.
-## Returns the change actually applied.
-func change_reputation(amount : int) -> int:
+## Returns the change actually applied. `source` feeds the day recap's breakdown.
+func change_reputation(amount : int, source : ReputationRules.Source = ReputationRules.Source.OTHER) -> int:
 	var before : int = reputation
 	reputation = ReputationRules.apply(reputation, amount)
+	var applied : int = reputation - before
+	if applied != 0:
+		BrewerySignals.reputation_changed.emit(applied, source)
 
 	var tiers : Array[ReputationTier] = ReputationTiers.all()
 	var tier : ReputationTier = ReputationTiers.tier_for(reputation, tiers)
 	if tier != null and tier != ReputationTiers.tier_for(before, tiers):
 		BrewerySignals.reputation_tier_changed.emit(tier, reputation > before)
-	return reputation - before
+	return applied
 
 
 ## Static so the curve can be unit-tested without a live Brewery.

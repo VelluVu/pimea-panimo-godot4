@@ -57,7 +57,7 @@ func check_for_raid() -> void:
 	var reputation_penalty : int = ReputationRules.raid_penalty(brewery.reputation, escalation)
 
 	brewery.money -= fine_amount
-	brewery.change_reputation(-reputation_penalty)
+	brewery.change_reputation(-reputation_penalty, ReputationRules.Source.LVV)
 	brewery.risk = 0
 	brewery.raid_count += 1
 
@@ -84,7 +84,7 @@ func apply_early_close_cost(earliness : float) -> void:
 	var risk_relief : int = roundi(EARLY_CLOSE_MAX_RISK_RELIEF * earliness)
 
 	brewery.money -= money_cost
-	brewery.change_reputation(-reputation_cost)
+	brewery.change_reputation(-reputation_cost, ReputationRules.Source.EARLY_CLOSE)
 	brewery.risk = max(0, brewery.risk - risk_relief)
 	brewery.early_closes_count += 1
 

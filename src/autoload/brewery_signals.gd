@@ -70,6 +70,10 @@ signal xp_popup_requested(amount: int, position: Vector2)
 ## penalty. Same capture-and-pair pattern as sale_xp_gained.
 @warning_ignore("unused_signal")
 signal sale_reputation_gained(amount: int)
+## Emitted by Brewery.change_reputation() with every non-zero change actually applied,
+## tagged with where it came from (ReputationRules.Source). DayRecapWindow sums them.
+@warning_ignore("unused_signal")
+signal reputation_changed(amount: int, source: ReputationRules.Source)
 ## Emitted by Brewery.change_reputation() when reputation crosses into another
 ## ReputationTier, up (`rose`) or down.
 @warning_ignore("unused_signal")
