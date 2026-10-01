@@ -3,7 +3,7 @@ extends McpTestSuite
 
 ## Unit tests for GoalSlot: starting a goal snapshots its tracking state.
 
-const GoalSlotScript := preload("res://src/progression/goal_slot.gd")
+const GoalSlotScript := preload("res://src/systems/goals/goal_slot.gd")
 
 
 func suite_name() -> String:
@@ -21,7 +21,7 @@ func test_new_slot_is_empty() -> void:
 	assert_false(GoalSlotScript.new().has_goal())
 
 
-func test_start_resets_progress_and_snapshots_reputation_and_target() -> void:
+func test_start_resets_progress_and_snapshots_baseline_and_target() -> void:
 	var slot := GoalSlotScript.new()
 	slot.progress = 4
 	var goal := _make_goal()
@@ -31,7 +31,7 @@ func test_start_resets_progress_and_snapshots_reputation_and_target() -> void:
 	assert_true(slot.has_goal())
 	assert_eq(slot.goal, goal)
 	assert_eq(slot.progress, 0)
-	assert_eq(slot.reputation_baseline, 25)
+	assert_eq(slot.baseline, 25)
 	assert_eq(slot.effective_target, goal.get_effective_target(3))
 
 
