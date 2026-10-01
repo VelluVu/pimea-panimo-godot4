@@ -22,11 +22,11 @@ const MODIFIER_TAG_FORMAT : String = "🎲 %s"
 
 const LEVEL_FORMAT : String = "Taso: %d"
 const LEVEL_PROGRESS_TOOLTIP_FORMAT : String = "%d / %d XP seuraavaan tasoon"
-const REPUTATION_TOOLTIP_FORMAT : String = "%s
-%s
-%s"
+const REPUTATION_TOOLTIP_FORMAT : String = "%s\n%s\n%s"
 const NEXT_TIER_FORMAT : String = "Seuraava: %s (%d mainetta)"
 const TOP_TIER_TEXT : String = "Korkein maine saavutettu."
+const FAME_RAID_FORMAT : String = "\nKuuluisuus houkuttelee tarkastajia: ratsiakynnys -%d"
+const FAME_DECAY_FORMAT : String = "\nMaine hiipuu %d %% joka yö"
 
 @onready var money_label : Label = $MoneyLabel
 @onready var reputation_label : Label = $ReputationLabel
@@ -149,7 +149,12 @@ func _reputation_tooltip(reputation : int) -> String:
 		return ""
 	var next : ReputationTier = ReputationTiers.next_tier(reputation, tiers)
 	var next_text : String = TOP_TIER_TEXT if next == null else NEXT_TIER_FORMAT % [next.tier_name, next.min_reputation]
-	return REPUTATION_TOOLTIP_FORMAT % [tier.tier_name, tier.description, next_text]
+	var text : String = REPUTATION_TOOLTIP_FORMAT % [tier.tier_name, tier.description, next_text]
+	if tier.raid_threshold_penalty > 0:
+		text += FAME_RAID_FORMAT % tier.raid_threshold_penalty
+	if tier.daily_decay_percent > 0.0:
+		text += FAME_DECAY_FORMAT % roundi(tier.daily_decay_percent * 100.0)
+	return text
 
 
 ## One-shot attention pulse the moment risk crosses into the warning

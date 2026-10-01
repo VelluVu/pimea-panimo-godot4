@@ -25,3 +25,17 @@ static func apply(reputation: int, amount: int) -> int:
 
 static func raid_penalty(reputation: int, escalation: float) -> int:
 	return mini(RAID_PENALTY_MAX, roundi(reputation * RAID_PENALTY_PERCENT * escalation))
+
+
+## `threshold` lowered by the tier's fame penalty, never below 1. `tier` may be null.
+static func raid_threshold(threshold: int, tier: ReputationTier) -> int:
+	if tier == null:
+		return threshold
+	return maxi(1, threshold - tier.raid_threshold_penalty)
+
+
+## Reputation lost at a day change. `tier` may be null.
+static func daily_decay(reputation: int, tier: ReputationTier) -> int:
+	if tier == null:
+		return 0
+	return roundi(reputation * tier.daily_decay_percent)

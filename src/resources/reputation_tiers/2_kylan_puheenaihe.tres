@@ -7,3 +7,4 @@ script = ExtResource("1_tier")
 tier_name = "Kylän puheenaihe"
 min_reputation = 30
 description = "Mummotkin puhuvat panimostasi kaupan kassajonossa."
+raid_threshold_penalty = 5

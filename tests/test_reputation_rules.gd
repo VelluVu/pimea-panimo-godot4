@@ -1,9 +1,10 @@
 @tool
 extends McpTestSuite
 
-## Unit tests for ReputationRules: diminishing gains and the raid penalty.
+## Unit tests for ReputationRules: diminishing gains, the raid penalty and fame effects.
 
 const RulesScript := preload("res://src/brewery/reputation_rules.gd")
+const TierScript := preload("res://src/brewery/reputation_tier.gd")
 
 
 func suite_name() -> String:
@@ -41,3 +42,28 @@ func test_raid_penalty_is_a_share_of_reputation() -> void:
 
 func test_raid_penalty_is_capped() -> void:
 	assert_eq(RulesScript.raid_penalty(120, 3.0), RulesScript.RAID_PENALTY_MAX)
+
+
+func _tier(raid_threshold_penalty: int, daily_decay_percent: float) -> ReputationTier:
+	var tier: ReputationTier = TierScript.new()
+	tier.raid_threshold_penalty = raid_threshold_penalty
+	tier.daily_decay_percent = daily_decay_percent
+	return tier
+
+
+func test_fame_lowers_the_raid_threshold() -> void:
+	assert_eq(RulesScript.raid_threshold(100, _tier(10, 0.0)), 90)
+
+
+func test_raid_threshold_never_drops_below_one() -> void:
+	assert_eq(RulesScript.raid_threshold(5, _tier(10, 0.0)), 1)
+
+
+func test_no_tier_leaves_the_threshold_alone() -> void:
+	assert_eq(RulesScript.raid_threshold(100, null), 100)
+
+
+func test_daily_decay_is_a_share_of_reputation() -> void:
+	assert_eq(RulesScript.daily_decay(150, _tier(0, 0.04)), 6)
+	assert_eq(RulesScript.daily_decay(150, _tier(0, 0.0)), 0)
+	assert_eq(RulesScript.daily_decay(150, null), 0)
