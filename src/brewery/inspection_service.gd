@@ -26,6 +26,9 @@ const EARLY_CLOSE_BASE_REPUTATION_COST : int = 1
 
 ## Cost growth per prior manual close: the 2nd costs 1.5x, the 3rd 2.0x.
 const EARLY_CLOSE_ESCALATION_PER_CLOSE : float = 0.5
+## Caps the escalation, so closing early stays usable as an emergency brake. Uncapped, a
+## player who closed early often paid more each time until the run spiralled down.
+const EARLY_CLOSE_MAX_ESCALATION : float = 3.0
 
 ## Risk relief at earliness 1.0. Not escalated by repeat closes.
 const EARLY_CLOSE_MAX_RISK_RELIEF : int = 10
@@ -75,6 +78,10 @@ func check_for_raid() -> void:
 	brewery.check_bankruptcy()
 
 
+static func early_close_escalation(prior_closes : int) -> float:
+	return minf(EARLY_CLOSE_MAX_ESCALATION, 1.0 + prior_closes * EARLY_CLOSE_ESCALATION_PER_CLOSE)
+
+
 static func raid_fine(money : float, escalation : float) -> float:
 	return minf(LVV_RAID_FINE_MAX, snappedf(maxf(0.0, money) * LVV_RAID_FINE_PERCENT * escalation, 0.1))
 
@@ -84,7 +91,7 @@ static func raid_fine(money : float, escalation : float) -> float:
 ## that grows with each manual close.
 func apply_early_close_cost(earliness : float) -> void:
 	earliness = clampf(earliness, 0.0, 1.0)
-	var escalation : float = 1.0 + brewery.early_closes_count * EARLY_CLOSE_ESCALATION_PER_CLOSE
+	var escalation : float = early_close_escalation(brewery.early_closes_count)
 
 	var money_cost : float = snappedf(EARLY_CLOSE_BASE_MONEY_COST * escalation * earliness, 0.1)
 	var reputation_cost : int = roundi(EARLY_CLOSE_BASE_REPUTATION_COST * escalation * earliness)

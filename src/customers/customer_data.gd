@@ -10,6 +10,10 @@ const DEFAULT_NAMES: Array[String] = ["Matti", "Maija", "Pekka", "Liisa", "Antti
 ## Flat tip floor per quality point, so a clear overshoot is felt on cheap styles
 ## where the proportional tip rounds to nothing.
 const MIN_TIP_PER_QUALITY_POINT : float = 1.0
+## Caps the reputation a sale earns for quality above this customer's bar. Uncapped,
+## customers with a very low bar (Opiskelija, Raksamies) gave almost double reputation
+## for any decent beer, so early reputation came far too easily. Penalties stay uncapped.
+const QUALITY_REPUTATION_BONUS_MAX : int = 2
 
 @export_group("Customer Profile")
 @export var customer_name: String = "Anonyymi"
@@ -213,7 +217,7 @@ func evaluate_brew_batch(batch: BrewBatch, style_base_price: float = 3.0) -> Dic
 	# way. Zero at the bar, positive above it (extra reputation, less risk) and negative in
 	# the bad-quality branch (the worse the miss, the harsher the penalty).
 	var quality_margin : float = quality - min_quality
-	rep_change += roundi(quality_margin * quality_reputation_sensitivity)
+	rep_change += mini(roundi(quality_margin * quality_reputation_sensitivity), QUALITY_REPUTATION_BONUS_MAX)
 
 	var risk_adjustment : int = roundi(quality_margin * quality_risk_sensitivity)
 	# Floor at 0 only for normally risky values, so quality can cancel a sale's risk but not

@@ -1,7 +1,7 @@
 @tool
 extends McpTestSuite
 
-## Unit tests for InspectionService.raid_fine().
+## Unit tests for InspectionService.raid_fine() and early_close_escalation().
 
 const ServiceScript := preload("res://src/brewery/inspection_service.gd")
 
@@ -20,3 +20,12 @@ func test_fine_is_capped() -> void:
 
 func test_debt_is_never_fined_into_a_payout() -> void:
 	assert_eq(ServiceScript.raid_fine(-50.0, 1.0), 0.0)
+
+
+func test_early_close_cost_grows_with_each_close() -> void:
+	assert_eq(ServiceScript.early_close_escalation(0), 1.0)
+	assert_eq(ServiceScript.early_close_escalation(2), 2.0)
+
+
+func test_early_close_cost_stops_growing_at_the_cap() -> void:
+	assert_eq(ServiceScript.early_close_escalation(20), ServiceScript.EARLY_CLOSE_MAX_ESCALATION)

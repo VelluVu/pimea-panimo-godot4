@@ -162,8 +162,8 @@ func test_evaluate_brew_batch_quality_at_min_quality_matches_flat_baseline() -> 
 
 
 func test_evaluate_brew_batch_masterful_quality_boosts_reputation_cuts_risk_and_pays_a_tip() -> void:
-	# Well above min_quality should keep compounding the bonus/reduction,
-	# not cap out at whatever the first threshold step gave.
+	# Well above min_quality keeps compounding the tip and risk reduction; the
+	# reputation bonus stops at QUALITY_REPUTATION_BONUS_MAX.
 	var customer := CustomerData.new()
 	var batch := _make_batch(BeerStyle.Style.BULKKILAGER, 1.5)
 	var result := customer.evaluate_brew_batch(batch)
@@ -174,7 +174,7 @@ func test_evaluate_brew_batch_masterful_quality_boosts_reputation_cuts_risk_and_
 	var expected_tip : float = maxf(0.0, snappedf(max(expected_proportional_tip, expected_floor_tip) * customer.budget_multiplier, 0.1))
 	assert_eq(result[CustomerManager.KEY_INCOME], expected_income, "income")
 	assert_eq(result[CustomerManager.KEY_TIP], expected_tip, "tip")
-	assert_eq(result[CustomerManager.KEY_REPUTATION], customer.rep_primary_style + roundi(margin * customer.quality_reputation_sensitivity), "reputation")
+	assert_eq(result[CustomerManager.KEY_REPUTATION], customer.rep_primary_style + CustomerData.QUALITY_REPUTATION_BONUS_MAX, "reputation")
 	assert_eq(result[CustomerManager.KEY_RISK], maxi(0, customer.risk_primary_style - roundi(margin * customer.quality_risk_sensitivity)), "risk")
 
 
