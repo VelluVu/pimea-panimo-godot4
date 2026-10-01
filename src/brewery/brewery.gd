@@ -19,7 +19,7 @@ const XP_LEVEL_BASE : int = 40
 const XP_LEVEL_GROWTH_PER_LEVEL : int = 20
 
 
-## Which SaveManager.SAVE_VERSION wrote this brewery; 0 for saves that
+## Which SaveWiring.SAVE_VERSION wrote this brewery; 0 for saves that
 ## predate versioning.
 @export var save_version : int = 0
 @export var inventory : Inventory
