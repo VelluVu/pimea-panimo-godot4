@@ -41,6 +41,7 @@
 [ext_resource type="Script" uid="uid://boq14pdk2ukfv" path="res://src/scenes/ui/receipt_machine_label.gd" id="41_ty1g6"]
 [ext_resource type="PackedScene" path="res://src/scenes/ui/run_effects_window.tscn" id="42_2cjbq"]
 [ext_resource type="Script" uid="uid://wlyaagmxb0io" path="res://src/scenes/ui/chalkboard_label.gd" id="42_bjg73"]
+[ext_resource type="PackedScene" path="res://src/scenes/ui/cellar_upgrades_window.tscn" id="42_cellarupgrades"]
 [ext_resource type="Script" uid="uid://cwvam2qbvgbk3" path="res://src/scenes/ui/warehouse_label.gd" id="43_bu4jf"]
 [ext_resource type="PackedScene" uid="uid://kttjbp45s274" path="res://src/scenes/bartender.tscn" id="43_chjal"]
 [ext_resource type="Script" uid="uid://b78ix8nmmshyf" path="res://src/ui/recipe_shelf_hover_area.gd" id="45_txyw0"]
@@ -814,6 +815,13 @@ size_flags_horizontal = 0
 size_flags_vertical = 8
 text = "Sulje"
 
+[node name="UpgradesButton" type="Button" parent="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer" unique_id=1477994951]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+text = "Parannukset"
+
 [node name="ShopEntrancePanel" type="Panel" parent="GUI_CanvasLayer/GUI" unique_id=53121703]
 visible = false
 custom_minimum_size = Vector2(64, 64)
@@ -1109,6 +1117,14 @@ anchor_left = 0.6
 anchor_top = 0.1
 anchor_right = 0.98
 anchor_bottom = 0.85
+
+[node name="CellarUpgradesWindow" parent="GUI_CanvasLayer/GUI" unique_id=1969979881 instance=ExtResource("42_cellarupgrades")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.23
+anchor_top = 0.1
+anchor_right = 0.77
+anchor_bottom = 0.9
 
 [node name="FirstBrewHintBanner" type="Label" parent="GUI_CanvasLayer/GUI" unique_id=1039613027]
 visible = false

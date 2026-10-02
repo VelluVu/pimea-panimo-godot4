@@ -16,6 +16,7 @@ extends Control
 @onready var dev_console : DevConsole = $DevConsole
 @onready var options_window : OptionsWindow = $OptionsWindow
 @onready var run_effects_window : RunEffectsWindow = $RunEffectsWindow
+@onready var cellar_upgrades_window : CellarUpgradesWindow = $CellarUpgradesWindow
 @onready var sale_receipt_log_window : SaleReceiptLogWindow = $SaleReceiptLogWindow
 
 var _views : GuiViewSwitcher
@@ -108,6 +109,9 @@ func _close_any_open_views() -> bool:
 		closed_something = true
 	if run_effects_window.visible:
 		run_effects_window.hide()
+		closed_something = true
+	if cellar_upgrades_window.visible:
+		cellar_upgrades_window.hide()
 		closed_something = true
 	if sale_receipt_log_window.visible:
 		sale_receipt_log_window.hide()

@@ -52,10 +52,19 @@ func check_for_raid() -> void:
 		shuffled.shuffle()
 		spared_batches = shuffled.slice(0, hidden_count)
 
-	var confiscated_bottles : int = brewery.inventory.count_bottles()
-	for spared : BrewBatch in spared_batches:
-		confiscated_bottles -= spared.amount_bottles
-	brewery.inventory.brew_batches = spared_batches
+	# raid_saved_bottle_share leaves part of every other batch behind.
+	var share : float = brewery.stats.chance(PerkStats.RAID_SAVED_BOTTLE_SHARE)
+	var kept_batches : Array[BrewBatch] = spared_batches.duplicate()
+	var confiscated_bottles : int = 0
+	for batch : BrewBatch in brewery.inventory.brew_batches:
+		if spared_batches.has(batch):
+			continue
+		var saved : int = saved_bottles(batch.amount_bottles, share)
+		confiscated_bottles += batch.amount_bottles - saved
+		if saved > 0:
+			batch.amount_bottles = saved
+			kept_batches.append(batch)
+	brewery.inventory.brew_batches = kept_batches
 
 	# raid_count still counts prior raids, so this raid escalates from the earlier count.
 	var escalation : float = minf(LVV_RAID_MAX_ESCALATION, 1.0 + brewery.raid_count * LVV_RAID_ESCALATION_PER_RAID)
@@ -76,6 +85,11 @@ func check_for_raid() -> void:
 		return
 
 	brewery.check_bankruptcy()
+
+
+## Bottles of a confiscated batch that a raid leaves behind, rounded down.
+static func saved_bottles(amount : int, share : float) -> int:
+	return floori(amount * clampf(share, 0.0, 1.0))
 
 
 static func early_close_escalation(prior_closes : int) -> float:

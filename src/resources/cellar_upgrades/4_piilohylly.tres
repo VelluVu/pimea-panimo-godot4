@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="CellarUpgradeData" format=3]
+
+[ext_resource type="Script" path="res://src/brewery/cellar_upgrade_data.gd" id="1_upgrade"]
+
+[resource]
+script = ExtResource("1_upgrade")
+upgrade_id = "piilohylly"
+sort_order = 4
+base_cost = 45
+cost_growth = 1.7
+perk_name = "Piilohylly"
+description = "Väärä seinä kellarissa. Ratsiassa osa pulloista jää löytymättä."
+icon_placeholder = "🗄️"
+raid_saved_bottle_share = 0.08
+stacks_additively = true

@@ -71,6 +71,8 @@ var game_has_ended : bool = false
 @export var brewed_styles : Dictionary = {} # BeerStyle.Style -> true
 ## How each customer type (CustomerData.title) has been treated this run, see RegularRules.
 @export var customer_standing : Dictionary = {} # String -> int
+## Cellar upgrades bought this run, see CellarUpgradeShop.
+@export var cellar_upgrade_levels : Dictionary = {} # CellarUpgradeData.upgrade_id -> level
 
 ## First-brew tutorial progress. One-way latches, so a step stays done after
 ## its ingredients are used up. tutorial_complete() derives from these.
@@ -87,11 +89,13 @@ var _announced_tier : ReputationTier = null
 ## Today's sales for the receipt log window; cleared each day, not saved.
 var today_sale_receipts : Array[SaleReceiptEntry] = []
 
-## Effective perk and modifier numbers, see PerkStats. Rebuilt on each access
-## because a loaded save replaces active_perks wholesale.
+## Effective perk, cellar upgrade and modifier numbers, see PerkStats. Rebuilt on each
+## access because a loaded save replaces active_perks wholesale.
 var stats : PerkStats:
 	get:
-		return PerkStats.new(run_modifier, active_perks)
+		var perks : Array[RunPerk] = active_perks.duplicate()
+		perks.append_array(CellarUpgrades.perks_for(cellar_upgrade_levels, CellarUpgrades.all()))
+		return PerkStats.new(run_modifier, perks)
 
 ## Services holding the Brewery's behaviour. They connect their own GUISignals
 ## handlers in _ready() and release them in disconnect_signals().
@@ -222,7 +226,7 @@ func _ready() -> void:
 	# not saved, so its pricing has to be re-synced here.
 	resolver.ingredient_price_multiplier = stats.multiplier(PerkStats.INGREDIENT_PRICE)
 
-	_services = [RecipeBook.new(self), IngredientTrader.new(self), BatchDistributor.new(self), Brewer.new(self)]
+	_services = [RecipeBook.new(self), IngredientTrader.new(self), BatchDistributor.new(self), Brewer.new(self), CellarUpgradeShop.new(self)]
 	for service : Variant in _services:
 		service.connect_signals()
 

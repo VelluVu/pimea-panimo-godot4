@@ -17,6 +17,8 @@ const NO_MATCH_RISK_PENALTY : int = 1
 
 ## Used until a spawner reports how many counter positions it really has.
 const DEFAULT_SLOT_COUNT : int = 5
+## Above this many occupied counter spots, customers only voice their reaction.
+const CROWDED_COUNTER_SIZE : int = 5
 
 var slots : CounterSlots = CounterSlots.new(DEFAULT_SLOT_COUNT)
 var active_spawner: CustomerSpawner = null
@@ -38,7 +40,9 @@ func register_spawner(spawner: CustomerSpawner) -> void:
 
 	# A new spawner means a new main scene: customers from the old one are gone,
 	# so their slots must not stay occupied.
-	slots.reset(spawner.counter_markers.size() if not spawner.counter_markers.is_empty() else DEFAULT_SLOT_COUNT)
+	var count : int = _counter_size()
+	spawner.layout_counter(count)
+	slots.reset(count)
 
 	if BrewEngine.current_brewery and not BrewEngine.current_brewery.inventory.brew_batches.is_empty():
 		active_spawner.start_spawning()
@@ -47,6 +51,10 @@ func register_spawner(spawner: CustomerSpawner) -> void:
 ## Used to warn before closing the day: someone mid-visit would lose their sale.
 func has_active_customers() -> bool:
 	return slots.has_customers()
+
+
+func is_counter_crowded() -> bool:
+	return slots.customers().size() > CROWDED_COUNTER_SIZE
 
 
 ## Throws out everyone still being served when the day is force-closed.
@@ -64,6 +72,7 @@ func evict_active_customers() -> void:
 			customer.queue_free()
 
 	slots.reset(slots.size())
+	_apply_counter_size()
 
 
 func get_free_slot_index() -> int:
@@ -81,9 +90,34 @@ func register_active_customer(slot: int, node: Node2D) -> void:
 
 func free_slot_index(slot: int) -> void:
 	slots.release(slot)
+	_apply_counter_size()
+
+
+## The spawner's markers plus the cellar upgrade's extra counter spots.
+func _counter_size() -> int:
+	var base : int = DEFAULT_SLOT_COUNT
+	if active_spawner and not active_spawner.counter_markers.is_empty():
+		base = active_spawner.counter_markers.size()
+	var brewery : Brewery = BrewEngine.current_brewery
+	if brewery == null:
+		return base
+	return base + int(brewery.stats.total(PerkStats.EXTRA_COUNTER_SLOTS))
+
+
+## Re-lays the counter when its size changed. Waits until nobody stands there, so no
+## one is left between the new spots; free_slot_index() calls it again as they leave.
+func _apply_counter_size() -> void:
+	if active_spawner == null or slots.has_customers():
+		return
+	var count : int = _counter_size()
+	if count == slots.size():
+		return
+	active_spawner.layout_counter(count)
+	slots.reset(count)
 
 
 func _on_brewery_state_changed(brewery: Brewery) -> void:
+	_apply_counter_size()
 	if active_spawner and not brewery.inventory.brew_batches.is_empty():
 		active_spawner.start_spawning()
 	

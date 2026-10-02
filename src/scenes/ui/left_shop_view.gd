@@ -14,6 +14,7 @@ const MONEY_POPUP_FLOAT_DISTANCE : float = 35.0
 
 @onready var current_item_label : Label = %ShopItemLabel
 @onready var ingredient_type_selector : IngredientTypeSelector = %ShopTypeSelector
+@onready var upgrades_button : Button = %UpgradesButton
 @export var main_slider : Slider
 @export var buy_button : Button
 @export var sell_button : Button
@@ -24,6 +25,7 @@ var current_id: int = -1
 
 func _ready() -> void:
 	main_slider.value_changed.connect(_on_slider_changed)
+	upgrades_button.pressed.connect(func() -> void: GUISignals.cellar_upgrades_requested.emit())
 	GUISignals.active_ingredient_changed.connect(_on_ingredient_selected_globally)
 	# Affordability (what _update_slider() below computes from) changes on
 	# every purchase/sale, but previously only refreshed when an

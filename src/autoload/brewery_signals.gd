@@ -169,3 +169,6 @@ signal day_event_effect_triggered(message: String)
 ## payload; shown as a good-news toast.
 @warning_ignore("unused_signal")
 signal ingredients_refunded()
+## Emitted by CellarUpgradeShop after a cellar upgrade is bought; `level` is its new level.
+@warning_ignore("unused_signal")
+signal cellar_upgrade_purchased(upgrade: CellarUpgradeData, level: int)

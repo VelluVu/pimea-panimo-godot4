@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="CellarUpgradeData" format=3]
+
+[ext_resource type="Script" path="res://src/brewery/cellar_upgrade_data.gd" id="1_upgrade"]
+
+[resource]
+script = ExtResource("1_upgrade")
+upgrade_id = "tiskipaikat"
+sort_order = 3
+base_cost = 80
+cost_growth = 1.9
+perk_name = "Lisää tiskipaikkoja"
+description = "Yksi asiakas lisää mahtuu tiskille, ja täysi baari houkuttelee lisää väkeä. Väljyys vähenee, mutta kassa kilisee."
+icon_placeholder = "🍺"
+extra_counter_slots = 1
+spawn_interval_multiplier = 0.95
+stacks_additively = true
