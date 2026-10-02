@@ -16,7 +16,8 @@ SettingsWiring loads.
       from the Finnish. Exit code 1 if any.
 
 The CSV's columns are keys (Finnish), en and _source (where the text is, ignored by
-Godot). Edit it in a spreadsheet like the sheets.py exports, then run check.
+Godot). Edit it in a spreadsheet like the sheets.py exports, then run check. The editor
+reimports the CSV when it regains focus; until then the game shows the old English.
 """
 import csv
 import re
@@ -33,6 +34,8 @@ CONST_STRING = re.compile(r'^\s*const\s+(\w+)\s*:\s*String\s*=\s*"((?:[^"\\]|\\.
 CONST_ARRAY = re.compile(r'^\s*const\s+(\w+)\s*:\s*Array\[String\]\s*=\s*\[(.*?)\]', re.M | re.S)
 CONST_DICT = re.compile(r'^\s*const\s+(\w+)\s*:\s*Dictionary\s*=\s*\{(.*?)\}', re.M | re.S)
 QUOTED = re.compile(r'"((?:[^"\\]|\\.)*)"')
+# A dictionary entry on its own line, like `ACTION_SHOP: "Kauppa",` or `"hint": "...",`.
+DICT_ENTRY = re.compile(r'^\s*(?:[A-Z][A-Z0-9_]*|"\w+")\s*:\s*"((?:[^"\\]|\\.)*)",?\s*$', re.M)
 SCENE_TEXT = re.compile(r'^(text|tooltip_text|placeholder_text) = "((?:[^"\\]|\\.)*)"', re.M)
 TEXT_NAME = re.compile(r'(_LABEL|_TEXT|_STRING|_HINT)$')
 PLACEHOLDER = re.compile(r'%[-+0-9.]*[dsf%]')
@@ -83,6 +86,8 @@ def find_texts():
             for name, value in CONST_STRING.findall(text):
                 if not SKIP_NAME.search(name):
                     add(value, _rel(path), name)
+            for value in DICT_ENTRY.findall(text):
+                add(value, _rel(path))
             for pattern in (CONST_ARRAY, CONST_DICT):
                 for name, body in pattern.findall(text):
                     if not SKIP_NAME.search(name):

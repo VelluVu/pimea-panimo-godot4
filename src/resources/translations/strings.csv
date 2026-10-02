@@ -126,7 +126,6 @@ Kate: %.2f €
 Margin: %.2f €
 = Price/serving: %.2f €",src/customers/sale_receipt_entry.gd
 "Häädä asiakkaat, ja aloita uusi päivä",Send the customers home and start a new day,src/scenes/main.tscn
-Kauppa,Shop,src/scenes/main.tscn
 Keittola,Brewhouse,src/scenes/main.tscn
 LVV Riski: 0%,LVV Risk: 0%,src/scenes/main.tscn
 Lisää,Add,src/scenes/main.tscn
@@ -198,11 +197,11 @@ Jatka,Continue,src/scenes/ui/day_recap_window.gd
 ei uusia,none new,src/scenes/ui/day_recap_window.gd
 Päivän yhteenveto,Day summary,src/scenes/ui/day_recap_window.tscn
 Jatka pelaamista,Keep playing,src/scenes/ui/game_end_window.gd
-Olutopin mainetta +%d,Olutoppi renown +%d,src/scenes/ui/game_end_window.gd
+Olutopin mainetta +%d,Brewlore renown +%d,src/scenes/ui/game_end_window.gd
 Sijoitus: #%d,Rank: #%d,src/scenes/ui/game_end_window.gd
 UUSI ENNÄTYS!,NEW RECORD!,src/scenes/ui/game_end_window.gd
 Valikkoon,To menu,src/scenes/ui/game_end_window.gd
-"Voit jatkaa pelaamista, mutta ennätyslistan pisteet eivät enää muutu. Olutopin mainetta saat jatkossa vähemmän, ja uudet reseptit ja saavutukset avautuvat yhä. Uuden yrityksen voit aloittaa valikosta.","You can keep playing, but your leaderboard score no longer changes. You earn less Olutoppi renown from here on, and new recipes and achievements still unlock. Start a new attempt from the menu.",src/scenes/ui/game_end_window.gd
+"Voit jatkaa pelaamista, mutta ennätyslistan pisteet eivät enää muutu. Olutopin mainetta saat jatkossa vähemmän, ja uudet reseptit ja saavutukset avautuvat yhä. Uuden yrityksen voit aloittaa valikosta.","You can keep playing, but your leaderboard score no longer changes. You earn less Brewlore renown from here on, and new recipes and achievements still unlock. Start a new attempt from the menu.",src/scenes/ui/game_end_window.gd
 Aloitetaanko uusi yritys? Tämä kausi jää kesken.,Start a new attempt? This season will be left unfinished.,src/scenes/ui/game_menu_window.gd
 Asetukset,Settings,src/scenes/ui/game_menu_window.gd
 Palataanko päävalikkoon? Peli tallennetaan.,Return to the main menu? The game will be saved.,src/scenes/ui/game_menu_window.gd
@@ -224,7 +223,7 @@ Aloita Peli,Start Game,src/scenes/ui/main_menu.gd
 Aloita uusi peli,Start a new game,src/scenes/ui/main_menu.gd
 Jatka Peliä,Continue Game,src/scenes/ui/main_menu.gd
 Lopeta Peli,Quit Game,src/scenes/ui/main_menu.gd
-Olutoppi,Olutoppi,src/scenes/ui/main_menu.gd
+Olutoppi,Brewlore,src/scenes/ui/main_menu.gd
 Takaisin,Back,src/scenes/ui/main_menu.gd
 Pimeä Panimo,Pimeä Panimo,src/scenes/ui/main_menu.tscn
 Ei vielä ennätystä. Tästä se lähtee.,No record yet. This is where it starts.,src/scenes/ui/modifier_select_window.gd
@@ -263,7 +262,7 @@ Lataa,Load,src/scenes/ui/recipe_library_window.gd
 Reseptit,Recipes,src/scenes/ui/recipe_shelf_label.gd
 Tynnyrit,Kegs,src/scenes/ui/right_warehouse_view.gd
 Varasto,Storage,src/scenes/ui/right_warehouse_view.gd
-Olutopin pysyvät bonukset (%d):,Permanent Olutoppi bonuses (%d):,src/scenes/ui/run_effects_window.gd
+Olutopin pysyvät bonukset (%d):,Permanent Brewlore bonuses (%d):,src/scenes/ui/run_effects_window.gd
 Halpamyynti: %s x%d  +%.1f €,Bulk sale: %s x%d  +%.1f €,src/scenes/ui/sale_flash_stack.gd
 Osa raaka-aineista säästyi panon yhteydessä!,Some ingredients were saved during brewing!,src/scenes/ui/sale_flash_stack.gd
 Vienti (%s): %s x%d  +%.1f € (LVV-riski +%d),Shipment (%s): %s x%d  +%.1f € (LVV risk +%d),src/scenes/ui/sale_flash_stack.gd
@@ -282,6 +281,19 @@ Päivä: %s,Day: %s,src/scenes/ui/top_panel_resources.gd
 Seuraava: %s (%d mainetta),Next: %s (%d reputation),src/scenes/ui/top_panel_resources.gd
 Taso: %d,Level: %d,src/scenes/ui/top_panel_resources.gd
 Tippi +%.1f €,Tip +%.1f €,src/systems/dialog/dialog_wiring.gd
+Key already in use: %s,Key already in use: %s,src/systems/input/input_bindings.gd
+Pick an action and press a new key. Esc cancels.,Pick an action and press a new key. Esc cancels.,src/systems/input/input_bindings.gd
+Press a key...,Press a key...,src/systems/input/input_bindings.gd
+Reset to defaults,Reset to defaults,src/systems/input/input_bindings.gd
+Ajon vaikutukset,Run effects,src/systems/input/input_wiring.gd
+Kauppa,Shop,src/systems/input/input_wiring.gd
+Konsoli,Console,src/systems/input/input_wiring.gd
+Kuittiloki,Receipt log,src/systems/input/input_wiring.gd
+Näppäin on jo käytössä: %s,Key already in use: %s,src/systems/input/input_wiring.gd
+Paina näppäintä...,Press a key...,src/systems/input/input_wiring.gd
+Palauta oletukset,Reset to defaults,src/systems/input/input_wiring.gd
+Panimo,Brewery,src/systems/input/input_wiring.gd
+Valitse toiminto ja paina uutta näppäintä. Esc peruu.,Pick an action and press a new key. Esc cancels.,src/systems/input/input_wiring.gd
 Nyt: %s,Now: %s,src/ui/cellar_upgrade_text.gd
 Osta %d €,Buy %d €,src/ui/cellar_upgrade_text.gd
 Seuraava taso: %s,Next level: %s,src/ui/cellar_upgrade_text.gd
