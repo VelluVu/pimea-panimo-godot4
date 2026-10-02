@@ -56,3 +56,11 @@ func test_the_podium_has_its_own_colors_and_the_rest_share_one() -> void:
 func test_every_ending_has_a_color() -> void:
 	for ending : String in ["survived", "season_over", "busted", "bankrupt", ""]:
 		assert_ne(LeaderboardTextScript.ending_color(ending), LeaderboardTextScript.DEFAULT_COLOR)
+
+
+func test_a_failed_run_shows_its_reputation_without_points() -> void:
+	var entry : Dictionary = _entry()
+	entry["ending_type"] = "busted"
+	var text : String = LeaderboardTextScript.breakdown(entry)
+	assert_contains(text, "Maine 110: ei pisteitä")
+	assert_false(text.contains("110 × 10"), "no reputation points line")

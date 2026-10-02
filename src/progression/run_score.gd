@@ -10,6 +10,9 @@ const REPUTATION_POINTS : int = 10
 const BOTTLE_POINTS : int = 1
 ## Reaching the target day as a legend must always beat any run that did not.
 const SURVIVAL_BONUS : int = 1500
+## Endings that close the brewery for good. Their reputation earns no points, so a run
+## that got caught or went bankrupt never outscores one that made it.
+const FAILED_ENDINGS : PackedStringArray = ["busted", "bankrupt"]
 ## Harder modifiers multiply the score by 1 + difficulty * weight, easier ones lower it.
 const DIFFICULTY_WEIGHT : float = 0.5
 const MIN_MULTIPLIER : float = 0.5
@@ -35,8 +38,16 @@ static func bonus(ending_type : String) -> int:
 	return SURVIVAL_BONUS if ending_type == DayRules.ENDING_SURVIVED else 0
 
 
+static func counts_reputation(ending_type : String) -> bool:
+	return not FAILED_ENDINGS.has(ending_type)
+
+
+static func reputation_points(reputation : int, ending_type : String) -> int:
+	return maxi(0, reputation) * REPUTATION_POINTS if counts_reputation(ending_type) else 0
+
+
 static func base_points(day : int, reputation : int, bottles : int, ending_type : String) -> int:
-	return scored_days(day) * DAY_POINTS + maxi(0, reputation) * REPUTATION_POINTS + bottles * BOTTLE_POINTS + bonus(ending_type)
+	return scored_days(day) * DAY_POINTS + reputation_points(reputation, ending_type) + bottles * BOTTLE_POINTS + bonus(ending_type)
 
 
 static func score(day : int, reputation : int, bottles : int, ending_type : String, run_modifier : RunModifier = null) -> int:
@@ -66,6 +77,13 @@ static func entry(day : int, reputation : int, bottles : int, ending_type : Stri
 		"modifier_name": run_modifier.modifier_name if run_modifier != null else "",
 		"score": score(day, reputation, bottles, ending_type, run_modifier),
 	}
+
+
+## A stored entry's score under today's formula, from the parts it keeps.
+static func rescore(entry : Dictionary) -> int:
+	var ending_type : String = entry.get("ending_type", "")
+	var points : int = base_points(entry.get("days_survived", 0), entry.get("reputation", 0), entry.get("lifetime_bottles_sold", 0), ending_type)
+	return roundi(points * float(entry.get("multiplier", 1.0)))
 
 
 static func entry_for(brewery : Brewery, ending_type : String) -> Dictionary:

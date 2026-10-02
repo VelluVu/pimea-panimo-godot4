@@ -12,6 +12,7 @@ const ENDING_IN_PROGRESS : String = "Kesken"
 
 const DAYS_LINE : String = "Päivät %d × %d"
 const REPUTATION_LINE : String = "Maine %d × %d"
+const REPUTATION_UNSCORED_LINE : String = "Maine %d: ei pisteitä"
 const BOTTLES_LINE : String = "Annokset %d"
 const BONUS_LINE : String = "Legendabonus +%d"
 const MULTIPLIER_LINE : String = "%s × %s"
@@ -60,7 +61,7 @@ static func ending_color(ending_type : String) -> Color:
 static func breakdown_lines(entry : Dictionary) -> PackedStringArray:
 	var lines : PackedStringArray = [
 		DAYS_LINE % [entry.get("days_survived", 0), RunScore.DAY_POINTS],
-		REPUTATION_LINE % [entry.get("reputation", 0), RunScore.REPUTATION_POINTS],
+		_reputation_line(entry),
 		BOTTLES_LINE % entry.get("lifetime_bottles_sold", 0),
 	]
 	var bonus : int = entry.get("bonus", 0)
@@ -70,6 +71,13 @@ static func breakdown_lines(entry : Dictionary) -> PackedStringArray:
 	if not is_equal_approx(multiplier, 1.0):
 		lines.append(MULTIPLIER_LINE % [entry.get("modifier_name", ""), format_multiplier(multiplier)])
 	return lines
+
+
+## A busted or bankrupt run's reputation is shown but earns nothing, see RunScore.
+static func _reputation_line(entry : Dictionary) -> String:
+	if not RunScore.counts_reputation(entry.get("ending_type", "")):
+		return REPUTATION_UNSCORED_LINE % entry.get("reputation", 0)
+	return REPUTATION_LINE % [entry.get("reputation", 0), RunScore.REPUTATION_POINTS]
 
 
 static func breakdown(entry : Dictionary) -> String:

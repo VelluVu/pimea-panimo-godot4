@@ -8,8 +8,11 @@ const SECTION : String = "leaderboard"
 const KEY_ENTRIES : String = "entries"
 const MAX_ENTRIES : int = 20
 
-## Entries scored with an older formula are moved out of the list, not mixed into it.
-const SCORE_VERSION : int = 2
+## Entries scored with an older formula are moved out of the list, not mixed into it,
+## unless they keep every part of their score (RESCORABLE_VERSION and later): those are
+## scored again with RunScore.rescore().
+const SCORE_VERSION : int = 3
+const RESCORABLE_VERSION : int = 2
 const KEY_ARCHIVED_ENTRIES : String = "archived_entries"
 
 var _config : ConfigFile = ConfigFile.new()
@@ -38,13 +41,22 @@ func _on_game_ended(ending_type : String) -> void:
 func _archive_old_entries() -> void:
 	var current : Array = []
 	var archived : Array = _config.get_value(SECTION, KEY_ARCHIVED_ENTRIES, [])
+	var changed : bool = false
 	for entry : Dictionary in get_entries():
-		if entry.get("score_version", 1) == SCORE_VERSION:
+		var version : int = entry.get("score_version", 1)
+		if version == SCORE_VERSION:
 			current.append(entry)
+		elif version >= RESCORABLE_VERSION:
+			entry["score"] = RunScore.rescore(entry)
+			entry["score_version"] = SCORE_VERSION
+			current.append(entry)
+			changed = true
 		else:
 			archived.append(entry)
-	if current.size() == get_entries().size():
+			changed = true
+	if not changed:
 		return
+	current.sort_custom(func(a, b): return a["score"] > b["score"])
 	_config.set_value(SECTION, KEY_ENTRIES, current)
 	_config.set_value(SECTION, KEY_ARCHIVED_ENTRIES, archived)
 	_config.save(SAVE_PATH)
