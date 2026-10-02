@@ -97,6 +97,7 @@ Vienna Lager,Vienna Lager,src/autoload/string_container.gd
 Witbier,Witbier,src/autoload/string_container.gd
 Yhteisvaikutus:,Combined effect:,src/autoload/string_container.gd
 erittäin karvas,very bitter,src/autoload/string_container.gd
+kpl,pcs,src/autoload/string_container.gd
 "Laatu: %s%% (%s %s, %s)
 EBC: %s | IBU: %s | ABV: %.1f%%
 ","Quality: %s%% (%s %s, %s)
@@ -125,6 +126,69 @@ Kate: %.2f €
 = Hinta/annos: %.2f €","Ingredients: %.2f €
 Margin: %.2f €
 = Price/serving: %.2f €",src/customers/sale_receipt_entry.gd
+Amerikkalainen aromihumala joka tuo sitruksista ja mäntyistä aromia,American aroma hop with citrus and pine notes,src/resources/ingredients/hops/cascade_hop.tres
+Cascade Humala,Cascade Hops,src/resources/ingredients/hops/cascade_hop.tres
+Centennial Humala,Centennial Hops,src/resources/ingredients/hops/centennial_hop.tres
+"Voimakas amerikkalainen humala, sitrus ja kukka-aromein",Strong American hop with citrus and floral aromas,src/resources/ingredients/hops/centennial_hop.tres
+Chinook Humala,Chinook Hops,src/resources/ingredients/hops/chinook_hop.tres
+"Voimakas katkerohumala, mäntyinen ja mausteinen","Strong bittering hop, piney and spicy",src/resources/ingredients/hops/chinook_hop.tres
+Citra Humala,Citra Hops,src/resources/ingredients/hops/citra_hop.tres
+Tämä aromihumala antaa trooppisia makuja oluelle,An aroma hop that gives beer tropical flavours,src/resources/ingredients/hops/citra_hop.tres
+"Arvostettu englantilainen humala, hunajainen ja pehmeä","A prized English hop, honeyed and smooth",src/resources/ingredients/hops/east_kent_golding_hop.tres
+East Kent Golding Humala,East Kent Golding Hops,src/resources/ingredients/hops/east_kent_golding_hop.tres
+Fuggle Humala,Fuggle Hops,src/resources/ingredients/hops/fuggle_hop.tres
+"Perinteinen englantilainen humala, maanläheinen ja hedelmäinen","A traditional English hop, earthy and fruity",src/resources/ingredients/hops/fuggle_hop.tres
+Hallertau Humala,Hallertau Hops,src/resources/ingredients/hops/hallertau_hop.tres
+"Saksalainen jalohumala, hienostunut ja kukkainen","A German noble hop, refined and floral",src/resources/ingredients/hops/hallertau_hop.tres
+Magnum Humala,Magnum Hops,src/resources/ingredients/hops/magnum_hop.tres
+Tämä katkerohumala antaa oluelle hyvät katkerot,A bittering hop that gives beer a clean bitterness,src/resources/ingredients/hops/magnum_hop.tres
+Mosaic Humala,Mosaic Hops,src/resources/ingredients/hops/mosaic_hop.tres
+"Trooppinen ja marjainen humala, hyvin monipuolinen aromeiltaan","A tropical, berry-like hop with very varied aromas",src/resources/ingredients/hops/mosaic_hop.tres
+"Klassinen tsekkiläinen jalohumala, mieto ja mausteinen","A classic Czech noble hop, mild and spicy",src/resources/ingredients/hops/saaz_hop.tres
+Saaz Humala,Saaz Hops,src/resources/ingredients/hops/saaz_hop.tres
+"Monipuolinen humala, tuo puuta ja hedelmäisyyttä",A versatile hop that brings wood and fruitiness,src/resources/ingredients/hops/simcoe_hop.tres
+Simcoe Humala,Simcoe Hops,src/resources/ingredients/hops/simcoe_hop.tres
+Tettnanger Humala,Tettnanger Hops,src/resources/ingredients/hops/tettnanger_hop.tres
+Tämä jalohumala antaa oluelle klassista makua,A noble hop that gives beer a classic flavour,src/resources/ingredients/hops/tettnanger_hop.tres
+Paahdettu erikoismallas joka tuo olueen keksimäistä makua,A roasted specialty malt that adds a biscuity flavour,src/resources/ingredients/malts/biscuit_malt.tres
+keksimallas,Biscuit malt,src/resources/ingredients/malts/biscuit_malt.tres
+Kevyesti paahdettu erikoismallas joka antaa pähkinäistä syvyyttä,A lightly roasted specialty malt that adds nutty depth,src/resources/ingredients/malts/brown_malt.tres
+Ruskea Mallas,Brown Malt,src/resources/ingredients/malts/brown_malt.tres
+Erikoismallas joka antaa väriä ja paahteista makua olueen,A specialty malt that adds colour and a toasty flavour,src/resources/ingredients/malts/caramell_malt.tres
+Karamelli Mallas,Caramel Malt,src/resources/ingredients/malts/caramell_malt.tres
+Tumma Karamellimallas,Dark Caramel Malt,src/resources/ingredients/malts/dark_crystal_malt.tres
+Voimakkaasti paahdettu karamellimallas tummille ja väkeville oluille,A heavily roasted caramel malt for dark and strong beers,src/resources/ingredients/malts/dark_crystal_malt.tres
+Münchenin Mallas,Munich Malt,src/resources/ingredients/malts/munich_malt.tres
+Tumma pohjamallas joka tuo olueen maltaista makeutta ja väriä,A dark base malt that adds malty sweetness and colour,src/resources/ingredients/malts/munich_malt.tres
+Pale-Ale Mallas,Pale Ale Malt,src/resources/ingredients/malts/pale_ale_malt.tres
+Pohjamallas antaa vähän maltaiden makua olueen,A base malt that adds a little malt flavour,src/resources/ingredients/malts/pale_ale_malt.tres
+Pilsner mallas,Pilsner Malt,src/resources/ingredients/malts/pilsner_malt.tres
+Pilsner pohjamallas antaa maltaiden makua olueen,A pilsner base malt that adds malt flavour,src/resources/ingredients/malts/pilsner_malt.tres
+Avotulella savustettu mallas joka tuo olueen savuisen maun,Malt smoked over an open fire for a smoky flavour,src/resources/ingredients/malts/smoked_malt.tres
+Savumallas,Smoked Malt,src/resources/ingredients/malts/smoked_malt.tres
+Vehnämallas,Wheat Malt,src/resources/ingredients/malts/wheat_malt.tres
+Vehnästä valmistettu mallas joka tekee oluesta samean ja pehmeän,Malt made from wheat that makes beer hazy and soft,src/resources/ingredients/malts/wheat_malt.tres
+Alehiiva,Ale Yeast,src/resources/ingredients/yeasts/ale_yeast.tres
+Pintahiiva tuottaa aromikkaan oluen,A top-fermenting yeast that makes an aromatic beer,src/resources/ingredients/yeasts/ale_yeast.tres
+Alkoholiton ale hiiva,Non-alcoholic Ale Yeast,src/resources/ingredients/yeasts/alkoholiton_ale_hiiva.tres
+"Erikoishiiva, joka pysäyttää käymisen ennen kuin alkoholia ehtii syntyä juuri lainkaan",A special yeast that stops fermenting before almost any alcohol forms,src/resources/ingredients/yeasts/alkoholiton_ale_hiiva.tres
+Alkoholiton lager hiiva,Non-alcoholic Lager Yeast,src/resources/ingredients/yeasts/alkoholiton_lager_hiiva.tres
+Halvinta mahdollista hiivaa tämä ei tee kovin hyvää olutta,The cheapest yeast there is. It doesn't make very good beer,src/resources/ingredients/yeasts/baking_yeast.tres
+Leivonta hiiva,Baking Yeast,src/resources/ingredients/yeasts/baking_yeast.tres
+Lagerhiiva,Lager Yeast,src/resources/ingredients/yeasts/lager_yeast.tres
+Pohjahiiva tuottaa puhtaan raikkaan oluen,"A bottom-fermenting yeast that makes a clean, crisp beer",src/resources/ingredients/yeasts/lager_yeast.tres
+Ainepula,Ingredient Shortage,src/resources/run_modifiers/ainepula.tres
+"Raaka-aineista on pulaa ja hinnat ovat pilvissä. Kaaoksen keskellä tarkastajatkin ovat muualla kiireisiä, ratsiakynnys on ennätyskorkealla.","Ingredients are scarce and prices are sky-high. In the chaos even the inspectors are busy elsewhere, and the raid threshold is at a record high.",src/resources/run_modifiers/ainepula.tres
+Kallis tori,Pricey Market,src/resources/run_modifiers/kallis_tori.tres
+"Ratsiakynnys korkeampi, mutta raaka-aineiden hinnat ovat nousseet.","A higher raid threshold, but ingredient prices have gone up.",src/resources/run_modifiers/kallis_tori.tres
+Kireä LVV,Strict LVV,src/resources/run_modifiers/kirea_lvv.tres
+"Tarkastajat ovat hereillä, ratsiakynnys on matalampi. Ainekset sentään halvempia.",The inspectors are alert and the raid threshold is lower. At least ingredients are cheaper.,src/resources/run_modifiers/kirea_lvv.tres
+"LVV on kiireinen muualla tänä kautena, ratsiakynnys on huomattavasti korkeampi. Rauha maksaa: tukkurit tietävät tilanteen ja hinnoittelevat sen mukaan.","The LVV is busy elsewhere this season, so the raid threshold is much higher. Peace has a price: the wholesalers know it and charge accordingly.",src/resources/run_modifiers/loysa_valvonta.tres
+Löysä valvonta,Lax Oversight,src/resources/run_modifiers/loysa_valvonta.tres
+Ei yllätyksiä tällä kertaa: perustaso kaikessa.,No surprises this time: everything at the baseline.,src/resources/run_modifiers/tavallinen_keikka.tres
+Tavallinen keikka,Business as Usual,src/resources/run_modifiers/tavallinen_keikka.tres
+"Maine karttuu nopeammin, mutta tunnettuus kiinnittää myös LVV:n huomion aiemmin.","Reputation builds faster, but fame also draws the LVV's attention sooner.",src/resources/run_modifiers/tunnettu_nimi.tres
+Tunnettu nimi,Known Name,src/resources/run_modifiers/tunnettu_nimi.tres
 "Häädä asiakkaat, ja aloita uusi päivä",Send the customers home and start a new day,src/scenes/main.tscn
 Keittola,Brewhouse,src/scenes/main.tscn
 LVV Riski: 0%,LVV Risk: 0%,src/scenes/main.tscn

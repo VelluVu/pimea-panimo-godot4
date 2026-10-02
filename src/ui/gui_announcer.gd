@@ -117,11 +117,11 @@ func _on_brewery_state_changed(brewery: Brewery) -> void:
 	# One toast per reputation jump, however many hops it unlocked.
 	var unlocked : Array[IngredientData] = _reputation_tracker.update(brewery.reputation)
 	if unlocked.size() == 1:
-		_show_toast(tr(StringContainer.INGREDIENT_UNLOCKED_TOAST_FORMAT) % unlocked[0].name)
+		_show_toast(tr(StringContainer.INGREDIENT_UNLOCKED_TOAST_FORMAT) % tr(unlocked[0].name))
 	elif unlocked.size() > 1:
 		var names : PackedStringArray = []
 		for ingredient: IngredientData in unlocked:
-			names.append(ingredient.name.trim_suffix(HOP_NAME_SUFFIX))
+			names.append(tr(ingredient.name.trim_suffix(HOP_NAME_SUFFIX)))
 		_show_toast(tr(INGREDIENTS_UNLOCKED_TOAST_FORMAT) % ", ".join(names))
 
 
@@ -156,12 +156,12 @@ func _on_early_day_close_applied(money_cost: float, reputation_cost: int, risk_r
 
 ## The shop already disables locked entries; the toast keeps both purchase failures surfaced.
 func _on_ingredient_purchase_locked(ingredient_name: String, required_reputation: int) -> void:
-	_show_toast(tr(INGREDIENT_LOCKED_TOAST_FORMAT) % [ingredient_name, required_reputation])
+	_show_toast(tr(INGREDIENT_LOCKED_TOAST_FORMAT) % [tr(ingredient_name), required_reputation])
 
 
 ## Tells a player who clicked "Osta" without enough money why nothing happened.
 func _on_ingredient_purchase_underfunded(ingredient_name: String, price: int, money: float) -> void:
-	_show_toast(tr(INGREDIENT_UNDERFUNDED_TOAST_FORMAT) % [ingredient_name, price, money])
+	_show_toast(tr(INGREDIENT_UNDERFUNDED_TOAST_FORMAT) % [tr(ingredient_name), price, money])
 
 
 func _on_reputation_tier_changed(tier: ReputationTier, rose: bool) -> void:

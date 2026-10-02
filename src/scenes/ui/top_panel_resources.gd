@@ -84,10 +84,10 @@ func _update_day_display(day_num: int) -> void:
 func _on_brewery_state_changed(brewery : Brewery) -> void:
 	if not _modifier_tag_shown and brewery.run_modifier != null:
 		_modifier_tag_shown = true
-		modifier_tag_label.text = MODIFIER_TAG_FORMAT % brewery.run_modifier.modifier_name
+		modifier_tag_label.text = tr(MODIFIER_TAG_FORMAT) % tr(brewery.run_modifier.modifier_name)
 
 		var stat_summary : String = brewery.run_modifier.get_stat_summary()
-		modifier_tag_label.tooltip_text = brewery.run_modifier.description if stat_summary.is_empty() else brewery.run_modifier.description + "\n" + stat_summary
+		modifier_tag_label.tooltip_text = tr(brewery.run_modifier.description) if stat_summary.is_empty() else tr(brewery.run_modifier.description) + "\n" + stat_summary
 
 	var new_money: float = brewery.money
 

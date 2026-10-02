@@ -156,13 +156,13 @@ func _update_table_list_ui() -> void:
 		var required : int = recipe_target.get(id, 0)
 
 		if required > 0:
-			label.text = INGREDIENT_LABEL_WITH_TARGET_STRING % [ingredient.name, on_table, required, ingredient.get_unit_string()]
-			label.tooltip_text = ingredient.description
+			label.text = INGREDIENT_LABEL_WITH_TARGET_STRING % [tr(ingredient.name), on_table, required, ingredient.get_unit_string()]
+			label.tooltip_text = tr(ingredient.description)
 			label.modulate = Color.LIME_GREEN if on_table >= required else Color.ORANGE
 			label.visible = true
 		elif on_table > 0:
-			label.text = StringContainer.INGREDIENT_LABEL_WITH_STAT_STRING % [ingredient.name, on_table, ingredient.get_unit_string(), ingredient.get_stat_string()]
-			label.tooltip_text = ingredient.description
+			label.text = StringContainer.INGREDIENT_LABEL_WITH_STAT_STRING % [tr(ingredient.name), on_table, ingredient.get_unit_string(), ingredient.get_stat_string()]
+			label.tooltip_text = tr(ingredient.description)
 			label.modulate = ingredient.get_color()
 			label.visible = true
 		else:

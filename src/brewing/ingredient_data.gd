@@ -34,8 +34,8 @@ static func get_color_for_type(ingredient_type : IngredientType) -> Color:
 func get_unit_string() -> String:
 	if type == IngredientType.MALT: return StringContainer.KG
 	if type == IngredientType.HOP: return StringContainer.G
-	if type == IngredientType.YEAST: return StringContainer.KPL
-	return StringContainer.KPL
+	if type == IngredientType.YEAST: return tr(StringContainer.KPL)
+	return tr(StringContainer.KPL)
 
 
 func get_stat_string() -> String:

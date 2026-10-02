@@ -28,6 +28,11 @@ ROOT = Path(__file__).resolve().parents[2]
 CSV_PATH = ROOT / "src" / "resources" / "translations" / "strings.csv"
 SCRIPT_DIRS = ["src"]
 # Dev-only text and content files (phase 2) stay out.
+# Content resources whose fields hold player-facing text. Phase 2 adds the rest here.
+CONTENT_FIELDS = {
+    "src/resources/run_modifiers": ("modifier_name", "description"),
+    "src/resources/ingredients": ("name", "description"),
+}
 SKIP_DIRS = ["src/console", "src/systems/console", "src/resources", "addons", "tests", "dev"]
 
 CONST_STRING = re.compile(r'^\s*const\s+(\w+)\s*:\s*String\s*=\s*"((?:[^"\\]|\\.)*)"', re.M)
@@ -37,7 +42,7 @@ QUOTED = re.compile(r'"((?:[^"\\]|\\.)*)"')
 # A dictionary entry on its own line, like `ACTION_SHOP: "Kauppa",` or `"hint": "...",`.
 DICT_ENTRY = re.compile(r'^\s*(?:[A-Z][A-Z0-9_]*|"\w+")\s*:\s*"((?:[^"\\]|\\.)*)",?\s*$', re.M)
 SCENE_TEXT = re.compile(r'^(text|tooltip_text|placeholder_text) = "((?:[^"\\]|\\.)*)"', re.M)
-TEXT_NAME = re.compile(r'(_LABEL|_TEXT|_STRING|_HINT)$')
+TEXT_NAME = re.compile(r'(_LABEL|_TEXT|_STRING|_HINT|^KPL)$')
 PLACEHOLDER = re.compile(r'%[-+0-9.]*[dsf%]')
 # Constant names that hold paths, keys or log text rather than player-facing words.
 SKIP_NAME = re.compile(r'(SPAWN_POINT|PATH|DIR|FOLDER|SECTION|^KEY|_KEY|_GROUP$|ACTION|ANIM|BUS|ERROR|WARNING|MESSAGE|_ID$|SCENE|SUFFIX|PREFIX|FILE|URL|META|SAVE|CONFIG|SIGNAL|NODE|^TITLE_|_TITLE$|EXTENSION|DEBUG|LOG_|^DATABASE_STRING$|^INVENTORY_STRING$|^LIST_STRING$|^MONEY_STRING$)')
@@ -98,6 +103,11 @@ def find_texts():
                 continue
             for _prop, value in SCENE_TEXT.findall(path.read_text(encoding="utf-8")):
                 add(value, _rel(path))
+    for folder, fields in CONTENT_FIELDS.items():
+        field_re = re.compile(r'^(?:' + "|".join(fields) + r') = "((?:[^"\\]|\\.)*)"', re.M)
+        for path in sorted((ROOT / folder).rglob("*.tres")):
+            for value in field_re.findall(path.read_text(encoding="utf-8")):
+                add(value, _rel(path), "_TEXT")
     return found
 
 
