@@ -17,3 +17,6 @@ extends Resource
 @export var start_delay_seconds : float = 0.0
 ## Time to walk the whole path, start to end.
 @export var crossing_seconds : float = 6.0
+## Flies above the room (a bat): keeps base_scale instead of the floor's depth
+## scaling, and draws over the counter and customers instead of y-sorting with them.
+@export var flying : bool = false

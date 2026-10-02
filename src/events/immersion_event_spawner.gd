@@ -17,6 +17,8 @@ const SPRITE_OFFSET : Vector2 = Vector2(-16, -32)
 ## Actors fade in at the start of a route and out at its end, so a route that
 ## begins or ends on screen does not pop.
 const FADE_SECONDS : float = 0.5
+## Above customers (z 1); same as the wall overlays in main.tscn.
+const FLYING_Z_INDEX : int = 2
 
 ## Lets the console's "cat" command find this node without an autoload.
 const IMMERSION_EVENT_SPAWNER_GROUP : String = "immersion_event_spawner"
@@ -116,9 +118,13 @@ func _cross(actor : ImmersionActorData, points : PackedVector2Array) -> void:
 	sprite.global_position = points[0]
 	add_child(sprite)
 	sprite.play(actor.animation)
-	_active_sprites[sprite] = actor.base_scale
-	# Set the depth scale before the first frame draws, not one frame later.
-	_apply_depth_scale(sprite, actor.base_scale)
+	if actor.flying:
+		sprite.scale = actor.base_scale
+		sprite.z_index = FLYING_Z_INDEX
+	else:
+		_active_sprites[sprite] = actor.base_scale
+		# Set the depth scale before the first frame draws, not one frame later.
+		_apply_depth_scale(sprite, actor.base_scale)
 
 	var durations : PackedFloat32Array = VignettePath.segment_durations(points, actor.crossing_seconds)
 	var tween := sprite.create_tween()

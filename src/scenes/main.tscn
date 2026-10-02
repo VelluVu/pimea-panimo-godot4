@@ -1435,6 +1435,29 @@ position = Vector2(300, 298)
 [node name="End" type="Marker2D" parent="WorldYSort/ImmersionEventSpawner/CockroachPathMarkers" unique_id=1003101290]
 position = Vector2(212, 254)
 
+[node name="BatPathMarkers" type="Node2D" parent="WorldYSort/ImmersionEventSpawner" unique_id=513604572]
+
+[node name="Start" type="Marker2D" parent="WorldYSort/ImmersionEventSpawner/BatPathMarkers" unique_id=1407462609]
+position = Vector2(200, 190)
+
+[node name="Path01" type="Marker2D" parent="WorldYSort/ImmersionEventSpawner/BatPathMarkers" unique_id=766072662]
+position = Vector2(320, 105)
+
+[node name="Path02" type="Marker2D" parent="WorldYSort/ImmersionEventSpawner/BatPathMarkers" unique_id=1462125795]
+position = Vector2(500, 85)
+
+[node name="Path03" type="Marker2D" parent="WorldYSort/ImmersionEventSpawner/BatPathMarkers" unique_id=1479721286]
+position = Vector2(550, 160)
+
+[node name="Path04" type="Marker2D" parent="WorldYSort/ImmersionEventSpawner/BatPathMarkers" unique_id=1075112684]
+position = Vector2(400, 130)
+
+[node name="Path05" type="Marker2D" parent="WorldYSort/ImmersionEventSpawner/BatPathMarkers" unique_id=864020061]
+position = Vector2(200, 85)
+
+[node name="End" type="Marker2D" parent="WorldYSort/ImmersionEventSpawner/BatPathMarkers" unique_id=979688027]
+position = Vector2(75, 60)
+
 [node name="WarehouseWallOverlay" type="Polygon2D" parent="." unique_id=1022889779]
 z_index = 2
 texture = ExtResource("2_85g3d")
