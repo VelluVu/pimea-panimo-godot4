@@ -50,6 +50,16 @@ const LEIJONAFANI_OFFSETS : Array[Vector2] = [
 	Vector2(-22, -58),
 ]
 
+## Kriitikko carries his notebook in the hand the default table tracks, so the glass
+## goes in the other one, steady at the hip (one pixel higher on frames 1 and 3).
+const KRIITIKKO_TITLE : String = "Kriitikko"
+const KRIITIKKO_OFFSETS : Array[Vector2] = [
+	Vector2(35, -44),
+	Vector2(35, -48),
+	Vector2(35, -44),
+	Vector2(35, -48),
+]
+
 
 ## Tarkastusdrooni flies off with the glass hanging just under its belly. The
 ## body bobs a pixel per frame (bottom rows 17, 16, 18), and the glass follows.
@@ -73,4 +83,6 @@ static func position_for(title: String, frame: int) -> Vector2:
 			offsets = LEIJONAFANI_OFFSETS
 		DRONE_TITLE:
 			offsets = DRONE_OFFSETS
+		KRIITIKKO_TITLE:
+			offsets = KRIITIKKO_OFFSETS
 	return offsets[frame % offsets.size()]
