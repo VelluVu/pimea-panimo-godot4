@@ -11,10 +11,11 @@ extends RefCounted
 const BULK_SELL_RATE : float = 0.5
 
 ## Quality clamp when shipping to a bar: a floor above 0 (bars expect drinkable
-## beer) and a ceiling above 1.0 (an excellent batch earns a premium).
+## beer) and a ceiling above 1.0 (an excellent batch earns a premium). The ceiling
+## is BrewQuality.MAX_MULTIPLIER, so a fully tuned recipe is paid in full.
 const SHIP_TO_BAR_QUALITY_CLAMP_MIN : float = 0.3
 
-const SHIP_TO_BAR_QUALITY_CLAMP_MAX : float = 1.3
+const SHIP_TO_BAR_QUALITY_CLAMP_MAX : float = 1.5
 
 var brewery : Brewery
 

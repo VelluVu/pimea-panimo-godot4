@@ -52,7 +52,7 @@ func test_ship_payout_clamps_quality_floor() -> void:
 
 
 func test_ship_payout_clamps_quality_ceiling() -> void:
-	# SHIP_TO_BAR_QUALITY_CLAMP_MAX is 1.3 — a bar will pay a real premium
+	# SHIP_TO_BAR_QUALITY_CLAMP_MAX is 1.5 — a bar will pay a real premium
 	# for excellence, but not an unbounded one.
 	var masterful := BatchDistributor.calculate_ship_payout(2.0, 2.5, 10, 0.8)
 	var at_ceiling := BatchDistributor.calculate_ship_payout(2.0, BatchDistributor.SHIP_TO_BAR_QUALITY_CLAMP_MAX, 10, 0.8)
