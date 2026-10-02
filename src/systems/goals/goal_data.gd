@@ -40,7 +40,11 @@ func scale_multiplier(day : int) -> float:
 	return 1.0 + target_scale_per_day * float(maxi(0, day - 1))
 
 
+## An avoid goal keeps its own target: 0 is a real limit ("no misses at all"), and
+## raising it to 1 let the goal read as failed at 1/1 without ever settling.
 func get_effective_target(day : int) -> int:
+	if is_avoid():
+		return target_amount
 	return maxi(1, roundi(target_amount * scale_multiplier(day)))
 
 

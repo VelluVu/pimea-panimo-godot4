@@ -106,12 +106,13 @@ func fill_empty_slots() -> void:
 
 
 ## Restores one slot, e.g. from a save. Emits nothing; call notify_changed() after.
+## An avoid goal takes its own target, since older saves stored a limit of 0 as 1.
 func load_slot(slot : int, goal : GoalData, progress : int, baseline : int, effective_target : int) -> void:
 	var goal_slot : GoalSlot = _slots[slot]
 	goal_slot.goal = goal
 	goal_slot.progress = progress
 	goal_slot.baseline = baseline
-	goal_slot.effective_target = effective_target
+	goal_slot.effective_target = goal.target_amount if goal != null and goal.is_avoid() else effective_target
 
 
 func notify_changed() -> void:

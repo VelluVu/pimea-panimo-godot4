@@ -81,6 +81,23 @@ func test_an_avoid_goal_fails_the_moment_it_passes_its_target() -> void:
 	assert_eq(log, [{"name": "UNHAPPY_CUSTOMERS_MAX", "succeeded": false}])
 
 
+func test_zero_limit_avoid_goal_fails_on_the_first_miss() -> void:
+	var none_unhappy := _goal(DailyGoalData.GoalType.UNHAPPY_CUSTOMERS_MAX, 0)
+	var board := _make_board([none_unhappy])
+	var log := _resolutions(board)
+	board.fill_empty_slots()
+	assert_eq(board.get_effective_target(0), 0)
+	board.add_progress(DailyGoalData.GoalType.UNHAPPY_CUSTOMERS_MAX, 1)
+	assert_eq(log, [{"name": "UNHAPPY_CUSTOMERS_MAX", "succeeded": false}])
+
+
+func test_loading_an_avoid_goal_restores_its_own_target() -> void:
+	var none_unhappy := _goal(DailyGoalData.GoalType.UNHAPPY_CUSTOMERS_MAX, 0)
+	var board := _make_board([none_unhappy])
+	board.load_slot(0, none_unhappy, 1, 0, 1)
+	assert_eq(board.get_effective_target(0), 0)
+
+
 func test_end_period_passes_avoid_goals_and_fails_unfinished_ones() -> void:
 	var unhappy := _goal(DailyGoalData.GoalType.UNHAPPY_CUSTOMERS_MAX, 2)
 	var sell := _goal(DailyGoalData.GoalType.SELL_BOTTLES, 5)
