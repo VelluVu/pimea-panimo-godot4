@@ -29,3 +29,12 @@ func test_early_close_cost_grows_with_each_close() -> void:
 
 func test_early_close_cost_stops_growing_at_the_cap() -> void:
 	assert_eq(ServiceScript.early_close_escalation(20), ServiceScript.EARLY_CLOSE_MAX_ESCALATION)
+
+
+func test_saved_bottles_round_down() -> void:
+	assert_eq(ServiceScript.saved_bottles(45, 0.08), 3)
+	assert_eq(ServiceScript.saved_bottles(45, 0.0), 0)
+
+
+func test_saved_bottles_share_is_capped() -> void:
+	assert_eq(ServiceScript.saved_bottles(45, 1.5), 45)

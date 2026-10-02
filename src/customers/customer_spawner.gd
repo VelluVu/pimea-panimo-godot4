@@ -13,6 +13,8 @@ const CUSTOMER_SCENE: PackedScene = preload("res://src/scenes/customer.tscn")
 var walk_in_timer: Timer
 var group_event_timer: Timer
 var counter_markers: Array[Node2D] = []
+## Global counter spots in slot order, see layout_counter().
+var counter_positions: Array[Vector2] = []
 var _group_visit: GroupVisitDirector
 ## Set during a raid. Brewery state changes call start_spawning() all the time, so the
 ## timers alone cannot hold a pause.
@@ -43,6 +45,15 @@ func _setup_positions() -> void:
 		for child: Node in counter_positions_parent.get_children():
 			if child is Node2D:
 				counter_markers.append(child)
+	layout_counter(counter_markers.size())
+
+
+## Spreads `count` counter spots over the markers' span, see CounterLayout.
+func layout_counter(count: int) -> void:
+	var markers: Array[Vector2] = []
+	for marker: Node2D in counter_markers:
+		markers.append(marker.global_position)
+	counter_positions = CounterLayout.positions(markers, count)
 
 
 func start_spawning() -> void:
@@ -119,7 +130,7 @@ func _try_spawn_walk_in(forced_data: CustomerData) -> void:
 	new_customer.assigned_slot = free_slot
 	new_customer.dialogue_slot = free_slot
 	CustomerManager.register_active_customer(free_slot, new_customer)
-	new_customer.walk_complex_route(stairs_bottom_marker.global_position, room_center_marker.global_position, counter_markers[free_slot].global_position)
+	new_customer.walk_complex_route(stairs_bottom_marker.global_position, room_center_marker.global_position, counter_positions[free_slot])
 
 
 func _try_spawn_group_visit(forced_event_data: GroupVisitEventData) -> void:
@@ -130,15 +141,15 @@ func _try_spawn_group_visit(forced_event_data: GroupVisitEventData) -> void:
 	if event_data == null or event_data.customer_data_options.is_empty():
 		return
 	BrewerySignals.group_visit_announced.emit(event_data.banner_text)
-	_group_visit.run(event_data, free_slot, counter_markers[free_slot].global_position)
+	_group_visit.run(event_data, free_slot, counter_positions[free_slot])
 
 
-## A free counter slot that has a marker, or -1 (also when no run is active).
+## A free counter slot that has a spot, or -1 (also when no run is active).
 func _free_slot() -> int:
-	if BrewEngine.current_brewery == null or counter_markers.is_empty():
+	if BrewEngine.current_brewery == null or counter_positions.is_empty():
 		return -1
 	var free_slot: int = CustomerManager.get_free_slot_index()
-	return free_slot if free_slot < counter_markers.size() else -1
+	return free_slot if free_slot < counter_positions.size() else -1
 
 
 func _start_next_walk_in_timer() -> void:

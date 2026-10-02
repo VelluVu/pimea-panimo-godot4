@@ -118,7 +118,7 @@ func _queue_floor_walk(tween: Tween, from_pos: Vector2, to_pos: Vector2) -> void
 
 func _on_reached_counter() -> void:
 	_play_animation(ANIM_IDLE_UP)
-	var display_time := _say(generated_name + ": " + customer_data.dialogue_intro)
+	var display_time := _say(generated_name + ": " + customer_data.dialogue_intro, true)
 	get_tree().create_timer(display_time).timeout.connect(_on_preview_timeout)
 
 
@@ -131,7 +131,7 @@ func _on_preview_timeout() -> void:
 	else:
 		preview_text = customer_data.dialogue_nothing_available
 
-	var display_time := _say(generated_name + ": " + preview_text)
+	var display_time := _say(generated_name + ": " + preview_text, true)
 	get_tree().create_timer(display_time).timeout.connect(_on_sale_timeout)
 
 
@@ -160,9 +160,13 @@ func _show_sale_popups(outcome: SaleOutcomeCapture) -> void:
 	outcome.emit_reputation_and_tip_popups(global_position)
 
 
-## Pushes a speech bubble for this customer and returns how long it stays up.
-func _say(text: String) -> float:
+## Pushes a speech bubble for this customer and returns how long it stays up. A
+## `skippable` line (greeting, order) stays silent at a crowded counter, leaving only the
+## reaction, but still takes its time, so a crowd is served at the same pace.
+func _say(text: String, skippable: bool = false) -> float:
 	var display_time := get_display_time_for_text(text)
+	if skippable and CustomerManager.is_counter_crowded():
+		return display_time
 	BrewerySignals.dialogue_pushed.emit(text, false, dialogue_slot, global_position, display_time, FADE_TIME_SECONDS)
 	return display_time
 

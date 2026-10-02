@@ -123,3 +123,9 @@ signal save_recipe_requested()
 signal load_recipe_requested(recipe : BrewRecipe)
 @warning_ignore("unused_signal")
 signal fill_recipe_from_inventory_requested()
+
+@warning_ignore("unused_signal")
+signal cellar_upgrades_requested()
+## The player asked to buy the next level of the upgrade with this upgrade_id.
+@warning_ignore("unused_signal")
+signal cellar_upgrade_requested(upgrade_id : String)

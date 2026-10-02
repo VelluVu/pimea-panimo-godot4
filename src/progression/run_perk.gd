@@ -56,6 +56,10 @@ enum Tier { COMMON, RARE, LEGENDARY }
 @export var extra_raid_strikes: int = 0
 ## Batches spared from confiscation in each raid.
 @export var raid_hidden_batch_count: int = 0
+## Counter spots added to the bar's default ones.
+@export var extra_counter_slots: int = 0
+## Share (0 to 1, summed and capped) of each confiscated batch's bottles a raid leaves behind.
+@export var raid_saved_bottle_share: float = 0.0
 
 ## When true, multiplier stats add their delta from 1.0 instead of
 ## multiplying, so repeat picks grow in a straight line.
@@ -81,6 +85,21 @@ static func combine_stacking(base : float, perks : Array[RunPerk], field_getter 
 			multiplier *= value
 
 	return multiplier + additive_bonus
+
+
+## A fresh perk with every stat scaled to `level`, for perks whose stats are authored
+## per level (see PerkStats.scale_per_level()). Never mutates self: such resources are
+## shared by every run.
+func scaled_copy(level : int) -> RunPerk:
+	var scaled := RunPerk.new()
+	scaled.perk_name = perk_name
+	scaled.description = description
+	scaled.icon_placeholder = icon_placeholder
+	scaled.tier = tier
+	scaled.stacks_additively = stacks_additively
+	for entry : Dictionary in PerkStats.definitions():
+		scaled.set(entry.stat, PerkStats.scale_per_level(entry.kind, get(entry.stat), level))
+	return scaled
 
 
 ## One short line per non-neutral stat, shown next to the perk's flavour text.

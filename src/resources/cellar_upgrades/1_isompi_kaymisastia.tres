@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="CellarUpgradeData" format=3]
+
+[ext_resource type="Script" path="res://src/brewery/cellar_upgrade_data.gd" id="1_upgrade"]
+
+[resource]
+script = ExtResource("1_upgrade")
+upgrade_id = "kaymisastia"
+sort_order = 1
+base_cost = 40
+cost_growth = 1.7
+perk_name = "Isompi käymisastia"
+description = "Isompi astia, enemmän pulloja samasta satsista."
+icon_placeholder = "🛢️"
+brew_yield_multiplier = 1.06
+stacks_additively = true

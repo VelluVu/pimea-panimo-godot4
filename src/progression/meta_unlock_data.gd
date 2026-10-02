@@ -65,13 +65,6 @@ enum Path { BAR_WORK, BREWING, MARKETING }
 ## Levels always grow linearly, whatever stacks_additively says; that flag only
 ## controls how the scaled total combines with other perks.
 func get_scaled_perk(level : int) -> RunPerk:
-	var scaled := RunPerk.new()
-	scaled.perk_name = perk_name
-	scaled.description = description
-	scaled.icon_placeholder = icon_placeholder
-	scaled.tier = tier
-	scaled.stacks_additively = stacks_additively
+	var scaled : RunPerk = scaled_copy(level)
 	scaled.is_permanent = true
-	for entry : Dictionary in PerkStats.definitions():
-		scaled.set(entry.stat, PerkStats.scale_per_level(entry.kind, get(entry.stat), level))
 	return scaled

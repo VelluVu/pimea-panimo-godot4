@@ -35,6 +35,8 @@ const BAR_FIGHT_CHANCE := &"bar_fight_chance_multiplier"
 const COUNTER_PRICE := &"counter_price_multiplier"
 const EXTRA_RAID_STRIKES := &"extra_raid_strikes"
 const RAID_HIDDEN_BATCHES := &"raid_hidden_batch_count"
+const EXTRA_COUNTER_SLOTS := &"extra_counter_slots"
+const RAID_SAVED_BOTTLE_SHARE := &"raid_saved_bottle_share"
 
 ## How a stat is stored and shown. MULTIPLIER is neutral at 1.0 and shown as
 ## a percentage change, PERCENT_ADD is a flat fraction neutral at 0 and shown
@@ -65,6 +67,8 @@ static func definitions() -> Array[Dictionary]:
 		{"stat": GROUP_EVENT_INTERVAL, "kind": Kind.MULTIPLIER, "text": StringContainer.PERK_GROUP_EVENT_INTERVAL_STAT_STRING},
 		{"stat": EXTRA_RAID_STRIKES, "kind": Kind.COUNT, "text": StringContainer.PERK_EXTRA_RAID_STRIKES_STAT_STRING},
 		{"stat": RAID_HIDDEN_BATCHES, "kind": Kind.COUNT, "text": StringContainer.PERK_RAID_HIDDEN_BATCH_STAT_STRING},
+		{"stat": RAID_SAVED_BOTTLE_SHARE, "kind": Kind.PERCENT_ADD, "text": StringContainer.PERK_RAID_SAVED_BOTTLE_SHARE_STAT_STRING},
+		{"stat": EXTRA_COUNTER_SLOTS, "kind": Kind.COUNT, "text": StringContainer.PERK_EXTRA_COUNTER_SLOTS_STAT_STRING},
 	]
 
 

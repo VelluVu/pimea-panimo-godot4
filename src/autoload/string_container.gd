@@ -135,6 +135,8 @@ const PERK_COUNTER_PRICE_STAT_STRING : String = "Tiskimyynnin hinnat: %+d %%"
 const PERK_GROUP_EVENT_INTERVAL_STAT_STRING : String = "Ryhmäasiakkaiden saapumisväli: %+d %%"
 const PERK_EXTRA_RAID_STRIKES_STAT_STRING : String = "Ratsioiden sietokyky: +%d"
 const PERK_RAID_HIDDEN_BATCH_STAT_STRING : String = "Piilotettuja eriä ratsiassa: %d"
+const PERK_RAID_SAVED_BOTTLE_SHARE_STAT_STRING : String = "Ratsiassa säästyviä pulloja: %d %%"
+const PERK_EXTRA_COUNTER_SLOTS_STAT_STRING : String = "Lisää tiskipaikkoja: +%d"
 const PERK_TIP_DOUBLE_CHANCE_STAT_STRING : String = "Mahdollisuus tuplatippiin: %d %%"
 const PERK_BAR_FIGHT_CHANCE_STAT_STRING : String = "Tappelun todennäköisyys: %+d %%"
 ## Appended to a perk's stat summary when RunPerk.stacks_additively is
