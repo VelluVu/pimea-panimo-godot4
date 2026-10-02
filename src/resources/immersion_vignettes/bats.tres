@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ImmersionVignetteData" format=3]
+
+[ext_resource type="Script" path="res://src/events/immersion_vignette_data.gd" id="1_script"]
+[ext_resource type="Script" path="res://src/events/immersion_actor_data.gd" id="2_actor_script"]
+[ext_resource type="Resource" path="res://src/resources/immersion_vignettes/actors/bat.tres" id="3_first"]
+[ext_resource type="Resource" path="res://src/resources/immersion_vignettes/actors/bat_2.tres" id="4_second"]
+
+[resource]
+script = ExtResource("1_script")
+vignette_name = "Lepakot"
+path_node_name = &"BatPathMarkers"
+actors = Array[ExtResource("2_actor_script")]([ExtResource("3_first"), ExtResource("4_second")])
+weight = 0.7
