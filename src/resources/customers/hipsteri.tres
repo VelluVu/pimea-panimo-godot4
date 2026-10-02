@@ -12,6 +12,7 @@ min_quality = 1.1
 budget_multiplier = 1.5
 primary_style = 5
 secondary_style = 3
+also_likes = Array[int]([14])
 sprite_frames = ExtResource("2_sprite")
 dialogue_intro = "Onko teillä jotain käsityöläismäistä? Ei mitään massatuotantoa."
 dialogue_success = "Vihdoinkin joku joka ymmärtää humalaprofiileja."
