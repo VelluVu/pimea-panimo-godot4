@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="CellarUpgradeData" format=3]
+
+[ext_resource type="Script" path="res://src/brewery/cellar_upgrade_data.gd" id="1_upgrade"]
+
+[resource]
+script = ExtResource("1_upgrade")
+upgrade_id = "kuormapyora"
+sort_order = 9
+base_cost = 60
+cost_growth = 1.8
+perk_name = "Kuormapyörä"
+description = "Viet laatikot baareihin itse. Lähetyksistä ja tukkumyynnistä jää enemmän käteen."
+icon_placeholder = "🚲"
+distribution_income_multiplier = 1.06
+stacks_additively = true

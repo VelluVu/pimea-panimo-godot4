@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="CellarUpgradeData" format=3]
+
+[ext_resource type="Script" path="res://src/brewery/cellar_upgrade_data.gd" id="1_upgrade"]
+
+[resource]
+script = ExtResource("1_upgrade")
+upgrade_id = "kunnon_lasit"
+sort_order = 7
+base_cost = 70
+cost_growth = 1.8
+perk_name = "Kunnon lasit"
+description = "Oikeat tuopit muovimukien tilalle. Tiskillä olusta saa pyytää vähän enemmän."
+icon_placeholder = "🍷"
+counter_price_multiplier = 1.05
+stacks_additively = true
