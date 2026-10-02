@@ -157,4 +157,4 @@ func _required_malt_name(beer_style : BeerStyle) -> String:
 
 func _ingredient_name(ingredient_id : int) -> String:
 	var ingredient : IngredientData = IngredientDatabase.get_item_by_id(ingredient_id)
-	return ingredient.name if ingredient != null else StringContainer.TUNTEMATON
+	return tr(ingredient.name if ingredient != null else StringContainer.TUNTEMATON)

@@ -64,7 +64,7 @@ func _add_modifier_section(brewery : Brewery) -> void:
 		rows_vbox.add_child(_make_label(StringContainer.RUN_EFFECTS_NO_MODIFIER_STRING))
 		return
 
-	rows_vbox.add_child(_make_header(tr(StringContainer.RUN_EFFECTS_MODIFIER_HEADER) % brewery.run_modifier.modifier_name))
+	rows_vbox.add_child(_make_header(tr(StringContainer.RUN_EFFECTS_MODIFIER_HEADER) % tr(brewery.run_modifier.modifier_name)))
 
 	var stat_summary : String = brewery.run_modifier.get_stat_summary()
 	if not stat_summary.is_empty():

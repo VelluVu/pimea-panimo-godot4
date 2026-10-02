@@ -73,7 +73,7 @@ static func breakdown_lines(entry : Dictionary) -> PackedStringArray:
 		lines.append(UiText.of(BONUS_LINE) % bonus)
 	var multiplier : float = entry.get("multiplier", 1.0)
 	if not is_equal_approx(multiplier, 1.0):
-		lines.append(MULTIPLIER_LINE % [entry.get("modifier_name", ""), format_multiplier(multiplier)])
+		lines.append(MULTIPLIER_LINE % [UiText.of(entry.get("modifier_name", "")), format_multiplier(multiplier)])
 	return lines
 
 

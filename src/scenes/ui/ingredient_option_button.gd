@@ -106,11 +106,11 @@ func _rebuild_items() -> void:
 
 		if ingredient.type == target_type:
 			var is_locked : bool = reputation < ingredient.min_reputation
-			add_item(tr(StringContainer.INGREDIENT_LOCKED_LABEL) % ingredient.min_reputation if is_locked else ingredient.name)
+			add_item(tr(StringContainer.INGREDIENT_LOCKED_LABEL) % ingredient.min_reputation if is_locked else tr(ingredient.name))
 			var new_item_index: int = get_item_count() - 1
 			set_item_id(new_item_index, ingredient.id)
 			set_item_disabled(new_item_index, is_locked)
-			var tooltip : String = ingredient.description + "\n" + ingredient.get_stat_string() if not is_locked else tr(StringContainer.INGREDIENT_LOCKED_LABEL) % ingredient.min_reputation
+			var tooltip : String = tr(ingredient.description) + "\n" + ingredient.get_stat_string() if not is_locked else tr(StringContainer.INGREDIENT_LOCKED_LABEL) % ingredient.min_reputation
 			get_popup().set_item_tooltip(new_item_index, tooltip)
 
 
@@ -150,7 +150,7 @@ func _on_global_ingredient_changed(ingredient_id: int) -> void:
 func _sync_own_tooltip(ingredient_id : int) -> void:
 	var ingredient : IngredientData = IngredientDatabase.get_item_by_id(ingredient_id)
 	if ingredient:
-		tooltip_text = ingredient.description + "\n" + ingredient.get_stat_string()
+		tooltip_text = tr(ingredient.description) + "\n" + ingredient.get_stat_string()
 
 
 ## Some ingredient descriptions run long enough to render wider than the
