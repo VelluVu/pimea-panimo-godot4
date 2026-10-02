@@ -107,23 +107,30 @@ func _on_toggle_pressed() -> void:
 	_apply_collapsed_state()
 
 
+## Collapsed it shrinks to just its header, so it covers as little of its corner as possible.
 func _apply_collapsed_state() -> void:
+	resize_handle.visible = not _is_collapsed
 	if _is_collapsed:
 		_expanded_size = size
 		body_vbox.hide()
 		toggle_button.text = EXPAND_ICON
-		offset_top = offset_bottom - _header_height()
+		var header: Vector2 = _header_size()
+		offset_left = offset_right - header.x
+		offset_top = offset_bottom - header.y
 	else:
 		body_vbox.show()
 		toggle_button.text = COLLAPSE_ICON
+		offset_left = offset_right - _expanded_size.x
 		offset_top = offset_bottom - _expanded_size.y
 
 
-func _header_height() -> float:
-	return %HeaderHBox.size.y + 10.0
+## The header plus the margins around it.
+func _header_size() -> Vector2:
+	return %HeaderHBox.get_combined_minimum_size() + Vector2(12.0, 10.0)
 
 
-## Drag-resize from the top-left corner; the bottom-right corner stays anchored.
+## Drag-resize from the top-left corner; the bottom-right corner stays anchored. Only while
+## expanded: the handle is hidden when collapsed.
 func _on_resize_handle_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
@@ -138,11 +145,8 @@ func _on_resize_handle_gui_input(event: InputEvent) -> void:
 		var new_width: float = clampf(-(_resize_start_offset_left + delta.x) + offset_right, MIN_SIZE.x, MAX_SIZE.x)
 		var new_height: float = clampf(-(_resize_start_offset_top + delta.y) + offset_bottom, MIN_SIZE.y, MAX_SIZE.y)
 		offset_left = offset_right - new_width
-		if not _is_collapsed:
-			offset_top = offset_bottom - new_height
-			_expanded_size = Vector2(new_width, new_height)
-		else:
-			_expanded_size.x = new_width
+		offset_top = offset_bottom - new_height
+		_expanded_size = Vector2(new_width, new_height)
 
 
 func _apply_focus_style(is_focused: bool) -> void:
