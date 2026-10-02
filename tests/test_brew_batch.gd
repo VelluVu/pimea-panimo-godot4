@@ -150,3 +150,11 @@ func test_quality_tier_boundaries() -> void:
 	assert_eq(batch.get_quality_tier_string(), StringContainer.QUALITY_TIER_EXCELLENT)
 	batch.current_quality = 1.3
 	assert_eq(batch.get_quality_tier_string(), StringContainer.QUALITY_TIER_MASTERFUL)
+
+
+func test_aged_price_grows_to_the_peak_and_ends_when_spoiling() -> void:
+	assert_eq(BrewBatch.aged_price_multiplier(0.6, 0, 30, 70), 1.0, "fresh")
+	assert_true(is_equal_approx(BrewBatch.aged_price_multiplier(0.6, 15, 30, 70), 1.3), "halfway to the peak")
+	assert_true(is_equal_approx(BrewBatch.aged_price_multiplier(0.6, 60, 30, 70), 1.6), "held through the shelf life")
+	assert_eq(BrewBatch.aged_price_multiplier(0.6, 101, 30, 70), 1.0, "spoiling")
+	assert_eq(BrewBatch.aged_price_multiplier(0.0, 30, 30, 70), 1.0, "no bonus")

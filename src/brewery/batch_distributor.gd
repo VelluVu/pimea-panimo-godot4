@@ -27,11 +27,13 @@ func _init(owner : Brewery) -> void:
 func connect_signals() -> void:
 	GUISignals.bulk_sell_batch_requested.connect(_on_bulk_sell_batch_requested)
 	GUISignals.ship_batch_to_bar_requested.connect(_on_ship_batch_to_bar_requested)
+	GUISignals.batch_hold_toggled.connect(_on_batch_hold_toggled)
 
 
 func disconnect_signals() -> void:
 	GUISignals.bulk_sell_batch_requested.disconnect(_on_bulk_sell_batch_requested)
 	GUISignals.ship_batch_to_bar_requested.disconnect(_on_ship_batch_to_bar_requested)
+	GUISignals.batch_hold_toggled.disconnect(_on_batch_hold_toggled)
 
 
 ## Static so the payout math can be unit-tested without a live Brewery.
@@ -72,11 +74,18 @@ func _on_ship_batch_to_bar_requested(batch : BrewBatch, bar : BarContact) -> voi
 
 	var raw_cost_per_bottle : float = brewery.resolver.get_price_breakdown(batch.beer_style).raw_cost_per_bottle
 	var payout : float = calculate_ship_payout(raw_cost_per_bottle, batch.current_quality, batch.amount_bottles, bar.price_multiplier)
-	payout = snappedf(payout * brewery.stats.multiplier(PerkStats.DISTRIBUTION_INCOME), 0.1)
+	payout = snappedf(payout * brewery.stats.multiplier(PerkStats.DISTRIBUTION_INCOME) * batch.get_aged_price_multiplier(), 0.1)
 
 	brewery.money += payout
 	brewery.add_risk(bar.risk_per_shipment)
 	BrewerySignals.keg_shipped_to_bar.emit(batch.get_style_name(), bar.bar_name, batch.amount_bottles, payout, bar.risk_per_shipment)
 
 	brewery.inventory.brew_batches.erase(batch)
+	BrewerySignals.brewery_state_changed.emit(brewery)
+
+
+func _on_batch_hold_toggled(batch : BrewBatch) -> void:
+	if not brewery.inventory.brew_batches.has(batch):
+		return
+	batch.held = not batch.held
 	BrewerySignals.brewery_state_changed.emit(brewery)
