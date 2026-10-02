@@ -95,3 +95,23 @@ func test_the_entry_holds_the_parts_of_its_score() -> void:
 	assert_eq(entry["modifier_name"], "Testi")
 	var base : int = 15 * 100 + 110 * 10 + 400 + RunScoreScript.SURVIVAL_BONUS
 	assert_eq(entry["score"], roundi(base * entry["multiplier"]))
+
+
+func test_the_brewerys_worth_adds_points() -> void:
+	var without : int = RunScoreScript.score(15, 100, 300, DayRulesScript.ENDING_SEASON_OVER)
+	var with_worth : int = RunScoreScript.score(15, 100, 300, DayRulesScript.ENDING_SEASON_OVER, null, 1000.0)
+	assert_eq(with_worth - without, roundi(1000.0 * RunScoreScript.WORTH_POINTS_PER_EURO))
+
+
+func test_a_failed_run_scores_no_worth() -> void:
+	assert_eq(RunScoreScript.worth_points(5000.0, "busted"), 0)
+	assert_eq(RunScoreScript.worth_points(5000.0, "bankrupt"), 0)
+
+
+func test_debt_is_not_negative_worth() -> void:
+	assert_eq(RunScoreScript.worth_points(-200.0, DayRulesScript.ENDING_SURVIVED), 0)
+
+
+func test_rescore_keeps_the_worth() -> void:
+	var entry : Dictionary = RunScoreScript.entry(15, 120, 400, DayRulesScript.ENDING_SURVIVED, null, 2500.0)
+	assert_eq(RunScoreScript.rescore(entry), entry["score"])

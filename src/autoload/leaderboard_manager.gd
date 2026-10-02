@@ -10,8 +10,9 @@ const MAX_ENTRIES : int = 20
 
 ## Entries scored with an older formula are moved out of the list, not mixed into it,
 ## unless they keep every part of their score (RESCORABLE_VERSION and later): those are
-## scored again with RunScore.rescore().
-const SCORE_VERSION : int = 3
+## scored again with RunScore.rescore(). Entries from before the brewery's worth was
+## stored rescore without it.
+const SCORE_VERSION : int = 4
 const RESCORABLE_VERSION : int = 2
 const KEY_ARCHIVED_ENTRIES : String = "archived_entries"
 
