@@ -123,6 +123,7 @@ func process(data : CustomerData) -> String:
 	var response_text : String = results[CustomerManager.KEY_RESPONSE]
 	if is_regular and results[CustomerManager.KEY_DELIGHTED]:
 		response_text = REGULAR_RESPONSE_FORMAT % response_text
+	response_text += QualityWishText.reject_suffix(best_batch.current_quality, data.min_quality)
 
 	if BarFightRules.breaks_out(data, wanted, bottles_sold, brewery.stats.multiplier(PerkStats.BAR_FIGHT_CHANCE), randf()):
 		_trigger_bar_fight(data, best_batch)

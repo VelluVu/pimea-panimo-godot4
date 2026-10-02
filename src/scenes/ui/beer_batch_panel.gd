@@ -153,5 +153,5 @@ func _make_batch_label(batch: BrewBatch) -> TooltipLabel:
 	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	label.custom_minimum_size = Vector2(ROW_LABEL_MIN_WIDTH, 0)
 	label.add_theme_font_size_override("font_size", 16)
-	label.tooltip_text = batch.get_full_info_tooltip()
+	label.tooltip_text = batch.get_full_info_tooltip() + QualityWishText.too_weak_line(batch.current_quality, CustomerRegistry.get_eligible_customers())
 	return label
