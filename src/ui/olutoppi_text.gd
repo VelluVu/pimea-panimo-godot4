@@ -44,7 +44,7 @@ static func locked_tooltip(unlock : MetaUnlockData, unmet_prerequisite_names : P
 	# list is every branch: "tai" reads as any one of them, "," would read as all.
 	var separator : String = TOOLTIP_PREREQ_ANY_SEPARATOR if unlock.requires_any_prerequisite else TOOLTIP_PREREQ_ALL_SEPARATOR
 	var lines : PackedStringArray = _header_lines(unlock)
-	lines.append(TOOLTIP_LOCKED_FORMAT % separator.join(unmet_prerequisite_names))
+	lines.append(UiText.of(TOOLTIP_LOCKED_FORMAT) % separator.join(unmet_prerequisite_names))
 	return "\n".join(lines)
 
 
@@ -56,15 +56,15 @@ static func tooltip(unlock : MetaUnlockData, level : int, maxed : bool) -> Strin
 	if level > 0:
 		var current_summary : String = unlock.get_scaled_perk(level).get_stat_summary()
 		if not current_summary.is_empty():
-			lines.append(TOOLTIP_CURRENT_FORMAT % current_summary)
+			lines.append(UiText.of(TOOLTIP_CURRENT_FORMAT) % current_summary)
 
 	if maxed:
 		lines.append(TOOLTIP_MAXED_TEXT)
 	else:
 		var next_summary : String = unlock.get_scaled_perk(level + 1).get_stat_summary()
 		if not next_summary.is_empty():
-			lines.append(TOOLTIP_NEXT_LEVEL_EFFECT_FORMAT % [level + 1, next_summary])
-		lines.append(TOOLTIP_NEXT_LEVEL_FORMAT % unlock.renown_cost_per_level)
+			lines.append(UiText.of(TOOLTIP_NEXT_LEVEL_EFFECT_FORMAT) % [level + 1, next_summary])
+		lines.append(UiText.of(TOOLTIP_NEXT_LEVEL_FORMAT) % unlock.renown_cost_per_level)
 	return "\n".join(lines)
 
 

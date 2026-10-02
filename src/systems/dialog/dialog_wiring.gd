@@ -39,12 +39,12 @@ func _on_dialogue_pushed(text : String, is_special : bool, slot : int, speaker_p
 
 
 func _on_xp_popup_requested(amount : int, character_pos : Vector2) -> void:
-	_dialog.show_popup(XP_POPUP_FORMAT % amount, XP_POPUP_COLOR, character_pos + XP_POPUP_OFFSET)
+	_dialog.show_popup(tr(XP_POPUP_FORMAT) % amount, XP_POPUP_COLOR, character_pos + XP_POPUP_OFFSET)
 
 
 func _on_reputation_popup_requested(amount : int, character_pos : Vector2) -> void:
-	_dialog.show_popup(REPUTATION_POPUP_FORMAT % amount, Color.GREEN if amount > 0 else Color.RED, character_pos + REPUTATION_POPUP_OFFSET)
+	_dialog.show_popup(tr(REPUTATION_POPUP_FORMAT) % amount, Color.GREEN if amount > 0 else Color.RED, character_pos + REPUTATION_POPUP_OFFSET)
 
 
 func _on_tip_popup_requested(amount : float, character_pos : Vector2) -> void:
-	_dialog.show_popup(TIP_POPUP_FORMAT % amount, TIP_POPUP_COLOR, character_pos + TIP_POPUP_OFFSET)
+	_dialog.show_popup(tr(TIP_POPUP_FORMAT) % amount, TIP_POPUP_COLOR, character_pos + TIP_POPUP_OFFSET)

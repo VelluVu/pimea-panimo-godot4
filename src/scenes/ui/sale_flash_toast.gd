@@ -39,7 +39,7 @@ func _ready() -> void:
 
 
 func initialize(entry : SaleReceiptEntry) -> void:
-	initialize_text(LABEL_FORMAT % [entry.get_summary_text(), entry.net_income])
+	initialize_text(tr(LABEL_FORMAT) % [entry.get_summary_text(), entry.net_income])
 
 
 ## Generic entry point for flashes that don't have a SaleReceiptEntry to

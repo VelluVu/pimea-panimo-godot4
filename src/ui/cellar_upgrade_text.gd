@@ -12,21 +12,21 @@ const NONE_TEXT : String = "ei vielä"
 
 
 static func title_line(upgrade : CellarUpgradeData, level : int) -> String:
-	return LEVEL_FORMAT % [upgrade.perk_name, level, upgrade.max_level]
+	return UiText.of(LEVEL_FORMAT) % [upgrade.perk_name, level, upgrade.max_level]
 
 
 static func button_text(upgrade : CellarUpgradeData, level : int) -> String:
 	if CellarUpgradeRules.is_maxed(level, upgrade.max_level):
-		return MAXED_TEXT
-	return BUY_FORMAT % upgrade.cost_for_next_level(level)
+		return UiText.of(MAXED_TEXT)
+	return UiText.of(BUY_FORMAT) % upgrade.cost_for_next_level(level)
 
 
 ## The effect at the current level and, unless maxed, at the next one.
 static func effect_lines(upgrade : CellarUpgradeData, level : int) -> String:
-	var now : String = effect(upgrade, level) if level > 0 else NONE_TEXT
-	var lines : PackedStringArray = [NOW_FORMAT % now]
+	var now : String = effect(upgrade, level) if level > 0 else UiText.of(NONE_TEXT)
+	var lines : PackedStringArray = [UiText.of(NOW_FORMAT) % now]
 	if not CellarUpgradeRules.is_maxed(level, upgrade.max_level):
-		lines.append(NEXT_FORMAT % effect(upgrade, level + 1))
+		lines.append(UiText.of(NEXT_FORMAT) % effect(upgrade, level + 1))
 	return "\n".join(lines)
 
 
@@ -38,5 +38,5 @@ static func effect(upgrade : CellarUpgradeData, level : int) -> String:
 		var kind : PerkStats.Kind = entry.kind
 		var value : float = perk.get(entry.stat)
 		if value != PerkStats.neutral_value(kind):
-			parts.append(entry.text % PerkStats.display_number(kind, value))
+			parts.append(UiText.of(entry.text) % PerkStats.display_number(kind, value))
 	return ", ".join(parts)

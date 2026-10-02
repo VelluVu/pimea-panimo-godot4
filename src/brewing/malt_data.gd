@@ -6,4 +6,4 @@ extends IngredientData
 
 
 func get_stat_string() -> String:
-	return StringContainer.MALT_STAT_STRING % ebc
+	return tr(StringContainer.MALT_STAT_STRING) % ebc

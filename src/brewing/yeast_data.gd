@@ -6,4 +6,4 @@ extends IngredientData
 
 
 func get_stat_string() -> String:
-	return StringContainer.YEAST_STAT_STRING % attentuation_percent
+	return tr(StringContainer.YEAST_STAT_STRING) % attentuation_percent

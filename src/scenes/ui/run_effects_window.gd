@@ -64,20 +64,20 @@ func _add_modifier_section(brewery : Brewery) -> void:
 		rows_vbox.add_child(_make_label(StringContainer.RUN_EFFECTS_NO_MODIFIER_STRING))
 		return
 
-	rows_vbox.add_child(_make_header(StringContainer.RUN_EFFECTS_MODIFIER_HEADER % brewery.run_modifier.modifier_name))
+	rows_vbox.add_child(_make_header(tr(StringContainer.RUN_EFFECTS_MODIFIER_HEADER) % brewery.run_modifier.modifier_name))
 
 	var stat_summary : String = brewery.run_modifier.get_stat_summary()
 	if not stat_summary.is_empty():
 		rows_vbox.add_child(_make_label(stat_summary))
 
-	rows_vbox.add_child(_make_label(StringContainer.RUN_EFFECTS_RAID_THRESHOLD_STRING % brewery.get_effective_raid_threshold()))
+	rows_vbox.add_child(_make_label(tr(StringContainer.RUN_EFFECTS_RAID_THRESHOLD_STRING) % brewery.get_effective_raid_threshold()))
 
 
 func _add_perks_section(brewery : Brewery) -> void:
 	# Olutoppi perks come first and apart, so they are not mistaken for this run's picks.
 	var permanent_rows : Array[Dictionary] = PerkStack.rows(brewery.active_perks, true)
 	if not permanent_rows.is_empty():
-		rows_vbox.add_child(_make_header(PERMANENT_PERKS_HEADER % permanent_rows.size()))
+		rows_vbox.add_child(_make_header(tr(PERMANENT_PERKS_HEADER) % permanent_rows.size()))
 		_add_perk_rows(permanent_rows)
 		_add_spacer()
 
@@ -85,7 +85,7 @@ func _add_perks_section(brewery : Brewery) -> void:
 	var run_pick_count : int = 0
 	for row : Dictionary in run_rows:
 		run_pick_count += row[PerkStack.KEY_COUNT]
-	rows_vbox.add_child(_make_header(StringContainer.RUN_EFFECTS_PERKS_HEADER % run_pick_count))
+	rows_vbox.add_child(_make_header(tr(StringContainer.RUN_EFFECTS_PERKS_HEADER) % run_pick_count))
 	if run_rows.is_empty():
 		rows_vbox.add_child(_make_label(StringContainer.RUN_EFFECTS_NO_PERKS_STRING))
 	_add_perk_rows(run_rows)
@@ -97,15 +97,15 @@ func _add_perks_section(brewery : Brewery) -> void:
 
 	var quality_bonus := brewery.stats.total(PerkStats.QUALITY_BONUS)
 	if quality_bonus != 0.0:
-		rows_vbox.add_child(_make_label(StringContainer.RUN_EFFECTS_TOTALS_QUALITY % roundi(quality_bonus * 100)))
+		rows_vbox.add_child(_make_label(tr(StringContainer.RUN_EFFECTS_TOTALS_QUALITY) % roundi(quality_bonus * 100)))
 
 	var reputation_multiplier := brewery.stats.multiplier(PerkStats.REPUTATION_GAIN)
 	if reputation_multiplier != 1.0:
-		rows_vbox.add_child(_make_label(StringContainer.RUN_EFFECTS_TOTALS_REPUTATION % roundi((reputation_multiplier - 1.0) * 100)))
+		rows_vbox.add_child(_make_label(tr(StringContainer.RUN_EFFECTS_TOTALS_REPUTATION) % roundi((reputation_multiplier - 1.0) * 100)))
 
 	var tip_multiplier := brewery.stats.multiplier(PerkStats.TIP_INCOME)
 	if tip_multiplier != 1.0:
-		rows_vbox.add_child(_make_label(StringContainer.RUN_EFFECTS_TOTALS_TIP % roundi((tip_multiplier - 1.0) * 100)))
+		rows_vbox.add_child(_make_label(tr(StringContainer.RUN_EFFECTS_TOTALS_TIP) % roundi((tip_multiplier - 1.0) * 100)))
 
 
 func _add_perk_rows(perk_rows : Array[Dictionary]) -> void:

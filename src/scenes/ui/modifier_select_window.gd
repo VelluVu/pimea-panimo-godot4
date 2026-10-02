@@ -84,7 +84,7 @@ func _show_record() -> void:
 		return
 
 	var best : Dictionary = entries[0]
-	record_label.text = RECORD_FORMAT % [best.get("score", 0), best.get("days_survived", 0), best.get("lifetime_bottles_sold", 0)]
+	record_label.text = tr(RECORD_FORMAT) % [best.get("score", 0), best.get("days_survived", 0), best.get("lifetime_bottles_sold", 0)]
 
 
 func _on_card_pressed(index : int) -> void:

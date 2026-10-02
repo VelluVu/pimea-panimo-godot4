@@ -11,6 +11,9 @@ const MAIN_MENU_SCENE_PATH : String = "res://src/scenes/ui/main_menu.tscn"
 
 const TAB_TITLES : Array[String] = ["Ääni", "Näyttö", "Ohjaus", "Tietoja"]
 const INPUT_TAB_INDEX : int = 2
+const LANGUAGE_LABEL_TEXT : String = "Kieli"
+## Each language in its own name, so a player can find theirs whatever is showing.
+const LANGUAGE_NAMES : Dictionary = {"fi": "Suomi", "en": "English"}
 
 ## False on the instance inside the main menu itself: there is nothing to return to.
 @export var show_main_menu_button : bool = true
@@ -26,11 +29,13 @@ const INPUT_TAB_INDEX : int = 2
 @onready var music_mute_check : CheckButton = %MusicMuteCheck
 @onready var sfx_mute_check : CheckButton = %SfxMuteCheck
 @onready var fullscreen_check : CheckButton = %FullscreenCheck
+@onready var display_tab : VBoxContainer = %DisplayTab
 
 ## Whether the tree was already paused (by the game menu) when this opened, so closing
 ## restores that instead of always unpausing.
 var _was_paused_before : bool = false
 var _key_bindings : KeyBindingsTab
+var _language_option : OptionButton
 
 
 func _ready() -> void:
@@ -39,6 +44,7 @@ func _ready() -> void:
 	main_menu_button.text = MAIN_MENU_BUTTON_TEXT
 	main_menu_button.visible = show_main_menu_button
 	_build_input_tab()
+	_build_language_row()
 	for i : int in TAB_TITLES.size():
 		tab_container.set_tab_title(i, TAB_TITLES[i])
 
@@ -68,6 +74,21 @@ func _build_input_tab() -> void:
 	tab_container.move_child(_key_bindings, INPUT_TAB_INDEX)
 
 
+func _build_language_row() -> void:
+	var row := HBoxContainer.new()
+	var label := Label.new()
+	label.text = LANGUAGE_LABEL_TEXT
+	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_child(label)
+	_language_option = OptionButton.new()
+	# Language names stay in their own language whichever one is active.
+	_language_option.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
+	for locale : String in SettingsManager.supported_locales:
+		_language_option.add_item(LANGUAGE_NAMES.get(locale, locale))
+	row.add_child(_language_option)
+	display_tab.add_child(row)
+
+
 func _connect_signals() -> void:
 	close_button.pressed.connect(_on_close_button_pressed)
 	main_menu_button.pressed.connect(_on_main_menu_button_pressed)
@@ -79,6 +100,7 @@ func _connect_signals() -> void:
 	music_mute_check.toggled.connect(func(muted : bool) -> void: SettingsManager.set_muted(SettingsManager.BUS_MUSIC, muted))
 	sfx_mute_check.toggled.connect(func(muted : bool) -> void: SettingsManager.set_muted(SettingsManager.BUS_SFX, muted))
 	fullscreen_check.toggled.connect(SettingsManager.set_fullscreen)
+	_language_option.item_selected.connect(func(index : int) -> void: SettingsManager.set_language(SettingsManager.supported_locales[index]))
 	GUISignals.options_requested.connect(_on_options_requested)
 	tab_container.tab_changed.connect(GUISignals.tab_switched.emit.unbind(1))
 
@@ -90,6 +112,7 @@ func _load_current_values() -> void:
 	music_mute_check.button_pressed = SettingsManager.is_muted(SettingsManager.BUS_MUSIC)
 	sfx_mute_check.button_pressed = SettingsManager.is_muted(SettingsManager.BUS_SFX)
 	fullscreen_check.button_pressed = SettingsManager.fullscreen
+	_language_option.select(SettingsManager.supported_locales.find(SettingsManager.get_language()))
 
 
 func _on_options_requested() -> void:

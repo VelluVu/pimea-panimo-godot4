@@ -33,7 +33,7 @@ func get_summary_text() -> String:
 
 
 func get_breakdown_text() -> String:
-	return BREAKDOWN_FORMAT % [
+	return tr(BREAKDOWN_FORMAT) % [
 		breakdown.raw_cost_per_bottle,
 		breakdown.profit_per_bottle,
 		breakdown.price_per_bottle,
@@ -41,4 +41,4 @@ func get_breakdown_text() -> String:
 
 
 func get_totals_text() -> String:
-	return TOTALS_FORMAT % [gross_income, tip_income, net_income]
+	return tr(TOTALS_FORMAT) % [gross_income, tip_income, net_income]

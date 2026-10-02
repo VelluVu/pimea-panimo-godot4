@@ -78,7 +78,7 @@ func _on_day_changed(new_day: int) -> void:
 
 func _update_day_display(day_num: int) -> void:
 	if day_label:
-		day_label.text = DAY_STRING % str(day_num)
+		day_label.text = tr(DAY_STRING) % str(day_num)
 
 
 func _on_brewery_state_changed(brewery : Brewery) -> void:
@@ -113,7 +113,7 @@ func _on_brewery_state_changed(brewery : Brewery) -> void:
 
 	if brewery.run_level != _last_level:
 		_last_level = brewery.run_level
-		level_label.text = LEVEL_FORMAT % brewery.run_level
+		level_label.text = tr(LEVEL_FORMAT) % brewery.run_level
 
 	# Unlike the level label above, this updates on every state change (not
 	# just on a level-up) — XP itself ticks up on every sale/brew, and the
@@ -121,7 +121,7 @@ func _on_brewery_state_changed(brewery : Brewery) -> void:
 	# level-ups, not just a snap the moment one happens.
 	var xp_needed : int = Brewery.xp_required_for_level(brewery.run_level)
 	level_progress_bar.value = float(brewery.run_xp) / float(xp_needed) if xp_needed > 0 else 0.0
-	level_progress_bar.tooltip_text = LEVEL_PROGRESS_TOOLTIP_FORMAT % [brewery.run_xp, xp_needed]
+	level_progress_bar.tooltip_text = tr(LEVEL_PROGRESS_TOOLTIP_FORMAT) % [brewery.run_xp, xp_needed]
 
 	var new_risk: int = brewery.risk
 	if last_risk != -1:
@@ -147,18 +147,18 @@ func _update_reputation_display(reputation : int) -> void:
 	var tiers : Array[ReputationTier] = ReputationTiers.all()
 	var tier : ReputationTier = ReputationTiers.tier_for(reputation, tiers)
 	if tier == null:
-		reputation_label.text = REPUTATION_VALUE_FORMAT % reputation
+		reputation_label.text = tr(REPUTATION_VALUE_FORMAT) % reputation
 		reputation_label.tooltip_text = ""
 		return
 
 	reputation_label.text = tier.tier_name
 	var next : ReputationTier = ReputationTiers.next_tier(reputation, tiers)
-	var next_text : String = TOP_TIER_TEXT if next == null else NEXT_TIER_FORMAT % [next.tier_name, next.min_reputation]
-	var text : String = REPUTATION_TOOLTIP_FORMAT % [REPUTATION_VALUE_FORMAT % reputation, tier.description, next_text]
+	var next_text : String = tr(TOP_TIER_TEXT) if next == null else tr(NEXT_TIER_FORMAT) % [next.tier_name, next.min_reputation]
+	var text : String = REPUTATION_TOOLTIP_FORMAT % [tr(REPUTATION_VALUE_FORMAT) % reputation, tier.description, next_text]
 	if tier.raid_threshold_penalty > 0:
-		text += FAME_RAID_FORMAT % tier.raid_threshold_penalty
+		text += tr(FAME_RAID_FORMAT) % tier.raid_threshold_penalty
 	if tier.daily_decay_percent > 0.0:
-		text += FAME_DECAY_FORMAT % roundi(tier.daily_decay_percent * 100.0)
+		text += tr(FAME_DECAY_FORMAT) % roundi(tier.daily_decay_percent * 100.0)
 	reputation_label.tooltip_text = text
 
 

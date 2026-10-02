@@ -1,7 +1,7 @@
 # Settings system
 
-Persisted player preferences: a volume and mute per audio bus, and fullscreen. Applied straight
-to `AudioServer` and `DisplayServer`, saved to a `ConfigFile`.
+Persisted player preferences: a volume and mute per audio bus, fullscreen and the language.
+Applied straight to `AudioServer`, `DisplayServer` and `TranslationServer`, saved to a `ConfigFile`.
 
 ## Interface (`SettingsStore`)
 
@@ -10,15 +10,17 @@ to `AudioServer` and `DisplayServer`, saved to a `ConfigFile`.
 | `get_volume(bus)`, `set_volume(bus, value)` | Linear 0 to 1. Applies at once; does not save |
 | `is_muted(bus)`, `set_muted(bus, value)` | Applies and saves |
 | `fullscreen`, `set_fullscreen(value)` | Applies and saves |
+| `get_language()`, `set_language(locale)` | The locale in use (saved choice, else system language, else `fallback_locale`). Setting applies, saves and emits `language_changed` |
 | `save_settings()` | Call when a slider drag ends, not on every tick |
 
-The file keeps `<bus>_volume` and `<bus>_muted` in `[audio]` and `fullscreen` in `[video]`.
+The file keeps `<bus>_volume` and `<bus>_muted` in `[audio]`, `fullscreen` in `[video]` and
+`language` in `[general]` (empty follows the system language).
 
 ## Use it in a new project
 
 1. Copy this folder (keep the `.uid` files).
-2. Edit **`settings_wiring.gd`**: the bus names from your bus layout, the default volume and
-   which buses start muted.
+2. Edit **`settings_wiring.gd`**: the bus names from your bus layout, the default volume,
+   which buses start muted, the `supported_locales` and the `translation_paths` to load.
 3. Register an autoload whose script is `settings_wiring.gd`, or a two-line script that extends
    `SettingsWiring` (this game's `src/autoload/settings_manager.gd`).
 

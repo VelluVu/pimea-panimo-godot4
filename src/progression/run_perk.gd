@@ -112,10 +112,10 @@ func get_stat_summary() -> String:
 		var kind : PerkStats.Kind = entry.kind
 		var value : float = get(entry.stat)
 		if value != PerkStats.neutral_value(kind):
-			lines.append(entry.text % PerkStats.display_number(kind, value))
+			lines.append(tr(entry.text) % PerkStats.display_number(kind, value))
 
 	if stacks_additively and not lines.is_empty():
-		lines.append(StringContainer.PERK_ADDITIVE_STACKING_HINT)
+		lines.append(tr(StringContainer.PERK_ADDITIVE_STACKING_HINT))
 
 	return "\n".join(lines)
 
@@ -123,11 +123,11 @@ func get_stat_summary() -> String:
 func get_tier_label() -> String:
 	match tier:
 		Tier.RARE:
-			return StringContainer.PERK_TIER_RARE
+			return tr(StringContainer.PERK_TIER_RARE)
 		Tier.LEGENDARY:
-			return StringContainer.PERK_TIER_LEGENDARY
+			return tr(StringContainer.PERK_TIER_LEGENDARY)
 		_:
-			return StringContainer.PERK_TIER_COMMON
+			return tr(StringContainer.PERK_TIER_COMMON)
 
 
 const TIER_COLOR_COMMON : Color = Color.WHITE

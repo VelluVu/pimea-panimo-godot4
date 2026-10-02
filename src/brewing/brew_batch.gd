@@ -74,30 +74,30 @@ const AGING_TREND_DECLINING_LABEL : String = "heikkenee"
 func get_aging_trend_label() -> String:
 	match get_aging_trend_icon():
 		AGING_TREND_RISING:
-			return AGING_TREND_RISING_LABEL
+			return tr(AGING_TREND_RISING_LABEL)
 		AGING_TREND_DECLINING:
-			return AGING_TREND_DECLINING_LABEL
+			return tr(AGING_TREND_DECLINING_LABEL)
 		_:
-			return AGING_TREND_PLATEAU_LABEL
+			return tr(AGING_TREND_PLATEAU_LABEL)
 
 
 func get_quality_tier_string() -> String:
 	if current_quality < 0.7:
-		return StringContainer.QUALITY_TIER_POOR
+		return tr(StringContainer.QUALITY_TIER_POOR)
 	elif current_quality < 0.9:
-		return StringContainer.QUALITY_TIER_MEDIOCRE
+		return tr(StringContainer.QUALITY_TIER_MEDIOCRE)
 	elif current_quality < 1.1:
-		return StringContainer.QUALITY_TIER_GOOD
+		return tr(StringContainer.QUALITY_TIER_GOOD)
 	elif current_quality < 1.3:
-		return StringContainer.QUALITY_TIER_EXCELLENT
+		return tr(StringContainer.QUALITY_TIER_EXCELLENT)
 	else:
-		return StringContainer.QUALITY_TIER_MASTERFUL
+		return tr(StringContainer.QUALITY_TIER_MASTERFUL)
 
 
 func get_quality_breakdown_tooltip() -> String:
 	var flavor_matched_string : String = StringContainer.YES_STRING if flavor_matched else StringContainer.NO_STRING
 
-	return StringContainer.BREW_QUALITY_BREAKDOWN_TOOLTIP % [
+	return tr(StringContainer.BREW_QUALITY_BREAKDOWN_TOOLTIP) % [
 		roundi(precision_score * 100),
 		hop_diversity_count,
 		roundi(hop_balance_bonus * 100),
@@ -112,7 +112,7 @@ const FULL_INFO_TOOLTIP_HEADER_FORMAT : String = "Laatu: %s%% (%s %s, %s)\nEBC: 
 ## row itself can stay to a single compact line. Spells out the aging
 ## trend arrow in words here since the row has no room to.
 func get_full_info_tooltip() -> String:
-	return FULL_INFO_TOOLTIP_HEADER_FORMAT % [
+	return tr(FULL_INFO_TOOLTIP_HEADER_FORMAT) % [
 		roundi(current_quality * 100),
 		get_quality_tier_string(),
 		get_aging_trend_icon(),

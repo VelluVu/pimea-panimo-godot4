@@ -23,9 +23,9 @@ func setup(achievement: AchievementData, unlocked: bool, progress: int) -> void:
 	modulate = Color.WHITE if unlocked else Color(1, 1, 1, 0.8)
 
 	if unlocked:
-		tooltip_text = UNLOCKED_TOOLTIP_FORMAT % [achievement.title, achievement.description]
+		tooltip_text = tr(UNLOCKED_TOOLTIP_FORMAT) % [achievement.title, achievement.description]
 	else:
-		tooltip_text = LOCKED_TOOLTIP_FORMAT % [achievement.title, achievement.description, progress, achievement.target_value]
+		tooltip_text = tr(LOCKED_TOOLTIP_FORMAT) % [achievement.title, achievement.description, progress, achievement.target_value]
 
 	var column := VBoxContainer.new()
 	column.mouse_filter = Control.MOUSE_FILTER_IGNORE

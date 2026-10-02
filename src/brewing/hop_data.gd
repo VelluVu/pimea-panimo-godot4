@@ -10,19 +10,19 @@ enum FlavorProfile { NONE, CITRUS, TROPICAL, PINE, NOBLE, EARTHY }
 
 
 func get_stat_string() -> String:
-	var base_stats := StringContainer.HOP_STAT_STRING % [alpha_acids, beta_acids]
+	var base_stats := tr(StringContainer.HOP_STAT_STRING) % [alpha_acids, beta_acids]
 
 	if flavor_profile == FlavorProfile.NONE:
 		return base_stats
 
-	return base_stats + "\n" + StringContainer.HOP_FLAVOR_STRING % get_flavor_profile_display_name(flavor_profile)
+	return base_stats + "\n" + tr(StringContainer.HOP_FLAVOR_STRING) % get_flavor_profile_display_name(flavor_profile)
 
 
 static func get_flavor_profile_display_name(profile: FlavorProfile) -> String:
 	match profile:
-		FlavorProfile.CITRUS: return StringContainer.HOP_FLAVOR_CITRUS
-		FlavorProfile.TROPICAL: return StringContainer.HOP_FLAVOR_TROPICAL
-		FlavorProfile.PINE: return StringContainer.HOP_FLAVOR_PINE
-		FlavorProfile.NOBLE: return StringContainer.HOP_FLAVOR_NOBLE
-		FlavorProfile.EARTHY: return StringContainer.HOP_FLAVOR_EARTHY
+		FlavorProfile.CITRUS: return UiText.of(StringContainer.HOP_FLAVOR_CITRUS)
+		FlavorProfile.TROPICAL: return UiText.of(StringContainer.HOP_FLAVOR_TROPICAL)
+		FlavorProfile.PINE: return UiText.of(StringContainer.HOP_FLAVOR_PINE)
+		FlavorProfile.NOBLE: return UiText.of(StringContainer.HOP_FLAVOR_NOBLE)
+		FlavorProfile.EARTHY: return UiText.of(StringContainer.HOP_FLAVOR_EARTHY)
 		_: return ""
