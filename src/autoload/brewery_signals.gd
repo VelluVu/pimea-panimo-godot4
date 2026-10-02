@@ -41,7 +41,7 @@ signal batch_bottled(bottles_lost: int, label_cost: float, style_name: String)
 @warning_ignore("unused_signal")
 signal daily_bills_paid(electricity: int, water: int, total: int)
 ## Emitted once per run by Brewery.trigger_ending(). `ending_type` is "busted", "bankrupt"
-## or "survived". See GameEndWindow.
+## "survived" or "season_over" (the last two on the season's last day). See GameEndWindow.
 @warning_ignore("unused_signal")
 signal game_ended(ending_type: String)
 ## Emitted once per level gained by Brewery.add_xp(). LevelUpWindow rolls its own perk

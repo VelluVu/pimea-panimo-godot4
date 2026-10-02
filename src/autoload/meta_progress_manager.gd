@@ -18,16 +18,6 @@ const KEY_UNLOCKED_LEVELS : String = "unlocked_levels"
 
 const UNLOCK_FOLDER_PATH : String = "res://src/resources/meta_unlocks/"
 
-## LeaderboardManager has no class_name, so its static function is reached through the
-## script (as test_leaderboard_manager.gd does) to avoid STATIC_CALLED_ON_INSTANCE.
-const LeaderboardManagerScript := preload("res://src/autoload/leaderboard_manager.gd")
-
-## The leaderboard's difficulty-weighted score scaled into a small currency, so the two
-## agree on what a good run is. Floored: a bust already costs the player its progress, so
-## it should still contribute a little.
-const RENOWN_SCORE_DIVISOR : float = 20.0
-const RENOWN_FLOOR : int = 5
-
 var unlock_pool : Array[MetaUnlockData] = []
 
 var _config : ConfigFile = ConfigFile.new()
@@ -41,11 +31,7 @@ func _ready() -> void:
 	unlock_pool.assign(ResourceFolder.load_all(UNLOCK_FOLDER_PATH, MetaUnlockData))
 	BrewerySignals.style_discovered.connect(_on_style_discovered)
 	BrewerySignals.game_ended.connect(_on_game_ended)
-
-
-static func calculate_renown(days_survived : int, reputation : int, lifetime_bottles_sold : int, run_modifier : RunModifier = null) -> int:
-	var score : int = LeaderboardManagerScript.calculate_score(days_survived, reputation, lifetime_bottles_sold, run_modifier)
-	return maxi(RENOWN_FLOOR, roundi(score / RENOWN_SCORE_DIVISOR))
+	TimeManager.day_changed.connect(_on_day_changed)
 
 
 func has_style(style : int) -> bool:
@@ -139,13 +125,23 @@ func _on_style_discovered(style : int) -> void:
 	_save()
 
 
-## A run pays out renown once, at its first genuine ending, never during the
-## off-the-record continued-play epilogue (same guard as LeaderboardManager).
-func _on_game_ended(_ending_type : String) -> void:
+## The run's score pays out in full once, at its first ending (same guard as
+## LeaderboardManager); continued play only earns the nightly share below.
+func _on_game_ended(ending_type : String) -> void:
 	var brewery : Brewery = BrewEngine.current_brewery
 	if brewery == null or brewery.has_continued_past_survival:
 		return
-	add_renown(calculate_renown(brewery.current_day, brewery.reputation, brewery.lifetime_bottles_sold, brewery.run_modifier))
+	brewery.renown_bottles_counted = brewery.lifetime_bottles_sold
+	add_renown(RunScore.renown(RunScore.entry_for(brewery, ending_type)["score"]))
+
+
+func _on_day_changed(_day : int) -> void:
+	var brewery : Brewery = BrewEngine.current_brewery
+	if brewery == null or not brewery.has_continued_past_survival or brewery.game_has_ended:
+		return
+	var bottles : int = brewery.lifetime_bottles_sold - brewery.renown_bottles_counted
+	brewery.renown_bottles_counted = brewery.lifetime_bottles_sold
+	add_renown(RunScore.continued_day_renown(bottles, brewery.run_modifier))
 
 
 func _save() -> void:

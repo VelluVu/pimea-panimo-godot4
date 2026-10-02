@@ -11,8 +11,8 @@ extends SaveSlot
 ## Version 0 -> 1 needed no migration step.
 const SAVE_VERSION: int = 1
 
-## Endings that finish the run for good. "survived" is left out on purpose:
-## the player can choose to keep playing, so that run must stay saved.
+## Endings that finish the run for good. The season endings ("survived",
+## "season_over") are left out on purpose: the player can keep playing.
 const RUN_ENDING_TYPES: PackedStringArray = ["busted", "bankrupt"]
 
 

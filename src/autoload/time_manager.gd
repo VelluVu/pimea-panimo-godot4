@@ -126,8 +126,9 @@ func _advance_day() -> void:
 
 
 func _check_survival_ending(brewery : Brewery) -> void:
-	if DayRules.survival_reached(brewery.current_day, brewery.reputation, brewery.money, brewery.game_has_ended, brewery.has_continued_past_survival):
-		brewery.trigger_ending("survived")
+	var ending : String = DayRules.season_ending(brewery.current_day, brewery.reputation, brewery.money, brewery.game_has_ended, brewery.has_continued_past_survival)
+	if not ending.is_empty():
+		brewery.trigger_ending(ending)
 
 
 ## Before day_changed, so the day recap's reputation change includes it.

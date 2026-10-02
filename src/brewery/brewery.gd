@@ -52,11 +52,13 @@ const XP_LEVEL_GROWTH_PER_LEVEL : int = 20
 ## Latched by trigger_ending() so two endings met on the same tick cannot both
 ## fire. Not saved: the end screen blocks play, and continuing clears it.
 var game_has_ended : bool = false
-## Set when the player picks "Jatka pelaamista" after surviving, so the
-## survived ending never fires again. Continued runs must stay out of any
-## future leaderboard tracking.
+## Set when the player picks "Jatka pelaamista" after the season ending, so it
+## never fires again. The run is already scored: nothing after it reaches the
+## leaderboard, and each night pays only reduced renown (RunScore).
 @export var has_continued_past_survival : bool = false
 ## Rolled or chosen once per run; fixed for the whole run.
+## lifetime_bottles_sold already paid out in renown, for continued play's nightly renown.
+@export var renown_bottles_counted : int = 0
 @export var run_modifier : RunModifier
 @export var run_xp : int = 0
 @export var run_level : int = 1
@@ -207,7 +209,7 @@ func check_bankruptcy() -> void:
 	trigger_ending("bankrupt")
 
 
-## ending_type is "busted", "bankrupt" or "survived"; only the first fires.
+## ending_type is "busted", "bankrupt", "survived" or "season_over"; only the first fires.
 func trigger_ending(ending_type : String) -> void:
 	if game_has_ended:
 		return
