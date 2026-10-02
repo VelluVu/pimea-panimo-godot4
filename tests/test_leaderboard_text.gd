@@ -64,3 +64,13 @@ func test_a_failed_run_shows_its_reputation_without_points() -> void:
 	var text : String = LeaderboardTextScript.breakdown(entry)
 	assert_contains(text, "Maine 110: ei pisteitä")
 	assert_false(text.contains("110 × 10"), "no reputation points line")
+
+
+func test_the_breakdown_shows_the_brewerys_worth() -> void:
+	var entry : Dictionary = _entry()
+	entry["worth"] = 2800.0
+	assert_contains(LeaderboardTextScript.breakdown(entry), "Panimon arvo 2800 €: +560")
+
+
+func test_no_worth_line_without_worth() -> void:
+	assert_false(LeaderboardTextScript.breakdown(_entry()).contains("Panimon arvo"))

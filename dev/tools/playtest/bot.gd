@@ -272,7 +272,7 @@ func _finish(b: Brewery) -> void:
 	_done = true
 	var report: Dictionary = {
 		"strategy": cfg.strategy, "profile": cfg.get("profile", ""), "ending": ending if ending != "" else "day_limit",
-		"final": {"day": b.current_day, "rep": b.reputation, "money": snappedf(b.money, 0.1), "raids": b.raid_count, "level": b.run_level, "standing": b.customer_standing, "upgrades": b.cellar_upgrade_levels},
+		"final": {"day": b.current_day, "rep": b.reputation, "money": snappedf(b.money, 0.1), "raids": b.raid_count, "level": b.run_level, "standing": b.customer_standing, "upgrades": b.cellar_upgrade_levels, "worth": RunScore.brewery_worth(b)},
 		"days": days, "counts": counts, "notes": notes,
 	}
 	var f := FileAccess.open(cfg.out, FileAccess.WRITE)

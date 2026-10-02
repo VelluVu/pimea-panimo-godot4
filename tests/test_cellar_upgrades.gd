@@ -52,3 +52,13 @@ func test_shipped_upgrades_have_unique_ids_and_five_levels() -> void:
 		ids[upgrade.upgrade_id] = true
 		assert_eq(upgrade.max_level, 5)
 		assert_ne(CellarUpgradeText.effect(upgrade, 1), "", "%s has no stat" % upgrade.upgrade_id)
+
+
+func test_invested_value_sums_the_price_of_every_bought_level() -> void:
+	var upgrade : CellarUpgradeData = _upgrade("a")
+	upgrade.base_cost = 40
+	upgrade.cost_growth = 1.7
+	var upgrades : Array[CellarUpgradeData] = [upgrade]
+	var expected : int = upgrade.cost_for_next_level(0) + upgrade.cost_for_next_level(1) + upgrade.cost_for_next_level(2)
+	assert_eq(UpgradesScript.invested_value({"a": 3}, upgrades), expected)
+	assert_eq(UpgradesScript.invested_value({}, upgrades), 0)
