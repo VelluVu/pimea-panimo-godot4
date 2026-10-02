@@ -109,7 +109,7 @@ func _style_names() -> Dictionary:
 	if brewery == null:
 		return names
 	for beer_style : BeerStyle in brewery.resolver.active_styles:
-		names[beer_style.style] = beer_style.style_name
+		names[beer_style.style] = tr(beer_style.style_name)
 	return names
 
 

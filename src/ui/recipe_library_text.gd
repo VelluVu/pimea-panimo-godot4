@@ -18,7 +18,7 @@ const MALT_BLEND_HINT : String = "\nVaatii mallasseoksen"
 
 static func known_row(beer_style : BeerStyle, yeast_name : String, required_malt_name : String) -> String:
 	var text : String = UiText.of(KNOWN_ROW_FORMAT) % [
-		beer_style.style_name, beer_style.abv,
+		UiText.of(beer_style.style_name), beer_style.abv,
 		beer_style.min_ebc, beer_style.max_ebc, beer_style.min_ibu, beer_style.max_ibu,
 		yeast_name,
 	]

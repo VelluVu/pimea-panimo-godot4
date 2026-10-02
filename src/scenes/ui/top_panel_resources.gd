@@ -72,6 +72,15 @@ func _ready() -> void:
 		_update_day_display(BrewEngine.current_brewery.current_day)
 
 
+## The day and the run condition tag are only set on change, so a language switch
+## rebuilds them here; the rest follows from brewery_state_changed.
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_TRANSLATION_CHANGED and is_node_ready() and BrewEngine.current_brewery != null:
+		_modifier_tag_shown = false
+		_update_day_display(BrewEngine.current_brewery.current_day)
+		_on_brewery_state_changed(BrewEngine.current_brewery)
+
+
 func _on_day_changed(new_day: int) -> void:
 	_update_day_display(new_day)
 
@@ -153,8 +162,8 @@ func _update_reputation_display(reputation : int) -> void:
 
 	reputation_label.text = tier.tier_name
 	var next : ReputationTier = ReputationTiers.next_tier(reputation, tiers)
-	var next_text : String = tr(TOP_TIER_TEXT) if next == null else tr(NEXT_TIER_FORMAT) % [next.tier_name, next.min_reputation]
-	var text : String = REPUTATION_TOOLTIP_FORMAT % [tr(REPUTATION_VALUE_FORMAT) % reputation, tier.description, next_text]
+	var next_text : String = tr(TOP_TIER_TEXT) if next == null else tr(NEXT_TIER_FORMAT) % [tr(next.tier_name), next.min_reputation]
+	var text : String = REPUTATION_TOOLTIP_FORMAT % [tr(REPUTATION_VALUE_FORMAT) % reputation, tr(tier.description), next_text]
 	if tier.raid_threshold_penalty > 0:
 		text += tr(FAME_RAID_FORMAT) % tier.raid_threshold_penalty
 	if tier.daily_decay_percent > 0.0:

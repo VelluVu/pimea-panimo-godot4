@@ -29,7 +29,7 @@ const TOTALS_FORMAT : String = "Myynti: +%.1f €\nTippi: +%.1f €\nTILILLE: +%
 
 
 func get_summary_text() -> String:
-	return SUMMARY_FORMAT % [breakdown.style_name, bottles_sold]
+	return SUMMARY_FORMAT % [tr(breakdown.style_name), bottles_sold]
 
 
 func get_breakdown_text() -> String:

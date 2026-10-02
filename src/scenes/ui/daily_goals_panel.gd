@@ -161,7 +161,7 @@ func _update_daily_goals() -> void:
 		var progress : int = DailyGoalManager.get_progress(i)
 		var target : int = DailyGoalManager.get_effective_target(i)
 		label.visible = not _daily_goals_section.collapsed
-		_set_line(label, DAILY_GOAL_LINE_FORMAT % [goal.goal_name, goal.get_progress_text(progress, target)], GoalStatus.daily_goal(goal.goal_type, progress, target))
+		_set_line(label, DAILY_GOAL_LINE_FORMAT % [tr(goal.goal_name), goal.get_progress_text(progress, target)], GoalStatus.daily_goal(goal.goal_type, progress, target))
 		_near_miss_pulses[i].set_active(GoalStatus.is_near_miss(goal.goal_type, progress, target))
 
 	# With today's goals used up every slot is empty: say when new ones come.

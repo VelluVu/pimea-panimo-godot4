@@ -48,13 +48,13 @@ func _on_beer_sale_breakdown(entry : SaleReceiptEntry) -> void:
 func _on_batch_bulk_sold(style_name : String, bottles : int, payout : float) -> void:
 	var toast : SaleFlashToast = SALE_FLASH_TOAST_SCENE.instantiate()
 	add_child(toast)
-	toast.initialize_text(tr(BULK_SELL_FLASH_FORMAT) % [style_name, bottles, payout])
+	toast.initialize_text(tr(BULK_SELL_FLASH_FORMAT) % [tr(style_name), bottles, payout])
 
 
 func _on_keg_shipped_to_bar(style_name : String, bar_name : String, bottles : int, payout : float, risk_added : int) -> void:
 	var toast : SaleFlashToast = SALE_FLASH_TOAST_SCENE.instantiate()
 	add_child(toast)
-	toast.initialize_text(tr(SHIP_FLASH_FORMAT) % [bar_name, style_name, bottles, payout, risk_added])
+	toast.initialize_text(tr(SHIP_FLASH_FORMAT) % [tr(bar_name), tr(style_name), bottles, payout, risk_added])
 
 
 func _on_bar_fight_triggered(message : String) -> void:

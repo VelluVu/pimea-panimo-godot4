@@ -139,11 +139,11 @@ func _on_customer_unlocked(title: String) -> void:
 
 func _on_daily_goal_resolved(goal_name: String, succeeded: bool, money: int, reputation: int, xp: int, risk: int) -> void:
 	if succeeded:
-		_show_toast(tr(GOAL_REWARD_TOAST_FORMAT) % [goal_name, money, reputation, xp])
+		_show_toast(tr(GOAL_REWARD_TOAST_FORMAT) % [tr(goal_name), money, reputation, xp])
 	elif reputation == 0 and risk == 0:
-		_show_toast(tr(GOAL_FAILED_NO_PENALTY_TOAST_FORMAT) % goal_name)
+		_show_toast(tr(GOAL_FAILED_NO_PENALTY_TOAST_FORMAT) % tr(goal_name))
 	else:
-		_show_toast(tr(GOAL_FAILED_TOAST_FORMAT) % [goal_name, reputation, risk])
+		_show_toast(tr(GOAL_FAILED_TOAST_FORMAT) % [tr(goal_name), reputation, risk])
 
 
 ## Explains the money/reputation shift of a forced close. Skipped when all three
@@ -165,11 +165,11 @@ func _on_ingredient_purchase_underfunded(ingredient_name: String, price: int, mo
 
 
 func _on_reputation_tier_changed(tier: ReputationTier, rose: bool) -> void:
-	_show_toast((REPUTATION_TIER_ROSE_TOAST_FORMAT if rose else REPUTATION_TIER_FELL_TOAST_FORMAT) % tier.tier_name)
+	_show_toast(tr(REPUTATION_TIER_ROSE_TOAST_FORMAT if rose else REPUTATION_TIER_FELL_TOAST_FORMAT) % tr(tier.tier_name))
 
 
 func _on_reputation_decayed(amount: int, tier: ReputationTier) -> void:
-	_show_toast(tr(REPUTATION_DECAY_TOAST_FORMAT) % [amount, tier.tier_name])
+	_show_toast(tr(REPUTATION_DECAY_TOAST_FORMAT) % [amount, tr(tier.tier_name)])
 
 
 func _on_regular_status_changed(customer_title: String, is_regular: bool) -> void:

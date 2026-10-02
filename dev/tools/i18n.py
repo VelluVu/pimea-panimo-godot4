@@ -32,6 +32,11 @@ SCRIPT_DIRS = ["src"]
 CONTENT_FIELDS = {
     "src/resources/run_modifiers": ("modifier_name", "description"),
     "src/resources/ingredients": ("name", "description"),
+    "src/resources/daily_goals": ("goal_name",),
+    "src/resources/reputation_tiers": ("tier_name", "description"),
+    "src/resources/beer_styles": ("style_name",),
+    "src/resources/bars": ("bar_name", "description"),
+    "src/resources/cellar_upgrades": ("perk_name", "description"),
 }
 SKIP_DIRS = ["src/console", "src/systems/console", "src/resources", "addons", "tests", "dev"]
 
