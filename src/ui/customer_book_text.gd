@@ -28,7 +28,10 @@ static func lines(data : CustomerData, met : bool, style_names : Dictionary) -> 
 		result.append(VARYING_FAVOURITE_TEXT)
 	else:
 		result.append(UiText.of(FAVOURITE_FORMAT) % style_names.get(data.primary_style, ""))
-		result.append(UiText.of(SECOND_FORMAT) % style_names.get(data.secondary_style, ""))
+		var seconds : PackedStringArray = [style_names.get(data.secondary_style, "")]
+		for style : BeerStyle.Style in data.also_likes:
+			seconds.append(style_names.get(style, ""))
+		result.append(UiText.of(SECOND_FORMAT) % LIST_SEPARATOR.join(seconds))
 	if not data.accepted_styles.is_empty():
 		var accepted : PackedStringArray = []
 		for style : BeerStyle.Style in data.accepted_styles:

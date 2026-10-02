@@ -25,6 +25,9 @@ const QUALITY_REPUTATION_BONUS_MAX : int = 2
 @export var budget_multiplier: float = 1.0
 @export var primary_style: BeerStyle.Style = BeerStyle.Style.BULKKILAGER
 @export var secondary_style: BeerStyle.Style = BeerStyle.Style.KOTIKALJA
+## Further styles liked as much as secondary_style. Unlike accepted_styles, every other
+## style stays on the menu (the metalheads also like Baltic Porter).
+@export var also_likes: Array[BeerStyle.Style] = []
 
 @export_group("Ulkoasu")
 @export var sprite_frames: SpriteFrames = null
@@ -144,7 +147,7 @@ func generate_display_name() -> String:
 func get_preference_score(style: BeerStyle.Style) -> float:
 	if style == primary_style:
 		return 1.0
-	elif style == secondary_style or accepted_styles.has(style):
+	elif style == secondary_style or also_likes.has(style) or accepted_styles.has(style):
 		return 0.5
 	return 0.0
 
