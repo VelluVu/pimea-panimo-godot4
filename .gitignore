@@ -20,3 +20,6 @@ dev/tools/sheets/*.xlsx
 
 # Present only during automated test runs; mutes the game (see audio_wiring.gd)
 dev/mute_audio.flag
+
+# Output of dev/tools/playtest/playtest.py run
+dev/tools/playtest/runs/

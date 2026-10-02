@@ -86,6 +86,7 @@ Five top-level folders: `addons/`, `assets/`, `src/`, `tests/` and `dev/`. Every
 ## Tools
 - `dev/tools/check_systems.py` checks that every folder in `src/systems/` is self-contained (exit code 1 on a violation).
 - `dev/tools/sheets.py` exports the customers and beer styles to spreadsheets (`export`) and reads edited sheets back into the `.tres` files (`import`, a dry run unless `--apply` is given). Needs `pip install openpyxl`. Output goes to `dev/tools/sheets/`, which is gitignored.
+- `dev/tools/playtest/playtest.py` runs headless bot playtests in parallel (`run`, four strategies, each run with its own APPDATA so real saves are safe), then prints a per-run table (`summary`) or compares batches (`compare`). Use it to check balance changes; bots never discover styles or do daily goals.
 
 ## Model Context Protocol (MCP) Live Usage Rules
 You are connected to the live Godot Editor via the `godot_ai` MCP plugin. Always utilize your toolsets before guessing or making structural assumptions:
