@@ -51,7 +51,16 @@ func test_shipped_upgrades_have_unique_ids_and_five_levels() -> void:
 		assert_false(ids.has(upgrade.upgrade_id), "duplicate id %s" % upgrade.upgrade_id)
 		ids[upgrade.upgrade_id] = true
 		assert_eq(upgrade.max_level, 5)
-		assert_ne(CellarUpgradeText.effect(upgrade, 1), "", "%s has no stat" % upgrade.upgrade_id)
+		assert_true(_has_stat(upgrade), "%s has no stat" % upgrade.upgrade_id)
+
+
+## Reads the authored per-level steps as properties: in the editor the loaded .tres
+## files are placeholders, so methods like scaled_copy() can't be called on them.
+func _has_stat(upgrade : CellarUpgradeData) -> bool:
+	for entry : Dictionary in PerkStats.definitions():
+		if upgrade.get(entry.stat) != PerkStats.neutral_value(entry.kind):
+			return true
+	return false
 
 
 func test_invested_value_sums_the_price_of_every_bought_level() -> void:
