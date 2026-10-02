@@ -2,7 +2,7 @@ class_name HopData
 extends IngredientData
 
 
-enum FlavorProfile { NONE, CITRUS, TROPICAL, PINE, NOBLE, EARTHY }
+enum FlavorProfile { NONE, CITRUS, TROPICAL, PINE, NOBLE, EARTHY, JUNIPER }
 
 @export var alpha_acids : int
 @export var beta_acids : int
@@ -25,4 +25,5 @@ static func get_flavor_profile_display_name(profile: FlavorProfile) -> String:
 		FlavorProfile.PINE: return UiText.of(StringContainer.HOP_FLAVOR_PINE)
 		FlavorProfile.NOBLE: return UiText.of(StringContainer.HOP_FLAVOR_NOBLE)
 		FlavorProfile.EARTHY: return UiText.of(StringContainer.HOP_FLAVOR_EARTHY)
+		FlavorProfile.JUNIPER: return UiText.of(StringContainer.HOP_FLAVOR_JUNIPER)
 		_: return ""
