@@ -45,13 +45,16 @@
 [ext_resource type="Script" uid="uid://cwvam2qbvgbk3" path="res://src/scenes/ui/warehouse_label.gd" id="43_bu4jf"]
 [ext_resource type="PackedScene" uid="uid://kttjbp45s274" path="res://src/scenes/bartender.tscn" id="43_chjal"]
 [ext_resource type="Script" uid="uid://b78ix8nmmshyf" path="res://src/ui/recipe_shelf_hover_area.gd" id="45_txyw0"]
+[ext_resource type="PackedScene" path="res://src/scenes/ui/customer_book_window.tscn" id="46_kvn2d"]
 [ext_resource type="Texture2D" uid="uid://ui42kael5n56" path="res://assets/textures/beer_bottle_8x8.png" id="46_vc5cj"]
 [ext_resource type="PackedScene" uid="uid://c8a7pb7q0ho8t" path="res://src/scenes/keg.tscn" id="47_1v6qk"]
 [ext_resource type="Script" uid="uid://dwc72b5x4eaw3" path="res://src/ui/receipt_machine_hover_area.gd" id="49_j2jfr"]
+[ext_resource type="Script" uid="uid://b0toudceq7ibd" path="res://src/scenes/ui/customer_book_label.gd" id="50_olp0l"]
 [ext_resource type="Script" uid="uid://dihcrv1yno5x5" path="res://src/ui/chalkboard_hover_area.gd" id="51_bu4jf"]
 [ext_resource type="Script" uid="uid://cbbayr0gg5kb5" path="res://src/customers/lvv_raid_spawner.gd" id="58_augu2"]
 [ext_resource type="Script" uid="uid://c1fy2446074o0" path="res://src/events/immersion_event_spawner.gd" id="59_t5ykj"]
 [ext_resource type="Texture2D" uid="uid://dwe4ql72sptwg" path="res://assets/textures/beer_dispenser_rack_48.png" id="60_beerrack"]
+[ext_resource type="Script" uid="uid://bt460kqjyukxg" path="res://src/ui/customer_book_hover_area.gd" id="61_fluu8"]
 [ext_resource type="Texture2D" uid="uid://b12vj0rmwdl8y" path="res://assets/textures/light_glow_32.png" id="70_lightglow"]
 [ext_resource type="Texture2D" uid="uid://dcrobw17uonit" path="res://assets/textures/pendant_lamp_24.png" id="71_pendantlamp"]
 [ext_resource type="Texture2D" uid="uid://b3yifds2n8sqd" path="res://assets/textures/light_cone_64x120.png" id="72_lightcone"]
@@ -117,6 +120,9 @@ size = Vector2(104, 40)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bjg73"]
 size = Vector2(20, 30)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_68ujc"]
+size = Vector2(24, 14)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o7ddy"]
 size = Vector2(44, 32)
@@ -1126,6 +1132,13 @@ anchor_top = 0.1
 anchor_right = 0.77
 anchor_bottom = 0.9
 
+[node name="CustomerBookWindow" parent="GUI_CanvasLayer/GUI" unique_id=1959374750 instance=ExtResource("46_kvn2d")]
+layout_mode = 0
+anchor_left = 0.23
+anchor_top = 0.1
+anchor_right = 0.77
+anchor_bottom = 0.9
+
 [node name="FirstBrewHintBanner" type="Label" parent="GUI_CanvasLayer/GUI" unique_id=1039613027]
 visible = false
 modulate = Color(1, 1, 1, 0)
@@ -1173,6 +1186,16 @@ offset_bottom = 200.0
 theme_override_colors/font_color = Color(0.949, 0.788, 0.42, 1)
 horizontal_alignment = 1
 script = ExtResource("41_ty1g6")
+
+[node name="CustomerBookLabel" type="Label" parent="GUI_CanvasLayer/GUI" unique_id=1200212213]
+layout_mode = 0
+offset_left = 287.0
+offset_top = 186.0
+offset_right = 377.0
+offset_bottom = 204.0
+theme_override_colors/font_color = Color(0.9490196, 0.7882353, 0.41960785, 1)
+horizontal_alignment = 1
+script = ExtResource("50_olp0l")
 
 [node name="ChalkboardLabel" type="Label" parent="GUI_CanvasLayer/GUI" unique_id=888619514]
 layout_mode = 0
@@ -1329,6 +1352,26 @@ polygon = PackedVector2Array(-1.5, -1, 1.5, -1, 1.5, 1, -1.5, 1)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WorldYSort/BarTable/BarTable_Sprite2D/ReceiptMachineHoverArea" unique_id=1999034065]
 position = Vector2(0, -7)
 shape = SubResource("RectangleShape2D_bjg73")
+
+[node name="CustomerBookHoverArea" type="Area2D" parent="WorldYSort/BarTable/BarTable_Sprite2D" unique_id=221676537]
+position = Vector2(-68, -21)
+script = ExtResource("61_fluu8")
+
+[node name="Pages" type="Polygon2D" parent="WorldYSort/BarTable/BarTable_Sprite2D/CustomerBookHoverArea" unique_id=1665226341]
+color = Color(0.9098039, 0.8627451, 0.7529412, 1)
+polygon = PackedVector2Array(-9, -3, 9, -3, 9, 2, -9, 2)
+
+[node name="Cover" type="Polygon2D" parent="WorldYSort/BarTable/BarTable_Sprite2D/CustomerBookHoverArea" unique_id=1203407717]
+color = Color(0.4509804, 0.24313726, 0.22352941, 1)
+polygon = PackedVector2Array(-10, -6, 10, -6, 10, -2, -10, -2)
+
+[node name="Ribbon" type="Polygon2D" parent="WorldYSort/BarTable/BarTable_Sprite2D/CustomerBookHoverArea" unique_id=1131389917]
+color = Color(0.89411765, 0.23137255, 0.26666668, 1)
+polygon = PackedVector2Array(4, -2, 6, -2, 6, 5, 5, 4, 4, 5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldYSort/BarTable/BarTable_Sprite2D/CustomerBookHoverArea" unique_id=605101201]
+position = Vector2(0, -2)
+shape = SubResource("RectangleShape2D_68ujc")
 
 [node name="Bartender" parent="WorldYSort" unique_id=1865937119 instance=ExtResource("43_chjal")]
 position = Vector2(399, 167)

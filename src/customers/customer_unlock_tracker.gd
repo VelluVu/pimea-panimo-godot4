@@ -12,6 +12,8 @@ signal customer_unlocked(title: String)
 const DEFAULT_SAVE_PATH: String = "user://customer_unlocks.cfg"
 const SECTION: String = "customer_unlocks"
 const KEY_ANNOUNCED_TITLES: String = "announced_titles"
+## Titles served at least once in any run: the Asiakaskirja shows their tastes.
+const KEY_MET_TITLES: String = "met_titles"
 
 var _config: ConfigFile = ConfigFile.new()
 var _save_path: String
@@ -56,7 +58,21 @@ func get_announced_titles() -> Array:
 	return _config.get_value(SECTION, KEY_ANNOUNCED_TITLES, [])
 
 
-## Forgets every announcement, in memory and on disk.
+## Saves `title` as met; a title already met is not written again.
+func mark_met(title: String) -> void:
+	var met: Array = get_met_titles()
+	if title.is_empty() or met.has(title):
+		return
+	met.append(title)
+	_config.set_value(SECTION, KEY_MET_TITLES, met)
+	_config.save(_save_path)
+
+
+func get_met_titles() -> Array:
+	return _config.get_value(SECTION, KEY_MET_TITLES, [])
+
+
+## Forgets every announcement and met customer, in memory and on disk.
 func reset() -> void:
 	_config.clear()
 	_config.save(_save_path)

@@ -84,6 +84,7 @@ func _connect_signals() -> void:
 		GUISignals.game_menu_closed,
 		GUISignals.run_effects_requested,
 		GUISignals.receipt_log_requested,
+		GUISignals.customer_book_requested,
 		GUISignals.window_closed,
 		GUISignals.tab_switched,
 	]:

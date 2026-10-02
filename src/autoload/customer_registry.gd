@@ -34,6 +34,7 @@ func _ready() -> void:
 	BrewerySignals.brewery_state_changed.connect(_rescan_unlocks.unbind(1))
 	BrewerySignals.style_discovered.connect(_rescan_unlocks.unbind(1))
 	AchievementManager.achievement_unlocked.connect(_rescan_unlocks.unbind(2))
+	BrewerySignals.customer_served.connect(func(data : CustomerData) -> void: _unlocks.mark_met(data.title))
 	_rescan_unlocks()
 
 
@@ -124,6 +125,16 @@ func get_random_group_event() -> GroupVisitEventData:
 ## See CustomerUnlockTracker.is_eligible().
 func is_eligible(customer : CustomerData) -> bool:
 	return _unlocks.is_eligible(customer)
+
+
+## Customer titles unlocked in any run, see CustomerUnlockTracker.
+func get_announced_titles() -> Array:
+	return _unlocks.get_announced_titles()
+
+
+## Customer titles served in any run, see CustomerUnlockTracker.
+func get_met_titles() -> Array:
+	return _unlocks.get_met_titles()
 
 
 ## The customers who can walk in right now.
