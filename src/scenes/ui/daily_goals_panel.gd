@@ -17,6 +17,8 @@ const REPUTATION_GOAL_FORMAT : String = "Maine: %d/%d"
 
 const MAIN_GOAL_HEADER_TEXT : String = "Päätavoite:"
 const DAILY_GOALS_HEADER_TEXT : String = "Päivätavoitteet:"
+const DAILY_GOALS_LEFT_HEADER_FORMAT : String = "Päivätavoitteet (+%d tänään):"
+const NO_GOALS_LEFT_TEXT : String = "Uusia tavoitteita huomenna."
 
 const TUTORIAL_MALT_FORMAT : String = "Mallasta: %d/%d kg"
 const TUTORIAL_YEAST_FORMAT : String = "Hiivaa: %d/1"
@@ -145,6 +147,8 @@ func _update_tutorial_goals(brewery : Brewery) -> void:
 
 
 func _update_daily_goals() -> void:
+	var rolls_left : int = DailyGoalManager.get_rolls_left()
+	daily_goals_header_label.text = DAILY_GOALS_HEADER_TEXT if rolls_left < 0 else DAILY_GOALS_LEFT_HEADER_FORMAT % rolls_left
 	for i : int in daily_goal_labels.size():
 		var label : Label = daily_goal_labels[i]
 		var goal : DailyGoalData = DailyGoalManager.active_goals[i]
@@ -158,6 +162,12 @@ func _update_daily_goals() -> void:
 		label.visible = not _daily_goals_section.collapsed
 		_set_line(label, DAILY_GOAL_LINE_FORMAT % [goal.goal_name, goal.get_progress_text(progress, target)], GoalStatus.daily_goal(goal.goal_type, progress, target))
 		_near_miss_pulses[i].set_active(GoalStatus.is_near_miss(goal.goal_type, progress, target))
+
+	# With today's goals used up every slot is empty: say when new ones come.
+	if rolls_left == 0 and DailyGoalManager.active_goals.all(func(goal : GoalData) -> bool: return goal == null):
+		var first : Label = daily_goal_labels[0]
+		first.visible = not _daily_goals_section.collapsed
+		_set_line(first, NO_GOALS_LEFT_TEXT, GoalStatus.State.PENDING)
 
 
 func _set_line(label : Label, text : String, state : GoalStatus.State) -> void:

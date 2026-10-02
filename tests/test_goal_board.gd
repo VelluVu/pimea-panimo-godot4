@@ -131,3 +131,32 @@ func test_load_slot_restores_every_field() -> void:
 	assert_eq(board.get_progress(0), 2)
 	assert_eq(board.get_baseline(0), 17)
 	assert_eq(board.get_effective_target(0), 9)
+
+
+func test_a_settled_goal_is_not_replaced_once_the_roll_limit_is_used() -> void:
+	var board := _make_board([_goal(DailyGoalData.GoalType.SELL_BOTTLES, 1), _goal(DailyGoalData.GoalType.EARN_MONEY, 1)])
+	board.roll_limit = 2
+	board.fill_empty_slots()
+	board.add_progress(board.active_goals[0].get_kind(), 1)
+	assert_true(board.active_goals[0] != null, "the second roll fits the limit")
+	board.add_progress(board.active_goals[0].get_kind(), 1)
+	assert_eq(board.active_goals[0], null, "a third roll would pass the limit")
+	assert_eq(board.get_rolls_left(), 0)
+
+
+func test_end_period_starts_a_new_roll_budget() -> void:
+	var board := _make_board([_goal(DailyGoalData.GoalType.SELL_BOTTLES, 1), _goal(DailyGoalData.GoalType.EARN_MONEY, 1)])
+	board.roll_limit = 1
+	board.fill_empty_slots()
+	board.add_progress(board.active_goals[0].get_kind(), 1)
+	assert_eq(board.active_goals[0], null)
+	board.end_period()
+	board.fill_empty_slots()
+	assert_true(board.active_goals[0] != null, "a new period rolls again")
+	assert_eq(board.rolls_used, 1)
+
+
+func test_without_a_limit_rolls_left_is_minus_one() -> void:
+	var board := _make_board([_goal(DailyGoalData.GoalType.SELL_BOTTLES)])
+	board.fill_empty_slots()
+	assert_eq(board.get_rolls_left(), -1)

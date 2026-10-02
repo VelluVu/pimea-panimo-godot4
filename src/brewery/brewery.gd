@@ -34,6 +34,8 @@ const XP_LEVEL_GROWTH_PER_LEVEL : int = 20
 @export var daily_goal_progress : Array[int] = [0, 0, 0]
 @export var daily_goal_reputation_baseline : Array[int] = [0, 0, 0]
 @export var daily_goal_effective_target : Array[int] = [0, 0, 0]
+## Daily goals rolled today, against GoalWiring.DAILY_GOAL_ROLLS.
+@export var daily_goal_rolls_used : int = 0
 
 ## Snapshot of the day timer, written before each save. -1.0 means the clock
 ## has not started. Without it a load restarts the full day, so quitting and

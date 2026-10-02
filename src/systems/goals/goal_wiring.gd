@@ -11,6 +11,9 @@ signal daily_goal_resolved(goal_name: String, succeeded: bool, money: int, reput
 
 const DAILY_GOAL_FOLDER_PATH : String = "res://src/resources/daily_goals/"
 const ACTIVE_GOAL_COUNT : int = 3
+## Goals rolled per day, the morning's three included. Without a limit a finished goal
+## was replaced at once, so cheap goals could be chained all day for reputation and XP.
+const DAILY_GOAL_ROLLS : int = 5
 const NO_EFFECTS : Dictionary = {"money": 0, "reputation": 0, "xp": 0, "risk": 0}
 
 
@@ -29,7 +32,8 @@ func _ready() -> void:
 	BrewerySignals.keg_shipped_to_bar.connect(_on_keg_shipped_to_bar)
 	BrewEngine.brewery_changed.connect(_load_from_brewery)
 	BrewEngine.brewery_about_to_save.connect(_flush_to_brewery)
-	TimeManager.day_changed.connect(end_period.unbind(1))
+	# A slot left empty by yesterday's limit gets its goal in the morning.
+	TimeManager.day_changed.connect(func(_day : int) -> void: end_period(); fill_empty_slots())
 	# The boot-time Brewery was created before this autoload existed.
 	if BrewEngine.current_brewery != null:
 		_load_from_brewery(BrewEngine.current_brewery)
@@ -65,6 +69,12 @@ func _on_special_event_resolved(succeeded : bool, _event_data : SpecialEventData
 func _can_roll_goals() -> bool:
 	var brewery : Brewery = BrewEngine.current_brewery
 	return brewery != null and brewery.tutorial_complete()
+
+
+func _roll_limit() -> int:
+	var brewery : Brewery = BrewEngine.current_brewery
+	var extra : int = int(brewery.stats.total(PerkStats.EXTRA_DAILY_GOAL_ROLLS)) if brewery != null else 0
+	return DAILY_GOAL_ROLLS + extra
 
 
 func _current_day() -> int:
@@ -110,6 +120,7 @@ func _load_from_brewery(brewery : Brewery) -> void:
 	for i : int in get_slot_count():
 		load_slot(i, brewery.active_daily_goals[i], brewery.daily_goal_progress[i],
 			brewery.daily_goal_reputation_baseline[i], brewery.daily_goal_effective_target[i])
+	rolls_used = brewery.daily_goal_rolls_used
 	notify_changed()
 
 
@@ -120,3 +131,4 @@ func _flush_to_brewery(brewery : Brewery) -> void:
 		brewery.daily_goal_progress[i] = get_progress(i)
 		brewery.daily_goal_reputation_baseline[i] = get_baseline(i)
 		brewery.daily_goal_effective_target[i] = get_effective_target(i)
+	brewery.daily_goal_rolls_used = rolls_used

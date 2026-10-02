@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="CellarUpgradeData" format=3]
+
+[ext_resource type="Script" path="res://src/brewery/cellar_upgrade_data.gd" id="1_upgrade"]
+
+[resource]
+script = ExtResource("1_upgrade")
+upgrade_id = "ilmoitustaulu"
+sort_order = 6
+max_level = 3
+base_cost = 60
+cost_growth = 2.0
+perk_name = "Ilmoitustaulu"
+description = "Kellarin seinään naulattu taulu, johon kanta-asiakkaat ja naapurit jättävät toiveitaan. Joka päivä tarjolla on yksi päivätavoite enemmän."
+icon_placeholder = "📌"
+extra_daily_goal_rolls = 1
