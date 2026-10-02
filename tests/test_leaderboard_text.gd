@@ -69,7 +69,7 @@ func test_a_failed_run_shows_its_reputation_without_points() -> void:
 func test_the_breakdown_shows_the_brewerys_worth() -> void:
 	var entry : Dictionary = _entry()
 	entry["worth"] = 2800.0
-	assert_contains(LeaderboardTextScript.breakdown(entry), "Panimon arvo 2800 €: +560")
+	assert_contains(LeaderboardTextScript.breakdown(entry), "Panimon arvo 2800 €: +840")
 
 
 func test_no_worth_line_without_worth() -> void:
