@@ -20,5 +20,5 @@ reputation_change = 6
 peak_days = 30
 shelf_life_days = 70
 aging_factor = 0.1
-aged_price_bonus = 0.5
+aged_price_bonus = 0.35
 metadata/_custom_type_script = "uid://qpqfdi1wacne"
