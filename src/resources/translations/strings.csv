@@ -233,6 +233,81 @@ Halvinta mahdollista hiivaa tämä ei tee kovin hyvää olutta,The cheapest yeas
 Leivonta hiiva,Baking Yeast,src/resources/ingredients/yeasts/baking_yeast.tres
 Lagerhiiva,Lager Yeast,src/resources/ingredients/yeasts/lager_yeast.tres
 Pohjahiiva tuottaa puhtaan raikkaan oluen,"A bottom-fermenting yeast that makes a clean, crisp beer",src/resources/ingredients/yeasts/lager_yeast.tres
+Baarimestari,Bar Master,src/resources/meta_unlocks/baarimestari.tres
+"Vuosien kokemus tiskin takana kiteytyy todelliseksi ammattitaidoksi. Jokaisella myynnillä on pysyvä mahdollisuus tuplatippiin, ja tiskillä syttyvät riidat ovat pysyvästi harvinaisempia.","Years behind the counter turn into real craft. Every sale has a permanent chance of a double tip, and fights at the counter are permanently rarer.",src/resources/meta_unlocks/baarimestari.tres
+Tarkka silmämitta,Sharp Eye for Measure,src/resources/meta_unlocks/hygieniamestari.tres
+Vuosien kokemus on hionut annostelusi lähes täydelliseksi. Jokaisella panolla on pysyvästi entistäkin parempi mahdollisuus saada raaka-aineita takaisin varastoon.,Years of practice have made your measuring almost perfect. Every brew has a permanently even better chance of returning ingredients to storage.,src/resources/meta_unlocks/hygieniamestari.tres
+Kanta-asiakkaat,Regulars,src/resources/meta_unlocks/kanta_asiakkaat.tres
+Tunnettu nimi tuo vakituisia kävijöitä yhä useammin. Uusia asiakkaita saapuu kellariin pysyvästi hieman tiheämmin.,A known name brings regulars back more and more often. New customers permanently arrive at the cellar a little more often.,src/resources/meta_unlocks/kanta_asiakkaat.tres
+Osaat arvioida raaka-ainemäärät tarkasti. Jokaisella panolla on pysyvä mahdollisuus saada osa raaka-aineista takaisin varastoon.,You judge ingredient amounts precisely. Every brew has a permanent chance of returning some ingredients to storage.,src/resources/meta_unlocks/kaymisen_hallinta.tres
+Säästäväinen käsiala,Thrifty Hand,src/resources/meta_unlocks/kaymisen_hallinta.tres
+Mainoskampanja,Ad Campaign,src/resources/meta_unlocks/mainoskampanja.tres
+Mainostat panimoasi aktiivisesti ympäri kaupunkia. Ryhmäasiakkaita saapuu kellariisi pysyvästi tiheämmin.,You advertise your brewery all over town. Groups permanently visit your cellar more often.,src/resources/meta_unlocks/mainoskampanja.tres
+Hallitset maltaiden pilkkomisen jo unissasi. Jokainen pano tuottaa pysyvästi merkittävästi enemmän pulloja.,You could mill malt in your sleep. Every brew permanently yields significantly more bottles.,src/resources/meta_unlocks/mallastuksen_mestari.tres
+Mallastuksen mestari,Master Maltster,src/resources/meta_unlocks/mallastuksen_mestari.tres
+Neuvottelutaito,Haggling,src/resources/meta_unlocks/neuvottelutaito.tres
+Osaat tinkiä raaka-aineiden hinnoista. Ostot ovat pysyvästi hieman halvempia.,You know how to haggle over ingredient prices. Purchases are permanently a little cheaper.,src/resources/meta_unlocks/neuvottelutaito.tres
+Panimomestari,Brewmaster,src/resources/meta_unlocks/panimomestari.tres
+"Vuosikymmenten kokemus mallastuksesta ja annostelusta kiteytyy todelliseksi mestaruudeksi. Jokainen pano kypsyy pysyvästi nopeammin huippuunsa, ja laatu heikkenee sen jälkeen pysyvästi hitaammin.","Decades of malting and measuring turn into true mastery. Every brew permanently peaks faster, and its quality permanently declines more slowly after that.",src/resources/meta_unlocks/panimomestari.tres
+"Aiempien panimoyritysten opit istuvat käsissä pysyvästi. Jokainen erä saa pienen laatuedun, joka periytyy jokaiseen tulevaan peliin.",Lessons from earlier brewing attempts stay in your hands for good. Every batch gets a small quality edge that carries into every future game.,src/resources/meta_unlocks/perinnetaito.tres
+Perinnetaito,Old Craft,src/resources/meta_unlocks/perinnetaito.tres
+"Olet oppinut piilottamaan osan varastosta ratsian varalta. LVV-ratsia jättää aina yhden satunnaisen erän löytämättä, ja panimosi kestää yhden ratsian enemmän ennen sulkemista.","You have learned to hide part of your stock in case of a raid. An LVV raid always misses one random batch, and your brewery survives one more raid before closing.",src/resources/meta_unlocks/piilokatko.tres
+Piilokätkö,Secret Stash,src/resources/meta_unlocks/piilokatko.tres
+Osaat pitää baaritiskin rauhallisena ja huomaamattomana. LVV-riskin sietokykysi on pysyvästi hieman parempi.,You keep the bar calm and inconspicuous. Your LVV risk tolerance is permanently a little higher.,src/resources/meta_unlocks/rauhallinen_kellari.tres
+Rauhallinen kellari,Quiet Cellar,src/resources/meta_unlocks/rauhallinen_kellari.tres
+Maltaiden pilkkominen tuottaa vähemmän hukkaa. Jokainen pano tuottaa pysyvästi hieman enemmän pulloja.,Milling the malt wastes less. Every brew permanently yields a few more bottles.,src/resources/meta_unlocks/tarkka_pilkonta.tres
+Tarkka pilkonta,Precise Milling,src/resources/meta_unlocks/tarkka_pilkonta.tres
+"Osaat tunnistaa epäilyttävät kasvot ovelta jo etukäältä ja karkottaa heidät hienovaraisesti. LVV:n agentteja näkyy pysyvästi harvemmin, ja alamaailman kontaktit löytävät tiensä kellariisi useammin.","You spot suspicious faces at the door in advance and send them away discreetly. LVV agents permanently show up less often, and underworld contacts find their way to your cellar more often.",src/resources/meta_unlocks/terava_silmae.tres
+Terävä silmä,Keen Eye,src/resources/meta_unlocks/terava_silmae.tres
+Neuvottelutaitosi ulottuu nyt myös myyntiin. Erien tukkumyynti baareihin ja suoramyynti varastosta tuottavat pysyvästi enemmän.,Your haggling now extends to selling. Bar shipments and bulk sales from storage permanently earn more.,src/resources/meta_unlocks/tukkuhinnat.tres
+Tukkuhinnat,Wholesale Prices,src/resources/meta_unlocks/tukkuhinnat.tres
+Tukkukauppias,Wholesaler,src/resources/meta_unlocks/tukkukauppias.tres
+"Tunnet sekä ostohinnat että hyvän myyntitavan perusteet. Ostot ovat pysyvästi hieman halvempia, ja tiskimyynnin hinnat hieman korkeampia.","You know both purchase prices and the basics of good salesmanship. Purchases are permanently a little cheaper, and counter prices a little higher.",src/resources/meta_unlocks/tukkukauppias.tres
+Panimosi maine on levinnyt entisten pelien ajalta. Maineen kertymä on pysyvästi hieman parempi.,Your brewery's fame has spread from past games. Reputation gain is permanently a little better.,src/resources/meta_unlocks/tunnettu_nimi.tres
+"Panimosi brändi tunnetaan jo laajalti, ja asiakkaat ovat valmiita maksamaan siitä. Tiskimyynnin hinnat ovat pysyvästi korkeampia.","Your brewery's brand is widely known, and customers are willing to pay for it. Counter prices are permanently higher.",src/resources/meta_unlocks/vahva_brandi.tres
+Vahva brändi,Strong Brand,src/resources/meta_unlocks/vahva_brandi.tres
+Kellarilla on jo valmiiksi hyvä maine tiskijuomana entisiltä pelikerroilta. Asiakkaat tippaavat pysyvästi hieman anteliaammin.,The cellar already has a good name at the counter from past games. Customers permanently tip a little more generously.,src/resources/meta_unlocks/vieraanvarainen_perinne.tres
+Vieraanvarainen perinne,Hospitable Tradition,src/resources/meta_unlocks/vieraanvarainen_perinne.tres
+Alueen kuningas,King of the District,src/resources/perks/alueen_kuningas.tres
+Jokainen baari kaupungissa haluaa tavaraasi. Halpamyynnin ja baarivientien tulot ovat merkittävästi paremmat.,Every bar in town wants your stuff. Bulk sales and bar shipments earn significantly more.,src/resources/perks/alueen_kuningas.tres
+Anteliaat asiakkaat,Generous Customers,src/resources/perks/anteliaat_asiakkaat.tres
+Sana kiirii hyvästä palvelusta: tyytyväiset asiakkaat jättävät nyt anteliaampia tippejä.,Word of good service gets around: happy customers now leave more generous tips.,src/resources/perks/anteliaat_asiakkaat.tres
+Baarimikon charmi,Bartender's Charm,src/resources/perks/baarimikon_charmi.tres
+"Opit jutustelemaan asiakkaiden kanssa tiskin yli, ja tipit kasvavat huomattavasti.","You learn to chat with customers over the counter, and tips grow noticeably.",src/resources/perks/baarimikon_charmi.tres
+Hiljainen kulma,Quiet Corner,src/resources/perks/hiljainen_kulma.tres
+"Pidät matalaa profiilia, joten LVV:n ratsiakynnys nousee hieman.","You keep a low profile, so the LVV's raid threshold rises a little.",src/resources/perks/hiljainen_kulma.tres
+Baarien pitäjät pitävät sinusta: halpamyynnin ja baarivientien tulot ovat hieman paremmat.,Bar owners like you: bulk sales and bar shipments earn a little more.,src/resources/perks/hyvat_suhteet.tres
+Hyvät suhteet,Good Connections,src/resources/perks/hyvat_suhteet.tres
+Kanta-asiakaskerho,Loyalty Club,src/resources/perks/kanta_asiakaskerho.tres
+Perustit uskollisille asiakkaille oman kerhon. Sana kiirii ja maine karttuu nopeammin.,You started a club for loyal customers. Word spreads and reputation builds faster.,src/resources/perks/kanta_asiakaskerho.tres
+Kellarin kuiskaaja,Cellar Whisperer,src/resources/perks/kellarin_kuiskaaja.tres
+"Kuulet, kun käyminen on juuri sopivassa pisteessä, ja laatu paranee huomattavasti.","You can hear when fermentation is just right, and quality improves noticeably.",src/resources/perks/kellarin_kuiskaaja.tres
+Luotettu piiri,Trusted Circle,src/resources/perks/luotettu_piiri.tres
+Tunnet oikeat ihmiset korttelissa. LVV:n ratsiakynnys nousee selvästi.,You know the right people on the block. The LVV's raid threshold rises clearly.,src/resources/perks/luotettu_piiri.tres
+Monitaituri,Jack of All Trades,src/resources/perks/monitaituri.tres
+"Olet oppinut vähän kaikesta, joten jokainen osa-alue paranee hieman. Ei yksittäistä supervoimaa, mutta tasainen parannus joka suuntaan.","You've learned a little of everything, so every area improves a little. No single superpower, but a steady boost in every direction.",src/resources/perks/monitaituri.tres
+Löysit muistivihkosta vanhan niksin. Jokainen erä saa siitä pienen laatupiikin.,You found an old trick in a notebook. Every batch gets a small quality boost from it.,src/resources/perks/mummon_resepti.tres
+Mummon resepti,Granny's Recipe,src/resources/perks/mummon_resepti.tres
+"Kukaan ei edes muista tätä kellaria olemassa olevaksi, joten LVV:n ratsiakynnys nousee merkittävästi.","Nobody even remembers this cellar exists, so the LVV's raid threshold rises significantly.",src/resources/perks/nakymaton_kellari.tres
+Näkymätön kellari,Invisible Cellar,src/resources/perks/nakymaton_kellari.tres
+"Tarinat kellarin salaisesta panimosta leviävät baarien takahuoneissa, ja maine karttuu tuntuvasti.","Stories of the cellar's secret brewery spread in bar back rooms, and reputation builds considerably.",src/resources/perks/oinen_legenda.tres
+Öinen legenda,Nighttime Legend,src/resources/perks/oinen_legenda.tres
+Opit jättämään vaihtorahat ottamatta huomiota. Asiakkaat pyöristävät tipit ylöspäin.,You learn to leave the change on the counter. Customers round their tips up.,src/resources/perks/pyoristys_ylospain.tres
+Pyöristys ylöspäin,Round It Up,src/resources/perks/pyoristys_ylospain.tres
+Puskaradio kiirii: jokainen onnistunut myynti tuo nyt hieman enemmän mainetta.,The grapevine buzzes: every good sale now brings a little more reputation.,src/resources/perks/suosittu_paikka.tres
+Suosittu paikka,Popular Spot,src/resources/perks/suosittu_paikka.tres
+Tarkka käsiala,Careful Hand,src/resources/perks/tarkka_kasiala.tres
+Vuosien harjoittelu näkyy pullossa. Jokainen tästä eteenpäin keitetty erä on hieman laadukkaampi.,Years of practice show in the bottle. Every batch brewed from now on is a little better.,src/resources/perks/tarkka_kasiala.tres
+Tasainen tienesti,Steady Earnings,src/resources/perks/tasainen_tienesti.tres
+"Tipit kertyvät suoraviivaisesti, poiminta poiminnalta vakaa tulonlähde.","Tips add up in a straight line, a steady income pick after pick.",src/resources/perks/tasainen_tienesti.tres
+Opit varomaan johdonmukaisesti. LVV:n ratsiakynnys nousee tasaisesti joka poiminnalla.,You learn to be consistently careful. The LVV's raid threshold rises steadily with every pick.,src/resources/perks/tasainen_varovaisuus.tres
+Tasainen varovaisuus,Steady Caution,src/resources/perks/tasainen_varovaisuus.tres
+Maineesi jakelijana kiirii kellarien välillä: halpamyynnin ja baarivientien tulot ovat selvästi paremmat.,Your name as a supplier travels between cellars: bulk sales and bar shipments earn clearly more.,src/resources/perks/tunnettu_toimittaja.tres
+Tunnettu toimittaja,Known Supplier,src/resources/perks/tunnettu_toimittaja.tres
+"Maineesi kasvaa tasaisesti keikasta toiseen: ei räjähdysmäistä, mutta ei koskaan hiivukaan.","Your reputation grows steadily from gig to gig: never explosive, but it never fades either.",src/resources/perks/vakaa_maine.tres
+Vakaa maine,Steady Reputation,src/resources/perks/vakaa_maine.tres
+Jakelureittisi vakiintuu: halpamyynnin ja baarivientien tulot kasvavat tasaisesti.,Your delivery route settles in: bulk sales and bar shipments grow steadily.,src/resources/perks/vakiintunut_reitti.tres
+Vakiintunut reitti,Established Route,src/resources/perks/vakiintunut_reitti.tres
 Kukaan ei tiedä kellaristasi. Vielä.,Nobody knows about your cellar. Yet.,src/resources/reputation_tiers/0_tuntematon.tres
 Kellarin salaisuus,Cellar secret,src/resources/reputation_tiers/1_kellarin_salaisuus.tres
 Muutama tietää oikean oven. Kuiskaukset kulkevat.,A few know the right door. Whispers travel.,src/resources/reputation_tiers/1_kellarin_salaisuus.tres

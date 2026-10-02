@@ -37,6 +37,8 @@ CONTENT_FIELDS = {
     "src/resources/beer_styles": ("style_name",),
     "src/resources/bars": ("bar_name", "description"),
     "src/resources/cellar_upgrades": ("perk_name", "description"),
+    "src/resources/perks": ("perk_name", "description"),
+    "src/resources/meta_unlocks": ("perk_name", "description"),
 }
 SKIP_DIRS = ["src/console", "src/systems/console", "src/resources", "addons", "tests", "dev"]
 

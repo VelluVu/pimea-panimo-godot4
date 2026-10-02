@@ -130,5 +130,5 @@ func _unmet_prerequisite_names(unlock : MetaUnlockData) -> PackedStringArray:
 	for prerequisite_id : String in unlock.prerequisite_ids:
 		var prerequisite : MetaUnlockData = MetaProgressManager.find_unlock(prerequisite_id)
 		if prerequisite != null and MetaProgressManager.get_node_level(prerequisite_id) <= 0:
-			names.append(prerequisite.perk_name)
+			names.append(tr(prerequisite.perk_name))
 	return names

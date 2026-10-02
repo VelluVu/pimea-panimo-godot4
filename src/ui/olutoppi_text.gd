@@ -69,5 +69,5 @@ static func tooltip(unlock : MetaUnlockData, level : int, maxed : bool) -> Strin
 
 
 static func _header_lines(unlock : MetaUnlockData) -> PackedStringArray:
-	return PackedStringArray([unlock.perk_name, unlock.description])
+	return PackedStringArray([UiText.of(unlock.perk_name), UiText.of(unlock.description)])
 

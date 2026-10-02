@@ -112,8 +112,8 @@ func _add_perk_rows(perk_rows : Array[Dictionary]) -> void:
 	for row : Dictionary in perk_rows:
 		var perk : RunPerk = row[PerkStack.KEY_PERK]
 		var count : int = row[PerkStack.KEY_COUNT]
-		var count_suffix : String = StringContainer.RUN_EFFECTS_PERK_ROW_COUNT_SUFFIX % count if count > 1 else ""
-		rows_vbox.add_child(_make_label(StringContainer.RUN_EFFECTS_PERK_ROW_FORMAT % [perk.icon_placeholder, perk.perk_name, count_suffix]))
+		var count_suffix : String = tr(StringContainer.RUN_EFFECTS_PERK_ROW_COUNT_SUFFIX) % count if count > 1 else ""
+		rows_vbox.add_child(_make_label(tr(StringContainer.RUN_EFFECTS_PERK_ROW_FORMAT) % [perk.icon_placeholder, tr(perk.perk_name), count_suffix]))
 
 		var stat_summary : String = perk.get_stat_summary()
 		if not stat_summary.is_empty():
