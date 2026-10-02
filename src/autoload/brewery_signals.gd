@@ -172,7 +172,8 @@ signal ingredients_refunded()
 ## Emitted by CellarUpgradeShop after a cellar upgrade is bought; `level` is its new level.
 @warning_ignore("unused_signal")
 signal cellar_upgrade_purchased(upgrade: CellarUpgradeData, level: int)
-## Emitted by SaleProcessor after a customer bought something; the Asiakaskirja
+## Emitted by SaleProcessor after a customer bought something, and by
+## GroupVisitDirector for the other types in a mixed group; the Asiakaskirja
 ## remembers the customer type as met (CustomerUnlockTracker).
 @warning_ignore("unused_signal")
 signal customer_served(data: CustomerData)

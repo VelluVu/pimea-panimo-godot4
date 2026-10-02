@@ -153,5 +153,15 @@ func _make_batch_label(batch: BrewBatch) -> TooltipLabel:
 	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	label.custom_minimum_size = Vector2(ROW_LABEL_MIN_WIDTH, 0)
 	label.add_theme_font_size_override("font_size", 16)
-	label.tooltip_text = batch.get_full_info_tooltip() + QualityWishText.too_weak_line(batch.current_quality, CustomerRegistry.get_eligible_customers())
+	label.tooltip_text = batch.get_full_info_tooltip() + QualityWishText.too_weak_line(batch.current_quality, _possible_buyers(batch))
 	return label
+
+
+## Customers who can walk in now and would consider this batch's style at all, so the
+## quality hint never names someone who would not buy it anyway (Zgen and a lager).
+func _possible_buyers(batch : BrewBatch) -> Array[CustomerData]:
+	var buyers : Array[CustomerData] = []
+	for customer : CustomerData in CustomerRegistry.get_eligible_customers():
+		if customer.meets_strict_requirements(batch.beer_style):
+			buyers.append(customer)
+	return buyers
