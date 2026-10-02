@@ -108,7 +108,7 @@ def read_csv():
 def write_csv(rows):
     CSV_PATH.parent.mkdir(parents=True, exist_ok=True)
     with CSV_PATH.open("w", encoding="utf-8", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=["keys", "en", "_source"])
+        writer = csv.DictWriter(f, fieldnames=["keys", "en", "_source"], lineterminator="\n")
         writer.writeheader()
         for key in sorted(rows, key=lambda k: (rows[k]["_source"], k)):
             writer.writerow(rows[key])
