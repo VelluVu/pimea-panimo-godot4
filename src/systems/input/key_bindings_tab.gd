@@ -101,7 +101,7 @@ func _finish_capture(keycode : Key) -> void:
 	if keycode != KEY_ESCAPE:
 		var conflict : StringName = _bindings.rebind(action, keycode)
 		if conflict != &"":
-			_status_label.text = _bindings.ui_text["key_in_use"] % _bindings.get_action_label(conflict)
+			_status_label.text = tr(_bindings.ui_text["key_in_use"]) % tr(_bindings.get_action_label(conflict))
 	_refresh_buttons()
 
 
