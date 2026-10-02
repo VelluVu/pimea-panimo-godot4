@@ -126,6 +126,13 @@ func is_eligible(customer : CustomerData) -> bool:
 	return _unlocks.is_eligible(customer)
 
 
+## The customers who can walk in right now.
+func get_eligible_customers() -> Array[CustomerData]:
+	var eligible : Array[CustomerData] = []
+	eligible.assign(customer_pool.filter(is_eligible))
+	return eligible
+
+
 func _rescan_unlocks() -> void:
 	_unlocks.announce_newly_unlocked(customer_pool)
 
