@@ -9,6 +9,8 @@ extends Node
 ##   expert  - knows every recipe: brews any style the unlocked ingredients allow, aiming at
 ##             reputation, profit, first brews and styles that unlock customers; plays
 ##             events and LVV risk like careful, and buys cellar upgrades with spare money
+##   gourmet - plays like expert, then tunes each recipe one ingredient unit at a time
+##             towards the best quality its unlocked, affordable ingredients reach
 
 var cfg: Dictionary = {}
 var days: Array = []
@@ -18,6 +20,9 @@ var ending: String = ""
 var _tick: float = 0.0
 var _brew_cooldown: float = 0.0
 var _done: bool = false
+
+## Strategies that play like the expert.
+const EXPERTS: Array[String] = ["expert", "gourmet"]
 var _pending_recap: String = ""
 
 
@@ -87,13 +92,13 @@ func _process(delta: float) -> void:
 
 	if get_tree().paused:
 		return
-	if cfg.strategy in ["careful", "expert"] and not TimeManager.day_timer.is_stopped() and b.risk >= 0.8 * b.get_effective_raid_threshold():
+	if (cfg.strategy == "careful" or cfg.strategy in EXPERTS) and not TimeManager.day_timer.is_stopped() and b.risk >= 0.8 * b.get_effective_raid_threshold():
 		_inc("early_closes")
 		TimeManager.force_advance_day()
 		return
 	if _brew_cooldown <= 0.0 and _needs_brew(b):
 		_brew(b)
-	if cfg.strategy == "expert":
+	if cfg.strategy in EXPERTS:
 		_buy_upgrade(b)
 
 
@@ -120,7 +125,7 @@ func _wants_event(b: Brewery, e: SpecialEventData) -> bool:
 
 
 func _needs_brew(b: Brewery) -> bool:
-	if cfg.strategy == "expert":
+	if cfg.strategy in EXPERTS:
 		return b.inventory.count_bottles() < 40 or b.inventory.brew_batches.size() < 3
 	if cfg.strategy in ["variety", "careful"]:
 		return b.inventory.count_bottles() < 30 or b.inventory.brew_batches.size() < 2
@@ -128,7 +133,7 @@ func _needs_brew(b: Brewery) -> bool:
 
 
 func _brew(b: Brewery) -> void:
-	if cfg.strategy == "expert":
+	if cfg.strategy in EXPERTS:
 		_brew_recipe(b, _expert_recipe(b))
 		return
 	var demand: Dictionary = {}
@@ -169,6 +174,9 @@ func _brew_recipe(b: Brewery, recipe: BrewRecipe) -> void:
 		var missing: int = maxi(0, recipe.ingredient_amounts[id] - _owned(b, id))
 		if missing > 0:
 			GUISignals.buy_ingredient.emit(id, missing)
+	var result: BrewResult = b.resolver.resolve_brew_style(recipe.ingredient_amounts)
+	if result != null:
+		counts["quality_sum"] = counts.get("quality_sum", 0.0) + result.original_quality
 	GUISignals.load_recipe_requested.emit(recipe)
 	GUISignals.start_brewing.emit()
 	_inc("brews")
@@ -203,7 +211,55 @@ func _expert_recipe(b: Brewery) -> BrewRecipe:
 			recipe.beer_style = style.style
 			recipe.ingredient_amounts = ingredients
 			best = recipe
+	if best != null and cfg.strategy == "gourmet":
+		best.ingredient_amounts = _tune_for_quality(b, best.beer_style, best.ingredient_amounts)
 	return best
+
+
+## Hill climb: adds or removes one unit of an ingredient while that raises the quality and
+## the style still resolves the same.
+func _tune_for_quality(b: Brewery, style: BeerStyle.Style, start: Dictionary) -> Dictionary:
+	var ids: Array[int] = []
+	for id: int in IngredientDatabase.database:
+		var item: IngredientData = IngredientDatabase.database[id]
+		if not (item is YeastData) and item.min_reputation <= b.reputation:
+			ids.append(id)
+	var best: Dictionary = start
+	var best_quality: float = _quality_of(b, best, style)
+	for step: int in 30:
+		var candidate: Dictionary = {}
+		var candidate_quality: float = best_quality + 0.001
+		for id: int in ids:
+			for delta: int in [1, -1]:
+				var combo: Dictionary = best.duplicate()
+				var amount: int = combo.get(id, 0) + delta
+				if amount < 0:
+					continue
+				if amount == 0:
+					combo.erase(id)
+				else:
+					combo[id] = amount
+				if _missing_cost_of(b, combo) + 10 > b.money:
+					continue
+				var quality: float = _quality_of(b, combo, style)
+				if quality > candidate_quality:
+					candidate_quality = quality
+					candidate = combo
+		if candidate.is_empty():
+			break
+		best = candidate
+		best_quality = candidate_quality
+	return best
+
+
+func _quality_of(b: Brewery, combo: Dictionary, style: BeerStyle.Style) -> float:
+	# Checked first: the resolver logs an error for every unbrewable mix.
+	if not BrewMixture.from_contents(combo, IngredientDatabase.database).is_brewable():
+		return -1.0
+	var result: BrewResult = b.resolver.resolve_brew_style(combo)
+	if result == null or not result.is_matched or result.beer_style.style != style:
+		return -1.0
+	return result.original_quality
 
 
 ## Reputation the style earns from the customers who can show up, counting the ones a
@@ -272,7 +328,7 @@ func _finish(b: Brewery) -> void:
 	_done = true
 	var report: Dictionary = {
 		"strategy": cfg.strategy, "profile": cfg.get("profile", ""), "ending": ending if ending != "" else "day_limit",
-		"final": {"day": b.current_day, "rep": b.reputation, "money": snappedf(b.money, 0.1), "raids": b.raid_count, "level": b.run_level, "standing": b.customer_standing, "upgrades": b.cellar_upgrade_levels, "worth": RunScore.brewery_worth(b)},
+		"final": {"day": b.current_day, "rep": b.reputation, "money": snappedf(b.money, 0.1), "raids": b.raid_count, "level": b.run_level, "standing": b.customer_standing, "upgrades": b.cellar_upgrade_levels, "worth": RunScore.brewery_worth(b), "score": RunScore.entry_for(b, ending).score, "bottles": b.lifetime_bottles_sold},
 		"days": days, "counts": counts, "notes": notes,
 	}
 	var f := FileAccess.open(cfg.out, FileAccess.WRITE)
