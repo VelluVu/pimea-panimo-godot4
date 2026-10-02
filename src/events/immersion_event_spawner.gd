@@ -14,6 +14,9 @@ const VIGNETTE_DIR : String = "res://src/resources/immersion_vignettes/"
 ## Same foot-anchored setup as customer.tscn's AnimatedSprite2D: position is
 ## the sprite's feet, so y-sorting against kegs and customers reads correctly.
 const SPRITE_OFFSET : Vector2 = Vector2(-16, -32)
+## Actors fade in at the start of a route and out at its end, so a route that
+## begins or ends on screen does not pop.
+const FADE_SECONDS : float = 0.5
 
 ## Lets the console's "cat" command find this node without an autoload.
 const IMMERSION_EVENT_SPAWNER_GROUP : String = "immersion_event_spawner"
@@ -133,6 +136,18 @@ func _cross(actor : ImmersionActorData, points : PackedVector2Array) -> void:
 			tween.tween_callback(func() -> void: sprite.flip_h = facing_right)
 		tween.tween_property(sprite, "global_position", points[i], durations[i - 1])
 	tween.tween_callback(_finish_actor.bind(sprite))
+	_fade_in_and_out(sprite, actor.start_delay_seconds, actor.crossing_seconds)
+
+
+func _fade_in_and_out(sprite : AnimatedSprite2D, delay : float, crossing : float) -> void:
+	var fade : float = minf(FADE_SECONDS, crossing * 0.5)
+	sprite.modulate.a = 0.0
+	var tween := sprite.create_tween()
+	if delay > 0.0:
+		tween.tween_interval(delay)
+	tween.tween_property(sprite, "modulate:a", 1.0, fade)
+	tween.tween_interval(crossing - 2.0 * fade)
+	tween.tween_property(sprite, "modulate:a", 0.0, fade)
 
 
 func _finish_actor(sprite : AnimatedSprite2D) -> void:
