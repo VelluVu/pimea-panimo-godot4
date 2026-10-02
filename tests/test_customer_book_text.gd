@@ -63,3 +63,10 @@ func test_one_entry_per_title() -> void:
 func test_locked_line_is_empty_when_all_known() -> void:
 	assert_eq(TextScript.locked_line(0), "")
 	assert_eq(TextScript.locked_line(3), "3 asiakastyyppiä vielä tuntematta.")
+
+
+func test_also_liked_styles_join_the_second_line() -> void:
+	var data := _customer("Mustanmetallinmies")
+	data.also_likes = [BeerStyle.Style.HELLES]
+	var lines : PackedStringArray = TextScript.lines(data, true, NAMES)
+	assert_true(lines.has("Käy myös: Session Ale, Helles"))

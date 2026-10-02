@@ -272,6 +272,18 @@ func test_get_preference_score_matches_primary_secondary_and_mismatch() -> void:
 	assert_eq(customer.get_preference_score(BeerStyle.Style.KOTIKALJA), 0.0, "unrelated style")
 
 
+func test_also_likes_scores_like_the_secondary_without_limiting_the_menu() -> void:
+	var customer := CustomerData.new()
+	customer.primary_style = BeerStyle.Style.IMPERIAL_STOUT
+	customer.secondary_style = BeerStyle.Style.SAHTI
+	customer.also_likes = [BeerStyle.Style.BALTIC_PORTTERI]
+	assert_eq(customer.get_preference_score(BeerStyle.Style.BALTIC_PORTTERI), 0.5)
+	assert_eq(customer.get_preference_score(BeerStyle.Style.IPA), 0.0)
+	var ipa := BeerStyle.new()
+	ipa.style = BeerStyle.Style.IPA
+	assert_true(customer.meets_strict_requirements(ipa), "other styles stay on the menu")
+
+
 ## customer.gd formats the preview line with one style name, so a missing or extra %s
 ## would break the counter dialogue of that customer.
 func test_shipped_preview_lines_take_exactly_one_style_name() -> void:
