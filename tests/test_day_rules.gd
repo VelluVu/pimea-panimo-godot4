@@ -2,7 +2,7 @@
 extends McpTestSuite
 
 ## Unit tests for DayRules, the pure day rules behind TimeManager: bills, the
-## survival ending, day progress and the clock's restart time. Loaded by path so
+## season ending, day progress and the clock's restart time. Loaded by path so
 ## the suite always runs the script as it is on disk.
 
 const DayRulesScript := preload("res://src/brewery/day_rules.gd")
@@ -19,41 +19,41 @@ func test_the_daily_bill_is_electricity_plus_water() -> void:
 	assert_gt(DayRulesScript.daily_bill_total(), 0)
 
 
-func test_survival_is_reached_on_the_target_day_with_enough_reputation_and_money() -> void:
+func test_the_season_ends_as_survived_on_the_target_day_with_enough_reputation_and_money() -> void:
 	var day : int = DayRulesScript.SURVIVAL_DAY_TARGET
-	assert_true(DayRulesScript.survival_reached(day, ENOUGH_REPUTATION, 10.0, false, false))
+	assert_eq(DayRulesScript.season_ending(day, ENOUGH_REPUTATION, 10.0, false, false), DayRulesScript.ENDING_SURVIVED)
 
 
-func test_survival_needs_the_target_day() -> void:
+func test_the_season_runs_on_before_the_target_day() -> void:
 	var day : int = DayRulesScript.SURVIVAL_DAY_TARGET - 1
-	assert_false(DayRulesScript.survival_reached(day, ENOUGH_REPUTATION, 10.0, false, false))
+	assert_eq(DayRulesScript.season_ending(day, ENOUGH_REPUTATION, 10.0, false, false), "")
 
 
-func test_survival_holds_on_later_days_too() -> void:
+func test_the_season_ends_on_the_target_day_even_without_enough_reputation() -> void:
+	var day : int = DayRulesScript.SURVIVAL_DAY_TARGET
+	assert_eq(DayRulesScript.season_ending(day, Brewery.SURVIVAL_MIN_REPUTATION - 1, 10.0, false, false), DayRulesScript.ENDING_SEASON_OVER)
+	assert_eq(DayRulesScript.season_ending(day, Brewery.SURVIVAL_MIN_REPUTATION, 10.0, false, false), DayRulesScript.ENDING_SURVIVED)
+
+
+func test_a_legend_needs_money_above_zero() -> void:
+	var day : int = DayRulesScript.SURVIVAL_DAY_TARGET
+	assert_eq(DayRulesScript.season_ending(day, ENOUGH_REPUTATION, 0.0, false, false), DayRulesScript.ENDING_SEASON_OVER)
+	assert_eq(DayRulesScript.season_ending(day, ENOUGH_REPUTATION, -5.0, false, false), DayRulesScript.ENDING_SEASON_OVER)
+
+
+func test_an_old_save_past_the_target_day_ends_at_its_next_day_change() -> void:
 	var day : int = DayRulesScript.SURVIVAL_DAY_TARGET + 5
-	assert_true(DayRulesScript.survival_reached(day, ENOUGH_REPUTATION, 10.0, false, false))
+	assert_eq(DayRulesScript.season_ending(day, 50, 10.0, false, false), DayRulesScript.ENDING_SEASON_OVER)
 
 
-func test_survival_needs_enough_reputation() -> void:
+func test_the_season_never_ends_after_the_run_has_ended() -> void:
 	var day : int = DayRulesScript.SURVIVAL_DAY_TARGET
-	assert_false(DayRulesScript.survival_reached(day, Brewery.SURVIVAL_MIN_REPUTATION - 1, 10.0, false, false))
-	assert_true(DayRulesScript.survival_reached(day, Brewery.SURVIVAL_MIN_REPUTATION, 10.0, false, false))
+	assert_eq(DayRulesScript.season_ending(day, ENOUGH_REPUTATION, 10.0, true, false), "")
 
 
-func test_survival_needs_money_above_zero() -> void:
-	var day : int = DayRulesScript.SURVIVAL_DAY_TARGET
-	assert_false(DayRulesScript.survival_reached(day, ENOUGH_REPUTATION, 0.0, false, false))
-	assert_false(DayRulesScript.survival_reached(day, ENOUGH_REPUTATION, -5.0, false, false))
-
-
-func test_survival_never_fires_after_the_run_has_ended() -> void:
-	var day : int = DayRulesScript.SURVIVAL_DAY_TARGET
-	assert_false(DayRulesScript.survival_reached(day, ENOUGH_REPUTATION, 10.0, true, false))
-
-
-func test_survival_never_fires_again_once_the_player_chose_to_continue() -> void:
-	var day : int = DayRulesScript.SURVIVAL_DAY_TARGET
-	assert_false(DayRulesScript.survival_reached(day, ENOUGH_REPUTATION, 10.0, false, true))
+func test_the_season_never_ends_again_once_the_player_chose_to_continue() -> void:
+	var day : int = DayRulesScript.SURVIVAL_DAY_TARGET + 1
+	assert_eq(DayRulesScript.season_ending(day, ENOUGH_REPUTATION, 10.0, false, true), "")
 
 
 func test_day_progress_is_the_fraction_of_the_timer_spent() -> void:

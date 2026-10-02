@@ -75,7 +75,7 @@ func get_stat_summary() -> String:
 ## same fields that already drive gameplay, so a new modifier's difficulty
 ## can never drift out of sync with what it actually does. Used both by
 ## RunModifierRegistry.get_run_start_modifiers() to bucket modifiers into a
-## medium/hard split, and by LeaderboardManager.calculate_score() to weight
+## medium/hard split, and by RunScore.difficulty_multiplier() to weight
 ## the end-of-run score.
 func get_difficulty_score() -> float:
 	var score : float = 0.0

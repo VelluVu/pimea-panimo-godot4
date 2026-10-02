@@ -1,0 +1,80 @@
+@tool
+extends McpTestSuite
+
+## Unit tests for RunScore: the leaderboard score, its parts and the renown it pays.
+
+const RunScoreScript := preload("res://src/progression/run_score.gd")
+const DayRulesScript := preload("res://src/brewery/day_rules.gd")
+
+
+func suite_name() -> String:
+	return "run_score"
+
+
+func _modifier(price_multiplier : float, reputation_multiplier : float = 1.0) -> RunModifier:
+	var modifier := RunModifier.new()
+	modifier.modifier_name = "Testi"
+	modifier.ingredient_price_multiplier = price_multiplier
+	modifier.reputation_gain_multiplier = reputation_multiplier
+	return modifier
+
+
+func test_the_score_adds_days_reputation_and_bottles() -> void:
+	assert_eq(RunScoreScript.score(10, 20, 30, "busted"), 10 * 100 + 20 * 10 + 30)
+
+
+func test_days_count_only_up_to_the_season_end() -> void:
+	var target : int = DayRulesScript.SURVIVAL_DAY_TARGET
+	assert_eq(RunScoreScript.score(target + 10, 0, 0, "busted"), RunScoreScript.score(target, 0, 0, "busted"))
+
+
+func test_only_a_legend_gets_the_survival_bonus() -> void:
+	var legend : int = RunScoreScript.score(15, 100, 300, DayRulesScript.ENDING_SURVIVED)
+	var season_over : int = RunScoreScript.score(15, 100, 300, DayRulesScript.ENDING_SEASON_OVER)
+	assert_eq(legend - season_over, RunScoreScript.SURVIVAL_BONUS)
+
+
+func test_a_legend_beats_a_strong_run_that_fell_short() -> void:
+	var legend : int = RunScoreScript.score(15, 100, 300, DayRulesScript.ENDING_SURVIVED)
+	var fell_short : int = RunScoreScript.score(15, 99, 900, DayRulesScript.ENDING_SEASON_OVER)
+	assert_gt(legend, fell_short)
+
+
+func test_negative_reputation_scores_zero_not_below() -> void:
+	assert_eq(RunScoreScript.score(3, -20, 0, "busted"), 300)
+
+
+func test_a_harder_modifier_raises_the_score() -> void:
+	var harder := _modifier(1.7) # difficulty 0.7
+	assert_eq(RunScoreScript.score(10, 20, 30, "busted", harder), roundi(1230 * 1.35))
+
+
+func test_an_easier_modifier_lowers_the_score() -> void:
+	var easier := _modifier(1.0, 1.25) # difficulty -0.25
+	assert_gt(1230, RunScoreScript.score(10, 20, 30, "busted", easier))
+
+
+func test_the_multiplier_never_drops_below_the_minimum() -> void:
+	var very_easy := _modifier(0.1, 3.0)
+	assert_eq(RunScoreScript.difficulty_multiplier(very_easy), RunScoreScript.MIN_MULTIPLIER)
+
+
+func test_renown_is_the_score_scaled_down_with_a_floor() -> void:
+	assert_eq(RunScoreScript.renown(4000), 200)
+	assert_eq(RunScoreScript.renown(0), RunScoreScript.RENOWN_FLOOR)
+
+
+func test_a_continued_night_pays_far_less_renown_than_a_scored_day() -> void:
+	var continued : int = RunScoreScript.continued_day_renown(30)
+	var scored_day : int = roundi((RunScoreScript.DAY_POINTS + 30) / RunScoreScript.RENOWN_DIVISOR)
+	assert_gt(continued, 0)
+	assert_gt(scored_day, continued)
+
+
+func test_the_entry_holds_the_parts_of_its_score() -> void:
+	var entry : Dictionary = RunScoreScript.entry(15, 110, 400, DayRulesScript.ENDING_SURVIVED, _modifier(1.7))
+	assert_eq(entry["days_survived"], 15)
+	assert_eq(entry["bonus"], RunScoreScript.SURVIVAL_BONUS)
+	assert_eq(entry["modifier_name"], "Testi")
+	var base : int = 15 * 100 + 110 * 10 + 400 + RunScoreScript.SURVIVAL_BONUS
+	assert_eq(entry["score"], roundi(base * entry["multiplier"]))

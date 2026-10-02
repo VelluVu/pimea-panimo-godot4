@@ -41,7 +41,7 @@ func test_stat_summary_combines_all_non_neutral_fields_in_declared_order() -> vo
 
 
 ## Unit tests for get_difficulty_score() — see RunModifierRegistry.
-## get_run_start_modifiers() and LeaderboardManager.calculate_score() for
+## get_run_start_modifiers() and RunScore.difficulty_multiplier() for
 ## where this feeds into.
 func test_difficulty_score_is_zero_for_a_fully_neutral_modifier() -> void:
 	var modifier := RunModifier.new()

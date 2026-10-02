@@ -56,6 +56,7 @@
 [ext_resource type="Texture2D" uid="uid://b3yifds2n8sqd" path="res://assets/textures/light_cone_64x120.png" id="72_lightcone"]
 [ext_resource type="PackedScene" path="res://src/scenes/ui/achievements_window.tscn" id="99_ach"]
 [ext_resource type="PackedScene" path="res://src/scenes/ui/game_menu_window.tscn" id="99_gamemenu"]
+[ext_resource type="PackedScene" path="res://src/scenes/ui/leaderboard_window.tscn" id="99_leaderboard"]
 [ext_resource type="PackedScene" path="res://src/scenes/ui/close_day_confirm_window.tscn" id="x_closedayconfirmwindow"]
 [ext_resource type="PackedScene" path="res://src/scenes/ui/day_recap_window.tscn" id="x_dayrecapwindow"]
 [ext_resource type="PackedScene" path="res://src/scenes/ui/game_end_window.tscn" id="x_gameendwindow"]
@@ -908,6 +909,10 @@ layout_mode = 1
 
 [node name="AchievementsWindow" parent="GUI_CanvasLayer/GUI" unique_id=1198131146 instance=ExtResource("99_ach")]
 layout_mode = 1
+
+[node name="LeaderboardWindow" parent="GUI_CanvasLayer/GUI" unique_id=1100806756 instance=ExtResource("99_leaderboard")]
+layout_mode = 1
+show_current_run = true
 
 [node name="DiscoveryToast" type="Label" parent="GUI_CanvasLayer/GUI" unique_id=1184602969]
 visible = false

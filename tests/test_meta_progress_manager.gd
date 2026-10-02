@@ -1,8 +1,8 @@
 @tool
 extends McpTestSuite
 
-## Unit tests for MetaProgressManager's pure renown formula and the
-## leveled unlock-purchase state machine. A fresh instance is created via
+## Unit tests for MetaProgressManager's leveled unlock-purchase state machine
+## (the renown formula is RunScore, see test_run_score.gd). A fresh instance is created via
 ## preload() rather than the MetaProgressManager autoload singleton — same
 ## reasoning as test_leaderboard_manager.gd — so these tests never touch
 ## the real user://meta_progress.cfg or its real unlock_pool. _ready()
@@ -19,7 +19,6 @@ extends McpTestSuite
 ## player's real save (see feedback_configfile_test_isolation memory).
 
 const MetaProgressManagerScript := preload("res://src/autoload/meta_progress_manager.gd")
-const LeaderboardManagerScript := preload("res://src/autoload/leaderboard_manager.gd")
 const TEST_SAVE_PATH : String = "user://test_meta_progress_manager.cfg"
 
 
@@ -40,16 +39,6 @@ func _make_unlock(id : String, cost_per_level : int, max_level : int = 3, prereq
 	unlock.max_level = max_level
 	unlock.prerequisite_ids = prerequisite_ids
 	return unlock
-
-
-func test_calculate_renown_matches_leaderboard_score_scaled_down() -> void:
-	var score : int = LeaderboardManagerScript.calculate_score(10, 20, 30)
-	var expected : int = maxi(MetaProgressManagerScript.RENOWN_FLOOR, roundi(score / MetaProgressManagerScript.RENOWN_SCORE_DIVISOR))
-	assert_eq(MetaProgressManagerScript.calculate_renown(10, 20, 30), expected)
-
-
-func test_calculate_renown_floors_a_near_zero_score() -> void:
-	assert_eq(MetaProgressManagerScript.calculate_renown(0, 0, 0), MetaProgressManagerScript.RENOWN_FLOOR)
 
 
 func test_get_node_level_defaults_to_zero() -> void:

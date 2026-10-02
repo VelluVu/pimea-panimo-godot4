@@ -7,7 +7,7 @@ extends Panel
 ## and displays those modifiers and emits
 ## modifier_chosen when one is clicked, but never touches BrewEngine or
 ## scene transitions itself ("signal up, method down") — the host
-## (MainMenu for "Aloita uusi peli", GameEndWindow for "Uusi yritys")
+## (MainMenu for "Aloita uusi peli", GameMenuWindow for "Uusi yritys")
 ## is what actually starts the new game once it hears the choice.
 ## Reused as-is from both places via this shared scene.
 

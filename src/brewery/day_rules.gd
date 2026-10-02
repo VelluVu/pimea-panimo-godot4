@@ -11,9 +11,11 @@ extends RefCounted
 const DAILY_ELECTRICITY_COST : int = 5
 const DAILY_WATER_COST : int = 3
 
-## Reaching this day, with the run not on the ropes, ends it in the "survived"
-## ending instead of running forever.
+## The season's last day: reaching it scores the run, as "survived" with enough
+## reputation and money, otherwise "season_over". The player may play on after it.
 const SURVIVAL_DAY_TARGET : int = 15
+const ENDING_SURVIVED : String = "survived"
+const ENDING_SEASON_OVER : String = "season_over"
 
 ## LVV risk the cellar sheds each night. Without it risk only ever climbed between
 ## raids, so about half of all runs were busted no matter how carefully they sold.
@@ -28,15 +30,14 @@ static func risk_after_night(risk : int) -> int:
 	return maxi(0, risk - NIGHTLY_RISK_DECAY)
 
 
-## The one win condition: outlast both failure states to the day target with
-## enough reputation and money to not just be circling the drain. Never fires
-## again once the run has ended, or once the player chose to keep playing past it.
-static func survival_reached(day : int, reputation : int, money : float, run_has_ended : bool, has_continued : bool) -> bool:
-	if run_has_ended or has_continued:
-		return false
-	if day < SURVIVAL_DAY_TARGET:
-		return false
-	return reputation >= Brewery.SURVIVAL_MIN_REPUTATION and money > 0.0
+## The ending the season reaches today, or "" while it runs on. Never fires again
+## once the run has ended, or once the player chose to keep playing past it.
+static func season_ending(day : int, reputation : int, money : float, run_has_ended : bool, has_continued : bool) -> String:
+	if run_has_ended or has_continued or day < SURVIVAL_DAY_TARGET:
+		return ""
+	if reputation >= Brewery.SURVIVAL_MIN_REPUTATION and money > 0.0:
+		return ENDING_SURVIVED
+	return ENDING_SEASON_OVER
 
 
 ## How far through the day the timer is, 0 to 1. A stopped or empty timer counts
