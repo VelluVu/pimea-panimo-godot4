@@ -42,7 +42,7 @@ ERROR_LINE = re.compile(r"(SCRIPT ERROR:.*|ERROR: .*)")
 
 
 def run(args: argparse.Namespace) -> None:
-    out = Path(args.out) if args.out else HERE / "runs" / datetime.now().strftime("%Y%m%d-%H%M%S")
+    out = Path(args.out).resolve() if args.out else HERE / "runs" / datetime.now().strftime("%Y%m%d-%H%M%S")
     out.mkdir(parents=True, exist_ok=True)
     procs = []
     for strategy in args.strategies.split(","):
