@@ -45,8 +45,9 @@ text = "Console"
 
 [node name="ToggleButton" type="Button" parent="MarginContainer/MainVBox/HeaderHBox"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(24, 0)
+custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
+theme_override_font_sizes/font_size = 10
 text = "▼"
 
 [node name="BodyVBox" type="VBoxContainer" parent="MarginContainer/MainVBox"]
