@@ -22,7 +22,7 @@ func _init() -> void:
 
 
 func _ready() -> void:
-	goal_pool.assign(ResourceFolder.load_all(DAILY_GOAL_FOLDER_PATH, DailyGoalData))
+	goal_pool.assign(ResourceFolder.load_all(DAILY_GOAL_FOLDER_PATH, DailyGoalData).filter(func(goal : DailyGoalData) -> bool: return not goal.retired))
 	BrewerySignals.brewery_state_changed.connect(_on_brewery_state_changed)
 	BrewerySignals.beer_brewed.connect(func(style : int) -> void: add_progress(DailyGoalData.GoalType.BREW_STYLE, 1, style))
 	BrewerySignals.bottles_sold.connect(func(amount : int) -> void: add_progress(DailyGoalData.GoalType.SELL_BOTTLES, amount))

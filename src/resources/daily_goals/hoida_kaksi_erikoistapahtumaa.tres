@@ -13,3 +13,4 @@ reward_reputation = 8
 reward_xp = 35
 penalty_reputation = 4
 penalty_risk = 5
+retired = true
