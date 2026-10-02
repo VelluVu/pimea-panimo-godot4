@@ -13,6 +13,8 @@ extends Resource
 ## start_brew()'s effective_yield (see BrewResult.bottle_yield's docstring
 ## for the 20L-keg/0.44L-serving math behind 45).
 @export var amount_bottles: int = 45
+## Kept in the cellar: customers skip it until the player releases it, so it can age.
+@export var held: bool = false
 @export var age_in_days: int = 0
 
 @export var precision_score : float = 1.0
@@ -35,6 +37,19 @@ extends Resource
 ## quality, used by both _calculate_current_quality() and
 ## get_aging_trend_icon() so the visible trend arrow always agrees with
 ## the quality number actually being shown.
+## The price multiplier this batch earns from aging, see BeerStyle.aged_price_bonus.
+func get_aged_price_multiplier() -> float:
+	return aged_price_multiplier(beer_style.aged_price_bonus, age_in_days, get_effective_peak_days(), beer_style.shelf_life_days)
+
+
+## Grows linearly to 1 + bonus at the peak, holds through the shelf life and is gone
+## once the batch starts to spoil.
+static func aged_price_multiplier(bonus : float, age : int, peak : int, shelf_life : int) -> float:
+	if bonus <= 0.0 or peak <= 0 or age > peak + shelf_life:
+		return 1.0
+	return 1.0 + bonus * clampf(float(age) / peak, 0.0, 1.0)
+
+
 func get_effective_peak_days() -> int:
 	return roundi(beer_style.peak_days * peak_days_multiplier)
 
@@ -105,6 +120,7 @@ func get_quality_breakdown_tooltip() -> String:
 	]
 
 
+const AGED_PRICE_FORMAT : String = "\nKypsytyslisä hintaan: +%d %% (enintään +%d %%)"
 const FULL_INFO_TOOLTIP_HEADER_FORMAT : String = "Laatu: %s%% (%s %s, %s)\nEBC: %s | IBU: %s | ABV: %.1f%%\n"
 
 ## Combines the header stats (quality/EBC/IBU/ABV) that used to sit in the
@@ -120,7 +136,13 @@ func get_full_info_tooltip() -> String:
 		final_ebc,
 		final_ibu,
 		beer_style.abv
-	] + get_quality_breakdown_tooltip()
+	] + get_quality_breakdown_tooltip() + _aged_price_line()
+
+
+func _aged_price_line() -> String:
+	if beer_style.aged_price_bonus <= 0.0:
+		return ""
+	return tr(AGED_PRICE_FORMAT) % [roundi((get_aged_price_multiplier() - 1.0) * 100.0), roundi(beer_style.aged_price_bonus * 100.0)]
 
 
 ## Called once per TimeManager aging tick (TimeManager.AGING_TICK_SECONDS,

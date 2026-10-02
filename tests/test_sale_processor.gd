@@ -51,6 +51,14 @@ func test_the_primary_style_beats_the_secondary() -> void:
 	assert_eq(SaleProcessorScript.find_best_batch(_batches([helles, ipa]), customer), ipa)
 
 
+func test_a_held_batch_is_never_picked() -> void:
+	var customer := _customer(BeerStyle.Style.IPA, BeerStyle.Style.HELLES)
+	var held_ipa := _batch(BeerStyle.Style.IPA, 10)
+	held_ipa.held = true
+	var helles := _batch(BeerStyle.Style.HELLES, 5)
+	assert_eq(SaleProcessorScript.find_best_batch(_batches([held_ipa, helles]), customer), helles)
+
+
 func test_an_empty_batch_is_never_picked() -> void:
 	var customer := _customer(BeerStyle.Style.IPA, BeerStyle.Style.HELLES)
 	var empty_ipa := _batch(BeerStyle.Style.IPA, 0)

@@ -26,6 +26,10 @@ const EMPTY_INVENTORY_COLOR : Color = Color(0.9490196, 0.7882353, 0.41960785, 1)
 ## sharing each row alongside the batch label. Full context lives in the
 ## tooltip below instead of the button face.
 const BULK_SELL_BUTTON_TEXT : String = "Myy"
+## Hold toggle on each batch's name row, see BrewBatch.held.
+const HELD_ICON : String = "🔒"
+const RELEASED_ICON : String = "🔓"
+const HOLD_BUTTON_TOOLTIP : String = "Kellaroi: lukittua erää ei myydä tiskillä, joten se ehtii vanheta. Kellarioluet maksavat kypsinä enemmän. Paina uudestaan vapauttaaksesi."
 const BULK_SELL_BUTTON_TOOLTIP : String = "Myy koko erä kerralla varastosta. Hinta on paljon normaalia myyntihintaa halvempi, ja heikkolaatuinen tai vanhentunut erä voi tuottaa jopa tappiota raaka-ainekuluihin nähden."
 
 const DESTINATION_LABEL_TEXT : String = "Kohde:"
@@ -129,10 +133,20 @@ func _update_beer_batches_ui() -> void:
 			action_row.add_child(bulk_sell_button)
 			action_row.add_child(ship_button)
 
+			var hold_button := TooltipButton.new()
+			hold_button.text = HELD_ICON if batch.held else RELEASED_ICON
+			hold_button.tooltip_text = HOLD_BUTTON_TOOLTIP
+			hold_button.flat = true
+			hold_button.pressed.connect(func(): GUISignals.batch_hold_toggled.emit(batch))
+			var name_row := HBoxContainer.new()
+			name_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			name_row.add_child(name_label)
+			name_row.add_child(hold_button)
+
 			var batch_box := VBoxContainer.new()
 			batch_box.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			batch_box.add_theme_constant_override("separation", 0)
-			batch_box.add_child(name_label)
+			batch_box.add_child(name_row)
 			batch_box.add_child(action_row)
 			beer_batch_list_vbox.add_child(batch_box)
 

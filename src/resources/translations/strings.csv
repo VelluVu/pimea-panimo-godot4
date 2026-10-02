@@ -116,6 +116,9 @@ Yhteisvaikutus:,Combined effect:,src/autoload/string_container.gd
 [IngredientDatabase] found from subfolder: %s (ID: %s),[IngredientDatabase] found from subfolder: %s (ID: %s),src/autoload/string_container.gd
 erittäin karvas,very bitter,src/autoload/string_container.gd
 kpl,pcs,src/autoload/string_container.gd
+"
+Kypsytyslisä hintaan: +%d %% (enintään +%d %%)","
+Aging price bonus: +%d %% (up to +%d %%)",src/brewing/brew_batch.gd
 "Laatu: %s%% (%s %s, %s)
 EBC: %s | IBU: %s | ABV: %.1f%%
 ","Quality: %s%% (%s %s, %s)
@@ -372,6 +375,7 @@ Laatu: 0.0,Quality: 0.0,src/scenes/ui/beer_batch_element.tscn
 Olut Tyyli,Beer style,src/scenes/ui/beer_batch_element.tscn
 %d kpl,%d pcs,src/scenes/ui/beer_batch_panel.gd
 Ei olutta myytävänä. Keitä lisää!,No beer to sell. Brew more!,src/scenes/ui/beer_batch_panel.gd
+"Kellaroi: lukittua erää ei myydä tiskillä, joten se ehtii vanheta. Kellarioluet maksavat kypsinä enemmän. Paina uudestaan vapauttaaksesi.","Cellar it: a locked batch isn't sold at the counter, so it has time to age. Cellar beers pay more once mature. Press again to release it.",src/scenes/ui/beer_batch_panel.gd
 Kohde:,Destination:,src/scenes/ui/beer_batch_panel.gd
 Myy,Sell,src/scenes/ui/beer_batch_panel.gd
 "Myy koko erä kerralla varastosta. Hinta on paljon normaalia myyntihintaa halvempi, ja heikkolaatuinen tai vanhentunut erä voi tuottaa jopa tappiota raaka-ainekuluihin nähden.","Sell the whole batch from the warehouse at once. The price is far below a normal sale, and a poor or old batch can even sell for less than its ingredients cost.",src/scenes/ui/beer_batch_panel.gd

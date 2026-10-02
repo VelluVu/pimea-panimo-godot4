@@ -26,7 +26,7 @@ static func find_best_batch(batches : Array[BrewBatch], data : CustomerData) -> 
 	var best_score : float = -1.0
 
 	for batch : BrewBatch in batches:
-		if batch.amount_bottles <= 0:
+		if batch.amount_bottles <= 0 or batch.held:
 			continue
 		if not data.meets_strict_requirements(batch.beer_style):
 			continue
@@ -82,7 +82,7 @@ func process(data : CustomerData) -> String:
 
 	var breakdown : SaleBreakdown = brewery.resolver.get_price_breakdown(best_batch.beer_style)
 	# The marketing perk marks up this sale's price only, never the shared breakdown.
-	var counter_price : float = breakdown.price_per_bottle * brewery.stats.multiplier(PerkStats.COUNTER_PRICE)
+	var counter_price : float = breakdown.price_per_bottle * brewery.stats.multiplier(PerkStats.COUNTER_PRICE) * best_batch.get_aged_price_multiplier()
 	var results : Dictionary = data.evaluate_brew_batch(best_batch, counter_price)
 
 	var bottles_sold : int = mini(wanted, best_batch.amount_bottles)

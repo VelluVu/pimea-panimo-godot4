@@ -18,6 +18,9 @@ signal sell_ingredient(ingredient_id : int, amount : int)
 signal bulk_sell_batch_requested(batch : BrewBatch)
 @warning_ignore("unused_signal")
 signal ship_batch_to_bar_requested(batch : BrewBatch, bar : BarContact)
+## Keeps a batch in the cellar (customers skip it) or releases it, see BrewBatch.held.
+@warning_ignore("unused_signal")
+signal batch_hold_toggled(batch : BrewBatch)
 
 @warning_ignore("unused_signal")
 signal start_brewing()

@@ -77,6 +77,9 @@ enum Style {
 @export var peak_days: int = 0
 @export var shelf_life_days: int = 14
 @export var aging_factor: float = 0.05
+## Extra share of the price a batch earns once aged to its peak, growing with age, so
+## an expensive cellar beer (Imperial Stout) pays most after long aging. 0 = never.
+@export var aged_price_bonus: float = 0.0
 
 
 ## Coarse, bucketed color hint for RecipeLibraryWindow's locked-style rows
