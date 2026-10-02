@@ -105,8 +105,35 @@ func _process(delta: float) -> void:
 	if _brew_cooldown <= 0.0 and _needs_brew(b):
 		_brew(b)
 	if cfg.strategy in EXPERTS:
+		_manage_cellar(b)
 		_buy_upgrade(b)
 		_maybe_ship(b)
+
+
+## Holds a young batch of a style that pays more aged (BeerStyle.aged_price_bonus) until
+## its peak, but never the last beer the counter has: a customer with nothing to buy
+## leaves unhappy.
+func _manage_cellar(b: Brewery) -> void:
+	for batch: BrewBatch in b.inventory.brew_batches:
+		var aging: bool = _still_aging(batch)
+		var others: int = b.inventory.count_bottles() - _held_bottles(b) - (0 if batch.held else batch.amount_bottles)
+		var should_hold: bool = aging and others >= CELLAR_COUNTER_FLOOR
+		if should_hold != batch.held:
+			GUISignals.batch_hold_toggled.emit(batch)
+			if should_hold:
+				_inc("cellar_holds")
+
+
+func _still_aging(batch: BrewBatch) -> bool:
+	return batch.beer_style.aged_price_bonus > 0.0 and batch.age_in_days < batch.get_effective_peak_days()
+
+
+func _held_bottles(b: Brewery) -> int:
+	var held: int = 0
+	for batch: BrewBatch in b.inventory.brew_batches:
+		if batch.held:
+			held += batch.amount_bottles
+	return held
 
 
 func _wants_event(b: Brewery, e: SpecialEventData) -> bool:
@@ -136,7 +163,8 @@ func _wants_event(b: Brewery, e: SpecialEventData) -> bool:
 
 func _needs_brew(b: Brewery) -> bool:
 	if cfg.strategy in EXPERTS:
-		if b.inventory.count_bottles() < COUNTER_STOCK or b.inventory.brew_batches.size() < 3:
+		# Held batches are aging, not for sale, so they do not count as counter stock.
+		if b.inventory.count_bottles() - _held_bottles(b) < COUNTER_STOCK or b.inventory.brew_batches.size() < 3:
 			return true
 		if not b.tutorial_complete() or _goal_style_recipe(b) != null:
 			return true
@@ -210,6 +238,8 @@ func _expert_recipe(b: Brewery) -> BrewRecipe:
 		return forced
 	var in_stock: Dictionary = {}
 	for batch: BrewBatch in b.inventory.brew_batches:
+		if batch.held:
+			continue
 		in_stock[batch.beer_style.style] = in_stock.get(batch.beer_style.style, 0) + batch.amount_bottles
 
 	var best: BrewRecipe = null
@@ -227,6 +257,8 @@ func _expert_recipe(b: Brewery) -> BrewRecipe:
 		if not b.brewed_styles.has(style.style):
 			score += maxi(0, style.reputation_change)
 		score += b.resolver.get_style_base_price(style) - b.resolver.get_style_cost_per_bottle(style)
+		# Half the aged bonus: the bot waits for it, and sells some young.
+		score += b.resolver.get_style_base_price(style) * style.aged_price_bonus * 0.5
 		if score > best_score:
 			best_score = score
 			var recipe := BrewRecipe.new()
@@ -325,14 +357,16 @@ func _maybe_ship(b: Brewery) -> void:
 	var total: int = b.inventory.count_bottles()
 	var in_stock: Dictionary = {}
 	for batch: BrewBatch in b.inventory.brew_batches:
+		if batch.held:
+			continue
 		in_stock[batch.beer_style.style] = in_stock.get(batch.beer_style.style, 0) + batch.amount_bottles
 	var pick: BrewBatch = null
 	var pick_demand: float = INF
 	for batch: BrewBatch in b.inventory.brew_batches:
-		if not goal_open and total - batch.amount_bottles < COUNTER_STOCK:
+		if not goal_open and (total - batch.amount_bottles < COUNTER_STOCK or _still_aging(batch)):
 			continue
 		var raw_cost: float = b.resolver.get_price_breakdown(batch.beer_style).raw_cost_per_bottle
-		var payout: float = BatchDistributor.calculate_ship_payout(raw_cost, batch.current_quality, batch.amount_bottles, bar.price_multiplier) * b.stats.multiplier(PerkStats.DISTRIBUTION_INCOME)
+		var payout: float = BatchDistributor.calculate_ship_payout(raw_cost, batch.current_quality, batch.amount_bottles, bar.price_multiplier) * b.stats.multiplier(PerkStats.DISTRIBUTION_INCOME) * batch.get_aged_price_multiplier()
 		if not goal_open and payout < raw_cost * batch.amount_bottles:
 			continue
 		var demand: float = _expert_demand(b, batch.beer_style.style, in_stock)
@@ -449,6 +483,9 @@ func _all_unlocked(b: Brewery, ingredients: Dictionary) -> bool:
 			return false
 	return true
 
+
+## Bottles the counter keeps unheld before the bot cellars a young batch.
+const CELLAR_COUNTER_FLOOR: int = 10
 
 ## The cheapest next upgrade level, keeping UPGRADE_RESERVE for ingredients.
 const UPGRADE_RESERVE: float = 150.0
