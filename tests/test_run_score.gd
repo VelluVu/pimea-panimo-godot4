@@ -20,7 +20,24 @@ func _modifier(price_multiplier : float, reputation_multiplier : float = 1.0) ->
 
 
 func test_the_score_adds_days_reputation_and_bottles() -> void:
-	assert_eq(RunScoreScript.score(10, 20, 30, "busted"), 10 * 100 + 20 * 10 + 30)
+	assert_eq(RunScoreScript.score(10, 20, 30, DayRulesScript.ENDING_SEASON_OVER), 10 * 100 + 20 * 10 + 30)
+
+
+func test_a_failed_run_scores_no_reputation() -> void:
+	for ending : String in ["busted", "bankrupt"]:
+		assert_eq(RunScoreScript.score(14, 475, 1491, ending), 14 * 100 + 1491)
+
+
+func test_a_legend_beats_a_failed_run_with_huge_reputation() -> void:
+	var legend : int = RunScoreScript.score(15, 100, 300, DayRulesScript.ENDING_SURVIVED)
+	var busted : int = RunScoreScript.score(14, 475, 1491, "busted")
+	assert_gt(legend, busted)
+
+
+func test_rescore_matches_a_fresh_score() -> void:
+	var entry : Dictionary = RunScoreScript.entry(14, 475, 1491, "busted", _modifier(1.4))
+	entry["score"] = 99999
+	assert_eq(RunScoreScript.rescore(entry), RunScoreScript.score(14, 475, 1491, "busted", _modifier(1.4)))
 
 
 func test_days_count_only_up_to_the_season_end() -> void:
@@ -46,12 +63,12 @@ func test_negative_reputation_scores_zero_not_below() -> void:
 
 func test_a_harder_modifier_raises_the_score() -> void:
 	var harder := _modifier(1.7) # difficulty 0.7
-	assert_eq(RunScoreScript.score(10, 20, 30, "busted", harder), roundi(1230 * 1.35))
+	assert_eq(RunScoreScript.score(10, 20, 30, DayRulesScript.ENDING_SEASON_OVER, harder), roundi(1230 * 1.35))
 
 
 func test_an_easier_modifier_lowers_the_score() -> void:
 	var easier := _modifier(1.0, 1.25) # difficulty -0.25
-	assert_gt(1230, RunScoreScript.score(10, 20, 30, "busted", easier))
+	assert_gt(1230, RunScoreScript.score(10, 20, 30, DayRulesScript.ENDING_SEASON_OVER, easier))
 
 
 func test_the_multiplier_never_drops_below_the_minimum() -> void:
