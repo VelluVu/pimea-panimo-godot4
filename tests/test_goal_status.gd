@@ -33,9 +33,10 @@ func test_daily_goal_achieve_is_met_at_target() -> void:
 	assert_eq(GoalStatusScript.daily_goal(ACHIEVE, 5, 5), GoalStatusScript.State.MET)
 
 
-func test_daily_goal_avoid_fails_at_the_limit() -> void:
+func test_daily_goal_avoid_warns_at_the_limit() -> void:
 	assert_eq(GoalStatusScript.daily_goal(AVOID, 2, 3), GoalStatusScript.State.PENDING)
-	assert_eq(GoalStatusScript.daily_goal(AVOID, 3, 3), GoalStatusScript.State.FAILING)
+	assert_eq(GoalStatusScript.daily_goal(AVOID, 3, 3), GoalStatusScript.State.WARNING)
+	assert_eq(GoalStatusScript.daily_goal(AVOID, 0, 0), GoalStatusScript.State.PENDING, "a zero limit is not a warning before any miss")
 
 
 func test_near_miss_only_for_achieve_goals_between_ratio_and_target() -> void:

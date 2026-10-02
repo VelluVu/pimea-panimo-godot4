@@ -27,6 +27,7 @@ const TUTORIAL_BREW_FORMAT : String = "Kotikalja: %d/1"
 const GOAL_MET_COLOR : Color = Color(0.6117647, 0.70980394, 0.41568628, 1) # matches ReputationLabel
 const GOAL_PENDING_COLOR : Color = Color(0.9490196, 0.7882353, 0.41960785, 1) # existing gold accent
 const GOAL_FAILING_COLOR : Color = Color(0.75686276, 0.3137255, 0.22745098, 1) # matches RiskLabel
+const GOAL_WARNING_COLOR : Color = Color(0.96862745, 0.4627451, 0.13333334, 1) # Endesga orange
 
 @onready var toggle_button : Button = $HeaderHBox/ToggleButton
 @onready var goals_vbox : VBoxContainer = $GoalsVBox
@@ -181,5 +182,7 @@ func _color_for(state : GoalStatus.State) -> Color:
 			return GOAL_MET_COLOR
 		GoalStatus.State.FAILING:
 			return GOAL_FAILING_COLOR
+		GoalStatus.State.WARNING:
+			return GOAL_WARNING_COLOR
 		_:
 			return GOAL_PENDING_COLOR
