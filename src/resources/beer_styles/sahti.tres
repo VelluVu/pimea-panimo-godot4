@@ -6,13 +6,13 @@
 script = ExtResource("1_sahti")
 style_name = "Sahti"
 style = 22
-abv = 8.0
+abv = 9.5
 profit_margin_multiplier = 1.4
-fixed_price_per_bottle = 4.5
+fixed_price_per_bottle = 5.5
 required_yeast_id = 300
 required_hop_id = 212
 preferred_hop_profile = 6
-min_malt_weight = 5
+min_malt_weight = 7
 min_ebc = 12
 max_ebc = 30
 min_ibu = 0

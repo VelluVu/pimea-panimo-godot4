@@ -431,6 +431,10 @@ func _expert_demand(b: Brewery, style: BeerStyle.Style, in_stock: Dictionary) ->
 		if not CustomerRegistry.is_eligible(c) and not unlocks:
 			continue
 		var served: float = 0.2 if in_stock.get(c.primary_style, 0) >= 10 else 1.0
+		# Unlocking a customer is worth half their favourite's value, whatever they think
+		# of the unlocking style (the old folks unlock with Vienna but want Sahti).
+		if unlocks and not CustomerRegistry.is_eligible(c):
+			demand += (2.0 + c.rep_primary_style) * 0.5
 		var preference: float = c.get_preference_score(style)
 		if preference >= 1.0:
 			demand += (2.0 + c.rep_primary_style) * served
