@@ -133,6 +133,7 @@ func process(data : CustomerData) -> String:
 	BrewerySignals.brewery_state_changed.emit(brewery)
 	_spread_word(data, results[CustomerManager.KEY_DELIGHTED], outcome.reputation_gain)
 	_update_standing(data, results[CustomerManager.KEY_DELIGHTED], outcome.reputation_gain)
+	BrewerySignals.customer_served.emit(data)
 	return response_text
 
 

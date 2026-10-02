@@ -18,6 +18,7 @@ extends Control
 @onready var run_effects_window : RunEffectsWindow = $RunEffectsWindow
 @onready var cellar_upgrades_window : CellarUpgradesWindow = $CellarUpgradesWindow
 @onready var sale_receipt_log_window : SaleReceiptLogWindow = $SaleReceiptLogWindow
+@onready var customer_book_window : CustomerBookWindow = $CustomerBookWindow
 
 var _views : GuiViewSwitcher
 var _announcer : GuiAnnouncer
@@ -115,6 +116,9 @@ func _close_any_open_views() -> bool:
 		closed_something = true
 	if sale_receipt_log_window.visible:
 		sale_receipt_log_window.hide()
+		closed_something = true
+	if customer_book_window.visible:
+		customer_book_window.hide()
 		closed_something = true
 	if warehouse_view.visible:
 		warehouse_view.hide_warehouse_view()
