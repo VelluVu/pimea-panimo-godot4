@@ -18,6 +18,8 @@ enum GoalType {
 @export var goal_type : GoalType = GoalType.EARN_MONEY
 ## Only read when goal_type == BREW_STYLE.
 @export var target_style : BeerStyle.Style = BeerStyle.Style.BULKKILAGER
+## Never rolled again, but kept so a save holding this goal still loads.
+@export var retired : bool = false
 
 @export_group("Palkkio (onnistuminen)")
 @export var reward_money : int = 20
