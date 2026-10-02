@@ -15,7 +15,7 @@ const SURVIVAL_BONUS : int = 1500
 const FAILED_ENDINGS : PackedStringArray = ["busted", "bankrupt"]
 ## The brewery's worth (money plus what its cellar upgrades cost) in points per euro.
 ## Counting the upgrades too means buying one never lowers the score.
-const WORTH_POINTS_PER_EURO : float = 0.2
+const WORTH_POINTS_PER_EURO : float = 0.3
 ## Harder modifiers multiply the score by 1 + difficulty * weight, easier ones lower it.
 const DIFFICULTY_WEIGHT : float = 0.5
 const MIN_MULTIPLIER : float = 0.5
