@@ -116,6 +116,7 @@ func _advance_day() -> void:
 
 	_charge_daily_utility_bills(brewery)
 	_apply_reputation_decay(brewery)
+	_apply_risk_decay(brewery)
 
 	SaveManager.save_game()
 	# DailyGoalManager, DayEventManager and the UI react to this themselves.
@@ -138,6 +139,17 @@ func _apply_reputation_decay(brewery : Brewery) -> void:
 
 	brewery.change_reputation(-decay, ReputationRules.Source.DECAY)
 	BrewerySignals.reputation_decayed.emit(decay, tier)
+	BrewerySignals.brewery_state_changed.emit(brewery)
+
+
+## Before day_changed, so the day recap can show the night's relief.
+func _apply_risk_decay(brewery : Brewery) -> void:
+	var relief : int = brewery.risk - DayRules.risk_after_night(brewery.risk)
+	if relief <= 0:
+		return
+
+	brewery.risk -= relief
+	BrewerySignals.risk_decayed.emit(relief)
 	BrewerySignals.brewery_state_changed.emit(brewery)
 
 

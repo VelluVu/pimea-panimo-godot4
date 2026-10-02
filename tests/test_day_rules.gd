@@ -80,3 +80,13 @@ func test_the_clock_resumes_from_the_saved_time_left() -> void:
 
 func test_a_saved_zero_resumes_at_zero_not_a_full_day() -> void:
 	assert_eq(DayRulesScript.clock_start_seconds(0.0, 300.0), 0.0)
+
+
+func test_the_night_lowers_risk_by_the_decay() -> void:
+	var risk : int = DayRulesScript.NIGHTLY_RISK_DECAY + 25
+	assert_eq(DayRulesScript.risk_after_night(risk), 25)
+
+
+func test_the_night_never_takes_risk_below_zero() -> void:
+	assert_eq(DayRulesScript.risk_after_night(DayRulesScript.NIGHTLY_RISK_DECAY - 3), 0)
+	assert_eq(DayRulesScript.risk_after_night(0), 0)

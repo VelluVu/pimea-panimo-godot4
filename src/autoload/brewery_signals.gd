@@ -81,6 +81,9 @@ signal reputation_tier_changed(tier: ReputationTier, rose: bool)
 ## Emitted by TimeManager at a day change with the reputation that `tier`'s daily decay took.
 @warning_ignore("unused_signal")
 signal reputation_decayed(amount: int, tier: ReputationTier)
+## Emitted by TimeManager at a day change with the LVV risk the night took (DayRules).
+@warning_ignore("unused_signal")
+signal risk_decayed(amount: int)
 ## Emitted by SaleProcessor when a delighted customer recommends the cellar; the
 ## spawner sends in a friend of the same kind (WordOfMouthRules).
 @warning_ignore("unused_signal")
