@@ -23,6 +23,10 @@ var active_goals : Array[GoalData]:
 		return goals
 
 var _slots : Array[GoalSlot] = []
+## Goals rolled since the period began; _roll_limit() caps it.
+var rolls_used : int = 0
+## Goals that may be rolled per period, -1 for no limit. Read through _roll_limit().
+var roll_limit : int = -1
 
 
 func _init() -> void:
@@ -77,9 +81,17 @@ func fail_kind_without_penalty(kind : int) -> void:
 			return
 
 
+## Goals that can still be rolled this period, or -1 when there is no limit.
+func get_rolls_left() -> int:
+	var limit : int = _roll_limit()
+	return -1 if limit < 0 else maxi(0, limit - rolls_used)
+
+
 ## Settles every active goal: a surviving avoid goal succeeds, an unfinished
-## achieve goal ran out of time.
+## achieve goal ran out of time. Starts a new period, so the replacements count
+## towards the next period's roll limit.
 func end_period() -> void:
+	rolls_used = 0
 	for i : int in _slots.size():
 		var goal : GoalData = _slots[i].goal
 		if goal != null:
@@ -135,10 +147,11 @@ func _resolve_goal(slot_index : int, succeeded : bool, apply_penalty : bool = tr
 
 func _assign_new_goal(slot_index : int) -> void:
 	var new_goal : GoalData = null
-	if _can_roll_goals():
+	if _can_roll_goals() and get_rolls_left() != 0:
 		new_goal = GoalRules.pick_new_goal(goal_pool, active_goals)
 
 	if new_goal != null:
+		rolls_used += 1
 		_slots[slot_index].start(new_goal, _baseline_for(new_goal), _current_day())
 	else:
 		_slots[slot_index].clear()
@@ -148,6 +161,12 @@ func _assign_new_goal(slot_index : int) -> void:
 ## Override: whether goals may be rolled right now (false leaves slots empty).
 func _can_roll_goals() -> bool:
 	return true
+
+
+## Override: how many goals may be rolled per period, or -1 for no limit. An
+## empty slot stays empty once the limit is used up.
+func _roll_limit() -> int:
+	return roll_limit
 
 
 ## Override: the day a new goal's target is scaled for.

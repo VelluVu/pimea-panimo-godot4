@@ -58,6 +58,8 @@ enum Tier { COMMON, RARE, LEGENDARY }
 @export var raid_hidden_batch_count: int = 0
 ## Counter spots added to the bar's default ones.
 @export var extra_counter_slots: int = 0
+## Daily goals rolled each day on top of GoalWiring.DAILY_GOAL_ROLLS.
+@export var extra_daily_goal_rolls: int = 0
 ## Share (0 to 1, summed and capped) of each confiscated batch's bottles a raid leaves behind.
 @export var raid_saved_bottle_share: float = 0.0
 

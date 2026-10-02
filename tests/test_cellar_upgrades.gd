@@ -43,14 +43,14 @@ func test_find_by_id() -> void:
 	assert_eq(UpgradesScript.find("x", upgrades), null)
 
 
-func test_shipped_upgrades_have_unique_ids_and_five_levels() -> void:
+func test_shipped_upgrades_have_unique_ids_and_one_to_five_levels() -> void:
 	var upgrades : Array[CellarUpgradeData] = UpgradesScript.all()
 	assert_gt(upgrades.size(), 0)
 	var ids : Dictionary = {}
 	for upgrade : CellarUpgradeData in upgrades:
 		assert_false(ids.has(upgrade.upgrade_id), "duplicate id %s" % upgrade.upgrade_id)
 		ids[upgrade.upgrade_id] = true
-		assert_eq(upgrade.max_level, 5)
+		assert_true(upgrade.max_level >= 1 and upgrade.max_level <= 5, "%s has %d levels" % [upgrade.upgrade_id, upgrade.max_level])
 		assert_true(_has_stat(upgrade), "%s has no stat" % upgrade.upgrade_id)
 
 

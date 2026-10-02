@@ -36,6 +36,7 @@ const COUNTER_PRICE := &"counter_price_multiplier"
 const EXTRA_RAID_STRIKES := &"extra_raid_strikes"
 const RAID_HIDDEN_BATCHES := &"raid_hidden_batch_count"
 const EXTRA_COUNTER_SLOTS := &"extra_counter_slots"
+const EXTRA_DAILY_GOAL_ROLLS := &"extra_daily_goal_rolls"
 const RAID_SAVED_BOTTLE_SHARE := &"raid_saved_bottle_share"
 
 ## How a stat is stored and shown. MULTIPLIER is neutral at 1.0 and shown as
@@ -69,6 +70,7 @@ static func definitions() -> Array[Dictionary]:
 		{"stat": RAID_HIDDEN_BATCHES, "kind": Kind.COUNT, "text": StringContainer.PERK_RAID_HIDDEN_BATCH_STAT_STRING},
 		{"stat": RAID_SAVED_BOTTLE_SHARE, "kind": Kind.PERCENT_ADD, "text": StringContainer.PERK_RAID_SAVED_BOTTLE_SHARE_STAT_STRING},
 		{"stat": EXTRA_COUNTER_SLOTS, "kind": Kind.COUNT, "text": StringContainer.PERK_EXTRA_COUNTER_SLOTS_STAT_STRING},
+		{"stat": EXTRA_DAILY_GOAL_ROLLS, "kind": Kind.COUNT, "text": StringContainer.PERK_EXTRA_DAILY_GOAL_ROLLS_STAT_STRING},
 	]
 
 
