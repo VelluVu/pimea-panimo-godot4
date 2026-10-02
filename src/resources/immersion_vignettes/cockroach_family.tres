@@ -9,6 +9,6 @@
 [resource]
 script = ExtResource("1_script")
 vignette_name = "Torakkaperhe"
-path_node_name = &"PathMarkers"
+path_node_name = &"CockroachPathMarkers"
 actors = Array[ExtResource("2_actor_script")]([ExtResource("3_first"), ExtResource("4_second"), ExtResource("5_third")])
 weight = 0.5
