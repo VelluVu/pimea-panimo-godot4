@@ -19,6 +19,9 @@ extends Resource
 ## customer's own expectations — see CustomerData.evaluate_brew_batch.
 @export var tip_income : float = 0.0
 @export var net_income : float = 0.0
+## EBC of the batch sold from, so the customer's glass shows the beer's colour.
+## -1 = unknown (receipts saved before this field).
+@export var beer_ebc : int = -1
 
 const SUMMARY_FORMAT : String = "%s x%d"
 const BREAKDOWN_FORMAT : String = "Raaka-aineet: %.2f €\nKate: %.2f €\n= Hinta/annos: %.2f €"

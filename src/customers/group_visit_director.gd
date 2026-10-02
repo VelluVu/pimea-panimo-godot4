@@ -146,6 +146,9 @@ func _run_shared_order(visit : GroupVisit) -> void:
 	var response_text : String = CustomerManager.process_auto_sale(order_data)
 	outcome.stop()
 
+	for member : Variant in visit.members:
+		if is_instance_valid(member):
+			member.fill_glasses(outcome.beer_ebc)
 	if outcome.xp > 0:
 		visit.mark_purchased()
 		outcome.emit_xp_popup(visit.counter_position)
