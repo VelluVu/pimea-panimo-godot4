@@ -151,6 +151,7 @@ func _run_shared_order(visit : GroupVisit) -> void:
 			member.fill_glasses(outcome.beer_ebc)
 	if outcome.xp > 0:
 		visit.mark_purchased()
+		_mark_members_served(visit, order_data.title)
 		outcome.emit_xp_popup(visit.counter_position)
 		if not await _serve_burst(visit):
 			return
@@ -163,6 +164,15 @@ func _run_shared_order(visit : GroupVisit) -> void:
 		wait_seconds = maxf(wait_seconds, BarFightRampage.DURATION_SECONDS)
 	if await _wait(wait_seconds):
 		await _dismiss(visit)
+
+
+## The sale reported the ordering type as served; a mixed group drank the round too.
+func _mark_members_served(visit : GroupVisit, order_title : String) -> void:
+	var reported : Dictionary = {order_title: true}
+	for member : Variant in visit.members:
+		if is_instance_valid(member) and not reported.has(member.customer_data.title):
+			reported[member.customer_data.title] = true
+			BrewerySignals.customer_served.emit(member.customer_data)
 
 
 ## The whole group rampages, but the broken glasses are shared out, not multiplied:
