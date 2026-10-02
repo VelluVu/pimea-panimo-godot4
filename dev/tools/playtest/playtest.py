@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Headless bot playtests: many short runs in parallel, then a summary.
 
-  python dev/tools/playtest/playtest.py run [--runs 6] [--days 20] [--out DIR] [--meta FILE]
-      Starts runs_per_strategy x 4 strategies (greedy, variety, careful, cheap) at once.
+  python dev/tools/playtest/playtest.py run [--runs 6] [--days 20] [--out DIR] [--meta FILE] [--strategies a,b]
+      Starts runs_per_strategy x each strategy (default: greedy, variety, careful, cheap) at
+      once; "expert" knows every recipe and is left out unless named.
       Each run gets its own APPDATA, so the real saves are never touched. --meta copies a
       meta_progress.cfg into every run for a "veteran" profile. Output defaults to
       dev/tools/playtest/runs/<timestamp>/ (gitignored). 24 runs of 20 days take ~25 s.
@@ -15,7 +16,7 @@
       One line per batch, to compare balance changes side by side.
 
 The Godot exe must match the editor version: set GODOT or pass --godot.
-Bots never discover new styles or do daily goals.
+Only the expert bot discovers new styles. No bot does daily goals.
 """
 import argparse
 import collections
@@ -33,6 +34,7 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[2]
 DEFAULT_GODOT = r"C:\Program Files (x86)\Steam\steamapps\common\Godot Engine\godot.windows.opt.tools.64.exe"
 STRATEGIES = ["greedy", "variety", "careful", "cheap"]
+ALL_STRATEGIES = STRATEGIES + ["expert"]
 USER_DIR = Path("Godot") / "app_userdata" / "Pimea Panimo"
 IGNORED_ERROR = re.compile(r"ERROR: \d+ resources still")
 ERROR_LINE = re.compile(r"(SCRIPT ERROR:.*|ERROR: .*)")
@@ -42,7 +44,7 @@ def run(args: argparse.Namespace) -> None:
     out = Path(args.out) if args.out else HERE / "runs" / datetime.now().strftime("%Y%m%d-%H%M%S")
     out.mkdir(parents=True, exist_ok=True)
     procs = []
-    for strategy in STRATEGIES:
+    for strategy in args.strategies.split(","):
         for i in range(1, args.runs + 1):
             name = f"{strategy}-{i}"
             appdata = out / name
@@ -128,6 +130,7 @@ def main() -> None:
     p_run.add_argument("--out")
     p_run.add_argument("--meta", help="meta_progress.cfg to start every run with")
     p_run.add_argument("--godot", default=os.environ.get("GODOT", DEFAULT_GODOT))
+    p_run.add_argument("--strategies", default=",".join(STRATEGIES), help="comma-separated, from: " + ", ".join(ALL_STRATEGIES))
     p_run.set_defaults(func=run)
     p_summary = sub.add_parser("summary")
     p_summary.add_argument("dir")
@@ -138,6 +141,8 @@ def main() -> None:
     args = parser.parse_args()
     if args.command == "run" and not Path(args.godot).exists():
         sys.exit(f"Godot exe not found: {args.godot} (set GODOT or pass --godot)")
+    if args.command == "run" and not set(args.strategies.split(",")) <= set(ALL_STRATEGIES):
+        sys.exit(f"Unknown strategy in {args.strategies}; choose from {', '.join(ALL_STRATEGIES)}")
     args.func(args)
 
 
