@@ -49,10 +49,10 @@ func _apply_depth_scale(sprite : AnimatedSprite2D, base_scale : Vector2) -> void
 	sprite.scale = base_scale * VignettePath.depth_scale_factor(sprite.global_position.y)
 
 
-## The console's "cat" command. Re-rolls the timer so a second vignette does not
-## follow moments later.
-func force_trigger() -> void:
-	_run_vignette()
+## The console's "cat" and "vignette" commands: plays `vignette`, or a random one
+## when null. Re-rolls the timer so a second vignette does not follow moments later.
+func force_trigger(vignette : ImmersionVignetteData = null) -> void:
+	_run_vignette(vignette if vignette != null else _pick_vignette())
 	_start_next_timer()
 
 
@@ -70,12 +70,11 @@ func _start_next_timer() -> void:
 
 
 func _on_timer_timeout() -> void:
-	_run_vignette()
+	_run_vignette(_pick_vignette())
 	_start_next_timer()
 
 
-func _run_vignette() -> void:
-	var vignette : ImmersionVignetteData = _pick_vignette()
+func _run_vignette(vignette : ImmersionVignetteData) -> void:
 	if vignette == null:
 		return
 
