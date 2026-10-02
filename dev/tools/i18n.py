@@ -36,7 +36,7 @@ CONTENT_FIELDS = {
 SKIP_DIRS = ["src/console", "src/systems/console", "src/resources", "addons", "tests", "dev"]
 
 CONST_STRING = re.compile(r'^\s*const\s+(\w+)\s*:\s*String\s*=\s*"((?:[^"\\]|\\.)*)"', re.M)
-CONST_ARRAY = re.compile(r'^\s*const\s+(\w+)\s*:\s*Array\[String\]\s*=\s*\[(.*?)\]', re.M | re.S)
+CONST_ARRAY = re.compile(r'^\s*const\s+(\w+)\s*:\s*(?:Array\[String\]|PackedStringArray)\s*=\s*\[(.*?)\]', re.M | re.S)
 CONST_DICT = re.compile(r'^\s*const\s+(\w+)\s*:\s*Dictionary\s*=\s*\{(.*?)\}', re.M | re.S)
 QUOTED = re.compile(r'"((?:[^"\\]|\\.)*)"')
 # A dictionary entry on its own line, like `ACTION_SHOP: "Kauppa",` or `"hint": "...",`.
@@ -45,7 +45,7 @@ SCENE_TEXT = re.compile(r'^(text|tooltip_text|placeholder_text) = "((?:[^"\\]|\\
 TEXT_NAME = re.compile(r'(_LABEL|_TEXT|_STRING|_HINT|^KPL)$')
 PLACEHOLDER = re.compile(r'%[-+0-9.]*[dsf%]')
 # Constant names that hold paths, keys or log text rather than player-facing words.
-SKIP_NAME = re.compile(r'(SPAWN_POINT|PATH|DIR|FOLDER|SECTION|^KEY|_KEY|_GROUP$|ACTION|ANIM|BUS|ERROR|WARNING|MESSAGE|_ID$|SCENE|SUFFIX|PREFIX|FILE|URL|META|SAVE|CONFIG|SIGNAL|NODE|^TITLE_|_TITLE$|EXTENSION|DEBUG|LOG_|^DATABASE_STRING$|^INVENTORY_STRING$|^LIST_STRING$|^MONEY_STRING$)')
+SKIP_NAME = re.compile(r'(SPAWN_POINT|PATH|DIR|FOLDER|SECTION|^KEY|_KEY|_GROUP$|ACTION|ANIM|^BUS_|ERROR|_ID$|SCENE|SUFFIX|PREFIX|FILE|URL|META|SAVE|CONFIG|SIGNAL|NODE|EXTENSION|DEBUG|LOG_|^DATABASE_STRING$|^INVENTORY_STRING$|^LIST_STRING$|^MONEY_STRING$)')
 
 
 def _is_text(value, name=""):

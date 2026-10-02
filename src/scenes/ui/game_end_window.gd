@@ -67,7 +67,7 @@ func _on_game_ended(ending_type : String) -> void:
 			message_label.text = MESSAGE_SURVIVED
 		"season_over":
 			title_label.text = TITLE_SEASON_OVER
-			message_label.text = MESSAGE_SEASON_OVER % Brewery.SURVIVAL_MIN_REPUTATION
+			message_label.text = tr(MESSAGE_SEASON_OVER) % Brewery.SURVIVAL_MIN_REPUTATION
 		_:
 			title_label.text = ending_type
 			message_label.text = ""

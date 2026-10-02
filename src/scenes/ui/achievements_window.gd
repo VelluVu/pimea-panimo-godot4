@@ -56,7 +56,7 @@ func _refresh_tiles() -> void:
 		else:
 			locked.append(achievement)
 
-	title_label.text = TITLE_FORMAT % [unlocked.size(), pool.size()]
+	title_label.text = tr(TITLE_FORMAT) % [unlocked.size(), pool.size()]
 
 	for achievement in unlocked:
 		_add_tile(achievement, true)

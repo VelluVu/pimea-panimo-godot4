@@ -19,7 +19,7 @@ func _ready() -> void:
 
 
 func _on_lvv_raid_recap_ready(confiscated_bottles : int, fine_amount : float, reputation_lost : int) -> void:
-	message_label.text = StringContainer.LVV_RAID_MESSAGE % [confiscated_bottles, fine_amount, reputation_lost]
+	message_label.text = tr(StringContainer.LVV_RAID_MESSAGE) % [confiscated_bottles, fine_amount, reputation_lost]
 	show()
 
 

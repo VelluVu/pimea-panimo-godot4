@@ -7,7 +7,7 @@ extends Panel
 
 const TITLE_TEXT : String = "Asiakaskirja"
 const CLOSE_TEXT : String = "Sulje"
-const REGULAR_SUFFIX : String = "  (kanta-asiakas)"
+const REGULAR_TAG : String = "  (kanta-asiakas)"
 const NAME_FONT_SIZE : int = 15
 const DETAIL_FONT_SIZE : int = 12
 const PORTRAIT_SIZE : Vector2 = Vector2(64, 64)
@@ -72,7 +72,7 @@ func _build_row(customer : CustomerData, met : bool, style_names : Dictionary) -
 	texts.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	texts.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	texts.add_theme_constant_override("separation", 0)
-	var title : Label = _make_label(customer.title + (REGULAR_SUFFIX if _is_regular(customer) else ""), NAME_FONT_SIZE)
+	var title : Label = _make_label(tr(customer.title) + (tr(REGULAR_TAG) if _is_regular(customer) else ""), NAME_FONT_SIZE)
 	if _is_regular(customer):
 		title.add_theme_color_override("font_color", REGULAR_COLOR)
 	texts.add_child(title)
