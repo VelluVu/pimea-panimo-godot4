@@ -29,4 +29,4 @@ static func too_weak_line(quality : float, customers : Array[CustomerData]) -> S
 			titles.append(title)
 	if titles.is_empty():
 		return ""
-	return TOO_WEAK_FORMAT % TITLE_SEPARATOR.join(titles)
+	return UiText.of(TOO_WEAK_FORMAT) % TITLE_SEPARATOR.join(titles)

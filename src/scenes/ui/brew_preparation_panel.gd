@@ -77,12 +77,12 @@ func _ready() -> void:
 ## button — the brewing counterpart to CustomerManager's sale XP popup,
 ## which appears on the customer instead (see DialogView).
 func _on_brew_xp_gained(amount : int) -> void:
-	_float_popup(XP_POPUP_FORMAT % amount, XP_POPUP_COLOR, XP_POPUP_OFFSET)
+	_float_popup(tr(XP_POPUP_FORMAT) % amount, XP_POPUP_COLOR, XP_POPUP_OFFSET)
 
 
 func _on_brew_reputation_gained(amount : int) -> void:
 	var color : Color = Color.GREEN if amount > 0 else Color.RED
-	_float_popup(REPUTATION_POPUP_FORMAT % amount, color, XP_POPUP_OFFSET + REPUTATION_POPUP_STEP)
+	_float_popup(tr(REPUTATION_POPUP_FORMAT) % amount, color, XP_POPUP_OFFSET + REPUTATION_POPUP_STEP)
 
 
 func _float_popup(text : String, color : Color, offset : Vector2) -> void:
@@ -183,10 +183,10 @@ func _update_preview(brewery : Brewery, prep_contents : Dictionary) -> void:
 		return
 
 	if not preview.is_matched:
-		preview_label.text = PREVIEW_NO_MATCH_FORMAT % [preview.final_ebc, preview.final_ibu]
+		preview_label.text = tr(PREVIEW_NO_MATCH_FORMAT) % [preview.final_ebc, preview.final_ibu]
 		return
 
 	if brewery.is_style_known(preview.beer_style.style):
-		preview_label.text = PREVIEW_KNOWN_MATCH_FORMAT % [preview.beer_style.style_name, preview.final_ebc, preview.final_ibu, roundi(preview.original_quality * 100)]
+		preview_label.text = tr(PREVIEW_KNOWN_MATCH_FORMAT) % [preview.beer_style.style_name, preview.final_ebc, preview.final_ibu, roundi(preview.original_quality * 100)]
 	else:
-		preview_label.text = PREVIEW_UNKNOWN_MATCH_FORMAT % [preview.final_ebc, preview.final_ibu]
+		preview_label.text = tr(PREVIEW_UNKNOWN_MATCH_FORMAT) % [preview.final_ebc, preview.final_ibu]

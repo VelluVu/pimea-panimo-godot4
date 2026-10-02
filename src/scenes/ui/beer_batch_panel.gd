@@ -98,7 +98,7 @@ func _update_beer_batches_ui() -> void:
 			amount_label.text_overrun_behavior = TextServer.OVERRUN_NO_TRIMMING
 			amount_label.size_flags_horizontal = Control.SIZE_FILL
 			amount_label.custom_minimum_size = Vector2.ZERO
-			amount_label.text = AMOUNT_LABEL_STRING % batch.amount_bottles
+			amount_label.text = tr(AMOUNT_LABEL_STRING) % batch.amount_bottles
 
 			var quality_label := _make_batch_label(batch)
 			quality_label.custom_minimum_size = Vector2.ZERO

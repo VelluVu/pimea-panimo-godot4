@@ -35,15 +35,15 @@ const DEFAULT_COLOR : Color = Color("ecdcb8")
 static func ending_label(ending_type : String) -> String:
 	match ending_type:
 		"survived":
-			return ENDING_SURVIVED
+			return UiText.of(ENDING_SURVIVED)
 		"season_over":
-			return ENDING_SEASON_OVER
+			return UiText.of(ENDING_SEASON_OVER)
 		"busted":
 			return ENDING_BUSTED
 		"bankrupt":
-			return ENDING_BANKRUPT
+			return UiText.of(ENDING_BANKRUPT)
 		"":
-			return ENDING_IN_PROGRESS
+			return UiText.of(ENDING_IN_PROGRESS)
 	return ending_type
 
 
@@ -61,16 +61,16 @@ static func ending_color(ending_type : String) -> Color:
 ## One part per line; the bonus and multiplier lines only when they change the score.
 static func breakdown_lines(entry : Dictionary) -> PackedStringArray:
 	var lines : PackedStringArray = [
-		DAYS_LINE % [entry.get("days_survived", 0), RunScore.DAY_POINTS],
+		UiText.of(DAYS_LINE) % [entry.get("days_survived", 0), RunScore.DAY_POINTS],
 		_reputation_line(entry),
-		BOTTLES_LINE % entry.get("lifetime_bottles_sold", 0),
+		UiText.of(BOTTLES_LINE) % entry.get("lifetime_bottles_sold", 0),
 	]
 	var worth_points : int = RunScore.worth_points(entry.get("worth", 0.0), entry.get("ending_type", ""))
 	if worth_points > 0:
-		lines.append(WORTH_LINE % [roundi(entry.get("worth", 0.0)), worth_points])
+		lines.append(UiText.of(WORTH_LINE) % [roundi(entry.get("worth", 0.0)), worth_points])
 	var bonus : int = entry.get("bonus", 0)
 	if bonus > 0:
-		lines.append(BONUS_LINE % bonus)
+		lines.append(UiText.of(BONUS_LINE) % bonus)
 	var multiplier : float = entry.get("multiplier", 1.0)
 	if not is_equal_approx(multiplier, 1.0):
 		lines.append(MULTIPLIER_LINE % [entry.get("modifier_name", ""), format_multiplier(multiplier)])
@@ -80,13 +80,13 @@ static func breakdown_lines(entry : Dictionary) -> PackedStringArray:
 ## A busted or bankrupt run's reputation is shown but earns nothing, see RunScore.
 static func _reputation_line(entry : Dictionary) -> String:
 	if not RunScore.counts_reputation(entry.get("ending_type", "")):
-		return REPUTATION_UNSCORED_LINE % entry.get("reputation", 0)
-	return REPUTATION_LINE % [entry.get("reputation", 0), RunScore.REPUTATION_POINTS]
+		return UiText.of(REPUTATION_UNSCORED_LINE) % entry.get("reputation", 0)
+	return UiText.of(REPUTATION_LINE) % [entry.get("reputation", 0), RunScore.REPUTATION_POINTS]
 
 
 static func breakdown(entry : Dictionary) -> String:
 	var lines : PackedStringArray = breakdown_lines(entry)
-	lines.append(TOTAL_LINE % entry.get("score", 0))
+	lines.append(UiText.of(TOTAL_LINE) % entry.get("score", 0))
 	return "\n".join(lines)
 
 

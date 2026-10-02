@@ -91,7 +91,7 @@ func _build_edges(buttons : Array[Button], centers : Dictionary) -> Array[Olutop
 
 func _refresh() -> void:
 	var renown : int = MetaProgressManager.get_renown()
-	renown_label.text = RENOWN_FORMAT % renown
+	renown_label.text = tr(RENOWN_FORMAT) % renown
 
 	for id : String in _node_views:
 		_refresh_node(id, renown)

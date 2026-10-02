@@ -53,15 +53,15 @@ func get_stat_summary() -> String:
 	var lines : PackedStringArray = []
 
 	if lvv_threshold_multiplier != 1.0:
-		lines.append(StringContainer.MODIFIER_RAID_THRESHOLD_STAT_STRING % roundi((lvv_threshold_multiplier - 1.0) * 100))
+		lines.append(tr(StringContainer.MODIFIER_RAID_THRESHOLD_STAT_STRING) % roundi((lvv_threshold_multiplier - 1.0) * 100))
 	if ingredient_price_multiplier != 1.0:
-		lines.append(StringContainer.MODIFIER_INGREDIENT_PRICE_STAT_STRING % roundi((ingredient_price_multiplier - 1.0) * 100))
+		lines.append(tr(StringContainer.MODIFIER_INGREDIENT_PRICE_STAT_STRING) % roundi((ingredient_price_multiplier - 1.0) * 100))
 	if quality_bonus != 0.0:
-		lines.append(StringContainer.PERK_QUALITY_STAT_STRING % roundi(quality_bonus * 100))
+		lines.append(tr(StringContainer.PERK_QUALITY_STAT_STRING) % roundi(quality_bonus * 100))
 	if reputation_gain_multiplier != 1.0:
-		lines.append(StringContainer.PERK_REPUTATION_STAT_STRING % roundi((reputation_gain_multiplier - 1.0) * 100))
+		lines.append(tr(StringContainer.PERK_REPUTATION_STAT_STRING) % roundi((reputation_gain_multiplier - 1.0) * 100))
 	if tip_income_multiplier != 1.0:
-		lines.append(StringContainer.PERK_TIP_STAT_STRING % roundi((tip_income_multiplier - 1.0) * 100))
+		lines.append(tr(StringContainer.PERK_TIP_STAT_STRING) % roundi((tip_income_multiplier - 1.0) * 100))
 
 	return "\n".join(lines)
 

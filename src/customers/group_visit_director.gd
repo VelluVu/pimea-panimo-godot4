@@ -135,7 +135,7 @@ func _run_shared_order(visit : GroupVisit) -> void:
 		return
 
 	var order_data : CustomerData = build_order_data(visit.event_data.customer_data_options, visit.size(), _active_styles.call())
-	var group_label : String = GROUP_LABEL_FORMAT % [order_data.title, visit.size()]
+	var group_label : String = tr(GROUP_LABEL_FORMAT) % [order_data.title, visit.size()]
 	_say(visit, SPEECH_FORMAT % [group_label, order_data.dialogue_intro])
 	if not await _wait(Customer.PREVIEW_DELAY_SECONDS):
 		return

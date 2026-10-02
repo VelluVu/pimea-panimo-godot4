@@ -72,7 +72,7 @@ func _refresh_current_run() -> void:
 		return
 	var entry : Dictionary = RunScore.entry_for(brewery, "")
 	var rank : int = LeaderboardManager.get_rank(entry["score"])
-	current_run_caption.text = CURRENT_RUN_FORMAT % rank
+	current_run_caption.text = tr(CURRENT_RUN_FORMAT) % rank
 	current_run_holder.add_child(_build_row(rank, entry, HIGHLIGHT_COLOR, false))
 
 

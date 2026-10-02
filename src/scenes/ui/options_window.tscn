@@ -117,6 +117,7 @@ layout_mode = 2
 text = "Pois"
 
 [node name="DisplayTab" type="VBoxContainer" parent="MarginContainer/MainVBox/TabContainer" unique_id=1026833400]
+unique_name_in_owner = true
 mouse_filter = 2
 visible = false
 layout_mode = 2

@@ -1,0 +1,357 @@
+keys,en,_source
+"
+
+Sijoitus: #%d / %d","
+
+Rank: #%d / %d",src/autoload/string_container.gd
+"
+
+UUSI ENNÄTYS!","
+
+NEW RECORD!",src/autoload/string_container.gd
+"(tasainen kasvu, ei kerry)","(steady growth, no stacking)",src/autoload/string_container.gd
+??? – vaatii mainetta: %d,??? – needs reputation: %d,src/autoload/string_container.gd
+Agenttien esiintyvyys: %+d %%,Agent visits: %+d %%,src/autoload/string_container.gd
+Ainehinnat: %+d %%,Ingredient prices: %+d %%,src/autoload/string_container.gd
+Ainepalautuksen mahdollisuus: %d %%,Ingredient refund chance: %d %%,src/autoload/string_container.gd
+Alfahapot: %s%% / Beetahapot: %s%%,Alpha acids: %s%% / Beta acids: %s%%,src/autoload/string_container.gd
+Alkoholiton IPA,Non-alcoholic IPA,src/autoload/string_container.gd
+Alkoholiton Lager,Non-alcoholic Lager,src/autoload/string_container.gd
+Amber Ale,Amber Ale,src/autoload/string_container.gd
+Asiakkaiden saapumisväli: %+d %%,Time between customers: %+d %%,src/autoload/string_container.gd
+Baltic Portteri,Baltic Porter,src/autoload/string_container.gd
+Barleywine,Barleywine,src/autoload/string_container.gd
+Belgian Dubbel,Belgian Dubbel,src/autoload/string_container.gd
+Belgian Strong Dark Ale,Belgian Strong Dark Ale,src/autoload/string_container.gd
+Bulkki Lager,Bulk Lager,src/autoload/string_container.gd
+Doppelbock,Doppelbock,src/autoload/string_container.gd
+EBC: %s,EBC: %s,src/autoload/string_container.gd
+Ei,No,src/autoload/string_container.gd
+Ei aktiivista kierrosta.,No active run.,src/autoload/string_container.gd
+"Ei tää sitä ollu mitä hain, mut jotaki kuitenki.","Not quite what I was after, but it'll do.",src/autoload/string_container.gd
+Ei vielä ennätyksiä. Pelaa ensimmäinen erä!,No records yet. Play your first round!,src/autoload/string_container.gd
+Ei vielä perkkejä. Nouse tasolle 2 saadaksesi ensimmäisen.,No perks yet. Reach level 2 to get your first.,src/autoload/string_container.gd
+Ennätykset,Records,src/autoload/string_container.gd
+Erinomainen,Excellent,src/autoload/string_container.gd
+Harvinainen,Rare,src/autoload/string_container.gd
+Hefeweizen,Hefeweizen,src/autoload/string_container.gd
+Heikkeneminen: %+d %%,Decline: %+d %%,src/autoload/string_container.gd
+Heikko,Poor,src/autoload/string_container.gd
+Helles,Helles,src/autoload/string_container.gd
+Hyvä,Good,src/autoload/string_container.gd
+IPA,IPA,src/autoload/string_container.gd
+Imperial Stout,Imperial Stout,src/autoload/string_container.gd
+Jakelutulot: %+d %%,Distribution income: %+d %%,src/autoload/string_container.gd
+Jalo,Noble,src/autoload/string_container.gd
+Kierroksen tilastot,Run stats,src/autoload/string_container.gd
+Kotikalja,Kotikalja,src/autoload/string_container.gd
+Kyllä,Yes,src/autoload/string_container.gd
+Kypsymisaika: %+d %%,Aging time: %+d %%,src/autoload/string_container.gd
+Käymisaste: %s%%,Attenuation: %s%%,src/autoload/string_container.gd
+Laatu: +%d %%,Quality: +%d %%,src/autoload/string_container.gd
+Laatubonus jokaiseen erään: +%d %%,Quality bonus on every batch: +%d %%,src/autoload/string_container.gd
+Legendaarinen,Legendary,src/autoload/string_container.gd
+Lisää tiskipaikkoja: +%d,Extra counter spots: +%d,src/autoload/string_container.gd
+Maanläheinen,Earthy,src/autoload/string_container.gd
+Mafiosojen esiintyvyys: %+d %%,Mafioso visits: %+d %%,src/autoload/string_container.gd
+Mahdollisuus tuplatippiin: %d %%,Double tip chance: %d %%,src/autoload/string_container.gd
+Maineen kertymä: +%d %%,Reputation gain: +%d %%,src/autoload/string_container.gd
+Maku: %s,Flavour: %s,src/autoload/string_container.gd
+Mestarillinen,Masterful,src/autoload/string_container.gd
+Mäntyinen,Piney,src/autoload/string_container.gd
+Märzen,Märzen,src/autoload/string_container.gd
+Olosuhteet: %s,Conditions: %s,src/autoload/string_container.gd
+"Osumatarkkuus: %s%%
+Humalalajeja käytetty: %s
+Humalatasapaino-bonus: %s%%
+Makuosuma: %s","Precision: %s%%
+Hop varieties used: %s
+Hop balance bonus: %s%%
+Flavour match: %s",src/autoload/string_container.gd
+Pale Ale,Pale Ale,src/autoload/string_container.gd
+Piilotettuja eriä ratsiassa: %d,Batches hidden in a raid: %d,src/autoload/string_container.gd
+Pullosaanto: %+d %%,Bottle yield: %+d %%,src/autoload/string_container.gd
+Päivätavoitteita päivässä: +%d,Daily goals per day: +%d,src/autoload/string_container.gd
+Ratsiakynnys tällä kierroksella: %d riskiä,Raid threshold this run: %d risk,src/autoload/string_container.gd
+Ratsiakynnys: %+d %%,Raid threshold: %+d %%,src/autoload/string_container.gd
+Ratsioiden sietokyky: +%d,Raids survived: +%d,src/autoload/string_container.gd
+Reseptikirja,Recipe book,src/autoload/string_container.gd
+Ryhmäasiakkaiden saapumisväli: %+d %%,Time between group visits: %+d %%,src/autoload/string_container.gd
+Saison,Saison,src/autoload/string_container.gd
+Scotch Ale,Scotch Ale,src/autoload/string_container.gd
+Selvä...,Right...,src/autoload/string_container.gd
+Session Ale,Session Ale,src/autoload/string_container.gd
+Sitruksinen,Citrusy,src/autoload/string_container.gd
+Sulje,Close,src/autoload/string_container.gd
+Tappelun todennäköisyys: %+d %%,Bar fight chance: %+d %%,src/autoload/string_container.gd
+Tavallinen,Common,src/autoload/string_container.gd
+Tipit: +%d %%,Tips: +%d %%,src/autoload/string_container.gd
+Tiskimyynnin hinnat: %+d %%,Counter prices: %+d %%,src/autoload/string_container.gd
+Trooppinen,Tropical,src/autoload/string_container.gd
+Tumma Lager,Dark Lager,src/autoload/string_container.gd
+Tuntematon,Unknown,src/autoload/string_container.gd
+Tyydyttävä,Fair,src/autoload/string_container.gd
+Tämän kierroksen perkit (%d):,This run's perks (%d):,src/autoload/string_container.gd
+Uusi humala saatavilla: %s!,New hop available: %s!,src/autoload/string_container.gd
+Vienna Lager,Vienna Lager,src/autoload/string_container.gd
+Witbier,Witbier,src/autoload/string_container.gd
+Yhteisvaikutus:,Combined effect:,src/autoload/string_container.gd
+erittäin karvas,very bitter,src/autoload/string_container.gd
+"Laatu: %s%% (%s %s, %s)
+EBC: %s | IBU: %s | ABV: %.1f%%
+","Quality: %s%% (%s %s, %s)
+EBC: %s | IBU: %s | ABV: %.1f%%
+",src/brewing/brew_batch.gd
+heikkenee,declining,src/brewing/brew_batch.gd
+kypsyy vielä,still maturing,src/brewing/brew_batch.gd
+parhaimmillaan,at its best,src/brewing/brew_batch.gd
+Antti,Antti,src/customers/customer_data.gd
+Liisa,Liisa,src/customers/customer_data.gd
+Maija,Maija,src/customers/customer_data.gd
+Matti,Matti,src/customers/customer_data.gd
+Pekka,Pekka,src/customers/customer_data.gd
+%s-lauma (%d hlöä),%s group (%d people),src/customers/group_visit_director.gd
+"
+Liian heikkoa: %s","
+Not good enough for: %s",src/customers/quality_wish_text.gd
+Taas täällä! %s,Back again! %s,src/customers/sale_processor.gd
+"Myynti: +%.1f €
+Tippi: +%.1f €
+TILILLE: +%.1f €","Sale: +%.1f €
+Tip: +%.1f €
+TO ACCOUNT: +%.1f €",src/customers/sale_receipt_entry.gd
+"Raaka-aineet: %.2f €
+Kate: %.2f €
+= Hinta/annos: %.2f €","Ingredients: %.2f €
+Margin: %.2f €
+= Price/serving: %.2f €",src/customers/sale_receipt_entry.gd
+"Häädä asiakkaat, ja aloita uusi päivä",Send the customers home and start a new day,src/scenes/main.tscn
+Kauppa,Shop,src/scenes/main.tscn
+Keittola,Brewhouse,src/scenes/main.tscn
+LVV Riski: 0%,LVV Risk: 0%,src/scenes/main.tscn
+Lisää,Add,src/scenes/main.tscn
+Maine: 0,Reputation: 0,src/scenes/main.tscn
+Osta,Buy,src/scenes/main.tscn
+Pane,Brew,src/scenes/main.tscn
+Parannukset,Upgrades,src/scenes/main.tscn
+Pelivalikko,Game menu,src/scenes/main.tscn
+Poista,Remove,src/scenes/main.tscn
+Raha: 500€,Money: 500€,src/scenes/main.tscn
+Resepti:,Recipe:,src/scenes/main.tscn
+Sulje ovet,Close doors,src/scenes/main.tscn
+Tallenna resepti,Save recipe,src/scenes/main.tscn
+Taso: 1,Level: 1,src/scenes/main.tscn
+Tavoitteet,Goals,src/scenes/main.tscn
+Tyhjennä valmistelu,Clear preparation,src/scenes/main.tscn
+Tyhjää,Empty,src/scenes/main.tscn
+päivä: 1,day: 1,src/scenes/main.tscn
+"%s
+%s
+Avattu","%s
+%s
+Unlocked",src/scenes/ui/achievement_tile.gd
+"%s
+%s
+Edistyminen: %d/%d","%s
+%s
+Progress: %d/%d",src/scenes/ui/achievement_tile.gd
+"%s
+Maksukerroin: x%.2f raaka-ainehinnasta
+LVV-riski per toimitus: +%d","%s
+Payout: x%.2f of ingredient cost
+LVV risk per delivery: +%d",src/scenes/ui/bar_contact_option_button.gd
+0 kpl,0 pcs,src/scenes/ui/beer_batch_element.tscn
+Laatu: 0.0,Quality: 0.0,src/scenes/ui/beer_batch_element.tscn
+Olut Tyyli,Beer style,src/scenes/ui/beer_batch_element.tscn
+%d kpl,%d pcs,src/scenes/ui/beer_batch_panel.gd
+Ei olutta myytävänä. Keitä lisää!,No beer to sell. Brew more!,src/scenes/ui/beer_batch_panel.gd
+Kohde:,Destination:,src/scenes/ui/beer_batch_panel.gd
+Myy,Sell,src/scenes/ui/beer_batch_panel.gd
+"Myy koko erä kerralla varastosta. Hinta on paljon normaalia myyntihintaa halvempi, ja heikkolaatuinen tai vanhentunut erä voi tuottaa jopa tappiota raaka-ainekuluihin nähden.","Sell the whole batch from the warehouse at once. The price is far below a normal sale, and a poor or old batch can even sell for less than its ingredients cost.",src/scenes/ui/beer_batch_panel.gd
+Vie,Ship,src/scenes/ui/beer_batch_panel.gd
+"Vie koko erä yllä valittuun baariin. Parempi hinta kuin halpamyynti, mutta nostaa LVV-riskiä toimituksen mukana.","Ship the whole batch to the bar selected above. A better price than a bulk sale, but each delivery raises the LVV risk.",src/scenes/ui/beer_batch_panel.gd
+%+d Mainetta,%+d Reputation,src/scenes/ui/brew_preparation_panel.gd
++%d XP,+%d XP,src/scenes/ui/brew_preparation_panel.gd
+"Arvio: %s, EBC %d, IBU %d, laatu %d%%","Estimate: %s, EBC %d, IBU %d, quality %d%%",src/scenes/ui/brew_preparation_panel.gd
+"Arvio: tuntematon tyyli täsmää! (EBC %d, IBU %d)","Estimate: an unknown style matches! (EBC %d, IBU %d)",src/scenes/ui/brew_preparation_panel.gd
+"Ei täsmää vielä mihinkään tyyliin. (EBC %d, IBU %d)","Doesn't match any style yet. (EBC %d, IBU %d)",src/scenes/ui/brew_preparation_panel.gd
+Lisää ainesosia nähdäksesi arvion.,Add ingredients to see an estimate.,src/scenes/ui/brew_preparation_panel.gd
+Tarvitset ainakin 3 kg mallasta ja hiivan.,You need at least 3 kg of malt and a yeast.,src/scenes/ui/brew_preparation_panel.gd
+Tuntematon oluttyyli. Keitä se ensin selvittääksesi reseptin!,Unknown beer style. Brew it first to work out the recipe!,src/scenes/ui/brew_preparation_panel.gd
+resepti:,recipe:,src/scenes/ui/brew_preparation_panel.gd
+Tilastot,Stats,src/scenes/ui/chalkboard_label.gd
+Peruuta,Cancel,src/scenes/ui/close_day_confirm_window.gd
+Sulje silti,Close anyway,src/scenes/ui/close_day_confirm_window.gd
+LVV-TARKASTUS!,LVV INSPECTION!,src/scenes/ui/close_day_confirm_window.tscn
+Asiakaskirja,Customer book,src/scenes/ui/customer_book_label.gd
+Hiivaa: %d/1,Yeast: %d/1,src/scenes/ui/daily_goals_panel.gd
+Kotikalja: %d/1,Kotikalja: %d/1,src/scenes/ui/daily_goals_panel.gd
+Maine: %d/%d,Reputation: %d/%d,src/scenes/ui/daily_goals_panel.gd
+Mallasta: %d/%d kg,Malt: %d/%d kg,src/scenes/ui/daily_goals_panel.gd
+Päivät: %d/%d,Days: %d/%d,src/scenes/ui/daily_goals_panel.gd
+Päivätavoitteet (+%d tänään):,Daily goals (+%d today):,src/scenes/ui/daily_goals_panel.gd
+Päivätavoitteet:,Daily goals:,src/scenes/ui/daily_goals_panel.gd
+Päätavoite:,Main goal:,src/scenes/ui/daily_goals_panel.gd
+Uusia tavoitteita huomenna.,New goals tomorrow.,src/scenes/ui/daily_goals_panel.gd
+ (yöllä -%d), (overnight -%d),src/scenes/ui/day_recap_window.gd
+Jatka,Continue,src/scenes/ui/day_recap_window.gd
+ei uusia,none new,src/scenes/ui/day_recap_window.gd
+Päivän yhteenveto,Day summary,src/scenes/ui/day_recap_window.tscn
+Jatka pelaamista,Keep playing,src/scenes/ui/game_end_window.gd
+Olutopin mainetta +%d,Olutoppi renown +%d,src/scenes/ui/game_end_window.gd
+Sijoitus: #%d,Rank: #%d,src/scenes/ui/game_end_window.gd
+UUSI ENNÄTYS!,NEW RECORD!,src/scenes/ui/game_end_window.gd
+Valikkoon,To menu,src/scenes/ui/game_end_window.gd
+"Voit jatkaa pelaamista, mutta ennätyslistan pisteet eivät enää muutu. Olutopin mainetta saat jatkossa vähemmän, ja uudet reseptit ja saavutukset avautuvat yhä. Uuden yrityksen voit aloittaa valikosta.","You can keep playing, but your leaderboard score no longer changes. You earn less Olutoppi renown from here on, and new recipes and achievements still unlock. Start a new attempt from the menu.",src/scenes/ui/game_end_window.gd
+Aloitetaanko uusi yritys? Tämä kausi jää kesken.,Start a new attempt? This season will be left unfinished.,src/scenes/ui/game_menu_window.gd
+Asetukset,Settings,src/scenes/ui/game_menu_window.gd
+Palataanko päävalikkoon? Peli tallennetaan.,Return to the main menu? The game will be saved.,src/scenes/ui/game_menu_window.gd
+Päävalikkoon,Main menu,src/scenes/ui/game_menu_window.gd
+Saavutukset,Achievements,src/scenes/ui/game_menu_window.gd
+Uusi yritys,New attempt,src/scenes/ui/game_menu_window.gd
+Hiiva,Yeast,src/scenes/ui/ingredient_type_selector.gd
+Humala,Hops,src/scenes/ui/ingredient_type_selector.gd
+Mallas,Malt,src/scenes/ui/ingredient_type_selector.gd
+ UUSI!, NEW!,src/scenes/ui/leaderboard_window.gd
+Ei vielä ennätyksiä. Pelaa ensimmäinen kausi!,No records yet. Play your first season!,src/scenes/ui/leaderboard_window.gd
+Tämä kausi nyt: sijoittuisi #%d,This season so far: would rank #%d,src/scenes/ui/leaderboard_window.gd
+"Täytä puuttuvat ainesosat pöydälle varastosta ladatun reseptin mukaan. Pois käytöstä, jos varastossa ei ole tarpeeksi jotain ainesosaa.",Put the missing ingredients for the loaded recipe on the table from storage. Disabled if storage is short of any ingredient.,src/scenes/ui/left_brewing_view.gd
+Täytä resepti,Fill recipe,src/scenes/ui/left_brewing_view.gd
+Kuvaus,Description,src/scenes/ui/level_up_window.tscn
+Perk,Perk,src/scenes/ui/level_up_window.tscn
+Taso 2!,Level 2!,src/scenes/ui/level_up_window.tscn
+Aloita Peli,Start Game,src/scenes/ui/main_menu.gd
+Aloita uusi peli,Start a new game,src/scenes/ui/main_menu.gd
+Jatka Peliä,Continue Game,src/scenes/ui/main_menu.gd
+Lopeta Peli,Quit Game,src/scenes/ui/main_menu.gd
+Olutoppi,Olutoppi,src/scenes/ui/main_menu.gd
+Takaisin,Back,src/scenes/ui/main_menu.gd
+Pimeä Panimo,Pimeä Panimo,src/scenes/ui/main_menu.tscn
+Ei vielä ennätystä. Tästä se lähtee.,No record yet. This is where it starts.,src/scenes/ui/modifier_select_window.gd
+"Ennätys: %d pistettä (päivä %d, %d annosta)","Record: %d points (day %d, %d servings)",src/scenes/ui/modifier_select_window.gd
+Modifier,Modifier,src/scenes/ui/modifier_select_window.tscn
+Valitse tämän kierroksen olosuhteet,Choose this run's conditions,src/scenes/ui/modifier_select_window.tscn
+Maine: %d,Renown: %d,src/scenes/ui/olutoppi_window.gd
+Baarityöskentely,Bar work,src/scenes/ui/olutoppi_window.tscn
+Markkinointi,Marketing,src/scenes/ui/olutoppi_window.tscn
+Oluenpanotaito,Brewing skill,src/scenes/ui/olutoppi_window.tscn
+English,English,src/scenes/ui/options_window.gd
+Kieli,Language,src/scenes/ui/options_window.gd
+Näyttö,Display,src/scenes/ui/options_window.gd
+Ohjaus,Controls,src/scenes/ui/options_window.gd
+Suomi,Suomi,src/scenes/ui/options_window.gd
+Tietoja,About,src/scenes/ui/options_window.gd
+Ääni,Sound,src/scenes/ui/options_window.gd
+Koko näyttö,Fullscreen,src/scenes/ui/options_window.tscn
+Musiikki,Music,src/scenes/ui/options_window.tscn
+"Pimeä Panimo
+
+Musiikki: Treblo
+Äänitehosteet: Kenney.nl (CC0)
+Käyttöliittymäkuvakkeet: Kenney.nl (CC0)","Pimeä Panimo
+
+Music: Treblo
+Sound effects: Kenney.nl (CC0)
+UI icons: Kenney.nl (CC0)",src/scenes/ui/options_window.tscn
+Pois,Off,src/scenes/ui/options_window.tscn
+Päävolyymi,Master volume,src/scenes/ui/options_window.tscn
+Äänitehosteet,Sound effects,src/scenes/ui/options_window.tscn
+Kuitit,Receipts,src/scenes/ui/receipt_machine_label.gd
+< Takaisin,< Back,src/scenes/ui/recipe_library_window.gd
+Ei tallennettuja reseptejä tälle tyylille.,No saved recipes for this style.,src/scenes/ui/recipe_library_window.gd
+Lataa,Load,src/scenes/ui/recipe_library_window.gd
+Reseptit,Recipes,src/scenes/ui/recipe_shelf_label.gd
+Tynnyrit,Kegs,src/scenes/ui/right_warehouse_view.gd
+Varasto,Storage,src/scenes/ui/right_warehouse_view.gd
+Olutopin pysyvät bonukset (%d):,Permanent Olutoppi bonuses (%d):,src/scenes/ui/run_effects_window.gd
+Halpamyynti: %s x%d  +%.1f €,Bulk sale: %s x%d  +%.1f €,src/scenes/ui/sale_flash_stack.gd
+Osa raaka-aineista säästyi panon yhteydessä!,Some ingredients were saved during brewing!,src/scenes/ui/sale_flash_stack.gd
+Vienti (%s): %s x%d  +%.1f € (LVV-riski +%d),Shipment (%s): %s x%d  +%.1f € (LVV risk +%d),src/scenes/ui/sale_flash_stack.gd
+Myyty: %s  +%.1f €,Sold: %s  +%.1f €,src/scenes/ui/sale_flash_toast.gd
+Ei myyntejä vielä tänään.,No sales yet today.,src/scenes/ui/sale_receipt_log_window.gd
+Joo,Sure,src/scenes/ui/special_event_window.tscn
+"
+Kuuluisuus houkuttelee tarkastajia: ratsiakynnys -%d","
+Fame attracts inspectors: raid threshold -%d",src/scenes/ui/top_panel_resources.gd
+"
+Maine hiipuu %d %% joka yö","
+Reputation fades %d %% every night",src/scenes/ui/top_panel_resources.gd
+%d / %d XP seuraavaan tasoon,%d / %d XP to the next level,src/scenes/ui/top_panel_resources.gd
+Korkein maine saavutettu.,Highest reputation reached.,src/scenes/ui/top_panel_resources.gd
+Päivä: %s,Day: %s,src/scenes/ui/top_panel_resources.gd
+Seuraava: %s (%d mainetta),Next: %s (%d reputation),src/scenes/ui/top_panel_resources.gd
+Taso: %d,Level: %d,src/scenes/ui/top_panel_resources.gd
+Tippi +%.1f €,Tip +%.1f €,src/systems/dialog/dialog_wiring.gd
+Nyt: %s,Now: %s,src/ui/cellar_upgrade_text.gd
+Osta %d €,Buy %d €,src/ui/cellar_upgrade_text.gd
+Seuraava taso: %s,Next level: %s,src/ui/cellar_upgrade_text.gd
+Täysi,Maxed,src/ui/cellar_upgrade_text.gd
+ei vielä,not yet,src/ui/cellar_upgrade_text.gd
+%d asiakastyyppiä vielä tuntematta.,%d customer types still unknown.,src/ui/customer_book_text.gd
+"Ei vielä tavattu. Palvele kerran, niin opit hänen makunsa.",Not met yet. Serve them once to learn their taste.,src/ui/customer_book_text.gd
+Enintään %.1f %% alkoholia,At most %.1f %% alcohol,src/ui/customer_book_text.gd
+Enintään %.2f € pullolta,At most %.2f € a bottle,src/ui/customer_book_text.gd
+Juo vain: %s,Only drinks: %s,src/ui/customer_book_text.gd
+Käy myös: %s,Also takes: %s,src/ui/customer_book_text.gd
+Laatutoive: vähintään %d %%,Quality wish: at least %d %%,src/ui/customer_book_text.gd
+Suosikki: %s,Favourite: %s,src/ui/customer_book_text.gd
+Suosikki: vaihtelee joka käynnillä,Favourite: changes every visit,src/ui/customer_book_text.gd
+Vähintään %.1f %% alkoholia,At least %.1f %% alcohol,src/ui/customer_book_text.gd
+%s ei ole enää kanta-asiakas.,%s is no longer a regular.,src/ui/gui_announcer.gd
+%s epäonnistui: %d maine / +%d LVV-riski,%s failed: %d reputation / +%d LVV risk,src/ui/gui_announcer.gd
+%s epäonnistui: ei seurauksia,%s failed: no consequences,src/ui/gui_announcer.gd
+%s on nyt kanta-asiakas! Ostaa enemmän ja tippaa paremmin.,%s is now a regular! Buys more and tips better.,src/ui/gui_announcer.gd
+%s saavutettu: +%d € / +%d maine / +%d XP!,%s done: +%d € / +%d reputation / +%d XP!,src/ui/gui_announcer.gd
+%s vaatii vähintään %d mainetta.,%s needs at least %d reputation.,src/ui/gui_announcer.gd
+"Ei varaa: %s maksaa %d €, kassassa %.1f €.","Can't afford: %s costs %d €, you have %.1f €.",src/ui/gui_announcer.gd
+Huono arvio kiertää. Asiakkaat viipyvät hetken.,A bad review is going around. Customers stay away for a while.,src/ui/gui_announcer.gd
+Maine hiipui yön aikana: -%d (%s),Reputation faded overnight: -%d (%s),src/ui/gui_announcer.gd
+Maineesi laski: %s.,Your reputation dropped: %s.,src/ui/gui_announcer.gd
+Maineesi nousi: %s!,Your reputation rose: %s!,src/ui/gui_announcer.gd
+Ovet ovat vielä hetken kiinni. Osta ainekset ja pane ensimmäinen olut rauhassa.,The doors stay shut for now. Buy ingredients and brew your first beer in peace.,src/ui/gui_announcer.gd
+"Ovet suljettu aikaisin: -%.1f €, mainetta -%d, LVV-riski -%d","Closed early: -%.1f €, reputation -%d, LVV risk -%d",src/ui/gui_announcer.gd
+Saavutus avattu: %s!,Achievement unlocked: %s!,src/ui/gui_announcer.gd
+Tyytyväinen asiakas suositteli panimoa kaverilleen!,A happy customer recommended the brewery to a friend!,src/ui/gui_announcer.gd
+Uusi asiakas avattu: %s!,New customer unlocked: %s!,src/ui/gui_announcer.gd
+Uusi oluttyyli löydetty: %s!,New beer style discovered: %s!,src/ui/gui_announcer.gd
+Uusia humalia saatavilla: %s!,New hops available: %s!,src/ui/gui_announcer.gd
+Annokset %d,Servings %d,src/ui/leaderboard_text.gd
+Kesken,In progress,src/ui/leaderboard_text.gd
+Konkurssi,Bankrupt,src/ui/leaderboard_text.gd
+Legenda,Legend,src/ui/leaderboard_text.gd
+Legendabonus +%d,Legend bonus +%d,src/ui/leaderboard_text.gd
+Maine %d × %d,Reputation %d × %d,src/ui/leaderboard_text.gd
+Maine %d: ei pisteitä,Reputation %d: no points,src/ui/leaderboard_text.gd
+Panimon arvo %d €: +%d,Brewery worth %d €: +%d,src/ui/leaderboard_text.gd
+Pisteet: %d,Score: %d,src/ui/leaderboard_text.gd
+Päivät %d × %d,Days %d × %d,src/ui/leaderboard_text.gd
+Selvisi,Survived,src/ui/leaderboard_text.gd
+ tai , or ,src/ui/olutoppi_text.gd
+"Nyt:
+%s","Now:
+%s",src/ui/olutoppi_text.gd
+Seuraava taso: %d maine,Next level: %d renown,src/ui/olutoppi_text.gd
+Taso enimmillään,Max level,src/ui/olutoppi_text.gd
+"Tason %d jälkeen:
+%s","After level %d:
+%s",src/ui/olutoppi_text.gd
+Vaatii ensin: %s,Requires first: %s,src/ui/olutoppi_text.gd
+"
+Katkeruus: %s","
+Bitterness: %s",src/ui/recipe_library_text.gd
+"
+Suosikkihumala: %s","
+Favourite hop: %s",src/ui/recipe_library_text.gd
+"
+Vaadittu mallas: %s","
+Required malt: %s",src/ui/recipe_library_text.gd
+"
+Vaatii mallasseoksen","
+Needs a malt blend",src/ui/recipe_library_text.gd
+"
+Väri: %s","
+Colour: %s",src/ui/recipe_library_text.gd
+"%s (%.1f%% ABV), EBC %s-%s, IBU %s-%s (hiiva: %s)","%s (%.1f%% ABV), EBC %s-%s, IBU %s-%s (yeast: %s)",src/ui/recipe_library_text.gd
+"??? (%.1f%% ABV) – vaatii: hiiva %s, vähintään %d kg mallasta","??? (%.1f%% ABV) – needs: yeast %s, at least %d kg of malt",src/ui/recipe_library_text.gd
+LVV,LVV,src/ui/reputation_breakdown_text.gd
+aikainen sulkeminen,early closing,src/ui/reputation_breakdown_text.gd

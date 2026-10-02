@@ -27,26 +27,26 @@ static func lines(data : CustomerData, met : bool, style_names : Dictionary) -> 
 	if data.randomizes_preference:
 		result.append(VARYING_FAVOURITE_TEXT)
 	else:
-		result.append(FAVOURITE_FORMAT % style_names.get(data.primary_style, ""))
-		result.append(SECOND_FORMAT % style_names.get(data.secondary_style, ""))
+		result.append(UiText.of(FAVOURITE_FORMAT) % style_names.get(data.primary_style, ""))
+		result.append(UiText.of(SECOND_FORMAT) % style_names.get(data.secondary_style, ""))
 	if not data.accepted_styles.is_empty():
 		var accepted : PackedStringArray = []
 		for style : BeerStyle.Style in data.accepted_styles:
 			accepted.append(style_names.get(style, ""))
-		result.append(ACCEPTED_FORMAT % LIST_SEPARATOR.join(accepted))
+		result.append(UiText.of(ACCEPTED_FORMAT) % LIST_SEPARATOR.join(accepted))
 
-	result.append(QUALITY_FORMAT % roundi(data.min_quality * 100.0))
+	result.append(UiText.of(QUALITY_FORMAT) % roundi(data.min_quality * 100.0))
 	if data.min_required_abv >= 0.0:
-		result.append(MIN_ABV_FORMAT % data.min_required_abv)
+		result.append(UiText.of(MIN_ABV_FORMAT) % data.min_required_abv)
 	if data.max_required_abv >= 0.0:
-		result.append(MAX_ABV_FORMAT % data.max_required_abv)
+		result.append(UiText.of(MAX_ABV_FORMAT) % data.max_required_abv)
 	if data.max_required_price >= 0.0:
-		result.append(MAX_PRICE_FORMAT % data.max_required_price)
+		result.append(UiText.of(MAX_PRICE_FORMAT) % data.max_required_price)
 	return result
 
 
 static func locked_line(locked_count : int) -> String:
-	return LOCKED_FORMAT % locked_count if locked_count > 0 else ""
+	return UiText.of(LOCKED_FORMAT) % locked_count if locked_count > 0 else ""
 
 
 ## One customer per title (gendered variants share one), in `customers` order.

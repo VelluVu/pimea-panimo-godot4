@@ -117,33 +117,33 @@ func _on_brewery_state_changed(brewery: Brewery) -> void:
 	# One toast per reputation jump, however many hops it unlocked.
 	var unlocked : Array[IngredientData] = _reputation_tracker.update(brewery.reputation)
 	if unlocked.size() == 1:
-		_show_toast(StringContainer.INGREDIENT_UNLOCKED_TOAST_FORMAT % unlocked[0].name)
+		_show_toast(tr(StringContainer.INGREDIENT_UNLOCKED_TOAST_FORMAT) % unlocked[0].name)
 	elif unlocked.size() > 1:
 		var names : PackedStringArray = []
 		for ingredient: IngredientData in unlocked:
 			names.append(ingredient.name.trim_suffix(HOP_NAME_SUFFIX))
-		_show_toast(INGREDIENTS_UNLOCKED_TOAST_FORMAT % ", ".join(names))
+		_show_toast(tr(INGREDIENTS_UNLOCKED_TOAST_FORMAT) % ", ".join(names))
 
 
 func _on_style_discovered(style: int) -> void:
-	_show_toast(DISCOVERY_TOAST_FORMAT % BeerStyle.get_style_string_from_style(style))
+	_show_toast(tr(DISCOVERY_TOAST_FORMAT) % BeerStyle.get_style_string_from_style(style))
 
 
 func _on_achievement_unlocked(_achievement_id: String, title: String) -> void:
-	_show_toast(ACHIEVEMENT_UNLOCKED_TOAST_FORMAT % title)
+	_show_toast(tr(ACHIEVEMENT_UNLOCKED_TOAST_FORMAT) % title)
 
 
 func _on_customer_unlocked(title: String) -> void:
-	_show_toast(CUSTOMER_UNLOCKED_TOAST_FORMAT % title)
+	_show_toast(tr(CUSTOMER_UNLOCKED_TOAST_FORMAT) % title)
 
 
 func _on_daily_goal_resolved(goal_name: String, succeeded: bool, money: int, reputation: int, xp: int, risk: int) -> void:
 	if succeeded:
-		_show_toast(GOAL_REWARD_TOAST_FORMAT % [goal_name, money, reputation, xp])
+		_show_toast(tr(GOAL_REWARD_TOAST_FORMAT) % [goal_name, money, reputation, xp])
 	elif reputation == 0 and risk == 0:
-		_show_toast(GOAL_FAILED_NO_PENALTY_TOAST_FORMAT % goal_name)
+		_show_toast(tr(GOAL_FAILED_NO_PENALTY_TOAST_FORMAT) % goal_name)
 	else:
-		_show_toast(GOAL_FAILED_TOAST_FORMAT % [goal_name, reputation, risk])
+		_show_toast(tr(GOAL_FAILED_TOAST_FORMAT) % [goal_name, reputation, risk])
 
 
 ## Explains the money/reputation shift of a forced close. Skipped when all three
@@ -151,17 +151,17 @@ func _on_daily_goal_resolved(goal_name: String, succeeded: bool, money: int, rep
 func _on_early_day_close_applied(money_cost: float, reputation_cost: int, risk_relief: int, _close_count: int) -> void:
 	if money_cost <= 0.0 and reputation_cost <= 0 and risk_relief <= 0:
 		return
-	_show_toast(EARLY_CLOSE_TOAST_FORMAT % [money_cost, reputation_cost, risk_relief])
+	_show_toast(tr(EARLY_CLOSE_TOAST_FORMAT) % [money_cost, reputation_cost, risk_relief])
 
 
 ## The shop already disables locked entries; the toast keeps both purchase failures surfaced.
 func _on_ingredient_purchase_locked(ingredient_name: String, required_reputation: int) -> void:
-	_show_toast(INGREDIENT_LOCKED_TOAST_FORMAT % [ingredient_name, required_reputation])
+	_show_toast(tr(INGREDIENT_LOCKED_TOAST_FORMAT) % [ingredient_name, required_reputation])
 
 
 ## Tells a player who clicked "Osta" without enough money why nothing happened.
 func _on_ingredient_purchase_underfunded(ingredient_name: String, price: int, money: float) -> void:
-	_show_toast(INGREDIENT_UNDERFUNDED_TOAST_FORMAT % [ingredient_name, price, money])
+	_show_toast(tr(INGREDIENT_UNDERFUNDED_TOAST_FORMAT) % [ingredient_name, price, money])
 
 
 func _on_reputation_tier_changed(tier: ReputationTier, rose: bool) -> void:
@@ -169,7 +169,7 @@ func _on_reputation_tier_changed(tier: ReputationTier, rose: bool) -> void:
 
 
 func _on_reputation_decayed(amount: int, tier: ReputationTier) -> void:
-	_show_toast(REPUTATION_DECAY_TOAST_FORMAT % [amount, tier.tier_name])
+	_show_toast(tr(REPUTATION_DECAY_TOAST_FORMAT) % [amount, tier.tier_name])
 
 
 func _on_regular_status_changed(customer_title: String, is_regular: bool) -> void:

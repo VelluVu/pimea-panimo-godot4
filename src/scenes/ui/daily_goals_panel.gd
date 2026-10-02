@@ -135,21 +135,21 @@ func _update_run_goal(brewery : Brewery) -> void:
 
 	day_goal_label.visible = not _main_goal_section.collapsed
 	reputation_goal_label.visible = not _main_goal_section.collapsed
-	_set_line(day_goal_label, DAY_GOAL_FORMAT % [brewery.current_day, target_day], GoalStatus.run_day(brewery.current_day, target_day, money_in_danger))
-	_set_line(reputation_goal_label, REPUTATION_GOAL_FORMAT % [brewery.reputation, min_reputation], GoalStatus.run_reputation(brewery.reputation, min_reputation, money_in_danger))
+	_set_line(day_goal_label, tr(DAY_GOAL_FORMAT) % [brewery.current_day, target_day], GoalStatus.run_day(brewery.current_day, target_day, money_in_danger))
+	_set_line(reputation_goal_label, tr(REPUTATION_GOAL_FORMAT) % [brewery.reputation, min_reputation], GoalStatus.run_reputation(brewery.reputation, min_reputation, money_in_danger))
 
 
 func _update_tutorial_goals(brewery : Brewery) -> void:
 	var malt_target : int = Brewery.TUTORIAL_MALT_TARGET_KG
 	var malt_kg : int = mini(brewery.lifetime_malt_kg_bought, malt_target)
-	_set_line(tutorial_malt_label, TUTORIAL_MALT_FORMAT % [malt_kg, malt_target], GoalStatus.from_met(malt_kg >= malt_target))
-	_set_line(tutorial_yeast_label, TUTORIAL_YEAST_FORMAT % int(brewery.tutorial_bought_yeast), GoalStatus.from_met(brewery.tutorial_bought_yeast))
-	_set_line(tutorial_brew_label, TUTORIAL_BREW_FORMAT % int(brewery.tutorial_brewed_kotikalja), GoalStatus.from_met(brewery.tutorial_brewed_kotikalja))
+	_set_line(tutorial_malt_label, tr(TUTORIAL_MALT_FORMAT) % [malt_kg, malt_target], GoalStatus.from_met(malt_kg >= malt_target))
+	_set_line(tutorial_yeast_label, tr(TUTORIAL_YEAST_FORMAT) % int(brewery.tutorial_bought_yeast), GoalStatus.from_met(brewery.tutorial_bought_yeast))
+	_set_line(tutorial_brew_label, tr(TUTORIAL_BREW_FORMAT) % int(brewery.tutorial_brewed_kotikalja), GoalStatus.from_met(brewery.tutorial_brewed_kotikalja))
 
 
 func _update_daily_goals() -> void:
 	var rolls_left : int = DailyGoalManager.get_rolls_left()
-	daily_goals_header_label.text = DAILY_GOALS_HEADER_TEXT if rolls_left < 0 else DAILY_GOALS_LEFT_HEADER_FORMAT % rolls_left
+	daily_goals_header_label.text = DAILY_GOALS_HEADER_TEXT if rolls_left < 0 else tr(DAILY_GOALS_LEFT_HEADER_FORMAT) % rolls_left
 	for i : int in daily_goal_labels.size():
 		var label : Label = daily_goal_labels[i]
 		var goal : DailyGoalData = DailyGoalManager.active_goals[i]

@@ -73,3 +73,22 @@ func test_reads_the_existing_file_layout() -> void:
 	assert_false(store.is_muted(BUS_B))
 	assert_true(store.fullscreen)
 	_cleanup()
+
+
+func test_pick_locale_prefers_saved_then_system_then_fallback() -> void:
+	var supported: Array[String] = ["fi", "en"]
+	assert_eq(SettingsStore.pick_locale("en", "fi", supported, "en"), "en")
+	assert_eq(SettingsStore.pick_locale("", "fi", supported, "en"), "fi")
+	assert_eq(SettingsStore.pick_locale("", "de", supported, "en"), "en")
+	assert_eq(SettingsStore.pick_locale("sv", "de", supported, "en"), "en", "an unsupported saved choice is ignored")
+
+
+func test_language_survives_a_save_and_load() -> void:
+	var store := _make_store()
+	store.language = "en"
+	store.save_settings()
+
+	var reloaded := _make_store()
+	reloaded.load_settings()
+	assert_eq(reloaded.language, "en")
+	_cleanup()
