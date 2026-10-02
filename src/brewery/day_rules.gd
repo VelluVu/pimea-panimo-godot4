@@ -15,9 +15,17 @@ const DAILY_WATER_COST : int = 3
 ## ending instead of running forever.
 const SURVIVAL_DAY_TARGET : int = 15
 
+## LVV risk the cellar sheds each night. Without it risk only ever climbed between
+## raids, so about half of all runs were busted no matter how carefully they sold.
+const NIGHTLY_RISK_DECAY : int = 15
+
 
 static func daily_bill_total() -> int:
 	return DAILY_ELECTRICITY_COST + DAILY_WATER_COST
+
+
+static func risk_after_night(risk : int) -> int:
+	return maxi(0, risk - NIGHTLY_RISK_DECAY)
 
 
 ## The one win condition: outlast both failure states to the day target with
