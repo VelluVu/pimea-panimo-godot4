@@ -95,7 +95,7 @@ func _show_next_pending_level() -> void:
 		_card_header_labels[i].add_theme_color_override("font_color", perk.get_tier_color())
 
 		var stat_summary : String = perk.get_stat_summary()
-		var description : String = "[%s]\n%s" % [perk.get_tier_label(), perk.description]
+		var description : String = "[%s]\n%s" % [perk.get_tier_label(), tr(perk.description)]
 		_card_description_labels[i].text = description if stat_summary.is_empty() else description + "\n" + stat_summary
 
 	get_tree().paused = true
