@@ -58,7 +58,7 @@ func _rebuild_items() -> void:
 		var bar : BarContact = CustomerRegistry.bar_contact_pool[i]
 		var is_locked : bool = reputation < bar.required_reputation
 
-		add_item(tr(StringContainer.INGREDIENT_LOCKED_LABEL) % bar.required_reputation if is_locked else bar.bar_name)
+		add_item(tr(StringContainer.INGREDIENT_LOCKED_LABEL) % bar.required_reputation if is_locked else tr(bar.bar_name))
 		var new_item_index := get_item_count() - 1
 		set_item_id(new_item_index, i)
 		set_item_disabled(new_item_index, is_locked)
@@ -90,7 +90,7 @@ func _sync_own_tooltip() -> void:
 
 
 func _build_tooltip(bar : BarContact) -> String:
-	return tr(TOOLTIP_FORMAT) % [bar.description, bar.price_multiplier, bar.risk_per_shipment]
+	return tr(TOOLTIP_FORMAT) % [tr(bar.description), bar.price_multiplier, bar.risk_per_shipment]
 
 
 ## A bar's description can run long enough to overflow Godot's default

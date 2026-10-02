@@ -149,6 +149,39 @@ Kate: %.2f €
 Margin: %.2f €
 = Price/serving: %.2f €",src/customers/sale_receipt_entry.gd
 PerkRegistry: Perk pool is empty!,PerkRegistry: Perk pool is empty!,src/progression/perk_registry.gd
+Kulman Kuppila,The Corner Dive,src/resources/bars/kulman_kuppila.tres
+"Naapurustobaari, joka ottaa vastaan mitä tahansa kelvollista tynnyriolutta ilman kysymyksiä. Ei maksa paljon, mutta ei myöskään herätä huomiota.","A neighbourhood bar that takes any decent keg beer, no questions asked. It doesn't pay much, but it doesn't draw attention either.",src/resources/bars/kulman_kuppila.tres
+"Arvostettu illallisravintola, joka maksaa parhaan hinnan laadukkaista eristä. Suuret toimitukset tänne ovat riski, jota ei kannata ottaa kevein perustein.",A respected dinner restaurant that pays the best price for quality batches. Big deliveries here are a risk you shouldn't take lightly.,src/resources/bars/kultainen_tynnyri.tres
+Kultainen Tynnyri,The Golden Barrel,src/resources/bars/kultainen_tynnyri.tres
+"Suosittu yökerho, joka maksaa mukavasti isommista eristä, mutta kuljetukset sen ovelle eivät jää keneltäkään huomaamatta.","A popular nightclub that pays well for bigger batches, but deliveries to its door never go unnoticed.",src/resources/bars/yokerho_varjo.tres
+Yökerho Varjo,Club Shadow,src/resources/bars/yokerho_varjo.tres
+Indian Pale ale,India Pale Ale,src/resources/beer_styles/ipa.tres
+"Isompi astia, enemmän pulloja samasta satsista.","A bigger vessel, more bottles from the same batch.",src/resources/cellar_upgrades/1_isompi_kaymisastia.tres
+Isompi käymisastia,Bigger fermenter,src/resources/cellar_upgrades/1_isompi_kaymisastia.tres
+Kylmäkypsytysvarasto,Cold storage,src/resources/cellar_upgrades/2_kylmakypsytysvarasto.tres
+Kylmässä olut säilyy pidempään. Koskee uusia satseja.,Beer keeps longer in the cold. Applies to new batches.,src/resources/cellar_upgrades/2_kylmakypsytysvarasto.tres
+Lisää tiskipaikkoja,More counter spots,src/resources/cellar_upgrades/3_lisaa_tiskipaikkoja.tres
+"Yksi asiakas lisää mahtuu tiskille, ja täysi baari houkuttelee lisää väkeä. Väljyys vähenee, mutta kassa kilisee.","One more customer fits at the counter, and a full bar draws a bigger crowd. Less elbow room, but the till keeps ringing.",src/resources/cellar_upgrades/3_lisaa_tiskipaikkoja.tres
+Piilohylly,Hidden shelf,src/resources/cellar_upgrades/4_piilohylly.tres
+Väärä seinä kellarissa. Ratsiassa osa pulloista jää löytymättä.,"A false wall in the cellar. In a raid, some bottles stay hidden.",src/resources/cellar_upgrades/4_piilohylly.tres
+Puhdistusvälineet,Cleaning gear,src/resources/cellar_upgrades/5_puhdistusvalineet.tres
+"Puhtaat astiat, puhtaampi maku. Koskee uusia satseja.","Clean vessels, cleaner taste. Applies to new batches.",src/resources/cellar_upgrades/5_puhdistusvalineet.tres
+Ilmoitustaulu,Notice board,src/resources/cellar_upgrades/6_ilmoitustaulu.tres
+"Kellarin seinään naulattu taulu, johon kanta-asiakkaat ja naapurit jättävät toiveitaan. Joka päivä tarjolla on yksi päivätavoite enemmän.",A board nailed to the cellar wall where regulars and neighbours leave their wishes. One more daily goal on offer every day.,src/resources/cellar_upgrades/6_ilmoitustaulu.tres
+Kunnon lasit,Proper glasses,src/resources/cellar_upgrades/7_kunnon_lasit.tres
+Oikeat tuopit muovimukien tilalle. Tiskillä olusta saa pyytää vähän enemmän.,Real pint glasses instead of plastic cups. You can charge a bit more at the counter.,src/resources/cellar_upgrades/7_kunnon_lasit.tres
+Purkki tiskin kulmalla. Tyytyväinen asiakas jättää vähän enemmän.,A jar on the corner of the counter. A happy customer leaves a little extra.,src/resources/cellar_upgrades/8_tippipurkki.tres
+Tippipurkki,Tip jar,src/resources/cellar_upgrades/8_tippipurkki.tres
+Kuormapyörä,Cargo bike,src/resources/cellar_upgrades/9_kuormapyora.tres
+Viet laatikot baareihin itse. Lähetyksistä ja tukkumyynnistä jää enemmän käteen.,You deliver the crates to the bars yourself. Shipments and bulk sales leave more in your pocket.,src/resources/cellar_upgrades/9_kuormapyora.tres
+Bulkkilager,Bulk Lager,src/resources/daily_goals/brew_bulkkilager.tres
+Erikoistapahtumat,Special events,src/resources/daily_goals/hoida_kaksi_erikoistapahtumaa.tres
+Erikoistapahtuma,Special event,src/resources/daily_goals/jarjesta_erikoistapahtuma.tres
+Mainetta,Reputation,src/resources/daily_goals/kasvata_mainetta.tres
+Myy pulloja,Sell bottles,src/resources/daily_goals/myy_paljon_pulloja.tres
+Tyytyväiset asiakkaat,Happy customers,src/resources/daily_goals/nolla_tyytymatonta.tres
+Rahaa,Money,src/resources/daily_goals/tienaa_paljon_rahaa.tres
+Vie baariin,Ship to a bar,src/resources/daily_goals/vie_baariin_paljon.tres
 Amerikkalainen aromihumala joka tuo sitruksista ja mäntyistä aromia,American aroma hop with citrus and pine notes,src/resources/ingredients/hops/cascade_hop.tres
 Cascade Humala,Cascade Hops,src/resources/ingredients/hops/cascade_hop.tres
 Centennial Humala,Centennial Hops,src/resources/ingredients/hops/centennial_hop.tres
@@ -200,6 +233,14 @@ Halvinta mahdollista hiivaa tämä ei tee kovin hyvää olutta,The cheapest yeas
 Leivonta hiiva,Baking Yeast,src/resources/ingredients/yeasts/baking_yeast.tres
 Lagerhiiva,Lager Yeast,src/resources/ingredients/yeasts/lager_yeast.tres
 Pohjahiiva tuottaa puhtaan raikkaan oluen,"A bottom-fermenting yeast that makes a clean, crisp beer",src/resources/ingredients/yeasts/lager_yeast.tres
+Kukaan ei tiedä kellaristasi. Vielä.,Nobody knows about your cellar. Yet.,src/resources/reputation_tiers/0_tuntematon.tres
+Kellarin salaisuus,Cellar secret,src/resources/reputation_tiers/1_kellarin_salaisuus.tres
+Muutama tietää oikean oven. Kuiskaukset kulkevat.,A few know the right door. Whispers travel.,src/resources/reputation_tiers/1_kellarin_salaisuus.tres
+Kylän puheenaihe,Talk of the town,src/resources/reputation_tiers/2_kylan_puheenaihe.tres
+Mummotkin puhuvat panimostasi kaupan kassajonossa.,Even the grannies talk about your brewery in the supermarket queue.,src/resources/reputation_tiers/2_kylan_puheenaihe.tres
+Kaupungin kuuluisuus,Local celebrity,src/resources/reputation_tiers/3_kaupungin_kuuluisuus.tres
+Oluesi tunnetaan kaupungilla. Niin myös osoitteesi.,Your beer is known all over town. So is your address.,src/resources/reputation_tiers/3_kaupungin_kuuluisuus.tres
+Pimeästä panimosta kerrotaan tarinoita. Osa niistä on jopa totta.,People tell stories about the dark brewery. Some of them are even true.,src/resources/reputation_tiers/4_legendaarinen.tres
 Ainepula,Ingredient Shortage,src/resources/run_modifiers/ainepula.tres
 "Raaka-aineista on pulaa ja hinnat ovat pilvissä. Kaaoksen keskellä tarkastajatkin ovat muualla kiireisiä, ratsiakynnys on ennätyskorkealla.","Ingredients are scarce and prices are sky-high. In the chaos even the inspectors are busy elsewhere, and the raid threshold is at a record high.",src/resources/run_modifiers/ainepula.tres
 Kallis tori,Pricey Market,src/resources/run_modifiers/kallis_tori.tres

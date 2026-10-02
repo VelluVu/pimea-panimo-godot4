@@ -60,7 +60,7 @@ func _build_row(upgrade : CellarUpgradeData, brewery : Brewery) -> Control:
 	texts.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	texts.add_theme_constant_override("separation", 0)
 	texts.add_child(_make_label("%s %s" % [upgrade.icon_placeholder, CellarUpgradeText.title_line(upgrade, level)], NAME_FONT_SIZE))
-	var description : Label = _make_label(upgrade.description, DETAIL_FONT_SIZE)
+	var description : Label = _make_label(tr(upgrade.description), DETAIL_FONT_SIZE)
 	description.add_theme_color_override("font_color", MUTED_COLOR)
 	texts.add_child(description)
 	texts.add_child(_make_label(CellarUpgradeText.effect_lines(upgrade, level), DETAIL_FONT_SIZE))

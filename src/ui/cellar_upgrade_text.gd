@@ -12,7 +12,7 @@ const NONE_TEXT : String = "ei vielä"
 
 
 static func title_line(upgrade : CellarUpgradeData, level : int) -> String:
-	return UiText.of(LEVEL_FORMAT) % [upgrade.perk_name, level, upgrade.max_level]
+	return UiText.of(LEVEL_FORMAT) % [UiText.of(upgrade.perk_name), level, upgrade.max_level]
 
 
 static func button_text(upgrade : CellarUpgradeData, level : int) -> String:
