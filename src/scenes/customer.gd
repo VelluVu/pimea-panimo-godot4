@@ -49,9 +49,13 @@ var dialogue_slot: int = -1
 
 var generated_name: String = "Asiakas"
 
+## The glass as drawn, before fill_glasses() colours its beer.
+var _glass_texture: Texture2D
+
 
 func _ready() -> void:
 	animated_sprite.frame_changed.connect(_on_animated_sprite_frame_changed)
+	_glass_texture = beer_glass_sprite.texture
 
 
 func _on_animated_sprite_frame_changed() -> void:
@@ -142,6 +146,7 @@ func _on_sale_timeout() -> void:
 	var response_text := CustomerManager.process_auto_sale(customer_data)
 	outcome.stop()
 
+	fill_glasses(outcome.beer_ebc)
 	_show_sale_popups(outcome)
 
 	var display_time := _say(generated_name + ": " + response_text)
@@ -169,6 +174,16 @@ func _say(text: String, skippable: bool = false) -> float:
 		return display_time
 	BrewerySignals.dialogue_pushed.emit(text, false, dialogue_slot, global_position, display_time, FADE_TIME_SECONDS)
 	return display_time
+
+
+## Colours the beer in this customer's glasses to match what they bought. A negative
+## `ebc` (nothing sold) leaves the glass as drawn.
+func fill_glasses(ebc: int) -> void:
+	if ebc < 0 or _glass_texture == null:
+		return
+	var filled: Texture2D = BeerColor.glass_texture(_glass_texture, ebc)
+	beer_glass_sprite.texture = filled
+	counter_glass_sprite.texture = filled
 
 
 func show_beer_glass() -> void:
