@@ -78,20 +78,14 @@ func test_plateau_holds_the_peak_value_through_shelf_life() -> void:
 	assert_eq(batch.get_aging_trend_icon(), BrewBatch.AGING_TREND_PLATEAU)
 
 
-func test_decline_with_non_negative_aging_factor_resets_baseline_to_original_quality() -> void:
-	# Characterizes real (if slightly surprising) existing behavior: once
-	# decline starts, a non-negative aging_factor's flat 0.02/day decay is
-	# computed from original_quality, not from the plateau value the batch
-	# was just holding at — so quality visibly drops the moment decline
-	# begins instead of continuing down from the peak. Not something this
-	# pass is trying to fix, just locking in so a future change to this
-	# formula is a deliberate decision, not an accidental one.
+func test_decline_with_non_negative_aging_factor_continues_from_the_peak() -> void:
+	# The flat 0.02/tick decay starts from the aged peak, so the aging bonus fades
+	# instead of vanishing the moment the shelf life ends.
 	var batch := _make_batch(10, 5, 0.5)
 	for i in range(16):
 		batch.age_one_day()
-	# days_past_peak=6, spoilage_days=1 -> original(1.0) - 0.02*1 = 0.98,
-	# not 1.5 - 0.02.
-	assert_eq(batch.current_quality, 0.98)
+	# days_past_peak=6, spoilage_days=1 -> peak(1.5) - 0.02*1 = 1.48
+	assert_eq(batch.current_quality, 1.48)
 	assert_eq(batch.get_aging_trend_icon(), BrewBatch.AGING_TREND_DECLINING)
 
 
@@ -99,8 +93,8 @@ func test_decline_with_negative_aging_factor_uses_aging_factor_directly() -> voi
 	var batch := _make_batch(5, 3, -0.1)
 	for i in range(11):
 		batch.age_one_day()
-	# days_past_peak=6, spoilage_days=3 -> original(1.0) + (-0.1)*3 = 0.7
-	assert_true(is_equal_approx(batch.current_quality, 0.7), "expected ~0.7, got %s" % batch.current_quality)
+	# Ages down to 0.9 at the peak, then days_past_peak=6, spoilage_days=3 -> 0.9 - 0.1*3 = 0.6
+	assert_true(is_equal_approx(batch.current_quality, 0.6), "expected ~0.6, got %s" % batch.current_quality)
 
 
 func test_current_quality_is_clamped_to_floor() -> void:
@@ -131,10 +125,10 @@ func test_decline_rate_multiplier_slows_post_shelf_life_quality_loss() -> void:
 		with_multiplier.age_one_day()
 		without_multiplier.age_one_day()
 
-	# days_past_peak=6, spoilage_days=1 -> without: original(1.0) - 0.02*1 = 0.98;
-	# with a 0.5 decline_rate_multiplier: original(1.0) - 0.02*1*0.5 = 0.99.
-	assert_eq(without_multiplier.current_quality, 0.98)
-	assert_eq(with_multiplier.current_quality, 0.99)
+	# days_past_peak=6, spoilage_days=1 -> without: peak(1.5) - 0.02*1 = 1.48;
+	# with a 0.5 decline_rate_multiplier: peak(1.5) - 0.02*1*0.5 = 1.49.
+	assert_eq(without_multiplier.current_quality, 1.48)
+	assert_eq(with_multiplier.current_quality, 1.49)
 	assert_true(with_multiplier.current_quality > without_multiplier.current_quality, "a slower decline rate should lose less quality over the same aging")
 
 
@@ -156,5 +150,14 @@ func test_aged_price_grows_to_the_peak_and_ends_when_spoiling() -> void:
 	assert_eq(BrewBatch.aged_price_multiplier(0.6, 0, 30, 70), 1.0, "fresh")
 	assert_true(is_equal_approx(BrewBatch.aged_price_multiplier(0.6, 15, 30, 70), 1.3), "halfway to the peak")
 	assert_true(is_equal_approx(BrewBatch.aged_price_multiplier(0.6, 60, 30, 70), 1.6), "held through the shelf life")
-	assert_eq(BrewBatch.aged_price_multiplier(0.6, 101, 30, 70), 1.0, "spoiling")
+	assert_true(is_equal_approx(BrewBatch.aged_price_multiplier(0.6, 105, 30, 70), 1.3), "half faded 5 ticks into spoiling")
+	assert_eq(BrewBatch.aged_price_multiplier(0.6, 110, 30, 70), 1.0, "faded after a day of spoiling")
 	assert_eq(BrewBatch.aged_price_multiplier(0.0, 30, 30, 70), 1.0, "no bonus")
+
+
+func test_spoilage_declines_from_the_aged_peak() -> void:
+	# Peaks at 1.1 after 2 ticks, keeps 3 ticks, then loses 0.02 a tick from 1.1.
+	var batch := _make_batch(2, 3, 0.1)
+	for i in range(6):
+		batch.age_one_day()
+	assert_eq(batch.current_quality, 1.08)

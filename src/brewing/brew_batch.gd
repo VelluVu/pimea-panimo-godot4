@@ -37,17 +37,25 @@ extends Resource
 ## quality, used by both _calculate_current_quality() and
 ## get_aging_trend_icon() so the visible trend arrow always agrees with
 ## the quality number actually being shown.
+## Quality lost per aging tick once the shelf life is over, for styles that age well.
+const SPOILAGE_PER_TICK : float = 0.02
+## Ticks over which the aged price bonus fades once the batch starts to spoil (a day).
+const AGED_BONUS_FADE_TICKS : float = 10.0
+
+
 ## The price multiplier this batch earns from aging, see BeerStyle.aged_price_bonus.
 func get_aged_price_multiplier() -> float:
 	return aged_price_multiplier(beer_style.aged_price_bonus, age_in_days, get_effective_peak_days(), beer_style.shelf_life_days)
 
 
-## Grows linearly to 1 + bonus at the peak, holds through the shelf life and is gone
-## once the batch starts to spoil.
+## Grows linearly to 1 + bonus at the peak, holds through the shelf life and fades
+## over AGED_BONUS_FADE_TICKS once the batch starts to spoil.
 static func aged_price_multiplier(bonus : float, age : int, peak : int, shelf_life : int) -> float:
-	if bonus <= 0.0 or peak <= 0 or age > peak + shelf_life:
+	if bonus <= 0.0 or peak <= 0:
 		return 1.0
-	return 1.0 + bonus * clampf(float(age) / peak, 0.0, 1.0)
+	var spoiled_ticks : int = age - peak - shelf_life
+	var fade : float = 1.0 - clampf(spoiled_ticks / AGED_BONUS_FADE_TICKS, 0.0, 1.0)
+	return 1.0 + bonus * clampf(float(age) / peak, 0.0, 1.0) * fade
 
 
 func get_effective_peak_days() -> int:
@@ -165,9 +173,9 @@ func _calculate_current_quality() -> void:
 		var days_past_peak : int = age_in_days - effective_peak_days
 		if days_past_peak > beer_style.shelf_life_days:
 			var spoilage_days : int = days_past_peak - beer_style.shelf_life_days
-			if beer_style.aging_factor < 0:
-				current_quality = original_quality + (beer_style.aging_factor * spoilage_days * decline_rate_multiplier)
-			else:
-				current_quality = original_quality - (0.02 * spoilage_days * decline_rate_multiplier)
+			# Declines from the aged peak, so the aging bonus fades instead of vanishing in one tick.
+			var peak_quality : float = original_quality + (beer_style.aging_factor if effective_peak_days > 0 else 0.0)
+			var decline_per_tick : float = -beer_style.aging_factor if beer_style.aging_factor < 0 else SPOILAGE_PER_TICK
+			current_quality = peak_quality - decline_per_tick * spoilage_days * decline_rate_multiplier
 
 	current_quality = snappedf(clampf(current_quality, 0.1, 2.5), 0.01)
