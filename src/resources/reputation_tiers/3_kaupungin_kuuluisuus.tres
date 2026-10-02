@@ -1,11 +1,11 @@
-[gd_resource type="Resource" script_class="ReputationTier" format=3]
+[gd_resource type="Resource" script_class="ReputationTier" format=3 uid="uid://ba52ba36v0ub7"]
 
-[ext_resource type="Script" path="res://src/brewery/reputation_tier.gd" id="1_tier"]
+[ext_resource type="Script" uid="uid://c7xw8eqd7ld3j" path="res://src/brewery/reputation_tier.gd" id="1_tier"]
 
 [resource]
 script = ExtResource("1_tier")
 tier_name = "Kaupungin kuuluisuus"
-min_reputation = 60
+min_reputation = 100
 description = "Oluesi tunnetaan kaupungilla. Niin myös osoitteesi."
 raid_threshold_penalty = 10
 daily_decay_percent = 0.04
