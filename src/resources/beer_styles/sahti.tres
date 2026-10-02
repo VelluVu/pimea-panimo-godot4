@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="BeerStyle" format=3]
+
+[ext_resource type="Script" uid="uid://qpqfdi1wacne" path="res://src/brewing/beer_style.gd" id="1_sahti"]
+
+[resource]
+script = ExtResource("1_sahti")
+style_name = "Sahti"
+style = 22
+abv = 8.0
+profit_margin_multiplier = 1.4
+fixed_price_per_bottle = 4.5
+required_yeast_id = 300
+required_hop_id = 212
+preferred_hop_profile = 6
+min_malt_weight = 5
+min_ebc = 12
+max_ebc = 30
+min_ibu = 0
+max_ibu = 8
+reputation_change = 5
+peak_days = 0
+shelf_life_days = 14
+aging_factor = 0.08
+metadata/_custom_type_script = "uid://qpqfdi1wacne"

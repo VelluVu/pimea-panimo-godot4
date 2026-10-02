@@ -24,7 +24,8 @@ enum Style {
 	BARLEYWINE,
 	IMPERIAL_STOUT,
 	ALKOHOLITON_IPA,
-	ALKOHOLITON_LAGER
+	ALKOHOLITON_LAGER,
+	SAHTI,
 }
 
 @export var style_name: String = "Uusi oluttyyli"
@@ -37,6 +38,9 @@ enum Style {
 ## real recipe is defined by one malt (Hefeweizen and Witbier need wheat malt). See
 ## BrewMixture.fits().
 @export var required_malt_id: int = -1
+## -1 = none. A hop or spice that must be on the table, like required_malt_id
+## (Sahti needs juniper).
+@export var required_hop_id: int = -1
 @export var preferred_hop_profile: HopData.FlavorProfile = HopData.FlavorProfile.NONE
 
 @export_group("Alkoholi")
@@ -125,4 +129,5 @@ static func get_style_string_from_style(new_style : BeerStyle.Style) -> String:
 		Style.IMPERIAL_STOUT: return UiText.of(StringContainer.IMPERIALSTOUT)
 		Style.ALKOHOLITON_IPA: return UiText.of(StringContainer.ALKOHOLITONIPA)
 		Style.ALKOHOLITON_LAGER: return UiText.of(StringContainer.ALKOHOLITONLAGER)
+		Style.SAHTI: return UiText.of(StringContainer.SAHTI)
 		_: return UiText.of(StringContainer.TUNTEMATON)

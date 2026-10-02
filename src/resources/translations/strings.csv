@@ -53,6 +53,7 @@ IPA,IPA,src/autoload/string_container.gd
 Imperial Stout,Imperial Stout,src/autoload/string_container.gd
 Jakelutulot: %+d %%,Distribution income: %+d %%,src/autoload/string_container.gd
 Jalo,Noble,src/autoload/string_container.gd
+Katajainen,Juniper,src/autoload/string_container.gd
 Kierroksen tilastot,Run stats,src/autoload/string_container.gd
 Kotikalja,Kotikalja,src/autoload/string_container.gd
 Kyllä,Yes,src/autoload/string_container.gd
@@ -90,6 +91,7 @@ Ratsiakynnys: %+d %%,Raid threshold: %+d %%,src/autoload/string_container.gd
 Ratsioiden sietokyky: +%d,Raids survived: +%d,src/autoload/string_container.gd
 Reseptikirja,Recipe book,src/autoload/string_container.gd
 Ryhmäasiakkaiden saapumisväli: %+d %%,Time between group visits: %+d %%,src/autoload/string_container.gd
+Sahti,Sahti,src/autoload/string_container.gd
 Saison,Saison,src/autoload/string_container.gd
 Scotch Ale,Scotch Ale,src/autoload/string_container.gd
 Selvä...,Right...,src/autoload/string_container.gd
@@ -196,6 +198,8 @@ Fuggle Humala,Fuggle Hops,src/resources/ingredients/hops/fuggle_hop.tres
 "Perinteinen englantilainen humala, maanläheinen ja hedelmäinen","A traditional English hop, earthy and fruity",src/resources/ingredients/hops/fuggle_hop.tres
 Hallertau Humala,Hallertau Hops,src/resources/ingredients/hops/hallertau_hop.tres
 "Saksalainen jalohumala, hienostunut ja kukkainen","A German noble hop, refined and floral",src/resources/ingredients/hops/hallertau_hop.tres
+Katajanoksat,Juniper Branches,src/resources/ingredients/hops/juniper.tres
+"Tuoreita katajanoksia. Sahti siivilöidään niiden läpi, ja ne tuovat pihkaisen, metsäisen maun.","Fresh juniper branches. Sahti is filtered through them, and they add a resinous, foresty flavour.",src/resources/ingredients/hops/juniper.tres
 Magnum Humala,Magnum Hops,src/resources/ingredients/hops/magnum_hop.tres
 Tämä katkerohumala antaa oluelle hyvät katkerot,A bittering hop that gives beer a clean bitterness,src/resources/ingredients/hops/magnum_hop.tres
 Mosaic Humala,Mosaic Hops,src/resources/ingredients/hops/mosaic_hop.tres
@@ -600,6 +604,9 @@ Required malt: %s",src/ui/recipe_library_text.gd
 "
 Vaatii mallasseoksen","
 Needs a malt blend",src/ui/recipe_library_text.gd
+"
+Vaatii myös: %s","
+Also needs: %s",src/ui/recipe_library_text.gd
 "
 Väri: %s","
 Colour: %s",src/ui/recipe_library_text.gd

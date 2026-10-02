@@ -6,6 +6,7 @@ extends RefCounted
 const MIN_MALT_WEIGHT : int = 3
 const NO_YEAST : int = -1
 const NO_REQUIRED_MALT : int = -1
+const NO_REQUIRED_HOP : int = -1
 const ALPHA_ACIDS_PER_IBU : float = 10.0
 
 var malt_weight : int = 0
@@ -40,6 +41,8 @@ func fits(beer_style : BeerStyle) -> bool:
 	if yeast_id != beer_style.required_yeast_id:
 		return false
 	if beer_style.required_malt_id != NO_REQUIRED_MALT and not malt_ids.has(beer_style.required_malt_id):
+		return false
+	if beer_style.required_hop_id != NO_REQUIRED_HOP and not hop_ids.has(beer_style.required_hop_id):
 		return false
 	if malt_weight < beer_style.min_malt_weight:
 		return false

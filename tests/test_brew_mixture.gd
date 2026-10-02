@@ -92,3 +92,10 @@ func test_fits_requires_matching_yeast_and_malt() -> void:
 	var wants_light := _make_style(0, 30, 0, 0)
 	wants_light.required_malt_id = MALT_ID
 	assert_true(mixture.fits(wants_light))
+
+
+func test_fits_requires_the_required_hop() -> void:
+	var wants_hop := _make_style(0, 30, 0, 999)
+	wants_hop.required_hop_id = HOP_ID
+	assert_false(_make_mixture({MALT_ID: 3, YEAST_ID: 1}).fits(wants_hop), "no hop on the table")
+	assert_true(_make_mixture({MALT_ID: 3, HOP_ID: 1, YEAST_ID: 1}).fits(wants_hop))
