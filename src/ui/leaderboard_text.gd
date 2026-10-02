@@ -39,7 +39,7 @@ static func ending_label(ending_type : String) -> String:
 		"season_over":
 			return UiText.of(ENDING_SEASON_OVER)
 		"busted":
-			return ENDING_BUSTED
+			return UiText.of(ENDING_BUSTED)
 		"bankrupt":
 			return UiText.of(ENDING_BANKRUPT)
 		"":

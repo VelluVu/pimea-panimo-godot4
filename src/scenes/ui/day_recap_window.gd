@@ -80,7 +80,7 @@ func _on_day_changed(new_day: int) -> void:
 	var risk_relief_text := tr(NIGHT_RISK_RELIEF_FORMAT) % _night_risk_relief if _night_risk_relief > 0 else ""
 	var discovered_text := ", ".join(_styles_discovered_today) if not _styles_discovered_today.is_empty() else tr(NO_NEW_STYLES_TEXT)
 
-	message_label.text = RECAP_MESSAGE_FORMAT % [new_day, money_delta, reputation_delta, ReputationBreakdownText.format(_reputation_by_source), brewery.risk, risk_relief_text, _bottles_sold_today, discovered_text, _goals_rewarded_today]
+	message_label.text = tr(RECAP_MESSAGE_FORMAT) % [new_day, money_delta, reputation_delta, ReputationBreakdownText.format(_reputation_by_source), brewery.risk, risk_relief_text, _bottles_sold_today, discovered_text, _goals_rewarded_today]
 	show()
 
 	_day_start_money = brewery.money

@@ -80,7 +80,7 @@ func _show_next_pending_level() -> void:
 		return
 
 	var level : int = _pending_levels[0]
-	title_label.text = TITLE_FORMAT % level
+	title_label.text = tr(TITLE_FORMAT) % level
 	_offered_perks = PerkRegistry.get_random_perks(CARD_COUNT)
 
 	for i in range(_card_buttons.size()):

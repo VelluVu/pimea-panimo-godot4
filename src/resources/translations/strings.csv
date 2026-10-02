@@ -1,4 +1,8 @@
 keys,en,_source
+Agentti,Agent,src/autoload/customer_registry.gd
+Mafioso,Mafioso,src/autoload/customer_registry.gd
+DayEventManager: Day event pool is empty!,DayEventManager: Day event pool is empty!,src/autoload/day_event_manager.gd
+RunModifierRegistry: Run modifier pool is empty!,RunModifierRegistry: Run modifier pool is empty!,src/autoload/run_modifier_registry.gd
 "
 
 Sijoitus: #%d / %d","
@@ -10,11 +14,13 @@ UUSI ENNÄTYS!","
 
 NEW RECORD!",src/autoload/string_container.gd
 "(tasainen kasvu, ei kerry)","(steady growth, no stacking)",src/autoload/string_container.gd
+--- DAY CHANGED: Day %s starts ---,--- DAY CHANGED: Day %s starts ---,src/autoload/string_container.gd
 ??? – vaatii mainetta: %d,??? – needs reputation: %d,src/autoload/string_container.gd
 Agenttien esiintyvyys: %+d %%,Agent visits: %+d %%,src/autoload/string_container.gd
 Ainehinnat: %+d %%,Ingredient prices: %+d %%,src/autoload/string_container.gd
 Ainepalautuksen mahdollisuus: %d %%,Ingredient refund chance: %d %%,src/autoload/string_container.gd
 Alfahapot: %s%% / Beetahapot: %s%%,Alpha acids: %s%% / Beta acids: %s%%,src/autoload/string_container.gd
+"Alkoholitarkastajat ryntäsivät kellariin ja takavarikoivat %s annosta valmista olutta! Lisäksi kirjoittivat sakon: %.1f €, ja maineesi laski %s pistettä.","Alcohol inspectors stormed the cellar and confiscated %s servings of finished beer! They also wrote a fine: %.1f €, and your reputation dropped %s points.",src/autoload/string_container.gd
 Alkoholiton IPA,Non-alcoholic IPA,src/autoload/string_container.gd
 Alkoholiton Lager,Non-alcoholic Lager,src/autoload/string_container.gd
 Amber Ale,Amber Ale,src/autoload/string_container.gd
@@ -24,6 +30,9 @@ Barleywine,Barleywine,src/autoload/string_container.gd
 Belgian Dubbel,Belgian Dubbel,src/autoload/string_container.gd
 Belgian Strong Dark Ale,Belgian Strong Dark Ale,src/autoload/string_container.gd
 Bulkki Lager,Bulk Lager,src/autoload/string_container.gd
+CustomerManager: Not enough bottles in batch!,CustomerManager: Not enough bottles in batch!,src/autoload/string_container.gd
+CustomerManager: The customer pool is empty! Check that .tres resources exists.,CustomerManager: The customer pool is empty! Check that .tres resources exists.,src/autoload/string_container.gd
+"CustomerManager: Tried to serve beer, but there are no customer.","CustomerManager: Tried to serve beer, but there are no customer.",src/autoload/string_container.gd
 Doppelbock,Doppelbock,src/autoload/string_container.gd
 EBC: %s,EBC: %s,src/autoload/string_container.gd
 Ei,No,src/autoload/string_container.gd
@@ -33,6 +42,7 @@ Ei vielä ennätyksiä. Pelaa ensimmäinen erä!,No records yet. Play your first
 Ei vielä perkkejä. Nouse tasolle 2 saadaksesi ensimmäisen.,No perks yet. Reach level 2 to get your first.,src/autoload/string_container.gd
 Ennätykset,Records,src/autoload/string_container.gd
 Erinomainen,Excellent,src/autoload/string_container.gd
+HUOMIO: Erä %s (Ikä: %s päivää) alkaa etikkoitua kellarissa!,WARNING: Batch %s (age: %s days) is starting to turn sour in the cellar!,src/autoload/string_container.gd
 Harvinainen,Rare,src/autoload/string_container.gd
 Hefeweizen,Hefeweizen,src/autoload/string_container.gd
 Heikkeneminen: %+d %%,Decline: %+d %%,src/autoload/string_container.gd
@@ -48,8 +58,10 @@ Kotikalja,Kotikalja,src/autoload/string_container.gd
 Kyllä,Yes,src/autoload/string_container.gd
 Kypsymisaika: %+d %%,Aging time: %+d %%,src/autoload/string_container.gd
 Käymisaste: %s%%,Attenuation: %s%%,src/autoload/string_container.gd
+LVV-TARKASTUS!,LVV INSPECTION!,src/autoload/string_container.gd
 Laatu: +%d %%,Quality: +%d %%,src/autoload/string_container.gd
 Laatubonus jokaiseen erään: +%d %%,Quality bonus on every batch: +%d %%,src/autoload/string_container.gd
+Ladattu yhteensä %s oluttyyliä datasta:,Loaded %s beer styles from data:,src/autoload/string_container.gd
 Legendaarinen,Legendary,src/autoload/string_container.gd
 Lisää tiskipaikkoja: +%d,Extra counter spots: +%d,src/autoload/string_container.gd
 Maanläheinen,Earthy,src/autoload/string_container.gd
@@ -60,6 +72,7 @@ Maku: %s,Flavour: %s,src/autoload/string_container.gd
 Mestarillinen,Masterful,src/autoload/string_container.gd
 Mäntyinen,Piney,src/autoload/string_container.gd
 Märzen,Märzen,src/autoload/string_container.gd
+New game started! Brewery established.,New game started! Brewery established.,src/autoload/string_container.gd
 Olosuhteet: %s,Conditions: %s,src/autoload/string_container.gd
 "Osumatarkkuus: %s%%
 Humalalajeja käytetty: %s
@@ -82,6 +95,8 @@ Scotch Ale,Scotch Ale,src/autoload/string_container.gd
 Selvä...,Right...,src/autoload/string_container.gd
 Session Ale,Session Ale,src/autoload/string_container.gd
 Sitruksinen,Citrusy,src/autoload/string_container.gd
+"Sold %s amount of stuff, and you get %s€ back","Sold %s amount of stuff, and you get %s€ back",src/autoload/string_container.gd
+Successful brew batch: ,Successful brew batch: ,src/autoload/string_container.gd
 Sulje,Close,src/autoload/string_container.gd
 Tappelun todennäköisyys: %+d %%,Bar fight chance: %+d %%,src/autoload/string_container.gd
 Tavallinen,Common,src/autoload/string_container.gd
@@ -96,6 +111,7 @@ Uusi humala saatavilla: %s!,New hop available: %s!,src/autoload/string_container
 Vienna Lager,Vienna Lager,src/autoload/string_container.gd
 Witbier,Witbier,src/autoload/string_container.gd
 Yhteisvaikutus:,Combined effect:,src/autoload/string_container.gd
+[IngredientDatabase] found from subfolder: %s (ID: %s),[IngredientDatabase] found from subfolder: %s (ID: %s),src/autoload/string_container.gd
 erittäin karvas,very bitter,src/autoload/string_container.gd
 kpl,pcs,src/autoload/string_container.gd
 "Laatu: %s%% (%s %s, %s)
@@ -107,10 +123,16 @@ heikkenee,declining,src/brewing/brew_batch.gd
 kypsyy vielä,still maturing,src/brewing/brew_batch.gd
 parhaimmillaan,at its best,src/brewing/brew_batch.gd
 Antti,Antti,src/customers/customer_data.gd
+Asiakas,Customer,src/customers/customer_data.gd
 Liisa,Liisa,src/customers/customer_data.gd
 Maija,Maija,src/customers/customer_data.gd
 Matti,Matti,src/customers/customer_data.gd
 Pekka,Pekka,src/customers/customer_data.gd
+Kriitikko,Critic,src/customers/customer_hand_offsets.gd
+Leijonafani,Lions Fan,src/customers/customer_hand_offsets.gd
+Raksamies,Builder,src/customers/customer_hand_offsets.gd
+Tarkastusdrooni,Inspection Drone,src/customers/customer_hand_offsets.gd
+Zgen,Zgen,src/customers/customer_hand_offsets.gd
 %s-lauma (%d hlöä),%s group (%d people),src/customers/group_visit_director.gd
 "
 Liian heikkoa: %s","
@@ -126,6 +148,7 @@ Kate: %.2f €
 = Hinta/annos: %.2f €","Ingredients: %.2f €
 Margin: %.2f €
 = Price/serving: %.2f €",src/customers/sale_receipt_entry.gd
+PerkRegistry: Perk pool is empty!,PerkRegistry: Perk pool is empty!,src/progression/perk_registry.gd
 Amerikkalainen aromihumala joka tuo sitruksista ja mäntyistä aromia,American aroma hop with citrus and pine notes,src/resources/ingredients/hops/cascade_hop.tres
 Cascade Humala,Cascade Hops,src/resources/ingredients/hops/cascade_hop.tres
 Centennial Humala,Centennial Hops,src/resources/ingredients/hops/centennial_hop.tres
@@ -218,6 +241,7 @@ Unlocked",src/scenes/ui/achievement_tile.gd
 Edistyminen: %d/%d","%s
 %s
 Progress: %d/%d",src/scenes/ui/achievement_tile.gd
+Saavutukset (%d/%d),Achievements (%d/%d),src/scenes/ui/achievements_window.gd
 "%s
 Maksukerroin: x%.2f raaka-ainehinnasta
 LVV-riski per toimitus: +%d","%s
@@ -242,11 +266,14 @@ Lisää ainesosia nähdäksesi arvion.,Add ingredients to see an estimate.,src/s
 Tarvitset ainakin 3 kg mallasta ja hiivan.,You need at least 3 kg of malt and a yeast.,src/scenes/ui/brew_preparation_panel.gd
 Tuntematon oluttyyli. Keitä se ensin selvittääksesi reseptin!,Unknown beer style. Brew it first to work out the recipe!,src/scenes/ui/brew_preparation_panel.gd
 resepti:,recipe:,src/scenes/ui/brew_preparation_panel.gd
+Kellarin parannukset,Cellar upgrades,src/scenes/ui/cellar_upgrades_window.gd
 Tilastot,Stats,src/scenes/ui/chalkboard_label.gd
+Asiakas on vielä baarissa,A customer is still in the bar,src/scenes/ui/close_day_confirm_window.gd
+"Jos suljet nyt, asiakkaan kesken jäänyt kauppa peruuntuu.","If you close now, the customer's unfinished purchase is cancelled.",src/scenes/ui/close_day_confirm_window.gd
 Peruuta,Cancel,src/scenes/ui/close_day_confirm_window.gd
 Sulje silti,Close anyway,src/scenes/ui/close_day_confirm_window.gd
-LVV-TARKASTUS!,LVV INSPECTION!,src/scenes/ui/close_day_confirm_window.tscn
 Asiakaskirja,Customer book,src/scenes/ui/customer_book_label.gd
+  (kanta-asiakas),  (regular),src/scenes/ui/customer_book_window.gd
 Hiivaa: %d/1,Yeast: %d/1,src/scenes/ui/daily_goals_panel.gd
 Kotikalja: %d/1,Kotikalja: %d/1,src/scenes/ui/daily_goals_panel.gd
 Maine: %d/%d,Reputation: %d/%d,src/scenes/ui/daily_goals_panel.gd
@@ -258,10 +285,33 @@ Päätavoite:,Main goal:,src/scenes/ui/daily_goals_panel.gd
 Uusia tavoitteita huomenna.,New goals tomorrow.,src/scenes/ui/daily_goals_panel.gd
  (yöllä -%d), (overnight -%d),src/scenes/ui/day_recap_window.gd
 Jatka,Continue,src/scenes/ui/day_recap_window.gd
+"Päivä %d alkoi.
+
+Rahaa: %+.1f €
+Mainetta: %+d%s
+LVV-riski nyt: %d%s
+Annoksia myyty: %d
+Uusia oluttyylejä: %s
+Päivätavoitteita saavutettu: %d","Day %d began.
+
+Money: %+.1f €
+Reputation: %+d%s
+LVV risk now: %d%s
+Servings sold: %d
+New beer styles: %s
+Daily goals completed: %d",src/scenes/ui/day_recap_window.gd
+Päivän yhteenveto,Day summary,src/scenes/ui/day_recap_window.gd
 ei uusia,none new,src/scenes/ui/day_recap_window.gd
-Päivän yhteenveto,Day summary,src/scenes/ui/day_recap_window.tscn
+BUSTED!,BUSTED!,src/scenes/ui/game_end_window.gd
 Jatka pelaamista,Keep playing,src/scenes/ui/game_end_window.gd
+KAUSI PÄÄTTYI!,SEASON OVER!,src/scenes/ui/game_end_window.gd
+KONKURSSI!,BANKRUPT!,src/scenes/ui/game_end_window.gd
+Kolmas ratsia oli viimeinen. LVV takavarikoi kaiken ja sulki panimosi pysyvästi.,The third raid was the last. The LVV confiscated everything and shut your brewery down for good.,src/scenes/ui/game_end_window.gd
+LEGENDA!,LEGEND!,src/scenes/ui/game_end_window.gd
 Olutopin mainetta +%d,Brewlore renown +%d,src/scenes/ui/game_end_window.gd
+Rahat loppuivat ja varasto oli tyhjä. Panimosi ajautui konkurssiin.,The money ran out and the storage was empty. Your brewery went bankrupt.,src/scenes/ui/game_end_window.gd
+"Selvisit kauden loppuun, ja kellarisi kaljasta tuli kaupunginosan legenda.","You made it to the end of the season, and your cellar beer became the stuff of neighbourhood legend.",src/scenes/ui/game_end_window.gd
+"Selvisit kauden loppuun, mutta legendaksi tarvitaan %d mainetta.","You made it to the end of the season, but becoming a legend takes %d reputation.",src/scenes/ui/game_end_window.gd
 Sijoitus: #%d,Rank: #%d,src/scenes/ui/game_end_window.gd
 UUSI ENNÄTYS!,NEW RECORD!,src/scenes/ui/game_end_window.gd
 Valikkoon,To menu,src/scenes/ui/game_end_window.gd
@@ -272,14 +322,22 @@ Palataanko päävalikkoon? Peli tallennetaan.,Return to the main menu? The game 
 Päävalikkoon,Main menu,src/scenes/ui/game_menu_window.gd
 Saavutukset,Achievements,src/scenes/ui/game_menu_window.gd
 Uusi yritys,New attempt,src/scenes/ui/game_menu_window.gd
+Valikko,Menu,src/scenes/ui/game_menu_window.gd
 Hiiva,Yeast,src/scenes/ui/ingredient_type_selector.gd
 Humala,Hops,src/scenes/ui/ingredient_type_selector.gd
 Mallas,Malt,src/scenes/ui/ingredient_type_selector.gd
  UUSI!, NEW!,src/scenes/ui/leaderboard_window.gd
+Annokset,Servings,src/scenes/ui/leaderboard_window.gd
 Ei vielä ennätyksiä. Pelaa ensimmäinen kausi!,No records yet. Play your first season!,src/scenes/ui/leaderboard_window.gd
+Maine,Reputation,src/scenes/ui/leaderboard_window.gd
+Olosuhteet,Conditions,src/scenes/ui/leaderboard_window.gd
+Pisteet,Score,src/scenes/ui/leaderboard_window.gd
+Pv,Day,src/scenes/ui/leaderboard_window.gd
+Tulos,Result,src/scenes/ui/leaderboard_window.gd
 Tämä kausi nyt: sijoittuisi #%d,This season so far: would rank #%d,src/scenes/ui/leaderboard_window.gd
 "Täytä puuttuvat ainesosat pöydälle varastosta ladatun reseptin mukaan. Pois käytöstä, jos varastossa ei ole tarpeeksi jotain ainesosaa.",Put the missing ingredients for the loaded recipe on the table from storage. Disabled if storage is short of any ingredient.,src/scenes/ui/left_brewing_view.gd
 Täytä resepti,Fill recipe,src/scenes/ui/left_brewing_view.gd
+Taso %d!,Level %d!,src/scenes/ui/level_up_window.gd
 Kuvaus,Description,src/scenes/ui/level_up_window.tscn
 Perk,Perk,src/scenes/ui/level_up_window.tscn
 Taso 2!,Level 2!,src/scenes/ui/level_up_window.tscn
@@ -288,12 +346,12 @@ Aloita uusi peli,Start a new game,src/scenes/ui/main_menu.gd
 Jatka Peliä,Continue Game,src/scenes/ui/main_menu.gd
 Lopeta Peli,Quit Game,src/scenes/ui/main_menu.gd
 Olutoppi,Brewlore,src/scenes/ui/main_menu.gd
+Pimeä Panimo,Pimeä Panimo,src/scenes/ui/main_menu.gd
 Takaisin,Back,src/scenes/ui/main_menu.gd
-Pimeä Panimo,Pimeä Panimo,src/scenes/ui/main_menu.tscn
 Ei vielä ennätystä. Tästä se lähtee.,No record yet. This is where it starts.,src/scenes/ui/modifier_select_window.gd
 "Ennätys: %d pistettä (päivä %d, %d annosta)","Record: %d points (day %d, %d servings)",src/scenes/ui/modifier_select_window.gd
+Valitse tämän kierroksen olosuhteet,Choose this run's conditions,src/scenes/ui/modifier_select_window.gd
 Modifier,Modifier,src/scenes/ui/modifier_select_window.tscn
-Valitse tämän kierroksen olosuhteet,Choose this run's conditions,src/scenes/ui/modifier_select_window.tscn
 Maine: %d,Renown: %d,src/scenes/ui/olutoppi_window.gd
 Baarityöskentely,Bar work,src/scenes/ui/olutoppi_window.tscn
 Markkinointi,Marketing,src/scenes/ui/olutoppi_window.tscn
@@ -332,6 +390,7 @@ Osa raaka-aineista säästyi panon yhteydessä!,Some ingredients were saved duri
 Vienti (%s): %s x%d  +%.1f € (LVV-riski +%d),Shipment (%s): %s x%d  +%.1f € (LVV risk +%d),src/scenes/ui/sale_flash_stack.gd
 Myyty: %s  +%.1f €,Sold: %s  +%.1f €,src/scenes/ui/sale_flash_toast.gd
 Ei myyntejä vielä tänään.,No sales yet today.,src/scenes/ui/sale_receipt_log_window.gd
+Päivän kuitit,Today's receipts,src/scenes/ui/sale_receipt_log_window.gd
 Joo,Sure,src/scenes/ui/special_event_window.tscn
 "
 Kuuluisuus houkuttelee tarkastajia: ratsiakynnys -%d","
@@ -392,6 +451,7 @@ Uusi asiakas avattu: %s!,New customer unlocked: %s!,src/ui/gui_announcer.gd
 Uusi oluttyyli löydetty: %s!,New beer style discovered: %s!,src/ui/gui_announcer.gd
 Uusia humalia saatavilla: %s!,New hops available: %s!,src/ui/gui_announcer.gd
 Annokset %d,Servings %d,src/ui/leaderboard_text.gd
+Jäi kiinni,Busted,src/ui/leaderboard_text.gd
 Kesken,In progress,src/ui/leaderboard_text.gd
 Konkurssi,Bankrupt,src/ui/leaderboard_text.gd
 Legenda,Legend,src/ui/leaderboard_text.gd
