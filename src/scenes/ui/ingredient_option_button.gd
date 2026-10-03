@@ -2,6 +2,9 @@ class_name IngredientOptionButton
 extends OptionButton
 
 
+## The 13 hops overflow the 360 px viewport; PopupMenu scrolls once capped.
+const POPUP_MAX_SIZE : Vector2i = Vector2i(10000, 200)
+
 @export var target_type : IngredientData.IngredientType = IngredientData.IngredientType.MALT
 
 ## Tracks reputation between brewery_state_changed emissions so this only
@@ -15,6 +18,7 @@ var _last_reputation_seen : int = -1
 func _ready() -> void:
 	clip_text = true
 	fit_to_longest_item = false
+	get_popup().max_size = POPUP_MAX_SIZE
 
 	while not IngredientDatabase.is_loaded:
 		await get_tree().process_frame
@@ -101,17 +105,31 @@ func _rebuild_items() -> void:
 	var brewery := BrewEngine.current_brewery
 	var reputation : int = brewery.reputation if brewery != null else 0
 
+	# Unlocked items first, then locked ones nearest to unlocking, so the usable
+	# part of a long list sits at the top.
+	var locked : Array[IngredientData] = []
 	for id in IngredientDatabase.sorted_ids:
 		var ingredient: IngredientData = IngredientDatabase.database[id]
+		if ingredient.type != target_type:
+			continue
+		if reputation < ingredient.min_reputation:
+			locked.append(ingredient)
+		else:
+			_add_ingredient_item(ingredient, false)
+	locked.sort_custom(func(a: IngredientData, b: IngredientData) -> bool:
+		return a.min_reputation < b.min_reputation or (a.min_reputation == b.min_reputation and a.id < b.id))
+	for ingredient in locked:
+		_add_ingredient_item(ingredient, true)
 
-		if ingredient.type == target_type:
-			var is_locked : bool = reputation < ingredient.min_reputation
-			add_item(tr(StringContainer.INGREDIENT_LOCKED_LABEL) % ingredient.min_reputation if is_locked else tr(ingredient.name))
-			var new_item_index: int = get_item_count() - 1
-			set_item_id(new_item_index, ingredient.id)
-			set_item_disabled(new_item_index, is_locked)
-			var tooltip : String = tr(ingredient.description) + "\n" + ingredient.get_stat_string() if not is_locked else tr(StringContainer.INGREDIENT_LOCKED_LABEL) % ingredient.min_reputation
-			get_popup().set_item_tooltip(new_item_index, tooltip)
+
+func _add_ingredient_item(ingredient : IngredientData, is_locked : bool) -> void:
+	var locked_text : String = tr(StringContainer.INGREDIENT_LOCKED_LABEL) % ingredient.min_reputation
+	add_item(locked_text if is_locked else tr(ingredient.name))
+	var new_item_index: int = get_item_count() - 1
+	set_item_id(new_item_index, ingredient.id)
+	set_item_disabled(new_item_index, is_locked)
+	var tooltip : String = locked_text if is_locked else tr(ingredient.description) + "\n" + ingredient.get_stat_string()
+	get_popup().set_item_tooltip(new_item_index, tooltip)
 
 
 func _first_enabled_index() -> int:
