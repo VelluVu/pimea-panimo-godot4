@@ -47,6 +47,10 @@ CONTENT_FIELDS = {
     "src/resources/group_events": ("banner_text",),
     "src/resources/special_events": ("event_caller_name", "intro_dialogue", "success_dialogue", "fail_dialogue", "reject_dialogue"),
 }
+# Content fields that hold a list of texts, like Array[String](["a", "b"]).
+CONTENT_ARRAY_FIELDS = {
+    "src/resources/group_events": ("chant_texts",),
+}
 SKIP_DIRS = ["src/console", "src/systems/console", "src/resources", "addons", "tests", "dev"]
 
 CONST_STRING = re.compile(r'^\s*const\s+(\w+)\s*:\s*String\s*=\s*"((?:[^"\\]|\\.)*)"', re.M)
@@ -122,6 +126,12 @@ def find_texts():
         for path in sorted((ROOT / folder).rglob("*.tres")):
             for value in field_re.findall(path.read_text(encoding="utf-8")):
                 add(value, _rel(path), "_TEXT")
+    for folder, fields in CONTENT_ARRAY_FIELDS.items():
+        array_re = re.compile(r'^(?:' + "|".join(fields) + r') = Array\[String\]\(\[(.*?)\]\)', re.M | re.S)
+        for path in sorted((ROOT / folder).rglob("*.tres")):
+            for body in array_re.findall(path.read_text(encoding="utf-8")):
+                for value in QUOTED.findall(body):
+                    add(value, _rel(path), "_TEXT")
     return found
 
 
