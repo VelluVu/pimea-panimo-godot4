@@ -935,16 +935,9 @@ Myyty: %s  +%.1f €,Sold: %s  +%.1f €,src/scenes/ui/sale_flash_toast.gd
 Ei myyntejä vielä tänään.,No sales yet today.,src/scenes/ui/sale_receipt_log_window.gd
 Päivän kuitit,Today's receipts,src/scenes/ui/sale_receipt_log_window.gd
 Joo,Sure,src/scenes/ui/special_event_window.tscn
-"
-Kuuluisuus houkuttelee tarkastajia: ratsiakynnys -%d","
-Fame attracts inspectors: raid threshold -%d",src/scenes/ui/top_panel_resources.gd
-"
-Maine hiipuu %d %% joka yö","
-Reputation fades %d %% every night",src/scenes/ui/top_panel_resources.gd
 %d / %d XP seuraavaan tasoon,%d / %d XP to the next level,src/scenes/ui/top_panel_resources.gd
-Korkein maine saavutettu.,Highest reputation reached.,src/scenes/ui/top_panel_resources.gd
+LVV Riski: %d%%,LVV Risk: %d%%,src/scenes/ui/top_panel_resources.gd
 Päivä: %s,Day: %s,src/scenes/ui/top_panel_resources.gd
-Seuraava: %s (%d mainetta),Next: %s (%d reputation),src/scenes/ui/top_panel_resources.gd
 Taso: %d,Level: %d,src/scenes/ui/top_panel_resources.gd
 Tippi +%.1f €,Tip +%.1f €,src/systems/dialog/dialog_wiring.gd
 Key already in use: %s,Key already in use: %s,src/systems/input/input_bindings.gd
@@ -1038,6 +1031,14 @@ Colour: %s",src/ui/recipe_library_text.gd
 "??? (%.1f%% ABV) – vaatii: hiiva %s, vähintään %d kg mallasta","??? (%.1f%% ABV) – needs: yeast %s, at least %d kg of malt",src/ui/recipe_library_text.gd
 LVV,LVV,src/ui/reputation_breakdown_text.gd
 aikainen sulkeminen,early closing,src/ui/reputation_breakdown_text.gd
+"
+Kuuluisuus houkuttelee tarkastajia: ratsiakynnys -%d","
+Fame attracts inspectors: raid threshold -%d",src/ui/reputation_tier_text.gd
+"
+Maine hiipuu %d %% joka yö","
+Reputation fades %d %% every night",src/ui/reputation_tier_text.gd
+Korkein maine saavutettu.,Highest reputation reached.,src/ui/reputation_tier_text.gd
+Seuraava: %s (%d mainetta),Next: %s (%d reputation),src/ui/reputation_tier_text.gd
 "
 Mausteet: +%d %%","
 Spices: +%d %%",src/ui/spice_preview_text.gd

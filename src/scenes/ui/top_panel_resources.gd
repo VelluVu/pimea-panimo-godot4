@@ -3,17 +3,15 @@ extends HBoxContainer
 
 
 const DAY_STRING : String = "Päivä: %s"
+const RISK_FORMAT : String = "LVV Riski: %d%%"
 
-## How long a "+X €"/"+X%" popup takes to float up and fade out — bumped up
-## from the original 1.0s so the player has a bit more time to actually
-## read it before it's gone.
+## Long enough to read a "+X €" popup before it fades.
 const POPUP_EFFECT_DURATION_SECONDS : float = 1.8
+const POPUP_OFFSET : Vector2 = Vector2(80, 0)
+const POPUP_FLOAT_DISTANCE : float = 35.0
 
-## Below Brewery.LVV_RAID_THRESHOLD (100, an instant full-inventory wipe +
-## fine with no other UI warning — see playtest_notes_2.txt's "AVI raid
-## has no explicit warning" finding) — a distinct "last chance" zone that
-## tints the risk label and pulses once on entry, on top of the existing
-## audio tension drone (audio_wiring.gd).
+## A "last chance" zone below Brewery.LVV_RAID_THRESHOLD: the risk label turns red and
+## pulses once on entry, on top of the audio tension drone.
 const RISK_WARNING_THRESHOLD : int = 75
 const RISK_WARNING_COLOR : Color = Color(0.75686276, 0.3137255, 0.22745098, 1) # matches DailyGoalsPanel.GOAL_FAILING_COLOR
 const RISK_WARNING_PULSE_SECONDS : float = 0.3
@@ -22,12 +20,6 @@ const MODIFIER_TAG_FORMAT : String = "🎲 %s"
 
 const LEVEL_FORMAT : String = "Taso: %d"
 const LEVEL_PROGRESS_TOOLTIP_FORMAT : String = "%d / %d XP seuraavaan tasoon"
-const REPUTATION_TOOLTIP_FORMAT : String = "%s\n%s\n%s"
-const REPUTATION_VALUE_FORMAT : String = "Maine: %d"
-const NEXT_TIER_FORMAT : String = "Seuraava: %s (%d mainetta)"
-const TOP_TIER_TEXT : String = "Korkein maine saavutettu."
-const FAME_RAID_FORMAT : String = "\nKuuluisuus houkuttelee tarkastajia: ratsiakynnys -%d"
-const FAME_DECAY_FORMAT : String = "\nMaine hiipuu %d %% joka yö"
 
 @onready var money_label : Label = $MoneyLabel
 @onready var reputation_label : Label = $ReputationLabel
@@ -39,26 +31,18 @@ const FAME_DECAY_FORMAT : String = "\nMaine hiipuu %d %% joka yö"
 var last_money: float = -1.0
 var last_reputation : int = -1
 var last_risk: int = -1
-## Unlike reputation/risk, level only ever goes up (see Brewery.add_xp())
-## and there's no popup-worthy "+1" moment here — LevelUpWindow's own
-## perk-pick popup already is that moment. Just tracked to skip a
-## redundant label-text write when nothing changed.
+## Level only goes up and LevelUpWindow is its moment, so no popup: tracked only to
+## skip rewriting the label.
 var _last_level : int = -1
-## Set once per run the first time _on_brewery_state_changed sees a
-## Brewery — this run's modifier never changes after that, so there's
-## nothing to keep updating (unlike money/reputation/risk above).
+## The run's modifier never changes, so its tag is set once.
 var _modifier_tag_shown : bool = false
-## Tracks whether the warning tint is currently applied, so the one-time
-## pulse only fires on the moment risk crosses upward into the warning
-## zone — not on every subsequent state change while it stays there.
+## The warning pulse fires only when risk crosses into the zone, not while it stays there.
 var _risk_warning_active: bool = false
 
 
 func _ready() -> void:
-	# Both are scene-defined nodes (see this scene's .tscn) — swap their
-	# script at runtime instead of editing the .tscn, so their tooltip_text
-	# (a run modifier's full description, or the XP-to-next-level readout)
-	# wraps via TooltipFactory instead of overflowing on a long description.
+	# Scene-defined nodes get their tooltip script at runtime, so long tooltips wrap
+	# via TooltipFactory instead of overflowing.
 	modifier_tag_label.set_script(TooltipLabel)
 	level_progress_bar.set_script(TooltipProgressBar)
 	reputation_label.set_script(TooltipLabel)
@@ -72,11 +56,12 @@ func _ready() -> void:
 		_update_day_display(BrewEngine.current_brewery.current_day)
 
 
-## The day and the run condition tag are only set on change, so a language switch
-## rebuilds them here; the rest follows from brewery_state_changed.
+## The day, the run modifier tag and the level are only set on change, so a language
+## switch resets them; the rest follows from brewery_state_changed.
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_TRANSLATION_CHANGED and is_node_ready() and BrewEngine.current_brewery != null:
 		_modifier_tag_shown = false
+		_last_level = -1
 		_update_day_display(BrewEngine.current_brewery.current_day)
 		_on_brewery_state_changed(BrewEngine.current_brewery)
 
@@ -91,57 +76,66 @@ func _update_day_display(day_num: int) -> void:
 
 
 func _on_brewery_state_changed(brewery : Brewery) -> void:
-	if not _modifier_tag_shown and brewery.run_modifier != null:
-		_modifier_tag_shown = true
-		modifier_tag_label.text = tr(MODIFIER_TAG_FORMAT) % tr(brewery.run_modifier.modifier_name)
+	_update_modifier_tag(brewery.run_modifier)
+	_update_money(brewery.money)
+	_update_reputation(brewery.reputation)
+	_update_level(brewery.run_level, brewery.run_xp)
+	_update_risk(brewery.risk)
 
-		var stat_summary : String = brewery.run_modifier.get_stat_summary()
-		modifier_tag_label.tooltip_text = tr(brewery.run_modifier.description) if stat_summary.is_empty() else tr(brewery.run_modifier.description) + "\n" + stat_summary
 
-	var new_money: float = brewery.money
+func _update_modifier_tag(modifier : RunModifier) -> void:
+	if _modifier_tag_shown or modifier == null:
+		return
+	_modifier_tag_shown = true
+	modifier_tag_label.text = tr(MODIFIER_TAG_FORMAT) % tr(modifier.modifier_name)
+	var stat_summary : String = modifier.get_stat_summary()
+	modifier_tag_label.tooltip_text = tr(modifier.description) if stat_summary.is_empty() else tr(modifier.description) + "\n" + stat_summary
 
+
+func _update_money(money : float) -> void:
 	if last_money != -1.0:
-		# Snapped so accumulated float noise from repeated +=/-= never
-		# reads as a spurious "+0.0 €" popup.
-		var change := snappedf(new_money - last_money, 0.1)
+		# Snapped so float noise from repeated += and -= never shows as "+0.0 €".
+		var change := snappedf(money - last_money, 0.1)
 		if change != 0.0:
 			_create_popup_effect(money_label, change, " €", false, 1)
+	money_label.text = "%.1f €" % money
+	last_money = money
 
-	money_label.text = "%.1f €" % new_money
-	last_money = new_money
-	
-	var new_reputation : int = brewery.reputation
-	
-	if last_reputation != -1:
-		var change: int = new_reputation - last_reputation
-		if change != 0:
-			_create_popup_effect(reputation_label, change, "", false)
-	
-	_update_reputation_display(new_reputation)
-	last_reputation = new_reputation
 
-	if brewery.run_level != _last_level:
-		_last_level = brewery.run_level
-		level_label.text = tr(LEVEL_FORMAT) % brewery.run_level
+func _update_reputation(reputation : int) -> void:
+	if last_reputation != -1 and reputation != last_reputation:
+		_create_popup_effect(reputation_label, reputation - last_reputation, "", false)
+	last_reputation = reputation
 
-	# Unlike the level label above, this updates on every state change (not
-	# just on a level-up) — XP itself ticks up on every sale/brew, and the
-	# whole point of the bar is the constant "almost there" read between
-	# level-ups, not just a snap the moment one happens.
-	var xp_needed : int = Brewery.xp_required_for_level(brewery.run_level)
-	level_progress_bar.value = float(brewery.run_xp) / float(xp_needed) if xp_needed > 0 else 0.0
-	level_progress_bar.tooltip_text = tr(LEVEL_PROGRESS_TOOLTIP_FORMAT) % [brewery.run_xp, xp_needed]
+	# The bar shows the tier name; the exact value and the tier's details are in the tooltip.
+	var tiers : Array[ReputationTier] = ReputationTiers.all()
+	var tier : ReputationTier = ReputationTiers.tier_for(reputation, tiers)
+	if tier == null:
+		reputation_label.text = tr(ReputationTierText.VALUE_FORMAT) % reputation
+		reputation_label.tooltip_text = ""
+		return
+	reputation_label.text = tr(tier.tier_name)
+	reputation_label.tooltip_text = ReputationTierText.tooltip(reputation, tier, ReputationTiers.next_tier(reputation, tiers))
 
-	var new_risk: int = brewery.risk
-	if last_risk != -1:
-		var change: int = new_risk - last_risk
-		if change != 0:
-			_create_popup_effect(risk_label, change, "%", true)
 
-	risk_label.text = "LVV Riski: " + str(new_risk) + "%"
-	last_risk = new_risk
+## The bar updates on every change: XP ticks up on each sale and brew, and the point
+## is the constant "almost there" read between level-ups.
+func _update_level(level : int, xp : int) -> void:
+	if level != _last_level:
+		_last_level = level
+		level_label.text = tr(LEVEL_FORMAT) % level
+	var xp_needed : int = Brewery.xp_required_for_level(level)
+	level_progress_bar.value = float(xp) / float(xp_needed) if xp_needed > 0 else 0.0
+	level_progress_bar.tooltip_text = tr(LEVEL_PROGRESS_TOOLTIP_FORMAT) % [xp, xp_needed]
 
-	if new_risk >= RISK_WARNING_THRESHOLD:
+
+func _update_risk(risk : int) -> void:
+	if last_risk != -1 and risk != last_risk:
+		_create_popup_effect(risk_label, risk - last_risk, "%", true)
+	risk_label.text = tr(RISK_FORMAT) % risk
+	last_risk = risk
+
+	if risk >= RISK_WARNING_THRESHOLD:
 		risk_label.add_theme_color_override("font_color", RISK_WARNING_COLOR)
 		if not _risk_warning_active:
 			_risk_warning_active = true
@@ -151,30 +145,7 @@ func _on_brewery_state_changed(brewery : Brewery) -> void:
 		_risk_warning_active = false
 
 
-## The bar shows the tier name; the exact value and the tier's details are in the tooltip.
-func _update_reputation_display(reputation : int) -> void:
-	var tiers : Array[ReputationTier] = ReputationTiers.all()
-	var tier : ReputationTier = ReputationTiers.tier_for(reputation, tiers)
-	if tier == null:
-		reputation_label.text = tr(REPUTATION_VALUE_FORMAT) % reputation
-		reputation_label.tooltip_text = ""
-		return
-
-	reputation_label.text = tier.tier_name
-	var next : ReputationTier = ReputationTiers.next_tier(reputation, tiers)
-	var next_text : String = tr(TOP_TIER_TEXT) if next == null else tr(NEXT_TIER_FORMAT) % [tr(next.tier_name), next.min_reputation]
-	var text : String = REPUTATION_TOOLTIP_FORMAT % [tr(REPUTATION_VALUE_FORMAT) % reputation, tr(tier.description), next_text]
-	if tier.raid_threshold_penalty > 0:
-		text += tr(FAME_RAID_FORMAT) % tier.raid_threshold_penalty
-	if tier.daily_decay_percent > 0.0:
-		text += tr(FAME_DECAY_FORMAT) % roundi(tier.daily_decay_percent * 100.0)
-	reputation_label.tooltip_text = text
-
-
-## One-shot attention pulse the moment risk crosses into the warning
-## zone — deliberately not looping (unlike DailyGoalsPanel's near-miss
-## pulse) since this fires once per crossing, not for as long as a
-## condition holds.
+## One-shot, unlike DailyGoalsPanel's looping near-miss pulse: it marks the crossing.
 func _pulse_risk_warning() -> void:
 	risk_label.pivot_offset = risk_label.size / 2.0
 	var tween := create_tween()
@@ -182,29 +153,21 @@ func _pulse_risk_warning() -> void:
 	tween.tween_property(risk_label, "scale", Vector2.ONE, RISK_WARNING_PULSE_SECONDS).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 
 
-## `decimals` picks the display precision — 0 for whole-number stats
-## (reputation, risk %), 1 for money (see Brewery.money's docstring on why
-## it isn't a whole euro amount).
+## `decimals` is 0 for reputation and risk, 1 for money (tracked to one decimal).
 func _create_popup_effect(target_label: Label, amount: float, suffix: String, is_risk: bool, decimals: int = 0) -> void:
 	var popup := Label.new()
 	var magnitude_text : String = ("%.1f" % absf(amount)) if decimals > 0 else str(roundi(absf(amount)))
-
-	if amount > 0:
-		popup.text = "+" + magnitude_text + suffix
-		popup.modulate = Color.RED if is_risk else Color.GREEN
-	else:
-		popup.text = "-" + magnitude_text + suffix
-		popup.modulate = Color.GREEN if is_risk else Color.RED
+	# Rising risk is bad news, rising money and reputation good news.
+	var good : bool = (amount > 0) != is_risk
+	popup.text = ("+" if amount > 0 else "-") + magnitude_text + suffix
+	popup.modulate = Color.GREEN if good else Color.RED
 
 	target_label.add_child(popup)
-	popup.position = Vector2(80, 0)
-	
+	popup.position = POPUP_OFFSET
+
 	var tween := create_tween().set_parallel(true)
-	var target_pos := popup.position + Vector2(0, -35)
 	var target_color := popup.modulate
 	target_color.a = 0.0
-	
-	tween.tween_property(popup, "position", target_pos, POPUP_EFFECT_DURATION_SECONDS)
+	tween.tween_property(popup, "position", popup.position + Vector2(0, -POPUP_FLOAT_DISTANCE), POPUP_EFFECT_DURATION_SECONDS)
 	tween.tween_property(popup, "modulate", target_color, POPUP_EFFECT_DURATION_SECONDS)
-	
 	tween.chain().tween_callback(popup.queue_free)
