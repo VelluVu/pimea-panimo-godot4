@@ -361,6 +361,15 @@ MITÄ HÄH?! EI MITÄÄN JUOTAVAA?! PAHEMPI KUIN JATKOAIKATAPPIO!,"WHAT, HUH?! N
 "TAIVAS VARJELE, MITÄ SIELTÄ TULEE!","HEAVEN HELP US, WHAT IS THIS!",src/resources/customers/leijonafani.tres
 TÄÄ MENEE KURKUSTA ALAS KUIN VOITTOMAALI VIIMEISELLÄ MINUUTILLA!,THIS GOES DOWN LIKE A WINNING GOAL IN THE LAST MINUTE!,src/resources/customers/leijonafani.tres
 "VELI, TEE ITSELLESI PALVELUS JA JUO TÄÄ YKSINÄS!","MATE, DO YOURSELF A FAVOUR AND DRINK THIS ALONE!",src/resources/customers/leijonafani.tres
+%s... onkohan siinä tarpeeksi makeutta?,%s... I wonder if it's sweet enough?,src/resources/customers/leipuri.tres
+"Ei ihan pullan kaveri, mutta maltaista makeutta löytyy. Kelpaa.","Not quite a match for a cinnamon bun, but it has malty sweetness. It'll do.",src/resources/customers/leipuri.tres
+Ei mitään makeaa? Menen takaisin uunien ääreen.,Nothing sweet? I'm going back to my ovens.,src/resources/customers/leipuri.tres
+"Huomenta! Uunit lämpenee jo neljältä, nyt kelpaisi jotain makeaa. Onko maitostouttia, pullan kaveriksi?","Morning! The ovens have been warming since four, now I could use something sweet. Got any milk stout to go with a bun?",src/resources/customers/leipuri.tres
+Hyllyt tyhjinä kuin leipälaari maanantaiaamuna...,Shelves as empty as a bread bin on a Monday morning...,src/resources/customers/leipuri.tres
+Leipuri,Baker,src/resources/customers/leipuri.tres
+"Tämä on kuin ruisleipää, kun tilasin wienerin. No, juodaan.","This is like getting rye bread when I ordered a Danish. Oh well, let's drink.",src/resources/customers/leipuri.tres
+Tämä on pohjaan palanut. Ei kelpaa leipurille.,This is burnt at the bottom. Not good enough for a baker.,src/resources/customers/leipuri.tres
+Täyteläistä ja makeaa kuin tuore korvapuusti! Tämän perään jaksaa taas vaivata taikinaa.,Rich and sweet like a fresh cinnamon bun! After this I can knead dough all day again.,src/resources/customers/leipuri.tres
 "Don ei näe täällä mitään, mistä kannattaisi maksaa...",The Don sees nothing here worth paying for...,src/resources/customers/mafioso.tres
 Don kuulostaa kiinnostuneelta liiketoiminnastanne. Näytä mitä teillä on.,The Don is interested in your business. Show me what you've got.,src/resources/customers/mafioso.tres
 Don lähettää kiitokset.,The Don sends his thanks.,src/resources/customers/mafioso.tres
