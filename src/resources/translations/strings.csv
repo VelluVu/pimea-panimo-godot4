@@ -472,13 +472,16 @@ Rahaa,Money,src/resources/daily_goals/tienaa_paljon_rahaa.tres
 Vie baariin,Ship to a bar,src/resources/daily_goals/vie_baariin_paljon.tres
 Eukonkanto-kisat järjestetään tänään lähistöllä. Odotettavissa testosteronin täyteisiä vahvoja asiakkaita ryhmittäin.,The wife-carrying championships are held nearby today. Expect groups of strong customers full of testosterone.,src/resources/day_events/day_event_eukonkanto.tres
 Läheisellä työmaalla vietetään harjakaisia tänään. Odotettavissa remonttimiehiä janoissaan.,A nearby building site celebrates its topping-out today. Expect thirsty builders.,src/resources/day_events/day_event_harjakaiset.tres
+"Helleaalto iski kaupunkiin. Odotettavissa kesäihmisiä, jotka kaipaavat raikasta vehnäolutta.",A heatwave hit the town. Expect summer people craving a fresh wheat beer.,src/resources/day_events/day_event_helleaalto.tres
 Jääkaappi hajosi yöllä ja pilasi %d pulloa varastosta.,The fridge broke during the night and spoiled %d bottles in storage.,src/resources/day_events/day_event_jaakaappi_hajoaa.tres
 Kellarin jääkaappi pitää epäilyttävää ääntä. Kylmäketju saattaa pätkiä tänään.,The cellar fridge is making a suspicious noise. The cold chain may fail today.,src/resources/day_events/day_event_jaakaappi_hajoaa.tres
 Hipsterien käsityökahvipapupaahtamiskerho kokoontuu tänään lähialueella. Odotettavissa käsityöläisoluesta kiinnostuneita hipstereitä.,The hipsters' artisan coffee bean roasting club meets nearby today. Expect hipsters curious about craft beer.,src/resources/day_events/day_event_kahvipaahtimo.tres
 Tänään on arkipyhä. Odotettavissa sekalaisia ryhmiä ympäri kaupunkia.,Today is a public holiday. Expect mixed groups from all over town.,src/resources/day_events/day_event_kesafestivaali.tres
 "Rahtilaiva saapui yöllä satamaan. Odotettavissa janoisia merimiehiä, jotka kaipaavat tummaa porttia.",A cargo ship arrived in port during the night. Expect thirsty sailors craving dark porter.,src/resources/day_events/day_event_laiva_satamassa.tres
+"Leijonat pelaa tänään MM-finaalin. Jos kulta tulee, kellari täyttyy fanikööristä.","The Lions play the World Championship final tonight. If they take gold, the cellar fills with fans.",src/resources/day_events/day_event_mm_finaali.tres
 Tavallinen päivä kellarissa. Ei erikoisia yllätyksiä luvassa tänään.,An ordinary day in the cellar. No special surprises expected today.,src/resources/day_events/day_event_none.tres
 Opintotukien maksupäivä on tänään. Odotettavissa rahaa polttavia opiskelijoita.,Student allowance payday is today. Expect students eager to spend.,src/resources/day_events/day_event_opintotuki.tres
+"Yleisen saunan naistenvuoro ja miestenvuoro päättyivät. Odotettavissa höyryäviä saunojia, joilla on sahtijano.",The public sauna's women's and men's turns are over. Expect steaming bathers with a thirst for sahti.,src/resources/day_events/day_event_saunailta.tres
 Suojelurahojen keräyspäivä koittaa tänään. Odotettavissa epäilyttävän hyvin pukeutuneita liikemiehiä.,Protection money collection day is today. Expect suspiciously well-dressed businessmen.,src/resources/day_events/day_event_suojelurahat.tres
 Aamulla löytyy puraisujälkiä säkeistä. Jokin on käynyt varastossa yöllä.,Bite marks on the sacks this morning. Something visited the storeroom at night.,src/resources/day_events/day_event_tuhoelaimet.tres
 Tuhoeläimet söivät varastosta %d kg maltaita.,Pests ate %d kg of malt from storage.,src/resources/day_events/day_event_tuhoelaimet.tres
@@ -500,6 +503,12 @@ AUTENTTINEN FIILIS TÄÄLLÄ.,AUTHENTIC VIBE IN HERE.,src/resources/group_events
 Hipsterien käsityökahvipapupaahtamiskerho kokoontuu lähialueella. Odotettavissa käsityöläisoluesta kiinnostuneita hipstereitä.,The hipsters' artisan coffee bean roasting club meets nearby. Expect hipsters curious about craft beer.,src/resources/group_events/hipsteri_lauma.tres
 "KÄSITYÖLÄISOLUTTA, KIITOS.","CRAFT BEER, PLEASE.",src/resources/group_events/hipsteri_lauma.tres
 ONKS TÄÄ LUOMUA?,IS THIS ORGANIC?,src/resources/group_events/hipsteri_lauma.tres
+"Helle ajaa aurinkolasipäisen porukan kellarin viileyteen.
+Jokaisesta tuopista otetaan kuva ennen ensimmäistä kulausta!","The heat drives a crowd in sunglasses into the cool cellar.
+Every pint gets photographed before the first sip!",src/resources/group_events/kesa_lauma.tres
+KESÄFIILIS!,SUMMER VIBES!,src/resources/group_events/kesa_lauma.tres
+KUVA! KUVA!,PHOTO! PHOTO!,src/resources/group_events/kesa_lauma.tres
+VEHNÄSTÄ JA JÄÄTÄ!,WHEAT BEER AND ICE!,src/resources/group_events/kesa_lauma.tres
 MAAILMANMESTARI HEI!,"WORLD CHAMPIONS, HEY!",src/resources/group_events/leijonafanit_mm_kulta.tres
 SUOMI ON UUSI!,FINLAND ON TOP AGAIN!,src/resources/group_events/leijonafanit_mm_kulta.tres
 "SUOMI VOITTI MM-KULTAA!
@@ -522,6 +531,12 @@ HARJAKAISET! HARJAKAISET!,TOPPING-OUT! TOPPING-OUT!,src/resources/group_events/r
 Harjakaiset pidetään läheisellä työmaalla. Remonttimiehet rynnivät kellariin sammuttamaan janon urakan kunniaksi.,A nearby building site holds its topping-out party. The builders rush into the cellar to quench their thirst in honour of the job.,src/resources/group_events/raksamies_lauma.tres
 "TALO PYSTYSSÄ, KALJA POHJASSA!","HOUSE IS UP, BEER IS DOWN!",src/resources/group_events/raksamies_lauma.tres
 "URAKKA VALMIS, HEI HEI HEI!","JOB'S DONE, HEY HEY HEY!",src/resources/group_events/raksamies_lauma.tres
+LÖYLYÄ!,MORE STEAM!,src/resources/group_events/saunaseura.tres
+SAHTIA SAUNOJILLE!,SAHTI FOR THE BATHERS!,src/resources/group_events/saunaseura.tres
+"Saunaseura saapuu punaposkisena suoraan lauteilta.
+Nyt kelpaisi kunnon sahti!","The sauna club arrives red-cheeked straight from the benches.
+A proper sahti would hit the spot now!",src/resources/group_events/saunaseura.tres
+VIHTA HEILUU!,SWING THE BIRCH WHISK!,src/resources/group_events/saunaseura.tres
 "Oudoin remmi ikinä ilmestyy portaille yhtä aikaa hipsteri, agentti, kummisetä ja remonttimies samassa jonossa.
 Kukaan ei kysy miksi.","The strangest crew ever shows up on the stairs: a hipster, an agent, a godfather and a builder in the same queue.
 Nobody asks why.",src/resources/group_events/sekalauma.tres
