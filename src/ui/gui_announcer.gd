@@ -20,6 +20,7 @@ const INGREDIENT_LOCKED_TOAST_FORMAT: String = "%s vaatii vähintään %d mainet
 const INGREDIENTS_UNLOCKED_TOAST_FORMAT: String = "Uusia aineksia saatavilla: %s!"
 ## Dropped from hop names in the merged toast, which lists them next to spices.
 const HOP_NAME_SUFFIX: String = " Humala"
+const PURITY_LAW_TOAST_FORMAT: String = "Reinheitsgebot rikottu! Baijerin herttua kääntyy haudassaan. %s: laatu -%d %%"
 const REPUTATION_TIER_ROSE_TOAST_FORMAT: String = "Maineesi nousi: %s!"
 const REPUTATION_TIER_FELL_TOAST_FORMAT: String = "Maineesi laski: %s."
 const FRIEND_RECOMMENDED_TOAST: String = "Tyytyväinen asiakas suositteli panimoa kaverilleen!"
@@ -100,6 +101,7 @@ func start() -> void:
 	BrewerySignals.bad_review_spread.connect(func() -> void: _show_toast(BAD_REVIEW_TOAST))
 	BrewerySignals.regular_status_changed.connect(_on_regular_status_changed)
 	BrewerySignals.group_visit_announced.connect(_on_group_visit_announced)
+	BrewerySignals.brew_spiced.connect(_on_brew_spiced)
 	BrewerySignals.day_event_announced.connect(_on_day_event_announced)
 
 	var brewery := BrewEngine.current_brewery
@@ -123,6 +125,11 @@ func _on_brewery_state_changed(brewery: Brewery) -> void:
 		for ingredient: IngredientData in unlocked:
 			names.append(tr(ingredient.name.trim_suffix(HOP_NAME_SUFFIX)))
 		_show_toast(tr(INGREDIENTS_UNLOCKED_TOAST_FORMAT) % ", ".join(names))
+
+
+func _on_brew_spiced(style_name: String, spice_bonus: float) -> void:
+	if spice_bonus < 0.0:
+		_show_toast(tr(PURITY_LAW_TOAST_FORMAT) % [tr(style_name), roundi(-spice_bonus * 100.0)])
 
 
 func _on_style_discovered(style: int) -> void:

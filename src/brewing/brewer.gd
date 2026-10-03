@@ -95,6 +95,8 @@ func start_brew() -> void:
 		if brew_report.beer_style.style == BeerStyle.Style.KOTIKALJA:
 			brewery.tutorial_brewed_kotikalja = true
 		BrewerySignals.beer_brewed.emit(brew_report.beer_style.style)
+		if brew_report.spice_bonus != 0.0:
+			BrewerySignals.brew_spiced.emit(brew_report.beer_style.style_name, brew_report.spice_bonus)
 
 		var brew_xp : int = Brewery.XP_PER_SUCCESSFUL_BREW
 		if is_new_discovery:

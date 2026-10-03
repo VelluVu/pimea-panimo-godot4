@@ -12,6 +12,7 @@ const HOP_BALANCE_WEIGHT : float = 0.1
 const FLAVOR_MATCH_BONUS : float = 0.1
 const SPICE_MATCH_STEP : float = 0.05
 const SPICE_MATCH_MAX : float = 0.1
+const PURITY_LAW_PENALTY : float = 0.1
 const MIN_MULTIPLIER : float = 0.5
 const MAX_MULTIPLIER : float = 1.5
 
@@ -50,7 +51,10 @@ static func flavor_matched(mixture : BrewMixture, beer_style : BeerStyle) -> boo
 			and mixture.hop_profiles.has(beer_style.preferred_hop_profile)
 
 
+## Negative when a spice breaks the style's Reinheitsgebot.
 static func spice_bonus(mixture : BrewMixture, beer_style : BeerStyle) -> float:
+	if beer_style.forbids_spices and not mixture.spice_ids.is_empty():
+		return -PURITY_LAW_PENALTY
 	var matched : int = 0
 	for spice_id : int in beer_style.preferred_spice_ids:
 		if mixture.spice_ids.has(spice_id):

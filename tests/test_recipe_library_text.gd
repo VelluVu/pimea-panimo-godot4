@@ -71,3 +71,10 @@ func test_known_row_lists_preferred_spices_when_given() -> void:
 	assert_false(plain.contains("Korianteri"))
 	var spiced : String = RecipeLibraryTextScript.known_row(_make_style(), "Y", "", "", "Korianteri, Pomeranssinkuori")
 	assert_true(spiced.contains("Korianteri, Pomeranssinkuori"))
+
+
+func test_known_row_warns_about_the_purity_law() -> void:
+	var beer_style := _make_style()
+	assert_false(RecipeLibraryTextScript.known_row(beer_style, "Y", "").contains("Reinheitsgebot"))
+	beer_style.forbids_spices = true
+	assert_true(RecipeLibraryTextScript.known_row(beer_style, "Y", "").contains("Reinheitsgebot"))

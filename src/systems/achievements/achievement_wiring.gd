@@ -32,6 +32,9 @@ const STAT_RUNS_SURVIVED : StringName = &"runs_survived"
 const STAT_HIGHEST_MONEY : StringName = &"highest_money"
 const STAT_HIGHEST_REPUTATION : StringName = &"highest_reputation"
 const STAT_HIGHEST_LEVEL : StringName = &"highest_level"
+## Brews whose spices suited the style, and brews that broke the Reinheitsgebot.
+const STAT_SPICED_BREWS : StringName = &"spiced_brews"
+const STAT_PURITY_LAW_BROKEN : StringName = &"purity_law_broken"
 
 const ENDING_SURVIVED : String = "survived"
 
@@ -57,6 +60,7 @@ func _ready() -> void:
 	BrewerySignals.lvv_raid_triggered.connect(increment_stat.bind(STAT_RAIDS_EXPERIENCED, 1).unbind(3))
 	BrewerySignals.level_up_reached.connect(func(level : int) -> void: set_stat_if_higher(STAT_HIGHEST_LEVEL, level))
 	BrewerySignals.game_ended.connect(_on_game_ended)
+	BrewerySignals.brew_spiced.connect(_on_brew_spiced)
 
 
 ## Called by CustomerRegistry, which alone knows when a customer's gates are all met.
@@ -102,6 +106,10 @@ func _on_sale_tip_gained(amount : float) -> void:
 	var cents : int = roundi(amount * 100.0)
 	if cents > 0:
 		increment_stat(STAT_TIPS_CENTS, cents)
+
+
+func _on_brew_spiced(_style_name : String, spice_bonus : float) -> void:
+	increment_stat(STAT_SPICED_BREWS if spice_bonus > 0.0 else STAT_PURITY_LAW_BROKEN)
 
 
 func _on_game_ended(ending_type : String) -> void:
