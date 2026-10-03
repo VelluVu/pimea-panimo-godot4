@@ -10,17 +10,7 @@ extends Node
 const DISCOVERY_TOAST_FORMAT: String = "Uusi oluttyyli löydetty: %s!"
 const ACHIEVEMENT_UNLOCKED_TOAST_FORMAT: String = "Saavutus avattu: %s!"
 const CUSTOMER_UNLOCKED_TOAST_FORMAT: String = "Uusi asiakas avattu: %s!"
-const GOAL_REWARD_TOAST_FORMAT: String = "%s saavutettu: +%d € / +%d maine / +%d XP!"
-const GOAL_FAILED_TOAST_FORMAT: String = "%s epäonnistui: %d maine / +%d LVV-riski"
-## A special-event goal that triggered but couldn't be filled fails penalty-free, so it
-## gets its own toast instead of a confusing "0 maine / +0 LVV-riski".
-const GOAL_FAILED_NO_PENALTY_TOAST_FORMAT: String = "%s epäonnistui: ei seurauksia"
-const EARLY_CLOSE_TOAST_FORMAT: String = "Ovet suljettu aikaisin: -%.1f €, mainetta -%d, LVV-riski -%d"
 const INGREDIENT_LOCKED_TOAST_FORMAT: String = "%s vaatii vähintään %d mainetta."
-const INGREDIENTS_UNLOCKED_TOAST_FORMAT: String = "Uusia aineksia saatavilla: %s!"
-## Dropped from hop names in the merged toast, which lists them next to spices.
-const HOP_NAME_SUFFIX: String = " Humala"
-const PURITY_LAW_TOAST_FORMAT: String = "Reinheitsgebot rikottu! Baijerin herttua kääntyy haudassaan. %s: laatu -%d %%"
 const REPUTATION_TIER_ROSE_TOAST_FORMAT: String = "Maineesi nousi: %s!"
 const REPUTATION_TIER_FELL_TOAST_FORMAT: String = "Maineesi laski: %s."
 const FRIEND_RECOMMENDED_TOAST: String = "Tyytyväinen asiakas suositteli panimoa kaverilleen!"
@@ -116,20 +106,11 @@ func start() -> void:
 
 
 func _on_brewery_state_changed(brewery: Brewery) -> void:
-	# One toast per reputation jump, however many hops it unlocked.
-	var unlocked : Array[IngredientData] = _reputation_tracker.update(brewery.reputation)
-	if unlocked.size() == 1:
-		_show_toast(tr(StringContainer.INGREDIENT_UNLOCKED_TOAST_FORMAT) % tr(unlocked[0].name))
-	elif unlocked.size() > 1:
-		var names : PackedStringArray = []
-		for ingredient: IngredientData in unlocked:
-			names.append(tr(ingredient.name.trim_suffix(HOP_NAME_SUFFIX)))
-		_show_toast(tr(INGREDIENTS_UNLOCKED_TOAST_FORMAT) % ", ".join(names))
+	_show_toast(ToastText.ingredients_unlocked(_reputation_tracker.update(brewery.reputation)))
 
 
 func _on_brew_spiced(style_name: String, spice_bonus: float) -> void:
-	if spice_bonus < 0.0:
-		_show_toast(tr(PURITY_LAW_TOAST_FORMAT) % [tr(style_name), roundi(-spice_bonus * 100.0)])
+	_show_toast(ToastText.spiced_brew(style_name, spice_bonus))
 
 
 func _on_style_discovered(style: int) -> void:
@@ -145,20 +126,12 @@ func _on_customer_unlocked(title: String) -> void:
 
 
 func _on_daily_goal_resolved(goal_name: String, succeeded: bool, money: int, reputation: int, xp: int, risk: int) -> void:
-	if succeeded:
-		_show_toast(tr(GOAL_REWARD_TOAST_FORMAT) % [tr(goal_name), money, reputation, xp])
-	elif reputation == 0 and risk == 0:
-		_show_toast(tr(GOAL_FAILED_NO_PENALTY_TOAST_FORMAT) % tr(goal_name))
-	else:
-		_show_toast(tr(GOAL_FAILED_TOAST_FORMAT) % [tr(goal_name), reputation, risk])
+	_show_toast(ToastText.goal_resolved(goal_name, succeeded, money, reputation, xp, risk))
 
 
-## Explains the money/reputation shift of a forced close. Skipped when all three
-## numbers rounded to zero (a very late close).
+## Explains the money/reputation shift of a forced close.
 func _on_early_day_close_applied(money_cost: float, reputation_cost: int, risk_relief: int, _close_count: int) -> void:
-	if money_cost <= 0.0 and reputation_cost <= 0 and risk_relief <= 0:
-		return
-	_show_toast(tr(EARLY_CLOSE_TOAST_FORMAT) % [money_cost, reputation_cost, risk_relief])
+	_show_toast(ToastText.early_close(money_cost, reputation_cost, risk_relief))
 
 
 ## The shop already disables locked entries; the toast keeps both purchase failures surfaced.
@@ -212,5 +185,7 @@ func _on_first_brew_hint_state_changed(_brewery: Brewery) -> void:
 	_first_brew_hint.dismiss_early()
 
 
+## ToastText returns an empty string for "no toast".
 func _show_toast(text: String) -> void:
-	_toasts.show_toast(text)
+	if not text.is_empty():
+		_toasts.show_toast(text)
