@@ -2,7 +2,7 @@ class_name BrewQuality
 extends RefCounted
 
 ## How well a mixture hits a style it already fits: precision inside the EBC/IBU
-## windows plus hop bonuses, folded into one quality multiplier.
+## windows plus hop and spice bonuses, folded into one quality multiplier.
 
 const PRECISION_WEIGHT : float = 0.4
 const NEUTRAL_PRECISION : float = 0.5
@@ -42,6 +42,8 @@ static func hop_diversity_bonus(mixture : BrewMixture) -> float:
 
 
 static func flavor_matched(mixture : BrewMixture, beer_style : BeerStyle) -> bool:
+	if beer_style.required_spice_id != BrewMixture.NO_REQUIRED_SPICE and mixture.spice_ids.has(beer_style.required_spice_id):
+		return true
 	return beer_style.preferred_hop_profile != HopData.FlavorProfile.NONE \
 			and mixture.hop_profiles.has(beer_style.preferred_hop_profile)
 

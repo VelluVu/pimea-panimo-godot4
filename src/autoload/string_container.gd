@@ -72,7 +72,6 @@ const HOP_FLAVOR_TROPICAL : String = "Trooppinen"
 const HOP_FLAVOR_PINE : String = "Mäntyinen"
 const HOP_FLAVOR_NOBLE : String = "Jalo"
 const HOP_FLAVOR_EARTHY : String = "Maanläheinen"
-const HOP_FLAVOR_JUNIPER : String = "Katajainen"
 
 const QUALITY_TIER_POOR : String = "Heikko"
 const QUALITY_TIER_MEDIOCRE : String = "Tyydyttävä"

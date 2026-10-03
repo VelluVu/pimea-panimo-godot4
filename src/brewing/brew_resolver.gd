@@ -5,6 +5,7 @@ extends Resource
 const FAILED_BREW_REPUTATION_CHANGE : int = -1
 const FAILED_BREW_QUALITY : float = 1.0
 const QUALITY_PRECISION : float = 0.01
+const REQUIRED_SPICE_DOSE : int = 2
 
 var active_styles : Array[BeerStyle] = []
 ## Forwarded to StylePricing; Brewery sets it per run.
@@ -64,8 +65,8 @@ func compute_minimum_ingredients(beer_style : BeerStyle) -> Dictionary:
 		if hop_dose.is_empty():
 			return {}
 		combo.merge(hop_dose)
-	if beer_style.required_hop_id != BrewMixture.NO_REQUIRED_HOP and not combo.has(beer_style.required_hop_id):
-		combo[beer_style.required_hop_id] = RecipeSearch.FLAVOR_HOP_DOSE
+	if beer_style.required_spice_id != BrewMixture.NO_REQUIRED_SPICE:
+		combo[beer_style.required_spice_id] = REQUIRED_SPICE_DOSE
 
 	var result : BrewResult = resolve_brew_style(combo)
 	if result == null or not result.is_matched or result.beer_style.style != beer_style.style:
@@ -107,7 +108,7 @@ func _load_all_beer_styles() -> void:
 ## Order within each group is kept.
 func _prioritize_required_malt_styles() -> void:
 	var requires_malt : Callable = func(beer_style : BeerStyle) -> bool:
-		return beer_style.required_malt_id != BrewMixture.NO_REQUIRED_MALT or beer_style.required_hop_id != BrewMixture.NO_REQUIRED_HOP
+		return beer_style.required_malt_id != BrewMixture.NO_REQUIRED_MALT or beer_style.required_spice_id != BrewMixture.NO_REQUIRED_SPICE
 	var with_required_malt : Array = active_styles.filter(requires_malt)
 	var without_required_malt : Array = active_styles.filter(func(beer_style : BeerStyle) -> bool: return not requires_malt.call(beer_style))
 	active_styles.assign(with_required_malt + without_required_malt)

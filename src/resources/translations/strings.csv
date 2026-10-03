@@ -53,7 +53,6 @@ IPA,IPA,src/autoload/string_container.gd
 Imperial Stout,Imperial Stout,src/autoload/string_container.gd
 Jakelutulot: %+d %%,Distribution income: %+d %%,src/autoload/string_container.gd
 Jalo,Noble,src/autoload/string_container.gd
-Katajainen,Juniper,src/autoload/string_container.gd
 Kierroksen tilastot,Run stats,src/autoload/string_container.gd
 Kotikalja,Kotikalja,src/autoload/string_container.gd
 Kyllä,Yes,src/autoload/string_container.gd
@@ -201,8 +200,6 @@ Fuggle Humala,Fuggle Hops,src/resources/ingredients/hops/fuggle_hop.tres
 "Perinteinen englantilainen humala, maanläheinen ja hedelmäinen","A traditional English hop, earthy and fruity",src/resources/ingredients/hops/fuggle_hop.tres
 Hallertau Humala,Hallertau Hops,src/resources/ingredients/hops/hallertau_hop.tres
 "Saksalainen jalohumala, hienostunut ja kukkainen","A German noble hop, refined and floral",src/resources/ingredients/hops/hallertau_hop.tres
-Katajanoksat,Juniper Branches,src/resources/ingredients/hops/juniper.tres
-"Tuoreita katajanoksia. Sahti siivilöidään niiden läpi, ja ne tuovat pihkaisen, metsäisen maun.","Fresh juniper branches. Sahti is filtered through them, and they add a resinous, foresty flavour.",src/resources/ingredients/hops/juniper.tres
 Magnum Humala,Magnum Hops,src/resources/ingredients/hops/magnum_hop.tres
 Tämä katkerohumala antaa oluelle hyvät katkerot,A bittering hop that gives beer a clean bitterness,src/resources/ingredients/hops/magnum_hop.tres
 Mosaic Humala,Mosaic Hops,src/resources/ingredients/hops/mosaic_hop.tres
@@ -231,6 +228,8 @@ Avotulella savustettu mallas joka tuo olueen savuisen maun,Malt smoked over an o
 Savumallas,Smoked Malt,src/resources/ingredients/malts/smoked_malt.tres
 Vehnämallas,Wheat Malt,src/resources/ingredients/malts/wheat_malt.tres
 Vehnästä valmistettu mallas joka tekee oluesta samean ja pehmeän,Malt made from wheat that makes beer hazy and soft,src/resources/ingredients/malts/wheat_malt.tres
+Katajanoksat,Juniper Branches,src/resources/ingredients/spices/juniper.tres
+"Tuoreita katajanoksia. Sahti siivilöidään niiden läpi, ja ne tuovat pihkaisen, metsäisen maun.","Fresh juniper branches. Sahti is filtered through them, and they add a resinous, foresty flavour.",src/resources/ingredients/spices/juniper.tres
 Alehiiva,Ale Yeast,src/resources/ingredients/yeasts/ale_yeast.tres
 Pintahiiva tuottaa aromikkaan oluen,A top-fermenting yeast that makes an aromatic beer,src/resources/ingredients/yeasts/ale_yeast.tres
 Alkoholiton ale hiiva,Non-alcoholic Ale Yeast,src/resources/ingredients/yeasts/alkoholiton_ale_hiiva.tres
@@ -450,6 +449,7 @@ Valikko,Menu,src/scenes/ui/game_menu_window.gd
 Hiiva,Yeast,src/scenes/ui/ingredient_type_selector.gd
 Humala,Hops,src/scenes/ui/ingredient_type_selector.gd
 Mallas,Malt,src/scenes/ui/ingredient_type_selector.gd
+Mauste,Spice,src/scenes/ui/ingredient_type_selector.gd
  UUSI!, NEW!,src/scenes/ui/leaderboard_window.gd
 Annokset,Servings,src/scenes/ui/leaderboard_window.gd
 Ei vielä ennätyksiä. Pelaa ensimmäinen kausi!,No records yet. Play your first season!,src/scenes/ui/leaderboard_window.gd
@@ -573,7 +573,7 @@ Saavutus avattu: %s!,Achievement unlocked: %s!,src/ui/gui_announcer.gd
 Tyytyväinen asiakas suositteli panimoa kaverilleen!,A happy customer recommended the brewery to a friend!,src/ui/gui_announcer.gd
 Uusi asiakas avattu: %s!,New customer unlocked: %s!,src/ui/gui_announcer.gd
 Uusi oluttyyli löydetty: %s!,New beer style discovered: %s!,src/ui/gui_announcer.gd
-Uusia humalia saatavilla: %s!,New hops available: %s!,src/ui/gui_announcer.gd
+Uusia aineksia saatavilla: %s!,New ingredients available: %s!,src/ui/gui_announcer.gd
 Annokset %d,Servings %d,src/ui/leaderboard_text.gd
 Jäi kiinni,Busted,src/ui/leaderboard_text.gd
 Kesken,In progress,src/ui/leaderboard_text.gd

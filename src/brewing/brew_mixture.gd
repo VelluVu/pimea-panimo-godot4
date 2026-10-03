@@ -6,7 +6,7 @@ extends RefCounted
 const MIN_MALT_WEIGHT : int = 3
 const NO_YEAST : int = -1
 const NO_REQUIRED_MALT : int = -1
-const NO_REQUIRED_HOP : int = -1
+const NO_REQUIRED_SPICE : int = -1
 const ALPHA_ACIDS_PER_IBU : float = 10.0
 
 var malt_weight : int = 0
@@ -20,6 +20,7 @@ var final_ibu : int = 0
 var malt_ids : Dictionary = {}
 var hop_ids : Dictionary = {}
 var hop_profiles : Dictionary = {}
+var spice_ids : Dictionary = {}
 
 var _weighted_ebc_sum : float = 0.0
 
@@ -42,7 +43,7 @@ func fits(beer_style : BeerStyle) -> bool:
 		return false
 	if beer_style.required_malt_id != NO_REQUIRED_MALT and not malt_ids.has(beer_style.required_malt_id):
 		return false
-	if beer_style.required_hop_id != NO_REQUIRED_HOP and not hop_ids.has(beer_style.required_hop_id):
+	if beer_style.required_spice_id != NO_REQUIRED_SPICE and not spice_ids.has(beer_style.required_spice_id):
 		return false
 	if malt_weight < beer_style.min_malt_weight:
 		return false
@@ -58,6 +59,9 @@ func _add(id : int, data : IngredientData, amount : int) -> void:
 			_add_hop(id, data as HopData, amount)
 		IngredientData.IngredientType.YEAST:
 			yeast_id = id
+		IngredientData.IngredientType.SPICE:
+			if amount > 0:
+				spice_ids[id] = true
 
 
 func _add_malt(id : int, malt : MaltData, amount : int) -> void:

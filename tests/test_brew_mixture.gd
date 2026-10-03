@@ -9,6 +9,7 @@ const MALT_ID : int = 101 # EBC 10
 const DARK_MALT_ID : int = 102 # EBC 60
 const HOP_ID : int = 201 # alpha 100, beta 50
 const YEAST_ID : int = 301
+const SPICE_ID : int = 212
 
 
 func suite_name() -> String:
@@ -29,7 +30,9 @@ func _make_ingredients() -> Dictionary:
 	hop.flavor_profile = HopData.FlavorProfile.CITRUS
 	var yeast := YeastData.new()
 	yeast.type = IngredientData.IngredientType.YEAST
-	return {MALT_ID: malt, DARK_MALT_ID: dark, HOP_ID: hop, YEAST_ID: yeast}
+	var spice := IngredientData.new()
+	spice.type = IngredientData.IngredientType.SPICE
+	return {MALT_ID: malt, DARK_MALT_ID: dark, HOP_ID: hop, YEAST_ID: yeast, SPICE_ID: spice}
 
 
 func _make_mixture(contents : Dictionary) -> BrewMixtureScript:
@@ -94,8 +97,15 @@ func test_fits_requires_matching_yeast_and_malt() -> void:
 	assert_true(mixture.fits(wants_light))
 
 
-func test_fits_requires_the_required_hop() -> void:
-	var wants_hop := _make_style(0, 30, 0, 999)
-	wants_hop.required_hop_id = HOP_ID
-	assert_false(_make_mixture({MALT_ID: 3, YEAST_ID: 1}).fits(wants_hop), "no hop on the table")
-	assert_true(_make_mixture({MALT_ID: 3, HOP_ID: 1, YEAST_ID: 1}).fits(wants_hop))
+func test_fits_requires_the_required_spice() -> void:
+	var wants_spice := _make_style(0, 30, 0, 999)
+	wants_spice.required_spice_id = SPICE_ID
+	assert_false(_make_mixture({MALT_ID: 3, YEAST_ID: 1}).fits(wants_spice), "no spice on the table")
+	assert_true(_make_mixture({MALT_ID: 3, SPICE_ID: 1, YEAST_ID: 1}).fits(wants_spice))
+
+
+func test_spice_adds_no_bitterness() -> void:
+	var mixture := _make_mixture({MALT_ID: 3, SPICE_ID: 5, YEAST_ID: 1})
+	assert_eq(mixture.final_ibu, 0)
+	assert_eq(mixture.hop_amount, 0)
+	assert_true(mixture.spice_ids.has(SPICE_ID))
