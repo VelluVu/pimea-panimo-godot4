@@ -4,6 +4,9 @@ extends OptionButton
 
 ## The 13 hops overflow the 360 px viewport; PopupMenu scrolls once capped.
 const POPUP_MAX_SIZE : Vector2i = Vector2i(10000, 200)
+## Locked ingredients show their name, so the player can plan which one to unlock next.
+const LOCKED_ITEM_FORMAT : String = "%s (maine %d)"
+const LOCKED_TOOLTIP_FORMAT : String = "Vaatii mainetta: %d"
 
 @export var target_type : IngredientData.IngredientType = IngredientData.IngredientType.MALT
 
@@ -123,12 +126,13 @@ func _rebuild_items() -> void:
 
 
 func _add_ingredient_item(ingredient : IngredientData, is_locked : bool) -> void:
-	var locked_text : String = tr(StringContainer.INGREDIENT_LOCKED_LABEL) % ingredient.min_reputation
-	add_item(locked_text if is_locked else tr(ingredient.name))
+	add_item(tr(LOCKED_ITEM_FORMAT) % [tr(ingredient.name), ingredient.min_reputation] if is_locked else tr(ingredient.name))
 	var new_item_index: int = get_item_count() - 1
 	set_item_id(new_item_index, ingredient.id)
 	set_item_disabled(new_item_index, is_locked)
-	var tooltip : String = locked_text if is_locked else tr(ingredient.description) + "\n" + ingredient.get_stat_string()
+	var tooltip : String = tr(ingredient.description) + "\n" + ingredient.get_stat_string()
+	if is_locked:
+		tooltip += "\n" + tr(LOCKED_TOOLTIP_FORMAT) % ingredient.min_reputation
 	get_popup().set_item_tooltip(new_item_index, tooltip)
 
 

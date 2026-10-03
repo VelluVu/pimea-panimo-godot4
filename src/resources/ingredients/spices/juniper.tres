@@ -10,5 +10,5 @@ description = "Tuoreita katajanoksia. Sahti siivilöidään niiden läpi, ja ne 
 base_price = 1
 unit = 2
 type = 3
-min_reputation = 20
+min_reputation = 15
 metadata/_custom_type_script = "uid://dniwiyu5ynp71"
