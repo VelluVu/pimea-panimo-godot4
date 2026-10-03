@@ -3,7 +3,7 @@ extends PanelContainer
 
 
 const INGREDIENT_LABEL_WITH_TARGET_STRING : String = "%s: %d/%d %s"
-const SAVE_TOAST_STRING : String = "Resepti \"%s\" tallennettu!"
+const RECIPE_SAVED_TOAST_FORMAT : String = "Resepti \"%s\" tallennettu!"
 const REJECT_TOAST_STRING : String = "Tuntematon oluttyyli. Keitä se ensin selvittääksesi reseptin!"
 const REJECT_TOAST_FLASH_COLOR : Color = Color(1.4, 0.6, 0.6, 1.0)
 const SAVE_TOAST_FLASH_SECONDS : float = 0.15
@@ -11,31 +11,7 @@ const SAVE_TOAST_HOLD_SECONDS : float = 1.2
 const SAVE_TOAST_FADE_SECONDS : float = 0.4
 const NO_ACTIVE_RECIPE_TEXT : String = "resepti:"
 
-## Live, no-cost preview of what the table's current contents would
-## actually brew — computed from the exact same BrewResolver.
-## resolve_brew_style() a real brew uses (it's a pure function, no side
-## effects on the dictionary passed in, same trick CustomerManager.
-## find_best_batch_for() already relies on for its own preview), so this
-## can never drift from what pressing "Pane" would really produce. Turns
-## a failed/undiscovered brew from "spend real ingredients, get a
-## Kotikalja-shaped dud with zero explanation" into "watch the numbers
-## while you're still deciding" — see the chat discussion this was built
-## from on why blind trial-and-error was the actual problem, not the
-## fixed recipe thresholds themselves.
-const PREVIEW_EMPTY_TEXT : String = "Lisää ainesosia nähdäksesi arvion."
-const PREVIEW_NOT_ENOUGH_TEXT : String = "Tarvitset ainakin 3 kg mallasta ja hiivan."
-const PREVIEW_NO_MATCH_FORMAT : String = "Ei täsmää vielä mihinkään tyyliin. (EBC %d, IBU %d)"
-## Style name deliberately withheld here even on a match — same reasoning
-## _on_save_recipe_requested()'s reject path already uses to stop a save
-## from name-peeking an undiscovered style: the whole point of "brew it to
-## find out" is that the name is the reward, not something the preview
-## should spoil before the player has actually brewed it once.
-const PREVIEW_UNKNOWN_MATCH_FORMAT : String = "Arvio: tuntematon tyyli täsmää! (EBC %d, IBU %d)"
-const PREVIEW_KNOWN_MATCH_FORMAT : String = "Arvio: %s, EBC %d, IBU %d, laatu %d%%"
-
-## Same gold accent used for perk/modifier names (LevelUpWindow,
-## ModifierSelectWindow) — ties this popup visually to that same
-## "growth" system instead of reading as a plain success/failure color.
+## The gold of perk and modifier names (LevelUpWindow), so XP reads as "growth".
 const XP_POPUP_COLOR : Color = Color(0.949, 0.788, 0.42, 1)
 const XP_POPUP_FORMAT : String = "+%d XP"
 const XP_POPUP_DURATION_SECONDS : float = 1.8
@@ -58,10 +34,7 @@ var _toast : BannerPresenter
 
 func _ready() -> void:
 	_toast = BannerPresenter.new(save_recipe_toast, SAVE_TOAST_FLASH_SECONDS, SAVE_TOAST_HOLD_SECONDS, SAVE_TOAST_FADE_SECONDS, true, false)
-	# CurrentRecipeLabel is a scene-defined plain Label (see this scene's
-	# .tscn) — swap its script at runtime instead of editing the .tscn, so
-	# its tooltip_text (the active recipe name) wraps via TooltipFactory
-	# instead of overflowing on a long/undiscovered style name.
+	# A scene-defined plain Label: the script swap makes its tooltip wrap.
 	current_recipe_label.set_script(TooltipLabel)
 	_initialize_table_nodes()
 	BrewerySignals.brewery_state_changed.connect(_on_brewery_state_changed)
@@ -73,9 +46,7 @@ func _ready() -> void:
 	_update_table_list_ui()
 
 
-## Floats a "+X XP" popup off the right edge of the "Pane" (start brew)
-## button — the brewing counterpart to CustomerManager's sale XP popup,
-## which appears on the customer instead (see DialogView).
+## Floats off the "Pane" button; a sale's XP popup appears on the customer instead.
 func _on_brew_xp_gained(amount : int) -> void:
 	_float_popup(tr(XP_POPUP_FORMAT) % amount, XP_POPUP_COLOR, XP_POPUP_OFFSET)
 
@@ -109,11 +80,11 @@ func _on_erase_button_pressed() -> void:
 
 
 func _on_recipe_saved(recipe_name : String) -> void:
-	_toast.present(SAVE_TOAST_STRING % recipe_name)
+	_toast.present(tr(RECIPE_SAVED_TOAST_FORMAT) % recipe_name)
 
 
 func _on_recipe_save_rejected() -> void:
-	_toast.present(REJECT_TOAST_STRING, REJECT_TOAST_FLASH_COLOR)
+	_toast.present(tr(REJECT_TOAST_STRING), REJECT_TOAST_FLASH_COLOR)
 
 
 func _initialize_table_nodes() -> void:
@@ -169,25 +140,7 @@ func _update_table_list_ui() -> void:
 			label.visible = false
 
 
-## See PREVIEW_EMPTY_TEXT's docstring above for why this exists. brewery
-## and prep_contents are passed in rather than re-fetched — the caller
-## (_update_table_list_ui()) already has both on hand.
 func _update_preview(brewery : Brewery, prep_contents : Dictionary) -> void:
-	if prep_contents.is_empty():
-		preview_label.text = PREVIEW_EMPTY_TEXT
-		return
-
-	var preview : BrewResult = brewery.resolver.resolve_brew_style(prep_contents)
-	if preview == null:
-		preview_label.text = PREVIEW_NOT_ENOUGH_TEXT
-		return
-
-	if not preview.is_matched:
-		preview_label.text = tr(PREVIEW_NO_MATCH_FORMAT) % [preview.final_ebc, preview.final_ibu]
-		return
-
-	if brewery.is_style_known(preview.beer_style.style):
-		preview_label.text = tr(PREVIEW_KNOWN_MATCH_FORMAT) % [tr(preview.beer_style.style_name), preview.final_ebc, preview.final_ibu, roundi(preview.original_quality * 100)] \
-				+ SpicePreviewText.line(preview.spice_bonus)
-	else:
-		preview_label.text = tr(PREVIEW_UNKNOWN_MATCH_FORMAT) % [preview.final_ebc, preview.final_ibu]
+	var preview : BrewResult = null if prep_contents.is_empty() else brewery.resolver.resolve_brew_style(prep_contents)
+	var style_known : bool = preview != null and preview.is_matched and brewery.is_style_known(preview.beer_style.style)
+	preview_label.text = BrewPreviewText.text(prep_contents.is_empty(), preview, style_known)
