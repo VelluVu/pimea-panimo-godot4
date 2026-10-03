@@ -141,7 +141,7 @@ func _on_achievement_unlocked(_achievement_id: String, title: String) -> void:
 
 
 func _on_customer_unlocked(title: String) -> void:
-	_show_toast(tr(CUSTOMER_UNLOCKED_TOAST_FORMAT) % title)
+	_show_toast(tr(CUSTOMER_UNLOCKED_TOAST_FORMAT) % tr(title))
 
 
 func _on_daily_goal_resolved(goal_name: String, succeeded: bool, money: int, reputation: int, xp: int, risk: int) -> void:
@@ -180,7 +180,7 @@ func _on_reputation_decayed(amount: int, tier: ReputationTier) -> void:
 
 
 func _on_regular_status_changed(customer_title: String, is_regular: bool) -> void:
-	_show_toast((REGULAR_GAINED_TOAST_FORMAT if is_regular else REGULAR_LOST_TOAST_FORMAT) % customer_title)
+	_show_toast(tr(REGULAR_GAINED_TOAST_FORMAT if is_regular else REGULAR_LOST_TOAST_FORMAT) % tr(customer_title))
 
 
 func _on_group_visit_announced(banner_text: String) -> void:

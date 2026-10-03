@@ -154,7 +154,7 @@ func _turn_away(data : CustomerData, wanted : int) -> String:
 		BrewerySignals.brewery_state_changed.emit(brewery)
 		_spread_word(data, false, -data.no_match_reputation_penalty)
 		_update_standing(data, false, -data.no_match_reputation_penalty)
-	return data.dialogue_no_match
+	return tr(data.dialogue_no_match)
 
 
 func _update_standing(data : CustomerData, delighted : bool, reputation_gain : int) -> void:
@@ -192,5 +192,5 @@ func _trigger_bar_fight(data : CustomerData, batch : BrewBatch) -> void:
 		if batch.amount_bottles <= 0:
 			brewery.inventory.brew_batches.erase(batch)
 
-	BrewerySignals.bar_fight_triggered.emit(data.dialogue_bar_fight % broken_bottles)
+	BrewerySignals.bar_fight_triggered.emit(tr(data.dialogue_bar_fight) % broken_bottles)
 	BrewerySignals.bar_fight_started.emit(broken_bottles)
