@@ -26,6 +26,7 @@ enum Style {
 	ALKOHOLITON_IPA,
 	ALKOHOLITON_LAGER,
 	SAHTI,
+	MAITOSTOUT,
 }
 
 @export var style_name: String = "Uusi oluttyyli"
@@ -137,4 +138,5 @@ static func get_style_string_from_style(new_style : BeerStyle.Style) -> String:
 		Style.ALKOHOLITON_IPA: return UiText.of(StringContainer.ALKOHOLITONIPA)
 		Style.ALKOHOLITON_LAGER: return UiText.of(StringContainer.ALKOHOLITONLAGER)
 		Style.SAHTI: return UiText.of(StringContainer.SAHTI)
+		Style.MAITOSTOUT: return UiText.of(StringContainer.MAITOSTOUT)
 		_: return UiText.of(StringContainer.TUNTEMATON)

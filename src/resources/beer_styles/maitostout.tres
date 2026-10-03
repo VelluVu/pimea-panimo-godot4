@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="BeerStyle" format=3]
+
+[ext_resource type="Script" uid="uid://qpqfdi1wacne" path="res://src/brewing/beer_style.gd" id="1_maitostout"]
+
+[resource]
+script = ExtResource("1_maitostout")
+style_name = "Maitostout"
+style = 23
+required_spice_id = 408
+preferred_spice_ids = Array[int]([403, 404, 406])
+abv = 5.5
+profit_margin_multiplier = 1.3
+fixed_price_per_bottle = 4.5
+required_yeast_id = 302
+min_malt_weight = 4
+min_ebc = 60
+max_ebc = 110
+min_ibu = 20
+max_ibu = 35
+reputation_change = 5
+peak_days = 3
+shelf_life_days = 25
+aging_factor = 0.05
+metadata/_custom_type_script = "uid://qpqfdi1wacne"

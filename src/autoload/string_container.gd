@@ -27,6 +27,7 @@ const IMPERIALSTOUT : String = "Imperial Stout"
 const ALKOHOLITONIPA : String = "Alkoholiton IPA"
 const ALKOHOLITONLAGER : String = "Alkoholiton Lager"
 const SAHTI : String = "Sahti"
+const MAITOSTOUT : String = "Maitostout"
 
 const KG : String = "kg"
 const G : String = "g"
