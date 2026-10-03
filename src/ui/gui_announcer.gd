@@ -17,8 +17,8 @@ const GOAL_FAILED_TOAST_FORMAT: String = "%s epäonnistui: %d maine / +%d LVV-ri
 const GOAL_FAILED_NO_PENALTY_TOAST_FORMAT: String = "%s epäonnistui: ei seurauksia"
 const EARLY_CLOSE_TOAST_FORMAT: String = "Ovet suljettu aikaisin: -%.1f €, mainetta -%d, LVV-riski -%d"
 const INGREDIENT_LOCKED_TOAST_FORMAT: String = "%s vaatii vähintään %d mainetta."
-const INGREDIENTS_UNLOCKED_TOAST_FORMAT: String = "Uusia humalia saatavilla: %s!"
-## Dropped from each name in the merged toast; the toast already says they are hops.
+const INGREDIENTS_UNLOCKED_TOAST_FORMAT: String = "Uusia aineksia saatavilla: %s!"
+## Dropped from hop names in the merged toast, which lists them next to spices.
 const HOP_NAME_SUFFIX: String = " Humala"
 const REPUTATION_TIER_ROSE_TOAST_FORMAT: String = "Maineesi nousi: %s!"
 const REPUTATION_TIER_FELL_TOAST_FORMAT: String = "Maineesi laski: %s."

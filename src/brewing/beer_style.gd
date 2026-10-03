@@ -38,9 +38,9 @@ enum Style {
 ## real recipe is defined by one malt (Hefeweizen and Witbier need wheat malt). See
 ## BrewMixture.fits().
 @export var required_malt_id: int = -1
-## -1 = none. A hop or spice that must be on the table, like required_malt_id
-## (Sahti needs juniper).
-@export var required_hop_id: int = -1
+## -1 = none. A spice that must be on the table, like required_malt_id (Sahti
+## needs juniper). It also counts as the style's flavour match in BrewQuality.
+@export var required_spice_id: int = -1
 @export var preferred_hop_profile: HopData.FlavorProfile = HopData.FlavorProfile.NONE
 
 @export_group("Alkoholi")

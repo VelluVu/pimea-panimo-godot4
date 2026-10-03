@@ -91,7 +91,7 @@ func _build_known_style_row(beer_style : BeerStyle) -> Button:
 	row.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	row.add_theme_font_size_override("font_size", ROW_FONT_SIZE)
 	row.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	row.text = RecipeLibraryText.known_row(beer_style, _ingredient_name(beer_style.required_yeast_id), _required_malt_name(beer_style), _required_hop_name(beer_style))
+	row.text = RecipeLibraryText.known_row(beer_style, _ingredient_name(beer_style.required_yeast_id), _required_malt_name(beer_style), _required_spice_name(beer_style))
 	row.pressed.connect(_select_style.bind(beer_style.style))
 	return row
 
@@ -101,7 +101,7 @@ func _build_locked_style_row(brewery : Brewery, beer_style : BeerStyle) -> Label
 	var row := Label.new()
 	row.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	row.add_theme_font_size_override("font_size", ROW_FONT_SIZE)
-	row.text = RecipeLibraryText.locked_row(beer_style, _ingredient_name(beer_style.required_yeast_id), _required_malt_name(beer_style), needs_malt_blend, _required_hop_name(beer_style))
+	row.text = RecipeLibraryText.locked_row(beer_style, _ingredient_name(beer_style.required_yeast_id), _required_malt_name(beer_style), needs_malt_blend, _required_spice_name(beer_style))
 	row.modulate = Color.DIM_GRAY
 	return row
 
@@ -149,10 +149,10 @@ func _build_recipe_row(recipe : BrewRecipe, brewable : bool) -> Control:
 
 
 ## Empty for a style with no single required malt, which the row text ignores.
-func _required_hop_name(beer_style : BeerStyle) -> String:
-	if beer_style.required_hop_id == BrewMixture.NO_REQUIRED_HOP:
+func _required_spice_name(beer_style : BeerStyle) -> String:
+	if beer_style.required_spice_id == BrewMixture.NO_REQUIRED_SPICE:
 		return ""
-	return _ingredient_name(beer_style.required_hop_id)
+	return _ingredient_name(beer_style.required_spice_id)
 
 
 func _required_malt_name(beer_style : BeerStyle) -> String:

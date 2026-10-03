@@ -8,12 +8,14 @@ extends VBoxContainer
 const MALT_TAB_TEXT : String = "Mallas"
 const HOP_TAB_TEXT : String = "Humala"
 const YEAST_TAB_TEXT : String = "Hiiva"
+const SPICE_TAB_TEXT : String = "Mauste"
 const TAB_ICON_SIZE : int = 10
 
 const TYPES_BY_TAB : Array[IngredientData.IngredientType] = [
 	IngredientData.IngredientType.MALT,
 	IngredientData.IngredientType.HOP,
 	IngredientData.IngredientType.YEAST,
+	IngredientData.IngredientType.SPICE,
 ]
 
 @onready var tab_bar : TabBar = $TabBar
@@ -29,6 +31,7 @@ func _ready() -> void:
 	_add_icon_tab(MALT_TAB_TEXT, IngredientData.IngredientType.MALT)
 	_add_icon_tab(HOP_TAB_TEXT, IngredientData.IngredientType.HOP)
 	_add_icon_tab(YEAST_TAB_TEXT, IngredientData.IngredientType.YEAST)
+	_add_icon_tab(SPICE_TAB_TEXT, IngredientData.IngredientType.SPICE)
 	tab_bar.current_tab = 0
 	tab_bar.tab_changed.connect(_on_tab_changed)
 	tab_bar.tab_changed.connect(GUISignals.tab_switched.emit.unbind(1))

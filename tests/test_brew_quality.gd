@@ -60,3 +60,12 @@ func test_multiplier_is_clamped_and_rewards_flavor_match() -> void:
 	var mixture := _make_mixture(0.0, 0.0, 0)
 	assert_true(BrewQualityScript.multiplier(mixture, 1.0, 0.0, true) > BrewQualityScript.multiplier(mixture, 1.0, 0.0, false))
 	assert_true(BrewQualityScript.multiplier(mixture, 1.0, 5.0, true) <= BrewQualityScript.MAX_MULTIPLIER)
+
+
+func test_required_spice_on_the_table_counts_as_flavor_match() -> void:
+	var beer_style := BeerStyle.new()
+	beer_style.required_spice_id = 212
+	var mixture := _make_mixture(0.0, 0.0, 0)
+	assert_false(BrewQualityScript.flavor_matched(mixture, beer_style))
+	mixture.spice_ids[212] = true
+	assert_true(BrewQualityScript.flavor_matched(mixture, beer_style))
