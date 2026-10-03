@@ -10,11 +10,8 @@ const LOCKED_TOOLTIP_FORMAT : String = "Vaatii mainetta: %d"
 
 @export var target_type : IngredientData.IngredientType = IngredientData.IngredientType.MALT
 
-## Tracks reputation between brewery_state_changed emissions so this only
-## rebuilds the list on an actual reputation change (crossing a hop's
-## min_reputation) instead of on every state change (a buy, sell, or sale
-## fires this signal far too often to rebuild — and clearing/rebuilding
-## resets the current selection, which would be disruptive mid-shop).
+## Only a reputation change can lock or unlock items. brewery_state_changed fires on
+## every buy and sale, and a rebuild resets the selection, so rebuild only then.
 var _last_reputation_seen : int = -1
 
 
@@ -31,17 +28,11 @@ func _ready() -> void:
 	GUISignals.active_ingredient_changed.connect(_on_global_ingredient_changed)
 	BrewerySignals.brewery_state_changed.connect(_on_brewery_state_changed)
 
-	var brewery := BrewEngine.current_brewery
-	_last_reputation_seen = brewery.reputation if brewery != null else 0
+	_last_reputation_seen = _reputation()
 	populate_ingredient_option_menu()
 
 
-## Reputation crossing a hop's min_reputation is the only thing that can
-## change which items are locked, so this only rebuilds on an actual
-## reputation change — not on every state change (a buy/sell/sale fires
-## brewery_state_changed far too often for that) — and restores the
-## player's current selection afterward instead of resetting to the first
-## item like a fresh populate_ingredient_option_menu() call would.
+## Rebuilds on a reputation change but keeps the player's selection if it is still usable.
 func _on_brewery_state_changed(brewery : Brewery) -> void:
 	if brewery.reputation == _last_reputation_seen:
 		return
@@ -62,11 +53,8 @@ func _on_brewery_state_changed(brewery : Brewery) -> void:
 		_on_item_selected(first_index)
 
 
+## Locked items are disabled entries, so index 0 is not always pickable.
 func _on_menu_opened() -> void:
-	# Only force-reselect the first item if nothing valid is currently
-	# selected — a locked ingredient sits in the list as a disabled entry
-	# (see populate_ingredient_option_menu()), so this can no longer assume
-	# index 0 is always pickable.
 	if selected != -1 and not is_item_disabled(selected):
 		return
 
@@ -74,55 +62,36 @@ func _on_menu_opened() -> void:
 	if first_index == -1:
 		return
 
-	var popup: PopupMenu = get_popup()
-	popup.set_focused_item(first_index)
+	get_popup().set_focused_item(first_index)
 	select(first_index)
 	var first_id: int = get_item_id(first_index)
-
 	if first_id != -1:
 		GUISignals.active_ingredient_changed.emit(first_id)
 
 
-## Rebuilds the list and defaults the selection to the first unlocked item —
-## called on _ready() and whenever the tab selector switches target_type
-## (ingredient_type_selector.gd), both cases where a fresh default selection
-## is correct. See _on_brewery_state_changed() for the one case (a
-## reputation change mid-shop) where the current selection must be
-## preserved instead.
+## Rebuilds and selects the first unlocked item: on _ready() and when the tab selector
+## switches target_type.
 func populate_ingredient_option_menu() -> void:
 	_rebuild_items()
 
 	var first_index := _first_enabled_index()
 	if first_index != -1:
 		select(first_index)
-		# Deferred: this can run during _ready(), before ancestor views
-		# (BrewingView/ShopView) have connected active_ingredient_changed —
-		# emitting synchronously here would fire into the void and leave
-		# their slider/label stuck uninitialized until the player manually
-		# reselects. Deferring pushes it past the whole tree's _ready() pass.
+		# Deferred: during _ready() the parent views have not connected
+		# active_ingredient_changed yet, and their slider would stay uninitialised.
 		_on_item_selected.call_deferred(first_index)
 
 
 func _rebuild_items() -> void:
 	clear()
-	var brewery := BrewEngine.current_brewery
-	var reputation : int = brewery.reputation if brewery != null else 0
-
-	# Unlocked items first, then locked ones nearest to unlocking, so the usable
-	# part of a long list sits at the top.
-	var locked : Array[IngredientData] = []
+	var reputation : int = _reputation()
+	var of_type : Array[IngredientData] = []
 	for id in IngredientDatabase.sorted_ids:
 		var ingredient: IngredientData = IngredientDatabase.database[id]
-		if ingredient.type != target_type:
-			continue
-		if reputation < ingredient.min_reputation:
-			locked.append(ingredient)
-		else:
-			_add_ingredient_item(ingredient, false)
-	locked.sort_custom(func(a: IngredientData, b: IngredientData) -> bool:
-		return a.min_reputation < b.min_reputation or (a.min_reputation == b.min_reputation and a.id < b.id))
-	for ingredient in locked:
-		_add_ingredient_item(ingredient, true)
+		if ingredient.type == target_type:
+			of_type.append(ingredient)
+	for ingredient : IngredientData in IngredientMenuOrder.order(of_type, reputation):
+		_add_ingredient_item(ingredient, IngredientMenuOrder.is_locked(ingredient, reputation))
 
 
 func _add_ingredient_item(ingredient : IngredientData, is_locked : bool) -> void:
@@ -130,10 +99,15 @@ func _add_ingredient_item(ingredient : IngredientData, is_locked : bool) -> void
 	var new_item_index: int = get_item_count() - 1
 	set_item_id(new_item_index, ingredient.id)
 	set_item_disabled(new_item_index, is_locked)
-	var tooltip : String = tr(ingredient.description) + "\n" + ingredient.get_stat_string()
+	var tooltip : String = ingredient.get_tooltip_text()
 	if is_locked:
 		tooltip += "\n" + tr(LOCKED_TOOLTIP_FORMAT) % ingredient.min_reputation
 	get_popup().set_item_tooltip(new_item_index, tooltip)
+
+
+func _reputation() -> int:
+	var brewery := BrewEngine.current_brewery
+	return brewery.reputation if brewery != null else 0
 
 
 func _first_enabled_index() -> int:
@@ -145,7 +119,6 @@ func _first_enabled_index() -> int:
 
 func _on_item_selected(index: int) -> void:
 	var selected_id: int = get_item_id(index)
-
 	if selected_id != -1:
 		_sync_own_tooltip(selected_id)
 		GUISignals.active_ingredient_changed.emit(selected_id)
@@ -166,17 +139,13 @@ func _on_global_ingredient_changed(ingredient_id: int) -> void:
 			select(first_index)
 
 
-## Mirrors the popup's per-item tooltip onto the closed button itself, so
-## hovering the collapsed dropdown (not just an open popup item) still shows
-## ingredient info instead of requiring a click.
+## The closed button shows the same info as the popup item, without a click.
 func _sync_own_tooltip(ingredient_id : int) -> void:
 	var ingredient : IngredientData = IngredientDatabase.get_item_by_id(ingredient_id)
 	if ingredient:
-		tooltip_text = tr(ingredient.description) + "\n" + ingredient.get_stat_string()
+		tooltip_text = ingredient.get_tooltip_text()
 
 
-## Some ingredient descriptions run long enough to render wider than the
-## game's 640px base viewport under Godot's default (non-wrapping) tooltip —
-## see TooltipFactory.
+## Some descriptions are wider than the 640 px viewport with Godot's default tooltip.
 func _make_custom_tooltip(for_text: String) -> Object:
 	return TooltipFactory.make_wrapped_tooltip(for_text)
