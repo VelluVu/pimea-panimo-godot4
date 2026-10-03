@@ -7,14 +7,6 @@ enum BarFightTrigger { RANDOM, NOT_ENOUGH_BEER, BOUGHT_MANY }
 const DEFAULT_TITLE: String = "Asiakas"
 const DEFAULT_NAMES: Array[String] = ["Matti", "Maija", "Pekka", "Liisa", "Antti"]
 
-## Flat tip floor per quality point, so a clear overshoot is felt on cheap styles
-## where the proportional tip rounds to nothing.
-const MIN_TIP_PER_QUALITY_POINT : float = 1.0
-## Caps the reputation a sale earns for quality above this customer's bar. Uncapped,
-## customers with a very low bar (Opiskelija, Raksamies) gave almost double reputation
-## for any decent beer, so early reputation came far too easily. Penalties stay uncapped.
-const QUALITY_REPUTATION_BONUS_MAX : int = 2
-
 @export_group("Customer Profile")
 @export var customer_name: String = "Anonyymi"
 @export var title: String = ""
@@ -193,78 +185,6 @@ func minds_purity_law(batch: BrewBatch) -> bool:
 	return not dialogue_purity_law_broken.is_empty() and batch.spice_bonus < 0.0
 
 
-## This customer's reaction to a batch, as a dictionary of CustomerManager.KEY_* values.
-## The caller passes `style_base_price`, so no autoload is needed here. Every customer
-## pays the same fixed price for a style: match and quality only move reputation and risk,
-## plus a tip when quality exceeds this customer's own bar.
+## See SaleEvaluation. The caller passes `style_base_price`, so no autoload is needed.
 func evaluate_brew_batch(batch: BrewBatch, style_base_price: float = 3.0) -> Dictionary:
-	var style: BeerStyle.Style = batch.beer_style.style
-	var quality: float = batch.current_quality
-	var score: float = get_preference_score(style)
-
-	var rep_change: int = 0
-	var avi_change: int = 1
-	var response_text: String = ""
-	var delighted: bool = false
-
-	if quality < min_quality:
-		rep_change = rep_bad_quality
-		avi_change = risk_bad_quality
-		response_text = tr(dialogue_reject)
-	elif score >= 1.0:
-		delighted = true
-		rep_change = rep_primary_style
-		avi_change = roundi(risk_primary_style * primary_match_risk_multiplier)
-		response_text = tr(dialogue_success)
-	elif score >= 0.5:
-		rep_change = rep_secondary_style
-		avi_change = risk_secondary_style
-		response_text = tr(dialogue_fallback)
-	else:
-		rep_change = rep_wrong_style
-		avi_change = risk_wrong_style
-		response_text = tr(dialogue_wrong_style)
-
-	# Quality effect on top of the branch: distance from this customer's min_quality, either
-	# way. Zero at the bar, positive above it (extra reputation, less risk) and negative in
-	# the bad-quality branch (the worse the miss, the harsher the penalty).
-	var quality_margin : float = quality - min_quality
-	rep_change += mini(roundi(quality_margin * quality_reputation_sensitivity), QUALITY_REPUTATION_BONUS_MAX)
-
-	var risk_adjustment : int = roundi(quality_margin * quality_risk_sensitivity)
-	# Floor at 0 only for normally risky values, so quality can cancel a sale's risk but not
-	# turn it into a reward. A deliberately negative flat risk (Zgen's alcohol-free favourites
-	# de-risk the LVV meter) keeps working past 0.
-	if avi_change > 0:
-		avi_change = maxi(0, avi_change - risk_adjustment)
-	else:
-		avi_change -= risk_adjustment
-
-	# Fixed price snapped to 10 cents (money is tracked to one decimal), floored at 0.1 so
-	# a sale is never free.
-	var income : float = maxf(0.1, snappedf(style_base_price, 0.1))
-
-	# Tip only above the bar, scaled by budget_multiplier. MIN_TIP_PER_QUALITY_POINT is a
-	# price-independent floor so an overshoot on a cheap style is not rounded away; the
-	# proportional formula wins once income is high. Sensitivity <= 0 means no tip at all,
-	# checked first so the flat floor cannot tip such a customer.
-	var tip : float = 0.0
-	if quality_margin > 0.0 and quality_tip_sensitivity > 0.0:
-		var proportional_tip : float = income * quality_margin * quality_tip_sensitivity
-		var floor_tip : float = quality_margin * MIN_TIP_PER_QUALITY_POINT
-		tip = maxf(0.0, snappedf(max(proportional_tip, floor_tip) * budget_multiplier, 0.1))
-
-	if minds_purity_law(batch):
-		rep_change = rep_purity_law_broken
-		tip = 0.0
-		delighted = false
-		response_text = tr(dialogue_purity_law_broken)
-
-	return {
-		CustomerManager.KEY_INCOME: income,
-		CustomerManager.KEY_TIP: tip,
-		CustomerManager.KEY_REPUTATION: rep_change,
-		CustomerManager.KEY_RISK: avi_change,
-		CustomerManager.KEY_RESPONSE: response_text,
-		CustomerManager.KEY_DELIGHTED: delighted
-	}
+	return SaleEvaluation.evaluate(self, batch, style_base_price)
