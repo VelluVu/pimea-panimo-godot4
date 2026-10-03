@@ -10,6 +10,8 @@ const HOP_DIVERSITY_STEP : float = 0.05
 const HOP_DIVERSITY_MAX : float = 0.15
 const HOP_BALANCE_WEIGHT : float = 0.1
 const FLAVOR_MATCH_BONUS : float = 0.1
+const SPICE_MATCH_STEP : float = 0.05
+const SPICE_MATCH_MAX : float = 0.1
 const MIN_MULTIPLIER : float = 0.5
 const MAX_MULTIPLIER : float = 1.5
 
@@ -48,9 +50,17 @@ static func flavor_matched(mixture : BrewMixture, beer_style : BeerStyle) -> boo
 			and mixture.hop_profiles.has(beer_style.preferred_hop_profile)
 
 
-static func multiplier(mixture : BrewMixture, precision : float, balance_bonus : float, flavor_match : bool) -> float:
+static func spice_bonus(mixture : BrewMixture, beer_style : BeerStyle) -> float:
+	var matched : int = 0
+	for spice_id : int in beer_style.preferred_spice_ids:
+		if mixture.spice_ids.has(spice_id):
+			matched += 1
+	return minf(matched * SPICE_MATCH_STEP, SPICE_MATCH_MAX)
+
+
+static func multiplier(mixture : BrewMixture, precision : float, balance_bonus : float, flavor_match : bool, spice_match_bonus : float = 0.0) -> float:
 	var value : float = 1.0 + (precision - NEUTRAL_PRECISION) * PRECISION_WEIGHT
-	value += hop_diversity_bonus(mixture) + balance_bonus
+	value += hop_diversity_bonus(mixture) + balance_bonus + spice_match_bonus
 	if flavor_match:
 		value += FLAVOR_MATCH_BONUS
 	return clampf(value, MIN_MULTIPLIER, MAX_MULTIPLIER)

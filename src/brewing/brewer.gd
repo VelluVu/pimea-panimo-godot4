@@ -70,6 +70,7 @@ func start_brew() -> void:
 	new_batch.hop_diversity_count = brew_report.hop_diversity_count
 	new_batch.hop_balance_bonus = brew_report.hop_balance_bonus
 	new_batch.flavor_matched = brew_report.flavor_matched
+	new_batch.spice_bonus = brew_report.spice_bonus
 	new_batch.peak_days_multiplier = brewery.stats.multiplier(PerkStats.PEAK_SPEED)
 	new_batch.decline_rate_multiplier = brewery.stats.multiplier(PerkStats.DECLINE_RATE)
 

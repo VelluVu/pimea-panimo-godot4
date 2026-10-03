@@ -12,18 +12,22 @@ const LOCKED_ROW_FORMAT : String = "??? (%.1f%% ABV) – vaatii: hiiva %s, vähi
 const HOP_HINT_FORMAT : String = "\nSuosikkihumala: %s"
 const MALT_HINT_FORMAT : String = "\nVaadittu mallas: %s"
 const REQUIRED_SPICE_HINT_FORMAT : String = "\nVaatii myös: %s"
+const PREFERRED_SPICES_HINT_FORMAT : String = "\nSopivat mausteet: %s"
 const COLOR_HINT_FORMAT : String = "\nVäri: %s"
 const BITTERNESS_HINT_FORMAT : String = "\nKatkeruus: %s"
 const MALT_BLEND_HINT : String = "\nVaatii mallasseoksen"
 
 
-static func known_row(beer_style : BeerStyle, yeast_name : String, required_malt_name : String, required_spice_name : String = "") -> String:
+static func known_row(beer_style : BeerStyle, yeast_name : String, required_malt_name : String, required_spice_name : String = "", preferred_spice_names : String = "") -> String:
 	var text : String = UiText.of(KNOWN_ROW_FORMAT) % [
 		UiText.of(beer_style.style_name), beer_style.abv,
 		beer_style.min_ebc, beer_style.max_ebc, beer_style.min_ibu, beer_style.max_ibu,
 		yeast_name,
 	]
-	return text + _hop_and_malt_hints(beer_style, required_malt_name, required_spice_name)
+	text += _hop_and_malt_hints(beer_style, required_malt_name, required_spice_name)
+	if not preferred_spice_names.is_empty():
+		text += UiText.of(PREFERRED_SPICES_HINT_FORMAT) % preferred_spice_names
+	return text
 
 
 ## `needs_malt_blend` only matters for a style with no single required malt.

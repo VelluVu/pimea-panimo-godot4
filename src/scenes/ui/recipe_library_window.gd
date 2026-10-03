@@ -91,7 +91,7 @@ func _build_known_style_row(beer_style : BeerStyle) -> Button:
 	row.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	row.add_theme_font_size_override("font_size", ROW_FONT_SIZE)
 	row.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	row.text = RecipeLibraryText.known_row(beer_style, _ingredient_name(beer_style.required_yeast_id), _required_malt_name(beer_style), _required_spice_name(beer_style))
+	row.text = RecipeLibraryText.known_row(beer_style, _ingredient_name(beer_style.required_yeast_id), _required_malt_name(beer_style), _required_spice_name(beer_style), _preferred_spice_names(beer_style))
 	row.pressed.connect(_select_style.bind(beer_style.style))
 	return row
 
@@ -149,6 +149,13 @@ func _build_recipe_row(recipe : BrewRecipe, brewable : bool) -> Control:
 
 
 ## Empty for a style with no single required malt, which the row text ignores.
+func _preferred_spice_names(beer_style : BeerStyle) -> String:
+	var names : PackedStringArray = []
+	for spice_id : int in beer_style.preferred_spice_ids:
+		names.append(_ingredient_name(spice_id))
+	return ", ".join(names)
+
+
 func _required_spice_name(beer_style : BeerStyle) -> String:
 	if beer_style.required_spice_id == BrewMixture.NO_REQUIRED_SPICE:
 		return ""

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="IngredientData" format=3]
+
+[ext_resource type="Script" uid="uid://dniwiyu5ynp71" path="res://src/brewing/ingredient_data.gd" id="1_liquorice_root"]
+
+[resource]
+script = ExtResource("1_liquorice_root")
+id = 405
+name = "Lakritsijuuri"
+description = "Kuivattua lakritsijuurta. Tummiin oluisiin tulee makeaa, hieman salmiakkista syvyyttä."
+base_price = 2
+unit = 2
+type = 3
+min_reputation = 25
+metadata/_custom_type_script = "uid://dniwiyu5ynp71"

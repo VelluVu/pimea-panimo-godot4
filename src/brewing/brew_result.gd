@@ -18,3 +18,4 @@ extends Resource
 @export var hop_diversity_count : int = 0
 @export var hop_balance_bonus : float = 0.0
 @export var flavor_matched : bool = false
+@export var spice_bonus : float = 0.0

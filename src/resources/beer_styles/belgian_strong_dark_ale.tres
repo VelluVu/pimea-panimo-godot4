@@ -6,6 +6,7 @@
 script = ExtResource("1_strongdark")
 style_name = "Belgian Strong Dark Ale"
 style = 16
+preferred_spice_ids = Array[int]([400])
 abv = 9.0
 profit_margin_multiplier = 1.4
 fixed_price_per_bottle = 5.0

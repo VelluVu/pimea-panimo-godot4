@@ -77,10 +77,12 @@ Olosuhteet: %s,Conditions: %s,src/autoload/string_container.gd
 "Osumatarkkuus: %s%%
 Humalalajeja käytetty: %s
 Humalatasapaino-bonus: %s%%
-Makuosuma: %s","Precision: %s%%
+Makuosuma: %s
+Maustebonus: %s%%","Precision: %s%%
 Hop varieties used: %s
 Hop balance bonus: %s%%
-Flavour match: %s",src/autoload/string_container.gd
+Flavour match: %s
+Spice bonus: %s%%",src/autoload/string_container.gd
 Pale Ale,Pale Ale,src/autoload/string_container.gd
 Piilotettuja eriä ratsiassa: %d,Batches hidden in a raid: %d,src/autoload/string_container.gd
 Pullosaanto: %+d %%,Bottle yield: %+d %%,src/autoload/string_container.gd
@@ -228,8 +230,24 @@ Avotulella savustettu mallas joka tuo olueen savuisen maun,Malt smoked over an o
 Savumallas,Smoked Malt,src/resources/ingredients/malts/smoked_malt.tres
 Vehnämallas,Wheat Malt,src/resources/ingredients/malts/wheat_malt.tres
 Vehnästä valmistettu mallas joka tekee oluesta samean ja pehmeän,Malt made from wheat that makes beer hazy and soft,src/resources/ingredients/malts/wheat_malt.tres
+Kaakaonibsit,Cacao Nibs,src/resources/ingredients/spices/cacao_nibs.tres
+Paahdettuja kaakaopavun paloja. Tuovat stouttiin ja Baltic Portteriin tummaa suklaata.,Roasted bits of cacao bean. They bring dark chocolate to stouts and Baltic Porter.,src/resources/ingredients/spices/cacao_nibs.tres
+"Belgialaisten luostarien salaisuus. Kirkastettua sokeria, joka antaa Dubbelille ja vahvalle tummalle belgialaiselle pehmeän, karamellisen syvyyden.","The secret of Belgian monasteries. Clarified sugar that gives Dubbel and Belgian Strong Dark Ale a smooth, caramel depth.",src/resources/ingredients/spices/candi_sugar.tres
+Kandisokeri,Candi Sugar,src/resources/ingredients/spices/candi_sugar.tres
+Kookoshiutaleet,Coconut Flakes,src/resources/ingredients/spices/coconut_flakes.tres
+Paahdettuja kookoshiutaleita. Imperial Stout maistuu niiden kanssa jälkiruoalta.,"Toasted coconut flakes. With them, Imperial Stout tastes like dessert.",src/resources/ingredients/spices/coconut_flakes.tres
+Kahvi,Coffee,src/resources/ingredients/spices/coffee.tres
+Tummaksi paahdettuja papuja. Baltic Portteri ja Tumma Lager heräävät niistä kuin maanantaiaamuna.,Dark roasted beans. Baltic Porter and Dark Lager wake up to them like on a Monday morning.,src/resources/ingredients/spices/coffee.tres
+Korianteri,Coriander,src/resources/ingredients/spices/coriander.tres
+"Murskattuja korianterinsiemeniä. Witbier ja Saison saavat niistä raikkaan, mausteisen tuoksun.","Crushed coriander seeds. They give Witbier and Saison a fresh, spicy aroma.",src/resources/ingredients/spices/coriander.tres
 Katajanoksat,Juniper Branches,src/resources/ingredients/spices/juniper.tres
 "Tuoreita katajanoksia. Sahti siivilöidään niiden läpi, ja ne tuovat pihkaisen, metsäisen maun.","Fresh juniper branches. Sahti is filtered through them, and they add a resinous, foresty flavour.",src/resources/ingredients/spices/juniper.tres
+"Kuivattua lakritsijuurta. Tummiin oluisiin tulee makeaa, hieman salmiakkista syvyyttä.",Dried liquorice root. Dark beers get a sweet depth with a hint of salmiakki.,src/resources/ingredients/spices/liquorice_root.tres
+Lakritsijuuri,Liquorice Root,src/resources/ingredients/spices/liquorice_root.tres
+Kuivattua karvasappelsiinin kuorta. Witbierin ja Saisonin vanha ystävä.,Dried bitter orange peel. An old friend of Witbier and Saison.,src/resources/ingredients/spices/orange_peel.tres
+Pomeranssinkuori,Bitter Orange Peel,src/resources/ingredients/spices/orange_peel.tres
+"Kuivattua ruisleipää, kuten mummolla. Kotikalja saa siitä aidon leipäisen maun.","Dried rye bread, just like at grandma's. It gives kotikalja a real bready taste.",src/resources/ingredients/spices/rye_bread.tres
+Ruisleipä,Rye Bread,src/resources/ingredients/spices/rye_bread.tres
 Alehiiva,Ale Yeast,src/resources/ingredients/yeasts/ale_yeast.tres
 Pintahiiva tuottaa aromikkaan oluen,A top-fermenting yeast that makes an aromatic beer,src/resources/ingredients/yeasts/ale_yeast.tres
 Alkoholiton ale hiiva,Non-alcoholic Ale Yeast,src/resources/ingredients/yeasts/alkoholiton_ale_hiiva.tres
@@ -599,6 +617,9 @@ Vaatii ensin: %s,Requires first: %s,src/ui/olutoppi_text.gd
 "
 Katkeruus: %s","
 Bitterness: %s",src/ui/recipe_library_text.gd
+"
+Sopivat mausteet: %s","
+Good spices: %s",src/ui/recipe_library_text.gd
 "
 Suosikkihumala: %s","
 Favourite hop: %s",src/ui/recipe_library_text.gd

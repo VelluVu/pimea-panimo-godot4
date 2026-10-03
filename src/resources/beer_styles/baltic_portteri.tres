@@ -6,6 +6,7 @@
 script = ExtResource("1_balticportteri")
 style_name = "Baltic Portteri"
 style = 9
+preferred_spice_ids = Array[int]([403, 405, 406])
 abv = 7.5
 profit_margin_multiplier = 1.3
 fixed_price_per_bottle = 4.0

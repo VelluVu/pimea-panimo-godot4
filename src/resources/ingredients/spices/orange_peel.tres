@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="IngredientData" format=3]
+
+[ext_resource type="Script" uid="uid://dniwiyu5ynp71" path="res://src/brewing/ingredient_data.gd" id="1_orange_peel"]
+
+[resource]
+script = ExtResource("1_orange_peel")
+id = 402
+name = "Pomeranssinkuori"
+description = "Kuivattua karvasappelsiinin kuorta. Witbierin ja Saisonin vanha ystävä."
+base_price = 1
+unit = 2
+type = 3
+min_reputation = 10
+metadata/_custom_type_script = "uid://dniwiyu5ynp71"

@@ -5,6 +5,7 @@
 [resource]
 script = ExtResource("1_qu52c")
 style_name = "Kotikalja"
+preferred_spice_ids = Array[int]([407])
 abv = 2.8
 fixed_price_per_bottle = 1.0
 required_yeast_id = 300

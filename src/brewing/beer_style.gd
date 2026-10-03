@@ -41,6 +41,8 @@ enum Style {
 ## -1 = none. A spice that must be on the table, like required_malt_id (Sahti
 ## needs juniper). It also counts as the style's flavour match in BrewQuality.
 @export var required_spice_id: int = -1
+## Optional spices that each add BrewQuality.SPICE_MATCH_STEP when on the table.
+@export var preferred_spice_ids: Array[int] = []
 @export var preferred_hop_profile: HopData.FlavorProfile = HopData.FlavorProfile.NONE
 
 @export_group("Alkoholi")

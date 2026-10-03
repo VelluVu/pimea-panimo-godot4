@@ -21,6 +21,7 @@ extends Resource
 @export var hop_diversity_count : int = 0
 @export var hop_balance_bonus : float = 0.0
 @export var flavor_matched : bool = false
+@export var spice_bonus : float = 0.0
 
 ## Snapshotted once from Brewery.get_peak_speed_multiplier()/
 ## get_decline_rate_multiplier() when this batch is brewed (see
@@ -124,7 +125,8 @@ func get_quality_breakdown_tooltip() -> String:
 		roundi(precision_score * 100),
 		hop_diversity_count,
 		roundi(hop_balance_bonus * 100),
-		flavor_matched_string
+		flavor_matched_string,
+		roundi(spice_bonus * 100),
 	]
 
 

@@ -6,6 +6,7 @@
 script = ExtResource("1_imperialstout")
 style_name = "Imperial Stout"
 style = 19
+preferred_spice_ids = Array[int]([403, 404, 405])
 abv = 9.5
 profit_margin_multiplier = 1.5
 fixed_price_per_bottle = 6.0

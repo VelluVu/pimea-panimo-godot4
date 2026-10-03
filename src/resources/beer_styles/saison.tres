@@ -5,6 +5,7 @@
 [resource]
 script = ExtResource("1_saison")
 style_name = "Saison"
+preferred_spice_ids = Array[int]([401, 402])
 style = 14
 abv = 6.0
 profit_margin_multiplier = 1.15
