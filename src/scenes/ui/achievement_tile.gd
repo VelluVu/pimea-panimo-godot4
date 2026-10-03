@@ -23,9 +23,9 @@ func setup(achievement: AchievementData, unlocked: bool, progress: int) -> void:
 	modulate = Color.WHITE if unlocked else Color(1, 1, 1, 0.8)
 
 	if unlocked:
-		tooltip_text = tr(UNLOCKED_TOOLTIP_FORMAT) % [achievement.title, achievement.description]
+		tooltip_text = tr(UNLOCKED_TOOLTIP_FORMAT) % [tr(achievement.title), tr(achievement.description)]
 	else:
-		tooltip_text = tr(LOCKED_TOOLTIP_FORMAT) % [achievement.title, achievement.description, progress, achievement.target_value]
+		tooltip_text = tr(LOCKED_TOOLTIP_FORMAT) % [tr(achievement.title), tr(achievement.description), progress, achievement.target_value]
 
 	var column := VBoxContainer.new()
 	column.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -38,7 +38,7 @@ func setup(achievement: AchievementData, unlocked: bool, progress: int) -> void:
 	icon_holder.add_child(_build_icon(color, UNLOCKED_ICON_GLYPH if unlocked else LOCKED_ICON_GLYPH))
 
 	var title_label := Label.new()
-	title_label.text = achievement.title
+	title_label.text = tr(achievement.title)
 	title_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	title_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title_label.add_theme_font_size_override("font_size", TITLE_FONT_SIZE)

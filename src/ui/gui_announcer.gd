@@ -137,7 +137,7 @@ func _on_style_discovered(style: int) -> void:
 
 
 func _on_achievement_unlocked(_achievement_id: String, title: String) -> void:
-	_show_toast(tr(ACHIEVEMENT_UNLOCKED_TOAST_FORMAT) % title)
+	_show_toast(tr(ACHIEVEMENT_UNLOCKED_TOAST_FORMAT) % tr(title))
 
 
 func _on_customer_unlocked(title: String) -> void:
@@ -184,7 +184,7 @@ func _on_regular_status_changed(customer_title: String, is_regular: bool) -> voi
 
 
 func _on_group_visit_announced(banner_text: String) -> void:
-	_group_visit_banner.present(banner_text)
+	_group_visit_banner.present(tr(banner_text))
 
 
 ## The day's forecast banner (see DayEventManager). It waits for the recap window,
@@ -199,7 +199,7 @@ func _on_day_event_announced(event: DayEventData) -> void:
 	if serial != _day_event_announce_serial:
 		return
 
-	_day_event_banner.present(event.announcement_text)
+	_day_event_banner.present(tr(event.announcement_text))
 
 
 ## Dismisses the hint once the clock starts (first brew done). One-shot, and hands

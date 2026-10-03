@@ -39,6 +39,10 @@ CONTENT_FIELDS = {
     "src/resources/cellar_upgrades": ("perk_name", "description"),
     "src/resources/perks": ("perk_name", "description"),
     "src/resources/meta_unlocks": ("perk_name", "description"),
+    "src/resources/achievements": ("title", "description"),
+    "src/resources/day_events": ("announcement_text", "effect_toast_format"),
+    "src/resources/group_events": ("banner_text",),
+    "src/resources/special_events": ("event_caller_name", "intro_dialogue", "success_dialogue", "fail_dialogue", "reject_dialogue"),
 }
 SKIP_DIRS = ["src/console", "src/systems/console", "src/resources", "addons", "tests", "dev"]
 

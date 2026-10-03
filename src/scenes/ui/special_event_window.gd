@@ -36,7 +36,7 @@ func initialize_window(p_data: SpecialEventData) -> void:
 	time_left = event_data.timeout_seconds
 	progress_bar.max_value = event_data.timeout_seconds
 	progress_bar.value = event_data.timeout_seconds
-	text_label.text = event_data.event_caller_name + ": " + event_data.intro_dialogue
+	text_label.text = tr(event_data.event_caller_name) + ": " + tr(event_data.intro_dialogue)
 	_resize_to_fit_content()
 
 
@@ -52,7 +52,7 @@ func _resize_to_fit_content() -> void:
 func _on_joo_button_pressed() -> void:
 	_hide_button()
 	var response: String = SpecialEventManager.process_accept(event_data)
-	text_label.text = event_data.event_caller_name + ": " + response
+	text_label.text = tr(event_data.event_caller_name) + ": " + tr(response)
 	_start_fade_out()
 
 
@@ -62,7 +62,7 @@ func _on_joo_button_pressed() -> void:
 func _timeout_event() -> void:
 	_hide_button()
 	var response: String = SpecialEventManager.process_reject(event_data)
-	text_label.text = event_data.event_caller_name + ": " + response
+	text_label.text = tr(event_data.event_caller_name) + ": " + tr(response)
 	_start_fade_out()
 
 

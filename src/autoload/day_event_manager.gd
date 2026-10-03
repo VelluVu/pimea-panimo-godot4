@@ -94,7 +94,7 @@ func _apply_direct_effect(event : DayEventData) -> void:
 	var removed : int = DayEventEffects.apply(brewery.inventory, event)
 	if removed <= 0:
 		return
-	BrewerySignals.day_event_effect_triggered.emit(event.effect_toast_format % removed)
+	BrewerySignals.day_event_effect_triggered.emit(tr(event.effect_toast_format) % removed)
 	BrewerySignals.brewery_state_changed.emit(brewery)
 
 
