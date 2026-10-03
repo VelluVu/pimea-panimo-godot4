@@ -68,6 +68,7 @@ Maanläheinen,Earthy,src/autoload/string_container.gd
 Mafiosojen esiintyvyys: %+d %%,Mafioso visits: %+d %%,src/autoload/string_container.gd
 Mahdollisuus tuplatippiin: %d %%,Double tip chance: %d %%,src/autoload/string_container.gd
 Maineen kertymä: +%d %%,Reputation gain: +%d %%,src/autoload/string_container.gd
+Maitostout,Milk Stout,src/autoload/string_container.gd
 Maku: %s,Flavour: %s,src/autoload/string_container.gd
 Mestarillinen,Masterful,src/autoload/string_container.gd
 Mäntyinen,Piney,src/autoload/string_container.gd
@@ -223,6 +224,8 @@ Pane hyllyyn ensimmäinen erä tyyliä IPA.,Put your first batch of IPA on the s
 Tyyli löydetty: IPA,Style discovered: IPA,src/resources/achievements/tyyli_ipa.tres
 Pane hyllyyn ensimmäinen erä tyyliä Kotikalja.,Put your first batch of Kotikalja on the shelf.,src/resources/achievements/tyyli_kotikalja.tres
 Tyyli löydetty: Kotikalja,Style discovered: Kotikalja,src/resources/achievements/tyyli_kotikalja.tres
+Pane hyllyyn ensimmäinen erä tyyliä Maitostout.,Put your first batch of Milk Stout on the shelf.,src/resources/achievements/tyyli_maitostout.tres
+Tyyli löydetty: Maitostout,Style discovered: Milk Stout,src/resources/achievements/tyyli_maitostout.tres
 Pane hyllyyn ensimmäinen erä tyyliä Märzen.,Put your first batch of Märzen on the shelf.,src/resources/achievements/tyyli_marzen.tres
 Tyyli löydetty: Märzen,Style discovered: Märzen,src/resources/achievements/tyyli_marzen.tres
 Pane hyllyyn ensimmäinen erä tyyliä Pale Ale.,Put your first batch of Pale Ale on the shelf.,src/resources/achievements/tyyli_paleale.tres
@@ -365,6 +368,15 @@ Don lähettää kiitokset.,The Don sends his thanks.,src/resources/customers/maf
 "Don pitää tästä. Homma hoidossa, ei tarvii huolehtia tarkastajista hetkeen.","The Don likes this. It's handled, no need to worry about inspectors for a while.",src/resources/customers/mafioso.tres
 Käy tällä kertaa.,It will do this time.,src/resources/customers/mafioso.tres
 Tämä oli virhe sinulta.,That was a mistake on your part.,src/resources/customers/mafioso.tres
+%s... sopisiko se myrskyiseen yöhön?,%s... would it suit a stormy night?,src/resources/customers/merimies.tres
+"Ahoi! Laiva lähtee aamulla. Onko porttia, oikeaa Itämeren mustaa?","Ahoy! The ship sails in the morning. Got any porter, the real black of the Baltic?",src/resources/customers/merimies.tres
+"Ei ihan porttia, mutta tummaa on. Kelpaa merimiehelle.","Not quite porter, but it's dark. Good enough for a sailor.",src/resources/customers/merimies.tres
+Ei porttia eikä mitään tummaa? Lähden takaisin laivaan.,No porter and nothing dark? I'm going back to the ship.,src/resources/customers/merimies.tres
+Merimies,Sailor,src/resources/customers/merimies.tres
+Tyhjät hyllyt kuin laivan ruuma kotimatkalla...,Shelves as empty as a ship's hold on the way home...,src/resources/customers/merimies.tres
+Tällä kelpaa purjehtia! Kuin kotisatamaan olisi palannut.,Now this is something to sail on! Like coming back to my home port.,src/resources/customers/merimies.tres
+"Tämmöistä juovat maakravut. No, menköön.","Landlubbers drink this stuff. Oh well, it'll do.",src/resources/customers/merimies.tres
+Tämä maistuu pilssivedeltä. Viekää takaisin.,This tastes like bilge water. Take it back.,src/resources/customers/merimies.tres
 "Ei tää sitä ollut mitä pyysin, mutta eiköhän tästäkin jotain irtoa.","Not what I asked for, but I suppose something will come of it.",src/resources/customers/mummeli.tres
 Ei täällä ollu mitään kunnon naisen juomaa. Palaan kun ootte oppineet jotain.,There was nothing here fit for a proper lady. I'll come back when you've learned something.,src/resources/customers/mummeli.tres
 "Hyvänen aika, eikö teillä ole mitään kunnon juotavaa...","Good gracious, don't you have anything proper to drink...",src/resources/customers/mummeli.tres
@@ -532,6 +544,8 @@ Korianteri,Coriander,src/resources/ingredients/spices/coriander.tres
 "Murskattuja korianterinsiemeniä. Witbier ja Saison saavat niistä raikkaan, mausteisen tuoksun.","Crushed coriander seeds. They give Witbier and Saison a fresh, spicy aroma.",src/resources/ingredients/spices/coriander.tres
 Katajanoksat,Juniper Branches,src/resources/ingredients/spices/juniper.tres
 "Tuoreita katajanoksia. Sahti siivilöidään niiden läpi, ja ne tuovat pihkaisen, metsäisen maun.","Fresh juniper branches. Sahti is filtered through them, and they add a resinous, foresty flavour.",src/resources/ingredients/spices/juniper.tres
+Laktoosi,Lactose,src/resources/ingredients/spices/lactose.tres
+"Maitosokeria, jota hiiva ei syö. Maitostout saa siitä täyteläisen, makean pehmeyden.","Milk sugar that yeast won't eat. It gives Milk Stout a full, sweet smoothness.",src/resources/ingredients/spices/lactose.tres
 "Kuivattua lakritsijuurta. Tummiin oluisiin tulee makeaa, hieman salmiakkista syvyyttä.",Dried liquorice root. Dark beers get a sweet depth with a hint of salmiakki.,src/resources/ingredients/spices/liquorice_root.tres
 Lakritsijuuri,Liquorice Root,src/resources/ingredients/spices/liquorice_root.tres
 Kuivattua karvasappelsiinin kuorta. Witbierin ja Saisonin vanha ystävä.,Dried bitter orange peel. An old friend of Witbier and Saison.,src/resources/ingredients/spices/orange_peel.tres
