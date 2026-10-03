@@ -122,7 +122,7 @@ func _queue_floor_walk(tween: Tween, from_pos: Vector2, to_pos: Vector2) -> void
 
 func _on_reached_counter() -> void:
 	_play_animation(ANIM_IDLE_UP)
-	var display_time := _say(generated_name + ": " + customer_data.dialogue_intro, true)
+	var display_time := _say(generated_name + ": " + tr(customer_data.dialogue_intro), true)
 	get_tree().create_timer(display_time).timeout.connect(_on_preview_timeout)
 
 
@@ -131,9 +131,9 @@ func _on_preview_timeout() -> void:
 	var previewed_batch : BrewBatch = CustomerManager.find_best_batch_for(customer_data)
 	var preview_text : String
 	if previewed_batch != null:
-		preview_text = customer_data.dialogue_preview_format % previewed_batch.get_style_name()
+		preview_text = tr(customer_data.dialogue_preview_format) % previewed_batch.get_style_name()
 	else:
-		preview_text = customer_data.dialogue_nothing_available
+		preview_text = tr(customer_data.dialogue_nothing_available)
 
 	var display_time := _say(generated_name + ": " + preview_text, true)
 	get_tree().create_timer(display_time).timeout.connect(_on_sale_timeout)

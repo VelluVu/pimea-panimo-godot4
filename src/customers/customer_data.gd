@@ -138,8 +138,8 @@ const QUALITY_REPUTATION_BONUS_MAX : int = 2
 
 func generate_display_name() -> String:
 	if title == "" or first_names.is_empty():
-		return DEFAULT_TITLE + " " + DEFAULT_NAMES.pick_random()
-	return title + " " + first_names.pick_random()
+		return tr(DEFAULT_TITLE) + " " + DEFAULT_NAMES.pick_random()
+	return tr(title) + " " + first_names.pick_random()
 
 
 ## An accepted style that is not a favourite scores like the secondary one: a customer
@@ -201,20 +201,20 @@ func evaluate_brew_batch(batch: BrewBatch, style_base_price: float = 3.0) -> Dic
 	if quality < min_quality:
 		rep_change = rep_bad_quality
 		avi_change = risk_bad_quality
-		response_text = dialogue_reject
+		response_text = tr(dialogue_reject)
 	elif score >= 1.0:
 		delighted = true
 		rep_change = rep_primary_style
 		avi_change = roundi(risk_primary_style * primary_match_risk_multiplier)
-		response_text = dialogue_success
+		response_text = tr(dialogue_success)
 	elif score >= 0.5:
 		rep_change = rep_secondary_style
 		avi_change = risk_secondary_style
-		response_text = dialogue_fallback
+		response_text = tr(dialogue_fallback)
 	else:
 		rep_change = rep_wrong_style
 		avi_change = risk_wrong_style
-		response_text = dialogue_wrong_style
+		response_text = tr(dialogue_wrong_style)
 
 	# Quality effect on top of the branch: distance from this customer's min_quality, either
 	# way. Zero at the bar, positive above it (extra reputation, less risk) and negative in

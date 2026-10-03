@@ -270,6 +270,175 @@ Purkki tiskin kulmalla. Tyytyväinen asiakas jättää vähän enemmän.,A jar o
 Tippipurkki,Tip jar,src/resources/cellar_upgrades/8_tippipurkki.tres
 Kuormapyörä,Cargo bike,src/resources/cellar_upgrades/9_kuormapyora.tres
 Viet laatikot baareihin itse. Lähetyksistä ja tukkumyynnistä jää enemmän käteen.,You deliver the crates to the bars yourself. Shipments and bulk sales leave more in your pocket.,src/resources/cellar_upgrades/9_kuormapyora.tres
+"Ai, että ei täällä myydä mitään mitä tietäisin, noh harmin paikka, nähdään vielä...","Oh, so you don't sell anything I'd know about here. Well, what a pity, see you again...",src/resources/customers/agentti.tres
+"Ei aivan sitä mitä etsin, mutta otan tämän näytteeksi.","Not quite what I was looking for, but I'll take this as a sample.",src/resources/customers/agentti.tres
+Ei mitään epäilyttävää? Raporttiin tulee aika ohut luku...,Nothing suspicious? That'll make a rather thin chapter in my report...,src/resources/customers/agentti.tres
+"Hmm, %s. Otan pienen näytteen... tutkimuksia varten.","Hmm, %s. I'll take a small sample... for research purposes.",src/resources/customers/agentti.tres
+Iltaa. Kuulin että täältä saa jotain laittomasti.,Evening. I heard you can get something illegal here.,src/resources/customers/agentti.tres
+Kiinnostavaa. Kirjoitan tämän ylös.,Interesting. I'll write this down.,src/resources/customers/agentti.tres
+Riittää tutkimuksiin.,Good enough for research.,src/resources/customers/agentti.tres
+Selvä. Tämäkään ei mennyt hukkaan.,Fine. This wasn't wasted either.,src/resources/customers/agentti.tres
+Alfagen,Gen Alpha,src/resources/customers/alpha_gen.tres
+"Bro et voi tarjota mulle tota, se on täysin chopped, koko kuppila on npc-energiaa.","Bro you can't serve me that, it's totally chopped, this whole place is NPC energy.",src/resources/customers/alpha_gen.tres
+"Bro tää oli ihan Ohio, ei ollenkaan sitä mitä pyysin, aura meni suoraan negatiiviseks.","Bro this was so Ohio, not what I asked for at all, my aura went straight negative.",src/resources/customers/alpha_gen.tres
+"Bro tää on ihan grimace shake -tasoista, aurapointsit nyt max, tää kuppila on goated fr fr.","Bro this is grimace shake level, aura points maxed, this place is goated fr fr.",src/resources/customers/alpha_gen.tres
+"Bro, toi %s näyttää lowkey goated, otan sen fr fr.","Bro, that %s looks lowkey goated, I'll take it fr fr.",src/resources/customers/alpha_gen.tres
+Ei mitään aurapointsien arvoista? Ihan NPC-meininki...,Nothing worth any aura points? Total NPC vibes...,src/resources/customers/alpha_gen.tres
+"Ei ollu yhtään alkoholitonta, en oo mikään delulu joka pakolla jotain juo, painun Ohioon takas.","There wasn't a single non-alcoholic one, I'm not some delulu who drinks anything, heading back to Ohio.",src/resources/customers/alpha_gen.tres
+"Ihan okei, ei nyt mitään 67-tasoa mut ei tää chopattukaan ollu.","It's alright, not 67-level or anything but it wasn't chopped either.",src/resources/customers/alpha_gen.tres
+"Yo, onks teil alkoholitonta lageria? En oo mikään NPC joka juo mitä sattuu, tarviin aurapointsit kasaan.","Yo, do you have non-alcoholic lager? I'm not some NPC who drinks whatever, I need to stack my aura points.",src/resources/customers/alpha_gen.tres
+"Bestie tää oli ihan Ohio, ei ollenkaan sitä mitä pyysin, aura meni suoraan negatiiviseks.","Bestie this was so Ohio, not what I asked for at all, my aura went straight negative.",src/resources/customers/alpha_gen_naaras.tres
+"Et voi tarjota mulle tota, se on täysin chopped, koko kuppila on npc-energiaa.","You can't serve me that, it's totally chopped, this whole place is NPC energy.",src/resources/customers/alpha_gen_naaras.tres
+"Heyy, onks teil alkoholitonta lageria? En oo mikään NPC joka juo mitä sattuu, tarviin aurapointsit kasaan.","Heyy, do you have non-alcoholic lager? I'm not some NPC who drinks whatever, I need to stack my aura points.",src/resources/customers/alpha_gen_naaras.tres
+"Ohmygod tää on ihan grimace shake -tasoista, aurapointsit nyt max, tää kuppila on goated fr fr.","Ohmygod this is grimace shake level, aura points maxed, this place is goated fr fr.",src/resources/customers/alpha_gen_naaras.tres
+"Ohmygod, toi %s näyttää lowkey goated, otan sen fr fr.","Ohmygod, that %s looks lowkey goated, I'll take it fr fr.",src/resources/customers/alpha_gen_naaras.tres
+ANNA TÄNNE VAHVINTA MITÄ ON!,GIVE ME THE STRONGEST YOU HAVE!,src/resources/customers/barbaari.tres
+Barbaari,Barbarian,src/resources/customers/barbaari.tres
+Barbaari aloitti riehumaan raivoissaan jäädessään ilman sopivaa olutta! Tuhoja kertyy %d kappaleen verran.,"The barbarian went on a rampage, furious at being left without a proper beer! %d things got smashed.",src/resources/customers/barbaari.tres
+"EI RIITÄ VAHVALLE, MUTTA JUON TÄMÄN SILTI!","NOT ENOUGH FOR THE STRONG, BUT I'LL DRINK IT ANYWAY!",src/resources/customers/barbaari.tres
+EI YHTÄÄN VAHVAA OLUTTA?! RAAAAAAAWWWWWWWRRRRR!!,NO STRONG BEER AT ALL?! RAAAAAAAWWWWWWWRRRRR!!,src/resources/customers/barbaari.tres
+HEIKKOA MUTTA KELPAA!,WEAK BUT IT WILL DO!,src/resources/customers/barbaari.tres
+MITÄ?! EI MITÄÄN SOTURILLE KELPAAVAA?!,WHAT?! NOTHING FIT FOR A WARRIOR?!,src/resources/customers/barbaari.tres
+TUO TUOLTA! %s! ANNA SE TÄNNE!,THAT ONE! %s! GIVE IT HERE!,src/resources/customers/barbaari.tres
+TÄMÄ ON OLUTTA MIEHELLE!,THIS IS BEER FOR A MAN!,src/resources/customers/barbaari.tres
+TÄÄ ON VETTÄ! EI KELPAA!,THIS IS WATER! NOT GOOD ENOUGH!,src/resources/customers/barbaari.tres
+EI YHTÄÄN VAHVAA OLUTTA?! LÄHDEN MUUALLE!,NO STRONG BEER AT ALL?! I'M GOING ELSEWHERE!,src/resources/customers/barbaari_naaras.tres
+MITÄ?! EI MITÄÄN SOTURILLE KELPAAVAA?! RAAAAWWWWRRRR!,WHAT?! NOTHING FIT FOR A WARRIOR?! RAAAAWWWWRRRR!,src/resources/customers/barbaari_naaras.tres
+TÄMÄ ON OLUTTA SOTURILLE!,THIS IS BEER FOR A WARRIOR!,src/resources/customers/barbaari_naaras.tres
+ANALYYSI HYVÄKSYTTY. Laatuarvo ylittää raja-arvon.,ANALYSIS APPROVED. Quality value exceeds the threshold.,src/resources/customers/drone.tres
+ANALYYSI: RAJATAPAUS. Kirjataan lievä poikkeama raporttiin.,ANALYSIS: BORDERLINE CASE. Logging a minor deviation in the report.,src/resources/customers/drone.tres
+Ei auditoitavaa näytettä saatavilla. Palaan myöhemmin uudella kierroksella.,No auditable sample available. Returning later on a new round.,src/resources/customers/drone.tres
+HYLÄTTY. Laatuarvo alittaa sallitun toleranssin selvästi.,REJECTED. Quality value clearly below the permitted tolerance.,src/resources/customers/drone.tres
+LAATUTARKASTUS ALOITETTU. Pyydän näytteitä korkeimman saatavilla olevan laadun oluesta.,QUALITY INSPECTION STARTED. Requesting samples of the highest quality beer available.,src/resources/customers/drone.tres
+NÄYTE TUNNISTETTU: %s. Aloitetaan laatuanalyysi...,SAMPLE IDENTIFIED: %s. Starting quality analysis...,src/resources/customers/drone.tres
+SKANNAUS VALMIS. Auditoitavaa näytettä ei löydy...,SCAN COMPLETE. No auditable sample found...,src/resources/customers/drone.tres
+"Tuoteluokka ei vastaa auditoinnin kohdetta, mutta arvo kirjataan silti.","Product category does not match the audit target, but the value is logged anyway.",src/resources/customers/drone.tres
+Hipsteri,Hipster,src/resources/customers/hipsteri.tres
+"Hmm, %s... ihan ok, jos se on oikeasti pienerä.","Hmm, %s... fine, if it's really a small batch.",src/resources/customers/hipsteri.tres
+Kaikki täällä on vähän liian mainstreamia...,Everything here is a bit too mainstream...,src/resources/customers/hipsteri.tres
+Mielenkiintoinen valinta.,Interesting choice.,src/resources/customers/hipsteri.tres
+Onko teillä jotain käsityöläismäistä? Ei mitään massatuotantoa.,Do you have anything artisanal? Nothing mass-produced.,src/resources/customers/hipsteri.tres
+"Tästä puuttuu vähän kompleksisuutta, mutta juon sen.","This lacks a little complexity, but I'll drink it.",src/resources/customers/hipsteri.tres
+Tää on ihan teollisuusjätettä. En koske tähän.,This is industrial waste. I won't touch it.,src/resources/customers/hipsteri.tres
+Vihdoinkin joku joka ymmärtää humalaprofiileja.,Finally someone who understands hop profiles.,src/resources/customers/hipsteri.tres
+"Ei ehkä ihan feed-materiaalia, mutta kyllä tän juo.","Not exactly feed material, but it's drinkable.",src/resources/customers/kesamies.tres
+Ei täällä ollu mitään kesäistä. Täytyy etsiä parempi valokuvapaikka.,Nothing summery here. Gotta find a better photo spot.,src/resources/customers/kesamies.tres
+"Hmm, ei mitään kesäistä, tästä ei tuu hyvää ottosta...","Hmm, nothing summery, this won't make a good shot...",src/resources/customers/kesamies.tres
+Kesämies,Summer Guy,src/resources/customers/kesamies.tres
+Moi! Onks teillä jotain kesäistä ja kuvan arvosta? Pitää saada hyvä ottos tarinaan.,Hi! Got anything summery and photo-worthy? I need a good shot for my story.,src/resources/customers/kesamies.tres
+"No joo, ei ollu ihan se fiilis mitä hain, mut menköön.","Well yeah, not quite the vibe I was after, but fine.",src/resources/customers/kesamies.tres
+"Ooh, %s! Tää näyttää kuvassa tosi hyvältä...","Ooh, %s! This looks so good on camera...",src/resources/customers/kesamies.tres
+"Tää näyttää ihan tunkilta kuvissa, en voi ottaa tätä.","This looks like total junk in photos, I can't take it.",src/resources/customers/kesamies.tres
+"Väri on ihan täydellinen, tää menee suoraan tarinaan!","The colour is just perfect, this goes straight into my story!",src/resources/customers/kesamies.tres
+Hei! Onks teillä jotain kesäistä ja Instaan sopivaa? Pitää saada hyvä ottos tarinaan.,Hey! Got anything summery and Insta-worthy? I need a good shot for my story.,src/resources/customers/kesanainen.tres
+Kesänainen,Summer Girl,src/resources/customers/kesanainen.tres
+"%s, sanotte? Katsotaan, kestääkö se lähemmän tarkastelun...","%s, you say? Let's see if it holds up to closer inspection...",src/resources/customers/kriitikko.tres
+Ei mitään arvostelemisen arvoista. Kirjoitan siitä kolumnin.,Nothing worth reviewing. I'll write a column about it.,src/resources/customers/kriitikko.tres
+"Hyvää päivää. Olen kirjoittamassa arvostelua. Yllättäkää minut, jos osaatte.","Good day. I'm writing a review. Surprise me, if you can.",src/resources/customers/kriitikko.tres
+"Kelvollinen, mutta ei yllätä. Arvosteluni jää harmittoman keskinkertaiseksi.","Decent, but unsurprising. My review will stay harmlessly mediocre.",src/resources/customers/kriitikko.tres
+"Kompleksinen, tasapainoinen, lähes runollinen. Neljä tähteä viidestä, viides on varattu kirjoittajalle itselleen.","Complex, balanced, almost poetic. Four stars out of five, the fifth is reserved for the writer himself.",src/resources/customers/kriitikko.tres
+"Tarjonta on, sanoisinko, niukka. Muistiinpanoni lyhenevät...","The selection is, shall we say, sparse. My notes are getting shorter...",src/resources/customers/kriitikko.tres
+"Tyyli on kyseenalainen, mutta käsityö puhuu puolestaan. Kirjoitan siitä varovasti.","The style is questionable, but the craftsmanship speaks for itself. I'll write about it carefully.",src/resources/customers/kriitikko.tres
+Tämä on arvosteluni kannalta ongelma. Ja teidän kannaltanne vielä isompi.,This is a problem for my review. And an even bigger one for you.,src/resources/customers/kriitikko.tres
+Ei yhteensopivaa tuotetta varastossa. Palaan seuraavalla kierroksella.,No matching product in stock. Returning on the next round.,src/resources/customers/lahettirobotti.tres
+HAKU KÄYNNISSÄ. Tilauskoodille ei löydy vastinetta...,SEARCH IN PROGRESS. No match found for the order code...,src/resources/customers/lahettirobotti.tres
+Hyväksyttävissä rajoissa. Jatkan toimitusreittiäni.,Within acceptable limits. Continuing my delivery route.,src/resources/customers/lahettirobotti.tres
+Lähettirobotti,Delivery Robot,src/resources/customers/lahettirobotti.tres
+SKANNAUS KÄYNNISSÄ. Toimitustehtävä vaatii useita pulloja tämän päivän tilauskoodin mukaan.,SCAN IN PROGRESS. Today's order code requires several bottles for the delivery task.,src/resources/customers/lahettirobotti.tres
+"TEHTÄVÄ SUORITETTU. Kiitos, biologinen yhteistyökumppani.","TASK COMPLETE. Thank you, biological partner.",src/resources/customers/lahettirobotti.tres
+TILAUSKOODI TÄSMÄÄ: %s. Valmistellaan lastausta...,ORDER CODE MATCHES: %s. Preparing to load...,src/resources/customers/lahettirobotti.tres
+"Tuotekoodi ei täsmää tilaukseen, mutta prosessoin poikkeaman.","Product code does not match the order, but I will process the deviation.",src/resources/customers/lahettirobotti.tres
+VIRHEILMOITUS. Laatu alittaa toleranssin. Lasti hylätty.,ERROR REPORT. Quality below tolerance. Cargo rejected.,src/resources/customers/lahettirobotti.tres
+%s! SE ON SAMA KUIN KULTAMITALI! ANNA SITÄ!,%s! IT'S AS GOOD AS A GOLD MEDAL! GIVE ME SOME!,src/resources/customers/leijonafani.tres
+"EI PAHA, JUODAAN LEIJONIEN KUNNIAKSI!","NOT BAD, LET'S DRINK TO THE LIONS!",src/resources/customers/leijonafani.tres
+"EI PERSE, LÄHDEN TOISEEN PUBIIN!","NO WAY, I'M GOING TO ANOTHER PUB!",src/resources/customers/leijonafani.tres
+LEIJONAT ON UUSI MAAILMAN MESTARI! ANNA TÄNNE KALJAA TAI TULEE TAPPELU!,THE LIONS ARE THE NEW WORLD CHAMPIONS! GIVE ME BEER OR THERE'LL BE A FIGHT!,src/resources/customers/leijonafani.tres
+"Leijonafanit alkavat laulaa täysin äänin ja heittelevät tyhjiä pulloja, syntyy täysi kaaos! Tuhoja kertyy %d kappaleen verran.","The Lions fans start singing at the top of their lungs and throwing empty bottles, total chaos! %d things got smashed.",src/resources/customers/leijonafani.tres
+MITÄ HÄH?! EI MITÄÄN JUOTAVAA?! PAHEMPI KUIN JATKOAIKATAPPIO!,"WHAT, HUH?! NOTHING TO DRINK?! WORSE THAN LOSING IN OVERTIME!",src/resources/customers/leijonafani.tres
+"TAIVAS VARJELE, MITÄ SIELTÄ TULEE!","HEAVEN HELP US, WHAT IS THIS!",src/resources/customers/leijonafani.tres
+TÄÄ MENEE KURKUSTA ALAS KUIN VOITTOMAALI VIIMEISELLÄ MINUUTILLA!,THIS GOES DOWN LIKE A WINNING GOAL IN THE LAST MINUTE!,src/resources/customers/leijonafani.tres
+"VELI, TEE ITSELLESI PALVELUS JA JUO TÄÄ YKSINÄS!","MATE, DO YOURSELF A FAVOUR AND DRINK THIS ALONE!",src/resources/customers/leijonafani.tres
+"Don ei näe täällä mitään, mistä kannattaisi maksaa...",The Don sees nothing here worth paying for...,src/resources/customers/mafioso.tres
+Don kuulostaa kiinnostuneelta liiketoiminnastanne. Näytä mitä teillä on.,The Don is interested in your business. Show me what you've got.,src/resources/customers/mafioso.tres
+Don lähettää kiitokset.,The Don sends his thanks.,src/resources/customers/mafioso.tres
+"Don on kiinnostunut: %s. Katsotaan, kelpaako se.",The Don is interested: %s. Let's see if it will do.,src/resources/customers/mafioso.tres
+"Don pitää tästä. Homma hoidossa, ei tarvii huolehtia tarkastajista hetkeen.","The Don likes this. It's handled, no need to worry about inspectors for a while.",src/resources/customers/mafioso.tres
+Käy tällä kertaa.,It will do this time.,src/resources/customers/mafioso.tres
+Tämä oli virhe sinulta.,That was a mistake on your part.,src/resources/customers/mafioso.tres
+"Ei tää sitä ollut mitä pyysin, mutta eiköhän tästäkin jotain irtoa.","Not what I asked for, but I suppose something will come of it.",src/resources/customers/mummeli.tres
+Ei täällä ollu mitään kunnon naisen juomaa. Palaan kun ootte oppineet jotain.,There was nothing here fit for a proper lady. I'll come back when you've learned something.,src/resources/customers/mummeli.tres
+"Hyvänen aika, eikö teillä ole mitään kunnon juotavaa...","Good gracious, don't you have anything proper to drink...",src/resources/customers/mummeli.tres
+Mummeli,Granny,src/resources/customers/mummeli.tres
+"No juu, kelpaa tää hätätilassa, vaikkei kehuttavaa oo.","Well yes, it will do in a pinch, though it's nothing to brag about.",src/resources/customers/mummeli.tres
+"No katsotaanpas, tuo %s voisi olla ihan kelvollista...","Well let's see, that %s could be quite decent...",src/resources/customers/mummeli.tres
+"No niin hyvänen aika, onkos teillä mitään kunnon olutta, ei mitään laimeaa limppariläpää.","Good gracious, do you have any proper beer, not some watery fizzy pop.",src/resources/customers/mummeli.tres
+"No sentään, tässä on edes vähän makua. Ei tää nyt ihan hassumpaa ole.",Well at least this has a bit of flavour. It's not half bad.,src/resources/customers/mummeli.tres
+Tätä laimeata löpöä en ota edes lahjaksi. Ennen olut oli olutta.,I wouldn't take this watery swill even as a gift. Beer used to be beer.,src/resources/customers/mummeli.tres
+%s... ehkä siinä on hiukan luostarin henkeä.,%s... perhaps it has a hint of the monastery's spirit.,src/resources/customers/munkki.tres
+"Ei täällä ollut mitään, jossa kärsivällisyys näkyisi. Palaan, kun aika on kypsempi.",There was nothing here that shows patience. I will return when the time is riper.,src/resources/customers/munkki.tres
+"Kelvollista käsityötä, vaikka luostarin syvyys jäi vielä puuttumaan.","Decent craftsmanship, though the monastery's depth is still missing.",src/resources/customers/munkki.tres
+Munkki,Monk,src/resources/customers/munkki.tres
+"Rauha kanssasi. Etsin luostarin olutta: tummaa, hedelmäistä ja kärsivällisesti kypsytettyä.","Peace be with you. I seek a monastery beer: dark, fruity and patiently matured.",src/resources/customers/munkki.tres
+"Toinen polku kuin toivoin, mutta otan sen vastaan nöyrästi.","A different path than I hoped for, but I accept it humbly.",src/resources/customers/munkki.tres
+Tänään ei ole tarjolla kärsivällisyyden hedelmiä...,Today there are no fruits of patience on offer...,src/resources/customers/munkki.tres
+Tässä ei ole luostarin henkeä lainkaan. En voi ottaa vastaan tällaista maljaa.,There is no monastic spirit in this at all. I cannot accept such a chalice.,src/resources/customers/munkki.tres
+"Tässä on veljesten työn arvoista olutta. Tummaa hedelmää ja lämpöä, siunattu olkoon panija.","This beer is worthy of the brothers' work. Dark fruit and warmth, blessed be the brewer.",src/resources/customers/munkki.tres
+%s. Onko se tarpeeksi synkkää? Katsotaan...,%s. Is it grim enough? Let's see...,src/resources/customers/mustanmetallinmies.tres
+"Ei täällä ole mitään mustaa. Palaan, kun varjot ovat pidempiä.",There is nothing black here. I will return when the shadows are longer.,src/resources/customers/mustanmetallinmies.tres
+Kaikki täällä on liian valoisaa...,Everything here is too bright...,src/resources/customers/mustanmetallinmies.tres
+"Liian valoisaa minulle, mutta juon sen kylmänä ja vihaisena.","Too bright for me, but I'll drink it cold and angry.",src/resources/customers/mustanmetallinmies.tres
+Mustanmetallinmies,Black Metal Man,src/resources/customers/mustanmetallinmies.tres
+"Riittävän synkkää. Ei täydellistä, mutta ei se ole maailmakaan.","Grim enough. Not perfect, but neither is the world.",src/resources/customers/mustanmetallinmies.tres
+"Terve. Etsin olutta, joka on yhtä musta kuin sieluni.",Hail. I seek a beer as black as my soul.,src/resources/customers/mustanmetallinmies.tres
+"Tämä ei ole pimeyttä, tämä on hukkaan heitettyä yötä.","This is not darkness, this is a wasted night.",src/resources/customers/mustanmetallinmies.tres
+Tämä on pimeyttä pullossa. Kaunista. Kiitos.,This is darkness in a bottle. Beautiful. Thank you.,src/resources/customers/mustanmetallinmies.tres
+Mustanmetallinnainen,Black Metal Woman,src/resources/customers/mustanmetallinmies_naaras.tres
+"Hmm, ei mitään opiskelijabudjetille sopivaa...","Hmm, nothing for a student budget...",src/resources/customers/opiskelija.tres
+"Jes, kunnon oluet!","Yes, proper beers!",src/resources/customers/opiskelija.tres
+"Liian kallista opiskelijabudjetille, mä lähen.","Too expensive for a student budget, I'm off.",src/resources/customers/opiskelija.tres
+Noni.,Right then.,src/resources/customers/opiskelija.tres
+Näillä mennään.,This'll do.,src/resources/customers/opiskelija.tres
+"Oho, melekosta litkua.","Whoa, quite the brew.",src/resources/customers/opiskelija.tres
+Opiskelija,Student,src/resources/customers/opiskelija.tres
+Toi %s näyttää sopivan budjettiin...,That %s looks like it fits the budget...,src/resources/customers/opiskelija.tres
+Ei täällä ollu mitään kunnon miehen juomaa. Palaan kun ootte oppineet jotain.,There was nothing here fit for a proper man. I'll come back when you've learned something.,src/resources/customers/papparainen.tres
+"No niin, onkos teillä täällä mitään kunnon olutta, ei mitään nykyajan vesikeitosta.","Well now, do you have any proper beer here, not some modern watery brew.",src/resources/customers/papparainen.tres
+"No sentään, tässä on edes vähän selkärankaa. Ei tää nyt ihan hassumpaa ole.",Well at least this has a bit of backbone. It's not half bad.,src/resources/customers/papparainen.tres
+"No voi hyvänen aika, eikö täällä ole mitään kunnon olutta...","Oh good gracious, is there no proper beer here...",src/resources/customers/papparainen.tres
+Papparainen,Grandpa,src/resources/customers/papparainen.tres
+Ei täällä ollu mitään aikuisille. Työpäivän jälkeen tarviin kyllä kunnon olutta.,Nothing here for grown-ups. After a workday I really need a proper beer.,src/resources/customers/raksamies.tres
+Just tätä tarvittiin homman jälkeen!,Just what we needed after the job!,src/resources/customers/raksamies.tres
+Kuha jotaki saa kurkusta alas.,As long as something goes down the throat.,src/resources/customers/raksamies.tres
+"Mitä, eikö täällä oo mitään kylmää juotavaa...","What, isn't there anything cold to drink here...",src/resources/customers/raksamies.tres
+No käyppä tämäkin.,"Well, this'll do too.",src/resources/customers/raksamies.tres
+"Terve! Työpäivä ohi, nyt kelpais kylmä kalja.","Hey! Workday's over, a cold beer would hit the spot now.",src/resources/customers/raksamies.tres
+Toi %s kelpaa hyvin työpäivän päälle...,That %s will do nicely after a workday...,src/resources/customers/raksamies.tres
+Tää on aika laimeeta läpänä.,This is pretty weak stuff.,src/resources/customers/raksamies.tres
+"Ach, hier gibt es wohl nichts Richtiges für mich...","Ach, hier gibt es wohl nichts Richtiges für mich...",src/resources/customers/saksalainen_turisti.tres
+"Ganz gut, ganz gut. Nicht ganz Oktoberfest, aber es geht. Prost!","Ganz gut, ganz gut. Nicht ganz Oktoberfest, aber es geht. Prost!",src/resources/customers/saksalainen_turisti.tres
+Guten Tag! Haben Sie ein richtiges deutsches Bier? Ein Märzen wäre wunderbar!,Guten Tag! Haben Sie ein richtiges deutsches Bier? Ein Märzen wäre wunderbar!,src/resources/customers/saksalainen_turisti.tres
+"Hmm, das ist nicht, was ich erwartet habe, aber ich probiere es.","Hmm, das ist nicht, was ich erwartet habe, aber ich probiere es.",src/resources/customers/saksalainen_turisti.tres
+"Kein Lager, kein Bier! Hier gibt es nichts für mich. Auf Wiedersehen!","Kein Lager, kein Bier! Hier gibt es nichts für mich. Auf Wiedersehen!",src/resources/customers/saksalainen_turisti.tres
+"Nein, nein, nein! Das ist kein Bier, das ist ein Unfall!","Nein, nein, nein! Das ist kein Bier, das ist ein Unfall!",src/resources/customers/saksalainen_turisti.tres
+"Oh, ein %s! Das sieht gut aus...","Oh, ein %s! Das sieht gut aus...",src/resources/customers/saksalainen_turisti.tres
+Saksalainen turisti,German Tourist,src/resources/customers/saksalainen_turisti.tres
+"Wunderbar! Das schmeckt fast wie in München. Prost, mein Freund!","Wunderbar! Das schmeckt fast wie in München. Prost, mein Freund!",src/resources/customers/saksalainen_turisti.tres
+"Wunderbar! Das schmeckt fast wie in München. Prost, meine Liebe!","Wunderbar! Das schmeckt fast wie in München. Prost, meine Liebe!",src/resources/customers/saksalainen_turisti_naaras.tres
+"Bro ei ollu yhtään alkoholitonta, ei mun tarvii cap-juomaa, painun muualle.","Bro there wasn't a single non-alcoholic one, I don't need a cap drink, I'm out.",src/resources/customers/zgen.tres
+"Bro tää on ihan cap, ei tää oo se paras, skibidi fail.","Bro this is so cap, this ain't the best, skibidi fail.",src/resources/customers/zgen.tres
+"Bro tää on ihan gyat-tasoista, respect, aito W tähän kuppilaan.","Bro this is gyat level, respect, a real W for this place.",src/resources/customers/zgen.tres
+"Bro tää on niin sus, total L, en koske tähän edes rizzillä.","Bro this is so sus, total L, wouldn't touch it even with rizz.",src/resources/customers/zgen.tres
+"Bro, ei oo mitään alkoholitonta, tää on ihan L...","Bro, there's nothing non-alcoholic, this is such an L...",src/resources/customers/zgen.tres
+"Bro, toi %s on lowkey sigma, otan sen.","Bro, that %s is lowkey sigma, I'll take it.",src/resources/customers/zgen.tres
+"Meh, ihan mid mut ok, ei L eikä W, käyköön.","Meh, pretty mid but ok, not an L or a W, it'll do.",src/resources/customers/zgen.tres
+"Yo bro, onks teil alkoholitonta IPA:a? En jaksa sitä cap-elämää, tarviin sigma-juoman fr fr.","Yo bro, do you have non-alcoholic IPA? I'm done with that cap life, I need a sigma drink fr fr.",src/resources/customers/zgen.tres
+"Bestie tää on ihan cap, ei tää oo se paras, skibidi fail.","Bestie this is so cap, this ain't the best, skibidi fail.",src/resources/customers/zgen_naaras.tres
+"Ei ollu yhtään alkoholitonta, ei mun tarvii cap-juomaa, painun muualle.","There wasn't a single non-alcoholic one, I don't need a cap drink, I'm out.",src/resources/customers/zgen_naaras.tres
+"Ei oo mitään alkoholitonta, tää on ihan L...","There's nothing non-alcoholic, this is such an L...",src/resources/customers/zgen_naaras.tres
+"Heyy, onks teil alkoholitonta IPA:a? No cap tarviin jotain sigma-juoman, en jaksa cap-fiilistä.","Heyy, do you have non-alcoholic IPA? No cap I need some sigma drink, not feeling the cap vibe.",src/resources/customers/zgen_naaras.tres
+"Ohmygod tää on ihan gyat-tasoista, respect, aito W tähän kuppilaan.","Ohmygod this is gyat level, respect, a real W for this place.",src/resources/customers/zgen_naaras.tres
+"Ohmygod, toi %s on lowkey sigma, otan sen.","Ohmygod, that %s is lowkey sigma, I'll take it.",src/resources/customers/zgen_naaras.tres
+"Tää on niin sus, total L, en koske tähän edes rizzillä.","This is so sus, total L, wouldn't touch it even with rizz.",src/resources/customers/zgen_naaras.tres
 Bulkkilager,Bulk Lager,src/resources/daily_goals/brew_bulkkilager.tres
 Erikoistapahtumat,Special events,src/resources/daily_goals/hoida_kaksi_erikoistapahtumaa.tres
 Erikoistapahtuma,Special event,src/resources/daily_goals/jarjesta_erikoistapahtuma.tres

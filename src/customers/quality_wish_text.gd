@@ -24,7 +24,7 @@ static func reject_suffix(quality : float, min_quality : float) -> String:
 static func too_weak_line(quality : float, customers : Array[CustomerData]) -> String:
 	var titles : PackedStringArray = []
 	for customer : CustomerData in customers:
-		var title : String = customer.title if not customer.title.is_empty() else customer.customer_name
+		var title : String = UiText.of(customer.title) if not customer.title.is_empty() else customer.customer_name
 		if quality < customer.min_quality and not titles.has(title):
 			titles.append(title)
 	if titles.is_empty():
