@@ -41,3 +41,8 @@ func get_unit_string() -> String:
 
 func get_stat_string() -> String:
 	return ""
+
+
+## The translated description followed by the stats, as the shop and inventory show it.
+func get_tooltip_text() -> String:
+	return tr(description) + "\n" + get_stat_string()
