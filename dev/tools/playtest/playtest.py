@@ -85,13 +85,15 @@ def summary(args: argparse.Namespace) -> None:
     per_strategy = collections.defaultdict(list)
     row = "%-14s %-12s %4s %4s %7s %6s %5s %4s %4s %5s %5s %4s %4s %5s %5s %4s"
     print(row % ("run", "ending", "day", "rep", "money", "score", "raids", "30@", "60@", "100@", "peak", "frnd", "badr", "toast", "decay", "eclo"))
-    for name, r in load_runs(args.dir):
-        for ext in (".log", ".err"):
-            log = Path(args.dir) / f"{name}{ext}"
-            if log.exists():
-                for line in ERROR_LINE.findall(log.read_text(encoding="utf-8", errors="replace")):
-                    if not IGNORED_ERROR.match(line):
-                        errors[line[:150]] += 1
+    runs = load_runs(args.dir)
+    # Every run's logs, including runs that crashed before writing their JSON.
+    for log in sorted(Path(args.dir).glob("*.log")) + sorted(Path(args.dir).glob("*.err")):
+        for line in ERROR_LINE.findall(log.read_text(encoding="utf-8", errors="replace")):
+            if not IGNORED_ERROR.match(line):
+                errors[line[:150]] += 1
+    reported = {name for name, _ in runs}
+    missing = sorted(p.stem for p in Path(args.dir).glob("*.out") if p.stem not in reported)
+    for name, r in runs:
         c, final = r["counts"], r["final"]
         print(row % (name, r["ending"], final["day"], final["rep"], final["money"], final.get("score", "-"), final["raids"],
                      first_day_at(r, 30), first_day_at(r, 60), first_day_at(r, 100), peak_rep(r),
@@ -105,6 +107,8 @@ def summary(args: argparse.Namespace) -> None:
         print("%-8s endings=%s score mean %.0f median %.0f 60@=%s 100@=%s peak=%s lastday=%s" % (
             strategy, endings, sum(scores) / len(scores), scores[len(scores) // 2], [first_day_at(r, 60) for r in rs], [first_day_at(r, 100) for r in rs],
             [peak_rep(r) for r in rs], [r["final"]["day"] for r in rs]))
+    if missing:
+        print("runs without a report (crashed?):", missing)
     print("errors:", errors.most_common(8) or "none")
 
 
