@@ -90,6 +90,7 @@ Pullosaanto: %+d %%,Bottle yield: %+d %%,src/autoload/string_container.gd
 Päivätavoitteita päivässä: +%d,Daily goals per day: +%d,src/autoload/string_container.gd
 Ratsiakynnys tällä kierroksella: %d riskiä,Raid threshold this run: %d risk,src/autoload/string_container.gd
 Ratsiakynnys: %+d %%,Raid threshold: %+d %%,src/autoload/string_container.gd
+Ratsiassa säästyviä pulloja: %d %%,Bottles saved in a raid: %d %%,src/autoload/string_container.gd
 Ratsioiden sietokyky: +%d,Raids survived: +%d,src/autoload/string_container.gd
 Reseptikirja,Recipe book,src/autoload/string_container.gd
 Ryhmäasiakkaiden saapumisväli: %+d %%,Time between group visits: %+d %%,src/autoload/string_container.gd
@@ -799,11 +800,7 @@ Vie,Ship,src/scenes/ui/beer_batch_panel.gd
 "Vie koko erä yllä valittuun baariin. Parempi hinta kuin halpamyynti, mutta nostaa LVV-riskiä toimituksen mukana.","Ship the whole batch to the bar selected above. A better price than a bulk sale, but each delivery raises the LVV risk.",src/scenes/ui/beer_batch_panel.gd
 %+d Mainetta,%+d Reputation,src/scenes/ui/brew_preparation_panel.gd
 +%d XP,+%d XP,src/scenes/ui/brew_preparation_panel.gd
-"Arvio: %s, EBC %d, IBU %d, laatu %d%%","Estimate: %s, EBC %d, IBU %d, quality %d%%",src/scenes/ui/brew_preparation_panel.gd
-"Arvio: tuntematon tyyli täsmää! (EBC %d, IBU %d)","Estimate: an unknown style matches! (EBC %d, IBU %d)",src/scenes/ui/brew_preparation_panel.gd
-"Ei täsmää vielä mihinkään tyyliin. (EBC %d, IBU %d)","Doesn't match any style yet. (EBC %d, IBU %d)",src/scenes/ui/brew_preparation_panel.gd
-Lisää ainesosia nähdäksesi arvion.,Add ingredients to see an estimate.,src/scenes/ui/brew_preparation_panel.gd
-Tarvitset ainakin 3 kg mallasta ja hiivan.,You need at least 3 kg of malt and a yeast.,src/scenes/ui/brew_preparation_panel.gd
+"Resepti ""%s"" tallennettu!","Recipe ""%s"" saved!",src/scenes/ui/brew_preparation_panel.gd
 Tuntematon oluttyyli. Keitä se ensin selvittääksesi reseptin!,Unknown beer style. Brew it first to work out the recipe!,src/scenes/ui/brew_preparation_panel.gd
 resepti:,recipe:,src/scenes/ui/brew_preparation_panel.gd
 Kellarin parannukset,Cellar upgrades,src/scenes/ui/cellar_upgrades_window.gd
@@ -953,6 +950,11 @@ Paina näppäintä...,Press a key...,src/systems/input/input_wiring.gd
 Palauta oletukset,Reset to defaults,src/systems/input/input_wiring.gd
 Panimo,Brewery,src/systems/input/input_wiring.gd
 Valitse toiminto ja paina uutta näppäintä. Esc peruu.,Pick an action and press a new key. Esc cancels.,src/systems/input/input_wiring.gd
+"Arvio: %s, EBC %d, IBU %d, laatu %d%%","Estimate: %s, EBC %d, IBU %d, quality %d%%",src/ui/brew_preview_text.gd
+"Arvio: tuntematon tyyli täsmää! (EBC %d, IBU %d)","Estimate: an unknown style matches! (EBC %d, IBU %d)",src/ui/brew_preview_text.gd
+"Ei täsmää vielä mihinkään tyyliin. (EBC %d, IBU %d)","Doesn't match any style yet. (EBC %d, IBU %d)",src/ui/brew_preview_text.gd
+Lisää ainesosia nähdäksesi arvion.,Add ingredients to see an estimate.,src/ui/brew_preview_text.gd
+Tarvitset ainakin 3 kg mallasta ja hiivan.,You need at least 3 kg of malt and a yeast.,src/ui/brew_preview_text.gd
 Nyt: %s,Now: %s,src/ui/cellar_upgrade_text.gd
 Osta %d €,Buy %d €,src/ui/cellar_upgrade_text.gd
 Seuraava taso: %s,Next level: %s,src/ui/cellar_upgrade_text.gd
