@@ -437,6 +437,7 @@ Toi %s kelpaa hyvin työpäivän päälle...,That %s will do nicely after a work
 Tää on aika laimeeta läpänä.,This is pretty weak stuff.,src/resources/customers/raksamies.tres
 "Ach, hier gibt es wohl nichts Richtiges für mich...","Ach, hier gibt es wohl nichts Richtiges für mich...",src/resources/customers/saksalainen_turisti.tres
 "Ganz gut, ganz gut. Nicht ganz Oktoberfest, aber es geht. Prost!","Ganz gut, ganz gut. Nicht ganz Oktoberfest, aber es geht. Prost!",src/resources/customers/saksalainen_turisti.tres
+Gewürze?! Im deutschen Bier?! Das Reinheitsgebot von 1516 weint! Verboten!,Gewürze?! Im deutschen Bier?! Das Reinheitsgebot von 1516 weint! Verboten!,src/resources/customers/saksalainen_turisti.tres
 Guten Tag! Haben Sie ein richtiges deutsches Bier? Ein Märzen wäre wunderbar!,Guten Tag! Haben Sie ein richtiges deutsches Bier? Ein Märzen wäre wunderbar!,src/resources/customers/saksalainen_turisti.tres
 "Hmm, das ist nicht, was ich erwartet habe, aber ich probiere es.","Hmm, das ist nicht, was ich erwartet habe, aber ich probiere es.",src/resources/customers/saksalainen_turisti.tres
 "Kein Lager, kein Bier! Hier gibt es nichts für mich. Auf Wiedersehen!","Kein Lager, kein Bier! Hier gibt es nichts für mich. Auf Wiedersehen!",src/resources/customers/saksalainen_turisti.tres
@@ -444,6 +445,7 @@ Guten Tag! Haben Sie ein richtiges deutsches Bier? Ein Märzen wäre wunderbar!,
 "Oh, ein %s! Das sieht gut aus...","Oh, ein %s! Das sieht gut aus...",src/resources/customers/saksalainen_turisti.tres
 Saksalainen turisti,German Tourist,src/resources/customers/saksalainen_turisti.tres
 "Wunderbar! Das schmeckt fast wie in München. Prost, mein Freund!","Wunderbar! Das schmeckt fast wie in München. Prost, mein Freund!",src/resources/customers/saksalainen_turisti.tres
+Was ist das?! Gewürze im Bier? Das ist gegen das Reinheitsgebot! Unglaublich!,Was ist das?! Gewürze im Bier? Das ist gegen das Reinheitsgebot! Unglaublich!,src/resources/customers/saksalainen_turisti_naaras.tres
 "Wunderbar! Das schmeckt fast wie in München. Prost, meine Liebe!","Wunderbar! Das schmeckt fast wie in München. Prost, meine Liebe!",src/resources/customers/saksalainen_turisti_naaras.tres
 "Bro ei ollu yhtään alkoholitonta, ei mun tarvii cap-juomaa, painun muualle.","Bro there wasn't a single non-alcoholic one, I don't need a cap drink, I'm out.",src/resources/customers/zgen.tres
 "Bro tää on ihan cap, ei tää oo se paras, skibidi fail.","Bro this is so cap, this ain't the best, skibidi fail.",src/resources/customers/zgen.tres

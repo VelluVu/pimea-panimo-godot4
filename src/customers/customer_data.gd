@@ -134,6 +134,11 @@ const QUALITY_REPUTATION_BONUS_MAX : int = 2
 ## Incident narration, not something the customer says: shown as its own toast via
 ## BrewerySignals.bar_fight_triggered. Must contain one %d for the broken-bottle count.
 @export_multiline var dialogue_bar_fight: String = ""
+## A customer with this line minds the Reinheitsgebot: a batch whose spices broke it
+## (BrewBatch.spice_bonus < 0) gets this line, rep_purity_law_broken and no tip,
+## whatever its style or quality. Empty means the customer does not care.
+@export_multiline var dialogue_purity_law_broken: String = ""
+@export var rep_purity_law_broken: int = -3
 
 
 func generate_display_name() -> String:
@@ -182,6 +187,10 @@ func reroll_preference(styles : Array[BeerStyle]) -> void:
 
 	primary_style = shuffled_styles[0].style
 	secondary_style = shuffled_styles[1].style
+
+
+func minds_purity_law(batch: BrewBatch) -> bool:
+	return not dialogue_purity_law_broken.is_empty() and batch.spice_bonus < 0.0
 
 
 ## This customer's reaction to a batch, as a dictionary of CustomerManager.KEY_* values.
@@ -244,6 +253,12 @@ func evaluate_brew_batch(batch: BrewBatch, style_base_price: float = 3.0) -> Dic
 		var proportional_tip : float = income * quality_margin * quality_tip_sensitivity
 		var floor_tip : float = quality_margin * MIN_TIP_PER_QUALITY_POINT
 		tip = maxf(0.0, snappedf(max(proportional_tip, floor_tip) * budget_multiplier, 0.1))
+
+	if minds_purity_law(batch):
+		rep_change = rep_purity_law_broken
+		tip = 0.0
+		delighted = false
+		response_text = tr(dialogue_purity_law_broken)
 
 	return {
 		CustomerManager.KEY_INCOME: income,

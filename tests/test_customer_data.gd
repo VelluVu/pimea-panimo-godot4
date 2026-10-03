@@ -311,3 +311,22 @@ func test_accepted_non_favourite_style_gets_the_fallback_reaction() -> void:
 	var batch := _make_batch(BeerStyle.Style.HEFEWEIZEN, customer.min_quality)
 	var results : Dictionary = customer.evaluate_brew_batch(batch)
 	assert_eq(results[CustomerManager.KEY_RESPONSE], customer.dialogue_fallback)
+
+
+func test_purity_law_customer_is_offended_by_a_spiced_german_beer() -> void:
+	var customer := CustomerData.new()
+	customer.dialogue_purity_law_broken = "Verboten!"
+	var batch := _make_batch(BeerStyle.Style.BULKKILAGER, 1.5)
+	batch.spice_bonus = -0.1
+	var result := customer.evaluate_brew_batch(batch)
+	assert_eq(result[CustomerManager.KEY_REPUTATION], customer.rep_purity_law_broken, "reputation")
+	assert_eq(result[CustomerManager.KEY_TIP], 0.0, "tip")
+	assert_eq(result[CustomerManager.KEY_RESPONSE], "Verboten!", "response")
+	assert_false(result[CustomerManager.KEY_DELIGHTED], "delighted")
+
+
+func test_customer_without_the_line_ignores_the_purity_law() -> void:
+	var customer := CustomerData.new()
+	var batch := _make_batch(BeerStyle.Style.BULKKILAGER, 1.0)
+	batch.spice_bonus = -0.1
+	assert_eq(customer.evaluate_brew_batch(batch)[CustomerManager.KEY_RESPONSE], customer.dialogue_success)
