@@ -485,25 +485,50 @@ Tuhoeläimet söivät varastosta %d kg maltaita.,Pests ate %d kg of malt from st
 LVV:n yllätystarkastusviikko alkaa tänään. Odotettavissa epäilyttävän montaa uutta kasvoa.,The LVV's surprise inspection week starts today. Expect a suspicious number of new faces.,src/resources/day_events/day_event_yllatystarkastus.tres
 Sukupolvi Z apocalypse festivaali käynnissä kaupungissa tänään. Odotettavissa runsaasti Zgen-asiakkaita.,The Generation Z apocalypse festival is on in town today. Expect plenty of Gen Z customers.,src/resources/day_events/day_event_zgen_festival.tres
 LVV:n yllätystarkastusviikko on alkanut. Epäilyttävän moni uusi kasvo saattaa kierrellä ovella tällä viikolla.,The LVV's surprise inspection week has begun. A suspicious number of new faces may hang around the door this week.,src/resources/group_events/agentti_lauma.tres
+"AURAPOINTSIT MAX, TÄÄ ON GOATED KUPPILA FR FR!","AURA POINTS MAX, THIS PLACE IS GOATED FR FR!",src/resources/group_events/alpha_gen_lauma.tres
 "Alfagen-lauma rynnii sisään puhelimet ja aurapointsit pystyssä, kaikki haluaa jotain alkoholitonta ja goattia.","A Gen Alpha pack storms in, phones and aura points up, all wanting something non-alcoholic and goated.",src/resources/group_events/alpha_gen_lauma.tres
+"EI OHIOTA TÄÄLLÄ, VAIN ALKOHOLITONTA KIITOS!","NO OHIO HERE, ONLY NON-ALCOHOLIC PLEASE!",src/resources/group_events/alpha_gen_lauma.tres
+"GRIMACE SHAKE TASOA TAI CHOPPED, EI VÄLIÄ!","GRIMACE SHAKE LEVEL OR CHOPPED, WHATEVER!",src/resources/group_events/alpha_gen_lauma.tres
+"NPC-ENERGIAA NOLLA, TÄÄ ON BUSSINIS FR!","ZERO NPC ENERGY, THIS IS BUSSIN FR!",src/resources/group_events/alpha_gen_lauma.tres
+"LIHAA JA OLUTTA, HEEEI!","MEAT AND BEER, HEEEY!",src/resources/group_events/barbaari_lauma.tres
+"MÄSKI JA MALTAAT, NYT!","MASH AND MALT, NOW!",src/resources/group_events/barbaari_lauma.tres
 "Raivokas barbaarilauma mahtuu juuri ja juuri panimon ovesta sisään.
 Nyt on paha riski tappelulle!","A raging barbarian horde barely fits through the brewery door.
 A fight is very likely now!",src/resources/group_events/barbaari_lauma.tres
+ÖRRRrrrr! ÖÖRRRrrr!,ÖRRRrrrr! ÖÖRRRrrr!,src/resources/group_events/barbaari_lauma.tres
+AUTENTTINEN FIILIS TÄÄLLÄ.,AUTHENTIC VIBE IN HERE.,src/resources/group_events/hipsteri_lauma.tres
 Hipsterien käsityökahvipapupaahtamiskerho kokoontuu lähialueella. Odotettavissa käsityöläisoluesta kiinnostuneita hipstereitä.,The hipsters' artisan coffee bean roasting club meets nearby. Expect hipsters curious about craft beer.,src/resources/group_events/hipsteri_lauma.tres
+"KÄSITYÖLÄISOLUTTA, KIITOS.","CRAFT BEER, PLEASE.",src/resources/group_events/hipsteri_lauma.tres
+ONKS TÄÄ LUOMUA?,IS THIS ORGANIC?,src/resources/group_events/hipsteri_lauma.tres
+MAAILMANMESTARI HEI!,"WORLD CHAMPIONS, HEY!",src/resources/group_events/leijonafanit_mm_kulta.tres
+SUOMI ON UUSI!,FINLAND ON TOP AGAIN!,src/resources/group_events/leijonafanit_mm_kulta.tres
 "SUOMI VOITTI MM-KULTAA!
 Nyt tulee fanikööri sisään!","FINLAND WON WORLD CHAMPIONSHIP GOLD!
 Here come the fans!",src/resources/group_events/leijonafanit_mm_kulta.tres
 "Suojelurahan kantopäivä koittaa. Pukumiehiä alkaa ilmestyä ovelle kiertämään lähistön liikkeitä, teidät mukaan lukien.","Protection money day has come. Men in suits start showing up, making the rounds of nearby businesses, yours included.",src/resources/group_events/mafioso_lauma.tres
+AHOI!,AHOY!,src/resources/group_events/merimies_lauma.tres
+LAIVA LÄHTEE AAMULLA!,THE SHIP SAILS IN THE MORNING!,src/resources/group_events/merimies_lauma.tres
+"PORTTIA, PORTTIA!","PORTER, PORTER!",src/resources/group_events/merimies_lauma.tres
 "Rahtilaivan vapaavahti marssii portaat alas.
 Porttia koko miehistölle, ja heti!","The cargo ship's off-duty watch marches down the stairs.
 Porter for the whole crew, right now!",src/resources/group_events/merimies_lauma.tres
+"FUKSIT FUKSIT, JUO POHJAAN!","FRESHMEN, FRESHMEN, DOWN IN ONE!",src/resources/group_events/opiskelijabileet.tres
 "Fuksivuosikurssi ryntää ovesta sisään haalarit päällä,
 halvinta kaljaa heti tiskiin!","The freshman class bursts in wearing their student overalls,
 cheapest beer on the counter right now!",src/resources/group_events/opiskelijabileet.tres
+HALPAA KALJAA! HALPAA KALJAA!,CHEAP BEER! CHEAP BEER!,src/resources/group_events/opiskelijabileet.tres
+"LISÄÄ VIINAA, EI RAHAA!","MORE BOOZE, NO MONEY!",src/resources/group_events/opiskelijabileet.tres
+HARJAKAISET! HARJAKAISET!,TOPPING-OUT! TOPPING-OUT!,src/resources/group_events/raksamies_lauma.tres
 Harjakaiset pidetään läheisellä työmaalla. Remonttimiehet rynnivät kellariin sammuttamaan janon urakan kunniaksi.,A nearby building site holds its topping-out party. The builders rush into the cellar to quench their thirst in honour of the job.,src/resources/group_events/raksamies_lauma.tres
+"TALO PYSTYSSÄ, KALJA POHJASSA!","HOUSE IS UP, BEER IS DOWN!",src/resources/group_events/raksamies_lauma.tres
+"URAKKA VALMIS, HEI HEI HEI!","JOB'S DONE, HEY HEY HEY!",src/resources/group_events/raksamies_lauma.tres
 "Oudoin remmi ikinä ilmestyy portaille yhtä aikaa hipsteri, agentti, kummisetä ja remonttimies samassa jonossa.
 Kukaan ei kysy miksi.","The strangest crew ever shows up on the stairs: a hipster, an agent, a godfather and a builder in the same queue.
 Nobody asks why.",src/resources/group_events/sekalauma.tres
+"ALKOHOLITONTA TAI SKIBIDI FAIL, KIITOS!","NON-ALCOHOLIC OR SKIBIDI FAIL, THANKS!",src/resources/group_events/zgen_lauma.tres
+"BUSSINIS ON HYVÄ TÄÄLLÄ FR FR, NO CAP!","IT'S BUSSIN IN HERE FR FR, NO CAP!",src/resources/group_events/zgen_lauma.tres
+"RIZZ LEVEL MAX, TÄÄ PAIKKA ON GYAT!","RIZZ LEVEL MAX, THIS PLACE IS GYAT!",src/resources/group_events/zgen_lauma.tres
+"SIGMA SIGMA BOY, EI CAP, TÄÄ ON W-KUPPILA FR FR!","SIGMA SIGMA BOY, NO CAP, THIS PLACE IS A W FR FR!",src/resources/group_events/zgen_lauma.tres
 "Zgen-lauma rynnii sisään puhelimet pystyssä kaikki haluaa alkoholitonta sisältöä somettaan, fr fr.","A Gen Z pack storms in, phones up, all wanting non-alcoholic content for their socials, fr fr.",src/resources/group_events/zgen_lauma.tres
 Amerikkalainen aromihumala joka tuo sitruksista ja mäntyistä aromia,American aroma hop with citrus and pine notes,src/resources/ingredients/hops/cascade_hop.tres
 Cascade Humala,Cascade Hops,src/resources/ingredients/hops/cascade_hop.tres

@@ -120,7 +120,7 @@ func _chant_until_arrival(visit : GroupVisit) -> void:
 
 	var chant_index : int = 0
 	while state.walking and is_instance_valid(last_member):
-		var chant_text : String = visit.event_data.get_chant_text(chant_index)
+		var chant_text : String = tr(visit.event_data.get_chant_text(chant_index))
 		chant_index += 1
 		if not chant_text.is_empty():
 			var display_time : float = visit.event_data.chant_interval_seconds + CHANT_BUBBLE_EXTRA_SECONDS
