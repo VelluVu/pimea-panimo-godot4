@@ -976,10 +976,7 @@ Suosikki: %s,Favourite: %s,src/ui/customer_book_text.gd
 Suosikki: vaihtelee joka käynnillä,Favourite: changes every visit,src/ui/customer_book_text.gd
 Vähintään %.1f %% alkoholia,At least %.1f %% alcohol,src/ui/customer_book_text.gd
 %s ei ole enää kanta-asiakas.,%s is no longer a regular.,src/ui/gui_announcer.gd
-%s epäonnistui: %d maine / +%d LVV-riski,%s failed: %d reputation / +%d LVV risk,src/ui/gui_announcer.gd
-%s epäonnistui: ei seurauksia,%s failed: no consequences,src/ui/gui_announcer.gd
 %s on nyt kanta-asiakas! Ostaa enemmän ja tippaa paremmin.,%s is now a regular! Buys more and tips better.,src/ui/gui_announcer.gd
-%s saavutettu: +%d € / +%d maine / +%d XP!,%s done: +%d € / +%d reputation / +%d XP!,src/ui/gui_announcer.gd
 %s vaatii vähintään %d mainetta.,%s needs at least %d reputation.,src/ui/gui_announcer.gd
 "Ei varaa: %s maksaa %d €, kassassa %.1f €.","Can't afford: %s costs %d €, you have %.1f €.",src/ui/gui_announcer.gd
 Huono arvio kiertää. Asiakkaat viipyvät hetken.,A bad review is going around. Customers stay away for a while.,src/ui/gui_announcer.gd
@@ -987,13 +984,10 @@ Maine hiipui yön aikana: -%d (%s),Reputation faded overnight: -%d (%s),src/ui/g
 Maineesi laski: %s.,Your reputation dropped: %s.,src/ui/gui_announcer.gd
 Maineesi nousi: %s!,Your reputation rose: %s!,src/ui/gui_announcer.gd
 Ovet ovat vielä hetken kiinni. Osta ainekset ja pane ensimmäinen olut rauhassa.,The doors stay shut for now. Buy ingredients and brew your first beer in peace.,src/ui/gui_announcer.gd
-"Ovet suljettu aikaisin: -%.1f €, mainetta -%d, LVV-riski -%d","Closed early: -%.1f €, reputation -%d, LVV risk -%d",src/ui/gui_announcer.gd
-Reinheitsgebot rikottu! Baijerin herttua kääntyy haudassaan. %s: laatu -%d %%,Reinheitsgebot broken! The Duke of Bavaria turns in his grave. %s: quality -%d %%,src/ui/gui_announcer.gd
 Saavutus avattu: %s!,Achievement unlocked: %s!,src/ui/gui_announcer.gd
 Tyytyväinen asiakas suositteli panimoa kaverilleen!,A happy customer recommended the brewery to a friend!,src/ui/gui_announcer.gd
 Uusi asiakas avattu: %s!,New customer unlocked: %s!,src/ui/gui_announcer.gd
 Uusi oluttyyli löydetty: %s!,New beer style discovered: %s!,src/ui/gui_announcer.gd
-Uusia aineksia saatavilla: %s!,New ingredients available: %s!,src/ui/gui_announcer.gd
 Annokset %d,Servings %d,src/ui/leaderboard_text.gd
 Jäi kiinni,Busted,src/ui/leaderboard_text.gd
 Kesken,In progress,src/ui/leaderboard_text.gd
@@ -1050,3 +1044,9 @@ Spices: +%d %%",src/ui/spice_preview_text.gd
 "
 Reinheitsgebot rikottu: -%d %%","
 Reinheitsgebot broken: -%d %%",src/ui/spice_preview_text.gd
+%s epäonnistui: %d maine / +%d LVV-riski,%s failed: %d reputation / +%d LVV risk,src/ui/toast_text.gd
+%s epäonnistui: ei seurauksia,%s failed: no consequences,src/ui/toast_text.gd
+%s saavutettu: +%d € / +%d maine / +%d XP!,%s done: +%d € / +%d reputation / +%d XP!,src/ui/toast_text.gd
+"Ovet suljettu aikaisin: -%.1f €, mainetta -%d, LVV-riski -%d","Closed early: -%.1f €, reputation -%d, LVV risk -%d",src/ui/toast_text.gd
+Reinheitsgebot rikottu! Baijerin herttua kääntyy haudassaan. %s: laatu -%d %%,Reinheitsgebot broken! The Duke of Bavaria turns in his grave. %s: quality -%d %%,src/ui/toast_text.gd
+Uusia aineksia saatavilla: %s!,New ingredients available: %s!,src/ui/toast_text.gd
