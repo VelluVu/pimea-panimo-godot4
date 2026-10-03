@@ -170,11 +170,11 @@ func test_evaluate_brew_batch_masterful_quality_boosts_reputation_cuts_risk_and_
 	var margin : float = 1.5 - customer.min_quality
 	var expected_income : float = maxf(0.1, snappedf(3.0, 0.1))
 	var expected_proportional_tip : float = expected_income * margin * customer.quality_tip_sensitivity
-	var expected_floor_tip : float = margin * CustomerData.MIN_TIP_PER_QUALITY_POINT
+	var expected_floor_tip : float = margin * SaleEvaluation.MIN_TIP_PER_QUALITY_POINT
 	var expected_tip : float = maxf(0.0, snappedf(max(expected_proportional_tip, expected_floor_tip) * customer.budget_multiplier, 0.1))
 	assert_eq(result[CustomerManager.KEY_INCOME], expected_income, "income")
 	assert_eq(result[CustomerManager.KEY_TIP], expected_tip, "tip")
-	assert_eq(result[CustomerManager.KEY_REPUTATION], customer.rep_primary_style + CustomerData.QUALITY_REPUTATION_BONUS_MAX, "reputation")
+	assert_eq(result[CustomerManager.KEY_REPUTATION], customer.rep_primary_style + SaleEvaluation.QUALITY_REPUTATION_BONUS_MAX, "reputation")
 	assert_eq(result[CustomerManager.KEY_RISK], maxi(0, customer.risk_primary_style - roundi(margin * customer.quality_risk_sensitivity)), "risk")
 
 
