@@ -9,12 +9,12 @@ var _injected_ids : Array[int] = []
 var _is_injected : bool = false
 
 
-## Reads from `table` (id -> IngredientData) instead of IngredientDatabase. Ids are
-## iterated in ascending order, like IngredientDatabase.sorted_ids.
-func inject(table : Dictionary) -> void:
-	_injected_table = table
+## Reads from `ingredient_table` (id -> IngredientData) instead of IngredientDatabase.
+## Ids are iterated in ascending order, like IngredientDatabase.sorted_ids.
+func inject(ingredient_table : Dictionary) -> void:
+	_injected_table = ingredient_table
 	_injected_ids.clear()
-	for id : int in table.keys():
+	for id : int in ingredient_table.keys():
 		_injected_ids.append(id)
 	_injected_ids.sort()
 	_is_injected = true

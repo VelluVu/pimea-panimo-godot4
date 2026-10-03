@@ -6,6 +6,7 @@ extends Node
 signal brewery_changed(brewery: Brewery)
 ## SaveManager is about to serialize `brewery`. Autoloads that keep run state
 ## outside Brewery write it onto `brewery` here, so it lands in the save.
+@warning_ignore("unused_signal") # emitted by SaveWiring
 signal brewery_about_to_save(brewery: Brewery)
 
 var current_brewery: Brewery = null
