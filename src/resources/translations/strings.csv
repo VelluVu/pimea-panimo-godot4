@@ -474,6 +474,7 @@ Jääkaappi hajosi yöllä ja pilasi %d pulloa varastosta.,The fridge broke duri
 Kellarin jääkaappi pitää epäilyttävää ääntä. Kylmäketju saattaa pätkiä tänään.,The cellar fridge is making a suspicious noise. The cold chain may fail today.,src/resources/day_events/day_event_jaakaappi_hajoaa.tres
 Hipsterien käsityökahvipapupaahtamiskerho kokoontuu tänään lähialueella. Odotettavissa käsityöläisoluesta kiinnostuneita hipstereitä.,The hipsters' artisan coffee bean roasting club meets nearby today. Expect hipsters curious about craft beer.,src/resources/day_events/day_event_kahvipaahtimo.tres
 Tänään on arkipyhä. Odotettavissa sekalaisia ryhmiä ympäri kaupunkia.,Today is a public holiday. Expect mixed groups from all over town.,src/resources/day_events/day_event_kesafestivaali.tres
+"Rahtilaiva saapui yöllä satamaan. Odotettavissa janoisia merimiehiä, jotka kaipaavat tummaa porttia.",A cargo ship arrived in port during the night. Expect thirsty sailors craving dark porter.,src/resources/day_events/day_event_laiva_satamassa.tres
 Tavallinen päivä kellarissa. Ei erikoisia yllätyksiä luvassa tänään.,An ordinary day in the cellar. No special surprises expected today.,src/resources/day_events/day_event_none.tres
 Opintotukien maksupäivä on tänään. Odotettavissa rahaa polttavia opiskelijoita.,Student allowance payday is today. Expect students eager to spend.,src/resources/day_events/day_event_opintotuki.tres
 Suojelurahojen keräyspäivä koittaa tänään. Odotettavissa epäilyttävän hyvin pukeutuneita liikemiehiä.,Protection money collection day is today. Expect suspiciously well-dressed businessmen.,src/resources/day_events/day_event_suojelurahat.tres
@@ -491,6 +492,9 @@ Hipsterien käsityökahvipapupaahtamiskerho kokoontuu lähialueella. Odotettavis
 Nyt tulee fanikööri sisään!","FINLAND WON WORLD CHAMPIONSHIP GOLD!
 Here come the fans!",src/resources/group_events/leijonafanit_mm_kulta.tres
 "Suojelurahan kantopäivä koittaa. Pukumiehiä alkaa ilmestyä ovelle kiertämään lähistön liikkeitä, teidät mukaan lukien.","Protection money day has come. Men in suits start showing up, making the rounds of nearby businesses, yours included.",src/resources/group_events/mafioso_lauma.tres
+"Rahtilaivan vapaavahti marssii portaat alas.
+Porttia koko miehistölle, ja heti!","The cargo ship's off-duty watch marches down the stairs.
+Porter for the whole crew, right now!",src/resources/group_events/merimies_lauma.tres
 "Fuksivuosikurssi ryntää ovesta sisään haalarit päällä,
 halvinta kaljaa heti tiskiin!","The freshman class bursts in wearing their student overalls,
 cheapest beer on the counter right now!",src/resources/group_events/opiskelijabileet.tres
