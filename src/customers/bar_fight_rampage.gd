@@ -69,6 +69,7 @@ static func play(actor: Node2D, sprite: AnimatedSprite2D, glass_texture: Texture
 ## Part `index` of `total` split into `parts` near-equal shares, earlier parts first:
 ## glasses over the stomps, and over the members of a fighting group.
 static func share_of(index: int, total: int, parts: int) -> int:
+	@warning_ignore("integer_division")
 	return total / parts + (1 if index < total % parts else 0)
 
 

@@ -88,10 +88,10 @@ static func entry(day : int, reputation : int, bottles : int, ending_type : Stri
 
 
 ## A stored entry's score under today's formula, from the parts it keeps.
-static func rescore(entry : Dictionary) -> int:
-	var ending_type : String = entry.get("ending_type", "")
-	var points : int = base_points(entry.get("days_survived", 0), entry.get("reputation", 0), entry.get("lifetime_bottles_sold", 0), ending_type, entry.get("worth", 0.0))
-	return roundi(points * float(entry.get("multiplier", 1.0)))
+static func rescore(stored : Dictionary) -> int:
+	var ending_type : String = stored.get("ending_type", "")
+	var points : int = base_points(stored.get("days_survived", 0), stored.get("reputation", 0), stored.get("lifetime_bottles_sold", 0), ending_type, stored.get("worth", 0.0))
+	return roundi(points * float(stored.get("multiplier", 1.0)))
 
 
 static func entry_for(brewery : Brewery, ending_type : String) -> Dictionary:
