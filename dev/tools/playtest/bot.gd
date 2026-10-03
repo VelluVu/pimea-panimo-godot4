@@ -246,8 +246,8 @@ func _expert_recipe(b: Brewery) -> BrewRecipe:
 			continue
 		in_stock[batch.beer_style.style] = in_stock.get(batch.beer_style.style, 0) + batch.amount_bottles
 
-	var best: BrewRecipe = null
-	var best_score: float = -INF
+	var candidates: Array[BrewRecipe] = []
+	var scores: Array[float] = []
 	for style: BeerStyle in b.resolver.active_styles:
 		var ingredients: Dictionary = _with_spices(b, style, b.resolver.compute_minimum_ingredients(style))
 		if ingredients.is_empty() or not _all_unlocked(b, ingredients):
@@ -263,15 +263,35 @@ func _expert_recipe(b: Brewery) -> BrewRecipe:
 		score += b.resolver.get_style_base_price(style) - b.resolver.get_style_cost_per_bottle(style)
 		# Half the aged bonus: the bot waits for it, and sells some young.
 		score += b.resolver.get_style_base_price(style) * style.aged_price_bonus * 0.5
-		if score > best_score:
-			best_score = score
-			var recipe := BrewRecipe.new()
-			recipe.beer_style = style.style
-			recipe.ingredient_amounts = ingredients
-			best = recipe
+		var recipe := BrewRecipe.new()
+		recipe.beer_style = style.style
+		recipe.ingredient_amounts = ingredients
+		candidates.append(recipe)
+		scores.append(score)
+	var best: BrewRecipe = _pick_near_best(candidates, scores)
 	if best != null and cfg.strategy == "gourmet":
 		best.ingredient_amounts = _tune_for_quality(b, best.beer_style, best.ingredient_amounts)
 	return best
+
+
+## Styles scoring at least this share of the best are all in the running.
+const NEAR_BEST_SHARE: float = 0.75
+
+
+## A weighted pick among the styles close to the best score, like a player who
+## serves several tastes. Always taking the top one made a one-point gap flip
+## a whole style on or off (Baltic Porter 1 vs 28 brews per run).
+func _pick_near_best(candidates: Array[BrewRecipe], scores: Array[float]) -> BrewRecipe:
+	if candidates.is_empty():
+		return null
+	var best_score: float = scores.max()
+	var near: Array[BrewRecipe] = []
+	var weights: Array[float] = []
+	for i: int in candidates.size():
+		if scores[i] >= best_score * NEAR_BEST_SHARE:
+			near.append(candidates[i])
+			weights.append(scores[i])
+	return WeightedPicker.pick(near, weights) as BrewRecipe
 
 
 ## Bottles an expert keeps for the counter before it ships or brews for bars.
