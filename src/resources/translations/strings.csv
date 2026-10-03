@@ -794,6 +794,8 @@ Päävalikkoon,Main menu,src/scenes/ui/game_menu_window.gd
 Saavutukset,Achievements,src/scenes/ui/game_menu_window.gd
 Uusi yritys,New attempt,src/scenes/ui/game_menu_window.gd
 Valikko,Menu,src/scenes/ui/game_menu_window.gd
+%s (maine %d),%s (reputation %d),src/scenes/ui/ingredient_option_button.gd
+Vaatii mainetta: %d,Needs reputation: %d,src/scenes/ui/ingredient_option_button.gd
 Hiiva,Yeast,src/scenes/ui/ingredient_type_selector.gd
 Humala,Hops,src/scenes/ui/ingredient_type_selector.gd
 Mallas,Malt,src/scenes/ui/ingredient_type_selector.gd
