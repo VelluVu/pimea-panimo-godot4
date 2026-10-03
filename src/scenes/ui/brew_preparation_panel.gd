@@ -187,6 +187,7 @@ func _update_preview(brewery : Brewery, prep_contents : Dictionary) -> void:
 		return
 
 	if brewery.is_style_known(preview.beer_style.style):
-		preview_label.text = tr(PREVIEW_KNOWN_MATCH_FORMAT) % [tr(preview.beer_style.style_name), preview.final_ebc, preview.final_ibu, roundi(preview.original_quality * 100)]
+		preview_label.text = tr(PREVIEW_KNOWN_MATCH_FORMAT) % [tr(preview.beer_style.style_name), preview.final_ebc, preview.final_ibu, roundi(preview.original_quality * 100)] \
+				+ SpicePreviewText.line(preview.spice_bonus)
 	else:
 		preview_label.text = tr(PREVIEW_UNKNOWN_MATCH_FORMAT) % [preview.final_ebc, preview.final_ibu]

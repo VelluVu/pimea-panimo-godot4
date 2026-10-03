@@ -998,3 +998,9 @@ Colour: %s",src/ui/recipe_library_text.gd
 "??? (%.1f%% ABV) – vaatii: hiiva %s, vähintään %d kg mallasta","??? (%.1f%% ABV) – needs: yeast %s, at least %d kg of malt",src/ui/recipe_library_text.gd
 LVV,LVV,src/ui/reputation_breakdown_text.gd
 aikainen sulkeminen,early closing,src/ui/reputation_breakdown_text.gd
+"
+Mausteet: +%d %%","
+Spices: +%d %%",src/ui/spice_preview_text.gd
+"
+Reinheitsgebot rikottu: -%d %%","
+Reinheitsgebot broken: -%d %%",src/ui/spice_preview_text.gd
