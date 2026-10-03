@@ -14,7 +14,7 @@ func _ready() -> void:
 
 
 func _initialize_storage_nodes() -> void:
-	for id in IngredientDatabase.sorted_ids:
+	for id in IngredientDatabase.display_ids():
 		var ingredient: IngredientData = IngredientDatabase.database[id]
 		
 		var new_label := TooltipLabel.new()
@@ -38,7 +38,7 @@ func _update_ingredient_list() -> void:
 	
 	var inventory : Inventory = BrewEngine.current_brewery.inventory
 
-	for id in IngredientDatabase.sorted_ids:
+	for id in IngredientDatabase.display_ids():
 		var ingredient : IngredientData = IngredientDatabase.database[id]
 		var label: Label = storage_labels[id]
 		var item : InventoryItem = null

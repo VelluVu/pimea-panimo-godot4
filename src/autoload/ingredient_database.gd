@@ -71,6 +71,18 @@ static func _copy_base_fields(source: IngredientData, target: IngredientData) ->
 	target.take_over_path(source.resource_path)
 
 
+## For lists the player reads: grouped by type (malts, hops, yeasts, spices), then id.
+## Juniper keeps its old hop id 212 but belongs with the spices. sorted_ids stays the
+## search order, since RecipeSearch breaks ties by it.
+static func display_ids() -> Array[int]:
+	var ids : Array[int] = sorted_ids.duplicate()
+	ids.sort_custom(func(a : int, b : int) -> bool:
+		var type_a : int = database[a].type
+		var type_b : int = database[b].type
+		return type_a < type_b or (type_a == type_b and a < b))
+	return ids
+
+
 func has_item_by_id(id : int) -> bool:
 	if not database.has(id):
 		print(StringContainer.INVALID_ID_ERROR % [StringContainer.DATABASE_STRING, id, StringContainer.LIST_STRING])
