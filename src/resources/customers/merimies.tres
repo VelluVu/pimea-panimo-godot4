@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="CustomerData" format=3]
 
 [ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_merimies"]
-[ext_resource type="SpriteFrames" uid="uid://cyee0tanoaldd" path="res://src/resources/sprite_frames/opiskelija_male_anim.tres" id="2_sprite"]
+[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/merimies_anim.tres" id="2_sprite"]
 
 [resource]
 script = ExtResource("1_merimies")
