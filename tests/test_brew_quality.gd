@@ -96,3 +96,13 @@ func test_multiplier_adds_the_spice_bonus() -> void:
 	var without : float = BrewQualityScript.multiplier(mixture, BrewQualityScript.NEUTRAL_PRECISION, 0.0, false)
 	var with_spice : float = BrewQualityScript.multiplier(mixture, BrewQualityScript.NEUTRAL_PRECISION, 0.0, false, 0.1)
 	assert_true(is_equal_approx(with_spice - without, 0.1))
+
+
+func test_any_spice_breaks_the_purity_law() -> void:
+	var beer_style := BeerStyle.new()
+	beer_style.forbids_spices = true
+	beer_style.preferred_spice_ids = [401]
+	var mixture := _make_mixture(0.0, 0.0, 0)
+	assert_eq(BrewQualityScript.spice_bonus(mixture, beer_style), 0.0)
+	mixture.spice_ids[401] = true
+	assert_eq(BrewQualityScript.spice_bonus(mixture, beer_style), -BrewQualityScript.PURITY_LAW_PENALTY)

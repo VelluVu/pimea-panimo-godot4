@@ -24,6 +24,10 @@ signal beer_sale_breakdown(entry: SaleReceiptEntry)
 signal recipe_save_rejected()
 @warning_ignore("unused_signal")
 signal beer_brewed(style: int)
+## Emitted by Brewer for a matched brew whose spices changed its quality: positive for
+## suitable spices, negative for a broken Reinheitsgebot.
+@warning_ignore("unused_signal")
+signal brew_spiced(style_name: String, spice_bonus: float)
 ## Emitted by SaleProcessor when a sale goes badly for the customer: rejected on quality,
 ## wrong style, or nothing in stock. DailyGoalManager reads it for UNHAPPY_CUSTOMERS_MAX.
 @warning_ignore("unused_signal")

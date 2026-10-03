@@ -587,6 +587,7 @@ Maineesi laski: %s.,Your reputation dropped: %s.,src/ui/gui_announcer.gd
 Maineesi nousi: %s!,Your reputation rose: %s!,src/ui/gui_announcer.gd
 Ovet ovat vielä hetken kiinni. Osta ainekset ja pane ensimmäinen olut rauhassa.,The doors stay shut for now. Buy ingredients and brew your first beer in peace.,src/ui/gui_announcer.gd
 "Ovet suljettu aikaisin: -%.1f €, mainetta -%d, LVV-riski -%d","Closed early: -%.1f €, reputation -%d, LVV risk -%d",src/ui/gui_announcer.gd
+Reinheitsgebot rikottu! Baijerin herttua kääntyy haudassaan. %s: laatu -%d %%,Reinheitsgebot broken! The Duke of Bavaria turns in his grave. %s: quality -%d %%,src/ui/gui_announcer.gd
 Saavutus avattu: %s!,Achievement unlocked: %s!,src/ui/gui_announcer.gd
 Tyytyväinen asiakas suositteli panimoa kaverilleen!,A happy customer recommended the brewery to a friend!,src/ui/gui_announcer.gd
 Uusi asiakas avattu: %s!,New customer unlocked: %s!,src/ui/gui_announcer.gd
@@ -617,6 +618,9 @@ Vaatii ensin: %s,Requires first: %s,src/ui/olutoppi_text.gd
 "
 Katkeruus: %s","
 Bitterness: %s",src/ui/recipe_library_text.gd
+"
+Reinheitsgebot: ei mausteita","
+Reinheitsgebot: no spices",src/ui/recipe_library_text.gd
 "
 Sopivat mausteet: %s","
 Good spices: %s",src/ui/recipe_library_text.gd

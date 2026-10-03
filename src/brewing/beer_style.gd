@@ -43,6 +43,8 @@ enum Style {
 @export var required_spice_id: int = -1
 ## Optional spices that each add BrewQuality.SPICE_MATCH_STEP when on the table.
 @export var preferred_spice_ids: Array[int] = []
+## German styles keep the Reinheitsgebot: any spice costs BrewQuality.PURITY_LAW_PENALTY.
+@export var forbids_spices: bool = false
 @export var preferred_hop_profile: HopData.FlavorProfile = HopData.FlavorProfile.NONE
 
 @export_group("Alkoholi")

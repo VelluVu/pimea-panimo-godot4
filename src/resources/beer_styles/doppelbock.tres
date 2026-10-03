@@ -5,6 +5,7 @@
 [resource]
 script = ExtResource("1_doppelbock")
 style_name = "Doppelbock"
+forbids_spices = true
 style = 10
 abv = 8.0
 profit_margin_multiplier = 1.4

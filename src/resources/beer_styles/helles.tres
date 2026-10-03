@@ -5,6 +5,7 @@
 [resource]
 script = ExtResource("1_helles")
 style_name = "Helles"
+forbids_spices = true
 style = 6
 abv = 4.9
 fixed_price_per_bottle = 2.8

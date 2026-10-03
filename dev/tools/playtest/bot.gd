@@ -220,6 +220,10 @@ func _brew_recipe(b: Brewery, recipe: BrewRecipe) -> void:
 	var result: BrewResult = b.resolver.resolve_brew_style(recipe.ingredient_amounts)
 	if result != null:
 		counts["quality_sum"] = counts.get("quality_sum", 0.0) + result.original_quality
+		if result.spice_bonus > 0.0:
+			_inc("spiced_brews")
+		elif result.spice_bonus < 0.0:
+			_inc("purity_law_broken")
 	GUISignals.load_recipe_requested.emit(recipe)
 	GUISignals.start_brewing.emit()
 	_inc("brews")
@@ -245,7 +249,7 @@ func _expert_recipe(b: Brewery) -> BrewRecipe:
 	var best: BrewRecipe = null
 	var best_score: float = -INF
 	for style: BeerStyle in b.resolver.active_styles:
-		var ingredients: Dictionary = b.resolver.compute_minimum_ingredients(style)
+		var ingredients: Dictionary = _with_spices(b, style, b.resolver.compute_minimum_ingredients(style))
 		if ingredients.is_empty() or not _all_unlocked(b, ingredients):
 			continue
 		var cost: int = _missing_cost_of(b, ingredients)
@@ -286,13 +290,30 @@ func _style_recipe(b: Brewery, style: BeerStyle.Style) -> BrewRecipe:
 	var beer_style: BeerStyle = b.resolver.get_beer_style(style)
 	if beer_style == null:
 		return null
-	var ingredients: Dictionary = b.resolver.compute_minimum_ingredients(beer_style)
+	var ingredients: Dictionary = _with_spices(b, beer_style, b.resolver.compute_minimum_ingredients(beer_style))
 	if ingredients.is_empty() or not _all_unlocked(b, ingredients) or _missing_cost_of(b, ingredients) + 10 > b.money:
 		return null
 	var recipe := BrewRecipe.new()
 	recipe.beer_style = style
 	recipe.ingredient_amounts = ingredients
 	return recipe
+
+
+## One unit of each unlocked spice the style likes, up to the bonus cap. A German
+## style gets none, since it keeps the Reinheitsgebot.
+func _with_spices(b: Brewery, style: BeerStyle, ingredients: Dictionary) -> Dictionary:
+	if ingredients.is_empty() or style.forbids_spices:
+		return ingredients
+	var spiced: Dictionary = ingredients.duplicate()
+	var added: int = 0
+	for spice_id: int in style.preferred_spice_ids:
+		if added * BrewQuality.SPICE_MATCH_STEP >= BrewQuality.SPICE_MATCH_MAX:
+			break
+		var spice: IngredientData = IngredientDatabase.get_item_by_id(spice_id)
+		if spice != null and spice.min_reputation <= b.reputation:
+			spiced[spice_id] = 1
+			added += 1
+	return spiced
 
 
 ## The slot of an unfinished daily goal of `kind`, or -1.

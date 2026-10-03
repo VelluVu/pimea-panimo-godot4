@@ -13,6 +13,7 @@ const HOP_HINT_FORMAT : String = "\nSuosikkihumala: %s"
 const MALT_HINT_FORMAT : String = "\nVaadittu mallas: %s"
 const REQUIRED_SPICE_HINT_FORMAT : String = "\nVaatii myös: %s"
 const PREFERRED_SPICES_HINT_FORMAT : String = "\nSopivat mausteet: %s"
+const PURITY_LAW_HINT : String = "\nReinheitsgebot: ei mausteita"
 const COLOR_HINT_FORMAT : String = "\nVäri: %s"
 const BITTERNESS_HINT_FORMAT : String = "\nKatkeruus: %s"
 const MALT_BLEND_HINT : String = "\nVaatii mallasseoksen"
@@ -25,6 +26,8 @@ static func known_row(beer_style : BeerStyle, yeast_name : String, required_malt
 		yeast_name,
 	]
 	text += _hop_and_malt_hints(beer_style, required_malt_name, required_spice_name)
+	if beer_style.forbids_spices:
+		text += UiText.of(PURITY_LAW_HINT)
 	if not preferred_spice_names.is_empty():
 		text += UiText.of(PREFERRED_SPICES_HINT_FORMAT) % preferred_spice_names
 	return text

@@ -5,6 +5,7 @@
 [resource]
 script = ExtResource("1_hefeweizen")
 style_name = "Hefeweizen"
+forbids_spices = true
 style = 11
 abv = 5.2
 profit_margin_multiplier = 1.1
