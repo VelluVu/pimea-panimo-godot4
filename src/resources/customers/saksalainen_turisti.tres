@@ -33,4 +33,5 @@ min_reputation_to_appear = 20
 required_discovered_style = 6
 max_bottles_per_visit = 3
 accepted_styles = Array[int]([1, 2, 6, 7, 8, 9, 10, 11])
+dialogue_purity_law_broken = "Gewürze?! Im deutschen Bier?! Das Reinheitsgebot von 1516 weint! Verboten!"
 metadata/_custom_type_script = "uid://b2vqc8lkfjwic"
