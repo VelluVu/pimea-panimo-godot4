@@ -155,6 +155,96 @@ Kate: %.2f €
 Margin: %.2f €
 = Price/serving: %.2f €",src/customers/sale_receipt_entry.gd
 PerkRegistry: Perk pool is empty!,PerkRegistry: Perk pool is empty!,src/progression/perk_registry.gd
+Ensimmäinen satsi,First Batch,src/resources/achievements/ensimmainen_satsi.tres
+Keitä 10 olutsatsia.,Brew 10 batches of beer.,src/resources/achievements/ensimmainen_satsi.tres
+Avaa 10 humalalajiketta reputaation kautta.,Unlock 10 hop varieties through reputation.,src/resources/achievements/humalat_10.tres
+Humalamestari,Hop Master,src/resources/achievements/humalat_10.tres
+Avaa kaikki 12 humalalajiketta.,Unlock all 12 hop varieties.,src/resources/achievements/humalat_12.tres
+Humalaneuvos,Hop Councillor,src/resources/achievements/humalat_12.tres
+Avaa 7 humalalajiketta reputaation kautta.,Unlock 7 hop varieties through reputation.,src/resources/achievements/humalat_7.tres
+Humalapuutarhuri,Hop Gardener,src/resources/achievements/humalat_7.tres
+Koe ensimmäinen baaritappelu.,Witness your first bar fight.,src/resources/achievements/kannissa_ja_tappelussa.tres
+Kännissä ja tappelussa,Drunk and Disorderly,src/resources/achievements/kannissa_ja_tappelussa.tres
+Kellarimestari,Cellar Master,src/resources/achievements/kellarimestari.tres
+Saavuta taso 10.,Reach level 10.,src/resources/achievements/kellarimestari.tres
+Lahjontarutiini,Bribery Routine,src/resources/achievements/kolme_lvv_lahjusta.tres
+Maksa LVV:lle lahjuksia onnistuneesti kolme kertaa.,Successfully bribe the LVV three times.,src/resources/achievements/kolme_lvv_lahjusta.tres
+Lähetä kolme vientierää baareihin.,Send three shipments to bars.,src/resources/achievements/kolme_vientieraa.tres
+Vakiotoimittaja,Regular Supplier,src/resources/achievements/kolme_vientieraa.tres
+Nosta maine 100:aan yhden pelin aikana.,Raise your reputation to 100 in one game.,src/resources/achievements/kylan_puheenaihe.tres
+Avaa 10 erilaista asiakastyyppiä.,Unlock 10 different customer types.,src/resources/achievements/kymmenen_asiakasta.tres
+Legendaarinen kellari,Legendary Cellar,src/resources/achievements/kymmenen_asiakasta.tres
+Paranna oluen laatua sopivalla mausteella.,Improve a beer's quality with a suitable spice.,src/resources/achievements/mausteet_1.tres
+Ripaus makua,A Pinch of Flavour,src/resources/achievements/mausteet_1.tres
+Maustehylly,Spice Rack,src/resources/achievements/mausteet_10.tres
+Pane 10 erää sopivilla mausteilla.,Brew 10 batches with suitable spices.,src/resources/achievements/mausteet_10.tres
+Maustemestari,Spice Master,src/resources/achievements/mausteet_25.tres
+Pane 25 erää sopivilla mausteilla.,Brew 25 batches with suitable spices.,src/resources/achievements/mausteet_25.tres
+Keitä 50 olutsatsia.,Brew 50 batches of beer.,src/resources/achievements/panimon_pyorittaja.tres
+Panimon pyörittäjä,Brewery Runner,src/resources/achievements/panimon_pyorittaja.tres
+Myy yhteensä 100 annosta.,Sell 100 servings in total.,src/resources/achievements/pullo_pullolta.tres
+Pullo pullolta,Bottle by Bottle,src/resources/achievements/pullo_pullolta.tres
+Omista kerralla 1000 €.,Hold 1000 € at once.,src/resources/achievements/rahasampo.tres
+Rahasampo,Money Mill,src/resources/achievements/rahasampo.tres
+Ota vastaan 5 ryhmävierailua.,Host 5 group visits.,src/resources/achievements/ryhmakuri.tres
+Ryhmäkuri,Group Discipline,src/resources/achievements/ryhmakuri.tres
+Pelaa peli loppuun ilman kiinnijäämistä tai konkurssia.,Finish a game without getting caught or going bankrupt.,src/resources/achievements/selviytyja.tres
+Selviytyjä,Survivor,src/resources/achievements/selviytyja.tres
+Selviä LVV-ratsiasta.,Survive an LVV raid.,src/resources/achievements/tarkastettu.tres
+Tarkastettu,Inspected,src/resources/achievements/tarkastettu.tres
+Myy yhteensä 500 annosta.,Sell 500 servings in total.,src/resources/achievements/tehtaanmyymala.tres
+Tehtaanmyymälä,Factory Outlet,src/resources/achievements/tehtaanmyymala.tres
+Kerää tippejä yhteensä 50 €.,Collect 50 € in tips in total.,src/resources/achievements/tippipurkki.tres
+Pane hyllyyn ensimmäinen erä tyyliä Alkoholiton IPA.,Put your first batch of Non-alcoholic IPA on the shelf.,src/resources/achievements/tyyli_alkoholitonipa.tres
+Tyyli löydetty: Alkoholiton IPA,Style discovered: Non-alcoholic IPA,src/resources/achievements/tyyli_alkoholitonipa.tres
+Pane hyllyyn ensimmäinen erä tyyliä Alkoholiton Lager.,Put your first batch of Non-alcoholic Lager on the shelf.,src/resources/achievements/tyyli_alkoholitonlager.tres
+Tyyli löydetty: Alkoholiton Lager,Style discovered: Non-alcoholic Lager,src/resources/achievements/tyyli_alkoholitonlager.tres
+Pane hyllyyn ensimmäinen erä tyyliä Amber Ale.,Put your first batch of Amber Ale on the shelf.,src/resources/achievements/tyyli_amberale.tres
+Tyyli löydetty: Amber Ale,Style discovered: Amber Ale,src/resources/achievements/tyyli_amberale.tres
+Pane hyllyyn ensimmäinen erä tyyliä Baltic Portteri.,Put your first batch of Baltic Porter on the shelf.,src/resources/achievements/tyyli_balticportteri.tres
+Tyyli löydetty: Baltic Portteri,Style discovered: Baltic Porter,src/resources/achievements/tyyli_balticportteri.tres
+Pane hyllyyn ensimmäinen erä tyyliä Barleywine.,Put your first batch of Barleywine on the shelf.,src/resources/achievements/tyyli_barleywine.tres
+Tyyli löydetty: Barleywine,Style discovered: Barleywine,src/resources/achievements/tyyli_barleywine.tres
+Pane hyllyyn ensimmäinen erä tyyliä Belgian Dubbel.,Put your first batch of Belgian Dubbel on the shelf.,src/resources/achievements/tyyli_belgiandubbel.tres
+Tyyli löydetty: Belgian Dubbel,Style discovered: Belgian Dubbel,src/resources/achievements/tyyli_belgiandubbel.tres
+Pane hyllyyn ensimmäinen erä tyyliä Belgian Strong Dark Ale.,Put your first batch of Belgian Strong Dark Ale on the shelf.,src/resources/achievements/tyyli_belgianstrongdark.tres
+Tyyli löydetty: Belgian Strong Dark Ale,Style discovered: Belgian Strong Dark Ale,src/resources/achievements/tyyli_belgianstrongdark.tres
+Pane hyllyyn ensimmäinen erä tyyliä Bulkki Lager.,Put your first batch of Bulk Lager on the shelf.,src/resources/achievements/tyyli_bulkkilager.tres
+Tyyli löydetty: Bulkki Lager,Style discovered: Bulk Lager,src/resources/achievements/tyyli_bulkkilager.tres
+Pane hyllyyn ensimmäinen erä tyyliä Doppelbock.,Put your first batch of Doppelbock on the shelf.,src/resources/achievements/tyyli_doppelbock.tres
+Tyyli löydetty: Doppelbock,Style discovered: Doppelbock,src/resources/achievements/tyyli_doppelbock.tres
+Pane hyllyyn ensimmäinen erä tyyliä Hefeweizen.,Put your first batch of Hefeweizen on the shelf.,src/resources/achievements/tyyli_hefeweizen.tres
+Tyyli löydetty: Hefeweizen,Style discovered: Hefeweizen,src/resources/achievements/tyyli_hefeweizen.tres
+Pane hyllyyn ensimmäinen erä tyyliä Helles.,Put your first batch of Helles on the shelf.,src/resources/achievements/tyyli_helles.tres
+Tyyli löydetty: Helles,Style discovered: Helles,src/resources/achievements/tyyli_helles.tres
+Pane hyllyyn ensimmäinen erä tyyliä Imperial Stout.,Put your first batch of Imperial Stout on the shelf.,src/resources/achievements/tyyli_imperialstout.tres
+Tyyli löydetty: Imperial Stout,Style discovered: Imperial Stout,src/resources/achievements/tyyli_imperialstout.tres
+Pane hyllyyn ensimmäinen erä tyyliä IPA.,Put your first batch of IPA on the shelf.,src/resources/achievements/tyyli_ipa.tres
+Tyyli löydetty: IPA,Style discovered: IPA,src/resources/achievements/tyyli_ipa.tres
+Pane hyllyyn ensimmäinen erä tyyliä Kotikalja.,Put your first batch of Kotikalja on the shelf.,src/resources/achievements/tyyli_kotikalja.tres
+Tyyli löydetty: Kotikalja,Style discovered: Kotikalja,src/resources/achievements/tyyli_kotikalja.tres
+Pane hyllyyn ensimmäinen erä tyyliä Märzen.,Put your first batch of Märzen on the shelf.,src/resources/achievements/tyyli_marzen.tres
+Tyyli löydetty: Märzen,Style discovered: Märzen,src/resources/achievements/tyyli_marzen.tres
+Pane hyllyyn ensimmäinen erä tyyliä Pale Ale.,Put your first batch of Pale Ale on the shelf.,src/resources/achievements/tyyli_paleale.tres
+Tyyli löydetty: Pale Ale,Style discovered: Pale Ale,src/resources/achievements/tyyli_paleale.tres
+Pane hyllyyn ensimmäinen erä tyyliä Sahti.,Put your first batch of Sahti on the shelf.,src/resources/achievements/tyyli_sahti.tres
+Tyyli löydetty: Sahti,Style discovered: Sahti,src/resources/achievements/tyyli_sahti.tres
+Pane hyllyyn ensimmäinen erä tyyliä Saison.,Put your first batch of Saison on the shelf.,src/resources/achievements/tyyli_saison.tres
+Tyyli löydetty: Saison,Style discovered: Saison,src/resources/achievements/tyyli_saison.tres
+Pane hyllyyn ensimmäinen erä tyyliä Scotch Ale.,Put your first batch of Scotch Ale on the shelf.,src/resources/achievements/tyyli_scotchale.tres
+Tyyli löydetty: Scotch Ale,Style discovered: Scotch Ale,src/resources/achievements/tyyli_scotchale.tres
+Pane hyllyyn ensimmäinen erä tyyliä Session Ale.,Put your first batch of Session Ale on the shelf.,src/resources/achievements/tyyli_sessionale.tres
+Tyyli löydetty: Session Ale,Style discovered: Session Ale,src/resources/achievements/tyyli_sessionale.tres
+Pane hyllyyn ensimmäinen erä tyyliä Tumma Lager.,Put your first batch of Dark Lager on the shelf.,src/resources/achievements/tyyli_tummalager.tres
+Tyyli löydetty: Tumma Lager,Style discovered: Dark Lager,src/resources/achievements/tyyli_tummalager.tres
+Pane hyllyyn ensimmäinen erä tyyliä Vienna Lager.,Put your first batch of Vienna Lager on the shelf.,src/resources/achievements/tyyli_viennalager.tres
+Tyyli löydetty: Vienna Lager,Style discovered: Vienna Lager,src/resources/achievements/tyyli_viennalager.tres
+Pane hyllyyn ensimmäinen erä tyyliä Witbier.,Put your first batch of Witbier on the shelf.,src/resources/achievements/tyyli_witbier.tres
+Tyyli löydetty: Witbier,Style discovered: Witbier,src/resources/achievements/tyyli_witbier.tres
+Mausta saksalaista olutta. Baijerin herttua ei ilahtunut.,Spice a German beer. The Duke of Bavaria was not amused.,src/resources/achievements/verboten.tres
+Verboten!,Verboten!,src/resources/achievements/verboten.tres
+Avaa 5 erilaista asiakastyyppiä.,Unlock 5 different customer types.,src/resources/achievements/viisi_asiakasta.tres
+Kanta-asiakaskunta kasvaa,A Growing Clientele,src/resources/achievements/viisi_asiakasta.tres
 Kulman Kuppila,The Corner Dive,src/resources/bars/kulman_kuppila.tres
 "Naapurustobaari, joka ottaa vastaan mitä tahansa kelvollista tynnyriolutta ilman kysymyksiä. Ei maksa paljon, mutta ei myöskään herätä huomiota.","A neighbourhood bar that takes any decent keg beer, no questions asked. It doesn't pay much, but it doesn't draw attention either.",src/resources/bars/kulman_kuppila.tres
 "Arvostettu illallisravintola, joka maksaa parhaan hinnan laadukkaista eristä. Suuret toimitukset tänne ovat riski, jota ei kannata ottaa kevein perustein.",A respected dinner restaurant that pays the best price for quality batches. Big deliveries here are a risk you shouldn't take lightly.,src/resources/bars/kultainen_tynnyri.tres
@@ -188,6 +278,37 @@ Myy pulloja,Sell bottles,src/resources/daily_goals/myy_paljon_pulloja.tres
 Tyytyväiset asiakkaat,Happy customers,src/resources/daily_goals/nolla_tyytymatonta.tres
 Rahaa,Money,src/resources/daily_goals/tienaa_paljon_rahaa.tres
 Vie baariin,Ship to a bar,src/resources/daily_goals/vie_baariin_paljon.tres
+Eukonkanto-kisat järjestetään tänään lähistöllä. Odotettavissa testosteronin täyteisiä vahvoja asiakkaita ryhmittäin.,The wife-carrying championships are held nearby today. Expect groups of strong customers full of testosterone.,src/resources/day_events/day_event_eukonkanto.tres
+Läheisellä työmaalla vietetään harjakaisia tänään. Odotettavissa remonttimiehiä janoissaan.,A nearby building site celebrates its topping-out today. Expect thirsty builders.,src/resources/day_events/day_event_harjakaiset.tres
+Jääkaappi hajosi yöllä ja pilasi %d pulloa varastosta.,The fridge broke during the night and spoiled %d bottles in storage.,src/resources/day_events/day_event_jaakaappi_hajoaa.tres
+Kellarin jääkaappi pitää epäilyttävää ääntä. Kylmäketju saattaa pätkiä tänään.,The cellar fridge is making a suspicious noise. The cold chain may fail today.,src/resources/day_events/day_event_jaakaappi_hajoaa.tres
+Hipsterien käsityökahvipapupaahtamiskerho kokoontuu tänään lähialueella. Odotettavissa käsityöläisoluesta kiinnostuneita hipstereitä.,The hipsters' artisan coffee bean roasting club meets nearby today. Expect hipsters curious about craft beer.,src/resources/day_events/day_event_kahvipaahtimo.tres
+Tänään on arkipyhä. Odotettavissa sekalaisia ryhmiä ympäri kaupunkia.,Today is a public holiday. Expect mixed groups from all over town.,src/resources/day_events/day_event_kesafestivaali.tres
+Tavallinen päivä kellarissa. Ei erikoisia yllätyksiä luvassa tänään.,An ordinary day in the cellar. No special surprises expected today.,src/resources/day_events/day_event_none.tres
+Opintotukien maksupäivä on tänään. Odotettavissa rahaa polttavia opiskelijoita.,Student allowance payday is today. Expect students eager to spend.,src/resources/day_events/day_event_opintotuki.tres
+Suojelurahojen keräyspäivä koittaa tänään. Odotettavissa epäilyttävän hyvin pukeutuneita liikemiehiä.,Protection money collection day is today. Expect suspiciously well-dressed businessmen.,src/resources/day_events/day_event_suojelurahat.tres
+Aamulla löytyy puraisujälkiä säkeistä. Jokin on käynyt varastossa yöllä.,Bite marks on the sacks this morning. Something visited the storeroom at night.,src/resources/day_events/day_event_tuhoelaimet.tres
+Tuhoeläimet söivät varastosta %d kg maltaita.,Pests ate %d kg of malt from storage.,src/resources/day_events/day_event_tuhoelaimet.tres
+LVV:n yllätystarkastusviikko alkaa tänään. Odotettavissa epäilyttävän montaa uutta kasvoa.,The LVV's surprise inspection week starts today. Expect a suspicious number of new faces.,src/resources/day_events/day_event_yllatystarkastus.tres
+Sukupolvi Z apocalypse festivaali käynnissä kaupungissa tänään. Odotettavissa runsaasti Zgen-asiakkaita.,The Generation Z apocalypse festival is on in town today. Expect plenty of Gen Z customers.,src/resources/day_events/day_event_zgen_festival.tres
+LVV:n yllätystarkastusviikko on alkanut. Epäilyttävän moni uusi kasvo saattaa kierrellä ovella tällä viikolla.,The LVV's surprise inspection week has begun. A suspicious number of new faces may hang around the door this week.,src/resources/group_events/agentti_lauma.tres
+"Alfagen-lauma rynnii sisään puhelimet ja aurapointsit pystyssä, kaikki haluaa jotain alkoholitonta ja goattia.","A Gen Alpha pack storms in, phones and aura points up, all wanting something non-alcoholic and goated.",src/resources/group_events/alpha_gen_lauma.tres
+"Raivokas barbaarilauma mahtuu juuri ja juuri panimon ovesta sisään.
+Nyt on paha riski tappelulle!","A raging barbarian horde barely fits through the brewery door.
+A fight is very likely now!",src/resources/group_events/barbaari_lauma.tres
+Hipsterien käsityökahvipapupaahtamiskerho kokoontuu lähialueella. Odotettavissa käsityöläisoluesta kiinnostuneita hipstereitä.,The hipsters' artisan coffee bean roasting club meets nearby. Expect hipsters curious about craft beer.,src/resources/group_events/hipsteri_lauma.tres
+"SUOMI VOITTI MM-KULTAA!
+Nyt tulee fanikööri sisään!","FINLAND WON WORLD CHAMPIONSHIP GOLD!
+Here come the fans!",src/resources/group_events/leijonafanit_mm_kulta.tres
+"Suojelurahan kantopäivä koittaa. Pukumiehiä alkaa ilmestyä ovelle kiertämään lähistön liikkeitä, teidät mukaan lukien.","Protection money day has come. Men in suits start showing up, making the rounds of nearby businesses, yours included.",src/resources/group_events/mafioso_lauma.tres
+"Fuksivuosikurssi ryntää ovesta sisään haalarit päällä,
+halvinta kaljaa heti tiskiin!","The freshman class bursts in wearing their student overalls,
+cheapest beer on the counter right now!",src/resources/group_events/opiskelijabileet.tres
+Harjakaiset pidetään läheisellä työmaalla. Remonttimiehet rynnivät kellariin sammuttamaan janon urakan kunniaksi.,A nearby building site holds its topping-out party. The builders rush into the cellar to quench their thirst in honour of the job.,src/resources/group_events/raksamies_lauma.tres
+"Oudoin remmi ikinä ilmestyy portaille yhtä aikaa hipsteri, agentti, kummisetä ja remonttimies samassa jonossa.
+Kukaan ei kysy miksi.","The strangest crew ever shows up on the stairs: a hipster, an agent, a godfather and a builder in the same queue.
+Nobody asks why.",src/resources/group_events/sekalauma.tres
+"Zgen-lauma rynnii sisään puhelimet pystyssä kaikki haluaa alkoholitonta sisältöä somettaan, fr fr.","A Gen Z pack storms in, phones up, all wanting non-alcoholic content for their socials, fr fr.",src/resources/group_events/zgen_lauma.tres
 Amerikkalainen aromihumala joka tuo sitruksista ja mäntyistä aromia,American aroma hop with citrus and pine notes,src/resources/ingredients/hops/cascade_hop.tres
 Cascade Humala,Cascade Hops,src/resources/ingredients/hops/cascade_hop.tres
 Centennial Humala,Centennial Hops,src/resources/ingredients/hops/centennial_hop.tres
@@ -352,6 +473,46 @@ Ei yllätyksiä tällä kertaa: perustaso kaikessa.,No surprises this time: ever
 Tavallinen keikka,Business as Usual,src/resources/run_modifiers/tavallinen_keikka.tres
 "Maine karttuu nopeammin, mutta tunnettuus kiinnittää myös LVV:n huomion aiemmin.","Reputation builds faster, but fame also draws the LVV's attention sooner.",src/resources/run_modifiers/tunnettu_nimi.tres
 Tunnettu nimi,Known Name,src/resources/run_modifiers/tunnettu_nimi.tres
+"Haluamme kasvosi energiajuomamainokseen! Maksamme 80 €, mutta maineesi kärsii: 15 mainetta.","We want your face in an energy drink ad! We pay 80 €, but your reputation suffers: 15 reputation.",src/resources/special_events/brand_deal.tres
+Kukaan ei vielä tunnista sinua. Ehkä myöhemmin.,Nobody recognises you yet. Maybe later.,src/resources/special_events/brand_deal.tres
+Loistavaa! Kuvaukset ovat huomenna. Älä aja partaa.,Brilliant! The shoot is tomorrow. Don't shave.,src/resources/special_events/brand_deal.tres
+Mainostoimiston Pirjo,Pirjo from the Ad Agency,src/resources/special_events/brand_deal.tres
+Taiteellinen integriteetti. Kunnioitan.,Artistic integrity. I respect that.,src/resources/special_events/brand_deal.tres
+"Ei ollut tarpeeksi mallasta. No, keksin jotain muuta.","Not enough malt. Oh well, I'll think of something else.",src/resources/special_events/ingredient_loan.tres
+"Meiltä loppui mallas kesken kaiken! Voisitko lainata vähän, maksan takaisin suosiolla?",We ran out of malt mid-brew! Could you lend some? I'll pay you back in goodwill.,src/resources/special_events/ingredient_loan.tres
+Naapuripanimon Jussi,Jussi from the Brewery Next Door,src/resources/special_events/ingredient_loan.tres
+Pelastit päiväni! Kiitos avusta.,You saved my day! Thanks for the help.,src/resources/special_events/ingredient_loan.tres
+"Selvä, pärjäämme kyllä jotenkin.","Fine, we'll manage somehow.",src/resources/special_events/ingredient_loan.tres
+"Harmi, ei ollut tarjolla mitä etsin.","Too bad, you didn't have what I was after.",src/resources/special_events/journalist_review.tres
+"No, ehkä toiste sitten.","Well, maybe another time.",src/resources/special_events/journalist_review.tres
+Teen juttua paikallisista pienpanimoista. Saisinko muutaman pullon IPA:a maisteluun?,I'm writing a story on local microbreweries. Could I get a few bottles of IPA to taste?,src/resources/special_events/journalist_review.tres
+Toimittaja Liisa,Liisa the Journalist,src/resources/special_events/journalist_review.tres
+Tästä tulee hyvä juttu lehteen!,This will make a great story!,src/resources/special_events/journalist_review.tres
+"Ei ollut tarpeeksi rahaa? No, sitten joudun tekemään raportin.","Not enough money? Well, then I'll have to file a report.",src/resources/special_events/lvv_bribe.tres
+"Kova moraali. Kunnioitettavaa, mutta typerää.","Strong morals. Admirable, but foolish.",src/resources/special_events/lvv_bribe.tres
+LVV-tarkastaja Virtanen,LVV Inspector Virtanen,src/resources/special_events/lvv_bribe.tres
+Olen kuullut huolestuttavia huhuja tästä paikasta... mutta ehkä voisimme sopia asian kahden kesken?,I've heard worrying rumours about this place... but maybe we could settle this between ourselves?,src/resources/special_events/lvv_bribe.tres
+Selvä homma. En ole nähnyt täällä mitään epäilyttävää.,Very well. I haven't seen anything suspicious here.,src/resources/special_events/lvv_bribe.tres
+Nimesi ei vielä paina tarpeeksi. Palataan asiaan.,Your name doesn't carry enough weight yet. Let's talk later.,src/resources/special_events/lvv_favour.tres
+"Sovittu. Nimesi kampanjaan, paperisi silppuriin.","Deal. Your name in my campaign, your papers in the shredder.",src/resources/special_events/lvv_favour.tres
+"Tunnen LVV:n tarkastajan. Hän unohtaa paperisi, jos panimosi nimi komeilee vaalimainoksessani. Hinta: 25 mainetta, LVV-riski laskee 40.","I know the LVV inspector. He'll forget your papers if your brewery's name shines in my election ad. Price: 25 reputation, LVV risk drops by 40.",src/resources/special_events/lvv_favour.tres
+Valtuutettu Kettunen,Councillor Kettunen,src/resources/special_events/lvv_favour.tres
+Ymmärrän. Kaikki eivät halua politiikkaan.,I understand. Not everyone wants to get into politics.,src/resources/special_events/lvv_favour.tres
+"Ei kotikaljaa? No, ehkä soitan sittenkin sille tarkastajalle.","No kotikalja? Well, maybe I'll call that inspector after all.",src/resources/special_events/nosy_neighbour.tres
+Kotikaljaa! Mitä kolinaa? En minä kuullut mitään.,Kotikalja! What clatter? I didn't hear a thing.,src/resources/special_events/nosy_neighbour.tres
+Naapurin Irma,Irma the Neighbour,src/resources/special_events/nosy_neighbour.tres
+"Teidän kellarista kuuluu kaikenlaista kolinaa... Mutta jos minulle tuotaisiin 10 pulloa kotikaljaa, en ehkä muistaisi mitään. LVV-riski laskee 20.","All sorts of clatter comes from your cellar... But if someone brought me 10 bottles of kotikalja, I might not remember a thing. LVV risk drops by 20.",src/resources/special_events/nosy_neighbour.tres
+Vai niin. Minä tästä sitten soittelen...,"I see. I'll be making a few calls, then...",src/resources/special_events/nosy_neighbour.tres
+Ei tässä ole mitään erikoista. Yritä uudestaan kun on jotain oikeasti hyvää.,Nothing special here. Try again when you have something really good.,src/resources/special_events/quality_critic.tres
+"Kuulin että täällä keitetään jotain erikoista. Näytä minulle parhaasi, en tyydy keskinkertaiseen!","I heard something special is brewed here. Show me your best, I won't settle for mediocre!",src/resources/special_events/quality_critic.tres
+Olutarvostelija Matti,Matti the Beer Critic,src/resources/special_events/quality_critic.tres
+Turha tuhlata aikaani sitten.,"No point wasting my time, then.",src/resources/special_events/quality_critic.tres
+Vaikuttavaa käsityötä! Tästä saa täydet tähdet.,Impressive craftsmanship! Full stars for this.,src/resources/special_events/quality_critic.tres
+"Ei kai teillä sentään Hefeweizeniä ole? No, keksitään jotain muuta.","You don't happen to have Hefeweizen? Oh well, we'll think of something else.",src/resources/special_events/wedding_order.tres
+Hääjärjestäjä Pekka,Pekka the Wedding Planner,src/resources/special_events/wedding_order.tres
+"Häät on tänä iltana ja kaljat loppu kesken! Hefeweizeniä olisi juhlavinta, jos vain sattuisi löytymään.","The wedding is tonight and the beer ran out! Hefeweizen would be the most festive, if you happen to have some.",src/resources/special_events/wedding_order.tres
+Pelastit häät! Morsian on onnesta soikeana.,You saved the wedding! The bride is over the moon.,src/resources/special_events/wedding_order.tres
+"Selvä, yritetään onneamme jossain muualla.","Fine, we'll try our luck somewhere else.",src/resources/special_events/wedding_order.tres
 "Häädä asiakkaat, ja aloita uusi päivä",Send the customers home and start a new day,src/scenes/main.tscn
 Keittola,Brewhouse,src/scenes/main.tscn
 LVV Riski: 0%,LVV Risk: 0%,src/scenes/main.tscn
