@@ -79,7 +79,7 @@ const QUALITY_TIER_GOOD : String = "Hyvä"
 const QUALITY_TIER_EXCELLENT : String = "Erinomainen"
 const QUALITY_TIER_MASTERFUL : String = "Mestarillinen"
 
-const BREW_QUALITY_BREAKDOWN_TOOLTIP : String = "Osumatarkkuus: %s%%\nHumalalajeja käytetty: %s\nHumalatasapaino-bonus: %s%%\nMakuosuma: %s"
+const BREW_QUALITY_BREAKDOWN_TOOLTIP : String = "Osumatarkkuus: %s%%\nHumalalajeja käytetty: %s\nHumalatasapaino-bonus: %s%%\nMakuosuma: %s\nMaustebonus: %s%%"
 const YES_STRING : String = "Kyllä"
 const NO_STRING : String = "Ei"
 

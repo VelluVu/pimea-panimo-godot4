@@ -5,6 +5,7 @@
 [resource]
 script = ExtResource("1_tigno")
 style_name = "Tumma Lager"
+preferred_spice_ids = Array[int]([406])
 style = 2
 abv = 4.8
 fixed_price_per_bottle = 2.0

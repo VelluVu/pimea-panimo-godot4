@@ -6,6 +6,7 @@
 script = ExtResource("1_dubbel")
 style_name = "Belgian Dubbel"
 style = 15
+preferred_spice_ids = Array[int]([400])
 abv = 7.0
 profit_margin_multiplier = 1.3
 fixed_price_per_bottle = 4.0

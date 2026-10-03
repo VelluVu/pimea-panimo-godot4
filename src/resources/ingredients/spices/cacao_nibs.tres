@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="IngredientData" format=3]
+
+[ext_resource type="Script" uid="uid://dniwiyu5ynp71" path="res://src/brewing/ingredient_data.gd" id="1_cacao_nibs"]
+
+[resource]
+script = ExtResource("1_cacao_nibs")
+id = 403
+name = "Kaakaonibsit"
+description = "Paahdettuja kaakaopavun paloja. Tuovat stouttiin ja Baltic Portteriin tummaa suklaata."
+base_price = 3
+unit = 2
+type = 3
+min_reputation = 30
+metadata/_custom_type_script = "uid://dniwiyu5ynp71"

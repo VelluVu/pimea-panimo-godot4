@@ -5,6 +5,7 @@
 [resource]
 script = ExtResource("1_witbier")
 style_name = "Witbier"
+preferred_spice_ids = Array[int]([401, 402])
 style = 12
 abv = 4.8
 profit_margin_multiplier = 1.1

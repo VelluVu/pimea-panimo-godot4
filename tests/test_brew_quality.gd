@@ -69,3 +69,30 @@ func test_required_spice_on_the_table_counts_as_flavor_match() -> void:
 	assert_false(BrewQualityScript.flavor_matched(mixture, beer_style))
 	mixture.spice_ids[212] = true
 	assert_true(BrewQualityScript.flavor_matched(mixture, beer_style))
+
+
+func test_spice_bonus_counts_preferred_spices_and_caps() -> void:
+	var beer_style := BeerStyle.new()
+	beer_style.preferred_spice_ids = [401, 402, 403]
+	var mixture := _make_mixture(0.0, 0.0, 0)
+	assert_eq(BrewQualityScript.spice_bonus(mixture, beer_style), 0.0)
+	mixture.spice_ids[401] = true
+	assert_eq(BrewQualityScript.spice_bonus(mixture, beer_style), BrewQualityScript.SPICE_MATCH_STEP)
+	mixture.spice_ids[402] = true
+	mixture.spice_ids[403] = true
+	assert_eq(BrewQualityScript.spice_bonus(mixture, beer_style), BrewQualityScript.SPICE_MATCH_MAX)
+
+
+func test_unrelated_spice_gives_no_bonus() -> void:
+	var beer_style := BeerStyle.new()
+	beer_style.preferred_spice_ids = [401]
+	var mixture := _make_mixture(0.0, 0.0, 0)
+	mixture.spice_ids[407] = true
+	assert_eq(BrewQualityScript.spice_bonus(mixture, beer_style), 0.0)
+
+
+func test_multiplier_adds_the_spice_bonus() -> void:
+	var mixture := _make_mixture(0.0, 0.0, 0)
+	var without : float = BrewQualityScript.multiplier(mixture, BrewQualityScript.NEUTRAL_PRECISION, 0.0, false)
+	var with_spice : float = BrewQualityScript.multiplier(mixture, BrewQualityScript.NEUTRAL_PRECISION, 0.0, false, 0.1)
+	assert_true(is_equal_approx(with_spice - without, 0.1))

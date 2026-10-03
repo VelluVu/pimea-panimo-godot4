@@ -64,3 +64,10 @@ func test_locked_row_mentions_a_malt_blend_only_without_a_required_malt() -> voi
 	var text : String = RecipeLibraryTextScript.locked_row(beer_style, "Y", "Vehnämallas", true)
 	assert_false(text.contains("Vaatii mallasseoksen"), "a single required malt replaces the blend hint")
 	assert_true(text.contains("Vaadittu mallas: Vehnämallas"))
+
+
+func test_known_row_lists_preferred_spices_when_given() -> void:
+	var plain : String = RecipeLibraryTextScript.known_row(_make_style(), "Y", "")
+	assert_false(plain.contains("Korianteri"))
+	var spiced : String = RecipeLibraryTextScript.known_row(_make_style(), "Y", "", "", "Korianteri, Pomeranssinkuori")
+	assert_true(spiced.contains("Korianteri, Pomeranssinkuori"))
