@@ -61,6 +61,8 @@ CONTENT_ARRAY_FIELDS = {
     "src/resources/group_events": ("chant_texts",),
 }
 SKIP_DIRS = ["src/console", "src/systems/console", "src/resources", "addons", "tests", "dev"]
+# Player-facing files inside the skipped folders. The other console sets are gitignored cheats.
+KEEP_FILES = ["src/console/player_commands.gd", "src/systems/console/console_wiring.gd"]
 
 CONST_STRING = re.compile(r'^\s*const\s+(\w+)\s*:\s*String\s*=\s*"((?:[^"\\]|\\.)*)"', re.M)
 CONST_ARRAY = re.compile(r'^\s*const\s+(\w+)\s*:\s*(?:Array\[String\]|PackedStringArray)\s*=\s*\[(.*?)\]', re.M | re.S)
@@ -98,6 +100,8 @@ def _rel(path):
 
 def _skipped(path):
     rel = _rel(path)
+    if rel in KEEP_FILES:
+        return False
     return any(rel == d or rel.startswith(d + "/") for d in SKIP_DIRS)
 
 

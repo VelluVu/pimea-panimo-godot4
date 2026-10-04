@@ -7,7 +7,8 @@ extends RefCounted
 
 ## Decides whether dev-only commands may run. The project sets it (ConsoleWiring).
 var developer_mode_check: Callable = func() -> bool: return true
-## Wording, English by default; the project replaces it (ConsoleWiring).
+## Wording, English by default; the project replaces it (ConsoleWiring). Passed through tr()
+## when shown.
 var dev_mode_off_message: String = "[color=orange]Developer commands are off.[/color]"
 var unknown_command_format: String = "[color=orange]Unknown command: %s (try 'help')[/color]"
 var help_format: String = "Commands: %s"
@@ -47,11 +48,11 @@ func execute(text: String) -> void:
 	var command_name := parts[0].to_lower()
 	var command: ConsoleCommand = _commands.get(command_name)
 	if command == null:
-		_log.call(unknown_command_format % command_name)
+		_log.call(tr(unknown_command_format) % command_name)
 		return
 
 	if command.dev_only and not developer_mode_check.call():
-		_log.call(dev_mode_off_message)
+		_log.call(tr(dev_mode_off_message))
 		return
 
 	command.handler.call(parts.slice(1))
@@ -59,10 +60,10 @@ func execute(text: String) -> void:
 
 ## Takes and ignores the argument list, because execute() passes one to every handler.
 func print_help(_args: PackedStringArray = PackedStringArray()) -> void:
-	_log.call(help_format % ", ".join(_help_entries(false)))
+	_log.call(tr(help_format) % ", ".join(_help_entries(false)))
 	var dev_entries := _help_entries(true)
 	if developer_mode_check.call() and not dev_entries.is_empty():
-		_log.call(dev_help_format % ", ".join(dev_entries))
+		_log.call(tr(dev_help_format) % ", ".join(dev_entries))
 
 
 ## Help lines for every listed command of one kind, in registration order.
