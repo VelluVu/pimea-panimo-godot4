@@ -1312,7 +1312,7 @@ msgstr "This is a problem for my review. And an even bigger one for you."
 
 #: src/resources/customers/lahettirobotti.tres
 msgid "Ei yhteensopivaa tuotetta varastossa. Palaan seuraavalla kierroksella."
-msgstr "No matching product in stock. Returning on the next round."
+msgstr "No matching product in storage. Returning on the next round."
 
 #: src/resources/customers/lahettirobotti.tres
 msgid "HAKU KÄYNNISSÄ. Tilauskoodille ei löydy vastinetta..."
@@ -1973,7 +1973,7 @@ msgstr ""
 #: src/resources/day_events/day_event_tuhoelaimet.tres
 msgid "Aamulla löytyy puraisujälkiä säkeistä. Jokin on käynyt varastossa yöllä."
 msgstr ""
-"Bite marks on the sacks this morning. Something visited the storeroom at "
+"Bite marks on the sacks this morning. Something got into storage during the "
 "night."
 
 #: src/resources/day_events/day_event_tuhoelaimet.tres
@@ -2661,9 +2661,9 @@ msgid ""
 "jättää aina yhden satunnaisen erän löytämättä, ja panimosi kestää yhden "
 "ratsian enemmän ennen sulkemista."
 msgstr ""
-"You have learned to hide part of your stock in case of a raid. An LVV raid "
-"always misses one random batch, and your brewery survives one more raid "
-"before closing."
+"You have learned to hide part of your storage in case of a raid. An LVV "
+"raid always misses one random batch, and your brewery survives one more "
+"raid before closing."
 
 #: src/resources/meta_unlocks/piilokatko.tres
 msgid "Piilokätkö"
@@ -3422,9 +3422,9 @@ msgid ""
 "halvempi, ja heikkolaatuinen tai vanhentunut erä voi tuottaa jopa tappiota "
 "raaka-ainekuluihin nähden."
 msgstr ""
-"Sell the whole batch from the warehouse at once. The price is far below a "
-"normal sale, and a poor or old batch can even sell for less than its "
-"ingredients cost."
+"Sell the whole batch from storage at once. The price is far below a normal "
+"sale, and a poor or old batch can even sell for less than its ingredients "
+"cost."
 
 #: src/scenes/ui/beer_batch_panel.gd
 msgid "Vie"
@@ -3596,7 +3596,7 @@ msgstr "Brewlore renown +%d"
 
 #: src/scenes/ui/game_end_window.gd
 msgid "Rahat loppuivat ja varasto oli tyhjä. Panimosi ajautui konkurssiin."
-msgstr "The money ran out and the storage was empty. Your brewery went bankrupt."
+msgstr "The money ran out and storage was empty. Your brewery went bankrupt."
 
 #: src/scenes/ui/game_end_window.gd
 msgid "Selvisit kauden loppuun, ja kellarisi kaljasta tuli kaupunginosan legenda."
