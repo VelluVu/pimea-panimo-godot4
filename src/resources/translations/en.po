@@ -537,6 +537,22 @@ msgstr ""
 msgid "Päätit olla tarttumatta tarjoukseen. Jatketaan pimeää bisnestä."
 msgstr "You decided to pass on the offer. Back to the dark business."
 
+#: src/resources/achievements/asiakaskirja_10.tres
+msgid "Ihmistuntija"
+msgstr "People Person"
+
+#: src/resources/achievements/asiakaskirja_10.tres
+msgid "Tapaa 10 eri asiakastyyppiä."
+msgstr "Meet 10 different customer types."
+
+#: src/resources/achievements/asiakaskirja_kaikki.tres
+msgid "Koko kylä tuttu"
+msgstr "Know the Whole Town"
+
+#: src/resources/achievements/asiakaskirja_kaikki.tres
+msgid "Tapaa kaikki 22 asiakastyyppiä."
+msgstr "Meet all 22 customer types."
+
 #: src/resources/achievements/ensimmainen_satsi.tres
 msgid "Ensimmäinen satsi"
 msgstr "First Batch"
@@ -577,6 +593,22 @@ msgstr "Witness your first bar fight."
 msgid "Kännissä ja tappelussa"
 msgstr "Drunk and Disorderly"
 
+#: src/resources/achievements/kanta_asiakas_1.tres
+msgid "Saa ensimmäinen kanta-asiakas."
+msgstr "Win your first regular."
+
+#: src/resources/achievements/kanta_asiakas_1.tres
+msgid "Tuttu naama"
+msgstr "A Familiar Face"
+
+#: src/resources/achievements/kanta_asiakas_5.tres
+msgid "Saa yhteensä 5 kanta-asiakasta."
+msgstr "Win 5 regulars in total."
+
+#: src/resources/achievements/kanta_asiakas_5.tres
+msgid "Vakiporukka"
+msgstr "The Usual Crowd"
+
 #: src/resources/achievements/kellarimestari.tres
 msgid "Kellarimestari"
 msgstr "Cellar Master"
@@ -612,6 +644,22 @@ msgstr "Unlock 10 different customer types."
 #: src/resources/achievements/kymmenen_asiakasta.tres
 msgid "Legendaarinen kellari"
 msgstr "Legendary Cellar"
+
+#: src/resources/achievements/kypsytetty_1.tres
+msgid "Kärsivällisyys palkitaan"
+msgstr "Patience Pays"
+
+#: src/resources/achievements/kypsytetty_1.tres
+msgid "Myy kypsytettyä olutta lisähintaan."
+msgstr "Sell an aged beer at a premium."
+
+#: src/resources/achievements/kypsytetty_25.tres
+msgid "Kellarin aarteet"
+msgstr "Cellar Treasures"
+
+#: src/resources/achievements/kypsytetty_25.tres
+msgid "Myy kypsytettyä olutta lisähintaan 25 kertaa."
+msgstr "Sell aged beer at a premium 25 times."
 
 #: src/resources/achievements/mausteet_1.tres
 msgid "Paranna oluen laatua sopivalla mausteella."

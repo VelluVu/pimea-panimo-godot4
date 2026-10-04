@@ -35,6 +35,12 @@ const STAT_HIGHEST_LEVEL : StringName = &"highest_level"
 ## Brews whose spices suited the style, and brews that broke the Reinheitsgebot.
 const STAT_SPICED_BREWS : StringName = &"spiced_brews"
 const STAT_PURITY_LAW_BROKEN : StringName = &"purity_law_broken"
+## Customer types that became regulars (losing the status later does not count down).
+const STAT_REGULARS_GAINED : StringName = &"regulars_gained"
+## Counter sales that earned a batch's aging premium.
+const STAT_AGED_SALES : StringName = &"aged_sales"
+## Ratchet: customer types met, the customer book's list (kept across seasons).
+const STAT_CUSTOMERS_MET : StringName = &"customers_met"
 
 const ENDING_SURVIVED : String = "survived"
 
@@ -61,11 +67,21 @@ func _ready() -> void:
 	BrewerySignals.level_up_reached.connect(func(level : int) -> void: set_stat_if_higher(STAT_HIGHEST_LEVEL, level))
 	BrewerySignals.game_ended.connect(_on_game_ended)
 	BrewerySignals.brew_spiced.connect(_on_brew_spiced)
+	BrewerySignals.regular_status_changed.connect(_on_regular_status_changed)
+	BrewerySignals.beer_sale_breakdown.connect(_on_beer_sale_breakdown)
+	# CustomerRegistry marks the customer met first: it is the earlier autoload.
+	BrewerySignals.customer_served.connect(func(_data : CustomerData) -> void: report_customers_met(CustomerRegistry.get_met_titles().size()))
+	# Catches up customers met before this achievement existed.
+	report_customers_met(CustomerRegistry.get_met_titles().size())
 
 
 ## Called by CustomerRegistry, which alone knows when a customer's gates are all met.
 func report_customer_unlocked() -> void:
 	increment_stat(STAT_CUSTOMERS_UNLOCKED)
+
+
+func report_customers_met(count : int) -> void:
+	set_stat_if_higher(STAT_CUSTOMERS_MET, count)
 
 
 ## One stat per style, so each style can have its own achievement (tyyli_*.tres).
@@ -110,6 +126,16 @@ func _on_sale_tip_gained(amount : float) -> void:
 
 func _on_brew_spiced(_style_name : String, spice_bonus : float) -> void:
 	increment_stat(STAT_SPICED_BREWS if spice_bonus > 0.0 else STAT_PURITY_LAW_BROKEN)
+
+
+func _on_regular_status_changed(_customer_title : String, is_regular : bool) -> void:
+	if is_regular:
+		increment_stat(STAT_REGULARS_GAINED)
+
+
+func _on_beer_sale_breakdown(entry : SaleReceiptEntry) -> void:
+	if entry.aged_price_multiplier > 1.0:
+		increment_stat(STAT_AGED_SALES)
 
 
 func _on_game_ended(ending_type : String) -> void:
