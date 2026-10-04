@@ -12,7 +12,7 @@ const GOAL_FAILED_NO_PENALTY_FORMAT : String = "%s epäonnistui: ei seurauksia"
 const EARLY_CLOSE_FORMAT : String = "Ovet suljettu aikaisin: -%.1f €, mainetta -%d, LVV-riski -%d"
 const INGREDIENTS_UNLOCKED_FORMAT : String = "Uusia aineksia saatavilla: %s!"
 ## Dropped from hop names in the merged toast, which lists them next to spices.
-const HOP_NAME_SUFFIX : String = " Humala"
+const HOP_NAME_SUFFIX : String = "-humala"
 const PURITY_LAW_FORMAT : String = "Reinheitsgebot rikottu! Baijerin herttua kääntyy haudassaan. %s: laatu -%d %%"
 
 

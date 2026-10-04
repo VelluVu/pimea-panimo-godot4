@@ -3,12 +3,12 @@ extends Control
 
 
 const TITLE_TEXT: String = "Pimeä Panimo"
-const START_BUTTON_TEXT: String = "Aloita Peli"
+const START_BUTTON_TEXT: String = "Aloita peli"
 const OLUTOPPI_BUTTON_TEXT: String = "Olutoppi"
 const ACHIEVEMENTS_BUTTON_TEXT: String = "Saavutukset"
 const OPTIONS_BUTTON_TEXT: String = "Asetukset"
-const QUIT_BUTTON_TEXT: String = "Lopeta Peli"
-const CONTINUE_BUTTON_TEXT: String = "Jatka Peliä"
+const QUIT_BUTTON_TEXT: String = "Lopeta peli"
+const CONTINUE_BUTTON_TEXT: String = "Jatka peliä"
 const NEW_GAME_BUTTON_TEXT: String = "Aloita uusi peli"
 const BACK_BUTTON_TEXT: String = "Takaisin"
 

@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_kckc3")
-style_name = "Indian Pale ale"
+style_name = "India Pale Ale"
 style = 5
 abv = 6.5
 profit_margin_multiplier = 1.3

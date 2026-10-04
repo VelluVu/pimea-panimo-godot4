@@ -20,7 +20,7 @@ func _initialize() -> void:
 func _start() -> void:
 	for i: int in 20:
 		await process_frame
-	_press("Aloita Peli")
+	_press("Aloita peli")
 	for i: int in 5:
 		await process_frame
 	_press("Aloita uusi peli")
