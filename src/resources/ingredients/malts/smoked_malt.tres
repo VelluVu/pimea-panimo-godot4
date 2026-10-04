@@ -7,6 +7,6 @@ script = ExtResource("1_smoked")
 ebc = 6
 id = 108
 name = "Savumallas"
-description = "Avotulella savustettu mallas joka tuo olueen savuisen maun"
+description = "Avotulella savustettu mallas, joka tuo olueen savuisen maun."
 base_price = 4
 metadata/_custom_type_script = "uid://dniwiyu5ynp71"
