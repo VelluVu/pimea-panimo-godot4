@@ -111,6 +111,7 @@ func process(data : CustomerData) -> String:
 	receipt_entry.tip_income = outcome.tip_income
 	receipt_entry.net_income = outcome.net_income
 	receipt_entry.beer_ebc = best_batch.final_ebc
+	receipt_entry.aged_price_multiplier = best_batch.get_aged_price_multiplier()
 	brewery.today_sale_receipts.append(receipt_entry)
 	BrewerySignals.beer_sale_breakdown.emit(receipt_entry)
 

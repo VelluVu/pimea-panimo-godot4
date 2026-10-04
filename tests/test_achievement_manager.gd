@@ -174,6 +174,42 @@ func test_tips_are_counted_in_cents() -> void:
 	assert_eq(manager.get_stat(AchievementManagerScript.STAT_TIPS_CENTS), 125)
 
 
+func test_only_becoming_a_regular_counts() -> void:
+	var manager : AchievementManagerScript = track(_make_manager())
+	manager._on_regular_status_changed("Hipsteri", false)
+	assert_eq(manager.get_stat(AchievementManagerScript.STAT_REGULARS_GAINED), 0)
+	manager._on_regular_status_changed("Hipsteri", true)
+	assert_eq(manager.get_stat(AchievementManagerScript.STAT_REGULARS_GAINED), 1)
+
+
+func test_only_a_sale_at_the_aging_premium_counts() -> void:
+	var manager : AchievementManagerScript = track(_make_manager())
+	var plain := SaleReceiptEntry.new()
+	manager._on_beer_sale_breakdown(plain)
+	assert_eq(manager.get_stat(AchievementManagerScript.STAT_AGED_SALES), 0)
+	var aged := SaleReceiptEntry.new()
+	aged.aged_price_multiplier = 1.2
+	manager._on_beer_sale_breakdown(aged)
+	assert_eq(manager.get_stat(AchievementManagerScript.STAT_AGED_SALES), 1)
+
+
+func test_customers_met_never_counts_down() -> void:
+	var manager : AchievementManagerScript = track(_make_manager())
+	manager.report_customers_met(5)
+	manager.report_customers_met(3)
+	assert_eq(manager.get_stat(AchievementManagerScript.STAT_CUSTOMERS_MET), 5)
+
+
+## "Meet every customer type" names its count, so a new customer type must update it.
+func test_meet_everyone_target_matches_the_shipped_customer_types() -> void:
+	var titles : Dictionary = {}
+	for customer : CustomerData in ResourceFolder.load_all("res://src/resources/customers/", CustomerData):
+		titles[customer.title] = true
+	var achievement : AchievementData = load("res://src/resources/achievements/asiakaskirja_kaikki.tres")
+	assert_eq(achievement.target_value, titles.size())
+	assert_true(achievement.description.contains(str(titles.size())), "description should name the count")
+
+
 func test_only_a_survived_ending_counts_as_a_survived_run() -> void:
 	var manager : AchievementManagerScript = track(_make_manager())
 	manager._on_game_ended("busted")

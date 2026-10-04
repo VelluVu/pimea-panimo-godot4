@@ -22,6 +22,8 @@ extends Resource
 ## EBC of the batch sold from, so the customer's glass shows the beer's colour.
 ## -1 = unknown (receipts saved before this field).
 @export var beer_ebc : int = -1
+## Above 1.0 when the batch sold at its aging premium (BrewBatch.get_aged_price_multiplier()).
+@export var aged_price_multiplier : float = 1.0
 
 const SUMMARY_FORMAT : String = "%s x%d"
 const BREAKDOWN_FORMAT : String = "Raaka-aineet: %.2f €\nKate: %.2f €\n= Hinta/annos: %.2f €"
