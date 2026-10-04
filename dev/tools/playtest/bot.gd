@@ -39,6 +39,7 @@ func _ready() -> void:
 	BrewerySignals.lvv_raid_triggered.connect(func(b: int, f: float, r: int) -> void: _note("RAID bottles %d fine %.0f rep -%d" % [b, f, r]))
 	BrewerySignals.special_event_resolved.connect(func(ok: bool, e: SpecialEventData) -> void: _inc("event_%s_%s" % [e.event_caller_name, "ok" if ok else "fail"]))
 	BrewerySignals.customer_unhappy.connect(func() -> void: _inc("unhappy"))
+	BrewerySignals.customer_served.connect(func(d: CustomerData) -> void: _inc("served:" + d.title))
 	BrewerySignals.bottles_sold.connect(func(n: int) -> void: _inc("bottles", n))
 	BrewerySignals.bar_fight_triggered.connect(func(_m: String) -> void: _inc("bar_fights"))
 	BrewerySignals.game_ended.connect(func(t: String) -> void: ending = t)
@@ -499,23 +500,31 @@ func _quality_of(b: Brewery, combo: Dictionary, style: BeerStyle.Style) -> float
 ## Reputation the style earns from the customers who can show up, counting the ones a
 ## first brew of it would unlock (like the Hipster after an IPA). A customer whose
 ## favourite is already well stocked counts for little, so the bot covers every taste.
+## Each sale's LVV risk counts too, more as the risk nears the raid line, so customers
+## whose sales pay risk off (Zgen, Alfagen) are worth unlocking when risk runs high.
 func _expert_demand(b: Brewery, style: BeerStyle.Style, in_stock: Dictionary) -> float:
+	var risk_weight: float = RISK_POINT_WEIGHT * b.risk / maxf(1.0, b.get_effective_raid_threshold())
 	var demand: float = 0.0
 	for c: CustomerData in CustomerRegistry.customer_pool:
 		var unlocks: bool = c.required_discovered_style == style and b.reputation >= c.min_reputation_to_appear
 		if not CustomerRegistry.is_eligible(c) and not unlocks:
 			continue
 		var served: float = 0.2 if in_stock.get(c.primary_style, 0) >= 10 else 1.0
+		var favourite_value: float = maxf(0.0, 2.0 + c.rep_primary_style - c.risk_primary_style * risk_weight)
 		# Unlocking a customer is worth half their favourite's value, whatever they think
 		# of the unlocking style (the old folks unlock with Vienna but want Sahti).
 		if unlocks and not CustomerRegistry.is_eligible(c):
-			demand += (2.0 + c.rep_primary_style) * 0.5
+			demand += favourite_value * 0.5
 		var preference: float = c.get_preference_score(style)
 		if preference >= 1.0:
-			demand += (2.0 + c.rep_primary_style) * served
+			demand += favourite_value * served
 		elif preference >= 0.5:
-			demand += (1.0 + c.rep_secondary_style) * served * 0.5
+			demand += maxf(0.0, 1.0 + c.rep_secondary_style - c.risk_secondary_style * risk_weight) * served * 0.5
 	return demand
+
+
+## What one point of sale risk costs in reputation points at the raid line.
+const RISK_POINT_WEIGHT: float = 2.0
 
 
 func _all_unlocked(b: Brewery, ingredients: Dictionary) -> bool:
