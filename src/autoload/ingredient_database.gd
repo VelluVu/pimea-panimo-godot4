@@ -1,8 +1,11 @@
 #IngredientDatabase (autoload)
 extends Node
 
+const LOG_FOUND_INGREDIENT : String = "[IngredientDatabase] found from subfolder: %s (ID: %s)"
+
 static var database: Dictionary = {}
 static var sorted_ids: Array[int] = []
+
 var inventory: Inventory = null
 
 static var is_loaded: bool = false
@@ -60,7 +63,7 @@ static func build_ingredient_database_recursive(folder_path: String) -> void:
 					printerr(StringContainer.DATABASE_DUBLICATE_KEY_ERROR % [final_res.id, final_res.name])
 				else:
 					database[final_res.id] = final_res
-					print(StringContainer.DATABASE_FOUND_DATA_MESSAGE % [final_res.name, final_res.id])
+					print(LOG_FOUND_INGREDIENT % [final_res.name, final_res.id])
 
 
 static func _copy_base_fields(source: IngredientData, target: IngredientData) -> void:

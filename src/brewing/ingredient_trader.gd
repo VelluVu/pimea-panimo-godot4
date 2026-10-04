@@ -3,6 +3,8 @@ extends RefCounted
 
 ## Buying and selling raw ingredients, plus the tutorial purchase tracking.
 
+const LOG_SOLD : String = "Sold %s amount of stuff, and you get %s€ back"
+
 var brewery : Brewery
 
 
@@ -69,5 +71,5 @@ func _on_sell_ingredient(ingredient_id : int, amount : int) -> void:
 		
 	var sell_price : float = snappedf(final_amount * ingredient.base_price * brewery.stats.multiplier(PerkStats.INGREDIENT_PRICE) * 0.75, 0.1)
 	brewery.money += sell_price #ei saa ihan samaa hintaa takas millä joskus osti...
-	print(StringContainer.SELL_MESSAGE % [final_amount, sell_price])
+	print(LOG_SOLD % [final_amount, sell_price])
 	BrewerySignals.brewery_state_changed.emit(brewery)

@@ -13,6 +13,8 @@ const DAY_END_CUSTOMER_RETRY_SECONDS : float = 5.0
 ## not change how fast beer ages.
 const AGING_TICK_SECONDS : float = 30.0
 
+const LOG_DAY_CHANGED : String = "--- DAY CHANGED: Day %s starts ---"
+
 @export var day_duration_seconds : float = 300
 var day_timer: Timer
 var aging_timer: Timer
@@ -110,7 +112,7 @@ func _advance_day() -> void:
 		return
 
 	brewery.current_day += 1
-	print(StringContainer.DAY_CHANGED_MESSAGE % brewery.current_day)
+	print(LOG_DAY_CHANGED % brewery.current_day)
 
 	brewery.today_sale_receipts.clear()
 

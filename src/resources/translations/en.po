@@ -13,41 +13,9 @@ msgstr "Agent"
 msgid "Mafioso"
 msgstr "Mafioso"
 
-#: src/autoload/day_event_manager.gd
-msgid "DayEventManager: Day event pool is empty!"
-msgstr "DayEventManager: Day event pool is empty!"
-
-#: src/autoload/run_modifier_registry.gd
-msgid "RunModifierRegistry: Run modifier pool is empty!"
-msgstr "RunModifierRegistry: Run modifier pool is empty!"
-
-#: src/autoload/string_container.gd
-msgid ""
-"\n"
-"\n"
-"Sijoitus: #%d / %d"
-msgstr ""
-"\n"
-"\n"
-"Rank: #%d / %d"
-
-#: src/autoload/string_container.gd
-msgid ""
-"\n"
-"\n"
-"UUSI ENNÄTYS!"
-msgstr ""
-"\n"
-"\n"
-"NEW RECORD!"
-
 #: src/autoload/string_container.gd
 msgid "(tasainen kasvu, ei kerry)"
 msgstr "(steady growth, no stacking)"
-
-#: src/autoload/string_container.gd
-msgid "--- DAY CHANGED: Day %s starts ---"
-msgstr "--- DAY CHANGED: Day %s starts ---"
 
 #: src/autoload/string_container.gd
 msgid "??? – vaatii mainetta: %d"
@@ -116,22 +84,6 @@ msgid "Bulkki Lager"
 msgstr "Bulk Lager"
 
 #: src/autoload/string_container.gd
-msgid "CustomerManager: Not enough bottles in batch!"
-msgstr "CustomerManager: Not enough bottles in batch!"
-
-#: src/autoload/string_container.gd
-msgid ""
-"CustomerManager: The customer pool is empty! Check that .tres resources "
-"exists."
-msgstr ""
-"CustomerManager: The customer pool is empty! Check that .tres resources "
-"exists."
-
-#: src/autoload/string_container.gd
-msgid "CustomerManager: Tried to serve beer, but there are no customer."
-msgstr "CustomerManager: Tried to serve beer, but there are no customer."
-
-#: src/autoload/string_container.gd
 msgid "Doppelbock"
 msgstr "Doppelbock"
 
@@ -148,14 +100,6 @@ msgid "Ei aktiivista kierrosta."
 msgstr "No active run."
 
 #: src/autoload/string_container.gd
-msgid "Ei tää sitä ollu mitä hain, mut jotaki kuitenki."
-msgstr "Not quite what I was after, but it'll do."
-
-#: src/autoload/string_container.gd
-msgid "Ei vielä ennätyksiä. Pelaa ensimmäinen erä!"
-msgstr "No records yet. Play your first round!"
-
-#: src/autoload/string_container.gd
 msgid "Ei vielä perkkejä. Nouse tasolle 2 saadaksesi ensimmäisen."
 msgstr "No perks yet. Reach level 2 to get your first."
 
@@ -166,10 +110,6 @@ msgstr "Records"
 #: src/autoload/string_container.gd
 msgid "Erinomainen"
 msgstr "Excellent"
-
-#: src/autoload/string_container.gd
-msgid "HUOMIO: Erä %s (Ikä: %s päivää) alkaa etikkoitua kellarissa!"
-msgstr "WARNING: Batch %s (age: %s days) is starting to turn sour in the cellar!"
 
 #: src/autoload/string_container.gd
 msgid "Harvinainen"
@@ -244,10 +184,6 @@ msgid "Laatubonus jokaiseen erään: +%d %%"
 msgstr "Quality bonus on every batch: +%d %%"
 
 #: src/autoload/string_container.gd
-msgid "Ladattu yhteensä %s oluttyyliä datasta:"
-msgstr "Loaded %s beer styles from data:"
-
-#: src/autoload/string_container.gd
 msgid "Legendaarinen"
 msgstr "Legendary"
 
@@ -290,10 +226,6 @@ msgstr "Piney"
 #: src/autoload/string_container.gd
 msgid "Märzen"
 msgstr "Märzen"
-
-#: src/autoload/string_container.gd
-msgid "New game started! Brewery established."
-msgstr "New game started! Brewery established."
 
 #: src/autoload/string_container.gd
 msgid "Olosuhteet: %s"
@@ -378,14 +310,6 @@ msgid "Sitruksinen"
 msgstr "Citrusy"
 
 #: src/autoload/string_container.gd
-msgid "Sold %s amount of stuff, and you get %s€ back"
-msgstr "Sold %s amount of stuff, and you get %s€ back"
-
-#: src/autoload/string_container.gd
-msgid "Successful brew batch: "
-msgstr "Successful brew batch: "
-
-#: src/autoload/string_container.gd
 msgid "Sulje"
 msgstr "Close"
 
@@ -440,10 +364,6 @@ msgstr "Witbier"
 #: src/autoload/string_container.gd
 msgid "Yhteisvaikutus:"
 msgstr "Combined effect:"
-
-#: src/autoload/string_container.gd
-msgid "[IngredientDatabase] found from subfolder: %s (ID: %s)"
-msgstr "[IngredientDatabase] found from subfolder: %s (ID: %s)"
 
 #: src/autoload/string_container.gd
 msgid "erittäin karvas"
@@ -560,10 +480,6 @@ msgstr ""
 "Ingredients: %.2f €\n"
 "Margin: %.2f €\n"
 "= Price/serving: %.2f €"
-
-#: src/progression/perk_registry.gd
-msgid "PerkRegistry: Perk pool is empty!"
-msgstr "PerkRegistry: Perk pool is empty!"
 
 #: src/resources/achievements/ensimmainen_satsi.tres
 msgid "Ensimmäinen satsi"
