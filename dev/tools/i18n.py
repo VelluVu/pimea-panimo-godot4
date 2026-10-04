@@ -141,6 +141,13 @@ def find_texts():
             for body in array_re.findall(path.read_text(encoding="utf-8")):
                 for value in QUOTED.findall(body):
                     add(value, _rel(path), "_TEXT")
+    # A .tres leaves out a field still at its script default, so read the defaults too.
+    fields = sorted({field for names in CONTENT_FIELDS.values() for field in names})
+    default_re = re.compile(r'^@export\w*\s+var\s+(?:' + "|".join(fields) + r')\s*:\s*String\s*=\s*"((?:[^"\\]|\\.)*)"', re.M)
+    for path in sorted((ROOT / "src").rglob("*.gd")):
+        if not _skipped(path):
+            for value in default_re.findall(path.read_text(encoding="utf-8")):
+                add(value, _rel(path), "_TEXT")
     return found
 
 
