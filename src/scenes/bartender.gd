@@ -38,9 +38,13 @@ const STACK_BASE_OFFSET_PX : Vector2 = Vector2(-20, 5)
 const STACK_COLUMN_OFFSET_PX : Vector2 = Vector2(-7, 0)
 const STACK_ROW_OFFSET_PX : Vector2 = Vector2(0, -6)
 
+## The frames as drawn, kept for pours with no known beer.
+var _drawn_frames : SpriteFrames
+
 
 func _ready() -> void:
 	add_to_group(BARTENDER_GROUP)
+	_drawn_frames = animated_sprite.sprite_frames
 	animated_sprite.animation_finished.connect(_on_animation_finished)
 	animated_sprite.play(ANIM_IDLE)
 
@@ -49,8 +53,9 @@ func _ready() -> void:
 ## speed_scale lets a group order (GroupVisitDirector._run_shared_group_order())
 ## visibly speed the pour up for its rapid-fire one-by-one serving burst
 ## without that lingering into the next solo customer's pour — reset back to
-## 1.0 the moment this returns to idle, below.
-func play_serve_beer(speed_scale: float = 1.0) -> void:
+## 1.0 the moment this returns to idle, below. A negative `ebc` pours the beer as drawn.
+func play_serve_beer(speed_scale: float = 1.0, ebc: int = -1) -> void:
+	animated_sprite.sprite_frames = _drawn_frames if ebc < 0 else BeerColor.pour_sprite_frames(_drawn_frames, ebc)
 	animated_sprite.speed_scale = speed_scale
 	animated_sprite.play(ANIM_SERVE_BEER)
 

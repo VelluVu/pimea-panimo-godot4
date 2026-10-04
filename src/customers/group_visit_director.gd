@@ -153,7 +153,7 @@ func _run_shared_order(visit : GroupVisit) -> void:
 		visit.mark_purchased()
 		_mark_members_served(visit, order_data.title)
 		outcome.emit_xp_popup(visit.counter_position)
-		if not await _serve_burst(visit):
+		if not await _serve_burst(visit, outcome.beer_ebc):
 			return
 	outcome.emit_reputation_and_tip_popups(visit.counter_position)
 
@@ -185,14 +185,14 @@ func _start_group_rampage(visit : GroupVisit, broken_bottles : int) -> void:
 
 
 ## One sale, many drinks: a sped-up pour per member. False when the host was freed meanwhile.
-func _serve_burst(visit : GroupVisit) -> bool:
+func _serve_burst(visit : GroupVisit, ebc : int) -> bool:
 	var bartender := _host.get_tree().get_first_node_in_group(Bartender.BARTENDER_GROUP) as Bartender
 	var stack_index : int = 0
 	for member : Variant in visit.members:
 		if not await _wait(SERVE_INTERVAL_SECONDS):
 			return false
 		if bartender != null:
-			bartender.play_serve_beer(SERVE_ANIMATION_SPEED_SCALE)
+			bartender.play_serve_beer(SERVE_ANIMATION_SPEED_SCALE, ebc)
 		if is_instance_valid(member):
 			var stack_position : Vector2 = bartender.get_stack_position(stack_index) if bartender != null else Vector2.INF
 			member.show_counter_glass(SERVE_GLASS_SLIDE_SECONDS, stack_position)

@@ -5,8 +5,8 @@ extends Node
 
 
 func _ready() -> void:
-	BrewerySignals.bottles_sold.connect(_on_bottles_sold)
+	BrewerySignals.beer_sale_breakdown.connect(_on_beer_sale_breakdown)
 
 
-func _on_bottles_sold(_amount: int) -> void:
-	bartender.play_serve_beer()
+func _on_beer_sale_breakdown(entry: SaleReceiptEntry) -> void:
+	bartender.play_serve_beer(1.0, entry.beer_ebc)
