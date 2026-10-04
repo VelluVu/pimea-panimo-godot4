@@ -5,7 +5,7 @@ const PATH_TO_BREW_STYLES : String = "res://src/resources/beer_styles/"
 
 const TUNTEMATON : String = "Tuntematon"
 const KOTIKALJA : String = "Kotikalja"
-const BULKKILAGER : String = "Bulkki Lager"
+const BULKKILAGER : String = "Bulkkilager"
 const TUMMALAGER : String = "Tumma Lager"
 const PALEALE : String = "Pale Ale"
 const AMBERALE : String = "Amber Ale"

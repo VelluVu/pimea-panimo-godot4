@@ -80,7 +80,7 @@ msgid "Belgian Strong Dark Ale"
 msgstr "Belgian Strong Dark Ale"
 
 #: src/autoload/string_container.gd
-msgid "Bulkki Lager"
+msgid "Bulkkilager"
 msgstr "Bulk Lager"
 
 #: src/autoload/string_container.gd
@@ -698,11 +698,11 @@ msgid "Tyyli löydetty: Belgian Strong Dark Ale"
 msgstr "Style discovered: Belgian Strong Dark Ale"
 
 #: src/resources/achievements/tyyli_bulkkilager.tres
-msgid "Pane hyllyyn ensimmäinen erä tyyliä Bulkki Lager."
+msgid "Pane hyllyyn ensimmäinen erä tyyliä Bulkkilager."
 msgstr "Put your first batch of Bulk Lager on the shelf."
 
 #: src/resources/achievements/tyyli_bulkkilager.tres
-msgid "Tyyli löydetty: Bulkki Lager"
+msgid "Tyyli löydetty: Bulkkilager"
 msgstr "Style discovered: Bulk Lager"
 
 #: src/resources/achievements/tyyli_doppelbock.tres
@@ -1861,10 +1861,6 @@ msgstr "Ohmygod, that %s is lowkey sigma, I'll take it."
 #: src/resources/customers/zgen_naaras.tres
 msgid "Tää on niin sus, total L, en koske tähän edes rizzillä."
 msgstr "This is so sus, total L, wouldn't touch it even with rizz."
-
-#: src/resources/daily_goals/brew_bulkkilager.tres
-msgid "Bulkkilager"
-msgstr "Bulk Lager"
 
 #: src/resources/daily_goals/hoida_kaksi_erikoistapahtumaa.tres
 msgid "Erikoistapahtumat"

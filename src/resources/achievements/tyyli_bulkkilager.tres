@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_achievement")
 achievement_id = "tyyli_bulkkilager"
-title = "Tyyli löydetty: Bulkki Lager"
-description = "Pane hyllyyn ensimmäinen erä tyyliä Bulkki Lager."
+title = "Tyyli löydetty: Bulkkilager"
+description = "Pane hyllyyn ensimmäinen erä tyyliä Bulkkilager."
 stat_key = &"style_discovered_1"
 target_value = 1
 metadata/_custom_type_script = "res://src/systems/achievements/achievement_data.gd"
