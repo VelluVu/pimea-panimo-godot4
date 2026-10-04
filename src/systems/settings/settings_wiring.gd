@@ -16,12 +16,12 @@ func _init() -> void:
 	default_muted_buses = [BUS_MUSIC, BUS_SFX]
 	save_path = "user://settings.cfg"
 	# The texts are written in Finnish and are their own translation keys, so Finnish
-	# needs no file; English comes from dev/tools/i18n.py's CSV.
+	# needs no file; English comes from dev/tools/i18n.py's en.po.
 	supported_locales = ["fi", "en"]
 	# Finnish until the player picks English in Options.
 	fallback_locale = "fi"
 	follow_system_language = false
-	translation_paths = ["res://src/resources/translations/strings.en.translation"]
+	translation_paths = ["res://src/resources/translations/en.po"]
 	# Text built in code (the HUD, the goals panel) is rebuilt from the brewery state.
 	language_changed.connect(func(_locale: String) -> void:
 		if BrewEngine.current_brewery != null:
