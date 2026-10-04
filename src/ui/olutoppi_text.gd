@@ -11,7 +11,7 @@ const TOOLTIP_NEXT_LEVEL_FORMAT : String = "Seuraava taso: %d maine"
 const TOOLTIP_MAXED_TEXT : String = "Taso enimmillään"
 const TOOLTIP_LOCKED_FORMAT : String = "Vaatii ensin: %s"
 const TOOLTIP_PREREQ_ALL_SEPARATOR : String = ", "
-const TOOLTIP_PREREQ_ANY_SEPARATOR : String = " tai "
+const TOOLTIP_PREREQ_OR_TEXT : String = "tai"
 
 
 ## The first non-neutral stat of the scaled perk, as a short number for the square. A
@@ -42,7 +42,7 @@ static func short_bonus(unlock : MetaUnlockData, level : int) -> String:
 static func locked_tooltip(unlock : MetaUnlockData, unmet_prerequisite_names : PackedStringArray) -> String:
 	# An any-mode capstone only shows locked while none of its branches are met, so the
 	# list is every branch: "tai" reads as any one of them, "," would read as all.
-	var separator : String = TOOLTIP_PREREQ_ANY_SEPARATOR if unlock.requires_any_prerequisite else TOOLTIP_PREREQ_ALL_SEPARATOR
+	var separator : String = " %s " % UiText.of(TOOLTIP_PREREQ_OR_TEXT) if unlock.requires_any_prerequisite else TOOLTIP_PREREQ_ALL_SEPARATOR
 	var lines : PackedStringArray = _header_lines(unlock)
 	lines.append(UiText.of(TOOLTIP_LOCKED_FORMAT) % separator.join(unmet_prerequisite_names))
 	return "\n".join(lines)

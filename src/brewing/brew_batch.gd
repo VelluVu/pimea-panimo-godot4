@@ -130,8 +130,8 @@ func get_quality_breakdown_tooltip() -> String:
 	]
 
 
-const AGED_PRICE_FORMAT : String = "\nKypsytyslisä hintaan: +%d %% (enintään +%d %%)"
-const FULL_INFO_TOOLTIP_HEADER_FORMAT : String = "Laatu: %s%% (%s %s, %s)\nEBC: %s | IBU: %s | ABV: %.1f%%\n"
+const AGED_PRICE_FORMAT : String = "Kypsytyslisä hintaan: +%d %% (enintään +%d %%)"
+const FULL_INFO_TOOLTIP_HEADER_FORMAT : String = "Laatu: %s%% (%s %s, %s)\nEBC: %s | IBU: %s | ABV: %.1f%%"
 
 ## Combines the header stats (quality/EBC/IBU/ABV) that used to sit in the
 ## batch row's visible text with the existing breakdown tooltip, so the
@@ -146,13 +146,13 @@ func get_full_info_tooltip() -> String:
 		final_ebc,
 		final_ibu,
 		beer_style.abv
-	] + get_quality_breakdown_tooltip() + _aged_price_line()
+	] + "\n" + get_quality_breakdown_tooltip() + _aged_price_line()
 
 
 func _aged_price_line() -> String:
 	if beer_style.aged_price_bonus <= 0.0:
 		return ""
-	return tr(AGED_PRICE_FORMAT) % [roundi((get_aged_price_multiplier() - 1.0) * 100.0), roundi(beer_style.aged_price_bonus * 100.0)]
+	return "\n" + tr(AGED_PRICE_FORMAT) % [roundi((get_aged_price_multiplier() - 1.0) * 100.0), roundi(beer_style.aged_price_bonus * 100.0)]
 
 
 ## Called once per TimeManager aging tick (TimeManager.AGING_TICK_SECONDS,

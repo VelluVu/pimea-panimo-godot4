@@ -374,20 +374,16 @@ msgid "kpl"
 msgstr "pcs"
 
 #: src/brewing/brew_batch.gd
-msgid ""
-"\n"
-"Kypsytyslisä hintaan: +%d %% (enintään +%d %%)"
-msgstr ""
-"\n"
-"Aging price bonus: +%d %% (up to +%d %%)"
+msgid "Kypsytyslisä hintaan: +%d %% (enintään +%d %%)"
+msgstr "Aging price bonus: +%d %% (up to +%d %%)"
 
 #: src/brewing/brew_batch.gd
 msgid ""
 "Laatu: %s%% (%s %s, %s)\n"
-"EBC: %s | IBU: %s | ABV: %.1f%%\n"
+"EBC: %s | IBU: %s | ABV: %.1f%%"
 msgstr ""
 "Quality: %s%% (%s %s, %s)\n"
-"EBC: %s | IBU: %s | ABV: %.1f%%\n"
+"EBC: %s | IBU: %s | ABV: %.1f%%"
 
 #: src/brewing/brew_batch.gd
 msgid "heikkenee"
@@ -450,12 +446,8 @@ msgid "%s-lauma (%d hlöä)"
 msgstr "%s group (%d people)"
 
 #: src/customers/quality_wish_text.gd
-msgid ""
-"\n"
-"Liian heikkoa: %s"
-msgstr ""
-"\n"
-"Not good enough for: %s"
+msgid "Liian heikkoa: %s"
+msgstr "Not good enough for: %s"
 
 #: src/customers/sale_processor.gd
 msgid "Taas täällä! %s"
@@ -3497,8 +3489,8 @@ msgid "Asiakaskirja"
 msgstr "Customer book"
 
 #: src/scenes/ui/customer_book_window.gd
-msgid "  (kanta-asiakas)"
-msgstr "  (regular)"
+msgid "(kanta-asiakas)"
+msgstr "(regular)"
 
 #: src/scenes/ui/daily_goals_panel.gd
 msgid "Hiivaa: %d/1"
@@ -3537,8 +3529,8 @@ msgid "Uusia tavoitteita huomenna."
 msgstr "New goals tomorrow."
 
 #: src/scenes/ui/day_recap_window.gd
-msgid " (yöllä -%d)"
-msgstr " (overnight -%d)"
+msgid "(yöllä -%d)"
+msgstr "(overnight -%d)"
 
 #: src/scenes/ui/day_recap_window.gd
 msgid "Jatka"
@@ -3695,10 +3687,6 @@ msgid "Mauste"
 msgstr "Spice"
 
 #: src/scenes/ui/leaderboard_window.gd
-msgid " UUSI!"
-msgstr " NEW!"
-
-#: src/scenes/ui/leaderboard_window.gd
 msgid "Annokset"
 msgstr "Servings"
 
@@ -3729,6 +3717,10 @@ msgstr "Result"
 #: src/scenes/ui/leaderboard_window.gd
 msgid "Tämä kausi nyt: sijoittuisi #%d"
 msgstr "This season so far: would rank #%d"
+
+#: src/scenes/ui/leaderboard_window.gd
+msgid "UUSI!"
+msgstr "NEW!"
 
 #: src/scenes/ui/left_brewing_view.gd
 msgid ""
@@ -4197,10 +4189,6 @@ msgid "Selvisi"
 msgstr "Survived"
 
 #: src/ui/olutoppi_text.gd
-msgid " tai "
-msgstr " or "
-
-#: src/ui/olutoppi_text.gd
 msgid ""
 "Nyt:\n"
 "%s"
@@ -4228,69 +4216,9 @@ msgstr ""
 msgid "Vaatii ensin: %s"
 msgstr "Requires first: %s"
 
-#: src/ui/recipe_library_text.gd
-msgid ""
-"\n"
-"Katkeruus: %s"
-msgstr ""
-"\n"
-"Bitterness: %s"
-
-#: src/ui/recipe_library_text.gd
-msgid ""
-"\n"
-"Reinheitsgebot: ei mausteita"
-msgstr ""
-"\n"
-"Reinheitsgebot: no spices"
-
-#: src/ui/recipe_library_text.gd
-msgid ""
-"\n"
-"Sopivat mausteet: %s"
-msgstr ""
-"\n"
-"Good spices: %s"
-
-#: src/ui/recipe_library_text.gd
-msgid ""
-"\n"
-"Suosikkihumala: %s"
-msgstr ""
-"\n"
-"Favourite hop: %s"
-
-#: src/ui/recipe_library_text.gd
-msgid ""
-"\n"
-"Vaadittu mallas: %s"
-msgstr ""
-"\n"
-"Required malt: %s"
-
-#: src/ui/recipe_library_text.gd
-msgid ""
-"\n"
-"Vaatii mallasseoksen"
-msgstr ""
-"\n"
-"Needs a malt blend"
-
-#: src/ui/recipe_library_text.gd
-msgid ""
-"\n"
-"Vaatii myös: %s"
-msgstr ""
-"\n"
-"Also needs: %s"
-
-#: src/ui/recipe_library_text.gd
-msgid ""
-"\n"
-"Väri: %s"
-msgstr ""
-"\n"
-"Colour: %s"
+#: src/ui/olutoppi_text.gd
+msgid "tai"
+msgstr "or"
 
 #: src/ui/recipe_library_text.gd
 msgid "%s (%.1f%% ABV), EBC %s-%s, IBU %s-%s (hiiva: %s)"
@@ -4299,6 +4227,38 @@ msgstr "%s (%.1f%% ABV), EBC %s-%s, IBU %s-%s (yeast: %s)"
 #: src/ui/recipe_library_text.gd
 msgid "??? (%.1f%% ABV) – vaatii: hiiva %s, vähintään %d kg mallasta"
 msgstr "??? (%.1f%% ABV) – needs: yeast %s, at least %d kg of malt"
+
+#: src/ui/recipe_library_text.gd
+msgid "Katkeruus: %s"
+msgstr "Bitterness: %s"
+
+#: src/ui/recipe_library_text.gd
+msgid "Reinheitsgebot: ei mausteita"
+msgstr "Reinheitsgebot: no spices"
+
+#: src/ui/recipe_library_text.gd
+msgid "Sopivat mausteet: %s"
+msgstr "Good spices: %s"
+
+#: src/ui/recipe_library_text.gd
+msgid "Suosikkihumala: %s"
+msgstr "Favourite hop: %s"
+
+#: src/ui/recipe_library_text.gd
+msgid "Vaadittu mallas: %s"
+msgstr "Required malt: %s"
+
+#: src/ui/recipe_library_text.gd
+msgid "Vaatii mallasseoksen"
+msgstr "Needs a malt blend"
+
+#: src/ui/recipe_library_text.gd
+msgid "Vaatii myös: %s"
+msgstr "Also needs: %s"
+
+#: src/ui/recipe_library_text.gd
+msgid "Väri: %s"
+msgstr "Colour: %s"
 
 #: src/ui/reputation_breakdown_text.gd
 msgid "LVV"
@@ -4309,44 +4269,28 @@ msgid "aikainen sulkeminen"
 msgstr "early closing"
 
 #: src/ui/reputation_tier_text.gd
-msgid ""
-"\n"
-"Kuuluisuus houkuttelee tarkastajia: ratsiakynnys -%d"
-msgstr ""
-"\n"
-"Fame attracts inspectors: raid threshold -%d"
-
-#: src/ui/reputation_tier_text.gd
-msgid ""
-"\n"
-"Maine hiipuu %d %% joka yö"
-msgstr ""
-"\n"
-"Reputation fades %d %% every night"
-
-#: src/ui/reputation_tier_text.gd
 msgid "Korkein maine saavutettu."
 msgstr "Highest reputation reached."
+
+#: src/ui/reputation_tier_text.gd
+msgid "Kuuluisuus houkuttelee tarkastajia: ratsiakynnys -%d"
+msgstr "Fame attracts inspectors: raid threshold -%d"
+
+#: src/ui/reputation_tier_text.gd
+msgid "Maine hiipuu %d %% joka yö"
+msgstr "Reputation fades %d %% every night"
 
 #: src/ui/reputation_tier_text.gd
 msgid "Seuraava: %s (%d mainetta)"
 msgstr "Next: %s (%d reputation)"
 
 #: src/ui/spice_preview_text.gd
-msgid ""
-"\n"
-"Mausteet: +%d %%"
-msgstr ""
-"\n"
-"Spices: +%d %%"
+msgid "Mausteet: +%d %%"
+msgstr "Spices: +%d %%"
 
 #: src/ui/spice_preview_text.gd
-msgid ""
-"\n"
-"Reinheitsgebot rikottu: -%d %%"
-msgstr ""
-"\n"
-"Reinheitsgebot broken: -%d %%"
+msgid "Reinheitsgebot rikottu: -%d %%"
+msgstr "Reinheitsgebot broken: -%d %%"
 
 #: src/ui/toast_text.gd
 msgid "%s epäonnistui: %d maine / +%d LVV-riski"
