@@ -52,7 +52,7 @@ Five top-level folders: `addons/`, `assets/`, `src/`, `tests/` and `dev/`. Every
 - **Signals:** Declare all custom signals at the very top of files: `signal customer_served(order_type: String)`.
 - **Comments:** Short. Say why, not what; one to four lines. Names and small functions carry the rest.
 - **Strings:** Only strings used in several places go into `StringContainer`; a string used once is a local `const` in its script. Player-facing text is Finnish and never contains an em dash (—); use periods, commas or colons.
-- **Translation:** The Finnish text is its own translation key. A Control showing a whole constant translates itself; text that gets numbers filled in or is joined with other text goes through `tr(CONST) % ...` (or `UiText.of()` in static functions) first. After adding or changing player-facing text, run `python dev/tools/i18n.py extract`, write the English in `src/resources/translations/strings.csv`, then `check`.
+- **Translation:** The Finnish text is its own translation key. A Control showing a whole constant translates itself; text that gets numbers filled in or is joined with other text goes through `tr(CONST) % ...` (or `UiText.of()` in static functions) first. After adding or changing player-facing text, run `python dev/tools/i18n.py extract`, write the English in the `msgstr` lines of `src/resources/translations/en.po`, then `check`.
 
 ## Useful CLI Commands
 * **Run Project:** `godot --path .`
@@ -88,7 +88,7 @@ Five top-level folders: `addons/`, `assets/`, `src/`, `tests/` and `dev/`. Every
 - `dev/tools/check_systems.py` checks that every folder in `src/systems/` is self-contained (exit code 1 on a violation).
 - `dev/tools/sheets.py` exports the customers and beer styles to spreadsheets (`export`) and reads edited sheets back into the `.tres` files (`import`, a dry run unless `--apply` is given). Needs `pip install openpyxl`. Output goes to `dev/tools/sheets/`, which is gitignored.
 - `dev/tools/playtest/playtest.py` runs headless bot playtests in parallel (`run`, four default strategies plus `expert` and `gourmet`, each run with its own APPDATA so real saves are safe), then prints a per-run table (`summary`) or compares batches (`compare`). Use it to check balance changes; only `expert` and `gourmet` discover styles, and no bot does daily goals.
-- `dev/tools/i18n.py` keeps the English translation CSV in step with the Finnish texts in scripts and scenes (`extract`) and lists missing English or mismatched `%d`/`%s` placeholders (`check`, exit code 1 on a problem). Content `.tres` texts are not translated yet.
+- `dev/tools/i18n.py` keeps the English translation (`en.po`) in step with the Finnish texts in scripts and scenes (`extract`) and lists missing English or mismatched `%d`/`%s` placeholders (`check`, exit code 1 on a problem). Content `.tres` texts are not translated yet.
 - `dev/tools/playtest/talents.py` runs the same bots once per Olutoppi spec (no talents, each path at a budget, balanced) and compares their scores.
 
 ## Model Context Protocol (MCP) Live Usage Rules

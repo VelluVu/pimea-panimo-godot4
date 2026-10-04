@@ -3,29 +3,38 @@
 
 The texts are written in Finnish and are their own translation keys: a Label or Button
 whose text is a key shows the English automatically, and code that fills numbers into a
-text calls tr() on it first. Godot imports the CSV into strings.en.translation, which
-SettingsWiring loads.
+text calls tr() on it first. SettingsWiring loads src/resources/translations/en.po,
+which Godot reads as it is (no import step).
 
   python dev/tools/i18n.py extract
       Finds the player-facing texts in src/ (string constants in scripts, text in scenes)
-      and adds the new ones to src/resources/translations/strings.csv. English already
-      written is kept, and texts no longer found are dropped.
+      and adds the new ones to en.po. English already written is kept, and texts no
+      longer found are dropped.
 
   python dev/tools/i18n.py check
       Lists texts with no English yet and English whose %d/%s/%.1f placeholders differ
       from the Finnish. Exit code 1 if any.
 
-The CSV's columns are keys (Finnish), en and _source (where the text is, ignored by
-Godot). Edit it in a spreadsheet like the sheets.py exports, then run check. The editor
-reimports the CSV when it regains focus; until then the game shows the old English.
+Each entry in en.po is the file the text was found in, the Finnish (msgid) and the
+English below it (msgstr); write the English in msgstr, then run check. Any text editor
+or Poedit works. Long texts are wrapped over several quoted lines, which join with no
+added spaces or line breaks; a line break in the text is written \\n.
 """
-import csv
 import re
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-CSV_PATH = ROOT / "src" / "resources" / "translations" / "strings.csv"
+PO_PATH = ROOT / "src" / "resources" / "translations" / "en.po"
+PO_HEADER = (
+    'msgid ""\nmsgstr ""\n'
+    '"Language: en\\n"\n'
+    '"MIME-Version: 1.0\\n"\n'
+    '"Content-Type: text/plain; charset=UTF-8\\n"\n'
+    '"Content-Transfer-Encoding: 8bit\\n"\n'
+)
+# Texts longer than this, or with line breaks, go on their own quoted lines.
+PO_WRAP = 76
 SCRIPT_DIRS = ["src"]
 # Dev-only text and content files (phase 2) stay out.
 # Content resources whose fields hold player-facing text. Phase 2 adds the rest here.
@@ -135,41 +144,82 @@ def find_texts():
     return found
 
 
-def read_csv():
+def _po_escape(text):
+    return text.replace("\\", "\\\\").replace('"', '\\"').replace("\t", "\\t").replace("\n", "\\n")
+
+
+def _po_unescape(text):
+    return re.sub(r'\\(.)', lambda m: {"n": "\n", "t": "\t"}.get(m.group(1), m.group(1)), text)
+
+
+def _po_pieces(text):
+    """Splits after each line break, then wraps long lines after a space."""
+    pieces = []
+    for line in re.findall(r'[^\n]*\n|[^\n]+', text):
+        while len(line) > PO_WRAP:
+            cut = line.rfind(" ", 0, PO_WRAP) + 1
+            if cut <= 0:
+                break
+            pieces.append(line[:cut])
+            line = line[cut:]
+        pieces.append(line)
+    return pieces
+
+
+def _po_field(name, text):
+    pieces = _po_pieces(text)
+    if len(pieces) <= 1:
+        return f'{name} "{_po_escape(text)}"\n'
+    return f'{name} ""\n' + "".join(f'"{_po_escape(p)}"\n' for p in pieces)
+
+
+def read_po():
+    """Finnish -> {"en", "source"}. The header entry (empty msgid) is left out."""
     rows = {}
-    if CSV_PATH.exists():
-        with CSV_PATH.open(encoding="utf-8", newline="") as f:
-            for row in csv.DictReader(f):
-                rows[row["keys"]] = row
+    if not PO_PATH.exists():
+        return rows
+    entry, field = {"source": ""}, None
+    for line in PO_PATH.read_text(encoding="utf-8").splitlines() + [""]:
+        line = line.strip()
+        if not line:
+            if entry.get("msgid"):
+                rows[entry["msgid"]] = {"en": entry.get("msgstr", ""), "source": entry["source"]}
+            entry, field = {"source": ""}, None
+        elif line.startswith("#:"):
+            entry["source"] = line[2:].strip()
+        elif line.startswith(("msgid ", "msgstr ")):
+            field, quoted = line.split(" ", 1)
+            entry[field] = _po_unescape(quoted[1:-1])
+        elif line.startswith('"') and field:
+            entry[field] += _po_unescape(line[1:-1])
     return rows
 
 
-def write_csv(rows):
-    CSV_PATH.parent.mkdir(parents=True, exist_ok=True)
-    with CSV_PATH.open("w", encoding="utf-8", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=["keys", "en", "_source"], lineterminator="\n")
-        writer.writeheader()
-        for key in sorted(rows, key=lambda k: (rows[k]["_source"], k)):
-            writer.writerow(rows[key])
+def write_po(rows):
+    PO_PATH.parent.mkdir(parents=True, exist_ok=True)
+    entries = [PO_HEADER]
+    for key in sorted(rows, key=lambda k: (rows[k]["source"], k)):
+        entries.append(f'#: {rows[key]["source"]}\n' + _po_field("msgid", key) + _po_field("msgstr", rows[key]["en"]))
+    PO_PATH.write_text("\n".join(entries), encoding="utf-8", newline="\n")
 
 
 def extract():
-    old = read_csv()
+    old = read_po()
     found = find_texts()
     rows = {}
     for key, source in found.items():
-        rows[key] = {"keys": key, "en": old.get(key, {}).get("en", ""), "_source": source}
-    write_csv(rows)
+        rows[key] = {"en": old.get(key, {}).get("en", ""), "source": source}
+    write_po(rows)
     added = len([k for k in found if k not in old])
     dropped = len([k for k in old if k not in found])
-    print(f"{len(rows)} texts, {added} new, {dropped} dropped -> {_rel(CSV_PATH)}")
+    print(f"{len(rows)} texts, {added} new, {dropped} dropped -> {_rel(PO_PATH)}")
 
 
 def check():
     problems = 0
-    for key, row in read_csv().items():
+    for key, row in read_po().items():
         if not row["en"]:
-            print(f"missing: {key!r} ({row['_source']})")
+            print(f"missing: {key!r} ({row['source']})")
             problems += 1
         elif sorted(PLACEHOLDER.findall(key)) != sorted(PLACEHOLDER.findall(row["en"])):
             print(f"placeholders differ: {key!r} -> {row['en']!r}")

@@ -29,7 +29,7 @@ var supported_locales: Array[String] = ["en"]
 var fallback_locale: String = "en"
 ## Whether a fresh install starts in the system language, if supported.
 var follow_system_language: bool = true
-## Translation resources loaded at start (Godot's imported .translation files).
+## Translation resources loaded at start (.po files, or imported .translation files).
 var translation_paths: Array[String] = []
 ## The saved choice; empty follows the system language.
 var language: String = ""
