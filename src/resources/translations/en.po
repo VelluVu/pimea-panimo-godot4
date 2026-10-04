@@ -373,6 +373,10 @@ msgstr "very bitter"
 msgid "kpl"
 msgstr "pcs"
 
+#: src/brewing/beer_style.gd
+msgid "Uusi oluttyyli"
+msgstr "New beer style"
+
 #: src/brewing/brew_batch.gd
 msgid "Kypsytyslisä hintaan: +%d %% (enintään +%d %%)"
 msgstr "Aging price bonus: +%d %% (up to +%d %%)"
@@ -406,6 +410,22 @@ msgid "Asiakas"
 msgstr "Customer"
 
 #: src/customers/customer_data.gd
+msgid "Ei tää sitäkään ollu, mut menköön..."
+msgstr "Wasn't that either, but fine..."
+
+#: src/customers/customer_data.gd
+msgid "Ei täällä ollu mitään minulle. Ehkä ensi kerralla."
+msgstr "Nothing here for me. Maybe next time."
+
+#: src/customers/customer_data.gd
+msgid "Eipä taida olla mitään sopivaa..."
+msgstr "Doesn't look like there's anything for me..."
+
+#: src/customers/customer_data.gd
+msgid "Kylläpä uppoo! Tässä rahat."
+msgstr "That goes down well! Here's the money."
+
+#: src/customers/customer_data.gd
 msgid "Liisa"
 msgstr "Liisa"
 
@@ -418,8 +438,24 @@ msgid "Matti"
 msgstr "Matti"
 
 #: src/customers/customer_data.gd
+msgid "Mitä helvettiä sä mulle myyt? Pitää tunkkis."
+msgstr "What the hell are you selling me? Keep your swill."
+
+#: src/customers/customer_data.gd
+msgid "Moro. Oisko jotain juotavaa?"
+msgstr "Hey. Got anything to drink?"
+
+#: src/customers/customer_data.gd
+msgid "No, tämäkin käy paremman puutteessa."
+msgstr "Well, this'll do for lack of anything better."
+
+#: src/customers/customer_data.gd
 msgid "Pekka"
 msgstr "Pekka"
+
+#: src/customers/customer_data.gd
+msgid "Tuo %s kiinnostaisi..."
+msgstr "That %s looks interesting..."
 
 #: src/customers/customer_hand_offsets.gd
 msgid "Kriitikko"
@@ -472,6 +508,34 @@ msgstr ""
 "Ingredients: %.2f €\n"
 "Margin: %.2f €\n"
 "= Price/serving: %.2f €"
+
+#: src/events/day_event_data.gd
+msgid "Tavallinen päivä kellarissa."
+msgstr "An ordinary day in the cellar."
+
+#: src/events/special_event_data.gd
+msgid "Eikö täältä räkälästä saa ees bulkkii kaikille?"
+msgstr "Can't this dump even sort out bulk beer for everyone?"
+
+#: src/events/special_event_data.gd
+msgid "Kaljabisnesmies"
+msgstr "Beer Businessman"
+
+#: src/events/special_event_data.gd
+msgid "Nyt bileet pystyyn!"
+msgstr "Let's get this party started!"
+
+#: src/events/special_event_data.gd
+msgid ""
+"Nyt pitäs saada reippaasti kaljaa kaikille, eli bulkkia vähintään 20 "
+"annosta!"
+msgstr ""
+"We need plenty of beer for everyone, so at least 20 servings of the bulk "
+"stuff!"
+
+#: src/events/special_event_data.gd
+msgid "Päätit olla tarttumatta tarjoukseen. Jatketaan pimeää bisnestä."
+msgstr "You decided to pass on the offer. Back to the dark business."
 
 #: src/resources/achievements/ensimmainen_satsi.tres
 msgid "Ensimmäinen satsi"
