@@ -70,7 +70,7 @@ theme_override_constants/separation = 10
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 28)
 layout_mode = 2
-text = "Aloita Peli"
+text = "Aloita peli"
 
 [node name="LeaderboardButton" type="Button" parent="CenterContainer/RootMenuView" unique_id=1437759141]
 unique_name_in_owner = true
@@ -98,7 +98,7 @@ text = "Asetukset"
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 28)
 layout_mode = 2
-text = "Lopeta Peli"
+text = "Lopeta peli"
 
 [node name="StartGameView" type="VBoxContainer" parent="CenterContainer" unique_id=96498033]
 visible = false
@@ -111,7 +111,7 @@ unique_name_in_owner = true
 visible = false
 custom_minimum_size = Vector2(200, 28)
 layout_mode = 2
-text = "Jatka Peliä"
+text = "Jatka peliä"
 
 [node name="NewGameButton" type="Button" parent="CenterContainer/StartGameView" unique_id=1256502717]
 unique_name_in_owner = true

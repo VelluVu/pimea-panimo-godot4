@@ -44,8 +44,8 @@ msgid ""
 "pistettä."
 msgstr ""
 "Alcohol inspectors stormed the cellar and confiscated %s servings of "
-"finished beer! They also wrote a fine: %.1f €, and your reputation dropped "
-"%s points."
+"finished beer! They also issued a fine of %.1f €, and your reputation "
+"dropped by %s points."
 
 #: src/autoload/string_container.gd
 msgid "Alkoholiton IPA"
@@ -859,8 +859,8 @@ msgid ""
 "eristä. Suuret toimitukset tänne ovat riski, jota ei kannata ottaa kevein "
 "perustein."
 msgstr ""
-"A respected dinner restaurant that pays the best price for quality batches. "
-"Big deliveries here are a risk you shouldn't take lightly."
+"A respected fine-dining restaurant that pays the best price for quality "
+"batches. Big deliveries here are a risk you shouldn't take lightly."
 
 #: src/resources/bars/kultainen_tynnyri.tres
 msgid "Kultainen Tynnyri"
@@ -879,7 +879,7 @@ msgid "Yökerho Varjo"
 msgstr "Club Shadow"
 
 #: src/resources/beer_styles/ipa.tres
-msgid "Indian Pale ale"
+msgid "India Pale Ale"
 msgstr "India Pale Ale"
 
 #: src/resources/cellar_upgrades/1_isompi_kaymisastia.tres
@@ -888,11 +888,11 @@ msgstr "A bigger vessel, more bottles from the same batch."
 
 #: src/resources/cellar_upgrades/1_isompi_kaymisastia.tres
 msgid "Isompi käymisastia"
-msgstr "Bigger fermenter"
+msgstr "Bigger Fermenter"
 
 #: src/resources/cellar_upgrades/2_kylmakypsytysvarasto.tres
 msgid "Kylmäkypsytysvarasto"
-msgstr "Cold storage"
+msgstr "Cold Storage"
 
 #: src/resources/cellar_upgrades/2_kylmakypsytysvarasto.tres
 msgid "Kylmässä olut säilyy pidempään. Koskee uusia satseja."
@@ -900,7 +900,7 @@ msgstr "Beer keeps longer in the cold. Applies to new batches."
 
 #: src/resources/cellar_upgrades/3_lisaa_tiskipaikkoja.tres
 msgid "Lisää tiskipaikkoja"
-msgstr "More counter spots"
+msgstr "More Counter Spots"
 
 #: src/resources/cellar_upgrades/3_lisaa_tiskipaikkoja.tres
 msgid ""
@@ -912,7 +912,7 @@ msgstr ""
 
 #: src/resources/cellar_upgrades/4_piilohylly.tres
 msgid "Piilohylly"
-msgstr "Hidden shelf"
+msgstr "Hidden Shelf"
 
 #: src/resources/cellar_upgrades/4_piilohylly.tres
 msgid "Väärä seinä kellarissa. Ratsiassa osa pulloista jää löytymättä."
@@ -920,7 +920,7 @@ msgstr "A false wall in the cellar. In a raid, some bottles stay hidden."
 
 #: src/resources/cellar_upgrades/5_puhdistusvalineet.tres
 msgid "Puhdistusvälineet"
-msgstr "Cleaning gear"
+msgstr "Cleaning Gear"
 
 #: src/resources/cellar_upgrades/5_puhdistusvalineet.tres
 msgid "Puhtaat astiat, puhtaampi maku. Koskee uusia satseja."
@@ -928,7 +928,7 @@ msgstr "Clean vessels, cleaner taste. Applies to new batches."
 
 #: src/resources/cellar_upgrades/6_ilmoitustaulu.tres
 msgid "Ilmoitustaulu"
-msgstr "Notice board"
+msgstr "Notice Board"
 
 #: src/resources/cellar_upgrades/6_ilmoitustaulu.tres
 msgid ""
@@ -940,7 +940,7 @@ msgstr ""
 
 #: src/resources/cellar_upgrades/7_kunnon_lasit.tres
 msgid "Kunnon lasit"
-msgstr "Proper glasses"
+msgstr "Proper Glasses"
 
 #: src/resources/cellar_upgrades/7_kunnon_lasit.tres
 msgid "Oikeat tuopit muovimukien tilalle. Tiskillä olusta saa pyytää vähän enemmän."
@@ -954,11 +954,11 @@ msgstr "A jar on the corner of the counter. A happy customer leaves a little ext
 
 #: src/resources/cellar_upgrades/8_tippipurkki.tres
 msgid "Tippipurkki"
-msgstr "Tip jar"
+msgstr "Tip Jar"
 
 #: src/resources/cellar_upgrades/9_kuormapyora.tres
 msgid "Kuormapyörä"
-msgstr "Cargo bike"
+msgstr "Cargo Bike"
 
 #: src/resources/cellar_upgrades/9_kuormapyora.tres
 msgid ""
@@ -1706,7 +1706,7 @@ msgstr "Just what we needed after the job!"
 
 #: src/resources/customers/raksamies.tres
 msgid "Kuha jotaki saa kurkusta alas."
-msgstr "As long as something goes down the throat."
+msgstr "As long as it goes down."
 
 #: src/resources/customers/raksamies.tres
 msgid "Mitä, eikö täällä oo mitään kylmää juotavaa..."
@@ -1836,7 +1836,7 @@ msgstr "There's nothing non-alcoholic, this is such an L..."
 
 #: src/resources/customers/zgen_naaras.tres
 msgid ""
-"Heyy, onks teil alkoholitonta IPA:a? No cap tarviin jotain sigma-juoman, en "
+"Heyy, onks teil alkoholitonta IPA:a? No cap tarviin jotain sigma-juomaa, en "
 "jaksa cap-fiilistä."
 msgstr ""
 "Heyy, do you have non-alcoholic IPA? No cap I need some sigma drink, not "
@@ -1952,15 +1952,15 @@ msgstr "An ordinary day in the cellar. No special surprises expected today."
 msgid ""
 "Opintotukien maksupäivä on tänään. Odotettavissa rahaa polttavia "
 "opiskelijoita."
-msgstr "Student allowance payday is today. Expect students eager to spend."
+msgstr "Student grant payday is today. Expect students eager to spend."
 
 #: src/resources/day_events/day_event_saunailta.tres
 msgid ""
 "Yleisen saunan naistenvuoro ja miestenvuoro päättyivät. Odotettavissa "
 "höyryäviä saunojia, joilla on sahtijano."
 msgstr ""
-"The public sauna's women's and men's turns are over. Expect steaming "
-"bathers with a thirst for sahti."
+"The public sauna's bathing hours are over. Expect steaming bathers with a "
+"thirst for sahti."
 
 #: src/resources/day_events/day_event_suojelurahat.tres
 msgid ""
@@ -1990,7 +1990,7 @@ msgstr ""
 
 #: src/resources/day_events/day_event_zgen_festival.tres
 msgid ""
-"Sukupolvi Z apocalypse festivaali käynnissä kaupungissa tänään. "
+"Sukupolvi Z:n apokalypsifestivaali käynnissä kaupungissa tänään. "
 "Odotettavissa runsaasti Zgen-asiakkaita."
 msgstr ""
 "The Generation Z apocalypse festival is on in town today. Expect plenty of "
@@ -2093,8 +2093,8 @@ msgid "MAAILMANMESTARI HEI!"
 msgstr "WORLD CHAMPIONS, HEY!"
 
 #: src/resources/group_events/leijonafanit_mm_kulta.tres
-msgid "SUOMI ON UUSI!"
-msgstr "FINLAND ON TOP AGAIN!"
+msgid "SUOMI ON UUSI MAAILMANMESTARI!"
+msgstr "FINLAND ARE THE NEW WORLD CHAMPIONS!"
 
 #: src/resources/group_events/leijonafanit_mm_kulta.tres
 msgid ""
@@ -2134,14 +2134,14 @@ msgstr ""
 
 #: src/resources/group_events/opiskelijabileet.tres
 msgid "FUKSIT FUKSIT, JUO POHJAAN!"
-msgstr "FRESHMEN, FRESHMEN, DOWN IN ONE!"
+msgstr "FRESHERS, FRESHERS, DOWN IN ONE!"
 
 #: src/resources/group_events/opiskelijabileet.tres
 msgid ""
 "Fuksivuosikurssi ryntää ovesta sisään haalarit päällä,\n"
 "halvinta kaljaa heti tiskiin!"
 msgstr ""
-"The freshman class bursts in wearing their student overalls,\n"
+"The freshers burst in wearing their student overalls,\n"
 "cheapest beer on the counter right now!"
 
 #: src/resources/group_events/opiskelijabileet.tres
@@ -2231,11 +2231,11 @@ msgid "Amerikkalainen aromihumala joka tuo sitruksista ja mäntyistä aromia"
 msgstr "American aroma hop with citrus and pine notes"
 
 #: src/resources/ingredients/hops/cascade_hop.tres
-msgid "Cascade Humala"
+msgid "Cascade-humala"
 msgstr "Cascade Hops"
 
 #: src/resources/ingredients/hops/centennial_hop.tres
-msgid "Centennial Humala"
+msgid "Centennial-humala"
 msgstr "Centennial Hops"
 
 #: src/resources/ingredients/hops/centennial_hop.tres
@@ -2243,7 +2243,7 @@ msgid "Voimakas amerikkalainen humala, sitrus ja kukka-aromein"
 msgstr "Strong American hop with citrus and floral aromas"
 
 #: src/resources/ingredients/hops/chinook_hop.tres
-msgid "Chinook Humala"
+msgid "Chinook-humala"
 msgstr "Chinook Hops"
 
 #: src/resources/ingredients/hops/chinook_hop.tres
@@ -2251,7 +2251,7 @@ msgid "Voimakas katkerohumala, mäntyinen ja mausteinen"
 msgstr "Strong bittering hop, piney and spicy"
 
 #: src/resources/ingredients/hops/citra_hop.tres
-msgid "Citra Humala"
+msgid "Citra-humala"
 msgstr "Citra Hops"
 
 #: src/resources/ingredients/hops/citra_hop.tres
@@ -2263,11 +2263,11 @@ msgid "Arvostettu englantilainen humala, hunajainen ja pehmeä"
 msgstr "A prized English hop, honeyed and smooth"
 
 #: src/resources/ingredients/hops/east_kent_golding_hop.tres
-msgid "East Kent Golding Humala"
+msgid "East Kent Golding-humala"
 msgstr "East Kent Golding Hops"
 
 #: src/resources/ingredients/hops/fuggle_hop.tres
-msgid "Fuggle Humala"
+msgid "Fuggle-humala"
 msgstr "Fuggle Hops"
 
 #: src/resources/ingredients/hops/fuggle_hop.tres
@@ -2275,7 +2275,7 @@ msgid "Perinteinen englantilainen humala, maanläheinen ja hedelmäinen"
 msgstr "A traditional English hop, earthy and fruity"
 
 #: src/resources/ingredients/hops/hallertau_hop.tres
-msgid "Hallertau Humala"
+msgid "Hallertau-humala"
 msgstr "Hallertau Hops"
 
 #: src/resources/ingredients/hops/hallertau_hop.tres
@@ -2283,7 +2283,7 @@ msgid "Saksalainen jalohumala, hienostunut ja kukkainen"
 msgstr "A German noble hop, refined and floral"
 
 #: src/resources/ingredients/hops/magnum_hop.tres
-msgid "Magnum Humala"
+msgid "Magnum-humala"
 msgstr "Magnum Hops"
 
 #: src/resources/ingredients/hops/magnum_hop.tres
@@ -2291,7 +2291,7 @@ msgid "Tämä katkerohumala antaa oluelle hyvät katkerot"
 msgstr "A bittering hop that gives beer a clean bitterness"
 
 #: src/resources/ingredients/hops/mosaic_hop.tres
-msgid "Mosaic Humala"
+msgid "Mosaic-humala"
 msgstr "Mosaic Hops"
 
 #: src/resources/ingredients/hops/mosaic_hop.tres
@@ -2303,7 +2303,7 @@ msgid "Klassinen tsekkiläinen jalohumala, mieto ja mausteinen"
 msgstr "A classic Czech noble hop, mild and spicy"
 
 #: src/resources/ingredients/hops/saaz_hop.tres
-msgid "Saaz Humala"
+msgid "Saaz-humala"
 msgstr "Saaz Hops"
 
 #: src/resources/ingredients/hops/simcoe_hop.tres
@@ -2311,11 +2311,11 @@ msgid "Monipuolinen humala, tuo puuta ja hedelmäisyyttä"
 msgstr "A versatile hop that brings wood and fruitiness"
 
 #: src/resources/ingredients/hops/simcoe_hop.tres
-msgid "Simcoe Humala"
+msgid "Simcoe-humala"
 msgstr "Simcoe Hops"
 
 #: src/resources/ingredients/hops/tettnanger_hop.tres
-msgid "Tettnanger Humala"
+msgid "Tettnanger-humala"
 msgstr "Tettnanger Hops"
 
 #: src/resources/ingredients/hops/tettnanger_hop.tres
@@ -2323,19 +2323,19 @@ msgid "Tämä jalohumala antaa oluelle klassista makua"
 msgstr "A noble hop that gives beer a classic flavour"
 
 #: src/resources/ingredients/malts/biscuit_malt.tres
-msgid "Paahdettu erikoismallas joka tuo olueen keksimäistä makua"
-msgstr "A roasted specialty malt that adds a biscuity flavour"
+msgid "Keksimallas"
+msgstr "Biscuit Malt"
 
 #: src/resources/ingredients/malts/biscuit_malt.tres
-msgid "keksimallas"
-msgstr "Biscuit malt"
+msgid "Paahdettu erikoismallas joka tuo olueen keksimäistä makua"
+msgstr "A roasted specialty malt that adds a biscuity flavour"
 
 #: src/resources/ingredients/malts/brown_malt.tres
 msgid "Kevyesti paahdettu erikoismallas joka antaa pähkinäistä syvyyttä"
 msgstr "A lightly roasted specialty malt that adds nutty depth"
 
 #: src/resources/ingredients/malts/brown_malt.tres
-msgid "Ruskea Mallas"
+msgid "Ruskea mallas"
 msgstr "Brown Malt"
 
 #: src/resources/ingredients/malts/caramell_malt.tres
@@ -2343,11 +2343,11 @@ msgid "Erikoismallas joka antaa väriä ja paahteista makua olueen"
 msgstr "A specialty malt that adds colour and a toasty flavour"
 
 #: src/resources/ingredients/malts/caramell_malt.tres
-msgid "Karamelli Mallas"
+msgid "Karamellimallas"
 msgstr "Caramel Malt"
 
 #: src/resources/ingredients/malts/dark_crystal_malt.tres
-msgid "Tumma Karamellimallas"
+msgid "Tumma karamellimallas"
 msgstr "Dark Caramel Malt"
 
 #: src/resources/ingredients/malts/dark_crystal_malt.tres
@@ -2355,7 +2355,7 @@ msgid "Voimakkaasti paahdettu karamellimallas tummille ja väkeville oluille"
 msgstr "A heavily roasted caramel malt for dark and strong beers"
 
 #: src/resources/ingredients/malts/munich_malt.tres
-msgid "Münchenin Mallas"
+msgid "Münchenin mallas"
 msgstr "Munich Malt"
 
 #: src/resources/ingredients/malts/munich_malt.tres
@@ -2363,7 +2363,7 @@ msgid "Tumma pohjamallas joka tuo olueen maltaista makeutta ja väriä"
 msgstr "A dark base malt that adds malty sweetness and colour"
 
 #: src/resources/ingredients/malts/pale_ale_malt.tres
-msgid "Pale-Ale Mallas"
+msgid "Pale ale -mallas"
 msgstr "Pale Ale Malt"
 
 #: src/resources/ingredients/malts/pale_ale_malt.tres
@@ -2371,12 +2371,12 @@ msgid "Pohjamallas antaa vähän maltaiden makua olueen"
 msgstr "A base malt that adds a little malt flavour"
 
 #: src/resources/ingredients/malts/pilsner_malt.tres
-msgid "Pilsner mallas"
-msgstr "Pilsner Malt"
-
-#: src/resources/ingredients/malts/pilsner_malt.tres
 msgid "Pilsner pohjamallas antaa maltaiden makua olueen"
 msgstr "A pilsner base malt that adds malt flavour"
+
+#: src/resources/ingredients/malts/pilsner_malt.tres
+msgid "Pilsner-mallas"
+msgstr "Pilsner Malt"
 
 #: src/resources/ingredients/malts/smoked_malt.tres
 msgid "Avotulella savustettu mallas joka tuo olueen savuisen maun"
@@ -2514,7 +2514,7 @@ msgid "Pintahiiva tuottaa aromikkaan oluen"
 msgstr "A top-fermenting yeast that makes an aromatic beer"
 
 #: src/resources/ingredients/yeasts/alkoholiton_ale_hiiva.tres
-msgid "Alkoholiton ale hiiva"
+msgid "Alkoholiton alehiiva"
 msgstr "Non-alcoholic Ale Yeast"
 
 #: src/resources/ingredients/yeasts/alkoholiton_ale_hiiva.tres
@@ -2524,7 +2524,7 @@ msgid ""
 msgstr "A special yeast that stops fermenting before almost any alcohol forms"
 
 #: src/resources/ingredients/yeasts/alkoholiton_lager_hiiva.tres
-msgid "Alkoholiton lager hiiva"
+msgid "Alkoholiton lagerhiiva"
 msgstr "Non-alcoholic Lager Yeast"
 
 #: src/resources/ingredients/yeasts/baking_yeast.tres
@@ -2532,7 +2532,7 @@ msgid "Halvinta mahdollista hiivaa tämä ei tee kovin hyvää olutta"
 msgstr "The cheapest yeast there is. It doesn't make very good beer"
 
 #: src/resources/ingredients/yeasts/baking_yeast.tres
-msgid "Leivonta hiiva"
+msgid "Leivinhiiva"
 msgstr "Baking Yeast"
 
 #: src/resources/ingredients/yeasts/lager_yeast.tres
@@ -2558,7 +2558,7 @@ msgstr ""
 
 #: src/resources/meta_unlocks/hygieniamestari.tres
 msgid "Tarkka silmämitta"
-msgstr "Sharp Eye for Measure"
+msgstr "A Good Eye"
 
 #: src/resources/meta_unlocks/hygieniamestari.tres
 msgid ""
@@ -2695,7 +2695,7 @@ msgstr "Precise Milling"
 
 #: src/resources/meta_unlocks/terava_silmae.tres
 msgid ""
-"Osaat tunnistaa epäilyttävät kasvot ovelta jo etukäältä ja karkottaa heidät "
+"Osaat tunnistaa epäilyttävät kasvot ovelta jo etukäteen ja karkottaa heidät "
 "hienovaraisesti. LVV:n agentteja näkyy pysyvästi harvemmin, ja alamaailman "
 "kontaktit löytävät tiensä kellariisi useammin."
 msgstr ""
@@ -2848,7 +2848,7 @@ msgstr "Trusted Circle"
 msgid "Tunnet oikeat ihmiset korttelissa. LVV:n ratsiakynnys nousee selvästi."
 msgstr ""
 "You know the right people on the block. The LVV's raid threshold rises "
-"clearly."
+"considerably."
 
 #: src/resources/perks/monitaituri.tres
 msgid "Monitaituri"
@@ -2899,10 +2899,8 @@ msgid "Öinen legenda"
 msgstr "Nighttime Legend"
 
 #: src/resources/perks/pyoristys_ylospain.tres
-msgid ""
-"Opit jättämään vaihtorahat ottamatta huomiota. Asiakkaat pyöristävät tipit "
-"ylöspäin."
-msgstr "You learn to leave the change on the counter. Customers round their tips up."
+msgid "Opit jättämään vaihtorahat huomiotta. Asiakkaat pyöristävät tipit ylöspäin."
+msgstr "You learn to conveniently forget the change. Customers round their tips up."
 
 #: src/resources/perks/pyoristys_ylospain.tres
 msgid "Pyöristys ylöspäin"
@@ -2956,7 +2954,7 @@ msgid ""
 "tulot ovat selvästi paremmat."
 msgstr ""
 "Your name as a supplier travels between cellars: bulk sales and bar "
-"shipments earn clearly more."
+"shipments earn noticeably more."
 
 #: src/resources/perks/tunnettu_toimittaja.tres
 msgid "Tunnettu toimittaja"
@@ -2990,7 +2988,7 @@ msgstr "Nobody knows about your cellar. Yet."
 
 #: src/resources/reputation_tiers/1_kellarin_salaisuus.tres
 msgid "Kellarin salaisuus"
-msgstr "Cellar secret"
+msgstr "Cellar Secret"
 
 #: src/resources/reputation_tiers/1_kellarin_salaisuus.tres
 msgid "Muutama tietää oikean oven. Kuiskaukset kulkevat."
@@ -2998,7 +2996,7 @@ msgstr "A few know the right door. Whispers travel."
 
 #: src/resources/reputation_tiers/2_kylan_puheenaihe.tres
 msgid "Kylän puheenaihe"
-msgstr "Talk of the town"
+msgstr "Talk of the Town"
 
 #: src/resources/reputation_tiers/2_kylan_puheenaihe.tres
 msgid "Mummotkin puhuvat panimostasi kaupan kassajonossa."
@@ -3006,7 +3004,7 @@ msgstr "Even the grannies talk about your brewery in the supermarket queue."
 
 #: src/resources/reputation_tiers/3_kaupungin_kuuluisuus.tres
 msgid "Kaupungin kuuluisuus"
-msgstr "Local celebrity"
+msgstr "Local Celebrity"
 
 #: src/resources/reputation_tiers/3_kaupungin_kuuluisuus.tres
 msgid "Oluesi tunnetaan kaupungilla. Niin myös osoitteesi."
@@ -3085,7 +3083,7 @@ msgid ""
 "kärsii: 15 mainetta."
 msgstr ""
 "We want your face in an energy drink ad! We pay 80 €, but your reputation "
-"suffers: 15 reputation."
+"drops by 15."
 
 #: src/resources/special_events/brand_deal.tres
 msgid "Kukaan ei vielä tunnista sinua. Ehkä myöhemmin."
@@ -3389,7 +3387,7 @@ msgid "Laatu: 0.0"
 msgstr "Quality: 0.0"
 
 #: src/scenes/ui/beer_batch_element.tscn
-msgid "Olut Tyyli"
+msgid "Oluttyyli"
 msgstr "Beer style"
 
 #: src/scenes/ui/beer_batch_panel.gd
@@ -3706,7 +3704,7 @@ msgstr "Score"
 
 #: src/scenes/ui/leaderboard_window.gd
 msgid "Pv"
-msgstr "Day"
+msgstr "Days"
 
 #: src/scenes/ui/leaderboard_window.gd
 msgid "Tulos"
@@ -3749,7 +3747,7 @@ msgid "Taso 2!"
 msgstr "Level 2!"
 
 #: src/scenes/ui/main_menu.gd
-msgid "Aloita Peli"
+msgid "Aloita peli"
 msgstr "Start Game"
 
 #: src/scenes/ui/main_menu.gd
@@ -3757,11 +3755,11 @@ msgid "Aloita uusi peli"
 msgstr "Start a new game"
 
 #: src/scenes/ui/main_menu.gd
-msgid "Jatka Peliä"
+msgid "Jatka peliä"
 msgstr "Continue Game"
 
 #: src/scenes/ui/main_menu.gd
-msgid "Lopeta Peli"
+msgid "Lopeta peli"
 msgstr "Quit Game"
 
 #: src/scenes/ui/main_menu.gd

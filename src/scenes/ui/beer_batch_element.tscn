@@ -6,7 +6,7 @@
 mouse_filter = 2
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Olut Tyyli"
+text = "Oluttyyli"
 
 [node name="AmountLabel" type="Label" parent="." unique_id=206597047]
 mouse_filter = 2

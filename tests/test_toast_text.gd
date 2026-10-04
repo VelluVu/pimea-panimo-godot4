@@ -40,10 +40,10 @@ func test_no_unlocks_gives_no_toast() -> void:
 
 
 func test_several_unlocks_merge_and_drop_the_hop_suffix() -> void:
-	var unlocked : Array[IngredientData] = [_ingredient("Cascade Humala"), _ingredient("Katajanoksat")]
+	var unlocked : Array[IngredientData] = [_ingredient("Cascade-humala"), _ingredient("Katajanoksat")]
 	var text : String = ToastTextScript.ingredients_unlocked(unlocked)
 	assert_true(text.contains("Cascade, Katajanoksat"))
-	assert_false(text.contains("Humala"))
+	assert_false(text.contains("humala"))
 
 
 func test_only_a_broken_purity_law_gets_a_toast() -> void:
