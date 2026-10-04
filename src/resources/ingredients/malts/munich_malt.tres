@@ -7,6 +7,6 @@ script = ExtResource("1_munich")
 ebc = 30
 id = 104
 name = "Münchenin mallas"
-description = "Tumma pohjamallas joka tuo olueen maltaista makeutta ja väriä"
+description = "Tumma pohjamallas, joka tuo olueen maltaista makeutta ja väriä."
 base_price = 3
 metadata/_custom_type_script = "uid://dniwiyu5ynp71"
