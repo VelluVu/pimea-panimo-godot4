@@ -146,7 +146,7 @@ func _cmd_keita(args: PackedStringArray) -> void:
 	var wanted := " ".join(Array(args)).to_lower()
 	var matched : BrewRecipe = null
 	for recipe : BrewRecipe in brewery.saved_recipes:
-		if recipe.recipe_name.to_lower().contains(wanted):
+		if recipe.recipe_name.to_lower().contains(wanted) or RecipeNameText.display(recipe).to_lower().contains(wanted):
 			matched = recipe
 			break
 
@@ -159,15 +159,15 @@ func _cmd_keita(args: PackedStringArray) -> void:
 	GUISignals.start_brewing.emit()
 
 	if brewery.inventory.brew_batches.size() > batches_before:
-		_log(tr(BREWING_MESSAGE) % matched.recipe_name)
+		_log(tr(BREWING_MESSAGE) % RecipeNameText.display(matched))
 	else:
-		_log(tr(BREWING_FAILED_MESSAGE) % matched.recipe_name)
+		_log(tr(BREWING_FAILED_MESSAGE) % RecipeNameText.display(matched))
 
 
 func _saved_recipe_names(brewery : Brewery) -> String:
 	var names : Array[String] = []
 	for recipe : BrewRecipe in brewery.saved_recipes:
-		names.append(recipe.recipe_name)
+		names.append(RecipeNameText.display(recipe))
 	return ", ".join(names) if not names.is_empty() else tr(NO_SAVED_RECIPES_TEXT)
 
 

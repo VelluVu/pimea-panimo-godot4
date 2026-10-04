@@ -4534,6 +4534,10 @@ msgstr "Also needs: %s"
 msgid "Väri: %s"
 msgstr "Colour: %s"
 
+#: src/ui/recipe_name_text.gd
+msgid "%s (perusresepti)"
+msgstr "%s (basic recipe)"
+
 #: src/ui/reputation_breakdown_text.gd
 msgid "LVV"
 msgstr "LVV"
