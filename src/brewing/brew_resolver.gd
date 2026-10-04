@@ -7,6 +7,8 @@ const FAILED_BREW_QUALITY : float = 1.0
 const QUALITY_PRECISION : float = 0.01
 const REQUIRED_SPICE_DOSE : int = 2
 
+const LOG_LOADED_STYLES : String = "Ladattu yhteensä %s oluttyyliä datasta:"
+
 var active_styles : Array[BeerStyle] = []
 ## Forwarded to StylePricing; Brewery sets it per run.
 var ingredient_price_multiplier : float:
@@ -100,7 +102,7 @@ func get_style_base_price(beer_style : BeerStyle) -> float:
 func _load_all_beer_styles() -> void:
 	active_styles.assign(ResourceFolder.load_all(StringContainer.PATH_TO_BREW_STYLES, BeerStyle))
 	_prioritize_required_malt_styles()
-	print(StringContainer.LOADED_BEER_STYLES_MESSAGE % str(active_styles.size()))
+	print(LOG_LOADED_STYLES % str(active_styles.size()))
 
 
 ## resolve_brew_style() is first-match-wins, so styles that require a specific malt go

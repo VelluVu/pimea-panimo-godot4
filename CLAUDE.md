@@ -52,7 +52,7 @@ Five top-level folders: `addons/`, `assets/`, `src/`, `tests/` and `dev/`. Every
 - **Signals:** Declare all custom signals at the very top of files: `signal customer_served(order_type: String)`.
 - **Comments:** Short. Say why, not what; one to four lines. Names and small functions carry the rest.
 - **Strings:** Only strings used in several places go into `StringContainer`; a string used once is a local `const` in its script. Player-facing text is Finnish and never contains an em dash (—); use periods, commas or colons.
-- **Translation:** The Finnish text is its own translation key. A Control showing a whole constant translates itself; text that gets numbers filled in or is joined with other text goes through `tr(CONST) % ...` (or `UiText.of()` in static functions) first. After adding or changing player-facing text, run `python dev/tools/i18n.py extract`, write the English in the `msgstr` lines of `src/resources/translations/en.po`, then `check`.
+- **Translation:** The Finnish text is its own translation key. A Control showing a whole constant translates itself; text that gets numbers filled in or is joined with other text goes through `tr(CONST) % ...` (or `UiText.of()` in static functions) first. After adding or changing player-facing text, run `python dev/tools/i18n.py extract`, write the English in the `msgstr` lines of `src/resources/translations/en.po`, then `check`. Text only for developers (`print`, `push_warning`, `push_error`) is never translated: name its constant `LOG_...`, `..._WARNING` or `..._ERROR` so the extractor skips it.
 
 ## Useful CLI Commands
 * **Run Project:** `godot --path .`

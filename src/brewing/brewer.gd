@@ -7,7 +7,7 @@ extends RefCounted
 ## Share of the consumed ingredients returned on a successful refund roll.
 ## Perk levels raise the odds, not this amount.
 const INGREDIENT_REFUND_FRACTION : float = 0.5
-
+const LOG_BREWED : String = "Successful brew batch: "
 
 var brewery : Brewery
 
@@ -106,7 +106,7 @@ func start_brew() -> void:
 
 	_roll_ingredient_refund()
 	brewery.brew_preparation.clear_preparation()
-	print(StringContainer.SUCCESFULL_BREW_MESSAGE, BeerStyle.get_style_string_from_style(brew_report.beer_style.style))
+	print(LOG_BREWED, BeerStyle.get_style_string_from_style(brew_report.beer_style.style))
 	BrewerySignals.batch_bottled.emit(bottles_lost, label_cost, brew_report.beer_style.style_name)
 	BrewerySignals.brewery_state_changed.emit(brewery)
 

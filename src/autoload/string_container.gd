@@ -40,7 +40,6 @@ const HOP_STAT_STRING : String = "Alfahapot: %s%% / Beetahapot: %s%%"
 const YEAST_STAT_STRING : String = "Käymisaste: %s%%"
 const INGREDIENT_LABEL_WITH_STAT_STRING : String = "%s: %s %s (%s)"
 
-const RECIPE_LIBRARY_BUTTON_TEXT : String = "Reseptikirja"
 const RECIPE_LIBRARY_TITLE : String = "Reseptikirja"
 const RECIPE_LIBRARY_CLOSE_TEXT : String = "Sulje"
 
@@ -60,12 +59,6 @@ const INGREDIENT_LOCKED_ERROR : String = "Ainesosa ERROR: %s vaatii vähintään
 const INGREDIENT_UNLOCKED_TOAST_FORMAT : String = "Uusi humala saatavilla: %s!"
 
 const LEADERBOARD_BUTTON_TEXT : String = "Ennätykset"
-const LEADERBOARD_TITLE : String = "Ennätykset"
-const LEADERBOARD_CLOSE_TEXT : String = "Sulje"
-const LEADERBOARD_EMPTY_STRING : String = "Ei vielä ennätyksiä. Pelaa ensimmäinen erä!"
-
-const NEW_RECORD_STRING : String = "\n\nUUSI ENNÄTYS!"
-const RANK_STRING : String = "\n\nSijoitus: #%d / %d"
 
 const HOP_FLAVOR_STRING : String = "Maku: %s"
 const HOP_FLAVOR_CITRUS : String = "Sitruksinen"
@@ -100,21 +93,8 @@ const INVALID_EXPORT_SCRIPT_ERROR : String = "%s ERROR: Export script is null"
 const TYPE_ERROR : String = "ERROR: ID %s is correct type, but file is not correct inherited class!"
 const INVALID_ADD_AMOUNT_ERROR : String = "%s ERROR: Trying to add %s amount of ingredient with ID: %s"
 
-const NO_CUSTOMERS_IN_RESOURCES_WARNING : String = "CustomerManager: The customer pool is empty! Check that .tres resources exists."
-const SERVING_NULL_CUSTOMER_WARNING : String = "CustomerManager: Tried to serve beer, but there are no customer."
-const NOT_ENOUGH_BOTTLES_IN_BATCH_WARNING : String = "CustomerManager: Not enough bottles in batch!"
-
-const SELL_MESSAGE : String = "Sold %s amount of stuff, and you get %s€ back"
-const SUCCESFULL_BREW_MESSAGE : String = "Successful brew batch: "
-const NEW_GAME_MESSAGE : String = "New game started! Brewery established."
 const FOLDER_SCAN_MESSAGE : String = "[IngredientDatabase] Start recursive folder scan..."
 const FOLDER_SCAN_COMPLETE_MESSAGE : String = "[IngredientDatabase] Database fully sorted! Total registered items: "
-const DATABASE_FOUND_DATA_MESSAGE : String = "[IngredientDatabase] found from subfolder: %s (ID: %s)"
-const LOADED_BEER_STYLES_MESSAGE : String = "Ladattu yhteensä %s oluttyyliä datasta:"
-const BEER_BATCH_STARTED_SPOILING_MESSAGE : String = "HUOMIO: Erä %s (Ikä: %s päivää) alkaa etikkoitua kellarissa!"
-const DAY_CHANGED_MESSAGE : String = "--- DAY CHANGED: Day %s starts ---"
-
-const WRONG_STYLE_DIALOGUE_STRING : String = "Ei tää sitä ollu mitä hain, mut jotaki kuitenki."
 
 const LVV_RAID_TITLE : String = "LVV-TARKASTUS!"
 const LVV_RAID_MESSAGE : String = "Alkoholitarkastajat ryntäsivät kellariin ja takavarikoivat %s annosta valmista olutta! Lisäksi kirjoittivat sakon: %.1f €, ja maineesi laski %s pistettä."
@@ -159,7 +139,6 @@ const PERK_TIER_LEGENDARY : String = "Legendaarinen"
 const MODIFIER_RAID_THRESHOLD_STAT_STRING : String = "Ratsiakynnys: %+d %%"
 const MODIFIER_INGREDIENT_PRICE_STAT_STRING : String = "Ainehinnat: %+d %%"
 
-const RUN_EFFECTS_BUTTON_TOOLTIP : String = "Kierroksen tilastot"
 const RUN_EFFECTS_TITLE : String = "Kierroksen tilastot"
 const RUN_EFFECTS_CLOSE_TEXT : String = "Sulje"
 const RUN_EFFECTS_MODIFIER_HEADER : String = "Olosuhteet: %s"

@@ -9,6 +9,8 @@ signal brewery_changed(brewery: Brewery)
 @warning_ignore("unused_signal") # emitted by SaveWiring
 signal brewery_about_to_save(brewery: Brewery)
 
+const LOG_NEW_GAME : String = "New game started! Brewery established."
+
 var current_brewery: Brewery = null
 var _developer_mode : bool = false
 
@@ -40,4 +42,4 @@ func set_brewery(brewery : Brewery) -> void:
 ## one (used for the boot-time Brewery).
 func start_new_game(chosen_modifier : RunModifier = null) -> void:
 	set_brewery(Brewery.new(chosen_modifier))
-	print(StringContainer.NEW_GAME_MESSAGE)
+	print(LOG_NEW_GAME)
