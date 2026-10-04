@@ -28,7 +28,7 @@ const MESSAGE_SEASON_OVER : String = "Selvisit kauden loppuun, mutta legendaksi 
 const RANK_FORMAT : String = "Sijoitus: #%d"
 const NEW_RECORD_TEXT : String = "UUSI ENNÄTYS!"
 const RENOWN_FORMAT : String = "Olutopin mainetta +%d"
-const CONTINUE_NOTE : String = "Voit jatkaa pelaamista, mutta ennätyslistan pisteet eivät enää muutu. Olutopin mainetta saat jatkossa vähemmän, ja uudet reseptit ja saavutukset avautuvat yhä. Uuden yrityksen voit aloittaa valikosta."
+const CONTINUE_NOTE : String = "Voit jatkaa pelaamista, mutta ennätyslistan pisteet eivät enää muutu. Olutopin mainetta saat jatkossa vähemmän, ja uudet reseptit ja saavutukset avautuvat yhä. Uuden kauden voit aloittaa valikosta."
 
 const CONTINUE_BUTTON_TEXT : String = "Jatka pelaamista"
 const MENU_BUTTON_TEXT : String = "Valikkoon"

@@ -34,7 +34,7 @@ unique_name_in_owner = true
 mouse_filter = 2
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
-text = "Valitse tämän kierroksen olosuhteet"
+text = "Valitse tämän kauden olosuhteet"
 horizontal_alignment = 1
 
 [node name="RecordLabel" type="Label" parent="MarginContainer/MainVBox" unique_id=316842150]

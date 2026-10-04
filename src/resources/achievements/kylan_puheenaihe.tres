@@ -6,7 +6,7 @@
 script = ExtResource("1_achievement")
 achievement_id = "kylan_puheenaihe"
 title = "Kylän puheenaihe"
-description = "Nosta maine 100:aan yhden pelin aikana."
+description = "Nosta maine 100:aan yhden kauden aikana."
 stat_key = &"highest_reputation"
 target_value = 100
 metadata/_custom_type_script = "res://src/systems/achievements/achievement_data.gd"

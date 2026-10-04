@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_unlock")
 perk_name = "Vieraanvarainen perinne"
-description = "Kellarilla on jo valmiiksi hyvä maine tiskijuomana entisiltä pelikerroilta. Asiakkaat tippaavat pysyvästi hieman anteliaammin."
+description = "Kellarilla on jo valmiiksi hyvä maine tiskijuomana entisiltä kausilta. Asiakkaat tippaavat pysyvästi hieman anteliaammin."
 icon_placeholder = "💶"
 tip_income_multiplier = 1.02
 stacks_additively = true
