@@ -70,3 +70,11 @@ func test_also_liked_styles_join_the_second_line() -> void:
 	data.also_likes = [BeerStyle.Style.HELLES]
 	var lines : PackedStringArray = TextScript.lines(data, true, NAMES)
 	assert_true(lines.has("Käy myös: Session Ale, Helles"))
+
+
+func test_a_risk_lowering_favourite_is_mentioned() -> void:
+	var plain := _customer("Raksamies")
+	assert_false(TextScript.lines(plain, true, NAMES).has("Suosikki laskee LVV-riskiä"))
+	var sober := _customer("Zgen")
+	sober.risk_primary_style = -2
+	assert_true(TextScript.lines(sober, true, NAMES).has("Suosikki laskee LVV-riskiä"))
