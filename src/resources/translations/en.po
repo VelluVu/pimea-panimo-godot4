@@ -401,6 +401,110 @@ msgstr "still maturing"
 msgid "parhaimmillaan"
 msgstr "at its best"
 
+#: src/console/player_commands.gd
+msgid "%s maksaa %d €, rahaa %.1f €"
+msgstr "%s costs %d €, you have %.1f €"
+
+#: src/console/player_commands.gd
+msgid "%s vaatii mainetta %d"
+msgstr "%s needs reputation %d"
+
+#: src/console/player_commands.gd
+msgid "%s: pyydetty %d, varastossa %d"
+msgstr "%s: asked for %d, %d in storage"
+
+#: src/console/player_commands.gd
+msgid "(ei tallennettuja reseptejä)"
+msgstr "(no saved recipes)"
+
+#: src/console/player_commands.gd
+msgid "Ainesosaa ei löytynyt: %s"
+msgstr "Ingredient not found: %s"
+
+#: src/console/player_commands.gd
+msgid "Ei aktiivista panimoa."
+msgstr "No active brewery."
+
+#: src/console/player_commands.gd
+msgid "Keitetään: %s"
+msgstr "Brewing: %s"
+
+#: src/console/player_commands.gd
+msgid "Keittäminen epäonnistui: %s (ei tarpeeksi ainesosia varastossa?)"
+msgstr "Brewing failed: %s (not enough ingredients in storage?)"
+
+#: src/console/player_commands.gd
+msgid "Käyttö: <komento> <ainesosa> <määrä>"
+msgstr "Usage: <command> <ingredient> <amount>"
+
+#: src/console/player_commands.gd
+msgid "Käyttö: keitä <resepti>. Tallennetut: %s"
+msgstr "Usage: keitä <recipe>. Saved: %s"
+
+#: src/console/player_commands.gd
+msgid "Myyminen"
+msgstr "Selling"
+
+#: src/console/player_commands.gd
+msgid "Myyty: %s x%d"
+msgstr "Sold: %s x%d"
+
+#: src/console/player_commands.gd
+msgid "Määrän täytyy olla suurempi kuin 0."
+msgstr "The amount must be greater than 0."
+
+#: src/console/player_commands.gd
+msgid "Ostaminen"
+msgstr "Buying"
+
+#: src/console/player_commands.gd
+msgid "Ostettu: %s x%d"
+msgstr "Bought: %s x%d"
+
+#: src/console/player_commands.gd
+msgid "Poistettu pöydältä: %s x%d"
+msgstr "Removed from the table: %s x%d"
+
+#: src/console/player_commands.gd
+msgid "Pöydälle lisätty: %s x%d"
+msgstr "Added to the table: %s x%d"
+
+#: src/console/player_commands.gd
+msgid "Reseptiä ei löytynyt: %s. Tallennetut: %s"
+msgstr "Recipe not found: %s. Saved: %s"
+
+#: src/console/player_commands.gd
+msgid "Reseptiä ei tallennettu (pöytä tyhjä tai oluttyyli ei vielä tuttu)"
+msgstr "Recipe not saved (the table is empty or the beer style is not known yet)"
+
+#: src/console/player_commands.gd
+msgid "Valmistelu tyhjennetty, ainekset palautettu varastoon."
+msgstr "Table cleared, ingredients returned to storage."
+
+#: src/console/player_commands.gd
+msgid "[color=orange]%s epäonnistui: %s[/color]"
+msgstr "[color=orange]%s failed: %s[/color]"
+
+#: src/console/player_commands.gd
+msgid "keitä <resepti>"
+msgstr "keitä <recipe>"
+
+#: src/console/player_commands.gd
+msgid "myy <ainesosa> <määrä>"
+msgstr "myy <ingredient> <amount>"
+
+#: src/console/player_commands.gd
+msgid "osta <ainesosa> <määrä>"
+msgstr "osta <ingredient> <amount>"
+
+#: src/console/player_commands.gd
+msgid "poista <ainesosa> <määrä>"
+msgstr "poista <ingredient> <amount>"
+
+#: src/console/player_commands.gd
+msgid "pöytään <ainesosa> <määrä>"
+msgstr "pöytään <ingredient> <amount>"
+
 #: src/customers/customer_data.gd
 msgid "Antti"
 msgstr "Antti"
@@ -4056,6 +4160,72 @@ msgstr "Day: %s"
 msgid "Taso: %d"
 msgstr "Level: %d"
 
+#: src/systems/console/console_wiring.gd
+msgid "Kirjoita komento... (help)"
+msgstr "Type a command... (help)"
+
+#: src/systems/console/console_wiring.gd
+msgid "Komennot: %s"
+msgstr "Commands: %s"
+
+#: src/systems/console/console_wiring.gd
+msgid "Konsoli"
+msgstr "Console"
+
+#: src/systems/console/console_wiring.gd
+msgid "Konsoli valmis. Kirjoita 'help' nähdäksesi komennot."
+msgstr "Console ready. Type 'help' to see the commands."
+
+#: src/systems/console/console_wiring.gd
+msgid "Päivä vaihtui: %d"
+msgstr "New day: %d"
+
+#: src/systems/console/console_wiring.gd
+msgid "Resepti tallennettu: %s"
+msgstr "Recipe saved: %s"
+
+#: src/systems/console/console_wiring.gd
+msgid "Tynnyröinti (%s): %d annosta hukkui, markkinointi -%.1f €"
+msgstr "Kegging (%s): %d servings lost, marketing -%.1f €"
+
+#: src/systems/console/console_wiring.gd
+msgid "[color=lightgreen]Uusi oluttyyli löydetty: %s[/color]"
+msgstr "[color=lightgreen]New beer style discovered: %s[/color]"
+
+#: src/systems/console/console_wiring.gd
+msgid "[color=orange]Kehittäjäkomennot: %s[/color]"
+msgstr "[color=orange]Developer commands: %s[/color]"
+
+#: src/systems/console/console_wiring.gd
+msgid "[color=orange]Komennot ovat pois käytöstä (DEVELOPER_MODE = false).[/color]"
+msgstr "[color=orange]Commands are turned off (DEVELOPER_MODE = false).[/color]"
+
+#: src/systems/console/console_wiring.gd
+msgid "[color=orange]Laskut: sähkö -%d €, vesi -%d € (yhteensä -%d €)[/color]"
+msgstr "[color=orange]Bills: electricity -%d €, water -%d € (total -%d €)[/color]"
+
+#: src/systems/console/console_wiring.gd
+msgid ""
+"[color=orange]Ovet suljettu aikaisin (%d. kerta): -%.1f €, mainetta -%d, "
+"LVV-riski -%d[/color]"
+msgstr ""
+"[color=orange]Doors closed early (time %d): -%.1f €, reputation -%d, LVV "
+"risk -%d[/color]"
+
+#: src/systems/console/console_wiring.gd
+msgid "[color=orange]Tuntematon komento: %s (kokeile 'help')[/color]"
+msgstr "[color=orange]Unknown command: %s (try 'help')[/color]"
+
+#: src/systems/console/console_wiring.gd
+msgid ""
+"[color=red]LVV-RATSIA! Takavarikoitu %d annosta, sakko %.1f €, mainetta "
+"-%d[/color]"
+msgstr "[color=red]LVV RAID! %d servings seized, fine %.1f €, reputation -%d[/color]"
+
+#: src/systems/console/console_wiring.gd
+msgid "[color=yellow]Erikoistapahtuma: %s[/color]"
+msgstr "[color=yellow]Special event: %s[/color]"
+
 #: src/systems/dialog/dialog_wiring.gd
 msgid "Tippi +%.1f €"
 msgstr "Tip +%.1f €"
@@ -4083,10 +4253,6 @@ msgstr "Season effects"
 #: src/systems/input/input_wiring.gd
 msgid "Kauppa"
 msgstr "Shop"
-
-#: src/systems/input/input_wiring.gd
-msgid "Konsoli"
-msgstr "Console"
 
 #: src/systems/input/input_wiring.gd
 msgid "Kuittiloki"

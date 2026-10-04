@@ -20,5 +20,6 @@ func _init(p_handler : Callable, p_usage : String, p_note : String, p_dev_only :
 	listed = p_listed
 
 
+## Translated when shown, so a language switch reaches `help` too.
 func help_text() -> String:
-	return usage if note.is_empty() else "%s (%s)" % [usage, note]
+	return tr(usage) if note.is_empty() else "%s (%s)" % [tr(usage), tr(note)]
