@@ -39,7 +39,7 @@ func _init() -> void:
 		ACTION_TOGGLE_BREWERY: "Panimo",
 		ACTION_TOGGLE_SHOP: "Kauppa",
 		ACTION_TOGGLE_WAREHOUSE: "Varasto",
-		ACTION_TOGGLE_RUN_EFFECTS: "Ajon vaikutukset",
+		ACTION_TOGGLE_RUN_EFFECTS: "Kauden vaikutukset",
 		ACTION_TOGGLE_RECEIPT_LOG: "Kuittiloki",
 	}
 	ui_text = {

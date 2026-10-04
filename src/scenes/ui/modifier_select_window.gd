@@ -13,7 +13,7 @@ extends Panel
 
 signal modifier_chosen(modifier : RunModifier)
 
-const TITLE_TEXT : String = "Valitse tämän kierroksen olosuhteet"
+const TITLE_TEXT : String = "Valitse tämän kauden olosuhteet"
 const ICON_FONT_SIZE : int = 40
 const HEADER_FONT_SIZE : int = 18
 

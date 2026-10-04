@@ -96,8 +96,8 @@ msgid "Ei"
 msgstr "No"
 
 #: src/autoload/string_container.gd
-msgid "Ei aktiivista kierrosta."
-msgstr "No active run."
+msgid "Ei aktiivista kautta."
+msgstr "No active season."
 
 #: src/autoload/string_container.gd
 msgid "Ei vielä perkkejä. Nouse tasolle 2 saadaksesi ensimmäisen."
@@ -152,8 +152,8 @@ msgid "Jalo"
 msgstr "Noble"
 
 #: src/autoload/string_container.gd
-msgid "Kierroksen tilastot"
-msgstr "Run stats"
+msgid "Kauden tilastot"
+msgstr "Season stats"
 
 #: src/autoload/string_container.gd
 msgid "Kotikalja"
@@ -262,8 +262,8 @@ msgid "Päivätavoitteita päivässä: +%d"
 msgstr "Daily goals per day: +%d"
 
 #: src/autoload/string_container.gd
-msgid "Ratsiakynnys tällä kierroksella: %d riskiä"
-msgstr "Raid threshold this run: %d risk"
+msgid "Ratsiakynnys tällä kaudella: %d riskiä"
+msgstr "Raid threshold this season: %d risk"
 
 #: src/autoload/string_container.gd
 msgid "Ratsiakynnys: %+d %%"
@@ -346,8 +346,8 @@ msgid "Tyydyttävä"
 msgstr "Fair"
 
 #: src/autoload/string_container.gd
-msgid "Tämän kierroksen perkit (%d):"
-msgstr "This run's perks (%d):"
+msgid "Tämän kauden perkit (%d):"
+msgstr "This season's perks (%d):"
 
 #: src/autoload/string_container.gd
 msgid "Uusi humala saatavilla: %s!"
@@ -538,8 +538,8 @@ msgid "Vakiotoimittaja"
 msgstr "Regular Supplier"
 
 #: src/resources/achievements/kylan_puheenaihe.tres
-msgid "Nosta maine 100:aan yhden pelin aikana."
-msgstr "Raise your reputation to 100 in one game."
+msgid "Nosta maine 100:aan yhden kauden aikana."
+msgstr "Raise your reputation to 100 in one season."
 
 #: src/resources/achievements/kymmenen_asiakasta.tres
 msgid "Avaa 10 erilaista asiakastyyppiä."
@@ -606,8 +606,8 @@ msgid "Ryhmäkuri"
 msgstr "Group Discipline"
 
 #: src/resources/achievements/selviytyja.tres
-msgid "Pelaa peli loppuun ilman kiinnijäämistä tai konkurssia."
-msgstr "Finish a game without getting caught or going bankrupt."
+msgid "Pelaa kausi loppuun ilman kiinnijäämistä tai konkurssia."
+msgstr "Finish a season without getting caught or going bankrupt."
 
 #: src/resources/achievements/selviytyja.tres
 msgid "Selviytyjä"
@@ -2646,10 +2646,10 @@ msgstr ""
 #: src/resources/meta_unlocks/perinnetaito.tres
 msgid ""
 "Aiempien panimoyritysten opit istuvat käsissä pysyvästi. Jokainen erä saa "
-"pienen laatuedun, joka periytyy jokaiseen tulevaan peliin."
+"pienen laatuedun, joka periytyy jokaiseen tulevaan kauteen."
 msgstr ""
 "Lessons from earlier brewing attempts stay in your hands for good. Every "
-"batch gets a small quality edge that carries into every future game."
+"batch gets a small quality edge that carries into every future season."
 
 #: src/resources/meta_unlocks/perinnetaito.tres
 msgid "Perinnetaito"
@@ -2734,10 +2734,10 @@ msgstr ""
 
 #: src/resources/meta_unlocks/tunnettu_nimi.tres
 msgid ""
-"Panimosi maine on levinnyt entisten pelien ajalta. Maineen kertymä on "
-"pysyvästi hieman parempi."
+"Panimosi maine on levinnyt entisiltä kausilta. Maineen kertymä on pysyvästi "
+"hieman parempi."
 msgstr ""
-"Your brewery's fame has spread from past games. Reputation gain is "
+"Your brewery's fame has spread from past seasons. Reputation gain is "
 "permanently a little better."
 
 #: src/resources/meta_unlocks/vahva_brandi.tres
@@ -2754,10 +2754,10 @@ msgstr "Strong Brand"
 
 #: src/resources/meta_unlocks/vieraanvarainen_perinne.tres
 msgid ""
-"Kellarilla on jo valmiiksi hyvä maine tiskijuomana entisiltä pelikerroilta. "
+"Kellarilla on jo valmiiksi hyvä maine tiskijuomana entisiltä kausilta. "
 "Asiakkaat tippaavat pysyvästi hieman anteliaammin."
 msgstr ""
-"The cellar already has a good name at the counter from past games. "
+"The cellar already has a good name at the counter from past seasons. "
 "Customers permanently tip a little more generously."
 
 #: src/resources/meta_unlocks/vieraanvarainen_perinne.tres
@@ -3626,15 +3626,15 @@ msgstr "To menu"
 msgid ""
 "Voit jatkaa pelaamista, mutta ennätyslistan pisteet eivät enää muutu. "
 "Olutopin mainetta saat jatkossa vähemmän, ja uudet reseptit ja saavutukset "
-"avautuvat yhä. Uuden yrityksen voit aloittaa valikosta."
+"avautuvat yhä. Uuden kauden voit aloittaa valikosta."
 msgstr ""
 "You can keep playing, but your leaderboard score no longer changes. You "
 "earn less Brewlore renown from here on, and new recipes and achievements "
-"still unlock. Start a new attempt from the menu."
+"still unlock. Start a new season from the menu."
 
 #: src/scenes/ui/game_menu_window.gd
-msgid "Aloitetaanko uusi yritys? Tämä kausi jää kesken."
-msgstr "Start a new attempt? This season will be left unfinished."
+msgid "Aloitetaanko uusi kausi? Tämä kausi jää kesken."
+msgstr "Start a new season? This one will be left unfinished."
 
 #: src/scenes/ui/game_menu_window.gd
 msgid "Asetukset"
@@ -3653,8 +3653,8 @@ msgid "Saavutukset"
 msgstr "Achievements"
 
 #: src/scenes/ui/game_menu_window.gd
-msgid "Uusi yritys"
-msgstr "New attempt"
+msgid "Uusi kausi"
+msgstr "New season"
 
 #: src/scenes/ui/game_menu_window.gd
 msgid "Valikko"
@@ -3785,8 +3785,8 @@ msgid "Ennätys: %d pistettä (päivä %d, %d annosta)"
 msgstr "Record: %d points (day %d, %d servings)"
 
 #: src/scenes/ui/modifier_select_window.gd
-msgid "Valitse tämän kierroksen olosuhteet"
-msgstr "Choose this run's conditions"
+msgid "Valitse tämän kauden olosuhteet"
+msgstr "Choose this season's conditions"
 
 #: src/scenes/ui/modifier_select_window.tscn
 msgid "Modifier"
@@ -3967,8 +3967,8 @@ msgid "Reset to defaults"
 msgstr "Reset to defaults"
 
 #: src/systems/input/input_wiring.gd
-msgid "Ajon vaikutukset"
-msgstr "Run effects"
+msgid "Kauden vaikutukset"
+msgstr "Season effects"
 
 #: src/systems/input/input_wiring.gd
 msgid "Kauppa"
