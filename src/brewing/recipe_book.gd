@@ -55,11 +55,11 @@ func save_recipe(beer_style : BeerStyle, ingredient_amounts : Dictionary) -> voi
 		if other_recipe.beer_style == recipe.beer_style:
 			existing_count += 1
 
-	recipe.recipe_name = "%s #%d" % [beer_style.style_name, existing_count + 1]
+	recipe.recipe_name = RecipeNameText.numbered_name(beer_style.style_name, existing_count + 1)
 
 	brewery.saved_recipes.append(recipe)
 	BrewerySignals.brewery_state_changed.emit(brewery)
-	BrewerySignals.recipe_saved.emit(recipe.recipe_name)
+	BrewerySignals.recipe_saved.emit(RecipeNameText.display(recipe))
 
 
 ## Clears the table, refunding its contents to inventory.

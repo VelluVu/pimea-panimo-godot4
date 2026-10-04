@@ -137,7 +137,7 @@ func _build_recipe_row(recipe : BrewRecipe, brewable : bool) -> Control:
 	row.add_child(row_hbox)
 
 	var name_label := Label.new()
-	name_label.text = recipe.recipe_name
+	name_label.text = RecipeNameText.display(recipe)
 	name_label.size_flags_horizontal = SIZE_EXPAND_FILL
 	row_hbox.add_child(name_label)
 

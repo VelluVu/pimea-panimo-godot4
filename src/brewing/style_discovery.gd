@@ -53,12 +53,12 @@ func ensure_default_recipe(beer_style : BeerStyle, emit_state_changed : bool = t
 	var recipe := BrewRecipe.new()
 	recipe.beer_style = beer_style.style
 	recipe.ingredient_amounts = ingredients
-	recipe.recipe_name = "%s (perusresepti)" % beer_style.style_name
+	recipe.recipe_name = RecipeNameText.default_name(beer_style.style_name)
 	recipe.is_default = true
 
 	brewery.saved_recipes.append(recipe)
 	if emit_state_changed:
 		BrewerySignals.brewery_state_changed.emit(brewery)
-	BrewerySignals.recipe_saved.emit(recipe.recipe_name)
+	BrewerySignals.recipe_saved.emit(RecipeNameText.display(recipe))
 
 	return recipe
