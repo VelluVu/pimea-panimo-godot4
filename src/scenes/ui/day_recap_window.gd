@@ -9,7 +9,7 @@ const RECAP_TITLE: String = "Päivän yhteenveto"
 const CLOSE_BUTTON_TEXT: String = "Jatka"
 const RECAP_MESSAGE_FORMAT: String = "Päivä %d alkoi.\n\nRahaa: %+.1f €\nMainetta: %+d%s\nLVV-riski nyt: %d%s\nAnnoksia myyty: %d\nUusia oluttyylejä: %s\nPäivätavoitteita saavutettu: %d"
 const NO_NEW_STYLES_TEXT: String = "ei uusia"
-const NIGHT_RISK_RELIEF_FORMAT: String = " (yöllä -%d)"
+const NIGHT_RISK_RELIEF_FORMAT: String = "(yöllä -%d)"
 
 @onready var title_label: Label = %TitleLabel
 @onready var message_label: Label = %MessageLabel
@@ -77,7 +77,7 @@ func _on_day_changed(new_day: int) -> void:
 
 	var money_delta := snappedf(brewery.money - _day_start_money, 0.1)
 	var reputation_delta := brewery.reputation - _day_start_reputation
-	var risk_relief_text := tr(NIGHT_RISK_RELIEF_FORMAT) % _night_risk_relief if _night_risk_relief > 0 else ""
+	var risk_relief_text := " " + tr(NIGHT_RISK_RELIEF_FORMAT) % _night_risk_relief if _night_risk_relief > 0 else ""
 	var discovered_text := ", ".join(_styles_discovered_today) if not _styles_discovered_today.is_empty() else tr(NO_NEW_STYLES_TEXT)
 
 	message_label.text = tr(RECAP_MESSAGE_FORMAT) % [new_day, money_delta, reputation_delta, ReputationBreakdownText.format(_reputation_by_source), brewery.risk, risk_relief_text, _bottles_sold_today, discovered_text, _goals_rewarded_today]

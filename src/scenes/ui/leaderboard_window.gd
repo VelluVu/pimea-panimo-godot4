@@ -11,7 +11,7 @@ const TITLE_TEXT : String = "Ennätykset"
 const CLOSE_BUTTON_TEXT : String = "Sulje"
 const EMPTY_TEXT : String = "Ei vielä ennätyksiä. Pelaa ensimmäinen kausi!"
 const CURRENT_RUN_FORMAT : String = "Tämä kausi nyt: sijoittuisi #%d"
-const NEW_TAG : String = " UUSI!"
+const NEW_TAG : String = "UUSI!"
 const HEADERS : PackedStringArray = ["#", "Tulos", "Pisteet", "Pv", "Maine", "Annokset", "Olosuhteet"]
 ## Minimum widths of the columns above; the last one takes the rest.
 const COLUMN_WIDTHS : Array[int] = [30, 74, 62, 28, 46, 66, 0]
@@ -118,7 +118,7 @@ func _build_row(rank : int, entry : Dictionary, background : Color, is_new : boo
 		"%d" % entry.get("days_survived", 0),
 		"%d" % entry.get("reputation", 0),
 		"%d" % entry.get("lifetime_bottles_sold", 0),
-		tr(entry.get("modifier_name", "")) + (tr(NEW_TAG) if is_new else ""),
+		tr(entry.get("modifier_name", "")) + (" " + tr(NEW_TAG) if is_new else ""),
 	]
 	var colors : Array[Color] = [LeaderboardText.rank_color(rank), LeaderboardText.ending_color(ending), LeaderboardText.rank_color(rank),
 		LeaderboardText.DEFAULT_COLOR, LeaderboardText.DEFAULT_COLOR, LeaderboardText.DEFAULT_COLOR, MUTED_COLOR]

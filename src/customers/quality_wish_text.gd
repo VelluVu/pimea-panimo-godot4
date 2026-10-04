@@ -5,7 +5,7 @@ extends RefCounted
 ## quality rejection can be understood and avoided instead of feeling random.
 
 const REJECT_SUFFIX_FORMAT : String = " (Laatu %d %%, toivoi %d %%)"
-const TOO_WEAK_FORMAT : String = "\nLiian heikkoa: %s"
+const TOO_WEAK_FORMAT : String = "Liian heikkoa: %s"
 const TITLE_SEPARATOR : String = ", "
 
 
@@ -29,4 +29,4 @@ static func too_weak_line(quality : float, customers : Array[CustomerData]) -> S
 			titles.append(title)
 	if titles.is_empty():
 		return ""
-	return UiText.of(TOO_WEAK_FORMAT) % TITLE_SEPARATOR.join(titles)
+	return "\n" + UiText.of(TOO_WEAK_FORMAT) % TITLE_SEPARATOR.join(titles)
