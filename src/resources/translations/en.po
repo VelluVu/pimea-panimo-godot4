@@ -275,7 +275,7 @@ msgstr "Bottles saved in a raid: %d %%"
 
 #: src/autoload/string_container.gd
 msgid "Ratsioiden sietokyky: +%d"
-msgstr "Raids survived: +%d"
+msgstr "Raid tolerance: +%d"
 
 #: src/autoload/string_container.gd
 msgid "Reseptikirja"
@@ -439,7 +439,7 @@ msgstr "Inspection Drone"
 
 #: src/customers/customer_hand_offsets.gd
 msgid "Zgen"
-msgstr "Zgen"
+msgstr "Gen Z"
 
 #: src/customers/group_visit_director.gd
 msgid "%s-lauma (%d hlöä)"
@@ -461,7 +461,7 @@ msgid ""
 msgstr ""
 "Sale: +%.1f €\n"
 "Tip: +%.1f €\n"
-"TO ACCOUNT: +%.1f €"
+"TOTAL: +%.1f €"
 
 #: src/customers/sale_receipt_entry.gd
 msgid ""
@@ -3111,9 +3111,7 @@ msgstr "Not enough malt. Oh well, I'll think of something else."
 msgid ""
 "Meiltä loppui mallas kesken kaiken! Voisitko lainata vähän, maksan takaisin "
 "suosiolla?"
-msgstr ""
-"We ran out of malt mid-brew! Could you lend some? I'll pay you back in "
-"goodwill."
+msgstr "We ran out of malt mid-brew! Could you lend some? I'll gladly pay you back."
 
 #: src/resources/special_events/ingredient_loan.tres
 msgid "Naapuripanimon Jussi"
