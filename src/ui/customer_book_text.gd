@@ -13,6 +13,7 @@ const QUALITY_FORMAT : String = "Laatutoive: vähintään %d %%"
 const MIN_ABV_FORMAT : String = "Vähintään %.1f %% alkoholia"
 const MAX_ABV_FORMAT : String = "Enintään %.1f %% alkoholia"
 const MAX_PRICE_FORMAT : String = "Enintään %.2f € pullolta"
+const LOWERS_RISK_TEXT : String = "Suosikki laskee LVV-riskiä"
 const LOCKED_FORMAT : String = "%d asiakastyyppiä vielä tuntematta."
 const LIST_SEPARATOR : String = ", "
 
@@ -45,6 +46,9 @@ static func lines(data : CustomerData, met : bool, style_names : Dictionary) -> 
 		result.append(UiText.of(MAX_ABV_FORMAT) % data.max_required_abv)
 	if data.max_required_price >= 0.0:
 		result.append(UiText.of(MAX_PRICE_FORMAT) % data.max_required_price)
+	# The only sales that pay off risk; without this line players never learn it.
+	if data.risk_primary_style < 0 and not data.randomizes_preference:
+		result.append(UiText.of(LOWERS_RISK_TEXT))
 	return result
 
 

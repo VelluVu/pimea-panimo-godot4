@@ -4347,6 +4347,10 @@ msgid "Laatutoive: vähintään %d %%"
 msgstr "Quality wish: at least %d %%"
 
 #: src/ui/customer_book_text.gd
+msgid "Suosikki laskee LVV-riskiä"
+msgstr "Favourite lowers LVV risk"
+
+#: src/ui/customer_book_text.gd
 msgid "Suosikki: %s"
 msgstr "Favourite: %s"
 
