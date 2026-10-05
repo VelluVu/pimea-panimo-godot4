@@ -8,7 +8,13 @@ extends Node2D
 ## (see main.tscn) just tell it what to play.
 
 const ANIM_IDLE : StringName = &"idle"
+const ANIM_IDLE_SHOULDERS : StringName = &"idle_shoulders"
+const ANIM_IDLE_WIPE : StringName = &"idle_wipe"
 const ANIM_SERVE_BEER : StringName = &"serve_beer"
+## Every idle is a one-shot; when one ends the next is picked by weight,
+## so standing still stays the common case.
+const IDLE_ANIMS : Array[StringName] = [ANIM_IDLE, ANIM_IDLE_SHOULDERS, ANIM_IDLE_WIPE]
+const IDLE_WEIGHTS : Array[float] = [3.0, 2.0, 1.0]
 
 ## Only one Bartender ever exists, so a group is a simpler way for Customer
 ## to find "where the bartender is" (for the counter-glass slide-in) than
@@ -49,6 +55,10 @@ func _ready() -> void:
 	animated_sprite.play(ANIM_IDLE)
 
 
+func _play_random_idle() -> void:
+	animated_sprite.play(WeightedPicker.pick(IDLE_ANIMS, IDLE_WEIGHTS) as StringName)
+
+
 ## Plays the one-shot serving animation, then returns to idle on its own.
 ## speed_scale lets a group order (GroupVisitDirector._run_shared_group_order())
 ## visibly speed the pour up for its rapid-fire one-by-one serving burst
@@ -63,7 +73,7 @@ func play_serve_beer(speed_scale: float = 1.0, ebc: int = -1) -> void:
 func _on_animation_finished() -> void:
 	if animated_sprite.animation == ANIM_SERVE_BEER:
 		animated_sprite.speed_scale = 1.0
-		animated_sprite.play(ANIM_IDLE)
+	_play_random_idle()
 
 
 ## Global position for the Nth glass in a group order's on-counter stack —
