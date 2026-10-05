@@ -207,12 +207,36 @@ func get_reputation_tier() -> ReputationTier:
 	return ReputationTiers.tier_for(reputation, ReputationTiers.all())
 
 
-## Call after anything that can drain money: no cash and nothing left to
-## sell is a dead end.
+## Call after anything that can drain money. See BankruptcyRules: a run ends only
+## when no known recipe can be brewed any more.
 func check_bankruptcy() -> void:
 	if money > 0.0 or inventory.count_bottles() > 0:
 		return
-	trigger_ending("bankrupt")
+
+	var recipes : Array[Dictionary] = []
+	for recipe : BrewRecipe in saved_recipes:
+		recipes.append(recipe.ingredient_amounts)
+	var price_multiplier : float = stats.multiplier(PerkStats.INGREDIENT_PRICE)
+	var buy_prices : Dictionary = {}
+	var sell_prices : Dictionary = {}
+	for id : int in IngredientDatabase.database:
+		var ingredient : IngredientData = IngredientDatabase.database[id]
+		var price : float = ingredient.base_price * price_multiplier
+		sell_prices[id] = price * IngredientTrader.SELL_BACK_RATE
+		if reputation >= ingredient.min_reputation:
+			buy_prices[id] = price
+
+	if BankruptcyRules.is_bankrupt(money, 0, _owned_ingredient_amounts(), recipes, buy_prices, sell_prices):
+		trigger_ending("bankrupt")
+
+
+## Storage plus what is on the brewing table, id -> amount.
+func _owned_ingredient_amounts() -> Dictionary:
+	var owned : Dictionary = brew_preparation.selected_contents.duplicate()
+	for type_items : Dictionary in inventory.items.values():
+		for id : int in type_items:
+			owned[id] = owned.get(id, 0) + (type_items[id] as InventoryItem).amount
+	return owned
 
 
 ## ending_type is "busted", "bankrupt", "survived" or "season_over"; only the first fires.
