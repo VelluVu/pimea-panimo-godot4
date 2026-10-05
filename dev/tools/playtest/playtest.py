@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
 """Headless bot playtests: many short runs in parallel, then a summary.
 
-  python dev/tools/playtest/playtest.py run [--runs 6] [--days 20] [--out DIR] [--meta FILE] [--strategies a,b]
+  python dev/tools/playtest/playtest.py run [--runs 6] [--days 20] [--out DIR] [--meta FILE] [--strategies a,b] [--no-goals]
       Starts runs_per_strategy x each strategy (default: greedy, variety, careful, cheap) at
-      once; "expert" knows every recipe and "gourmet" also tunes it for quality;
-      both are left out unless named.
+      once; "expert" knows every recipe, "gourmet" also tunes it for quality and
+      "minmax" plays like gourmet aimed straight at the run score (it picks the modifier
+      it expects to score best on and cashes out on the last day); all three are
+      left out unless named.
       Each run gets its own APPDATA, so the real saves are never touched. --meta copies a
       meta_progress.cfg into every run for a "veteran" profile. Output defaults to
       dev/tools/playtest/runs/<timestamp>/ (gitignored). 24 runs of 20 days take ~25 s.
+      Every bot chases daily goals; --no-goals turns that off to measure what goals are worth.
 
   python dev/tools/playtest/playtest.py summary DIR
       One line per run (ending, reputation milestones, raids, ...), totals per strategy,
@@ -17,7 +20,8 @@
       One line per batch, to compare balance changes side by side.
 
 The Godot exe must match the editor version: set GODOT or pass --godot.
-Only the expert and gourmet bots discover new styles. No bot does daily goals.
+Only the expert, gourmet and minmax bots discover new styles on their own; the others learn a
+style only by brewing it for a daily goal.
 """
 import argparse
 import collections
@@ -35,7 +39,7 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[2]
 DEFAULT_GODOT = r"C:\Program Files (x86)\Steam\steamapps\common\Godot Engine\godot.windows.opt.tools.64.exe"
 STRATEGIES = ["greedy", "variety", "careful", "cheap"]
-ALL_STRATEGIES = STRATEGIES + ["expert", "gourmet"]
+ALL_STRATEGIES = STRATEGIES + ["expert", "gourmet", "minmax"]
 USER_DIR = Path("Godot") / "app_userdata" / "Pimea Panimo"
 IGNORED_ERROR = re.compile(r"ERROR: \d+ resources still")
 ERROR_LINE = re.compile(r"(SCRIPT ERROR:.*|ERROR: .*)")
@@ -57,7 +61,8 @@ def run(args: argparse.Namespace) -> None:
                 "--log-file", str(out / f"{name}.log"), "-s", str(HERE / "runner.gd"), "--",
                 f"--bot={HERE / 'bot.gd'}", f"--strategy={strategy}", f"--max_days={args.days}",
                 f"--speed={args.speed}", f"--out={out / f'{name}.json'}",
-                f"--profile={'veteran' if args.meta else 'new'}",
+                f"--profile={'veteran' if args.meta else 'new'}", f"--goals={0 if args.no_goals else 1}",
+                f"--modifier={args.modifier or ('bot' if strategy == 'minmax' else 0)}",
             ]
             env = dict(os.environ, APPDATA=str(appdata))
             with open(out / f"{name}.out", "w") as stdout, open(out / f"{name}.err", "w") as stderr:
@@ -80,11 +85,17 @@ def peak_rep(report: dict) -> int:
     return max([d["rep"] for d in report["days"]] or [0])
 
 
+def goals_done(report: dict) -> str:
+    c = report["counts"]
+    ok = c.get("goals_ok", 0)
+    return "%d/%d" % (ok, ok + c.get("goals_failed", 0))
+
+
 def summary(args: argparse.Namespace) -> None:
     errors = collections.Counter()
     per_strategy = collections.defaultdict(list)
-    row = "%-14s %-12s %4s %4s %7s %6s %5s %4s %4s %5s %5s %4s %4s %5s %5s %4s"
-    print(row % ("run", "ending", "day", "rep", "money", "score", "raids", "30@", "60@", "100@", "peak", "frnd", "badr", "toast", "decay", "eclo"))
+    row = "%-14s %-12s %4s %4s %7s %6s %5s %4s %4s %5s %5s %4s %4s %5s %5s %4s %6s"
+    print(row % ("run", "ending", "day", "rep", "money", "score", "raids", "30@", "60@", "100@", "peak", "frnd", "badr", "toast", "decay", "eclo", "goals"))
     runs = load_runs(args.dir)
     # Every run's logs, including runs that crashed before writing their JSON.
     for log in sorted(Path(args.dir).glob("*.log")) + sorted(Path(args.dir).glob("*.err")):
@@ -98,15 +109,20 @@ def summary(args: argparse.Namespace) -> None:
         print(row % (name, r["ending"], final["day"], final["rep"], final["money"], final.get("score", "-"), final["raids"],
                      first_day_at(r, 30), first_day_at(r, 60), first_day_at(r, 100), peak_rep(r),
                      c.get("friends", 0), c.get("bad_reviews", 0), c.get("tier_toasts", 0),
-                     c.get("decay_total", 0), c.get("early_closes", 0)))
+                     c.get("decay_total", 0), c.get("early_closes", 0), goals_done(r)))
         per_strategy[name.rsplit("-", 1)[0]].append(r)
     print()
     for strategy, rs in per_strategy.items():
         endings = dict(collections.Counter(r["ending"] for r in rs))
         scores = sorted(r["final"].get("score", 0) for r in rs)
-        print("%-8s endings=%s score mean %.0f median %.0f 60@=%s 100@=%s peak=%s lastday=%s" % (
-            strategy, endings, sum(scores) / len(scores), scores[len(scores) // 2], [first_day_at(r, 60) for r in rs], [first_day_at(r, 100) for r in rs],
-            [peak_rep(r) for r in rs], [r["final"]["day"] for r in rs]))
+        ok = sum(r["counts"].get("goals_ok", 0) for r in rs)
+        tried = ok + sum(r["counts"].get("goals_failed", 0) for r in rs)
+        modifiers = dict(collections.Counter(r.get("modifier", "") for r in rs))
+        if any(modifiers):
+            print("%-8s modifiers=%s" % (strategy, modifiers))
+        print("%-8s endings=%s score mean %.0f median %.0f goals %d%% 60@=%s 100@=%s peak=%s lastday=%s" % (
+            strategy, endings, sum(scores) / len(scores), scores[len(scores) // 2], 100 * ok / max(1, tried),
+            [first_day_at(r, 60) for r in rs], [first_day_at(r, 100) for r in rs], [peak_rep(r) for r in rs], [r["final"]["day"] for r in rs]))
     if missing:
         print("runs without a report (crashed?):", missing)
     print("errors:", errors.most_common(8) or "none")
@@ -121,10 +137,12 @@ def compare(args: argparse.Namespace) -> None:
         endings = dict(collections.Counter(r["ending"] for _, r in rs))
         busted = dict(collections.Counter(n.rsplit("-", 1)[0] for n, r in rs if r["ending"] == "busted"))
         n = len(rs)
-        print("%-16s %s raids/run %.2f busted by strategy %s avg money %.0f avg peak rep %.0f avg score %.0f" % (
+        ok = sum(r["counts"].get("goals_ok", 0) for _, r in rs)
+        tried = ok + sum(r["counts"].get("goals_failed", 0) for _, r in rs)
+        print("%-16s %s raids/run %.2f busted by strategy %s avg money %.0f avg peak rep %.0f avg score %.0f goals %d%%" % (
             Path(directory).name, endings, sum(r["final"]["raids"] for _, r in rs) / n, busted,
             sum(r["final"]["money"] for _, r in rs) / n, sum(peak_rep(r) for _, r in rs) / n,
-            sum(r["final"].get("score", 0) for _, r in rs) / n))
+            sum(r["final"].get("score", 0) for _, r in rs) / n, 100 * ok / max(1, tried)))
 
 
 def main() -> None:
@@ -138,6 +156,9 @@ def main() -> None:
     p_run.add_argument("--meta", help="meta_progress.cfg to start every run with")
     p_run.add_argument("--godot", default=os.environ.get("GODOT", DEFAULT_GODOT))
     p_run.add_argument("--strategies", default=",".join(STRATEGIES), help="comma-separated, from: " + ", ".join(ALL_STRATEGIES))
+    p_run.add_argument("--no-goals", action="store_true", help="bots ignore daily goals")
+    p_run.add_argument("--modifier", help="run modifier card: 0 (plain), 1, 2, random, or bot (the strategy's own pick); "
+                       "default 0, and bot for minmax")
     p_run.set_defaults(func=run)
     p_summary = sub.add_parser("summary")
     p_summary.add_argument("dir")
