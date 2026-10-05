@@ -157,7 +157,8 @@ def main() -> None:
     p_run.add_argument("--godot", default=os.environ.get("GODOT", DEFAULT_GODOT))
     p_run.add_argument("--strategies", default=",".join(STRATEGIES), help="comma-separated, from: " + ", ".join(ALL_STRATEGIES))
     p_run.add_argument("--no-goals", action="store_true", help="bots ignore daily goals")
-    p_run.add_argument("--modifier", help="run modifier card: 0 (plain), 1, 2, random, or bot (the strategy's own pick); "
+    p_run.add_argument("--modifier", help="run modifier card: 0 (plain), 1, 2, random, bot (the strategy's own pick) or a "
+                       "file name in src/resources/run_modifiers/ (e.g. kirea_lvv); "
                        "default 0, and bot for minmax")
     p_run.set_defaults(func=run)
     p_summary = sub.add_parser("summary")

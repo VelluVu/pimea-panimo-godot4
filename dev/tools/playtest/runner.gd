@@ -3,7 +3,8 @@ extends SceneTree
 ## Headless playtest: starts a new run from the main menu and hands it to a bot.
 ## Started by playtest.py run; by hand:
 ## godot --headless --fixed-fps 60 --path <project> -s runner.gd -- --bot=<path> --strategy=greedy --out=<json>
-## --modifier picks the run modifier card: 0 (the plain one, default), 1, 2, random or bot.
+## --modifier picks the run modifier card: 0 (the plain one, default), 1, 2, random or bot,
+## or names a modifier file in src/resources/run_modifiers/ (e.g. kirea_lvv) to force it.
 
 var cfg: Dictionary = {"strategy": "greedy", "modifier": "0", "max_days": "16", "speed": "4", "out": "", "bot": ""}
 
@@ -47,13 +48,16 @@ func _start() -> void:
 ## The modifier card to pick, 0-based: a fixed index, "random", or "bot" to let the
 ## bot script's choose_modifier() rank the offered modifiers for its strategy.
 func _modifier_index() -> int:
-	if cfg.modifier != "random" and cfg.modifier != "bot":
+	if cfg.modifier.is_valid_int():
 		return int(cfg.modifier)
 	var windows: Array[Node] = root.find_children("ModifierSelectWindow", "", true, false).filter(func(w: Node) -> bool: return w.visible)
 	if windows.is_empty():
 		push_error("PLAYTEST: modifier window not found")
 		return 0
 	var offered: Array = windows[0].get("_offered_modifiers")
+	if cfg.modifier != "random" and cfg.modifier != "bot":
+		offered[0] = load("res://src/resources/run_modifiers/%s.tres" % cfg.modifier)
+		return 0
 	if cfg.modifier == "random":
 		return randi() % offered.size()
 	return load(cfg.bot).choose_modifier(cfg.strategy, offered)
