@@ -51,13 +51,13 @@ func test_difficulty_score_is_zero_for_a_fully_neutral_modifier() -> void:
 func test_difficulty_score_is_positive_when_lvv_threshold_is_lower() -> void:
 	var modifier := RunModifier.new()
 	modifier.lvv_threshold_multiplier = 0.7
-	assert_true(is_equal_approx(modifier.get_difficulty_score(), 0.3))
+	assert_true(is_equal_approx(modifier.get_difficulty_score(), 0.6))
 
 
 func test_difficulty_score_is_negative_when_lvv_threshold_is_higher() -> void:
 	var modifier := RunModifier.new()
 	modifier.lvv_threshold_multiplier = 1.3
-	assert_true(is_equal_approx(modifier.get_difficulty_score(), -0.3))
+	assert_true(is_equal_approx(modifier.get_difficulty_score(), -0.6))
 
 
 func test_difficulty_score_is_positive_when_ingredient_price_is_higher() -> void:
@@ -67,9 +67,9 @@ func test_difficulty_score_is_positive_when_ingredient_price_is_higher() -> void
 
 
 func test_difficulty_score_nets_offsetting_fields_toward_zero() -> void:
-	# A higher LVV threshold (easier) fully offset by an equal ingredient
-	# price hike (harder) should net to roughly neutral overall difficulty.
+	# The raid threshold counts double, so a 25% higher threshold (easier)
+	# offsets a 50% ingredient price hike (harder).
 	var modifier := RunModifier.new()
-	modifier.lvv_threshold_multiplier = 1.5
+	modifier.lvv_threshold_multiplier = 1.25
 	modifier.ingredient_price_multiplier = 1.5
 	assert_true(is_equal_approx(modifier.get_difficulty_score(), 0.0))

@@ -6,6 +6,10 @@ extends Resource
 ## pricing — never mutates shared IngredientData/Brewery constants in
 ## place, since those are reused across runs.
 
+## The raid threshold counts double in get_difficulty_score(): bot runs showed it
+## moves a run far more than ingredient prices do.
+const RAID_THRESHOLD_DIFFICULTY_WEIGHT : float = 2.0
+
 @export var modifier_name: String = ""
 @export var description: String = ""
 ## True on exactly one modifier resource (tavallinen_keikka.tres) — the
@@ -79,7 +83,7 @@ func get_stat_summary() -> String:
 ## the end-of-run score.
 func get_difficulty_score() -> float:
 	var score : float = 0.0
-	score += 1.0 - lvv_threshold_multiplier
+	score += (1.0 - lvv_threshold_multiplier) * RAID_THRESHOLD_DIFFICULTY_WEIGHT
 	score += ingredient_price_multiplier - 1.0
 	score += -quality_bonus
 	score += 1.0 - reputation_gain_multiplier
