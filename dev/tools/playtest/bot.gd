@@ -11,12 +11,22 @@ extends Node
 ##             events and LVV risk like careful, and buys cellar upgrades with spare money
 ##   gourmet - plays like expert, then tunes each recipe one ingredient unit at a time
 ##             towards the best quality its unlocked, affordable ingredients reach
+##   minmax  - plays like gourmet, aiming straight at RunScore: starts on the modifier with
+##             the biggest score multiplier, takes an event only when its rewards outweigh
+##             what it costs in score points, and cashes out every leftover batch and
+##             ingredient on the last scored day
 ## Both experts also play the rest of the game the way their Olutoppi spec rewards: they
-## finish the tutorial, chase daily goals, ship surplus batches to bars, pick level-up
-## cards by value and play closer to the raid line when a raid would be survivable.
+## finish the tutorial, ship surplus batches to bars, pick level-up cards by value and
+## play closer to the raid line when a raid would be survivable.
+## Every bot chases daily goals unless --goals=0: it brews a brew-style goal's style
+## from its minimum recipe (what the recipe library's hints lead a player to), ships a
+## batch to the safest bar for a ship-to-bar goal and takes a risk-free favour for a
+## special-event goal. The other goal types follow from playing well.
 
 ## Strategies that play like the expert.
-const EXPERTS: Array[String] = ["expert", "gourmet"]
+const EXPERTS: Array[String] = ["expert", "gourmet", "minmax"]
+## Strategies that tune their recipes for quality.
+const TUNERS: Array[String] = ["gourmet", "minmax"]
 
 var cfg: Dictionary = {}
 var days: Array = []
@@ -45,8 +55,22 @@ func _ready() -> void:
 	BrewerySignals.game_ended.connect(func(t: String) -> void: ending = t)
 	CustomerRegistry.customer_unlocked.connect(func(t: String) -> void: _note("unlocked %s" % t))
 	TimeManager.day_changed.connect(_on_day_changed)
+	BrewerySignals.beer_sale_breakdown.connect(func(e: SaleReceiptEntry) -> void: _inc("counter_money", roundi(e.net_income)); _inc("tip_money", roundi(e.tip_income)))
+	BrewerySignals.batch_bulk_sold.connect(func(_s: String, _n: int, pay: float) -> void: _inc("bulk_money", roundi(pay)))
 	BrewerySignals.keg_shipped_to_bar.connect(func(_s: String, _b: String, n: int, pay: float, _r: int) -> void: _inc("shipments"); _inc("shipped_bottles", n); _inc("shipped_money", roundi(pay)))
 	DailyGoalManager.daily_goal_resolved.connect(func(n: String, ok: bool, _m: int, _r: int, _x: int, _k: int) -> void: _inc("goals_ok" if ok else "goals_failed"); _inc(("goal_ok:" if ok else "goal_fail:") + n))
+
+
+## The run modifier card the runner picks for `strategy` with --modifier=bot, 0-based.
+## The biggest score multiplier wins; on a tie, the later raid line (Kallis tori over
+## Kireä LVV), since a bust scores nothing.
+static func choose_modifier(_strategy: String, offered: Array) -> int:
+	var best: int = 0
+	for i: int in offered.size():
+		var gain: float = RunScore.difficulty_multiplier(offered[i]) - RunScore.difficulty_multiplier(offered[best])
+		if gain > 0.0 or is_zero_approx(gain) and offered[i].lvv_threshold_multiplier > offered[best].lvv_threshold_multiplier:
+			best = i
+	return best
 
 
 func _inc(key: String, n: int = 1) -> void:
@@ -99,8 +123,12 @@ func _process(delta: float) -> void:
 
 	if get_tree().paused:
 		return
+	if cfg.strategy == "minmax":
+		_cash_out(b)
 	if (cfg.strategy == "careful" or cfg.strategy in EXPERTS) and not TimeManager.day_timer.is_stopped() and b.risk >= _close_ratio(b) * b.get_effective_raid_threshold():
 		_inc("early_closes")
+		if cfg.strategy == "minmax":
+			_cash_out(b, true)
 		TimeManager.force_advance_day()
 		return
 	if _brew_cooldown <= 0.0 and _needs_brew(b):
@@ -108,6 +136,7 @@ func _process(delta: float) -> void:
 	if cfg.strategy in EXPERTS:
 		_manage_cellar(b)
 		_buy_upgrade(b)
+	if cfg.strategy in EXPERTS or _open_goal(DailyGoalData.GoalType.SHIP_TO_BAR) != -1:
 		_maybe_ship(b)
 
 
@@ -139,16 +168,17 @@ func _held_bottles(b: Brewery) -> int:
 
 func _wants_event(b: Brewery, e: SpecialEventData) -> bool:
 	var threshold: int = b.get_effective_raid_threshold()
+	if e is ReputationFavourEventData and (e as ReputationFavourEventData).reward_risk <= 0 and _open_goal(DailyGoalData.GoalType.SPECIAL_EVENT) != -1:
+		return true
 	match cfg.strategy:
+		"minmax":
+			return _event_points(b, e) > 0.0
 		"greedy":
 			return true
 		"cheap":
 			return false
-	var event_goal_open: bool = cfg.strategy in EXPERTS and _open_goal(DailyGoalData.GoalType.SPECIAL_EVENT) != -1
 	if e is ReputationFavourEventData:
 		var favour := e as ReputationFavourEventData
-		if event_goal_open and favour.reward_risk <= 0:
-			return true
 		if favour.reward_risk < 0:
 			return b.risk >= 0.6 * threshold
 		return b.money < 40.0
@@ -163,6 +193,8 @@ func _wants_event(b: Brewery, e: SpecialEventData) -> bool:
 
 
 func _needs_brew(b: Brewery) -> bool:
+	if cfg.strategy == "minmax" and _is_last_day(b) and TimeManager.get_day_progress() >= LAST_BREW_PROGRESS:
+		return false
 	if cfg.strategy in EXPERTS:
 		# Held batches are aging, not for sale, so they do not count as counter stock.
 		if b.inventory.count_bottles() - _held_bottles(b) < COUNTER_STOCK or b.inventory.brew_batches.size() < 3:
@@ -171,6 +203,8 @@ func _needs_brew(b: Brewery) -> bool:
 			return true
 		# Brews extra batches to ship while the risk and the cash allow it.
 		return b.inventory.brew_batches.size() < 5 and b.money >= EXPORT_BREW_RESERVE and _best_bar(b) != null
+	if _goal_style_recipe(b) != null:
+		return true
 	if cfg.strategy in ["variety", "careful"]:
 		return b.inventory.count_bottles() < 30 or b.inventory.brew_batches.size() < 2
 	return b.inventory.count_bottles() < 15
@@ -179,6 +213,11 @@ func _needs_brew(b: Brewery) -> bool:
 func _brew(b: Brewery) -> void:
 	if cfg.strategy in EXPERTS:
 		_brew_recipe(b, _expert_recipe(b))
+		return
+	var goal_recipe: BrewRecipe = _goal_style_recipe(b)
+	if goal_recipe != null:
+		_inc("goal_brews")
+		_brew_recipe(b, goal_recipe)
 		return
 	var demand: Dictionary = {}
 	for c: CustomerData in CustomerRegistry.customer_pool:
@@ -193,7 +232,7 @@ func _brew(b: Brewery) -> void:
 	var best_score: float = -INF
 	for r: BrewRecipe in b.saved_recipes:
 		var cost: int = _missing_cost(b, r)
-		if cost + 10 > b.money:
+		if cost + _reserve(b) > b.money:
 			continue
 		var score: float
 		match cfg.strategy:
@@ -238,7 +277,7 @@ func _expert_recipe(b: Brewery) -> BrewRecipe:
 	if not b.tutorial_complete():
 		forced = _style_recipe(b, BeerStyle.Style.KOTIKALJA)
 	if forced != null:
-		if cfg.strategy == "gourmet":
+		if cfg.strategy in TUNERS:
 			forced.ingredient_amounts = _tune_for_quality(b, forced.beer_style, forced.ingredient_amounts)
 		return forced
 	var in_stock: Dictionary = {}
@@ -254,7 +293,7 @@ func _expert_recipe(b: Brewery) -> BrewRecipe:
 		if ingredients.is_empty() or not _all_unlocked(b, ingredients):
 			continue
 		var cost: int = _missing_cost_of(b, ingredients)
-		if cost + 10 > b.money:
+		if cost + _reserve(b) > b.money:
 			continue
 		var score: float = _expert_demand(b, style.style, in_stock)
 		if score <= 0.0:
@@ -270,7 +309,7 @@ func _expert_recipe(b: Brewery) -> BrewRecipe:
 		candidates.append(recipe)
 		scores.append(score)
 	var best: BrewRecipe = _pick_near_best(candidates, scores)
-	if best != null and cfg.strategy == "gourmet":
+	if best != null and cfg.strategy in TUNERS:
 		best.ingredient_amounts = _tune_for_quality(b, best.beer_style, best.ingredient_amounts)
 	return best
 
@@ -312,7 +351,7 @@ func _style_recipe(b: Brewery, style: BeerStyle.Style) -> BrewRecipe:
 	if beer_style == null:
 		return null
 	var ingredients: Dictionary = _with_spices(b, beer_style, b.resolver.compute_minimum_ingredients(beer_style))
-	if ingredients.is_empty() or not _all_unlocked(b, ingredients) or _missing_cost_of(b, ingredients) + 10 > b.money:
+	if ingredients.is_empty() or not _all_unlocked(b, ingredients) or _missing_cost_of(b, ingredients) + _reserve(b) > b.money:
 		return null
 	var recipe := BrewRecipe.new()
 	recipe.beer_style = style
@@ -337,8 +376,10 @@ func _with_spices(b: Brewery, style: BeerStyle, ingredients: Dictionary) -> Dict
 	return spiced
 
 
-## The slot of an unfinished daily goal of `kind`, or -1.
+## The slot of an unfinished daily goal of `kind`, or -1. Always -1 with --goals=0.
 func _open_goal(kind: DailyGoalData.GoalType) -> int:
+	if cfg.get("goals", "1") == "0":
+		return -1
 	var goals: Array[GoalData] = DailyGoalManager.active_goals
 	for i: int in goals.size():
 		var goal := goals[i] as DailyGoalData
@@ -474,7 +515,7 @@ func _tune_for_quality(b: Brewery, style: BeerStyle.Style, start: Dictionary) ->
 					combo.erase(id)
 				else:
 					combo[id] = amount
-				if _missing_cost_of(b, combo) + 10 > b.money:
+				if _missing_cost_of(b, combo) + _reserve(b) > b.money:
 					continue
 				var quality: float = _quality_of(b, combo, style)
 				if quality > candidate_quality:
@@ -557,6 +598,116 @@ func _buy_upgrade(b: Brewery) -> void:
 		_note("upgrade %s" % best.upgrade_id)
 
 
+## Score points per euro of worth and per reputation point, from RunScore.
+const WORTH_POINTS: float = RunScore.WORTH_POINTS_PER_EURO
+const REP_POINTS: float = RunScore.REPUTATION_POINTS
+## Reputation a counter bottle earns on average, for valuing bottles an event takes.
+const REP_PER_BOTTLE: float = 0.5
+## Day progress after which a last-day brew would not sell before the score is taken.
+const LAST_BREW_PROGRESS: float = 0.5
+## Day progress where the last day turns its stock and ingredients into money.
+const CASH_OUT_PROGRESS: float = 0.92
+
+
+## The day before DayRules.SURVIVAL_DAY_TARGET: the run is scored as that target day
+## begins, so this is the last day whose sales count.
+func _is_last_day(b: Brewery) -> bool:
+	return b.current_day == DayRules.SURVIVAL_DAY_TARGET - 1
+
+
+## The event's change to the run score: its money and reputation, minus what it takes
+## (bottles, ingredients, cash, reputation) and the risk it adds.
+func _event_points(b: Brewery, e: SpecialEventData) -> float:
+	var risk_change: int = -b.risk if e.clears_risk else e.reward_risk
+	var points: float = e.reward_money * WORTH_POINTS + e.reward_reputation * REP_POINTS - _risk_points(b, risk_change)
+	if e is ReputationFavourEventData:
+		points -= (e as ReputationFavourEventData).reputation_cost * REP_POINTS
+	elif e is RiskBribeEventData:
+		points -= (e as RiskBribeEventData).bribe_cost * WORTH_POINTS
+	elif e is IngredientDonationEventData:
+		var donation := e as IngredientDonationEventData
+		points -= donation.required_ingredient_amount * IngredientDatabase.get_item_by_id(donation.required_ingredient_id).base_price * WORTH_POINTS
+	else:
+		var batch: BrewBatch = _event_batch(b, e)
+		if batch == null:
+			return 0.0
+		points -= e.required_bottles * _bottle_points(b, batch)
+	return points
+
+
+## The batch a bottle-request or quality event would take, or null if none qualifies.
+func _event_batch(b: Brewery, e: SpecialEventData) -> BrewBatch:
+	for batch: BrewBatch in b.inventory.brew_batches:
+		if batch.amount_bottles < e.required_bottles:
+			continue
+		if e is QualityChallengeEventData:
+			if batch.current_quality >= (e as QualityChallengeEventData).required_min_quality:
+				return batch
+		elif batch.beer_style.style == e.required_style:
+			return batch
+	return null
+
+
+## What a bottle would score sold at the counter instead: its price, the bottle point
+## and some reputation.
+func _bottle_points(b: Brewery, batch: BrewBatch) -> float:
+	var price: float = b.resolver.get_price_breakdown(batch.beer_style).price_per_bottle * batch.get_aged_price_multiplier()
+	return price * WORTH_POINTS + RunScore.BOTTLE_POINTS + REP_PER_BOTTLE * REP_POINTS
+
+
+## Score cost of changing risk by `delta`: each point weighs more the nearer the raid
+## line it ends, and crossing the line costs a raid. Negative for risk relief.
+func _risk_points(b: Brewery, delta: int) -> float:
+	var threshold: float = maxf(1.0, b.get_effective_raid_threshold())
+	var after: int = maxi(0, b.risk + delta)
+	if after >= threshold:
+		return INF
+	var weight: float = RISK_POINT_WEIGHT * REP_POINTS * (b.risk + after) * 0.5 / threshold
+	return (after - b.risk) * weight
+
+
+## Late on the last day, or as it closes early, turns everything the score would count
+## as nothing into money: ships each batch to the best-paying bar the risk allows (a raid
+## now would still cost reputation and cash), bulk sells the rest and sells every ingredient.
+func _cash_out(b: Brewery, closing: bool = false) -> void:
+	if not _is_last_day(b) or not closing and TimeManager.get_day_progress() < CASH_OUT_PROGRESS:
+		return
+	for batch: BrewBatch in b.inventory.brew_batches.duplicate():
+		var raw_cost: float = b.resolver.get_price_breakdown(batch.beer_style).raw_cost_per_bottle
+		var bar: BarContact = _richest_bar_below(b, b.get_effective_raid_threshold())
+		var bulk: float = BatchDistributor.calculate_bulk_sell_payout(raw_cost, batch.current_quality, batch.amount_bottles)
+		if bar != null and BatchDistributor.calculate_ship_payout(raw_cost, batch.current_quality, batch.amount_bottles, bar.price_multiplier) * batch.get_aged_price_multiplier() > bulk:
+			GUISignals.ship_batch_to_bar_requested.emit(batch, bar)
+			_inc("cash_out_ships")
+		else:
+			GUISignals.bulk_sell_batch_requested.emit(batch)
+			_inc("cash_out_bulk")
+	for kind: Variant in b.inventory.items:
+		for id: int in b.inventory.items[kind].keys():
+			var amount: int = b.inventory.items[kind][id].amount
+			if amount > 0:
+				GUISignals.sell_ingredient.emit(id, amount)
+				_inc("cash_out_ingredients", amount)
+
+
+## The best-paying unlocked bar whose shipment keeps risk below `limit`.
+func _richest_bar_below(b: Brewery, limit: float) -> BarContact:
+	var best: BarContact = null
+	for bar: BarContact in CustomerRegistry.bar_contact_pool:
+		if b.reputation < bar.required_reputation or b.risk + bar.risk_per_shipment >= limit:
+			continue
+		if best == null or bar.price_multiplier > best.price_multiplier:
+			best = bar
+	return best
+
+
+## Cash kept back when buying a brew's ingredients. Only a euro while the cellar is empty:
+## the day clock starts with the first batch and a pricey modifier leaves little spare,
+## but spending down to zero with no bottles is bankruptcy.
+func _reserve(b: Brewery) -> int:
+	return 1 if b.inventory.brew_batches.is_empty() else 10
+
+
 func _missing_cost(b: Brewery, r: BrewRecipe) -> int:
 	return _missing_cost_of(b, r.ingredient_amounts)
 
@@ -566,7 +717,8 @@ func _missing_cost_of(b: Brewery, ingredients: Dictionary) -> int:
 	for id: int in ingredients:
 		var missing: int = maxi(0, ingredients[id] - _owned(b, id))
 		cost += IngredientDatabase.get_item_by_id(id).base_price * missing
-	return cost
+	# The run modifier's price change is folded into this stat, as the trader charges it.
+	return roundi(cost * b.stats.multiplier(PerkStats.INGREDIENT_PRICE))
 
 
 func _owned(b: Brewery, id: int) -> int:
@@ -587,7 +739,7 @@ func _stat_snapshot(b: Brewery) -> Dictionary:
 func _finish(b: Brewery) -> void:
 	_done = true
 	var report: Dictionary = {
-		"strategy": cfg.strategy, "profile": cfg.get("profile", ""), "ending": ending if ending != "" else "day_limit",
+		"strategy": cfg.strategy, "profile": cfg.get("profile", ""), "modifier": b.run_modifier.modifier_name, "ending": ending if ending != "" else "day_limit",
 		"final": {"day": b.current_day, "rep": b.reputation, "money": snappedf(b.money, 0.1), "raids": b.raid_count, "level": b.run_level, "standing": b.customer_standing, "upgrades": b.cellar_upgrade_levels, "worth": RunScore.brewery_worth(b), "score": RunScore.entry_for(b, ending).score, "bottles": b.lifetime_bottles_sold},
 		"days": days, "counts": counts, "notes": notes, "stats": _stat_snapshot(b), "perks": b.active_perks.size(),
 	}
