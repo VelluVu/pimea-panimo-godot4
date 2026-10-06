@@ -6,14 +6,15 @@
 [ext_resource type="AudioStream" path="res://assets/audio/music/randommind_chiptune_bards_tale.mp3" id="4_music3"]
 [ext_resource type="AudioStream" path="res://assets/audio/music/theouterlinux_drunken_sailor.ogg" id="5_music4"]
 [ext_resource type="AudioStream" path="res://assets/audio/music/randommind_chiptune_minstrel_dance.mp3" id="6_music5"]
-[ext_resource type="AudioStream" uid="uid://crupwph86ufl5" path="res://assets/audio/sfx/kenney/coin_success.ogg" id="7_coin"]
-[ext_resource type="AudioStream" uid="uid://c7hp71ilb0dg2" path="res://assets/audio/sfx/kenney/ui_click.ogg" id="8_click"]
-[ext_resource type="AudioStream" uid="uid://cjpibn8xxn4tl" path="res://assets/audio/sfx/kenney/notification_ping.ogg" id="9_ping"]
-[ext_resource type="AudioStream" uid="uid://br0j0cwdl0lgx" path="res://assets/audio/sfx/kenney/avi_alarm.ogg" id="10_alarm"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/retro/coin_success.ogg" id="7_coin"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/retro/ui_click.ogg" id="8_click"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/retro/notification_ping.ogg" id="9_ping"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/retro/lvv_alarm.ogg" id="10_alarm"]
 [ext_resource type="AudioStream" uid="uid://wevxvnr0v5mv" path="res://assets/audio/sfx/risk_tension_drone.wav" id="11_drone"]
-[ext_resource type="AudioStream" uid="uid://dsd5v6oxpblg1" path="res://assets/audio/sfx/kenney/style_discovered.ogg" id="12_discovered"]
-[ext_resource type="AudioStream" uid="uid://dkq2ruviyo5no" path="res://assets/audio/sfx/kenney/brew_start.ogg" id="13_brewstart"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/retro/style_discovered.ogg" id="12_discovered"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/retro/brew_start.ogg" id="13_brewstart"]
 [ext_resource type="AudioStream" uid="uid://em3q71r5rxgy" path="res://assets/audio/sfx/kenney/glass_clink.ogg" id="14_clink"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/retro/talent_purchased.ogg" id="15_talent"]
 
 [resource]
 script = ExtResource("1_bank")
@@ -26,5 +27,5 @@ sfx_notification_ping = ExtResource("9_ping")
 sfx_lvv_alarm = ExtResource("10_alarm")
 sfx_risk_tension_drone = ExtResource("11_drone")
 sfx_style_discovered = ExtResource("12_discovered")
-sfx_talent_purchased = ExtResource("14_clink")
+sfx_talent_purchased = ExtResource("15_talent")
 sfx_glass_shatter = ExtResource("14_clink")

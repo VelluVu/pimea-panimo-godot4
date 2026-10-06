@@ -1,0 +1,14 @@
+Sound effects from "The Essential Retro Video Game Sound Effects Collection [512 sounds]"
+by Juhani Junkala (SubspaceAudio), CC0 (public domain), published 2016:
+https://opengameart.org/content/512-sound-effects-8-bit-style
+https://creativecommons.org/publicdomain/zero/1.0/
+
+Converted to OGG and loudness-matched to the sounds they replaced.
+
+ui_click.ogg            Menu Sounds/sfx_menu_move4.wav
+coin_success.ogg        Coins/sfx_coin_double1.wav
+notification_ping.ogg   Neutral Sounds/sfx_sound_neutral1.wav
+style_discovered.ogg    Fanfares/sfx_sounds_fanfare1.wav
+talent_purchased.ogg    Positive Sounds/sfx_sounds_powerup10.wav
+brew_start.ogg          Menu Sounds/sfx_menu_select1.wav
+lvv_alarm.ogg           Alarms/Alarms/sfx_alarm_loop2.wav (played twice in a row)
