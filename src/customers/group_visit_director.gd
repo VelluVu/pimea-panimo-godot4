@@ -125,6 +125,7 @@ func _chant_until_arrival(visit : GroupVisit) -> void:
 		if not chant_text.is_empty():
 			var display_time : float = visit.event_data.chant_interval_seconds + CHANT_BUBBLE_EXTRA_SECONDS
 			BrewerySignals.dialogue_pushed.emit(chant_text, false, visit.dialogue_slot, last_member.global_position, display_time, CHANT_BUBBLE_FADE_SECONDS)
+			BrewerySignals.customer_spoke.emit(last_member.global_position, last_member.customer_data.voice_pitch)
 		if not await _wait(visit.event_data.chant_interval_seconds):
 			return
 
@@ -218,4 +219,13 @@ func _dismiss(visit : GroupVisit) -> void:
 func _say(visit : GroupVisit, text : String) -> float:
 	var display_time : float = Customer.get_display_time_for_text(text)
 	BrewerySignals.dialogue_pushed.emit(text, false, visit.dialogue_slot, visit.counter_position, display_time, Customer.FADE_TIME_SECONDS)
+	BrewerySignals.customer_spoke.emit(visit.counter_position, _voice_pitch_of(visit))
 	return display_time
+
+
+## The first member still here speaks for the group.
+func _voice_pitch_of(visit : GroupVisit) -> float:
+	for member : Variant in visit.members:
+		if is_instance_valid(member):
+			return member.customer_data.voice_pitch
+	return 1.0

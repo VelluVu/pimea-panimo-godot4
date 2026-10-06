@@ -30,4 +30,5 @@ rep_primary_style = 4
 risk_primary_style = 2
 max_bottles_per_visit = 4
 required_discovered_style = 1
+voice_pitch = 0.85
 metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

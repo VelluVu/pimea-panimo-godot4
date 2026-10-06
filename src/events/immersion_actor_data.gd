@@ -20,3 +20,7 @@ extends Resource
 ## Flies above the room (a bat): keeps base_scale instead of the floor's depth
 ## scaling, and draws over the counter and customers instead of y-sorting with them.
 @export var flying : bool = false
+## One of these plays at a random moment of the crossing (a meow, a squeak).
+@export var sounds : Array[AudioStream] = []
+## Chance that this actor makes its sound on a crossing, so it doesn't get old.
+@export_range(0.0, 1.0) var sound_chance : float = 1.0

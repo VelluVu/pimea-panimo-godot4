@@ -30,4 +30,5 @@ primary_match_risk_multiplier = 2.5
 requires_preference_match = true
 no_match_reputation_penalty = 0
 no_match_risk_penalty = 0
+voice_pitch = 1.235
 metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

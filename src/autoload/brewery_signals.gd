@@ -181,3 +181,13 @@ signal cellar_upgrade_purchased(upgrade: CellarUpgradeData, level: int)
 ## remembers the customer type as met (CustomerUnlockTracker).
 @warning_ignore("unused_signal")
 signal customer_served(data: CustomerData)
+## A walking customer put a foot down, for the footstep sound.
+@warning_ignore("unused_signal")
+signal customer_stepped(position: Vector2)
+## A customer or a group said something out loud, for the babble sound. `voice_pitch`
+## is the speaker's CustomerData.voice_pitch.
+@warning_ignore("unused_signal")
+signal customer_spoke(position: Vector2, voice_pitch: float)
+## The bartender started pouring; `speed_scale` is the pour animation's speed.
+@warning_ignore("unused_signal")
+signal beer_poured(position: Vector2, speed_scale: float)

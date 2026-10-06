@@ -33,4 +33,5 @@ bar_fight_max_bottles_broken = 4
 dialogue_bar_fight = "Leijonafanit alkavat laulaa täysin äänin ja heittelevät tyhjiä pulloja, syntyy täysi kaaos! Tuhoja kertyy %d kappaleen verran."
 dialogue_preview_format = "%s! SE ON SAMA KUIN KULTAMITALI! ANNA SITÄ!"
 dialogue_nothing_available = "MITÄ HÄH?! EI MITÄÄN JUOTAVAA?! PAHEMPI KUIN JATKOAIKATAPPIO!"
+voice_pitch = 0.9
 metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" path="res://src/events/immersion_actor_data.gd" id="1_script"]
 [ext_resource type="SpriteFrames" uid="uid://c8ldm8b7chbew" path="res://src/resources/sprite_frames/mouse_anim.tres" id="2_frames"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/mouse_squeak.wav" id="snd_mouse_squeak"]
 
 [resource]
 script = ExtResource("1_script")
@@ -10,3 +11,5 @@ animation = &"walk_left"
 base_scale = Vector2(3.5, 3.5)
 start_delay_seconds = 0.0
 crossing_seconds = 6.0
+sound_chance = 0.6
+sounds = Array[AudioStream]([ExtResource("snd_mouse_squeak")])

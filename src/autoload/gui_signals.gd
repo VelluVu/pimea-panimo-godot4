@@ -120,6 +120,14 @@ signal window_closed()
 @warning_ignore("unused_signal")
 signal tab_switched()
 
+## A toast appeared, for its sound.
+@warning_ignore("unused_signal")
+signal toast_shown()
+
+## The day event banner appeared (it waits for the day recap window), for its sound.
+@warning_ignore("unused_signal")
+signal day_event_banner_shown(event: DayEventData)
+
 @warning_ignore("unused_signal")
 signal close_day_requested()
 

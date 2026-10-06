@@ -20,6 +20,11 @@ const FADE_SECONDS : float = 0.5
 ## Above customers (z 1); same as the wall overlays in main.tscn.
 const FLYING_Z_INDEX : int = 2
 
+const SOUND_BUS : StringName = &"SFX"
+const SOUND_VOLUME_DB : float = -4.0
+## Part of the crossing the sound may land in: not while the critter is still fading in or out.
+const SOUND_WINDOW : Vector2 = Vector2(0.2, 0.7)
+
 ## Lets the console's "cat" command find this node without an autoload.
 const IMMERSION_EVENT_SPAWNER_GROUP : String = "immersion_event_spawner"
 
@@ -142,6 +147,21 @@ func _cross(actor : ImmersionActorData, points : PackedVector2Array) -> void:
 		tween.tween_property(sprite, "global_position", points[i], durations[i - 1])
 	tween.tween_callback(_finish_actor.bind(sprite))
 	_fade_in_and_out(sprite, actor.start_delay_seconds, actor.crossing_seconds)
+	_maybe_make_sound(actor, sprite)
+
+
+## A child player, so the sound comes from where the critter is at that moment and
+## goes away with it.
+func _maybe_make_sound(actor : ImmersionActorData, sprite : AnimatedSprite2D) -> void:
+	if actor.sounds.is_empty() or randf() >= actor.sound_chance:
+		return
+	var player := AudioStreamPlayer2D.new()
+	player.stream = actor.sounds.pick_random()
+	player.bus = SOUND_BUS
+	player.volume_db = SOUND_VOLUME_DB
+	sprite.add_child(player)
+	var at_seconds : float = actor.start_delay_seconds + randf_range(SOUND_WINDOW.x, SOUND_WINDOW.y) * actor.crossing_seconds
+	sprite.create_tween().tween_callback(player.play).set_delay(at_seconds)
 
 
 func _fade_in_and_out(sprite : AnimatedSprite2D, delay : float, crossing : float) -> void:

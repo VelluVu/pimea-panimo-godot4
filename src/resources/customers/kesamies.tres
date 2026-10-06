@@ -30,4 +30,5 @@ rep_primary_style = 4
 rep_secondary_style = 1
 quality_reputation_sensitivity = 2.0
 required_discovered_style = 11
+voice_pitch = 1
 metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

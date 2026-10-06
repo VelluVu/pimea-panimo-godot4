@@ -173,6 +173,7 @@ func _on_day_event_announced(event: DayEventData) -> void:
 		return
 
 	_day_event_banner.present(tr(event.announcement_text))
+	GUISignals.day_event_banner_shown.emit(event)
 
 
 ## Dismisses the hint once the clock starts (first brew done). One-shot, and hands
@@ -189,3 +190,4 @@ func _on_first_brew_hint_state_changed(_brewery: Brewery) -> void:
 func _show_toast(text: String) -> void:
 	if not text.is_empty():
 		_toasts.show_toast(text)
+		GUISignals.toast_shown.emit()

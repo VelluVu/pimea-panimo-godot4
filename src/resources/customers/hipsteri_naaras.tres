@@ -26,4 +26,5 @@ rep_bad_quality = -5
 rep_primary_style = 6
 min_reputation_to_appear = 30
 required_discovered_style = 5
+voice_pitch = 1.365
 metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

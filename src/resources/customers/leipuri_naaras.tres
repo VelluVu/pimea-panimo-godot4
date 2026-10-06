@@ -27,4 +27,5 @@ quality_tip_sensitivity = 0.5
 rep_primary_style = 6
 rep_secondary_style = 2
 min_reputation_to_appear = 40
+voice_pitch = 1.235
 metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

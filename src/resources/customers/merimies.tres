@@ -29,4 +29,5 @@ rep_primary_style = 6
 rep_secondary_style = 2
 min_reputation_to_appear = 25
 required_discovered_style = 9
+voice_pitch = 0.85
 metadata/_custom_type_script = "uid://b2vqc8lkfjwic"
