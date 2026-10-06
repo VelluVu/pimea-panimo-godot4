@@ -20,6 +20,8 @@ const FOOTSTEP_MIN_GAP_MSEC: int = 60
 const BABBLE_VOLUME_DB: float = -4.0
 const BABBLE_PITCH_JITTER: float = 0.05
 const POUR_VOLUME_DB: float = -3.0
+## A group's serving burst runs the pour at 3x; full pitch would sound like a chipmunk.
+const POUR_MAX_PITCH: float = 1.4
 const TOAST_VOLUME_DB: float = -6.0
 
 var bank: AudioBank = preload("res://src/resources/audio/audio_bank.tres")
@@ -28,6 +30,8 @@ var _tension_player: AudioStreamPlayer
 var _last_money: float = -1.0
 var _last_risk: int = -1
 var _last_footstep_msec: int = -FOOTSTEP_MIN_GAP_MSEC
+## Several toasts in one frame (a burst of unlocks) blip once.
+var _last_toast_frame: int = -1
 
 
 func _init() -> void:
@@ -74,9 +78,9 @@ func _connect_signals() -> void:
 	GUISignals.start_brewing.connect(play_sfx.bind(bank.sfx_brew_start))
 	BrewerySignals.customer_stepped.connect(_on_customer_stepped)
 	BrewerySignals.customer_spoke.connect(_on_customer_spoke)
-	BrewerySignals.beer_poured.connect(func(at: Vector2, speed_scale: float) -> void: play_sfx_at(bank.sfx_pour, at, POUR_VOLUME_DB, speed_scale))
+	BrewerySignals.beer_poured.connect(func(at: Vector2, speed_scale: float) -> void: play_sfx_at(bank.sfx_pour, at, POUR_VOLUME_DB, minf(speed_scale, POUR_MAX_PITCH)))
 	BrewerySignals.group_visit_announced.connect(play_sfx.bind(bank.sfx_group_banner).unbind(1))
-	GUISignals.toast_shown.connect(play_sfx.bind(bank.sfx_toast, TOAST_VOLUME_DB))
+	GUISignals.toast_shown.connect(_on_toast_shown)
 	GUISignals.day_event_banner_shown.connect(_on_day_event_banner_shown)
 	BrewerySignals.glass_shattered.connect(func() -> void: play_sfx(bank.sfx_glass_shatter, 0.0, randf_range(SHATTER_PITCH_RANGE.x, SHATTER_PITCH_RANGE.y)))
 
@@ -127,6 +131,13 @@ func _on_customer_spoke(at: Vector2, voice_pitch: float) -> void:
 		return
 	var pitch: float = voice_pitch * randf_range(1.0 - BABBLE_PITCH_JITTER, 1.0 + BABBLE_PITCH_JITTER)
 	play_sfx_at(bank.sfx_babbles.pick_random(), at, BABBLE_VOLUME_DB, pitch)
+
+
+func _on_toast_shown() -> void:
+	var frame: int = Engine.get_process_frames()
+	if frame != _last_toast_frame:
+		_last_toast_frame = frame
+		play_sfx(bank.sfx_toast, TOAST_VOLUME_DB)
 
 
 func _on_day_event_banner_shown(event: DayEventData) -> void:

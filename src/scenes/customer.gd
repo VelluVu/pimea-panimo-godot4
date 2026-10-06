@@ -20,12 +20,12 @@ const PREVIEW_DELAY_SECONDS : float = 2.0
 ## Seconds between footsteps while a walk animation plays.
 const FOOTSTEP_INTERVAL_SECONDS : float = 0.32
 const AMBIENT_LOOP_VOLUME_DB : float = -12.0
-const WALK_ANIMATIONS : Array[StringName] = [&"walk_towards", &"walk_right"]
 
 const ANIM_IDLE : StringName = &"idle"
 const ANIM_IDLE_UP : StringName = &"idle_up"
 const ANIM_WALK_TOWARDS : StringName = &"walk_towards"
 const ANIM_WALK_RIGHT : StringName = &"walk_right"
+const WALK_ANIMATIONS : Array[StringName] = [ANIM_WALK_TOWARDS, ANIM_WALK_RIGHT]
 
 ## How long a just-served glass sits on the counter before pickup; matches Bartender's
 ## serve_beer animation (2.0s) so the glass appears once the pour has finished.
