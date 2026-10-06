@@ -1,4 +1,4 @@
-All music is CC0 (public domain), from OpenGameArt.org:
+The music in this folder is CC0 (public domain), from OpenGameArt.org:
 https://creativecommons.org/publicdomain/zero/1.0/
 
 Human-composed and published 2018-2020, before generative music tools. No AI-generated audio.
@@ -16,3 +16,9 @@ springspring_woffelsbacher_pirates.ogg      Spring Spring, "Woffelsbacher Pirate
     https://opengameart.org/node/116761
 theouterlinux_drunken_sailor.ogg            TheOuterLinux, "OPL2 - Unknown - Drunken Sailor" (traditional shanty, played four times in a row)
     https://opengameart.org/content/opl2-unkown-drunken-sailor
+
+Original music, in custom/:
+Composed for Pimeä Panimo by VelluVu in the Furnace tracker (Sega Genesis sound), 2026.
+The Furnace project and raw export are kept in dev/music/; dev/tools/music/prepare_track.py
+builds the playlist file.
+custom/dark_reggae_pub.ogg                   "Dark Reggae Pub" (intro, three loops, faded ending)

@@ -23,3 +23,6 @@ dev/mute_audio.flag
 
 # Output of dev/tools/playtest/playtest.py run
 dev/tools/playtest/runs/
+# Raw tracker exports (rebuilt from the .fur project; the game uses the OGG in assets/)
+dev/music/*.wav
+__pycache__/
