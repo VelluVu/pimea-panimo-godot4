@@ -72,7 +72,7 @@ animations = [{
 "duration": 8.0,
 "texture": SubResource("AtlasTexture_idle_0")
 }],
-"loop": false,
+"loop": 0,
 "name": &"idle",
 "speed": 4.0
 }, {
@@ -86,7 +86,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_idle_2")
 }],
-"loop": false,
+"loop": 0,
 "name": &"idle_shoulders",
 "speed": 4.0
 }, {
@@ -109,7 +109,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_idle_8")
 }],
-"loop": false,
+"loop": 0,
 "name": &"idle_wipe",
 "speed": 4.0
 }, {
@@ -135,7 +135,7 @@ animations = [{
 "duration": 2.0,
 "texture": SubResource("AtlasTexture_serve_beer_6")
 }],
-"loop": false,
+"loop": 0,
 "name": &"serve_beer",
 "speed": 4.0
 }]
