@@ -39,6 +39,14 @@ const DEFAULT_NAMES: Array[String] = ["Matti", "Maija", "Pekka", "Liisa", "Antti
 ## the counter glass just vanishes when they leave.
 @export var carries_glass_out: bool = true
 
+@export_group("Äänet")
+## Pitch of the babble when this customer speaks: under 1 is deeper, over 1 higher.
+@export var voice_pitch: float = 1.0
+## False for customers who roll or fly instead of walking.
+@export var makes_footsteps: bool = true
+## Loops quietly wherever the customer goes (the drone's rotors), or null for none.
+@export var ambient_loop: AudioStream = null
+
 @export_group("Dialogues")
 @export_multiline var dialogue_intro: String = "Moro. Oisko jotain juotavaa?"
 @export_multiline var dialogue_success: String = "Kylläpä uppoo! Tässä rahat."

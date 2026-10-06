@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" path="res://src/events/immersion_actor_data.gd" id="1_script"]
 [ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/bat_anim.tres" id="2_frames"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/bat_squeak.wav" id="snd_bat_squeak"]
 
 [resource]
 script = ExtResource("1_script")
@@ -11,3 +12,5 @@ base_scale = Vector2(2, 2)
 start_delay_seconds = 0.4
 crossing_seconds = 7.4
 flying = true
+sound_chance = 0.4
+sounds = Array[AudioStream]([ExtResource("snd_bat_squeak")])

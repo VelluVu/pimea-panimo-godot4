@@ -17,6 +17,11 @@ const MAX_DISPLAY_TIME_SECONDS : float = 9.0
 
 const PREVIEW_DELAY_SECONDS : float = 2.0
 
+## Seconds between footsteps while a walk animation plays.
+const FOOTSTEP_INTERVAL_SECONDS : float = 0.32
+const AMBIENT_LOOP_VOLUME_DB : float = -12.0
+const WALK_ANIMATIONS : Array[StringName] = [&"walk_towards", &"walk_right"]
+
 const ANIM_IDLE : StringName = &"idle"
 const ANIM_IDLE_UP : StringName = &"idle_up"
 const ANIM_WALK_TOWARDS : StringName = &"walk_towards"
@@ -51,11 +56,25 @@ var generated_name: String = "Asiakas"
 
 ## The glass as drawn, before fill_glasses() colours its beer.
 var _glass_texture: Texture2D
+var _footstep_clock: float = 0.0
+var _ambient_player: AudioStreamPlayer2D
 
 
 func _ready() -> void:
 	animated_sprite.frame_changed.connect(_on_animated_sprite_frame_changed)
 	_glass_texture = beer_glass_sprite.texture
+
+
+func _process(delta: float) -> void:
+	if customer_data == null or not customer_data.makes_footsteps:
+		return
+	if not (animated_sprite.is_playing() and animated_sprite.animation in WALK_ANIMATIONS):
+		_footstep_clock = 0.0
+		return
+	_footstep_clock += delta
+	if _footstep_clock >= FOOTSTEP_INTERVAL_SECONDS:
+		_footstep_clock -= FOOTSTEP_INTERVAL_SECONDS
+		BrewerySignals.customer_stepped.emit(global_position)
 
 
 func _on_animated_sprite_frame_changed() -> void:
@@ -67,6 +86,21 @@ func _apply_visuals() -> void:
 	animated_sprite.sprite_frames = customer_data.sprite_frames
 	animated_sprite.material = CustomerRecolor.build_material(customer_data)
 	_play_animation(ANIM_IDLE)
+	_start_ambient_loop()
+
+
+## The loop follows the customer, so it is a child player rather than AudioManager's.
+## Restarted on finish: the WAV files are not imported as loops.
+func _start_ambient_loop() -> void:
+	if customer_data.ambient_loop == null or _ambient_player != null:
+		return
+	_ambient_player = AudioStreamPlayer2D.new()
+	_ambient_player.stream = customer_data.ambient_loop
+	_ambient_player.bus = &"SFX"
+	_ambient_player.volume_db = AMBIENT_LOOP_VOLUME_DB
+	_ambient_player.finished.connect(_ambient_player.play)
+	add_child(_ambient_player)
+	_ambient_player.play()
 
 
 func _play_animation(anim_name: StringName, flip_horizontally: bool = false) -> void:
@@ -173,6 +207,7 @@ func _say(text: String, skippable: bool = false) -> float:
 	if skippable and CustomerManager.is_counter_crowded():
 		return display_time
 	BrewerySignals.dialogue_pushed.emit(text, false, dialogue_slot, global_position, display_time, FADE_TIME_SECONDS)
+	BrewerySignals.customer_spoke.emit(global_position, customer_data.voice_pitch)
 	return display_time
 
 

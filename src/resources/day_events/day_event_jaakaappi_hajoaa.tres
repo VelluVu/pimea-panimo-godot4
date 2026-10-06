@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="DayEventData" format=3]
 
 [ext_resource type="Script" uid="uid://dhlswvb7h0ba8" path="res://src/events/day_event_data.gd" id="1_event"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/day_fridge_breaks.wav" id="snd_day_fridge_breaks"]
 
 [resource]
 script = ExtResource("1_event")
@@ -11,3 +12,4 @@ effect_type = 2
 effect_amount_min = 3
 effect_amount_max = 8
 effect_toast_format = "Jääkaappi hajosi yöllä ja pilasi %d pulloa varastosta."
+announcement_sound = ExtResource("snd_day_fridge_breaks")

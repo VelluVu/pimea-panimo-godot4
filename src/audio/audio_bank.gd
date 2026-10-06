@@ -16,6 +16,17 @@ extends Resource
 
 @export_group("UI")
 @export var sfx_ui_click: AudioStream
+@export var sfx_toast: AudioStream
+@export var sfx_group_banner: AudioStream
+## Day events without an announcement_sound of their own.
+@export var sfx_day_event: AudioStream
+
+@export_group("World")
+## World sounds play at their place in the cellar, heard from the bartender.
+@export var sfx_footstep: AudioStream
+## One is picked at random each time someone speaks.
+@export var sfx_babbles: Array[AudioStream] = []
+@export var sfx_pour: AudioStream
 
 @export_group("Brewing")
 @export var sfx_brew_start: AudioStream

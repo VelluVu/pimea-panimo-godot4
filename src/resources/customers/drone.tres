@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_drone"]
 [ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/drone_anim.tres" id="2_sprite"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/drone_hover_loop.wav" id="snd_drone_hover_loop"]
 
 [resource]
 script = ExtResource("1_drone")
@@ -35,4 +36,7 @@ required_achievement_id = "kolme_lvv_lahjusta"
 randomizes_preference = true
 min_bottles_per_visit = 2
 max_bottles_per_visit = 4
+voice_pitch = 1.8
+makes_footsteps = false
+ambient_loop = ExtResource("snd_drone_hover_loop")
 metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

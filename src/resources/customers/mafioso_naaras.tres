@@ -31,4 +31,5 @@ risk_wrong_style = 0
 min_reputation_to_appear = 70
 randomizes_preference = true
 primary_match_risk_multiplier = -1.5
+voice_pitch = 1.04
 metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

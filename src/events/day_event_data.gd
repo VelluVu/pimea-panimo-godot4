@@ -17,6 +17,8 @@ extends Resource
 @export var event_name : String = ""
 ## Shown once via a held banner at day start (see GuiAnnouncer._on_day_event_announced()).
 @export_multiline var announcement_text : String = "Tavallinen päivä kellarissa."
+## Played with the banner. Null plays AudioBank's generic day event chime.
+@export var announcement_sound : AudioStream = null
 
 @export_group("Painotus")
 ## Relative odds against every other DayEventData in the pool — mirrors

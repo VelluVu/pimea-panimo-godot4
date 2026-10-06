@@ -34,4 +34,5 @@ quality_reputation_sensitivity = 8.0
 risk_primary_style = 1
 min_reputation_to_appear = 40
 randomizes_preference = true
+voice_pitch = 1.1
 metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

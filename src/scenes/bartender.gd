@@ -5,7 +5,8 @@ extends Node2D
 ## walks or rotates (only a south-facing sprite exists), so this is just an
 ## idle/serve_beer animation player with a public method-down API. No
 ## signals of its own: nothing needs to react to the bartender, callers
-## (see main.tscn) just tell it what to play.
+## (see main.tscn) just tell it what to play. It is also where the player
+## listens from: world sounds are panned and faded by their distance to the bar.
 
 const ANIM_IDLE : StringName = &"idle"
 const ANIM_IDLE_SHOULDERS : StringName = &"idle_shoulders"
@@ -50,6 +51,9 @@ var _drawn_frames : SpriteFrames
 
 func _ready() -> void:
 	add_to_group(BARTENDER_GROUP)
+	var listener := AudioListener2D.new()
+	add_child(listener)
+	listener.make_current()
 	_drawn_frames = animated_sprite.sprite_frames
 	animated_sprite.animation_finished.connect(_on_animation_finished)
 	animated_sprite.play(ANIM_IDLE)
@@ -68,6 +72,7 @@ func play_serve_beer(speed_scale: float = 1.0, ebc: int = -1) -> void:
 	animated_sprite.sprite_frames = _drawn_frames if ebc < 0 else BeerColor.pour_sprite_frames(_drawn_frames, ebc)
 	animated_sprite.speed_scale = speed_scale
 	animated_sprite.play(ANIM_SERVE_BEER)
+	BrewerySignals.beer_poured.emit(serve_marker.global_position, speed_scale)
 
 
 func _on_animation_finished() -> void:

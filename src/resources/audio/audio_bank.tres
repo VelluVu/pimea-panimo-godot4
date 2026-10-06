@@ -15,6 +15,15 @@
 [ext_resource type="AudioStream" path="res://assets/audio/sfx/retro/brew_start.ogg" id="13_brewstart"]
 [ext_resource type="AudioStream" uid="uid://em3q71r5rxgy" path="res://assets/audio/sfx/kenney/glass_clink.ogg" id="14_clink"]
 [ext_resource type="AudioStream" path="res://assets/audio/sfx/retro/talent_purchased.ogg" id="15_talent"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/toast.wav" id="snd_toast"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/group_banner.wav" id="snd_group_banner"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/day_event.wav" id="snd_day_event"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/footstep.wav" id="snd_footstep"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/babble_1.wav" id="snd_babble_1"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/babble_2.wav" id="snd_babble_2"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/babble_3.wav" id="snd_babble_3"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/babble_4.wav" id="snd_babble_4"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/pour.wav" id="snd_pour"]
 
 [resource]
 script = ExtResource("1_bank")
@@ -29,3 +38,9 @@ sfx_risk_tension_drone = ExtResource("11_drone")
 sfx_style_discovered = ExtResource("12_discovered")
 sfx_talent_purchased = ExtResource("15_talent")
 sfx_glass_shatter = ExtResource("14_clink")
+sfx_toast = ExtResource("snd_toast")
+sfx_group_banner = ExtResource("snd_group_banner")
+sfx_day_event = ExtResource("snd_day_event")
+sfx_footstep = ExtResource("snd_footstep")
+sfx_babbles = Array[AudioStream]([ExtResource("snd_babble_1"), ExtResource("snd_babble_2"), ExtResource("snd_babble_3"), ExtResource("snd_babble_4")])
+sfx_pour = ExtResource("snd_pour")

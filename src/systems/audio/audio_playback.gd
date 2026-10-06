@@ -9,12 +9,21 @@ extends Node
 var sfx_bus: StringName = &"SFX"
 var music_bus: StringName = &"Music"
 var sfx_pool_size: int = 6
+## Positional sounds (play_sfx_at()) have their own pool, heard from the current
+## AudioListener2D, or the screen centre without one.
+var world_pool_size: int = 8
+## Past this distance in pixels a world sound is silent.
+var world_max_distance: float = 900.0
+var world_attenuation: float = 1.0
+var world_panning_strength: float = 0.6
 var click_stream: AudioStream
 ## Every button that enters the tree plays the click when pressed, so none is left silent.
 var click_all_buttons: bool = true
 
 var _sfx_pool: Array[AudioStreamPlayer] = []
 var _next_sfx_player_index: int = 0
+var _world_pool: Array[AudioStreamPlayer2D] = []
+var _next_world_player_index: int = 0
 
 var _music_player: AudioStreamPlayer
 var _playlist: Array[AudioStream] = []
@@ -31,6 +40,8 @@ func _ready() -> void:
 		# A sound that is playing when a window pauses the tree would freeze until it
 		# closes, which silences the click of every button that opens one.
 		_sfx_pool.append(_add_player(sfx_bus))
+	for i in range(world_pool_size):
+		_world_pool.append(_add_world_player())
 	_music_player = _add_player(music_bus)
 	_music_player.finished.connect(_on_music_finished)
 	if click_all_buttons:
@@ -41,6 +52,19 @@ func _ready() -> void:
 func play_sfx(stream: AudioStream, volume_db: float = 0.0, pitch_scale: float = 1.0) -> void:
 	_specific_sfx_frame = Engine.get_process_frames()
 	_play_stream(stream, volume_db, pitch_scale)
+
+
+## One-shot sound at a place in the world, panned and faded by its distance to the listener.
+func play_sfx_at(stream: AudioStream, world_position: Vector2, volume_db: float = 0.0, pitch_scale: float = 1.0) -> void:
+	if stream == null:
+		return
+	var player := _world_pool[_next_world_player_index]
+	_next_world_player_index = (_next_world_player_index + 1) % _world_pool.size()
+	player.global_position = world_position
+	player.stream = stream
+	player.volume_db = volume_db
+	player.pitch_scale = pitch_scale
+	player.play()
 
 
 ## Deferred to the end of the frame: one press can ask twice (the button and the signal
@@ -78,6 +102,16 @@ func _add_player(bus: StringName) -> AudioStreamPlayer:
 	var player := AudioStreamPlayer.new()
 	player.bus = bus
 	player.process_mode = Node.PROCESS_MODE_ALWAYS
+	add_child(player)
+	return player
+
+
+func _add_world_player() -> AudioStreamPlayer2D:
+	var player := AudioStreamPlayer2D.new()
+	player.bus = sfx_bus
+	player.max_distance = world_max_distance
+	player.attenuation = world_attenuation
+	player.panning_strength = world_panning_strength
 	add_child(player)
 	return player
 

@@ -21,4 +21,5 @@ dialogue_preview_format = "Toi %s näyttää sopivan budjettiin..."
 dialogue_nothing_available = "Hmm, ei mitään opiskelijabudjetille sopivaa..."
 quality_tip_sensitivity = 0.0
 max_required_price = 2.5
+voice_pitch = 1.365
 metadata/_custom_type_script = "uid://b2vqc8lkfjwic"
