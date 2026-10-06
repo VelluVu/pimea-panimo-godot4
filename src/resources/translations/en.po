@@ -4507,6 +4507,10 @@ msgid "??? (%.1f%% ABV) – vaatii: hiiva %s, vähintään %d kg mallasta"
 msgstr "??? (%.1f%% ABV) – needs: yeast %s, at least %d kg of malt"
 
 #: src/ui/recipe_library_text.gd
+msgid "Houkuttelee uuden asiakkaan"
+msgstr "Attracts a new customer"
+
+#: src/ui/recipe_library_text.gd
 msgid "Katkeruus: %s"
 msgstr "Bitterness: %s"
 

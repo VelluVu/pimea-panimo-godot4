@@ -137,6 +137,11 @@ func get_met_titles() -> Array:
 	return _unlocks.get_met_titles()
 
 
+## True when some customer only appears once `style` has been discovered.
+func is_style_customer_gate(style : int) -> bool:
+	return customer_pool.any(func(customer : CustomerData) -> bool: return customer.required_discovered_style == style)
+
+
 ## The customers who can walk in right now.
 func get_eligible_customers() -> Array[CustomerData]:
 	var eligible : Array[CustomerData] = []

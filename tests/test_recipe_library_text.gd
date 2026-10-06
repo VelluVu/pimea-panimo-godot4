@@ -66,6 +66,11 @@ func test_locked_row_mentions_a_malt_blend_only_without_a_required_malt() -> voi
 	assert_true(text.contains("Vaadittu mallas: Vehnämallas"))
 
 
+func test_locked_row_teases_a_new_customer_only_when_asked() -> void:
+	assert_false(RecipeLibraryTextScript.locked_row(_make_style(), "Y", "", false).contains("Houkuttelee uuden asiakkaan"))
+	assert_true(RecipeLibraryTextScript.locked_row(_make_style(), "Y", "", false, "", true).ends_with("Houkuttelee uuden asiakkaan"))
+
+
 func test_known_row_lists_preferred_spices_when_given() -> void:
 	var plain : String = RecipeLibraryTextScript.known_row(_make_style(), "Y", "")
 	assert_false(plain.contains("Korianteri"))
