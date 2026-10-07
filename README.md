@@ -2,6 +2,8 @@
 
 A 2D side-scrolling business management/crafting game built in **Godot 4 (GDScript)**, parodying Finnish alcohol bureaucracy and the murky world of bootleg brewing.
 
+**[Play the demo in your browser](https://velluvu.github.io/pimea-panimo-godot4/)**: a five-day season, in Finnish (English in the options).
+
 The player buys raw ingredients from a wholesaler, hauls them from the storage cabinet to the preparation table, tunes the ratios, and brews dynamically-generated beer styles (or dark moonshine) for the cellar shelf — all while dodging LVV risk and the inspectors who come knocking. Funny, unique customers wander in with orders and special requests. In-game currencies are **Money (Euros)**, **Reputation (Maine)**, and **LVV Risk (LVV-riski)**.
 
 > Code and comments are written in English; all in-game text and UI copy are in Finnish.
