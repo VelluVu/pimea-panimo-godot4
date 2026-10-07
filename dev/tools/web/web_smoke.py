@@ -5,7 +5,9 @@ time, clicks or presses keys if asked, and saves screenshots plus every console 
 Needs only the Python standard library and an installed Chrome.
 
     python dev/tools/web/web_smoke.py [--wait 40] [--steps "click 640 400; wait 3; shot menu"]
-        [--out DIR] [--chrome PATH] [--keep-profile]
+        [--out DIR] [--chrome PATH] [--keep-profile] [--url URL]
+
+--url tests a published copy (GitHub Pages, itch.io) instead of serving build/web.
 
 Steps run after the first wait, separated by ';':
     click X Y      left click at page pixels (the page is 1280x720, the game 640x360 x2)
@@ -220,14 +222,16 @@ def main():
 	parser.add_argument("--out", default=DEFAULT_OUT)
 	parser.add_argument("--chrome", default=os.environ.get("CHROME", DEFAULT_CHROME))
 	parser.add_argument("--keep-profile", action="store_true", help="reuse the browser profile, so saves survive between runs")
+	parser.add_argument("--url", default="", help="a published copy to test instead of build/web")
 	args = parser.parse_args()
 
-	if not os.path.isfile(os.path.join(BUILD_DIR, "index.html")):
+	if not args.url and not os.path.isfile(os.path.join(BUILD_DIR, "index.html")):
 		sys.exit("No build/web/index.html: export the Web Demo preset first.")
 	os.makedirs(args.out, exist_ok=True)
 	profile = os.path.join(args.out, "profile") if args.keep_profile else tempfile.mkdtemp(prefix="web_smoke_")
 
-	server = serve(BUILD_DIR)
+	server = None if args.url else serve(BUILD_DIR)
+	url = args.url or f"http://127.0.0.1:{SERVE_PORT}/index.html"
 	chrome = subprocess.Popen([
 		args.chrome, "--headless=new", f"--remote-debugging-port={DEBUG_PORT}", f"--user-data-dir={profile}",
 		f"--window-size={WINDOW[0]},{WINDOW[1]}", "--use-angle=swiftshader", "--enable-unsafe-swiftshader",
@@ -237,7 +241,7 @@ def main():
 		tools = DevTools(WebSocket(page_websocket_url()))
 		tools.call("Runtime.enable")
 		tools.call("Page.enable")
-		tools.call("Page.navigate", {"url": f"http://127.0.0.1:{SERVE_PORT}/index.html"})
+		tools.call("Page.navigate", {"url": url})
 		tools.pump(args.wait)
 		screenshot(tools, args.out, "loaded")
 		run_steps(tools, args.steps, args.out)
@@ -248,7 +252,8 @@ def main():
 		else:
 			chrome.terminate()
 		chrome.wait(10)
-		server.shutdown()
+		if server is not None:
+			server.shutdown()
 		if not args.keep_profile:
 			shutil.rmtree(profile, ignore_errors=True)
 

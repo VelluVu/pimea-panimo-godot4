@@ -55,6 +55,9 @@ checklist for when it is. Facts checked 2026-10-07.
 - Not checkable headless, left for a person: sound after the first click, the day-5 end
   screen in a real 25-minute session, fullscreen, and how it feels.
 
+Live on GitHub Pages since 2026-10-07 (first workflow run succeeded, about 2.5 minutes):
+https://velluvu.github.io/pimea-panimo-godot4/ . Checked with `web_smoke.py --url ...`.
+
 ## Publish
 
 - GitHub Pages: `.github/workflows/web-demo.yml` exports headless (Godot 4.7.2 + templates)
