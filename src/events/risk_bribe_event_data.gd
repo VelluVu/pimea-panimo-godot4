@@ -14,6 +14,6 @@ func try_fulfill(brewery: Brewery) -> bool:
 	if brewery.money < bribe_cost:
 		return false
 
-	brewery.money -= bribe_cost
+	brewery.change_money(-bribe_cost, MoneyLedger.Source.LVV)
 	_apply_rewards(brewery)
 	return true

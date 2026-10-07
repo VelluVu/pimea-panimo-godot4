@@ -45,6 +45,9 @@ func _ready() -> void:
 	reputation_label.mouse_filter = Control.MOUSE_FILTER_PASS
 	risk_label.set_script(TooltipLabel)
 	risk_label.mouse_filter = Control.MOUSE_FILTER_PASS
+	money_label.set_script(LiveTooltipLabel)
+	money_label.set(&"tooltip_source", _money_tooltip)
+	money_label.mouse_filter = Control.MOUSE_FILTER_PASS
 	# The day and the clock share one tooltip, built on hover so the time is current.
 	day_label.set_script(LiveTooltipLabel)
 	day_label.set(&"tooltip_source", _day_clock_tooltip)
@@ -71,6 +74,13 @@ func _notification(what: int) -> void:
 
 func _on_day_changed(new_day: int) -> void:
 	_update_day_display(new_day)
+
+
+func _money_tooltip() -> String:
+	var brewery : Brewery = BrewEngine.current_brewery
+	if brewery == null:
+		return ""
+	return MoneyText.tooltip(brewery.money, brewery.money_today, brewery.money_recent_days)
 
 
 func _day_clock_tooltip() -> String:

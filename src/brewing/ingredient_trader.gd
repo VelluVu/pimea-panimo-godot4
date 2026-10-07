@@ -41,7 +41,7 @@ func _on_buy_ingredient(ingredient_id : int, amount : int) -> void:
 		BrewerySignals.ingredient_purchase_underfunded.emit(ingredient.name, buy_price, brewery.money)
 		return
 
-	brewery.money -= buy_price
+	brewery.change_money(-buy_price, MoneyLedger.Source.INGREDIENTS)
 	brewery.inventory.add_amount(ingredient, amount)
 	_track_tutorial_purchase(ingredient, amount)
 	BrewerySignals.ingredient_purchased.emit(buy_price)
@@ -72,6 +72,6 @@ func _on_sell_ingredient(ingredient_id : int, amount : int) -> void:
 		return
 		
 	var sell_price : float = snappedf(final_amount * ingredient.base_price * brewery.stats.multiplier(PerkStats.INGREDIENT_PRICE) * SELL_BACK_RATE, 0.1)
-	brewery.money += sell_price
+	brewery.change_money(sell_price, MoneyLedger.Source.INGREDIENTS)
 	print(LOG_SOLD % [final_amount, sell_price])
 	BrewerySignals.brewery_state_changed.emit(brewery)

@@ -51,7 +51,7 @@ func _on_bulk_sell_batch_requested(batch : BrewBatch) -> void:
 	var payout : float = calculate_bulk_sell_payout(raw_cost_per_bottle, batch.current_quality, batch.amount_bottles)
 	payout = snappedf(payout * brewery.stats.multiplier(PerkStats.DISTRIBUTION_INCOME), 0.1)
 
-	brewery.money += payout
+	brewery.change_money(payout, MoneyLedger.Source.SHIPMENTS)
 	BrewerySignals.batch_bulk_sold.emit(batch.get_style_name(), batch.amount_bottles, payout)
 
 	brewery.inventory.brew_batches.erase(batch)
@@ -76,7 +76,7 @@ func _on_ship_batch_to_bar_requested(batch : BrewBatch, bar : BarContact) -> voi
 	var payout : float = calculate_ship_payout(raw_cost_per_bottle, batch.current_quality, batch.amount_bottles, bar.price_multiplier)
 	payout = snappedf(payout * brewery.stats.multiplier(PerkStats.DISTRIBUTION_INCOME) * batch.get_aged_price_multiplier(), 0.1)
 
-	brewery.money += payout
+	brewery.change_money(payout, MoneyLedger.Source.SHIPMENTS)
 	brewery.add_risk(bar.risk_per_shipment)
 	BrewerySignals.keg_shipped_to_bar.emit(batch.get_style_name(), bar.bar_name, batch.amount_bottles, payout, bar.risk_per_shipment)
 

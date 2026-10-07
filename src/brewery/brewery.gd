@@ -45,6 +45,9 @@ const XP_LEVEL_GROWTH_PER_LEVEL : int = 20
 ## start clears the 8 EUR tutorial recipe with little room, keeping the early
 ## bankruptcy risk real.
 @export var money: float = 20.0
+## Today's money per MoneyLedger.Source, and the net of the last days (oldest first).
+@export var money_today : Dictionary = {}
+@export var money_recent_days : Array[float] = []
 @export var risk: int = 0
 @export var reputation: int = 0
 ## LVV raids survived this run. Never resets.
@@ -148,6 +151,18 @@ func skip_tutorial() -> void:
 func add_risk(amount : int) -> void:
 	risk = max(0, risk + amount)
 	InspectionService.new(self).check_for_raid()
+
+
+## Every change of money goes through here, so the money tooltip can tell where it went.
+func change_money(amount : float, source : MoneyLedger.Source) -> void:
+	money += amount
+	MoneyLedger.record(money_today, source, amount)
+
+
+## Called after the night's bills, which still count for the day that ends.
+func close_money_day() -> void:
+	money_recent_days = MoneyLedger.closed_day(money_today, money_recent_days)
+	money_today = {}
 
 
 ## Gains shrink as reputation grows (ReputationRules); losses apply in full.
