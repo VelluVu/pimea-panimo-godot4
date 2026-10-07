@@ -53,9 +53,7 @@ static func play(actor: Node2D, sprite: AnimatedSprite2D, glass_texture: Texture
 		if on_stomp.is_valid():
 			on_stomp.call(i + 1)
 		var direction: float = 1.0 if i % 2 == 0 else -1.0
-		sprite.flip_h = direction < 0.0
-		if sprite.sprite_frames != null and sprite.sprite_frames.has_animation(Customer.ANIM_WALK_RIGHT):
-			sprite.play(Customer.ANIM_WALK_RIGHT)
+		MirroredAnimation.play(sprite, Customer.ANIM_WALK_RIGHT, direction < 0.0)
 		var stomp := actor.create_tween()
 		stomp.tween_property(actor, "position", home + Vector2(STOMP_DISTANCE * direction, -STOMP_HOP), STOMP_SECONDS * 0.5)
 		stomp.tween_property(actor, "position", home + Vector2(STOMP_DISTANCE * direction, 0.0), STOMP_SECONDS * 0.5)
