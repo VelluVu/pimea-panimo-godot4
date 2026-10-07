@@ -2,7 +2,7 @@
 
 A 2D side-scrolling business management/crafting game built in **Godot 4 (GDScript)**, parodying Finnish alcohol bureaucracy and the murky world of bootleg brewing.
 
-**[Play the demo in your browser](https://velluvu.github.io/pimea-panimo-godot4/)**: a five-day season, in Finnish (English in the options).
+**Play the demo in your browser** on [itch.io](https://velluv.itch.io/pime-panimo-demo) or [GitHub Pages](https://velluvu.github.io/pimea-panimo-godot4/): a five-day season, in Finnish (English in the options).
 
 The player buys raw ingredients from a wholesaler, hauls them from the storage cabinet to the preparation table, tunes the ratios, and brews dynamically-generated beer styles (or dark moonshine) for the cellar shelf — all while dodging LVV risk and the inspectors who come knocking. Funny, unique customers wander in with orders and special requests. In-game currencies are **Money (Euros)**, **Reputation (Maine)**, and **LVV Risk (LVV-riski)**.
 
@@ -25,24 +25,31 @@ The player buys raw ingredients from a wholesaler, hauls them from the storage c
 
 ```text
 📁 addons/                  Godot plugins (the godot_ai MCP plugin, dev tools)
-📁 assets/                  Fonts, shaders, textures
+📁 assets/                  Audio, fonts, shaders, textures
 📁 src/                     The game
   📁 scenes/                Scenes and their bound scripts: main.tscn, customer.tscn, ui/ windows and panels
   📁 systems/               Reusable systems you can copy to another project (see systems/README.md)
-    dialog/, console/         Have a *_wiring.gd, the only project-specific file
+    achievements/, audio/, console/, dialog/, goals/, input/, save/, settings/
+                              Have a *_wiring.gd, the only project-specific file
     toast/, tooltip/, toolkit/  Need no wiring
   📁 autoload/              Signal buses (brewery_signals, gui_signals), registries and managers
   📁 brewing/               Ingredients, recipes, BrewResolver and its parts, inventory
   📁 brewery/               The Brewery run state and its services
   📁 customers/             Customers, spawning, group visits, sales
   📁 events/                Special, day and immersion events
-  📁 progression/           Perks, run modifiers, meta unlocks, achievements, daily goals
+  📁 progression/           Perks, meta unlocks (Olutoppi), run score, daily goals
   📁 ui/                    UI helper classes (text, layout, hover areas)
   📁 console/               The game's console commands
-  📁 save/, audio/          Save file handling, audio bank
+  📁 audio/                 Audio bank (which sound plays for what)
   📁 resources/             All content as .tres files, one folder per type
 📁 tests/                   Unit tests, one test_<class>.gd per class
-📁 dev/                     Development only: tools/ (sheets.py, check_systems.py), docs/, notes/ (local)
+📁 dev/                     Development only: tools/, docs/, notes/ (local)
+    tools/playtest/           Headless bot playtests for balance checks
+    tools/web/                Browser smoke test for the web demo (headless Chrome)
+    tools/i18n.py             Keeps the English translation in step with the Finnish texts
+    tools/sheets.py           Customers and beer styles to spreadsheets and back
+    tools/sfx/, tools/fonts/  Sound effect synthesizer, font metric fitting
+    tools/check_systems.py    Checks that every system folder is self-contained
 ```
 
 ---
@@ -61,6 +68,15 @@ godot --headless --quit
 ```
 
 Requires **Godot 4.7** (GL Compatibility renderer).
+
+### Web demo
+
+```bash
+# Export the demo (needs the Godot 4.7 export templates)
+godot --headless --path . --export-release "Web Demo" build/web/index.html
+```
+
+The **Web Demo** preset sets the `demo` feature tag, which limits the season to five days (`DemoRules`). GitHub Pages is published by the *Web demo* workflow (Actions tab → Run workflow); for itch.io, zip the contents of `build/web/` and upload it as an HTML game. See [dev/docs/browser_demo_plan.md](dev/docs/browser_demo_plan.md).
 
 ---
 
