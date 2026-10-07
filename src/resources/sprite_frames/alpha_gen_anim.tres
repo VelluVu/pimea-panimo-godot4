@@ -1,4 +1,4 @@
-[gd_resource type="SpriteFrames" format=3]
+[gd_resource type="SpriteFrames" format=3 uid="uid://jmn6kju3suob"]
 
 [ext_resource type="Texture2D" uid="uid://nrdmvxqlbgmi" path="res://assets/textures/alpha_gen_32.png" id="1_alpha_gen"]
 
