@@ -1,30 +1,30 @@
-[gd_resource type="Resource" script_class="AudioBank" format=3]
+[gd_resource type="Resource" script_class="AudioBank" format=3 uid="uid://bl7pjj70wqms1"]
 
-[ext_resource type="Script" path="res://src/audio/audio_bank.gd" id="1_bank"]
-[ext_resource type="AudioStream" path="res://assets/audio/music/randommind_chiptune_old_tower_inn_loop.ogg" id="2_music1"]
-[ext_resource type="AudioStream" path="res://assets/audio/music/randommind_chiptune_bards_tale.mp3" id="4_music3"]
-[ext_resource type="AudioStream" path="res://assets/audio/music/theouterlinux_drunken_sailor.ogg" id="5_music4"]
-[ext_resource type="AudioStream" path="res://assets/audio/music/randommind_chiptune_minstrel_dance.mp3" id="6_music5"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/retro/coin_success.ogg" id="7_coin"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/retro/ui_click.ogg" id="8_click"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/retro/notification_ping.ogg" id="9_ping"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/retro/lvv_alarm.ogg" id="10_alarm"]
+[ext_resource type="Script" uid="uid://dr6nuqxdfh240" path="res://src/audio/audio_bank.gd" id="1_bank"]
+[ext_resource type="AudioStream" uid="uid://cy38b11it4hnm" path="res://assets/audio/music/randommind_chiptune_old_tower_inn_loop.ogg" id="2_music1"]
+[ext_resource type="AudioStream" uid="uid://2afeusv2mx5a" path="res://assets/audio/music/randommind_chiptune_bards_tale.mp3" id="4_music3"]
+[ext_resource type="AudioStream" uid="uid://n2ciol6tb4un" path="res://assets/audio/music/theouterlinux_drunken_sailor.ogg" id="5_music4"]
+[ext_resource type="AudioStream" uid="uid://0m65clbvsugn" path="res://assets/audio/music/randommind_chiptune_minstrel_dance.mp3" id="6_music5"]
+[ext_resource type="AudioStream" uid="uid://djwl66bnp3whr" path="res://assets/audio/sfx/retro/coin_success.ogg" id="7_coin"]
+[ext_resource type="AudioStream" uid="uid://dmnxcs0dlnwwj" path="res://assets/audio/sfx/retro/ui_click.ogg" id="8_click"]
+[ext_resource type="AudioStream" uid="uid://cta3ob6wqyxsy" path="res://assets/audio/sfx/retro/notification_ping.ogg" id="9_ping"]
+[ext_resource type="AudioStream" uid="uid://dn05ot6efyqbf" path="res://assets/audio/sfx/retro/lvv_alarm.ogg" id="10_alarm"]
 [ext_resource type="AudioStream" uid="uid://wevxvnr0v5mv" path="res://assets/audio/sfx/risk_tension_drone.wav" id="11_drone"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/retro/style_discovered.ogg" id="12_discovered"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/retro/brew_start.ogg" id="13_brewstart"]
+[ext_resource type="AudioStream" uid="uid://dxkym4f860mef" path="res://assets/audio/sfx/retro/style_discovered.ogg" id="12_discovered"]
+[ext_resource type="AudioStream" uid="uid://db3wbwr0rv5ji" path="res://assets/audio/sfx/retro/brew_start.ogg" id="13_brewstart"]
 [ext_resource type="AudioStream" uid="uid://em3q71r5rxgy" path="res://assets/audio/sfx/kenney/glass_clink.ogg" id="14_clink"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/retro/talent_purchased.ogg" id="15_talent"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/toast.wav" id="snd_toast"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/group_banner.wav" id="snd_group_banner"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/day_event.wav" id="snd_day_event"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/footstep.wav" id="snd_footstep"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/babble_1.wav" id="snd_babble_1"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/babble_2.wav" id="snd_babble_2"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/babble_3.wav" id="snd_babble_3"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/babble_4.wav" id="snd_babble_4"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/pour.wav" id="snd_pour"]
-[ext_resource type="AudioStream" path="res://assets/audio/music/custom/dark_reggae_pub.ogg" id="music_dark_reggae_pub"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/crit_gain.wav" id="snd_crit_gain"]
+[ext_resource type="AudioStream" uid="uid://cyd2hmtomjibe" path="res://assets/audio/sfx/retro/talent_purchased.ogg" id="15_talent"]
+[ext_resource type="AudioStream" uid="uid://belsv6j6vprxq" path="res://assets/audio/music/custom/dark_reggae_pub.ogg" id="music_dark_reggae_pub"]
+[ext_resource type="AudioStream" uid="uid://dr0xk4sb5u04u" path="res://assets/audio/sfx/synth/babble_1.wav" id="snd_babble_1"]
+[ext_resource type="AudioStream" uid="uid://ba1eb0vynqwxs" path="res://assets/audio/sfx/synth/babble_2.wav" id="snd_babble_2"]
+[ext_resource type="AudioStream" uid="uid://dhefl26k5clta" path="res://assets/audio/sfx/synth/babble_3.wav" id="snd_babble_3"]
+[ext_resource type="AudioStream" uid="uid://vvcdougujoo2" path="res://assets/audio/sfx/synth/babble_4.wav" id="snd_babble_4"]
+[ext_resource type="AudioStream" uid="uid://b2cgkjklaw0ar" path="res://assets/audio/sfx/synth/crit_gain.wav" id="snd_crit_gain"]
+[ext_resource type="AudioStream" uid="uid://cx8icd6q5eadu" path="res://assets/audio/sfx/synth/day_event.wav" id="snd_day_event"]
+[ext_resource type="AudioStream" uid="uid://cstk5a3b7rc45" path="res://assets/audio/sfx/synth/footstep.wav" id="snd_footstep"]
+[ext_resource type="AudioStream" uid="uid://byxi80sjdkwpj" path="res://assets/audio/sfx/synth/group_banner.wav" id="snd_group_banner"]
+[ext_resource type="AudioStream" uid="uid://drcs0nsvyn5q1" path="res://assets/audio/sfx/synth/pour.wav" id="snd_pour"]
+[ext_resource type="AudioStream" uid="uid://covirrtcco5o3" path="res://assets/audio/sfx/synth/toast.wav" id="snd_toast"]
 
 [resource]
 script = ExtResource("1_bank")
@@ -33,6 +33,12 @@ music_tracks = Array[AudioStream]([ExtResource("4_music3"), ExtResource("5_music
 sfx_coin_success = ExtResource("7_coin")
 sfx_critical_gain = ExtResource("snd_crit_gain")
 sfx_ui_click = ExtResource("8_click")
+sfx_toast = ExtResource("snd_toast")
+sfx_group_banner = ExtResource("snd_group_banner")
+sfx_day_event = ExtResource("snd_day_event")
+sfx_footstep = ExtResource("snd_footstep")
+sfx_babbles = Array[AudioStream]([ExtResource("snd_babble_1"), ExtResource("snd_babble_2"), ExtResource("snd_babble_3"), ExtResource("snd_babble_4")])
+sfx_pour = ExtResource("snd_pour")
 sfx_brew_start = ExtResource("13_brewstart")
 sfx_notification_ping = ExtResource("9_ping")
 sfx_lvv_alarm = ExtResource("10_alarm")
@@ -40,9 +46,3 @@ sfx_risk_tension_drone = ExtResource("11_drone")
 sfx_style_discovered = ExtResource("12_discovered")
 sfx_talent_purchased = ExtResource("15_talent")
 sfx_glass_shatter = ExtResource("14_clink")
-sfx_toast = ExtResource("snd_toast")
-sfx_group_banner = ExtResource("snd_group_banner")
-sfx_day_event = ExtResource("snd_day_event")
-sfx_footstep = ExtResource("snd_footstep")
-sfx_babbles = Array[AudioStream]([ExtResource("snd_babble_1"), ExtResource("snd_babble_2"), ExtResource("snd_babble_3"), ExtResource("snd_babble_4")])
-sfx_pour = ExtResource("snd_pour")
