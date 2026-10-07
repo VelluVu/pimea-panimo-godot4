@@ -62,6 +62,11 @@ enum Tier { COMMON, RARE, LEGENDARY }
 @export var extra_daily_goal_rolls: int = 0
 ## Share (0 to 1, summed and capped) of each confiscated batch's bottles a raid leaves behind.
 @export var raid_saved_bottle_share: float = 0.0
+## Chance (0 to 1, summed and capped) on top of WalkInRules.BASE_COMPANY_CHANCE that a
+## walk-in arrives with company.
+@export var walk_in_company_chance: float = 0.0
+## Extra customers in such a company beyond the usual one.
+@export var walk_in_company_bonus: int = 0
 
 ## When true, multiplier stats add their delta from 1.0 instead of
 ## multiplying, so repeat picks grow in a straight line.

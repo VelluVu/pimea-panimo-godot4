@@ -60,6 +60,10 @@ msgid "Amber Ale"
 msgstr "Amber Ale"
 
 #: src/autoload/string_container.gd
+msgid "Asiakas tuo seuraa: +%d %%"
+msgstr "Customer brings company: +%d %%"
+
+#: src/autoload/string_container.gd
 msgid "Asiakkaiden saapumisväli: %+d %%"
 msgstr "Time between customers: %+d %%"
 
@@ -296,6 +300,10 @@ msgstr "Right..."
 #: src/autoload/string_container.gd
 msgid "Session Ale"
 msgstr "Session Ale"
+
+#: src/autoload/string_container.gd
+msgid "Seurueessa asiakkaita: +%d"
+msgstr "Customers in a company: +%d"
 
 #: src/autoload/string_container.gd
 msgid "Sitruksinen"
@@ -2784,10 +2792,8 @@ msgstr "Regulars"
 #: src/resources/meta_unlocks/kanta_asiakkaat.tres
 msgid ""
 "Tunnettu nimi tuo vakituisia kävijöitä yhä useammin. Uusia asiakkaita "
-"saapuu kellariin pysyvästi hieman tiheämmin."
-msgstr ""
-"A known name brings regulars back more and more often. New customers "
-"permanently arrive at the cellar a little more often."
+"saapuu kellariin pysyvästi hieman tiheämmin, ja joskus kaverin kanssa."
+msgstr "A known name brings regular visitors more and more often. New customers permanently arrive a little more often, and sometimes with a friend."
 
 #: src/resources/meta_unlocks/kaymisen_hallinta.tres
 msgid ""
@@ -3040,6 +3046,16 @@ msgstr ""
 "You started a club for loyal customers. Word spreads and reputation builds "
 "faster."
 
+#: src/resources/perks/kaveriporukka.tres
+msgid ""
+"Asiakkaat kertovat kellarista kavereilleen, ja välillä joku ottaa kaverin "
+"mukaan."
+msgstr "Customers tell their friends about the cellar, and now and then someone brings a friend along."
+
+#: src/resources/perks/kaveriporukka.tres
+msgid "Kaveriporukka"
+msgstr "Bunch of Friends"
+
 #: src/resources/perks/kellarin_kuiskaaja.tres
 msgid "Kellarin kuiskaaja"
 msgstr "Cellar Whisperer"
@@ -3051,6 +3067,14 @@ msgid ""
 msgstr ""
 "You can hear when fermentation is just right, and quality improves "
 "noticeably."
+
+#: src/resources/perks/kolmen_kopla.tres
+msgid "Kolmen kopla"
+msgstr "Gang of Three"
+
+#: src/resources/perks/kolmen_kopla.tres
+msgid "Kun asiakas tuo seuraa, mukana on aina vielä yksi kaveri lisää."
+msgstr "When a customer brings company, one more friend always tags along."
 
 #: src/resources/perks/luotettu_piiri.tres
 msgid "Luotettu piiri"
@@ -3109,6 +3133,16 @@ msgstr ""
 #: src/resources/perks/oinen_legenda.tres
 msgid "Öinen legenda"
 msgstr "Nighttime Legend"
+
+#: src/resources/perks/porukalla_liikkeelle.tres
+msgid ""
+"Kellarista on tullut illan kokoontumispaikka: asiakkaat saapuvat yhä "
+"useammin seurassa."
+msgstr "The cellar has become the evening's meeting place: customers arrive in company more and more often."
+
+#: src/resources/perks/porukalla_liikkeelle.tres
+msgid "Porukalla liikkeelle"
+msgstr "Out with the Crew"
 
 #: src/resources/perks/pyoristys_ylospain.tres
 msgid "Opit jättämään vaihtorahat huomiotta. Asiakkaat pyöristävät tipit ylöspäin."

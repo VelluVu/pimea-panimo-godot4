@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="RunPerk" format=3]
+
+[ext_resource type="Script" uid="uid://dewmdbm4a0vst" path="res://src/progression/run_perk.gd" id="1_perk"]
+
+[resource]
+script = ExtResource("1_perk")
+perk_name = "Kolmen kopla"
+description = "Kun asiakas tuo seuraa, mukana on aina vielä yksi kaveri lisää."
+icon_placeholder = "🎳"
+tier = 2
+walk_in_company_chance = 0.04
+walk_in_company_bonus = 1
