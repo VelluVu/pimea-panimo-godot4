@@ -14,7 +14,8 @@ const SAVE_VERSION: int = 2
 
 ## Endings that finish the run for good. The season endings ("survived",
 ## "season_over") are left out on purpose: the player can keep playing.
-const RUN_ENDING_TYPES: PackedStringArray = ["busted", "bankrupt"]
+## The browser demo's end ("demo_over", DemoRules) is final too.
+const RUN_ENDING_TYPES: PackedStringArray = ["busted", "bankrupt", "demo_over"]
 
 
 func _init() -> void:

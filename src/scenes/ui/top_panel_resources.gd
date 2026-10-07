@@ -87,7 +87,7 @@ func _day_clock_tooltip() -> String:
 	var brewery : Brewery = BrewEngine.current_brewery
 	if brewery == null:
 		return ""
-	return DayClockText.tooltip(brewery.current_day, DayRules.SURVIVAL_DAY_TARGET, TimeManager.get_day_progress(), TimeManager.get_seconds_left(), TimeManager.day_duration_seconds)
+	return DayClockText.tooltip(brewery.current_day, DemoRules.last_day(), TimeManager.get_day_progress(), TimeManager.get_seconds_left(), TimeManager.day_duration_seconds)
 
 
 func _update_day_display(day_num: int) -> void:

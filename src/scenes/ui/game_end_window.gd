@@ -19,11 +19,13 @@ const TITLE_BUSTED : String = "BUSTED!"
 const TITLE_BANKRUPT : String = "KONKURSSI!"
 const TITLE_SURVIVED : String = "LEGENDA!"
 const TITLE_SEASON_OVER : String = "KAUSI PÄÄTTYI!"
+const TITLE_DEMO_OVER : String = "KIITOS PELAAMISESTA!"
 
 const MESSAGE_BUSTED : String = "Kolmas ratsia oli viimeinen. LVV takavarikoi kaiken ja sulki panimosi pysyvästi."
 const MESSAGE_BANKRUPT : String = "Rahat loppuivat ja varasto oli tyhjä. Panimosi ajautui konkurssiin."
 const MESSAGE_SURVIVED : String = "Selvisit kauden loppuun, ja kellarisi kaljasta tuli kaupunginosan legenda."
 const MESSAGE_SEASON_OVER : String = "Selvisit kauden loppuun, mutta legendaksi tarvitaan %d mainetta."
+const MESSAGE_DEMO_OVER : String = "Demo päättyi päivään %d. Koko pelissä kausi kestää %d päivää, ja Olutopin kyvyt vievät panimoa eteenpäin kaudesta toiseen. Koko peli on tulossa!"
 
 const RANK_FORMAT : String = "Sijoitus: #%d"
 const NEW_RECORD_TEXT : String = "UUSI ENNÄTYS!"
@@ -68,6 +70,9 @@ func _on_game_ended(ending_type : String) -> void:
 		"season_over":
 			title_label.text = TITLE_SEASON_OVER
 			message_label.text = tr(MESSAGE_SEASON_OVER) % Brewery.SURVIVAL_MIN_REPUTATION
+		DemoRules.ENDING_DEMO_OVER:
+			title_label.text = TITLE_DEMO_OVER
+			message_label.text = tr(MESSAGE_DEMO_OVER) % [DemoRules.DEMO_LAST_DAY, DayRules.SURVIVAL_DAY_TARGET]
 		_:
 			title_label.text = ending_type
 			message_label.text = ""

@@ -9,6 +9,7 @@ const ENDING_SEASON_OVER : String = "Selvisi"
 const ENDING_BUSTED : String = "Jäi kiinni"
 const ENDING_BANKRUPT : String = "Konkurssi"
 const ENDING_IN_PROGRESS : String = "Kesken"
+const ENDING_DEMO_OVER : String = "Demo"
 
 const DAYS_LINE : String = "Päivät %d × %d"
 const REPUTATION_LINE : String = "Maine %d × %d"
@@ -25,6 +26,7 @@ const ENDING_COLORS : Dictionary = {
 	"season_over": Color("63c74d"),
 	"busted": Color("e43b44"),
 	"bankrupt": Color("8b9bb4"),
+	"demo_over": Color("2ce8f5"),
 	"": Color("f77622"),
 }
 ## The theme's Label color.
@@ -37,6 +39,8 @@ static func ending_label(ending_type : String) -> String:
 			return UiText.of(ENDING_SURVIVED)
 		"season_over":
 			return UiText.of(ENDING_SEASON_OVER)
+		"demo_over":
+			return UiText.of(ENDING_DEMO_OVER)
 		"busted":
 			return UiText.of(ENDING_BUSTED)
 		"bankrupt":

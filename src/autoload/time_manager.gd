@@ -128,8 +128,10 @@ func _advance_day() -> void:
 	_check_survival_ending(brewery)
 
 
+## The browser demo ends on its own shorter day instead, see DemoRules.
 func _check_survival_ending(brewery : Brewery) -> void:
-	var ending : String = DayRules.season_ending(brewery.current_day, brewery.reputation, brewery.money, brewery.game_has_ended, brewery.has_continued_past_survival)
+	var ending : String = DemoRules.demo_ending(brewery.current_day, brewery.game_has_ended) if DemoRules.is_demo() \
+			else DayRules.season_ending(brewery.current_day, brewery.reputation, brewery.money, brewery.game_has_ended, brewery.has_continued_past_survival)
 	if not ending.is_empty():
 		brewery.trigger_ending(ending)
 

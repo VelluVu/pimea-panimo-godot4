@@ -96,6 +96,9 @@ func get_active_perks() -> Array[RunPerk]:
 ## bought (see MetaUnlockRules.can_purchase()); callers should still check that first to
 ## keep a node's square disabled.
 func purchase_next_level(unlock_id : String) -> bool:
+	# The browser demo shows the talent tree but sells nothing from it.
+	if DemoRules.is_demo():
+		return false
 	var unlock : MetaUnlockData = find_unlock(unlock_id)
 	if unlock == null or not MetaUnlockRules.can_purchase(unlock, get_unlocked_levels(), get_renown()):
 		return false

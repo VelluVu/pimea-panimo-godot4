@@ -3750,12 +3750,22 @@ msgid "BUSTED!"
 msgstr "BUSTED!"
 
 #: src/scenes/ui/game_end_window.gd
+msgid ""
+"Demo päättyi päivään %d. Koko pelissä kausi kestää %d päivää, ja Olutopin "
+"kyvyt vievät panimoa eteenpäin kaudesta toiseen. Koko peli on tulossa!"
+msgstr "The demo ends on day %d. In the full game a season lasts %d days, and Olutoppi talents carry your brewery forward from season to season. The full game is coming!"
+
+#: src/scenes/ui/game_end_window.gd
 msgid "Jatka pelaamista"
 msgstr "Keep playing"
 
 #: src/scenes/ui/game_end_window.gd
 msgid "KAUSI PÄÄTTYI!"
 msgstr "SEASON OVER!"
+
+#: src/scenes/ui/game_end_window.gd
+msgid "KIITOS PELAAMISESTA!"
+msgstr "THANKS FOR PLAYING!"
 
 #: src/scenes/ui/game_end_window.gd
 msgid "KONKURSSI!"
@@ -3970,6 +3980,10 @@ msgstr "Back"
 #: src/scenes/ui/olutoppi_window.gd
 msgid "Maine: %d"
 msgstr "Renown: %d"
+
+#: src/scenes/ui/olutoppi_window.gd
+msgid "Maine: %d. Kykyjä voi ostaa koko pelissä."
+msgstr "Renown: %d. Talents can be bought in the full game."
 
 #: src/scenes/ui/olutoppi_window.tscn
 msgid "Baarityöskentely"
@@ -4496,6 +4510,10 @@ msgstr "New customers unlocked: %s!"
 #: src/ui/leaderboard_text.gd
 msgid "Annokset %d"
 msgstr "Servings %d"
+
+#: src/ui/leaderboard_text.gd
+msgid "Demo"
+msgstr "Demo"
 
 #: src/ui/leaderboard_text.gd
 msgid "Jäi kiinni"
