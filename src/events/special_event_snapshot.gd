@@ -7,6 +7,9 @@ extends Resource
 @export var event_data : SpecialEventData
 ## Seconds left to answer; unused once answered.
 @export var time_left : float = 0.0
+## Accepted and waiting for the goods, with the seconds left to deliver.
+@export var delivering : bool = false
+@export var delivery_left : float = 0.0
 ## The caller's reply once answered (the event is already settled), with its seconds left.
 @export var answer_text : String = ""
 @export var fade_left : float = 0.0

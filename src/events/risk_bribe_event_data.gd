@@ -10,6 +10,11 @@ extends SpecialEventData
 @export var bribe_cost: int = 40
 
 
+## A payment settles on "Joo"; it never waits to take money or reputation later.
+func waits_for_delivery() -> bool:
+	return false
+
+
 func try_fulfill(brewery: Brewery) -> bool:
 	if brewery.money < bribe_cost:
 		return false
