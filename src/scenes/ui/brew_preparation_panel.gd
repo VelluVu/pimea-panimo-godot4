@@ -11,8 +11,8 @@ const SAVE_TOAST_HOLD_SECONDS : float = 1.2
 const SAVE_TOAST_FADE_SECONDS : float = 0.4
 const NO_ACTIVE_RECIPE_TEXT : String = "resepti:"
 
-## The gold of perk and modifier names (LevelUpWindow), so XP reads as "growth".
-const XP_POPUP_COLOR : Color = Color(0.949, 0.788, 0.42, 1)
+## Light blue on both XP popups (here and DialogWiring), apart from the gold money.
+const XP_POPUP_COLOR : Color = Color(0.4, 0.75, 1.0, 1)
 const XP_POPUP_FORMAT : String = "+%d XP"
 const XP_POPUP_DURATION_SECONDS : float = 1.8
 const XP_POPUP_OFFSET : Vector2 = Vector2(6, 0)

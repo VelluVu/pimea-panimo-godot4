@@ -18,7 +18,7 @@ const FOLLOW_UP_POPUP_DELAY_SECONDS : float = 0.4
 
 ## XP sits just above the shoulder and reputation just below it.
 const XP_POPUP_OFFSET : Vector2 = Vector2(0.0, -8.0)
-const XP_POPUP_COLOR : Color = Color(0.949, 0.788, 0.42, 1) # same gold as BrewPreparationPanel
+const XP_POPUP_COLOR : Color = Color(0.4, 0.75, 1.0, 1) # same blue as BrewPreparationPanel
 const XP_POPUP_FORMAT : String = "+%d XP"
 
 const REPUTATION_POPUP_OFFSET : Vector2 = Vector2(0.0, 8.0)
