@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RunPerk" format=3]
+
+[ext_resource type="Script" uid="uid://dewmdbm4a0vst" path="res://src/progression/run_perk.gd" id="1_perk"]
+
+[resource]
+script = ExtResource("1_perk")
+perk_name = "Porukalla liikkeelle"
+description = "Kellarista on tullut illan kokoontumispaikka: asiakkaat saapuvat yhä useammin seurassa."
+icon_placeholder = "🍻"
+tier = 1
+walk_in_company_chance = 0.08

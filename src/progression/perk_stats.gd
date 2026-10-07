@@ -38,6 +38,8 @@ const RAID_HIDDEN_BATCHES := &"raid_hidden_batch_count"
 const EXTRA_COUNTER_SLOTS := &"extra_counter_slots"
 const EXTRA_DAILY_GOAL_ROLLS := &"extra_daily_goal_rolls"
 const RAID_SAVED_BOTTLE_SHARE := &"raid_saved_bottle_share"
+const WALK_IN_COMPANY_CHANCE := &"walk_in_company_chance"
+const WALK_IN_COMPANY_BONUS := &"walk_in_company_bonus"
 
 ## How a stat is stored and shown. MULTIPLIER is neutral at 1.0 and shown as
 ## a percentage change, PERCENT_ADD is a flat fraction neutral at 0 and shown
@@ -60,6 +62,8 @@ static func definitions() -> Array[Dictionary]:
 		{"stat": PEAK_SPEED, "kind": Kind.MULTIPLIER, "text": StringContainer.PERK_PEAK_SPEED_STAT_STRING},
 		{"stat": DECLINE_RATE, "kind": Kind.MULTIPLIER, "text": StringContainer.PERK_DECLINE_RATE_STAT_STRING},
 		{"stat": SPAWN_INTERVAL, "kind": Kind.MULTIPLIER, "text": StringContainer.PERK_SPAWN_INTERVAL_STAT_STRING},
+		{"stat": WALK_IN_COMPANY_CHANCE, "kind": Kind.PERCENT_ADD, "text": StringContainer.PERK_WALK_IN_COMPANY_CHANCE_STAT_STRING},
+		{"stat": WALK_IN_COMPANY_BONUS, "kind": Kind.COUNT, "text": StringContainer.PERK_WALK_IN_COMPANY_BONUS_STAT_STRING},
 		{"stat": AGENTTI_APPEARANCE, "kind": Kind.MULTIPLIER, "text": StringContainer.PERK_AGENTTI_APPEARANCE_STAT_STRING},
 		{"stat": MAFIOSO_APPEARANCE, "kind": Kind.MULTIPLIER, "text": StringContainer.PERK_MAFIOSO_APPEARANCE_STAT_STRING},
 		{"stat": TIP_DOUBLE_CHANCE, "kind": Kind.PERCENT_ADD, "text": StringContainer.PERK_TIP_DOUBLE_CHANCE_STAT_STRING},

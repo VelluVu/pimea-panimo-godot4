@@ -86,6 +86,25 @@ func spawn_walk_in(forced_data: CustomerData = null) -> void:
 		return
 	_try_spawn_walk_in(forced_data)
 	_start_next_walk_in_timer()
+	# A forced walk-in (a recommended friend, a console command) comes alone.
+	if forced_data == null:
+		_spawn_company()
+
+
+## Now and then a walk-in brings company, see WalkInRules. Each companion is its own
+## random customer and needs its own free counter spot.
+func _spawn_company() -> void:
+	var brewery: Brewery = BrewEngine.current_brewery
+	if brewery == null:
+		return
+	var chance: float = WalkInRules.company_chance(brewery.stats.chance(PerkStats.WALK_IN_COMPANY_CHANCE))
+	var count: int = WalkInRules.customer_count(randf(), chance, int(brewery.stats.total(PerkStats.WALK_IN_COMPANY_BONUS)))
+	for i: int in count - 1:
+		# Pauses with the tree, so no companion walks in behind a level-up window.
+		await get_tree().create_timer(randf_range(WalkInRules.COMPANY_GAP_SECONDS.x, WalkInRules.COMPANY_GAP_SECONDS.y), false).timeout
+		if _paused or BrewEngine.current_brewery != brewery:
+			return
+		_try_spawn_walk_in(null)
 
 
 ## A crowd shares one counter slot and spawns staggered so it floods in. Like a
