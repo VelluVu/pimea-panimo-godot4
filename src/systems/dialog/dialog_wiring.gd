@@ -7,17 +7,20 @@ extends Node
 ## folder works unchanged. DialogView adds this as a child, so the connections go away
 ## with it.
 
-const XP_POPUP_OFFSET : Vector2 = Vector2(0.0, -50.0)
+## Popups come out of the customer's shoulders, measured on Opiskelija from its feet:
+## XP and reputation grow out of the left shoulder, the money out of the right one.
+const LEFT_SHOULDER : Vector2 = Vector2(-32.0, -68.0)
+const RIGHT_SHOULDER : Vector2 = Vector2(32.0, -68.0)
+
+## XP sits just above the shoulder and reputation just below it.
+const XP_POPUP_OFFSET : Vector2 = Vector2(0.0, -8.0)
 const XP_POPUP_COLOR : Color = Color(0.949, 0.788, 0.42, 1) # same gold as BrewPreparationPanel
 const XP_POPUP_FORMAT : String = "+%d XP"
 
-## Popups sit well below the speech bubble so they read as coming from the customer:
-## XP highest, reputation just under it, the money beside them.
-const REPUTATION_POPUP_OFFSET : Vector2 = Vector2(0.0, -25.0)
+const REPUTATION_POPUP_OFFSET : Vector2 = Vector2(0.0, 8.0)
 const REPUTATION_POPUP_FORMAT : String = "%+d"
 
 ## The sale's income pops out first and the tip takes its place once it has faded.
-const MONEY_POPUP_OFFSET : Vector2 = Vector2(40.0, -50.0)
 const MONEY_POPUP_COLOR : Color = Color.GREEN
 const MONEY_POPUP_FORMAT : String = "+%.1f €"
 ## A big or critical tip turns gold, like the treasure it is.
@@ -45,24 +48,24 @@ func _on_dialogue_pushed(text : String, is_special : bool, slot : int, speaker_p
 
 func _on_xp_popup_requested(amount : int, character_pos : Vector2, tier : PopupTierRules.Tier) -> void:
 	var emphasis : DialogView.Emphasis = _emphasis(tier)
-	_dialog.show_popup(tr(XP_POPUP_FORMAT) % amount, XP_POPUP_COLOR, character_pos + _scaled(XP_POPUP_OFFSET, emphasis), emphasis)
+	_dialog.show_popup(tr(XP_POPUP_FORMAT) % amount, XP_POPUP_COLOR, character_pos + LEFT_SHOULDER + _scaled(XP_POPUP_OFFSET, emphasis), emphasis, 0.0, HORIZONTAL_ALIGNMENT_RIGHT)
 
 
 func _on_reputation_popup_requested(amount : int, character_pos : Vector2, tier : PopupTierRules.Tier) -> void:
 	var emphasis : DialogView.Emphasis = _emphasis(tier)
-	_dialog.show_popup(tr(REPUTATION_POPUP_FORMAT) % amount, Color.GREEN if amount > 0 else Color.RED, character_pos + _scaled(REPUTATION_POPUP_OFFSET, emphasis), emphasis)
+	_dialog.show_popup(tr(REPUTATION_POPUP_FORMAT) % amount, Color.GREEN if amount > 0 else Color.RED, character_pos + LEFT_SHOULDER + _scaled(REPUTATION_POPUP_OFFSET, emphasis), emphasis, 0.0, HORIZONTAL_ALIGNMENT_RIGHT)
 
 
 func _on_money_popup_requested(income : float, tip : float, character_pos : Vector2, tip_tier : PopupTierRules.Tier) -> void:
 	var tip_delay : float = 0.0
 	if income > 0.0:
-		_dialog.show_popup(tr(MONEY_POPUP_FORMAT) % income, MONEY_POPUP_COLOR, character_pos + MONEY_POPUP_OFFSET)
+		_dialog.show_popup(tr(MONEY_POPUP_FORMAT) % income, MONEY_POPUP_COLOR, character_pos + RIGHT_SHOULDER)
 		tip_delay = DialogView.popup_duration(DialogView.Emphasis.NORMAL)
 	if tip <= 0.0:
 		return
 	var emphasis : DialogView.Emphasis = _emphasis(tip_tier)
 	var color : Color = MONEY_POPUP_COLOR if emphasis == DialogView.Emphasis.NORMAL else LOUD_TIP_POPUP_COLOR
-	_dialog.show_popup(tr(MONEY_POPUP_FORMAT) % tip, color, character_pos + MONEY_POPUP_OFFSET, emphasis, tip_delay)
+	_dialog.show_popup(tr(MONEY_POPUP_FORMAT) % tip, color, character_pos + RIGHT_SHOULDER, emphasis, tip_delay)
 
 
 ## The crit chime plays when a critical popup actually appears, once for popups that

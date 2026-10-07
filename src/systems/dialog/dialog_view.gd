@@ -80,22 +80,26 @@ func close_bubble(slot : int) -> void:
 ## A brief flourish that pops out, drifts up and fades out. Independent of the bubble
 ## slots. A louder `emphasis` is bigger (and shakes when CRITICAL), like a critical hit.
 ## With `delay_seconds` the popup waits hidden first, so popups can follow each other.
-func show_popup(text : String, color : Color, global_pos : Vector2, emphasis : Emphasis = Emphasis.NORMAL, delay_seconds : float = 0.0) -> void:
+## `anchor_edge` is the edge of the text that sits on `anchor_pos` (at the text's middle
+## height): RIGHT grows the text out to the left of it, LEFT out to the right.
+func show_popup(text : String, color : Color, anchor_pos : Vector2, emphasis : Emphasis = Emphasis.NORMAL, delay_seconds : float = 0.0, anchor_edge : HorizontalAlignment = HORIZONTAL_ALIGNMENT_LEFT) -> void:
 	var popup := Label.new()
 	popup.text = text
 	popup.modulate = color
 	popup.visible = false
 	_spawn_point.add_child(popup)
-	popup.global_position = global_pos
 	if emphasis != Emphasis.NORMAL:
 		_enlarge(popup, POPUP_FONT_SCALES[emphasis])
 	popup.reset_size()
-	popup.pivot_offset = popup.size / 2.0
+	# The bounce grows out of the anchored edge.
+	popup.pivot_offset = Vector2(_edge_x(popup.size.x, anchor_edge), popup.size.y / 2.0)
+	var global_pos : Vector2 = anchor_pos - popup.pivot_offset
+	popup.global_position = global_pos
 
 	var tween := create_tween()
 	if delay_seconds > 0.0:
 		tween.tween_interval(delay_seconds)
-	tween.tween_callback(_reveal.bind(popup, emphasis, global_pos))
+	tween.tween_callback(_reveal.bind(popup, emphasis, anchor_pos))
 	_bounce_in(tween, popup, LOUD_POPUP_BOUNCE_SCALE if emphasis != Emphasis.NORMAL else POPUP_BOUNCE_SCALE)
 	if emphasis == Emphasis.CRITICAL:
 		_shake(tween, popup, global_pos)
@@ -106,6 +110,16 @@ func show_popup(text : String, color : Color, global_pos : Vector2, emphasis : E
 	tween.tween_property(popup, "global_position", global_pos + Vector2(0.0, -POPUP_FLOAT_DISTANCE), duration)
 	tween.parallel().tween_property(popup, "modulate", faded, duration)
 	tween.tween_callback(popup.queue_free)
+
+
+static func _edge_x(width : float, anchor_edge : HorizontalAlignment) -> float:
+	match anchor_edge:
+		HORIZONTAL_ALIGNMENT_RIGHT:
+			return width
+		HORIZONTAL_ALIGNMENT_CENTER:
+			return width / 2.0
+		_:
+			return 0.0
 
 
 ## How long a popup floats after popping out, for chaining popups one after another.
