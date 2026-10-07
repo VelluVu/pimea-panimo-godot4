@@ -72,5 +72,11 @@ func process_reject(event_data: SpecialEventData) -> String:
 	return event_data.reject_dialogue
 
 
+## An accepted request whose goods never came in time: it failed, at no further cost.
+func process_expired(event_data: SpecialEventData) -> String:
+	BrewerySignals.special_event_resolved.emit(false, event_data)
+	return event_data.fail_dialogue
+
+
 func spawn_special_customer() -> void:
 	_on_special_event_timer_timeout()

@@ -8,6 +8,21 @@ extends SpecialEventData
 
 @export var required_min_quality: float = 1.2
 
+const REQUIREMENT_FORMAT: String = "olutta, laatu vähintään %d %%"
+
+
+## The most bottles any one batch good enough has: the delivery comes from one batch.
+func delivery_progress(inventory: Inventory) -> Vector2i:
+	var most: int = 0
+	for batch: BrewBatch in inventory.brew_batches:
+		if batch.current_quality >= required_min_quality:
+			most = maxi(most, batch.amount_bottles)
+	return Vector2i(most, required_bottles)
+
+
+func requirement_name() -> String:
+	return UiText.of(REQUIREMENT_FORMAT) % roundi(required_min_quality * 100.0)
+
 
 func try_fulfill(brewery: Brewery) -> bool:
 	var best_batch: BrewBatch = null

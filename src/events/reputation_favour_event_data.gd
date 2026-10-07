@@ -16,6 +16,11 @@ static func affordable_weight(reputation: int, cost: int, base_weight: float) ->
 	return base_weight if reputation >= cost else 0.0
 
 
+## A payment settles on "Joo"; it never waits to take money or reputation later.
+func waits_for_delivery() -> bool:
+	return false
+
+
 func try_fulfill(brewery: Brewery) -> bool:
 	if brewery.reputation < reputation_cost:
 		return false

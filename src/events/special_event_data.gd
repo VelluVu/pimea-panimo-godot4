@@ -5,6 +5,9 @@ extends Resource
 ## try_fulfill() to implement a different mechanic entirely (quality
 ## thresholds, paying a bribe, donating raw ingredients, ...) while reusing
 ## the shared dialogue/reward/timeout fields and _apply_rewards() below.
+## A request for goods waits after "Joo" (delivery_seconds) and completes itself once
+## the stock is there (SpecialEventWindow); one that costs money or reputation settles
+## on "Joo" (waits_for_delivery()).
 
 
 @export var event_caller_name: String = "Kaljabisnesmies"
@@ -13,6 +16,8 @@ extends Resource
 @export var fail_dialogue: String = "Eikö täältä räkälästä saa ees bulkkii kaikille?"
 @export var reject_dialogue : String = "Päätit olla tarttumatta tarjoukseen. Jatketaan pimeää bisnestä."
 @export var timeout_seconds: float = 10.0
+## After "Joo": seconds to get the goods in before the request fails.
+@export var delivery_seconds: float = 30.0
 
 @export_group("Vaatimus")
 @export var required_style: BeerStyle.Style = BeerStyle.Style.BULKKILAGER
@@ -53,12 +58,33 @@ static func risk_fraction(brewery: Brewery) -> float:
 	return clampf(float(brewery.risk) / float(threshold), 0.0, 1.0)
 
 
+## False for a request that settles on "Joo" (a payment), see the subclasses.
+func waits_for_delivery() -> bool:
+	return true
+
+
+func can_fulfill(brewery: Brewery) -> bool:
+	var progress: Vector2i = delivery_progress(brewery.inventory)
+	return progress.x >= progress.y
+
+
+## How much of the requirement is in stock (x) out of what is asked (y).
+func delivery_progress(inventory: Inventory) -> Vector2i:
+	var batch := _find_batch_by_style(inventory, required_style)
+	return Vector2i(batch.amount_bottles if batch != null else 0, required_bottles)
+
+
+## What is asked for, as shown while it is being delivered (translated).
+func requirement_name() -> String:
+	return BeerStyle.get_style_string_from_style(required_style)
+
+
 ## Attempts to satisfy this event against the given brewery, applying its
 ## side effects (consuming stock, changing money/reputation/risk) only on
 ## success. Returns whether it succeeded. Override in subclasses for a
 ## different requirement; call _apply_rewards() once the requirement is met.
 func try_fulfill(brewery: Brewery) -> bool:
-	var matching_batch := _find_batch_by_style(brewery, required_style)
+	var matching_batch := _find_batch_by_style(brewery.inventory, required_style)
 	if matching_batch == null or matching_batch.amount_bottles < required_bottles:
 		return false
 
@@ -71,11 +97,13 @@ func try_fulfill(brewery: Brewery) -> bool:
 	return true
 
 
-func _find_batch_by_style(brewery: Brewery, style: BeerStyle.Style) -> BrewBatch:
-	for batch: BrewBatch in brewery.inventory.brew_batches:
-		if batch.beer_style.style == style:
-			return batch
-	return null
+## The fullest batch of `style`, so two batches of it never hide a big enough one.
+func _find_batch_by_style(inventory: Inventory, style: BeerStyle.Style) -> BrewBatch:
+	var best: BrewBatch = null
+	for batch: BrewBatch in inventory.brew_batches:
+		if batch.beer_style.style == style and (best == null or batch.amount_bottles > best.amount_bottles):
+			best = batch
+	return best
 
 
 func _apply_rewards(brewery: Brewery) -> void:
