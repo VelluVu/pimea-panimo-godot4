@@ -26,10 +26,9 @@ const REPUTATION_POPUP_FORMAT : String = "%+d"
 
 ## The tip pops a row below the income so the two never cover each other.
 const TIP_POPUP_OFFSET : Vector2 = Vector2(0.0, 12.0)
-const MONEY_POPUP_COLOR : Color = Color.GREEN
+## Money is gold, so it never reads as the green reputation popup.
+const MONEY_POPUP_COLOR : Color = Color(1.0, 0.84, 0.0, 1)
 const MONEY_POPUP_FORMAT : String = "+%.1f €"
-## A big or critical tip turns gold, like the treasure it is.
-const LOUD_TIP_POPUP_COLOR : Color = Color(1.0, 0.84, 0.0, 1)
 
 var _dialog : DialogView
 var _last_critical_frame : int = -1
@@ -69,8 +68,7 @@ func _on_money_popup_requested(income : float, tip : float, character_pos : Vect
 	if tip <= 0.0:
 		return
 	var emphasis : DialogView.Emphasis = _emphasis(tip_tier)
-	var color : Color = MONEY_POPUP_COLOR if emphasis == DialogView.Emphasis.NORMAL else LOUD_TIP_POPUP_COLOR
-	_dialog.show_popup(tr(MONEY_POPUP_FORMAT) % tip, color, character_pos + RIGHT_SHOULDER + _scaled(TIP_POPUP_OFFSET, emphasis), emphasis, tip_delay)
+	_dialog.show_popup(tr(MONEY_POPUP_FORMAT) % tip, MONEY_POPUP_COLOR, character_pos + RIGHT_SHOULDER + _scaled(TIP_POPUP_OFFSET, emphasis), emphasis, tip_delay)
 
 
 ## The crit chime plays when a critical popup actually appears, once for popups that
