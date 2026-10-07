@@ -16,6 +16,17 @@ const HOP_NAME_SUFFIX : String = "-humala"
 const PURITY_LAW_FORMAT : String = "Reinheitsgebot rikottu! Baijerin herttua kääntyy haudassaan. %s: laatu -%d %%"
 
 
+## One toast for several unlocks that land together: `single_format` for one name,
+## `many_format` for a comma-joined list. Names are translated here.
+static func unlocked(single_format : String, many_format : String, names : Array[String]) -> String:
+	if names.is_empty():
+		return ""
+	var translated : PackedStringArray = []
+	for name : String in names:
+		translated.append(UiText.of(name))
+	return UiText.of(single_format if names.size() == 1 else many_format) % ", ".join(translated)
+
+
 static func goal_resolved(goal_name : String, succeeded : bool, money : int, reputation : int, xp : int, risk : int) -> String:
 	var name : String = UiText.of(goal_name)
 	if succeeded:

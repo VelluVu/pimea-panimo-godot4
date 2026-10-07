@@ -2793,7 +2793,9 @@ msgstr "Regulars"
 msgid ""
 "Tunnettu nimi tuo vakituisia kävijöitä yhä useammin. Uusia asiakkaita "
 "saapuu kellariin pysyvästi hieman tiheämmin, ja joskus kaverin kanssa."
-msgstr "A known name brings regular visitors more and more often. New customers permanently arrive a little more often, and sometimes with a friend."
+msgstr ""
+"A known name brings regular visitors more and more often. New customers "
+"permanently arrive a little more often, and sometimes with a friend."
 
 #: src/resources/meta_unlocks/kaymisen_hallinta.tres
 msgid ""
@@ -3050,7 +3052,9 @@ msgstr ""
 msgid ""
 "Asiakkaat kertovat kellarista kavereilleen, ja välillä joku ottaa kaverin "
 "mukaan."
-msgstr "Customers tell their friends about the cellar, and now and then someone brings a friend along."
+msgstr ""
+"Customers tell their friends about the cellar, and now and then someone "
+"brings a friend along."
 
 #: src/resources/perks/kaveriporukka.tres
 msgid "Kaveriporukka"
@@ -3138,7 +3142,9 @@ msgstr "Nighttime Legend"
 msgid ""
 "Kellarista on tullut illan kokoontumispaikka: asiakkaat saapuvat yhä "
 "useammin seurassa."
-msgstr "The cellar has become the evening's meeting place: customers arrive in company more and more often."
+msgstr ""
+"The cellar has become the evening's meeting place: customers arrive in "
+"company more and more often."
 
 #: src/resources/perks/porukalla_liikkeelle.tres
 msgid "Porukalla liikkeelle"
@@ -3909,6 +3915,14 @@ msgstr ""
 msgid "Täytä resepti"
 msgstr "Fill recipe"
 
+#: src/scenes/ui/left_shop_view.gd
+msgid "Ei varaa: %d €"
+msgstr "Can't afford: %d €"
+
+#: src/scenes/ui/left_shop_view.gd
+msgid "Vaatii %d mainetta"
+msgstr "Needs %d reputation"
+
 #: src/scenes/ui/level_up_window.gd
 msgid "Taso %d!"
 msgstr "Level %d!"
@@ -4175,6 +4189,22 @@ msgstr "[color=red]LVV RAID! %d servings seized, fine %.1f €, reputation -%d[/
 msgid "[color=yellow]Erikoistapahtuma: %s[/color]"
 msgstr "[color=yellow]Special event: %s[/color]"
 
+#: src/systems/dialog/dialog_wiring.gd
+msgid "Ei enää kanta-asiakas"
+msgstr "No longer a regular"
+
+#: src/systems/dialog/dialog_wiring.gd
+msgid "Huono arvio!"
+msgstr "Bad review!"
+
+#: src/systems/dialog/dialog_wiring.gd
+msgid "Kanta-asiakas!"
+msgstr "Regular!"
+
+#: src/systems/dialog/dialog_wiring.gd
+msgid "Suosittelee kaverille!"
+msgstr "Tells a friend!"
+
 #: src/systems/input/input_bindings.gd
 msgid "Key already in use: %s"
 msgstr "Key already in use: %s"
@@ -4328,30 +4358,6 @@ msgid "Päivää jäljellä %s / %s"
 msgstr "%s left of %s today"
 
 #: src/ui/gui_announcer.gd
-msgid "%s ei ole enää kanta-asiakas."
-msgstr "%s is no longer a regular."
-
-#: src/ui/gui_announcer.gd
-msgid "%s on nyt kanta-asiakas! Ostaa enemmän ja tippaa paremmin."
-msgstr "%s is now a regular! Buys more and tips better."
-
-#: src/ui/gui_announcer.gd
-msgid "%s vaatii vähintään %d mainetta."
-msgstr "%s needs at least %d reputation."
-
-#: src/ui/gui_announcer.gd
-msgid "Ei varaa: %s maksaa %d €, kassassa %.1f €."
-msgstr "Can't afford: %s costs %d €, you have %.1f €."
-
-#: src/ui/gui_announcer.gd
-msgid "Huono arvio kiertää. Asiakkaat viipyvät hetken."
-msgstr "A bad review is going around. Customers stay away for a while."
-
-#: src/ui/gui_announcer.gd
-msgid "Maine hiipui yön aikana: -%d (%s)"
-msgstr "Reputation faded overnight: -%d (%s)"
-
-#: src/ui/gui_announcer.gd
 msgid "Maineesi laski: %s."
 msgstr "Your reputation dropped: %s."
 
@@ -4368,12 +4374,12 @@ msgstr ""
 "peace."
 
 #: src/ui/gui_announcer.gd
-msgid "Saavutus avattu: %s!"
-msgstr "Achievement unlocked: %s!"
+msgid "Saavutuksia avattu: %s!"
+msgstr "Achievements unlocked: %s!"
 
 #: src/ui/gui_announcer.gd
-msgid "Tyytyväinen asiakas suositteli panimoa kaverilleen!"
-msgstr "A happy customer recommended the brewery to a friend!"
+msgid "Saavutus avattu: %s!"
+msgstr "Achievement unlocked: %s!"
 
 #: src/ui/gui_announcer.gd
 msgid "Uusi asiakas avattu: %s!"
@@ -4382,6 +4388,10 @@ msgstr "New customer unlocked: %s!"
 #: src/ui/gui_announcer.gd
 msgid "Uusi oluttyyli löydetty: %s!"
 msgstr "New beer style discovered: %s!"
+
+#: src/ui/gui_announcer.gd
+msgid "Uusia asiakkaita avattu: %s!"
+msgstr "New customers unlocked: %s!"
 
 #: src/ui/leaderboard_text.gd
 msgid "Annokset %d"

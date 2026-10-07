@@ -11,6 +11,9 @@ const MONEY_POPUP_FORMAT : String = "-%.1f €"
 const MONEY_POPUP_DURATION_SECONDS : float = 1.8
 const MONEY_POPUP_OFFSET : Vector2 = Vector2(6, 0)
 const MONEY_POPUP_FLOAT_DISTANCE : float = 35.0
+## Why a purchase failed, floated from the same spot instead of a toast.
+const LOCKED_POPUP_FORMAT : String = "Vaatii %d mainetta"
+const UNDERFUNDED_POPUP_FORMAT : String = "Ei varaa: %d €"
 
 @onready var current_item_label : Label = %ShopItemLabel
 @onready var ingredient_type_selector : IngredientTypeSelector = %ShopTypeSelector
@@ -34,6 +37,10 @@ func _ready() -> void:
 	# until the player reselected. Same fix as BrewingView's slider.
 	BrewerySignals.brewery_state_changed.connect(_on_brewery_state_changed)
 	BrewerySignals.ingredient_purchased.connect(_on_ingredient_purchased)
+	BrewerySignals.ingredient_purchase_locked.connect(func(_name: String, required_reputation: int) -> void:
+		_float_popup(tr(LOCKED_POPUP_FORMAT) % required_reputation))
+	BrewerySignals.ingredient_purchase_underfunded.connect(func(_name: String, price: int, _money: float) -> void:
+		_float_popup(tr(UNDERFUNDED_POPUP_FORMAT) % price))
 	# BrewingView's own IngredientOptionButton listens to this same
 	# global active_ingredient_changed signal, so adding something to the
 	# brew table over there leaves current_id here pointing at whatever
@@ -106,8 +113,12 @@ func _update_label() -> void:
 ## BrewerySignals.ingredient_purchased and BrewPreparationPanel's
 ## equivalent "+X XP" popup at "Pane".
 func _on_ingredient_purchased(cost : float) -> void:
+	_float_popup(MONEY_POPUP_FORMAT % cost)
+
+
+func _float_popup(text : String) -> void:
 	var popup := Label.new()
-	popup.text = MONEY_POPUP_FORMAT % cost
+	popup.text = text
 	popup.modulate = MONEY_POPUP_COLOR
 
 	buy_button.add_child(popup)

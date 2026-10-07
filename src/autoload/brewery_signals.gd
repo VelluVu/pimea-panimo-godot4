@@ -115,6 +115,10 @@ signal money_popup_requested(income: float, tip: float, position: Vector2, tip_t
 ## quality of the beer sold, which sets how loud the XP and reputation popups are.
 @warning_ignore("unused_signal")
 signal sale_popup_tiers_rated(tip_tier: PopupTierRules.Tier, beer_quality: float)
+## Emitted by SaleOutcomeCapture with a sale's word of mouth or regular status change,
+## shown over the customer instead of a toast.
+@warning_ignore("unused_signal")
+signal customer_note_popup_requested(note: SaleOutcomeCapture.Note, position: Vector2)
 ## Emitted by DialogWiring when a critical popup appears, once per frame, at the customer.
 @warning_ignore("unused_signal")
 signal critical_gain_shown(position: Vector2)
