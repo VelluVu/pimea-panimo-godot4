@@ -10,14 +10,18 @@ checklist for when it is. Facts checked 2026-10-07.
 - No `export_presets.cfg` yet.
 - Assets are about 18 MB, mostly music (OGG/MP3). The web build downloads all of it at start.
 
-## Decide first (the developer's call)
+## Decided (2026-10-07)
 
-1. **Demo limits.** Options: a shorter season (e.g. 7 days instead of 15), some customers,
-   styles or Olutoppi talents locked, a "full game coming" screen at the end. Or no limits:
-   the whole game as it is now.
-2. **Where it is hosted.** GitHub Pages (free, from the repo), itch.io (free, a game page with
-   comments), or both.
-3. **Leaderboard.** Keep it local in the demo (the planned Supabase online board is not built).
+1. **Demo limits: a shorter taste.** The season ends at **day 5** (about 25 minutes) with a
+   "Kiitos pelaamisesta! Koko peli tulossa" screen showing the score. Olutoppi talents can be
+   seen but not bought. Everything else as in the full game: all customers, styles and events
+   that turn up in 5 days. The rules sit behind `OS.has_feature("demo")`.
+2. **Hosting: itch.io and GitHub Pages.** itch.io is the public page people are sent to (the
+   developer makes the account and page); GitHub Pages builds automatically from the repo for
+   the README link and testing. The repo is public, so Pages is free. The public source means
+   the limit only stops normal players; fine for now, revisit before a Steam release.
+3. **Leaderboard: local.** It works in the browser as is. The online board waits until the
+   Steam page is paid for (see the Supabase plan).
 
 ## Build steps
 
