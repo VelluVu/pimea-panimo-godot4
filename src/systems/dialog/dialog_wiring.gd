@@ -30,6 +30,19 @@ const TIP_POPUP_OFFSET : Vector2 = Vector2(0.0, 12.0)
 const MONEY_POPUP_COLOR : Color = Color(1.0, 0.84, 0.0, 1)
 const MONEY_POPUP_FORMAT : String = "+%.1f €"
 
+## Word of mouth and regular status pop centred on the customer, below the shoulder
+## numbers and clear of the speech bubble, after them.
+const NOTE_POPUP_OFFSET : Vector2 = Vector2(0.0, -30.0)
+const NOTE_POPUP_DELAY_SECONDS : float = 0.8
+const FRIEND_RECOMMENDED_TEXT : String = "Suosittelee kaverille!"
+const BAD_REVIEW_TEXT : String = "Huono arvio!"
+const BECAME_REGULAR_TEXT : String = "Kanta-asiakas!"
+const LOST_REGULAR_TEXT : String = "Ei enää kanta-asiakas"
+const GOOD_NOTE_COLOR : Color = Color.GREEN
+const BAD_NOTE_COLOR : Color = Color(1.0, 0.35, 0.3, 1)
+const REGULAR_NOTE_COLOR : Color = Color(1.0, 0.84, 0.0, 1)
+const FADED_NOTE_COLOR : Color = Color(0.7, 0.7, 0.7, 1)
+
 var _dialog : DialogView
 var _last_critical_frame : int = -1
 
@@ -41,6 +54,7 @@ func _ready() -> void:
 	BrewerySignals.xp_popup_requested.connect(_on_xp_popup_requested)
 	BrewerySignals.reputation_popup_requested.connect(_on_reputation_popup_requested)
 	BrewerySignals.money_popup_requested.connect(_on_money_popup_requested)
+	BrewerySignals.customer_note_popup_requested.connect(_on_customer_note_popup_requested)
 	_dialog.popup_shown.connect(_on_popup_shown)
 
 
@@ -69,6 +83,22 @@ func _on_money_popup_requested(income : float, tip : float, character_pos : Vect
 		return
 	var emphasis : DialogView.Emphasis = _emphasis(tip_tier)
 	_dialog.show_popup(tr(MONEY_POPUP_FORMAT) % tip, MONEY_POPUP_COLOR, character_pos + RIGHT_SHOULDER + _scaled(TIP_POPUP_OFFSET, emphasis), emphasis, tip_delay)
+
+
+func _on_customer_note_popup_requested(note : SaleOutcomeCapture.Note, character_pos : Vector2) -> void:
+	var text : String = FRIEND_RECOMMENDED_TEXT
+	var color : Color = GOOD_NOTE_COLOR
+	match note:
+		SaleOutcomeCapture.Note.BAD_REVIEW:
+			text = BAD_REVIEW_TEXT
+			color = BAD_NOTE_COLOR
+		SaleOutcomeCapture.Note.BECAME_REGULAR:
+			text = BECAME_REGULAR_TEXT
+			color = REGULAR_NOTE_COLOR
+		SaleOutcomeCapture.Note.LOST_REGULAR:
+			text = LOST_REGULAR_TEXT
+			color = FADED_NOTE_COLOR
+	_dialog.show_popup(tr(text), color, character_pos + NOTE_POPUP_OFFSET, DialogView.Emphasis.NORMAL, NOTE_POPUP_DELAY_SECONDS, HORIZONTAL_ALIGNMENT_CENTER)
 
 
 ## The crit chime plays when a critical popup actually appears, once for popups that

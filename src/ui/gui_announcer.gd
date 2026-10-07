@@ -9,24 +9,20 @@ extends Node
 
 const DISCOVERY_TOAST_FORMAT: String = "Uusi oluttyyli löydetty: %s!"
 const ACHIEVEMENT_UNLOCKED_TOAST_FORMAT: String = "Saavutus avattu: %s!"
+const ACHIEVEMENTS_UNLOCKED_TOAST_FORMAT: String = "Saavutuksia avattu: %s!"
 const CUSTOMER_UNLOCKED_TOAST_FORMAT: String = "Uusi asiakas avattu: %s!"
-const INGREDIENT_LOCKED_TOAST_FORMAT: String = "%s vaatii vähintään %d mainetta."
+const CUSTOMERS_UNLOCKED_TOAST_FORMAT: String = "Uusia asiakkaita avattu: %s!"
 const REPUTATION_TIER_ROSE_TOAST_FORMAT: String = "Maineesi nousi: %s!"
 const REPUTATION_TIER_FELL_TOAST_FORMAT: String = "Maineesi laski: %s."
-const FRIEND_RECOMMENDED_TOAST: String = "Tyytyväinen asiakas suositteli panimoa kaverilleen!"
-const BAD_REVIEW_TOAST: String = "Huono arvio kiertää. Asiakkaat viipyvät hetken."
-const REGULAR_GAINED_TOAST_FORMAT: String = "%s on nyt kanta-asiakas! Ostaa enemmän ja tippaa paremmin."
-const REGULAR_LOST_TOAST_FORMAT: String = "%s ei ole enää kanta-asiakas."
-const REPUTATION_DECAY_TOAST_FORMAT: String = "Maine hiipui yön aikana: -%d (%s)"
-const INGREDIENT_UNDERFUNDED_TOAST_FORMAT: String = "Ei varaa: %s maksaa %d €, kassassa %.1f €."
 const DISCOVERY_TOAST_FLASH_SECONDS: float = 0.15
 const DISCOVERY_TOAST_HOLD_SECONDS: float = 2.0
 ## Long toasts (a daily goal's reward line) stay up long enough to read.
 const TOAST_HOLD_PER_CHARACTER_SECONDS: float = 0.05
 const TOAST_MIN_HOLD_SECONDS: float = 3.0
 const TOAST_MAX_HOLD_SECONDS: float = 7.0
-## A burst of unlocks at once would otherwise stack down the whole screen.
-const TOAST_MAX_VISIBLE: int = 3
+## A burst at once would otherwise stack down the screen; unlocks that land together
+## also share one toast (_flush_unlocks).
+const TOAST_MAX_VISIBLE: int = 2
 const DISCOVERY_TOAST_FADE_SECONDS: float = 0.6
 
 const GROUP_VISIT_BANNER_FLASH_SECONDS: float = 0.2
@@ -56,6 +52,9 @@ var _day_recap_window: DayRecapWindow
 ## Bumped on every announcement so a banner still waiting out the recap
 ## window is dropped if a newer day's announcement arrives first.
 var _day_event_announce_serial: int = 0
+## Unlocks that land in the same frame share one toast; flushed at the frame's end.
+var _pending_achievements: Array[String] = []
+var _pending_customers: Array[String] = []
 
 
 ## Builds the presenters. `goals_panel` is pointed at when the first-brew hint ends.
@@ -83,13 +82,7 @@ func start() -> void:
 	CustomerRegistry.customer_unlocked.connect(_on_customer_unlocked)
 	DailyGoalManager.daily_goal_resolved.connect(_on_daily_goal_resolved)
 	BrewerySignals.early_day_close_applied.connect(_on_early_day_close_applied)
-	BrewerySignals.ingredient_purchase_locked.connect(_on_ingredient_purchase_locked)
-	BrewerySignals.ingredient_purchase_underfunded.connect(_on_ingredient_purchase_underfunded)
 	BrewerySignals.reputation_tier_changed.connect(_on_reputation_tier_changed)
-	BrewerySignals.reputation_decayed.connect(_on_reputation_decayed)
-	BrewerySignals.friend_recommended.connect(func(_data: CustomerData) -> void: _show_toast(FRIEND_RECOMMENDED_TOAST))
-	BrewerySignals.bad_review_spread.connect(func() -> void: _show_toast(BAD_REVIEW_TOAST))
-	BrewerySignals.regular_status_changed.connect(_on_regular_status_changed)
 	BrewerySignals.group_visit_announced.connect(_on_group_visit_announced)
 	BrewerySignals.brew_spiced.connect(_on_brew_spiced)
 	BrewerySignals.day_event_announced.connect(_on_day_event_announced)
@@ -118,11 +111,22 @@ func _on_style_discovered(style: int) -> void:
 
 
 func _on_achievement_unlocked(_achievement_id: String, title: String) -> void:
-	_show_toast(tr(ACHIEVEMENT_UNLOCKED_TOAST_FORMAT) % tr(title))
+	if _pending_achievements.is_empty() and _pending_customers.is_empty():
+		_flush_unlocks.call_deferred()
+	_pending_achievements.append(title)
 
 
 func _on_customer_unlocked(title: String) -> void:
-	_show_toast(tr(CUSTOMER_UNLOCKED_TOAST_FORMAT) % tr(title))
+	if _pending_achievements.is_empty() and _pending_customers.is_empty():
+		_flush_unlocks.call_deferred()
+	_pending_customers.append(title)
+
+
+func _flush_unlocks() -> void:
+	_show_toast(ToastText.unlocked(ACHIEVEMENT_UNLOCKED_TOAST_FORMAT, ACHIEVEMENTS_UNLOCKED_TOAST_FORMAT, _pending_achievements))
+	_show_toast(ToastText.unlocked(CUSTOMER_UNLOCKED_TOAST_FORMAT, CUSTOMERS_UNLOCKED_TOAST_FORMAT, _pending_customers))
+	_pending_achievements.clear()
+	_pending_customers.clear()
 
 
 func _on_daily_goal_resolved(goal_name: String, succeeded: bool, money: int, reputation: int, xp: int, risk: int) -> void:
@@ -134,26 +138,8 @@ func _on_early_day_close_applied(money_cost: float, reputation_cost: int, risk_r
 	_show_toast(ToastText.early_close(money_cost, reputation_cost, risk_relief))
 
 
-## The shop already disables locked entries; the toast keeps both purchase failures surfaced.
-func _on_ingredient_purchase_locked(ingredient_name: String, required_reputation: int) -> void:
-	_show_toast(tr(INGREDIENT_LOCKED_TOAST_FORMAT) % [tr(ingredient_name), required_reputation])
-
-
-## Tells a player who clicked "Osta" without enough money why nothing happened.
-func _on_ingredient_purchase_underfunded(ingredient_name: String, price: int, money: float) -> void:
-	_show_toast(tr(INGREDIENT_UNDERFUNDED_TOAST_FORMAT) % [tr(ingredient_name), price, money])
-
-
 func _on_reputation_tier_changed(tier: ReputationTier, rose: bool) -> void:
 	_show_toast(tr(REPUTATION_TIER_ROSE_TOAST_FORMAT if rose else REPUTATION_TIER_FELL_TOAST_FORMAT) % tr(tier.tier_name))
-
-
-func _on_reputation_decayed(amount: int, tier: ReputationTier) -> void:
-	_show_toast(tr(REPUTATION_DECAY_TOAST_FORMAT) % [amount, tr(tier.tier_name)])
-
-
-func _on_regular_status_changed(customer_title: String, is_regular: bool) -> void:
-	_show_toast(tr(REGULAR_GAINED_TOAST_FORMAT if is_regular else REGULAR_LOST_TOAST_FORMAT) % tr(customer_title))
 
 
 func _on_group_visit_announced(banner_text: String) -> void:

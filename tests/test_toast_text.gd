@@ -49,3 +49,15 @@ func test_several_unlocks_merge_and_drop_the_hop_suffix() -> void:
 func test_only_a_broken_purity_law_gets_a_toast() -> void:
 	assert_eq(ToastTextScript.spiced_brew("Witbier", 0.1), "")
 	assert_true(ToastTextScript.spiced_brew("Helles", -0.1).contains("Reinheitsgebot"))
+
+
+func test_one_unlock_uses_the_single_format() -> void:
+	assert_eq(ToastTextScript.unlocked("Uusi: %s!", "Uusia: %s!", ["Leipuri"] as Array[String]), "Uusi: Leipuri!")
+
+
+func test_several_unlocks_share_one_toast() -> void:
+	assert_eq(ToastTextScript.unlocked("Uusi: %s!", "Uusia: %s!", ["Leipuri", "Munkki"] as Array[String]), "Uusia: Leipuri, Munkki!")
+
+
+func test_no_unlocks_means_no_toast() -> void:
+	assert_eq(ToastTextScript.unlocked("Uusi: %s!", "Uusia: %s!", [] as Array[String]), "")

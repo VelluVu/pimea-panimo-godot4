@@ -5,6 +5,8 @@ extends RefCounted
 ## own copy of the template label, presented by its own BannerPresenter and freed once faded.
 
 const STACK_SEPARATION: int = 2
+## Added to a toast shown again while its first copy is still up, instead of a second copy.
+const REPEAT_SUFFIX: String = " (×%d)"
 
 var _template: Label
 var _stack: VBoxContainer
@@ -21,6 +23,8 @@ var max_hold_seconds: float = INF
 var max_visible: int = 0
 
 var _showing: Array[BannerPresenter] = []
+## BannerPresenter -> [text without the repeat suffix, times shown].
+var _repeats: Dictionary = {}
 
 
 ## The template label supplies the look and the stack's screen rect; it is hidden and stays
@@ -45,6 +49,18 @@ func _init(template: Label, flash_seconds: float, hold_seconds: float, fade_seco
 
 
 func show_toast(text: String) -> void:
+	var count: int = 1
+	for presenter: BannerPresenter in _running():
+		var shown: Array = _repeats.get(presenter, [])
+		if not shown.is_empty() and shown[0] == text:
+			count = shown[1] + 1
+			_showing.erase(presenter)
+			presenter.dismiss_early()
+			break
+	_present(text if count == 1 else text + REPEAT_SUFFIX % count, text, count)
+
+
+func _present(shown_text: String, text: String, count: int) -> void:
 	var label: Label = _template.duplicate() as Label
 	label.show()
 	label.custom_minimum_size.y = _template.offset_bottom - _template.offset_top
@@ -54,14 +70,23 @@ func show_toast(text: String) -> void:
 	_stack.move_child(label, 0)
 
 	_make_room()
-	var hold: float = hold_seconds_for(text.length(), _hold_seconds, hold_per_character, min_hold_seconds, max_hold_seconds)
+	var hold: float = hold_seconds_for(shown_text.length(), _hold_seconds, hold_per_character, min_hold_seconds, max_hold_seconds)
 	var presenter := BannerPresenter.new(label, _flash_seconds, hold, _fade_seconds, true, false, false, label.queue_free)
-	presenter.present(text)
+	presenter.present(shown_text)
 	_showing.append(presenter)
+	_repeats[presenter] = [text, count]
+
+
+func _running() -> Array[BannerPresenter]:
+	_showing = _showing.filter(func(presenter: BannerPresenter) -> bool: return presenter.is_running())
+	for presenter: BannerPresenter in _repeats.keys():
+		if not _showing.has(presenter):
+			_repeats.erase(presenter)
+	return _showing.duplicate()
 
 
 func _make_room() -> void:
-	_showing = _showing.filter(func(presenter: BannerPresenter) -> bool: return presenter.is_running())
+	_running()
 	while max_visible > 0 and _showing.size() >= max_visible:
 		_showing.pop_front().dismiss_early()
 
