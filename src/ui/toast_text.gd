@@ -10,7 +10,11 @@ const GOAL_FAILED_FORMAT : String = "%s epäonnistui: %d maine / +%d LVV-riski"
 ## gets its own toast instead of a confusing "0 maine / +0 LVV-riski".
 const GOAL_FAILED_NO_PENALTY_FORMAT : String = "%s epäonnistui: ei seurauksia"
 const EARLY_CLOSE_FORMAT : String = "Ovet suljettu aikaisin: -%.1f €, mainetta -%d, LVV-riski -%d"
-const INGREDIENTS_UNLOCKED_FORMAT : String = "Uusia aineksia saatavilla: %s!"
+const INGREDIENT_UNLOCKED_FORMAT : String = "Uusi aines: %s"
+const INGREDIENTS_UNLOCKED_FORMAT : String = "Uusia aineksia: %s"
+## The shop popup stays small: a few names, then how many more.
+const MAX_LISTED_INGREDIENTS : int = 2
+const MORE_INGREDIENTS_FORMAT : String = "%s +%d"
 ## Dropped from hop names in the merged toast, which lists them next to spices.
 const HOP_NAME_SUFFIX : String = "-humala"
 const PURITY_LAW_FORMAT : String = "Reinheitsgebot rikottu! Baijerin herttua kääntyy haudassaan. %s: laatu -%d %%"
@@ -43,16 +47,20 @@ static func early_close(money_cost : float, reputation_cost : int, risk_relief :
 	return UiText.of(EARLY_CLOSE_FORMAT) % [money_cost, reputation_cost, risk_relief]
 
 
-## One toast per reputation jump, however many ingredients it unlocked.
+## One short line per reputation jump for the shop entrance's popup, however many
+## ingredients it unlocked.
 static func ingredients_unlocked(unlocked : Array[IngredientData]) -> String:
 	if unlocked.is_empty():
 		return ""
 	if unlocked.size() == 1:
-		return UiText.of(StringContainer.INGREDIENT_UNLOCKED_TOAST_FORMAT) % UiText.of(unlocked[0].name)
+		return UiText.of(INGREDIENT_UNLOCKED_FORMAT) % UiText.of(unlocked[0].name)
 	var names : PackedStringArray = []
-	for ingredient : IngredientData in unlocked:
+	for ingredient : IngredientData in unlocked.slice(0, MAX_LISTED_INGREDIENTS):
 		names.append(UiText.of(ingredient.name.trim_suffix(HOP_NAME_SUFFIX)))
-	return UiText.of(INGREDIENTS_UNLOCKED_FORMAT) % ", ".join(names)
+	var listed : String = ", ".join(names)
+	if unlocked.size() > MAX_LISTED_INGREDIENTS:
+		listed = MORE_INGREDIENTS_FORMAT % [listed, unlocked.size() - MAX_LISTED_INGREDIENTS]
+	return UiText.of(INGREDIENTS_UNLOCKED_FORMAT) % listed
 
 
 ## Only a broken Reinheitsgebot gets a toast; a spice bonus shows in the batch tooltip.
