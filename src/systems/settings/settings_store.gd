@@ -1,8 +1,8 @@
 class_name SettingsStore
 extends Node
 
-## Persisted player preferences: a volume and mute per audio bus, fullscreen and the
-## language. Applies them straight to AudioServer, DisplayServer and TranslationServer.
+## Persisted player preferences: a volume and mute per audio bus, fullscreen, the
+## language and small named options. Applies them straight to AudioServer, DisplayServer and TranslationServer.
 ## The project lists its buses, languages and defaults in its wiring subclass.
 
 ## The language changed; text built in code may need rebuilding.
@@ -15,6 +15,7 @@ const SECTION_VIDEO: String = "video"
 const KEY_FULLSCREEN: String = "fullscreen"
 const VOLUME_SUFFIX: String = "_volume"
 const MUTED_SUFFIX: String = "_muted"
+const SECTION_OPTIONS: String = "options"
 
 ## Buses that exist in the project's bus layout; a missing bus is skipped.
 var audio_buses: Array[StringName] = [&"Master"]
@@ -41,6 +42,8 @@ var _volumes: Dictionary = {}  # bus -> linear 0..1
 ## so a registered English file would show through in Finnish.
 var _translations: Array[Translation] = []
 var _muted: Dictionary = {}    # bus -> bool
+## Small choices other systems keep across sessions (get_option/set_option), key -> value.
+var _options: Dictionary = {}
 
 
 func _ready() -> void:
@@ -91,6 +94,15 @@ static func pick_locale(saved: String, system_language: String, supported: Array
 	return fallback
 
 
+func get_option(key: String, default_value: Variant) -> Variant:
+	return _options.get(key, default_value)
+
+
+func set_option(key: String, value: Variant) -> void:
+	_options[key] = value
+	save_settings()
+
+
 func set_fullscreen(value: bool) -> void:
 	fullscreen = value
 	_apply_fullscreen()
@@ -106,6 +118,10 @@ func load_settings() -> void:
 		_muted[bus] = config.get_value(SECTION_AUDIO, key + MUTED_SUFFIX, default_muted_buses.has(bus)) if loaded else default_muted_buses.has(bus)
 	fullscreen = config.get_value(SECTION_VIDEO, KEY_FULLSCREEN, false) if loaded else false
 	language = config.get_value(SECTION_GENERAL, KEY_LANGUAGE, "") if loaded else ""
+	_options.clear()
+	if loaded and config.has_section(SECTION_OPTIONS):
+		for key: String in config.get_section_keys(SECTION_OPTIONS):
+			_options[key] = config.get_value(SECTION_OPTIONS, key)
 
 
 func save_settings() -> void:
@@ -116,6 +132,8 @@ func save_settings() -> void:
 		config.set_value(SECTION_AUDIO, key + MUTED_SUFFIX, is_muted(bus))
 	config.set_value(SECTION_VIDEO, KEY_FULLSCREEN, fullscreen)
 	config.set_value(SECTION_GENERAL, KEY_LANGUAGE, language)
+	for key: String in _options:
+		config.set_value(SECTION_OPTIONS, key, _options[key])
 	config.save(save_path)
 
 

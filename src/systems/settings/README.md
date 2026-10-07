@@ -1,6 +1,7 @@
 # Settings system
 
-Persisted player preferences: a volume and mute per audio bus, fullscreen and the language.
+Persisted player preferences: a volume and mute per audio bus, fullscreen, the language and
+small named options.
 Applied straight to `AudioServer`, `DisplayServer` and `TranslationServer`, saved to a `ConfigFile`.
 
 ## Interface (`SettingsStore`)
@@ -11,10 +12,11 @@ Applied straight to `AudioServer`, `DisplayServer` and `TranslationServer`, save
 | `is_muted(bus)`, `set_muted(bus, value)` | Applies and saves |
 | `fullscreen`, `set_fullscreen(value)` | Applies and saves |
 | `get_language()`, `set_language(locale)` | The locale in use (saved choice, else system language, else `fallback_locale`). Setting applies, saves and emits `language_changed` |
+| `get_option(key, default)`, `set_option(key, value)` | Any small choice another system keeps across sessions. Setting saves |
 | `save_settings()` | Call when a slider drag ends, not on every tick |
 
 The file keeps `<bus>_volume` and `<bus>_muted` in `[audio]`, `fullscreen` in `[video]` and
-`language` in `[general]` (empty follows the system language).
+`language` in `[general]` (empty follows the system language), and the options in `[options]`.
 
 ## Use it in a new project
 
