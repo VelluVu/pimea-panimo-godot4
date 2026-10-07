@@ -14,11 +14,11 @@ const XP_POPUP_FORMAT : String = "+%d XP"
 ## Popups sit well below the speech bubble so they read as coming from the customer:
 ## XP highest, reputation just under it, the tip beside them.
 const REPUTATION_POPUP_OFFSET : Vector2 = Vector2(0.0, -25.0)
-const REPUTATION_POPUP_FORMAT : String = "%+d Mainetta"
+const REPUTATION_POPUP_FORMAT : String = "%+d"
 
 const TIP_POPUP_OFFSET : Vector2 = Vector2(40.0, -50.0)
 const TIP_POPUP_COLOR : Color = Color.GREEN
-const TIP_POPUP_FORMAT : String = "Tippi +%.1f €"
+const TIP_POPUP_FORMAT : String = "+%.1f €"
 ## A big or critical tip turns gold, like the treasure it is. Too wide to sit beside the
 ## XP popup, it gets its own row above it.
 const LOUD_TIP_POPUP_COLOR : Color = Color(1.0, 0.84, 0.0, 1)

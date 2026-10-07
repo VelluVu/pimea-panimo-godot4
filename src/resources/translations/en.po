@@ -4226,10 +4226,6 @@ msgstr "[color=red]LVV RAID! %d servings seized, fine %.1f €, reputation -%d[/
 msgid "[color=yellow]Erikoistapahtuma: %s[/color]"
 msgstr "[color=yellow]Special event: %s[/color]"
 
-#: src/systems/dialog/dialog_wiring.gd
-msgid "Tippi +%.1f €"
-msgstr "Tip +%.1f €"
-
 #: src/systems/input/input_bindings.gd
 msgid "Key already in use: %s"
 msgstr "Key already in use: %s"
