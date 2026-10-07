@@ -8,6 +8,8 @@ extends RefCounted
 var xp: int = 0
 var reputation: int = 0
 var tip: float = 0.0
+## What the bottles cost, without the tip.
+var income: float = 0.0
 var tip_tier: PopupTierRules.Tier = PopupTierRules.Tier.NORMAL
 ## Quality of the beer sold, or -1 when nothing was sold.
 var beer_quality: float = -1.0
@@ -15,8 +17,6 @@ var beer_quality: float = -1.0
 var bar_fight_bottles: int = -1
 ## EBC of the beer sold, or -1 when nothing was sold.
 var beer_ebc: int = -1
-
-var _critical_announced: bool = false
 
 
 func start() -> void:
@@ -40,25 +40,14 @@ func stop() -> void:
 func emit_xp_popup(position: Vector2) -> void:
 	var tier: PopupTierRules.Tier = PopupTierRules.quality_tier(beer_quality, xp)
 	BrewerySignals.xp_popup_requested.emit(xp, position, tier)
-	_announce_if_critical(tier, position)
 
 
-## Nothing is emitted for a zero reputation change or a missing tip.
-func emit_reputation_and_tip_popups(position: Vector2) -> void:
+## Nothing is emitted for a zero reputation change or a sale that earned nothing.
+func emit_reputation_and_money_popups(position: Vector2) -> void:
 	if reputation != 0:
-		var tier: PopupTierRules.Tier = PopupTierRules.quality_tier(beer_quality, reputation)
-		BrewerySignals.reputation_popup_requested.emit(reputation, position, tier)
-		_announce_if_critical(tier, position)
-	if tip > 0:
-		BrewerySignals.tip_popup_requested.emit(tip, position, tip_tier)
-		_announce_if_critical(tip_tier, position)
-
-
-## One crit sound per sale, however many of its popups are critical.
-func _announce_if_critical(tier: PopupTierRules.Tier, position: Vector2) -> void:
-	if tier == PopupTierRules.Tier.CRITICAL and not _critical_announced:
-		_critical_announced = true
-		BrewerySignals.critical_gain_shown.emit(position)
+		BrewerySignals.reputation_popup_requested.emit(reputation, position, PopupTierRules.quality_tier(beer_quality, reputation))
+	if income > 0.0 or tip > 0.0:
+		BrewerySignals.money_popup_requested.emit(income, tip, position, tip_tier)
 
 
 func _on_xp(amount: int) -> void:
@@ -79,6 +68,7 @@ func _on_bar_fight(broken_bottles: int) -> void:
 
 func _on_sale_breakdown(entry: SaleReceiptEntry) -> void:
 	beer_ebc = entry.beer_ebc
+	income = entry.gross_income
 
 
 func _on_tiers_rated(rated_tip_tier: PopupTierRules.Tier, quality: float) -> void:

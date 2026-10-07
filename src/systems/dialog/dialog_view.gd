@@ -5,6 +5,9 @@ extends Control
 ## with show_bubble(), close_bubble() and show_popup(). Everything that ties it to a
 ## project (its signals, its popup wording) lives in DialogWiring, which this adds as a child.
 
+## A popup appeared on screen, after its delay if it had one.
+signal popup_shown(emphasis : Emphasis, global_pos : Vector2)
+
 ## How loud a popup is: BIG pops in larger with an outline, CRITICAL also shakes.
 enum Emphasis { NORMAL, BIG, CRITICAL }
 
@@ -20,7 +23,9 @@ const POPUP_FONT_SCALES : Array[float] = [1.0, 1.4, 1.9]
 const POPUP_OUTLINE_SIZE : int = 4
 const POPUP_OUTLINE_COLOR : Color = Color(0.12, 0.06, 0.0, 1.0)
 const POPUP_START_SCALE : float = 0.4
-const POPUP_BOUNCE_SCALE : float = 1.3
+## Every popup pops out a little; loud ones overshoot further.
+const POPUP_BOUNCE_SCALE : float = 1.15
+const LOUD_POPUP_BOUNCE_SCALE : float = 1.3
 const POPUP_BOUNCE_SECONDS : float = 0.16
 const POPUP_SHAKE_PIXELS : float = 3.0
 const POPUP_SHAKE_STEPS : int = 6
@@ -72,42 +77,56 @@ func close_bubble(slot : int) -> void:
 	_bubbles.erase(slot)
 
 
-## A brief flourish that drifts up and fades out. Independent of the bubble slots. A
-## louder `emphasis` first bounces in (and shakes when CRITICAL), like a critical hit.
-func show_popup(text : String, color : Color, global_pos : Vector2, emphasis : Emphasis = Emphasis.NORMAL) -> void:
+## A brief flourish that pops out, drifts up and fades out. Independent of the bubble
+## slots. A louder `emphasis` is bigger (and shakes when CRITICAL), like a critical hit.
+## With `delay_seconds` the popup waits hidden first, so popups can follow each other.
+func show_popup(text : String, color : Color, global_pos : Vector2, emphasis : Emphasis = Emphasis.NORMAL, delay_seconds : float = 0.0) -> void:
 	var popup := Label.new()
 	popup.text = text
 	popup.modulate = color
+	popup.visible = false
 	_spawn_point.add_child(popup)
 	popup.global_position = global_pos
+	if emphasis != Emphasis.NORMAL:
+		_enlarge(popup, POPUP_FONT_SCALES[emphasis])
+	popup.reset_size()
+	popup.pivot_offset = popup.size / 2.0
 
 	var tween := create_tween()
-	var duration : float = POPUP_DURATION_SECONDS
-	if emphasis != Emphasis.NORMAL:
-		duration = LOUD_POPUP_DURATION_SECONDS
-		_enlarge(popup, POPUP_FONT_SCALES[emphasis])
-		_bounce_in(tween, popup)
-		if emphasis == Emphasis.CRITICAL:
-			_shake(tween, popup, global_pos)
+	if delay_seconds > 0.0:
+		tween.tween_interval(delay_seconds)
+	tween.tween_callback(_reveal.bind(popup, emphasis, global_pos))
+	_bounce_in(tween, popup, LOUD_POPUP_BOUNCE_SCALE if emphasis != Emphasis.NORMAL else POPUP_BOUNCE_SCALE)
+	if emphasis == Emphasis.CRITICAL:
+		_shake(tween, popup, global_pos)
 
 	var faded : Color = color
 	faded.a = 0.0
+	var duration : float = popup_duration(emphasis)
 	tween.tween_property(popup, "global_position", global_pos + Vector2(0.0, -POPUP_FLOAT_DISTANCE), duration)
 	tween.parallel().tween_property(popup, "modulate", faded, duration)
 	tween.tween_callback(popup.queue_free)
+
+
+## How long a popup floats after popping out, for chaining popups one after another.
+static func popup_duration(emphasis : Emphasis) -> float:
+	return POPUP_DURATION_SECONDS if emphasis == Emphasis.NORMAL else LOUD_POPUP_DURATION_SECONDS
+
+
+func _reveal(popup : Label, emphasis : Emphasis, global_pos : Vector2) -> void:
+	popup.show()
+	popup_shown.emit(emphasis, global_pos)
 
 
 func _enlarge(popup : Label, font_scale : float) -> void:
 	popup.add_theme_font_size_override(&"font_size", roundi(popup.get_theme_font_size(&"font_size") * font_scale))
 	popup.add_theme_constant_override(&"outline_size", POPUP_OUTLINE_SIZE)
 	popup.add_theme_color_override(&"font_outline_color", POPUP_OUTLINE_COLOR)
-	popup.reset_size()
-	popup.pivot_offset = popup.size / 2.0
 
 
-func _bounce_in(tween : Tween, popup : Label) -> void:
+func _bounce_in(tween : Tween, popup : Label, bounce_scale : float) -> void:
 	popup.scale = Vector2.ONE * POPUP_START_SCALE
-	tween.tween_property(popup, "scale", Vector2.ONE * POPUP_BOUNCE_SCALE, POPUP_BOUNCE_SECONDS).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tween.tween_property(popup, "scale", Vector2.ONE * bounce_scale, POPUP_BOUNCE_SECONDS).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	tween.tween_property(popup, "scale", Vector2.ONE, POPUP_BOUNCE_SECONDS)
 
 

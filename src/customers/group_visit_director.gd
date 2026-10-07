@@ -156,7 +156,7 @@ func _run_shared_order(visit : GroupVisit) -> void:
 		outcome.emit_xp_popup(visit.counter_position)
 		if not await _serve_burst(visit, outcome.beer_ebc):
 			return
-	outcome.emit_reputation_and_tip_popups(visit.counter_position)
+	outcome.emit_reputation_and_money_popups(visit.counter_position)
 
 	var display_time : float = _say(visit, SPEECH_FORMAT % [group_label, response_text])
 	var wait_seconds : float = display_time + Customer.FADE_TIME_SECONDS
