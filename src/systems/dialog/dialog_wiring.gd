@@ -12,6 +12,10 @@ extends Node
 const LEFT_SHOULDER : Vector2 = Vector2(-32.0, -68.0)
 const RIGHT_SHOULDER : Vector2 = Vector2(32.0, -68.0)
 
+## Reputation follows the XP, and the tip the income, by this much, so each pair reads
+## as two beats instead of one clump.
+const FOLLOW_UP_POPUP_DELAY_SECONDS : float = 0.4
+
 ## XP sits just above the shoulder and reputation just below it.
 const XP_POPUP_OFFSET : Vector2 = Vector2(0.0, -8.0)
 const XP_POPUP_COLOR : Color = Color(0.949, 0.788, 0.42, 1) # same gold as BrewPreparationPanel
@@ -20,7 +24,8 @@ const XP_POPUP_FORMAT : String = "+%d XP"
 const REPUTATION_POPUP_OFFSET : Vector2 = Vector2(0.0, 8.0)
 const REPUTATION_POPUP_FORMAT : String = "%+d"
 
-## The sale's income pops out first and the tip takes its place once it has faded.
+## The tip pops a row below the income so the two never cover each other.
+const TIP_POPUP_OFFSET : Vector2 = Vector2(0.0, 12.0)
 const MONEY_POPUP_COLOR : Color = Color.GREEN
 const MONEY_POPUP_FORMAT : String = "+%.1f €"
 ## A big or critical tip turns gold, like the treasure it is.
@@ -53,19 +58,19 @@ func _on_xp_popup_requested(amount : int, character_pos : Vector2, tier : PopupT
 
 func _on_reputation_popup_requested(amount : int, character_pos : Vector2, tier : PopupTierRules.Tier) -> void:
 	var emphasis : DialogView.Emphasis = _emphasis(tier)
-	_dialog.show_popup(tr(REPUTATION_POPUP_FORMAT) % amount, Color.GREEN if amount > 0 else Color.RED, character_pos + LEFT_SHOULDER + _scaled(REPUTATION_POPUP_OFFSET, emphasis), emphasis, 0.0, HORIZONTAL_ALIGNMENT_RIGHT)
+	_dialog.show_popup(tr(REPUTATION_POPUP_FORMAT) % amount, Color.GREEN if amount > 0 else Color.RED, character_pos + LEFT_SHOULDER + _scaled(REPUTATION_POPUP_OFFSET, emphasis), emphasis, FOLLOW_UP_POPUP_DELAY_SECONDS, HORIZONTAL_ALIGNMENT_RIGHT)
 
 
 func _on_money_popup_requested(income : float, tip : float, character_pos : Vector2, tip_tier : PopupTierRules.Tier) -> void:
 	var tip_delay : float = 0.0
 	if income > 0.0:
 		_dialog.show_popup(tr(MONEY_POPUP_FORMAT) % income, MONEY_POPUP_COLOR, character_pos + RIGHT_SHOULDER)
-		tip_delay = DialogView.popup_duration(DialogView.Emphasis.NORMAL)
+		tip_delay = FOLLOW_UP_POPUP_DELAY_SECONDS
 	if tip <= 0.0:
 		return
 	var emphasis : DialogView.Emphasis = _emphasis(tip_tier)
 	var color : Color = MONEY_POPUP_COLOR if emphasis == DialogView.Emphasis.NORMAL else LOUD_TIP_POPUP_COLOR
-	_dialog.show_popup(tr(MONEY_POPUP_FORMAT) % tip, color, character_pos + RIGHT_SHOULDER, emphasis, tip_delay)
+	_dialog.show_popup(tr(MONEY_POPUP_FORMAT) % tip, color, character_pos + RIGHT_SHOULDER + _scaled(TIP_POPUP_OFFSET, emphasis), emphasis, tip_delay)
 
 
 ## The crit chime plays when a critical popup actually appears, once for popups that
