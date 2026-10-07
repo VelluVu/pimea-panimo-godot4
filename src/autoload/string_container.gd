@@ -56,7 +56,6 @@ const BITTERNESS_HINT_VERY_BITTER : String = "erittäin karvas"
 
 const INGREDIENT_LOCKED_LABEL : String = "??? – vaatii mainetta: %d"
 const INGREDIENT_LOCKED_ERROR : String = "Ainesosa ERROR: %s vaatii vähintään %d mainetta"
-const INGREDIENT_UNLOCKED_TOAST_FORMAT : String = "Uusi humala saatavilla: %s!"
 
 const LEADERBOARD_BUTTON_TEXT : String = "Ennätykset"
 

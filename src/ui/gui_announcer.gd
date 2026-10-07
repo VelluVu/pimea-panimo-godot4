@@ -46,7 +46,6 @@ var _toasts: ToastStack
 var _group_visit_banner: BannerPresenter
 var _day_event_banner: BannerPresenter
 var _first_brew_hint: BannerPresenter
-var _reputation_tracker: ReputationUnlockTracker
 var _day_recap_window: DayRecapWindow
 
 ## Bumped on every announcement so a banner still waiting out the recap
@@ -87,19 +86,11 @@ func start() -> void:
 	BrewerySignals.brew_spiced.connect(_on_brew_spiced)
 	BrewerySignals.day_event_announced.connect(_on_day_event_announced)
 
-	var brewery := BrewEngine.current_brewery
-	_reputation_tracker = ReputationUnlockTracker.new(brewery.reputation if brewery != null else 0)
-	BrewerySignals.brewery_state_changed.connect(_on_brewery_state_changed)
-
 	# Shown while the day clock is still stopped, so the missing customers
 	# don't read as a bug. Ends by pointing at DailyGoalsPanel.
 	if TimeManager.day_timer.is_stopped():
 		BrewerySignals.brewery_state_changed.connect(_on_first_brew_hint_state_changed)
 		_first_brew_hint.present(FIRST_BREW_HINT_TEXT)
-
-
-func _on_brewery_state_changed(brewery: Brewery) -> void:
-	_show_toast(ToastText.ingredients_unlocked(_reputation_tracker.update(brewery.reputation)))
 
 
 func _on_brew_spiced(style_name: String, spice_bonus: float) -> void:

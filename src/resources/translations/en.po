@@ -350,10 +350,6 @@ msgid "Tämän kauden perkit (%d):"
 msgstr "This season's perks (%d):"
 
 #: src/autoload/string_container.gd
-msgid "Uusi humala saatavilla: %s!"
-msgstr "New hop available: %s!"
-
-#: src/autoload/string_container.gd
 msgid "Vienna Lager"
 msgstr "Vienna Lager"
 
@@ -4638,5 +4634,9 @@ msgstr ""
 "-%d %%"
 
 #: src/ui/toast_text.gd
-msgid "Uusia aineksia saatavilla: %s!"
-msgstr "New ingredients available: %s!"
+msgid "Uusi aines: %s"
+msgstr "New ingredient: %s"
+
+#: src/ui/toast_text.gd
+msgid "Uusia aineksia: %s"
+msgstr "New ingredients: %s"
