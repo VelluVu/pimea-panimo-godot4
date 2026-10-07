@@ -49,7 +49,10 @@ checklist for when it is. Facts checked 2026-10-07.
 
 ## Publish
 
-- GitHub Pages: a GitHub Actions workflow that exports headless (Godot 4.7 + templates) and
-  pushes the build to Pages on a tag or on demand.
+- GitHub Pages: `.github/workflows/web-demo.yml` exports headless (Godot 4.7.2 + templates)
+  and deploys to Pages, on demand (Actions tab, "Web demo", Run workflow) or on a `demo-*`
+  tag. One-time setup: Settings > Pages > Source "GitHub Actions". The page is then
+  https://velluvu.github.io/pimea-panimo-godot4/. A fresh clone exports clean (checked
+  2026-10-07; the first import logs parse errors while the class cache is built, harmless).
 - itch.io: `butler push build/web <user>/pimea-panimo:html5`, as an HTML game with the
   "SharedArrayBuffer" option off (threads are off).
