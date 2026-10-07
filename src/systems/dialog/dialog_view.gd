@@ -122,7 +122,7 @@ static func _edge_x(width : float, anchor_edge : HorizontalAlignment) -> float:
 			return 0.0
 
 
-## How long a popup floats after popping out, for chaining popups one after another.
+## How long a popup floats after popping out.
 static func popup_duration(emphasis : Emphasis) -> float:
 	return POPUP_DURATION_SECONDS if emphasis == Emphasis.NORMAL else LOUD_POPUP_DURATION_SECONDS
 
