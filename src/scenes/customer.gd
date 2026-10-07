@@ -1,10 +1,6 @@
 class_name Customer
 extends Node2D
 
-
-## Fired when walk_complex_route's tween finishes, whether or not skip_interaction is set.
-signal walk_route_finished
-
 const STAIR_STEPS : int = 15
 const STAIR_STEP_PAUSE_SECONDS : float = 0.05
 const CENTER_PAUSE_SECONDS : float = 0.8
@@ -60,7 +56,7 @@ var generated_name: String = "Asiakas"
 ## Where the visit is, kept so snapshot() can freeze it for a save and resume() can
 ## carry on from exactly there.
 var _phase: CustomerSnapshot.Phase = CustomerSnapshot.Phase.WALKING_IN
-## Group members are driven by GroupVisitDirector and are not saved.
+## Group members are driven by GroupVisitDirector, which saves them with their group.
 var _skip_interaction: bool = false
 var _route: Array[Vector2] = []  # spawn, stairs bottom, room centre, counter spot
 var _leg: int = Leg.STAIRS
@@ -71,6 +67,8 @@ var _glass_timer: SceneTreeTimer
 var _bubble_text: String = ""
 var _beer_ebc: int = -1
 var _exit_position: Vector2
+## Where a group member walks for their glass before leaving; INF when not.
+var _pickup_target: Vector2 = Vector2.INF
 
 ## The glass as drawn, before fill_glasses() colours its beer.
 var _glass_texture: Texture2D
@@ -171,10 +169,26 @@ func _walk_route_from(first_leg: int, pause_seconds: float) -> void:
 	_queue_floor_walk(tween, from, _route[3])
 
 	if _skip_interaction:
-		tween.tween_callback(_play_animation.bind(ANIM_IDLE_UP, false))
+		tween.tween_callback(_wait_with_group)
 	else:
 		tween.tween_callback(_on_reached_counter)
-	tween.tween_callback(walk_route_finished.emit)
+
+
+func _wait_with_group() -> void:
+	_phase = CustomerSnapshot.Phase.WAITING
+	_play_animation(ANIM_IDLE_UP)
+
+
+func is_group_member() -> bool:
+	return _skip_interaction
+
+
+func is_walking_in() -> bool:
+	return _phase == CustomerSnapshot.Phase.WALKING_IN
+
+
+func is_leaving() -> bool:
+	return _phase == CustomerSnapshot.Phase.LEAVING
 
 
 func _set_leg(leg: int) -> void:
@@ -199,15 +213,14 @@ func _queue_floor_walk(tween: Tween, from_pos: Vector2, to_pos: Vector2) -> void
 	tween.tween_property(self, "global_position", to_pos, duration).set_trans(Tween.TRANS_LINEAR)
 
 
-## The visit frozen for a save, or null for a group member (GroupVisitDirector runs those).
+## The visit frozen for a save. A group member's goes into its group's snapshot.
 func snapshot() -> CustomerSnapshot:
-	if _skip_interaction:
-		return null
 	var snap := CustomerSnapshot.new()
 	snap.data = customer_data
 	snap.generated_name = generated_name
 	snap.slot = assigned_slot
 	snap.phase = _phase
+	snap.group_member = _skip_interaction
 	snap.position = global_position
 	snap.route = _route.duplicate()
 	snap.leg = _leg
@@ -219,7 +232,11 @@ func snapshot() -> CustomerSnapshot:
 	snap.made_purchase = made_purchase
 	snap.beer_ebc = _beer_ebc
 	snap.glass_time_left = _glass_timer.time_left if _glass_timer != null and _glass_timer.time_left > 0.0 else -1.0
+	snap.glass_shown = counter_glass_sprite.visible
+	snap.glass_position = counter_glass_sprite.position
 	snap.exit_position = _exit_position
+	snap.walks_to_pickup = _pickup_target != Vector2.INF
+	snap.pickup_position = _pickup_target if snap.walks_to_pickup else Vector2.ZERO
 	return snap
 
 
@@ -228,8 +245,11 @@ func snapshot() -> CustomerSnapshot:
 func resume(snap: CustomerSnapshot) -> void:
 	global_position = snap.position
 	made_purchase = snap.made_purchase
-	_beer_ebc = snap.beer_ebc
+	_skip_interaction = snap.group_member
 	fill_glasses(snap.beer_ebc)
+	# Shown before a walk out, which hides it again once under way.
+	if snap.glass_shown:
+		show_counter_glass(0.0, snap.glass_position)
 	match snap.phase:
 		CustomerSnapshot.Phase.WALKING_IN:
 			_route = snap.route.duplicate()
@@ -242,9 +262,14 @@ func resume(snap: CustomerSnapshot) -> void:
 			_enter_counter_phase(CustomerSnapshot.Phase.PREVIEWING, snap.bubble_text, _on_sale_timeout, snap.time_left)
 		CustomerSnapshot.Phase.SERVED:
 			_resume_served(snap)
+		CustomerSnapshot.Phase.WAITING:
+			_wait_with_group()
 		CustomerSnapshot.Phase.LEAVING:
-			_phase = CustomerSnapshot.Phase.LEAVING
-			_walk_out(snap.exit_position)
+			if snap.walks_to_pickup:
+				leave_counter(snap.pickup_position)
+			else:
+				_phase = CustomerSnapshot.Phase.LEAVING
+				_walk_out(snap.exit_position)
 
 
 ## The sale is already in the saved money and stock: only the glass, the reply and
@@ -252,12 +277,9 @@ func resume(snap: CustomerSnapshot) -> void:
 func _resume_served(snap: CustomerSnapshot) -> void:
 	_phase = CustomerSnapshot.Phase.SERVED
 	_play_animation(ANIM_IDLE_UP)
-	if made_purchase:
-		if snap.glass_time_left >= 0.0:
-			_glass_timer = get_tree().create_timer(snap.glass_time_left)
-			_glass_timer.timeout.connect(show_counter_glass)
-		else:
-			show_counter_glass(0.0)
+	if made_purchase and snap.glass_time_left >= 0.0:
+		_glass_timer = get_tree().create_timer(snap.glass_time_left)
+		_glass_timer.timeout.connect(show_counter_glass)
 	_bubble_text = snap.bubble_text
 	if snap.time_left > FADE_TIME_SECONDS:
 		_say(snap.bubble_text, false, snap.time_left - FADE_TIME_SECONDS)
@@ -300,7 +322,6 @@ func _on_sale_timeout() -> void:
 	var response_text := CustomerManager.process_auto_sale(customer_data)
 	outcome.stop()
 
-	_beer_ebc = outcome.beer_ebc
 	fill_glasses(outcome.beer_ebc)
 	_show_sale_popups(outcome)
 
@@ -339,6 +360,7 @@ func _say(text: String, skippable: bool = false, seconds: float = -1.0) -> float
 ## Colours the beer in this customer's glasses to match what they bought. A negative
 ## `ebc` (nothing sold) leaves the glass as drawn.
 func fill_glasses(ebc: int) -> void:
+	_beer_ebc = ebc
 	if ebc < 0 or _glass_texture == null:
 		return
 	var filled: Texture2D = BeerColor.glass_texture(_glass_texture, ebc)
@@ -382,10 +404,12 @@ func hide_counter_glass() -> void:
 ## pickup_position_override (global) makes a group's standby member walk to the
 ## bar stack and grab their round first. Vector2.INF means no pickup walk.
 func leave_counter(pickup_position_override: Vector2 = Vector2.INF) -> void:
-	if pickup_position_override != Vector2.INF:
-		await _walk_to_pickup_spot(pickup_position_override)
-
 	_phase = CustomerSnapshot.Phase.LEAVING
+	if pickup_position_override != Vector2.INF:
+		_pickup_target = pickup_position_override
+		await _walk_to_pickup_spot(pickup_position_override)
+		_pickup_target = Vector2.INF
+
 	_walk_out(global_position + Vector2(0.0, EXIT_WALK_DISTANCE))
 	CustomerManager.free_slot_index(assigned_slot)
 

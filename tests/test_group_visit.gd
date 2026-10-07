@@ -123,3 +123,35 @@ func test_build_order_data_scales_the_bought_many_fight_threshold() -> void:
 	options[0].bar_fight_min_bottles_bought = 3
 	var order : CustomerData = GroupVisitDirector.build_order_data(options, 4, [])
 	assert_eq(order.bar_fight_min_bottles_bought, 12)
+
+
+## A loaded visit must carry on at the same stage with the same progress, or the
+## shared order could be sold twice.
+func test_group_visit_snapshot_round_trips_its_progress() -> void:
+	var visit := GroupVisit.new(GroupVisitEventData.new(), 2, 10, Vector2(5.0, 6.0))
+	visit.stage = GroupVisit.Stage.SERVING
+	visit.group_size = 4
+	visit.order_data = _make_options()[0]
+	visit.response_text = "Kiitos"
+	visit.purchased = true
+	visit.beer_ebc = 12
+	visit.served = 2
+	visit.glasses_out = 1
+	visit.members.append(null)
+
+	var snap : GroupVisitSnapshot = visit.snapshot()
+	assert_eq(snap.slot, 2)
+	assert_eq(snap.counter_position, Vector2(5.0, 6.0))
+	assert_eq(snap.members.size(), 1, "a member already gone keeps its place")
+	assert_eq(snap.members[0], null)
+
+	var loaded := GroupVisit.new(snap.event_data, 2, 11, snap.counter_position)
+	loaded.restore(snap)
+	assert_eq(loaded.stage, GroupVisit.Stage.SERVING)
+	assert_eq(loaded.group_size, 4)
+	assert_eq(loaded.order_data, visit.order_data)
+	assert_eq(loaded.response_text, "Kiitos")
+	assert_true(loaded.purchased)
+	assert_eq(loaded.beer_ebc, 12)
+	assert_eq(loaded.served, 2)
+	assert_eq(loaded.glasses_out, 1)
