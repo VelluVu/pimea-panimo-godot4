@@ -132,21 +132,19 @@ func _on_bad_review_spread() -> void:
 		walk_in_timer.start(walk_in_timer.time_left + WordOfMouthRules.BAD_REVIEW_DELAY_SECONDS)
 
 
-## Every solo customer in the cellar goes into the save, frozen mid-visit; a group's
-## shared order (GroupVisitDirector) is not saved.
+## Everyone in the cellar goes into the save, frozen mid-visit; group members go in with
+## their group.
 func _record_cellar_customers(brewery: Brewery) -> void:
 	brewery.cellar_customers.clear()
 	for node: Node in get_children():
 		var customer := node as Customer
-		if customer == null or customer.is_queued_for_deletion():
-			continue
-		var snap: CustomerSnapshot = customer.snapshot()
-		if snap != null:
-			brewery.cellar_customers.append(snap)
+		if customer != null and not customer.is_queued_for_deletion() and not customer.is_group_member():
+			brewery.cellar_customers.append(customer.snapshot())
+	brewery.cellar_groups = _group_visit.snapshots()
 
 
-## After a load, puts the saved customers back and lets each carry on its visit. One
-## already walking out holds no counter spot.
+## After a load, puts the saved customers and crowds back and lets each carry on its
+## visit. A solo customer already walking out holds no counter spot.
 func _resume_cellar_customers() -> void:
 	var brewery: Brewery = BrewEngine.current_brewery
 	if brewery == null:
@@ -155,10 +153,9 @@ func _resume_cellar_customers() -> void:
 	for snap: CustomerSnapshot in brewery.cellar_customers:
 		var slot: int = -1
 		if snap.phase != CustomerSnapshot.Phase.LEAVING:
-			slot = snap.slot if snap.slot >= 0 and snap.slot < counter_positions.size() and not taken.has(snap.slot) else _free_slot()
+			slot = _resume_slot(snap.slot, taken)
 			if slot == -1:
 				continue
-			taken[slot] = true
 			if snap.route.size() == 4:
 				snap.route[3] = counter_positions[slot]
 		var customer: Customer = CUSTOMER_SCENE.instantiate()
@@ -171,6 +168,20 @@ func _resume_cellar_customers() -> void:
 			CustomerManager.register_active_customer(slot, customer)
 		customer.resume(snap)
 	brewery.cellar_customers.clear()
+
+	for group_snap: GroupVisitSnapshot in brewery.cellar_groups:
+		var slot: int = _resume_slot(group_snap.slot, taken)
+		if slot != -1:
+			_group_visit.resume(group_snap, slot, counter_positions[slot])
+	brewery.cellar_groups.clear()
+
+
+## The saved counter slot if it is still there and free, else any free one (or -1).
+func _resume_slot(saved_slot: int, taken: Dictionary) -> int:
+	var slot: int = saved_slot if saved_slot >= 0 and saved_slot < counter_positions.size() and not taken.has(saved_slot) else _free_slot()
+	if slot != -1:
+		taken[slot] = true
+	return slot
 
 
 func _try_spawn_walk_in(forced_data: CustomerData) -> void:

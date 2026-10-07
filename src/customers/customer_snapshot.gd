@@ -1,16 +1,19 @@
 class_name CustomerSnapshot
 extends Resource
 
-## One solo customer frozen mid-visit for the save (Brewery.cellar_customers), so a loaded
-## run carries on exactly where it was: the same spot, the same line, the same time left.
-## Customer.snapshot() fills it and Customer.resume() plays it back.
+## One customer frozen mid-visit for the save (Brewery.cellar_customers, or a member in
+## a GroupVisitSnapshot), so a loaded run carries on exactly where it was: the same spot,
+## the same line, the same time left. Customer.snapshot() fills it and Customer.resume()
+## plays it back.
 
-enum Phase { WALKING_IN, GREETING, PREVIEWING, SERVED, LEAVING }
+## WAITING is a group member standing at the counter; its group does the talking.
+enum Phase { WALKING_IN, GREETING, PREVIEWING, SERVED, LEAVING, WAITING }
 
 @export var data : CustomerData
 @export var generated_name : String = ""
 @export var slot : int = -1
 @export var phase : Phase = Phase.WALKING_IN
+@export var group_member : bool = false
 @export var position : Vector2 = Vector2.ZERO
 
 ## Walking in: the waypoints (spawn, stairs bottom, room centre, counter spot), the leg
@@ -28,6 +31,10 @@ enum Phase { WALKING_IN, GREETING, PREVIEWING, SERVED, LEAVING }
 @export var beer_ebc : int = -1
 ## Seconds before the served glass appears; negative once it is on the counter.
 @export var glass_time_left : float = -1.0
+@export var glass_shown : bool = false
+@export var glass_position : Vector2 = Vector2.ZERO
 
-## Walking out.
+## Walking out; a group member may first walk to the bar stack for their glass.
 @export var exit_position : Vector2 = Vector2.ZERO
+@export var walks_to_pickup : bool = false
+@export var pickup_position : Vector2 = Vector2.ZERO
