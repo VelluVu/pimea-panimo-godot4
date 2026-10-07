@@ -107,14 +107,15 @@ signal sale_tip_gained(amount: float)
 ## XP popup.
 @warning_ignore("unused_signal")
 signal reputation_popup_requested(amount: int, position: Vector2, tier: PopupTierRules.Tier)
-## Emitted like xp_popup_requested, for a sale's tip.
+## Emitted like xp_popup_requested, for what the bottles cost and the tip on top.
+## DialogView shows the tip once the income popup has faded.
 @warning_ignore("unused_signal")
-signal tip_popup_requested(amount: float, position: Vector2, tier: PopupTierRules.Tier)
+signal money_popup_requested(income: float, tip: float, position: Vector2, tip_tier: PopupTierRules.Tier)
 ## Emitted by SaleProcessor after sale_tip_gained with how loud the tip popup is and the
 ## quality of the beer sold, which sets how loud the XP and reputation popups are.
 @warning_ignore("unused_signal")
 signal sale_popup_tiers_rated(tip_tier: PopupTierRules.Tier, beer_quality: float)
-## Emitted by SaleOutcomeCapture once per sale that shows a critical popup, at the customer.
+## Emitted by DialogWiring when a critical popup appears, once per frame, at the customer.
 @warning_ignore("unused_signal")
 signal critical_gain_shown(position: Vector2)
 ## Emitted by IngredientTrader with the exact amount charged. ShopView shows a "-X €"

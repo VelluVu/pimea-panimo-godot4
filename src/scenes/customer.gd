@@ -196,7 +196,7 @@ func _show_sale_popups(outcome: SaleOutcomeCapture) -> void:
 		made_purchase = true
 		get_tree().create_timer(SERVE_BEER_WAIT_SECONDS).timeout.connect(show_counter_glass)
 		outcome.emit_xp_popup(global_position)
-	outcome.emit_reputation_and_tip_popups(global_position)
+	outcome.emit_reputation_and_money_popups(global_position)
 
 
 ## Pushes a speech bubble for this customer and returns how long it stays up. A
