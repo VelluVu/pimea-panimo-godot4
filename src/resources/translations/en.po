@@ -4124,6 +4124,14 @@ msgid "Taso: %d"
 msgstr "Level: %d"
 
 #: src/systems/console/console_wiring.gd
+msgid "%s ei ole enää kanta-asiakas."
+msgstr "%s is no longer a regular."
+
+#: src/systems/console/console_wiring.gd
+msgid "Kellariparannus: %s (taso %d)"
+msgstr "Cellar upgrade: %s (level %d)"
+
+#: src/systems/console/console_wiring.gd
 msgid "Kirjoita komento... (help)"
 msgstr "Type a command... (help)"
 
@@ -4140,6 +4148,10 @@ msgid "Konsoli valmis. Kirjoita 'help' nähdäksesi komennot."
 msgstr "Console ready. Type 'help' to see the commands."
 
 #: src/systems/console/console_wiring.gd
+msgid "Maine hiipui yöllä: -%d (%s)"
+msgstr "Reputation faded overnight: -%d (%s)"
+
+#: src/systems/console/console_wiring.gd
 msgid "Päivä vaihtui: %d"
 msgstr "New day: %d"
 
@@ -4148,12 +4160,72 @@ msgid "Resepti tallennettu: %s"
 msgstr "Recipe saved: %s"
 
 #: src/systems/console/console_wiring.gd
+msgid "Tapahtumaloki näkyvissä."
+msgstr "Event log shown."
+
+#: src/systems/console/console_wiring.gd
+msgid "Tapahtumaloki piilotettu. Takaisin: loki näytä"
+msgstr "Event log hidden. Bring it back: loki näytä"
+
+#: src/systems/console/console_wiring.gd
+msgid "Tukkumyynti: %s, %d pulloa, +%.1f €"
+msgstr "Wholesale: %s, %d bottles, +%.1f €"
+
+#: src/systems/console/console_wiring.gd
 msgid "Tynnyröinti (%s): %d annosta hukkui, markkinointi -%.1f €"
 msgstr "Kegging (%s): %d servings lost, marketing -%.1f €"
 
 #: src/systems/console/console_wiring.gd
+msgid "Varastoon: %s +%d pulloa"
+msgstr "Into storage: %s +%d bottles"
+
+#: src/systems/console/console_wiring.gd
+msgid "Vienti: %s baariin %s, %d pulloa, +%.1f €, LVV-riski +%d"
+msgstr "Shipment: %s to %s, %d bottles, +%.1f €, LVV risk +%d"
+
+#: src/systems/console/console_wiring.gd
+msgid "[color=gold]%s on nyt kanta-asiakas.[/color]"
+msgstr "[color=gold]%s is now a regular.[/color]"
+
+#: src/systems/console/console_wiring.gd
+msgid "[color=gold]Saavutus avattu: %s[/color]"
+msgstr "[color=gold]Achievement unlocked: %s[/color]"
+
+#: src/systems/console/console_wiring.gd
+msgid "[color=gold]Taso %d saavutettu![/color]"
+msgstr "[color=gold]Level %d reached![/color]"
+
+#: src/systems/console/console_wiring.gd
+msgid "[color=lightgreen]%s suositteli kellaria kaverilleen.[/color]"
+msgstr "[color=lightgreen]%s recommended the cellar to a friend.[/color]"
+
+#: src/systems/console/console_wiring.gd
+msgid "[color=lightgreen]Maine nousi: %s[/color]"
+msgstr "[color=lightgreen]Reputation rose: %s[/color]"
+
+#: src/systems/console/console_wiring.gd
+msgid "[color=lightgreen]Uusi asiakas avattu: %s[/color]"
+msgstr "[color=lightgreen]New customer unlocked: %s[/color]"
+
+#: src/systems/console/console_wiring.gd
 msgid "[color=lightgreen]Uusi oluttyyli löydetty: %s[/color]"
 msgstr "[color=lightgreen]New beer style discovered: %s[/color]"
+
+#: src/systems/console/console_wiring.gd
+msgid "[color=lightgreen]Uusia aineksia: %s[/color]"
+msgstr "[color=lightgreen]New ingredients: %s[/color]"
+
+#: src/systems/console/console_wiring.gd
+msgid "[color=orange]Baaritappelu! %d pulloa rikki.[/color]"
+msgstr "[color=orange]Bar fight! %d bottles broken.[/color]"
+
+#: src/systems/console/console_wiring.gd
+msgid ""
+"[color=orange]Huono arvio kiertää: asiakkaita tulee hetken "
+"harvemmin.[/color]"
+msgstr ""
+"[color=orange]A bad review is going around: customers come less often for a "
+"while.[/color]"
 
 #: src/systems/console/console_wiring.gd
 msgid "[color=orange]Kehittäjäkomennot: %s[/color]"
@@ -4166,6 +4238,10 @@ msgstr "[color=orange]Commands are turned off (DEVELOPER_MODE = false).[/color]"
 #: src/systems/console/console_wiring.gd
 msgid "[color=orange]Laskut: sähkö -%d €, vesi -%d € (yhteensä -%d €)[/color]"
 msgstr "[color=orange]Bills: electricity -%d €, water -%d € (total -%d €)[/color]"
+
+#: src/systems/console/console_wiring.gd
+msgid "[color=orange]Maine laski: %s[/color]"
+msgstr "[color=orange]Reputation fell: %s[/color]"
 
 #: src/systems/console/console_wiring.gd
 msgid ""
@@ -4188,6 +4264,10 @@ msgstr "[color=red]LVV RAID! %d servings seized, fine %.1f €, reputation -%d[/
 #: src/systems/console/console_wiring.gd
 msgid "[color=yellow]Erikoistapahtuma: %s[/color]"
 msgstr "[color=yellow]Special event: %s[/color]"
+
+#: src/systems/console/console_wiring.gd
+msgid "loki näytä|piilota"
+msgstr "loki näytä|piilota"
 
 #: src/systems/dialog/dialog_wiring.gd
 msgid "Ei enää kanta-asiakas"
@@ -4292,6 +4372,26 @@ msgstr "Maxed"
 #: src/ui/cellar_upgrade_text.gd
 msgid "ei vielä"
 msgstr "not yet"
+
+#: src/ui/console_event_text.gd
+msgid "%s lähti tyhjin käsin, mainetta %+d"
+msgstr "%s left empty-handed, reputation %+d"
+
+#: src/ui/console_event_text.gd
+msgid "Myynti: %s osti %d × %s, +%.1f €"
+msgstr "Sale: %s bought %d × %s, +%.1f €"
+
+#: src/ui/console_event_text.gd
+msgid "XP +%d"
+msgstr "XP +%d"
+
+#: src/ui/console_event_text.gd
+msgid "mainetta %+d"
+msgstr "reputation %+d"
+
+#: src/ui/console_event_text.gd
+msgid "tippi +%.1f €"
+msgstr "tip +%.1f €"
 
 #: src/ui/customer_book_text.gd
 msgid "%d asiakastyyppiä vielä tuntematta."

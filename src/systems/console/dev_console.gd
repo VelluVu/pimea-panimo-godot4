@@ -8,7 +8,8 @@ extends Panel
 
 const COLLAPSE_ICON: String = "▼"
 const EXPAND_ICON: String = "▲"
-const MAX_LOG_LINES: int = 200
+## Every sale writes a line, so this holds about a day of a busy cellar.
+const MAX_LOG_LINES: int = 400
 
 const MIN_SIZE: Vector2 = Vector2(180, 90)
 ## Capped so the console cannot cover whatever shares its corner (its mouse_filter is STOP).
@@ -38,7 +39,10 @@ var _resize_start_mouse: Vector2
 var _resize_start_offset_left: float
 var _resize_start_offset_top: float
 
-var _log_lines: PackedStringArray = []
+## Every logged line as [bbcode, category], oldest first, hidden ones included.
+var _log_entries: Array = []
+## Categories (StringName) whose lines are kept but not shown.
+var _hidden_categories: Dictionary = {}
 
 
 func _ready() -> void:
@@ -85,15 +89,39 @@ func is_console_active() -> bool:
 	return not _is_collapsed or input_line_edit.has_focus()
 
 
-## Appends one BBCode line to the log.
-func log_line(bbcode_line: String) -> void:
-	log_label.append_text(bbcode_line + "\n")
-	_log_lines.append(bbcode_line)
-	if _log_lines.size() > MAX_LOG_LINES:
-		_log_lines.remove_at(0)
-		log_label.clear()
-		log_label.append_text("\n".join(_log_lines) + "\n")
+## Appends one BBCode line to the log. A `category` lets the host hide a kind of line
+## (set_category_hidden) without losing it: hidden lines come back when shown again.
+func log_line(bbcode_line: String, category: StringName = &"") -> void:
+	_log_entries.append([bbcode_line, category])
+	if _log_entries.size() > MAX_LOG_LINES:
+		_log_entries.remove_at(0)
+		_redraw_log()
+	elif not _hidden_categories.has(category):
+		log_label.append_text(bbcode_line + "\n")
 	_scroll_log_to_bottom()
+
+
+func set_category_hidden(category: StringName, is_hidden: bool) -> void:
+	if is_hidden:
+		_hidden_categories[category] = true
+	else:
+		_hidden_categories.erase(category)
+	_redraw_log()
+	_scroll_log_to_bottom()
+
+
+func is_category_hidden(category: StringName) -> bool:
+	return _hidden_categories.has(category)
+
+
+func _redraw_log() -> void:
+	var shown: PackedStringArray = []
+	for entry: Array in _log_entries:
+		if not _hidden_categories.has(entry[1]):
+			shown.append(entry[0])
+	log_label.clear()
+	if not shown.is_empty():
+		log_label.append_text("\n".join(shown) + "\n")
 
 
 func _open_and_focus_input() -> void:
@@ -185,4 +213,4 @@ func _on_command_submitted(raw_text: String) -> void:
 
 func _cmd_clear(_args: PackedStringArray) -> void:
 	log_label.clear()
-	_log_lines.clear()
+	_log_entries.clear()

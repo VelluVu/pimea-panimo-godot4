@@ -7,7 +7,8 @@ registry, developer-only commands, and command sets that group commands by domai
 
 | Call | What it does |
 |---|---|
-| `DevConsole.log_line(bbcode)` | Appends a line to the log |
+| `DevConsole.log_line(bbcode, category)` | Appends a line to the log; `category` (optional) tags it for hiding |
+| `DevConsole.set_category_hidden(category, hidden)`, `is_category_hidden(category)` | Hides or shows every line of a category, past ones too; hidden lines are kept |
 | `DevConsole.registry.register(name, handler, usage, note, dev_only, listed)` | Adds a command; the handler receives the arguments as a `PackedStringArray` |
 | `DevConsole.registry.add_command_set(set)` | Adds a `ConsoleCommandSet` (a group of commands with its own `register()`) |
 | `DevConsole.registry.developer_mode_check` | A Callable returning whether dev-only commands may run (default: always) |
