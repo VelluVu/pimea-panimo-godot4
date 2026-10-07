@@ -67,9 +67,9 @@ func get_style_name() -> String:
 	return BeerStyle.get_style_string_from_style(beer_style.style)
 
 
-const AGING_TREND_RISING : String = "↑"
-const AGING_TREND_PLATEAU : String = "→"
-const AGING_TREND_DECLINING : String = "↓"
+const AGING_TREND_RISING : String = "▲"
+const AGING_TREND_PLATEAU : String = "▶"
+const AGING_TREND_DECLINING : String = "▼"
 
 ## Whether quality is still rising toward peak, holding at its plateau, or
 ## has moved into post-shelf-life decline — mirrors the three phases in

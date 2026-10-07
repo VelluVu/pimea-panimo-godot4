@@ -1,6 +1,8 @@
 [gd_resource type="Theme" format=3 uid="uid://dkmfe4a5nvvcd"]
 
 [ext_resource type="FontFile" uid="uid://xfbjk7l1sd3n" path="res://assets/fonts/m5x7.ttf" id="1_qtffb"]
+[ext_resource type="FontFile" path="res://assets/fonts/twemoji/Twemoji.Mozilla.ttf" id="2_twemoji"]
+[ext_resource type="FontFile" path="res://assets/fonts/noto_sans_symbols2/NotoSansSymbols2-Regular.ttf" id="3_symbols"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q3iol"]
 content_margin_left = 4.0
@@ -181,8 +183,12 @@ border_width_bottom = 2
 border_color = Color(0.3529412, 0.23529412, 0.13333334, 1)
 anti_aliasing = false
 
+[sub_resource type="FontVariation" id="FontVariation_main"]
+base_font = ExtResource("1_qtffb")
+fallbacks = Array[Font]([ExtResource("3_symbols"), ExtResource("2_twemoji")])
+
 [resource]
-default_font = ExtResource("1_qtffb")
+default_font = SubResource("FontVariation_main")
 default_font_size = 16
 Button/colors/font_color = Color(0.9254902, 0.8627451, 0.72156864, 1)
 Button/colors/font_disabled_color = Color(0.5411765, 0.47843137, 0.36862746, 1)
