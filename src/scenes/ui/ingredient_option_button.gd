@@ -7,12 +7,15 @@ const POPUP_MAX_SIZE : Vector2i = Vector2i(10000, 200)
 ## Locked ingredients show their name, so the player can plan which one to unlock next.
 const LOCKED_ITEM_FORMAT : String = "%s (maine %d)"
 const LOCKED_TOOLTIP_FORMAT : String = "Vaatii mainetta: %d"
+## An ingredient bought earlier stays usable when reputation falls below its bar.
+const OWNED_LOCKED_TOOLTIP_FORMAT : String = "Lisää voi ostaa vasta %d maineella. Omistamasi määrän voi käyttää."
 
 @export var target_type : IngredientData.IngredientType = IngredientData.IngredientType.MALT
 
-## Only a reputation change can lock or unlock items. brewery_state_changed fires on
-## every buy and sale, and a rebuild resets the selection, so rebuild only then.
-var _last_reputation_seen : int = -1
+## Which items are locked changes with reputation and with running out of an owned
+## ingredient past its bar. brewery_state_changed fires on every buy and sale, and a
+## rebuild resets the selection, so rebuild only when the locked set changed.
+var _last_locked_ids : Array[int] = []
 
 
 func _ready() -> void:
@@ -28,15 +31,16 @@ func _ready() -> void:
 	GUISignals.active_ingredient_changed.connect(_on_global_ingredient_changed)
 	BrewerySignals.brewery_state_changed.connect(_on_brewery_state_changed)
 
-	_last_reputation_seen = _reputation()
+	_last_locked_ids = _locked_ids()
 	populate_ingredient_option_menu()
 
 
 ## Rebuilds on a reputation change but keeps the player's selection if it is still usable.
-func _on_brewery_state_changed(brewery : Brewery) -> void:
-	if brewery.reputation == _last_reputation_seen:
+func _on_brewery_state_changed(_brewery : Brewery) -> void:
+	var locked_ids : Array[int] = _locked_ids()
+	if locked_ids == _last_locked_ids:
 		return
-	_last_reputation_seen = brewery.reputation
+	_last_locked_ids = locked_ids
 
 	var previously_selected_id : int = get_item_id(selected) if selected != -1 else -1
 	_rebuild_items()
@@ -85,16 +89,12 @@ func populate_ingredient_option_menu() -> void:
 func _rebuild_items() -> void:
 	clear()
 	var reputation : int = _reputation()
-	var of_type : Array[IngredientData] = []
-	for id in IngredientDatabase.sorted_ids:
-		var ingredient: IngredientData = IngredientDatabase.database[id]
-		if ingredient.type == target_type:
-			of_type.append(ingredient)
-	for ingredient : IngredientData in IngredientMenuOrder.order(of_type, reputation):
-		_add_ingredient_item(ingredient, IngredientMenuOrder.is_locked(ingredient, reputation))
+	var owned : Dictionary = _owned()
+	for ingredient : IngredientData in IngredientMenuOrder.order(_of_type(), reputation, owned):
+		_add_ingredient_item(ingredient, IngredientMenuOrder.is_locked(ingredient, reputation, owned), IngredientMenuOrder.is_buy_locked(ingredient, reputation))
 
 
-func _add_ingredient_item(ingredient : IngredientData, is_locked : bool) -> void:
+func _add_ingredient_item(ingredient : IngredientData, is_locked : bool, is_buy_locked : bool) -> void:
 	add_item(tr(LOCKED_ITEM_FORMAT) % [tr(ingredient.name), ingredient.min_reputation] if is_locked else tr(ingredient.name))
 	var new_item_index: int = get_item_count() - 1
 	set_item_id(new_item_index, ingredient.id)
@@ -102,12 +102,38 @@ func _add_ingredient_item(ingredient : IngredientData, is_locked : bool) -> void
 	var tooltip : String = ingredient.get_tooltip_text()
 	if is_locked:
 		tooltip += "\n" + tr(LOCKED_TOOLTIP_FORMAT) % ingredient.min_reputation
+	elif is_buy_locked:
+		tooltip += "\n" + tr(OWNED_LOCKED_TOOLTIP_FORMAT) % ingredient.min_reputation
 	get_popup().set_item_tooltip(new_item_index, tooltip)
+
+
+func _of_type() -> Array[IngredientData]:
+	var of_type : Array[IngredientData] = []
+	for id in IngredientDatabase.sorted_ids:
+		var ingredient: IngredientData = IngredientDatabase.database[id]
+		if ingredient.type == target_type:
+			of_type.append(ingredient)
+	return of_type
+
+
+func _locked_ids() -> Array[int]:
+	var reputation : int = _reputation()
+	var owned : Dictionary = _owned()
+	var ids : Array[int] = []
+	for ingredient : IngredientData in _of_type():
+		if IngredientMenuOrder.is_locked(ingredient, reputation, owned):
+			ids.append(ingredient.id)
+	return ids
 
 
 func _reputation() -> int:
 	var brewery := BrewEngine.current_brewery
 	return brewery.reputation if brewery != null else 0
+
+
+func _owned() -> Dictionary:
+	var brewery := BrewEngine.current_brewery
+	return brewery.owned_ingredient_amounts() if brewery != null else {}
 
 
 func _first_enabled_index() -> int:
