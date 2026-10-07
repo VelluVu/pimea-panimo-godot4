@@ -90,7 +90,7 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if customer_data == null or not customer_data.makes_footsteps:
 		return
-	if not (animated_sprite.is_playing() and animated_sprite.animation in WALK_ANIMATIONS):
+	if not (animated_sprite.is_playing() and MirroredAnimation.base_name(animated_sprite.animation) in WALK_ANIMATIONS):
 		_footstep_clock = 0.0
 		return
 	_footstep_clock += delta
@@ -126,10 +126,7 @@ func _start_ambient_loop() -> void:
 
 
 func _play_animation(anim_name: StringName, flip_horizontally: bool = false) -> void:
-	if animated_sprite.sprite_frames == null or not animated_sprite.sprite_frames.has_animation(anim_name):
-		return
-	animated_sprite.flip_h = flip_horizontally
-	animated_sprite.play(anim_name)
+	MirroredAnimation.play(animated_sprite, anim_name, flip_horizontally)
 
 
 static func get_display_time_for_text(text: String) -> float:
