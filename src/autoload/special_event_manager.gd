@@ -11,6 +11,18 @@ var _special_event_timer: Timer
 
 func _ready() -> void:
 	_setup_timers()
+	BrewEngine.brewery_about_to_save.connect(_record_timer)
+	BrewEngine.brewery_changed.connect(_restore_timer)
+
+
+## The next special event comes when it would have in the saved run.
+func _record_timer(brewery: Brewery) -> void:
+	brewery.special_event_time_left = -1.0 if _special_event_timer.is_stopped() else _special_event_timer.time_left
+
+
+func _restore_timer(brewery: Brewery) -> void:
+	if brewery.special_event_time_left > 0.0:
+		_special_event_timer.start(brewery.special_event_time_left)
 
 
 func _setup_timers() -> void:

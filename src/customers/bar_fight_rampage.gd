@@ -38,14 +38,20 @@ const SHARD_SECONDS: float = 0.5
 
 
 ## Plays the rampage; await it to know when it is over. The sprite gets the red flash,
-## facing and walk animation, the actor is the node that moves.
-static func play(actor: Node2D, sprite: AnimatedSprite2D, glass_texture: Texture2D, glass_count: int) -> void:
+## facing and walk animation, the actor is the node that moves. A loaded rampage starts
+## at `first_stomp`; `on_stomp` hears the index of each stomp still to come once the
+## previous one is under way, so the caller can save its progress.
+static func play(actor: Node2D, sprite: AnimatedSprite2D, glass_texture: Texture2D, glass_count: int, first_stomp: int = 0, on_stomp: Callable = Callable()) -> void:
+	if first_stomp >= STOMPS:
+		return
 	var home: Vector2 = actor.position
-	var flash := actor.create_tween().set_loops(STOMPS)
+	var flash := actor.create_tween().set_loops(STOMPS - first_stomp)
 	flash.tween_property(sprite, "modulate", RAGE_COLOR, FLASH_SECONDS)
 	flash.tween_property(sprite, "modulate", Color.WHITE, FLASH_SECONDS)
 
-	for i in STOMPS:
+	for i in range(first_stomp, STOMPS):
+		if on_stomp.is_valid():
+			on_stomp.call(i + 1)
 		var direction: float = 1.0 if i % 2 == 0 else -1.0
 		sprite.flip_h = direction < 0.0
 		if sprite.sprite_frames != null and sprite.sprite_frames.has_animation(Customer.ANIM_WALK_RIGHT):

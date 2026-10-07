@@ -31,6 +31,7 @@ const CARRIED_KEG_SCALE : float = 1.0
 @onready var carry_marker : Marker2D = $CarryMarker
 
 var _carried_keg : Node2D = null
+var _route_tween : Tween
 
 
 func _play_animation(anim_name : StringName, flip_horizontally : bool = false) -> void:
@@ -55,9 +56,11 @@ func _update_carried_keg_z_index(anim_name : StringName) -> void:
 
 ## `waypoints` are global positions walked in order after the stairs descent (waypoints[0]
 ## is where the stairs bottom out). Seizes a keg at the last one, then walks every leg back
-## in reverse and climbs out, showing the keg as the return trip starts.
-func walk_in_and_seize(waypoints : Array[Vector2]) -> void:
+## in reverse and climbs out, showing the keg as the return trip starts. A loaded raid
+## skips the first `elapsed_seconds` of it.
+func walk_in_and_seize(waypoints : Array[Vector2], elapsed_seconds : float = 0.0) -> void:
 	var tween := create_tween()
+	_route_tween = tween
 	var spawn_pos := global_position
 
 	tween.tween_callback(_play_animation.bind(ANIM_WALK_TOWARDS, true))
@@ -79,6 +82,13 @@ func walk_in_and_seize(waypoints : Array[Vector2]) -> void:
 
 	tween.tween_callback(raid_sequence_finished.emit)
 	tween.tween_callback(queue_free)
+	if elapsed_seconds > 0.0:
+		tween.custom_step(elapsed_seconds)
+
+
+## Seconds walked of the route so far, for the save.
+func elapsed_seconds() -> float:
+	return _route_tween.get_total_elapsed_time() if _route_tween != null else 0.0
 
 
 ## walk_towards or walk_away for a mostly vertical leg (towards the camera on increasing Y,

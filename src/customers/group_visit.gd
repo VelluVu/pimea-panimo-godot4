@@ -28,8 +28,7 @@ var bar_fight_bottles : int = -1
 ## Members poured for so far, and the glasses that went on the counter.
 var served : int = 0
 var glasses_out : int = 0
-## The sale's popups wait for the round to be poured. Not saved: a loaded visit
-## skips them, the sale itself is already in the save.
+## The sale's popups wait for the round to be poured; null once shown.
 var outcome : SaleOutcomeCapture
 ## The current wait, read for the save.
 var timer : SceneTreeTimer
@@ -81,6 +80,15 @@ func snapshot() -> GroupVisitSnapshot:
 	snap.bar_fight_bottles = bar_fight_bottles
 	snap.served = served
 	snap.glasses_out = glasses_out
+	if outcome != null:
+		snap.popups_pending = true
+		snap.popup_reputation = outcome.reputation
+		snap.popup_income = outcome.income
+		snap.popup_tip = outcome.tip
+		snap.popup_tip_tier = outcome.tip_tier
+		snap.popup_beer_quality = outcome.beer_quality
+		for note : SaleOutcomeCapture.Note in outcome.notes:
+			snap.popup_notes.append(note)
 	snap.bubble_text = bubble_text
 	snap.bubble_position = bubble_position
 	snap.bubble_fade = bubble_fade
@@ -103,3 +111,12 @@ func restore(snap : GroupVisitSnapshot) -> void:
 	bar_fight_bottles = snap.bar_fight_bottles
 	served = snap.served
 	glasses_out = snap.glasses_out
+	if snap.popups_pending:
+		outcome = SaleOutcomeCapture.new()
+		outcome.reputation = snap.popup_reputation
+		outcome.income = snap.popup_income
+		outcome.tip = snap.popup_tip
+		outcome.tip_tier = snap.popup_tip_tier
+		outcome.beer_quality = snap.popup_beer_quality
+		for note : int in snap.popup_notes:
+			outcome.notes.append(note as SaleOutcomeCapture.Note)

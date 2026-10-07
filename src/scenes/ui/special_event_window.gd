@@ -12,6 +12,7 @@ const DISPLAY_TIME_SECONDS = 3.5
 var event_data: SpecialEventData
 var time_left: float = 10.0
 var is_active: bool = true
+var _fade_timer: SceneTreeTimer
 
 
 func _ready() -> void:
@@ -31,13 +32,33 @@ func _process(delta: float) -> void:
 		_timeout_event()
 
 
-func initialize_window(p_data: SpecialEventData) -> void:
+## `seconds_left` (a loaded run) is what was left of the time to answer.
+func initialize_window(p_data: SpecialEventData, seconds_left: float = -1.0) -> void:
 	event_data = p_data
-	time_left = event_data.timeout_seconds
+	time_left = seconds_left if seconds_left >= 0.0 else event_data.timeout_seconds
 	progress_bar.max_value = event_data.timeout_seconds
-	progress_bar.value = event_data.timeout_seconds
+	progress_bar.value = time_left
 	text_label.text = tr(event_data.event_caller_name) + ": " + tr(event_data.intro_dialogue)
 	_resize_to_fit_content()
+
+
+## Puts a saved window back: still waiting for an answer, or showing the reply.
+func resume(snap: SpecialEventSnapshot) -> void:
+	initialize_window(snap.event_data, snap.time_left)
+	if not snap.answer_text.is_empty():
+		_hide_button()
+		text_label.text = snap.answer_text
+		_start_fade_out(snap.fade_left)
+
+
+func snapshot() -> SpecialEventSnapshot:
+	var snap := SpecialEventSnapshot.new()
+	snap.event_data = event_data
+	snap.time_left = maxf(time_left, 0.0)
+	if not is_active:
+		snap.answer_text = text_label.text
+		snap.fade_left = _fade_timer.time_left if _fade_timer != null else 0.0
+	return snap
 
 
 ## Panel doesn't extend Container, so it never relays its children's
@@ -72,7 +93,7 @@ func _hide_button() -> void:
 	progress_bar.visible = false
 
 
-func _start_fade_out() -> void:
-	var fade_timer: SceneTreeTimer = get_tree().create_timer(DISPLAY_TIME_SECONDS)
-	await fade_timer.timeout
+func _start_fade_out(seconds: float = DISPLAY_TIME_SECONDS) -> void:
+	_fade_timer = get_tree().create_timer(seconds)
+	await _fade_timer.timeout
 	queue_free()
