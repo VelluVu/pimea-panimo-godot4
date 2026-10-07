@@ -16,7 +16,7 @@ const RISK_WARNING_PULSE_SECONDS : float = 0.3
 
 
 const LEVEL_FORMAT : String = "Taso: %d"
-const LEVEL_PROGRESS_TOOLTIP_FORMAT : String = "%d / %d XP seuraavaan tasoon"
+const LEVEL_TOOLTIP_FORMAT : String = "Taso %d\n%d/%d XP\n%d XP seuraavaan tasoon"
 
 @onready var money_label : Label = $MoneyLabel
 @onready var reputation_label : Label = $ReputationLabel
@@ -39,6 +39,8 @@ func _ready() -> void:
 	# Scene-defined nodes get their tooltip script at runtime, so long tooltips wrap
 	# via TooltipFactory instead of overflowing.
 	level_progress_bar.set_script(TooltipProgressBar)
+	level_label.set_script(TooltipLabel)
+	level_label.mouse_filter = Control.MOUSE_FILTER_PASS
 	reputation_label.set_script(TooltipLabel)
 	reputation_label.mouse_filter = Control.MOUSE_FILTER_PASS
 	risk_label.set_script(TooltipLabel)
@@ -75,7 +77,7 @@ func _day_clock_tooltip() -> String:
 	var brewery : Brewery = BrewEngine.current_brewery
 	if brewery == null:
 		return ""
-	return DayClockText.tooltip(brewery.current_day, DayRules.SURVIVAL_DAY_TARGET, TimeManager.get_day_progress(), TimeManager.get_seconds_left())
+	return DayClockText.tooltip(brewery.current_day, DayRules.SURVIVAL_DAY_TARGET, TimeManager.get_day_progress(), TimeManager.get_seconds_left(), TimeManager.day_duration_seconds)
 
 
 func _update_day_display(day_num: int) -> void:
@@ -124,7 +126,9 @@ func _update_level(level : int, xp : int) -> void:
 		level_label.text = tr(LEVEL_FORMAT) % level
 	var xp_needed : int = Brewery.xp_required_for_level(level)
 	level_progress_bar.value = float(xp) / float(xp_needed) if xp_needed > 0 else 0.0
-	level_progress_bar.tooltip_text = tr(LEVEL_PROGRESS_TOOLTIP_FORMAT) % [xp, xp_needed]
+	# The label and the thin bar under it share one tooltip.
+	level_progress_bar.tooltip_text = tr(LEVEL_TOOLTIP_FORMAT) % [level, xp, xp_needed, maxi(0, xp_needed - xp)]
+	level_label.tooltip_text = level_progress_bar.tooltip_text
 
 
 func _update_risk(brewery : Brewery) -> void:

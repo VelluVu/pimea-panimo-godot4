@@ -12,7 +12,7 @@ const MINUTE_STEP : int = 5
 const DAY_FORMAT : String = "Päivä %d/%d"
 const CONTINUED_DAY_FORMAT : String = "Päivä %d, kausi on jo pelattu"
 const TIME_FORMAT : String = "Kello %s, valot sammuvat klo %s"
-const TIME_LEFT_FORMAT : String = "Päivää jäljellä %d min %02d s"
+const TIME_LEFT_FORMAT : String = "Päivää jäljellä %s / %s"
 const CLOCK_STOPPED_TEXT : String = "Kello lähtee käyntiin, kun ensimmäinen olut on pantu."
 
 
@@ -26,8 +26,9 @@ static func closing_time() -> String:
 	return _hh_mm((OPEN_HOUR + OPEN_HOURS) * 60)
 
 
-## `seconds_left` is negative while the clock has not started.
-static func tooltip(day : int, target_day : int, progress : float, seconds_left : float) -> String:
+## `seconds_left` is negative while the clock has not started; `day_length` is a whole
+## day in seconds.
+static func tooltip(day : int, target_day : int, progress : float, seconds_left : float, day_length : float) -> String:
 	var lines : PackedStringArray = []
 	if day <= target_day:
 		lines.append(UiText.of(DAY_FORMAT) % [day, target_day])
@@ -37,9 +38,14 @@ static func tooltip(day : int, target_day : int, progress : float, seconds_left 
 		lines.append(UiText.of(CLOCK_STOPPED_TEXT))
 		return "\n".join(lines)
 	lines.append(UiText.of(TIME_FORMAT) % [clock_time(progress), closing_time()])
-	var whole_seconds : int = ceili(seconds_left)
-	lines.append(UiText.of(TIME_LEFT_FORMAT) % [floori(whole_seconds / 60.0), whole_seconds % 60])
+	lines.append(UiText.of(TIME_LEFT_FORMAT) % [minutes_seconds(seconds_left), minutes_seconds(day_length)])
 	return "\n".join(lines)
+
+
+## 200.4 -> "3 min 21 s", rounded up so the last second still reads "0 min 01 s".
+static func minutes_seconds(seconds : float) -> String:
+	var whole_seconds : int = ceili(seconds)
+	return "%d min %02d s" % [floori(whole_seconds / 60.0), whole_seconds % 60]
 
 
 static func _hh_mm(total_minutes : int) -> String:
