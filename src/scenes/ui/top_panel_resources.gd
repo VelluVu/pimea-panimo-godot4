@@ -3,16 +3,14 @@ extends HBoxContainer
 
 
 const DAY_STRING : String = "Päivä: %s"
-const RISK_FORMAT : String = "LVV Riski: %d%%"
 
 ## Long enough to read a "+X €" popup before it fades.
 const POPUP_EFFECT_DURATION_SECONDS : float = 1.8
 const POPUP_OFFSET : Vector2 = Vector2(80, 0)
 const POPUP_FLOAT_DISTANCE : float = 35.0
 
-## A "last chance" zone below Brewery.LVV_RAID_THRESHOLD: the risk label turns red and
-## pulses once on entry, on top of the audio tension drone.
-const RISK_WARNING_THRESHOLD : int = 75
+## Near the raid threshold (RiskText.is_warning) the risk label turns red and pulses
+## once on entry, on top of the audio tension drone.
 const RISK_WARNING_COLOR : Color = Color(0.75686276, 0.3137255, 0.22745098, 1) # matches DailyGoalsPanel.GOAL_FAILING_COLOR
 const RISK_WARNING_PULSE_SECONDS : float = 0.3
 
@@ -26,6 +24,7 @@ const LEVEL_PROGRESS_TOOLTIP_FORMAT : String = "%d / %d XP seuraavaan tasoon"
 @onready var level_progress_bar : ProgressBar = $LevelBox/LevelProgressBar
 @onready var risk_label : Label = $RiskLabel
 @onready var day_label : Label = $DayLabel
+@onready var clock_ui : ClockUI = $ClockUITextureRect
 var last_money: float = -1.0
 var last_reputation : int = -1
 var last_risk: int = -1
@@ -42,6 +41,14 @@ func _ready() -> void:
 	level_progress_bar.set_script(TooltipProgressBar)
 	reputation_label.set_script(TooltipLabel)
 	reputation_label.mouse_filter = Control.MOUSE_FILTER_PASS
+	risk_label.set_script(TooltipLabel)
+	risk_label.mouse_filter = Control.MOUSE_FILTER_PASS
+	# The day and the clock share one tooltip, built on hover so the time is current.
+	day_label.set_script(LiveTooltipLabel)
+	day_label.set(&"tooltip_source", _day_clock_tooltip)
+	day_label.mouse_filter = Control.MOUSE_FILTER_PASS
+	clock_ui.tooltip_source = _day_clock_tooltip
+	clock_ui.mouse_filter = Control.MOUSE_FILTER_PASS
 
 	BrewerySignals.brewery_state_changed.connect(_on_brewery_state_changed)
 	TimeManager.day_changed.connect(_on_day_changed)
@@ -64,6 +71,13 @@ func _on_day_changed(new_day: int) -> void:
 	_update_day_display(new_day)
 
 
+func _day_clock_tooltip() -> String:
+	var brewery : Brewery = BrewEngine.current_brewery
+	if brewery == null:
+		return ""
+	return DayClockText.tooltip(brewery.current_day, DayRules.SURVIVAL_DAY_TARGET, TimeManager.get_day_progress(), TimeManager.get_seconds_left())
+
+
 func _update_day_display(day_num: int) -> void:
 	if day_label:
 		day_label.text = tr(DAY_STRING) % str(day_num)
@@ -73,7 +87,7 @@ func _on_brewery_state_changed(brewery : Brewery) -> void:
 	_update_money(brewery.money)
 	_update_reputation(brewery.reputation)
 	_update_level(brewery.run_level, brewery.run_xp)
-	_update_risk(brewery.risk)
+	_update_risk(brewery)
 
 
 func _update_money(money : float) -> void:
@@ -113,13 +127,16 @@ func _update_level(level : int, xp : int) -> void:
 	level_progress_bar.tooltip_text = tr(LEVEL_PROGRESS_TOOLTIP_FORMAT) % [xp, xp_needed]
 
 
-func _update_risk(risk : int) -> void:
+func _update_risk(brewery : Brewery) -> void:
+	var risk : int = brewery.risk
+	var threshold : int = brewery.get_effective_raid_threshold()
 	if last_risk != -1 and risk != last_risk:
-		_create_popup_effect(risk_label, risk - last_risk, "%", true)
-	risk_label.text = tr(RISK_FORMAT) % risk
+		_create_popup_effect(risk_label, risk - last_risk, "", true)
+	risk_label.text = RiskText.label(risk, threshold)
+	risk_label.tooltip_text = _risk_tooltip(brewery, threshold)
 	last_risk = risk
 
-	if risk >= RISK_WARNING_THRESHOLD:
+	if RiskText.is_warning(risk, threshold):
 		risk_label.add_theme_color_override("font_color", RISK_WARNING_COLOR)
 		if not _risk_warning_active:
 			_risk_warning_active = true
@@ -127,6 +144,16 @@ func _update_risk(risk : int) -> void:
 	else:
 		risk_label.remove_theme_color_override("font_color")
 		_risk_warning_active = false
+
+
+func _risk_tooltip(brewery : Brewery, threshold : int) -> String:
+	var base : int = Brewery.LVV_RAID_THRESHOLD
+	var tier : ReputationTier = brewery.get_reputation_tier()
+	var fame_penalty : int = tier.raid_threshold_penalty if tier != null else 0
+	var escalation : float = InspectionService.raid_escalation(brewery.raid_count)
+	return RiskText.tooltip(brewery.risk, threshold, base, brewery.stats.raid_threshold(base) - base, fame_penalty,
+		brewery.raid_count, InspectionService.raid_limit(brewery),
+		InspectionService.raid_fine(brewery.money, escalation), ReputationRules.raid_penalty(brewery.reputation, escalation))
 
 
 ## One-shot, unlike DailyGoalsPanel's looping near-miss pulse: it marks the crossing.

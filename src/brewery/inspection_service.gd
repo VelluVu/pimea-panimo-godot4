@@ -67,7 +67,7 @@ func check_for_raid() -> void:
 	brewery.inventory.brew_batches = kept_batches
 
 	# raid_count still counts prior raids, so this raid escalates from the earlier count.
-	var escalation : float = minf(LVV_RAID_MAX_ESCALATION, 1.0 + brewery.raid_count * LVV_RAID_ESCALATION_PER_RAID)
+	var escalation : float = raid_escalation(brewery.raid_count)
 	var fine_amount : float = raid_fine(brewery.money, escalation)
 	var reputation_penalty : int = ReputationRules.raid_penalty(brewery.reputation, escalation)
 
@@ -79,8 +79,7 @@ func check_for_raid() -> void:
 	BrewerySignals.lvv_raid_triggered.emit(confiscated_bottles, fine_amount, reputation_penalty)
 	BrewerySignals.brewery_state_changed.emit(brewery)
 
-	# extra_raid_strikes raises the bust threshold.
-	if brewery.raid_count >= BUSTED_RAID_COUNT + int(brewery.stats.total(PerkStats.EXTRA_RAID_STRIKES)):
+	if brewery.raid_count >= raid_limit(brewery):
 		brewery.trigger_ending("busted")
 		return
 
@@ -90,6 +89,15 @@ func check_for_raid() -> void:
 ## Bottles of a confiscated batch that a raid leaves behind, rounded down.
 static func saved_bottles(amount : int, share : float) -> int:
 	return floori(amount * clampf(share, 0.0, 1.0))
+
+
+static func raid_escalation(prior_raids : int) -> float:
+	return minf(LVV_RAID_MAX_ESCALATION, 1.0 + prior_raids * LVV_RAID_ESCALATION_PER_RAID)
+
+
+## The raid that brings raid_count to this ends the run; extra_raid_strikes raises it.
+static func raid_limit(owner : Brewery) -> int:
+	return BUSTED_RAID_COUNT + int(owner.stats.total(PerkStats.EXTRA_RAID_STRIKES))
 
 
 static func early_close_escalation(prior_closes : int) -> float:
