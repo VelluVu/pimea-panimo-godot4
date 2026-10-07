@@ -45,11 +45,10 @@ const XP_LEVEL_GROWTH_PER_LEVEL : int = 20
 ## start clears the 8 EUR tutorial recipe with little room, keeping the early
 ## bankruptcy risk real.
 @export var money: float = 20.0
-## Solo customers at the counter who had not ordered yet when the run was saved, with
-## their generated names. CustomerSpawner writes them before a save and seats them again
-## after a load, so leaving to the menu does not send them away.
-@export var waiting_customers : Array[CustomerData] = []
-@export var waiting_customer_names : Array[String] = []
+## Solo customers in the cellar when the run was saved, each frozen mid-visit.
+## CustomerSpawner writes them before a save and resumes them after a load, so leaving to
+## the menu and continuing picks every visit up exactly where it was.
+@export var cellar_customers : Array[CustomerSnapshot] = []
 ## Today's money per MoneyLedger.Source, and the net of the last days (oldest first).
 @export var money_today : Dictionary = {}
 @export var money_recent_days : Array[float] = []

@@ -21,6 +21,9 @@ const PREVIEW_DELAY_SECONDS : float = 2.0
 const FOOTSTEP_INTERVAL_SECONDS : float = 0.32
 const AMBIENT_LOOP_VOLUME_DB : float = -12.0
 
+## The legs of the walk in, in order (see walk_complex_route()).
+enum Leg { STAIRS, TO_CENTER, CENTER_PAUSE, TO_COUNTER }
+
 const ANIM_IDLE : StringName = &"idle"
 const ANIM_IDLE_UP : StringName = &"idle_up"
 const ANIM_WALK_TOWARDS : StringName = &"walk_towards"
@@ -53,8 +56,21 @@ var made_purchase: bool = false
 var dialogue_slot: int = -1
 
 var generated_name: String = "Asiakas"
-## Set once the sale has run; until then the customer can be saved and seated again.
-var _sale_done: bool = false
+
+## Where the visit is, kept so snapshot() can freeze it for a save and resume() can
+## carry on from exactly there.
+var _phase: CustomerSnapshot.Phase = CustomerSnapshot.Phase.WALKING_IN
+## Group members are driven by GroupVisitDirector and are not saved.
+var _skip_interaction: bool = false
+var _route: Array[Vector2] = []  # spawn, stairs bottom, room centre, counter spot
+var _leg: int = Leg.STAIRS
+var _pause_seconds: float = CENTER_PAUSE_SECONDS
+var _pause_started_msec: int = 0
+var _phase_timer: SceneTreeTimer
+var _glass_timer: SceneTreeTimer
+var _bubble_text: String = ""
+var _beer_ebc: int = -1
+var _exit_position: Vector2
 
 ## The glass as drawn, before fill_glasses() colours its beer.
 var _glass_texture: Texture2D
@@ -127,25 +143,52 @@ func get_customer_name() -> String:
 ## skip_interaction is true for group members: the group's controller drives their
 ## dialogue, order and departure instead (see CustomerSpawner).
 func walk_complex_route(stairs_pos: Vector2, center_pos: Vector2, target_pos: Vector2, skip_interaction: bool = false) -> void:
+	_skip_interaction = skip_interaction
+	_route = [global_position, stairs_pos, center_pos, target_pos]
+	_walk_route_from(Leg.STAIRS, CENTER_PAUSE_SECONDS)
+
+
+## Queues the walk in from `first_leg` on, starting where the customer stands now: a
+## fresh visit starts at the top, a loaded one mid-way (resume()).
+func _walk_route_from(first_leg: int, pause_seconds: float) -> void:
+	_phase = CustomerSnapshot.Phase.WALKING_IN
 	var tween := create_tween()
+	var from := global_position
+	if first_leg <= Leg.STAIRS:
+		tween.tween_callback(_set_leg.bind(Leg.STAIRS))
+		_queue_stair_descent(tween, from, _route[1], CustomerRoute.stair_steps_left(_route[0], _route[1], from, STAIR_STEPS))
+		from = _route[1]
+	if first_leg <= Leg.TO_CENTER:
+		tween.tween_callback(_set_leg.bind(Leg.TO_CENTER))
+		_queue_floor_walk(tween, from, _route[2])
+		from = _route[2]
+	if first_leg <= Leg.CENTER_PAUSE:
+		_pause_seconds = pause_seconds
+		tween.tween_callback(_set_leg.bind(Leg.CENTER_PAUSE))
+		tween.tween_callback(_play_animation.bind(ANIM_IDLE, false))
+		tween.tween_interval(pause_seconds)
+	tween.tween_callback(_set_leg.bind(Leg.TO_COUNTER))
+	_queue_floor_walk(tween, from, _route[3])
 
-	_queue_stair_descent(tween, global_position, stairs_pos)
-	_queue_floor_walk(tween, stairs_pos, center_pos)
-	tween.tween_callback(_play_animation.bind(ANIM_IDLE, false))
-	tween.tween_interval(CENTER_PAUSE_SECONDS)
-	_queue_floor_walk(tween, center_pos, target_pos)
-
-	if skip_interaction:
+	if _skip_interaction:
 		tween.tween_callback(_play_animation.bind(ANIM_IDLE_UP, false))
 	else:
 		tween.tween_callback(_on_reached_counter)
 	tween.tween_callback(walk_route_finished.emit)
 
 
-func _queue_stair_descent(tween: Tween, from_pos: Vector2, stairs_pos: Vector2) -> void:
+func _set_leg(leg: int) -> void:
+	_leg = leg
+	if leg == Leg.CENTER_PAUSE:
+		_pause_started_msec = Time.get_ticks_msec()
+
+
+func _queue_stair_descent(tween: Tween, from_pos: Vector2, stairs_pos: Vector2, steps: int) -> void:
+	if steps <= 0:
+		return
 	tween.tween_callback(_play_animation.bind(ANIM_WALK_TOWARDS, true))
-	for i in range(1, STAIR_STEPS + 1):
-		var step_pos := from_pos.lerp(stairs_pos, float(i) / STAIR_STEPS)
+	for i in range(1, steps + 1):
+		var step_pos := from_pos.lerp(stairs_pos, float(i) / steps)
 		tween.tween_property(self, "global_position", step_pos, customer_data.stair_step_duration).set_trans(Tween.TRANS_LINEAR)
 		tween.tween_interval(STAIR_STEP_PAUSE_SECONDS)
 
@@ -156,20 +199,85 @@ func _queue_floor_walk(tween: Tween, from_pos: Vector2, to_pos: Vector2) -> void
 	tween.tween_property(self, "global_position", to_pos, duration).set_trans(Tween.TRANS_LINEAR)
 
 
-## Seats a customer restored from a save straight at their counter spot.
-func arrive_at_counter(counter_position: Vector2) -> void:
-	global_position = counter_position
-	_on_reached_counter()
+## The visit frozen for a save, or null for a group member (GroupVisitDirector runs those).
+func snapshot() -> CustomerSnapshot:
+	if _skip_interaction:
+		return null
+	var snap := CustomerSnapshot.new()
+	snap.data = customer_data
+	snap.generated_name = generated_name
+	snap.slot = assigned_slot
+	snap.phase = _phase
+	snap.position = global_position
+	snap.route = _route.duplicate()
+	snap.leg = _leg
+	snap.pause_left = _pause_seconds
+	if _leg == Leg.CENTER_PAUSE:
+		snap.pause_left = maxf(0.0, _pause_seconds - (Time.get_ticks_msec() - _pause_started_msec) / 1000.0)
+	snap.bubble_text = _bubble_text
+	snap.time_left = _phase_timer.time_left if _phase_timer != null else 0.0
+	snap.made_purchase = made_purchase
+	snap.beer_ebc = _beer_ebc
+	snap.glass_time_left = _glass_timer.time_left if _glass_timer != null and _glass_timer.time_left > 0.0 else -1.0
+	snap.exit_position = _exit_position
+	return snap
 
 
-func is_waiting_to_order() -> bool:
-	return not _sale_done
+## Carries on a visit from a save exactly where snapshot() left it. Call after the
+## customer is in the tree with its data, name and slots set.
+func resume(snap: CustomerSnapshot) -> void:
+	global_position = snap.position
+	made_purchase = snap.made_purchase
+	_beer_ebc = snap.beer_ebc
+	fill_glasses(snap.beer_ebc)
+	match snap.phase:
+		CustomerSnapshot.Phase.WALKING_IN:
+			_route = snap.route.duplicate()
+			_walk_route_from(snap.leg, snap.pause_left)
+		CustomerSnapshot.Phase.GREETING:
+			_play_animation(ANIM_IDLE_UP)
+			_enter_counter_phase(CustomerSnapshot.Phase.GREETING, snap.bubble_text, _on_preview_timeout, snap.time_left)
+		CustomerSnapshot.Phase.PREVIEWING:
+			_play_animation(ANIM_IDLE_UP)
+			_enter_counter_phase(CustomerSnapshot.Phase.PREVIEWING, snap.bubble_text, _on_sale_timeout, snap.time_left)
+		CustomerSnapshot.Phase.SERVED:
+			_resume_served(snap)
+		CustomerSnapshot.Phase.LEAVING:
+			_phase = CustomerSnapshot.Phase.LEAVING
+			_walk_out(snap.exit_position)
+
+
+## The sale is already in the saved money and stock: only the glass, the reply and
+## the wait before leaving carry on.
+func _resume_served(snap: CustomerSnapshot) -> void:
+	_phase = CustomerSnapshot.Phase.SERVED
+	_play_animation(ANIM_IDLE_UP)
+	if made_purchase:
+		if snap.glass_time_left >= 0.0:
+			_glass_timer = get_tree().create_timer(snap.glass_time_left)
+			_glass_timer.timeout.connect(show_counter_glass)
+		else:
+			show_counter_glass(0.0)
+	_bubble_text = snap.bubble_text
+	if snap.time_left > FADE_TIME_SECONDS:
+		_say(snap.bubble_text, false, snap.time_left - FADE_TIME_SECONDS)
+	_phase_timer = get_tree().create_timer(maxf(snap.time_left, 0.01))
+	_phase_timer.timeout.connect(leave_counter)
 
 
 func _on_reached_counter() -> void:
 	_play_animation(ANIM_IDLE_UP)
-	var display_time := _say(generated_name + ": " + tr(customer_data.dialogue_intro), true)
-	get_tree().create_timer(display_time).timeout.connect(_on_preview_timeout)
+	_enter_counter_phase(CustomerSnapshot.Phase.GREETING, generated_name + ": " + tr(customer_data.dialogue_intro), _on_preview_timeout)
+
+
+## Says `text` and moves on to `next` once it has been up long enough; `seconds` (when
+## resuming) is what was left of it.
+func _enter_counter_phase(phase: CustomerSnapshot.Phase, text: String, next: Callable, seconds: float = -1.0) -> void:
+	_phase = phase
+	_bubble_text = text
+	var display_time := _say(text, true, seconds)
+	_phase_timer = get_tree().create_timer(display_time)
+	_phase_timer.timeout.connect(next)
 
 
 ## Shows the batch the customer will pick before the sale resolves.
@@ -181,33 +289,36 @@ func _on_preview_timeout() -> void:
 	else:
 		preview_text = tr(customer_data.dialogue_nothing_available)
 
-	var display_time := _say(generated_name + ": " + preview_text, true)
-	get_tree().create_timer(display_time).timeout.connect(_on_sale_timeout)
+	_enter_counter_phase(CustomerSnapshot.Phase.PREVIEWING, generated_name + ": " + preview_text, _on_sale_timeout)
 
 
 func _on_sale_timeout() -> void:
-	_sale_done = true
+	_phase = CustomerSnapshot.Phase.SERVED
 	# process_auto_sale() is synchronous, so signals fired during it belong to this sale.
 	var outcome := SaleOutcomeCapture.new()
 	outcome.start()
 	var response_text := CustomerManager.process_auto_sale(customer_data)
 	outcome.stop()
 
+	_beer_ebc = outcome.beer_ebc
 	fill_glasses(outcome.beer_ebc)
 	_show_sale_popups(outcome)
 
-	var display_time := _say(generated_name + ": " + response_text)
+	_bubble_text = generated_name + ": " + response_text
+	var display_time := _say(_bubble_text)
 	var leave_after: float = display_time + FADE_TIME_SECONDS
 	if outcome.bar_fight_bottles >= 0:
 		BarFightRampage.play(self, animated_sprite, beer_glass_sprite.texture, outcome.bar_fight_bottles)
 		leave_after = maxf(leave_after, BarFightRampage.DURATION_SECONDS)
-	get_tree().create_timer(leave_after).timeout.connect(leave_counter)
+	_phase_timer = get_tree().create_timer(leave_after)
+	_phase_timer.timeout.connect(leave_counter)
 
 
 func _show_sale_popups(outcome: SaleOutcomeCapture) -> void:
 	if outcome.xp > 0:
 		made_purchase = true
-		get_tree().create_timer(SERVE_BEER_WAIT_SECONDS).timeout.connect(show_counter_glass)
+		_glass_timer = get_tree().create_timer(SERVE_BEER_WAIT_SECONDS)
+		_glass_timer.timeout.connect(show_counter_glass)
 		outcome.emit_xp_popup(global_position)
 	outcome.emit_reputation_and_money_popups(global_position)
 
@@ -215,8 +326,9 @@ func _show_sale_popups(outcome: SaleOutcomeCapture) -> void:
 ## Pushes a speech bubble for this customer and returns how long it stays up. A
 ## `skippable` line (greeting, order) stays silent at a crowded counter, leaving only the
 ## reaction, but still takes its time, so a crowd is served at the same pace.
-func _say(text: String, skippable: bool = false) -> float:
-	var display_time := get_display_time_for_text(text)
+## `seconds` overrides the time (a resumed line keeps what it had left).
+func _say(text: String, skippable: bool = false, seconds: float = -1.0) -> float:
+	var display_time := seconds if seconds >= 0.0 else get_display_time_for_text(text)
 	if skippable and CustomerManager.is_counter_crowded():
 		return display_time
 	BrewerySignals.dialogue_pushed.emit(text, false, dialogue_slot, global_position, display_time, FADE_TIME_SECONDS)
@@ -273,8 +385,15 @@ func leave_counter(pickup_position_override: Vector2 = Vector2.INF) -> void:
 	if pickup_position_override != Vector2.INF:
 		await _walk_to_pickup_spot(pickup_position_override)
 
-	var exit_pos := global_position + Vector2(0.0, EXIT_WALK_DISTANCE)
-	var duration := EXIT_WALK_DISTANCE / customer_data.floor_walk_speed
+	_phase = CustomerSnapshot.Phase.LEAVING
+	_walk_out(global_position + Vector2(0.0, EXIT_WALK_DISTANCE))
+	CustomerManager.free_slot_index(assigned_slot)
+
+
+## Walks from here to `exit_position` and is gone; resume() calls it mid-way.
+func _walk_out(exit_position: Vector2) -> void:
+	_exit_position = exit_position
+	var duration := CustomerRoute.seconds_left(global_position, exit_position, customer_data.floor_walk_speed)
 
 	_play_animation(ANIM_WALK_TOWARDS, true)
 	if made_purchase:
@@ -282,10 +401,8 @@ func leave_counter(pickup_position_override: Vector2 = Vector2.INF) -> void:
 		if customer_data.carries_glass_out:
 			show_beer_glass()
 	var tween := create_tween()
-	tween.tween_property(self, "global_position", exit_pos, duration).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	tween.tween_property(self, "global_position", exit_position, duration).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 	tween.tween_callback(queue_free)
-
-	CustomerManager.free_slot_index(assigned_slot)
 
 
 ## Short lateral walk to the counter, like walk_complex_route()'s last leg.

@@ -29,8 +29,8 @@ func _ready() -> void:
 	CustomerManager.register_spawner(self)
 	BrewerySignals.friend_recommended.connect(_on_friend_recommended)
 	BrewerySignals.bad_review_spread.connect(_on_bad_review_spread)
-	BrewEngine.brewery_about_to_save.connect(_record_waiting_customers)
-	_seat_waiting_customers.call_deferred()
+	BrewEngine.brewery_about_to_save.connect(_record_cellar_customers)
+	_resume_cellar_customers.call_deferred()
 
 
 func _make_timer(on_timeout: Callable) -> Timer:
@@ -132,37 +132,45 @@ func _on_bad_review_spread() -> void:
 		walk_in_timer.start(walk_in_timer.time_left + WordOfMouthRules.BAD_REVIEW_DELAY_SECONDS)
 
 
-## Solo customers who have not ordered yet go into the save; a group's shared order
-## (GroupVisitDirector) is not saved. Group members have their own dialogue slots.
-func _record_waiting_customers(brewery: Brewery) -> void:
-	brewery.waiting_customers.clear()
-	brewery.waiting_customer_names.clear()
-	for node: Node in CustomerManager.slots.customers():
+## Every solo customer in the cellar goes into the save, frozen mid-visit; a group's
+## shared order (GroupVisitDirector) is not saved.
+func _record_cellar_customers(brewery: Brewery) -> void:
+	brewery.cellar_customers.clear()
+	for node: Node in get_children():
 		var customer := node as Customer
-		if customer != null and customer.dialogue_slot == customer.assigned_slot and customer.is_waiting_to_order():
-			brewery.waiting_customers.append(customer.customer_data)
-			brewery.waiting_customer_names.append(customer.generated_name)
+		if customer == null or customer.is_queued_for_deletion():
+			continue
+		var snap: CustomerSnapshot = customer.snapshot()
+		if snap != null:
+			brewery.cellar_customers.append(snap)
 
 
-## After a load, seats the saved customers back at the counter to order again.
-func _seat_waiting_customers() -> void:
+## After a load, puts the saved customers back and lets each carry on its visit. One
+## already walking out holds no counter spot.
+func _resume_cellar_customers() -> void:
 	var brewery: Brewery = BrewEngine.current_brewery
 	if brewery == null:
 		return
-	for i: int in brewery.waiting_customers.size():
-		var free_slot: int = _free_slot()
-		if free_slot == -1:
-			break
+	var taken: Dictionary = {}
+	for snap: CustomerSnapshot in brewery.cellar_customers:
+		var slot: int = -1
+		if snap.phase != CustomerSnapshot.Phase.LEAVING:
+			slot = snap.slot if snap.slot >= 0 and snap.slot < counter_positions.size() and not taken.has(snap.slot) else _free_slot()
+			if slot == -1:
+				continue
+			taken[slot] = true
+			if snap.route.size() == 4:
+				snap.route[3] = counter_positions[slot]
 		var customer: Customer = CUSTOMER_SCENE.instantiate()
 		add_child(customer)
-		customer.customer_data = brewery.waiting_customers[i]
-		customer.generated_name = brewery.waiting_customer_names[i] if i < brewery.waiting_customer_names.size() else customer.generated_name
-		customer.assigned_slot = free_slot
-		customer.dialogue_slot = free_slot
-		CustomerManager.register_active_customer(free_slot, customer)
-		customer.arrive_at_counter(counter_positions[free_slot])
-	brewery.waiting_customers.clear()
-	brewery.waiting_customer_names.clear()
+		customer.customer_data = snap.data
+		customer.generated_name = snap.generated_name
+		customer.assigned_slot = slot
+		customer.dialogue_slot = slot
+		if slot != -1:
+			CustomerManager.register_active_customer(slot, customer)
+		customer.resume(snap)
+	brewery.cellar_customers.clear()
 
 
 func _try_spawn_walk_in(forced_data: CustomerData) -> void:
