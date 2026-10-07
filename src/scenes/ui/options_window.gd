@@ -120,6 +120,8 @@ func _on_options_requested() -> void:
 	_key_bindings.cancel_capture()
 	_was_paused_before = get_tree().paused
 	get_tree().paused = true
+	# The web export dropped the scene's offsets and opened this in the corner.
+	set_anchors_and_offsets_preset(Control.PRESET_CENTER, Control.PRESET_MODE_KEEP_SIZE)
 	show()
 
 
