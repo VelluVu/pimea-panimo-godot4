@@ -47,6 +47,14 @@ checklist for when it is. Facts checked 2026-10-07.
 - **Input:** keyboard shortcuts that the browser also uses (F11, Escape, Ctrl+keys).
 - **Quit button:** does nothing in a browser; hide it on web (`OS.has_feature("web")`).
 
+## Checked in headless Chrome (2026-10-07, dev/tools/web/web_smoke.py)
+
+- Loads to the main menu with no console errors; Quit is hidden.
+- New game, the in-game menu (Escape), saving through "Päävalikkoon", and after a page
+  reload "Jatka peliä" appears and continues the run.
+- Not checkable headless, left for a person: sound after the first click, the day-5 end
+  screen in a real 25-minute session, fullscreen, and how it feels.
+
 ## Publish
 
 - GitHub Pages: `.github/workflows/web-demo.yml` exports headless (Godot 4.7.2 + templates)
