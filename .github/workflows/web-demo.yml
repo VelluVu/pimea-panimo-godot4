@@ -1,0 +1,65 @@
+# Exports the "Web Demo" preset and publishes it to GitHub Pages.
+# Runs on demand (Actions tab > Web demo > Run workflow) or when a demo-* tag is pushed.
+# One-time setup: repo Settings > Pages > Source: "GitHub Actions".
+name: Web demo
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "demo-*"
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+env:
+  GODOT_VERSION: "4.7.2"
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Godot and the export templates
+        run: |
+          base="https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable"
+          curl -sSL -o godot.zip "$base/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip"
+          curl -sSL -o templates.tpz "$base/Godot_v${GODOT_VERSION}-stable_export_templates.tpz"
+          unzip -q godot.zip
+          mv "Godot_v${GODOT_VERSION}-stable_linux.x86_64" /usr/local/bin/godot
+          templates_dir="$HOME/.local/share/godot/export_templates/${GODOT_VERSION}.stable"
+          mkdir -p "$templates_dir"
+          unzip -q templates.tpz
+          mv templates/* "$templates_dir/"
+          rm -rf godot.zip templates.tpz templates
+
+      # A fresh clone has no .godot/ cache: import the assets once before exporting.
+      - name: Import
+        run: godot --headless --path . --import
+
+      - name: Export
+        run: |
+          mkdir -p build/web
+          godot --headless --path . --export-release "Web Demo" build/web/index.html
+          test -f build/web/index.pck
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/web
+
+  deploy:
+    needs: export
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
