@@ -55,6 +55,7 @@ func _ready() -> void:
 	BrewerySignals.reputation_popup_requested.connect(_on_reputation_popup_requested)
 	BrewerySignals.money_popup_requested.connect(_on_money_popup_requested)
 	BrewerySignals.customer_note_popup_requested.connect(_on_customer_note_popup_requested)
+	GUISignals.world_popup_requested.connect(_dialog.show_drifting_note)
 	_dialog.popup_shown.connect(_on_popup_shown)
 
 

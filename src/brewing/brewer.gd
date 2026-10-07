@@ -108,6 +108,7 @@ func start_brew() -> void:
 	brewery.brew_preparation.clear_preparation()
 	print(LOG_BREWED, BeerStyle.get_style_string_from_style(brew_report.beer_style.style))
 	BrewerySignals.batch_bottled.emit(bottles_lost, label_cost, brew_report.beer_style.style_name)
+	BrewerySignals.batch_stored.emit(brew_report.beer_style.style_name, effective_yield)
 	BrewerySignals.brewery_state_changed.emit(brewery)
 
 

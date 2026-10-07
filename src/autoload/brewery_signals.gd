@@ -42,6 +42,10 @@ signal special_event_resolved(succeeded: bool, event_data: SpecialEventData)
 signal group_visit_announced(banner_text: String)
 @warning_ignore("unused_signal")
 signal batch_bottled(bottles_lost: int, label_cost: float, style_name: String)
+## Emitted by Brewer once a brewed batch's bottles are in storage. The warehouse door
+## floats it up.
+@warning_ignore("unused_signal")
+signal batch_stored(style_name: String, bottles: int)
 @warning_ignore("unused_signal")
 signal daily_bills_paid(electricity: int, water: int, total: int)
 ## Emitted once per run by Brewery.trigger_ending(). `ending_type` is "busted", "bankrupt"

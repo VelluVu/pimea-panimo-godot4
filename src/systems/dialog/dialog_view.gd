@@ -30,6 +30,9 @@ const POPUP_BOUNCE_SECONDS : float = 0.16
 const POPUP_SHAKE_PIXELS : float = 3.0
 const POPUP_SHAKE_STEPS : int = 6
 const POPUP_SHAKE_STEP_SECONDS : float = 0.035
+const DRIFTING_NOTE_RISE : float = 45.0
+const DRIFTING_NOTE_SECONDS : float = 3.5
+const DRIFTING_NOTE_OUTLINE_COLOR : Color = Color(0.05, 0.05, 0.05, 1)
 
 ## Dialogue slot (int) -> BubbleEntry.
 var _bubbles : Dictionary = {}
@@ -120,6 +123,28 @@ static func _edge_x(width : float, anchor_edge : HorizontalAlignment) -> float:
 			return width / 2.0
 		_:
 			return 0.0
+
+
+## A calmer line than show_popup(): outlined, it rises slowly from `anchor_pos` (its
+## bottom centre) and fades over the last part of the way. For news from a place, not
+## a customer, like a door.
+func show_drifting_note(text : String, color : Color, anchor_pos : Vector2) -> void:
+	var note := Label.new()
+	note.text = text
+	note.modulate = color
+	note.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	note.add_theme_constant_override(&"outline_size", POPUP_OUTLINE_SIZE)
+	note.add_theme_color_override(&"font_outline_color", DRIFTING_NOTE_OUTLINE_COLOR)
+	_spawn_point.add_child(note)
+	note.reset_size()
+	note.global_position = anchor_pos - Vector2(note.size.x / 2.0, note.size.y)
+
+	var faded : Color = color
+	faded.a = 0.0
+	var tween := create_tween().set_parallel(true)
+	tween.tween_property(note, "global_position:y", note.global_position.y - DRIFTING_NOTE_RISE, DRIFTING_NOTE_SECONDS)
+	tween.tween_property(note, "modulate", faded, DRIFTING_NOTE_SECONDS * 0.4).set_delay(DRIFTING_NOTE_SECONDS * 0.6)
+	tween.chain().tween_callback(note.queue_free)
 
 
 ## How long a popup floats after popping out.

@@ -28,6 +28,11 @@ signal start_brewing()
 @warning_ignore("unused_signal")
 signal warehouse_door_clicked()
 
+## A short line that drifts up from a place in the cellar (its bottom centre at
+## world_position), shown by DialogView above the world's darkness.
+@warning_ignore("unused_signal")
+signal world_popup_requested(text: String, color: Color, world_position: Vector2)
+
 @warning_ignore("unused_signal")
 signal brewery_view_requested()
 
