@@ -12,8 +12,6 @@ const BUS_SFX: StringName = &"SFX"
 func _init() -> void:
 	audio_buses = [BUS_MASTER, BUS_MUSIC, BUS_SFX]
 	default_volume = 0.8
-	# Music and effects ship muted.
-	default_muted_buses = [BUS_MUSIC, BUS_SFX]
 	save_path = "user://settings.cfg"
 	# The texts are written in Finnish and are their own translation keys, so Finnish
 	# needs no file; English comes from dev/tools/i18n.py's en.po.
