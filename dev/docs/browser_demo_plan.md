@@ -61,8 +61,8 @@ https://velluvu.github.io/pimea-panimo-godot4/ . Checked with `web_smoke.py --ur
 ## Publish
 
 - GitHub Pages: `.github/workflows/web-demo.yml` exports headless (Godot 4.7.2 + templates)
-  and deploys to Pages, on demand (Actions tab, "Web demo", Run workflow) or on a `demo-*`
-  tag. One-time setup: Settings > Pages > Source "GitHub Actions". The page is then
+  and deploys to Pages, on demand (Actions tab, "Web demo", Run workflow on main). Tags
+  cannot deploy: the github-pages environment only allows main. One-time setup: Settings > Pages > Source "GitHub Actions". The page is then
   https://velluvu.github.io/pimea-panimo-godot4/. A fresh clone exports clean (checked
   2026-10-07; the first import logs parse errors while the class cache is built, harmless).
 - itch.io: `butler push build/web <user>/pimea-panimo:html5`, as an HTML game with the

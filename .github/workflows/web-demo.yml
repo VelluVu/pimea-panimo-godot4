@@ -1,13 +1,11 @@
 # Exports the "Web Demo" preset and publishes it to GitHub Pages.
-# Runs on demand (Actions tab > Web demo > Run workflow) or when a demo-* tag is pushed.
+# Runs on demand: Actions tab > Web demo > Run workflow (branch main). Only main may
+# deploy to the github-pages environment, so there is no tag trigger.
 # One-time setup: repo Settings > Pages > Source: "GitHub Actions".
 name: Web demo
 
 on:
   workflow_dispatch:
-  push:
-    tags:
-      - "demo-*"
 
 permissions:
   contents: read
