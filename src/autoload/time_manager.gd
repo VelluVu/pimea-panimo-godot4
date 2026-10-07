@@ -182,6 +182,13 @@ func get_day_progress() -> float:
 	return DayRules.day_progress(not day_timer.is_stopped(), day_timer.wait_time, day_timer.time_left)
 
 
+## Seconds left today, or -1.0 while the clock has not started.
+func get_seconds_left() -> float:
+	if day_timer == null or day_timer.is_stopped():
+		return -1.0
+	return day_timer.time_left
+
+
 func pause_time() -> void:
 	day_timer.paused = true
 	aging_timer.paused = true

@@ -7,7 +7,7 @@ extends RefCounted
 ## Run modifier cards were removed: a save still links its card's .tres, and a missing
 ## [ext_resource] makes Godot reject the whole file.
 const REMOVED_MODIFIER_FOLDER : String = "res://src/resources/run_modifiers/"
-const REMOVED_MODIFIER_PROPERTY : String = "run_modifier = "
+const REMOVED_MODIFIER_PREFIX : String = "run_modifier = "
 
 
 static func needs_cleanup(text : String) -> bool:
@@ -19,7 +19,7 @@ static func cleaned(text : String) -> String:
 	for line : String in text.split("\n"):
 		if line.begins_with("[ext_resource") and line.contains(REMOVED_MODIFIER_FOLDER):
 			continue
-		if line.begins_with(REMOVED_MODIFIER_PROPERTY):
+		if line.begins_with(REMOVED_MODIFIER_PREFIX):
 			continue
 		kept.append(line)
 	return "\n".join(kept)

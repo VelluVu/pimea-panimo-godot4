@@ -4062,10 +4062,6 @@ msgid "%d / %d XP seuraavaan tasoon"
 msgstr "%d / %d XP to the next level"
 
 #: src/scenes/ui/top_panel_resources.gd
-msgid "LVV Riski: %d%%"
-msgstr "LVV Risk: %d%%"
-
-#: src/scenes/ui/top_panel_resources.gd
 msgid "Päivä: %s"
 msgstr "Day: %s"
 
@@ -4270,6 +4266,26 @@ msgstr "Favourite: changes every visit"
 #: src/ui/customer_book_text.gd
 msgid "Vähintään %.1f %% alkoholia"
 msgstr "At least %.1f %% alcohol"
+
+#: src/ui/day_clock_text.gd
+msgid "Kello %s, valot sammuvat klo %s"
+msgstr "It is %s, lights out at %s"
+
+#: src/ui/day_clock_text.gd
+msgid "Kello lähtee käyntiin, kun ensimmäinen olut on pantu."
+msgstr "The clock starts once the first beer is brewed."
+
+#: src/ui/day_clock_text.gd
+msgid "Päivä %d, kausi on jo pelattu"
+msgstr "Day %d, the season is already played"
+
+#: src/ui/day_clock_text.gd
+msgid "Päivä %d/%d"
+msgstr "Day %d/%d"
+
+#: src/ui/day_clock_text.gd
+msgid "Päivää jäljellä %d min %02d s"
+msgstr "%d min %02d s left today"
 
 #: src/ui/gui_announcer.gd
 msgid "%s ei ole enää kanta-asiakas."
@@ -4478,6 +4494,46 @@ msgstr "Reputation fades %d %% every night"
 #: src/ui/reputation_tier_text.gd
 msgid "Seuraava: %s (%d mainetta)"
 msgstr "Next: %s (%d reputation)"
+
+#: src/ui/risk_text.gd
+msgid "%d riskiä ennen ratsiaa"
+msgstr "%d risk before a raid"
+
+#: src/ui/risk_text.gd
+msgid "LVV-riski: %d/%d"
+msgstr "LVV risk: %d/%d"
+
+#: src/ui/risk_text.gd
+msgid "Laskee %d joka yö"
+msgstr "Drops %d every night"
+
+#: src/ui/risk_text.gd
+msgid "Peruskynnys %d"
+msgstr "Base threshold %d"
+
+#: src/ui/risk_text.gd
+msgid "Ratsiat: %d/%d, viimeinen lopettaa kauden"
+msgstr "Raids: %d/%d, the last one ends the season"
+
+#: src/ui/risk_text.gd
+msgid "Riski %d, ratsiakynnys %d"
+msgstr "Risk %d, raid threshold %d"
+
+#: src/ui/risk_text.gd
+msgid "Seuraava ratsia lopettaa kauden!"
+msgstr "The next raid ends the season!"
+
+#: src/ui/risk_text.gd
+msgid "Seuraava ratsia: sakko %.1f €, mainetta -%d ja oluet takavarikoidaan"
+msgstr "Next raid: %.1f € fine, -%d reputation and the beer is confiscated"
+
+#: src/ui/risk_text.gd
+msgid "maine -%d"
+msgstr "fame -%d"
+
+#: src/ui/risk_text.gd
+msgid "perkit %+d"
+msgstr "perks %+d"
 
 #: src/ui/spice_preview_text.gd
 msgid "Mausteet: +%d %%"
