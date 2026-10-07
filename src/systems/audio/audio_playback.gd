@@ -43,6 +43,9 @@ func _ready() -> void:
 	for i in range(world_pool_size):
 		_world_pool.append(_add_world_player())
 	_music_player = _add_player(music_bus)
+	# The web's default sample playback lost track of a looping song, so the menu music
+	# kept playing under the run's. Streamed, the engine's own mixer plays it as on desktop.
+	_music_player.playback_type = AudioServer.PLAYBACK_TYPE_STREAM
 	_music_player.finished.connect(_on_music_finished)
 	if click_all_buttons:
 		get_tree().node_added.connect(_on_node_added)
@@ -81,8 +84,7 @@ func play_music_loop(stream: AudioStream) -> void:
 	if _looping and _music_player.stream == stream and _music_player.playing:
 		return
 	_looping = true
-	_music_player.stream = stream
-	_music_player.play()
+	_switch_music(stream)
 
 
 ## Plays the tracks in a shuffled order, over and over.
@@ -141,7 +143,13 @@ func _on_node_added(node: Node) -> void:
 func _play_playlist_track() -> void:
 	if _playlist.is_empty():
 		return
-	_music_player.stream = _playlist[_playlist_index]
+	_switch_music(_playlist[_playlist_index])
+
+
+## Stops the old track first, so the switch never overlaps two songs.
+func _switch_music(stream: AudioStream) -> void:
+	_music_player.stop()
+	_music_player.stream = stream
 	_music_player.play()
 
 

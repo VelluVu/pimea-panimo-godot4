@@ -14,6 +14,8 @@ Steps run after the first wait, separated by ';':
     key NAME       press and release a key (Escape, Enter, Space, a letter, F1...)
     wait SECONDS   sleep
     shot NAME      save a screenshot as NAME.png
+    js EXPRESSION  evaluate JavaScript in the page and print the result
+--init-script FILE runs a JavaScript file in the page before the game loads (for probes).
 A screenshot "loaded.png" is always taken after the first wait. Exits 1 if the page logged
 an uncaught exception or a console error.
 """
@@ -211,6 +213,9 @@ def run_steps(tools, steps, out_dir):
 			tools.pump(float(args[0]))
 		elif verb == "shot":
 			screenshot(tools, out_dir, args[0])
+		elif verb == "js":
+			result = tools.call("Runtime.evaluate", {"expression": step[3:].strip(), "returnByValue": True})
+			print("js", result.get("result", {}).get("value"))
 		else:
 			raise ValueError("unknown step: " + step)
 
@@ -223,6 +228,7 @@ def main():
 	parser.add_argument("--chrome", default=os.environ.get("CHROME", DEFAULT_CHROME))
 	parser.add_argument("--keep-profile", action="store_true", help="reuse the browser profile, so saves survive between runs")
 	parser.add_argument("--url", default="", help="a published copy to test instead of build/web")
+	parser.add_argument("--init-script", default="", help="JavaScript file to run in the page before it loads")
 	args = parser.parse_args()
 
 	if not args.url and not os.path.isfile(os.path.join(BUILD_DIR, "index.html")):
@@ -235,20 +241,30 @@ def main():
 	chrome = subprocess.Popen([
 		args.chrome, "--headless=new", f"--remote-debugging-port={DEBUG_PORT}", f"--user-data-dir={profile}",
 		f"--window-size={WINDOW[0]},{WINDOW[1]}", "--use-angle=swiftshader", "--enable-unsafe-swiftshader",
-		"--autoplay-policy=no-user-gesture-required", "about:blank",
+		"--autoplay-policy=no-user-gesture-required",
+		# Muted, or the game plays through the developer's speakers; Web Audio still runs.
+		"--mute-audio", "about:blank",
 	], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 	try:
 		tools = DevTools(WebSocket(page_websocket_url()))
 		tools.call("Runtime.enable")
 		tools.call("Page.enable")
+		if args.init_script:
+			with open(args.init_script, encoding="utf-8") as f:
+				tools.call("Page.addScriptToEvaluateOnNewDocument", {"source": f.read()})
 		tools.call("Page.navigate", {"url": url})
 		tools.pump(args.wait)
 		screenshot(tools, args.out, "loaded")
 		run_steps(tools, args.steps, args.out)
 	finally:
-		# Chrome's helper processes outlive the main one and keep the profile locked.
+		# Chrome can hand over to a new main process, and its helpers outlive it: stop every
+		# Chrome using this run's profile, or they keep playing the game in the background.
 		if os.name == "nt":
 			subprocess.run(["taskkill", "/PID", str(chrome.pid), "/T", "/F"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+			subprocess.run(["powershell", "-NoProfile", "-Command",
+				"Get-CimInstance Win32_Process -Filter \"Name = 'chrome.exe'\" | Where-Object { $_.CommandLine.Contains('"
+				+ os.path.abspath(profile).replace("'", "''") + "') } | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }"],
+				stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 		else:
 			chrome.terminate()
 		chrome.wait(10)
