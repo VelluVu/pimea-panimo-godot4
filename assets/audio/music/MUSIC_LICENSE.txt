@@ -12,8 +12,6 @@ randommind_chiptune_minstrel_dance.mp3      RandomMind, "[Chiptune] Medieval: Mi
     https://opengameart.org/content/chiptune-medieval-minstrel-dance
 randommind_chiptune_bards_tale.mp3          RandomMind, "[Chiptune] Medieval: The Bard's Tale"
     https://opengameart.org/node/94347
-springspring_woffelsbacher_pirates.ogg      Spring Spring, "Woffelsbacher Pirates" (also CC-BY-SA; used under CC0)
-    https://opengameart.org/node/116761
 theouterlinux_drunken_sailor.ogg            TheOuterLinux, "OPL2 - Unknown - Drunken Sailor" (traditional shanty, played four times in a row)
     https://opengameart.org/content/opl2-unkown-drunken-sailor
 
