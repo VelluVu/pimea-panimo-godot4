@@ -5,11 +5,26 @@ extends Control
 ## with show_bubble(), close_bubble() and show_popup(). Everything that ties it to a
 ## project (its signals, its popup wording) lives in DialogWiring, which this adds as a child.
 
+## How loud a popup is: BIG pops in larger with an outline, CRITICAL also shakes.
+enum Emphasis { NORMAL, BIG, CRITICAL }
+
 const SPEECH_BUBBLE_SCENE : PackedScene = preload("speech_bubble.tscn")
 
 const SPAWN_POINT_NAME : String = "BubbleSpawnPoint"
 const POPUP_FLOAT_DISTANCE : float = 35.0
 const POPUP_DURATION_SECONDS : float = 1.8
+## Loud popups stay a little longer so they can be read after the bounce.
+const LOUD_POPUP_DURATION_SECONDS : float = 2.4
+## Font size multiplier per Emphasis.
+const POPUP_FONT_SCALES : Array[float] = [1.0, 1.4, 1.9]
+const POPUP_OUTLINE_SIZE : int = 4
+const POPUP_OUTLINE_COLOR : Color = Color(0.12, 0.06, 0.0, 1.0)
+const POPUP_START_SCALE : float = 0.4
+const POPUP_BOUNCE_SCALE : float = 1.3
+const POPUP_BOUNCE_SECONDS : float = 0.16
+const POPUP_SHAKE_PIXELS : float = 3.0
+const POPUP_SHAKE_STEPS : int = 6
+const POPUP_SHAKE_STEP_SECONDS : float = 0.035
 
 ## Dialogue slot (int) -> BubbleEntry.
 var _bubbles : Dictionary = {}
@@ -57,20 +72,50 @@ func close_bubble(slot : int) -> void:
 	_bubbles.erase(slot)
 
 
-## A brief flourish that drifts up and fades out. Independent of the bubble slots.
-func show_popup(text : String, color : Color, global_pos : Vector2) -> void:
+## A brief flourish that drifts up and fades out. Independent of the bubble slots. A
+## louder `emphasis` first bounces in (and shakes when CRITICAL), like a critical hit.
+func show_popup(text : String, color : Color, global_pos : Vector2, emphasis : Emphasis = Emphasis.NORMAL) -> void:
 	var popup := Label.new()
 	popup.text = text
 	popup.modulate = color
 	_spawn_point.add_child(popup)
 	popup.global_position = global_pos
 
+	var tween := create_tween()
+	var duration : float = POPUP_DURATION_SECONDS
+	if emphasis != Emphasis.NORMAL:
+		duration = LOUD_POPUP_DURATION_SECONDS
+		_enlarge(popup, POPUP_FONT_SCALES[emphasis])
+		_bounce_in(tween, popup)
+		if emphasis == Emphasis.CRITICAL:
+			_shake(tween, popup, global_pos)
+
 	var faded : Color = color
 	faded.a = 0.0
-	var tween := create_tween().set_parallel(true)
-	tween.tween_property(popup, "global_position", global_pos + Vector2(0.0, -POPUP_FLOAT_DISTANCE), POPUP_DURATION_SECONDS)
-	tween.tween_property(popup, "modulate", faded, POPUP_DURATION_SECONDS)
-	tween.chain().tween_callback(popup.queue_free)
+	tween.tween_property(popup, "global_position", global_pos + Vector2(0.0, -POPUP_FLOAT_DISTANCE), duration)
+	tween.parallel().tween_property(popup, "modulate", faded, duration)
+	tween.tween_callback(popup.queue_free)
+
+
+func _enlarge(popup : Label, font_scale : float) -> void:
+	popup.add_theme_font_size_override(&"font_size", roundi(popup.get_theme_font_size(&"font_size") * font_scale))
+	popup.add_theme_constant_override(&"outline_size", POPUP_OUTLINE_SIZE)
+	popup.add_theme_color_override(&"font_outline_color", POPUP_OUTLINE_COLOR)
+	popup.reset_size()
+	popup.pivot_offset = popup.size / 2.0
+
+
+func _bounce_in(tween : Tween, popup : Label) -> void:
+	popup.scale = Vector2.ONE * POPUP_START_SCALE
+	tween.tween_property(popup, "scale", Vector2.ONE * POPUP_BOUNCE_SCALE, POPUP_BOUNCE_SECONDS).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tween.tween_property(popup, "scale", Vector2.ONE, POPUP_BOUNCE_SECONDS)
+
+
+func _shake(tween : Tween, popup : Label, global_pos : Vector2) -> void:
+	for step : int in POPUP_SHAKE_STEPS:
+		var jolt := Vector2(randf_range(-1.0, 1.0), randf_range(-1.0, 1.0)) * POPUP_SHAKE_PIXELS
+		tween.tween_property(popup, "global_position", global_pos + jolt, POPUP_SHAKE_STEP_SECONDS)
+	tween.tween_property(popup, "global_position", global_pos, POPUP_SHAKE_STEP_SECONDS)
 
 
 func _place(entry : BubbleEntry, slot : int, speaker_pos : Vector2) -> void:

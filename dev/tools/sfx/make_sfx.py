@@ -248,6 +248,15 @@ def toast():
     return melody(["E6", "A6"], 0.07, "square", duty=0.25, cutoff=3500) * 0.8, 0.35
 
 
+def crit_gain():
+    """A critical tip or quality gain: a fast rising coin arpeggio and a sparkling top."""
+    run = melody(["E5", "G#5", "B5", "E6", "G#6"], 0.045, "square", duty=0.25, gap=0.005, cutoff=4500)
+    ring = tone(note("B6"), 0.35, "square", 0.125, release=0.3, cutoff=5000)
+    sparkle = highpass(noise(0.3, hold=1), 6000) * env(0.3, 0.005, 0.25) * 0.25
+    bass = seq([tone(note("E3"), 0.12, "triangle"), tone(note("B3"), 0.2, "triangle", release=0.15)])
+    return mix(seq([run, ring]), at(0.22, sparkle), bass * 0.6), 0.5
+
+
 def group_banner():
     fanfare = melody(["C5", "E5", "G5", "C6"], 0.09, "square", duty=0.5, cutoff=3500)
     hold = tone(note("C6"), 0.35, "square", 0.25, release=0.25, cutoff=3500)
@@ -398,6 +407,7 @@ RECIPES = {
     "mouse_squeak": mouse_squeak,
     "bat_squeak": bat_squeak,
     "toast": toast,
+    "crit_gain": crit_gain,
     "group_banner": group_banner,
     "day_event": day_event_generic,
     "day_ship_horn": ship_horn,

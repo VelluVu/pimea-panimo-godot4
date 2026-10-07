@@ -13,6 +13,8 @@ extends Resource
 
 @export_group("Economy")
 @export var sfx_coin_success: AudioStream
+## A critical tip or quality gain popped off a customer, on top of the coin.
+@export var sfx_critical_gain: AudioStream
 
 @export_group("UI")
 @export var sfx_ui_click: AudioStream

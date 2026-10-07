@@ -51,6 +51,7 @@ static func calculate_sale(results : Dictionary, bottles_sold : int, tip_multipl
 	var tip : float = snappedf(results[CustomerManager.KEY_TIP] * bottles_sold * tip_multiplier, 0.1)
 	if tip > 0.0 and randf() < tip_double_chance:
 		tip = snappedf(tip * 2.0, 0.1)
+		outcome.tip_doubled = true
 	outcome.tip_income = tip
 
 	outcome.net_income = snappedf(outcome.gross_income + tip, 0.1)
@@ -103,6 +104,7 @@ func process(data : CustomerData) -> String:
 	brewery.add_xp(sale_xp)
 	BrewerySignals.sale_xp_gained.emit(sale_xp)
 	BrewerySignals.sale_tip_gained.emit(outcome.tip_income)
+	BrewerySignals.sale_popup_tiers_rated.emit(PopupTierRules.tip_tier(outcome.tip_income, outcome.gross_income, outcome.tip_doubled), best_batch.current_quality)
 
 	var receipt_entry := SaleReceiptEntry.new()
 	receipt_entry.breakdown = breakdown
