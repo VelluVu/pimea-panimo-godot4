@@ -53,6 +53,8 @@ var made_purchase: bool = false
 var dialogue_slot: int = -1
 
 var generated_name: String = "Asiakas"
+## Set once the sale has run; until then the customer can be saved and seated again.
+var _sale_done: bool = false
 
 ## The glass as drawn, before fill_glasses() colours its beer.
 var _glass_texture: Texture2D
@@ -154,6 +156,16 @@ func _queue_floor_walk(tween: Tween, from_pos: Vector2, to_pos: Vector2) -> void
 	tween.tween_property(self, "global_position", to_pos, duration).set_trans(Tween.TRANS_LINEAR)
 
 
+## Seats a customer restored from a save straight at their counter spot.
+func arrive_at_counter(counter_position: Vector2) -> void:
+	global_position = counter_position
+	_on_reached_counter()
+
+
+func is_waiting_to_order() -> bool:
+	return not _sale_done
+
+
 func _on_reached_counter() -> void:
 	_play_animation(ANIM_IDLE_UP)
 	var display_time := _say(generated_name + ": " + tr(customer_data.dialogue_intro), true)
@@ -174,6 +186,7 @@ func _on_preview_timeout() -> void:
 
 
 func _on_sale_timeout() -> void:
+	_sale_done = true
 	# process_auto_sale() is synchronous, so signals fired during it belong to this sale.
 	var outcome := SaleOutcomeCapture.new()
 	outcome.start()
