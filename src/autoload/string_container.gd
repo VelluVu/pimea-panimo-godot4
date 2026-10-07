@@ -134,16 +134,13 @@ const PERK_TIER_COMMON : String = "Tavallinen"
 const PERK_TIER_RARE : String = "Harvinainen"
 const PERK_TIER_LEGENDARY : String = "Legendaarinen"
 
-## RunModifier.get_stat_summary() lines — signed (%+d) since a modifier can
-## push either direction (see e.g. Kireä LVV's lower raid threshold).
-const MODIFIER_RAID_THRESHOLD_STAT_STRING : String = "Ratsiakynnys: %+d %%"
-const MODIFIER_INGREDIENT_PRICE_STAT_STRING : String = "Ainehinnat: %+d %%"
+## RunPerk.get_stat_summary() lines, signed (%+d) since a perk can push either way.
+const PERK_RAID_THRESHOLD_STAT_STRING : String = "Ratsiakynnys: %+d %%"
+const PERK_INGREDIENT_PRICE_STAT_STRING : String = "Ainehinnat: %+d %%"
 
 const RUN_EFFECTS_TITLE : String = "Kauden tilastot"
 const RUN_EFFECTS_CLOSE_TEXT : String = "Sulje"
-const RUN_EFFECTS_MODIFIER_HEADER : String = "Olosuhteet: %s"
 const RUN_EFFECTS_RAID_THRESHOLD_STRING : String = "Ratsiakynnys tällä kaudella: %d riskiä"
-const RUN_EFFECTS_NO_MODIFIER_STRING : String = "Ei aktiivista kautta."
 const RUN_EFFECTS_PERKS_HEADER : String = "Tämän kauden perkit (%d):"
 const RUN_EFFECTS_NO_PERKS_STRING : String = "Ei vielä perkkejä. Nouse tasolle 2 saadaksesi ensimmäisen."
 const RUN_EFFECTS_PERK_ROW_FORMAT : String = "%s %s%s"

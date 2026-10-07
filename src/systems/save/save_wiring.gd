@@ -8,8 +8,9 @@ extends SaveSlot
 ## Brewery on BrewEngine.brewery_about_to_save. The game's SaveManager autoload
 ## extends this.
 
-## Version 0 -> 1 needed no migration step.
-const SAVE_VERSION: int = 1
+## Version 0 -> 1 needed no migration step. 1 -> 2 dropped the run modifier, which is
+## stripped from the file text before loading (LegacySaveText).
+const SAVE_VERSION: int = 2
 
 ## Endings that finish the run for good. The season endings ("survived",
 ## "season_over") are left out on purpose: the player can keep playing.
@@ -40,6 +41,7 @@ func save_game() -> bool:
 
 ## The current run is left untouched when nothing could be loaded.
 func load_game() -> bool:
+	_clean_legacy_saves()
 	var loaded: Brewery = read() as Brewery
 	if loaded == null:
 		return false
@@ -47,6 +49,19 @@ func load_game() -> bool:
 	BrewEngine.set_brewery(loaded)
 	BrewEngine.current_brewery.emit_initial_values()
 	return true
+
+
+## Rewrites saves from older builds that Godot could not load at all, see LegacySaveText.
+func _clean_legacy_saves() -> void:
+	for path: String in [save_path, SaveFile.backup_path(save_path)]:
+		if not FileAccess.file_exists(path):
+			continue
+		var text: String = FileAccess.get_file_as_string(path)
+		if not LegacySaveText.needs_cleanup(text):
+			continue
+		var file: FileAccess = FileAccess.open(path, FileAccess.WRITE)
+		if file != null:
+			file.store_string(LegacySaveText.cleaned(text))
 
 
 func _on_game_ended(ending_type: String) -> void:

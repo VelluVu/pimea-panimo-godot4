@@ -141,7 +141,7 @@ func _on_day_changed(_day : int) -> void:
 		return
 	var bottles : int = brewery.lifetime_bottles_sold - brewery.renown_bottles_counted
 	brewery.renown_bottles_counted = brewery.lifetime_bottles_sold
-	add_renown(RunScore.continued_day_renown(bottles, brewery.run_modifier))
+	add_renown(RunScore.continued_day_renown(bottles))
 
 
 func _save() -> void:

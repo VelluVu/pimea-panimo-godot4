@@ -19,7 +19,7 @@ Five top-level folders: `addons/`, `assets/`, `src/`, `tests/` and `dev/`. Every
     - `src/brewery/` — the `Brewery` run state and its services (raids, distribution, day rules)
     - `src/customers/` — customers, spawning, group visits, sales
     - `src/events/` — special, day and immersion events
-    - `src/progression/` — perks, run modifiers, meta unlocks and their rules, daily goals
+    - `src/progression/` — perks, meta unlocks and their rules, run score, daily goals
     - `src/ui/` — UI helper classes: pure text and layout logic (`OlutoppiText`, `RecipeLibraryText`), small view helpers (`LabelPulse`, `CollapsibleSection`) and tooltip/hover-area nodes
     - `src/console/` — the game's console commands (`PlayerCommands`, the gitignored cheat sets); the console itself is in `src/systems/console/`
     - `src/audio/` — audio bank
@@ -87,7 +87,7 @@ Five top-level folders: `addons/`, `assets/`, `src/`, `tests/` and `dev/`. Every
 ## Tools
 - `dev/tools/check_systems.py` checks that every folder in `src/systems/` is self-contained (exit code 1 on a violation).
 - `dev/tools/sheets.py` exports the customers and beer styles to spreadsheets (`export`) and reads edited sheets back into the `.tres` files (`import`, a dry run unless `--apply` is given). Needs `pip install openpyxl`. Output goes to `dev/tools/sheets/`, which is gitignored.
-- `dev/tools/playtest/playtest.py` runs headless bot playtests in parallel (`run`, four default strategies plus `expert`, `gourmet` and `minmax`, each run with its own APPDATA so real saves are safe), then prints a per-run table (`summary`) or compares batches (`compare`). Use it to check balance changes; only the last three discover styles on their own, every bot chases daily goals (`--no-goals` turns that off). `minmax` plays for the highest run score (picks its own modifier, values events in score points, cashes out on the last day), so it shows what an optimising player can squeeze out; `--modifier` sets the modifier card (0, 1, 2, `random`, `bot`).
+- `dev/tools/playtest/playtest.py` runs headless bot playtests in parallel (`run`, four default strategies plus `expert`, `gourmet` and `minmax`, each run with its own APPDATA so real saves are safe), then prints a per-run table (`summary`) or compares batches (`compare`). Use it to check balance changes; only the last three discover styles on their own, every bot chases daily goals (`--no-goals` turns that off). `minmax` plays for the highest run score (values events in score points, cashes out on the last day), so it shows what an optimising player can squeeze out.
 - `dev/tools/i18n.py` keeps the English translation (`en.po`) in step with the Finnish texts in scripts and scenes (`extract`) and lists missing English or mismatched `%d`/`%s` placeholders (`check`, exit code 1 on a problem). Content `.tres` texts are not translated yet.
 - `dev/tools/sfx/make_sfx.py` synthesizes the game's own 16-bit style sounds (footsteps, voices, pour, critters, toasts, day events) into `assets/audio/sfx/synth/`; edit a recipe and rerun (`make_sfx.py <name>` for one). The `addons/sound_board/` dock lists every sound slot in `src/resources/` for drag and drop swapping.
 - `dev/tools/playtest/talents.py` runs the same bots once per Olutoppi spec (no talents, each path at a budget, balanced) and compares their scores.

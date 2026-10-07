@@ -96,10 +96,6 @@ msgid "Ei"
 msgstr "No"
 
 #: src/autoload/string_container.gd
-msgid "Ei aktiivista kautta."
-msgstr "No active season."
-
-#: src/autoload/string_container.gd
 msgid "Ei vielä perkkejä. Nouse tasolle 2 saadaksesi ensimmäisen."
 msgstr "No perks yet. Reach level 2 to get your first."
 
@@ -226,10 +222,6 @@ msgstr "Piney"
 #: src/autoload/string_container.gd
 msgid "Märzen"
 msgstr "Märzen"
-
-#: src/autoload/string_container.gd
-msgid "Olosuhteet: %s"
-msgstr "Conditions: %s"
 
 #: src/autoload/string_container.gd
 msgid ""
@@ -2956,6 +2948,10 @@ msgstr ""
 "Your brewery's fame has spread from past seasons. Reputation gain is "
 "permanently a little better."
 
+#: src/resources/meta_unlocks/tunnettu_nimi.tres
+msgid "Tunnettu nimi"
+msgstr "Known Name"
+
 #: src/resources/meta_unlocks/vahva_brandi.tres
 msgid ""
 "Panimosi brändi tunnetaan jo laajalti, ja asiakkaat ovat valmiita maksamaan "
@@ -3229,69 +3225,6 @@ msgstr "Your beer is known all over town. So is your address."
 #: src/resources/reputation_tiers/4_legendaarinen.tres
 msgid "Pimeästä panimosta kerrotaan tarinoita. Osa niistä on jopa totta."
 msgstr "People tell stories about the dark brewery. Some of them are even true."
-
-#: src/resources/run_modifiers/ainepula.tres
-msgid "Ainepula"
-msgstr "Ingredient Shortage"
-
-#: src/resources/run_modifiers/ainepula.tres
-msgid ""
-"Raaka-aineista on pulaa ja hinnat ovat pilvissä. Kaaoksen keskellä "
-"tarkastajatkin ovat muualla kiireisiä, ratsiakynnys on ennätyskorkealla."
-msgstr ""
-"Ingredients are scarce and prices are sky-high. In the chaos even the "
-"inspectors are busy elsewhere, and the raid threshold is at a record high."
-
-#: src/resources/run_modifiers/kallis_tori.tres
-msgid "Kallis tori"
-msgstr "Pricey Market"
-
-#: src/resources/run_modifiers/kallis_tori.tres
-msgid "Ratsiakynnys korkeampi, mutta raaka-aineiden hinnat ovat nousseet."
-msgstr "A higher raid threshold, but ingredient prices have gone up."
-
-#: src/resources/run_modifiers/kirea_lvv.tres
-msgid "Kireä LVV"
-msgstr "Strict LVV"
-
-#: src/resources/run_modifiers/kirea_lvv.tres
-msgid ""
-"Tarkastajat ovat hereillä, ratsiakynnys on matalampi. Ainekset sentään "
-"halvempia."
-msgstr ""
-"The inspectors are alert and the raid threshold is lower. At least "
-"ingredients are cheaper."
-
-#: src/resources/run_modifiers/loysa_valvonta.tres
-msgid ""
-"LVV on kiireinen muualla tänä kautena, ratsiakynnys on huomattavasti "
-"korkeampi. Rauha maksaa: tukkurit tietävät tilanteen ja hinnoittelevat sen "
-"mukaan."
-msgstr ""
-"The LVV is busy elsewhere this season, so the raid threshold is much "
-"higher. Peace has a price: the wholesalers know it and charge accordingly."
-
-#: src/resources/run_modifiers/loysa_valvonta.tres
-msgid "Löysä valvonta"
-msgstr "Lax Oversight"
-
-#: src/resources/run_modifiers/tavallinen_keikka.tres
-msgid "Ei yllätyksiä tällä kertaa: perustaso kaikessa."
-msgstr "No surprises this time: everything at the baseline."
-
-#: src/resources/run_modifiers/tavallinen_keikka.tres
-msgid "Tavallinen keikka"
-msgstr "Business as Usual"
-
-#: src/resources/run_modifiers/tunnettu_nimi.tres
-msgid ""
-"Maine karttuu nopeammin, mutta tunnettuus kiinnittää myös LVV:n huomion "
-"aiemmin."
-msgstr "Reputation builds faster, but fame also draws the LVV's attention sooner."
-
-#: src/resources/run_modifiers/tunnettu_nimi.tres
-msgid "Tunnettu nimi"
-msgstr "Known Name"
 
 #: src/resources/special_events/brand_deal.tres
 msgid ""
@@ -3911,10 +3844,6 @@ msgid "Maine"
 msgstr "Reputation"
 
 #: src/scenes/ui/leaderboard_window.gd
-msgid "Olosuhteet"
-msgstr "Conditions"
-
-#: src/scenes/ui/leaderboard_window.gd
 msgid "Pisteet"
 msgstr "Score"
 
@@ -3989,22 +3918,6 @@ msgstr "Pimeä Panimo"
 #: src/scenes/ui/main_menu.gd
 msgid "Takaisin"
 msgstr "Back"
-
-#: src/scenes/ui/modifier_select_window.gd
-msgid "Ei vielä ennätystä. Tästä se lähtee."
-msgstr "No record yet. This is where it starts."
-
-#: src/scenes/ui/modifier_select_window.gd
-msgid "Ennätys: %d pistettä (päivä %d, %d annosta)"
-msgstr "Record: %d points (day %d, %d servings)"
-
-#: src/scenes/ui/modifier_select_window.gd
-msgid "Valitse tämän kauden olosuhteet"
-msgstr "Choose this season's conditions"
-
-#: src/scenes/ui/modifier_select_window.tscn
-msgid "Modifier"
-msgstr "Modifier"
 
 #: src/scenes/ui/olutoppi_window.gd
 msgid "Maine: %d"

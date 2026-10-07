@@ -33,7 +33,6 @@ const CONFIRM_NO_TEXT: String = "Ei"
 @onready var confirm_label: Label = %ConfirmLabel
 @onready var yes_button: Button = %YesButton
 @onready var no_button: Button = %NoButton
-@onready var modifier_select_window: ModifierSelectWindow = $"../ModifierSelectWindow"
 
 ## True from opening until resuming or leaving, including while a sub-window
 ## (settings, achievements, leaderboard) has this menu hidden.
@@ -61,7 +60,6 @@ func _ready() -> void:
 	main_menu_button.pressed.connect(_confirm.bind(CONFIRM_MAIN_MENU_TEXT, _go_to_main_menu))
 	yes_button.pressed.connect(func() -> void: _confirmed_action.call())
 	no_button.pressed.connect(_show_confirm.bind(false))
-	modifier_select_window.modifier_chosen.connect(_on_modifier_chosen)
 
 	GUISignals.game_menu_requested.connect(_open)
 	GUISignals.options_closed.connect(_on_sub_window_closed)
@@ -134,16 +132,11 @@ func _show_confirm(confirming: bool) -> void:
 	buttons_vbox.visible = not confirming
 
 
-## Stays paused while the modifier is picked; _on_modifier_chosen starts the run.
 func _start_new_run() -> void:
 	hide()
-	modifier_select_window.open()
-
-
-func _on_modifier_chosen(modifier: RunModifier) -> void:
 	_is_open = false
 	get_tree().paused = false
-	BrewEngine.start_new_game(modifier)
+	BrewEngine.start_new_game()
 	TimeManager.resume_time()
 	get_tree().change_scene_to_file(GAME_SCENE_PATH)
 

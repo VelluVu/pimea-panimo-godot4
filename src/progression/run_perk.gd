@@ -10,7 +10,7 @@ extends Resource
 @export var perk_name: String = ""
 @export var description: String = ""
 
-## Placeholder until real art exists, same as RunModifier.
+## Placeholder until real art exists.
 @export var icon_placeholder: String = "⭐"
 
 ## Weights PerkRegistry.get_random_perks() and colours the LevelUpWindow card.
@@ -73,8 +73,8 @@ enum Tier { COMMON, RARE, LEGENDARY }
 
 
 ## Combines one stat over a list of perks: multiplicative by default, additive
-## for perks with stacks_additively. `base` is the starting value (a
-## RunModifier's own multiplier, or 1.0). Static so it is testable without a Brewery.
+## for perks with stacks_additively. `base` is the starting value (PerkStats
+## passes 1.0). Static so it is testable without a Brewery.
 static func combine_stacking(base : float, perks : Array[RunPerk], field_getter : Callable) -> float:
 	var multiplier : float = base
 	var additive_bonus : float = 0.0

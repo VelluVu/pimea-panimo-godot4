@@ -16,7 +16,6 @@ const REPUTATION_UNSCORED_LINE : String = "Maine %d: ei pisteitä"
 const BOTTLES_LINE : String = "Annokset %d"
 const WORTH_LINE : String = "Panimon arvo %d €: +%d"
 const BONUS_LINE : String = "Legendabonus +%d"
-const MULTIPLIER_LINE : String = "%s × %s"
 const TOTAL_LINE : String = "Pisteet: %d"
 
 ## Endesga 32: gold, silver and bronze for the podium.
@@ -58,7 +57,7 @@ static func ending_color(ending_type : String) -> Color:
 	return ENDING_COLORS.get(ending_type, DEFAULT_COLOR)
 
 
-## One part per line; the bonus and multiplier lines only when they change the score.
+## One part per line; the bonus line only when the run earned it.
 static func breakdown_lines(entry : Dictionary) -> PackedStringArray:
 	var lines : PackedStringArray = [
 		UiText.of(DAYS_LINE) % [entry.get("days_survived", 0), RunScore.DAY_POINTS],
@@ -71,9 +70,6 @@ static func breakdown_lines(entry : Dictionary) -> PackedStringArray:
 	var bonus : int = entry.get("bonus", 0)
 	if bonus > 0:
 		lines.append(UiText.of(BONUS_LINE) % bonus)
-	var multiplier : float = entry.get("multiplier", 1.0)
-	if not is_equal_approx(multiplier, 1.0):
-		lines.append(MULTIPLIER_LINE % [UiText.of(entry.get("modifier_name", "")), format_multiplier(multiplier)])
 	return lines
 
 
@@ -88,11 +84,6 @@ static func breakdown(entry : Dictionary) -> String:
 	var lines : PackedStringArray = breakdown_lines(entry)
 	lines.append(UiText.of(TOTAL_LINE) % entry.get("score", 0))
 	return "\n".join(lines)
-
-
-## Finnish decimal comma, at most two decimals: 1.35 -> "1,35", 0.95 -> "0,95".
-static func format_multiplier(multiplier : float) -> String:
-	return String.num(snappedf(multiplier, 0.01), 2).replace(".", ",")
 
 
 ## "2026-09-13T10:27:33" -> "13.09.2026".

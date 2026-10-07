@@ -4,8 +4,8 @@
   python dev/tools/playtest/playtest.py run [--runs 6] [--days 20] [--out DIR] [--meta FILE] [--strategies a,b] [--no-goals]
       Starts runs_per_strategy x each strategy (default: greedy, variety, careful, cheap) at
       once; "expert" knows every recipe, "gourmet" also tunes it for quality and
-      "minmax" plays like gourmet aimed straight at the run score (it picks the modifier
-      it expects to score best on and cashes out on the last day); all three are
+      "minmax" plays like gourmet aimed straight at the run score (it cashes out on the
+      last day); all three are
       left out unless named.
       Each run gets its own APPDATA, so the real saves are never touched. --meta copies a
       meta_progress.cfg into every run for a "veteran" profile. Output defaults to
@@ -62,7 +62,6 @@ def run(args: argparse.Namespace) -> None:
                 f"--bot={HERE / 'bot.gd'}", f"--strategy={strategy}", f"--max_days={args.days}",
                 f"--speed={args.speed}", f"--out={out / f'{name}.json'}",
                 f"--profile={'veteran' if args.meta else 'new'}", f"--goals={0 if args.no_goals else 1}",
-                f"--modifier={args.modifier or ('bot' if strategy == 'minmax' else 0)}",
             ]
             env = dict(os.environ, APPDATA=str(appdata))
             with open(out / f"{name}.out", "w") as stdout, open(out / f"{name}.err", "w") as stderr:
@@ -117,9 +116,6 @@ def summary(args: argparse.Namespace) -> None:
         scores = sorted(r["final"].get("score", 0) for r in rs)
         ok = sum(r["counts"].get("goals_ok", 0) for r in rs)
         tried = ok + sum(r["counts"].get("goals_failed", 0) for r in rs)
-        modifiers = dict(collections.Counter(r.get("modifier", "") for r in rs))
-        if any(modifiers):
-            print("%-8s modifiers=%s" % (strategy, modifiers))
         print("%-8s endings=%s score mean %.0f median %.0f goals %d%% 60@=%s 100@=%s peak=%s lastday=%s" % (
             strategy, endings, sum(scores) / len(scores), scores[len(scores) // 2], 100 * ok / max(1, tried),
             [first_day_at(r, 60) for r in rs], [first_day_at(r, 100) for r in rs], [peak_rep(r) for r in rs], [r["final"]["day"] for r in rs]))
@@ -157,9 +153,6 @@ def main() -> None:
     p_run.add_argument("--godot", default=os.environ.get("GODOT", DEFAULT_GODOT))
     p_run.add_argument("--strategies", default=",".join(STRATEGIES), help="comma-separated, from: " + ", ".join(ALL_STRATEGIES))
     p_run.add_argument("--no-goals", action="store_true", help="bots ignore daily goals")
-    p_run.add_argument("--modifier", help="run modifier card: 0 (plain), 1, 2, random, bot (the strategy's own pick) or a "
-                       "file name in src/resources/run_modifiers/ (e.g. kirea_lvv); "
-                       "default 0, and bot for minmax")
     p_run.set_defaults(func=run)
     p_summary = sub.add_parser("summary")
     p_summary.add_argument("dir")

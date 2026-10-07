@@ -38,8 +38,6 @@ func set_brewery(brewery : Brewery) -> void:
 	brewery_changed.emit(current_brewery)
 
 
-## Starts a fresh run. `chosen_modifier` is the player's pick; null rolls a random
-## one (used for the boot-time Brewery).
-func start_new_game(chosen_modifier : RunModifier = null) -> void:
-	set_brewery(Brewery.new(chosen_modifier))
+func start_new_game() -> void:
+	set_brewery(Brewery.new())
 	print(LOG_NEW_GAME)

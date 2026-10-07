@@ -1,8 +1,8 @@
 class_name PerkStats
 extends RefCounted
 
-## Read-only view that folds a run's RunModifier plus every active RunPerk
-## into one effective number per stat. Replaces the ~20 hand-written
+## Read-only view that folds every active RunPerk into one effective number
+## per stat. Replaces the ~20 hand-written
 ## Brewery.get_X_multiplier() getters: a new perk axis is now just a new
 ## RunPerk field (plus a stat-summary line) and never touches Brewery.
 ##
@@ -52,9 +52,9 @@ static func definitions() -> Array[Dictionary]:
 		{"stat": QUALITY_BONUS, "kind": Kind.PERCENT_ADD, "text": StringContainer.PERK_QUALITY_STAT_STRING},
 		{"stat": REPUTATION_GAIN, "kind": Kind.MULTIPLIER, "text": StringContainer.PERK_REPUTATION_STAT_STRING},
 		{"stat": TIP_INCOME, "kind": Kind.MULTIPLIER, "text": StringContainer.PERK_TIP_STAT_STRING},
-		{"stat": RAID_THRESHOLD, "kind": Kind.MULTIPLIER, "text": StringContainer.MODIFIER_RAID_THRESHOLD_STAT_STRING},
+		{"stat": RAID_THRESHOLD, "kind": Kind.MULTIPLIER, "text": StringContainer.PERK_RAID_THRESHOLD_STAT_STRING},
 		{"stat": DISTRIBUTION_INCOME, "kind": Kind.MULTIPLIER, "text": StringContainer.PERK_DISTRIBUTION_STAT_STRING},
-		{"stat": INGREDIENT_PRICE, "kind": Kind.MULTIPLIER, "text": StringContainer.MODIFIER_INGREDIENT_PRICE_STAT_STRING},
+		{"stat": INGREDIENT_PRICE, "kind": Kind.MULTIPLIER, "text": StringContainer.PERK_INGREDIENT_PRICE_STAT_STRING},
 		{"stat": BREW_YIELD, "kind": Kind.MULTIPLIER, "text": StringContainer.PERK_YIELD_STAT_STRING},
 		{"stat": INGREDIENT_REFUND_CHANCE, "kind": Kind.PERCENT_ADD, "text": StringContainer.PERK_REFUND_CHANCE_STAT_STRING},
 		{"stat": PEAK_SPEED, "kind": Kind.MULTIPLIER, "text": StringContainer.PERK_PEAK_SPEED_STAT_STRING},
@@ -102,30 +102,21 @@ static func scale_per_level(kind : Kind, per_level : float, level : int) -> Vari
 			return roundi(per_level) * level
 
 
-var _modifier : RunModifier
 var _perks : Array[RunPerk]
 
 
-func _init(modifier : RunModifier, perks : Array[RunPerk]) -> void:
-	_modifier = modifier
+func _init(perks : Array[RunPerk]) -> void:
 	_perks = perks
 
 
-## Multiplicative stat. Starts from the run modifier's own field of the
-## same name when it has one (its fixed starting conditions), else 1.0.
+## Multiplicative stat, starting from 1.0.
 func multiplier(stat : StringName) -> float:
-	var base : float = 1.0
-	if _modifier != null and stat in _modifier:
-		base = _modifier.get(stat)
-	return RunPerk.combine_stacking(base, _perks, func(perk : RunPerk) -> float: return perk.get(stat))
+	return RunPerk.combine_stacking(1.0, _perks, func(perk : RunPerk) -> float: return perk.get(stat))
 
 
-## Flat sum of a perk field, added to the modifier's field when it has one
-## (only quality_bonus does). Works for int and float stats.
+## Flat sum of a perk field. Works for int and float stats.
 func total(stat : StringName) -> float:
 	var sum : float = 0.0
-	if _modifier != null and stat in _modifier:
-		sum += _modifier.get(stat)
 	for perk : RunPerk in _perks:
 		sum += perk.get(stat)
 	return sum
@@ -136,10 +127,6 @@ func chance(stat : StringName) -> float:
 	return clampf(total(stat), 0.0, 1.0)
 
 
-## Base threshold scaled by the modifier's lvv_threshold_multiplier and the
-## perks' raid_threshold_multiplier. The two fields have different names,
-## so this can't go through multiplier().
+## Base threshold scaled by the perks' raid_threshold_multiplier.
 func raid_threshold(base_threshold : int) -> int:
-	var start : float = _modifier.lvv_threshold_multiplier if _modifier != null else 1.0
-	var combined : float = RunPerk.combine_stacking(start, _perks, func(perk : RunPerk) -> float: return perk.raid_threshold_multiplier)
-	return roundi(base_threshold * combined)
+	return roundi(base_threshold * multiplier(RAID_THRESHOLD))
