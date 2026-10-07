@@ -127,10 +127,10 @@ func _update_goals(brewery : Brewery) -> void:
 		_update_daily_goals()
 
 
-## The run's win condition (DayRules.SURVIVAL_DAY_TARGET, Brewery.SURVIVAL_MIN_REPUTATION).
+## The run's win condition (DemoRules.last_day(), Brewery.SURVIVAL_MIN_REPUTATION).
 func _update_run_goal(brewery : Brewery) -> void:
 	var money_in_danger : bool = brewery.money <= 0.0
-	var target_day : int = DayRules.SURVIVAL_DAY_TARGET
+	var target_day : int = DemoRules.last_day()
 	var min_reputation : int = Brewery.SURVIVAL_MIN_REPUTATION
 
 	day_goal_label.visible = not _main_goal_section.collapsed

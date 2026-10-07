@@ -9,6 +9,8 @@ extends Panel
 const TITLE_TEXT : String = "Olutoppi"
 const CLOSE_BUTTON_TEXT : String = "Sulje"
 const RENOWN_FORMAT : String = "Maine: %d"
+## The browser demo shows the tree but sells nothing from it (DemoRules).
+const DEMO_RENOWN_FORMAT : String = "Maine: %d. Kykyjä voi ostaa koko pelissä."
 const LEVEL_BONUS_FORMAT : String = "%d/%d %s"
 const LOCKED_ICON : String = "🔒"
 
@@ -91,7 +93,7 @@ func _build_edges(buttons : Array[Button], centers : Dictionary) -> Array[Olutop
 
 func _refresh() -> void:
 	var renown : int = MetaProgressManager.get_renown()
-	renown_label.text = tr(RENOWN_FORMAT) % renown
+	renown_label.text = tr(DEMO_RENOWN_FORMAT if DemoRules.is_demo() else RENOWN_FORMAT) % renown
 
 	for id : String in _node_views:
 		_refresh_node(id, renown)

@@ -50,6 +50,8 @@ func _ready() -> void:
 	olutoppi_button.pressed.connect(_on_olutoppi_button_pressed)
 	options_button.pressed.connect(_on_options_button_pressed)
 	quit_button.pressed.connect(_on_quit_button_pressed)
+	# A browser tab cannot be closed by the game.
+	quit_button.visible = not OS.has_feature("web")
 	new_game_button.pressed.connect(_on_new_game_button_pressed)
 	continue_button.pressed.connect(_on_continue_button_pressed)
 	back_button.pressed.connect(_on_back_button_pressed)

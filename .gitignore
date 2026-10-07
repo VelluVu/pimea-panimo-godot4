@@ -26,3 +26,6 @@ dev/tools/playtest/runs/
 # Raw tracker exports (rebuilt from the .fur project; the game uses the OGG in assets/)
 dev/music/*.wav
 __pycache__/
+
+# Web export output (see dev/docs/browser_demo_plan.md)
+build/
