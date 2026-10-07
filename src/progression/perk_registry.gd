@@ -1,7 +1,7 @@
 class_name PerkRegistry
 extends RefCounted
 
-## Static pool of every RunPerk, filled in _static_init() like RunModifierRegistry.
+## Static pool of every RunPerk, filled in _static_init().
 ## A plain class rather than an autoload: perks are only rolled on a level-up.
 
 const PERK_FOLDER_PATH : String = "res://src/resources/perks/"
@@ -29,7 +29,7 @@ const TIER_WEIGHTS : Dictionary = {
 ## repeats across separate level-ups, stacking the same perk twice over a
 ## run, are fine and expected), weighted by TIER_WEIGHTS instead of a flat
 ## shuffle — legendary perks are rare draws, not evenly-odds ones. Clamped
-## to pool size, same reasoning as RunModifierRegistry.get_random_modifiers().
+## to pool size.
 static func get_random_perks(count : int) -> Array[RunPerk]:
 	if pool.is_empty():
 		return [RunPerk.new()]

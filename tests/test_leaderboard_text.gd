@@ -12,7 +12,7 @@ func suite_name() -> String:
 
 func _entry() -> Dictionary:
 	return {"ending_type": "survived", "days_survived": 15, "reputation": 110, "lifetime_bottles_sold": 400,
-		"bonus": 1500, "multiplier": 1.35, "modifier_name": "Ainepula", "score": 6075}
+		"bonus": 1500, "score": 3500}
 
 
 func test_every_ending_has_a_finnish_name() -> void:
@@ -26,20 +26,13 @@ func test_the_breakdown_lists_every_part_and_the_total() -> void:
 	assert_contains(text, "110 × 10")
 	assert_contains(text, "400")
 	assert_contains(text, "+1500")
-	assert_contains(text, "Ainepula × 1,35")
-	assert_contains(text, "6075")
+	assert_contains(text, "3500")
 
 
-func test_the_breakdown_skips_a_missing_bonus_and_a_neutral_multiplier() -> void:
+func test_the_breakdown_skips_a_missing_bonus() -> void:
 	var entry : Dictionary = _entry()
 	entry["bonus"] = 0
-	entry["multiplier"] = 1.0
 	assert_eq(LeaderboardTextScript.breakdown_lines(entry).size(), 3)
-
-
-func test_multipliers_use_a_decimal_comma() -> void:
-	assert_eq(LeaderboardTextScript.format_multiplier(1.35), "1,35")
-	assert_eq(LeaderboardTextScript.format_multiplier(0.95), "0,95")
 
 
 func test_dates_are_finnish() -> void:

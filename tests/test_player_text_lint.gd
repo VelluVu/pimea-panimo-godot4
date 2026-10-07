@@ -13,7 +13,6 @@ extends McpTestSuite
 
 const DESCRIPTION_DIRS : Array[String] = [
 	"res://src/resources/perks",
-	"res://src/resources/run_modifiers",
 	"res://src/resources/meta_unlocks",
 	"res://src/resources/bars",
 	"res://src/resources/achievements",

@@ -39,7 +39,6 @@ SCRIPT_DIRS = ["src"]
 # Dev-only text and content files (phase 2) stay out.
 # Content resources whose fields hold player-facing text. Phase 2 adds the rest here.
 CONTENT_FIELDS = {
-    "src/resources/run_modifiers": ("modifier_name", "description"),
     "src/resources/ingredients": ("name", "description"),
     "src/resources/daily_goals": ("goal_name",),
     "src/resources/reputation_tiers": ("tier_name", "description"),

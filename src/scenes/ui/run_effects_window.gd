@@ -4,8 +4,8 @@ extends Panel
 ## The player-facing "why is this run going the way it is" stat sheet —
 ## opened from a button next to ReceiptLogButton (see
 ## GUISignals.run_effects_requested). Shows the real numbers behind
-## everything RunModifier/RunPerk only describe in flavor text: this run's
-## modifier and its stat line, the actual current LVV raid threshold, every
+## everything RunPerk only describes in flavor text: the actual current
+## LVV raid threshold, every
 ## active perk, and the combined totals those perks add up to (see
 ## Brewery.get_quality_bonus()/get_reputation_gain_multiplier()/
 ## get_tip_income_multiplier()) — since perks stack and a single card's own
@@ -54,23 +54,9 @@ func _refresh_rows() -> void:
 	if brewery == null:
 		return
 
-	_add_modifier_section(brewery)
+	rows_vbox.add_child(_make_label(tr(StringContainer.RUN_EFFECTS_RAID_THRESHOLD_STRING) % brewery.get_effective_raid_threshold()))
 	_add_spacer()
 	_add_perks_section(brewery)
-
-
-func _add_modifier_section(brewery : Brewery) -> void:
-	if brewery.run_modifier == null:
-		rows_vbox.add_child(_make_label(StringContainer.RUN_EFFECTS_NO_MODIFIER_STRING))
-		return
-
-	rows_vbox.add_child(_make_header(tr(StringContainer.RUN_EFFECTS_MODIFIER_HEADER) % tr(brewery.run_modifier.modifier_name)))
-
-	var stat_summary : String = brewery.run_modifier.get_stat_summary()
-	if not stat_summary.is_empty():
-		rows_vbox.add_child(_make_label(stat_summary))
-
-	rows_vbox.add_child(_make_label(tr(StringContainer.RUN_EFFECTS_RAID_THRESHOLD_STRING) % brewery.get_effective_raid_threshold()))
 
 
 func _add_perks_section(brewery : Brewery) -> void:

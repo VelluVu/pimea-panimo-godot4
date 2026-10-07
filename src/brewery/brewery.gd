@@ -58,10 +58,8 @@ var game_has_ended : bool = false
 ## never fires again. The run is already scored: nothing after it reaches the
 ## leaderboard, and each night pays only reduced renown (RunScore).
 @export var has_continued_past_survival : bool = false
-## Rolled or chosen once per run; fixed for the whole run.
 ## lifetime_bottles_sold already paid out in renown, for continued play's nightly renown.
 @export var renown_bottles_counted : int = 0
-@export var run_modifier : RunModifier
 @export var run_xp : int = 0
 @export var run_level : int = 1
 @export var active_perks : Array[RunPerk] = []
@@ -91,25 +89,23 @@ var _announced_tier : ReputationTier = null
 ## Today's sales for the receipt log window; cleared each day, not saved.
 var today_sale_receipts : Array[SaleReceiptEntry] = []
 
-## Effective perk, cellar upgrade and modifier numbers, see PerkStats. Rebuilt on each
+## Effective perk and cellar upgrade numbers, see PerkStats. Rebuilt on each
 ## access because a loaded save replaces active_perks wholesale.
 var stats : PerkStats:
 	get:
 		var perks : Array[RunPerk] = active_perks.duplicate()
 		perks.append_array(CellarUpgrades.perks_for(cellar_upgrade_levels, CellarUpgrades.all()))
-		return PerkStats.new(run_modifier, perks)
+		return PerkStats.new(perks)
 
 ## Services holding the Brewery's behaviour. They connect their own GUISignals
 ## handlers in _ready() and release them in disconnect_signals().
 var _services : Array = []
 
 
-## Godot also calls _init() when loading a save, then overwrites the exported
-## fields. `preset_modifier` is the player's pick; null rolls a random one.
-func _init(preset_modifier : RunModifier = null) -> void:
+## Godot also calls _init() when loading a save, then overwrites the exported fields.
+func _init() -> void:
 	inventory = Inventory.new()
 	brew_preparation = BrewPreparation.new()
-	run_modifier = preset_modifier if preset_modifier != null else RunModifierRegistry.get_random_modifier()
 	resolver = BrewResolver.new()
 	resolver._ready()
 	resolver.ingredient_price_multiplier = stats.multiplier(PerkStats.INGREDIENT_PRICE)
@@ -248,7 +244,7 @@ func trigger_ending(ending_type : String) -> void:
 
 
 func _ready() -> void:
-	# A loaded save replaces run_modifier after _init(), and the resolver is
+	# A loaded save replaces active_perks after _init(), and the resolver is
 	# not saved, so its pricing has to be re-synced here.
 	resolver.ingredient_price_multiplier = stats.multiplier(PerkStats.INGREDIENT_PRICE)
 

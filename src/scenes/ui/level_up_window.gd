@@ -2,9 +2,8 @@ class_name LevelUpWindow
 extends Panel
 
 ## Mid-run "you leveled up, pick a perk" popup — see Brewery.add_xp()/
-## apply_perk() and RunPerk. Shares ModifierSelectWindow's card-picker
-## shape exactly: icon + header + description, click to choose, three
-## choices per offer.
+## apply_perk() and RunPerk. Cards of icon + header + description, click
+## to choose, three choices per offer.
 ##
 ## Pauses the whole SceneTree while a choice is on screen — same pattern
 ## as GameEndWindow/OptionsWindow (see their docstrings): needs

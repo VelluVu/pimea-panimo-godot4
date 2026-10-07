@@ -16,7 +16,6 @@ const RISK_WARNING_THRESHOLD : int = 75
 const RISK_WARNING_COLOR : Color = Color(0.75686276, 0.3137255, 0.22745098, 1) # matches DailyGoalsPanel.GOAL_FAILING_COLOR
 const RISK_WARNING_PULSE_SECONDS : float = 0.3
 
-const MODIFIER_TAG_FORMAT : String = "🎲 %s"
 
 const LEVEL_FORMAT : String = "Taso: %d"
 const LEVEL_PROGRESS_TOOLTIP_FORMAT : String = "%d / %d XP seuraavaan tasoon"
@@ -27,15 +26,12 @@ const LEVEL_PROGRESS_TOOLTIP_FORMAT : String = "%d / %d XP seuraavaan tasoon"
 @onready var level_progress_bar : ProgressBar = $LevelBox/LevelProgressBar
 @onready var risk_label : Label = $RiskLabel
 @onready var day_label : Label = $DayLabel
-@onready var modifier_tag_label : Label = $ModifierTagLabel
 var last_money: float = -1.0
 var last_reputation : int = -1
 var last_risk: int = -1
 ## Level only goes up and LevelUpWindow is its moment, so no popup: tracked only to
 ## skip rewriting the label.
 var _last_level : int = -1
-## The run's modifier never changes, so its tag is set once.
-var _modifier_tag_shown : bool = false
 ## The warning pulse fires only when risk crosses into the zone, not while it stays there.
 var _risk_warning_active: bool = false
 
@@ -43,7 +39,6 @@ var _risk_warning_active: bool = false
 func _ready() -> void:
 	# Scene-defined nodes get their tooltip script at runtime, so long tooltips wrap
 	# via TooltipFactory instead of overflowing.
-	modifier_tag_label.set_script(TooltipLabel)
 	level_progress_bar.set_script(TooltipProgressBar)
 	reputation_label.set_script(TooltipLabel)
 	reputation_label.mouse_filter = Control.MOUSE_FILTER_PASS
@@ -56,11 +51,10 @@ func _ready() -> void:
 		_update_day_display(BrewEngine.current_brewery.current_day)
 
 
-## The day, the run modifier tag and the level are only set on change, so a language
+## The day and the level are only set on change, so a language
 ## switch resets them; the rest follows from brewery_state_changed.
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_TRANSLATION_CHANGED and is_node_ready() and BrewEngine.current_brewery != null:
-		_modifier_tag_shown = false
 		_last_level = -1
 		_update_day_display(BrewEngine.current_brewery.current_day)
 		_on_brewery_state_changed(BrewEngine.current_brewery)
@@ -76,20 +70,10 @@ func _update_day_display(day_num: int) -> void:
 
 
 func _on_brewery_state_changed(brewery : Brewery) -> void:
-	_update_modifier_tag(brewery.run_modifier)
 	_update_money(brewery.money)
 	_update_reputation(brewery.reputation)
 	_update_level(brewery.run_level, brewery.run_xp)
 	_update_risk(brewery.risk)
-
-
-func _update_modifier_tag(modifier : RunModifier) -> void:
-	if _modifier_tag_shown or modifier == null:
-		return
-	_modifier_tag_shown = true
-	modifier_tag_label.text = tr(MODIFIER_TAG_FORMAT) % tr(modifier.modifier_name)
-	var stat_summary : String = modifier.get_stat_summary()
-	modifier_tag_label.tooltip_text = tr(modifier.description) if stat_summary.is_empty() else tr(modifier.description) + "\n" + stat_summary
 
 
 func _update_money(money : float) -> void:

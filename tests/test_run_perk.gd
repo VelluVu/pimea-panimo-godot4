@@ -33,14 +33,14 @@ func test_stat_summary_includes_raid_threshold_and_distribution_income() -> void
 	var perk := RunPerk.new()
 	perk.raid_threshold_multiplier = 1.25
 	perk.distribution_income_multiplier = 1.4
-	var expected := StringContainer.MODIFIER_RAID_THRESHOLD_STAT_STRING % 25 + "\n" + StringContainer.PERK_DISTRIBUTION_STAT_STRING % 40
+	var expected := StringContainer.PERK_RAID_THRESHOLD_STAT_STRING % 25 + "\n" + StringContainer.PERK_DISTRIBUTION_STAT_STRING % 40
 	assert_eq(perk.get_stat_summary(), expected)
 
 
 func test_stat_summary_includes_ingredient_price() -> void:
 	var perk := RunPerk.new()
 	perk.ingredient_price_multiplier = 0.9
-	assert_eq(perk.get_stat_summary(), StringContainer.MODIFIER_INGREDIENT_PRICE_STAT_STRING % -10)
+	assert_eq(perk.get_stat_summary(), StringContainer.PERK_INGREDIENT_PRICE_STAT_STRING % -10)
 
 
 func test_stat_summary_includes_brew_yield() -> void:
@@ -165,8 +165,8 @@ func test_combine_stacking_respects_a_non_neutral_base() -> void:
 	perk.reputation_gain_multiplier = 1.1
 	perk.stacks_additively = true
 
-	# A RunModifier's own multiplier (1.5 here) is the starting point —
-	# the additive perk's +10% lands on top of it, not on a fresh 1.0.
+	# The base (1.5 here) is the starting point: the additive perk's +10%
+	# lands on top of it, not on a fresh 1.0.
 	var result := RunPerk.combine_stacking(1.5, [perk], func(p: RunPerk) -> float: return p.reputation_gain_multiplier)
 	assert_true(is_equal_approx(result, 1.6))
 

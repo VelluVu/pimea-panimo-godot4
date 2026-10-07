@@ -1,20 +1,15 @@
 @tool
 extends McpTestSuite
 
-## Unit tests for PerkRegistry.get_random_perks() — mirrors
-## test_run_modifier_registry.gd's approach and its reasoning almost
-## exactly, but PerkRegistry is a plain class_name utility (not an
-## autoload), and its methods are real static calls (no instance needed),
-## since nothing needs the perk pool ready before another autoload's
-## _init() the way RunModifierRegistry's pool does.
+## Unit tests for PerkRegistry.get_random_perks(). PerkRegistry is a plain
+## class_name utility (not an autoload), so its methods are real static calls.
 
 
 func suite_name() -> String:
 	return "perk_registry"
 
 
-## Same rationale as test_run_modifier_registry.gd's _ensure_pool_populated:
-## this @tool test-runner loads its own copy of the script independently
+## This @tool test-runner loads its own copy of the script independently
 ## of the live game's autoload boot, so whether _static_init() already
 ## ran here isn't something this suite controls. Guarded top-up keeps
 ## these tests self-sufficient either way.

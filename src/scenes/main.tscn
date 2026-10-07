@@ -35,7 +35,6 @@
 [ext_resource type="Script" uid="uid://l7dtc2itv83e" path="res://src/scenes/ui/daily_goals_panel.gd" id="32_qkpxi"]
 [ext_resource type="Script" uid="uid://dxw7jcfhxobkb" path="res://src/scenes/ui/sale_flash_stack.gd" id="37_fuf3a"]
 [ext_resource type="PackedScene" uid="uid://di8en5fvrwrkk" path="res://src/scenes/ui/sale_receipt_log_window.tscn" id="38_pibwh"]
-[ext_resource type="PackedScene" uid="uid://2ddvq1esbm4f" path="res://src/scenes/ui/modifier_select_window.tscn" id="40_5he1u"]
 [ext_resource type="Script" uid="uid://bdvg8mgx0ohsg" path="res://src/scenes/ui/recipe_shelf_label.gd" id="40_vc5cj"]
 [ext_resource type="PackedScene" uid="uid://4pjyebwj4isb" path="res://src/scenes/ui/level_up_window.tscn" id="41_5poiv"]
 [ext_resource type="Script" uid="uid://boq14pdk2ukfv" path="res://src/scenes/ui/receipt_machine_label.gd" id="41_ty1g6"]
@@ -333,9 +332,6 @@ show_percentage = false
 layout_mode = 2
 size_flags_horizontal = 4
 text = "päivä: 1"
-
-[node name="ModifierTagLabel" type="Label" parent="GUI_CanvasLayer/GUI/TopPanel_Resources" unique_id=1048168889]
-layout_mode = 2
 
 [node name="ClockUITextureRect" type="TextureRect" parent="GUI_CanvasLayer/GUI/TopPanel_Resources" unique_id=586740352]
 layout_mode = 2
@@ -1106,10 +1102,6 @@ anchor_right = 0.38
 anchor_bottom = 0.75
 
 [node name="GameEndWindow" parent="GUI_CanvasLayer/GUI" unique_id=590660075 instance=ExtResource("x_gameendwindow")]
-
-[node name="ModifierSelectWindow" parent="GUI_CanvasLayer/GUI" unique_id=1067175277 instance=ExtResource("40_5he1u")]
-process_mode = 3
-layout_mode = 1
 
 [node name="LevelUpWindow" parent="GUI_CanvasLayer/GUI" unique_id=1956261132 instance=ExtResource("41_5poiv")]
 process_mode = 3

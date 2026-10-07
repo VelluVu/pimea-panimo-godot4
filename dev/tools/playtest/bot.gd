@@ -11,10 +11,9 @@ extends Node
 ##             events and LVV risk like careful, and buys cellar upgrades with spare money
 ##   gourmet - plays like expert, then tunes each recipe one ingredient unit at a time
 ##             towards the best quality its unlocked, affordable ingredients reach
-##   minmax  - plays like gourmet, aiming straight at RunScore: starts on the modifier with
-##             the biggest score multiplier, takes an event only when its rewards outweigh
-##             what it costs in score points, and cashes out every leftover batch and
-##             ingredient on the last scored day
+##   minmax  - plays like gourmet, aiming straight at RunScore: takes an event only when
+##             its rewards outweigh what it costs in score points, and cashes out every
+##             leftover batch and ingredient on the last scored day
 ## Both experts also play the rest of the game the way their Olutoppi spec rewards: they
 ## finish the tutorial, ship surplus batches to bars, pick level-up cards by value and
 ## play closer to the raid line when a raid would be survivable.
@@ -59,18 +58,6 @@ func _ready() -> void:
 	BrewerySignals.batch_bulk_sold.connect(func(_s: String, _n: int, pay: float) -> void: _inc("bulk_money", roundi(pay)))
 	BrewerySignals.keg_shipped_to_bar.connect(func(_s: String, _b: String, n: int, pay: float, _r: int) -> void: _inc("shipments"); _inc("shipped_bottles", n); _inc("shipped_money", roundi(pay)))
 	DailyGoalManager.daily_goal_resolved.connect(func(n: String, ok: bool, _m: int, _r: int, _x: int, _k: int) -> void: _inc("goals_ok" if ok else "goals_failed"); _inc(("goal_ok:" if ok else "goal_fail:") + n))
-
-
-## The run modifier card the runner picks for `strategy` with --modifier=bot, 0-based.
-## The biggest score multiplier wins; on a tie, the later raid line (Kallis tori over
-## Kireä LVV), since a bust scores nothing.
-static func choose_modifier(_strategy: String, offered: Array) -> int:
-	var best: int = 0
-	for i: int in offered.size():
-		var gain: float = RunScore.difficulty_multiplier(offered[i]) - RunScore.difficulty_multiplier(offered[best])
-		if gain > 0.0 or is_zero_approx(gain) and offered[i].lvv_threshold_multiplier > offered[best].lvv_threshold_multiplier:
-			best = i
-	return best
 
 
 func _inc(key: String, n: int = 1) -> void:
@@ -702,7 +689,7 @@ func _richest_bar_below(b: Brewery, limit: float) -> BarContact:
 
 
 ## Cash kept back when buying a brew's ingredients. Only a euro while the cellar is empty:
-## the day clock starts with the first batch and a pricey modifier leaves little spare,
+## the day clock starts with the first batch and pricey ingredients leave little spare,
 ## but spending down to zero with no bottles is bankruptcy.
 func _reserve(b: Brewery) -> int:
 	return 1 if b.inventory.brew_batches.is_empty() else 10
@@ -717,7 +704,7 @@ func _missing_cost_of(b: Brewery, ingredients: Dictionary) -> int:
 	for id: int in ingredients:
 		var missing: int = maxi(0, ingredients[id] - _owned(b, id))
 		cost += IngredientDatabase.get_item_by_id(id).base_price * missing
-	# The run modifier's price change is folded into this stat, as the trader charges it.
+	# Perks' price changes are folded into this stat, as the trader charges it.
 	return roundi(cost * b.stats.multiplier(PerkStats.INGREDIENT_PRICE))
 
 
@@ -739,7 +726,7 @@ func _stat_snapshot(b: Brewery) -> Dictionary:
 func _finish(b: Brewery) -> void:
 	_done = true
 	var report: Dictionary = {
-		"strategy": cfg.strategy, "profile": cfg.get("profile", ""), "modifier": b.run_modifier.modifier_name, "ending": ending if ending != "" else "day_limit",
+		"strategy": cfg.strategy, "profile": cfg.get("profile", ""), "ending": ending if ending != "" else "day_limit",
 		"final": {"day": b.current_day, "rep": b.reputation, "money": snappedf(b.money, 0.1), "raids": b.raid_count, "level": b.run_level, "standing": b.customer_standing, "upgrades": b.cellar_upgrade_levels, "worth": RunScore.brewery_worth(b), "score": RunScore.entry_for(b, ending).score, "bottles": b.lifetime_bottles_sold},
 		"days": days, "counts": counts, "notes": notes, "stats": _stat_snapshot(b), "perks": b.active_perks.size(),
 	}
