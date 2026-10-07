@@ -24,6 +24,7 @@ const BAD_COLOR : Color = Color(1.0, 0.35, 0.3, 1)
 @onready var text_label: Label = %SpecialLabel
 @onready var joo_button: Button = %JooButton
 @onready var progress_bar: ProgressBar = %ProgressBar
+@onready var time_label: Label = %TimeLabel
 @onready var margin_container: MarginContainer = $MarginContainer
 
 var event_data: SpecialEventData
@@ -45,12 +46,12 @@ func _process(delta: float) -> void:
 	match _state:
 		State.ASKING:
 			time_left -= delta
-			progress_bar.value = time_left
+			_show_time(time_left)
 			if time_left <= 0.0:
 				_timeout_event()
 		State.DELIVERING:
 			_delivery_left -= delta
-			progress_bar.value = _delivery_left
+			_show_time(_delivery_left)
 			_check_clock += delta
 			if _check_clock >= DELIVERY_CHECK_SECONDS:
 				_check_clock = 0.0
@@ -64,7 +65,7 @@ func initialize_window(p_data: SpecialEventData, seconds_left: float = -1.0) -> 
 	event_data = p_data
 	time_left = seconds_left if seconds_left >= 0.0 else event_data.timeout_seconds
 	progress_bar.max_value = event_data.timeout_seconds
-	progress_bar.value = time_left
+	_show_time(time_left)
 	text_label.text = _caller_line(event_data.intro_dialogue)
 	_resize_to_fit_content()
 
@@ -117,7 +118,7 @@ func _start_delivery(seconds: float) -> void:
 	joo_button.visible = false
 	_delivery_left = seconds
 	progress_bar.max_value = event_data.delivery_seconds
-	progress_bar.value = seconds
+	_show_time(seconds)
 	_check_delivery()
 
 
@@ -162,6 +163,11 @@ func _answer(response: String) -> void:
 	text_label.text = _caller_line(response)
 	_resize_to_fit_content()
 	_start_fade_out()
+
+
+func _show_time(seconds_left: float) -> void:
+	progress_bar.value = seconds_left
+	time_label.text = SpecialEventText.seconds(seconds_left)
 
 
 func _caller_line(dialogue: String) -> String:
