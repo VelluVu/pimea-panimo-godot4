@@ -25,3 +25,9 @@ func test_money_drops_the_decimal_of_whole_euros() -> void:
 func test_reputation_and_risk_carry_their_sign() -> void:
 	assert_eq(SpecialEventText.reputation(8), "+8 mainetta")
 	assert_eq(SpecialEventText.risk(-20), "-20 LVV-riskiä")
+
+
+func test_seconds_round_up_and_never_go_negative() -> void:
+	assert_eq(SpecialEventText.seconds(12.0), "12 s")
+	assert_eq(SpecialEventText.seconds(0.2), "1 s")
+	assert_eq(SpecialEventText.seconds(-0.1), "0 s")
