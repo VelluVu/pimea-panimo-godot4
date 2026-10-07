@@ -117,6 +117,7 @@ func _advance_day() -> void:
 	brewery.today_sale_receipts.clear()
 
 	_charge_daily_utility_bills(brewery)
+	brewery.close_money_day()
 	_apply_reputation_decay(brewery)
 	_apply_risk_decay(brewery)
 
@@ -162,7 +163,7 @@ func _charge_daily_utility_bills(brewery : Brewery) -> void:
 		return
 
 	var total : int = DayRules.daily_bill_total()
-	brewery.money -= total
+	brewery.change_money(-total, MoneyLedger.Source.BILLS)
 	BrewerySignals.daily_bills_paid.emit(DayRules.DAILY_ELECTRICITY_COST, DayRules.DAILY_WATER_COST, total)
 	BrewerySignals.brewery_state_changed.emit(brewery)
 	brewery.check_bankruptcy()

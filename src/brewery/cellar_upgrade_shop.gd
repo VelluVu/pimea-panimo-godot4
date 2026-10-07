@@ -32,7 +32,7 @@ func _on_cellar_upgrade_requested(upgrade_id : String) -> void:
 	if not CellarUpgradeRules.can_buy(level, upgrade.max_level, cost, brewery.money):
 		return
 
-	brewery.money -= cost
+	brewery.change_money(-cost, MoneyLedger.Source.UPGRADES)
 	brewery.cellar_upgrade_levels[upgrade_id] = level + 1
 	BrewerySignals.cellar_upgrade_purchased.emit(upgrade, level + 1)
 	BrewerySignals.brewery_state_changed.emit(brewery)

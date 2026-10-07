@@ -4397,6 +4397,30 @@ msgstr "Days %d × %d"
 msgid "Selvisi"
 msgstr "Survived"
 
+#: src/ui/money_text.gd
+msgid "Eilen %+.1f €"
+msgstr "Yesterday %+.1f €"
+
+#: src/ui/money_text.gd
+msgid "LVV"
+msgstr "LVV"
+
+#: src/ui/money_text.gd
+msgid "Rahaa %.1f €"
+msgstr "Money %.1f €"
+
+#: src/ui/money_text.gd
+msgid "Tänään %+.1f €"
+msgstr "Today %+.1f €"
+
+#: src/ui/money_text.gd
+msgid "Viime päivät: %s"
+msgstr "Last days: %s"
+
+#: src/ui/money_text.gd
+msgid "tukku ja viennit"
+msgstr "wholesale and shipments"
+
 #: src/ui/olutoppi_text.gd
 msgid ""
 "Nyt:\n"
@@ -4476,10 +4500,6 @@ msgstr "Colour: %s"
 #: src/ui/recipe_name_text.gd
 msgid "%s (perusresepti)"
 msgstr "%s (basic recipe)"
-
-#: src/ui/reputation_breakdown_text.gd
-msgid "LVV"
-msgstr "LVV"
 
 #: src/ui/reputation_breakdown_text.gd
 msgid "aikainen sulkeminen"

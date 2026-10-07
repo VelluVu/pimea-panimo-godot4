@@ -31,7 +31,7 @@ func apply_bottling_costs(raw_yield : int) -> Dictionary:
 	var effective_yield : int = StylePricing.get_effective_bottle_yield(raw_yield)
 	var bottles_lost : int = raw_yield - effective_yield
 	var label_cost : float = snappedf(raw_yield * StylePricing.LABEL_ART_COST_PER_BOTTLE, 0.1)
-	brewery.money -= label_cost
+	brewery.change_money(-label_cost, MoneyLedger.Source.BREWING)
 
 	return {
 		"effective_yield": effective_yield,

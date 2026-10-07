@@ -95,7 +95,8 @@ func process(data : CustomerData) -> String:
 		brewery.stats.chance(PerkStats.TIP_DOUBLE_CHANCE),
 		brewery.stats.multiplier(PerkStats.REPUTATION_GAIN))
 
-	brewery.money += outcome.net_income
+	brewery.change_money(outcome.gross_income, MoneyLedger.Source.SALES)
+	brewery.change_money(outcome.tip_income, MoneyLedger.Source.TIPS)
 	brewery.change_reputation(outcome.reputation_gain, ReputationRules.Source.CUSTOMERS)
 	if outcome.reputation_gain < 0:
 		BrewerySignals.customer_unhappy.emit()
