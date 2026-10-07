@@ -37,3 +37,15 @@ func test_locked_are_sorted_by_reputation_then_id() -> void:
 func test_reaching_the_bar_unlocks() -> void:
 	assert_false(IngredientMenuOrderScript.is_locked(_make(1, 20), 20))
 	assert_true(IngredientMenuOrderScript.is_locked(_make(1, 20), 19))
+
+
+func test_an_owned_ingredient_stays_usable_below_its_bar() -> void:
+	var hop : IngredientData = _make(1, 20)
+	assert_false(IngredientMenuOrderScript.is_locked(hop, 10, {1: 3}))
+	assert_true(IngredientMenuOrderScript.is_locked(hop, 10, {1: 0}))
+	assert_true(IngredientMenuOrderScript.is_buy_locked(hop, 10), "buying still needs the reputation")
+
+
+func test_an_owned_ingredient_sorts_with_the_usable_ones() -> void:
+	var list : Array[IngredientData] = [_make(1, 0), _make(2, 30), _make(3, 20)]
+	assert_eq(_ids(IngredientMenuOrderScript.order(list, 10, {2: 1})), [1, 2, 3] as Array[int])

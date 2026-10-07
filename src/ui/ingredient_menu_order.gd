@@ -3,13 +3,15 @@ extends RefCounted
 
 ## The order of an ingredient dropdown: unlocked items first, in the given order,
 ## then locked ones nearest to unlocking, so the usable part of a long list is on top.
+## `owned` (id -> amount, storage plus brewing table) keeps an ingredient usable after
+## reputation drops below its bar: only buying more needs the reputation.
 
 
-static func order(ingredients : Array[IngredientData], reputation : int) -> Array[IngredientData]:
+static func order(ingredients : Array[IngredientData], reputation : int, owned : Dictionary = {}) -> Array[IngredientData]:
 	var unlocked : Array[IngredientData] = []
 	var locked : Array[IngredientData] = []
 	for ingredient : IngredientData in ingredients:
-		if is_locked(ingredient, reputation):
+		if is_locked(ingredient, reputation, owned):
 			locked.append(ingredient)
 		else:
 			unlocked.append(ingredient)
@@ -18,5 +20,9 @@ static func order(ingredients : Array[IngredientData], reputation : int) -> Arra
 	return unlocked + locked
 
 
-static func is_locked(ingredient : IngredientData, reputation : int) -> bool:
+static func is_locked(ingredient : IngredientData, reputation : int, owned : Dictionary = {}) -> bool:
+	return is_buy_locked(ingredient, reputation) and owned.get(ingredient.id, 0) <= 0
+
+
+static func is_buy_locked(ingredient : IngredientData, reputation : int) -> bool:
 	return reputation < ingredient.min_reputation

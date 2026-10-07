@@ -237,12 +237,12 @@ func check_bankruptcy() -> void:
 		if reputation >= ingredient.min_reputation:
 			buy_prices[id] = price
 
-	if BankruptcyRules.is_bankrupt(money, 0, _owned_ingredient_amounts(), recipes, buy_prices, sell_prices):
+	if BankruptcyRules.is_bankrupt(money, 0, owned_ingredient_amounts(), recipes, buy_prices, sell_prices):
 		trigger_ending("bankrupt")
 
 
 ## Storage plus what is on the brewing table, id -> amount.
-func _owned_ingredient_amounts() -> Dictionary:
+func owned_ingredient_amounts() -> Dictionary:
 	var owned : Dictionary = brew_preparation.selected_contents.duplicate()
 	for type_items : Dictionary in inventory.items.values():
 		for id : int in type_items:

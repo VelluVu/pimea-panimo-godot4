@@ -3848,6 +3848,10 @@ msgid "%s (maine %d)"
 msgstr "%s (reputation %d)"
 
 #: src/scenes/ui/ingredient_option_button.gd
+msgid "Lisää voi ostaa vasta %d maineella. Omistamasi määrän voi käyttää."
+msgstr "You can buy more only at %d reputation. What you own can still be used."
+
+#: src/scenes/ui/ingredient_option_button.gd
 msgid "Vaatii mainetta: %d"
 msgstr "Needs reputation: %d"
 
