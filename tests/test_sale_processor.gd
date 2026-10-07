@@ -110,12 +110,14 @@ func test_sale_tip_applies_its_multiplier() -> void:
 	var outcome = SaleProcessorScript.calculate_sale(_results(2.0, 0.5, 0), 2, 1.5, 0.0, 1.0)
 	assert_eq(outcome.tip_income, 1.5)
 	assert_eq(outcome.net_income, 5.5)
+	assert_false(outcome.tip_doubled)
 
 
 func test_a_guaranteed_double_tip_doubles_after_the_multiplier() -> void:
 	var outcome = SaleProcessorScript.calculate_sale(_results(2.0, 0.5, 0), 2, 1.5, 1.0, 1.0)
 	assert_eq(outcome.tip_income, 3.0)
 	assert_eq(outcome.net_income, 7.0)
+	assert_true(outcome.tip_doubled)
 
 
 func test_no_tip_is_never_doubled_into_existence() -> void:

@@ -82,6 +82,8 @@ func _connect_signals() -> void:
 	BrewerySignals.group_visit_announced.connect(play_sfx.bind(bank.sfx_group_banner).unbind(1))
 	GUISignals.toast_shown.connect(_on_toast_shown)
 	GUISignals.day_event_banner_shown.connect(_on_day_event_banner_shown)
+	# Not placed in the world: like the popup it belongs to, it should be heard at once.
+	BrewerySignals.critical_gain_shown.connect(play_sfx.bind(bank.sfx_critical_gain).unbind(1))
 	BrewerySignals.glass_shattered.connect(func() -> void: play_sfx(bank.sfx_glass_shatter, 0.0, randf_range(SHATTER_PITCH_RANGE.x, SHATTER_PITCH_RANGE.y)))
 
 	# Buttons click on their own; these also cover keyboard shortcuts that open things.

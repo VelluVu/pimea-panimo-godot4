@@ -25,12 +25,14 @@
 [ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/babble_4.wav" id="snd_babble_4"]
 [ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/pour.wav" id="snd_pour"]
 [ext_resource type="AudioStream" path="res://assets/audio/music/custom/dark_reggae_pub.ogg" id="music_dark_reggae_pub"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/crit_gain.wav" id="snd_crit_gain"]
 
 [resource]
 script = ExtResource("1_bank")
 menu_music = ExtResource("2_music1")
 music_tracks = Array[AudioStream]([ExtResource("3_music2"), ExtResource("4_music3"), ExtResource("5_music4"), ExtResource("6_music5"), ExtResource("music_dark_reggae_pub")])
 sfx_coin_success = ExtResource("7_coin")
+sfx_critical_gain = ExtResource("snd_crit_gain")
 sfx_ui_click = ExtResource("8_click")
 sfx_brew_start = ExtResource("13_brewstart")
 sfx_notification_ping = ExtResource("9_ping")
