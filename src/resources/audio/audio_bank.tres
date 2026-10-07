@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" path="res://src/audio/audio_bank.gd" id="1_bank"]
 [ext_resource type="AudioStream" path="res://assets/audio/music/randommind_chiptune_old_tower_inn_loop.ogg" id="2_music1"]
-[ext_resource type="AudioStream" path="res://assets/audio/music/springspring_woffelsbacher_pirates.ogg" id="3_music2"]
 [ext_resource type="AudioStream" path="res://assets/audio/music/randommind_chiptune_bards_tale.mp3" id="4_music3"]
 [ext_resource type="AudioStream" path="res://assets/audio/music/theouterlinux_drunken_sailor.ogg" id="5_music4"]
 [ext_resource type="AudioStream" path="res://assets/audio/music/randommind_chiptune_minstrel_dance.mp3" id="6_music5"]
@@ -30,7 +29,7 @@
 [resource]
 script = ExtResource("1_bank")
 menu_music = ExtResource("2_music1")
-music_tracks = Array[AudioStream]([ExtResource("3_music2"), ExtResource("4_music3"), ExtResource("5_music4"), ExtResource("6_music5"), ExtResource("music_dark_reggae_pub")])
+music_tracks = Array[AudioStream]([ExtResource("4_music3"), ExtResource("5_music4"), ExtResource("6_music5"), ExtResource("music_dark_reggae_pub")])
 sfx_coin_success = ExtResource("7_coin")
 sfx_critical_gain = ExtResource("snd_crit_gain")
 sfx_ui_click = ExtResource("8_click")
