@@ -4058,12 +4058,18 @@ msgid "Joo"
 msgstr "Sure"
 
 #: src/scenes/ui/top_panel_resources.gd
-msgid "%d / %d XP seuraavaan tasoon"
-msgstr "%d / %d XP to the next level"
-
-#: src/scenes/ui/top_panel_resources.gd
 msgid "Päivä: %s"
 msgstr "Day: %s"
+
+#: src/scenes/ui/top_panel_resources.gd
+msgid ""
+"Taso %d\n"
+"%d/%d XP\n"
+"%d XP seuraavaan tasoon"
+msgstr ""
+"Level %d\n"
+"%d/%d XP\n"
+"%d XP to the next level"
 
 #: src/scenes/ui/top_panel_resources.gd
 msgid "Taso: %d"
@@ -4284,8 +4290,8 @@ msgid "Päivä %d/%d"
 msgstr "Day %d/%d"
 
 #: src/ui/day_clock_text.gd
-msgid "Päivää jäljellä %d min %02d s"
-msgstr "%d min %02d s left today"
+msgid "Päivää jäljellä %s / %s"
+msgstr "%s left of %s today"
 
 #: src/ui/gui_announcer.gd
 msgid "%s ei ole enää kanta-asiakas."
