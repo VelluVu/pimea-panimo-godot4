@@ -50,6 +50,16 @@ const XP_LEVEL_GROWTH_PER_LEVEL : int = 20
 ## leaving to the menu and continuing picks every visit up exactly where it was.
 @export var cellar_customers : Array[CustomerSnapshot] = []
 @export var cellar_groups : Array[GroupVisitSnapshot] = []
+## Walk-ins already on their way (a recommended friend, a walk-in's company): each
+## {"data": CustomerData or null for a random one, "seconds": float until they come in}.
+@export var scheduled_walk_ins : Array[Dictionary] = []
+@export var lvv_raid : LvvRaidSnapshot
+@export var open_special_events : Array[SpecialEventSnapshot] = []
+## Seconds left on the cellar's clocks when saved, -1 when one was not running, so the
+## next walk-in, crowd and special event come when they would have.
+@export var walk_in_time_left : float = -1.0
+@export var group_visit_time_left : float = -1.0
+@export var special_event_time_left : float = -1.0
 ## Today's money per MoneyLedger.Source, and the net of the last days (oldest first).
 @export var money_today : Dictionary = {}
 @export var money_recent_days : Array[float] = []

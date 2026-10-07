@@ -24,6 +24,14 @@ extends Resource
 @export var bar_fight_bottles : int = -1
 @export var served : int = 0
 @export var glasses_out : int = 0
+## The sale's money and reputation popups, still to show once the round is poured.
+@export var popups_pending : bool = false
+@export var popup_reputation : int = 0
+@export var popup_income : float = 0.0
+@export var popup_tip : float = 0.0
+@export var popup_tip_tier : PopupTierRules.Tier = PopupTierRules.Tier.NORMAL
+@export var popup_beer_quality : float = -1.0
+@export var popup_notes : Array[int] = []
 
 ## The shared bubble on screen and its seconds left.
 @export var bubble_text : String = ""

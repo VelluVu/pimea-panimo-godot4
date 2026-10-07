@@ -155,3 +155,31 @@ func test_group_visit_snapshot_round_trips_its_progress() -> void:
 	assert_eq(loaded.beer_ebc, 12)
 	assert_eq(loaded.served, 2)
 	assert_eq(loaded.glasses_out, 1)
+
+
+## Saved mid-pour, the money and reputation popups still show once the round is poured.
+func test_group_visit_snapshot_keeps_the_popups_still_to_show() -> void:
+	var visit := GroupVisit.new(GroupVisitEventData.new(), 0, 10, Vector2.ZERO)
+	visit.outcome = SaleOutcomeCapture.new()
+	visit.outcome.reputation = 3
+	visit.outcome.income = 12.5
+	visit.outcome.tip = 2.0
+	visit.outcome.tip_tier = PopupTierRules.Tier.CRITICAL
+	visit.outcome.notes.append(SaleOutcomeCapture.Note.BECAME_REGULAR)
+
+	var loaded := GroupVisit.new(null, 0, 11, Vector2.ZERO)
+	loaded.restore(visit.snapshot())
+	assert_true(loaded.outcome != null)
+	assert_eq(loaded.outcome.reputation, 3)
+	assert_eq(loaded.outcome.income, 12.5)
+	assert_eq(loaded.outcome.tip, 2.0)
+	assert_eq(loaded.outcome.tip_tier, PopupTierRules.Tier.CRITICAL)
+	assert_eq(loaded.outcome.notes.size(), 1)
+	assert_eq(loaded.outcome.notes[0], SaleOutcomeCapture.Note.BECAME_REGULAR)
+
+
+func test_group_visit_snapshot_has_no_popups_once_shown() -> void:
+	var visit := GroupVisit.new(GroupVisitEventData.new(), 0, 10, Vector2.ZERO)
+	var loaded := GroupVisit.new(null, 0, 11, Vector2.ZERO)
+	loaded.restore(visit.snapshot())
+	assert_true(loaded.outcome == null, "nothing left to show")

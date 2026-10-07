@@ -70,6 +70,12 @@ var _exit_position: Vector2
 ## Where a group member walks for their glass before leaving; INF when not.
 var _pickup_target: Vector2 = Vector2.INF
 
+## A bar fight under way: the glasses it throws (-1 when none), the next stomp and the
+## spot it stomps around, so a save can play the rest of it.
+var _rampage_glasses: int = -1
+var _rampage_stomp: int = 0
+var _rampage_home: Vector2
+
 ## The glass as drawn, before fill_glasses() colours its beer.
 var _glass_texture: Texture2D
 var _footstep_clock: float = 0.0
@@ -221,7 +227,7 @@ func snapshot() -> CustomerSnapshot:
 	snap.slot = assigned_slot
 	snap.phase = _phase
 	snap.group_member = _skip_interaction
-	snap.position = global_position
+	snap.position = global_position if _rampage_glasses < 0 else _rampage_home
 	snap.route = _route.duplicate()
 	snap.leg = _leg
 	snap.pause_left = _pause_seconds
@@ -235,6 +241,8 @@ func snapshot() -> CustomerSnapshot:
 	snap.glass_shown = counter_glass_sprite.visible
 	snap.glass_position = counter_glass_sprite.position
 	snap.exit_position = _exit_position
+	snap.rampage_glasses = _rampage_glasses
+	snap.rampage_stomp = _rampage_stomp
 	snap.walks_to_pickup = _pickup_target != Vector2.INF
 	snap.pickup_position = _pickup_target if snap.walks_to_pickup else Vector2.ZERO
 	return snap
@@ -270,6 +278,8 @@ func resume(snap: CustomerSnapshot) -> void:
 			else:
 				_phase = CustomerSnapshot.Phase.LEAVING
 				_walk_out(snap.exit_position)
+	if snap.rampage_glasses >= 0:
+		play_rampage(snap.rampage_glasses, snap.rampage_stomp)
 
 
 ## The sale is already in the saved money and stock: only the glass, the reply and
@@ -329,10 +339,20 @@ func _on_sale_timeout() -> void:
 	var display_time := _say(_bubble_text)
 	var leave_after: float = display_time + FADE_TIME_SECONDS
 	if outcome.bar_fight_bottles >= 0:
-		BarFightRampage.play(self, animated_sprite, beer_glass_sprite.texture, outcome.bar_fight_bottles)
+		play_rampage(outcome.bar_fight_bottles)
 		leave_after = maxf(leave_after, BarFightRampage.DURATION_SECONDS)
 	_phase_timer = get_tree().create_timer(leave_after)
 	_phase_timer.timeout.connect(leave_counter)
+
+
+## Stomps around in place throwing `glass_count` glasses, see BarFightRampage; a loaded
+## fight picks up at `first_stomp`.
+func play_rampage(glass_count: int, first_stomp: int = 0) -> void:
+	_rampage_glasses = glass_count
+	_rampage_stomp = first_stomp
+	_rampage_home = global_position
+	await BarFightRampage.play(self, animated_sprite, beer_glass_sprite.texture, glass_count, first_stomp, func(next_stomp: int) -> void: _rampage_stomp = next_stomp)
+	_rampage_glasses = -1
 
 
 func _show_sale_popups(outcome: SaleOutcomeCapture) -> void:

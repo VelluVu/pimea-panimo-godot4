@@ -259,7 +259,7 @@ func _start_group_rampage(visit : GroupVisit, broken_bottles : int) -> void:
 	for i : int in visit.size():
 		var member : Variant = visit.members[i]
 		if is_instance_valid(member):
-			BarFightRampage.play(member, member.animated_sprite, member.beer_glass_sprite.texture, BarFightRampage.share_of(i, broken_bottles, visit.size()))
+			member.play_rampage(BarFightRampage.share_of(i, broken_bottles, visit.size()))
 
 
 ## One sale, many drinks: a sped-up pour per member, then the sale's popups.
@@ -281,6 +281,7 @@ func _serve_burst(visit : GroupVisit, resume_seconds : float) -> bool:
 				visit.glasses_out += 1
 	if visit.outcome != null:
 		visit.outcome.emit_reputation_and_money_popups(visit.counter_position)
+		visit.outcome = null
 	return true
 
 

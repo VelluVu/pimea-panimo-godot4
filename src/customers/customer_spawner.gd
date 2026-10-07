@@ -19,6 +19,8 @@ var _group_visit: GroupVisitDirector
 ## Set during a raid. Brewery state changes call start_spawning() all the time, so the
 ## timers alone cannot hold a pause.
 var _paused: bool = false
+## Walk-ins already on their way: {"data": CustomerData or null, "timer": SceneTreeTimer}.
+var _scheduled: Array[Dictionary] = []
 
 
 func _ready() -> void:
@@ -101,12 +103,22 @@ func _spawn_company() -> void:
 		return
 	var chance: float = WalkInRules.company_chance(brewery.stats.chance(PerkStats.WALK_IN_COMPANY_CHANCE))
 	var count: int = WalkInRules.customer_count(randf(), chance, int(brewery.stats.total(PerkStats.WALK_IN_COMPANY_BONUS)))
+	var delay: float = 0.0
 	for i: int in count - 1:
-		# Pauses with the tree, so no companion walks in behind a level-up window.
-		await get_tree().create_timer(randf_range(WalkInRules.COMPANY_GAP_SECONDS.x, WalkInRules.COMPANY_GAP_SECONDS.y), false).timeout
-		if _paused or BrewEngine.current_brewery != brewery:
-			return
-		_try_spawn_walk_in(null)
+		delay += randf_range(WalkInRules.COMPANY_GAP_SECONDS.x, WalkInRules.COMPANY_GAP_SECONDS.y)
+		_schedule_walk_in(null, delay)
+
+
+## Sends a walk-in (`data`, or a random one when null) in after `seconds`. The timer
+## pauses with the tree, so no one walks in behind a level-up window; a raid cancels it.
+func _schedule_walk_in(data: CustomerData, seconds: float) -> void:
+	var brewery: Brewery = BrewEngine.current_brewery
+	var entry: Dictionary = {"data": data, "timer": get_tree().create_timer(seconds, false)}
+	_scheduled.append(entry)
+	await entry.timer.timeout
+	_scheduled.erase(entry)
+	if not _paused and BrewEngine.current_brewery == brewery:
+		_try_spawn_walk_in(data)
 
 
 ## A crowd shares one counter slot and spawns staggered so it floods in. Like a
@@ -118,13 +130,9 @@ func spawn_group_visit(forced_event_data: GroupVisitEventData = null) -> void:
 	_start_next_group_event_timer()
 
 
-## The friend comes on its own clock, so the regular walk-in timer is untouched. The
-## timer pauses with the tree, so no friend walks in behind a level-up window.
+## The friend comes on its own clock, so the regular walk-in timer is untouched.
 func _on_friend_recommended(data: CustomerData) -> void:
-	var delay: float = randf_range(WordOfMouthRules.FRIEND_DELAY_MIN_SECONDS, WordOfMouthRules.FRIEND_DELAY_MAX_SECONDS)
-	await get_tree().create_timer(delay, false).timeout
-	if not _paused:
-		_try_spawn_walk_in(data)
+	_schedule_walk_in(data, randf_range(WordOfMouthRules.FRIEND_DELAY_MIN_SECONDS, WordOfMouthRules.FRIEND_DELAY_MAX_SECONDS))
 
 
 func _on_bad_review_spread() -> void:
@@ -141,6 +149,11 @@ func _record_cellar_customers(brewery: Brewery) -> void:
 		if customer != null and not customer.is_queued_for_deletion() and not customer.is_group_member():
 			brewery.cellar_customers.append(customer.snapshot())
 	brewery.cellar_groups = _group_visit.snapshots()
+	brewery.scheduled_walk_ins.clear()
+	for entry: Dictionary in _scheduled:
+		brewery.scheduled_walk_ins.append({"data": entry.data, "seconds": entry.timer.time_left})
+	brewery.walk_in_time_left = -1.0 if walk_in_timer.is_stopped() else walk_in_timer.time_left
+	brewery.group_visit_time_left = -1.0 if group_event_timer.is_stopped() else group_event_timer.time_left
 
 
 ## After a load, puts the saved customers and crowds back and lets each carry on its
@@ -174,6 +187,18 @@ func _resume_cellar_customers() -> void:
 		if slot != -1:
 			_group_visit.resume(group_snap, slot, counter_positions[slot])
 	brewery.cellar_groups.clear()
+
+	for entry: Dictionary in brewery.scheduled_walk_ins:
+		_schedule_walk_in(entry.get("data"), entry.get("seconds", 0.0))
+	brewery.scheduled_walk_ins.clear()
+	_resume_timer(walk_in_timer, brewery.walk_in_time_left)
+	_resume_timer(group_event_timer, brewery.group_visit_time_left)
+
+
+## A raid already under way (LvvRaidSpawner) keeps the timers stopped.
+func _resume_timer(timer: Timer, seconds_left: float) -> void:
+	if seconds_left > 0.0 and not _paused:
+		timer.start(seconds_left)
 
 
 ## The saved counter slot if it is still there and free, else any free one (or -1).

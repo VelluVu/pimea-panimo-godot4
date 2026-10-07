@@ -34,6 +34,10 @@ enum Phase { WALKING_IN, GREETING, PREVIEWING, SERVED, LEAVING, WAITING }
 @export var glass_shown : bool = false
 @export var glass_position : Vector2 = Vector2.ZERO
 
+## A bar fight under way: the glasses it throws (-1 when none) and the next stomp.
+@export var rampage_glasses : int = -1
+@export var rampage_stomp : int = 0
+
 ## Walking out; a group member may first walk to the bar stack for their glass.
 @export var exit_position : Vector2 = Vector2.ZERO
 @export var walks_to_pickup : bool = false
