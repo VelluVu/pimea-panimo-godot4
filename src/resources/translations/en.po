@@ -4644,3 +4644,7 @@ msgstr "New ingredient: %s"
 #: src/ui/toast_text.gd
 msgid "Uusia aineksia: %s"
 msgstr "New ingredients: %s"
+
+#: src/ui/warehouse_hover_area.gd
+msgid "%s: +%d pulloa"
+msgstr "%s: +%d bottles"
