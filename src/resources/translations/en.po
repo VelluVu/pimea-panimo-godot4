@@ -566,6 +566,10 @@ msgid "Tuo %s kiinnostaisi..."
 msgstr "That %s looks interesting..."
 
 #: src/customers/customer_hand_offsets.gd
+msgid "Gen Z"
+msgstr "Gen Z"
+
+#: src/customers/customer_hand_offsets.gd
 msgid "Kriitikko"
 msgstr "Critic"
 
@@ -580,10 +584,6 @@ msgstr "Builder"
 #: src/customers/customer_hand_offsets.gd
 msgid "Tarkastusdrooni"
 msgstr "Inspection Drone"
-
-#: src/customers/customer_hand_offsets.gd
-msgid "Zgen"
-msgstr "Gen Z"
 
 #: src/customers/group_visit_director.gd
 msgid "%s-lauma (%d hlöä)"
