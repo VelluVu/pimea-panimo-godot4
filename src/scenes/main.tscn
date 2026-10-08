@@ -472,8 +472,8 @@ remove_button = NodePath("Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxCont
 custom_minimum_size = Vector2(140, 0)
 layout_mode = 1
 anchors_preset = -1
-anchor_right = 0.21875
-anchor_bottom = 0.52
+anchor_right = 0.3125
+anchor_bottom = 0.66
 grow_vertical = 2
 metadata/_edit_use_anchors_ = true
 
@@ -494,6 +494,7 @@ theme_override_constants/margin_bottom = 4
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
+theme_override_constants/separation = 4
 
 [node name="MaltAndHopVBoxContainer" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer" unique_id=125395658]
 layout_mode = 2
@@ -507,7 +508,7 @@ mouse_filter = 2
 script = ExtResource("20_5q0nq")
 
 [node name="TabBar" type="TabBar" parent="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/BrewingTypeSelector" unique_id=397359994]
-custom_minimum_size = Vector2(0, 16)
+custom_minimum_size = Vector2(0, 26)
 layout_mode = 2
 current_tab = 0
 tab_count = 3
@@ -523,6 +524,7 @@ layout_mode = 2
 mouse_filter = 2
 
 [node name="IngredientOptionButton" type="OptionButton" parent="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/BrewingTypeSelector/IngredientRow" unique_id=1466153152]
+custom_minimum_size = Vector2(0, 26)
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("5_tipki")
@@ -531,7 +533,7 @@ script = ExtResource("5_tipki")
 unique_name_in_owner = true
 custom_minimum_size = Vector2(46, 0)
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 8
 size_flags_vertical = 1
 text = "ju"
 horizontal_alignment = 2
@@ -546,7 +548,7 @@ theme_override_constants/separation = 1
 [node name="AddRemoveLastModifiedButtonPanel" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/IngredientSelectionPanel" unique_id=1059275306]
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/separation = 1
+theme_override_constants/separation = 4
 
 [node name="HBoxContainer" type="HBoxContainer" parent="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/IngredientSelectionPanel/AddRemoveLastModifiedButtonPanel" unique_id=595795310]
 layout_mode = 2
@@ -555,12 +557,12 @@ mouse_filter = 2
 theme_override_constants/separation = 4
 
 [node name="AddButton" type="Button" parent="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/IngredientSelectionPanel/AddRemoveLastModifiedButtonPanel/HBoxContainer" unique_id=461576018]
-custom_minimum_size = Vector2(32, 16)
+custom_minimum_size = Vector2(64, 26)
 layout_mode = 2
 text = "Lisää"
 
 [node name="RemoveButton" type="Button" parent="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/IngredientSelectionPanel/AddRemoveLastModifiedButtonPanel/HBoxContainer" unique_id=1366387079]
-custom_minimum_size = Vector2(32, 16)
+custom_minimum_size = Vector2(64, 26)
 layout_mode = 2
 text = "Poista"
 
@@ -571,6 +573,7 @@ size_flags_vertical = 1
 rounded = true
 
 [node name="BackButton" type="Button" parent="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer" unique_id=1985203723]
+custom_minimum_size = Vector2(56, 26)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
@@ -580,10 +583,10 @@ text = "Sulje"
 visible = false
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.2203125
+anchor_left = 0.3171875
 anchor_top = 0.09166667
-anchor_right = 0.44375
-anchor_bottom = 0.76944447
+anchor_right = 0.5703125
+anchor_bottom = 0.84
 grow_vertical = 2
 size_flags_vertical = 3
 mouse_filter = 2
@@ -595,7 +598,7 @@ layout_mode = 2
 mouse_filter = 2
 
 [node name="CurrentRecipeBar" type="Panel" parent="GUI_CanvasLayer/GUI/BrewPreparationPanel/VBoxContainer" unique_id=1325025093]
-custom_minimum_size = Vector2(0, 20)
+custom_minimum_size = Vector2(0, 28)
 custom_maximum_size = Vector2(-1, 45)
 layout_mode = 2
 size_flags_vertical = 0
@@ -628,7 +631,7 @@ text_overrun_behavior = 3
 
 [node name="EraseButton" type="Button" parent="GUI_CanvasLayer/GUI/BrewPreparationPanel/VBoxContainer/CurrentRecipeBar/HBoxContainer" unique_id=1313314109]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(12, 12)
+custom_minimum_size = Vector2(0, 26)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
@@ -641,7 +644,7 @@ expand_icon = true
 [node name="PreviewLabel" type="Label" parent="GUI_CanvasLayer/GUI/BrewPreparationPanel/VBoxContainer" unique_id=1373895704]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.949, 0.788, 0.42, 1)
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 16
 autowrap_mode = 3
 
 [node name="TableScrollContainer" type="ScrollContainer" parent="GUI_CanvasLayer/GUI/BrewPreparationPanel/VBoxContainer" unique_id=898673407]
@@ -658,7 +661,7 @@ mouse_filter = 2
 theme_override_constants/separation = 1
 
 [node name="ButtonPanel" type="Panel" parent="GUI_CanvasLayer/GUI/BrewPreparationPanel/VBoxContainer" unique_id=1947074259]
-custom_minimum_size = Vector2(0, 45)
+custom_minimum_size = Vector2(0, 56)
 layout_mode = 2
 size_flags_vertical = 8
 
@@ -679,6 +682,7 @@ mouse_filter = 2
 theme_override_constants/separation = 1
 
 [node name="SaveRecipeButton" type="Button" parent="GUI_CanvasLayer/GUI/BrewPreparationPanel/VBoxContainer/ButtonPanel/HBoxContainer/VBoxContainer" unique_id=397344710]
+custom_minimum_size = Vector2(0, 26)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 2
@@ -686,7 +690,7 @@ text = "Tallenna resepti"
 
 [node name="StartBrewButton" type="Button" parent="GUI_CanvasLayer/GUI/BrewPreparationPanel/VBoxContainer/ButtonPanel/HBoxContainer" unique_id=2072042436]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(32, 16)
+custom_minimum_size = Vector2(56, 26)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
@@ -713,8 +717,8 @@ visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.1
-anchor_right = 0.21875
-anchor_bottom = 0.425
+anchor_right = 0.3125
+anchor_bottom = 0.62
 offset_bottom = 3.0
 size_flags_horizontal = 3
 mouse_filter = 2
@@ -746,7 +750,7 @@ theme_override_constants/margin_bottom = 4
 [node name="IngredientSelectionElementList" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer" unique_id=641646327]
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/separation = 1
+theme_override_constants/separation = 4
 
 [node name="ShopTypeSelector" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer/IngredientSelectionElementList" unique_id=1354188737]
 unique_name_in_owner = true
@@ -755,6 +759,7 @@ mouse_filter = 2
 script = ExtResource("20_5q0nq")
 
 [node name="TabBar" type="TabBar" parent="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer/IngredientSelectionElementList/ShopTypeSelector" unique_id=465448606]
+custom_minimum_size = Vector2(0, 26)
 layout_mode = 2
 current_tab = 0
 tab_count = 3
@@ -770,15 +775,16 @@ layout_mode = 2
 mouse_filter = 2
 
 [node name="IngredientOptionButton" type="OptionButton" parent="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer/IngredientSelectionElementList/ShopTypeSelector/IngredientRow" unique_id=337315106]
+custom_minimum_size = Vector2(0, 26)
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("5_tipki")
 
 [node name="ShopItemLabel" type="Label" parent="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer/IngredientSelectionElementList/ShopTypeSelector/IngredientRow" unique_id=344108055]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(70, 0)
+custom_minimum_size = Vector2(60, 0)
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 8
 size_flags_vertical = 1
 horizontal_alignment = 2
 vertical_alignment = 1
@@ -787,7 +793,7 @@ clip_text = true
 [node name="BuySellLastModifiedButtonPanel" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer/IngredientSelectionElementList" unique_id=809090564]
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/separation = 1
+theme_override_constants/separation = 4
 
 [node name="HBoxContainer" type="HBoxContainer" parent="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer/IngredientSelectionElementList/BuySellLastModifiedButtonPanel" unique_id=646491687]
 layout_mode = 2
@@ -796,12 +802,12 @@ size_flags_vertical = 4
 mouse_filter = 2
 
 [node name="SellButton" type="Button" parent="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer/IngredientSelectionElementList/BuySellLastModifiedButtonPanel/HBoxContainer" unique_id=31296574]
-custom_minimum_size = Vector2(32, 16)
+custom_minimum_size = Vector2(64, 26)
 layout_mode = 2
 text = "Myy"
 
 [node name="BuyButton" type="Button" parent="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer/IngredientSelectionElementList/BuySellLastModifiedButtonPanel/HBoxContainer" unique_id=2004856264]
-custom_minimum_size = Vector2(36, 16)
+custom_minimum_size = Vector2(64, 26)
 layout_mode = 2
 text = "Osta"
 
@@ -812,6 +818,7 @@ size_flags_vertical = 1
 rounded = true
 
 [node name="BackButton" type="Button" parent="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer" unique_id=123854584]
+custom_minimum_size = Vector2(56, 26)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
@@ -819,6 +826,7 @@ text = "Sulje"
 
 [node name="UpgradesButton" type="Button" parent="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer" unique_id=1477994951]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 26)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8

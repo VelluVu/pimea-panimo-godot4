@@ -3,6 +3,8 @@ extends Control
 
 const AMOUNT_FORMAT : String = "%d %s"
 const FILL_FROM_INVENTORY_BUTTON_TEXT : String = "Täytä resepti"
+## Same height as the scene's other buttons, a comfortable finger target.
+const FILL_BUTTON_HEIGHT : float = 26.0
 const FILL_FROM_INVENTORY_BUTTON_TOOLTIP : String = "Täytä puuttuvat ainesosat pöydälle varastosta ladatun reseptin mukaan. Pois käytöstä, jos varastossa ei ole tarpeeksi jotain ainesosaa."
 
 @onready var current_item_label : Label = %BrewingItemLabel
@@ -22,6 +24,7 @@ var _fill_from_inventory_button : Button = null
 
 
 func _ready() -> void:
+	SliderStepper.wrap(main_slider)
 	main_slider.value_changed.connect(_on_slider_changed)
 	GUISignals.active_ingredient_changed.connect(_set_active_ingredient)
 	# Without this, the slider's max_value only ever refreshed at the
@@ -46,6 +49,7 @@ func _ready() -> void:
 	_fill_from_inventory_button.text = FILL_FROM_INVENTORY_BUTTON_TEXT
 	_fill_from_inventory_button.tooltip_text = FILL_FROM_INVENTORY_BUTTON_TOOLTIP
 	_fill_from_inventory_button.disabled = true
+	_fill_from_inventory_button.custom_minimum_size.y = FILL_BUTTON_HEIGHT
 	_fill_from_inventory_button.pressed.connect(_on_fill_from_inventory_button_pressed)
 	main_vbox.add_child(_fill_from_inventory_button)
 
