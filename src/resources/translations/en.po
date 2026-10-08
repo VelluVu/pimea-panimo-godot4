@@ -3055,12 +3055,13 @@ msgstr "Bar Master"
 
 #: src/resources/meta_unlocks/baarimestari.tres
 msgid ""
-"Vuosien kokemus tiskin takana kiteytyy todelliseksi ammattitaidoksi. "
-"Jokaisella myynnillä on pysyvä mahdollisuus tuplatippiin, ja tiskillä "
-"syttyvät riidat ovat pysyvästi harvinaisempia."
+"Baarimikkosi vuosien kokemus tiskin takana kiteytyy todelliseksi "
+"ammattitaidoksi. Jokaisella myynnillä on pysyvä mahdollisuus tuplatippiin, "
+"ja tiskillä syttyvät riidat ovat pysyvästi harvinaisempia."
 msgstr ""
-"Years behind the counter turn into real craft. Every sale has a permanent "
-"chance of a double tip, and fights at the counter are permanently rarer."
+"Your bartender's years behind the counter crystallise into real skill. "
+"Every sale has a permanent chance of a double tip, and quarrels at the "
+"counter are permanently rarer."
 
 #: src/resources/meta_unlocks/hygieniamestari.tres
 msgid "Tarkka silmämitta"
@@ -3088,16 +3089,16 @@ msgstr ""
 "permanently arrive a little more often, and sometimes with a friend."
 
 #: src/resources/meta_unlocks/kaymisen_hallinta.tres
+msgid "Huolellinen käsityöläinen"
+msgstr "Careful Craftsman"
+
+#: src/resources/meta_unlocks/kaymisen_hallinta.tres
 msgid ""
 "Osaat arvioida raaka-ainemäärät tarkasti. Jokaisella panolla on pysyvä "
 "mahdollisuus saada osa raaka-aineista takaisin varastoon."
 msgstr ""
 "You judge ingredient amounts precisely. Every brew has a permanent chance "
 "of returning some ingredients to storage."
-
-#: src/resources/meta_unlocks/kaymisen_hallinta.tres
-msgid "Säästäväinen käsiala"
-msgstr "Thrifty Hand"
 
 #: src/resources/meta_unlocks/mainoskampanja.tres
 msgid "Mainoskampanja"
@@ -3113,15 +3114,15 @@ msgstr ""
 
 #: src/resources/meta_unlocks/mallastuksen_mestari.tres
 msgid ""
-"Hallitset maltaiden pilkkomisen jo unissasi. Jokainen pano tuottaa "
-"pysyvästi merkittävästi enemmän annoksia."
+"Hallitset mäskäyksen jo unissasi. Jokainen pano tuottaa pysyvästi "
+"merkittävästi enemmän annoksia."
 msgstr ""
-"You could mill malt in your sleep. Every brew permanently yields "
-"significantly more servings."
+"You could mash in your sleep. Every brew permanently yields significantly "
+"more servings."
 
 #: src/resources/meta_unlocks/mallastuksen_mestari.tres
-msgid "Mallastuksen mestari"
-msgstr "Master Maltster"
+msgid "Mäskäyksen mestari"
+msgstr "Mashing Master"
 
 #: src/resources/meta_unlocks/neuvottelutaito.tres
 msgid "Neuvottelutaito"
@@ -3141,11 +3142,11 @@ msgstr "Brewmaster"
 
 #: src/resources/meta_unlocks/panimomestari.tres
 msgid ""
-"Vuosikymmenten kokemus mallastuksesta ja annostelusta kiteytyy todelliseksi "
+"Vuosikymmenten kokemus mäskäyksestä ja annostelusta kiteytyy todelliseksi "
 "mestaruudeksi. Jokainen pano kypsyy pysyvästi nopeammin huippuunsa, ja "
 "laatu heikkenee sen jälkeen pysyvästi hitaammin."
 msgstr ""
-"Decades of malting and measuring turn into true mastery. Every brew "
+"Decades of mashing and measuring turn into true mastery. Every brew "
 "permanently peaks faster, and its quality permanently declines more slowly "
 "after that."
 
@@ -3215,11 +3216,11 @@ msgstr "Keen Eye"
 
 #: src/resources/meta_unlocks/tukkuhinnat.tres
 msgid ""
-"Neuvottelutaitosi ulottuu nyt myös myyntiin. Erien tukkumyynti baareihin ja "
-"suoramyynti varastosta tuottavat pysyvästi enemmän."
+"Neuvottelutaitosi ulottuu nyt myös myyntiin. Halpamyynnin ja baarivientien "
+"tulot ovat pysyvästi paremmat."
 msgstr ""
-"Your haggling now extends to selling. Bar shipments and bulk sales from "
-"storage permanently earn more."
+"Your bargaining reaches sales now too. Bulk sales and bar shipments "
+"permanently earn more."
 
 #: src/resources/meta_unlocks/tukkuhinnat.tres
 msgid "Tukkuhinnat"
@@ -3264,11 +3265,11 @@ msgstr "Strong Brand"
 
 #: src/resources/meta_unlocks/vieraanvarainen_perinne.tres
 msgid ""
-"Kellarilla on jo valmiiksi hyvä maine tiskijuomana entisiltä kausilta. "
-"Asiakkaat tippaavat pysyvästi hieman anteliaammin."
+"Kellarilla on jo hyvä maine entisiltä kausilta. Asiakkaat tippaavat "
+"pysyvästi hieman anteliaammin."
 msgstr ""
-"The cellar already has a good name at the counter from past seasons. "
-"Customers permanently tip a little more generously."
+"The cellar already has a good name from earlier seasons. Customers "
+"permanently tip a little more generously."
 
 #: src/resources/meta_unlocks/vieraanvarainen_perinne.tres
 msgid "Vieraanvarainen perinne"

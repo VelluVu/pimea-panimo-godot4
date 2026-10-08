@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_unlock")
 perk_name = "Panimomestari"
-description = "Vuosikymmenten kokemus mallastuksesta ja annostelusta kiteytyy todelliseksi mestaruudeksi. Jokainen pano kypsyy pysyvästi nopeammin huippuunsa, ja laatu heikkenee sen jälkeen pysyvästi hitaammin."
+description = "Vuosikymmenten kokemus mäskäyksestä ja annostelusta kiteytyy todelliseksi mestaruudeksi. Jokainen pano kypsyy pysyvästi nopeammin huippuunsa, ja laatu heikkenee sen jälkeen pysyvästi hitaammin."
 icon_placeholder = "🏅"
 peak_speed_multiplier = 0.85
 decline_rate_multiplier = 0.8
