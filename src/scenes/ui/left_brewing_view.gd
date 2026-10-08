@@ -58,6 +58,11 @@ func _ready() -> void:
 	_update_fill_from_inventory_button()
 
 
+func _input(event : InputEvent) -> void:
+	if IngredientViewKeys.handle(event, self, ingredient_type_selector, main_slider, _on_add_button_pressed):
+		get_viewport().set_input_as_handled()
+
+
 func _on_fill_from_inventory_button_pressed() -> void:
 	GUISignals.fill_recipe_from_inventory_requested.emit()
 

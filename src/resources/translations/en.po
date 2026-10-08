@@ -4547,6 +4547,10 @@ msgid "Reset to defaults"
 msgstr "Reset to defaults"
 
 #: src/systems/input/input_wiring.gd
+msgid "Edellinen aines"
+msgstr "Previous ingredient"
+
+#: src/systems/input/input_wiring.gd
 msgid "Kauden vaikutukset"
 msgstr "Season effects"
 
@@ -4559,8 +4563,20 @@ msgid "Kuittiloki"
 msgstr "Receipt log"
 
 #: src/systems/input/input_wiring.gd
+msgid "Määrä alas (Shift: 10)"
+msgstr "Amount down (Shift: 10)"
+
+#: src/systems/input/input_wiring.gd
+msgid "Määrä ylös (Shift: 10)"
+msgstr "Amount up (Shift: 10)"
+
+#: src/systems/input/input_wiring.gd
 msgid "Näppäin on jo käytössä: %s"
 msgstr "Key already in use: %s"
+
+#: src/systems/input/input_wiring.gd
+msgid "Osta tai lisää pöydälle"
+msgstr "Buy or add to the table"
 
 #: src/systems/input/input_wiring.gd
 msgid "Paina näppäintä..."
@@ -4573,6 +4589,14 @@ msgstr "Reset to defaults"
 #: src/systems/input/input_wiring.gd
 msgid "Panimo"
 msgstr "Brewery"
+
+#: src/systems/input/input_wiring.gd
+msgid "Seuraava aines"
+msgstr "Next ingredient"
+
+#: src/systems/input/input_wiring.gd
+msgid "Seuraava ainesryhmä (Shift: edellinen)"
+msgstr "Next ingredient type (Shift: previous)"
 
 #: src/systems/input/input_wiring.gd
 msgid "Valitse toiminto ja paina uutta näppäintä. Esc peruu."

@@ -32,25 +32,29 @@ static func wrap(option: OptionButton) -> HBoxContainer:
 ## `current` when no other item is enabled.
 static func next_index(current: int, direction: int, disabled: Array[bool]) -> int:
 	var count: int = disabled.size()
-	for step: int in range(1, count + 1):
-		var candidate: int = posmod(current + direction * step, count)
+	for distance: int in range(1, count + 1):
+		var candidate: int = posmod(current + direction * distance, count)
 		if not disabled[candidate]:
 			return candidate
 	return current
+
+
+## Selects the next enabled item in `direction`, as the arrow buttons do (also for keys).
+static func step(option: OptionButton, direction: int) -> void:
+	if option.item_count == 0:
+		return
+	var disabled: Array[bool] = []
+	for i: int in option.item_count:
+		disabled.append(option.is_item_disabled(i))
+	var target: int = next_index(option.selected, direction, disabled)
+	if target != option.selected:
+		option.select(target)
+		option.item_selected.emit(target)
 
 
 static func _make_button(option: OptionButton, text: String, direction: int) -> Button:
 	var button := Button.new()
 	button.text = text
 	button.custom_minimum_size = BUTTON_SIZE
-	button.pressed.connect(func() -> void:
-		if option.item_count == 0:
-			return
-		var disabled: Array[bool] = []
-		for i: int in option.item_count:
-			disabled.append(option.is_item_disabled(i))
-		var target: int = next_index(option.selected, direction, disabled)
-		if target != option.selected:
-			option.select(target)
-			option.item_selected.emit(target))
+	button.pressed.connect(step.bind(option, direction))
 	return button
