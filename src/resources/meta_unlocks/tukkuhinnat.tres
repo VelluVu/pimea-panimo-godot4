@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_unlock")
 perk_name = "Tukkuhinnat"
-description = "Neuvottelutaitosi ulottuu nyt myös myyntiin. Erien tukkumyynti baareihin ja suoramyynti varastosta tuottavat pysyvästi enemmän."
+description = "Neuvottelutaitosi ulottuu nyt myös myyntiin. Halpamyynnin ja baarivientien tulot ovat pysyvästi paremmat."
 icon_placeholder = "📦"
 distribution_income_multiplier = 1.025
 stacks_additively = true

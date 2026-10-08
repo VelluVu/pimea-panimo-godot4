@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_unlock")
 perk_name = "Baarimestari"
-description = "Vuosien kokemus tiskin takana kiteytyy todelliseksi ammattitaidoksi. Jokaisella myynnillä on pysyvä mahdollisuus tuplatippiin, ja tiskillä syttyvät riidat ovat pysyvästi harvinaisempia."
+description = "Baarimikkosi vuosien kokemus tiskin takana kiteytyy todelliseksi ammattitaidoksi. Jokaisella myynnillä on pysyvä mahdollisuus tuplatippiin, ja tiskillä syttyvät riidat ovat pysyvästi harvinaisempia."
 icon_placeholder = "🎩"
 tip_double_chance = 0.08
 bar_fight_chance_multiplier = 0.75
