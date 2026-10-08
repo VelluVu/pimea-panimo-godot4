@@ -11,7 +11,9 @@ tooltip that wraps at `TooltipFactory.MAX_WIDTH`.
   instead of `Label.new()` and so on, or attach with `node.set_script(TooltipLabel)`.
 - `TouchTooltip` gives touch screens tooltips: add one (`add_child(TouchTooltip.new())`) to each
   scene's UI root. Pressing and holding a Control (`TouchHold.HOLD_SECONDS`) shows its tooltip
-  above the finger, and the next tap closes it. A held button fires only if it has no tooltip. It reacts only to
+  above the finger; it closes 1.5 s after the finger lifts or on the next tap. A held button
+  fires only if it has no tooltip. A lifted finger leaves no pointer behind, so Godot's hover
+  tooltips never pop up after a tap. It reacts only to
   mouse events emulated from touch, so mouse players see no change.
 
 ## Use it in a new project

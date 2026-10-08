@@ -2,17 +2,24 @@ class_name TouchTooltip
 extends CanvasLayer
 
 ## Tooltips for touch screens, which have no hover: pressing and holding a Control shows its
-## tooltip above the finger, and the next tap closes it. Add one to each scene's UI root.
-## Only reacts to mouse events emulated from touch, so mouse players see no change.
+## tooltip above the finger; it closes soon after the finger lifts, or on the next tap. Add
+## one to each scene's UI root. Only reacts to mouse events emulated from touch, so mouse
+## players see no change.
 
 ## Above every window and the level-up cards.
 const LAYER: int = 120
 ## Gap between the finger and the tooltip's bottom edge.
 const FINGER_GAP: float = 14.0
 const SCREEN_MARGIN: float = 4.0
+## How long a tooltip stays readable after the finger lifts.
+const CLOSE_AFTER_LIFT_SECONDS: float = 1.5
+## Where the pointer goes when a finger lifts or slides off a held button.
+const AWAY: Vector2 = Vector2(-10000.0, -10000.0)
 
 var _hold := TouchHold.new()
 var _shown: Control = null
+## Bumped by every tooltip, so an old close timer leaves a newer tooltip alone.
+var _shown_id: int = 0
 
 
 func _ready() -> void:
@@ -30,6 +37,11 @@ func _input(event: InputEvent) -> void:
 			_hold.press(event.position)
 		else:
 			_hold.release()
+			# A lifted finger leaves no pointer behind, or Godot's hover tooltip would
+			# pop up where the finger was.
+			_push_pointer.call_deferred(0)
+			if is_instance_valid(_shown):
+				_close_later(_shown_id)
 	elif event is InputEventMouseMotion:
 		_hold.move(event.position)
 
@@ -45,7 +57,8 @@ func _open_at(finger: Vector2) -> void:
 		var text: String = control.get_tooltip(control.get_local_mouse_position())
 		if not text.is_empty():
 			_show(_make_content(control, text), _theme_of(control), finger)
-			_drag_finger_off_the_button()
+			# Buttons decide on release from the last motion: the finger "slid off".
+			_push_pointer(MOUSE_BUTTON_MASK_LEFT)
 			return
 		control = control.get_parent() as Control
 
@@ -57,14 +70,21 @@ func _make_content(control: Control, text: String) -> Control:
 	return content if content != null else TooltipFactory.make_wrapped_tooltip(text)
 
 
-## A held button would fire on release. Buttons judge that from the last mouse motion,
-## so a motion far outside tells it the finger slid off.
-func _drag_finger_off_the_button() -> void:
+func _push_pointer(button_mask: int) -> void:
+	# Deferred after a tap that changed the scene, this layer may be gone already.
+	if not is_inside_tree():
+		return
 	var motion := InputEventMouseMotion.new()
-	motion.position = Vector2(-10000.0, -10000.0)
-	motion.global_position = motion.position
-	motion.button_mask = MOUSE_BUTTON_MASK_LEFT
+	motion.position = AWAY
+	motion.global_position = AWAY
+	motion.button_mask = button_mask
 	get_viewport().push_input(motion, true)
+
+
+func _close_later(id: int) -> void:
+	await get_tree().create_timer(CLOSE_AFTER_LIFT_SECONDS, true).timeout
+	if id == _shown_id:
+		_close()
 
 
 ## This layer sits outside the UI's own theme, so the tooltip borrows it.
@@ -79,6 +99,7 @@ func _theme_of(control: Control) -> Theme:
 
 func _show(content: Control, theme: Theme, finger: Vector2) -> void:
 	_shown = content
+	_shown_id += 1
 	content.theme = theme
 	content.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(content)

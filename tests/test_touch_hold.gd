@@ -13,16 +13,16 @@ func suite_name() -> String:
 func test_holding_still_fires_once() -> void:
 	var hold := TouchHoldScript.new()
 	hold.press(Vector2(100, 100))
-	assert_false(hold.tick(0.3))
-	assert_true(hold.tick(0.3))
-	assert_false(hold.tick(0.3), "fires only once per press")
+	assert_false(hold.tick(0.4))
+	assert_true(hold.tick(0.4))
+	assert_false(hold.tick(0.4), "fires only once per press")
 	assert_true(hold.has_fired())
 
 
 func test_a_quick_tap_never_fires() -> void:
 	var hold := TouchHoldScript.new()
 	hold.press(Vector2(100, 100))
-	hold.tick(0.1)
+	hold.tick(0.5)
 	hold.release()
 	assert_false(hold.tick(1.0))
 	assert_false(hold.has_fired())

@@ -4,7 +4,8 @@ extends RefCounted
 ## Tells a press-and-hold from a tap or a drag: fires once when a finger has stayed down
 ## within SLOP pixels for HOLD_SECONDS.
 
-const HOLD_SECONDS: float = 0.45
+## A deliberate tap can last half a second, so a hold needs a little longer.
+const HOLD_SECONDS: float = 0.6
 ## A finger wobbles; moving further than this is a drag (scrolling), not a hold.
 const SLOP: float = 10.0
 
