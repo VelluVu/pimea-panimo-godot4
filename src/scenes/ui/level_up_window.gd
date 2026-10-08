@@ -89,7 +89,7 @@ func _on_game_menu_requested() -> void:
 func _on_game_menu_closed() -> void:
 	_menu_open = false
 	if not _offered_perks.is_empty():
-		show()
+		_show_over_popups()
 	elif not _pending_levels.is_empty() and not _is_run_over():
 		_show_next_pending_level()
 
@@ -122,6 +122,15 @@ func _show_next_pending_level() -> void:
 		var description : String = "[%s]\n%s" % [perk.get_tier_label(), tr(perk.description)]
 		_card_description_labels[i].text = description if stat_summary.is_empty() else description + "\n" + stat_summary
 
+	_show_over_popups()
+
+
+## An open dropdown list is its own window, drawn over any z_index, and the click
+## that closed it also went through to the card under it. Close it first.
+func _show_over_popups() -> void:
+	for window : Window in get_viewport().get_embedded_subwindows():
+		if window is Popup:
+			window.hide()
 	show()
 
 
