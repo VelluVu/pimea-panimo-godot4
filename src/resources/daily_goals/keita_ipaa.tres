@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_goal")
-goal_name = "IPA"
+goal_name = "Keitä IPA:ta"
 goal_type = 0
 target_amount = 1
 target_style = 5

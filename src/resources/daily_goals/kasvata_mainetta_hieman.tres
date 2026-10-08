@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_goal")
-goal_name = "Mainetta"
+goal_name = "Kasvata mainetta"
 goal_type = 3
 target_amount = 6
 progress_format = "%d/%d"

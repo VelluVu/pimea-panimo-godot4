@@ -2086,33 +2086,53 @@ msgstr "Ohmygod, that %s is lowkey sigma, I'll take it."
 msgid "Tää on niin sus, total L, en koske tähän edes rizzillä."
 msgstr "This is so sus, total L, wouldn't touch it even with rizz."
 
+#: src/resources/daily_goals/brew_bulkkilager.tres
+msgid "Keitä bulkkilageria"
+msgstr "Brew Bulk Lager"
+
 #: src/resources/daily_goals/hoida_kaksi_erikoistapahtumaa.tres
-msgid "Erikoistapahtumat"
-msgstr "Special events"
+msgid "Hoida erikoistapahtumia"
+msgstr "Handle special events"
 
 #: src/resources/daily_goals/jarjesta_erikoistapahtuma.tres
-msgid "Erikoistapahtuma"
-msgstr "Special event"
+msgid "Hoida erikoistapahtuma"
+msgstr "Handle a special event"
 
 #: src/resources/daily_goals/kasvata_mainetta.tres
-msgid "Mainetta"
-msgstr "Reputation"
+msgid "Kasvata mainetta"
+msgstr "Gain reputation"
+
+#: src/resources/daily_goals/keita_ipaa.tres
+msgid "Keitä IPA:ta"
+msgstr "Brew IPA"
+
+#: src/resources/daily_goals/keita_kotikaljaa.tres
+msgid "Keitä kotikaljaa"
+msgstr "Brew Homebrew"
 
 #: src/resources/daily_goals/myy_paljon_pulloja.tres
 msgid "Myy annoksia"
 msgstr "Sell servings"
 
 #: src/resources/daily_goals/nolla_tyytymatonta.tres
-msgid "Tyytyväiset asiakkaat"
-msgstr "Happy customers"
+msgid "Ei tyytymättömiä"
+msgstr "No unhappy customers"
 
 #: src/resources/daily_goals/tienaa_paljon_rahaa.tres
-msgid "Rahaa"
-msgstr "Money"
+msgid "Tienaa rahaa"
+msgstr "Earn money"
+
+#: src/resources/daily_goals/tyytyvaiset_asiakkaat.tres
+msgid "Tyytymättömiä enintään"
+msgstr "Unhappy customers, at most"
 
 #: src/resources/daily_goals/vie_baariin_paljon.tres
-msgid "Vie baariin"
-msgstr "Ship to a bar"
+msgid "Vie tynnyreitä baariin"
+msgstr "Ship kegs to bars"
+
+#: src/resources/daily_goals/vie_baariin_vahan.tres
+msgid "Vie tynnyri baariin"
+msgstr "Ship a keg to a bar"
 
 #: src/resources/day_events/day_event_eukonkanto.tres
 msgid ""

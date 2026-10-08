@@ -4,14 +4,12 @@
 
 [resource]
 script = ExtResource("1_goal")
-goal_name = "Vie baariin"
+goal_name = "Vie tynnyreitä baariin"
 goal_type = 6
-target_amount = 25
+target_amount = 2
 progress_format = "%d/%d"
 reward_money = 45
 reward_reputation = 10
 reward_xp = 35
 penalty_reputation = 4
 penalty_risk = 6
-scales_with_day = true
-target_scale_per_day = 0.08

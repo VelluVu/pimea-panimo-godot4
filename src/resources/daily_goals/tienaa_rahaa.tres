@@ -4,10 +4,10 @@
 
 [resource]
 script = ExtResource("1_goal")
-goal_name = "Rahaa"
+goal_name = "Tienaa rahaa"
 goal_type = 4
 target_amount = 50
-progress_format = "%d/%d€"
+progress_format = "%d/%d €"
 reward_money = 20
 reward_reputation = 3
 reward_xp = 15
