@@ -48,8 +48,9 @@ func _ready() -> void:
 	# Slot the goals panel and the passive banners just below the first modal so open
 	# windows cover them instead of colliding with their text.
 	move_child(daily_goals_panel, lvv_raid_window.get_index())
+	# The banners also go under the brewing and shop views, which come earlier.
 	for banner : Label in [group_visit_banner, first_brew_hint_banner, day_event_banner]:
-		move_child(banner, lvv_raid_window.get_index())
+		move_child(banner, brewery_view.get_index())
 	await get_tree().process_frame
 	_views.show_bar()
 	GUISignals.brewery_view_requested.connect(_on_brewery_button_pressed)
