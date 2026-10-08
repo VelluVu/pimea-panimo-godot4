@@ -3336,9 +3336,11 @@ msgstr "You keep a low profile, so the LVV's raid threshold rises a little."
 
 #: src/resources/perks/hyvat_suhteet.tres
 msgid ""
-"Baarien pitäjät pitävät sinusta: halpamyynnin ja baarivientien tulot ovat "
-"hieman paremmat."
-msgstr "Bar owners like you: bulk sales and bar shipments earn a little more."
+"Baarien pitäjät tykästyivät olueesi. Halpamyynnin ja baarivientien tulot "
+"ovat hieman paremmat."
+msgstr ""
+"Bar owners took a liking to your beer. Bulk sales and bar shipments earn a "
+"little more."
 
 #: src/resources/perks/hyvat_suhteet.tres
 msgid "Hyvät suhteet"
