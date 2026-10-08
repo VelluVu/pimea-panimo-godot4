@@ -13,7 +13,7 @@ const DELAY_SECONDS : float = 0.4
 const BUTTON_TEXT : String = "?"
 const BUTTON_TOOLTIP : String = "Näytä paikkojen nimet"
 const BUTTON_FONT_SIZE : int = 32
-const BUTTON_GAP : float = 2.0
+const BUTTON_GAP : float = 6.0
 
 ## Set at run start and each new day; the next time the bar is in view, the hints show.
 var _pending : bool = true
@@ -49,9 +49,16 @@ func toggle() -> void:
 ## Added as its sibling so the windows above it still cover it.
 static func make_button(beside : Control) -> Button:
 	var button := Button.new()
-	button.text = BUTTON_TEXT
 	button.tooltip_text = BUTTON_TOOLTIP
-	button.add_theme_font_size_override("font_size", BUTTON_FONT_SIZE)
+	# A child label, not the button's text: big text would make the button taller than `beside`.
+	var mark := Label.new()
+	mark.text = BUTTON_TEXT
+	mark.add_theme_font_size_override("font_size", BUTTON_FONT_SIZE)
+	mark.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	mark.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	mark.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	mark.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	button.add_child(mark)
 	button.anchor_left = beside.anchor_left
 	button.anchor_right = beside.anchor_right
 	button.anchor_top = beside.anchor_top
