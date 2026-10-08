@@ -666,12 +666,12 @@ msgid "Tapaa kaikki 22 asiakastyyppiä."
 msgstr "Meet all 22 customer types."
 
 #: src/resources/achievements/ensimmainen_satsi.tres
-msgid "Ensimmäinen satsi"
-msgstr "First Batch"
+msgid "Ensimmäinen olut"
+msgstr "First Beer"
 
 #: src/resources/achievements/ensimmainen_satsi.tres
-msgid "Keitä ensimmäinen olutsatsisi."
-msgstr "Brew your first batch of beer."
+msgid "Keitä ensimmäinen olut."
+msgstr "Brew your first beer."
 
 #: src/resources/achievements/humalat_10.tres
 msgid "Avaa 10 humalalajiketta reputaation kautta."
@@ -798,7 +798,7 @@ msgid "Pane 25 erää sopivilla mausteilla."
 msgstr "Brew 25 batches with suitable spices."
 
 #: src/resources/achievements/panimon_pyorittaja.tres
-msgid "Keitä 50 olutsatsia."
+msgid "Keitä 50 oluterää."
 msgstr "Brew 50 batches of beer."
 
 #: src/resources/achievements/panimon_pyorittaja.tres
@@ -806,7 +806,7 @@ msgid "Panimon pyörittäjä"
 msgstr "Brewery Runner"
 
 #: src/resources/achievements/pannu_lampenee.tres
-msgid "Keitä 10 olutsatsia."
+msgid "Keitä 10 oluterää."
 msgstr "Brew 10 batches of beer."
 
 #: src/resources/achievements/pannu_lampenee.tres
