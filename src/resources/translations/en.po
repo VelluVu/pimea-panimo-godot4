@@ -3305,14 +3305,16 @@ msgstr ""
 "tips."
 
 #: src/resources/perks/baarimikon_charmi.tres
-msgid "Baarimikon charmi"
-msgstr "Bartender's Charm"
+msgid ""
+"Baarimikkosi oppii jutustelemaan asiakkaiden kanssa tiskin yli, ja tipit "
+"kasvavat huomattavasti."
+msgstr ""
+"Your bartender learns to chat with customers over the counter, and tips "
+"grow noticeably."
 
 #: src/resources/perks/baarimikon_charmi.tres
-msgid ""
-"Opit jutustelemaan asiakkaiden kanssa tiskin yli, ja tipit kasvavat "
-"huomattavasti."
-msgstr "You learn to chat with customers over the counter, and tips grow noticeably."
+msgid "Baarimikon charmi"
+msgstr "Bartender's Charm"
 
 #: src/resources/perks/hiljainen_kulma.tres
 msgid "Hiljainen kulma"
