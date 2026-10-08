@@ -157,7 +157,7 @@ msgstr "Season stats"
 
 #: src/autoload/string_container.gd
 msgid "Kotikalja"
-msgstr "Kotikalja"
+msgstr "Homebrew"
 
 #: src/autoload/string_container.gd
 msgid "Kyllä"
@@ -971,11 +971,11 @@ msgstr "Style discovered: IPA"
 
 #: src/resources/achievements/tyyli_kotikalja.tres
 msgid "Pane hyllyyn ensimmäinen erä tyyliä Kotikalja."
-msgstr "Put your first batch of Kotikalja on the shelf."
+msgstr "Put your first batch of Homebrew on the shelf."
 
 #: src/resources/achievements/tyyli_kotikalja.tres
 msgid "Tyyli löydetty: Kotikalja"
-msgstr "Style discovered: Kotikalja"
+msgstr "Style discovered: Homebrew"
 
 #: src/resources/achievements/tyyli_maitostout.tres
 msgid "Pane hyllyyn ensimmäinen erä tyyliä Maitostout."
@@ -2982,7 +2982,7 @@ msgid ""
 "Kuivattua ruisleipää, kuten mummolla. Kotikalja saa siitä aidon leipäisen "
 "maun."
 msgstr ""
-"Dried rye bread, just like at grandma's. It gives kotikalja a real bready "
+"Dried rye bread, just like at grandma's. It gives homebrew a real bready "
 "taste."
 
 #: src/resources/ingredients/spices/rye_bread.tres
@@ -3654,11 +3654,11 @@ msgstr "I understand. Not everyone wants to get into politics."
 
 #: src/resources/special_events/nosy_neighbour.tres
 msgid "Ei kotikaljaa? No, ehkä soitan sittenkin sille tarkastajalle."
-msgstr "No kotikalja? Well, maybe I'll call that inspector after all."
+msgstr "No homebrew? Well, maybe I'll call that inspector after all."
 
 #: src/resources/special_events/nosy_neighbour.tres
 msgid "Kotikaljaa! Mitä kolinaa? En minä kuullut mitään."
-msgstr "Kotikalja! What clatter? I didn't hear a thing."
+msgstr "Homebrew! What clatter? I didn't hear a thing."
 
 #: src/resources/special_events/nosy_neighbour.tres
 msgid "Naapurin Irma"
@@ -3671,7 +3671,7 @@ msgid ""
 "20."
 msgstr ""
 "All sorts of clatter comes from your cellar... But if someone brought me 10 "
-"bottles of kotikalja, I might not remember a thing. LVV risk drops by 20."
+"bottles of homebrew, I might not remember a thing. LVV risk drops by 20."
 
 #: src/resources/special_events/nosy_neighbour.tres
 msgid "Vai niin. Minä tästä sitten soittelen..."
@@ -3971,7 +3971,7 @@ msgstr "Yeast: %d/1"
 
 #: src/scenes/ui/daily_goals_panel.gd
 msgid "Kotikalja: %d/1"
-msgstr "Kotikalja: %d/1"
+msgstr "Homebrew: %d/1"
 
 #: src/scenes/ui/daily_goals_panel.gd
 msgid "Maine: %d/%d"

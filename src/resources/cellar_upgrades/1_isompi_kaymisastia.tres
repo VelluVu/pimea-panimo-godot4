@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="CellarUpgradeData" format=3]
+[gd_resource type="Resource" script_class="CellarUpgradeData" format=3 uid="uid://ya8318c5w6al"]
 
-[ext_resource type="Script" path="res://src/brewery/cellar_upgrade_data.gd" id="1_upgrade"]
+[ext_resource type="Script" uid="uid://vrs3bafxturw" path="res://src/brewery/cellar_upgrade_data.gd" id="1_upgrade"]
 
 [resource]
 script = ExtResource("1_upgrade")

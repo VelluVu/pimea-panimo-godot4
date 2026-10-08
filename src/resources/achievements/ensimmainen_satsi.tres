@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="AchievementData" format=3]
+[gd_resource type="Resource" script_class="AchievementData" format=3 uid="uid://cxxisptdqb8np"]
 
-[ext_resource type="Script" path="res://src/systems/achievements/achievement_data.gd" id="1_achievement"]
+[ext_resource type="Script" uid="uid://bux4h17jj8yiq" path="res://src/systems/achievements/achievement_data.gd" id="1_achievement"]
 
 [resource]
 script = ExtResource("1_achievement")
@@ -8,5 +8,4 @@ achievement_id = "ensimmainen_satsi"
 title = "Ensimmäinen olut"
 description = "Keitä ensimmäinen olut."
 stat_key = &"batches_brewed"
-target_value = 1
 metadata/_custom_type_script = "res://src/systems/achievements/achievement_data.gd"
