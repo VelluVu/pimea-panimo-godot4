@@ -8,9 +8,13 @@ Needs only the Python standard library and an installed Chrome.
         [--out DIR] [--chrome PATH] [--keep-profile] [--url URL]
 
 --url tests a published copy (GitHub Pages, itch.io) instead of serving build/web.
+--phone emulates a phone in landscape (Pixel 7: 915x412 CSS pixels at 2.625x) with touch
+input; the game then fills the height (scale 412/360) and has bars at the sides.
 
 Steps run after the first wait, separated by ';':
     click X Y      left click at page pixels (the page is 1280x720, the game 640x360 x2)
+    tap X Y        a finger tap at page pixels (with --phone)
+    hold X Y SECS  a finger pressed down for SECS seconds (with --phone)
     key NAME       press and release a key (Escape, Enter, Space, a letter, F1...)
     wait SECONDS   sleep
     shot NAME      save a screenshot as NAME.png
@@ -41,6 +45,8 @@ BUILD_DIR = os.path.join(ROOT, "build", "web")
 DEFAULT_OUT = os.path.join(ROOT, "dev", "tools", "web", "out")
 DEFAULT_CHROME = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
 WINDOW = (1280, 720)
+PHONE = {"width": 915, "height": 412, "deviceScaleFactor": 2.625, "mobile": True,
+	"screenOrientation": {"type": "landscapePrimary", "angle": 90}}
 SERVE_PORT = 8062
 DEBUG_PORT = 9233
 
@@ -194,6 +200,13 @@ def click(tools, x, y):
 		tools.call("Input.dispatchMouseEvent", {"type": kind, "x": x, "y": y, "button": "left", "clickCount": 1})
 
 
+def touch(tools, x, y, hold_seconds=0.05):
+	point = [{"x": x, "y": y}]
+	tools.call("Input.dispatchTouchEvent", {"type": "touchStart", "touchPoints": point})
+	tools.pump(hold_seconds)
+	tools.call("Input.dispatchTouchEvent", {"type": "touchEnd", "touchPoints": []})
+
+
 def press(tools, name):
 	code, key = KEYS.get(name, (ord(name.upper()) if len(name) == 1 else 0, name))
 	for kind in ("keyDown", "keyUp"):
@@ -205,6 +218,12 @@ def run_steps(tools, steps, out_dir):
 		verb, *args = step.split()
 		if verb == "click":
 			click(tools, float(args[0]), float(args[1]))
+			tools.pump(0.3)
+		elif verb == "tap":
+			touch(tools, float(args[0]), float(args[1]))
+			tools.pump(0.3)
+		elif verb == "hold":
+			touch(tools, float(args[0]), float(args[1]), float(args[2]))
 			tools.pump(0.3)
 		elif verb == "key":
 			press(tools, args[0])
@@ -229,6 +248,7 @@ def main():
 	parser.add_argument("--keep-profile", action="store_true", help="reuse the browser profile, so saves survive between runs")
 	parser.add_argument("--url", default="", help="a published copy to test instead of build/web")
 	parser.add_argument("--init-script", default="", help="JavaScript file to run in the page before it loads")
+	parser.add_argument("--phone", action="store_true", help="emulate a phone in landscape with touch input")
 	args = parser.parse_args()
 
 	if not args.url and not os.path.isfile(os.path.join(BUILD_DIR, "index.html")):
@@ -249,6 +269,9 @@ def main():
 		tools = DevTools(WebSocket(page_websocket_url()))
 		tools.call("Runtime.enable")
 		tools.call("Page.enable")
+		if args.phone:
+			tools.call("Emulation.setDeviceMetricsOverride", PHONE)
+			tools.call("Emulation.setTouchEmulationEnabled", {"enabled": True, "maxTouchPoints": 5})
 		if args.init_script:
 			with open(args.init_script, encoding="utf-8") as f:
 				tools.call("Page.addScriptToEvaluateOnNewDocument", {"source": f.read()})
