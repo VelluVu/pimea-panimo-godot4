@@ -45,7 +45,7 @@ const FRIEND_FORMAT: String = "[color=lightgreen]%s suositteli kellaria kaverill
 const BAD_REVIEW_TEXT: String = "[color=orange]Huono arvio kiertää: asiakkaita tulee hetken harvemmin.[/color]"
 const REGULAR_GAINED_FORMAT: String = "[color=gold]%s on nyt kanta-asiakas.[/color]"
 const REGULAR_LOST_FORMAT: String = "%s ei ole enää kanta-asiakas."
-const STORED_FORMAT: String = "Varastoon: %s +%d pulloa"
+const STORED_FORMAT: String = "Varastoon: %s +%d annosta"
 const INGREDIENTS_UNLOCKED_FORMAT: String = "[color=lightgreen]Uusia aineksia: %s[/color]"
 const CUSTOMER_UNLOCKED_FORMAT: String = "[color=lightgreen]Uusi asiakas avattu: %s[/color]"
 const ACHIEVEMENT_FORMAT: String = "[color=gold]Saavutus avattu: %s[/color]"
@@ -53,10 +53,10 @@ const TIER_ROSE_FORMAT: String = "[color=lightgreen]Maine nousi: %s[/color]"
 const TIER_FELL_FORMAT: String = "[color=orange]Maine laski: %s[/color]"
 const DECAY_FORMAT: String = "Maine hiipui yöllä: -%d (%s)"
 const LEVEL_UP_FORMAT: String = "[color=gold]Taso %d saavutettu![/color]"
-const BULK_SOLD_FORMAT: String = "Tukkumyynti: %s, %d pulloa, +%.1f €"
-const SHIPPED_FORMAT: String = "Vienti: %s baariin %s, %d pulloa, +%.1f €, LVV-riski +%d"
+const BULK_SOLD_FORMAT: String = "Tukkumyynti: %s, %d annosta, +%.1f €"
+const SHIPPED_FORMAT: String = "Vienti: %s baariin %s, %d annosta, +%.1f €, LVV-riski +%d"
 const UPGRADE_FORMAT: String = "Kellariparannus: %s (taso %d)"
-const BAR_FIGHT_FORMAT: String = "[color=orange]Baaritappelu! %d pulloa rikki.[/color]"
+const BAR_FIGHT_FORMAT: String = "[color=orange]Baaritappelu! %d annosta rikki.[/color]"
 
 var _console: DevConsole
 var _unlock_tracker: ReputationUnlockTracker

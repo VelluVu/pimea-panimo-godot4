@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_unlock")
 perk_name = "Mallastuksen mestari"
-description = "Hallitset maltaiden pilkkomisen jo unissasi. Jokainen pano tuottaa pysyvästi merkittävästi enemmän pulloja."
+description = "Hallitset maltaiden pilkkomisen jo unissasi. Jokainen pano tuottaa pysyvästi merkittävästi enemmän annoksia."
 icon_placeholder = "🌽"
 brew_yield_multiplier = 1.04
 stacks_additively = true

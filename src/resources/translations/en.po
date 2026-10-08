@@ -60,6 +60,10 @@ msgid "Amber Ale"
 msgstr "Amber Ale"
 
 #: src/autoload/string_container.gd
+msgid "Annossaanto: %s"
+msgstr "Servings per batch: %s"
+
+#: src/autoload/string_container.gd
 msgid "Asiakas tuo seuraa: %s"
 msgstr "Customer brings company: %s"
 
@@ -254,10 +258,6 @@ msgid "Piilotettuja eriä ratsiassa: %s"
 msgstr "Batches hidden in a raid: %s"
 
 #: src/autoload/string_container.gd
-msgid "Pullosaanto: %s"
-msgstr "Bottle yield: %s"
-
-#: src/autoload/string_container.gd
 msgid "Päivätavoitteita päivässä: %s"
 msgstr "Daily goals per day: %s"
 
@@ -270,8 +270,8 @@ msgid "Ratsiakynnys: %s"
 msgstr "Raid threshold: %s"
 
 #: src/autoload/string_container.gd
-msgid "Ratsiassa säästyviä pulloja: %s"
-msgstr "Bottles saved in a raid: %s"
+msgid "Ratsiassa säästyviä annoksia: %s"
+msgstr "Servings saved in a raid: %s"
 
 #: src/autoload/string_container.gd
 msgid "Ratsioiden sietokyky: %s"
@@ -1115,8 +1115,8 @@ msgid "India Pale Ale"
 msgstr "India Pale Ale"
 
 #: src/resources/cellar_upgrades/1_isompi_kaymisastia.tres
-msgid "Isompi astia, enemmän pulloja samasta erästä."
-msgstr "A bigger vessel, more bottles from the same batch."
+msgid "Isompi astia, enemmän annoksia samasta erästä."
+msgstr "A bigger vessel, more servings from the same batch."
 
 #: src/resources/cellar_upgrades/1_isompi_kaymisastia.tres
 msgid "Isompi käymisastia"
@@ -1147,8 +1147,8 @@ msgid "Piilohylly"
 msgstr "Hidden Shelf"
 
 #: src/resources/cellar_upgrades/4_piilohylly.tres
-msgid "Väärä seinä kellarissa. Ratsiassa osa pulloista jää löytymättä."
-msgstr "A false wall in the cellar. In a raid, some bottles stay hidden."
+msgid "Väärä seinä kellarissa. Ratsiassa osa annoksista jää löytymättä."
+msgstr "A false wall in the cellar. In a raid, some of the servings go unfound."
 
 #: src/resources/cellar_upgrades/5_puhdistusvalineet.tres
 msgid "Puhdistusvälineet"
@@ -2157,8 +2157,8 @@ msgid ""
 msgstr "A heatwave hit the town. Expect summer people craving a fresh wheat beer."
 
 #: src/resources/day_events/day_event_jaakaappi_hajoaa.tres
-msgid "Jääkaappi hajosi yöllä ja pilasi %d pulloa varastosta."
-msgstr "The fridge broke during the night and spoiled %d bottles in storage."
+msgid "Jääkaappi hajosi yöllä ja pilasi %d annosta varastosta."
+msgstr "The fridge broke during the night and spoiled %d servings in storage."
 
 #: src/resources/day_events/day_event_jaakaappi_hajoaa.tres
 msgid ""
@@ -2480,10 +2480,10 @@ msgstr ""
 
 #: src/resources/guide/01_kausi.tres
 msgid ""
-"Jos rahat loppuvat, pulloja ei ole ja mitään reseptiä ei voi enää keittää, "
+"Jos rahat loppuvat, annoksia ei ole ja mitään reseptiä ei voi enää keittää, "
 "panimo menee konkurssiin."
 msgstr ""
-"If the money runs out, there are no bottles left and no recipe can be "
+"If the money runs out, there are no servings left and no recipe can be "
 "brewed any more, the brewery goes bankrupt."
 
 #: src/resources/guide/01_kausi.tres
@@ -2512,11 +2512,11 @@ msgstr ""
 
 #: src/resources/guide/02_keittaminen.tres
 msgid ""
-"Avaa keittola, lisää ainekset pöydälle ja paina Pane. Pullot menevät "
+"Avaa keittola, lisää ainekset pöydälle ja paina Pane. Valmis tynnyri menee "
 "varastoon."
 msgstr ""
-"Open the brewhouse, put the ingredients on the table and press Brew. The "
-"bottles go to storage."
+"Open the brewhouse, add ingredients to the table and press Brew. The "
+"finished keg goes into storage."
 
 #: src/resources/guide/02_keittaminen.tres
 msgid ""
@@ -2560,11 +2560,11 @@ msgstr ""
 
 #: src/resources/guide/03_myynti.tres
 msgid ""
-"Asiakkaat ostavat varaston pulloista. Suosikkityyli tuo enemmän mainetta ja "
-"tippiä."
+"Asiakkaat ostavat annoksia varaston tynnyreistä. Suosikkityyli tuo enemmän "
+"mainetta ja tippiä."
 msgstr ""
-"Customers buy the bottles in storage. Their favourite style brings more "
-"reputation and tips."
+"Customers buy servings from the kegs in storage. Their favourite style "
+"brings more reputation and tips."
 
 #: src/resources/guide/03_myynti.tres
 msgid "Myynti ja asiakkaat"
@@ -3120,10 +3120,10 @@ msgstr ""
 #: src/resources/meta_unlocks/mallastuksen_mestari.tres
 msgid ""
 "Hallitset maltaiden pilkkomisen jo unissasi. Jokainen pano tuottaa "
-"pysyvästi merkittävästi enemmän pulloja."
+"pysyvästi merkittävästi enemmän annoksia."
 msgstr ""
 "You could mill malt in your sleep. Every brew permanently yields "
-"significantly more bottles."
+"significantly more servings."
 
 #: src/resources/meta_unlocks/mallastuksen_mestari.tres
 msgid "Mallastuksen mestari"
@@ -3196,10 +3196,10 @@ msgstr "Quiet Cellar"
 #: src/resources/meta_unlocks/tarkka_pilkonta.tres
 msgid ""
 "Maltaiden pilkkominen tuottaa vähemmän hukkaa. Jokainen pano tuottaa "
-"pysyvästi hieman enemmän pulloja."
+"pysyvästi hieman enemmän annoksia."
 msgstr ""
 "Milling the malt wastes less. Every brew permanently yields a few more "
-"bottles."
+"servings."
 
 #: src/resources/meta_unlocks/tarkka_pilkonta.tres
 msgid "Tarkka pilkonta"
@@ -3535,8 +3535,8 @@ msgid "Hukkaa ei synny: jokaisesta erästä saa selvästi enemmän annoksia."
 msgstr "Nothing goes to waste: every batch gives noticeably more servings."
 
 #: src/resources/perks/saastavainen_pullottaja.tres
-msgid "Säästäväinen pullottaja"
-msgstr "Thrifty Bottler"
+msgid "Säästäväinen panija"
+msgstr "Thrifty Brewer"
 
 #: src/resources/perks/siisti_tiski.tres
 msgid "Kiiltävä tiski tekee vaikutuksen, ja asiakkaat maksavat hieman enemmän."
@@ -3585,12 +3585,12 @@ msgid "Tasainen varovaisuus"
 msgstr "Steady Caution"
 
 #: src/resources/perks/tiivis_pullotus.tres
-msgid "Pullotat tarkemmin, ja jokaisesta erästä riittää hieman enemmän annoksia."
-msgstr "You bottle more carefully, and every batch gives a few more servings."
+msgid "Tarkka tynnyröinti"
+msgstr "Careful Kegging"
 
 #: src/resources/perks/tiivis_pullotus.tres
-msgid "Tiivis pullotus"
-msgstr "Tight Bottling"
+msgid "Tynnyröit tarkemmin, ja jokaisesta erästä riittää hieman enemmän annoksia."
+msgstr "You keg more carefully, and every batch gives a few more servings."
 
 #: src/resources/perks/tukkurin_tuttu.tres
 msgid "Tukkurin tuttu"
@@ -3734,10 +3734,10 @@ msgstr "Well, maybe another time."
 
 #: src/resources/special_events/journalist_review.tres
 msgid ""
-"Teen juttua paikallisista pienpanimoista. Saisinko muutaman pullon IPA:a "
+"Teen juttua paikallisista pienpanimoista. Saisinko muutaman annoksen IPA:a "
 "maisteluun?"
 msgstr ""
-"I'm writing a story on local microbreweries. Could I get a few bottles of "
+"I'm writing a story on local microbreweries. Could I get a few servings of "
 "IPA to taste?"
 
 #: src/resources/special_events/journalist_review.tres
@@ -3811,11 +3811,11 @@ msgstr "Irma the Neighbour"
 #: src/resources/special_events/nosy_neighbour.tres
 msgid ""
 "Teidän kellarista kuuluu kaikenlaista kolinaa... Mutta jos minulle "
-"tuotaisiin 10 pulloa kotikaljaa, en ehkä muistaisi mitään. LVV-riski laskee "
-"20."
+"tuotaisiin 10 annosta kotikaljaa, en ehkä muistaisi mitään. LVV-riski "
+"laskee 20."
 msgstr ""
 "All sorts of clatter comes from your cellar... But if someone brought me 10 "
-"bottles of homebrew, I might not remember a thing. LVV risk drops by 20."
+"servings of homebrew, I might not remember a thing. LVV risk drops by 20."
 
 #: src/resources/special_events/nosy_neighbour.tres
 msgid "Vai niin. Minä tästä sitten soittelen..."
@@ -3992,8 +3992,8 @@ msgid "Oluttyyli"
 msgstr "Beer style"
 
 #: src/scenes/ui/beer_batch_panel.gd
-msgid "%d kpl"
-msgstr "%d pcs"
+msgid "%d annosta"
+msgstr "%d servings"
 
 #: src/scenes/ui/beer_batch_panel.gd
 msgid "Ei olutta myytävänä. Keitä lisää!"
@@ -4627,20 +4627,20 @@ msgid "Tapahtumaloki piilotettu. Takaisin: loki näytä"
 msgstr "Event log hidden. Bring it back: loki näytä"
 
 #: src/systems/console/console_wiring.gd
-msgid "Tukkumyynti: %s, %d pulloa, +%.1f €"
-msgstr "Wholesale: %s, %d bottles, +%.1f €"
+msgid "Tukkumyynti: %s, %d annosta, +%.1f €"
+msgstr "Bulk sale: %s, %d servings, +%.1f €"
 
 #: src/systems/console/console_wiring.gd
 msgid "Tynnyröinti (%s): %d annosta hukkui, markkinointi -%.1f €"
 msgstr "Kegging (%s): %d servings lost, marketing -%.1f €"
 
 #: src/systems/console/console_wiring.gd
-msgid "Varastoon: %s +%d pulloa"
-msgstr "Into storage: %s +%d bottles"
+msgid "Varastoon: %s +%d annosta"
+msgstr "Stored: %s +%d servings"
 
 #: src/systems/console/console_wiring.gd
-msgid "Vienti: %s baariin %s, %d pulloa, +%.1f €, LVV-riski +%d"
-msgstr "Shipment: %s to %s, %d bottles, +%.1f €, LVV risk +%d"
+msgid "Vienti: %s baariin %s, %d annosta, +%.1f €, LVV-riski +%d"
+msgstr "Shipment: %s to bar %s, %d servings, +%.1f €, LVV risk +%d"
 
 #: src/systems/console/console_wiring.gd
 msgid "[color=gold]%s on nyt kanta-asiakas.[/color]"
@@ -4675,8 +4675,8 @@ msgid "[color=lightgreen]Uusia aineksia: %s[/color]"
 msgstr "[color=lightgreen]New ingredients: %s[/color]"
 
 #: src/systems/console/console_wiring.gd
-msgid "[color=orange]Baaritappelu! %d pulloa rikki.[/color]"
-msgstr "[color=orange]Bar fight! %d bottles broken.[/color]"
+msgid "[color=orange]Baaritappelu! %d annosta rikki.[/color]"
+msgstr "[color=orange]Bar fight! %d servings broken.[/color]"
 
 #: src/systems/console/console_wiring.gd
 msgid ""
@@ -4889,8 +4889,8 @@ msgid "Enintään %.1f %% alkoholia"
 msgstr "At most %.1f %% alcohol"
 
 #: src/ui/customer_book_text.gd
-msgid "Enintään %.2f € pullolta"
-msgstr "At most %.2f € a bottle"
+msgid "Enintään %.2f € annokselta"
+msgstr "At most %.2f € per serving"
 
 #: src/ui/customer_book_text.gd
 msgid "Juo vain: %s"
@@ -5297,5 +5297,5 @@ msgid "Näytä paikkojen nimet"
 msgstr "Show the names of places"
 
 #: src/ui/warehouse_hover_area.gd
-msgid "%s: +%d pulloa"
-msgstr "%s: +%d bottles"
+msgid "%s: +%d annosta"
+msgstr "%s: +%d servings"

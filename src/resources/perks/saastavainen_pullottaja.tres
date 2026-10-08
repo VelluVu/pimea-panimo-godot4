@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_saastavainen_pullottaja")
-perk_name = "Säästäväinen pullottaja"
+perk_name = "Säästäväinen panija"
 description = "Hukkaa ei synny: jokaisesta erästä saa selvästi enemmän annoksia."
 icon_placeholder = "🫗"
 tier = 1

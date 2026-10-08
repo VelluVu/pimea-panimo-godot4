@@ -7,7 +7,7 @@ extends VBoxContainer
 ## names pushed the bottle count past the ellipsis. The count never clips;
 ## the quality label next to it gives way instead.
 const NAME_LABEL_STRING : String = "🍺 %s (%.1f%%)"
-const AMOUNT_LABEL_STRING : String = "%d kpl"
+const AMOUNT_LABEL_STRING : String = "%d annosta"
 const QUALITY_LABEL_STRING : String = "%s %s"
 ## Shown when there's nothing left to sell — without this the panel just
 ## goes quiet with no explanation. Customer traffic keeps arriving even

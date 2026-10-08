@@ -11,5 +11,5 @@ weight = 1.0
 effect_type = 2
 effect_amount_min = 3
 effect_amount_max = 8
-effect_toast_format = "Jääkaappi hajosi yöllä ja pilasi %d pulloa varastosta."
+effect_toast_format = "Jääkaappi hajosi yöllä ja pilasi %d annosta varastosta."
 announcement_sound = ExtResource("snd_day_fridge_breaks")
