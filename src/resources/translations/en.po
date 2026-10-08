@@ -2099,8 +2099,8 @@ msgid "Mainetta"
 msgstr "Reputation"
 
 #: src/resources/daily_goals/myy_paljon_pulloja.tres
-msgid "Myy pulloja"
-msgstr "Sell bottles"
+msgid "Myy annoksia"
+msgstr "Sell servings"
 
 #: src/resources/daily_goals/nolla_tyytymatonta.tres
 msgid "Tyytyväiset asiakkaat"
