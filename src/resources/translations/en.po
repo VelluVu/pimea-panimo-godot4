@@ -1775,7 +1775,7 @@ msgid "No sentään, tässä on edes vähän makua. Ei tää nyt ihan hassumpaa 
 msgstr "Well at least this has a bit of flavour. It's not half bad."
 
 #: src/resources/customers/mummeli.tres
-msgid "Tätä laimeata löpöä en ota edes lahjaksi. Ennen olut oli olutta."
+msgid "Tätä laimeata litkua en ota edes lahjaksi. Ennen olut oli olutta."
 msgstr "I wouldn't take this watery swill even as a gift. Beer used to be beer."
 
 #: src/resources/customers/munkki.tres
