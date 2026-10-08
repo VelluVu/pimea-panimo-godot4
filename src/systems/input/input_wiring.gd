@@ -12,6 +12,9 @@ const ACTION_TOGGLE_SHOP: StringName = &"toggle_shop"
 const ACTION_TOGGLE_WAREHOUSE: StringName = &"toggle_warehouse"
 const ACTION_TOGGLE_RUN_EFFECTS: StringName = &"toggle_run_effects"
 const ACTION_TOGGLE_RECEIPT_LOG: StringName = &"toggle_receipt_log"
+const ACTION_TOGGLE_RECIPE_LIBRARY: StringName = &"toggle_recipe_library"
+const ACTION_TOGGLE_BREWERY_BOOK: StringName = &"toggle_brewery_book"
+const ACTION_TOGGLE_UPGRADES: StringName = &"toggle_upgrades"
 
 
 func _init() -> void:
@@ -24,6 +27,9 @@ func _init() -> void:
 		ACTION_TOGGLE_WAREHOUSE,
 		ACTION_TOGGLE_RUN_EFFECTS,
 		ACTION_TOGGLE_RECEIPT_LOG,
+		ACTION_TOGGLE_RECIPE_LIBRARY,
+		ACTION_TOGGLE_BREWERY_BOOK,
+		ACTION_TOGGLE_UPGRADES,
 	]
 	direct_actions = [ACTION_OPEN_CONSOLE]
 	default_keys = {
@@ -33,6 +39,9 @@ func _init() -> void:
 		ACTION_TOGGLE_WAREHOUSE: KEY_I,
 		ACTION_TOGGLE_RUN_EFFECTS: KEY_T,
 		ACTION_TOGGLE_RECEIPT_LOG: KEY_U,
+		ACTION_TOGGLE_RECIPE_LIBRARY: KEY_R,
+		ACTION_TOGGLE_BREWERY_BOOK: KEY_B,
+		ACTION_TOGGLE_UPGRADES: KEY_L,
 	}
 	action_labels = {
 		ACTION_OPEN_CONSOLE: "Konsoli",
@@ -41,6 +50,9 @@ func _init() -> void:
 		ACTION_TOGGLE_WAREHOUSE: "Varasto",
 		ACTION_TOGGLE_RUN_EFFECTS: "Kauden vaikutukset",
 		ACTION_TOGGLE_RECEIPT_LOG: "Kuittiloki",
+		ACTION_TOGGLE_RECIPE_LIBRARY: "Reseptikirja",
+		ACTION_TOGGLE_BREWERY_BOOK: "Panimokirja",
+		ACTION_TOGGLE_UPGRADES: "Kellarin parannukset",
 	}
 	ui_text = {
 		"hint": "Valitse toiminto ja paina uutta näppäintä. Esc peruu.",
