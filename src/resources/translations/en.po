@@ -1463,7 +1463,7 @@ msgid "Ei täällä ollu mitään kesäistä. Täytyy etsiä parempi valokuvapai
 msgstr "Nothing summery here. Gotta find a better photo spot."
 
 #: src/resources/customers/kesamies.tres
-msgid "Hmm, ei mitään kesäistä, tästä ei tuu hyvää ottosta..."
+msgid "Hmm, ei mitään kesäistä, tästä ei tuu hyvää otosta..."
 msgstr "Hmm, nothing summery, this won't make a good shot..."
 
 #: src/resources/customers/kesamies.tres
@@ -1472,7 +1472,7 @@ msgstr "Summer Guy"
 
 #: src/resources/customers/kesamies.tres
 msgid ""
-"Moi! Onks teillä jotain kesäistä ja kuvan arvosta? Pitää saada hyvä ottos "
+"Moi! Onks teillä jotain kesäistä ja kuvan arvosta? Pitää saada hyvä otos "
 "tarinaan."
 msgstr "Hi! Got anything summery and photo-worthy? I need a good shot for my story."
 
@@ -1494,7 +1494,7 @@ msgstr "The colour is just perfect, this goes straight into my story!"
 
 #: src/resources/customers/kesanainen.tres
 msgid ""
-"Hei! Onks teillä jotain kesäistä ja Instaan sopivaa? Pitää saada hyvä ottos "
+"Hei! Onks teillä jotain kesäistä ja Instan arvosta? Pitää saada hyvä otos "
 "tarinaan."
 msgstr "Hey! Got anything summery and Insta-worthy? I need a good shot for my story."
 
