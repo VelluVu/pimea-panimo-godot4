@@ -1934,7 +1934,7 @@ msgstr "Nothing here for grown-ups. After a workday I really need a proper beer.
 
 #: src/resources/customers/raksamies.tres
 msgid "Jaa, eipä täällä oo mitään työläiselle passelia..."
-msgstr "Huh, nothing here fit for a working man..."
+msgstr "Huh, nothing here fit for a worker..."
 
 #: src/resources/customers/raksamies.tres
 msgid "Just tätä tarvittiin homman jälkeen!"
