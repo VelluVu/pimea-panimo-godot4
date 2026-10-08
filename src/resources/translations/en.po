@@ -1791,8 +1791,8 @@ msgstr ""
 "riper."
 
 #: src/resources/customers/munkki.tres
-msgid "Kelvollista käsityötä, vaikka luostarin syvyys jäi vielä puuttumaan."
-msgstr "Decent craftsmanship, though the monastery's depth is still missing."
+msgid "Kelvollista käsityötä, vaikka luostarin sielu jäi vielä puuttumaan."
+msgstr "Decent craftsmanship, though the soul of the monastery is still missing."
 
 #: src/resources/customers/munkki.tres
 msgid "Munkki"
