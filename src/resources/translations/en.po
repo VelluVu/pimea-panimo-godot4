@@ -3577,10 +3577,8 @@ msgid "Tasainen tienesti"
 msgstr "Steady Earnings"
 
 #: src/resources/perks/tasainen_varovaisuus.tres
-msgid "Opit varomaan johdonmukaisesti. LVV:n ratsiakynnys nousee tasaisesti."
-msgstr ""
-"You learn to be consistently careful. The LVV's raid threshold rises "
-"steadily."
+msgid "Opit varovaisemmaksi. LVV:n ratsiakynnys nousee."
+msgstr "You learn to be more careful. The LVV's raid threshold rises."
 
 #: src/resources/perks/tasainen_varovaisuus.tres
 msgid "Tasainen varovaisuus"
