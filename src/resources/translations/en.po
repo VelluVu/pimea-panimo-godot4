@@ -5074,6 +5074,10 @@ msgstr "New ingredient: %s"
 msgid "Uusia aineksia: %s"
 msgstr "New ingredients: %s"
 
+#: src/ui/touch_hints.gd
+msgid "Näytä paikkojen nimet"
+msgstr "Show the names of places"
+
 #: src/ui/warehouse_hover_area.gd
 msgid "%s: +%d pulloa"
 msgstr "%s: +%d bottles"
