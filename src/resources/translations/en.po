@@ -2138,11 +2138,11 @@ msgstr ""
 
 #: src/resources/day_events/day_event_harjakaiset.tres
 msgid ""
-"Läheisellä työmaalla vietetään harjakaisia tänään. Odotettavissa "
-"remonttimiehiä janoissaan."
+"Läheisellä työmaalla vietetään harjakaisia tänään. Odotettavissa työläisiä "
+"raksoilta."
 msgstr ""
-"A nearby building site celebrates its topping-out today. Expect thirsty "
-"builders."
+"A nearby building site celebrates its topping-out today. Expect workers "
+"from the building sites."
 
 #: src/resources/day_events/day_event_helleaalto.tres
 msgid ""
