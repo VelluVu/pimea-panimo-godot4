@@ -101,32 +101,30 @@ const LVV_RAID_CLOSE_TEXT : String = "Selvä..."
 
 ## RunPerk.get_stat_summary() lines — only the non-neutral fields are ever
 ## shown (see that function), so every perk's numbers are always positive.
-const PERK_QUALITY_STAT_STRING : String = "Laatu: +%d %%"
-const PERK_REPUTATION_STAT_STRING : String = "Maineen kertymä: +%d %%"
-const PERK_TIP_STAT_STRING : String = "Tipit: +%d %%"
-const PERK_DISTRIBUTION_STAT_STRING : String = "Jakelutulot: %+d %%"
-const PERK_YIELD_STAT_STRING : String = "Pullosaanto: %+d %%"
-const PERK_REFUND_CHANCE_STAT_STRING : String = "Ainepalautuksen mahdollisuus: %d %%"
-const PERK_PEAK_SPEED_STAT_STRING : String = "Kypsymisaika: %+d %%"
-const PERK_DECLINE_RATE_STAT_STRING : String = "Heikkeneminen: %+d %%"
-const PERK_SPAWN_INTERVAL_STAT_STRING : String = "Asiakkaiden saapumisväli: %+d %%"
-const PERK_WALK_IN_COMPANY_CHANCE_STAT_STRING : String = "Asiakas tuo seuraa: +%d %%"
-const PERK_WALK_IN_COMPANY_BONUS_STAT_STRING : String = "Seurueessa asiakkaita: +%d"
-const PERK_AGENTTI_APPEARANCE_STAT_STRING : String = "Agenttien esiintyvyys: %+d %%"
-const PERK_MAFIOSO_APPEARANCE_STAT_STRING : String = "Mafiosojen esiintyvyys: %+d %%"
-const PERK_COUNTER_PRICE_STAT_STRING : String = "Tiskimyynnin hinnat: %+d %%"
-const PERK_GROUP_EVENT_INTERVAL_STAT_STRING : String = "Ryhmäasiakkaiden saapumisväli: %+d %%"
-const PERK_EXTRA_RAID_STRIKES_STAT_STRING : String = "Ratsioiden sietokyky: +%d"
-const PERK_RAID_HIDDEN_BATCH_STAT_STRING : String = "Piilotettuja eriä ratsiassa: %d"
-const PERK_RAID_SAVED_BOTTLE_SHARE_STAT_STRING : String = "Ratsiassa säästyviä pulloja: %d %%"
-const PERK_EXTRA_COUNTER_SLOTS_STAT_STRING : String = "Lisää tiskipaikkoja: +%d"
-const PERK_EXTRA_DAILY_GOAL_ROLLS_STAT_STRING : String = "Päivätavoitteita päivässä: +%d"
-const PERK_TIP_DOUBLE_CHANCE_STAT_STRING : String = "Mahdollisuus tuplatippiin: %d %%"
-const PERK_BAR_FIGHT_CHANCE_STAT_STRING : String = "Tappelun todennäköisyys: %+d %%"
-## Appended to a perk's stat summary when RunPerk.stacks_additively is
-## true — the default (false, no hint shown) compounds with repeat
-## picks, so this only needs to call out the exception.
-const PERK_ADDITIVE_STACKING_HINT : String = "(tasainen kasvu, ei kerry)"
+const PERK_QUALITY_STAT_STRING : String = "Laatu: %s"
+const PERK_REPUTATION_STAT_STRING : String = "Maineen kertymä: %s"
+const PERK_TIP_STAT_STRING : String = "Tipit: %s"
+const PERK_DISTRIBUTION_STAT_STRING : String = "Jakelutulot: %s"
+const PERK_YIELD_STAT_STRING : String = "Pullosaanto: %s"
+const PERK_REFUND_CHANCE_STAT_STRING : String = "Ainepalautuksen mahdollisuus: %s"
+const PERK_PEAK_SPEED_STAT_STRING : String = "Kypsymisaika: %s"
+const PERK_DECLINE_RATE_STAT_STRING : String = "Heikkeneminen: %s"
+const PERK_SPAWN_INTERVAL_STAT_STRING : String = "Asiakkaiden saapumisväli: %s"
+const PERK_WALK_IN_COMPANY_CHANCE_STAT_STRING : String = "Asiakas tuo seuraa: %s"
+const PERK_WALK_IN_COMPANY_BONUS_STAT_STRING : String = "Seurueessa asiakkaita: %s"
+const PERK_AGENTTI_APPEARANCE_STAT_STRING : String = "Agenttien esiintyvyys: %s"
+const PERK_MAFIOSO_APPEARANCE_STAT_STRING : String = "Mafiosojen esiintyvyys: %s"
+const PERK_COUNTER_PRICE_STAT_STRING : String = "Tiskimyynnin hinnat: %s"
+const PERK_GROUP_EVENT_INTERVAL_STAT_STRING : String = "Ryhmäasiakkaiden saapumisväli: %s"
+const PERK_EXTRA_RAID_STRIKES_STAT_STRING : String = "Ratsioiden sietokyky: %s"
+const PERK_RAID_HIDDEN_BATCH_STAT_STRING : String = "Piilotettuja eriä ratsiassa: %s"
+const PERK_RAID_SAVED_BOTTLE_SHARE_STAT_STRING : String = "Ratsiassa säästyviä pulloja: %s"
+const PERK_EXTRA_COUNTER_SLOTS_STAT_STRING : String = "Lisää tiskipaikkoja: %s"
+const PERK_EXTRA_DAILY_GOAL_ROLLS_STAT_STRING : String = "Päivätavoitteita päivässä: %s"
+const PERK_TIP_DOUBLE_CHANCE_STAT_STRING : String = "Mahdollisuus tuplatippiin: %s"
+const PERK_BAR_FIGHT_CHANCE_STAT_STRING : String = "Tappelun todennäköisyys: %s"
+## Explains PerkStats.value_text() wherever perk values are listed.
+const PERK_VALUE_LEGEND : String = "+ % lasketaan yhteen, × kertoo kokonaisuuden."
 
 ## RunPerk.get_tier_label() — shown on LevelUpWindow's cards (color-coded
 ## via RunPerk.get_tier_color()) so a level-up's rarity is actually visible
@@ -136,8 +134,8 @@ const PERK_TIER_RARE : String = "Harvinainen"
 const PERK_TIER_LEGENDARY : String = "Legendaarinen"
 
 ## RunPerk.get_stat_summary() lines, signed (%+d) since a perk can push either way.
-const PERK_RAID_THRESHOLD_STAT_STRING : String = "Ratsiakynnys: %+d %%"
-const PERK_INGREDIENT_PRICE_STAT_STRING : String = "Ainehinnat: %+d %%"
+const PERK_RAID_THRESHOLD_STAT_STRING : String = "Ratsiakynnys: %s"
+const PERK_INGREDIENT_PRICE_STAT_STRING : String = "Ainehinnat: %s"
 
 const RUN_EFFECTS_TITLE : String = "Kauden tilastot"
 const RUN_EFFECTS_CLOSE_TEXT : String = "Sulje"

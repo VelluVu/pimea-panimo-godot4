@@ -26,14 +26,8 @@ static func short_bonus(unlock : MetaUnlockData, level : int) -> String:
 		var value : float = scaled.get(entry.stat)
 		if value == PerkStats.neutral_value(kind):
 			continue
-		var number : int = PerkStats.display_number(kind, value)
-		match kind:
-			PerkStats.Kind.MULTIPLIER:
-				return "%+d%%" % number
-			PerkStats.Kind.PERCENT_ADD:
-				return "%d%%" % number
-			_:
-				return "+%d" % number
+		# The square is small: "+15%" without the space.
+		return PerkStats.value_text(kind, value, scaled.stacks_additively).replace(" ", "")
 	return BONUS_NEUTRAL_TEXT
 
 
