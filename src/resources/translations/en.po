@@ -3500,10 +3500,10 @@ msgstr "Steady Caution"
 
 #: src/resources/perks/tunnettu_toimittaja.tres
 msgid ""
-"Maineesi jakelijana kiirii kellarien välillä: halpamyynnin ja baarivientien "
-"tulot ovat selvästi paremmat."
+"Maineesi oluen toimittajana kiirii baarista toiseen: halpamyynnin ja "
+"baarivientien tulot ovat selvästi paremmat."
 msgstr ""
-"Your name as a supplier travels between cellars: bulk sales and bar "
+"Your name as a beer supplier travels from bar to bar: bulk sales and bar "
 "shipments earn noticeably more."
 
 #: src/resources/perks/tunnettu_toimittaja.tres
