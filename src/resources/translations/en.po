@@ -1365,8 +1365,8 @@ msgid "TUO TUOLTA! %s! ANNA SE TÄNNE!"
 msgstr "THAT ONE! %s! GIVE IT HERE!"
 
 #: src/resources/customers/barbaari.tres
-msgid "TÄMÄ ON OLUTTA MIEHELLE!"
-msgstr "THIS IS BEER FOR A MAN!"
+msgid "TÄMÄ ON OLUTTA SOTURILLE!"
+msgstr "THIS IS BEER FOR A WARRIOR!"
 
 #: src/resources/customers/barbaari.tres
 msgid "TÄÄ ON VETTÄ! EI KELPAA!"
@@ -1379,10 +1379,6 @@ msgstr "NO STRONG BEER AT ALL?! I'M GOING ELSEWHERE!"
 #: src/resources/customers/barbaari_naaras.tres
 msgid "MITÄ?! EI MITÄÄN SOTURILLE KELPAAVAA?! RAAAAWWWWRRRR!"
 msgstr "WHAT?! NOTHING FIT FOR A WARRIOR?! RAAAAWWWWRRRR!"
-
-#: src/resources/customers/barbaari_naaras.tres
-msgid "TÄMÄ ON OLUTTA SOTURILLE!"
-msgstr "THIS IS BEER FOR A WARRIOR!"
 
 #: src/resources/customers/drone.tres
 msgid "ANALYYSI HYVÄKSYTTY. Laatuarvo ylittää raja-arvon."
