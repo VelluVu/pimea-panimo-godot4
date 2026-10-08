@@ -3281,16 +3281,14 @@ msgid "Vieraanvarainen perinne"
 msgstr "Hospitable Tradition"
 
 #: src/resources/perks/alennuskuponki.tres
-msgid ""
-"Aineskaupan kassa antaa sinulle kanta-asiakasalennuksen. Ainekset ovat "
-"hieman halvempia."
-msgstr ""
-"The ingredient shop's cashier gives you a loyalty discount. Ingredients are "
-"a little cheaper."
-
-#: src/resources/perks/alennuskuponki.tres
 msgid "Alennuskuponki"
 msgstr "Discount Coupon"
+
+#: src/resources/perks/alennuskuponki.tres
+msgid ""
+"Kauppa antaa sinulle kanta-asiakasalennuksen. Ainekset ovat hieman "
+"halvempia."
+msgstr "The shop gives you a loyalty discount. Ingredients are a little cheaper."
 
 #: src/resources/perks/alueen_kuningas.tres
 msgid "Alueen kuningas"

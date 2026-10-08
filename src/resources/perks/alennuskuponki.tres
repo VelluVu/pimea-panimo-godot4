@@ -5,6 +5,6 @@
 [resource]
 script = ExtResource("1_alennuskuponki")
 perk_name = "Alennuskuponki"
-description = "Aineskaupan kassa antaa sinulle kanta-asiakasalennuksen. Ainekset ovat hieman halvempia."
+description = "Kauppa antaa sinulle kanta-asiakasalennuksen. Ainekset ovat hieman halvempia."
 icon_placeholder = "🎟️"
 ingredient_price_multiplier = 0.95
