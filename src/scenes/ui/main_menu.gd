@@ -14,6 +14,9 @@ const BACK_BUTTON_TEXT: String = "Takaisin"
 
 const GAME_SCENE_PATH: String = "res://src/scenes/main.tscn"
 
+const TOUCH_BUTTON_SIZE : Vector2 = Vector2(240, 40)
+const TOUCH_FONT_SIZE : int = 32
+
 @onready var title_label: Label = $TitleLabel
 
 @onready var root_menu_view: VBoxContainer = $CenterContainer/RootMenuView
@@ -55,6 +58,8 @@ func _ready() -> void:
 	add_child(TouchTooltip.new())
 	# Typing commands needs a keyboard, and the button takes a corner of a small screen.
 	$DevConsole.visible = not DisplayServer.is_touchscreen_available()
+	if DisplayServer.is_touchscreen_available():
+		_enlarge_buttons_for_touch()
 	new_game_button.pressed.connect(_on_new_game_button_pressed)
 	continue_button.pressed.connect(_on_continue_button_pressed)
 	back_button.pressed.connect(_on_back_button_pressed)
@@ -127,3 +132,12 @@ func _on_options_button_pressed() -> void:
 func _on_quit_button_pressed() -> void:
 	GUISignals.menu_button_pressed.emit()
 	get_tree().quit()
+
+
+## Finger-sized buttons; 32 is twice the pixel font's size, so the text stays sharp.
+func _enlarge_buttons_for_touch() -> void:
+	for view : VBoxContainer in [root_menu_view, start_game_view]:
+		for button : Node in view.get_children():
+			if button is Button:
+				(button as Button).custom_minimum_size = TOUCH_BUTTON_SIZE
+				(button as Button).add_theme_font_size_override("font_size", TOUCH_FONT_SIZE)
