@@ -72,6 +72,11 @@ signal mouse_entered_warehouse_hover_area(is_entered : bool)
 @warning_ignore("unused_signal")
 signal mouse_entered_customer_book_hover_area(is_entered : bool)
 
+## Touch screens have no hover: every hotspot's name label shows (true) or hides (false)
+## at once, without the hover glow. See TouchHints.
+@warning_ignore("unused_signal")
+signal touch_hints_shown(is_shown : bool)
+
 @warning_ignore("unused_signal")
 signal recipe_library_requested()
 

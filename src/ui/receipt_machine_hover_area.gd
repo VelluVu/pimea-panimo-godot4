@@ -16,7 +16,6 @@ var current_tween : Tween
 
 
 func _ready() -> void:
-	add_to_group(TouchHints.GROUP)
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
 	input_event.connect(_on_input_event)
