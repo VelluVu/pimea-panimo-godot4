@@ -1,12 +1,11 @@
 class_name KegRules
 extends RefCounted
 
-## A batch is one 20 L keg (BrewResult.bottle_yield). It leaves the cellar as a keg, to a
-## bar or sold off in bulk, only while nearly full: once the counter has drawn it below
-## MIN_SERVINGS, what is left is sold by the glass.
+## A batch is one 20 L keg (BrewResult.bottle_yield, 45 servings fresh). Any batch can be
+## shipped, but only a nearly full one counts as a keg for the "Vie tynnyri baariin" goal.
 
 const MIN_SERVINGS : int = 40
 
 
-static func can_leave_as_keg(servings : int) -> bool:
+static func is_full_keg(servings : int) -> bool:
 	return servings >= MIN_SERVINGS

@@ -53,9 +53,10 @@ func _on_brewery_state_changed(brewery : Brewery) -> void:
 			set_progress(i, DailyGoalRules.reputation_progress(brewery.reputation, get_baseline(i)))
 
 
-## Counts kegs, one per shipment: the goal reads "Vie tynnyri baariin".
-func _on_keg_shipped_to_bar(_style_name : String, _bar_name : String, _bottles : int, _payout : float, _risk_added : int) -> void:
-	add_progress(DailyGoalData.GoalType.SHIP_TO_BAR, 1)
+## Counts full kegs only: the goal reads "Vie tynnyri baariin", and a drawn batch is no keg.
+func _on_keg_shipped_to_bar(_style_name : String, _bar_name : String, bottles : int, _payout : float, _risk_added : int) -> void:
+	if KegRules.is_full_keg(bottles):
+		add_progress(DailyGoalData.GoalType.SHIP_TO_BAR, 1)
 
 
 ## A failed special event fails an active SPECIAL_EVENT goal outright, without a

@@ -2704,6 +2704,14 @@ msgstr ""
 "The Goals panel on the right shows the day's goals. Completed goals give "
 "rewards."
 
+#: src/resources/guide/06_tasot.tres
+msgid ""
+"Vie tynnyri baariin -tavoitteeseen lasketaan vain täysi tynnyri: erässä "
+"pitää olla vähintään 40 annosta. Vajaankin erän voi silti viedä baariin."
+msgstr ""
+"Only a full keg counts for the Ship a keg to a bar goal: the batch needs at "
+"least 40 servings. You can still ship a smaller batch."
+
 #: src/resources/guide/07_olutoppi.tres
 msgid "Kauden lopussa saat pisteidesi mukaan Olutopin mainetta."
 msgstr "At the end of a season you earn Brewlore renown based on your score."
@@ -3893,21 +3901,13 @@ msgstr "Sell"
 
 #: src/scenes/ui/beer_batch_panel.gd
 msgid ""
-"Myy koko tynnyri kerralla varastosta. Hinta on paljon normaalia "
-"myyntihintaa halvempi, ja heikkolaatuinen tai vanhentunut erä voi tuottaa "
-"jopa tappiota raaka-ainekuluihin nähden."
+"Myy koko erä kerralla varastosta. Hinta on paljon normaalia myyntihintaa "
+"halvempi, ja heikkolaatuinen tai vanhentunut erä voi tuottaa jopa tappiota "
+"raaka-ainekuluihin nähden."
 msgstr ""
-"Sell the whole keg at once from storage. The price is much lower than a "
-"normal sale, and a poor or stale batch can even lose money against its "
-"ingredient costs."
-
-#: src/scenes/ui/beer_batch_panel.gd
-msgid ""
-"Tynnyrissä pitää olla vähintään %d annosta, jotta sen voi myydä tai viedä "
-"baariin. Tässä on %d. Loput myydään tiskillä."
-msgstr ""
-"A keg needs at least %d servings to be sold or shipped to a bar. This one "
-"has %d. The rest is sold at the counter."
+"Sell the whole batch from storage at once. The price is far below a normal "
+"sale, and a poor or old batch can even sell for less than its ingredients "
+"cost."
 
 #: src/scenes/ui/beer_batch_panel.gd
 msgid "Vie"
@@ -3915,11 +3915,11 @@ msgstr "Ship"
 
 #: src/scenes/ui/beer_batch_panel.gd
 msgid ""
-"Vie koko tynnyri yllä valittuun baariin. Parempi hinta kuin halpamyynti, "
-"mutta nostaa LVV-riskiä toimituksen mukana."
+"Vie koko erä yllä valittuun baariin. Parempi hinta kuin halpamyynti, mutta "
+"nostaa LVV-riskiä toimituksen mukana."
 msgstr ""
-"Ship the whole keg to the bar selected above. A better price than a bulk "
-"sale, but each shipment raises the LVV risk."
+"Ship the whole batch to the bar selected above. A better price than a bulk "
+"sale, but each delivery raises the LVV risk."
 
 #: src/scenes/ui/brew_preparation_panel.gd
 msgid "%+d Mainetta"
