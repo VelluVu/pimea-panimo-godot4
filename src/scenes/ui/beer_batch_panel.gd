@@ -34,6 +34,8 @@ const BULK_SELL_BUTTON_TOOLTIP : String = "Myy koko erä kerralla varastosta. Hi
 
 const DESTINATION_LABEL_TEXT : String = "Kohde:"
 const SHIP_BUTTON_TEXT : String = "Vie"
+## Finger-sized row buttons and destination dropdown.
+const ROW_BUTTON_SIZE : Vector2 = Vector2(40, 24)
 const SHIP_BUTTON_TOOLTIP : String = "Vie koko erä yllä valittuun baariin. Parempi hinta kuin halpamyynti, mutta nostaa LVV-riskiä toimituksen mukana."
 
 ## Floor under the batch row label's width — without it, HBoxContainer's
@@ -62,6 +64,7 @@ func _ready() -> void:
 	destination_label.text = DESTINATION_LABEL_TEXT
 	_bar_contact_option_button = BarContactOptionButton.new()
 	_bar_contact_option_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_bar_contact_option_button.custom_minimum_size.y = ROW_BUTTON_SIZE.y
 	destination_row.add_child(destination_label)
 	destination_row.add_child(_bar_contact_option_button)
 	add_child(destination_row)
@@ -115,11 +118,13 @@ func _update_beer_batches_ui() -> void:
 			var bulk_sell_button := TooltipButton.new()
 			bulk_sell_button.text = BULK_SELL_BUTTON_TEXT
 			bulk_sell_button.tooltip_text = BULK_SELL_BUTTON_TOOLTIP
+			bulk_sell_button.custom_minimum_size = ROW_BUTTON_SIZE
 			bulk_sell_button.pressed.connect(func(): GUISignals.bulk_sell_batch_requested.emit(batch))
 
 			var ship_button := TooltipButton.new()
 			ship_button.text = SHIP_BUTTON_TEXT
 			ship_button.tooltip_text = SHIP_BUTTON_TOOLTIP
+			ship_button.custom_minimum_size = ROW_BUTTON_SIZE
 			ship_button.pressed.connect(func():
 				var bar : BarContact = _bar_contact_option_button.get_selected_bar()
 				if bar != null:
@@ -137,6 +142,7 @@ func _update_beer_batches_ui() -> void:
 			hold_button.text = HELD_ICON if batch.held else RELEASED_ICON
 			hold_button.tooltip_text = HOLD_BUTTON_TOOLTIP
 			hold_button.flat = true
+			hold_button.custom_minimum_size = ROW_BUTTON_SIZE
 			hold_button.pressed.connect(func(): GUISignals.batch_hold_toggled.emit(batch))
 			var name_row := HBoxContainer.new()
 			name_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -145,7 +151,7 @@ func _update_beer_batches_ui() -> void:
 
 			var batch_box := VBoxContainer.new()
 			batch_box.mouse_filter = Control.MOUSE_FILTER_IGNORE
-			batch_box.add_theme_constant_override("separation", 0)
+			batch_box.add_theme_constant_override("separation", 2)
 			batch_box.add_child(name_row)
 			batch_box.add_child(action_row)
 			beer_batch_list_vbox.add_child(batch_box)
