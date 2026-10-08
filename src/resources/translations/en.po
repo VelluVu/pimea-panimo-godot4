@@ -1919,7 +1919,7 @@ msgid "No sentään, tässä on edes vähän selkärankaa. Ei tää nyt ihan has
 msgstr "Well at least this has a bit of backbone. It's not half bad."
 
 #: src/resources/customers/papparainen.tres
-msgid "No voi pahanen peijooni, eikö täällä ollut mitään kunnon olutta..."
+msgid "No voi pahanen peijjoona, eikö täällä ollut mitään kunnon olutta..."
 msgstr "Well, blast it all, wasn't there any proper beer here..."
 
 #: src/resources/customers/papparainen.tres
