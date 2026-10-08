@@ -41,6 +41,8 @@ func _ready() -> void:
 	close_button.text = CLOSE_TEXT
 	close_button.pressed.connect(_on_close_button_pressed)
 	GUISignals.customer_book_requested.connect(_on_customer_book_requested)
+	process_mode = Node.PROCESS_MODE_ALWAYS
+	PauseLock.hold_while_visible(self)
 
 	_guide_sections.assign(ResourceFolder.load_all(GUIDE_FOLDER_PATH, GuideSection))
 	_guide_sections.sort_custom(func(a : GuideSection, b : GuideSection) -> bool: return a.order < b.order)
@@ -55,6 +57,13 @@ func _ready() -> void:
 	_tab_bar.tab_changed.connect(func(_tab : int) -> void:
 		GUISignals.tab_switched.emit()
 		_refresh_rows())
+
+
+## The paused tree no longer reaches gui.gd's Esc handler, so this closes itself.
+func _input(event : InputEvent) -> void:
+	if visible and event.is_action_pressed(InputManager.ACTION_CANCEL):
+		_on_close_button_pressed()
+		get_viewport().set_input_as_handled()
 
 
 func _on_customer_book_requested() -> void:
