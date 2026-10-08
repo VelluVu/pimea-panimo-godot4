@@ -3566,11 +3566,9 @@ msgstr "Careful Hand"
 
 #: src/resources/perks/tarkka_kasiala.tres
 msgid ""
-"Vuosien harjoittelu näkyy pullossa. Jokainen tästä eteenpäin keitetty erä "
-"on hieman laadukkaampi."
-msgstr ""
-"Years of practice show in the bottle. Every batch brewed from now on is a "
-"little better."
+"Vuosien harjoittelu näkyy oluessa. Jokainen keitetty erä on hieman "
+"laadukkaampi."
+msgstr "Years of practice show in the beer. Every batch you brew is a little better."
 
 #: src/resources/perks/tasainen_tienesti.tres
 msgid "Paremmat tipit, vakaa tulonlähde."
