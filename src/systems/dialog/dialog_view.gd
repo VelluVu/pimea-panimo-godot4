@@ -33,6 +33,8 @@ const POPUP_SHAKE_STEP_SECONDS : float = 0.035
 const DRIFTING_NOTE_RISE : float = 45.0
 const DRIFTING_NOTE_SECONDS : float = 3.5
 const DRIFTING_NOTE_OUTLINE_COLOR : Color = Color(0.05, 0.05, 0.05, 1)
+## Bubbles stack by slot but stay below z 0, so every panel and window covers them.
+const BUBBLE_Z_BASE : int = -1000
 
 ## Dialogue slot (int) -> BubbleEntry.
 var _bubbles : Dictionary = {}
@@ -186,7 +188,7 @@ func _place(entry : BubbleEntry, slot : int, speaker_pos : Vector2) -> void:
 	entry.x = speaker_pos.x
 	entry.height_step = BubbleLayout.choose_step(speaker_pos, neighbors)
 	entry.bubble.global_position = BubbleLayout.position_for(speaker_pos, entry.height_step, entry.bubble.get_size(), get_viewport_rect().size)
-	entry.bubble.z_index = slot
+	entry.bubble.z_index = BUBBLE_Z_BASE + slot
 
 
 func _hide_after_delay(entry : BubbleEntry, slot : int, token : int, display_time : float, fade_time : float) -> void:
