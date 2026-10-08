@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_unlock")
 perk_name = "Tarkka pilkonta"
-description = "Maltaiden pilkkominen tuottaa vähemmän hukkaa. Jokainen pano tuottaa pysyvästi hieman enemmän pulloja."
+description = "Maltaiden pilkkominen tuottaa vähemmän hukkaa. Jokainen pano tuottaa pysyvästi hieman enemmän annoksia."
 icon_placeholder = "🌾"
 brew_yield_multiplier = 1.03
 stacks_additively = true

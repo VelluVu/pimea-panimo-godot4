@@ -6,7 +6,7 @@ const HOVER_GLOW_COLOR = Color(1.3, 1.15, 0.8, 1.0)
 const BASE_COLOR = Color(0.0, 0.0, 0.0, 1.0)
 const TWEEN_DURATION_SECONDS = 0.15
 ## A brewed batch going into storage floats up from the door.
-const STORED_POPUP_FORMAT : String = "%s: +%d pulloa"
+const STORED_POPUP_FORMAT : String = "%s: +%d annosta"
 const STORED_POPUP_COLOR : Color = Color(1.0, 0.78, 0.35, 1)
 ## From the middle of the doorway, below where the shop door's notes rise.
 const STORED_POPUP_OFFSET : Vector2 = Vector2(-5.0, 20.0)

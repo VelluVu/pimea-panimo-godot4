@@ -50,7 +50,7 @@ func test_strict_limits_are_listed() -> void:
 	var lines : PackedStringArray = TextScript.lines(data, true, NAMES)
 	assert_true(lines.has("Juo vain: Helles"))
 	assert_true(lines.has("Vähintään 5.0 % alkoholia"))
-	assert_true(lines.has("Enintään 2.50 € pullolta"))
+	assert_true(lines.has("Enintään 2.50 € annokselta"))
 
 
 func test_one_entry_per_title() -> void:

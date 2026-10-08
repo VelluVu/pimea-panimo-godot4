@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_tiivis_pullotus")
-perk_name = "Tiivis pullotus"
-description = "Pullotat tarkemmin, ja jokaisesta erästä riittää hieman enemmän annoksia."
+perk_name = "Tarkka tynnyröinti"
+description = "Tynnyröit tarkemmin, ja jokaisesta erästä riittää hieman enemmän annoksia."
 icon_placeholder = "🍾"
 brew_yield_multiplier = 1.04

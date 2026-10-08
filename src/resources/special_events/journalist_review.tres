@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_journalist")
 event_caller_name = "Toimittaja Liisa"
-intro_dialogue = "Teen juttua paikallisista pienpanimoista. Saisinko muutaman pullon IPA:a maisteluun?"
+intro_dialogue = "Teen juttua paikallisista pienpanimoista. Saisinko muutaman annoksen IPA:a maisteluun?"
 success_dialogue = "Tästä tulee hyvä juttu lehteen!"
 fail_dialogue = "Harmi, ei ollut tarjolla mitä etsin."
 reject_dialogue = "No, ehkä toiste sitten."
