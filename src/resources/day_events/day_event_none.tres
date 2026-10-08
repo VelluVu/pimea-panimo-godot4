@@ -5,5 +5,5 @@
 [resource]
 script = ExtResource("1_event")
 event_name = "Tavallinen päivä"
-announcement_text = "Tavallinen päivä kellarissa. Ei erikoisia yllätyksiä luvassa tänään."
+announcement_text = "Ei yllätyksiä tänään."
 weight = 12.0
