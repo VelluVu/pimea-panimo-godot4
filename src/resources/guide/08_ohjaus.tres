@@ -6,4 +6,4 @@
 script = ExtResource("1_guide")
 order = 8
 title = "Ohjaus"
-lines = Array[String](["Hiirellä lisätiedot näkyvät, kun osoitin on kohteen päällä.", "Kosketusnäytöllä pidä sormea kohteen päällä hetki.", "Esc sulkee avoimet ikkunat tai avaa valikon."])
+lines = Array[String](["Hiirellä lisätiedot näkyvät, kun osoitin on kohteen päällä.", "Kosketusnäytöllä pidä sormea kohteen päällä hetki.", "Kosketusnäytöllä ?-nappi vasemmassa alakulmassa näyttää paikkojen nimet.", "Esc sulkee avoimet ikkunat tai avaa valikon."])

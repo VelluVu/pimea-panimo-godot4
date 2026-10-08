@@ -19,6 +19,7 @@ extends Panel
 
 const CARD_COUNT : int = 3
 const TITLE_FORMAT : String = "Taso %d!"
+const LEGEND_COLOR : Color = Color(0.75, 0.73, 0.67, 1)
 
 @onready var title_label : Label = %TitleLabel
 @onready var cards_hbox : HBoxContainer = %CardsHBox
@@ -45,6 +46,14 @@ func _ready() -> void:
 		_card_header_labels.append(card.get_node("CardVBox/HeaderLabel"))
 		_card_description_labels.append(card.get_node("CardVBox/DescriptionLabel"))
 		card.pressed.connect(_on_card_pressed.bind(i))
+
+	# How to read "+15 %" and "×1.15" on the cards.
+	var legend := Label.new()
+	legend.text = StringContainer.PERK_VALUE_LEGEND
+	legend.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	legend.add_theme_color_override("font_color", LEGEND_COLOR)
+	legend.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	cards_hbox.add_sibling(legend)
 
 	BrewerySignals.level_up_reached.connect(_on_level_up_reached)
 	BrewerySignals.game_ended.connect(_on_game_ended)

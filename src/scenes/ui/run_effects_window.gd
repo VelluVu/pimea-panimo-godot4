@@ -82,6 +82,7 @@ func _add_perks_section(brewery : Brewery) -> void:
 
 	if brewery.active_perks.is_empty():
 		return
+	rows_vbox.add_child(_make_label(tr(StringContainer.PERK_VALUE_LEGEND)))
 	_add_spacer()
 	rows_vbox.add_child(_make_header(StringContainer.RUN_EFFECTS_TOTALS_HEADER))
 

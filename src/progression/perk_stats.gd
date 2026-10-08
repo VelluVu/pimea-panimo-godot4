@@ -46,6 +46,10 @@ const WALK_IN_COMPANY_BONUS := &"walk_in_company_bonus"
 ## as a percentage, COUNT is a whole number neutral at 0.
 enum Kind { MULTIPLIER, PERCENT_ADD, COUNT }
 
+const ADDITIVE_PERCENT_FORMAT : String = "%+d %%"
+const MULTIPLICATIVE_FORMAT : String = "×%.2f"
+const COUNT_FORMAT : String = "%+d"
+
 
 ## Every perk stat in display order, with the Finnish line that shows it.
 ## The one place a new stat is registered besides its RunPerk field.
@@ -84,6 +88,21 @@ static func neutral_value(kind : Kind) -> float:
 
 ## The whole number a stat line shows: the percentage change, the percentage,
 ## or the count.
+## A stat value as the player reads it, Diablo style: additive values show as "+15 %"
+## (summed into one pool), multiplicative ones as "×1.15" (each multiplies the total).
+## Only MULTIPLIER stats can be multiplicative; the other kinds always add up.
+static func value_text(kind : Kind, value : float, additive : bool) -> String:
+	match kind:
+		Kind.MULTIPLIER:
+			if additive:
+				return ADDITIVE_PERCENT_FORMAT % display_number(kind, value)
+			return MULTIPLICATIVE_FORMAT % value
+		Kind.PERCENT_ADD:
+			return ADDITIVE_PERCENT_FORMAT % display_number(kind, value)
+		_:
+			return COUNT_FORMAT % display_number(kind, value)
+
+
 static func display_number(kind : Kind, value : float) -> int:
 	match kind:
 		Kind.MULTIPLIER:

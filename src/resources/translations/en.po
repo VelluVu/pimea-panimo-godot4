@@ -14,24 +14,24 @@ msgid "Mafioso"
 msgstr "Mafioso"
 
 #: src/autoload/string_container.gd
-msgid "(tasainen kasvu, ei kerry)"
-msgstr "(steady growth, no stacking)"
+msgid "+ % lasketaan yhteen, × kertoo kokonaisuuden."
+msgstr "+ % values add up, × multiplies the total."
 
 #: src/autoload/string_container.gd
 msgid "??? – vaatii mainetta: %d"
 msgstr "??? – needs reputation: %d"
 
 #: src/autoload/string_container.gd
-msgid "Agenttien esiintyvyys: %+d %%"
-msgstr "Agent visits: %+d %%"
+msgid "Agenttien esiintyvyys: %s"
+msgstr "Agent visits: %s"
 
 #: src/autoload/string_container.gd
-msgid "Ainehinnat: %+d %%"
-msgstr "Ingredient prices: %+d %%"
+msgid "Ainehinnat: %s"
+msgstr "Ingredient prices: %s"
 
 #: src/autoload/string_container.gd
-msgid "Ainepalautuksen mahdollisuus: %d %%"
-msgstr "Ingredient refund chance: %d %%"
+msgid "Ainepalautuksen mahdollisuus: %s"
+msgstr "Ingredient refund chance: %s"
 
 #: src/autoload/string_container.gd
 msgid "Alfahapot: %s%% / Beetahapot: %s%%"
@@ -60,12 +60,12 @@ msgid "Amber Ale"
 msgstr "Amber Ale"
 
 #: src/autoload/string_container.gd
-msgid "Asiakas tuo seuraa: +%d %%"
-msgstr "Customer brings company: +%d %%"
+msgid "Asiakas tuo seuraa: %s"
+msgstr "Customer brings company: %s"
 
 #: src/autoload/string_container.gd
-msgid "Asiakkaiden saapumisväli: %+d %%"
-msgstr "Time between customers: %+d %%"
+msgid "Asiakkaiden saapumisväli: %s"
+msgstr "Time between customers: %s"
 
 #: src/autoload/string_container.gd
 msgid "Baltic Portteri"
@@ -120,8 +120,8 @@ msgid "Hefeweizen"
 msgstr "Hefeweizen"
 
 #: src/autoload/string_container.gd
-msgid "Heikkeneminen: %+d %%"
-msgstr "Decline: %+d %%"
+msgid "Heikkeneminen: %s"
+msgstr "Decline: %s"
 
 #: src/autoload/string_container.gd
 msgid "Heikko"
@@ -144,8 +144,8 @@ msgid "Imperial Stout"
 msgstr "Imperial Stout"
 
 #: src/autoload/string_container.gd
-msgid "Jakelutulot: %+d %%"
-msgstr "Distribution income: %+d %%"
+msgid "Jakelutulot: %s"
+msgstr "Distribution income: %s"
 
 #: src/autoload/string_container.gd
 msgid "Jalo"
@@ -164,8 +164,8 @@ msgid "Kyllä"
 msgstr "Yes"
 
 #: src/autoload/string_container.gd
-msgid "Kypsymisaika: %+d %%"
-msgstr "Aging time: %+d %%"
+msgid "Kypsymisaika: %s"
+msgstr "Aging time: %s"
 
 #: src/autoload/string_container.gd
 msgid "Käymisaste: %s%%"
@@ -176,8 +176,8 @@ msgid "LVV-TARKASTUS!"
 msgstr "LVV INSPECTION!"
 
 #: src/autoload/string_container.gd
-msgid "Laatu: +%d %%"
-msgstr "Quality: +%d %%"
+msgid "Laatu: %s"
+msgstr "Quality: %s"
 
 #: src/autoload/string_container.gd
 msgid "Laatubonus jokaiseen erään: +%d %%"
@@ -188,20 +188,24 @@ msgid "Legendaarinen"
 msgstr "Legendary"
 
 #: src/autoload/string_container.gd
-msgid "Lisää tiskipaikkoja: +%d"
-msgstr "Extra counter spots: +%d"
+msgid "Lisää tiskipaikkoja: %s"
+msgstr "Extra counter spots: %s"
 
 #: src/autoload/string_container.gd
 msgid "Maanläheinen"
 msgstr "Earthy"
 
 #: src/autoload/string_container.gd
-msgid "Mafiosojen esiintyvyys: %+d %%"
-msgstr "Mafioso visits: %+d %%"
+msgid "Mafiosojen esiintyvyys: %s"
+msgstr "Mafioso visits: %s"
 
 #: src/autoload/string_container.gd
-msgid "Mahdollisuus tuplatippiin: %d %%"
-msgstr "Double tip chance: %d %%"
+msgid "Mahdollisuus tuplatippiin: %s"
+msgstr "Double tip chance: %s"
+
+#: src/autoload/string_container.gd
+msgid "Maineen kertymä: %s"
+msgstr "Reputation gain: %s"
 
 #: src/autoload/string_container.gd
 msgid "Maineen kertymä: +%d %%"
@@ -246,40 +250,40 @@ msgid "Pale Ale"
 msgstr "Pale Ale"
 
 #: src/autoload/string_container.gd
-msgid "Piilotettuja eriä ratsiassa: %d"
-msgstr "Batches hidden in a raid: %d"
+msgid "Piilotettuja eriä ratsiassa: %s"
+msgstr "Batches hidden in a raid: %s"
 
 #: src/autoload/string_container.gd
-msgid "Pullosaanto: %+d %%"
-msgstr "Bottle yield: %+d %%"
+msgid "Pullosaanto: %s"
+msgstr "Bottle yield: %s"
 
 #: src/autoload/string_container.gd
-msgid "Päivätavoitteita päivässä: +%d"
-msgstr "Daily goals per day: +%d"
+msgid "Päivätavoitteita päivässä: %s"
+msgstr "Daily goals per day: %s"
 
 #: src/autoload/string_container.gd
 msgid "Ratsiakynnys tällä kaudella: %d riskiä"
 msgstr "Raid threshold this season: %d risk"
 
 #: src/autoload/string_container.gd
-msgid "Ratsiakynnys: %+d %%"
-msgstr "Raid threshold: %+d %%"
+msgid "Ratsiakynnys: %s"
+msgstr "Raid threshold: %s"
 
 #: src/autoload/string_container.gd
-msgid "Ratsiassa säästyviä pulloja: %d %%"
-msgstr "Bottles saved in a raid: %d %%"
+msgid "Ratsiassa säästyviä pulloja: %s"
+msgstr "Bottles saved in a raid: %s"
 
 #: src/autoload/string_container.gd
-msgid "Ratsioiden sietokyky: +%d"
-msgstr "Raid tolerance: +%d"
+msgid "Ratsioiden sietokyky: %s"
+msgstr "Raid tolerance: %s"
 
 #: src/autoload/string_container.gd
 msgid "Reseptikirja"
 msgstr "Recipe book"
 
 #: src/autoload/string_container.gd
-msgid "Ryhmäasiakkaiden saapumisväli: %+d %%"
-msgstr "Time between group visits: %+d %%"
+msgid "Ryhmäasiakkaiden saapumisväli: %s"
+msgstr "Time between group visits: %s"
 
 #: src/autoload/string_container.gd
 msgid "Sahti"
@@ -302,8 +306,8 @@ msgid "Session Ale"
 msgstr "Session Ale"
 
 #: src/autoload/string_container.gd
-msgid "Seurueessa asiakkaita: +%d"
-msgstr "Customers in a company: +%d"
+msgid "Seurueessa asiakkaita: %s"
+msgstr "Customers in a company: %s"
 
 #: src/autoload/string_container.gd
 msgid "Sitruksinen"
@@ -314,20 +318,24 @@ msgid "Sulje"
 msgstr "Close"
 
 #: src/autoload/string_container.gd
-msgid "Tappelun todennäköisyys: %+d %%"
-msgstr "Bar fight chance: %+d %%"
+msgid "Tappelun todennäköisyys: %s"
+msgstr "Bar fight chance: %s"
 
 #: src/autoload/string_container.gd
 msgid "Tavallinen"
 msgstr "Common"
 
 #: src/autoload/string_container.gd
+msgid "Tipit: %s"
+msgstr "Tips: %s"
+
+#: src/autoload/string_container.gd
 msgid "Tipit: +%d %%"
 msgstr "Tips: +%d %%"
 
 #: src/autoload/string_container.gd
-msgid "Tiskimyynnin hinnat: %+d %%"
-msgstr "Counter prices: %+d %%"
+msgid "Tiskimyynnin hinnat: %s"
+msgstr "Counter prices: %s"
 
 #: src/autoload/string_container.gd
 msgid "Trooppinen"
@@ -2602,6 +2610,14 @@ msgstr ""
 
 #: src/resources/guide/06_tasot.tres
 msgid ""
+"Etujen arvot: +15 % lasketaan samanlaisten etujen kanssa yhteen. ×1.15 "
+"kertoo koko summan erikseen, joten useampi ×-etu kasvaa nopeasti."
+msgstr ""
+"Perk values: +15 % adds up with similar perks. ×1.15 multiplies the whole "
+"total on its own, so several × perks grow fast."
+
+#: src/resources/guide/06_tasot.tres
+msgid ""
 "Keittäminen ja myynti antavat kokemusta. Uudella tasolla valitset yhden "
 "kolmesta edusta loppukaudeksi."
 msgstr ""
@@ -2635,6 +2651,10 @@ msgstr "Esc closes open windows or opens the menu."
 #: src/resources/guide/08_ohjaus.tres
 msgid "Hiirellä lisätiedot näkyvät, kun osoitin on kohteen päällä."
 msgstr "With a mouse, more information shows when the pointer rests on something."
+
+#: src/resources/guide/08_ohjaus.tres
+msgid "Kosketusnäytöllä ?-nappi vasemmassa alakulmassa näyttää paikkojen nimet."
+msgstr "On a touch screen, the ? button in the bottom left corner shows the names of places."
 
 #: src/resources/guide/08_ohjaus.tres
 msgid "Kosketusnäytöllä pidä sormea kohteen päällä hetki."

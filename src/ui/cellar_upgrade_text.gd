@@ -38,5 +38,5 @@ static func effect(upgrade : CellarUpgradeData, level : int) -> String:
 		var kind : PerkStats.Kind = entry.kind
 		var value : float = perk.get(entry.stat)
 		if value != PerkStats.neutral_value(kind):
-			parts.append(UiText.of(entry.text) % PerkStats.display_number(kind, value))
+			parts.append(UiText.of(entry.text) % PerkStats.value_text(kind, value, perk.stacks_additively))
 	return ", ".join(parts)

@@ -6,4 +6,4 @@
 script = ExtResource("1_guide")
 order = 6
 title = "Tasot ja tavoitteet"
-lines = Array[String](["Keittäminen ja myynti antavat kokemusta. Uudella tasolla valitset yhden kolmesta edusta loppukaudeksi.", "Tavoitteet-paneeli oikealla näyttää päivän tavoitteet. Suoritetut tavoitteet antavat palkintoja."])
+lines = Array[String](["Keittäminen ja myynti antavat kokemusta. Uudella tasolla valitset yhden kolmesta edusta loppukaudeksi.", "Etujen arvot: +15 % lasketaan samanlaisten etujen kanssa yhteen. ×1.15 kertoo koko summan erikseen, joten useampi ×-etu kasvaa nopeasti.", "Tavoitteet-paneeli oikealla näyttää päivän tavoitteet. Suoritetut tavoitteet antavat palkintoja."])

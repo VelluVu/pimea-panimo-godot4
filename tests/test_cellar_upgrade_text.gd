@@ -18,6 +18,8 @@ func _upgrade() -> CellarUpgradeData:
 	upgrade.base_cost = 40
 	upgrade.cost_growth = 1.7
 	upgrade.brew_yield_multiplier = 1.06
+	# Like the shipped upgrades: levels add up.
+	upgrade.stacks_additively = true
 	return upgrade
 
 
@@ -33,5 +35,5 @@ func test_button_shows_the_next_price_until_maxed() -> void:
 func test_effect_lines_show_now_and_next() -> void:
 	var lines : String = TextScript.effect_lines(_upgrade(), 0)
 	assert_contains(lines, TextScript.NONE_TEXT)
-	assert_contains(lines, "+6")
+	assert_contains(lines, "+6 %")
 	assert_false(TextScript.effect_lines(_upgrade(), 5).contains("Seuraava"), "no next line when maxed")
