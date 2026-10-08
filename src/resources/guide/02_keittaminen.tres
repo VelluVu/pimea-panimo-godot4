@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="GuideSection" format=3]
+
+[ext_resource type="Script" path="res://src/ui/guide_section.gd" id="1_guide"]
+
+[resource]
+script = ExtResource("1_guide")
+order = 2
+title = "Oluen keittäminen"
+lines = Array[String](["Osta mallasta, humalaa ja hiivaa kaupasta.", "Avaa keittola, lisää ainekset pöydälle ja paina Pane. Pullot menevät varastoon.", "Oluen tyyli määräytyy värin (EBC), katkeruuden (IBU) ja vahvuuden mukaan. Jotkut tyylit vaativat tietyn hiivan, maltaan tai mausteen.", "Uusi tyyli löytyy, kun keität sen ensimmäisen kerran. Hyllyn reseptikirja vihjaa, mitä muut tyylit vaativat.", "Laatu nousee, kun osut tyylin EBC- ja IBU-rajojen keskelle ja käytät tyylille sopivia humalia ja mausteita.", "Jotkut tummat oluet paranevat varastossa vanhetessaan. Lukitse erä, niin asiakkaat eivät osta sitä liian aikaisin."])

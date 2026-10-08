@@ -54,10 +54,12 @@ CONTENT_FIELDS = {
     "src/resources/day_events": ("announcement_text", "effect_toast_format"),
     "src/resources/group_events": ("banner_text",),
     "src/resources/special_events": ("event_caller_name", "intro_dialogue", "success_dialogue", "fail_dialogue", "reject_dialogue"),
+    "src/resources/guide": ("title",),
 }
 # Content fields that hold a list of texts, like Array[String](["a", "b"]).
 CONTENT_ARRAY_FIELDS = {
     "src/resources/group_events": ("chant_texts",),
+    "src/resources/guide": ("lines",),
 }
 SKIP_DIRS = ["src/console", "src/systems/console", "src/resources", "addons", "tests", "dev"]
 # Player-facing files inside the skipped folders. The other console sets are gitignored cheats.
