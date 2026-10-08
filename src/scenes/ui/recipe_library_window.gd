@@ -40,9 +40,12 @@ func _ready() -> void:
 	PauseLock.hold_while_visible(self)
 
 
-## The paused tree no longer reaches gui.gd's Esc handler, so this closes itself.
+## The paused tree no longer reaches gui.gd's key handlers, so this closes itself.
 func _input(event : InputEvent) -> void:
-	if visible and event.is_action_pressed(InputManager.ACTION_CANCEL):
+	if visible and event.is_action_pressed(InputManager.ACTION_TOGGLE_RECIPE_LIBRARY):
+		_on_close_button_pressed()
+		get_viewport().set_input_as_handled()
+	elif visible and event.is_action_pressed(InputManager.ACTION_CANCEL):
 		if selected_style != NO_STYLE_SELECTED:
 			_select_style(NO_STYLE_SELECTED)
 		else:

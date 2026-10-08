@@ -59,9 +59,9 @@ func _ready() -> void:
 		_refresh_rows())
 
 
-## The paused tree no longer reaches gui.gd's Esc handler, so this closes itself.
+## The paused tree no longer reaches gui.gd's key handlers, so this closes itself.
 func _input(event : InputEvent) -> void:
-	if visible and event.is_action_pressed(InputManager.ACTION_CANCEL):
+	if visible and (event.is_action_pressed(InputManager.ACTION_CANCEL) or event.is_action_pressed(InputManager.ACTION_TOGGLE_BREWERY_BOOK)):
 		_on_close_button_pressed()
 		get_viewport().set_input_as_handled()
 

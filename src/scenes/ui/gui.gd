@@ -93,6 +93,13 @@ func _on_shortcut_pressed(action: StringName) -> void:
 			_toggle_run_effects_window()
 		InputManager.ACTION_TOGGLE_RECEIPT_LOG:
 			_toggle_receipt_log_window()
+		# These two pause the tree, so they close on their own key themselves.
+		InputManager.ACTION_TOGGLE_RECIPE_LIBRARY:
+			GUISignals.recipe_library_requested.emit()
+		InputManager.ACTION_TOGGLE_BREWERY_BOOK:
+			GUISignals.customer_book_requested.emit()
+		InputManager.ACTION_TOGGLE_UPGRADES:
+			_toggle_cellar_upgrades_window()
 
 
 ## Closes every open view and popup in one press; if none was open, opens the game menu.
@@ -142,6 +149,13 @@ func _toggle_run_effects_window() -> void:
 		run_effects_window.hide()
 	else:
 		GUISignals.run_effects_requested.emit()
+
+
+func _toggle_cellar_upgrades_window() -> void:
+	if cellar_upgrades_window.visible:
+		cellar_upgrades_window.hide()
+	else:
+		GUISignals.cellar_upgrades_requested.emit()
 
 
 func _toggle_receipt_log_window() -> void:
