@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="CustomerData" format=3]
+[gd_resource type="Resource" script_class="CustomerData" format=3 uid="uid://7st072jfjiv8"]
 
 [ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_leipuri_naaras"]
-[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/leipuri_naaras_anim.tres" id="2_sprite"]
+[ext_resource type="SpriteFrames" uid="uid://5uy3tugf5yd8" path="res://src/resources/sprite_frames/leipuri_naaras_anim.tres" id="2_sprite"]
 
 [resource]
 script = ExtResource("1_leipuri_naaras")
@@ -15,6 +15,7 @@ secondary_style = 17
 also_likes = Array[int]([15])
 sprite_frames = ExtResource("2_sprite")
 randomize_clothes = false
+voice_pitch = 1.235
 dialogue_intro = "Huomenta! Uunit lämpenee jo neljältä, nyt kelpaisi jotain makeaa. Onko maitostouttia, pullan kaveriksi?"
 dialogue_success = "Täyteläistä ja makeaa kuin tuore korvapuusti! Tämän perään jaksaa taas vaivata taikinaa."
 dialogue_fallback = "Ei ihan pullan kaveri, mutta maltaista makeutta löytyy. Kelpaa."
@@ -27,5 +28,4 @@ quality_tip_sensitivity = 0.5
 rep_primary_style = 6
 rep_secondary_style = 2
 min_reputation_to_appear = 40
-voice_pitch = 1.235
 metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

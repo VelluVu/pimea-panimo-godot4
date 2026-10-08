@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="CustomerData" format=3]
+[gd_resource type="Resource" script_class="CustomerData" format=3 uid="uid://ofc35bnprvif"]
 
 [ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_kesanainen"]
-[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/kesanainen_anim.tres" id="2_sprite"]
+[ext_resource type="SpriteFrames" uid="uid://cvp5587xdml64" path="res://src/resources/sprite_frames/kesanainen_anim.tres" id="2_sprite"]
 
 [resource]
 script = ExtResource("1_kesanainen")
@@ -17,6 +17,7 @@ randomize_skin = false
 randomize_hair = false
 randomize_clothes = false
 randomize_shoes = false
+voice_pitch = 1.3
 dialogue_intro = "Hei! Onks teillä jotain kesäistä ja Instan arvosta? Pitää saada hyvä otos tarinaan."
 dialogue_success = "Väri on ihan täydellinen, tää menee suoraan tarinaan!"
 dialogue_fallback = "Ei ehkä ihan feed-materiaalia, mutta kyllä tän juo."
@@ -30,5 +31,4 @@ rep_primary_style = 4
 rep_secondary_style = 1
 quality_reputation_sensitivity = 2.0
 required_discovered_style = 11
-voice_pitch = 1.3
 metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

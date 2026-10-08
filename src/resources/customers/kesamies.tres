@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="CustomerData" format=3]
+[gd_resource type="Resource" script_class="CustomerData" format=3 uid="uid://k3e7xb6sbdnr"]
 
 [ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_kesamies"]
-[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/kesamies_anim.tres" id="2_sprite"]
+[ext_resource type="SpriteFrames" uid="uid://ccvv6ao3q7jyv" path="res://src/resources/sprite_frames/kesamies_anim.tres" id="2_sprite"]
 
 [resource]
 script = ExtResource("1_kesamies")
@@ -30,5 +30,4 @@ rep_primary_style = 4
 rep_secondary_style = 1
 quality_reputation_sensitivity = 2.0
 required_discovered_style = 11
-voice_pitch = 1
 metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

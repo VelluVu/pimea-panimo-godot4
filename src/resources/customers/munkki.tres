@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="CustomerData" format=3]
+[gd_resource type="Resource" script_class="CustomerData" format=3 uid="uid://clo3ieql8jjqx"]
 
 [ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_munkki"]
-[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/munkki_anim.tres" id="2_sprite"]
+[ext_resource type="SpriteFrames" uid="uid://6mh25vn8y7k8" path="res://src/resources/sprite_frames/munkki_anim.tres" id="2_sprite"]
 
 [resource]
 script = ExtResource("1_munkki")
@@ -17,6 +17,7 @@ randomize_skin = false
 randomize_hair = false
 randomize_clothes = false
 randomize_shoes = false
+voice_pitch = 0.9
 dialogue_intro = "Rauha kanssasi. Etsin luostarin olutta: tummaa, hedelmäistä ja kärsivällisesti kypsytettyä."
 dialogue_success = "Tässä on veljesten työn arvoista olutta. Tummaa hedelmää ja lämpöä, siunattu olkoon panija."
 dialogue_fallback = "Kelvollista käsityötä, vaikka luostarin sielu jäi vielä puuttumaan."
@@ -32,5 +33,4 @@ rep_secondary_style = 2
 quality_reputation_sensitivity = 5.0
 min_reputation_to_appear = 25
 required_discovered_style = 15
-voice_pitch = 0.9
 metadata/_custom_type_script = "uid://b2vqc8lkfjwic"
