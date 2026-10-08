@@ -16,11 +16,11 @@ static func _static_init() -> void:
 		push_warning(WARNING_POOL_EMPTY)
 
 
-## Weight a common perk is TIER_WEIGHTS[COMMON] times as likely to be drawn
-## as a legendary one on any single pick — see RunPerk.Tier/get_tier_label().
+## Per-perk draw weights. With the current pool a card is legendary about 2.5 %
+## of the time, so roughly one level-up in 14 offers one (was one in 5).
 const TIER_WEIGHTS : Dictionary = {
-	RunPerk.Tier.COMMON: 10,
-	RunPerk.Tier.RARE: 4,
+	RunPerk.Tier.COMMON: 30,
+	RunPerk.Tier.RARE: 10,
 	RunPerk.Tier.LEGENDARY: 1,
 }
 
@@ -53,3 +53,15 @@ static func get_random_perks(count : int) -> Array[RunPerk]:
 				break
 
 	return result
+
+
+## Chance that a single card is of this tier, from the whole pool.
+static func tier_chance(tier : RunPerk.Tier) -> float:
+	var total : int = 0
+	var of_tier : int = 0
+	for perk : RunPerk in pool:
+		var weight : int = TIER_WEIGHTS.get(perk.tier, 1)
+		total += weight
+		if perk.tier == tier:
+			of_tier += weight
+	return float(of_tier) / float(total) if total > 0 else 0.0

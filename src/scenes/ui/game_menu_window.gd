@@ -73,7 +73,9 @@ func _open() -> void:
 	if _is_open:
 		return
 	_is_open = true
-	get_tree().paused = true
+	PauseLock.hold(self)
+	# Drawn over any window that was open when the menu button was clicked.
+	move_to_front()
 	# After a bust or bankruptcy there is nothing to resume: only a new run or the main menu.
 	resume_button.visible = not _is_run_over()
 	_show_confirm(false)
@@ -84,7 +86,7 @@ func _close() -> void:
 	if _is_run_over():
 		return
 	_is_open = false
-	get_tree().paused = false
+	PauseLock.release(self)
 	hide()
 	GUISignals.game_menu_closed.emit()
 
@@ -135,7 +137,7 @@ func _show_confirm(confirming: bool) -> void:
 func _start_new_run() -> void:
 	hide()
 	_is_open = false
-	get_tree().paused = false
+	PauseLock.release_all(get_tree())
 	BrewEngine.start_new_game()
 	TimeManager.resume_time()
 	get_tree().change_scene_to_file(GAME_SCENE_PATH)
@@ -145,5 +147,5 @@ func _go_to_main_menu() -> void:
 	GUISignals.menu_button_pressed.emit()
 	SaveManager.save_game()
 	_is_open = false
-	get_tree().paused = false
+	PauseLock.release_all(get_tree())
 	get_tree().change_scene_to_file(MAIN_MENU_SCENE_PATH)

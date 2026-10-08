@@ -3,6 +3,7 @@ extends Panel
 
 ## The recipe book: a list of styles (known ones open their saved recipes, locked ones
 ## only hint) and, per known style, its saved recipes with a button to load each.
+## Pauses the game while open, so it runs while paused and handles its own Esc.
 
 const NO_RECIPES_FOR_STYLE_STRING : String = "Ei tallennettuja reseptejä tälle tyylille."
 const RECIPE_ROW_LOAD_BUTTON_TEXT : String = "Lataa"
@@ -14,6 +15,8 @@ const RECIPE_BORDER_WIDTH : int = 2
 const RECIPE_CORNER_RADIUS : int = 4
 const RECIPE_BREWABLE_BORDER_COLOR : Color = Color(0.3, 0.85, 0.35)
 const RECIPE_MISSING_BORDER_COLOR : Color = Color(0.5, 0.5, 0.5)
+const SECTION_FONT_SIZE : int = 17
+const SECTION_COLOR : Color = Color(0.949, 0.788, 0.42)
 
 @onready var title_label : Label = %TitleLabel
 @onready var close_button : Button = %CloseButton
@@ -33,6 +36,18 @@ func _ready() -> void:
 	GUISignals.recipe_library_requested.connect(_on_recipe_library_requested)
 	BrewerySignals.brewery_state_changed.connect(_on_state_changed)
 	BrewerySignals.style_discovered.connect(_on_state_changed)
+	process_mode = Node.PROCESS_MODE_ALWAYS
+	PauseLock.hold_while_visible(self)
+
+
+## The paused tree no longer reaches gui.gd's Esc handler, so this closes itself.
+func _input(event : InputEvent) -> void:
+	if visible and event.is_action_pressed(InputManager.ACTION_CANCEL):
+		if selected_style != NO_STYLE_SELECTED:
+			_select_style(NO_STYLE_SELECTED)
+		else:
+			_on_close_button_pressed()
+		get_viewport().set_input_as_handled()
 
 
 func _on_recipe_library_requested() -> void:
@@ -78,20 +93,41 @@ func _refresh_rows() -> void:
 		_build_recipe_detail_rows(brewery)
 
 
+## Discovered styles first, so the ones the player can brew are on top.
 func _build_style_list_rows(brewery : Brewery) -> void:
+	var known : Array[BeerStyle] = []
+	var locked : Array[BeerStyle] = []
 	for beer_style : BeerStyle in brewery.resolver.active_styles:
 		if brewery.is_style_known(beer_style.style):
-			rows_vbox.add_child(_build_known_style_row(beer_style))
+			known.append(beer_style)
 		else:
-			rows_vbox.add_child(_build_locked_style_row(brewery, beer_style))
+			locked.append(beer_style)
+
+	rows_vbox.add_child(_build_section_label(RecipeLibraryText.known_section_title(known.size(), known.size() + locked.size())))
+	for beer_style : BeerStyle in known:
+		rows_vbox.add_child(_build_known_style_row(brewery, beer_style))
+	if locked.is_empty():
+		return
+	rows_vbox.add_child(HSeparator.new())
+	rows_vbox.add_child(_build_section_label(RecipeLibraryText.locked_section_title(locked.size())))
+	for beer_style : BeerStyle in locked:
+		rows_vbox.add_child(_build_locked_style_row(brewery, beer_style))
 
 
-func _build_known_style_row(beer_style : BeerStyle) -> Button:
+func _build_section_label(text : String) -> Label:
+	var label := Label.new()
+	label.text = text
+	label.add_theme_font_size_override("font_size", SECTION_FONT_SIZE)
+	label.add_theme_color_override("font_color", SECTION_COLOR)
+	return label
+
+
+func _build_known_style_row(brewery : Brewery, beer_style : BeerStyle) -> Button:
 	var row := Button.new()
 	row.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	row.add_theme_font_size_override("font_size", ROW_FONT_SIZE)
 	row.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	row.text = RecipeLibraryText.known_row(beer_style, _ingredient_name(beer_style.required_yeast_id), _required_malt_name(beer_style), _required_spice_name(beer_style), _preferred_spice_names(beer_style))
+	row.text = RecipeLibraryText.known_row(beer_style, _ingredient_name(beer_style.required_yeast_id), _required_malt_name(beer_style), _required_spice_name(beer_style), _preferred_spice_names(beer_style), _saved_recipe_count(brewery, beer_style.style))
 	row.pressed.connect(_select_style.bind(beer_style.style))
 	return row
 
@@ -147,6 +183,14 @@ func _build_recipe_row(recipe : BrewRecipe, brewable : bool) -> Control:
 	load_button.pressed.connect(_on_recipe_load_button_pressed.bind(recipe))
 	row_hbox.add_child(load_button)
 	return row
+
+
+func _saved_recipe_count(brewery : Brewery, style : int) -> int:
+	var count : int = 0
+	for recipe : BrewRecipe in brewery.saved_recipes:
+		if recipe.beer_style == style:
+			count += 1
+	return count
 
 
 ## Empty for a style with no single required malt, which the row text ignores.

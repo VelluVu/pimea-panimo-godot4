@@ -24,7 +24,7 @@ func _make_style() -> BeerStyle:
 
 func test_known_row_shows_the_name_abv_and_exact_ranges() -> void:
 	var text : String = RecipeLibraryTextScript.known_row(_make_style(), "Lagerhiiva", "")
-	assert_true(text.begins_with("Testiolut (4.5% ABV), EBC 11-14, IBU 14-20"))
+	assert_true(text.begins_with("Testiolut\n4.5% ABV, EBC 11-14, IBU 14-20"))
 	assert_true(text.contains("Lagerhiiva"))
 
 
@@ -83,3 +83,13 @@ func test_known_row_warns_about_the_purity_law() -> void:
 	assert_false(RecipeLibraryTextScript.known_row(beer_style, "Y", "").contains("Reinheitsgebot"))
 	beer_style.forbids_spices = true
 	assert_true(RecipeLibraryTextScript.known_row(beer_style, "Y", "").contains("Reinheitsgebot"))
+
+
+func test_known_row_counts_saved_recipes_only_when_there_are_some() -> void:
+	assert_false(RecipeLibraryTextScript.known_row(_make_style(), "Y", "").contains("Tallennettuja"))
+	assert_true(RecipeLibraryTextScript.known_row(_make_style(), "Y", "", "", "", 2).ends_with("Tallennettuja reseptejä: 2"))
+
+
+func test_section_titles_show_the_counts() -> void:
+	assert_eq(RecipeLibraryTextScript.known_section_title(5, 24), "Löydetyt tyylit (5/24)")
+	assert_eq(RecipeLibraryTextScript.locked_section_title(19), "Löytämättömät tyylit (19)")

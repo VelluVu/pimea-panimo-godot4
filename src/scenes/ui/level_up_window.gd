@@ -36,6 +36,8 @@ var _card_buttons : Array[Button] = []
 var _card_icon_labels : Array[Label] = []
 var _card_header_labels : Array[Label] = []
 var _card_description_labels : Array[Label] = []
+## The game menu is open: an offer waits hidden under it, so the cards never cover the menu.
+var _menu_open : bool = false
 
 
 func _ready() -> void:
@@ -49,6 +51,9 @@ func _ready() -> void:
 
 	BrewerySignals.level_up_reached.connect(_on_level_up_reached)
 	BrewerySignals.game_ended.connect(_on_game_ended)
+	GUISignals.game_menu_requested.connect(_on_game_menu_requested)
+	GUISignals.game_menu_closed.connect(_on_game_menu_closed)
+	PauseLock.hold_while_visible(self)
 	hide()
 
 
@@ -65,13 +70,33 @@ func _on_level_up_reached(new_level : int) -> void:
 	_pending_levels.append(new_level)
 	var brewery := BrewEngine.current_brewery
 	var run_has_ended : bool = brewery != null and brewery.game_has_ended
-	if not visible and not run_has_ended:
+	if not visible and not run_has_ended and not _menu_open and _offered_perks.is_empty():
 		_show_next_pending_level()
 
 
 func _on_game_ended(_ending_type : String) -> void:
+	_offered_perks.clear()
 	if visible:
 		hide()
+
+
+func _on_game_menu_requested() -> void:
+	_menu_open = true
+	hide()
+
+
+## Brings back the same cards, so opening the menu never rerolls an offer.
+func _on_game_menu_closed() -> void:
+	_menu_open = false
+	if not _offered_perks.is_empty():
+		show()
+	elif not _pending_levels.is_empty() and not _is_run_over():
+		_show_next_pending_level()
+
+
+func _is_run_over() -> bool:
+	var brewery := BrewEngine.current_brewery
+	return brewery != null and brewery.game_has_ended
 
 
 func _show_next_pending_level() -> void:
@@ -97,7 +122,6 @@ func _show_next_pending_level() -> void:
 		var description : String = "[%s]\n%s" % [perk.get_tier_label(), tr(perk.description)]
 		_card_description_labels[i].text = description if stat_summary.is_empty() else description + "\n" + stat_summary
 
-	get_tree().paused = true
 	show()
 
 
@@ -109,8 +133,7 @@ func _on_card_pressed(index : int) -> void:
 	if brewery != null:
 		brewery.apply_perk(_offered_perks[index])
 
+	_offered_perks.clear()
 	hide()
 	_pending_levels.pop_front()
-	if _pending_levels.is_empty():
-		get_tree().paused = false
 	_show_next_pending_level()
