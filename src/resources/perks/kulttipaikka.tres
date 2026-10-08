@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RunPerk" format=3]
+
+[ext_resource type="Script" uid="uid://dewmdbm4a0vst" path="res://src/progression/run_perk.gd" id="1_kulttipaikka"]
+
+[resource]
+script = ExtResource("1_kulttipaikka")
+perk_name = "Kulttipaikka"
+description = "Kellarista on tullut kulttipaikka. Asiakkaat maksavat tiskillä mielellään merkittävästi enemmän."
+icon_placeholder = "🏆"
+tier = 2
+counter_price_multiplier = 1.15

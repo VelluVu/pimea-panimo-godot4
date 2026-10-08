@@ -3280,6 +3280,18 @@ msgstr ""
 msgid "Vieraanvarainen perinne"
 msgstr "Hospitable Tradition"
 
+#: src/resources/perks/alennuskuponki.tres
+msgid ""
+"Aineskaupan kassa antaa sinulle kanta-asiakasalennuksen. Ainekset ovat "
+"hieman halvempia."
+msgstr ""
+"The ingredient shop's cashier gives you a loyalty discount. Ingredients are "
+"a little cheaper."
+
+#: src/resources/perks/alennuskuponki.tres
+msgid "Alennuskuponki"
+msgstr "Discount Coupon"
+
 #: src/resources/perks/alueen_kuningas.tres
 msgid "Alueen kuningas"
 msgstr "King of the District"
@@ -3334,6 +3346,16 @@ msgstr "Bar owners like you: bulk sales and bar shipments earn a little more."
 msgid "Hyvät suhteet"
 msgstr "Good Connections"
 
+#: src/resources/perks/ikuinen_kellari.tres
+msgid "Ikuinen kellari"
+msgstr "Timeless Cellar"
+
+#: src/resources/perks/ikuinen_kellari.tres
+msgid ""
+"Kellarisi on kuin aikakapseli: oluet kypsyvät nopeasti eivätkä juuri "
+"vanhene."
+msgstr "Your cellar is like a time capsule: beers mature fast and hardly go stale."
+
 #: src/resources/perks/kanta_asiakaskerho.tres
 msgid "Kanta-asiakaskerho"
 msgstr "Loyalty Club"
@@ -3370,6 +3392,16 @@ msgstr ""
 "You can hear when fermentation is just right, and quality improves "
 "noticeably."
 
+#: src/resources/perks/kellarin_tunnelma.tres
+msgid ""
+"Hämärä valaistus ja hyvä musiikki: asiakkaat maksavat tiskillä selvästi "
+"enemmän."
+msgstr "Dim lights and good music: customers pay noticeably more at the counter."
+
+#: src/resources/perks/kellarin_tunnelma.tres
+msgid "Kellarin tunnelma"
+msgstr "Cellar Atmosphere"
+
 #: src/resources/perks/kolmen_kopla.tres
 msgid "Kolmen kopla"
 msgstr "Gang of Three"
@@ -3377,6 +3409,26 @@ msgstr "Gang of Three"
 #: src/resources/perks/kolmen_kopla.tres
 msgid "Kun asiakas tuo seuraa, mukana on aina vielä yksi kaveri lisää."
 msgstr "When a customer brings company, one more friend always tags along."
+
+#: src/resources/perks/kulttipaikka.tres
+msgid ""
+"Kellarista on tullut kulttipaikka. Asiakkaat maksavat tiskillä mielellään "
+"merkittävästi enemmän."
+msgstr ""
+"The cellar has become a cult favourite. Customers gladly pay significantly "
+"more at the counter."
+
+#: src/resources/perks/kulttipaikka.tres
+msgid "Kulttipaikka"
+msgstr "Cult Favourite"
+
+#: src/resources/perks/kypsa_kellari.tres
+msgid "Kellarin lämpötila on juuri oikea: oluet kypsyvät hieman nopeammin."
+msgstr "The cellar temperature is just right: beers mature a little faster."
+
+#: src/resources/perks/kypsa_kellari.tres
+msgid "Kypsä kellari"
+msgstr "Mellow Cellar"
 
 #: src/resources/perks/luotettu_piiri.tres
 msgid "Luotettu piiri"
@@ -3436,6 +3488,28 @@ msgstr ""
 msgid "Öinen legenda"
 msgstr "Nighttime Legend"
 
+#: src/resources/perks/oma_maahantuoja.tres
+msgid "Oma maahantuoja"
+msgstr "Your Own Importer"
+
+#: src/resources/perks/oma_maahantuoja.tres
+msgid ""
+"Tuot ainekset itse suoraan tuottajilta, joten ostot ovat merkittävästi "
+"halvempia."
+msgstr ""
+"You import ingredients straight from the producers, so buying is "
+"significantly cheaper."
+
+#: src/resources/perks/pohjaton_pannu.tres
+msgid ""
+"Pannusta tuntuu riittävän loputtomiin: jokainen erä antaa merkittävästi "
+"enemmän annoksia."
+msgstr "The kettle seems endless: every batch gives significantly more servings."
+
+#: src/resources/perks/pohjaton_pannu.tres
+msgid "Pohjaton pannu"
+msgstr "Bottomless Kettle"
+
 #: src/resources/perks/porukalla_liikkeelle.tres
 msgid ""
 "Kellarista on tullut illan kokoontumispaikka: asiakkaat saapuvat yhä "
@@ -3455,6 +3529,22 @@ msgstr "You learn to conveniently forget the change. Customers round their tips 
 #: src/resources/perks/pyoristys_ylospain.tres
 msgid "Pyöristys ylöspäin"
 msgstr "Round It Up"
+
+#: src/resources/perks/saastavainen_pullottaja.tres
+msgid "Hukkaa ei synny: jokaisesta erästä saa selvästi enemmän annoksia."
+msgstr "Nothing goes to waste: every batch gives noticeably more servings."
+
+#: src/resources/perks/saastavainen_pullottaja.tres
+msgid "Säästäväinen pullottaja"
+msgstr "Thrifty Bottler"
+
+#: src/resources/perks/siisti_tiski.tres
+msgid "Kiiltävä tiski tekee vaikutuksen, ja asiakkaat maksavat hieman enemmän."
+msgstr "A shiny counter makes an impression, and customers pay a little more."
+
+#: src/resources/perks/siisti_tiski.tres
+msgid "Siisti tiski"
+msgstr "Tidy Counter"
 
 #: src/resources/perks/suosittu_paikka.tres
 msgid ""
@@ -3498,6 +3588,24 @@ msgstr ""
 msgid "Tasainen varovaisuus"
 msgstr "Steady Caution"
 
+#: src/resources/perks/tiivis_pullotus.tres
+msgid "Pullotat tarkemmin, ja jokaisesta erästä riittää hieman enemmän annoksia."
+msgstr "You bottle more carefully, and every batch gives a few more servings."
+
+#: src/resources/perks/tiivis_pullotus.tres
+msgid "Tiivis pullotus"
+msgstr "Tight Bottling"
+
+#: src/resources/perks/tukkurin_tuttu.tres
+msgid "Tukkurin tuttu"
+msgstr "Wholesaler's Friend"
+
+#: src/resources/perks/tukkurin_tuttu.tres
+msgid "Tunnet tukkurin myyjän, ja hän laskee hinnat sinulle selvästi alemmas."
+msgstr ""
+"You know the wholesaler's salesman, and he drops his prices for you "
+"noticeably."
+
 #: src/resources/perks/tunnettu_toimittaja.tres
 msgid ""
 "Maineesi oluen toimittajana kiirii baarista toiseen: halpamyynnin ja "
@@ -3533,6 +3641,14 @@ msgstr ""
 #: src/resources/perks/vakiintunut_reitti.tres
 msgid "Vakiintunut reitti"
 msgstr "Established Route"
+
+#: src/resources/perks/viilea_nurkka.tres
+msgid "Löysit kellarista viileän nurkan. Oluet säilyvät hyvinä selvästi pidempään."
+msgstr "You found a cool corner in the cellar. Beers stay good noticeably longer."
+
+#: src/resources/perks/viilea_nurkka.tres
+msgid "Viileä nurkka"
+msgstr "Cool Corner"
 
 #: src/resources/reputation_tiers/0_tuntematon.tres
 msgid "Kukaan ei tiedä kellaristasi. Vielä."

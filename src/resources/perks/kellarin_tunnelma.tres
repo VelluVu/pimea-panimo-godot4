@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RunPerk" format=3]
+
+[ext_resource type="Script" uid="uid://dewmdbm4a0vst" path="res://src/progression/run_perk.gd" id="1_kellarin_tunnelma"]
+
+[resource]
+script = ExtResource("1_kellarin_tunnelma")
+perk_name = "Kellarin tunnelma"
+description = "Hämärä valaistus ja hyvä musiikki: asiakkaat maksavat tiskillä selvästi enemmän."
+icon_placeholder = "🎶"
+tier = 1
+counter_price_multiplier = 1.08

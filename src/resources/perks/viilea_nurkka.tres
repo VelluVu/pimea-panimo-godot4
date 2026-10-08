@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RunPerk" format=3]
+
+[ext_resource type="Script" uid="uid://dewmdbm4a0vst" path="res://src/progression/run_perk.gd" id="1_viilea_nurkka"]
+
+[resource]
+script = ExtResource("1_viilea_nurkka")
+perk_name = "Viileä nurkka"
+description = "Löysit kellarista viileän nurkan. Oluet säilyvät hyvinä selvästi pidempään."
+icon_placeholder = "❄️"
+tier = 1
+decline_rate_multiplier = 0.85
