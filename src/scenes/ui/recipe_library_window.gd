@@ -51,6 +51,10 @@ func _input(event : InputEvent) -> void:
 
 
 func _on_recipe_library_requested() -> void:
+	# Tapping the spot that opened it closes it again.
+	if visible:
+		_on_close_button_pressed()
+		return
 	selected_style = NO_STYLE_SELECTED
 	_refresh_rows()
 	show()

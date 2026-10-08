@@ -58,6 +58,10 @@ func _ready() -> void:
 
 
 func _on_customer_book_requested() -> void:
+	# Tapping the spot that opened it closes it again.
+	if visible:
+		_on_close_button_pressed()
+		return
 	_refresh_rows()
 	show()
 
