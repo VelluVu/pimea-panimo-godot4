@@ -674,8 +674,8 @@ msgid "Keitä ensimmäinen olut."
 msgstr "Brew your first beer."
 
 #: src/resources/achievements/humalat_10.tres
-msgid "Avaa 10 humalalajiketta reputaation kautta."
-msgstr "Unlock 10 hop varieties through reputation."
+msgid "Avaa 10 humalalajiketta maineen avulla."
+msgstr "Unlock 10 hop varieties with reputation."
 
 #: src/resources/achievements/humalat_10.tres
 msgid "Humalamestari"
@@ -690,8 +690,8 @@ msgid "Humalaneuvos"
 msgstr "Hop Councillor"
 
 #: src/resources/achievements/humalat_7.tres
-msgid "Avaa 7 humalalajiketta reputaation kautta."
-msgstr "Unlock 7 hop varieties through reputation."
+msgid "Avaa 7 humalalajiketta maineen avulla."
+msgstr "Unlock 7 hop varieties with reputation."
 
 #: src/resources/achievements/humalat_7.tres
 msgid "Humalapuutarhuri"
