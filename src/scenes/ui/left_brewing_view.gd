@@ -25,6 +25,7 @@ var _fill_from_inventory_button : Button = null
 
 func _ready() -> void:
 	SliderStepper.wrap(main_slider)
+	ingredient_type_selector.add_step_buttons(current_item_label)
 	main_slider.value_changed.connect(_on_slider_changed)
 	GUISignals.active_ingredient_changed.connect(_set_active_ingredient)
 	# Without this, the slider's max_value only ever refreshed at the

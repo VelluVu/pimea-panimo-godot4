@@ -28,6 +28,7 @@ var current_id: int = -1
 
 func _ready() -> void:
 	SliderStepper.wrap(main_slider)
+	ingredient_type_selector.add_step_buttons(current_item_label)
 	main_slider.value_changed.connect(_on_slider_changed)
 	upgrades_button.pressed.connect(func() -> void: GUISignals.cellar_upgrades_requested.emit())
 	GUISignals.active_ingredient_changed.connect(_on_ingredient_selected_globally)

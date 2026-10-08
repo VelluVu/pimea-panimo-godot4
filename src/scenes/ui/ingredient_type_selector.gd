@@ -20,6 +20,7 @@ const TYPES_BY_TAB : Array[IngredientData.IngredientType] = [
 
 @onready var tab_bar : TabBar = $TabBar
 @onready var option_button : IngredientOptionButton = $IngredientRow/IngredientOptionButton
+@onready var ingredient_row : HBoxContainer = $IngredientRow
 
 
 func _ready() -> void:
@@ -67,3 +68,11 @@ func _make_swatch_texture(color : Color) -> ImageTexture:
 	var image : Image = Image.create(TAB_ICON_SIZE, TAB_ICON_SIZE, false, Image.FORMAT_RGBA8)
 	image.fill(color)
 	return ImageTexture.create_from_image(image)
+
+
+## Puts < and > beside the dropdown and moves `amount_label` (the shop's or brew view's
+## amount text) to its own line below, so the arrows leave the names room.
+func add_step_buttons(amount_label : Label) -> void:
+	OptionStepper.wrap(option_button)
+	amount_label.reparent(self)
+	move_child(amount_label, ingredient_row.get_index() + 1)
