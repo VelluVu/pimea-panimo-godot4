@@ -9,3 +9,4 @@ description = "Kellarista on tullut kulttipaikka. Asiakkaat maksavat tiskillä m
 icon_placeholder = "🏆"
 tier = 2
 counter_price_multiplier = 1.15
+tip_double_chance = 0.05
