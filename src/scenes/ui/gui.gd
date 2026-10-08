@@ -44,7 +44,12 @@ func _ready() -> void:
 	_views = GuiViewSwitcher.new(shop_view, brewery_view, brew_preparation_panel, shop_entrance_panel, brewery_entrance_panel)
 	_assert_default_visibility()
 	add_child(TouchTooltip.new())
-	add_child(TouchHints.new())
+	var touch_hints := TouchHints.new()
+	add_child(touch_hints)
+	if DisplayServer.is_touchscreen_available():
+		TouchHints.make_button(options_button).pressed.connect(func() -> void:
+			if not _views.is_away_from_bar():
+				touch_hints.toggle())
 	# Slot the goals panel and the passive banners below the first panel (the warehouse)
 	# so open panels and windows cover them instead of colliding with their text.
 	for passive : Control in [daily_goals_panel, group_visit_banner, first_brew_hint_banner, day_event_banner]:
