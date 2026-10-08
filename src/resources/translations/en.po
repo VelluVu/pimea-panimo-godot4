@@ -3524,9 +3524,11 @@ msgstr "Steady Reputation"
 
 #: src/resources/perks/vakiintunut_reitti.tres
 msgid ""
-"Jakelureittisi vakiintuu: halpamyynnin ja baarivientien tulot kasvavat "
+"Toimituskohteesi vakiintuvat: halpamyynnin ja baarivientien tulot kasvavat "
 "tasaisesti."
-msgstr "Your delivery route settles in: bulk sales and bar shipments grow steadily."
+msgstr ""
+"Your delivery customers become regulars: bulk sales and bar shipments grow "
+"steadily."
 
 #: src/resources/perks/vakiintunut_reitti.tres
 msgid "Vakiintunut reitti"
