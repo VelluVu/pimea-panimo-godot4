@@ -44,6 +44,7 @@ func _ready() -> void:
 	_views = GuiViewSwitcher.new(shop_view, brewery_view, brew_preparation_panel, shop_entrance_panel, brewery_entrance_panel)
 	_assert_default_visibility()
 	add_child(TouchTooltip.new())
+	add_child(PortraitNotice.new())
 	var touch_hints := TouchHints.new()
 	add_child(touch_hints)
 	if DisplayServer.is_touchscreen_available():
