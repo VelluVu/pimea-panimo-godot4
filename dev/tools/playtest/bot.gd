@@ -433,6 +433,8 @@ func _maybe_ship(b: Brewery) -> void:
 	var pick: BrewBatch = null
 	var pick_demand: float = INF
 	for batch: BrewBatch in b.inventory.brew_batches:
+		if not KegRules.can_leave_as_keg(batch.amount_bottles):
+			continue
 		if not goal_open and (total - batch.amount_bottles < COUNTER_STOCK or _still_aging(batch)):
 			continue
 		var raw_cost: float = b.resolver.get_price_breakdown(batch.beer_style).raw_cost_per_bottle
@@ -660,6 +662,9 @@ func _cash_out(b: Brewery, closing: bool = false) -> void:
 	if not _is_last_day(b) or not closing and TimeManager.get_day_progress() < CASH_OUT_PROGRESS:
 		return
 	for batch: BrewBatch in b.inventory.brew_batches.duplicate():
+		# A drawn keg can't leave the cellar; the counter sells what is left.
+		if not KegRules.can_leave_as_keg(batch.amount_bottles):
+			continue
 		var raw_cost: float = b.resolver.get_price_breakdown(batch.beer_style).raw_cost_per_bottle
 		var bar: BarContact = _richest_bar_below(b, b.get_effective_raid_threshold())
 		var bulk: float = BatchDistributor.calculate_bulk_sell_payout(raw_cost, batch.current_quality, batch.amount_bottles)
