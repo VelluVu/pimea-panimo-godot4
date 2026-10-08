@@ -9,3 +9,4 @@ description = "Baarimikkosi oppii jutustelemaan asiakkaiden kanssa tiskin yli, j
 icon_placeholder = "😏"
 tier = 2
 tip_income_multiplier = 1.75
+tip_double_chance = 0.05
