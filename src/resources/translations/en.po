@@ -670,8 +670,8 @@ msgid "Ensimmäinen satsi"
 msgstr "First Batch"
 
 #: src/resources/achievements/ensimmainen_satsi.tres
-msgid "Keitä 10 olutsatsia."
-msgstr "Brew 10 batches of beer."
+msgid "Keitä ensimmäinen olutsatsisi."
+msgstr "Brew your first batch of beer."
 
 #: src/resources/achievements/humalat_10.tres
 msgid "Avaa 10 humalalajiketta reputaation kautta."
@@ -804,6 +804,14 @@ msgstr "Brew 50 batches of beer."
 #: src/resources/achievements/panimon_pyorittaja.tres
 msgid "Panimon pyörittäjä"
 msgstr "Brewery Runner"
+
+#: src/resources/achievements/pannu_lampenee.tres
+msgid "Keitä 10 olutsatsia."
+msgstr "Brew 10 batches of beer."
+
+#: src/resources/achievements/pannu_lampenee.tres
+msgid "Pannu lämpenee"
+msgstr "The Kettle Warms Up"
 
 #: src/resources/achievements/pullo_pullolta.tres
 msgid "Myy yhteensä 100 annosta."
