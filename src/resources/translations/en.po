@@ -3569,20 +3569,18 @@ msgstr ""
 "little better."
 
 #: src/resources/perks/tasainen_tienesti.tres
+msgid "Paremmat tipit, vakaa tulonlähde."
+msgstr "Better tips, a steady income."
+
+#: src/resources/perks/tasainen_tienesti.tres
 msgid "Tasainen tienesti"
 msgstr "Steady Earnings"
 
-#: src/resources/perks/tasainen_tienesti.tres
-msgid "Tipit kertyvät suoraviivaisesti, poiminta poiminnalta vakaa tulonlähde."
-msgstr "Tips add up in a straight line, a steady income pick after pick."
-
 #: src/resources/perks/tasainen_varovaisuus.tres
-msgid ""
-"Opit varomaan johdonmukaisesti. LVV:n ratsiakynnys nousee tasaisesti joka "
-"poiminnalla."
+msgid "Opit varomaan johdonmukaisesti. LVV:n ratsiakynnys nousee tasaisesti."
 msgstr ""
 "You learn to be consistently careful. The LVV's raid threshold rises "
-"steadily with every pick."
+"steadily."
 
 #: src/resources/perks/tasainen_varovaisuus.tres
 msgid "Tasainen varovaisuus"

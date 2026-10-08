@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_tasainen_tienesti")
 perk_name = "Tasainen tienesti"
-description = "Tipit kertyvät suoraviivaisesti, poiminta poiminnalta vakaa tulonlähde."
+description = "Paremmat tipit, vakaa tulonlähde."
 icon_placeholder = "🪙"
 tier = 1
 tip_income_multiplier = 1.2
