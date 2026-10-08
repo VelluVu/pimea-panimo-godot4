@@ -2191,8 +2191,8 @@ msgstr ""
 "cellar fills with fans."
 
 #: src/resources/day_events/day_event_none.tres
-msgid "Tavallinen päivä kellarissa. Ei erikoisia yllätyksiä luvassa tänään."
-msgstr "An ordinary day in the cellar. No special surprises expected today."
+msgid "Ei yllätyksiä tänään."
+msgstr "No surprises today."
 
 #: src/resources/day_events/day_event_opintotuki.tres
 msgid ""
