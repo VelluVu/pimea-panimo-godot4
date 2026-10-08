@@ -2228,11 +2228,11 @@ msgstr "Pests ate %d kg of malt from storage."
 
 #: src/resources/day_events/day_event_yllatystarkastus.tres
 msgid ""
-"LVV:n yllätystarkastusviikko alkaa tänään. Odotettavissa epäilyttävän "
-"montaa uutta kasvoa."
+"LVV:n yllätystarkastusviikko alkaa tänään. Odotettavissa epäilyttäviä "
+"tummiin pukeutuneita kyttääjiä."
 msgstr ""
-"The LVV's surprise inspection week starts today. Expect a suspicious number "
-"of new faces."
+"The LVV's surprise inspection week starts today. Expect suspicious snoops "
+"dressed in dark clothes."
 
 #: src/resources/day_events/day_event_zgen_festival.tres
 msgid ""
