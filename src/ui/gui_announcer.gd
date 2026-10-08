@@ -37,7 +37,7 @@ const DAY_EVENT_BANNER_FADE_SECONDS: float = 1.0
 
 ## Same banner language as group visits, held much longer since it is a paragraph
 ## read once at the start of a run. Purely passive.
-const FIRST_BREW_HINT_TEXT: String = "Ovet ovat vielä hetken kiinni. Osta ainekset ja pane ensimmäinen olut rauhassa."
+const FIRST_BREW_HINT_TEXT: String = "Ovet ovat vielä hetken kiinni. Osta raaka-aineet ja pane ensimmäinen olut rauhassa."
 const FIRST_BREW_HINT_FLASH_SECONDS: float = 0.25
 const FIRST_BREW_HINT_HOLD_SECONDS: float = 12.0
 const FIRST_BREW_HINT_FADE_SECONDS: float = 1.2

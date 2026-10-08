@@ -106,7 +106,7 @@ const PERK_REPUTATION_STAT_STRING : String = "Maineen kertymä: %s"
 const PERK_TIP_STAT_STRING : String = "Tipit: %s"
 const PERK_DISTRIBUTION_STAT_STRING : String = "Jakelutulot: %s"
 const PERK_YIELD_STAT_STRING : String = "Annossaanto: %s"
-const PERK_REFUND_CHANCE_STAT_STRING : String = "Ainepalautuksen mahdollisuus: %s"
+const PERK_REFUND_CHANCE_STAT_STRING : String = "Raaka-ainepalautuksen mahdollisuus: %s"
 const PERK_PEAK_SPEED_STAT_STRING : String = "Kypsymisaika: %s"
 const PERK_DECLINE_RATE_STAT_STRING : String = "Heikkeneminen: %s"
 const PERK_SPAWN_INTERVAL_STAT_STRING : String = "Asiakkaiden saapumisväli: %s"
@@ -135,7 +135,7 @@ const PERK_TIER_LEGENDARY : String = "Legendaarinen"
 
 ## RunPerk.get_stat_summary() lines, signed (%+d) since a perk can push either way.
 const PERK_RAID_THRESHOLD_STAT_STRING : String = "Ratsiakynnys: %s"
-const PERK_INGREDIENT_PRICE_STAT_STRING : String = "Ainesten hinnat: %s"
+const PERK_INGREDIENT_PRICE_STAT_STRING : String = "Raaka-aineiden hinnat: %s"
 
 const RUN_EFFECTS_TITLE : String = "Kauden tilastot"
 const RUN_EFFECTS_CLOSE_TEXT : String = "Sulje"

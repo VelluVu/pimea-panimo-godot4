@@ -26,14 +26,6 @@ msgid "Agenttien esiintyvyys: %s"
 msgstr "Agent visits: %s"
 
 #: src/autoload/string_container.gd
-msgid "Ainepalautuksen mahdollisuus: %s"
-msgstr "Ingredient refund chance: %s"
-
-#: src/autoload/string_container.gd
-msgid "Ainesten hinnat: %s"
-msgstr "Ingredient prices: %s"
-
-#: src/autoload/string_container.gd
 msgid "Alfahapot: %s%% / Beetahapot: %s%%"
 msgstr "Alpha acids: %s%% / Beta acids: %s%%"
 
@@ -262,6 +254,14 @@ msgid "Päivätavoitteita päivässä: %s"
 msgstr "Daily goals per day: %s"
 
 #: src/autoload/string_container.gd
+msgid "Raaka-aineiden hinnat: %s"
+msgstr "Ingredient prices: %s"
+
+#: src/autoload/string_container.gd
+msgid "Raaka-ainepalautuksen mahdollisuus: %s"
+msgstr "Ingredient refund chance: %s"
+
+#: src/autoload/string_container.gd
 msgid "Ratsiakynnys tällä kaudella: %d riskiä"
 msgstr "Raid threshold this season: %d risk"
 
@@ -422,10 +422,6 @@ msgid "(ei tallennettuja reseptejä)"
 msgstr "(no saved recipes)"
 
 #: src/console/player_commands.gd
-msgid "Ainesta ei löytynyt: %s"
-msgstr "Ingredient not found: %s"
-
-#: src/console/player_commands.gd
 msgid "Ei aktiivista panimoa."
 msgstr "No active brewery."
 
@@ -434,11 +430,11 @@ msgid "Keitetään: %s"
 msgstr "Brewing: %s"
 
 #: src/console/player_commands.gd
-msgid "Keittäminen epäonnistui: %s (ei tarpeeksi aineksia varastossa?)"
+msgid "Keittäminen epäonnistui: %s (ei tarpeeksi raaka-aineita varastossa?)"
 msgstr "Brewing failed: %s (not enough ingredients in storage?)"
 
 #: src/console/player_commands.gd
-msgid "Käyttö: <komento> <aines> <määrä>"
+msgid "Käyttö: <komento> <raaka-aine> <määrä>"
 msgstr "Usage: <command> <ingredient> <amount>"
 
 #: src/console/player_commands.gd
@@ -474,6 +470,10 @@ msgid "Pöydälle lisätty: %s x%d"
 msgstr "Added to the table: %s x%d"
 
 #: src/console/player_commands.gd
+msgid "Raaka-ainetta ei löytynyt: %s"
+msgstr "Ingredient not found: %s"
+
+#: src/console/player_commands.gd
 msgid "Reseptiä ei löytynyt: %s. Tallennetut: %s"
 msgstr "Recipe not found: %s. Saved: %s"
 
@@ -482,7 +482,7 @@ msgid "Reseptiä ei tallennettu (pöytä tyhjä tai oluttyyli ei vielä tuttu)"
 msgstr "Recipe not saved (the table is empty or the beer style is not known yet)"
 
 #: src/console/player_commands.gd
-msgid "Valmistelu tyhjennetty, ainekset palautettu varastoon."
+msgid "Valmistelu tyhjennetty, raaka-aineet palautettu varastoon."
 msgstr "Table cleared, ingredients returned to storage."
 
 #: src/console/player_commands.gd
@@ -494,19 +494,19 @@ msgid "keitä <resepti>"
 msgstr "keitä <recipe>"
 
 #: src/console/player_commands.gd
-msgid "myy <aines> <määrä>"
+msgid "myy <raaka-aine> <määrä>"
 msgstr "myy <ingredient> <amount>"
 
 #: src/console/player_commands.gd
-msgid "osta <aines> <määrä>"
+msgid "osta <raaka-aine> <määrä>"
 msgstr "osta <ingredient> <amount>"
 
 #: src/console/player_commands.gd
-msgid "poista <aines> <määrä>"
+msgid "poista <raaka-aine> <määrä>"
 msgstr "poista <ingredient> <amount>"
 
 #: src/console/player_commands.gd
-msgid "pöytään <aines> <määrä>"
+msgid "pöytään <raaka-aine> <määrä>"
 msgstr "pöytään <ingredient> <amount>"
 
 #: src/customers/customer_data.gd
@@ -599,16 +599,6 @@ msgstr "Back again! %s"
 
 #: src/customers/sale_receipt_entry.gd
 msgid ""
-"Ainekset: %.2f €\n"
-"Kate: %.2f €\n"
-"= Hinta/annos: %.2f €"
-msgstr ""
-"Ingredients: %.2f €\n"
-"Margin: %.2f €\n"
-"= Price/serving: %.2f €"
-
-#: src/customers/sale_receipt_entry.gd
-msgid ""
 "Myynti: +%.1f €\n"
 "Tippi: +%.1f €\n"
 "TILILLE: +%.1f €"
@@ -616,6 +606,16 @@ msgstr ""
 "Sale: +%.1f €\n"
 "Tip: +%.1f €\n"
 "TOTAL: +%.1f €"
+
+#: src/customers/sale_receipt_entry.gd
+msgid ""
+"Raaka-aineet: %.2f €\n"
+"Kate: %.2f €\n"
+"= Hinta/annos: %.2f €"
+msgstr ""
+"Ingredients: %.2f €\n"
+"Margin: %.2f €\n"
+"= Price/serving: %.2f €"
 
 #: src/events/day_event_data.gd
 msgid "Tavallinen päivä kellarissa."
@@ -2512,8 +2512,8 @@ msgstr ""
 
 #: src/resources/guide/02_keittaminen.tres
 msgid ""
-"Avaa keittola, lisää ainekset pöydälle ja paina Pane. Valmis tynnyri menee "
-"varastoon."
+"Avaa keittola, lisää raaka-aineet pöydälle ja paina Pane. Valmis tynnyri "
+"menee varastoon."
 msgstr ""
 "Open the brewhouse, add ingredients to the table and press Brew. The "
 "finished keg goes into storage."
@@ -2597,7 +2597,7 @@ msgstr ""
 "lowers the raid limit."
 
 #: src/resources/guide/04_maine.tres
-msgid "Maine avaa uusia aineksia ja tuo uusia asiakkaita."
+msgid "Maine avaa uusia raaka-aineita ja tuo uusia asiakkaita."
 msgstr "Reputation unlocks new ingredients and brings new customers."
 
 #: src/resources/guide/04_maine.tres
@@ -2650,8 +2650,8 @@ msgstr ""
 
 #: src/resources/guide/065_etujen_arvot.tres
 msgid ""
-"Alle 1 oleva kerroin pienentää: Ainesten hinnat ×0.90 tarkoittaa 10 % "
-"halvempia aineksia."
+"Alle 1 oleva kerroin pienentää: Raaka-aineiden hinnat ×0.90 tarkoittaa 10 % "
+"halvempia raaka-aineita."
 msgstr ""
 "A multiplier below 1 reduces: Ingredient prices ×0.90 means ingredients 10 "
 "% cheaper."
@@ -3075,7 +3075,7 @@ msgstr "A Good Eye"
 #: src/resources/meta_unlocks/hygieniamestari.tres
 msgid ""
 "Vuosien kokemus on hionut annostelusi lähes täydelliseksi. Jokaisella "
-"panolla on pysyvästi entistäkin parempi mahdollisuus saada aineksia "
+"panolla on pysyvästi entistäkin parempi mahdollisuus saada raaka-aineita "
 "takaisin varastoon."
 msgstr ""
 "Years of practice have made your measuring almost perfect. Every brew has a "
@@ -3095,8 +3095,8 @@ msgstr ""
 
 #: src/resources/meta_unlocks/kaymisen_hallinta.tres
 msgid ""
-"Osaat arvioida ainesmäärät tarkasti. Jokaisella panolla on pysyvä "
-"mahdollisuus saada osa aineksista takaisin varastoon."
+"Osaat arvioida raaka-ainemäärät tarkasti. Jokaisella panolla on pysyvä "
+"mahdollisuus saada osa raaka-aineista takaisin varastoon."
 msgstr ""
 "You judge ingredient amounts precisely. Every brew has a permanent chance "
 "of returning some ingredients to storage."
@@ -3134,7 +3134,9 @@ msgid "Neuvottelutaito"
 msgstr "Haggling"
 
 #: src/resources/meta_unlocks/neuvottelutaito.tres
-msgid "Osaat tinkiä ainesten hinnoista. Ostot ovat pysyvästi hieman halvempia."
+msgid ""
+"Osaat tinkiä raaka-aineiden hinnoista. Ostot ovat pysyvästi hieman "
+"halvempia."
 msgstr ""
 "You know how to haggle over ingredient prices. Purchases are permanently a "
 "little cheaper."
@@ -3284,7 +3286,7 @@ msgstr "Discount Coupon"
 
 #: src/resources/perks/alennuskuponki.tres
 msgid ""
-"Kauppa antaa sinulle kanta-asiakasalennuksen. Ainekset ovat hieman "
+"Kauppa antaa sinulle kanta-asiakasalennuksen. Raaka-aineet ovat hieman "
 "halvempia."
 msgstr "The shop gives you a loyalty discount. Ingredients are a little cheaper."
 
@@ -3492,7 +3494,7 @@ msgstr "Your Own Importer"
 
 #: src/resources/perks/oma_maahantuoja.tres
 msgid ""
-"Tuot ainekset itse suoraan tuottajilta, joten ostot ovat merkittävästi "
+"Tuot raaka-aineet itse suoraan tuottajilta, joten ostot ovat merkittävästi "
 "halvempia."
 msgstr ""
 "You import ingredients straight from the producers, so buying is "
@@ -3529,7 +3531,9 @@ msgid "Pyöristys ylöspäin"
 msgstr "Round It Up"
 
 #: src/resources/perks/saastavainen_pullottaja.tres
-msgid "Lasket hävikin ja ainekset tarkemmin, ja tuotantomäärät kasvavat selvästi."
+msgid ""
+"Lasket hävikin ja raaka-aineet tarkemmin, ja tuotantomäärät kasvavat "
+"selvästi."
 msgstr ""
 "You calculate losses and ingredients more precisely, and your output grows "
 "noticeably."
@@ -3974,7 +3978,7 @@ msgstr "Achievements (%d/%d)"
 #: src/scenes/ui/bar_contact_option_button.gd
 msgid ""
 "%s\n"
-"Maksukerroin: x%.2f ainesten hinnasta\n"
+"Maksukerroin: x%.2f raaka-aineiden hinnasta\n"
 "LVV-riski per toimitus: +%d"
 msgstr ""
 "%s\n"
@@ -4021,7 +4025,7 @@ msgstr "Sell"
 msgid ""
 "Myy koko erä kerralla varastosta. Hinta on paljon normaalia myyntihintaa "
 "halvempi, ja heikkolaatuinen tai vanhentunut erä voi tuottaa jopa tappiota "
-"ainesten hintaan nähden."
+"raaka-aineiden hintaan nähden."
 msgstr ""
 "Sell the whole batch from storage at once. The price is far below a normal "
 "sale, and a poor or old batch can even sell for less than its ingredients "
@@ -4048,7 +4052,7 @@ msgid "+%d XP"
 msgstr "+%d XP"
 
 #: src/scenes/ui/brew_preparation_panel.gd
-msgid "Ainekset eivät sovi mihinkään oluttyyliin."
+msgid "Raaka-aineet eivät sovi mihinkään oluttyyliin."
 msgstr "These ingredients don't fit any beer style."
 
 #: src/scenes/ui/brew_preparation_panel.gd
@@ -4100,16 +4104,16 @@ msgid "(kanta-asiakas)"
 msgstr "(regular)"
 
 #: src/scenes/ui/customer_book_window.gd
-msgid "Ainekset"
-msgstr "Ingredients"
-
-#: src/scenes/ui/customer_book_window.gd
 msgid "Asiakkaat"
 msgstr "Customers"
 
 #: src/scenes/ui/customer_book_window.gd
 msgid "Ohjeet"
 msgstr "Guide"
+
+#: src/scenes/ui/customer_book_window.gd
+msgid "Raaka-aineet"
+msgstr "Ingredients"
 
 #: src/scenes/ui/daily_goals_panel.gd
 msgid "Hiivaa: %d/1"
@@ -4356,8 +4360,8 @@ msgstr "NEW!"
 
 #: src/scenes/ui/left_brewing_view.gd
 msgid ""
-"Täytä puuttuvat ainekset pöydälle varastosta ladatun reseptin mukaan. Pois "
-"käytöstä, jos varastossa ei ole tarpeeksi jotain ainesta."
+"Täytä puuttuvat raaka-aineet pöydälle varastosta ladatun reseptin mukaan. "
+"Pois käytöstä, jos varastossa ei ole tarpeeksi jotain raaka-ainetta."
 msgstr ""
 "Put the missing ingredients for the loaded recipe on the table from "
 "storage. Disabled if storage is short of any ingredient."
@@ -4543,7 +4547,7 @@ msgid "Halpamyynti: %s x%d  +%.1f €"
 msgstr "Bulk sale: %s x%d  +%.1f €"
 
 #: src/scenes/ui/sale_flash_stack.gd
-msgid "Osa aineksista säästyi panon yhteydessä!"
+msgid "Osa raaka-aineista säästyi panon yhteydessä!"
 msgstr "Some ingredients were saved during brewing!"
 
 #: src/scenes/ui/sale_flash_stack.gd
@@ -4673,7 +4677,7 @@ msgid "[color=lightgreen]Uusi oluttyyli löydetty: %s[/color]"
 msgstr "[color=lightgreen]New beer style discovered: %s[/color]"
 
 #: src/systems/console/console_wiring.gd
-msgid "[color=lightgreen]Uusia aineksia: %s[/color]"
+msgid "[color=lightgreen]Uusia raaka-aineita: %s[/color]"
 msgstr "[color=lightgreen]New ingredients: %s[/color]"
 
 #: src/systems/console/console_wiring.gd
@@ -4763,7 +4767,7 @@ msgid "Reset to defaults"
 msgstr "Reset to defaults"
 
 #: src/systems/input/input_wiring.gd
-msgid "Edellinen aines"
+msgid "Edellinen raaka-aine"
 msgstr "Previous ingredient"
 
 #: src/systems/input/input_wiring.gd
@@ -4807,11 +4811,11 @@ msgid "Panimo"
 msgstr "Brewery"
 
 #: src/systems/input/input_wiring.gd
-msgid "Seuraava aines"
+msgid "Seuraava raaka-aine"
 msgstr "Next ingredient"
 
 #: src/systems/input/input_wiring.gd
-msgid "Seuraava ainesryhmä (Shift: edellinen)"
+msgid "Seuraava raaka-aineryhmä (Shift: edellinen)"
 msgstr "Next ingredient type (Shift: previous)"
 
 #: src/systems/input/input_wiring.gd
@@ -4831,7 +4835,7 @@ msgid "Ei täsmää vielä mihinkään tyyliin. (EBC %d, IBU %d)"
 msgstr "Doesn't match any style yet. (EBC %d, IBU %d)"
 
 #: src/ui/brew_preview_text.gd
-msgid "Lisää aineksia nähdäksesi arvion."
+msgid "Lisää raaka-aineita nähdäksesi arvion."
 msgstr "Add ingredients to see an estimate."
 
 #: src/ui/brew_preview_text.gd
@@ -4952,7 +4956,7 @@ msgstr "Your reputation rose: %s!"
 
 #: src/ui/gui_announcer.gd
 msgid ""
-"Ovet ovat vielä hetken kiinni. Osta ainekset ja pane ensimmäinen olut "
+"Ovet ovat vielä hetken kiinni. Osta raaka-aineet ja pane ensimmäinen olut "
 "rauhassa."
 msgstr ""
 "The doors stay shut for now. Buy ingredients and brew your first beer in "
@@ -5287,11 +5291,11 @@ msgstr ""
 "-%d %%"
 
 #: src/ui/toast_text.gd
-msgid "Uusi aines: %s"
+msgid "Uusi raaka-aine: %s"
 msgstr "New ingredient: %s"
 
 #: src/ui/toast_text.gd
-msgid "Uusia aineksia: %s"
+msgid "Uusia raaka-aineita: %s"
 msgstr "New ingredients: %s"
 
 #: src/ui/touch_hints.gd

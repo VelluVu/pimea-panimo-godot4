@@ -65,8 +65,8 @@ func test_no_unlocks_means_no_toast() -> void:
 
 func test_a_big_unlock_lists_two_names_and_counts_the_rest() -> void:
 	var unlocked : Array[IngredientData] = [_ingredient("Cascade-humala"), _ingredient("Citra-humala"), _ingredient("Kahvi"), _ingredient("Kaakaonibsit")]
-	assert_eq(ToastTextScript.ingredients_unlocked(unlocked), "Uusia aineksia: Cascade, Citra +2")
+	assert_eq(ToastTextScript.ingredients_unlocked(unlocked), "Uusia raaka-aineita: Cascade, Citra +2")
 
 
 func test_one_unlock_names_it_in_full() -> void:
-	assert_eq(ToastTextScript.ingredients_unlocked([_ingredient("Kahvi")] as Array[IngredientData]), "Uusi aines: Kahvi")
+	assert_eq(ToastTextScript.ingredients_unlocked([_ingredient("Kahvi")] as Array[IngredientData]), "Uusi raaka-aine: Kahvi")

@@ -10,8 +10,8 @@ const GOAL_FAILED_FORMAT : String = "%s epäonnistui: %d maine / +%d LVV-riski"
 ## gets its own toast instead of a confusing "0 maine / +0 LVV-riski".
 const GOAL_FAILED_NO_PENALTY_FORMAT : String = "%s epäonnistui: ei seurauksia"
 const EARLY_CLOSE_FORMAT : String = "Ovet suljettu aikaisin: -%.1f €, mainetta -%d, LVV-riski -%d"
-const INGREDIENT_UNLOCKED_FORMAT : String = "Uusi aines: %s"
-const INGREDIENTS_UNLOCKED_FORMAT : String = "Uusia aineksia: %s"
+const INGREDIENT_UNLOCKED_FORMAT : String = "Uusi raaka-aine: %s"
+const INGREDIENTS_UNLOCKED_FORMAT : String = "Uusia raaka-aineita: %s"
 ## The shop popup stays small: a few names, then how many more.
 const MAX_LISTED_INGREDIENTS : int = 2
 const MORE_INGREDIENTS_FORMAT : String = "%s +%d"
