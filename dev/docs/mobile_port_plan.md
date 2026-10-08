@@ -30,7 +30,8 @@ Started 2026-10-08.
 
 ## Steps
 
-1. **Touch input basics** (small, no layout change)
+1. **Touch input basics** (small, no layout change). Done 2026-10-08 (`8b3096c`): hold for
+   tooltips (`TouchTooltip`), hotspot hints on the bar view (`TouchHints`), console hidden on touch.
    - Press-and-hold opens the tooltip, in `src/systems/tooltip/` so every tooltip gets it;
      a tap elsewhere closes it.
    - Hover glow: on touch devices show the clickable outlines in another way (a short pulse
