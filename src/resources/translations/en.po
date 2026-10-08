@@ -2131,7 +2131,7 @@ msgstr "Ship a keg to a bar"
 #: src/resources/day_events/day_event_eukonkanto.tres
 msgid ""
 "Eukonkanto-kisat järjestetään tänään lähistöllä. Odotettavissa "
-"testosteronin täyteisiä vahvoja asiakkaita ryhmittäin."
+"testosteronintäyteisiä vahvoja asiakkaita ryhmittäin."
 msgstr ""
 "The wife-carrying championships are held nearby today. Expect groups of "
 "strong customers full of testosterone."
