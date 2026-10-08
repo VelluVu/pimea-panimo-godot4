@@ -3286,10 +3286,10 @@ msgstr "King of the District"
 
 #: src/resources/perks/alueen_kuningas.tres
 msgid ""
-"Jokainen baari kaupungissa haluaa tavaraasi. Halpamyynnin ja baarivientien "
-"tulot ovat merkittävästi paremmat."
+"Jokainen baari kaupungissa haluaa tuotteitasi. Halpamyynnin ja "
+"baarivientien tulot ovat merkittävästi paremmat."
 msgstr ""
-"Every bar in town wants your stuff. Bulk sales and bar shipments earn "
+"Every bar in town wants your products. Bulk sales and bar shipments earn "
 "significantly more."
 
 #: src/resources/perks/anteliaat_asiakkaat.tres
