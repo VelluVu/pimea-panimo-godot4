@@ -26,7 +26,7 @@ extends Resource
 @export var aged_price_multiplier : float = 1.0
 
 const SUMMARY_FORMAT : String = "%s x%d"
-const BREAKDOWN_FORMAT : String = "Raaka-aineet: %.2f €\nKate: %.2f €\n= Hinta/annos: %.2f €"
+const BREAKDOWN_FORMAT : String = "Ainekset: %.2f €\nKate: %.2f €\n= Hinta/annos: %.2f €"
 const TOTALS_FORMAT : String = "Myynti: +%.1f €\nTippi: +%.1f €\nTILILLE: +%.1f €"
 
 

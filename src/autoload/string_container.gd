@@ -135,7 +135,7 @@ const PERK_TIER_LEGENDARY : String = "Legendaarinen"
 
 ## RunPerk.get_stat_summary() lines, signed (%+d) since a perk can push either way.
 const PERK_RAID_THRESHOLD_STAT_STRING : String = "Ratsiakynnys: %s"
-const PERK_INGREDIENT_PRICE_STAT_STRING : String = "Ainehinnat: %s"
+const PERK_INGREDIENT_PRICE_STAT_STRING : String = "Ainesten hinnat: %s"
 
 const RUN_EFFECTS_TITLE : String = "Kauden tilastot"
 const RUN_EFFECTS_CLOSE_TEXT : String = "Sulje"

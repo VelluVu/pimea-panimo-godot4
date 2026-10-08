@@ -5,7 +5,7 @@ const AMOUNT_FORMAT : String = "%d %s"
 const FILL_FROM_INVENTORY_BUTTON_TEXT : String = "Täytä resepti"
 ## Same height as the scene's other buttons, a comfortable finger target.
 const FILL_BUTTON_HEIGHT : float = 26.0
-const FILL_FROM_INVENTORY_BUTTON_TOOLTIP : String = "Täytä puuttuvat ainesosat pöydälle varastosta ladatun reseptin mukaan. Pois käytöstä, jos varastossa ei ole tarpeeksi jotain ainesosaa."
+const FILL_FROM_INVENTORY_BUTTON_TOOLTIP : String = "Täytä puuttuvat ainekset pöydälle varastosta ladatun reseptin mukaan. Pois käytöstä, jos varastossa ei ole tarpeeksi jotain ainesta."
 
 @onready var current_item_label : Label = %BrewingItemLabel
 @onready var ingredient_type_selector : IngredientTypeSelector = %BrewingTypeSelector
