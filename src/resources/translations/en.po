@@ -1485,8 +1485,8 @@ msgid "Ooh, %s! Tää näyttää kuvassa tosi hyvältä..."
 msgstr "Ooh, %s! This looks so good on camera..."
 
 #: src/resources/customers/kesamies.tres
-msgid "Tää näyttää ihan tunkilta kuvissa, en voi ottaa tätä."
-msgstr "This looks like total junk in photos, I can't take it."
+msgid "Tää näyttää ihan surkeelta kuvissa, en voi ottaa tätä."
+msgstr "This looks awful in photos, I can't take it."
 
 #: src/resources/customers/kesamies.tres
 msgid "Väri on ihan täydellinen, tää menee suoraan tarinaan!"
