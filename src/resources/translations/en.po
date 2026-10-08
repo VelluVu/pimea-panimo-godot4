@@ -1673,12 +1673,12 @@ msgid "Don ei näe täällä mitään, mistä kannattaisi maksaa..."
 msgstr "The Don sees nothing here worth paying for..."
 
 #: src/resources/customers/mafioso.tres
-msgid "Don kuulostaa kiinnostuneelta liiketoiminnastanne. Näytä mitä teillä on."
-msgstr "The Don is interested in your business. Show me what you've got."
-
-#: src/resources/customers/mafioso.tres
 msgid "Don lähettää kiitokset."
 msgstr "The Don sends his thanks."
+
+#: src/resources/customers/mafioso.tres
+msgid "Don on kiinnostunut liiketoiminnastanne. Näytä mitä teillä on."
+msgstr "The Don is interested in your business. Show me what you've got."
 
 #: src/resources/customers/mafioso.tres
 msgid "Don on kiinnostunut: %s. Katsotaan, kelpaako se."
