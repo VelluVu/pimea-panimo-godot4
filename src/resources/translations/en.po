@@ -3529,8 +3529,10 @@ msgid "Pyöristys ylöspäin"
 msgstr "Round It Up"
 
 #: src/resources/perks/saastavainen_pullottaja.tres
-msgid "Hukkaa ei synny: jokaisesta erästä saa selvästi enemmän annoksia."
-msgstr "Nothing goes to waste: every batch gives noticeably more servings."
+msgid "Lasket hävikin ja ainekset tarkemmin, ja tuotantomäärät kasvavat selvästi."
+msgstr ""
+"You calculate losses and ingredients more precisely, and your output grows "
+"noticeably."
 
 #: src/resources/perks/saastavainen_pullottaja.tres
 msgid "Säästäväinen panija"
@@ -3583,12 +3585,14 @@ msgid "Tasainen varovaisuus"
 msgstr "Steady Caution"
 
 #: src/resources/perks/tiivis_pullotus.tres
-msgid "Tarkka tynnyröinti"
-msgstr "Careful Kegging"
+msgid ""
+"Tunnet keittimesi paremmin, ja jokaisesta erästä riittää hieman enemmän "
+"annoksia."
+msgstr "You know your kettle better, and every batch gives a few more servings."
 
 #: src/resources/perks/tiivis_pullotus.tres
-msgid "Tynnyröit tarkemmin, ja jokaisesta erästä riittää hieman enemmän annoksia."
-msgstr "You keg more carefully, and every batch gives a few more servings."
+msgid "Tuttu keitin"
+msgstr "Familiar Kettle"
 
 #: src/resources/perks/tukkurin_tuttu.tres
 msgid "Tukkurin tuttu"
