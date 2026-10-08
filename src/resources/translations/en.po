@@ -1945,7 +1945,7 @@ msgid "Mitä, eikö täällä oo mitään kylmää juotavaa..."
 msgstr "What, isn't there anything cold to drink here..."
 
 #: src/resources/customers/raksamies.tres
-msgid "No käyppä tämäkin."
+msgid "No käypä tämäkin."
 msgstr "Well, this'll do too."
 
 #: src/resources/customers/raksamies.tres
