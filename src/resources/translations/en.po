@@ -1933,16 +1933,16 @@ msgid ""
 msgstr "Nothing here for grown-ups. After a workday I really need a proper beer."
 
 #: src/resources/customers/raksamies.tres
+msgid "Jaa, eipä täällä oo mitään työläiselle passelia..."
+msgstr "Huh, nothing here fit for a working man..."
+
+#: src/resources/customers/raksamies.tres
 msgid "Just tätä tarvittiin homman jälkeen!"
 msgstr "Just what we needed after the job!"
 
 #: src/resources/customers/raksamies.tres
 msgid "Kuha jotaki saa kurkusta alas."
 msgstr "As long as it goes down."
-
-#: src/resources/customers/raksamies.tres
-msgid "Mitä, eikö täällä oo mitään kylmää juotavaa..."
-msgstr "What, isn't there anything cold to drink here..."
 
 #: src/resources/customers/raksamies.tres
 msgid "No käypä tämäkin."
