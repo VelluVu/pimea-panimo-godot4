@@ -5,6 +5,8 @@ extends PanelContainer
 const INGREDIENT_LABEL_WITH_TARGET_STRING : String = "%s: %d/%d %s"
 const RECIPE_SAVED_TOAST_FORMAT : String = "Resepti \"%s\" tallennettu!"
 const REJECT_TOAST_STRING : String = "Tuntematon oluttyyli. Keitä se ensin selvittääksesi reseptin!"
+const NO_STYLE_TOAST_STRING : String = "Ainekset eivät sovi mihinkään oluttyyliin."
+const DUPLICATE_TOAST_FORMAT : String = "Sama resepti on jo tallennettu: %s"
 const REJECT_TOAST_FLASH_COLOR : Color = Color(1.4, 0.6, 0.6, 1.0)
 const SAVE_TOAST_FLASH_SECONDS : float = 0.15
 const SAVE_TOAST_HOLD_SECONDS : float = 1.2
@@ -83,8 +85,14 @@ func _on_recipe_saved(recipe_name : String) -> void:
 	_toast.present(tr(RECIPE_SAVED_TOAST_FORMAT) % recipe_name)
 
 
-func _on_recipe_save_rejected() -> void:
-	_toast.present(tr(REJECT_TOAST_STRING), REJECT_TOAST_FLASH_COLOR)
+func _on_recipe_save_rejected(reason : int, same_recipe_name : String) -> void:
+	var text : String = tr(REJECT_TOAST_STRING)
+	match reason:
+		RecipeSaveRules.Rejection.NO_STYLE:
+			text = tr(NO_STYLE_TOAST_STRING)
+		RecipeSaveRules.Rejection.DUPLICATE:
+			text = tr(DUPLICATE_TOAST_FORMAT) % same_recipe_name
+	_toast.present(text, REJECT_TOAST_FLASH_COLOR)
 
 
 func _initialize_table_nodes() -> void:

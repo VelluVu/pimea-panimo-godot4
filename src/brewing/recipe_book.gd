@@ -32,17 +32,16 @@ func _on_save_recipe_requested() -> void:
 	if brewery.brew_preparation.selected_contents.is_empty():
 		return
 
-	var preview : BrewResult = brewery.resolver.resolve_brew_style(brewery.brew_preparation.selected_contents)
-	if preview == null:
+	var contents : Dictionary = brewery.brew_preparation.selected_contents
+	var preview : BrewResult = brewery.resolver.resolve_brew_style(contents)
+	var style_known : bool = preview != null and brewery.is_style_known(preview.beer_style.style)
+	var rejection : RecipeSaveRules.Rejection = RecipeSaveRules.rejection(preview, style_known, contents, brewery.saved_recipes)
+	if rejection != RecipeSaveRules.Rejection.NONE:
+		var same : BrewRecipe = RecipeSaveRules.find_same(contents, brewery.saved_recipes)
+		BrewerySignals.recipe_save_rejected.emit(rejection, RecipeNameText.display(same) if same != null else "")
 		return
 
-	# Saving would reveal an undiscovered style's name. Styles save themselves
-	# when discovered.
-	if not brewery.is_style_known(preview.beer_style.style):
-		BrewerySignals.recipe_save_rejected.emit()
-		return
-
-	save_recipe(preview.beer_style, brewery.brew_preparation.selected_contents.duplicate())
+	save_recipe(preview.beer_style, contents.duplicate())
 
 
 func save_recipe(beer_style : BeerStyle, ingredient_amounts : Dictionary) -> void:
