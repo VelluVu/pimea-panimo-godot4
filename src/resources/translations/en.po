@@ -1957,8 +1957,8 @@ msgid "Toi %s kelpaa hyvin työpäivän päälle..."
 msgstr "That %s will do nicely after a workday..."
 
 #: src/resources/customers/raksamies.tres
-msgid "Tää on aika laimeeta läpänä."
-msgstr "This is pretty weak stuff."
+msgid "Tää on vähän turhan laimeeta litkua."
+msgstr "This stuff is a bit too watery."
 
 #: src/resources/customers/saksalainen_turisti.tres
 msgid "Ach, hier gibt es wohl nichts Richtiges für mich..."
