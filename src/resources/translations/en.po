@@ -1587,10 +1587,6 @@ msgid "EI PAHA, JUODAAN LEIJONIEN KUNNIAKSI!"
 msgstr "NOT BAD, LET'S DRINK TO THE LIONS!"
 
 #: src/resources/customers/leijonafani.tres
-msgid "EI PERSE, LÄHDEN TOISEEN PUBIIN!"
-msgstr "NO WAY, I'M GOING TO ANOTHER PUB!"
-
-#: src/resources/customers/leijonafani.tres
 msgid "LEIJONAT ON UUSI MAAILMAN MESTARI! ANNA KALJAA!"
 msgstr "THE LIONS ARE THE NEW WORLD CHAMPIONS! GIVE ME BEER!"
 
@@ -1605,6 +1601,10 @@ msgstr ""
 #: src/resources/customers/leijonafani.tres
 msgid "MITÄ HÄH?! EI MITÄÄN JUOTAVAA?! PAHEMPI KUIN JATKOAIKATAPPIO!"
 msgstr "WHAT, HUH?! NOTHING TO DRINK?! WORSE THAN LOSING IN OVERTIME!"
+
+#: src/resources/customers/leijonafani.tres
+msgid "MÖRKÖ EI LYÖNYT SISÄÄN! NÄHDÄÄN TORILLA!"
+msgstr "MÖRKÖ DIDN'T SCORE! SEE YOU AT THE MARKET SQUARE!"
 
 #: src/resources/customers/leijonafani.tres
 msgid "TAIVAS VARJELE, MITÄ SIELTÄ TULEE!"
