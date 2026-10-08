@@ -2237,9 +2237,9 @@ msgstr ""
 #: src/resources/day_events/day_event_zgen_festival.tres
 msgid ""
 "Sukupolvi Z:n apokalypsifestivaali käynnissä kaupungissa tänään. "
-"Odotettavissa runsaasti Zgen-asiakkaita."
+"Odotettavissa runsaasti gen Z-asiakkaita."
 msgstr ""
-"The Generation Z apocalypse festival is on in town today. Expect plenty of "
+"Generation Z's apocalypse festival is on in town today. Expect plenty of "
 "Gen Z customers."
 
 #: src/resources/group_events/agentti_lauma.tres
