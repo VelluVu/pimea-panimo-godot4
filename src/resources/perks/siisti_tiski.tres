@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="RunPerk" format=3]
+
+[ext_resource type="Script" uid="uid://dewmdbm4a0vst" path="res://src/progression/run_perk.gd" id="1_siisti_tiski"]
+
+[resource]
+script = ExtResource("1_siisti_tiski")
+perk_name = "Siisti tiski"
+description = "Kiiltävä tiski tekee vaikutuksen, ja asiakkaat maksavat hieman enemmän."
+icon_placeholder = "🧽"
+counter_price_multiplier = 1.04

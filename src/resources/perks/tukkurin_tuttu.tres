@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RunPerk" format=3]
+
+[ext_resource type="Script" uid="uid://dewmdbm4a0vst" path="res://src/progression/run_perk.gd" id="1_tukkurin_tuttu"]
+
+[resource]
+script = ExtResource("1_tukkurin_tuttu")
+perk_name = "Tukkurin tuttu"
+description = "Tunnet tukkurin myyjän, ja hän laskee hinnat sinulle selvästi alemmas."
+icon_placeholder = "📇"
+tier = 1
+ingredient_price_multiplier = 0.9

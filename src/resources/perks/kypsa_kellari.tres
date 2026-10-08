@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="RunPerk" format=3]
+
+[ext_resource type="Script" uid="uid://dewmdbm4a0vst" path="res://src/progression/run_perk.gd" id="1_kypsa_kellari"]
+
+[resource]
+script = ExtResource("1_kypsa_kellari")
+perk_name = "Kypsä kellari"
+description = "Kellarin lämpötila on juuri oikea: oluet kypsyvät hieman nopeammin."
+icon_placeholder = "⏳"
+peak_speed_multiplier = 0.9

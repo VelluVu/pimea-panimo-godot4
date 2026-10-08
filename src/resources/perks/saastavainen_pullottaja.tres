@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RunPerk" format=3]
+
+[ext_resource type="Script" uid="uid://dewmdbm4a0vst" path="res://src/progression/run_perk.gd" id="1_saastavainen_pullottaja"]
+
+[resource]
+script = ExtResource("1_saastavainen_pullottaja")
+perk_name = "Säästäväinen pullottaja"
+description = "Hukkaa ei synny: jokaisesta erästä saa selvästi enemmän annoksia."
+icon_placeholder = "🫗"
+tier = 1
+brew_yield_multiplier = 1.08
