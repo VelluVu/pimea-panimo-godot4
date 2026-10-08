@@ -8,6 +8,7 @@ goal_name = "Vie tynnyreitä baariin"
 goal_type = 6
 target_amount = 2
 progress_format = "%d/%d"
+retired = true
 reward_money = 45
 reward_reputation = 10
 reward_xp = 35
