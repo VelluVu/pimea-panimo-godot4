@@ -11,7 +11,7 @@ extends OptionButton
 ## reputation hasn't unlocked yet are shown disabled instead of hidden, so
 ## the picker itself previews what's coming.
 
-const TOOLTIP_FORMAT : String = "%s\nMaksukerroin: x%.2f raaka-ainehinnasta\nLVV-riski per toimitus: +%d"
+const TOOLTIP_FORMAT : String = "%s\nMaksukerroin: x%.2f ainesten hinnasta\nLVV-riski per toimitus: +%d"
 
 
 func _ready() -> void:

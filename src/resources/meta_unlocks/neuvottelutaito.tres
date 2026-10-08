@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_unlock")
 perk_name = "Neuvottelutaito"
-description = "Osaat tinkiä raaka-aineiden hinnoista. Ostot ovat pysyvästi hieman halvempia."
+description = "Osaat tinkiä ainesten hinnoista. Ostot ovat pysyvästi hieman halvempia."
 icon_placeholder = "🤝"
 ingredient_price_multiplier = 0.98
 stacks_additively = true

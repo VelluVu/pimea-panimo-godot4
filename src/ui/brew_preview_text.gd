@@ -5,7 +5,7 @@ extends RefCounted
 ## BrewResolver result a real brew uses, so players can tune a recipe before spending
 ## ingredients instead of finding out from a failed brew.
 
-const EMPTY_TEXT : String = "Lisää ainesosia nähdäksesi arvion."
+const EMPTY_TEXT : String = "Lisää aineksia nähdäksesi arvion."
 const NOT_ENOUGH_TEXT : String = "Tarvitset ainakin 3 kg mallasta ja hiivan."
 const NO_MATCH_FORMAT : String = "Ei täsmää vielä mihinkään tyyliin. (EBC %d, IBU %d)"
 ## An undiscovered style keeps its name: the name is the reward for brewing it once.

@@ -26,12 +26,12 @@ msgid "Agenttien esiintyvyys: %s"
 msgstr "Agent visits: %s"
 
 #: src/autoload/string_container.gd
-msgid "Ainehinnat: %s"
-msgstr "Ingredient prices: %s"
-
-#: src/autoload/string_container.gd
 msgid "Ainepalautuksen mahdollisuus: %s"
 msgstr "Ingredient refund chance: %s"
+
+#: src/autoload/string_container.gd
+msgid "Ainesten hinnat: %s"
+msgstr "Ingredient prices: %s"
 
 #: src/autoload/string_container.gd
 msgid "Alfahapot: %s%% / Beetahapot: %s%%"
@@ -422,7 +422,7 @@ msgid "(ei tallennettuja reseptejä)"
 msgstr "(no saved recipes)"
 
 #: src/console/player_commands.gd
-msgid "Ainesosaa ei löytynyt: %s"
+msgid "Ainesta ei löytynyt: %s"
 msgstr "Ingredient not found: %s"
 
 #: src/console/player_commands.gd
@@ -434,11 +434,11 @@ msgid "Keitetään: %s"
 msgstr "Brewing: %s"
 
 #: src/console/player_commands.gd
-msgid "Keittäminen epäonnistui: %s (ei tarpeeksi ainesosia varastossa?)"
+msgid "Keittäminen epäonnistui: %s (ei tarpeeksi aineksia varastossa?)"
 msgstr "Brewing failed: %s (not enough ingredients in storage?)"
 
 #: src/console/player_commands.gd
-msgid "Käyttö: <komento> <ainesosa> <määrä>"
+msgid "Käyttö: <komento> <aines> <määrä>"
 msgstr "Usage: <command> <ingredient> <amount>"
 
 #: src/console/player_commands.gd
@@ -494,19 +494,19 @@ msgid "keitä <resepti>"
 msgstr "keitä <recipe>"
 
 #: src/console/player_commands.gd
-msgid "myy <ainesosa> <määrä>"
+msgid "myy <aines> <määrä>"
 msgstr "myy <ingredient> <amount>"
 
 #: src/console/player_commands.gd
-msgid "osta <ainesosa> <määrä>"
+msgid "osta <aines> <määrä>"
 msgstr "osta <ingredient> <amount>"
 
 #: src/console/player_commands.gd
-msgid "poista <ainesosa> <määrä>"
+msgid "poista <aines> <määrä>"
 msgstr "poista <ingredient> <amount>"
 
 #: src/console/player_commands.gd
-msgid "pöytään <ainesosa> <määrä>"
+msgid "pöytään <aines> <määrä>"
 msgstr "pöytään <ingredient> <amount>"
 
 #: src/customers/customer_data.gd
@@ -599,6 +599,16 @@ msgstr "Back again! %s"
 
 #: src/customers/sale_receipt_entry.gd
 msgid ""
+"Ainekset: %.2f €\n"
+"Kate: %.2f €\n"
+"= Hinta/annos: %.2f €"
+msgstr ""
+"Ingredients: %.2f €\n"
+"Margin: %.2f €\n"
+"= Price/serving: %.2f €"
+
+#: src/customers/sale_receipt_entry.gd
+msgid ""
 "Myynti: +%.1f €\n"
 "Tippi: +%.1f €\n"
 "TILILLE: +%.1f €"
@@ -606,16 +616,6 @@ msgstr ""
 "Sale: +%.1f €\n"
 "Tip: +%.1f €\n"
 "TOTAL: +%.1f €"
-
-#: src/customers/sale_receipt_entry.gd
-msgid ""
-"Raaka-aineet: %.2f €\n"
-"Kate: %.2f €\n"
-"= Hinta/annos: %.2f €"
-msgstr ""
-"Ingredients: %.2f €\n"
-"Margin: %.2f €\n"
-"= Price/serving: %.2f €"
 
 #: src/events/day_event_data.gd
 msgid "Tavallinen päivä kellarissa."
@@ -2650,8 +2650,8 @@ msgstr ""
 
 #: src/resources/guide/065_etujen_arvot.tres
 msgid ""
-"Alle 1 oleva kerroin pienentää: Ainehinnat ×0.90 tarkoittaa 10 % halvempia "
-"aineksia."
+"Alle 1 oleva kerroin pienentää: Ainesten hinnat ×0.90 tarkoittaa 10 % "
+"halvempia aineksia."
 msgstr ""
 "A multiplier below 1 reduces: Ingredient prices ×0.90 means ingredients 10 "
 "% cheaper."
@@ -3075,7 +3075,7 @@ msgstr "A Good Eye"
 #: src/resources/meta_unlocks/hygieniamestari.tres
 msgid ""
 "Vuosien kokemus on hionut annostelusi lähes täydelliseksi. Jokaisella "
-"panolla on pysyvästi entistäkin parempi mahdollisuus saada raaka-aineita "
+"panolla on pysyvästi entistäkin parempi mahdollisuus saada aineksia "
 "takaisin varastoon."
 msgstr ""
 "Years of practice have made your measuring almost perfect. Every brew has a "
@@ -3095,8 +3095,8 @@ msgstr ""
 
 #: src/resources/meta_unlocks/kaymisen_hallinta.tres
 msgid ""
-"Osaat arvioida raaka-ainemäärät tarkasti. Jokaisella panolla on pysyvä "
-"mahdollisuus saada osa raaka-aineista takaisin varastoon."
+"Osaat arvioida ainesmäärät tarkasti. Jokaisella panolla on pysyvä "
+"mahdollisuus saada osa aineksista takaisin varastoon."
 msgstr ""
 "You judge ingredient amounts precisely. Every brew has a permanent chance "
 "of returning some ingredients to storage."
@@ -3134,9 +3134,7 @@ msgid "Neuvottelutaito"
 msgstr "Haggling"
 
 #: src/resources/meta_unlocks/neuvottelutaito.tres
-msgid ""
-"Osaat tinkiä raaka-aineiden hinnoista. Ostot ovat pysyvästi hieman "
-"halvempia."
+msgid "Osaat tinkiä ainesten hinnoista. Ostot ovat pysyvästi hieman halvempia."
 msgstr ""
 "You know how to haggle over ingredient prices. Purchases are permanently a "
 "little cheaper."
@@ -3972,7 +3970,7 @@ msgstr "Achievements (%d/%d)"
 #: src/scenes/ui/bar_contact_option_button.gd
 msgid ""
 "%s\n"
-"Maksukerroin: x%.2f raaka-ainehinnasta\n"
+"Maksukerroin: x%.2f ainesten hinnasta\n"
 "LVV-riski per toimitus: +%d"
 msgstr ""
 "%s\n"
@@ -4019,7 +4017,7 @@ msgstr "Sell"
 msgid ""
 "Myy koko erä kerralla varastosta. Hinta on paljon normaalia myyntihintaa "
 "halvempi, ja heikkolaatuinen tai vanhentunut erä voi tuottaa jopa tappiota "
-"raaka-ainekuluihin nähden."
+"ainesten hintaan nähden."
 msgstr ""
 "Sell the whole batch from storage at once. The price is far below a normal "
 "sale, and a poor or old batch can even sell for less than its ingredients "
@@ -4354,8 +4352,8 @@ msgstr "NEW!"
 
 #: src/scenes/ui/left_brewing_view.gd
 msgid ""
-"Täytä puuttuvat ainesosat pöydälle varastosta ladatun reseptin mukaan. Pois "
-"käytöstä, jos varastossa ei ole tarpeeksi jotain ainesosaa."
+"Täytä puuttuvat ainekset pöydälle varastosta ladatun reseptin mukaan. Pois "
+"käytöstä, jos varastossa ei ole tarpeeksi jotain ainesta."
 msgstr ""
 "Put the missing ingredients for the loaded recipe on the table from "
 "storage. Disabled if storage is short of any ingredient."
@@ -4541,7 +4539,7 @@ msgid "Halpamyynti: %s x%d  +%.1f €"
 msgstr "Bulk sale: %s x%d  +%.1f €"
 
 #: src/scenes/ui/sale_flash_stack.gd
-msgid "Osa raaka-aineista säästyi panon yhteydessä!"
+msgid "Osa aineksista säästyi panon yhteydessä!"
 msgstr "Some ingredients were saved during brewing!"
 
 #: src/scenes/ui/sale_flash_stack.gd
@@ -4829,7 +4827,7 @@ msgid "Ei täsmää vielä mihinkään tyyliin. (EBC %d, IBU %d)"
 msgstr "Doesn't match any style yet. (EBC %d, IBU %d)"
 
 #: src/ui/brew_preview_text.gd
-msgid "Lisää ainesosia nähdäksesi arvion."
+msgid "Lisää aineksia nähdäksesi arvion."
 msgstr "Add ingredients to see an estimate."
 
 #: src/ui/brew_preview_text.gd
