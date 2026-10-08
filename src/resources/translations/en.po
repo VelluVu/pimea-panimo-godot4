@@ -1767,7 +1767,7 @@ msgstr "Well let's see, that %s could be quite decent..."
 #: src/resources/customers/mummeli.tres
 msgid ""
 "No niin hyvänen aika, onkos teillä mitään kunnon olutta, ei mitään laimeaa "
-"limppariläpää."
+"limpparia."
 msgstr "Good gracious, do you have any proper beer, not some watery fizzy pop."
 
 #: src/resources/customers/mummeli.tres
