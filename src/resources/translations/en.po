@@ -2608,13 +2608,53 @@ msgstr ""
 "The risk drops 15 points every night. Selling some customers their "
 "favourite style even lowers it."
 
-#: src/resources/guide/06_tasot.tres
+#: src/resources/guide/065_etujen_arvot.tres
+msgid "+ % -edut kasvavat tasaisesti, ×-edut sitä nopeammin, mitä useampi niitä on."
+msgstr "+ % perks grow steadily, × perks grow faster the more of them you have."
+
+#: src/resources/guide/065_etujen_arvot.tres
 msgid ""
-"Etujen arvot: +15 % lasketaan samanlaisten etujen kanssa yhteen. ×1.15 "
-"kertoo koko summan erikseen, joten useampi ×-etu kasvaa nopeasti."
+"+ %: lasketaan yhteen muiden samanlaisten etujen kanssa. Kaksi +15 % etua "
+"tipeille antaa yhteensä +30 %."
 msgstr ""
-"Perk values: +15 % adds up with similar perks. ×1.15 multiplies the whole "
-"total on its own, so several × perks grow fast."
+"+ %: adds up with other perks of the same kind. Two +15 % tip perks give "
+"+30 % in total."
+
+#: src/resources/guide/065_etujen_arvot.tres
+msgid ""
+"Alle 1 oleva kerroin pienentää: Ainehinnat ×0.90 tarkoittaa 10 % halvempia "
+"aineksia."
+msgstr ""
+"A multiplier below 1 reduces: Ingredient prices ×0.90 means ingredients 10 "
+"% cheaper."
+
+#: src/resources/guide/065_etujen_arvot.tres
+msgid "Etujen arvot"
+msgstr "Perk values"
+
+#: src/resources/guide/065_etujen_arvot.tres
+msgid "Etujen arvot näkyvät kahdella tavalla: +15 % tai ×1.15."
+msgstr "Perk values show in two ways: +15 % or ×1.15."
+
+#: src/resources/guide/065_etujen_arvot.tres
+msgid "Kauden tilastot -ikkunassa näet kaikki etusi ja niiden yhteisvaikutuksen."
+msgstr "The Season stats window shows all your perks and their combined effect."
+
+#: src/resources/guide/065_etujen_arvot.tres
+msgid ""
+"Kun samaan asiaan on molempia, ×-arvot kerrotaan ensin keskenään ja + % "
+"lisätään lopuksi. ×1.20 ja +20 % antavat yhteensä ×1.40."
+msgstr ""
+"When something has both, the × values are multiplied together first and the "
+"+ % is added last. ×1.20 and +20 % give ×1.40 in total."
+
+#: src/resources/guide/065_etujen_arvot.tres
+msgid ""
+"×: kertoo kokonaisuuden. Kaksi ×1.15 etua tipeille antaa 1.15 × 1.15 = "
+"×1.32, eli enemmän kuin kaksi +15 % etua."
+msgstr ""
+"×: multiplies the total. Two ×1.15 tip perks give 1.15 × 1.15 = ×1.32, more "
+"than two +15 % perks."
 
 #: src/resources/guide/06_tasot.tres
 msgid ""
@@ -2654,7 +2694,9 @@ msgstr "With a mouse, more information shows when the pointer rests on something
 
 #: src/resources/guide/08_ohjaus.tres
 msgid "Kosketusnäytöllä ?-nappi vasemmassa alakulmassa näyttää paikkojen nimet."
-msgstr "On a touch screen, the ? button in the bottom left corner shows the names of places."
+msgstr ""
+"On a touch screen, the ? button in the bottom left corner shows the names "
+"of places."
 
 #: src/resources/guide/08_ohjaus.tres
 msgid "Kosketusnäytöllä pidä sormea kohteen päällä hetki."

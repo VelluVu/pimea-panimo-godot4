@@ -4,6 +4,6 @@
 
 [resource]
 script = ExtResource("1_guide")
-order = 7
+order = 8
 title = "Olutoppi"
 lines = Array[String](["Kauden lopussa saat pisteidesi mukaan Olutopin mainetta.", "Sillä ostetaan päävalikon Olutopista pysyviä etuja tuleville kausille."])
