@@ -30,7 +30,7 @@ const BULK_SELL_BUTTON_TEXT : String = "Myy"
 const HELD_ICON : String = "🔒"
 const RELEASED_ICON : String = "🔓"
 const HOLD_BUTTON_TOOLTIP : String = "Kellaroi: lukittua erää ei myydä tiskillä, joten se ehtii vanheta. Kellarioluet maksavat kypsinä enemmän. Paina uudestaan vapauttaaksesi."
-const BULK_SELL_BUTTON_TOOLTIP : String = "Myy koko erä kerralla varastosta. Hinta on paljon normaalia myyntihintaa halvempi, ja heikkolaatuinen tai vanhentunut erä voi tuottaa jopa tappiota ainesten hintaan nähden."
+const BULK_SELL_BUTTON_TOOLTIP : String = "Myy koko erä kerralla varastosta. Hinta on paljon normaalia myyntihintaa halvempi, ja heikkolaatuinen tai vanhentunut erä voi tuottaa jopa tappiota raaka-aineiden hintaan nähden."
 
 const DESTINATION_LABEL_TEXT : String = "Kohde:"
 const SHIP_BUTTON_TEXT : String = "Vie"

@@ -27,7 +27,7 @@ const DAY_EVENT_EFFECT_FLASH_COLOR : Color = Color(0.9, 0.75, 0.35)
 ## Good news this time (ingredients_refunded) — a cool green instead of any
 ## of the "something bad happened" colors above.
 const INGREDIENT_REFUND_FLASH_COLOR : Color = Color(0.55, 0.85, 0.5)
-const INGREDIENT_REFUND_FLASH_TEXT : String = "Osa aineksista säästyi panon yhteydessä!"
+const INGREDIENT_REFUND_FLASH_TEXT : String = "Osa raaka-aineista säästyi panon yhteydessä!"
 
 
 func _ready() -> void:

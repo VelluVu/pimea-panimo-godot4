@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_unlock")
 perk_name = "Tarkka silmämitta"
-description = "Vuosien kokemus on hionut annostelusi lähes täydelliseksi. Jokaisella panolla on pysyvästi entistäkin parempi mahdollisuus saada aineksia takaisin varastoon."
+description = "Vuosien kokemus on hionut annostelusi lähes täydelliseksi. Jokaisella panolla on pysyvästi entistäkin parempi mahdollisuus saada raaka-aineita takaisin varastoon."
 icon_placeholder = "🎯"
 ingredient_refund_chance = 0.1
 stacks_additively = true

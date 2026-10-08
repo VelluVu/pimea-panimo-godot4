@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_oma_maahantuoja")
 perk_name = "Oma maahantuoja"
-description = "Tuot ainekset itse suoraan tuottajilta, joten ostot ovat merkittävästi halvempia."
+description = "Tuot raaka-aineet itse suoraan tuottajilta, joten ostot ovat merkittävästi halvempia."
 icon_placeholder = "🚢"
 tier = 2
 ingredient_price_multiplier = 0.82

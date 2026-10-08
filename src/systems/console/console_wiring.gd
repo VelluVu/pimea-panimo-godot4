@@ -46,7 +46,7 @@ const BAD_REVIEW_TEXT: String = "[color=orange]Huono arvio kiertää: asiakkaita
 const REGULAR_GAINED_FORMAT: String = "[color=gold]%s on nyt kanta-asiakas.[/color]"
 const REGULAR_LOST_FORMAT: String = "%s ei ole enää kanta-asiakas."
 const STORED_FORMAT: String = "Varastoon: %s +%d annosta"
-const INGREDIENTS_UNLOCKED_FORMAT: String = "[color=lightgreen]Uusia aineksia: %s[/color]"
+const INGREDIENTS_UNLOCKED_FORMAT: String = "[color=lightgreen]Uusia raaka-aineita: %s[/color]"
 const CUSTOMER_UNLOCKED_FORMAT: String = "[color=lightgreen]Uusi asiakas avattu: %s[/color]"
 const ACHIEVEMENT_FORMAT: String = "[color=gold]Saavutus avattu: %s[/color]"
 const TIER_ROSE_FORMAT: String = "[color=lightgreen]Maine nousi: %s[/color]"

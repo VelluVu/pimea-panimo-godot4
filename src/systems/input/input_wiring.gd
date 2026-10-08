@@ -76,11 +76,11 @@ func _init() -> void:
 		ACTION_TOGGLE_RECIPE_LIBRARY: "Reseptikirja",
 		ACTION_TOGGLE_BREWERY_BOOK: "Panimokirja",
 		ACTION_TOGGLE_UPGRADES: "Kellarin parannukset",
-		ACTION_INGREDIENT_PREVIOUS: "Edellinen aines",
-		ACTION_INGREDIENT_NEXT: "Seuraava aines",
+		ACTION_INGREDIENT_PREVIOUS: "Edellinen raaka-aine",
+		ACTION_INGREDIENT_NEXT: "Seuraava raaka-aine",
 		ACTION_AMOUNT_UP: "Määrä ylös (Shift: 10)",
 		ACTION_AMOUNT_DOWN: "Määrä alas (Shift: 10)",
-		ACTION_INGREDIENT_TYPE: "Seuraava ainesryhmä (Shift: edellinen)",
+		ACTION_INGREDIENT_TYPE: "Seuraava raaka-aineryhmä (Shift: edellinen)",
 		ACTION_INGREDIENT_CONFIRM: "Osta tai lisää pöydälle",
 	}
 	ui_text = {
