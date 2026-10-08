@@ -34,10 +34,11 @@ func show_bar() -> void:
 	GUISignals.bar_view_entered.emit()
 
 
+## The shop's spot stays active beside the open shop, so a second tap closes it.
 func show_shop() -> void:
 	_brewery_view.hide()
 	_brew_preparation_panel.hide()
-	_shop_entrance_panel.deactivate_shop_panel()
+	_shop_entrance_panel.activate_shop_panel()
 	_brewery_entrance_panel.hide()
 	_shop_view.show()
 	GUISignals.bar_view_exited.emit()

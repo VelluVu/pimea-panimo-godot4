@@ -23,11 +23,6 @@ func _ready() -> void:
 	BrewerySignals.brewery_state_changed.connect(_on_brewery_state_changed)
 
 
-func deactivate_shop_panel() -> void:
-	shop_button.disabled = true
-	shop_button.mouse_filter = Control.MOUSE_FILTER_IGNORE
-
-
 func activate_shop_panel() -> void:
 	shop_button.disabled = false
 	shop_button.mouse_filter = Control.MOUSE_FILTER_STOP

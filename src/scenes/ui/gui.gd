@@ -154,7 +154,7 @@ func _toggle_receipt_log_window() -> void:
 
 
 func _on_shop_button_pressed() -> void:
-	_views.show_shop()
+	_views.toggle_shop()
 
 
 func _on_back_button_pressed() -> void:
@@ -162,6 +162,9 @@ func _on_back_button_pressed() -> void:
 
 
 func _on_brewery_button_pressed() -> void:
+	if brewery_view.visible:
+		_views.show_bar()
+		return
 	if _views.is_away_from_bar():
 		return
 	_views.show_brewery()
