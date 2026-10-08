@@ -9,5 +9,6 @@ Small independent helpers that need nothing else.
 | `LabelPulse.new(label, pivot)` | A looping grow-and-shrink pulse; `set_active(bool)`; `PIVOT_RIGHT` for a label flush to the right edge |
 | `CollapsibleSection.new(container, header_label)` | An arrow button beside a header; `collapsed` and a `toggled` signal |
 | `SliderStepper.wrap(slider)` | Big - and + buttons around a slider (hold to repeat) and a larger knob, for touch |
+| `OptionStepper.wrap(option_button)` | < and > buttons around an OptionButton; skips disabled items, wraps around |
 
 Copy the folder to your project (keep the `.uid` files, so scene references still resolve). No wiring file is needed.

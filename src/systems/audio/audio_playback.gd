@@ -135,8 +135,9 @@ func _flush_click() -> void:
 		_play_stream(click_stream)
 
 
+## A button moved to a new parent enters the tree again; connect it only once.
 func _on_node_added(node: Node) -> void:
-	if node is BaseButton:
+	if node is BaseButton and not (node as BaseButton).pressed.is_connected(play_click):
 		(node as BaseButton).pressed.connect(play_click)
 
 
