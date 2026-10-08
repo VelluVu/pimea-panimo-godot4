@@ -1,15 +1,25 @@
 class_name CustomerBookWindow
 extends Panel
 
-## The Asiakaskirja: every customer type unlocked in any run, with the tastes of the
-## ones served at least once. Opened from the notebook on the counter
-## (GUISignals.customer_book_requested).
+## The Panimokirja, opened from the notebook on the counter
+## (GUISignals.customer_book_requested). Three tabs: every customer type unlocked in any
+## run with the tastes of the ones served; every ingredient with price and stats; and the
+## Ohjeet, a short guide to the game (GuideSection resources). The reference that touch
+## screens, without hover tooltips, need most.
 
-const TITLE_TEXT : String = "Asiakaskirja"
+const TITLE_TEXT : String = "Panimokirja"
 const CLOSE_TEXT : String = "Sulje"
+const CUSTOMERS_TAB_TEXT : String = "Asiakkaat"
+const INGREDIENTS_TAB_TEXT : String = "Ainekset"
+const GUIDE_TAB_TEXT : String = "Ohjeet"
+const GUIDE_FOLDER_PATH : String = "res://src/resources/guide/"
 const REGULAR_TAG : String = "(kanta-asiakas)"
-const NAME_FONT_SIZE : int = 15
-const DETAIL_FONT_SIZE : int = 12
+const NAME_FONT_SIZE : int = 16
+const DETAIL_FONT_SIZE : int = 14
+const TAB_HEIGHT : float = 26.0
+const HEADER_COLOR : Color = Color(0.949, 0.788, 0.42, 1)
+
+enum Tab { CUSTOMERS, INGREDIENTS, GUIDE }
 const PORTRAIT_SIZE : Vector2 = Vector2(64, 64)
 const PORTRAIT_ANIMATION : StringName = &"idle"
 ## Not-met customers show as a dark silhouette.
@@ -20,6 +30,10 @@ const MUTED_COLOR : Color = Color(0.75, 0.73, 0.67, 1)
 @onready var title_label : Label = %TitleLabel
 @onready var close_button : Button = %CloseButton
 @onready var rows_vbox : VBoxContainer = %RowsVBox
+@onready var scroll_container : ScrollContainer = $MarginContainer/MainVBox/ScrollContainer
+
+var _tab_bar : TabBar
+var _guide_sections : Array[GuideSection] = []
 
 
 func _ready() -> void:
@@ -27,6 +41,20 @@ func _ready() -> void:
 	close_button.text = CLOSE_TEXT
 	close_button.pressed.connect(_on_close_button_pressed)
 	GUISignals.customer_book_requested.connect(_on_customer_book_requested)
+
+	_guide_sections.assign(ResourceFolder.load_all(GUIDE_FOLDER_PATH, GuideSection))
+	_guide_sections.sort_custom(func(a : GuideSection, b : GuideSection) -> bool: return a.order < b.order)
+
+	_tab_bar = TabBar.new()
+	_tab_bar.custom_minimum_size.y = TAB_HEIGHT
+	for tab_text : String in [CUSTOMERS_TAB_TEXT, INGREDIENTS_TAB_TEXT, GUIDE_TAB_TEXT]:
+		_tab_bar.add_tab(tab_text)
+	var main_vbox : Node = scroll_container.get_parent()
+	main_vbox.add_child(_tab_bar)
+	main_vbox.move_child(_tab_bar, scroll_container.get_index())
+	_tab_bar.tab_changed.connect(func(_tab : int) -> void:
+		GUISignals.tab_switched.emit()
+		_refresh_rows())
 
 
 func _on_customer_book_requested() -> void:
@@ -42,7 +70,48 @@ func _on_close_button_pressed() -> void:
 func _refresh_rows() -> void:
 	for child : Node in rows_vbox.get_children():
 		child.queue_free()
+	scroll_container.scroll_vertical = 0
 
+	match _tab_bar.current_tab:
+		Tab.INGREDIENTS:
+			_build_ingredient_rows()
+		Tab.GUIDE:
+			_build_guide_rows()
+		_:
+			_build_customer_rows()
+
+
+func _build_ingredient_rows() -> void:
+	var brewery : Brewery = BrewEngine.current_brewery
+	var reputation : int = brewery.reputation if brewery != null else 0
+	var price_multiplier : float = brewery.stats.multiplier(PerkStats.INGREDIENT_PRICE) if brewery != null else 1.0
+	var last_type : int = -1
+	for id : int in IngredientDatabase.display_ids():
+		var ingredient : IngredientData = IngredientDatabase.get_item_by_id(id)
+		if ingredient.type != last_type:
+			last_type = ingredient.type
+			rows_vbox.add_child(_make_header(IngredientBookText.type_header(ingredient.type)))
+		var name_label : Label = _make_label(tr(ingredient.name), NAME_FONT_SIZE)
+		name_label.add_theme_color_override("font_color", ingredient.get_color())
+		rows_vbox.add_child(name_label)
+		var lines : PackedStringArray = IngredientBookText.lines(ingredient, ingredient.base_price * price_multiplier, reputation)
+		rows_vbox.add_child(_make_label("\n".join(lines), DETAIL_FONT_SIZE))
+
+
+func _build_guide_rows() -> void:
+	for section : GuideSection in _guide_sections:
+		rows_vbox.add_child(_make_header(tr(section.title)))
+		for line : String in section.lines:
+			rows_vbox.add_child(_make_label(tr(line), DETAIL_FONT_SIZE))
+
+
+func _make_header(text : String) -> Label:
+	var header : Label = _make_label(text, NAME_FONT_SIZE)
+	header.add_theme_color_override("font_color", HEADER_COLOR)
+	return header
+
+
+func _build_customer_rows() -> void:
 	var announced : Array = CustomerRegistry.get_announced_titles()
 	var met : Array = CustomerRegistry.get_met_titles()
 	var customers : Array[CustomerData] = CustomerBookText.unique_by_title(CustomerRegistry.customer_pool)

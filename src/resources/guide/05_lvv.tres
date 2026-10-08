@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="GuideSection" format=3]
+
+[ext_resource type="Script" path="res://src/ui/guide_section.gd" id="1_guide"]
+
+[resource]
+script = ExtResource("1_guide")
+order = 5
+title = "LVV-riski"
+lines = Array[String](["Jokainen myynti nostaa LVV-riskiä. Kun riski saavuttaa yläpalkissa näkyvän rajan, LVV tekee ratsian.", "Ratsia vie osan rahoista ja maineesta, ja jokainen seuraava ratsia on edellistä kovempi. Kolmas ratsia päättää kauden.", "Riski laskee joka yö 15 pistettä. Joidenkin asiakkaiden suosikkityylin myynti jopa laskee sitä."])

@@ -3,7 +3,7 @@ extends Label
 
 ## Hover label for CustomerBookHoverArea, same pattern as ReceiptMachineLabel.
 
-const LABEL_TEXT : String = "Asiakaskirja"
+const LABEL_TEXT : String = "Panimokirja"
 
 
 func _ready() -> void:

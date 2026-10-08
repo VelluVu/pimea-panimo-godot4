@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="GuideSection" format=3]
+
+[ext_resource type="Script" path="res://src/ui/guide_section.gd" id="1_guide"]
+
+[resource]
+script = ExtResource("1_guide")
+order = 8
+title = "Ohjaus"
+lines = Array[String](["Hiirellä lisätiedot näkyvät, kun osoitin on kohteen päällä.", "Kosketusnäytöllä pidä sormea kohteen päällä hetki.", "Esc sulkee avoimet ikkunat tai avaa valikon."])

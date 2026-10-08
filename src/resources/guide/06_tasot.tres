@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="GuideSection" format=3]
+
+[ext_resource type="Script" path="res://src/ui/guide_section.gd" id="1_guide"]
+
+[resource]
+script = ExtResource("1_guide")
+order = 6
+title = "Tasot ja tavoitteet"
+lines = Array[String](["Keittäminen ja myynti antavat kokemusta. Uudella tasolla valitset yhden kolmesta edusta loppukaudeksi.", "Tavoitteet-paneeli oikealla näyttää päivän tavoitteet. Suoritetut tavoitteet antavat palkintoja."])

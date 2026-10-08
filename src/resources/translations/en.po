@@ -2442,6 +2442,204 @@ msgstr ""
 "A Gen Z pack storms in, phones up, all wanting non-alcoholic content for "
 "their socials, fr fr."
 
+#: src/resources/guide/01_kausi.tres
+msgid ""
+"Jos rahat loppuvat, pulloja ei ole ja mitään reseptiä ei voi enää keittää, "
+"panimo menee konkurssiin."
+msgstr ""
+"If the money runs out, there are no bottles left and no recipe can be "
+"brewed any more, the brewery goes bankrupt."
+
+#: src/resources/guide/01_kausi.tres
+msgid "Kauden kulku"
+msgstr "The season"
+
+#: src/resources/guide/01_kausi.tres
+msgid ""
+"Kausi kestää 15 päivää (demossa 5). Jos maineesi on viimeisenä päivänä "
+"vähintään 100 ja rahaa on jäljellä, panimostasi tulee legenda."
+msgstr ""
+"A season lasts 15 days (5 in the demo). If your reputation is at least 100 "
+"on the last day and you still have money, your brewery becomes a legend."
+
+#: src/resources/guide/01_kausi.tres
+msgid "Päivä kestää viisi minuuttia. Joka yö maksat sähköstä ja vedestä 8 €."
+msgstr "A day lasts five minutes. Every night you pay 8 € for electricity and water."
+
+#: src/resources/guide/01_kausi.tres
+msgid ""
+"Sulje ovet päättää päivän etuajassa. Se maksaa vähän rahaa ja mainetta, "
+"mutta laskee LVV-riskiä."
+msgstr ""
+"Close doors ends the day early. It costs a little money and reputation, but "
+"lowers the LVV risk."
+
+#: src/resources/guide/02_keittaminen.tres
+msgid ""
+"Avaa keittola, lisää ainekset pöydälle ja paina Pane. Pullot menevät "
+"varastoon."
+msgstr ""
+"Open the brewhouse, put the ingredients on the table and press Brew. The "
+"bottles go to storage."
+
+#: src/resources/guide/02_keittaminen.tres
+msgid ""
+"Jotkut tummat oluet paranevat varastossa vanhetessaan. Lukitse erä, niin "
+"asiakkaat eivät osta sitä liian aikaisin."
+msgstr ""
+"Some dark beers get better as they age in storage. Lock a batch so "
+"customers do not buy it too early."
+
+#: src/resources/guide/02_keittaminen.tres
+msgid ""
+"Laatu nousee, kun osut tyylin EBC- ja IBU-rajojen keskelle ja käytät "
+"tyylille sopivia humalia ja mausteita."
+msgstr ""
+"Quality rises when you hit the middle of the style's EBC and IBU ranges and "
+"use hops and spices that suit the style."
+
+#: src/resources/guide/02_keittaminen.tres
+msgid "Oluen keittäminen"
+msgstr "Brewing beer"
+
+#: src/resources/guide/02_keittaminen.tres
+msgid ""
+"Oluen tyyli määräytyy värin (EBC), katkeruuden (IBU) ja vahvuuden mukaan. "
+"Jotkut tyylit vaativat tietyn hiivan, maltaan tai mausteen."
+msgstr ""
+"A beer's style depends on its colour (EBC), bitterness (IBU) and strength. "
+"Some styles need a certain yeast, malt or spice."
+
+#: src/resources/guide/02_keittaminen.tres
+msgid "Osta mallasta, humalaa ja hiivaa kaupasta."
+msgstr "Buy malt, hops and yeast from the shop."
+
+#: src/resources/guide/02_keittaminen.tres
+msgid ""
+"Uusi tyyli löytyy, kun keität sen ensimmäisen kerran. Hyllyn reseptikirja "
+"vihjaa, mitä muut tyylit vaativat."
+msgstr ""
+"You discover a new style by brewing it for the first time. The recipe book "
+"on the shelf hints at what the other styles need."
+
+#: src/resources/guide/03_myynti.tres
+msgid ""
+"Asiakkaat ostavat varaston pulloista. Suosikkityyli tuo enemmän mainetta ja "
+"tippiä."
+msgstr ""
+"Customers buy the bottles in storage. Their favourite style brings more "
+"reputation and tips."
+
+#: src/resources/guide/03_myynti.tres
+msgid "Myynti ja asiakkaat"
+msgstr "Sales and customers"
+
+#: src/resources/guide/03_myynti.tres
+msgid ""
+"Nirsot asiakkaat haluavat tietyn laadun. Asiakkaat-välilehti kertoo, mistä "
+"kukin pitää."
+msgstr ""
+"Picky customers want a certain quality. The Customers tab tells what each "
+"of them likes."
+
+#: src/resources/guide/03_myynti.tres
+msgid "Tyytyväinen asiakas tuo kavereita ja voi ryhtyä kanta-asiakkaaksi."
+msgstr "A happy customer brings friends and can become a regular."
+
+#: src/resources/guide/03_myynti.tres
+msgid "Varaston Tynnyrit-välilehdeltä erän voi myydä tukkuun tai lähettää baariin."
+msgstr ""
+"From the Kegs tab in storage you can sell a batch wholesale or ship it to a "
+"bar."
+
+#: src/resources/guide/04_maine.tres
+msgid ""
+"Kuuluisa panimo herättää myös LVV:n huomion, joten korkeampi maine laskee "
+"ratsiarajaa."
+msgstr ""
+"A famous brewery also draws the LVV's attention, so higher reputation "
+"lowers the raid limit."
+
+#: src/resources/guide/04_maine.tres
+msgid "Maine avaa uusia aineksia ja tuo uusia asiakkaita."
+msgstr "Reputation unlocks new ingredients and brings new customers."
+
+#: src/resources/guide/04_maine.tres
+msgid ""
+"Maine kasvaa myynneistä ja tavoitteista. Mitä korkeampi maine, sitä "
+"hitaammin se kasvaa."
+msgstr ""
+"Reputation grows from sales and goals. The higher it is, the slower it "
+"grows."
+
+#: src/resources/guide/05_lvv.tres
+msgid ""
+"Jokainen myynti nostaa LVV-riskiä. Kun riski saavuttaa yläpalkissa näkyvän "
+"rajan, LVV tekee ratsian."
+msgstr ""
+"Every sale raises the LVV risk. When the risk reaches the limit shown in "
+"the top bar, the LVV raids the cellar."
+
+#: src/resources/guide/05_lvv.tres
+msgid "LVV-riski"
+msgstr "LVV risk"
+
+#: src/resources/guide/05_lvv.tres
+msgid ""
+"Ratsia vie osan rahoista ja maineesta, ja jokainen seuraava ratsia on "
+"edellistä kovempi. Kolmas ratsia päättää kauden."
+msgstr ""
+"A raid takes part of your money and reputation, and every raid is harsher "
+"than the last. The third raid ends the season."
+
+#: src/resources/guide/05_lvv.tres
+msgid ""
+"Riski laskee joka yö 15 pistettä. Joidenkin asiakkaiden suosikkityylin "
+"myynti jopa laskee sitä."
+msgstr ""
+"The risk drops 15 points every night. Selling some customers their "
+"favourite style even lowers it."
+
+#: src/resources/guide/06_tasot.tres
+msgid ""
+"Keittäminen ja myynti antavat kokemusta. Uudella tasolla valitset yhden "
+"kolmesta edusta loppukaudeksi."
+msgstr ""
+"Brewing and selling give experience. At each new level you pick one of "
+"three perks for the rest of the season."
+
+#: src/resources/guide/06_tasot.tres
+msgid "Tasot ja tavoitteet"
+msgstr "Levels and goals"
+
+#: src/resources/guide/06_tasot.tres
+msgid ""
+"Tavoitteet-paneeli oikealla näyttää päivän tavoitteet. Suoritetut "
+"tavoitteet antavat palkintoja."
+msgstr ""
+"The Goals panel on the right shows the day's goals. Completed goals give "
+"rewards."
+
+#: src/resources/guide/07_olutoppi.tres
+msgid "Kauden lopussa saat pisteidesi mukaan Olutopin mainetta."
+msgstr "At the end of a season you earn Brewlore renown based on your score."
+
+#: src/resources/guide/07_olutoppi.tres
+msgid "Sillä ostetaan päävalikon Olutopista pysyviä etuja tuleville kausille."
+msgstr "Spend it in Brewlore in the main menu on lasting perks for future seasons."
+
+#: src/resources/guide/08_ohjaus.tres
+msgid "Esc sulkee avoimet ikkunat tai avaa valikon."
+msgstr "Esc closes open windows or opens the menu."
+
+#: src/resources/guide/08_ohjaus.tres
+msgid "Hiirellä lisätiedot näkyvät, kun osoitin on kohteen päällä."
+msgstr "With a mouse, more information shows when the pointer rests on something."
+
+#: src/resources/guide/08_ohjaus.tres
+msgid "Kosketusnäytöllä pidä sormea kohteen päällä hetki."
+msgstr "On a touch screen, hold your finger on it for a moment."
+
 #: src/resources/ingredients/hops/cascade_hop.tres
 msgid "Amerikkalainen aromihumala, joka tuo sitruksista ja mäntyistä aromia."
 msgstr "American aroma hop with citrus and pine notes."
@@ -3670,12 +3868,24 @@ msgid "Sulje silti"
 msgstr "Close anyway"
 
 #: src/scenes/ui/customer_book_label.gd
-msgid "Asiakaskirja"
-msgstr "Customer book"
+msgid "Panimokirja"
+msgstr "Brewery book"
 
 #: src/scenes/ui/customer_book_window.gd
 msgid "(kanta-asiakas)"
 msgstr "(regular)"
+
+#: src/scenes/ui/customer_book_window.gd
+msgid "Ainekset"
+msgstr "Ingredients"
+
+#: src/scenes/ui/customer_book_window.gd
+msgid "Asiakkaat"
+msgstr "Customers"
+
+#: src/scenes/ui/customer_book_window.gd
+msgid "Ohjeet"
+msgstr "Guide"
 
 #: src/scenes/ui/daily_goals_panel.gd
 msgid "Hiivaa: %d/1"
@@ -4519,6 +4729,30 @@ msgstr "New beer style discovered: %s!"
 #: src/ui/gui_announcer.gd
 msgid "Uusia asiakkaita avattu: %s!"
 msgstr "New customers unlocked: %s!"
+
+#: src/ui/ingredient_book_text.gd
+msgid "Avautuu maineella %d"
+msgstr "Unlocks at reputation %d"
+
+#: src/ui/ingredient_book_text.gd
+msgid "Hiivat"
+msgstr "Yeasts"
+
+#: src/ui/ingredient_book_text.gd
+msgid "Hinta: %.2f € / %s"
+msgstr "Price: %.2f € / %s"
+
+#: src/ui/ingredient_book_text.gd
+msgid "Humalat"
+msgstr "Hops"
+
+#: src/ui/ingredient_book_text.gd
+msgid "Maltaat"
+msgstr "Malts"
+
+#: src/ui/ingredient_book_text.gd
+msgid "Mausteet"
+msgstr "Spices"
 
 #: src/ui/leaderboard_text.gd
 msgid "Annokset %d"
