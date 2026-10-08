@@ -1749,10 +1749,6 @@ msgstr ""
 "learned something."
 
 #: src/resources/customers/mummeli.tres
-msgid "Hyvänen aika, eikö teillä ole mitään kunnon juotavaa..."
-msgstr "Good gracious, don't you have anything proper to drink..."
-
-#: src/resources/customers/mummeli.tres
 msgid "Mummeli"
 msgstr "Granny"
 
@@ -1777,6 +1773,10 @@ msgstr "Well at least this has a bit of flavour. It's not half bad."
 #: src/resources/customers/mummeli.tres
 msgid "Tätä laimeata litkua en ota edes lahjaksi. Ennen olut oli olutta."
 msgstr "I wouldn't take this watery swill even as a gift. Beer used to be beer."
+
+#: src/resources/customers/mummeli.tres
+msgid "Voi hyvä jumala, eikö teillä nyt ollut mitään kunnon juotavaa..."
+msgstr "Good Lord, didn't you have anything proper to drink..."
 
 #: src/resources/customers/munkki.tres
 msgid "%s... ehkä siinä on hiukan luostarin henkeä."
