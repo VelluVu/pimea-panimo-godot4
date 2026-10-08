@@ -9,6 +9,10 @@ tooltip that wraps at `TooltipFactory.MAX_WIDTH`.
   with `func _make_custom_tooltip(for_text): return TooltipFactory.make_wrapped_tooltip(for_text)`.
 - `TooltipLabel`, `TooltipButton`, `TooltipProgressBar` are the same thing ready-made: use them
   instead of `Label.new()` and so on, or attach with `node.set_script(TooltipLabel)`.
+- `TouchTooltip` gives touch screens tooltips: add one (`add_child(TouchTooltip.new())`) to each
+  scene's UI root. Pressing and holding a Control (`TouchHold.HOLD_SECONDS`) shows its tooltip
+  above the finger, and the next tap closes it. A held button fires only if it has no tooltip. It reacts only to
+  mouse events emulated from touch, so mouse players see no change.
 
 ## Use it in a new project
 
