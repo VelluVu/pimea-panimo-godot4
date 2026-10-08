@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_achievement")
 achievement_id = "ensimmainen_satsi"
-title = "Ensimmäinen satsi"
-description = "Keitä ensimmäinen olutsatsisi."
+title = "Ensimmäinen olut"
+description = "Keitä ensimmäinen olut."
 stat_key = &"batches_brewed"
 target_value = 1
 metadata/_custom_type_script = "res://src/systems/achievements/achievement_data.gd"

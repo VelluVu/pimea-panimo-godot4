@@ -6,7 +6,7 @@
 script = ExtResource("1_achievement")
 achievement_id = "panimon_pyorittaja"
 title = "Panimon pyörittäjä"
-description = "Keitä 50 olutsatsia."
+description = "Keitä 50 oluterää."
 stat_key = &"batches_brewed"
 target_value = 50
 metadata/_custom_type_script = "res://src/systems/achievements/achievement_data.gd"
