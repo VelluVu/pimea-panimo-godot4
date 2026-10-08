@@ -1651,10 +1651,8 @@ msgid "Leipuri"
 msgstr "Baker"
 
 #: src/resources/customers/leipuri.tres
-msgid "Tämä on kuin ruisleipää, kun tilasin wienerin. No, juodaan."
-msgstr ""
-"This is like getting rye bread when I ordered a Danish. Oh well, let's "
-"drink."
+msgid "Tämä on kuin ruisleipää, kun tilasin viinerin. No, juodaan."
+msgstr "This is like rye bread when I ordered a Danish. Oh well, let's drink."
 
 #: src/resources/customers/leipuri.tres
 msgid "Tämä on pohjaan palanut. Ei kelpaa leipurille."
