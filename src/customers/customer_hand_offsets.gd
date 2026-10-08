@@ -20,7 +20,7 @@ const DEFAULT_OFFSETS : Array[Vector2] = [
 
 ## Zgen keeps both arms crossed at the chest the whole cycle (no swinging hand
 ## to track), so this is a small hand-authored sway around chest height.
-const ZGEN_TITLE : String = "Zgen"
+const ZGEN_TITLE : String = "Gen Z"
 const ZGEN_OFFSETS : Array[Vector2] = [
 	Vector2(-4, -68),
 	Vector2(0, -66),

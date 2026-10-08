@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("1_zgen")
 customer_name = "Peetu"
-title = "Zgen"
+title = "Gen Z"
 first_names = Array[String](["Peetu", "Roope", "Eemeli", "Valtteri", "Aatu", "Konsta"])
 min_quality = 0.3
 budget_multiplier = 0.6
