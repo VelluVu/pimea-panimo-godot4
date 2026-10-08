@@ -3189,16 +3189,12 @@ msgid "Rauhallinen kellari"
 msgstr "Quiet Cellar"
 
 #: src/resources/meta_unlocks/tarkka_pilkonta.tres
-msgid ""
-"Maltaiden pilkkominen tuottaa vähemmän hukkaa. Jokainen pano tuottaa "
-"pysyvästi hieman enemmän annoksia."
-msgstr ""
-"Milling the malt wastes less. Every brew permanently yields a few more "
-"servings."
+msgid "Maltaat mylläytyvät tehokkaammin, ja syntyy vähemmän hukkaa. Suuremmat erät."
+msgstr "The malt mills more efficiently, with less waste. Bigger batches."
 
 #: src/resources/meta_unlocks/tarkka_pilkonta.tres
-msgid "Tarkka pilkonta"
-msgstr "Precise Milling"
+msgid "Parempi Mallasmylly"
+msgstr "Better Malt Mill"
 
 #: src/resources/meta_unlocks/terava_silmae.tres
 msgid ""
