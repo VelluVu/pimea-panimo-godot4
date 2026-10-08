@@ -43,6 +43,8 @@ func _ready() -> void:
 	_special_events = SpecialEventPresenter.new(special_events_container)
 	_views = GuiViewSwitcher.new(shop_view, brewery_view, brew_preparation_panel, shop_entrance_panel, brewery_entrance_panel)
 	_assert_default_visibility()
+	add_child(TouchTooltip.new())
+	add_child(TouchHints.new())
 	# Slot the goals panel and the passive banners just below the first modal so open
 	# windows cover them instead of colliding with their text.
 	move_child(daily_goals_panel, lvv_raid_window.get_index())
@@ -67,7 +69,8 @@ func _assert_default_visibility() -> void:
 	top_panel_resources.show()
 	shop_entrance_panel.show()
 	options_button.show()
-	dev_console.show()
+	# Typing commands needs a keyboard, and the button takes a corner of a small screen.
+	dev_console.visible = not DisplayServer.is_touchscreen_available()
 	group_visit_banner.show()
 	first_brew_hint_banner.show()
 	day_event_banner.show()

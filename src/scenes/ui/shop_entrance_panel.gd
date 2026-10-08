@@ -14,6 +14,7 @@ var _unlock_tracker : ReputationUnlockTracker
 
 
 func _ready() -> void:
+	shop_button.add_to_group(TouchHints.GROUP)
 	shop_button.mouse_entered.connect(_on_shop_button_mouse_entered)
 	shop_button.mouse_exited.connect(_on_shop_button_mouse_exited)
 	shop_label.hide()
