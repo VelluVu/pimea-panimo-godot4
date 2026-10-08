@@ -1115,7 +1115,7 @@ msgid "India Pale Ale"
 msgstr "India Pale Ale"
 
 #: src/resources/cellar_upgrades/1_isompi_kaymisastia.tres
-msgid "Isompi astia, enemmän pulloja samasta satsista."
+msgid "Isompi astia, enemmän pulloja samasta erästä."
 msgstr "A bigger vessel, more bottles from the same batch."
 
 #: src/resources/cellar_upgrades/1_isompi_kaymisastia.tres
