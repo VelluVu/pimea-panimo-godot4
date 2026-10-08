@@ -361,10 +361,10 @@ text = "Sulje ovet"
 visible = false
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.4921875
+anchor_left = 0.578125
 anchor_top = 0.08888889
-anchor_right = 0.7265625
-anchor_bottom = 0.3555556
+anchor_right = 0.890625
+anchor_bottom = 0.82
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
@@ -397,6 +397,7 @@ mouse_filter = 2
 
 [node name="TabBar" type="TabBar" parent="GUI_CanvasLayer/GUI/Right_WarehouseView/Panel/MarginContainer/MainVBox" unique_id=1089975088]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 26)
 layout_mode = 2
 current_tab = 0
 tab_count = 2
