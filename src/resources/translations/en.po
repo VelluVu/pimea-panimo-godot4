@@ -1663,6 +1663,10 @@ msgstr ""
 "day again."
 
 #: src/resources/customers/mafioso.tres
+msgid "%s. Katsotaan, kelpaako se Donille."
+msgstr "%s. Let's see if it's good enough for the Don."
+
+#: src/resources/customers/mafioso.tres
 msgid "Don ei näe täällä mitään, mistä kannattaisi maksaa..."
 msgstr "The Don sees nothing here worth paying for..."
 
@@ -1673,10 +1677,6 @@ msgstr "The Don sends his thanks."
 #: src/resources/customers/mafioso.tres
 msgid "Don on kiinnostunut liiketoiminnastanne. Näytä mitä teillä on."
 msgstr "The Don is interested in your business. Show me what you've got."
-
-#: src/resources/customers/mafioso.tres
-msgid "Don on kiinnostunut: %s. Katsotaan, kelpaako se."
-msgstr "The Don is interested: %s. Let's see if it will do."
 
 #: src/resources/customers/mafioso.tres
 msgid "Don pitää tästä. Homma hoidossa, ei tarvii huolehtia tarkastajista hetkeen."
