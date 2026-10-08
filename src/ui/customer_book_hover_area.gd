@@ -12,7 +12,6 @@ var current_tween : Tween
 
 
 func _ready() -> void:
-	add_to_group(TouchHints.GROUP)
 	mouse_entered.connect(_on_hover_changed.bind(true))
 	mouse_exited.connect(_on_hover_changed.bind(false))
 	input_event.connect(_on_input_event)

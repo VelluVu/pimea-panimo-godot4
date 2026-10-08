@@ -7,6 +7,7 @@ extends Panel
 
 func _ready() -> void:
 	GUISignals.mouse_entered_brewery_hover_area.connect(_on_mouse_entered_brewery_hover_area)
+	GUISignals.touch_hints_shown.connect(_on_mouse_entered_brewery_hover_area)
 	brewery_label.hide()
 
 
