@@ -4894,6 +4894,10 @@ msgstr "Requires first: %s"
 msgid "tai"
 msgstr "or"
 
+#: src/ui/portrait_notice.gd
+msgid "Käännä puhelin vaakatasoon."
+msgstr "Turn your phone sideways."
+
 #: src/ui/recipe_library_text.gd
 msgid ""
 "%s\n"
