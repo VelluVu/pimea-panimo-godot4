@@ -4629,8 +4629,12 @@ msgid "tai"
 msgstr "or"
 
 #: src/ui/recipe_library_text.gd
-msgid "%s (%.1f%% ABV), EBC %s-%s, IBU %s-%s (hiiva: %s)"
-msgstr "%s (%.1f%% ABV), EBC %s-%s, IBU %s-%s (yeast: %s)"
+msgid ""
+"%s\n"
+"%.1f%% ABV, EBC %s-%s, IBU %s-%s, hiiva: %s"
+msgstr ""
+"%s\n"
+"%.1f%% ABV, EBC %s-%s, IBU %s-%s, yeast: %s"
 
 #: src/ui/recipe_library_text.gd
 msgid "??? (%.1f%% ABV) – vaatii: hiiva %s, vähintään %d kg mallasta"
@@ -4645,6 +4649,14 @@ msgid "Katkeruus: %s"
 msgstr "Bitterness: %s"
 
 #: src/ui/recipe_library_text.gd
+msgid "Löydetyt tyylit (%d/%d)"
+msgstr "Discovered styles (%d/%d)"
+
+#: src/ui/recipe_library_text.gd
+msgid "Löytämättömät tyylit (%d)"
+msgstr "Undiscovered styles (%d)"
+
+#: src/ui/recipe_library_text.gd
 msgid "Reinheitsgebot: ei mausteita"
 msgstr "Reinheitsgebot: no spices"
 
@@ -4655,6 +4667,10 @@ msgstr "Good spices: %s"
 #: src/ui/recipe_library_text.gd
 msgid "Suosikkihumala: %s"
 msgstr "Favourite hop: %s"
+
+#: src/ui/recipe_library_text.gd
+msgid "Tallennettuja reseptejä: %d"
+msgstr "Saved recipes: %d"
 
 #: src/ui/recipe_library_text.gd
 msgid "Vaadittu mallas: %s"

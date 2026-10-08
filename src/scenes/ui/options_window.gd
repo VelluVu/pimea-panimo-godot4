@@ -31,9 +31,6 @@ const LANGUAGE_NAMES : Dictionary = {"fi": "Suomi", "en": "English"}
 @onready var fullscreen_check : CheckButton = %FullscreenCheck
 @onready var display_tab : VBoxContainer = %DisplayTab
 
-## Whether the tree was already paused (by the game menu) when this opened, so closing
-## restores that instead of always unpausing.
-var _was_paused_before : bool = false
 var _key_bindings : KeyBindingsTab
 var _language_option : OptionButton
 
@@ -118,8 +115,8 @@ func _load_current_values() -> void:
 func _on_options_requested() -> void:
 	_load_current_values()
 	_key_bindings.cancel_capture()
-	_was_paused_before = get_tree().paused
-	get_tree().paused = true
+	PauseLock.hold(self)
+	move_to_front()
 	# The web export dropped the scene's offsets and opened this in the corner.
 	set_anchors_and_offsets_preset(Control.PRESET_CENTER, Control.PRESET_MODE_KEEP_SIZE)
 	show()
@@ -127,14 +124,14 @@ func _on_options_requested() -> void:
 
 func _on_close_button_pressed() -> void:
 	GUISignals.options_closed.emit()
-	get_tree().paused = _was_paused_before
+	PauseLock.release(self)
 	hide()
 
 
 func _on_main_menu_button_pressed() -> void:
 	GUISignals.menu_button_pressed.emit()
 	SaveManager.save_game()
-	get_tree().paused = false
+	PauseLock.release_all(get_tree())
 	get_tree().change_scene_to_file(MAIN_MENU_SCENE_PATH)
 
 

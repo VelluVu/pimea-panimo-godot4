@@ -7,7 +7,11 @@ extends RefCounted
 ## spoils nothing, and the malt weight is only a floor. The color and bitterness hints are
 ## coarse buckets, see BeerStyle.get_color_hint() and get_bitterness_hint().
 
-const KNOWN_ROW_FORMAT : String = "%s (%.1f%% ABV), EBC %s-%s, IBU %s-%s (hiiva: %s)"
+## The name gets a line of its own so the list reads at a glance.
+const KNOWN_ROW_FORMAT : String = "%s\n%.1f%% ABV, EBC %s-%s, IBU %s-%s, hiiva: %s"
+const SAVED_RECIPES_HINT_FORMAT : String = "Tallennettuja reseptejä: %d"
+const KNOWN_HEADER_FORMAT : String = "Löydetyt tyylit (%d/%d)"
+const LOCKED_HEADER_FORMAT : String = "Löytämättömät tyylit (%d)"
 const LOCKED_ROW_FORMAT : String = "??? (%.1f%% ABV) – vaatii: hiiva %s, vähintään %d kg mallasta"
 ## The hints below each go on their own line under the row.
 const HOP_HINT_FORMAT : String = "Suosikkihumala: %s"
@@ -21,7 +25,15 @@ const MALT_BLEND_HINT : String = "Vaatii mallasseoksen"
 const NEW_CUSTOMER_HINT : String = "Houkuttelee uuden asiakkaan"
 
 
-static func known_row(beer_style : BeerStyle, yeast_name : String, required_malt_name : String, required_spice_name : String = "", preferred_spice_names : String = "") -> String:
+static func known_section_title(known_count : int, total_count : int) -> String:
+	return UiText.of(KNOWN_HEADER_FORMAT) % [known_count, total_count]
+
+
+static func locked_section_title(locked_count : int) -> String:
+	return UiText.of(LOCKED_HEADER_FORMAT) % locked_count
+
+
+static func known_row(beer_style : BeerStyle, yeast_name : String, required_malt_name : String, required_spice_name : String = "", preferred_spice_names : String = "", saved_recipe_count : int = 0) -> String:
 	var text : String = UiText.of(KNOWN_ROW_FORMAT) % [
 		UiText.of(beer_style.style_name), beer_style.abv,
 		beer_style.min_ebc, beer_style.max_ebc, beer_style.min_ibu, beer_style.max_ibu,
@@ -32,6 +44,8 @@ static func known_row(beer_style : BeerStyle, yeast_name : String, required_malt
 		text += "\n" + UiText.of(PURITY_LAW_HINT)
 	if not preferred_spice_names.is_empty():
 		text += "\n" + UiText.of(PREFERRED_SPICES_HINT_FORMAT) % preferred_spice_names
+	if saved_recipe_count > 0:
+		text += "\n" + UiText.of(SAVED_RECIPES_HINT_FORMAT) % saved_recipe_count
 	return text
 
 

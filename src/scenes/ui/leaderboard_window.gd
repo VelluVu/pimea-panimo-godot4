@@ -46,6 +46,7 @@ func _ready() -> void:
 func _on_leaderboard_requested() -> void:
 	_refresh_current_run()
 	_refresh_rows()
+	move_to_front()
 	show()
 
 

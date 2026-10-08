@@ -83,7 +83,7 @@ func _on_game_ended(ending_type : String) -> void:
 	note_label.text = CONTINUE_NOTE
 	close_button.text = CONTINUE_BUTTON_TEXT if _is_season_end else MENU_BUTTON_TEXT
 
-	get_tree().paused = true
+	PauseLock.hold(self)
 	show()
 
 
@@ -108,6 +108,7 @@ func _show_score(brewery : Brewery, ending_type : String) -> void:
 
 func _on_close_button_pressed() -> void:
 	hide()
+	PauseLock.release(self)
 	if _is_season_end:
 		_continue_run()
 	else:
@@ -125,4 +126,3 @@ func _continue_run() -> void:
 		return
 	brewery.game_has_ended = false
 	brewery.has_continued_past_survival = true
-	get_tree().paused = false

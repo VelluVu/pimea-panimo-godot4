@@ -61,7 +61,7 @@ func _ready() -> void:
 	_main_goal_section.toggled.connect(_on_section_toggled)
 	_daily_goals_section.toggled.connect(_on_section_toggled)
 	for label : Label in daily_goal_labels:
-		_near_miss_pulses.append(LabelPulse.new(label))
+		_near_miss_pulses.append(LabelPulse.new(label, LabelPulse.PIVOT_RIGHT))
 
 	toggle_button.pressed.connect(_on_toggle_pressed)
 	BrewerySignals.brewery_state_changed.connect(_update_goals)

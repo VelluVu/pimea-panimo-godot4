@@ -25,6 +25,7 @@ func _ready() -> void:
 
 func _on_achievements_requested() -> void:
 	_refresh_tiles()
+	move_to_front()
 	show()
 
 

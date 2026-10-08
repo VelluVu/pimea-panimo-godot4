@@ -45,3 +45,9 @@ func test_get_random_perks_every_result_comes_from_the_pool() -> void:
 	var picked : Array[RunPerk] = PerkRegistry.get_random_perks(2)
 	for perk : RunPerk in picked:
 		assert_true(PerkRegistry.pool.has(perk), "offered perk not found in pool: %s" % perk.perk_name)
+
+
+func test_legendary_cards_stay_rare() -> void:
+	_ensure_pool_populated()
+	assert_true(PerkRegistry.tier_chance(RunPerk.Tier.LEGENDARY) < 0.04, "a playtest found legendary offers too frequent")
+	assert_true(PerkRegistry.tier_chance(RunPerk.Tier.COMMON) > PerkRegistry.tier_chance(RunPerk.Tier.RARE))
