@@ -6,7 +6,7 @@
 script = ExtResource("1_achievement")
 achievement_id = "humalat_7"
 title = "Humalapuutarhuri"
-description = "Avaa 7 humalalajiketta reputaation kautta."
+description = "Avaa 7 humalalajiketta maineen avulla."
 stat_key = &"hops_unlocked"
 target_value = 7
 metadata/_custom_type_script = "res://src/systems/achievements/achievement_data.gd"
