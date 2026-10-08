@@ -11,7 +11,7 @@ enum GoalType {
 	REPUTATION_GAIN,
 	EARN_MONEY,
 	UNHAPPY_CUSTOMERS_MAX,
-	## Kegs (whole batches) shipped to any BarContact today (BrewerySignals.keg_shipped_to_bar).
+	## Full kegs (KegRules.is_full_keg) shipped to any BarContact today (BrewerySignals.keg_shipped_to_bar).
 	SHIP_TO_BAR,
 }
 

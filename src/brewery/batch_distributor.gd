@@ -44,7 +44,7 @@ static func calculate_bulk_sell_payout(raw_cost_per_bottle : float, quality : fl
 
 ## Dumps a whole batch for cash without a customer: no reputation, XP, tip or risk.
 func _on_bulk_sell_batch_requested(batch : BrewBatch) -> void:
-	if batch == null or not brewery.inventory.brew_batches.has(batch) or not KegRules.can_leave_as_keg(batch.amount_bottles):
+	if batch == null or not brewery.inventory.brew_batches.has(batch) or batch.amount_bottles <= 0:
 		return
 
 	var raw_cost_per_bottle : float = brewery.resolver.get_price_breakdown(batch.beer_style).raw_cost_per_bottle
@@ -67,7 +67,7 @@ static func calculate_ship_payout(raw_cost_per_bottle : float, quality : float, 
 ## Ships a whole batch to a bar. Raises risk, since the beer now circulates outside
 ## the cellar. Refuses a bar the player's reputation has not unlocked.
 func _on_ship_batch_to_bar_requested(batch : BrewBatch, bar : BarContact) -> void:
-	if batch == null or bar == null or not brewery.inventory.brew_batches.has(batch) or not KegRules.can_leave_as_keg(batch.amount_bottles):
+	if batch == null or bar == null or not brewery.inventory.brew_batches.has(batch) or batch.amount_bottles <= 0:
 		return
 	if brewery.reputation < bar.required_reputation:
 		return

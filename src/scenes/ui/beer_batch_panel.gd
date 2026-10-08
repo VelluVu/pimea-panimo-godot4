@@ -30,15 +30,13 @@ const BULK_SELL_BUTTON_TEXT : String = "Myy"
 const HELD_ICON : String = "🔒"
 const RELEASED_ICON : String = "🔓"
 const HOLD_BUTTON_TOOLTIP : String = "Kellaroi: lukittua erää ei myydä tiskillä, joten se ehtii vanheta. Kellarioluet maksavat kypsinä enemmän. Paina uudestaan vapauttaaksesi."
-const BULK_SELL_BUTTON_TOOLTIP : String = "Myy koko tynnyri kerralla varastosta. Hinta on paljon normaalia myyntihintaa halvempi, ja heikkolaatuinen tai vanhentunut erä voi tuottaa jopa tappiota raaka-ainekuluihin nähden."
+const BULK_SELL_BUTTON_TOOLTIP : String = "Myy koko erä kerralla varastosta. Hinta on paljon normaalia myyntihintaa halvempi, ja heikkolaatuinen tai vanhentunut erä voi tuottaa jopa tappiota raaka-ainekuluihin nähden."
 
 const DESTINATION_LABEL_TEXT : String = "Kohde:"
 const SHIP_BUTTON_TEXT : String = "Vie"
-## Replaces both buttons' tooltips while the batch is too low to leave as a keg (KegRules).
-const KEG_TOO_LOW_TOOLTIP_FORMAT : String = "Tynnyrissä pitää olla vähintään %d annosta, jotta sen voi myydä tai viedä baariin. Tässä on %d. Loput myydään tiskillä."
 ## Finger-sized row buttons and destination dropdown.
 const ROW_BUTTON_SIZE : Vector2 = Vector2(40, 24)
-const SHIP_BUTTON_TOOLTIP : String = "Vie koko tynnyri yllä valittuun baariin. Parempi hinta kuin halpamyynti, mutta nostaa LVV-riskiä toimituksen mukana."
+const SHIP_BUTTON_TOOLTIP : String = "Vie koko erä yllä valittuun baariin. Parempi hinta kuin halpamyynti, mutta nostaa LVV-riskiä toimituksen mukana."
 
 ## Floor under the batch row label's width — without it, HBoxContainer's
 ## layout pass can hand the label (size_flags SIZE_EXPAND_FILL, sharing
@@ -132,12 +130,6 @@ func _update_beer_batches_ui() -> void:
 				if bar != null:
 					GUISignals.ship_batch_to_bar_requested.emit(batch, bar)
 			)
-
-			if not KegRules.can_leave_as_keg(batch.amount_bottles):
-				var too_low_tooltip : String = tr(KEG_TOO_LOW_TOOLTIP_FORMAT) % [KegRules.MIN_SERVINGS, batch.amount_bottles]
-				for keg_button : TooltipButton in [bulk_sell_button, ship_button]:
-					keg_button.disabled = true
-					keg_button.tooltip_text = too_low_tooltip
 
 			var action_row := HBoxContainer.new()
 			action_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
