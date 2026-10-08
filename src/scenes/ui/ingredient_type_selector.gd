@@ -70,6 +70,15 @@ func _make_swatch_texture(color : Color) -> ImageTexture:
 	return ImageTexture.create_from_image(image)
 
 
+func step_ingredient(direction : int) -> void:
+	OptionStepper.step(option_button, direction)
+
+
+## Wraps around both ways; setting current_tab emits tab_changed, which repopulates.
+func step_type(direction : int) -> void:
+	tab_bar.current_tab = posmod(tab_bar.current_tab + direction, tab_bar.tab_count)
+
+
 ## Puts < and > beside the dropdown and moves `amount_label` (the shop's or brew view's
 ## amount text) to its own line below, so the arrows leave the names room.
 func add_step_buttons(amount_label : Label) -> void:

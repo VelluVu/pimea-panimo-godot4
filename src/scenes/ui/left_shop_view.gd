@@ -53,6 +53,11 @@ func _ready() -> void:
 	_update_label()
 
 
+func _input(event : InputEvent) -> void:
+	if IngredientViewKeys.handle(event, self, ingredient_type_selector, main_slider, _on_buy_button_pressed):
+		get_viewport().set_input_as_handled()
+
+
 func _on_ingredient_selected_globally(id: int) -> void:
 	current_id = id
 	_update_slider()
