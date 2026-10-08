@@ -20,8 +20,9 @@ signal recipe_saved(recipe_name: String)
 signal bottles_sold(amount: int)
 @warning_ignore("unused_signal")
 signal beer_sale_breakdown(entry: SaleReceiptEntry)
+## reason is a RecipeSaveRules.Rejection; same_recipe_name is set for DUPLICATE.
 @warning_ignore("unused_signal")
-signal recipe_save_rejected()
+signal recipe_save_rejected(reason: int, same_recipe_name: String)
 @warning_ignore("unused_signal")
 signal beer_brewed(style: int)
 ## Emitted by Brewer for a matched brew whose spices changed its quality: positive for

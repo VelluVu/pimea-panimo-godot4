@@ -3832,8 +3832,16 @@ msgid "+%d XP"
 msgstr "+%d XP"
 
 #: src/scenes/ui/brew_preparation_panel.gd
+msgid "Ainekset eivät sovi mihinkään oluttyyliin."
+msgstr "These ingredients don't fit any beer style."
+
+#: src/scenes/ui/brew_preparation_panel.gd
 msgid "Resepti \"%s\" tallennettu!"
 msgstr "Recipe \"%s\" saved!"
+
+#: src/scenes/ui/brew_preparation_panel.gd
+msgid "Sama resepti on jo tallennettu: %s"
+msgstr "This recipe is already saved: %s"
 
 #: src/scenes/ui/brew_preparation_panel.gd
 msgid "Tuntematon oluttyyli. Keitä se ensin selvittääksesi reseptin!"
