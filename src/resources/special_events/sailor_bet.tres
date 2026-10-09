@@ -6,7 +6,7 @@
 script = ExtResource("1_event")
 event_caller_name = "Merimies Mauno"
 intro_dialogue = "Lyödäänkö vetoa? Panokseksi tynnyri, ja voittaja vie potin."
-success_dialogue = "Hah, sinä voitit! Tässä rahasi, merimies pitää sanansa."
+success_dialogue = "Hah, sinä voitit! Tässä rahasi."
 lost_dialogue = "Hah! Tynnyri lähtee laivaan."
 fail_dialogue = "Ei tynnyriä panokseksi? No, toiste sitten."
 reject_dialogue = "Pelkuri! Hah, ei se mitään."

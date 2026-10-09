@@ -7,6 +7,7 @@ script = ExtResource("1_biscuit")
 ebc = 55
 id = 106
 name = "Keksimallas"
+name_partitive = "keksimallasta"
 description = "Paahdettu erikoismallas, joka tuo olueen keksimäistä makua."
 base_price = 4
 metadata/_custom_type_script = "uid://dniwiyu5ynp71"

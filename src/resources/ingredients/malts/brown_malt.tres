@@ -7,6 +7,7 @@ script = ExtResource("1_brown")
 ebc = 45
 id = 105
 name = "Ruskea mallas"
+name_partitive = "ruskeaa mallasta"
 description = "Kevyesti paahdettu erikoismallas, joka antaa pähkinäistä syvyyttä."
 base_price = 3
 metadata/_custom_type_script = "uid://dniwiyu5ynp71"

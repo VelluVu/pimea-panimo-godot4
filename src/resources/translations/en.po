@@ -3026,6 +3026,10 @@ msgstr "Biscuit Malt"
 msgid "Paahdettu erikoismallas, joka tuo olueen keksimäistä makua."
 msgstr "A roasted specialty malt that adds a biscuity flavour."
 
+#: src/resources/ingredients/malts/biscuit_malt.tres
+msgid "keksimallasta"
+msgstr "biscuit malt"
+
 #: src/resources/ingredients/malts/brown_malt.tres
 msgid "Kevyesti paahdettu erikoismallas, joka antaa pähkinäistä syvyyttä."
 msgstr "A lightly roasted specialty malt that adds nutty depth."
@@ -3033,6 +3037,10 @@ msgstr "A lightly roasted specialty malt that adds nutty depth."
 #: src/resources/ingredients/malts/brown_malt.tres
 msgid "Ruskea mallas"
 msgstr "Brown Malt"
+
+#: src/resources/ingredients/malts/brown_malt.tres
+msgid "ruskeaa mallasta"
+msgstr "brown malt"
 
 #: src/resources/ingredients/malts/caramell_malt.tres
 msgid "Erikoismallas, joka antaa väriä ja paahteista makua olueen."
@@ -3042,6 +3050,10 @@ msgstr "A specialty malt that adds colour and a toasty flavour."
 msgid "Karamellimallas"
 msgstr "Caramel Malt"
 
+#: src/resources/ingredients/malts/caramell_malt.tres
+msgid "karamellimallasta"
+msgstr "caramel malt"
+
 #: src/resources/ingredients/malts/dark_crystal_malt.tres
 msgid "Tumma karamellimallas"
 msgstr "Dark Caramel Malt"
@@ -3050,9 +3062,17 @@ msgstr "Dark Caramel Malt"
 msgid "Voimakkaasti paahdettu karamellimallas tummille ja väkeville oluille."
 msgstr "A heavily roasted caramel malt for dark and strong beers."
 
+#: src/resources/ingredients/malts/dark_crystal_malt.tres
+msgid "tummaa karamellimallasta"
+msgstr "dark caramel malt"
+
 #: src/resources/ingredients/malts/munich_malt.tres
 msgid "Münchenin mallas"
 msgstr "Munich Malt"
+
+#: src/resources/ingredients/malts/munich_malt.tres
+msgid "Münchenin mallasta"
+msgstr "Munich malt"
 
 #: src/resources/ingredients/malts/munich_malt.tres
 msgid "Tumma pohjamallas, joka tuo olueen maltaista makeutta ja väriä."
@@ -3066,6 +3086,10 @@ msgstr "Pale Ale Malt"
 msgid "Pohjamallas antaa vähän maltaiden makua olueen."
 msgstr "A base malt that adds a little malt flavour."
 
+#: src/resources/ingredients/malts/pale_ale_malt.tres
+msgid "pale ale -mallasta"
+msgstr "pale ale malt"
+
 #: src/resources/ingredients/malts/pilsner_malt.tres
 msgid "Pilsner-mallas"
 msgstr "Pilsner Malt"
@@ -3073,6 +3097,10 @@ msgstr "Pilsner Malt"
 #: src/resources/ingredients/malts/pilsner_malt.tres
 msgid "Pilsner-pohjamallas antaa maltaiden makua olueen."
 msgstr "A pilsner base malt that adds malt flavour."
+
+#: src/resources/ingredients/malts/pilsner_malt.tres
+msgid "pilsner-mallasta"
+msgstr "pilsner malt"
 
 #: src/resources/ingredients/malts/smoked_malt.tres
 msgid "Avotulella savustettu mallas, joka tuo olueen savuisen maun."
@@ -3082,6 +3110,10 @@ msgstr "Malt smoked over an open fire for a smoky flavour."
 msgid "Savumallas"
 msgstr "Smoked Malt"
 
+#: src/resources/ingredients/malts/smoked_malt.tres
+msgid "savumallasta"
+msgstr "smoked malt"
+
 #: src/resources/ingredients/malts/wheat_malt.tres
 msgid "Vehnämallas"
 msgstr "Wheat Malt"
@@ -3089,6 +3121,10 @@ msgstr "Wheat Malt"
 #: src/resources/ingredients/malts/wheat_malt.tres
 msgid "Vehnästä valmistettu mallas, joka tekee oluesta samean ja pehmeän."
 msgstr "Malt made from wheat that makes beer hazy and soft."
+
+#: src/resources/ingredients/malts/wheat_malt.tres
+msgid "vehnämallasta"
+msgstr "wheat malt"
 
 #: src/resources/ingredients/spices/cacao_nibs.tres
 msgid "Kaakaonibsit"
@@ -3873,7 +3909,9 @@ msgstr "A fine placing! Maybe a win next time."
 
 #: src/resources/special_events/beer_contest.tres
 msgid "Kisat lauantaina! Lähetätkö kolme annosta parastasi tuomaristolle?"
-msgstr "Contest on Saturday! Will you send three servings of your best to the judges?"
+msgstr ""
+"Contest on Saturday! Will you send three servings of your best to the "
+"judges?"
 
 #: src/resources/special_events/beer_contest.tres
 msgid "No, ehkä ensi vuonna."
@@ -3923,7 +3961,9 @@ msgstr "Not enough... the dance goes dry."
 msgid ""
 "Lavatansseissa on illalla tuhat janoista! Tarvitaan 100 annosta bulkkia tai "
 "kotikaljaa."
-msgstr "A thousand thirsty dancers tonight! We need 100 servings of bulk lager or kotikalja."
+msgstr ""
+"A thousand thirsty dancers tonight! We need 100 servings of bulk lager or "
+"kotikalja."
 
 #: src/resources/special_events/dance_order.tres
 msgid "Lavatanssien järjestäjä"
@@ -4120,9 +4160,9 @@ msgstr "The young never listen to the old."
 
 #: src/resources/special_events/old_master.tres
 msgid ""
-"Tuo minulle %s, %d kg, ja 50 €, niin kerron yhden vanhan panimomestarin "
+"Tuo minulle %d kiloa %s ja 50 €, niin kerron yhden vanhan panimomestarin "
 "salaisuuden."
-msgstr "Bring me %s, %d kg, and 50 €, and I'll tell you an old brewmaster's secret."
+msgstr "Bring me %d kilos of %s and 50 €, and I'll tell you an old brewmaster's secret."
 
 #: src/resources/special_events/old_master.tres
 msgid "Vanha mestari Aatu"
@@ -4189,8 +4229,8 @@ msgid "Hah! Tynnyri lähtee laivaan."
 msgstr "Hah! The keg goes aboard."
 
 #: src/resources/special_events/sailor_bet.tres
-msgid "Hah, sinä voitit! Tässä rahasi, merimies pitää sanansa."
-msgstr "Hah, you won! Here's your money, a sailor keeps his word."
+msgid "Hah, sinä voitit! Tässä rahasi."
+msgstr "Hah, you won! Here's your money."
 
 #: src/resources/special_events/sailor_bet.tres
 msgid "Lyödäänkö vetoa? Panokseksi tynnyri, ja voittaja vie potin."

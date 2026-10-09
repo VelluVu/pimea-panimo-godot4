@@ -6,6 +6,8 @@ enum UnitType { KILOGRAM, GRAM, PIECE }
 
 @export var id : int = 0 #malts start 100, hops 200, yeasts 300, special 400 (juniper kept 212 for old recipes)
 @export var name : String = ""
+## The name in the partitive ("5 kiloa savumallasta"); empty falls back to name.
+@export var name_partitive : String = ""
 @export var description : String = ""
 @export var base_price : int = 1
 @export var unit: UnitType = UnitType.KILOGRAM
