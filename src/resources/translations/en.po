@@ -2278,6 +2278,18 @@ msgstr ""
 "Pekka praises your brewery to everyone he knows: bulk sales and bar "
 "shipments pay a little more."
 
+#: src/resources/event_perks/jussin_tukkuhinnat.tres
+msgid "Jussin tukkuhinnat"
+msgstr "Jussi's Wholesale Prices"
+
+#: src/resources/event_perks/jussin_tukkuhinnat.tres
+msgid ""
+"Naapuripanimon Jussi kertoi, mistä hän ostaa raaka-aineensa: kaupan hinnat "
+"ovat hieman halvempia."
+msgstr ""
+"Jussi from the brewery next door told you where he buys his ingredients: shop "
+"prices are a little lower."
+
 #: src/resources/group_events/agentti_lauma.tres
 msgid ""
 "LVV:n yllätystarkastusviikko on alkanut. Epäilyttävän moni uusi kasvo "
@@ -3711,11 +3723,11 @@ msgstr "People tell stories about the dark brewery. Some of them are even true."
 
 #: src/resources/special_events/brand_deal.tres
 msgid ""
-"Haluamme kasvosi energiajuomamainokseen! Maksamme 80 €, mutta maineesi "
+"Haluamme kasvosi energiajuomamainokseen! Maksamme 50 €, mutta maineesi "
 "kärsii: 15 mainetta."
 msgstr ""
-"We want your face in an energy drink ad! We pay 80 €, but your reputation "
-"drops by 15."
+"We want your face in an energy drink ad! We pay 50 €, but your reputation "
+"suffers: 15 reputation."
 
 #: src/resources/special_events/brand_deal.tres
 msgid "Kukaan ei vielä tunnista sinua. Ehkä myöhemmin."
@@ -3739,9 +3751,11 @@ msgstr "Not enough malt. Oh well, I'll think of something else."
 
 #: src/resources/special_events/ingredient_loan.tres
 msgid ""
-"Meiltä loppui mallas kesken kaiken! Voisitko lainata vähän, maksan takaisin "
-"suosiolla?"
-msgstr "We ran out of malt mid-brew! Could you lend some? I'll gladly pay you back."
+"Meiltä loppui %s kesken kaiken! Voisitko lainata %d kg? Maksan takaisin "
+"korkojen kanssa."
+msgstr ""
+"We ran out of %s right in the middle of it! Could you lend us %d kg? I'll pay "
+"you back with interest."
 
 #: src/resources/special_events/ingredient_loan.tres
 msgid "Naapuripanimon Jussi"
@@ -3765,11 +3779,11 @@ msgstr "Well, maybe another time."
 
 #: src/resources/special_events/journalist_review.tres
 msgid ""
-"Teen juttua paikallisista pienpanimoista. Saisinko muutaman annoksen IPA:a "
-"maisteluun?"
+"Teen juttua paikallisista pienpanimoista. Saisinko haastatella sinua "
+"lehteen?"
 msgstr ""
-"I'm writing a story on local microbreweries. Could I get a few servings of "
-"IPA to taste?"
+"I'm writing a story about local microbreweries. Could I interview you for the "
+"paper?"
 
 #: src/resources/special_events/journalist_review.tres
 msgid "Toimittaja Liisa"
