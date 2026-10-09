@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="RunPerk" format=3]
+
+[ext_resource type="Script" uid="uid://dewmdbm4a0vst" path="res://src/progression/run_perk.gd" id="1_course"]
+
+[resource]
+script = ExtResource("1_course")
+perk_name = "Tuplatippikurssi"
+description = "Keke opetti, miten asiakkaan saa tuntemaan itsensä tärkeäksi: tippi tuplaantuu hieman useammin."
+icon_placeholder = "💰"
+tip_double_chance = 0.03
