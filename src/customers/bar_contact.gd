@@ -31,3 +31,13 @@ extends Resource
 ## reputation clears it, mirroring IngredientData.min_reputation's
 ## locked-item treatment in IngredientOptionButton.
 @export var required_reputation : int = 0
+
+
+## Risk change of shipping an alcohol-free keg anywhere: a little relief, since the
+## cellar looks like it brews the legal stuff.
+const ALCOHOL_FREE_SHIPMENT_RISK : int = -3
+
+
+## LVV risk of shipping `beer_style` here, see ALCOHOL_FREE_SHIPMENT_RISK.
+func risk_for(beer_style : BeerStyle) -> int:
+	return ALCOHOL_FREE_SHIPMENT_RISK if beer_style.is_alcohol_free() else risk_per_shipment

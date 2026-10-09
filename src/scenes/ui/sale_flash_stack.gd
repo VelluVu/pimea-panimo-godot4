@@ -15,7 +15,7 @@ extends VBoxContainer
 const SALE_FLASH_TOAST_SCENE : PackedScene = preload("res://src/scenes/ui/sale_flash_toast.tscn")
 
 const BULK_SELL_FLASH_FORMAT : String = "Halpamyynti: %s x%d  +%.1f €"
-const SHIP_FLASH_FORMAT : String = "Vienti (%s): %s x%d  +%.1f € (LVV-riski +%d)"
+const SHIP_FLASH_FORMAT : String = "Vienti (%s): %s x%d  +%.1f € (LVV-riski %+d)"
 
 ## Warm red-orange instead of the default sale-toast white, so a bar-fight
 ## flash reads as bad news at a glance instead of looking like another payout.

@@ -1135,8 +1135,8 @@ msgid ""
 "Villaa seiniin ja tiivisteet oviin: kellarin kolina ei kanna naapuriin. "
 "Myynti herättää vähemmän huomiota."
 msgstr ""
-"Wool in the walls and seals on the doors: the cellar's racket no longer carries "
-"next door. Sales draw less attention."
+"Wool in the walls and seals on the doors: the cellar's racket no longer "
+"carries next door. Sales draw less attention."
 
 #: src/resources/cellar_upgrades/10_aanieristys.tres
 msgid "Äänieristys"
@@ -4034,11 +4034,11 @@ msgstr "Achievements (%d/%d)"
 msgid ""
 "%s\n"
 "Maksukerroin: x%.2f raaka-aineiden hinnasta\n"
-"LVV-riski per toimitus: +%d"
+"LVV-riski per toimitus: +%d (alkoholittomat %+d)"
 msgstr ""
 "%s\n"
-"Payout: x%.2f of ingredient cost\n"
-"LVV risk per delivery: +%d"
+"Pay rate: x%.2f of the ingredient cost\n"
+"LVV risk per shipment: +%d (alcohol-free %+d)"
 
 #: src/scenes/ui/beer_batch_element.tscn
 msgid "0 kpl"
@@ -4606,8 +4606,8 @@ msgid "Osa raaka-aineista säästyi panon yhteydessä!"
 msgstr "Some ingredients were saved during brewing!"
 
 #: src/scenes/ui/sale_flash_stack.gd
-msgid "Vienti (%s): %s x%d  +%.1f € (LVV-riski +%d)"
-msgstr "Shipment (%s): %s x%d  +%.1f € (LVV risk +%d)"
+msgid "Vienti (%s): %s x%d  +%.1f € (LVV-riski %+d)"
+msgstr "Shipment (%s): %s x%d  +%.1f € (LVV risk %+d)"
 
 #: src/scenes/ui/sale_flash_toast.gd
 msgid "Myyty: %s  +%.1f €"
@@ -4700,8 +4700,8 @@ msgid "Varastoon: %s +%d annosta"
 msgstr "Stored: %s +%d servings"
 
 #: src/systems/console/console_wiring.gd
-msgid "Vienti: %s baariin %s, %d annosta, +%.1f €, LVV-riski +%d"
-msgstr "Shipment: %s to bar %s, %d servings, +%.1f €, LVV risk +%d"
+msgid "Vienti: %s baariin %s, %d annosta, +%.1f €, LVV-riski %+d"
+msgstr "Shipment: %s to bar %s, %d servings, +%.1f €, LVV risk %+d"
 
 #: src/systems/console/console_wiring.gd
 msgid "[color=gold]%s on nyt kanta-asiakas.[/color]"
