@@ -122,3 +122,11 @@ func test_hoppy_style_costs_more_than_hopless_style() -> void:
 func test_style_needs_malt_blend_is_false_when_one_malt_fits() -> void:
 	var resolver := _make_resolver()
 	assert_false(resolver.style_needs_malt_blend(resolver.get_beer_style(BeerStyle.Style.KOTIKALJA)))
+
+
+func test_a_new_price_multiplier_drops_cached_costs() -> void:
+	var resolver := _make_resolver()
+	var style : BeerStyle = resolver.get_beer_style(BeerStyle.Style.KOTIKALJA)
+	var full : float = resolver.get_style_cost_per_bottle(style)
+	resolver.ingredient_price_multiplier = 0.5
+	assert_true(resolver.get_style_cost_per_bottle(style) < full, "a cheaper shop lowers the cached cost")

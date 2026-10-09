@@ -15,8 +15,14 @@ const PROFIT_MARKUP_RATE : float = 0.5
 ## Floor under the markup, so cheap styles like Kotikalja still show a real profit.
 const MIN_PROFIT_PER_BOTTLE : float = 0.5
 
-## Set by Brewery per run, so costs match what the player pays.
-var ingredient_price_multiplier : float = 1.0
+## Set by Brewery per run and whenever a perk changes it, so costs match what the player
+## pays. A change drops the cached costs and prices.
+var ingredient_price_multiplier : float = 1.0:
+	set(value):
+		if not is_equal_approx(value, ingredient_price_multiplier):
+			_cost_cache.clear()
+			_breakdown_cache.clear()
+		ingredient_price_multiplier = value
 
 var _ingredients : IngredientSource
 var _cost_cache : Dictionary = {}
