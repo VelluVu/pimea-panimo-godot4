@@ -2,12 +2,15 @@ class_name ImmersionEventSpawner
 extends Node2D
 
 ## Decorative background vignettes (a mouse chased by a cat, ...) played every few
-## minutes. No gameplay effect: nothing here touches Brewery state or BrewerySignals.
+## minutes. No gameplay effect. The adopted cellar cat (Brewery.cellar_cat_adopted) walks
+## on its own, more frequent timer, so a cat the player paid for is actually seen.
 ## Each ImmersionVignetteData names its actors and the child node whose Marker2Ds
 ## form the route.
 
 const MIN_INTERVAL_SECONDS : float = 240.0
 const MAX_INTERVAL_SECONDS : float = 480.0
+const CAT_MIN_INTERVAL_SECONDS : float = 60.0
+const CAT_MAX_INTERVAL_SECONDS : float = 120.0
 
 const VIGNETTE_DIR : String = "res://src/resources/immersion_vignettes/"
 
@@ -31,6 +34,7 @@ const IMMERSION_EVENT_SPAWNER_GROUP : String = "immersion_event_spawner"
 var vignettes : Array[ImmersionVignetteData] = []
 
 var _timer : Timer
+var _cat_timer : Timer
 ## Live actor sprite -> its base scale, rescaled for depth every frame.
 var _active_sprites : Dictionary = {}
 
@@ -39,6 +43,13 @@ func _ready() -> void:
 	add_to_group(IMMERSION_EVENT_SPAWNER_GROUP)
 	_load_vignettes()
 	_setup_timer()
+	_cat_timer = Timer.new()
+	_cat_timer.one_shot = true
+	_cat_timer.timeout.connect(_on_cat_timer_timeout)
+	add_child(_cat_timer)
+	BrewerySignals.cellar_cat_adopted.connect(_on_cat_timer_timeout)
+	BrewEngine.brewery_changed.connect(_on_brewery_changed)
+	_on_brewery_changed(BrewEngine.current_brewery)
 
 
 func _process(_delta: float) -> void:
@@ -79,6 +90,23 @@ func _on_timer_timeout() -> void:
 	_start_next_timer()
 
 
+## A loaded season with the cat keeps its walks going; a new one stops them.
+func _on_brewery_changed(brewery : Brewery) -> void:
+	if brewery != null and brewery.cellar_cat_adopted:
+		_cat_timer.start(randf_range(CAT_MIN_INTERVAL_SECONDS, CAT_MAX_INTERVAL_SECONDS))
+	else:
+		_cat_timer.stop()
+
+
+## Walks the cellar cat now and schedules its next round.
+func _on_cat_timer_timeout() -> void:
+	for vignette : ImmersionVignetteData in vignettes:
+		if vignette.needs_cellar_cat:
+			_run_vignette(vignette)
+			break
+	_cat_timer.start(randf_range(CAT_MIN_INTERVAL_SECONDS, CAT_MAX_INTERVAL_SECONDS))
+
+
 func _run_vignette(vignette : ImmersionVignetteData) -> void:
 	if vignette == null:
 		return
@@ -100,10 +128,9 @@ func _run_vignette(vignette : ImmersionVignetteData) -> void:
 ## Null when nothing is loaded.
 func _pick_vignette() -> ImmersionVignetteData:
 	var weights : Array[float] = []
-	var brewery : Brewery = BrewEngine.current_brewery
-	var has_cat : bool = brewery != null and brewery.cellar_cat_adopted
+	# The cellar cat walks on its own timer (_on_cat_timer_timeout).
 	for vignette : ImmersionVignetteData in vignettes:
-		weights.append(0.0 if vignette.needs_cellar_cat and not has_cat else maxf(vignette.weight, 0.0))
+		weights.append(0.0 if vignette.needs_cellar_cat else maxf(vignette.weight, 0.0))
 	return WeightedPicker.pick(vignettes, weights) as ImmersionVignetteData
 
 
