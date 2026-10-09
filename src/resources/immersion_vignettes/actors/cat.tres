@@ -9,7 +9,7 @@
 script = ExtResource("1_script")
 sprite_frames = ExtResource("2_frames")
 animation = &"walk_left"
-base_scale = Vector2(3.5, 3.5)
+base_scale = Vector2(3, 3)
 start_delay_seconds = 0.5
 crossing_seconds = 6.0
 sound_chance = 0.85
