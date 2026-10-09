@@ -23,9 +23,15 @@ extends Node
 ## special-event goal. The other goal types follow from playing well.
 
 ## Strategies that play like the expert.
-const EXPERTS: Array[String] = ["expert", "gourmet", "minmax"]
+const EXPERTS: Array[String] = ["expert", "gourmet", "minmax", "calm"]
 ## Strategies that tune their recipes for quality.
-const TUNERS: Array[String] = ["gourmet", "minmax"]
+const TUNERS: Array[String] = ["gourmet", "minmax", "calm"]
+## "calm" plays like gourmet but never buys LVV relief (bribes, favours, Irma's kotikalja):
+## it keeps risk down with alcohol-free brews and exports, aged beer and Äänieristys.
+## Compared with gourmet it shows whether careful play can stand in for bribing.
+const CALM_ALCOHOL_FREE_BONUS: float = 25.0
+## Risk share of the raid line above which calm ships alcohol-free kegs at any time of day.
+const CALM_EXPORT_RISK_SHARE: float = 0.3
 
 var cfg: Dictionary = {}
 var days: Array = []
@@ -158,10 +164,12 @@ func _held_bottles(b: Brewery) -> int:
 func _wants_event(b: Brewery, e: SpecialEventData) -> bool:
 	var threshold: int = b.get_effective_raid_threshold()
 	if e is ReputationFavourEventData and (e as ReputationFavourEventData).reward_risk <= 0 and _open_goal(DailyGoalData.GoalType.SPECIAL_EVENT) != -1:
-		return true
+		return not (cfg.strategy == "calm" and _buys_lvv_relief(e))
 	match cfg.strategy:
 		"minmax":
 			return _event_points(b, e) > 0.0
+		"calm":
+			return not _buys_lvv_relief(e) and _event_points(b, e) > 0.0
 		"greedy":
 			return true
 		"cheap":
@@ -182,6 +190,11 @@ func _wants_event(b: Brewery, e: SpecialEventData) -> bool:
 				return true
 		return false
 	return true
+
+
+## Events whose point is lowering LVV risk: a bribe, a favour, Irma's kotikalja.
+func _buys_lvv_relief(e: SpecialEventData) -> bool:
+	return e.weighs_by_risk or e.clears_risk or e.reward_risk < 0
 
 
 func _needs_brew(b: Brewery) -> bool:
@@ -295,6 +308,8 @@ func _expert_recipe(b: Brewery) -> BrewRecipe:
 		score += b.resolver.get_style_base_price(style) - b.resolver.get_style_cost_per_bottle(style)
 		# Half the aged bonus: the bot waits for it, and sells some young.
 		score += b.resolver.get_style_base_price(style) * style.aged_price_bonus * 0.5
+		if cfg.strategy == "calm" and style.is_alcohol_free():
+			score += CALM_ALCOHOL_FREE_BONUS * b.risk / maxf(1.0, b.get_effective_raid_threshold())
 		var recipe := BrewRecipe.new()
 		recipe.beer_style = style.style
 		recipe.ingredient_amounts = ingredients
@@ -425,7 +440,8 @@ func _maybe_ship(b: Brewery) -> void:
 		return
 	_ship_cooldown = 2.0
 	var goal_open: bool = _open_goal(DailyGoalData.GoalType.SHIP_TO_BAR) != -1
-	if not goal_open and TimeManager.get_day_progress() < EXPORT_DAY_PROGRESS:
+	var calm_export: bool = cfg.strategy == "calm" and b.risk >= CALM_EXPORT_RISK_SHARE * b.get_effective_raid_threshold()
+	if not goal_open and not calm_export and TimeManager.get_day_progress() < EXPORT_DAY_PROGRESS:
 		return
 	var bar: BarContact = _best_bar(b, goal_open)
 	var alcohol_free_bar: BarContact = _best_bar(b, false, true)
@@ -446,6 +462,9 @@ func _maybe_ship(b: Brewery) -> void:
 			continue
 		# Only a full keg counts for the goal.
 		if goal_open and not KegRules.is_full_keg(batch.amount_bottles):
+			continue
+		# Before the evening, calm ships only the alcohol-free kegs that lower the risk.
+		if calm_export and not goal_open and TimeManager.get_day_progress() < EXPORT_DAY_PROGRESS and not batch.beer_style.is_alcohol_free():
 			continue
 		if not goal_open and (total - batch.amount_bottles < COUNTER_STOCK or _still_aging(batch)):
 			continue
