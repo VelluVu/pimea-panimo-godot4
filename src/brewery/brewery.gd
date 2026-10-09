@@ -172,17 +172,18 @@ func skip_tutorial() -> void:
 
 func add_risk(amount : int) -> void:
 	risk = max(0, risk + amount)
-	_check_lvv_warnings()
+	# After the raid check: a raid empties the risk, so no warning lands on top of it.
 	InspectionService.new(self).check_for_raid()
+	_check_lvv_warnings()
 
 
 func _check_lvv_warnings() -> void:
 	if not lvv_hint_shown and risk >= LVV_HINT_RISK:
 		lvv_hint_shown = true
 		BrewerySignals.lvv_hint_reached.emit()
+	# Asked again on every rise until the inspector gets in (CustomerSpawner sets the latch).
 	if not lvv_inspector_visited and risk >= LVV_INSPECTOR_VISIT_RISK:
-		lvv_inspector_visited = true
-		BrewerySignals.lvv_inspector_visit_due.emit()
+		BrewerySignals.lvv_inspector_visit_due.emit(self)
 
 
 ## Every change of money goes through here, so the money tooltip can tell where it went.

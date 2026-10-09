@@ -100,20 +100,22 @@ static func combine_stacking(base : float, perks : Array[RunPerk], field_getter 
 ## per level (see PerkStats.scale_per_level()). Never mutates self: such resources are
 ## shared by every run.
 func scaled_copy(level : int) -> RunPerk:
-	var scaled := RunPerk.new()
-	scaled.perk_name = perk_name
-	scaled.description = description
-	scaled.icon_placeholder = icon_placeholder
-	scaled.tier = tier
-	scaled.stacks_additively = stacks_additively
-	for entry : Dictionary in PerkStats.definitions():
-		scaled.set(entry.stat, PerkStats.scale_per_level(entry.kind, get(entry.stat), level))
-	return scaled
+	return _copy_with(func(kind : PerkStats.Kind, value : float) -> Variant: return PerkStats.scale_per_level(kind, value, level))
 
 
 ## A fresh perk with every stat moved `strength` (0 to 1) of the way from neutral, for
 ## a reward that grows with how well something went. Counts round down.
 func strength_copy(strength : float) -> RunPerk:
+	return _copy_with(func(kind : PerkStats.Kind, value : float) -> Variant:
+		var neutral : float = PerkStats.neutral_value(kind)
+		var moved : float = neutral + (value - neutral) * strength
+		if kind == PerkStats.Kind.COUNT:
+			return floori(moved)
+		return moved)
+
+
+## A fresh perk with this one's name and look, and each stat as `stat_value(kind, value)`.
+func _copy_with(stat_value : Callable) -> RunPerk:
 	var copy := RunPerk.new()
 	copy.perk_name = perk_name
 	copy.description = description
@@ -121,12 +123,7 @@ func strength_copy(strength : float) -> RunPerk:
 	copy.tier = tier
 	copy.stacks_additively = stacks_additively
 	for entry : Dictionary in PerkStats.definitions():
-		var neutral : float = PerkStats.neutral_value(entry.kind)
-		var value : float = neutral + (get(entry.stat) - neutral) * strength
-		if entry.kind == PerkStats.Kind.COUNT:
-			copy.set(entry.stat, floori(value))
-		else:
-			copy.set(entry.stat, value)
+		copy.set(entry.stat, stat_value.call(entry.kind, float(get(entry.stat))))
 	return copy
 
 

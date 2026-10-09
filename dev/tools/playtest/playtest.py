@@ -48,6 +48,11 @@ ERROR_LINE = re.compile(r"(SCRIPT ERROR:.*|ERROR: .*)")
 def run(args: argparse.Namespace) -> None:
     out = Path(args.out).resolve() if args.out else HERE / "runs" / datetime.now().strftime("%Y%m%d-%H%M%S")
     out.mkdir(parents=True, exist_ok=True)
+    # Each run leaves a savegame here; without .gdignore the open editor scans them and
+    # trips over resources that old saves point at.
+    (out / ".gdignore").touch()
+    (HERE / "runs").mkdir(exist_ok=True)
+    (HERE / "runs" / ".gdignore").touch()
     procs = []
     for strategy in args.strategies.split(","):
         for i in range(1, args.runs + 1):
@@ -65,9 +70,10 @@ def run(args: argparse.Namespace) -> None:
             ]
             env = dict(os.environ, APPDATA=str(appdata))
             with open(out / f"{name}.out", "w") as stdout, open(out / f"{name}.err", "w") as stderr:
-                procs.append(subprocess.Popen(cmd, env=env, stdout=stdout, stderr=stderr))
-    for p in procs:
-        p.wait()
+                procs.append((name, subprocess.Popen(cmd, env=env, stdout=stdout, stderr=stderr)))
+    for name, p in procs:
+        # Kept for runs that end without a report: a crash leaves a non-zero code.
+        (out / f"{name}.exit").write_text(str(p.wait()))
     print(f"{len(procs)} runs in {out}")
     summary(argparse.Namespace(dir=str(out)))
 
@@ -120,7 +126,8 @@ def summary(args: argparse.Namespace) -> None:
             strategy, endings, sum(scores) / len(scores), scores[len(scores) // 2], 100 * ok / max(1, tried),
             [first_day_at(r, 60) for r in rs], [first_day_at(r, 100) for r in rs], [peak_rep(r) for r in rs], [r["final"]["day"] for r in rs]))
     if missing:
-        print("runs without a report (crashed?):", missing)
+        codes = {m: (Path(directory) / f"{m}.exit").read_text() if (Path(directory) / f"{m}.exit").exists() else "?" for m in missing}
+        print("runs without a report (crashed?), exit codes:", codes)
     print("errors:", errors.most_common(8) or "none")
 
 

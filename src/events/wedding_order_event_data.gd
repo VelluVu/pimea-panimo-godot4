@@ -12,7 +12,8 @@ const DELIVERY_FORMAT: String = "Toimita %s ja %s, määrällä ei väliä.\nVar
 const REQUIREMENT_FORMAT: String = "%s ja %s"
 
 @export_group("Hääpyyntö")
-## Light beer: stronger than alcohol-free, at most this strong.
+## Light beer: at least min_light_abv (so Kotikalja does not count), at most max_light_abv.
+@export var min_light_abv: float = 3.0
 @export var max_light_abv: float = 5.0
 @export var max_alcohol_free_abv: float = BeerStyle.ALCOHOL_FREE_MAX_ABV
 ## Where the money lands between the best export payout (0) and the pub price (1).
@@ -27,16 +28,16 @@ const REQUIREMENT_FORMAT: String = "%s ja %s"
 
 ## Never rolled before the player knows a style of each kind.
 func get_weight(brewery: Brewery) -> float:
-	if _known_styles(brewery, max_alcohol_free_abv, max_light_abv).is_empty():
+	if _known_styles(brewery, min_light_abv, max_light_abv).is_empty():
 		return 0.0
-	if _known_styles(brewery, -1.0, max_alcohol_free_abv).is_empty():
+	if _known_styles(brewery, 0.0, max_alcohol_free_abv).is_empty():
 		return 0.0
 	return super(brewery)
 
 
 func prepared(brewery: Brewery, bars: Array[BarContact]) -> SpecialEventData:
-	var light: Array[BeerStyle.Style] = _known_styles(brewery, max_alcohol_free_abv, max_light_abv)
-	var alcohol_free: Array[BeerStyle.Style] = _known_styles(brewery, -1.0, max_alcohol_free_abv)
+	var light: Array[BeerStyle.Style] = _known_styles(brewery, min_light_abv, max_light_abv)
+	var alcohol_free: Array[BeerStyle.Style] = _known_styles(brewery, 0.0, max_alcohol_free_abv)
 	if light.is_empty() or alcohol_free.is_empty():
 		return self
 	var rolled := duplicate() as WeddingOrderEventData
@@ -97,29 +98,32 @@ static func best_export_multiplier(bars: Array[BarContact], reputation: int) -> 
 	return best if best > 0.0 else 1.0
 
 
-## Styles stronger than `above_abv` and at most `up_to_abv`.
-static func styles_between(styles: Array[BeerStyle], above_abv: float, up_to_abv: float) -> Array[BeerStyle.Style]:
+## Styles from `min_abv` to `max_abv`, both included.
+static func styles_between(styles: Array[BeerStyle], min_abv: float, max_abv: float) -> Array[BeerStyle.Style]:
 	var found: Array[BeerStyle.Style] = []
 	for beer_style: BeerStyle in styles:
-		if beer_style.abv > above_abv and beer_style.abv <= up_to_abv:
+		if beer_style.abv >= min_abv and beer_style.abv <= max_abv:
 			found.append(beer_style.style)
 	return found
 
 
-func _known_styles(brewery: Brewery, above_abv: float, up_to_abv: float) -> Array[BeerStyle.Style]:
+func _known_styles(brewery: Brewery, min_abv: float, max_abv: float) -> Array[BeerStyle.Style]:
 	var known: Array[BeerStyle.Style] = []
-	for style: BeerStyle.Style in styles_between(brewery.resolver.active_styles, above_abv, up_to_abv):
+	for style: BeerStyle.Style in styles_between(brewery.resolver.active_styles, min_abv, max_abv):
 		if brewery.is_style_known(style):
 			known.append(style)
 	return known
 
 
-## What the whole batch would bring shipped to the best bar, and in the pub, then the share between.
+## What the whole batch would bring shipped to the best bar, and sold in the pub (with the
+## same perks and aging a real sale gets), then the share between.
 func _payout(brewery: Brewery, batch: BrewBatch) -> float:
-	var breakdown: SaleBreakdown = brewery.resolver.get_price_breakdown(batch.beer_style)
-	var export_payout: float = BatchDistributor.calculate_ship_payout(breakdown.raw_cost_per_bottle, batch.current_quality, batch.amount_bottles, export_price_multiplier) \
-			* brewery.stats.multiplier(PerkStats.DISTRIBUTION_INCOME) * batch.get_aged_price_multiplier()
-	return reward_between(export_payout, breakdown.price_per_bottle * batch.amount_bottles, pub_share, min_over_export)
+	var aged: float = batch.get_aged_price_multiplier()
+	var export_payout: float = BatchDistributor.calculate_ship_payout(brewery.resolver.get_market_cost_per_bottle(batch.beer_style), batch.current_quality, batch.amount_bottles, export_price_multiplier) \
+			* brewery.stats.multiplier(PerkStats.DISTRIBUTION_INCOME) * aged
+	var pub_income: float = brewery.resolver.get_price_breakdown(batch.beer_style).price_per_bottle \
+			* brewery.stats.multiplier(PerkStats.COUNTER_PRICE) * aged * batch.amount_bottles
+	return reward_between(export_payout, pub_income, pub_share, min_over_export)
 
 
 ## The batch of `style` on offer with the highest quality, then the most servings.

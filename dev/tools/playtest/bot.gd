@@ -468,7 +468,7 @@ func _maybe_ship(b: Brewery) -> void:
 			continue
 		if not goal_open and (total - batch.amount_bottles < COUNTER_STOCK or _still_aging(batch)):
 			continue
-		var raw_cost: float = b.resolver.get_price_breakdown(batch.beer_style).raw_cost_per_bottle
+		var raw_cost: float = b.resolver.get_market_cost_per_bottle(batch.beer_style)
 		var payout: float = BatchDistributor.calculate_ship_payout(raw_cost, batch.current_quality, batch.amount_bottles, ship_bar.price_multiplier) * b.stats.multiplier(PerkStats.DISTRIBUTION_INCOME) * batch.get_aged_price_multiplier()
 		if not goal_open and payout < raw_cost * batch.amount_bottles:
 			continue
@@ -696,7 +696,7 @@ func _cash_out(b: Brewery, closing: bool = false) -> void:
 	if not _is_last_day(b) or not closing and TimeManager.get_day_progress() < CASH_OUT_PROGRESS:
 		return
 	for batch: BrewBatch in b.inventory.brew_batches.duplicate():
-		var raw_cost: float = b.resolver.get_price_breakdown(batch.beer_style).raw_cost_per_bottle
+		var raw_cost: float = b.resolver.get_market_cost_per_bottle(batch.beer_style)
 		var bar: BarContact = _richest_bar_below(b, INF if batch.beer_style.is_alcohol_free() else float(b.get_effective_raid_threshold()))
 		var bulk: float = BatchDistributor.calculate_bulk_sell_payout(raw_cost, batch.current_quality, batch.amount_bottles)
 		if bar != null and BatchDistributor.calculate_ship_payout(raw_cost, batch.current_quality, batch.amount_bottles, bar.price_multiplier) * batch.get_aged_price_multiplier() > bulk:
