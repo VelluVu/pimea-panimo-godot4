@@ -4,7 +4,9 @@ extends CanvasLayer
 ## The game is built for landscape. On a touch screen held upright this covers the screen,
 ## asks the player to turn the phone and holds the pause until they do. With the phone's
 ## rotation lock on, turning does nothing, so a tap asks the browser for a fullscreen
-## landscape instead (Android; iOS has no orientation lock). The game starts in Finnish and
+## landscape instead (Android; iOS has no orientation lock). On a phone the first tap anywhere
+## asks for the same once: itch.io's mobile frame can be larger than the screen and does not
+## follow the turn, while a fullscreen page always fills it. The game starts in Finnish and
 ## the Options are behind this cover, so a Finnish notice repeats itself in English below.
 ## Add one to each scene's UI root.
 
@@ -31,6 +33,9 @@ const LANDSCAPE_JS : String = """
 """
 const TEXT_MARGIN : float = 16.0
 
+## Once per session, so leaving fullscreen on purpose sticks.
+static var _asked_landscape : bool = false
+
 var _cover : ColorRect
 var _english_lines : Control
 
@@ -52,6 +57,11 @@ func _ready() -> void:
 	add_child(_cover)
 	PauseLock.hold_while_visible(_cover)
 	_refresh()
+
+
+func _input(event : InputEvent) -> void:
+	if _cover != null and not _asked_landscape and _is_phone_browser() and _is_tap_release(event):
+		_request_landscape()
 
 
 ## Checked every frame: the web build turning the phone did not emit size_changed.
@@ -84,9 +94,21 @@ func _borrowed_theme() -> Theme:
 
 ## On the release: a browser counts only the end of a touch as the user's permission.
 func _on_cover_input(event : InputEvent) -> void:
-	var tapped : bool = (event is InputEventScreenTouch or event is InputEventMouseButton) 			and event.is_released()
-	if tapped and OS.has_feature("web"):
-		JavaScriptBridge.eval(LANDSCAPE_JS)
+	if _is_tap_release(event) and OS.has_feature("web"):
+		_request_landscape()
+
+
+static func _is_tap_release(event : InputEvent) -> bool:
+	return (event is InputEventScreenTouch or event is InputEventMouseButton) and event.is_released()
+
+
+static func _is_phone_browser() -> bool:
+	return OS.has_feature("web_android") or OS.has_feature("web_ios")
+
+
+static func _request_landscape() -> void:
+	_asked_landscape = true
+	JavaScriptBridge.eval(LANDSCAPE_JS)
 
 
 func _make_texts() -> VBoxContainer:
