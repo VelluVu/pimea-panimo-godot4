@@ -9,7 +9,7 @@ Needs only the Python standard library and an installed Chrome.
 
 --url tests a published copy (GitHub Pages, itch.io) instead of serving build/web.
 --phone emulates a phone in landscape (Pixel 7: 915x412 CSS pixels at 2.625x) with touch
-input; the game then fills the height (scale 412/360) and has bars at the sides.
+input and an Android user agent; the game then fills the height (scale 412/360) and has bars at the sides.
 --portrait starts that phone held upright (412x915).
 
 Steps run after the first wait, separated by ';':
@@ -51,6 +51,9 @@ PHONE = {"width": 915, "height": 412, "deviceScaleFactor": 2.625, "mobile": True
 	"screenOrientation": {"type": "landscapePrimary", "angle": 90}}
 PORTRAIT = {"width": 412, "height": 915, "deviceScaleFactor": 2.625, "mobile": True,
 	"screenOrientation": {"type": "portraitPrimary", "angle": 0}}
+# So the game's web_android feature tag is on, as on a real phone.
+PHONE_USER_AGENT = ("Mozilla/5.0 (Linux; Android 14; Pixel 7) AppleWebKit/537.36 "
+	"(KHTML, like Gecko) Chrome/130.0.0.0 Mobile Safari/537.36")
 SERVE_PORT = 8062
 DEBUG_PORT = 9233
 
@@ -280,6 +283,7 @@ def main():
 		if args.phone:
 			tools.call("Emulation.setDeviceMetricsOverride", PORTRAIT if args.portrait else PHONE)
 			tools.call("Emulation.setTouchEmulationEnabled", {"enabled": True, "maxTouchPoints": 5})
+			tools.call("Emulation.setUserAgentOverride", {"userAgent": PHONE_USER_AGENT, "platform": "Android"})
 		if args.init_script:
 			with open(args.init_script, encoding="utf-8") as f:
 				tools.call("Page.addScriptToEvaluateOnNewDocument", {"source": f.read()})
