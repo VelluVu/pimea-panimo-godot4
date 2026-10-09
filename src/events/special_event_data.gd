@@ -126,6 +126,11 @@ func servings_taken(brewery: Brewery) -> Dictionary:
 	return {batch: required_bottles}
 
 
+## Called when the player lets the offer pass (the window times out); most events shrug.
+func on_rejected(_brewery: Brewery) -> void:
+	pass
+
+
 ## The perk a success would grant, or null.
 func perk_on_success(_brewery: Brewery) -> RunPerk:
 	return granted_perk

@@ -11,7 +11,7 @@
 [resource]
 script = ExtResource("1_reno")
 event_caller_name = "Remonttihenkilö Pasi"
-intro_dialogue = "Nyt tajolla 200€ remppa... laitetaas tilat kuntoon, niin on mukavampi jatkaa bisneksiä... köh"
+intro_dialogue = "Nyt tarjolla 200€ remppa... laitetaas tilat kuntoon, niin on mukavampi jatkaa bisneksiä... köh"
 success_dialogue = "Valmista tuli! Kyllä nyt kelpaa."
 fail_dialogue = "Ei taida olla rahaa remppaan. No, kellari pysyy sitten ennallaan."
 reject_dialogue = "Selvä, jatketaan entisillä."

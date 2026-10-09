@@ -69,6 +69,8 @@ func process_accept(event_data: SpecialEventData) -> String:
 ## "Joo"; see try_fulfill/fail_dialogue for how a genuine lack of stock
 ## already gets handled instead).
 func process_reject(event_data: SpecialEventData) -> String:
+	if BrewEngine.current_brewery != null:
+		event_data.on_rejected(BrewEngine.current_brewery)
 	return event_data.reject_dialogue
 
 
