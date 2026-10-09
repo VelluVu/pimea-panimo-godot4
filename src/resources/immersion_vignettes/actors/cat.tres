@@ -1,16 +1,14 @@
-[gd_resource type="Resource" script_class="ImmersionActorData" format=3]
+[gd_resource type="Resource" script_class="ImmersionActorData" format=3 uid="uid://bfnowtc10831n"]
 
-[ext_resource type="Script" path="res://src/events/immersion_actor_data.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://chmin5uvts5nw" path="res://src/events/immersion_actor_data.gd" id="1_script"]
 [ext_resource type="SpriteFrames" uid="uid://dfvvvufq2xe84" path="res://src/resources/sprite_frames/cat_anim.tres" id="2_frames"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/cat_meow_1.wav" id="snd_cat_meow_1"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/cat_meow_2.wav" id="snd_cat_meow_2"]
+[ext_resource type="AudioStream" uid="uid://cmnuhxdiduvmp" path="res://assets/audio/sfx/synth/cat_meow_1.wav" id="snd_cat_meow_1"]
+[ext_resource type="AudioStream" uid="uid://b8wq2h3i7tdge" path="res://assets/audio/sfx/synth/cat_meow_2.wav" id="snd_cat_meow_2"]
 
 [resource]
 script = ExtResource("1_script")
 sprite_frames = ExtResource("2_frames")
-animation = &"walk_left"
 base_scale = Vector2(3, 3)
 start_delay_seconds = 0.5
-crossing_seconds = 6.0
-sound_chance = 0.85
 sounds = Array[AudioStream]([ExtResource("snd_cat_meow_1"), ExtResource("snd_cat_meow_2")])
+sound_chance = 0.85
