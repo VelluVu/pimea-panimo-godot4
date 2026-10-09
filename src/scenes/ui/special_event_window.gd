@@ -20,6 +20,7 @@ const REWARD_OUTLINE_COLOR : Color = Color(0.05, 0.03, 0.02, 1)
 const MONEY_COLOR : Color = Color(1.0, 0.84, 0.0, 1) # gold like the sale popups
 const GOOD_COLOR : Color = Color.GREEN
 const BAD_COLOR : Color = Color(1.0, 0.35, 0.3, 1)
+const PERK_COLOR : Color = RunPerk.TIER_COLOR_RARE
 
 @onready var text_label: Label = %SpecialLabel
 @onready var joo_button: Button = %JooButton
@@ -142,7 +143,7 @@ func _complete() -> void:
 	var before: Array = _resources_of(brewery)
 	var response: String = SpecialEventManager.process_accept(event_data)
 	_answer(response)
-	_pop_rewards(before, _resources_of(brewery))
+	_pop_rewards(before, _resources_of(brewery), brewery)
 
 
 ## Only reached by inaction (the player let the timer run out without
@@ -184,14 +185,14 @@ func _start_fade_out(seconds: float = DISPLAY_TIME_SECONDS) -> void:
 	queue_free()
 
 
-## Money, reputation and risk, compared before and after the request settles.
+## Money, reputation, risk and perk count, compared before and after the request settles.
 func _resources_of(brewery: Brewery) -> Array:
 	if brewery == null:
-		return [0.0, 0, 0]
-	return [brewery.money, brewery.reputation, brewery.risk]
+		return [0.0, 0, 0, 0]
+	return [brewery.money, brewery.reputation, brewery.risk, brewery.active_perks.size()]
 
 
-func _pop_rewards(before: Array, after: Array) -> void:
+func _pop_rewards(before: Array, after: Array, brewery: Brewery) -> void:
 	var lines: Array = []
 	var money: float = snappedf(after[0] - before[0], 0.1)
 	if not is_zero_approx(money):
@@ -202,6 +203,9 @@ func _pop_rewards(before: Array, after: Array) -> void:
 	var risk: int = after[2] - before[2]
 	if risk != 0:
 		lines.append([SpecialEventText.risk(risk), BAD_COLOR if risk > 0 else GOOD_COLOR])
+	if brewery != null:
+		for perk : RunPerk in brewery.active_perks.slice(before[3]):
+			lines.append([tr(perk.perk_name), PERK_COLOR])
 	for i : int in lines.size():
 		_pop_reward(lines[i][0], lines[i][1], i)
 

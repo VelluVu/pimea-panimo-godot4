@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RunPerk" format=3]
+
+[ext_resource type="Script" uid="uid://dewmdbm4a0vst" path="res://src/progression/run_perk.gd" id="1_suositus"]
+
+[resource]
+script = ExtResource("1_suositus")
+perk_name = "Hääjärjestäjän suositus"
+description = "Pekka kehuu panimoasi kaikille tutuilleen: halpamyynnin ja baarivientien tulot kasvavat hieman."
+icon_placeholder = "💍"
+distribution_income_multiplier = 1.05
+stacks_additively = true

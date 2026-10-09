@@ -3,7 +3,8 @@ extends SpecialEventData
 
 ## A wedding wants a light beer (required_style) and an alcohol-free one, both rolled
 ## from the styles the player knows each time it shows up (prepared()). It pays more
-## than shipping the bottles to the best bar would, but less than the pub price.
+## than shipping the bottles to the best bar would, but less than the pub price,
+## and grants a perk.
 ## intro_dialogue takes the two style names (%s, %s).
 
 const DELIVERY_FORMAT: String = "Toimita %d × %s ja %d × %s.\nVarastossa: %d / %d ja %d / %d"
@@ -18,6 +19,9 @@ const REQUIREMENT_FORMAT: String = "%s ja %s"
 @export var pub_share: float = 0.5
 ## Never less than this times the export payout, for a batch that exports above pub price.
 @export var min_over_export: float = 1.1
+## Given on each success, so a second wedding stacks it again. Kept out of the
+## perks folder so it never shows up on a level-up card.
+@export var granted_perk: RunPerk
 
 ## Rolled by prepared() and saved with an open window.
 @export var alcohol_free_style: BeerStyle.Style = BeerStyle.Style.ALKOHOLITON_LAGER
@@ -81,6 +85,8 @@ func try_fulfill(brewery: Brewery) -> bool:
 	_take(brewery.inventory, alcohol_free_batch, alcohol_free_bottles)
 	brewery.change_money(snappedf(payout, 0.1), MoneyLedger.Source.EVENTS)
 	_apply_rewards(brewery)
+	if granted_perk != null:
+		brewery.apply_perk(granted_perk)
 	return true
 
 
