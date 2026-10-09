@@ -649,6 +649,18 @@ msgstr ""
 msgid "Päätit olla tarttumatta tarjoukseen. Jatketaan pimeää bisnestä."
 msgstr "You decided to pass on the offer. Back to the dark business."
 
+#: src/events/wedding_order_event_data.gd
+msgid "%s ja %s"
+msgstr "%s and %s"
+
+#: src/events/wedding_order_event_data.gd
+msgid ""
+"Toimita %d × %s ja %d × %s.\n"
+"Varastossa: %d / %d ja %d / %d"
+msgstr ""
+"Deliver %d × %s and %d × %s.\n"
+"In stock: %d / %d and %d / %d"
+
 #: src/resources/achievements/asiakaskirja_10.tres
 msgid "Ihmistuntija"
 msgstr "People Person"
@@ -3841,8 +3853,8 @@ msgid "Vaikuttavaa käsityötä! Tästä saa täydet tähdet."
 msgstr "Impressive craftsmanship! Full stars for this."
 
 #: src/resources/special_events/wedding_order.tres
-msgid "Ei kai teillä sentään Hefeweizeniä ole? No, keksitään jotain muuta."
-msgstr "You don't happen to have Hefeweizen? Oh well, we'll think of something else."
+msgid "Ei teiltäkään löytynyt? No, keksitään jotain muuta."
+msgstr "Not here either? Well, we'll think of something else."
 
 #: src/resources/special_events/wedding_order.tres
 msgid "Hääjärjestäjä Pekka"
@@ -3850,11 +3862,11 @@ msgstr "Pekka the Wedding Planner"
 
 #: src/resources/special_events/wedding_order.tres
 msgid ""
-"Häät on tänä iltana ja kaljat loppu kesken! Hefeweizeniä olisi juhlavinta, "
-"jos vain sattuisi löytymään."
+"Häät on tänä iltana ja kaljat loppu kesken! Vieraille %s ja raittiille "
+"tädeille %s."
 msgstr ""
-"The wedding is tonight and the beer ran out! Hefeweizen would be the most "
-"festive, if you happen to have some."
+"The wedding is tonight and we ran out of beer! %s for the guests and %s "
+"for the teetotal aunties."
 
 #: src/resources/special_events/wedding_order.tres
 msgid "Pelastit häät! Morsian on onnesta soikeana."
