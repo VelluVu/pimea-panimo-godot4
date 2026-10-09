@@ -38,6 +38,14 @@ func set_brewery(brewery : Brewery) -> void:
 	brewery_changed.emit(current_brewery)
 
 
+## Brewery and its services point at each other, so the last one is never freed on its
+## own: without this the whole season leaks into the engine's shutdown.
+func _exit_tree() -> void:
+	if current_brewery != null:
+		current_brewery.disconnect_signals()
+		current_brewery = null
+
+
 func start_new_game() -> void:
 	set_brewery(Brewery.new())
 	print(LOG_NEW_GAME)
