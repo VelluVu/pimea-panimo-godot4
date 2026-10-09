@@ -113,6 +113,7 @@ func _make_english_lines() -> Control:
 	lines.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var gap := Control.new()
 	gap.custom_minimum_size.y = ENGLISH_GAP
+	gap.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	lines.add_child(gap)
 	for entry : Array in [[NOTICE_TEXT, FONT_SIZE, TEXT_COLOR], [LOCK_HINT_TEXT, HINT_FONT_SIZE, HINT_COLOR]]:
 		var label := _make_label(String(english.get_message(entry[0])), entry[1], entry[2])
