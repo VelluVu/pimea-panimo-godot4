@@ -6,4 +6,4 @@
 script = ExtResource("1_guide")
 order = 5
 title = "LVV-riski"
-lines = Array[String](["Jokainen myynti nostaa LVV-riskiä. Kun riski saavuttaa yläpalkissa näkyvän rajan, LVV tekee ratsian.", "Ratsia vie osan rahoista ja maineesta, ja jokainen seuraava ratsia on edellistä kovempi. Kolmas ratsia päättää kauden.", "Riski laskee joka yö 15 pistettä. Joidenkin asiakkaiden suosikkityylin myynti jopa laskee sitä."])
+lines = Array[String](["Jokainen myynti nostaa LVV-riskiä. Kun riski saavuttaa yläpalkissa näkyvän rajan, LVV tekee ratsian.", "Ratsia vie osan rahoista ja maineesta, ja jokainen seuraava ratsia on edellistä kovempi. Kolmas ratsia päättää kauden.", "Riski laskee joka yö 15 pistettä. Joidenkin asiakkaiden suosikkityylin myynti jopa laskee sitä.", "Riskiä pitää kurissa sulkemalla ovet ajoissa, myymällä alkoholitonta ja lähettämällä alkoholittomia tynnyreitä baareihin: ne laskevat riskiä.", "Kypsytetyt vahvat oluet herättävät vähemmän huomiota, ja Äänieristys-parannus hiljentää kaiken myynnin.", "Kun riski kasvaa, LVV-tarkastaja piipahtaa nuuskimassa. Se on vasta varoitus, ei ratsia."])

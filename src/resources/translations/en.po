@@ -2675,6 +2675,22 @@ msgstr ""
 "the top bar, the LVV raids the cellar."
 
 #: src/resources/guide/05_lvv.tres
+msgid ""
+"Kun riski kasvaa, LVV-tarkastaja piipahtaa nuuskimassa. Se on vasta "
+"varoitus, ei ratsia."
+msgstr ""
+"As the risk grows, an LVV inspector drops by to sniff around. That is only a "
+"warning, not a raid."
+
+#: src/resources/guide/05_lvv.tres
+msgid ""
+"Kypsytetyt vahvat oluet herättävät vähemmän huomiota, ja "
+"Äänieristys-parannus hiljentää kaiken myynnin."
+msgstr ""
+"Aged strong beers draw less attention, and the Soundproofing upgrade quiets "
+"every sale."
+
+#: src/resources/guide/05_lvv.tres
 msgid "LVV-riski"
 msgstr "LVV risk"
 
@@ -2693,6 +2709,14 @@ msgid ""
 msgstr ""
 "The risk drops 15 points every night. Selling some customers their "
 "favourite style even lowers it."
+
+#: src/resources/guide/05_lvv.tres
+msgid ""
+"Riskiä pitää kurissa sulkemalla ovet ajoissa, myymällä alkoholitonta ja "
+"lähettämällä alkoholittomia tynnyreitä baareihin: ne laskevat riskiä."
+msgstr ""
+"Keep the risk in check by closing the doors in time, selling alcohol-free "
+"beer and shipping alcohol-free kegs to bars: they lower the risk."
 
 #: src/resources/guide/065_etujen_arvot.tres
 msgid "+ % -edut kasvavat tasaisesti, ×-edut sitä nopeammin, mitä useampi niitä on."
@@ -3934,8 +3958,7 @@ msgstr "Fine, we'll try our luck somewhere else."
 msgid ""
 "Ei tässä mitään. Vielä. Palaan asiaan, jos tämä paikka alkaa kiinnostaa "
 "enemmän."
-msgstr ""
-"Nothing here. Yet. I'll be back if this place starts to interest me more."
+msgstr "Nothing here. Yet. I'll be back if this place starts to interest me more."
 
 #: src/resources/visitors/lvv_inspector.tres
 msgid "Hmm. Kirjoitan tämän muistiin."
@@ -5021,14 +5044,8 @@ msgid "Päivää jäljellä %s / %s"
 msgstr "%s left of %s today"
 
 #: src/ui/gui_announcer.gd
-msgid ""
-"Jokainen myynti herättää huomiota: LVV-riski nousee, ja sadassa tulee "
-"ratsia. Pidä riski alhaalla sulkemalla ovet ajoissa, myymällä alkoholitonta "
-"ja kypsyttämällä vahvat oluet."
-msgstr ""
-"Every sale draws attention: LVV risk rises, and at a hundred comes a raid. "
-"Keep it down by closing the doors in time, selling alcohol-free and aging "
-"your strong beers."
+msgid "LVV-riski nousee. Panimokirjan ohjeet kertovat, miten sen pitää kurissa."
+msgstr "LVV risk is rising. The Brewery book's Guide tells you how to keep it in check."
 
 #: src/ui/gui_announcer.gd
 msgid "Maineesi laski: %s."
