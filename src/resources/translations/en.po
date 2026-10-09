@@ -3930,6 +3930,25 @@ msgstr "You saved the wedding! The bride is over the moon."
 msgid "Selvä, yritetään onneamme jossain muualla."
 msgstr "Fine, we'll try our luck somewhere else."
 
+#: src/resources/visitors/lvv_inspector.tres
+msgid ""
+"Ei tässä mitään. Vielä. Palaan asiaan, jos tämä paikka alkaa kiinnostaa "
+"enemmän."
+msgstr ""
+"Nothing here. Yet. I'll be back if this place starts to interest me more."
+
+#: src/resources/visitors/lvv_inspector.tres
+msgid "Hmm. Kirjoitan tämän muistiin."
+msgstr "Hmm. I'll make a note of this."
+
+#: src/resources/visitors/lvv_inspector.tres
+msgid "Iltaa. Ihan rutiinikäynti vain. Täällä tuoksuu kovasti maltaalle..."
+msgstr "Evening. Just a routine visit. It smells awfully malty in here..."
+
+#: src/resources/visitors/lvv_inspector.tres
+msgid "LVV-tarkastaja"
+msgstr "LVV inspector"
+
 #: src/scenes/main.tscn
 msgid "Häädä asiakkaat, ja aloita uusi päivä"
 msgstr "Send the customers home and start a new day"
@@ -5000,6 +5019,16 @@ msgstr "Day %d/%d"
 #: src/ui/day_clock_text.gd
 msgid "Päivää jäljellä %s / %s"
 msgstr "%s left of %s today"
+
+#: src/ui/gui_announcer.gd
+msgid ""
+"Jokainen myynti herättää huomiota: LVV-riski nousee, ja sadassa tulee "
+"ratsia. Pidä riski alhaalla sulkemalla ovet ajoissa, myymällä alkoholitonta "
+"ja kypsyttämällä vahvat oluet."
+msgstr ""
+"Every sale draws attention: LVV risk rises, and at a hundred comes a raid. "
+"Keep it down by closing the doors in time, selling alcohol-free and aging "
+"your strong beers."
 
 #: src/ui/gui_announcer.gd
 msgid "Maineesi laski: %s."

@@ -41,11 +41,14 @@ const FIRST_BREW_HINT_TEXT: String = "Ovet ovat vielä hetken kiinni. Osta raaka
 const FIRST_BREW_HINT_FLASH_SECONDS: float = 0.25
 const FIRST_BREW_HINT_HOLD_SECONDS: float = 12.0
 const FIRST_BREW_HINT_FADE_SECONDS: float = 1.2
+## Shown on the same banner once a season, when LVV risk first reaches Brewery.LVV_HINT_RISK.
+const LVV_HINT_TEXT: String = "Jokainen myynti herättää huomiota: LVV-riski nousee, ja sadassa tulee ratsia. Pidä riski alhaalla sulkemalla ovet ajoissa, myymällä alkoholitonta ja kypsyttämällä vahvat oluet."
 
 var _toasts: ToastStack
 var _group_visit_banner: BannerPresenter
 var _day_event_banner: BannerPresenter
 var _first_brew_hint: BannerPresenter
+var _lvv_hint: BannerPresenter
 var _day_recap_window: DayRecapWindow
 
 ## Bumped on every announcement so a banner still waiting out the recap
@@ -72,6 +75,7 @@ func setup(toast_label: Label, group_visit_label: Label, day_event_label: Label,
 	_day_event_banner = BannerPresenter.new(day_event_label, DAY_EVENT_BANNER_FLASH_SECONDS, DAY_EVENT_BANNER_HOLD_SECONDS, DAY_EVENT_BANNER_FADE_SECONDS, false)
 	# Natural end and early dismissal both hide it and hand off to the goals panel.
 	_first_brew_hint = BannerPresenter.new(first_brew_hint_label, FIRST_BREW_HINT_FLASH_SECONDS, FIRST_BREW_HINT_HOLD_SECONDS, FIRST_BREW_HINT_FADE_SECONDS, true, true, true, goals_panel.draw_attention)
+	_lvv_hint = BannerPresenter.new(first_brew_hint_label, FIRST_BREW_HINT_FLASH_SECONDS, FIRST_BREW_HINT_HOLD_SECONDS, FIRST_BREW_HINT_FADE_SECONDS, true, true, true)
 
 
 ## Connects every event source and shows the first-brew hint on a fresh run.
@@ -85,6 +89,7 @@ func start() -> void:
 	BrewerySignals.group_visit_announced.connect(_on_group_visit_announced)
 	BrewerySignals.brew_spiced.connect(_on_brew_spiced)
 	BrewerySignals.day_event_announced.connect(_on_day_event_announced)
+	BrewerySignals.lvv_hint_reached.connect(_on_lvv_hint_reached)
 
 	# Shown while the day clock is still stopped, so the missing customers
 	# don't read as a bug. Ends by pointing at DailyGoalsPanel.
@@ -161,6 +166,10 @@ func _on_first_brew_hint_state_changed(_brewery: Brewery) -> void:
 
 	BrewerySignals.brewery_state_changed.disconnect(_on_first_brew_hint_state_changed)
 	_first_brew_hint.dismiss_early()
+
+
+func _on_lvv_hint_reached() -> void:
+	_lvv_hint.present(tr(LVV_HINT_TEXT))
 
 
 ## ToastText returns an empty string for "no toast".

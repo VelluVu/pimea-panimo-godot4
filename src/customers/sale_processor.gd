@@ -69,6 +69,8 @@ func find_best_batch_for(data : CustomerData) -> BrewBatch:
 
 ## Returns the customer's spoken response.
 func process(data : CustomerData) -> String:
+	if data.browses_only:
+		return tr(data.dialogue_no_match)
 	var is_regular : bool = RegularRules.is_regular(brewery.customer_standing.get(data.title, 0)) if brewery != null else false
 	var wanted : int = randi_range(data.min_bottles_per_visit, data.max_bottles_per_visit)
 	if is_regular:

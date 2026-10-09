@@ -5,6 +5,8 @@ extends Node2D
 ## free counter slot. The sales themselves happen in CustomerManager.
 
 const CUSTOMER_SCENE: PackedScene = preload("res://src/scenes/customer.tscn")
+## Sent in once a season when LVV risk reaches Brewery.LVV_INSPECTOR_VISIT_RISK.
+const LVV_INSPECTOR: CustomerData = preload("res://src/resources/visitors/lvv_inspector.tres")
 
 @onready var counter_positions_parent: Node2D = $CounterPositionsParent
 @onready var stairs_bottom_marker: Marker2D = $StairsBottomMarker
@@ -31,6 +33,7 @@ func _ready() -> void:
 	CustomerManager.register_spawner(self)
 	BrewerySignals.friend_recommended.connect(_on_friend_recommended)
 	BrewerySignals.bad_review_spread.connect(_on_bad_review_spread)
+	BrewerySignals.lvv_inspector_visit_due.connect(_on_lvv_inspector_visit_due)
 	BrewEngine.brewery_about_to_save.connect(_record_cellar_customers)
 	_resume_cellar_customers.call_deferred()
 
@@ -133,6 +136,12 @@ func spawn_group_visit(forced_event_data: GroupVisitEventData = null) -> void:
 ## The friend comes on its own clock, so the regular walk-in timer is untouched.
 func _on_friend_recommended(data: CustomerData) -> void:
 	_schedule_walk_in(data, randf_range(WordOfMouthRules.FRIEND_DELAY_MIN_SECONDS, WordOfMouthRules.FRIEND_DELAY_MAX_SECONDS))
+
+
+## Walks in alone and leaves the walk-in timer alone; a full counter just skips the visit.
+func _on_lvv_inspector_visit_due() -> void:
+	if not _paused:
+		_try_spawn_walk_in(LVV_INSPECTOR)
 
 
 func _on_bad_review_spread() -> void:

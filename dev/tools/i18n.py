@@ -52,6 +52,7 @@ CONTENT_FIELDS = {
     "src/resources/customers": ("title", "dialogue_intro", "dialogue_success", "dialogue_fallback", "dialogue_wrong_style",
                                 "dialogue_reject", "dialogue_no_match", "dialogue_preview_format",
                                 "dialogue_nothing_available", "dialogue_bar_fight", "dialogue_purity_law_broken"),
+    "src/resources/visitors": ("title", "dialogue_intro", "dialogue_no_match", "dialogue_nothing_available"),
     "src/resources/day_events": ("announcement_text", "effect_toast_format"),
     "src/resources/group_events": ("banner_text",),
     "src/resources/special_events": ("event_caller_name", "intro_dialogue", "success_dialogue", "fail_dialogue", "reject_dialogue"),

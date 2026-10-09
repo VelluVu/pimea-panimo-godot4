@@ -9,6 +9,10 @@ const LVV_RAID_THRESHOLD : int = 100
 const SURVIVAL_MIN_REPUTATION : int = 100
 
 const TUTORIAL_MALT_TARGET_KG : int = 3
+## LVV warnings, once a season each, well before the raid: a hint explaining the risk,
+## then the inspector walking in to look around.
+const LVV_HINT_RISK : int = 30
+const LVV_INSPECTOR_VISIT_RISK : int = 45
 
 const XP_PER_SUCCESSFUL_BREW : int = 20
 const XP_PER_NEW_STYLE_DISCOVERY_BONUS : int = 20
@@ -97,6 +101,9 @@ var game_has_ended : bool = false
 @export var lifetime_malt_kg_bought : int = 0
 @export var tutorial_bought_yeast : bool = false
 @export var tutorial_brewed_kotikalja : bool = false
+## One-way latches for the LVV warnings, see LVV_HINT_RISK.
+@export var lvv_hint_shown : bool = false
+@export var lvv_inspector_visited : bool = false
 
 ## Runtime only, not saved.
 var resolver : BrewResolver = null
@@ -165,7 +172,17 @@ func skip_tutorial() -> void:
 
 func add_risk(amount : int) -> void:
 	risk = max(0, risk + amount)
+	_check_lvv_warnings()
 	InspectionService.new(self).check_for_raid()
+
+
+func _check_lvv_warnings() -> void:
+	if not lvv_hint_shown and risk >= LVV_HINT_RISK:
+		lvv_hint_shown = true
+		BrewerySignals.lvv_hint_reached.emit()
+	if not lvv_inspector_visited and risk >= LVV_INSPECTOR_VISIT_RISK:
+		lvv_inspector_visited = true
+		BrewerySignals.lvv_inspector_visit_due.emit()
 
 
 ## Every change of money goes through here, so the money tooltip can tell where it went.

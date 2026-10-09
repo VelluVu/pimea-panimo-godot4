@@ -313,7 +313,7 @@ func _enter_counter_phase(phase: CustomerSnapshot.Phase, text: String, next: Cal
 func _on_preview_timeout() -> void:
 	var previewed_batch : BrewBatch = CustomerManager.find_best_batch_for(customer_data)
 	var preview_text : String
-	if previewed_batch != null:
+	if previewed_batch != null and not customer_data.browses_only:
 		preview_text = tr(customer_data.dialogue_preview_format) % previewed_batch.get_style_name()
 	else:
 		preview_text = tr(customer_data.dialogue_nothing_available)
