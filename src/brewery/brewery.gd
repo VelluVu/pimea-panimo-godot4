@@ -238,6 +238,7 @@ func add_xp(amount : int) -> void:
 
 func apply_perk(perk : RunPerk) -> void:
 	active_perks.append(perk)
+	resolver.ingredient_price_multiplier = stats.multiplier(PerkStats.INGREDIENT_PRICE)
 	BrewerySignals.brewery_state_changed.emit(self)
 
 
