@@ -152,3 +152,5 @@ func _update_preview(brewery : Brewery, prep_contents : Dictionary) -> void:
 	var preview : BrewResult = null if prep_contents.is_empty() else brewery.resolver.resolve_brew_style(prep_contents)
 	var style_known : bool = preview != null and preview.is_matched and brewery.is_style_known(preview.beer_style.style)
 	preview_label.text = BrewPreviewText.text(prep_contents.is_empty(), preview, style_known)
+	# Nothing would come out yet; the preview says what is missing.
+	start_brew_button.disabled = preview == null
