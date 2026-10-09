@@ -655,11 +655,11 @@ msgstr "%s and %s"
 
 #: src/events/wedding_order_event_data.gd
 msgid ""
-"Toimita %d × %s ja %d × %s.\n"
-"Varastossa: %d / %d ja %d / %d"
+"Toimita %s ja %s, määrällä ei väliä.\n"
+"Varastossa: %d ja %d annosta"
 msgstr ""
-"Deliver %d × %s and %d × %s.\n"
-"In stock: %d / %d and %d / %d"
+"Deliver %s and %s, any amount will do.\n"
+"In storage: %d and %d servings"
 
 #: src/resources/achievements/asiakaskirja_10.tres
 msgid "Ihmistuntija"
@@ -2263,8 +2263,8 @@ msgid ""
 "Olutarvostelija Matti jakoi kellarointivinkkinsä: oluet kypsyvät nopeammin "
 "ja pysyvät hyvinä pidempään. Mitä parempi erä, sitä paremmat vinkit."
 msgstr ""
-"Beer critic Matti shared his cellaring tips: beers peak sooner and stay good "
-"longer. The better the batch, the better the tips."
+"Beer critic Matti shared his cellaring tips: beers peak sooner and stay "
+"good longer. The better the batch, the better the tips."
 
 #: src/resources/event_perks/haajarjestajan_suositus.tres
 msgid "Hääjärjestäjän suositus"

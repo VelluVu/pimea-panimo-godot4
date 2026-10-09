@@ -114,6 +114,14 @@ func try_fulfill(brewery: Brewery) -> bool:
 	return true
 
 
+## For requests that take a whole batch: highest quality first, then the larger `value`
+## (what the batch is worth, or its servings).
+static func is_better(quality: float, value: float, best_quality_so_far: float, best_value: float) -> bool:
+	if not is_equal_approx(quality, best_quality_so_far):
+		return quality > best_quality_so_far
+	return value > best_value
+
+
 ## The fullest batch of `style`, so two batches of it never hide a big enough one.
 func _find_batch_by_style(inventory: Inventory, style: BeerStyle.Style) -> BrewBatch:
 	var best: BrewBatch = null
