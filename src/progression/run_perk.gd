@@ -109,6 +109,25 @@ func scaled_copy(level : int) -> RunPerk:
 	return scaled
 
 
+## A fresh perk with every stat moved `strength` (0 to 1) of the way from neutral, for
+## a reward that grows with how well something went. Counts round down.
+func strength_copy(strength : float) -> RunPerk:
+	var copy := RunPerk.new()
+	copy.perk_name = perk_name
+	copy.description = description
+	copy.icon_placeholder = icon_placeholder
+	copy.tier = tier
+	copy.stacks_additively = stacks_additively
+	for entry : Dictionary in PerkStats.definitions():
+		var neutral : float = PerkStats.neutral_value(entry.kind)
+		var value : float = neutral + (get(entry.stat) - neutral) * strength
+		if entry.kind == PerkStats.Kind.COUNT:
+			copy.set(entry.stat, floori(value))
+		else:
+			copy.set(entry.stat, value)
+	return copy
+
+
 ## One short line per non-neutral stat, shown next to the perk's flavour text.
 func get_stat_summary() -> String:
 	var lines : PackedStringArray = []

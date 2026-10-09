@@ -127,3 +127,17 @@ func test_tier_label_and_color_for_each_tier() -> void:
 	perk.tier = RunPerk.Tier.LEGENDARY
 	assert_eq(perk.get_tier_label(), StringContainer.PERK_TIER_LEGENDARY)
 	assert_eq(perk.get_tier_color(), RunPerk.TIER_COLOR_LEGENDARY)
+
+
+func test_strength_copy_moves_stats_part_way_from_neutral() -> void:
+	var perk := RunPerk.new()
+	perk.perk_name = "Vinkit"
+	perk.peak_speed_multiplier = 0.8
+	perk.quality_bonus = 0.2
+	perk.extra_counter_slots = 3
+	var half : RunPerk = perk.strength_copy(0.5)
+	assert_true(is_equal_approx(half.peak_speed_multiplier, 0.9))
+	assert_true(is_equal_approx(half.quality_bonus, 0.1))
+	assert_eq(half.extra_counter_slots, 1, "counts round down")
+	assert_eq(half.perk_name, "Vinkit")
+	assert_true(is_equal_approx(perk.peak_speed_multiplier, 0.8), "the template is untouched")
