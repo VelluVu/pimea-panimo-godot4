@@ -3,6 +3,7 @@ extends SpecialEventData
 
 ## Someone wants to borrow the brewery's good name: the player pays in reputation
 ## instead of beer or money. Only offered once the player has enough to pay.
+## At a cost of 0 it is a plain offer settled on "Joo" (the journalist's story).
 
 @export var reputation_cost: int = 20
 

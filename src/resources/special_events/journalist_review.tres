@@ -1,19 +1,16 @@
-[gd_resource type="Resource" script_class="SpecialEventData" format=3]
+[gd_resource type="Resource" script_class="ReputationFavourEventData" format=3]
 
-[ext_resource type="Script" uid="uid://cl0kqitrmb4gj" path="res://src/events/special_event_data.gd" id="1_journalist"]
+[ext_resource type="Script" path="res://src/events/reputation_favour_event_data.gd" id="1_journalist"]
 
 [resource]
 script = ExtResource("1_journalist")
 event_caller_name = "Toimittaja Liisa"
-intro_dialogue = "Teen juttua paikallisista pienpanimoista. Saisinko muutaman annoksen IPA:a maisteluun?"
+intro_dialogue = "Teen juttua paikallisista pienpanimoista. Saisinko haastatella sinua lehteen?"
 success_dialogue = "Tästä tulee hyvä juttu lehteen!"
 fail_dialogue = "Harmi, ei ollut tarjolla mitä etsin."
 reject_dialogue = "No, ehkä toiste sitten."
 timeout_seconds = 15.0
-required_style = 5
-required_bottles = 5
-reward_money = 30
-reward_reputation = 20
-reward_risk = 15
-clears_risk = false
-metadata/_custom_type_script = "uid://cl0kqitrmb4gj"
+reward_money = 25
+reward_reputation = 15
+reward_risk = 12
+reputation_cost = 0

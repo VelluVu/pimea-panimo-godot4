@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="RunPerk" format=3]
+
+[ext_resource type="Script" uid="uid://dewmdbm4a0vst" path="res://src/progression/run_perk.gd" id="1_tukku"]
+
+[resource]
+script = ExtResource("1_tukku")
+perk_name = "Jussin tukkuhinnat"
+description = "Naapuripanimon Jussi kertoi, mistä hän ostaa raaka-aineensa: kaupan hinnat ovat hieman halvempia."
+icon_placeholder = "🌾"
+ingredient_price_multiplier = 0.97
