@@ -466,7 +466,7 @@ const CARD_WEIGHTS: Dictionary = {
 	&"raid_threshold_multiplier": 40.0, &"extra_raid_strikes": 3.0, &"raid_hidden_batch_count": 2.0,
 	&"raid_saved_bottle_share": 5.0, &"extra_counter_slots": 3.0, &"peak_speed_multiplier": -5.0,
 	&"decline_rate_multiplier": -5.0, &"agentti_appearance_multiplier": -10.0,
-	&"bar_fight_chance_multiplier": -10.0,
+	&"bar_fight_chance_multiplier": -10.0, &"sale_risk_multiplier": -40.0,
 }
 
 func _pick_card(b: Brewery, offered: Array[RunPerk]) -> int:

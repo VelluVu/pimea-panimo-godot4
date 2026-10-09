@@ -220,6 +220,10 @@ msgid "Mestarillinen"
 msgstr "Masterful"
 
 #: src/autoload/string_container.gd
+msgid "Myynnin LVV-riski: %s"
+msgstr "LVV risk from sales: %s"
+
+#: src/autoload/string_container.gd
 msgid "Mäntyinen"
 msgstr "Piney"
 
@@ -1125,6 +1129,18 @@ msgstr "Club Shadow"
 #: src/resources/beer_styles/ipa.tres
 msgid "India Pale Ale"
 msgstr "India Pale Ale"
+
+#: src/resources/cellar_upgrades/10_aanieristys.tres
+msgid ""
+"Villaa seiniin ja tiivisteet oviin: kellarin kolina ei kanna naapuriin. "
+"Myynti herättää vähemmän huomiota."
+msgstr ""
+"Wool in the walls and seals on the doors: the cellar's racket no longer carries "
+"next door. Sales draw less attention."
+
+#: src/resources/cellar_upgrades/10_aanieristys.tres
+msgid "Äänieristys"
+msgstr "Soundproofing"
 
 #: src/resources/cellar_upgrades/1_isompi_kaymisastia.tres
 msgid "Isompi astia, enemmän annoksia samasta erästä."
@@ -2287,8 +2303,8 @@ msgid ""
 "Naapuripanimon Jussi kertoi, mistä hän ostaa raaka-aineensa: kaupan hinnat "
 "ovat hieman halvempia."
 msgstr ""
-"Jussi from the brewery next door told you where he buys his ingredients: shop "
-"prices are a little lower."
+"Jussi from the brewery next door told you where he buys his ingredients: "
+"shop prices are a little lower."
 
 #: src/resources/group_events/agentti_lauma.tres
 msgid ""
@@ -3754,8 +3770,8 @@ msgid ""
 "Meiltä loppui %s kesken kaiken! Voisitko lainata %d kg? Maksan takaisin "
 "korkojen kanssa."
 msgstr ""
-"We ran out of %s right in the middle of it! Could you lend us %d kg? I'll pay "
-"you back with interest."
+"We ran out of %s right in the middle of it! Could you lend us %d kg? I'll "
+"pay you back with interest."
 
 #: src/resources/special_events/ingredient_loan.tres
 msgid "Naapuripanimon Jussi"
@@ -3782,8 +3798,8 @@ msgid ""
 "Teen juttua paikallisista pienpanimoista. Saisinko haastatella sinua "
 "lehteen?"
 msgstr ""
-"I'm writing a story about local microbreweries. Could I interview you for the "
-"paper?"
+"I'm writing a story about local microbreweries. Could I interview you for "
+"the paper?"
 
 #: src/resources/special_events/journalist_review.tres
 msgid "Toimittaja Liisa"

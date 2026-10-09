@@ -50,6 +50,8 @@ enum Tier { COMMON, RARE, LEGENDARY }
 @export var bar_fight_chance_multiplier: float = 1.0
 ## Multiplies the listed price of a counter sale; the tip follows it.
 @export var counter_price_multiplier: float = 1.0
+## Multiplies the LVV risk a counter sale adds; below 1.0 draws less attention.
+@export var sale_risk_multiplier: float = 1.0
 ## Multiplies the wait before the next group visit only, not walk-ins.
 @export var group_event_interval_multiplier: float = 1.0
 ## Extra raids tolerated before the busted ending.

@@ -43,3 +43,16 @@ func test_tip_floor_wins_on_cheap_styles() -> void:
 
 func test_tip_scales_with_budget() -> void:
 	assert_eq(SaleEvaluationScript.tip_for(1.0, 0.5, 0.3, 2.0), 1.0)
+
+
+func test_discreet_risk_keeps_whole_risk_at_full_multiplier() -> void:
+	assert_eq(SaleEvaluation.discreet_risk(3, 1.0, 0.99), 3)
+
+
+func test_discreet_risk_rounds_the_fraction_by_its_odds() -> void:
+	assert_eq(SaleEvaluation.discreet_risk(3, 0.5, 0.4), 2, "1.5: a roll under 0.5 rounds up")
+	assert_eq(SaleEvaluation.discreet_risk(3, 0.5, 0.6), 1, "a roll over 0.5 rounds down")
+
+
+func test_discreet_risk_leaves_calming_sales_alone() -> void:
+	assert_eq(SaleEvaluation.discreet_risk(-2, 0.5, 0.0), -2)

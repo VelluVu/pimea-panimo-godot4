@@ -42,6 +42,9 @@ extends Resource
 const SPOILAGE_PER_TICK : float = 0.02
 ## Ticks over which the aged price bonus fades once the batch starts to spoil (a day).
 const AGED_BONUS_FADE_TICKS : float = 10.0
+## Share of a sale's LVV risk an aged batch saves at its peak: connoisseurs are discreet,
+## so a calm, aging cellar draws less attention than one pouring volume.
+const AGED_RISK_DISCOUNT : float = 0.5
 
 
 ## The price multiplier this batch earns from aging, see BeerStyle.aged_price_bonus.
@@ -52,11 +55,22 @@ func get_aged_price_multiplier() -> float:
 ## Grows linearly to 1 + bonus at the peak, holds through the shelf life and fades
 ## over AGED_BONUS_FADE_TICKS once the batch starts to spoil.
 static func aged_price_multiplier(bonus : float, age : int, peak : int, shelf_life : int) -> float:
+	return 1.0 + bonus * aging_progress(bonus, age, peak, shelf_life)
+
+
+## The multiplier on a sale's LVV risk from this batch's aging, see AGED_RISK_DISCOUNT.
+func get_aged_risk_multiplier() -> float:
+	return 1.0 - AGED_RISK_DISCOUNT * aging_progress(beer_style.aged_price_bonus, age_in_days, get_effective_peak_days(), beer_style.shelf_life_days)
+
+
+## 0 to 1: how far an aging style (aged_price_bonus > 0) has come toward its peak, fading
+## over AGED_BONUS_FADE_TICKS once it starts to spoil. 0 for styles that do not age.
+static func aging_progress(bonus : float, age : int, peak : int, shelf_life : int) -> float:
 	if bonus <= 0.0 or peak <= 0:
-		return 1.0
+		return 0.0
 	var spoiled_ticks : int = age - peak - shelf_life
 	var fade : float = 1.0 - clampf(spoiled_ticks / AGED_BONUS_FADE_TICKS, 0.0, 1.0)
-	return 1.0 + bonus * clampf(float(age) / peak, 0.0, 1.0) * fade
+	return clampf(float(age) / peak, 0.0, 1.0) * fade
 
 
 func get_effective_peak_days() -> int:
