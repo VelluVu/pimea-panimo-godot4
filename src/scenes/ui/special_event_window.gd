@@ -66,7 +66,7 @@ func initialize_window(p_data: SpecialEventData, seconds_left: float = -1.0) -> 
 	time_left = seconds_left if seconds_left >= 0.0 else event_data.timeout_seconds
 	progress_bar.max_value = event_data.timeout_seconds
 	_show_time(time_left)
-	text_label.text = _caller_line(event_data.intro_dialogue)
+	text_label.text = tr(event_data.event_caller_name) + ": " + event_data.intro_text()
 	_resize_to_fit_content()
 
 
@@ -130,8 +130,7 @@ func _check_delivery() -> void:
 	if event_data.can_fulfill(brewery):
 		_complete()
 		return
-	var progress: Vector2i = event_data.delivery_progress(brewery.inventory)
-	var text: String = tr(event_data.event_caller_name) + ": " + SpecialEventText.delivery(event_data.requirement_name(), progress.x, progress.y)
+	var text: String = tr(event_data.event_caller_name) + ": " + event_data.delivery_text(brewery.inventory)
 	if text != text_label.text:
 		text_label.text = text
 		_resize_to_fit_content()

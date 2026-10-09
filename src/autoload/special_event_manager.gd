@@ -46,8 +46,8 @@ func _on_special_event_timer_timeout() -> void:
 	var event_data: SpecialEventData = CustomerRegistry.get_random_special_event(BrewEngine.current_brewery)
 	if event_data == null:
 		return
-		
-	special_event_triggered.emit(event_data)
+
+	special_event_triggered.emit(event_data.prepared(brewery, CustomerRegistry.bar_contact_pool))
 
 
 func process_accept(event_data: SpecialEventData) -> String:

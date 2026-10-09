@@ -58,6 +58,23 @@ static func risk_fraction(brewery: Brewery) -> float:
 	return clampf(float(brewery.risk) / float(threshold), 0.0, 1.0)
 
 
+## The event as it shows up this time. An event that rolls its request returns a
+## rolled copy (WeddingOrderEventData); `bars` are the shipping contacts.
+func prepared(_brewery: Brewery, _bars: Array[BarContact]) -> SpecialEventData:
+	return self
+
+
+## The opening line, translated.
+func intro_text() -> String:
+	return tr(intro_dialogue)
+
+
+## What is still missing while the goods are on their way, translated.
+func delivery_text(inventory: Inventory) -> String:
+	var progress: Vector2i = delivery_progress(inventory)
+	return SpecialEventText.delivery(requirement_name(), progress.x, progress.y)
+
+
 ## False for a request that settles on "Joo" (a payment), see the subclasses.
 func waits_for_delivery() -> bool:
 	return true
