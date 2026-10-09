@@ -4162,7 +4162,9 @@ msgstr "The young never listen to the old."
 msgid ""
 "Tuo minulle %d kiloa %s ja 50 €, niin kerron yhden vanhan panimomestarin "
 "salaisuuden."
-msgstr "Bring me %d kilos of %s and 50 €, and I'll tell you an old brewmaster's secret."
+msgstr ""
+"Bring me %d kilos of %s and 50 €, and I'll tell you an old brewmaster's "
+"secret."
 
 #: src/resources/special_events/old_master.tres
 msgid "Vanha mestari Aatu"

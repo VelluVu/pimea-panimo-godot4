@@ -13,10 +13,15 @@ const BORDER_WIDTH : int = 3
 const BUBBLE_COLOR : Color = Color(0.97, 0.94, 0.85)
 const BORDER_COLOR : Color = Color(0.2, 0.13, 0.08)
 const TEXT_COLOR : Color = Color(0.14, 0.09, 0.05)
+## What a collapsed bubble shows; the full line stays in its tooltip.
+const COLLAPSED_TEXT : String = "…"
 
 @onready var label : Label = $Label
 
 var bubble_style := StyleBoxFlat.new()
+## The whole line, kept while the bubble is collapsed into a badge.
+var full_text : String = ""
+var collapsed : bool = false
 
 
 func _ready() -> void:
@@ -35,9 +40,40 @@ func _ready() -> void:
 
 
 func set_text(text : String) -> void:
+	full_text = text
+	collapsed = false
+	mouse_filter = Control.MOUSE_FILTER_IGNORE
+	tooltip_text = ""
 	label.text = text
 	_resize_to_fit(text)
 	queue_redraw()
+
+
+## Shrinks to a small "…" badge; pointing at it (or holding a finger) shows the line.
+func collapse() -> void:
+	if collapsed:
+		return
+	collapsed = true
+	label.text = COLLAPSED_TEXT
+	_resize_to_fit(COLLAPSED_TEXT)
+	tooltip_text = full_text
+	mouse_filter = Control.MOUSE_FILTER_PASS
+	queue_redraw()
+
+
+## The line wraps at MAX_WIDTH in the same colours as the bubble.
+func _make_custom_tooltip(for_text : String) -> Object:
+	var panel := PanelContainer.new()
+	var style := bubble_style.duplicate() as StyleBoxFlat
+	style.set_content_margin_all(PADDING * 0.5)
+	panel.add_theme_stylebox_override("panel", style)
+	var tip := Label.new()
+	tip.text = for_text
+	tip.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	tip.custom_minimum_size.x = MAX_WIDTH
+	tip.add_theme_color_override("font_color", TEXT_COLOR)
+	panel.add_child(tip)
+	return panel
 
 
 func _resize_to_fit(text : String) -> void:
@@ -54,6 +90,8 @@ func _resize_to_fit(text : String) -> void:
 	var body_width := content_width + PADDING * 2.0
 	var body_height := content_height + PADDING * 2.0
 
+	# The old minimum would keep a shorter line (or a collapsed badge) at the old size.
+	custom_minimum_size = Vector2.ZERO
 	size = Vector2(body_width, body_height + TAIL_HEIGHT)
 	custom_minimum_size = size
 

@@ -7,6 +7,9 @@ extends RefCounted
 
 var bubble : SpeechBubble
 var x : float = 0.0
+## The bubble's width, for BubbleLayout's overlap test.
+var width : float = 0.0
+var speaker_pos : Vector2 = Vector2.ZERO
 var height_step : int = 0
 var fade_tween : Tween = null
 
