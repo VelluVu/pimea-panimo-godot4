@@ -43,6 +43,10 @@ var _resize_start_offset_top: float
 var _log_entries: Array = []
 ## Categories (StringName) whose lines are kept but not shown.
 var _hidden_categories: Dictionary = {}
+## Tabs above the log (add_view()): each is [title, Array of the categories it shows].
+var _views: Array = []
+var _current_view: int = 0
+var _view_tabs: TabBar = null
 
 
 func _ready() -> void:
@@ -96,9 +100,38 @@ func log_line(bbcode_line: String, category: StringName = &"") -> void:
 	if _log_entries.size() > MAX_LOG_LINES:
 		_log_entries.remove_at(0)
 		_redraw_log()
-	elif not _hidden_categories.has(category):
+	elif _shows(category):
 		log_label.append_text(bbcode_line + "\n")
 	_scroll_log_to_bottom()
+
+
+## Adds a tab above the log that shows only lines of `categories` (the default category
+## is &""). With no views the log shows every category that is not hidden.
+func add_view(title: String, categories: Array[StringName]) -> void:
+	if _view_tabs == null:
+		_view_tabs = TabBar.new()
+		_view_tabs.focus_mode = Control.FOCUS_NONE
+		_view_tabs.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		_view_tabs.tab_changed.connect(_on_view_changed)
+		title_label.get_parent().add_child(_view_tabs)
+		title_label.get_parent().move_child(_view_tabs, title_label.get_index() + 1)
+		_view_tabs.visible = not _is_collapsed
+		title_label.visible = _is_collapsed
+	_views.append([title, categories])
+	_view_tabs.add_tab(title)
+	_redraw_log()
+
+
+func _on_view_changed(index: int) -> void:
+	_current_view = index
+	_redraw_log()
+	_scroll_log_to_bottom()
+
+
+func _shows(category: StringName) -> bool:
+	if _hidden_categories.has(category):
+		return false
+	return _views.is_empty() or (_views[_current_view][1] as Array).has(category)
 
 
 func set_category_hidden(category: StringName, is_hidden: bool) -> void:
@@ -117,7 +150,7 @@ func is_category_hidden(category: StringName) -> bool:
 func _redraw_log() -> void:
 	var shown: PackedStringArray = []
 	for entry: Array in _log_entries:
-		if not _hidden_categories.has(entry[1]):
+		if _shows(entry[1]):
 			shown.append(entry[0])
 	log_label.clear()
 	if not shown.is_empty():
@@ -138,6 +171,10 @@ func _on_toggle_pressed() -> void:
 ## Collapsed it shrinks to just its header, so it covers as little of its corner as possible.
 func _apply_collapsed_state() -> void:
 	resize_handle.visible = not _is_collapsed
+	# Open, the tabs take the title's place in the narrow header.
+	if _view_tabs != null:
+		_view_tabs.visible = not _is_collapsed
+		title_label.visible = _is_collapsed
 	if _is_collapsed:
 		_expanded_size = size
 		body_vbox.hide()
@@ -207,6 +244,12 @@ func _on_command_submitted(raw_text: String) -> void:
 	if text.is_empty():
 		return
 
+	# A command's answer goes to the default category, so show a tab that has it.
+	if not _shows(&""):
+		for index: int in _views.size():
+			if (_views[index][1] as Array).has(&""):
+				_view_tabs.current_tab = index
+				break
 	log_line("[color=gray]> %s[/color]" % text)
 	registry.execute(text)
 
