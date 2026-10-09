@@ -75,7 +75,8 @@ func _connect_signals() -> void:
 	BrewerySignals.lvv_raid_triggered.connect(play_sfx.bind(bank.sfx_lvv_alarm).unbind(3))
 	SpecialEventManager.special_event_triggered.connect(play_sfx.bind(bank.sfx_notification_ping).unbind(1))
 	MetaProgressManager.talent_purchased.connect(play_sfx.bind(bank.sfx_talent_purchased).unbind(1))
-	GUISignals.start_brewing.connect(play_sfx.bind(bank.sfx_brew_start))
+	# On the batch, not the button: a mix that brews nothing stays silent.
+	BrewerySignals.batch_stored.connect(play_sfx.bind(bank.sfx_brew_start).unbind(2))
 	BrewerySignals.customer_stepped.connect(_on_customer_stepped)
 	BrewerySignals.customer_spoke.connect(_on_customer_spoke)
 	BrewerySignals.beer_poured.connect(func(at: Vector2, speed_scale: float) -> void: play_sfx_at(bank.sfx_pour, at, POUR_VOLUME_DB, minf(speed_scale, POUR_MAX_PITCH)))
