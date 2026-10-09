@@ -47,6 +47,7 @@ func _ready() -> void:
 	BrewerySignals.reputation_decayed.connect(func(a: int, _t: ReputationTier) -> void: _inc("decay_total", a))
 	BrewerySignals.lvv_raid_triggered.connect(func(b: int, f: float, r: int) -> void: _note("RAID bottles %d fine %.0f rep -%d" % [b, f, r]))
 	BrewerySignals.special_event_resolved.connect(func(ok: bool, e: SpecialEventData) -> void: _inc("event_%s_%s" % [e.event_caller_name, "ok" if ok else "fail"]))
+	SpecialEventManager.special_event_triggered.connect(func(e: SpecialEventData) -> void: _inc("offered_%s" % e.event_caller_name))
 	BrewerySignals.customer_unhappy.connect(func() -> void: _inc("unhappy"))
 	BrewerySignals.customer_served.connect(func(d: CustomerData) -> void: _inc("served:" + d.title))
 	BrewerySignals.bottles_sold.connect(func(n: int) -> void: _inc("bottles", n))
