@@ -178,17 +178,34 @@ func _shake(tween : Tween, popup : Label, global_pos : Vector2) -> void:
 	tween.tween_property(popup, "global_position", global_pos, POPUP_SHAKE_STEP_SECONDS)
 
 
+## The newest line always shows in full: an open bubble it still overlaps after stacking
+## collapses into a badge (SpeechBubble.collapse()).
 func _place(entry : BubbleEntry, slot : int, speaker_pos : Vector2) -> void:
 	var neighbors : Array[BubbleEntry] = []
 	for other_slot : int in _bubbles:
 		var other : BubbleEntry = _bubbles[other_slot]
-		if other_slot != slot and other.is_alive():
+		if other_slot != slot and other.is_alive() and not other.bubble.collapsed:
 			neighbors.append(other)
 
 	entry.x = speaker_pos.x
-	entry.height_step = BubbleLayout.choose_step(speaker_pos, neighbors)
+	entry.speaker_pos = speaker_pos
+	entry.width = entry.bubble.get_size().x
+	entry.height_step = BubbleLayout.choose_step(speaker_pos, entry.width, neighbors)
 	entry.bubble.global_position = BubbleLayout.position_for(speaker_pos, entry.height_step, entry.bubble.get_size(), get_viewport_rect().size)
 	entry.bubble.z_index = BUBBLE_Z_BASE + slot
+
+	var placed := Rect2(entry.bubble.global_position, entry.bubble.get_size())
+	for other : BubbleEntry in neighbors:
+		if placed.intersects(Rect2(other.bubble.global_position, other.bubble.get_size())):
+			_collapse(other)
+
+
+func _collapse(entry : BubbleEntry) -> void:
+	entry.bubble.collapse()
+	entry.width = entry.bubble.get_size().x
+	entry.bubble.global_position = BubbleLayout.badge_position_for(entry.speaker_pos, entry.bubble.get_size(), get_viewport_rect().size)
+	# Under every full bubble, which may cover part of it.
+	entry.bubble.z_index = BUBBLE_Z_BASE - 1
 
 
 func _hide_after_delay(entry : BubbleEntry, slot : int, token : int, display_time : float, fade_time : float) -> void:
