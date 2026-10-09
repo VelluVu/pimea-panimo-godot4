@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ContestEventData" format=3]
+
+[ext_resource type="Script" path="res://src/events/contest_event_data.gd" id="1_event"]
+
+[resource]
+script = ExtResource("1_event")
+event_caller_name = "Olutkisan järjestäjä"
+intro_dialogue = "Kisat lauantaina! Lähetätkö kolme annosta parastasi tuomaristolle?"
+success_dialogue = "Voitto! Tuomaristo oli myyty. Palkinto on teidän."
+placed_dialogue = "Hieno sijoitus! Ensi kerralla ehkä voitto."
+lost_dialogue = "Tuomaristo ei syttynyt. Ensi kerralla paremmin."
+fail_dialogue = "Ei näytettä? Kisat menevät ilman teitä."
+reject_dialogue = "No, ehkä ensi vuonna."
+timeout_seconds = 12.0
+required_bottles = 3
+reward_money = 0
+reward_reputation = 0
+reward_risk = 0

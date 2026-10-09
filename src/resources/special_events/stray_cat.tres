@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="AdoptionEventData" format=3]
+
+[ext_resource type="Script" path="res://src/events/adoption_event_data.gd" id="1_event"]
+[ext_resource type="Script" uid="uid://dewmdbm4a0vst" path="res://src/progression/run_perk.gd" id="2_perk_script"]
+[ext_resource type="Resource" path="res://src/resources/event_perks/kellarikissa.tres" id="3_cat"]
+
+[resource]
+script = ExtResource("1_event")
+event_caller_name = "Kulkukissa"
+intro_dialogue = "Miau? (Laiha kulkukissa katsoo ovelta. Ruokitaanko se, 10 €?)"
+success_dialogue = "Purr... (Kissa kiertyy hyllyn päälle. Se jää taloon.)"
+fail_dialogue = "(Ei rahaa kissanruokaan.)"
+reject_dialogue = "Miau... (Kissa katoaa pimeään.)"
+timeout_seconds = 12.0
+reward_money = 0
+reward_reputation = 0
+reward_risk = 0
+offer_cost = 10
+offered_perks = Array[ExtResource("2_perk_script")]([ExtResource("3_cat")])
+perk_count = 1

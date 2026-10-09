@@ -55,7 +55,8 @@ CONTENT_FIELDS = {
     "src/resources/visitors": ("title", "dialogue_intro", "dialogue_no_match", "dialogue_nothing_available"),
     "src/resources/day_events": ("announcement_text", "effect_toast_format"),
     "src/resources/group_events": ("banner_text",),
-    "src/resources/special_events": ("event_caller_name", "intro_dialogue", "success_dialogue", "fail_dialogue", "reject_dialogue"),
+    "src/resources/special_events": ("event_caller_name", "intro_dialogue", "success_dialogue", "fail_dialogue", "reject_dialogue",
+                                     "placed_dialogue", "lost_dialogue", "damage_dialogue"),
     "src/resources/guide": ("title",),
 }
 # Content fields that hold a list of texts, like Array[String](["a", "b"]).

@@ -621,6 +621,14 @@ msgstr ""
 "Margin: %.2f €\n"
 "= Price/serving: %.2f €"
 
+#: src/events/bulk_order_event_data.gd
+msgid " tai "
+msgstr " or "
+
+#: src/events/contest_event_data.gd
+msgid "parasta olutta"
+msgstr "your best beer"
+
 #: src/events/day_event_data.gd
 msgid "Tavallinen päivä kellarissa."
 msgstr "An ordinary day in the cellar."
@@ -2314,6 +2322,14 @@ msgstr ""
 "Jussi from the brewery next door told you where he buys his ingredients: "
 "shop prices are a little lower."
 
+#: src/resources/event_perks/kellarikissa.tres
+msgid "Kellarikissa"
+msgstr "Cellar Cat"
+
+#: src/resources/event_perks/kellarikissa.tres
+msgid "Kissa pitää tuholaiset loitolla: oluet pysyvät hyvinä hieman pidempään."
+msgstr "The cat keeps pests away: beers stay good a little longer."
+
 #: src/resources/event_perks/kurssi_asiakaspalvelu.tres
 msgid "Asiakaspalvelukurssi"
 msgstr "Customer Service Course"
@@ -3847,6 +3863,34 @@ msgstr "Your beer is known all over town. So is your address."
 msgid "Pimeästä panimosta kerrotaan tarinoita. Osa niistä on jopa totta."
 msgstr "People tell stories about the dark brewery. Some of them are even true."
 
+#: src/resources/special_events/beer_contest.tres
+msgid "Ei näytettä? Kisat menevät ilman teitä."
+msgstr "No sample? The contest goes on without you."
+
+#: src/resources/special_events/beer_contest.tres
+msgid "Hieno sijoitus! Ensi kerralla ehkä voitto."
+msgstr "A fine placing! Maybe a win next time."
+
+#: src/resources/special_events/beer_contest.tres
+msgid "Kisat lauantaina! Lähetätkö kolme annosta parastasi tuomaristolle?"
+msgstr "Contest on Saturday! Will you send three servings of your best to the judges?"
+
+#: src/resources/special_events/beer_contest.tres
+msgid "No, ehkä ensi vuonna."
+msgstr "Well, maybe next year."
+
+#: src/resources/special_events/beer_contest.tres
+msgid "Olutkisan järjestäjä"
+msgstr "Beer contest organiser"
+
+#: src/resources/special_events/beer_contest.tres
+msgid "Tuomaristo ei syttynyt. Ensi kerralla paremmin."
+msgstr "The judges weren't impressed. Better luck next time."
+
+#: src/resources/special_events/beer_contest.tres
+msgid "Voitto! Tuomaristo oli myyty. Palkinto on teidän."
+msgstr "A win! The judges were sold. The prize is yours."
+
 #: src/resources/special_events/brand_deal.tres
 msgid ""
 "Haluamme kasvosi energiajuomamainokseen! Maksamme 50 €, mutta maineesi "
@@ -3871,6 +3915,28 @@ msgstr "Pirjo from the Ad Agency"
 msgid "Taiteellinen integriteetti. Kunnioitan."
 msgstr "Artistic integrity. I respect that."
 
+#: src/resources/special_events/dance_order.tres
+msgid "Ei riittänyt... tanssit jäävät kuiviksi."
+msgstr "Not enough... the dance goes dry."
+
+#: src/resources/special_events/dance_order.tres
+msgid ""
+"Lavatansseissa on illalla tuhat janoista! Tarvitaan 100 annosta bulkkia tai "
+"kotikaljaa."
+msgstr "A thousand thirsty dancers tonight! We need 100 servings of bulk lager or kotikalja."
+
+#: src/resources/special_events/dance_order.tres
+msgid "Lavatanssien järjestäjä"
+msgstr "Dance hall organiser"
+
+#: src/resources/special_events/dance_order.tres
+msgid "Nyt riittää juomaa koko illaksi. Kiitos!"
+msgstr "Now there's enough to drink all night. Thanks!"
+
+#: src/resources/special_events/dance_order.tres
+msgid "Selvä, haetaan muualta."
+msgstr "Right, we'll get it elsewhere."
+
 #: src/resources/special_events/don_protection.tres
 msgid "Don soittaa"
 msgstr "The Don calls"
@@ -3883,7 +3949,9 @@ msgstr "No money? Pity. Let's hope nothing happens."
 msgid ""
 "Sana on kierinyt, että on eräs kellari, missä tehdään jotain hämärää. "
 "Teillä varmaan on tarve erityissuojelulle 200 €."
-msgstr "Word has it there's a certain cellar where something shady goes on. You'll surely be needing some special protection, 200 €."
+msgstr ""
+"Word has it there's a certain cellar where something shady goes on. You'll "
+"surely be needing some special protection, 200 €."
 
 #: src/resources/special_events/don_protection.tres
 msgid "Viisas valinta. Tänään kukaan ei tule kyselemään."
@@ -3892,6 +3960,30 @@ msgstr "A wise choice. Nobody will come asking questions today."
 #: src/resources/special_events/don_protection.tres
 msgid "Ymmärrän. Pojat eivät sitten käy teillä hetkeen."
 msgstr "I understand. The boys won't be dropping by for a while, then."
+
+#: src/resources/special_events/electrician.tres
+msgid "Ei rahaa? No, pidetään peukkuja."
+msgstr "No money? Well, fingers crossed."
+
+#: src/resources/special_events/electrician.tres
+msgid "Ja siinä se sitten paukahti. Yksi erä lämpeni pilalle."
+msgstr "And there it went, bang. One batch warmed up and spoiled."
+
+#: src/resources/special_events/electrician.tres
+msgid "Noniin, nyt pysyy virrat päällä."
+msgstr "There we go, the power stays on now."
+
+#: src/resources/special_events/electrician.tres
+msgid "Selvä. Toivottavasti ne kestää."
+msgstr "Right. Hope they hold."
+
+#: src/resources/special_events/electrician.tres
+msgid "Sulakkeet on vähän niin ja näin... 50 € ja korjaan."
+msgstr "The fuses are a bit iffy... 50 € and I'll fix them."
+
+#: src/resources/special_events/electrician.tres
+msgid "Sähkömies Seppo"
+msgstr "Electrician Seppo"
 
 #: src/resources/special_events/ingredient_loan.tres
 msgid "Ei ollut tarpeeksi mallasta. No, keksin jotain muuta."
@@ -4014,6 +4106,28 @@ msgstr ""
 msgid "Vai niin. Minä tästä sitten soittelen..."
 msgstr "I see. I'll be making a few calls, then..."
 
+#: src/resources/special_events/old_master.tres
+msgid "Ei maltaita, ei salaisuuksia."
+msgstr "No malt, no secrets."
+
+#: src/resources/special_events/old_master.tres
+msgid "Kirjoitin sen reseptikirjaasi. Älä kerro kenellekään."
+msgstr "I wrote it in your recipe book. Don't tell anyone."
+
+#: src/resources/special_events/old_master.tres
+msgid "Nuoriso ei kuuntele vanhoja."
+msgstr "The young never listen to the old."
+
+#: src/resources/special_events/old_master.tres
+msgid ""
+"Tuo minulle %s, %d kg, ja 50 €, niin kerron yhden vanhan panimomestarin "
+"salaisuuden."
+msgstr "Bring me %s, %d kg, and 50 €, and I'll tell you an old brewmaster's secret."
+
+#: src/resources/special_events/old_master.tres
+msgid "Vanha mestari Aatu"
+msgstr "Old master Aatu"
+
 #: src/resources/special_events/quality_critic.tres
 msgid "Ei tässä ole mitään erikoista. Yritä uudestaan kun on jotain oikeasti hyvää."
 msgstr "Nothing special here. Try again when you have something really good."
@@ -4046,7 +4160,9 @@ msgstr "No money for a renovation? Well, the cellar stays as it is then."
 msgid ""
 "Nyt tarjolla 200 € remppa... laitetaas tilat kuntoon, niin on mukavampi "
 "jatkaa bisneksiä... köh"
-msgstr "Renovation on offer now, 200 €... let's fix the place up, nicer to keep doing business... ahem"
+msgstr ""
+"Renovation on offer now, 200 €... let's fix the place up, nicer to keep "
+"doing business... ahem"
 
 #: src/resources/special_events/renovation.tres
 msgid "Remonttihenkilö Mirkku"
@@ -4064,13 +4180,57 @@ msgstr "Right, carry on with the old then."
 msgid "Valmista tuli! Kyllä nyt kelpaa."
 msgstr "All done! Now that's more like it."
 
+#: src/resources/special_events/sailor_bet.tres
+msgid "Ei tynnyriä panokseksi? No, toiste sitten."
+msgstr "No keg to stake? Another time, then."
+
+#: src/resources/special_events/sailor_bet.tres
+msgid "Hah! Tynnyri lähtee laivaan."
+msgstr "Hah! The keg goes aboard."
+
+#: src/resources/special_events/sailor_bet.tres
+msgid "Hah, sinä voitit! Tässä rahasi, merimies pitää sanansa."
+msgstr "Hah, you won! Here's your money, a sailor keeps his word."
+
+#: src/resources/special_events/sailor_bet.tres
+msgid "Lyödäänkö vetoa? Panokseksi tynnyri, ja voittaja vie potin."
+msgstr "Fancy a bet? A keg at stake, winner takes the pot."
+
+#: src/resources/special_events/sailor_bet.tres
+msgid "Merimies Mauno"
+msgstr "Sailor Mauno"
+
+#: src/resources/special_events/sailor_bet.tres
+msgid "Pelkuri! Hah, ei se mitään."
+msgstr "Coward! Hah, never mind."
+
+#: src/resources/special_events/stray_cat.tres
+msgid "(Ei rahaa kissanruokaan.)"
+msgstr "(No money for cat food.)"
+
+#: src/resources/special_events/stray_cat.tres
+msgid "Kulkukissa"
+msgstr "Stray cat"
+
+#: src/resources/special_events/stray_cat.tres
+msgid "Miau... (Kissa katoaa pimeään.)"
+msgstr "Meow... (The cat disappears into the dark.)"
+
+#: src/resources/special_events/stray_cat.tres
+msgid "Miau? (Laiha kulkukissa katsoo ovelta. Ruokitaanko se, 10 €?)"
+msgstr "Meow? (A thin stray cat looks in from the door. Feed it, 10 €?)"
+
+#: src/resources/special_events/stray_cat.tres
+msgid "Purr... (Kissa kiertyy hyllyn päälle. Se jää taloon.)"
+msgstr "Purr... (The cat curls up on the shelf. It's staying.)"
+
 #: src/resources/special_events/training_course.tres
 msgid ""
 "Baarimikoille olisi pikainen kurssi tarjolla, 100 € maksaisi... et tule "
 "katumaan."
 msgstr ""
-"There'd be a quick course for bartenders, 100 € it costs... you won't regret "
-"it."
+"There'd be a quick course for bartenders, 100 € it costs... you won't "
+"regret it."
 
 #: src/resources/special_events/training_course.tres
 msgid "Ei ole varaa kouluttautua? No, ensi kerralla sitten."
@@ -4111,6 +4271,26 @@ msgstr "You saved the wedding! The bride is over the moon."
 #: src/resources/special_events/wedding_order.tres
 msgid "Selvä, yritetään onneamme jossain muualla."
 msgstr "Fine, we'll try our luck somewhere else."
+
+#: src/resources/special_events/youtuber.tres
+msgid "Harmi, ei onnistunut tällä kertaa."
+msgstr "Shame, it didn't work out this time."
+
+#: src/resources/special_events/youtuber.tres
+msgid "Harmi, olis ollut viraali."
+msgstr "Shame, it would've gone viral."
+
+#: src/resources/special_events/youtuber.tres
+msgid "Moi kaikki! Saanko kuvata kellarissa? Tästä tulee viraali!"
+msgstr "Hi everyone! Can I film in the cellar? This is going viral!"
+
+#: src/resources/special_events/youtuber.tres
+msgid "Tubettaja Tuukka"
+msgstr "YouTuber Tuukka"
+
+#: src/resources/special_events/youtuber.tres
+msgid "Video on netissä! Katsojia tulee ovista ja ikkunoista."
+msgstr "The video is online! Viewers are pouring in."
 
 #: src/resources/visitors/lvv_inspector.tres
 msgid ""
@@ -5390,6 +5570,10 @@ msgstr ""
 #: src/ui/recipe_library_text.gd
 msgid "??? (%.1f%% ABV) – vaatii: hiiva %s, vähintään %d kg mallasta"
 msgstr "??? (%.1f%% ABV) – needs: yeast %s, at least %d kg of malt"
+
+#: src/ui/recipe_library_text.gd
+msgid "Aatun vinkki: EBC %d-%d, IBU %d-%d"
+msgstr "Aatu's tip: EBC %d-%d, IBU %d-%d"
 
 #: src/ui/recipe_library_text.gd
 msgid "Houkuttelee uuden asiakkaan"

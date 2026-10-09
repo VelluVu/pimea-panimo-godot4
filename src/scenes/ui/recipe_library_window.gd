@@ -145,7 +145,7 @@ func _build_locked_style_row(brewery : Brewery, beer_style : BeerStyle) -> Label
 	row.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	row.add_theme_font_size_override("font_size", ROW_FONT_SIZE)
 	var attracts_new_customer : bool = not MetaProgressManager.has_style(beer_style.style) and CustomerRegistry.is_style_customer_gate(beer_style.style)
-	row.text = RecipeLibraryText.locked_row(beer_style, _ingredient_name(beer_style.required_yeast_id), _required_malt_name(beer_style), needs_malt_blend, _required_spice_name(beer_style), attracts_new_customer)
+	row.text = RecipeLibraryText.locked_row(beer_style, _ingredient_name(beer_style.required_yeast_id), _required_malt_name(beer_style), needs_malt_blend, _required_spice_name(beer_style), attracts_new_customer, brewery.hinted_styles.has(beer_style.style))
 	row.modulate = Color.DIM_GRAY
 	return row
 
