@@ -5094,6 +5094,10 @@ msgid "Maine hiipui yöllä: -%d (%s)"
 msgstr "Reputation faded overnight: -%d (%s)"
 
 #: src/systems/console/console_wiring.gd
+msgid "Puheet"
+msgstr "Lines"
+
+#: src/systems/console/console_wiring.gd
 msgid "Päivä vaihtui: %d"
 msgstr "New day: %d"
 
@@ -5596,6 +5600,10 @@ msgstr "Requires first: %s"
 #: src/ui/olutoppi_text.gd
 msgid "tai"
 msgstr "or"
+
+#: src/ui/portrait_notice.gd
+msgid "Kierto lukossa? Kosketa ruutua tai salli näytön kierto."
+msgstr "Rotation locked? Tap the screen or allow screen rotation."
 
 #: src/ui/portrait_notice.gd
 msgid "Käännä puhelin vaakatasoon."
