@@ -3872,8 +3872,8 @@ msgid "Taiteellinen integriteetti. Kunnioitan."
 msgstr "Artistic integrity. I respect that."
 
 #: src/resources/special_events/don_protection.tres
-msgid "Don Soittaa"
-msgstr "The Don Calls"
+msgid "Don soittaa"
+msgstr "The Don calls"
 
 #: src/resources/special_events/don_protection.tres
 msgid "Ei rahaa? Harmi. Toivottavasti mitään ei satu."
@@ -3881,9 +3881,9 @@ msgstr "No money? Pity. Let's hope nothing happens."
 
 #: src/resources/special_events/don_protection.tres
 msgid ""
-"Sana on kierinyt, että on eräs kellari missä tehdään jotain hämärää. Teillä "
-"varmaan on tarve erityis suojelulle 200€."
-msgstr "Word has it there's a certain cellar where something shady goes on. You'll surely be needing some special protection, 200€."
+"Sana on kierinyt, että on eräs kellari, missä tehdään jotain hämärää. "
+"Teillä varmaan on tarve erityissuojelulle 200 €."
+msgstr "Word has it there's a certain cellar where something shady goes on. You'll surely be needing some special protection, 200 €."
 
 #: src/resources/special_events/don_protection.tres
 msgid "Viisas valinta. Tänään kukaan ei tule kyselemään."
@@ -4044,9 +4044,9 @@ msgstr "No money for a renovation? Well, the cellar stays as it is then."
 
 #: src/resources/special_events/renovation.tres
 msgid ""
-"Nyt tarjolla 200€ remppa... laitetaas tilat kuntoon, niin on mukavampi "
+"Nyt tarjolla 200 € remppa... laitetaas tilat kuntoon, niin on mukavampi "
 "jatkaa bisneksiä... köh"
-msgstr "Renovation on offer now, 200€... let's fix the place up, nicer to keep doing business... ahem"
+msgstr "Renovation on offer now, 200 €... let's fix the place up, nicer to keep doing business... ahem"
 
 #: src/resources/special_events/renovation.tres
 msgid "Remonttihenkilö Mirkku"
@@ -4066,10 +4066,10 @@ msgstr "All done! Now that's more like it."
 
 #: src/resources/special_events/training_course.tres
 msgid ""
-"Baarimikoille olisi pikainen kurssi tarjolla, 100€ maksaisi... et tule "
+"Baarimikoille olisi pikainen kurssi tarjolla, 100 € maksaisi... et tule "
 "katumaan."
 msgstr ""
-"There'd be a quick course for bartenders, 100€ it costs... you won't regret "
+"There'd be a quick course for bartenders, 100 € it costs... you won't regret "
 "it."
 
 #: src/resources/special_events/training_course.tres
