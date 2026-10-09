@@ -75,6 +75,17 @@ static func risk_after_quality(risk : int, adjustment : int) -> int:
 	return risk - adjustment
 
 
+## A sale's added risk scaled by `multiplier` (aging, perks). Risk is whole points and a
+## sale adds only a few, so the fraction is rounded up with its own odds (`roll` 0 to 1):
+## a small cut still counts on average. A negative risk is left alone.
+static func discreet_risk(risk : int, multiplier : float, roll : float) -> int:
+	if risk <= 0:
+		return risk
+	var scaled : float = risk * maxf(0.0, multiplier)
+	var whole : int = floori(scaled)
+	return whole + (1 if roll < scaled - whole else 0)
+
+
 ## The fixed price snapped to 10 cents, never free.
 static func income_for(style_base_price : float) -> float:
 	return maxf(0.1, snappedf(style_base_price, 0.1))

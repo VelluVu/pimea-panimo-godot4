@@ -33,6 +33,7 @@ const MAFIOSO_APPEARANCE := &"mafioso_appearance_multiplier"
 const TIP_DOUBLE_CHANCE := &"tip_double_chance"
 const BAR_FIGHT_CHANCE := &"bar_fight_chance_multiplier"
 const COUNTER_PRICE := &"counter_price_multiplier"
+const SALE_RISK := &"sale_risk_multiplier"
 const EXTRA_RAID_STRIKES := &"extra_raid_strikes"
 const RAID_HIDDEN_BATCHES := &"raid_hidden_batch_count"
 const EXTRA_COUNTER_SLOTS := &"extra_counter_slots"
@@ -73,6 +74,7 @@ static func definitions() -> Array[Dictionary]:
 		{"stat": TIP_DOUBLE_CHANCE, "kind": Kind.PERCENT_ADD, "text": StringContainer.PERK_TIP_DOUBLE_CHANCE_STAT_STRING},
 		{"stat": BAR_FIGHT_CHANCE, "kind": Kind.MULTIPLIER, "text": StringContainer.PERK_BAR_FIGHT_CHANCE_STAT_STRING},
 		{"stat": COUNTER_PRICE, "kind": Kind.MULTIPLIER, "text": StringContainer.PERK_COUNTER_PRICE_STAT_STRING},
+		{"stat": SALE_RISK, "kind": Kind.MULTIPLIER, "text": StringContainer.PERK_SALE_RISK_STAT_STRING},
 		{"stat": GROUP_EVENT_INTERVAL, "kind": Kind.MULTIPLIER, "text": StringContainer.PERK_GROUP_EVENT_INTERVAL_STAT_STRING},
 		{"stat": EXTRA_RAID_STRIKES, "kind": Kind.COUNT, "text": StringContainer.PERK_EXTRA_RAID_STRIKES_STAT_STRING},
 		{"stat": RAID_HIDDEN_BATCHES, "kind": Kind.COUNT, "text": StringContainer.PERK_RAID_HIDDEN_BATCH_STAT_STRING},

@@ -100,7 +100,8 @@ func process(data : CustomerData) -> String:
 	brewery.change_reputation(outcome.reputation_gain, ReputationRules.Source.CUSTOMERS)
 	if outcome.reputation_gain < 0:
 		BrewerySignals.customer_unhappy.emit()
-	brewery.add_risk(results[CustomerManager.KEY_RISK])
+	var risk_multiplier : float = best_batch.get_aged_risk_multiplier() * brewery.stats.multiplier(PerkStats.SALE_RISK)
+	brewery.add_risk(SaleEvaluation.discreet_risk(results[CustomerManager.KEY_RISK], risk_multiplier, randf()))
 	var sale_xp : int = Brewery.XP_PER_BOTTLE_SOLD * bottles_sold
 	brewery.add_xp(sale_xp)
 	BrewerySignals.sale_xp_gained.emit(sale_xp)

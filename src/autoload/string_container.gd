@@ -115,6 +115,7 @@ const PERK_WALK_IN_COMPANY_BONUS_STAT_STRING : String = "Seurueessa asiakkaita: 
 const PERK_AGENTTI_APPEARANCE_STAT_STRING : String = "Agenttien esiintyvyys: %s"
 const PERK_MAFIOSO_APPEARANCE_STAT_STRING : String = "Mafiosojen esiintyvyys: %s"
 const PERK_COUNTER_PRICE_STAT_STRING : String = "Tiskimyynnin hinnat: %s"
+const PERK_SALE_RISK_STAT_STRING : String = "Myynnin LVV-riski: %s"
 const PERK_GROUP_EVENT_INTERVAL_STAT_STRING : String = "Ryhmäasiakkaiden saapumisväli: %s"
 const PERK_EXTRA_RAID_STRIKES_STAT_STRING : String = "Ratsioiden sietokyky: %s"
 const PERK_RAID_HIDDEN_BATCH_STAT_STRING : String = "Piilotettuja eriä ratsiassa: %s"

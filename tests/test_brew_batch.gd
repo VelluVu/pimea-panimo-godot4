@@ -161,3 +161,16 @@ func test_spoilage_declines_from_the_aged_peak() -> void:
 	for i in range(6):
 		batch.age_one_day()
 	assert_eq(batch.current_quality, 1.08)
+
+
+func test_aging_progress_is_zero_for_styles_that_do_not_age() -> void:
+	assert_eq(BrewBatch.aging_progress(0.0, 20, 10, 30), 0.0)
+
+
+func test_aging_progress_reaches_one_at_the_peak() -> void:
+	assert_eq(BrewBatch.aging_progress(0.3, 5, 10, 30), 0.5)
+	assert_eq(BrewBatch.aging_progress(0.3, 12, 10, 30), 1.0)
+
+
+func test_aging_progress_fades_once_spoiling() -> void:
+	assert_eq(BrewBatch.aging_progress(0.3, 10 + 30 + 5, 10, 30), 0.5)
