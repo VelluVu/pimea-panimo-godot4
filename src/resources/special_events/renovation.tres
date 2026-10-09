@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="PerkOfferEventData" format=3]
+
+[ext_resource type="Script" path="res://src/events/perk_offer_event_data.gd" id="1_reno"]
+[ext_resource type="Script" uid="uid://dewmdbm4a0vst" path="res://src/progression/run_perk.gd" id="2_perk_script"]
+[ext_resource type="Resource" path="res://src/resources/event_perks/remontti_letkut.tres" id="3_hoses"]
+[ext_resource type="Resource" path="res://src/resources/event_perks/remontti_hyllyt.tres" id="4_shelves"]
+[ext_resource type="Resource" path="res://src/resources/event_perks/remontti_lampo.tres" id="5_heat"]
+[ext_resource type="Resource" path="res://src/resources/event_perks/remontti_keittio.tres" id="6_kitchen"]
+[ext_resource type="Resource" path="res://src/resources/event_perks/remontti_salalokero.tres" id="7_hideout"]
+
+[resource]
+script = ExtResource("1_reno")
+event_caller_name = "Remonttihenkilö Pasi"
+intro_dialogue = "Nyt tajolla 200€ remppa... laitetaas tilat kuntoon, niin on mukavampi jatkaa bisneksiä... köh"
+success_dialogue = "Valmista tuli! Kyllä nyt kelpaa."
+fail_dialogue = "Ei taida olla rahaa remppaan. No, kellari pysyy sitten ennallaan."
+reject_dialogue = "Selvä, jatketaan entisillä."
+timeout_seconds = 12.0
+reward_money = 0
+reward_reputation = 0
+reward_risk = 0
+offer_cost = 200
+offered_perks = Array[ExtResource("2_perk_script")]([ExtResource("3_hoses"), ExtResource("4_shelves"), ExtResource("5_heat"), ExtResource("6_kitchen"), ExtResource("7_hideout")])
+perk_count = 2
+caller_names = Array[String](["Remonttihenkilö Mirkku", "Remonttihenkilö Pasi"])
