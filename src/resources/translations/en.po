@@ -2254,6 +2254,18 @@ msgstr ""
 "Generation Z's apocalypse festival is on in town today. Expect plenty of "
 "Gen Z customers."
 
+#: src/resources/event_perks/arvostelijan_kellarivinkit.tres
+msgid "Arvostelijan kellarivinkit"
+msgstr "Critic's Cellar Tips"
+
+#: src/resources/event_perks/arvostelijan_kellarivinkit.tres
+msgid ""
+"Olutarvostelija Matti jakoi kellarointivinkkinsä: oluet kypsyvät nopeammin "
+"ja pysyvät hyvinä pidempään. Mitä parempi erä, sitä paremmat vinkit."
+msgstr ""
+"Beer critic Matti shared his cellaring tips: beers peak sooner and stay good "
+"longer. The better the batch, the better the tips."
+
 #: src/resources/event_perks/haajarjestajan_suositus.tres
 msgid "Hääjärjestäjän suositus"
 msgstr "Wedding Planner's Word"

@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="QualityChallengeEventData" format=3]
 
 [ext_resource type="Script" uid="uid://ctrwas4g08sal" path="res://src/events/quality_challenge_event_data.gd" id="1_critic"]
+[ext_resource type="Resource" path="res://src/resources/event_perks/arvostelijan_kellarivinkit.tres" id="2_perk"]
 
 [resource]
 script = ExtResource("1_critic")
@@ -10,10 +11,11 @@ success_dialogue = "Vaikuttavaa käsityötä! Tästä saa täydet tähdet."
 fail_dialogue = "Ei tässä ole mitään erikoista. Yritä uudestaan kun on jotain oikeasti hyvää."
 reject_dialogue = "Turha tuhlata aikaani sitten."
 timeout_seconds = 15.0
-required_bottles = 3
-reward_money = 50
+required_bottles = 10
+reward_money = 0
 reward_reputation = 25
 reward_risk = 0
 clears_risk = false
 required_min_quality = 1.2
+granted_perk = ExtResource("2_perk")
 metadata/_custom_type_script = "uid://ctrwas4g08sal"
