@@ -2254,6 +2254,18 @@ msgstr ""
 "Generation Z's apocalypse festival is on in town today. Expect plenty of "
 "Gen Z customers."
 
+#: src/resources/event_perks/haajarjestajan_suositus.tres
+msgid "Hääjärjestäjän suositus"
+msgstr "Wedding Planner's Word"
+
+#: src/resources/event_perks/haajarjestajan_suositus.tres
+msgid ""
+"Pekka kehuu panimoasi kaikille tutuilleen: halpamyynnin ja baarivientien "
+"tulot kasvavat hieman."
+msgstr ""
+"Pekka praises your brewery to everyone he knows: bulk sales and bar "
+"shipments pay a little more."
+
 #: src/resources/group_events/agentti_lauma.tres
 msgid ""
 "LVV:n yllätystarkastusviikko on alkanut. Epäilyttävän moni uusi kasvo "
@@ -3865,8 +3877,8 @@ msgid ""
 "Häät on tänä iltana ja kaljat loppu kesken! Vieraille %s ja raittiille "
 "tädeille %s."
 msgstr ""
-"The wedding is tonight and we ran out of beer! %s for the guests and %s "
-"for the teetotal aunties."
+"The wedding is tonight and we ran out of beer! %s for the guests and %s for "
+"the teetotal aunties."
 
 #: src/resources/special_events/wedding_order.tres
 msgid "Pelastit häät! Morsian on onnesta soikeana."

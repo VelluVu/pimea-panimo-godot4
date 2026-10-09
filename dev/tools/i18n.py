@@ -46,6 +46,7 @@ CONTENT_FIELDS = {
     "src/resources/bars": ("bar_name", "description"),
     "src/resources/cellar_upgrades": ("perk_name", "description"),
     "src/resources/perks": ("perk_name", "description"),
+    "src/resources/event_perks": ("perk_name", "description"),
     "src/resources/meta_unlocks": ("perk_name", "description"),
     "src/resources/achievements": ("title", "description"),
     "src/resources/customers": ("title", "dialogue_intro", "dialogue_success", "dialogue_fallback", "dialogue_wrong_style",

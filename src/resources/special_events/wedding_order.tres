@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="WeddingOrderEventData" format=3]
 
 [ext_resource type="Script" path="res://src/events/wedding_order_event_data.gd" id="1_wedding"]
+[ext_resource type="Resource" path="res://src/resources/event_perks/haajarjestajan_suositus.tres" id="2_perk"]
 
 [resource]
 script = ExtResource("1_wedding")
@@ -16,3 +17,4 @@ reward_money = 0
 reward_reputation = 8
 reward_risk = 3
 alcohol_free_bottles = 10
+granted_perk = ExtResource("2_perk")
