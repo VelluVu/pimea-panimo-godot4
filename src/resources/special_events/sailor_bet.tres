@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="GambleEventData" format=3]
+
+[ext_resource type="Script" path="res://src/events/gamble_event_data.gd" id="1_event"]
+
+[resource]
+script = ExtResource("1_event")
+event_caller_name = "Merimies Mauno"
+intro_dialogue = "Lyödäänkö vetoa? Panokseksi tynnyri, ja voittaja vie potin."
+success_dialogue = "Hah, sinä voitit! Tässä rahasi, merimies pitää sanansa."
+lost_dialogue = "Hah! Tynnyri lähtee laivaan."
+fail_dialogue = "Ei tynnyriä panokseksi? No, toiste sitten."
+reject_dialogue = "Pelkuri! Hah, ei se mitään."
+timeout_seconds = 10.0
+reward_money = 0
+reward_reputation = 0
+reward_risk = 0

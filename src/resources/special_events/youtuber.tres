@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ReputationFavourEventData" format=3]
+
+[ext_resource type="Script" path="res://src/events/reputation_favour_event_data.gd" id="1_event"]
+
+[resource]
+script = ExtResource("1_event")
+event_caller_name = "Tubettaja Tuukka"
+intro_dialogue = "Moi kaikki! Saanko kuvata kellarissa? Tästä tulee viraali!"
+success_dialogue = "Video on netissä! Katsojia tulee ovista ja ikkunoista."
+fail_dialogue = "Harmi, ei onnistunut tällä kertaa."
+reject_dialogue = "Harmi, olis ollut viraali."
+timeout_seconds = 12.0
+reward_money = 0
+reward_reputation = 30
+reward_risk = 25
+reputation_cost = 0

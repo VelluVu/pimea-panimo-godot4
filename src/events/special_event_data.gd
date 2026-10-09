@@ -131,6 +131,16 @@ func on_rejected(_brewery: Brewery) -> void:
 	pass
 
 
+## The reply after a success; events whose outcome varies (a contest, a bet) pick a line.
+func success_text() -> String:
+	return success_dialogue
+
+
+## The reply after on_rejected().
+func reject_text() -> String:
+	return reject_dialogue
+
+
 ## The perk a success would grant, or null.
 func perk_on_success(_brewery: Brewery) -> RunPerk:
 	return granted_perk

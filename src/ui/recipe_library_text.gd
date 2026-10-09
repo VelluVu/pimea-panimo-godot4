@@ -23,6 +23,7 @@ const COLOR_HINT_FORMAT : String = "Väri: %s"
 const BITTERNESS_HINT_FORMAT : String = "Katkeruus: %s"
 const MALT_BLEND_HINT : String = "Vaatii mallasseoksen"
 const NEW_CUSTOMER_HINT : String = "Houkuttelee uuden asiakkaan"
+const MASTER_HINT_FORMAT : String = "Aatun vinkki: EBC %d-%d, IBU %d-%d"
 
 
 static func known_section_title(known_count : int, total_count : int) -> String:
@@ -51,7 +52,8 @@ static func known_row(beer_style : BeerStyle, yeast_name : String, required_malt
 
 ## `needs_malt_blend` only matters for a style with no single required malt.
 ## `attracts_new_customer`: discovering the style unlocks a customer for good.
-static func locked_row(beer_style : BeerStyle, yeast_name : String, required_malt_name : String, needs_malt_blend : bool, required_spice_name : String = "", attracts_new_customer : bool = false) -> String:
+## `hinted`: the old master told its exact ranges (StyleHintEventData).
+static func locked_row(beer_style : BeerStyle, yeast_name : String, required_malt_name : String, needs_malt_blend : bool, required_spice_name : String = "", attracts_new_customer : bool = false, hinted : bool = false) -> String:
 	var text : String = UiText.of(LOCKED_ROW_FORMAT) % [beer_style.abv, yeast_name, beer_style.min_malt_weight]
 	text += "\n" + UiText.of(COLOR_HINT_FORMAT) % BeerStyle.get_color_hint(beer_style.min_ebc, beer_style.max_ebc)
 	text += "\n" + UiText.of(BITTERNESS_HINT_FORMAT) % BeerStyle.get_bitterness_hint(beer_style.min_ibu, beer_style.max_ibu)
@@ -60,6 +62,8 @@ static func locked_row(beer_style : BeerStyle, yeast_name : String, required_mal
 		text += "\n" + UiText.of(MALT_BLEND_HINT)
 	if attracts_new_customer:
 		text += "\n" + UiText.of(NEW_CUSTOMER_HINT)
+	if hinted:
+		text += "\n" + UiText.of(MASTER_HINT_FORMAT) % [beer_style.min_ebc, beer_style.max_ebc, beer_style.min_ibu, beer_style.max_ibu]
 	return text
 
 

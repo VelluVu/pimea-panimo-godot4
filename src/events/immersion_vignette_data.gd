@@ -14,3 +14,5 @@ extends Resource
 @export var actors : Array[ImmersionActorData] = []
 ## Relative chance among all vignettes when the spawner picks one.
 @export var weight : float = 1.0
+## Only once the cellar cat is adopted (Brewery.cellar_cat_adopted).
+@export var needs_cellar_cat : bool = false

@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="StyleHintEventData" format=3]
+
+[ext_resource type="Script" path="res://src/events/style_hint_event_data.gd" id="1_event"]
+
+[resource]
+script = ExtResource("1_event")
+event_caller_name = "Vanha mestari Aatu"
+intro_dialogue = "Tuo minulle %s, %d kg, ja 50 €, niin kerron yhden vanhan panimomestarin salaisuuden."
+success_dialogue = "Kirjoitin sen reseptikirjaasi. Älä kerro kenellekään."
+fail_dialogue = "Ei maltaita, ei salaisuuksia."
+reject_dialogue = "Nuoriso ei kuuntele vanhoja."
+timeout_seconds = 12.0
+reward_money = 0
+reward_reputation = 0
+reward_risk = 0
+required_ingredient_amount = 5
+rolls_ingredient = true
+hint_cost = 50

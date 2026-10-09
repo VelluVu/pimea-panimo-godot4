@@ -100,8 +100,10 @@ func _run_vignette(vignette : ImmersionVignetteData) -> void:
 ## Null when nothing is loaded.
 func _pick_vignette() -> ImmersionVignetteData:
 	var weights : Array[float] = []
+	var brewery : Brewery = BrewEngine.current_brewery
+	var has_cat : bool = brewery != null and brewery.cellar_cat_adopted
 	for vignette : ImmersionVignetteData in vignettes:
-		weights.append(maxf(vignette.weight, 0.0))
+		weights.append(0.0 if vignette.needs_cellar_cat and not has_cat else maxf(vignette.weight, 0.0))
 	return WeightedPicker.pick(vignettes, weights) as ImmersionVignetteData
 
 

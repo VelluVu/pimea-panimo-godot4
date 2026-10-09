@@ -59,7 +59,7 @@ func process_accept(event_data: SpecialEventData) -> String:
 
 	if succeeded:
 		BrewerySignals.brewery_state_changed.emit(brewery)
-		return event_data.success_dialogue
+		return event_data.success_text()
 	else:
 		return event_data.fail_dialogue
 
@@ -71,7 +71,7 @@ func process_accept(event_data: SpecialEventData) -> String:
 func process_reject(event_data: SpecialEventData) -> String:
 	if BrewEngine.current_brewery != null:
 		event_data.on_rejected(BrewEngine.current_brewery)
-	return event_data.reject_dialogue
+	return event_data.reject_text()
 
 
 ## An accepted request whose goods never came in time: it failed, at no further cost.

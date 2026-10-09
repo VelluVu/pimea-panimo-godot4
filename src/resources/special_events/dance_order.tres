@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="BulkOrderEventData" format=3]
+
+[ext_resource type="Script" path="res://src/events/bulk_order_event_data.gd" id="1_event"]
+
+[resource]
+script = ExtResource("1_event")
+event_caller_name = "Lavatanssien järjestäjä"
+intro_dialogue = "Lavatansseissa on illalla tuhat janoista! Tarvitaan 100 annosta bulkkia tai kotikaljaa."
+success_dialogue = "Nyt riittää juomaa koko illaksi. Kiitos!"
+fail_dialogue = "Ei riittänyt... tanssit jäävät kuiviksi."
+reject_dialogue = "Selvä, haetaan muualta."
+timeout_seconds = 12.0
+delivery_seconds = 120.0
+required_bottles = 100
+reward_money = 0
+reward_reputation = 5
+reward_risk = 6
+accepted_styles = Array[int]([1, 0])
+pub_share = 0.8
