@@ -2316,7 +2316,9 @@ msgstr "Keke taught you to smile at the right moment: tips are a little bigger."
 
 #: src/resources/event_perks/kurssi_pikapalvelu.tres
 msgid "Keke opetti nopean palvelun salat: asiakkaita tulee hieman tiheämmin."
-msgstr "Keke taught you the secrets of fast service: customers come a little more often."
+msgstr ""
+"Keke taught you the secrets of fast service: customers come a little more "
+"often."
 
 #: src/resources/event_perks/kurssi_pikapalvelu.tres
 msgid "Pikapalvelukurssi"
@@ -2326,11 +2328,57 @@ msgstr "Fast Service Course"
 msgid ""
 "Keke opetti, miten asiakkaan saa tuntemaan itsensä tärkeäksi: tippi "
 "tuplaantuu hieman useammin."
-msgstr "Keke taught you how to make a customer feel important: tips double a little more often."
+msgstr ""
+"Keke taught you how to make a customer feel important: tips double a little "
+"more often."
 
 #: src/resources/event_perks/kurssi_tuplatipit.tres
 msgid "Tuplatippikurssi"
 msgstr "Double Tip Course"
+
+#: src/resources/event_perks/remontti_hyllyt.tres
+msgid "Uudet hyllyt"
+msgstr "New Shelves"
+
+#: src/resources/event_perks/remontti_hyllyt.tres
+msgid "Varastoon tuli kunnon hyllyt: oluet pysyvät hyvinä hieman pidempään."
+msgstr "Proper shelves in the storage: beers stay good a little longer."
+
+#: src/resources/event_perks/remontti_keittio.tres
+msgid "Keittola on remontin jäljiltä siisti: raaka-aineita jää joskus käyttämättä."
+msgstr "The brewhouse is spotless after the renovation: some ingredients are sometimes left unused."
+
+#: src/resources/event_perks/remontti_keittio.tres
+msgid "Siisti keittiö"
+msgstr "Tidy Brewhouse"
+
+#: src/resources/event_perks/remontti_lampo.tres
+msgid "Kellarin lämpö pysyy nyt tasaisena: oluet kypsyvät hieman nopeammin."
+msgstr "The cellar keeps an even temperature now: beers mature a little faster."
+
+#: src/resources/event_perks/remontti_lampo.tres
+msgid "Tasainen lämpö"
+msgstr "Even Temperature"
+
+#: src/resources/event_perks/remontti_letkut.tres
+msgid ""
+"Remontissa vaihdettiin vuotavat letkut: samasta erästä tulee hieman enemmän "
+"annoksia."
+msgstr "The leaky hoses were replaced: a batch gives a few more servings."
+
+#: src/resources/event_perks/remontti_letkut.tres
+msgid "Tiiviit letkut"
+msgstr "Tight Hoses"
+
+#: src/resources/event_perks/remontti_salalokero.tres
+msgid ""
+"Hyllyn taakse ilmestyi salalokero. Köh. Ratsiassa osa annoksista jää "
+"löytymättä."
+msgstr "A secret compartment appeared behind the shelf. Ahem. In a raid, some servings stay hidden."
+
+#: src/resources/event_perks/remontti_salalokero.tres
+msgid "Salalokero"
+msgstr "Secret Compartment"
 
 #: src/resources/group_events/agentti_lauma.tres
 msgid ""
@@ -3956,11 +4004,39 @@ msgstr "No point wasting my time, then."
 msgid "Vaikuttavaa käsityötä! Tästä saa täydet tähdet."
 msgstr "Impressive craftsmanship! Full stars for this."
 
+#: src/resources/special_events/renovation.tres
+msgid "Ei taida olla rahaa remppaan. No, kellari pysyy sitten ennallaan."
+msgstr "No money for a renovation? Well, the cellar stays as it is then."
+
+#: src/resources/special_events/renovation.tres
+msgid ""
+"Nyt tajolla 200€ remppa... laitetaas tilat kuntoon, niin on mukavampi "
+"jatkaa bisneksiä... köh"
+msgstr "Renovation on offer now, 200€... let's fix the place up, nicer to keep doing business... ahem"
+
+#: src/resources/special_events/renovation.tres
+msgid "Remonttihenkilö Mirkku"
+msgstr "Handyperson Mirkku"
+
+#: src/resources/special_events/renovation.tres
+msgid "Remonttihenkilö Pasi"
+msgstr "Handyperson Pasi"
+
+#: src/resources/special_events/renovation.tres
+msgid "Selvä, jatketaan entisillä."
+msgstr "Right, carry on with the old then."
+
+#: src/resources/special_events/renovation.tres
+msgid "Valmista tuli! Kyllä nyt kelpaa."
+msgstr "All done! Now that's more like it."
+
 #: src/resources/special_events/training_course.tres
 msgid ""
 "Baarimikoille olisi pikainen kurssi tarjolla, 100€ maksaisi... et tule "
 "katumaan."
-msgstr "There'd be a quick course for bartenders, 100€ it costs... you won't regret it."
+msgstr ""
+"There'd be a quick course for bartenders, 100€ it costs... you won't regret "
+"it."
 
 #: src/resources/special_events/training_course.tres
 msgid "Ei ole varaa kouluttautua? No, ensi kerralla sitten."

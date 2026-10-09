@@ -62,6 +62,7 @@ CONTENT_FIELDS = {
 CONTENT_ARRAY_FIELDS = {
     "src/resources/group_events": ("chant_texts",),
     "src/resources/guide": ("lines",),
+    "src/resources/special_events": ("caller_names",),
 }
 SKIP_DIRS = ["src/console", "src/systems/console", "src/resources", "addons", "tests", "dev"]
 # Player-facing files inside the skipped folders. The other console sets are gitignored cheats.

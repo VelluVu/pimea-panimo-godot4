@@ -131,6 +131,15 @@ func perk_on_success(_brewery: Brewery) -> RunPerk:
 	return granted_perk
 
 
+## Every perk a success would grant; one at most unless a subclass offers more.
+func perks_on_success(brewery: Brewery) -> Array[RunPerk]:
+	var perks: Array[RunPerk] = []
+	var perk: RunPerk = perk_on_success(brewery)
+	if perk != null:
+		perks.append(perk)
+	return perks
+
+
 ## For requests that take a whole batch: highest quality first, then the larger `value`
 ## (what the batch is worth, or its servings).
 static func is_better(quality: float, value: float, best_quality_so_far: float, best_value: float) -> bool:
@@ -151,7 +160,7 @@ func _find_batch_by_style(inventory: Inventory, style: BeerStyle.Style) -> BrewB
 ## Pays out a success: money, reputation, risk and perk, then takes `taken` out of storage.
 func _settle(brewery: Brewery, taken: Dictionary) -> void:
 	var money: float = money_on_success(brewery)
-	var perk: RunPerk = perk_on_success(brewery)
+	var perks: Array[RunPerk] = perks_on_success(brewery)
 	for batch: BrewBatch in taken:
 		batch.amount_bottles -= taken[batch]
 		if batch.amount_bottles <= 0:
@@ -162,5 +171,5 @@ func _settle(brewery: Brewery, taken: Dictionary) -> void:
 		brewery.risk = 0
 	else:
 		brewery.add_risk(reward_risk)
-	if perk != null:
+	for perk: RunPerk in perks:
 		brewery.apply_perk(perk)
