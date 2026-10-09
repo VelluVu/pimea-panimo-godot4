@@ -7,6 +7,7 @@ script = ExtResource("1_darkcrystal")
 ebc = 140
 id = 107
 name = "Tumma karamellimallas"
+name_partitive = "tummaa karamellimallasta"
 description = "Voimakkaasti paahdettu karamellimallas tummille ja väkeville oluille."
 base_price = 5
 metadata/_custom_type_script = "uid://dniwiyu5ynp71"

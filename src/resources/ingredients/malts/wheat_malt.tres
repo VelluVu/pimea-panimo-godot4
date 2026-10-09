@@ -7,6 +7,7 @@ script = ExtResource("1_wheat")
 ebc = 4
 id = 103
 name = "Vehnämallas"
+name_partitive = "vehnämallasta"
 description = "Vehnästä valmistettu mallas, joka tekee oluesta samean ja pehmeän."
 base_price = 2
 metadata/_custom_type_script = "uid://dniwiyu5ynp71"

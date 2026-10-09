@@ -35,6 +35,15 @@ static func untold_styles(brewery: Brewery) -> Array[BeerStyle.Style]:
 	return found
 
 
+## The intro takes the amount and the malt in the partitive (%d, %s): "5 kiloa savumallasta".
+func intro_text() -> String:
+	var ingredient: IngredientData = IngredientDatabase.get_item_by_id(required_ingredient_id)
+	var malt: String = ""
+	if ingredient != null:
+		malt = UiText.of(ingredient.name_partitive if not ingredient.name_partitive.is_empty() else ingredient.name)
+	return tr(intro_dialogue) % [required_ingredient_amount, malt]
+
+
 func money_on_success(brewery: Brewery) -> float:
 	return super(brewery) - hint_cost
 
