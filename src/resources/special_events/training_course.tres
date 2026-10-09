@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="TrainingCourseEventData" format=3]
+
+[ext_resource type="Script" path="res://src/events/training_course_event_data.gd" id="1_course"]
+[ext_resource type="Script" uid="uid://dewmdbm4a0vst" path="res://src/progression/run_perk.gd" id="5_perk_script"]
+[ext_resource type="Resource" path="res://src/resources/event_perks/kurssi_tuplatipit.tres" id="2_tips"]
+[ext_resource type="Resource" path="res://src/resources/event_perks/kurssi_pikapalvelu.tres" id="3_flow"]
+[ext_resource type="Resource" path="res://src/resources/event_perks/kurssi_asiakaspalvelu.tres" id="4_service"]
+
+[resource]
+script = ExtResource("1_course")
+event_caller_name = "Kouluttaja Keke"
+intro_dialogue = "Baarimikoille olisi pikainen kurssi tarjolla, 100€ maksaisi... et tule katumaan."
+success_dialogue = "Kurssi käyty! Nyt osaat jotain uutta."
+fail_dialogue = "Ei ole varaa kouluttautua? No, ensi kerralla sitten."
+reject_dialogue = "Harmi. Tieto ei kasva tyhjästä."
+timeout_seconds = 12.0
+reward_money = 0
+reward_reputation = 0
+reward_risk = 0
+course_cost = 100
+course_perks = Array[ExtResource("5_perk_script")]([ExtResource("2_tips"), ExtResource("3_flow"), ExtResource("4_service")])

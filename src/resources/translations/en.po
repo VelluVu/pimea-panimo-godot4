@@ -2306,6 +2306,32 @@ msgstr ""
 "Jussi from the brewery next door told you where he buys his ingredients: "
 "shop prices are a little lower."
 
+#: src/resources/event_perks/kurssi_asiakaspalvelu.tres
+msgid "Asiakaspalvelukurssi"
+msgstr "Customer Service Course"
+
+#: src/resources/event_perks/kurssi_asiakaspalvelu.tres
+msgid "Keke opetti hymyilemään oikeaan aikaan: tipit ovat hieman isompia."
+msgstr "Keke taught you to smile at the right moment: tips are a little bigger."
+
+#: src/resources/event_perks/kurssi_pikapalvelu.tres
+msgid "Keke opetti nopean palvelun salat: asiakkaita tulee hieman tiheämmin."
+msgstr "Keke taught you the secrets of fast service: customers come a little more often."
+
+#: src/resources/event_perks/kurssi_pikapalvelu.tres
+msgid "Pikapalvelukurssi"
+msgstr "Fast Service Course"
+
+#: src/resources/event_perks/kurssi_tuplatipit.tres
+msgid ""
+"Keke opetti, miten asiakkaan saa tuntemaan itsensä tärkeäksi: tippi "
+"tuplaantuu hieman useammin."
+msgstr "Keke taught you how to make a customer feel important: tips double a little more often."
+
+#: src/resources/event_perks/kurssi_tuplatipit.tres
+msgid "Tuplatippikurssi"
+msgstr "Double Tip Course"
+
 #: src/resources/group_events/agentti_lauma.tres
 msgid ""
 "LVV:n yllätystarkastusviikko on alkanut. Epäilyttävän moni uusi kasvo "
@@ -2679,8 +2705,8 @@ msgid ""
 "Kun riski kasvaa, LVV-tarkastaja piipahtaa nuuskimassa. Se on vasta "
 "varoitus, ei ratsia."
 msgstr ""
-"As the risk grows, an LVV inspector drops by to sniff around. That is only a "
-"warning, not a raid."
+"As the risk grows, an LVV inspector drops by to sniff around. That is only "
+"a warning, not a raid."
 
 #: src/resources/guide/05_lvv.tres
 msgid ""
@@ -3930,6 +3956,28 @@ msgstr "No point wasting my time, then."
 msgid "Vaikuttavaa käsityötä! Tästä saa täydet tähdet."
 msgstr "Impressive craftsmanship! Full stars for this."
 
+#: src/resources/special_events/training_course.tres
+msgid ""
+"Baarimikoille olisi pikainen kurssi tarjolla, 100€ maksaisi... et tule "
+"katumaan."
+msgstr "There'd be a quick course for bartenders, 100€ it costs... you won't regret it."
+
+#: src/resources/special_events/training_course.tres
+msgid "Ei ole varaa kouluttautua? No, ensi kerralla sitten."
+msgstr "Can't afford some training? Well, next time then."
+
+#: src/resources/special_events/training_course.tres
+msgid "Harmi. Tieto ei kasva tyhjästä."
+msgstr "Shame. Knowledge doesn't grow out of nothing."
+
+#: src/resources/special_events/training_course.tres
+msgid "Kouluttaja Keke"
+msgstr "Trainer Keke"
+
+#: src/resources/special_events/training_course.tres
+msgid "Kurssi käyty! Nyt osaat jotain uutta."
+msgstr "Course done! Now you know something new."
+
 #: src/resources/special_events/wedding_order.tres
 msgid "Ei teiltäkään löytynyt? No, keksitään jotain muuta."
 msgstr "Not here either? Well, we'll think of something else."
@@ -5045,7 +5093,9 @@ msgstr "%s left of %s today"
 
 #: src/ui/gui_announcer.gd
 msgid "LVV-riski nousee. Panimokirjan ohjeet kertovat, miten sen pitää kurissa."
-msgstr "LVV risk is rising. The Brewery book's Guide tells you how to keep it in check."
+msgstr ""
+"LVV risk is rising. The Brewery book's Guide tells you how to keep it in "
+"check."
 
 #: src/ui/gui_announcer.gd
 msgid "Maineesi laski: %s."

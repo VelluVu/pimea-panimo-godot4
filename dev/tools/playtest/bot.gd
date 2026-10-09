@@ -184,6 +184,8 @@ func _wants_event(b: Brewery, e: SpecialEventData) -> bool:
 		return b.money < 40.0
 	if e is RiskBribeEventData:
 		return b.risk >= 0.6 * threshold and b.money >= (e as RiskBribeEventData).bribe_cost + 20
+	if e is TrainingCourseEventData:
+		return b.money >= (e as TrainingCourseEventData).course_cost + COURSE_RESERVE
 	if e.get_script() == SpecialEventData:
 		for batch: BrewBatch in b.inventory.brew_batches:
 			if batch.beer_style.style == e.required_style and batch.amount_bottles >= e.required_bottles:
@@ -642,6 +644,10 @@ func _is_last_day(b: Brewery) -> bool:
 	return b.current_day == DayRules.SURVIVAL_DAY_TARGET - 1
 
 
+## Money a rule bot keeps after paying for a course.
+const COURSE_RESERVE: float = 150.0
+
+
 ## Rough score worth of one CARD_WEIGHTS unit of perk for one remaining day: +5 % bar
 ## income (1 unit) on ~100 € of daily shipping is ~5 € a day, ~1.5 points.
 const PERK_POINTS_PER_VALUE_DAY: float = 2.0
@@ -665,6 +671,8 @@ func _event_points(b: Brewery, e: SpecialEventData) -> float:
 		points -= (e as ReputationFavourEventData).reputation_cost * REP_POINTS
 	elif e is RiskBribeEventData:
 		points -= (e as RiskBribeEventData).bribe_cost * WORTH_POINTS
+	elif e is TrainingCourseEventData:
+		points -= (e as TrainingCourseEventData).course_cost * WORTH_POINTS
 	elif e is IngredientDonationEventData:
 		var donation := e as IngredientDonationEventData
 		points -= donation.required_ingredient_amount * IngredientDatabase.get_item_by_id(donation.required_ingredient_id).base_price * WORTH_POINTS
