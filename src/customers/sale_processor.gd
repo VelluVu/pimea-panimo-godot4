@@ -7,7 +7,9 @@ extends RefCounted
 ## be unit-tested without a live run.
 
 const BOTTLES_SOLD_PER_TRANSACTION : int = 1
-const QUALITY_BONUS_WEIGHT : float = 0.2
+## A batch good enough for the customer always beats one that is not: below their bar
+## they refuse it (_refuse_bad_quality), so the choice must not settle for it.
+const QUALITY_BONUS_WEIGHT : float = 10.0
 const REGULAR_RESPONSE_FORMAT : String = "Taas täällä! %s"
 
 
@@ -78,6 +80,8 @@ func process(data : CustomerData) -> String:
 	var best_batch : BrewBatch = find_best_batch_for(data)
 	if best_batch == null or best_batch.amount_bottles < BOTTLES_SOLD_PER_TRANSACTION:
 		return _turn_away(data, wanted)
+	if refuses(best_batch.current_quality, data.min_quality):
+		return _refuse_bad_quality(data)
 
 	# The net reputation change, including any bar fight below, is reported as
 	# one popup-friendly delta at the end.
@@ -148,6 +152,26 @@ func process(data : CustomerData) -> String:
 ## they leave without buying. The penalty is per customer, and can be zero for
 ## one who was never offered anything, like an Agentti whose cover story did not
 ## match what is on tap.
+## Below the customer's quality bar nothing is bought: their reject line says so.
+static func refuses(quality : float, min_quality : float) -> bool:
+	return quality < min_quality
+
+
+## Nothing good enough on offer: no sale, the bad-quality reputation and risk, an unhappy
+## customer. The beer stays in storage.
+func _refuse_bad_quality(data : CustomerData) -> String:
+	if brewery != null:
+		var reputation_before : int = brewery.reputation
+		brewery.change_reputation(data.rep_bad_quality, ReputationRules.Source.CUSTOMERS)
+		brewery.add_risk(data.risk_bad_quality)
+		BrewerySignals.customer_unhappy.emit()
+		BrewerySignals.sale_reputation_gained.emit(brewery.reputation - reputation_before)
+		BrewerySignals.brewery_state_changed.emit(brewery)
+		_spread_word(data, false, data.rep_bad_quality)
+		_update_standing(data, false, data.rep_bad_quality)
+	return tr(data.dialogue_reject)
+
+
 func _turn_away(data : CustomerData, wanted : int) -> String:
 	if brewery != null:
 		var reputation_before : int = brewery.reputation

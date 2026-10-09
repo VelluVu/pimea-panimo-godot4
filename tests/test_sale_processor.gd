@@ -73,14 +73,26 @@ func test_a_batch_failing_a_strict_requirement_is_invisible() -> void:
 	assert_eq(SaleProcessorScript.find_best_batch(_batches([weak_ipa]), customer), null)
 
 
-func test_a_matching_style_beats_an_unmatched_one_despite_better_quality() -> void:
-	# The secondary style scores 0.5; an unmatched style scores 0 plus the 0.2
-	# quality bonus, so it still loses.
+func test_a_good_enough_beer_beats_a_preferred_one_below_the_bar() -> void:
+	# Below the bar the customer would refuse, so anything good enough wins.
 	var customer := _customer(BeerStyle.Style.IPA, BeerStyle.Style.HELLES)
 	customer.min_quality = 0.5
 	var poor_helles := _batch(BeerStyle.Style.HELLES, 10, 0.1)
 	var good_lager := _batch(BeerStyle.Style.BULKKILAGER, 10, 1.0)
-	assert_eq(SaleProcessorScript.find_best_batch(_batches([good_lager, poor_helles]), customer), poor_helles)
+	assert_eq(SaleProcessorScript.find_best_batch(_batches([good_lager, poor_helles]), customer), good_lager)
+
+
+func test_among_good_enough_beers_the_preferred_style_wins() -> void:
+	var customer := _customer(BeerStyle.Style.IPA, BeerStyle.Style.HELLES)
+	customer.min_quality = 0.5
+	var good_helles := _batch(BeerStyle.Style.HELLES, 10, 0.8)
+	var good_lager := _batch(BeerStyle.Style.BULKKILAGER, 10, 1.0)
+	assert_eq(SaleProcessorScript.find_best_batch(_batches([good_lager, good_helles]), customer), good_helles)
+
+
+func test_a_customer_refuses_beer_below_their_bar() -> void:
+	assert_true(SaleProcessorScript.refuses(0.9, 1.0))
+	assert_false(SaleProcessorScript.refuses(1.0, 1.0), "exactly at the bar is good enough")
 
 
 func test_quality_bonus_breaks_a_tie_between_equal_styles() -> void:
