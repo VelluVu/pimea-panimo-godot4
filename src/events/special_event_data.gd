@@ -36,7 +36,7 @@ extends Resource
 @export var weighs_by_risk: bool = false
 
 ## How many times as likely a weighs_by_risk event is at the raid threshold as at risk 0.
-const MAX_RISK_WEIGHT_MULTIPLIER: float = 5.0
+const MAX_RISK_WEIGHT_MULTIPLIER: float = 2.0
 
 
 ## Relative odds of this event being the one CustomerRegistry.
