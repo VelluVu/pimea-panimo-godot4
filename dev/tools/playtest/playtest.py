@@ -5,8 +5,8 @@
       Starts runs_per_strategy x each strategy (default: greedy, variety, careful, cheap) at
       once; "expert" knows every recipe, "gourmet" also tunes it for quality and
       "minmax" plays like gourmet aimed straight at the run score (it cashes out on the
-      last day); all three are
-      left out unless named.
+      last day); "calm" plays like gourmet without any LVV relief events (alcohol-free
+      brews and exports instead); all four are left out unless named.
       Each run gets its own APPDATA, so the real saves are never touched. --meta copies a
       meta_progress.cfg into every run for a "veteran" profile. Output defaults to
       dev/tools/playtest/runs/<timestamp>/ (gitignored). 24 runs of 20 days take ~25 s.
