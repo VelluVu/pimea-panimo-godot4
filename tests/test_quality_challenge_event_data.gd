@@ -21,12 +21,12 @@ func test_perk_never_passes_full_strength() -> void:
 
 
 func test_higher_quality_wins_over_more_money() -> void:
-	assert_true(QualityChallengeEventData.is_better(1.5, 10.0, 1.4, 200.0))
+	assert_true(SpecialEventData.is_better(1.5, 10.0, 1.4, 200.0))
 
 
 func test_equal_quality_goes_to_the_batch_worth_more() -> void:
-	assert_true(QualityChallengeEventData.is_better(1.4, 150.0, 1.4, 100.0))
-	assert_false(QualityChallengeEventData.is_better(1.4, 50.0, 1.4, 100.0))
+	assert_true(SpecialEventData.is_better(1.4, 150.0, 1.4, 100.0))
+	assert_false(SpecialEventData.is_better(1.4, 50.0, 1.4, 100.0))
 
 
 func test_held_batch_is_not_on_offer() -> void:

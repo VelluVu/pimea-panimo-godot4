@@ -2,19 +2,19 @@ class_name WeddingOrderEventData
 extends SpecialEventData
 
 ## A wedding wants a light beer (required_style) and an alcohol-free one, both rolled
-## from the styles the player knows each time it shows up (prepared()). It pays more
-## than shipping the bottles to the best bar would, but less than the pub price,
+## from the styles the player knows each time it shows up (prepared()). The amount
+## does not matter: it takes the best batch on offer of each (_best_batch_of()),
+## pays more than shipping them to the best bar would but less than the pub price,
 ## and grants a perk.
 ## intro_dialogue takes the two style names (%s, %s).
 
-const DELIVERY_FORMAT: String = "Toimita %d × %s ja %d × %s.\nVarastossa: %d / %d ja %d / %d"
+const DELIVERY_FORMAT: String = "Toimita %s ja %s, määrällä ei väliä.\nVarastossa: %d ja %d annosta"
 const REQUIREMENT_FORMAT: String = "%s ja %s"
 
 @export_group("Hääpyyntö")
 ## Light beer: stronger than alcohol-free, at most this strong.
 @export var max_light_abv: float = 5.0
 @export var max_alcohol_free_abv: float = 0.5
-@export var alcohol_free_bottles: int = 10
 ## Where the money lands between the best export payout (0) and the pub price (1).
 @export var pub_share: float = 0.5
 ## Never less than this times the export payout, for a batch that exports above pub price.
@@ -58,31 +58,26 @@ func requirement_name() -> String:
 
 
 func delivery_text(inventory: Inventory) -> String:
-	var light: int = _bottles_of(inventory, required_style)
-	var alcohol_free: int = _bottles_of(inventory, alcohol_free_style)
-	return UiText.of(DELIVERY_FORMAT) % [
-		required_bottles, _style_name(required_style), alcohol_free_bottles, _style_name(alcohol_free_style),
-		mini(light, required_bottles), required_bottles, mini(alcohol_free, alcohol_free_bottles), alcohol_free_bottles]
+	return UiText.of(DELIVERY_FORMAT) % [_style_name(required_style), _style_name(alcohol_free_style),
+		_servings_of(inventory, required_style), _servings_of(inventory, alcohol_free_style)]
 
 
-## Each style counts up to what is asked of it, so a full cellar of one does not cover the other.
+## One step per style that has a batch on offer.
 func delivery_progress(inventory: Inventory) -> Vector2i:
-	var have: int = mini(_bottles_of(inventory, required_style), required_bottles) \
-			+ mini(_bottles_of(inventory, alcohol_free_style), alcohol_free_bottles)
-	return Vector2i(have, required_bottles + alcohol_free_bottles)
+	var have: int = int(_best_batch_of(inventory, required_style) != null) \
+			+ int(_best_batch_of(inventory, alcohol_free_style) != null)
+	return Vector2i(have, 2)
 
 
 func try_fulfill(brewery: Brewery) -> bool:
-	var light_batch: BrewBatch = _find_batch_by_style(brewery.inventory, required_style)
-	var alcohol_free_batch: BrewBatch = _find_batch_by_style(brewery.inventory, alcohol_free_style)
-	if light_batch == null or light_batch.amount_bottles < required_bottles:
-		return false
-	if alcohol_free_batch == null or alcohol_free_batch.amount_bottles < alcohol_free_bottles:
+	var light_batch: BrewBatch = _best_batch_of(brewery.inventory, required_style)
+	var alcohol_free_batch: BrewBatch = _best_batch_of(brewery.inventory, alcohol_free_style)
+	if light_batch == null or alcohol_free_batch == null:
 		return false
 
-	var payout: float = _payout(brewery, light_batch, required_bottles) + _payout(brewery, alcohol_free_batch, alcohol_free_bottles)
-	_take(brewery.inventory, light_batch, required_bottles)
-	_take(brewery.inventory, alcohol_free_batch, alcohol_free_bottles)
+	var payout: float = _payout(brewery, light_batch) + _payout(brewery, alcohol_free_batch)
+	brewery.inventory.brew_batches.erase(light_batch)
+	brewery.inventory.brew_batches.erase(alcohol_free_batch)
 	brewery.change_money(snappedf(payout, 0.1), MoneyLedger.Source.EVENTS)
 	_apply_rewards(brewery)
 	if granted_perk != null:
@@ -121,22 +116,27 @@ func _known_styles(brewery: Brewery, above_abv: float, up_to_abv: float) -> Arra
 	return known
 
 
-## What these bottles would bring shipped to the best bar, and in the pub, then the share between.
-func _payout(brewery: Brewery, batch: BrewBatch, bottles: int) -> float:
+## What the whole batch would bring shipped to the best bar, and in the pub, then the share between.
+func _payout(brewery: Brewery, batch: BrewBatch) -> float:
 	var breakdown: SaleBreakdown = brewery.resolver.get_price_breakdown(batch.beer_style)
-	var export_payout: float = BatchDistributor.calculate_ship_payout(breakdown.raw_cost_per_bottle, batch.current_quality, bottles, export_price_multiplier) \
+	var export_payout: float = BatchDistributor.calculate_ship_payout(breakdown.raw_cost_per_bottle, batch.current_quality, batch.amount_bottles, export_price_multiplier) \
 			* brewery.stats.multiplier(PerkStats.DISTRIBUTION_INCOME) * batch.get_aged_price_multiplier()
-	return reward_between(export_payout, breakdown.price_per_bottle * bottles, pub_share, min_over_export)
+	return reward_between(export_payout, breakdown.price_per_bottle * batch.amount_bottles, pub_share, min_over_export)
 
 
-func _take(inventory: Inventory, batch: BrewBatch, bottles: int) -> void:
-	batch.amount_bottles -= bottles
-	if batch.amount_bottles <= 0:
-		inventory.brew_batches.erase(batch)
+## The batch of `style` on offer with the highest quality, then the most servings.
+func _best_batch_of(inventory: Inventory, style: BeerStyle.Style) -> BrewBatch:
+	var best: BrewBatch = null
+	for batch: BrewBatch in inventory.brew_batches:
+		if batch.beer_style.style != style or batch.held or batch.amount_bottles <= 0:
+			continue
+		if best == null or is_better(batch.current_quality, batch.amount_bottles, best.current_quality, best.amount_bottles):
+			best = batch
+	return best
 
 
-func _bottles_of(inventory: Inventory, style: BeerStyle.Style) -> int:
-	var batch: BrewBatch = _find_batch_by_style(inventory, style)
+func _servings_of(inventory: Inventory, style: BeerStyle.Style) -> int:
+	var batch: BrewBatch = _best_batch_of(inventory, style)
 	return batch.amount_bottles if batch != null else 0
 
 

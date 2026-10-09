@@ -57,13 +57,25 @@ func test_styles_split_into_light_and_alcohol_free() -> void:
 	assert_eq(WeddingOrderEventData.styles_between(styles, -1.0, 0.5), [BeerStyle.Style.ALKOHOLITON_LAGER])
 
 
-func test_each_style_counts_only_up_to_its_own_amount() -> void:
+func _make_event() -> WeddingOrderEventData:
 	var event := WeddingOrderEventData.new()
 	event.required_style = BeerStyle.Style.HELLES
-	event.required_bottles = 15
 	event.alcohol_free_style = BeerStyle.Style.ALKOHOLITON_IPA
-	event.alcohol_free_bottles = 10
+	return event
+
+
+func test_any_amount_of_each_style_completes_the_order() -> void:
 	var inventory := Inventory.new()
-	inventory.brew_batches.append(_make_batch(BeerStyle.Style.HELLES, 40))
-	inventory.brew_batches.append(_make_batch(BeerStyle.Style.ALKOHOLITON_IPA, 4))
-	assert_eq(event.delivery_progress(inventory), Vector2i(19, 25))
+	inventory.brew_batches.append(_make_batch(BeerStyle.Style.HELLES, 2))
+	assert_eq(_make_event().delivery_progress(inventory), Vector2i(1, 2), "only the light beer is in")
+	inventory.brew_batches.append(_make_batch(BeerStyle.Style.ALKOHOLITON_IPA, 1))
+	assert_eq(_make_event().delivery_progress(inventory), Vector2i(2, 2))
+
+
+func test_held_batches_are_not_on_offer() -> void:
+	var inventory := Inventory.new()
+	var held := _make_batch(BeerStyle.Style.HELLES, 30)
+	held.held = true
+	inventory.brew_batches.append(held)
+	inventory.brew_batches.append(_make_batch(BeerStyle.Style.ALKOHOLITON_IPA, 10))
+	assert_eq(_make_event().delivery_progress(inventory), Vector2i(1, 2))

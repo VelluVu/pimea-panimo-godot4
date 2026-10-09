@@ -57,13 +57,6 @@ func try_fulfill(brewery: Brewery) -> bool:
 	return true
 
 
-## Highest quality first; between equal qualities, the batch worth more at the counter.
-static func is_better(quality: float, value: float, best_quality_so_far: float, best_value: float) -> bool:
-	if not is_equal_approx(quality, best_quality_so_far):
-		return quality > best_quality_so_far
-	return value > best_value
-
-
 ## Good enough and not held back in the cellar (BrewBatch.held), like a customer sees it.
 func _on_offer(batch: BrewBatch) -> bool:
 	return not batch.held and batch.current_quality >= required_min_quality
