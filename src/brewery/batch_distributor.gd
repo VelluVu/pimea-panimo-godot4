@@ -65,7 +65,8 @@ static func calculate_ship_payout(raw_cost_per_bottle : float, quality : float, 
 
 
 ## Ships a whole batch to a bar. Raises risk, since the beer now circulates outside
-## the cellar. Refuses a bar the player's reputation has not unlocked.
+## the cellar, unless it is alcohol-free (BarContact.risk_for()). Refuses a bar the
+## player's reputation has not unlocked.
 func _on_ship_batch_to_bar_requested(batch : BrewBatch, bar : BarContact) -> void:
 	if batch == null or bar == null or not brewery.inventory.brew_batches.has(batch) or batch.amount_bottles <= 0:
 		return
@@ -77,8 +78,9 @@ func _on_ship_batch_to_bar_requested(batch : BrewBatch, bar : BarContact) -> voi
 	payout = snappedf(payout * brewery.stats.multiplier(PerkStats.DISTRIBUTION_INCOME) * batch.get_aged_price_multiplier(), 0.1)
 
 	brewery.change_money(payout, MoneyLedger.Source.SHIPMENTS)
-	brewery.add_risk(bar.risk_per_shipment)
-	BrewerySignals.keg_shipped_to_bar.emit(batch.get_style_name(), bar.bar_name, batch.amount_bottles, payout, bar.risk_per_shipment)
+	var risk : int = bar.risk_for(batch.beer_style)
+	brewery.add_risk(risk)
+	BrewerySignals.keg_shipped_to_bar.emit(batch.get_style_name(), bar.bar_name, batch.amount_bottles, payout, risk)
 
 	brewery.inventory.brew_batches.erase(batch)
 	BrewerySignals.brewery_state_changed.emit(brewery)

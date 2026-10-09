@@ -14,7 +14,7 @@ const REQUIREMENT_FORMAT: String = "%s ja %s"
 @export_group("Hääpyyntö")
 ## Light beer: stronger than alcohol-free, at most this strong.
 @export var max_light_abv: float = 5.0
-@export var max_alcohol_free_abv: float = 0.5
+@export var max_alcohol_free_abv: float = BeerStyle.ALCOHOL_FREE_MAX_ABV
 ## Where the money lands between the best export payout (0) and the pub price (1).
 @export var pub_share: float = 0.5
 ## Never less than this times the export payout, for a batch that exports above pub price.

@@ -11,7 +11,7 @@ extends OptionButton
 ## reputation hasn't unlocked yet are shown disabled instead of hidden, so
 ## the picker itself previews what's coming.
 
-const TOOLTIP_FORMAT : String = "%s\nMaksukerroin: x%.2f raaka-aineiden hinnasta\nLVV-riski per toimitus: +%d"
+const TOOLTIP_FORMAT : String = "%s\nMaksukerroin: x%.2f raaka-aineiden hinnasta\nLVV-riski per toimitus: +%d (alkoholittomat %+d)"
 
 
 func _ready() -> void:
@@ -90,7 +90,7 @@ func _sync_own_tooltip() -> void:
 
 
 func _build_tooltip(bar : BarContact) -> String:
-	return tr(TOOLTIP_FORMAT) % [tr(bar.description), bar.price_multiplier, bar.risk_per_shipment]
+	return tr(TOOLTIP_FORMAT) % [tr(bar.description), bar.price_multiplier, bar.risk_per_shipment, BarContact.ALCOHOL_FREE_SHIPMENT_RISK]
 
 
 ## A bar's description can run long enough to overflow Godot's default

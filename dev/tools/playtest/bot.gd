@@ -399,13 +399,14 @@ func _close_ratio(b: Brewery) -> float:
 
 ## The best-paying unlocked bar that keeps risk under EXPORT_RISK_SHARE. For a ship-to-bar
 ## goal it is the lowest-risk bar under the close-early line instead: failing the goal
-## would add more risk than the cheapest shipment.
-func _best_bar(b: Brewery, for_goal: bool = false) -> BarContact:
+## would add more risk than the cheapest shipment. `alcohol_free` kegs lower the risk, so
+## any unlocked bar will do.
+func _best_bar(b: Brewery, for_goal: bool = false, alcohol_free: bool = false) -> BarContact:
 	var share: float = _close_ratio(b) if for_goal else EXPORT_RISK_SHARE
 	var limit: float = share * b.get_effective_raid_threshold()
 	var best: BarContact = null
 	for bar: BarContact in CustomerRegistry.bar_contact_pool:
-		if b.reputation < bar.required_reputation or b.risk + bar.risk_per_shipment > limit:
+		if b.reputation < bar.required_reputation or not alcohol_free and b.risk + bar.risk_per_shipment > limit:
 			continue
 		if best == null:
 			best = bar
@@ -427,7 +428,8 @@ func _maybe_ship(b: Brewery) -> void:
 	if not goal_open and TimeManager.get_day_progress() < EXPORT_DAY_PROGRESS:
 		return
 	var bar: BarContact = _best_bar(b, goal_open)
-	if bar == null:
+	var alcohol_free_bar: BarContact = _best_bar(b, false, true)
+	if bar == null and alcohol_free_bar == null:
 		return
 	var total: int = b.inventory.count_bottles()
 	var in_stock: Dictionary = {}
@@ -436,23 +438,28 @@ func _maybe_ship(b: Brewery) -> void:
 			continue
 		in_stock[batch.beer_style.style] = in_stock.get(batch.beer_style.style, 0) + batch.amount_bottles
 	var pick: BrewBatch = null
+	var pick_bar: BarContact = null
 	var pick_demand: float = INF
 	for batch: BrewBatch in b.inventory.brew_batches:
+		var ship_bar: BarContact = alcohol_free_bar if batch.beer_style.is_alcohol_free() else bar
+		if ship_bar == null:
+			continue
 		# Only a full keg counts for the goal.
 		if goal_open and not KegRules.is_full_keg(batch.amount_bottles):
 			continue
 		if not goal_open and (total - batch.amount_bottles < COUNTER_STOCK or _still_aging(batch)):
 			continue
 		var raw_cost: float = b.resolver.get_price_breakdown(batch.beer_style).raw_cost_per_bottle
-		var payout: float = BatchDistributor.calculate_ship_payout(raw_cost, batch.current_quality, batch.amount_bottles, bar.price_multiplier) * b.stats.multiplier(PerkStats.DISTRIBUTION_INCOME) * batch.get_aged_price_multiplier()
+		var payout: float = BatchDistributor.calculate_ship_payout(raw_cost, batch.current_quality, batch.amount_bottles, ship_bar.price_multiplier) * b.stats.multiplier(PerkStats.DISTRIBUTION_INCOME) * batch.get_aged_price_multiplier()
 		if not goal_open and payout < raw_cost * batch.amount_bottles:
 			continue
 		var demand: float = _expert_demand(b, batch.beer_style.style, in_stock)
 		if demand < pick_demand:
 			pick_demand = demand
 			pick = batch
+			pick_bar = ship_bar
 	if pick != null:
-		GUISignals.ship_batch_to_bar_requested.emit(pick, bar)
+		GUISignals.ship_batch_to_bar_requested.emit(pick, pick_bar)
 
 
 ## Value of a level-up card: each stat's change from neutral times what it is worth to a
@@ -671,7 +678,7 @@ func _cash_out(b: Brewery, closing: bool = false) -> void:
 		return
 	for batch: BrewBatch in b.inventory.brew_batches.duplicate():
 		var raw_cost: float = b.resolver.get_price_breakdown(batch.beer_style).raw_cost_per_bottle
-		var bar: BarContact = _richest_bar_below(b, b.get_effective_raid_threshold())
+		var bar: BarContact = _richest_bar_below(b, INF if batch.beer_style.is_alcohol_free() else float(b.get_effective_raid_threshold()))
 		var bulk: float = BatchDistributor.calculate_bulk_sell_payout(raw_cost, batch.current_quality, batch.amount_bottles)
 		if bar != null and BatchDistributor.calculate_ship_payout(raw_cost, batch.current_quality, batch.amount_bottles, bar.price_multiplier) * batch.get_aged_price_multiplier() > bulk:
 			GUISignals.ship_batch_to_bar_requested.emit(batch, bar)

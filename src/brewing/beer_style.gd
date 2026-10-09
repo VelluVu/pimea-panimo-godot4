@@ -52,6 +52,13 @@ enum Style {
 ## Percent, e.g. 5.2 = 5.2 %. Shown on bottles and receipts; does not affect price.
 @export var abv: float = 5.0
 
+## At or under this ABV a style is alcohol-free: the LVV has no interest in it.
+const ALCOHOL_FREE_MAX_ABV: float = 0.5
+
+
+func is_alcohol_free() -> bool:
+	return abv <= ALCOHOL_FREE_MAX_ABV
+
 @export_group("Talous")
 ## Scales StylePricing.PROFIT_MARKUP_RATE, so laborious styles (IPA, Imperial Stout,
 ## Barleywine) earn more per bottle. Ignored when fixed_price_per_bottle is set.
