@@ -35,7 +35,7 @@ func _setup_timers() -> void:
 	add_child(_special_event_timer)
 
 
-## Re-armed each time with a wait that shrinks as LVV risk climbs (SpecialEventPacing).
+## Re-armed each time with SpecialEventPacing's wait (flat for now, see MAX_RISK_SPEEDUP).
 func _on_special_event_timer_timeout() -> void:
 	var brewery: Brewery = BrewEngine.current_brewery
 	var risk_fraction: float = SpecialEventData.risk_fraction(brewery) if brewery != null else 0.0

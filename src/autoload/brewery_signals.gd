@@ -97,10 +97,10 @@ signal risk_decayed(amount: int)
 ## GUI explains the risk and how to keep it down.
 @warning_ignore("unused_signal")
 signal lvv_hint_reached()
-## Emitted by Brewery the first time in a season LVV risk reaches LVV_INSPECTOR_VISIT_RISK;
-## CustomerSpawner sends the inspector in to look around.
+## Emitted by Brewery whenever LVV risk rises at or above LVV_INSPECTOR_VISIT_RISK until the
+## inspector has visited; CustomerSpawner sends him in and sets Brewery.lvv_inspector_visited.
 @warning_ignore("unused_signal")
-signal lvv_inspector_visit_due()
+signal lvv_inspector_visit_due(brewery: Brewery)
 ## Emitted by SaleProcessor when a delighted customer recommends the cellar; the
 ## spawner sends in a friend of the same kind (WordOfMouthRules).
 @warning_ignore("unused_signal")

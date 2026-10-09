@@ -138,10 +138,11 @@ func _on_friend_recommended(data: CustomerData) -> void:
 	_schedule_walk_in(data, randf_range(WordOfMouthRules.FRIEND_DELAY_MIN_SECONDS, WordOfMouthRules.FRIEND_DELAY_MAX_SECONDS))
 
 
-## Walks in alone and leaves the walk-in timer alone; a full counter just skips the visit.
-func _on_lvv_inspector_visit_due() -> void:
-	if not _paused:
-		_try_spawn_walk_in(LVV_INSPECTOR)
+## Walks in alone and leaves the walk-in timer alone. With the counter full or the doors
+## shut he tries again on the next rise in risk.
+func _on_lvv_inspector_visit_due(brewery: Brewery) -> void:
+	if not _paused and _try_spawn_walk_in(LVV_INSPECTOR):
+		brewery.lvv_inspector_visited = true
 
 
 func _on_bad_review_spread() -> void:
@@ -218,13 +219,14 @@ func _resume_slot(saved_slot: int, taken: Dictionary) -> int:
 	return slot
 
 
-func _try_spawn_walk_in(forced_data: CustomerData) -> void:
+## Whether someone walked in.
+func _try_spawn_walk_in(forced_data: CustomerData) -> bool:
 	var free_slot: int = _free_slot()
 	if free_slot == -1:
-		return
+		return false
 	var data: CustomerData = forced_data if forced_data != null else CustomerManager.get_random_customer_data()
 	if data == null:
-		return
+		return false
 	if data.randomizes_preference:
 		data = data.duplicate()
 		data.reroll_preference(_active_styles())
@@ -238,6 +240,7 @@ func _try_spawn_walk_in(forced_data: CustomerData) -> void:
 	new_customer.dialogue_slot = free_slot
 	CustomerManager.register_active_customer(free_slot, new_customer)
 	new_customer.walk_complex_route(stairs_bottom_marker.global_position, room_center_marker.global_position, counter_positions[free_slot])
+	return true
 
 
 func _try_spawn_group_visit(forced_event_data: GroupVisitEventData) -> void:

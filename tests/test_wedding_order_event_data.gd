@@ -53,8 +53,13 @@ func test_styles_split_into_light_and_alcohol_free() -> void:
 		_make_style(BeerStyle.Style.PALE_ALE, 5.0),
 		_make_style(BeerStyle.Style.IPA, 6.5),
 	]
-	assert_eq(WeddingOrderEventData.styles_between(styles, 0.5, 5.0), [BeerStyle.Style.SESSION_ALE, BeerStyle.Style.PALE_ALE])
-	assert_eq(WeddingOrderEventData.styles_between(styles, -1.0, 0.5), [BeerStyle.Style.ALKOHOLITON_LAGER])
+	assert_eq(WeddingOrderEventData.styles_between(styles, 3.0, 5.0), [BeerStyle.Style.SESSION_ALE, BeerStyle.Style.PALE_ALE])
+	assert_eq(WeddingOrderEventData.styles_between(styles, 0.0, 0.5), [BeerStyle.Style.ALKOHOLITON_LAGER])
+
+
+func test_kotikalja_is_not_a_wedding_beer() -> void:
+	var styles : Array[BeerStyle] = [_make_style(BeerStyle.Style.KOTIKALJA, 2.8), _make_style(BeerStyle.Style.HELLES, 4.9)]
+	assert_eq(WeddingOrderEventData.styles_between(styles, WeddingOrderEventData.new().min_light_abv, 5.0), [BeerStyle.Style.HELLES])
 
 
 func _make_event() -> WeddingOrderEventData:

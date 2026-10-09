@@ -26,6 +26,7 @@ var ingredient_price_multiplier : float = 1.0:
 
 var _ingredients : IngredientSource
 var _cost_cache : Dictionary = {}
+var _market_cost_cache : Dictionary = {}
 var _breakdown_cache : Dictionary = {}
 
 
@@ -53,14 +54,23 @@ static func calculate_price_breakdown(style_name : String, abv : float, raw_cost
 
 
 func cost_per_bottle(beer_style : BeerStyle) -> float:
-	if _cost_cache.has(beer_style.style):
-		return _cost_cache[beer_style.style]
+	if not _cost_cache.has(beer_style.style):
+		_cost_cache[beer_style.style] = _cost_at(beer_style, ingredient_price_multiplier)
+	return _cost_cache[beer_style.style]
 
+
+## The cost at full shop prices, whatever the player's perks: what the beer is worth to a
+## bar or a wholesaler (BatchDistributor), so a cheaper shop never lowers their payouts.
+func market_cost_per_bottle(beer_style : BeerStyle) -> float:
+	if not _market_cost_cache.has(beer_style.style):
+		_market_cost_cache[beer_style.style] = _cost_at(beer_style, 1.0)
+	return _market_cost_cache[beer_style.style]
+
+
+func _cost_at(beer_style : BeerStyle, price_multiplier : float) -> float:
 	var effective_yield : int = get_effective_bottle_yield(BrewResult.new().bottle_yield)
-	var ingredient_cost : float = _cheapest_recipe_cost(beer_style) * ingredient_price_multiplier
-	var cost : float = ingredient_cost / effective_yield + LABEL_ART_COST_PER_BOTTLE + CONSUMABLES_COST_PER_BOTTLE
-	_cost_cache[beer_style.style] = cost
-	return cost
+	var ingredient_cost : float = _cheapest_recipe_cost(beer_style) * price_multiplier
+	return ingredient_cost / effective_yield + LABEL_ART_COST_PER_BOTTLE + CONSUMABLES_COST_PER_BOTTLE
 
 
 ## Cost plus margin, unless BeerStyle.fixed_price_per_bottle is set: then that price

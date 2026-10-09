@@ -41,3 +41,13 @@ func test_scaled_olutoppi_perk_is_permanent() -> void:
 	unlock.perk_name = "Testi"
 	assert_true(unlock.get_scaled_perk(1).is_permanent)
 	assert_false(RunPerk.new().is_permanent)
+
+
+func test_copies_of_different_strength_get_their_own_rows() -> void:
+	var perk := RunPerk.new()
+	perk.perk_name = "Vinkit"
+	perk.peak_speed_multiplier = 0.8
+	var perks : Array[RunPerk] = [perk.strength_copy(0.25), perk.strength_copy(1.0), perk.strength_copy(1.0)]
+	var rows : Array[Dictionary] = PerkStack.rows(perks, false)
+	assert_eq(rows.size(), 2)
+	assert_eq(rows[1][PerkStack.KEY_COUNT], 2)

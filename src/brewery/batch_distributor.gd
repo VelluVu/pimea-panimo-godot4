@@ -47,7 +47,7 @@ func _on_bulk_sell_batch_requested(batch : BrewBatch) -> void:
 	if batch == null or not brewery.inventory.brew_batches.has(batch) or batch.amount_bottles <= 0:
 		return
 
-	var raw_cost_per_bottle : float = brewery.resolver.get_price_breakdown(batch.beer_style).raw_cost_per_bottle
+	var raw_cost_per_bottle : float = brewery.resolver.get_market_cost_per_bottle(batch.beer_style)
 	var payout : float = calculate_bulk_sell_payout(raw_cost_per_bottle, batch.current_quality, batch.amount_bottles)
 	payout = snappedf(payout * brewery.stats.multiplier(PerkStats.DISTRIBUTION_INCOME), 0.1)
 
@@ -73,7 +73,7 @@ func _on_ship_batch_to_bar_requested(batch : BrewBatch, bar : BarContact) -> voi
 	if brewery.reputation < bar.required_reputation:
 		return
 
-	var raw_cost_per_bottle : float = brewery.resolver.get_price_breakdown(batch.beer_style).raw_cost_per_bottle
+	var raw_cost_per_bottle : float = brewery.resolver.get_market_cost_per_bottle(batch.beer_style)
 	var payout : float = calculate_ship_payout(raw_cost_per_bottle, batch.current_quality, batch.amount_bottles, bar.price_multiplier)
 	payout = snappedf(payout * brewery.stats.multiplier(PerkStats.DISTRIBUTION_INCOME) * batch.get_aged_price_multiplier(), 0.1)
 

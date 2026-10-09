@@ -32,14 +32,6 @@ func requirement_name() -> String:
 	return UiText.of(REQUIREMENT_FORMAT) % roundi(required_min_quality * 100.0)
 
 
-func try_fulfill(brewery: Brewery) -> bool:
-	var taken: Dictionary = servings_taken(brewery)
-	if taken.is_empty():
-		return false
-	_settle(brewery, taken)
-	return true
-
-
 ## The whole best batch on offer.
 func servings_taken(brewery: Brewery) -> Dictionary:
 	var batch: BrewBatch = best_batch(brewery)
