@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CustomerData" format=3]
+
+[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_inspector"]
+[ext_resource type="SpriteFrames" uid="uid://4hf7kyk1mcmb" path="res://src/resources/sprite_frames/agentti_anim.tres" id="2_sprite"]
+
+[resource]
+script = ExtResource("1_inspector")
+customer_name = "Virtanen"
+title = "LVV-tarkastaja"
+first_names = Array[String](["Virtanen"])
+sprite_frames = ExtResource("2_sprite")
+hair_base_color = Color(0.047059, 0.047059, 0.054902, 1)
+clothes_base_color = Color(0.25, 0.27, 0.3, 1)
+shoes_base_color = Color(0.039216, 0.039216, 0.047059, 1)
+randomize_hair = false
+randomize_clothes = false
+randomize_shoes = false
+dialogue_intro = "Iltaa. Ihan rutiinikäynti vain. Täällä tuoksuu kovasti maltaalle..."
+dialogue_nothing_available = "Hmm. Kirjoitan tämän muistiin."
+dialogue_no_match = "Ei tässä mitään. Vielä. Palaan asiaan, jos tämä paikka alkaa kiinnostaa enemmän."
+no_match_reputation_penalty = 0
+no_match_risk_penalty = 0
+browses_only = true
+voice_pitch = 0.9

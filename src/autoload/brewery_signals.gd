@@ -93,6 +93,14 @@ signal reputation_decayed(amount: int, tier: ReputationTier)
 ## Emitted by TimeManager at a day change with the LVV risk the night took (DayRules).
 @warning_ignore("unused_signal")
 signal risk_decayed(amount: int)
+## Emitted by Brewery the first time in a season LVV risk reaches LVV_HINT_RISK; the
+## GUI explains the risk and how to keep it down.
+@warning_ignore("unused_signal")
+signal lvv_hint_reached()
+## Emitted by Brewery the first time in a season LVV risk reaches LVV_INSPECTOR_VISIT_RISK;
+## CustomerSpawner sends the inspector in to look around.
+@warning_ignore("unused_signal")
+signal lvv_inspector_visit_due()
 ## Emitted by SaleProcessor when a delighted customer recommends the cellar; the
 ## spawner sends in a friend of the same kind (WordOfMouthRules).
 @warning_ignore("unused_signal")

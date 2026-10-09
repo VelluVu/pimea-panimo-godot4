@@ -120,6 +120,10 @@ const DEFAULT_NAMES: Array[String] = ["Matti", "Maija", "Pekka", "Liisa", "Antti
 ## dialogue_no_match. Agentti zeroes them, since nothing was ever offered to him.
 @export var no_match_reputation_penalty: int = CustomerManager.NO_MATCH_REPUTATION_PENALTY
 @export var no_match_risk_penalty: int = CustomerManager.NO_MATCH_RISK_PENALTY
+## Only looks around: says dialogue_intro, then dialogue_nothing_available instead of a
+## preview, and leaves with dialogue_no_match. No sale, penalty or unhappy customer
+## (the LVV inspector's warning visit, see Brewery.LVV_INSPECTOR_VISIT_RISK).
+@export var browses_only: bool = false
 @export var min_bottles_per_visit: int = 1
 @export var max_bottles_per_visit: int = 1
 ## What can start this customer's bar fight (see BarFightRules): any sale, not getting
