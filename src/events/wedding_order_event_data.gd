@@ -19,9 +19,6 @@ const REQUIREMENT_FORMAT: String = "%s ja %s"
 @export var pub_share: float = 0.5
 ## Never less than this times the export payout, for a batch that exports above pub price.
 @export var min_over_export: float = 1.1
-## Given on each success, so a second wedding stacks it again. Kept out of the
-## perks folder so it never shows up on a level-up card.
-@export var granted_perk: RunPerk
 
 ## Rolled by prepared() and saved with an open window.
 @export var alcohol_free_style: BeerStyle.Style = BeerStyle.Style.ALKOHOLITON_LAGER
@@ -69,20 +66,21 @@ func delivery_progress(inventory: Inventory) -> Vector2i:
 	return Vector2i(have, 2)
 
 
-func try_fulfill(brewery: Brewery) -> bool:
+## The whole best batch on offer of each style, or nothing until both are there.
+func servings_taken(brewery: Brewery) -> Dictionary:
 	var light_batch: BrewBatch = _best_batch_of(brewery.inventory, required_style)
 	var alcohol_free_batch: BrewBatch = _best_batch_of(brewery.inventory, alcohol_free_style)
 	if light_batch == null or alcohol_free_batch == null:
-		return false
+		return {}
+	return {light_batch: light_batch.amount_bottles, alcohol_free_batch: alcohol_free_batch.amount_bottles}
 
-	var payout: float = _payout(brewery, light_batch) + _payout(brewery, alcohol_free_batch)
-	brewery.inventory.brew_batches.erase(light_batch)
-	brewery.inventory.brew_batches.erase(alcohol_free_batch)
-	brewery.change_money(snappedf(payout, 0.1), MoneyLedger.Source.EVENTS)
-	_apply_rewards(brewery)
-	if granted_perk != null:
-		brewery.apply_perk(granted_perk)
-	return true
+
+## reward_money plus _payout() for each batch taken.
+func money_on_success(brewery: Brewery) -> float:
+	var money: float = reward_money
+	for batch: BrewBatch in servings_taken(brewery):
+		money += _payout(brewery, batch)
+	return money
 
 
 ## Between the export payout and the pub income of the same bottles, see pub_share.

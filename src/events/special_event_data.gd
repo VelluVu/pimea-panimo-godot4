@@ -4,7 +4,7 @@ extends Resource
 ## Base special event: "bring N bottles of style X". Subclasses override
 ## try_fulfill() to implement a different mechanic entirely (quality
 ## thresholds, paying a bribe, donating raw ingredients, ...) while reusing
-## the shared dialogue/reward/timeout fields and _apply_rewards() below.
+## the shared dialogue/reward/timeout fields and _settle() below.
 ## A request for goods waits after "Joo" (delivery_seconds) and completes itself once
 ## the stock is there (SpecialEventWindow); one that costs money or reputation settles
 ## on "Joo" (waits_for_delivery()).
@@ -28,6 +28,9 @@ extends Resource
 @export var reward_reputation: int = 10
 @export var reward_risk: int = 5
 @export var clears_risk: bool = false
+## Given on each success; event perks live in src/resources/event_perks/, outside the
+## perks folder, so they never show up on a level-up card.
+@export var granted_perk: RunPerk
 ## Grows likelier as LVV risk climbs (see risk_weight()). Set on events that lower risk,
 ## so a player close to a raid sees a way out more often.
 @export var weighs_by_risk: bool = false
@@ -99,19 +102,33 @@ func requirement_name() -> String:
 ## Attempts to satisfy this event against the given brewery, applying its
 ## side effects (consuming stock, changing money/reputation/risk) only on
 ## success. Returns whether it succeeded. Override in subclasses for a
-## different requirement; call _apply_rewards() once the requirement is met.
+## different requirement; call _settle() once the requirement is met.
 func try_fulfill(brewery: Brewery) -> bool:
-	var matching_batch := _find_batch_by_style(brewery.inventory, required_style)
-	if matching_batch == null or matching_batch.amount_bottles < required_bottles:
+	var taken: Dictionary = servings_taken(brewery)
+	if taken.is_empty():
 		return false
-
-	matching_batch.amount_bottles -= required_bottles
-	_apply_rewards(brewery)
-
-	if matching_batch.amount_bottles <= 0:
-		brewery.inventory.brew_batches.erase(matching_batch)
-
+	_settle(brewery, taken)
 	return true
+
+
+## What a success would pay right now. Subclasses that price the goods override it;
+## the playtest bot reads it too, so it always matches what _settle() pays.
+func money_on_success(_brewery: Brewery) -> float:
+	return reward_money
+
+
+## The batches a success would take, BrewBatch -> servings; empty when the goods are not
+## there. Requests for something other than beer leave it empty.
+func servings_taken(brewery: Brewery) -> Dictionary:
+	var batch: BrewBatch = _find_batch_by_style(brewery.inventory, required_style)
+	if batch == null or batch.amount_bottles < required_bottles:
+		return {}
+	return {batch: required_bottles}
+
+
+## The perk a success would grant, or null.
+func perk_on_success(_brewery: Brewery) -> RunPerk:
+	return granted_perk
 
 
 ## For requests that take a whole batch: highest quality first, then the larger `value`
@@ -131,10 +148,19 @@ func _find_batch_by_style(inventory: Inventory, style: BeerStyle.Style) -> BrewB
 	return best
 
 
-func _apply_rewards(brewery: Brewery) -> void:
-	brewery.change_money(reward_money, MoneyLedger.Source.EVENTS)
+## Pays out a success: money, reputation, risk and perk, then takes `taken` out of storage.
+func _settle(brewery: Brewery, taken: Dictionary) -> void:
+	var money: float = money_on_success(brewery)
+	var perk: RunPerk = perk_on_success(brewery)
+	for batch: BrewBatch in taken:
+		batch.amount_bottles -= taken[batch]
+		if batch.amount_bottles <= 0:
+			brewery.inventory.brew_batches.erase(batch)
+	brewery.change_money(snappedf(money, 0.1), MoneyLedger.Source.EVENTS)
 	brewery.change_reputation(reward_reputation, ReputationRules.Source.EVENTS)
 	if clears_risk:
 		brewery.risk = 0
 	else:
 		brewery.add_risk(reward_risk)
+	if perk != null:
+		brewery.apply_perk(perk)
