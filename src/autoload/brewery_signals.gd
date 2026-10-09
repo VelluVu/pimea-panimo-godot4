@@ -97,6 +97,10 @@ signal risk_decayed(amount: int)
 ## GUI explains the risk and how to keep it down.
 @warning_ignore("unused_signal")
 signal lvv_hint_reached()
+## Emitted by AdoptionEventData when the player keeps the stray cat; ImmersionEventSpawner
+## sends it on its first walk and keeps it strolling through the cellar.
+@warning_ignore("unused_signal")
+signal cellar_cat_adopted()
 ## Emitted by Brewery whenever LVV risk rises at or above LVV_INSPECTOR_VISIT_RISK until the
 ## inspector has visited; CustomerSpawner sends him in and sets Brewery.lvv_inspector_visited.
 @warning_ignore("unused_signal")

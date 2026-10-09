@@ -13,4 +13,5 @@ func try_fulfill(brewery: Brewery) -> bool:
 	if not super(brewery):
 		return false
 	brewery.cellar_cat_adopted = true
+	BrewerySignals.cellar_cat_adopted.emit()
 	return true
