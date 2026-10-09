@@ -4,7 +4,9 @@ extends CanvasLayer
 ## The game is built for landscape. On a touch screen held upright this covers the screen,
 ## asks the player to turn the phone and holds the pause until they do. With the phone's
 ## rotation lock on, turning does nothing, so a tap asks the browser for a fullscreen
-## landscape instead (Android; iOS has no orientation lock). Add one to each scene's UI root.
+## landscape instead (Android; iOS has no orientation lock). The game starts in Finnish and
+## the Options are behind this cover, so a Finnish notice repeats itself in English below.
+## Add one to each scene's UI root.
 
 ## Above every window, the level-up cards and touch tooltips.
 const LAYER : int = 127
@@ -16,6 +18,8 @@ const TEXT_COLOR : Color = Color(0.949, 0.788, 0.42, 1)
 const FONT_SIZE : int = 64
 const HINT_FONT_SIZE : int = 32
 const HINT_COLOR : Color = Color(0.75, 0.68, 0.55, 1)
+const ENGLISH_TRANSLATION_PATH : String = "res://src/resources/translations/en.po"
+const ENGLISH_GAP : float = 24.0
 ## The lock only works in fullscreen, and both need the tap's user activation.
 const LANDSCAPE_JS : String = """
 (async () => {
@@ -28,6 +32,7 @@ const LANDSCAPE_JS : String = """
 const TEXT_MARGIN : float = 16.0
 
 var _cover : ColorRect
+var _english_lines : Control
 
 
 func _ready() -> void:
@@ -63,6 +68,8 @@ func _refresh() -> void:
 	var portrait : bool = is_portrait(DisplayServer.window_get_size())
 	if _cover.visible != portrait:
 		_cover.visible = portrait
+		if portrait and _english_lines != null:
+			_english_lines.visible = TranslationServer.get_locale().begins_with("fi")
 
 
 ## This layer sits outside the UI's theme, so the notice borrows the nearest one above it.
@@ -91,7 +98,27 @@ func _make_texts() -> VBoxContainer:
 	box.offset_right = -TEXT_MARGIN
 	box.add_child(_make_label(NOTICE_TEXT, FONT_SIZE, TEXT_COLOR))
 	box.add_child(_make_label(LOCK_HINT_TEXT, HINT_FONT_SIZE, HINT_COLOR))
+	_english_lines = _make_english_lines()
+	if _english_lines != null:
+		box.add_child(_english_lines)
 	return box
+
+
+## The same lines from en.po, which is in the TranslationServer only while English is chosen.
+func _make_english_lines() -> Control:
+	var english := load(ENGLISH_TRANSLATION_PATH) as Translation
+	if english == null:
+		return null
+	var lines := VBoxContainer.new()
+	lines.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var gap := Control.new()
+	gap.custom_minimum_size.y = ENGLISH_GAP
+	lines.add_child(gap)
+	for entry : Array in [[NOTICE_TEXT, FONT_SIZE, TEXT_COLOR], [LOCK_HINT_TEXT, HINT_FONT_SIZE, HINT_COLOR]]:
+		var label := _make_label(String(english.get_message(entry[0])), entry[1], entry[2])
+		label.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
+		lines.add_child(label)
+	return lines
 
 
 func _make_label(text : String, font_size : int, color : Color) -> Label:
