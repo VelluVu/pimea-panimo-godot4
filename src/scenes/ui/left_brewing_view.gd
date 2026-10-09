@@ -46,7 +46,7 @@ func _ready() -> void:
 	# scene load.
 	visibility_changed.connect(_on_visibility_changed)
 
-	_fill_from_inventory_button = Button.new()
+	_fill_from_inventory_button = TooltipButton.new()
 	_fill_from_inventory_button.text = FILL_FROM_INVENTORY_BUTTON_TEXT
 	_fill_from_inventory_button.tooltip_text = FILL_FROM_INVENTORY_BUTTON_TOOLTIP
 	_fill_from_inventory_button.disabled = true
