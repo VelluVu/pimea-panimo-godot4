@@ -47,9 +47,8 @@ func start_brew() -> void:
 	
 	var brew_report : BrewResult = brewery.resolver.resolve_brew_style(brewery.brew_preparation.selected_contents)
 
+	# Not brewable yet: the ingredients stay on the table rather than being lost.
 	if brew_report == null:
-		brewery.brew_preparation.clear_preparation()
-		BrewerySignals.brewery_state_changed.emit(brewery)
 		return
 
 	# The yield perk multiplies the raw yield, before bottling loss.
