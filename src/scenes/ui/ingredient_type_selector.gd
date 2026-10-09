@@ -9,7 +9,17 @@ const MALT_TAB_TEXT : String = "Mallas"
 const HOP_TAB_TEXT : String = "Humala"
 const YEAST_TAB_TEXT : String = "Hiiva"
 const SPICE_TAB_TEXT : String = "Mauste"
-const TAB_ICON_SIZE : int = 10
+## The icons' own size, so the pixels stay square; the tab sides are trimmed to
+## TAB_SIDE_MARGIN so all four still fit the ~190 px panel without scroll arrows.
+const TAB_ICON_WIDTH : int = 32
+const TAB_SIDE_MARGIN : int = 6
+const TAB_STYLES : Array[StringName] = [&"tab_selected", &"tab_unselected", &"tab_hovered", &"tab_disabled", &"tab_focus"]
+const TAB_ICONS : Dictionary = {
+	IngredientData.IngredientType.MALT: preload("res://assets/textures/malt.png"),
+	IngredientData.IngredientType.HOP: preload("res://assets/textures/hop.png"),
+	IngredientData.IngredientType.YEAST: preload("res://assets/textures/yeast.png"),
+	IngredientData.IngredientType.SPICE: preload("res://assets/textures/spices.png"),
+}
 
 const TYPES_BY_TAB : Array[IngredientData.IngredientType] = [
 	IngredientData.IngredientType.MALT,
@@ -25,6 +35,8 @@ const TYPES_BY_TAB : Array[IngredientData.IngredientType] = [
 
 func _ready() -> void:
 	tab_bar.clear_tabs()
+	tab_bar.add_theme_constant_override(&"icon_max_width", TAB_ICON_WIDTH)
+	_trim_tab_sides()
 	# Icon-only tabs, name as tooltip: the panel is only ~140px wide, too
 	# narrow for three text+icon tabs to fit without scrolling — and a wide
 	# tab row here collides with the corner BackButton shared by this view
@@ -40,8 +52,19 @@ func _ready() -> void:
 
 
 func _add_icon_tab(tab_name : String, ingredient_type : IngredientData.IngredientType) -> void:
-	tab_bar.add_tab("", _make_swatch_texture(IngredientData.get_color_for_type(ingredient_type)))
+	tab_bar.add_tab("", TAB_ICONS[ingredient_type])
 	tab_bar.set_tab_tooltip(tab_bar.tab_count - 1, tab_name)
+
+
+func _trim_tab_sides() -> void:
+	for style_name : StringName in TAB_STYLES:
+		var style : StyleBox = tab_bar.get_theme_stylebox(style_name)
+		if style == null:
+			continue
+		style = style.duplicate()
+		style.content_margin_left = TAB_SIDE_MARGIN
+		style.content_margin_right = TAB_SIDE_MARGIN
+		tab_bar.add_theme_stylebox_override(style_name, style)
 
 
 func _on_tab_changed(tab_index : int) -> void:
@@ -62,12 +85,6 @@ func _on_tab_changed(tab_index : int) -> void:
 func reset_to_first_tab() -> void:
 	tab_bar.current_tab = 0
 	_on_tab_changed(0)
-
-
-func _make_swatch_texture(color : Color) -> ImageTexture:
-	var image : Image = Image.create(TAB_ICON_SIZE, TAB_ICON_SIZE, false, Image.FORMAT_RGBA8)
-	image.fill(color)
-	return ImageTexture.create_from_image(image)
 
 
 func step_ingredient(direction : int) -> void:
