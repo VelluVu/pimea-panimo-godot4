@@ -35,6 +35,10 @@ const DAY_CHANGED_FORMAT: String = "Päivä vaihtui: %d"
 ## Event lines: everything toasts and popups show, so a missed one can be read back.
 ## The player hides and shows them with `loki`; the choice is kept in the settings.
 const EVENT_CATEGORY: StringName = &"event"
+## Customers' lines, shown only on their own tab so the log is not drowned in chatter.
+const DIALOGUE_CATEGORY: StringName = &"dialogue"
+const LOG_TAB_TEXT: String = "Loki"
+const DIALOGUE_TAB_TEXT: String = "Puheet"
 const EVENTS_HIDDEN_OPTION_KEY: String = "console_events_hidden"
 const LOKI_USAGE_TEXT: String = "loki näytä|piilota"
 const EVENTS_SHOWN_MESSAGE: String = "Tapahtumaloki näkyvissä."
@@ -97,6 +101,9 @@ func _ready() -> void:
 
 	_connect_log_sources()
 	_console.set_category_hidden(EVENT_CATEGORY, SettingsManager.get_option(EVENTS_HIDDEN_OPTION_KEY, false))
+	if in_game:
+		_console.add_view(tr(LOG_TAB_TEXT), [&"", EVENT_CATEGORY] as Array[StringName])
+		_console.add_view(tr(DIALOGUE_TAB_TEXT), [DIALOGUE_CATEGORY] as Array[StringName])
 	_console.log_line(tr(READY_MESSAGE))
 
 
@@ -109,6 +116,8 @@ func _connect_log_sources() -> void:
 	BrewerySignals.early_day_close_applied.connect(_on_early_day_close_applied)
 	SpecialEventManager.special_event_triggered.connect(_on_special_event_triggered)
 	TimeManager.day_changed.connect(_on_day_changed)
+	BrewerySignals.dialogue_pushed.connect(func(text: String, _special: bool, _slot: int, _pos: Vector2, _time: float, _fade: float) -> void:
+		_console.log_line(text, DIALOGUE_CATEGORY))
 
 	BrewerySignals.sale_xp_gained.connect(func(amount: int) -> void: _sale_xp = amount)
 	BrewerySignals.sale_tip_gained.connect(func(amount: float) -> void: _sale_tip = amount)
