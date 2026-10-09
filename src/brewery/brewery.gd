@@ -101,6 +101,11 @@ var game_has_ended : bool = false
 @export var lifetime_malt_kg_bought : int = 0
 @export var tutorial_bought_yeast : bool = false
 @export var tutorial_brewed_kotikalja : bool = false
+## The Don's protection (ProtectionEventData): no Agentti walks in before this day, and
+## Mafioso walk-ins weigh mafioso_cut_multiplier before mafioso_cut_until_day.
+@export var agentti_free_until_day : int = 0
+@export var mafioso_cut_until_day : int = 0
+@export var mafioso_cut_multiplier : float = 1.0
 ## One-way latches for the LVV warnings, see LVV_HINT_RISK.
 @export var lvv_hint_shown : bool = false
 @export var lvv_inspector_visited : bool = false

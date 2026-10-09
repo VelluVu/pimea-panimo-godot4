@@ -2282,6 +2282,14 @@ msgstr ""
 "Beer critic Matti shared his cellaring tips: beers peak sooner and stay "
 "good longer. The better the batch, the better the tips."
 
+#: src/resources/event_perks/donin_suojelus.tres
+msgid "Donin miehet pitävät kellaria silmällä: agentteja käy hieman harvemmin."
+msgstr "The Don's men keep an eye on the cellar: agents drop by a little less often."
+
+#: src/resources/event_perks/donin_suojelus.tres
+msgid "Donin suojelus"
+msgstr "The Don's Protection"
+
 #: src/resources/event_perks/haajarjestajan_suositus.tres
 msgid "Hääjärjestäjän suositus"
 msgstr "Wedding Planner's Word"
@@ -2346,7 +2354,9 @@ msgstr "Proper shelves in the storage: beers stay good a little longer."
 
 #: src/resources/event_perks/remontti_keittio.tres
 msgid "Keittola on remontin jäljiltä siisti: raaka-aineita jää joskus käyttämättä."
-msgstr "The brewhouse is spotless after the renovation: some ingredients are sometimes left unused."
+msgstr ""
+"The brewhouse is spotless after the renovation: some ingredients are "
+"sometimes left unused."
 
 #: src/resources/event_perks/remontti_keittio.tres
 msgid "Siisti keittiö"
@@ -2374,7 +2384,9 @@ msgstr "Tight Hoses"
 msgid ""
 "Hyllyn taakse ilmestyi salalokero. Köh. Ratsiassa osa annoksista jää "
 "löytymättä."
-msgstr "A secret compartment appeared behind the shelf. Ahem. In a raid, some servings stay hidden."
+msgstr ""
+"A secret compartment appeared behind the shelf. Ahem. In a raid, some "
+"servings stay hidden."
 
 #: src/resources/event_perks/remontti_salalokero.tres
 msgid "Salalokero"
@@ -3859,6 +3871,28 @@ msgstr "Pirjo from the Ad Agency"
 msgid "Taiteellinen integriteetti. Kunnioitan."
 msgstr "Artistic integrity. I respect that."
 
+#: src/resources/special_events/don_protection.tres
+msgid "Don Soittaa"
+msgstr "The Don Calls"
+
+#: src/resources/special_events/don_protection.tres
+msgid "Ei rahaa? Harmi. Toivottavasti mitään ei satu."
+msgstr "No money? Pity. Let's hope nothing happens."
+
+#: src/resources/special_events/don_protection.tres
+msgid ""
+"Sana on kierinyt, että on eräs kellari missä tehdään jotain hämärää. Teillä "
+"varmaan on tarve erityis suojelulle 200€."
+msgstr "Word has it there's a certain cellar where something shady goes on. You'll surely be needing some special protection, 200€."
+
+#: src/resources/special_events/don_protection.tres
+msgid "Viisas valinta. Tänään kukaan ei tule kyselemään."
+msgstr "A wise choice. Nobody will come asking questions today."
+
+#: src/resources/special_events/don_protection.tres
+msgid "Ymmärrän. Pojat eivät sitten käy teillä hetkeen."
+msgstr "I understand. The boys won't be dropping by for a while, then."
+
 #: src/resources/special_events/ingredient_loan.tres
 msgid "Ei ollut tarpeeksi mallasta. No, keksin jotain muuta."
 msgstr "Not enough malt. Oh well, I'll think of something else."
@@ -4010,7 +4044,7 @@ msgstr "No money for a renovation? Well, the cellar stays as it is then."
 
 #: src/resources/special_events/renovation.tres
 msgid ""
-"Nyt tajolla 200€ remppa... laitetaas tilat kuntoon, niin on mukavampi "
+"Nyt tarjolla 200€ remppa... laitetaas tilat kuntoon, niin on mukavampi "
 "jatkaa bisneksiä... köh"
 msgstr "Renovation on offer now, 200€... let's fix the place up, nicer to keep doing business... ahem"
 

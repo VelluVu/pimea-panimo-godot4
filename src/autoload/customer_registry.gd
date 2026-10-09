@@ -45,9 +45,10 @@ func get_random_customer_data() -> CustomerData:
 	if customer_pool.is_empty():
 		return null
 
+	var brewery : Brewery = BrewEngine.current_brewery
 	var eligible_customers : Array[CustomerData] = []
 	for customer in customer_pool:
-		if is_eligible(customer):
+		if is_eligible(customer) and not _kept_away(customer, brewery):
 			eligible_customers.append(customer)
 
 	if eligible_customers.is_empty():
@@ -65,6 +66,11 @@ func get_random_customer_data() -> CustomerData:
 	return _pick_weighted_customer(eligible_customers)
 
 
+## The Don's protection keeps the Agentti out of the cellar for the day it was paid.
+func _kept_away(customer : CustomerData, brewery : Brewery) -> bool:
+	return brewery != null and customer.title == TITLE_AGENTTI and brewery.current_day < brewery.agentti_free_until_day
+
+
 ## Weighted by the agentti/mafioso appearance perks ("Terävä silmä"); every other
 ## title weighs 1.0, so without those perks this is a plain uniform pick.
 func _pick_weighted_customer(customers : Array[CustomerData]) -> CustomerData:
@@ -79,6 +85,8 @@ func _pick_weighted_customer(customers : Array[CustomerData]) -> CustomerData:
 			weight = brewery.stats.multiplier(PerkStats.AGENTTI_APPEARANCE)
 		elif customer.title == TITLE_MAFIOSO:
 			weight = brewery.stats.multiplier(PerkStats.MAFIOSO_APPEARANCE)
+			if brewery.current_day < brewery.mafioso_cut_until_day:
+				weight *= brewery.mafioso_cut_multiplier
 		weights.append(weight)
 
 	return WeightedPicker.pick(customers, weights) as CustomerData
