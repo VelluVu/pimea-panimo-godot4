@@ -20,5 +20,10 @@ func try_fulfill(brewery: Brewery) -> bool:
 		return false
 
 	brewery.change_money(-bribe_cost, MoneyLedger.Source.LVV)
-	_apply_rewards(brewery)
+	_settle(brewery, {})
 	return true
+
+
+## Takes no beer.
+func servings_taken(_brewery: Brewery) -> Dictionary:
+	return {}

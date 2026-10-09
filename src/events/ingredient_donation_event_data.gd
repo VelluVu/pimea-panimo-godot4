@@ -14,8 +14,6 @@ extends SpecialEventData
 @export var rolled_type: IngredientData.IngredientType = IngredientData.IngredientType.MALT
 ## Paid on top of what the ingredient costs the player in the shop.
 @export var price_markup: float = 0.0
-## Given on each success; kept out of the perks folder so it never shows on a level-up card.
-@export var granted_perk: RunPerk
 
 
 func prepared(brewery: Brewery, _bars: Array[BarContact]) -> SpecialEventData:
@@ -60,12 +58,20 @@ func try_fulfill(brewery: Brewery) -> bool:
 		return false
 
 	brewery.inventory.withdraw_item_by_id(required_ingredient_id, required_ingredient_amount)
-	if price_markup > 0.0:
-		brewery.change_money(snappedf(_shop_value(brewery) * (1.0 + price_markup), 0.1), MoneyLedger.Source.EVENTS)
-	_apply_rewards(brewery)
-	if granted_perk != null:
-		brewery.apply_perk(granted_perk)
+	_settle(brewery, {})
 	return true
+
+
+## reward_money plus the shop price of the ingredients and price_markup on top.
+func money_on_success(brewery: Brewery) -> float:
+	if price_markup <= 0.0:
+		return reward_money
+	return reward_money + _shop_value(brewery) * (1.0 + price_markup)
+
+
+## Takes ingredients, no beer.
+func servings_taken(_brewery: Brewery) -> Dictionary:
+	return {}
 
 
 ## What the asked amount costs the player in the shop right now.

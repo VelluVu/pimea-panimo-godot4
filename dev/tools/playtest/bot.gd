@@ -168,6 +168,9 @@ func _wants_event(b: Brewery, e: SpecialEventData) -> bool:
 		var favour := e as ReputationFavourEventData
 		if favour.reward_risk < 0:
 			return b.risk >= 0.6 * threshold
+		# A free offer (the journalist) only costs risk: fine while well below the raid line.
+		if favour.reputation_cost == 0:
+			return b.risk + favour.reward_risk < 0.5 * threshold
 		return b.money < 40.0
 	if e is RiskBribeEventData:
 		return b.risk >= 0.6 * threshold and b.money >= (e as RiskBribeEventData).bribe_cost + 20
@@ -469,17 +472,23 @@ func _pick_card(b: Brewery, offered: Array[RunPerk]) -> int:
 	var best: int = 0
 	var best_value: float = -INF
 	for i: int in offered.size():
-		var value: float = 0.0
-		for entry: Dictionary in PerkStats.definitions():
-			var change: float = float(offered[i].get(entry.stat)) - PerkStats.neutral_value(entry.kind)
-			if change == 0.0:
-				continue
-			var owned: float = b.stats.multiplier(entry.stat) - 1.0 if entry.kind == PerkStats.Kind.MULTIPLIER else b.stats.total(entry.stat)
-			value += change * CARD_WEIGHTS.get(entry.stat, 0.0) * (1.5 if owned != 0.0 else 1.0)
+		var value: float = _perk_value(b, offered[i])
 		if value > best_value:
 			best_value = value
 			best = i
 	return best
+
+
+## A perk's worth in CARD_WEIGHTS units; a stat the bot already has counts half again.
+func _perk_value(b: Brewery, perk: RunPerk) -> float:
+	var value: float = 0.0
+	for entry: Dictionary in PerkStats.definitions():
+		var change: float = float(perk.get(entry.stat)) - PerkStats.neutral_value(entry.kind)
+		if change == 0.0:
+			continue
+		var owned: float = b.stats.multiplier(entry.stat) - 1.0 if entry.kind == PerkStats.Kind.MULTIPLIER else b.stats.total(entry.stat)
+		value += change * CARD_WEIGHTS.get(entry.stat, 0.0) * (1.5 if owned != 0.0 else 1.0)
+	return value
 
 
 ## Hill climb: adds or removes one unit of an ingredient while that raises the quality and
@@ -605,11 +614,25 @@ func _is_last_day(b: Brewery) -> bool:
 	return b.current_day == DayRules.SURVIVAL_DAY_TARGET - 1
 
 
-## The event's change to the run score: its money and reputation, minus what it takes
-## (bottles, ingredients, cash, reputation) and the risk it adds.
+## Rough score worth of one CARD_WEIGHTS unit of perk for one remaining day: +5 % bar
+## income (1 unit) on ~100 € of daily shipping is ~5 € a day, ~1.5 points.
+const PERK_POINTS_PER_VALUE_DAY: float = 2.0
+
+
+## The event's change to the run score, priced by the event itself (money_on_success,
+## servings_taken, perk_on_success): its money, reputation and perk, minus what it takes
+## (servings, ingredients, cash, reputation) and the risk it adds.
 func _event_points(b: Brewery, e: SpecialEventData) -> float:
+	var taken: Dictionary = e.servings_taken(b)
+	if taken.is_empty() and e.waits_for_delivery() and not e is IngredientDonationEventData:
+		return 0.0
 	var risk_change: int = -b.risk if e.clears_risk else e.reward_risk
-	var points: float = e.reward_money * WORTH_POINTS + e.reward_reputation * REP_POINTS - _risk_points(b, risk_change)
+	var points: float = e.money_on_success(b) * WORTH_POINTS + e.reward_reputation * REP_POINTS - _risk_points(b, risk_change)
+	for batch: BrewBatch in taken:
+		points -= taken[batch] * _bottle_points(b, batch)
+	var perk: RunPerk = e.perk_on_success(b)
+	if perk != null:
+		points += _perk_value(b, perk) * PERK_POINTS_PER_VALUE_DAY * maxi(0, DayRules.SURVIVAL_DAY_TARGET - b.current_day)
 	if e is ReputationFavourEventData:
 		points -= (e as ReputationFavourEventData).reputation_cost * REP_POINTS
 	elif e is RiskBribeEventData:
@@ -617,25 +640,7 @@ func _event_points(b: Brewery, e: SpecialEventData) -> float:
 	elif e is IngredientDonationEventData:
 		var donation := e as IngredientDonationEventData
 		points -= donation.required_ingredient_amount * IngredientDatabase.get_item_by_id(donation.required_ingredient_id).base_price * WORTH_POINTS
-	else:
-		var batch: BrewBatch = _event_batch(b, e)
-		if batch == null:
-			return 0.0
-		points -= e.required_bottles * _bottle_points(b, batch)
 	return points
-
-
-## The batch a bottle-request or quality event would take, or null if none qualifies.
-func _event_batch(b: Brewery, e: SpecialEventData) -> BrewBatch:
-	for batch: BrewBatch in b.inventory.brew_batches:
-		if batch.amount_bottles < e.required_bottles:
-			continue
-		if e is QualityChallengeEventData:
-			if batch.current_quality >= (e as QualityChallengeEventData).required_min_quality:
-				return batch
-		elif batch.beer_style.style == e.required_style:
-			return batch
-	return null
 
 
 ## What a bottle would score sold at the counter instead: its price, the bottle point

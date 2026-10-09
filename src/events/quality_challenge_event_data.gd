@@ -15,8 +15,6 @@ extends SpecialEventData
 @export var min_perk_strength: float = 0.25
 ## Share of what the batch would bring at the counter.
 @export var counter_share: float = 0.9
-## Authored at full strength; kept out of the perks folder so it never shows on a level-up card.
-@export var granted_perk: RunPerk
 
 const REQUIREMENT_FORMAT: String = "olutta, laatu vähintään %d %%"
 
@@ -35,26 +33,47 @@ func requirement_name() -> String:
 
 
 func try_fulfill(brewery: Brewery) -> bool:
-	var best_batch: BrewBatch = null
-	var best_value: float = 0.0
+	var taken: Dictionary = servings_taken(brewery)
+	if taken.is_empty():
+		return false
+	_settle(brewery, taken)
+	return true
 
+
+## The whole best batch on offer.
+func servings_taken(brewery: Brewery) -> Dictionary:
+	var batch: BrewBatch = best_batch(brewery)
+	return {batch: batch.amount_bottles} if batch != null else {}
+
+
+## reward_money plus counter_share of what the whole best batch would bring at the counter.
+func money_on_success(brewery: Brewery) -> float:
+	var batch: BrewBatch = best_batch(brewery)
+	if batch == null:
+		return reward_money
+	return reward_money + _counter_price(brewery, batch) * batch.amount_bottles * counter_share
+
+
+## granted_perk (authored at full strength) scaled by the best batch's quality.
+func perk_on_success(brewery: Brewery) -> RunPerk:
+	var batch: BrewBatch = best_batch(brewery)
+	if granted_perk == null or batch == null:
+		return null
+	return granted_perk.strength_copy(perk_strength(batch.current_quality, required_min_quality, best_quality, min_perk_strength))
+
+
+## The batch on offer with the highest quality, then the one worth more at the counter.
+func best_batch(brewery: Brewery) -> BrewBatch:
+	var best: BrewBatch = null
+	var best_value: float = 0.0
 	for batch: BrewBatch in brewery.inventory.brew_batches:
 		if not _on_offer(batch) or batch.amount_bottles < required_bottles:
 			continue
 		var value: float = _counter_price(brewery, batch) * batch.amount_bottles
-		if best_batch == null or is_better(batch.current_quality, value, best_batch.current_quality, best_value):
-			best_batch = batch
+		if best == null or is_better(batch.current_quality, value, best.current_quality, best_value):
+			best = batch
 			best_value = value
-
-	if best_batch == null:
-		return false
-
-	brewery.inventory.brew_batches.erase(best_batch)
-	brewery.change_money(snappedf(best_value * counter_share, 0.1), MoneyLedger.Source.EVENTS)
-	_apply_rewards(brewery)
-	if granted_perk != null:
-		brewery.apply_perk(granted_perk.strength_copy(perk_strength(best_batch.current_quality, required_min_quality, best_quality, min_perk_strength)))
-	return true
+	return best
 
 
 ## Good enough and not held back in the cellar (BrewBatch.held), like a customer sees it.
