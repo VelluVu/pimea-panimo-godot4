@@ -1171,7 +1171,7 @@ msgid "Kylmäkypsytysvarasto"
 msgstr "Cold Storage"
 
 #: src/resources/cellar_upgrades/2_kylmakypsytysvarasto.tres
-msgid "Kylmässä olut säilyy pidempään. Koskee uusia satseja."
+msgid "Kylmässä olut säilyy pidempään. Koskee uusia eriä."
 msgstr "Beer keeps longer in the cold. Applies to new batches."
 
 #: src/resources/cellar_upgrades/3_lisaa_tiskipaikkoja.tres
@@ -1180,7 +1180,7 @@ msgstr "More Counter Spots"
 
 #: src/resources/cellar_upgrades/3_lisaa_tiskipaikkoja.tres
 msgid ""
-"Yksi asiakas lisää mahtuu tiskille, ja täysi baari houkuttelee lisää väkeä. "
+"Tiskille mahtuu yksi asiakas lisää, ja täysi baari houkuttelee lisää väkeä. "
 "Väljyys vähenee, mutta kassa kilisee."
 msgstr ""
 "One more customer fits at the counter, and a full bar draws a bigger crowd. "
@@ -1191,7 +1191,7 @@ msgid "Piilohylly"
 msgstr "Hidden Shelf"
 
 #: src/resources/cellar_upgrades/4_piilohylly.tres
-msgid "Väärä seinä kellarissa. Ratsiassa osa annoksista jää löytymättä."
+msgid "Valeseinä kellarissa. Ratsiassa osa annoksista jää löytymättä."
 msgstr "A false wall in the cellar. In a raid, some of the servings go unfound."
 
 #: src/resources/cellar_upgrades/5_puhdistusvalineet.tres
@@ -1199,7 +1199,7 @@ msgid "Puhdistusvälineet"
 msgstr "Cleaning Gear"
 
 #: src/resources/cellar_upgrades/5_puhdistusvalineet.tres
-msgid "Puhtaat astiat, puhtaampi maku. Koskee uusia satseja."
+msgid "Puhtaat astiat, puhtaampi maku. Koskee uusia eriä."
 msgstr "Clean vessels, cleaner taste. Applies to new batches."
 
 #: src/resources/cellar_upgrades/6_ilmoitustaulu.tres
@@ -1238,10 +1238,10 @@ msgstr "Cargo Bike"
 
 #: src/resources/cellar_upgrades/9_kuormapyora.tres
 msgid ""
-"Viet laatikot baareihin itse. Lähetyksistä ja tukkumyynnistä jää enemmän "
+"Viet tynnyrit baareihin itse. Lähetyksistä ja tukkumyynnistä jää enemmän "
 "käteen."
 msgstr ""
-"You deliver the crates to the bars yourself. Shipments and bulk sales leave "
+"You deliver the kegs to the bars yourself. Shipments and bulk sales leave "
 "more in your pocket."
 
 #: src/resources/customers/agentti.tres
