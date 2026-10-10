@@ -4,8 +4,8 @@
 
 [resource]
 script = ExtResource("1_unlock")
-perk_name = "Parempi Mallasmylly"
-description = "Maltaat mylläytyvät tehokkaammin, ja syntyy vähemmän hukkaa. Suuremmat erät."
+perk_name = "Parempi mallasmylly"
+description = "Maltaat jauhautuvat tehokkaammin ja hukkaa syntyy vähemmän: erät ovat suurempia."
 icon_placeholder = "🌾"
 brew_yield_multiplier = 1.03
 stacks_additively = true
