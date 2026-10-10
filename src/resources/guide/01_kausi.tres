@@ -6,4 +6,4 @@
 script = ExtResource("1_guide")
 order = 1
 title = "Kauden kulku"
-lines = Array[String](["Kausi kestää 15 päivää (demossa 5). Jos maineesi on viimeisenä päivänä vähintään 100 ja rahaa on jäljellä, panimostasi tulee legenda.", "Päivä kestää viisi minuuttia. Joka yö maksat sähköstä ja vedestä 8 €.", "Sulje ovet päättää päivän etuajassa. Se maksaa vähän rahaa ja mainetta, mutta laskee LVV-riskiä.", "Jos rahat loppuvat, annoksia ei ole ja mitään reseptiä ei voi enää keittää, panimo menee konkurssiin."])
+lines = Array[String](["Kausi kestää 15 päivää (demossa 5). Jos maineesi on viimeisenä päivänä vähintään 100 ja rahaa on jäljellä, panimostasi tulee legenda.", "Päivä kestää viisi minuuttia. Joka yö maksat sähköstä ja vedestä 8 €.", "Sulje ovet -nappi päättää päivän etuajassa. Se maksaa vähän rahaa ja mainetta, mutta laskee LVV-riskiä.", "Jos rahat loppuvat, annoksia ei ole ja mitään reseptiä ei voi enää keittää, panimo menee konkurssiin."])

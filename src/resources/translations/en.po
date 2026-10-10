@@ -2672,11 +2672,11 @@ msgstr "A day lasts five minutes. Every night you pay 8 € for electricity and 
 
 #: src/resources/guide/01_kausi.tres
 msgid ""
-"Sulje ovet päättää päivän etuajassa. Se maksaa vähän rahaa ja mainetta, "
-"mutta laskee LVV-riskiä."
+"Sulje ovet -nappi päättää päivän etuajassa. Se maksaa vähän rahaa ja "
+"mainetta, mutta laskee LVV-riskiä."
 msgstr ""
-"Close doors ends the day early. It costs a little money and reputation, but "
-"lowers the LVV risk."
+"The Close doors button ends the day early. It costs a little money and "
+"reputation, but lowers the LVV risk."
 
 #: src/resources/guide/02_keittaminen.tres
 msgid ""
@@ -2729,7 +2729,7 @@ msgstr ""
 #: src/resources/guide/03_myynti.tres
 msgid ""
 "Asiakkaat ostavat annoksia varaston tynnyreistä. Suosikkityyli tuo enemmän "
-"mainetta ja tippiä."
+"mainetta ja tippejä."
 msgstr ""
 "Customers buy servings from the kegs in storage. Their favourite style "
 "brings more reputation and tips."
@@ -2834,7 +2834,7 @@ msgstr "+ % perks grow steadily, × perks grow faster the more of them you have.
 
 #: src/resources/guide/065_etujen_arvot.tres
 msgid ""
-"+ %: lasketaan yhteen muiden samanlaisten etujen kanssa. Kaksi +15 % etua "
+"+ %: lasketaan yhteen muiden samanlaisten etujen kanssa. Kaksi +15 %:n etua "
 "tipeille antaa yhteensä +30 %."
 msgstr ""
 "+ %: adds up with other perks of the same kind. Two +15 % tip perks give "
@@ -2870,8 +2870,8 @@ msgstr ""
 
 #: src/resources/guide/065_etujen_arvot.tres
 msgid ""
-"×: kertoo kokonaisuuden. Kaksi ×1.15 etua tipeille antaa 1.15 × 1.15 = "
-"×1.32, eli enemmän kuin kaksi +15 % etua."
+"×: kertoo kokonaisuuden. Kaksi ×1.15:n etua tipeille antaa 1.15 × 1.15 = "
+"×1.32, eli enemmän kuin kaksi +15 %:n etua."
 msgstr ""
 "×: multiplies the total. Two ×1.15 tip perks give 1.15 × 1.15 = ×1.32, more "
 "than two +15 % perks."
