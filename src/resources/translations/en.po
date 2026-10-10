@@ -738,7 +738,7 @@ msgid "Kännissä ja tappelussa"
 msgstr "Drunk and Disorderly"
 
 #: src/resources/achievements/kanta_asiakas_1.tres
-msgid "Saa ensimmäinen kanta-asiakas."
+msgid "Hanki ensimmäinen kanta-asiakas."
 msgstr "Win your first regular."
 
 #: src/resources/achievements/kanta_asiakas_1.tres
@@ -746,7 +746,7 @@ msgid "Tuttu naama"
 msgstr "A Familiar Face"
 
 #: src/resources/achievements/kanta_asiakas_5.tres
-msgid "Saa yhteensä 5 kanta-asiakasta."
+msgid "Hanki yhteensä 5 kanta-asiakasta."
 msgstr "Win 5 regulars in total."
 
 #: src/resources/achievements/kanta_asiakas_5.tres
@@ -850,8 +850,8 @@ msgid "Myy yhteensä 100 annosta."
 msgstr "Sell 100 servings in total."
 
 #: src/resources/achievements/pullo_pullolta.tres
-msgid "Pullo pullolta"
-msgstr "Bottle by Bottle"
+msgid "Tuoppi tuopilta"
+msgstr "Pint by Pint"
 
 #: src/resources/achievements/rahasampo.tres
 msgid "Omista kerralla 1000 €."

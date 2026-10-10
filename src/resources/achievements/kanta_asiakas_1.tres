@@ -6,7 +6,7 @@
 script = ExtResource("1_achievement")
 achievement_id = "kanta_asiakas_1"
 title = "Tuttu naama"
-description = "Saa ensimmäinen kanta-asiakas."
+description = "Hanki ensimmäinen kanta-asiakas."
 stat_key = &"regulars_gained"
 target_value = 1
 metadata/_custom_type_script = "res://src/systems/achievements/achievement_data.gd"
