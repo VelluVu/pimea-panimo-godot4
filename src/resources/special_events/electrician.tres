@@ -6,7 +6,7 @@
 script = ExtResource("1_event")
 event_caller_name = "Sähkömies Seppo"
 intro_dialogue = "Sulakkeet on vähän niin ja näin... 50 € ja korjaan."
-success_dialogue = "Noniin, nyt pysyy virrat päällä."
+success_dialogue = "No niin, nyt pysyy virrat päällä."
 fail_dialogue = "Ei rahaa? No, pidetään peukkuja."
 reject_dialogue = "Selvä. Toivottavasti ne kestää."
 damage_dialogue = "Ja siinä se sitten paukahti. Yksi erä lämpeni pilalle."

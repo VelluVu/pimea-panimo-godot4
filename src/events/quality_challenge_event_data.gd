@@ -17,6 +17,8 @@ extends SpecialEventData
 @export var counter_share: float = 0.9
 
 const REQUIREMENT_FORMAT: String = "olutta, laatu vähintään %d %%"
+## The critic takes the whole batch, so the line names the minimum, not an exact amount.
+const DELIVERY_FORMAT: String = "Toimita koko erä (vähintään %d annosta), laatu vähintään %d %%.\nVarastossa: %d / %d"
 
 
 ## The most servings any one batch on offer has: the delivery comes from one batch.
@@ -30,6 +32,12 @@ func delivery_progress(inventory: Inventory) -> Vector2i:
 
 func requirement_name() -> String:
 	return UiText.of(REQUIREMENT_FORMAT) % roundi(required_min_quality * 100.0)
+
+
+func delivery_text(inventory: Inventory) -> String:
+	var progress: Vector2i = delivery_progress(inventory)
+	return UiText.of(DELIVERY_FORMAT) % [progress.y, roundi(required_min_quality * 100.0),
+			mini(progress.x, progress.y), progress.y]
 
 
 ## The whole best batch on offer.

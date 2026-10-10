@@ -634,6 +634,14 @@ msgid "Tavallinen päivä kellarissa."
 msgstr "An ordinary day in the cellar."
 
 #: src/events/quality_challenge_event_data.gd
+msgid ""
+"Toimita koko erä (vähintään %d annosta), laatu vähintään %d %%.\n"
+"Varastossa: %d / %d"
+msgstr ""
+"Deliver a whole batch (at least %d servings) of at least %d %% quality.\n"
+"In storage: %d / %d"
+
+#: src/events/quality_challenge_event_data.gd
 msgid "olutta, laatu vähintään %d %%"
 msgstr "beer of at least %d %% quality"
 
@@ -2375,7 +2383,7 @@ msgstr ""
 "sometimes left unused."
 
 #: src/resources/event_perks/remontti_keittio.tres
-msgid "Siisti keittiö"
+msgid "Siisti keittola"
 msgstr "Tidy Brewhouse"
 
 #: src/resources/event_perks/remontti_lampo.tres
@@ -3932,10 +3940,10 @@ msgstr "A win! The judges were sold. The prize is yours."
 #: src/resources/special_events/brand_deal.tres
 msgid ""
 "Haluamme kasvosi energiajuomamainokseen! Maksamme 50 €, mutta maineesi "
-"kärsii: 15 mainetta."
+"kärsii (−15 mainetta)."
 msgstr ""
 "We want your face in an energy drink ad! We pay 50 €, but your reputation "
-"suffers: 15 reputation."
+"suffers (−15 reputation)."
 
 #: src/resources/special_events/brand_deal.tres
 msgid "Kukaan ei vielä tunnista sinua. Ehkä myöhemmin."
@@ -3959,11 +3967,11 @@ msgstr "Not enough... the dance goes dry."
 
 #: src/resources/special_events/dance_order.tres
 msgid ""
-"Lavatansseissa on illalla tuhat janoista! Tarvitaan 100 annosta bulkkia tai "
-"kotikaljaa."
+"Lavatansseissa on illalla tuhat janoista! Tarvitaan 100 annosta "
+"bulkkilageria tai kotikaljaa."
 msgstr ""
-"A thousand thirsty dancers tonight! We need 100 servings of bulk lager or "
-"kotikalja."
+"A thousand thirsty dancers tonight! We need 100 servings of Bulk Lager or "
+"Homebrew."
 
 #: src/resources/special_events/dance_order.tres
 msgid "Lavatanssien järjestäjä"
@@ -3987,11 +3995,11 @@ msgstr "No money? Pity. Let's hope nothing happens."
 
 #: src/resources/special_events/don_protection.tres
 msgid ""
-"Sana on kierinyt, että on eräs kellari, missä tehdään jotain hämärää. "
-"Teillä varmaan on tarve erityissuojelulle 200 €."
+"Sana on kiirinyt, että on eräs kellari, missä tehdään jotain hämärää. "
+"Teillä on varmaan tarvetta erityissuojelulle. 200 €."
 msgstr ""
 "Word has it there's a certain cellar where something shady goes on. You'll "
-"surely be needing some special protection, 200 €."
+"surely be needing some special protection. 200 €."
 
 #: src/resources/special_events/don_protection.tres
 msgid "Viisas valinta. Tänään kukaan ei tule kyselemään."
@@ -4010,7 +4018,7 @@ msgid "Ja siinä se sitten paukahti. Yksi erä lämpeni pilalle."
 msgstr "And there it went, bang. One batch warmed up and spoiled."
 
 #: src/resources/special_events/electrician.tres
-msgid "Noniin, nyt pysyy virrat päällä."
+msgid "No niin, nyt pysyy virrat päällä."
 msgstr "There we go, the power stays on now."
 
 #: src/resources/special_events/electrician.tres
@@ -4171,16 +4179,18 @@ msgid "Vanha mestari Aatu"
 msgstr "Old master Aatu"
 
 #: src/resources/special_events/quality_critic.tres
-msgid "Ei tässä ole mitään erikoista. Yritä uudestaan kun on jotain oikeasti hyvää."
+msgid ""
+"Ei tässä ole mitään erikoista. Yritä uudestaan, kun on jotain oikeasti "
+"hyvää."
 msgstr "Nothing special here. Try again when you have something really good."
 
 #: src/resources/special_events/quality_critic.tres
 msgid ""
-"Kuulin että täällä keitetään jotain erikoista. Näytä minulle parhaasi, en "
-"tyydy keskinkertaiseen!"
+"Kuulin, että täällä keitetään jotain erikoista. Näytä minulle parhaasi, en "
+"tyydy keskinkertaiseen! Ostan koko erän."
 msgstr ""
 "I heard something special is brewed here. Show me your best, I won't settle "
-"for mediocre!"
+"for mediocre! I'll buy the whole batch."
 
 #: src/resources/special_events/quality_critic.tres
 msgid "Olutarvostelija Matti"
@@ -4263,8 +4273,8 @@ msgid "Miau? (Laiha kulkukissa katsoo ovelta. Ruokitaanko se, 10 €?)"
 msgstr "Meow? (A thin stray cat looks in from the door. Feed it, 10 €?)"
 
 #: src/resources/special_events/stray_cat.tres
-msgid "Purr... (Kissa kiertyy hyllyn päälle. Se jää taloon.)"
-msgstr "Purr... (The cat curls up on the shelf. It's staying.)"
+msgid "Purr... (Kissa tekee tarkastuskierroksen panimon ympäri. Se jää taloon.)"
+msgstr "Purr... (The cat makes an inspection round of the brewery. It's staying.)"
 
 #: src/resources/special_events/training_course.tres
 msgid ""

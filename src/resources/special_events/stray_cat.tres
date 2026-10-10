@@ -8,7 +8,7 @@
 script = ExtResource("1_event")
 event_caller_name = "Kulkukissa"
 intro_dialogue = "Miau? (Laiha kulkukissa katsoo ovelta. Ruokitaanko se, 10 €?)"
-success_dialogue = "Purr... (Kissa kiertyy hyllyn päälle. Se jää taloon.)"
+success_dialogue = "Purr... (Kissa tekee tarkastuskierroksen panimon ympäri. Se jää taloon.)"
 fail_dialogue = "(Ei rahaa kissanruokaan.)"
 reject_dialogue = "Miau... (Kissa katoaa pimeään.)"
 timeout_seconds = 12.0

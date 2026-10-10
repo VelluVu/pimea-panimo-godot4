@@ -6,9 +6,9 @@
 [resource]
 script = ExtResource("1_critic")
 event_caller_name = "Olutarvostelija Matti"
-intro_dialogue = "Kuulin että täällä keitetään jotain erikoista. Näytä minulle parhaasi, en tyydy keskinkertaiseen!"
+intro_dialogue = "Kuulin, että täällä keitetään jotain erikoista. Näytä minulle parhaasi, en tyydy keskinkertaiseen! Ostan koko erän."
 success_dialogue = "Vaikuttavaa käsityötä! Tästä saa täydet tähdet."
-fail_dialogue = "Ei tässä ole mitään erikoista. Yritä uudestaan kun on jotain oikeasti hyvää."
+fail_dialogue = "Ei tässä ole mitään erikoista. Yritä uudestaan, kun on jotain oikeasti hyvää."
 reject_dialogue = "Turha tuhlata aikaani sitten."
 timeout_seconds = 15.0
 required_bottles = 3
