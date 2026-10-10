@@ -3611,11 +3611,9 @@ msgstr "Cellar Whisperer"
 
 #: src/resources/perks/kellarin_kuiskaaja.tres
 msgid ""
-"Kuulet, kun käyminen on juuri sopivassa pisteessä, ja laatu paranee "
+"Kuulet, milloin käyminen on juuri sopivassa vaiheessa: laatu paranee "
 "huomattavasti."
-msgstr ""
-"You can hear when fermentation is just right, and quality improves "
-"noticeably."
+msgstr "You can hear when fermentation is just right: quality improves noticeably."
 
 #: src/resources/perks/kellarin_tunnelma.tres
 msgid ""
@@ -3691,7 +3689,7 @@ msgstr "Granny's Recipe"
 
 #: src/resources/perks/nakymaton_kellari.tres
 msgid ""
-"Kukaan ei edes muista tätä kellaria olemassa olevaksi, joten LVV:n "
+"Kukaan ei edes muista, että tämä kellari on olemassa, joten LVV:n "
 "ratsiakynnys nousee merkittävästi."
 msgstr ""
 "Nobody even remembers this cellar exists, so the LVV's raid threshold rises "
@@ -3748,8 +3746,8 @@ msgid "Porukalla liikkeelle"
 msgstr "Out with the Crew"
 
 #: src/resources/perks/pyoristys_ylospain.tres
-msgid "Opit jättämään vaihtorahat huomiotta. Asiakkaat pyöristävät tipit ylöspäin."
-msgstr "You learn to conveniently forget the change. Customers round their tips up."
+msgid "Asiakkaat jättävät vaihtorahat tiskille: tipit pyöristyvät ylöspäin."
+msgstr "Customers leave the change on the counter: tips get rounded up."
 
 #: src/resources/perks/pyoristys_ylospain.tres
 msgid "Pyöristys ylöspäin"
@@ -3777,7 +3775,7 @@ msgstr "Tidy Counter"
 
 #: src/resources/perks/suosittu_paikka.tres
 msgid ""
-"Puskaradio kiirii: jokainen onnistunut myynti tuo nyt hieman enemmän "
+"Puskaradio toimii: jokainen onnistunut myynti tuo nyt hieman enemmän "
 "mainetta."
 msgstr "The grapevine buzzes: every good sale now brings a little more reputation."
 
@@ -3804,7 +3802,7 @@ msgid "Tasainen tienesti"
 msgstr "Steady Earnings"
 
 #: src/resources/perks/tasainen_varovaisuus.tres
-msgid "Opit varovaisemmaksi. LVV:n ratsiakynnys nousee."
+msgid "Opit olemaan varovaisempi. LVV:n ratsiakynnys nousee."
 msgstr "You learn to be more careful. The LVV's raid threshold rises."
 
 #: src/resources/perks/tasainen_varovaisuus.tres
@@ -3845,10 +3843,10 @@ msgstr "Known Supplier"
 
 #: src/resources/perks/vakaa_maine.tres
 msgid ""
-"Maineesi kasvaa tasaisesti keikasta toiseen: ei räjähdysmäistä, mutta ei "
-"koskaan hiivukaan."
+"Maineesi kasvaa tasaisesti päivästä toiseen: ei räjähdysmäisesti, mutta se "
+"ei myöskään koskaan hiivu."
 msgstr ""
-"Your reputation grows steadily from gig to gig: never explosive, but it "
+"Your reputation grows steadily from day to day: never explosive, but it "
 "never fades either."
 
 #: src/resources/perks/vakaa_maine.tres
