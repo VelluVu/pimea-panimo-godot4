@@ -7,7 +7,7 @@
 
 [resource]
 script = ExtResource("1_event")
-banner_text = "Alfagen-lauma rynnii sisään puhelimet ja aurapointsit pystyssä, kaikki haluaa jotain alkoholitonta ja goattia."
+banner_text = "Alfagen-lauma rynnii sisään puhelimet ja aurapointsit pystyssä, kaikki haluavat jotain alkoholitonta ja goattia."
 customer_data_options = Array[ExtResource("1_v3hht")]([ExtResource("2_customer"), ExtResource("3_customer_naaras")])
 max_group_size = 14
 walk_in_stagger_seconds = 0.25
