@@ -354,7 +354,7 @@ texture = ExtResource("12_pm3ni")
 [node name="CloseDayButton" type="Button" parent="GUI_CanvasLayer/GUI/TopPanel_Resources" unique_id=1208766186]
 layout_mode = 2
 size_flags_horizontal = 8
-tooltip_text = "Häädä asiakkaat, ja aloita uusi päivä"
+tooltip_text = "Häädä asiakkaat ja aloita uusi päivä"
 text = "Sulje ovet"
 
 [node name="Right_WarehouseView" type="VBoxContainer" parent="GUI_CanvasLayer/GUI" unique_id=1128246563]

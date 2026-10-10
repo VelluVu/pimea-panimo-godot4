@@ -32,11 +32,11 @@ msgstr "Alpha acids: %s%% / Beta acids: %s%%"
 #: src/autoload/string_container.gd
 msgid ""
 "Alkoholitarkastajat ryntäsivät kellariin ja takavarikoivat %s annosta "
-"valmista olutta! Lisäksi kirjoittivat sakon: %.1f €, ja maineesi laski %s "
-"pistettä."
+"valmista olutta! Lisäksi he kirjoittivat sakon (%.1f €), ja maineesi laski "
+"%s pistettä."
 msgstr ""
 "Alcohol inspectors stormed the cellar and confiscated %s servings of "
-"finished beer! They also issued a fine of %.1f €, and your reputation "
+"finished beer! They also issued a fine (%.1f €), and your reputation "
 "dropped by %s points."
 
 #: src/autoload/string_container.gd
@@ -96,7 +96,7 @@ msgid "Ei"
 msgstr "No"
 
 #: src/autoload/string_container.gd
-msgid "Ei vielä perkkejä. Nouse tasolle 2 saadaksesi ensimmäisen."
+msgid "Ei vielä etuja. Nouse tasolle 2 saadaksesi ensimmäisen."
 msgstr "No perks yet. Reach level 2 to get your first."
 
 #: src/autoload/string_container.gd
@@ -358,7 +358,7 @@ msgid "Tyydyttävä"
 msgstr "Fair"
 
 #: src/autoload/string_container.gd
-msgid "Tämän kauden perkit (%d):"
+msgid "Tämän kauden edut (%d):"
 msgstr "This season's perks (%d):"
 
 #: src/autoload/string_container.gd
@@ -4363,7 +4363,7 @@ msgid "LVV-tarkastaja"
 msgstr "LVV inspector"
 
 #: src/scenes/main.tscn
-msgid "Häädä asiakkaat, ja aloita uusi päivä"
+msgid "Häädä asiakkaat ja aloita uusi päivä"
 msgstr "Send the customers home and start a new day"
 
 #: src/scenes/main.tscn
@@ -4531,8 +4531,8 @@ msgstr ""
 "sale, but each delivery raises the LVV risk."
 
 #: src/scenes/ui/brew_preparation_panel.gd
-msgid "%+d Mainetta"
-msgstr "%+d Reputation"
+msgid "%+d mainetta"
+msgstr "%+d reputation"
 
 #: src/scenes/ui/brew_preparation_panel.gd
 msgid "+%d XP"
@@ -4675,10 +4675,6 @@ msgid "ei uusia"
 msgstr "none new"
 
 #: src/scenes/ui/game_end_window.gd
-msgid "BUSTED!"
-msgstr "BUSTED!"
-
-#: src/scenes/ui/game_end_window.gd
 msgid ""
 "Demo päättyi päivään %d. Koko pelissä kausi kestää %d päivää, ja Olutopin "
 "kyvyt vievät panimoa eteenpäin kaudesta toiseen. Koko peli on tulossa!"
@@ -4692,6 +4688,10 @@ msgid "Jatka pelaamista"
 msgstr "Keep playing"
 
 #: src/scenes/ui/game_end_window.gd
+msgid "JÄIT KIINNI!"
+msgstr "BUSTED!"
+
+#: src/scenes/ui/game_end_window.gd
 msgid "KAUSI PÄÄTTYI!"
 msgstr "SEASON OVER!"
 
@@ -4702,14 +4702,6 @@ msgstr "THANKS FOR PLAYING!"
 #: src/scenes/ui/game_end_window.gd
 msgid "KONKURSSI!"
 msgstr "BANKRUPT!"
-
-#: src/scenes/ui/game_end_window.gd
-msgid ""
-"Kolmas ratsia oli viimeinen. LVV takavarikoi kaiken ja sulki panimosi "
-"pysyvästi."
-msgstr ""
-"The third raid was the last. The LVV confiscated everything and shut your "
-"brewery down for good."
 
 #: src/scenes/ui/game_end_window.gd
 msgid "LEGENDA!"
@@ -4746,6 +4738,14 @@ msgstr "NEW RECORD!"
 #: src/scenes/ui/game_end_window.gd
 msgid "Valikkoon"
 msgstr "To menu"
+
+#: src/scenes/ui/game_end_window.gd
+msgid ""
+"Viimeinen ratsia sinetöi kohtalosi. LVV takavarikoi kaiken ja sulki "
+"panimosi pysyvästi."
+msgstr ""
+"The last raid sealed your fate. The LVV confiscated everything and shut "
+"your brewery down for good."
 
 #: src/scenes/ui/game_end_window.gd
 msgid ""
@@ -5588,7 +5588,7 @@ msgstr ""
 "%s"
 
 #: src/ui/olutoppi_text.gd
-msgid "Seuraava taso: %d maine"
+msgid "Seuraava taso: %d mainetta"
 msgstr "Next level: %d renown"
 
 #: src/ui/olutoppi_text.gd
@@ -5740,20 +5740,16 @@ msgid "Seuraava ratsia: sakko %.1f €, mainetta -%d ja oluet takavarikoidaan"
 msgstr "Next raid: %.1f € fine, -%d reputation and the beer is confiscated"
 
 #: src/ui/risk_text.gd
-msgid "maine -%d"
-msgstr "fame -%d"
+msgid "edut %+d"
+msgstr "perks %+d"
 
 #: src/ui/risk_text.gd
-msgid "perkit %+d"
-msgstr "perks %+d"
+msgid "maine -%d"
+msgstr "fame -%d"
 
 #: src/ui/special_event_text.gd
 msgid "%+d LVV-riskiä"
 msgstr "%+d LVV risk"
-
-#: src/ui/special_event_text.gd
-msgid "%+d mainetta"
-msgstr "%+d reputation"
 
 #: src/ui/special_event_text.gd
 msgid ""

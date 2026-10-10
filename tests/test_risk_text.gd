@@ -23,7 +23,7 @@ func test_the_tooltip_explains_a_moved_threshold() -> void:
 	var text : String = RiskTextScript.tooltip(62, 105, 100, 20, 15, 1, 3, 60.0, 24)
 	assert_contains(text, "Riski 62, ratsiakynnys 105")
 	assert_contains(text, "43 riskiä ennen ratsiaa")
-	assert_contains(text, "Peruskynnys 100, perkit +20, maine -15")
+	assert_contains(text, "Peruskynnys 100, edut +20, maine -15")
 	assert_contains(text, "Ratsiat: 1/3")
 	assert_contains(text, "sakko 60.0 €, mainetta -24")
 
