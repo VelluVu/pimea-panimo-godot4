@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="CustomerData" format=3]
+[gd_resource type="Resource" script_class="CustomerData" format=3 uid="uid://bu4eyeux8vvtr"]
 
 [ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_metalli"]
-[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/mustanmetallinmies_anim.tres" id="2_sprite"]
+[ext_resource type="SpriteFrames" uid="uid://bmk7jaa6hcx2f" path="res://src/resources/sprite_frames/mustanmetallinmies_anim.tres" id="2_sprite"]
 
 [resource]
 script = ExtResource("1_metalli")
@@ -18,6 +18,7 @@ randomize_skin = false
 randomize_hair = false
 randomize_clothes = false
 randomize_shoes = false
+voice_pitch = 0.75
 dialogue_intro = "Terve. Etsin olutta, joka on yhtä musta kuin sieluni."
 dialogue_success = "Tämä on pimeyttä tuopissa. Kaunista. Kiitos."
 dialogue_fallback = "Riittävän synkkää. Ei täydellistä, mutta ei se ole maailmakaan."
@@ -33,5 +34,4 @@ rep_secondary_style = 2
 quality_reputation_sensitivity = 5.0
 min_reputation_to_appear = 25
 required_discovered_style = 9
-voice_pitch = 0.75
 metadata/_custom_type_script = "uid://b2vqc8lkfjwic"
