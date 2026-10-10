@@ -95,14 +95,39 @@ func is_console_active() -> bool:
 
 ## Appends one BBCode line to the log. A `category` lets the host hide a kind of line
 ## (set_category_hidden) without losing it: hidden lines come back when shown again.
+## Each category keeps its own MAX_LOG_LINES, so chatty lines never push out the others.
 func log_line(bbcode_line: String, category: StringName = &"") -> void:
 	_log_entries.append([bbcode_line, category])
-	if _log_entries.size() > MAX_LOG_LINES:
-		_log_entries.remove_at(0)
-		_redraw_log()
-	elif _shows(category):
+	var oldest: int = _oldest_beyond_cap(category)
+	if oldest != -1:
+		var shown_before: int = _shown_count_before(oldest)
+		var was_shown: bool = _shows(_log_entries[oldest][1])
+		_log_entries.remove_at(oldest)
+		if was_shown:
+			log_label.remove_paragraph(shown_before)
+	if _shows(category):
 		log_label.append_text(bbcode_line + "\n")
 	_scroll_log_to_bottom()
+
+
+## Index of the oldest line of `category` once it has more than MAX_LOG_LINES, else -1.
+func _oldest_beyond_cap(category: StringName) -> int:
+	var first: int = -1
+	var count: int = 0
+	for i: int in _log_entries.size():
+		if _log_entries[i][1] == category:
+			count += 1
+			if first == -1:
+				first = i
+	return first if count > MAX_LOG_LINES else -1
+
+
+func _shown_count_before(index: int) -> int:
+	var count: int = 0
+	for i: int in index:
+		if _shows(_log_entries[i][1]):
+			count += 1
+	return count
 
 
 ## Adds a tab above the log that shows only lines of `categories` (the default category

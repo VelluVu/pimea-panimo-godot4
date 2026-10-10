@@ -44,6 +44,11 @@ func intro_text() -> String:
 	return tr(intro_dialogue) % [required_ingredient_amount, malt]
 
 
+## Waits for the money as well as the malt: buying the malt can leave too little for him.
+func can_fulfill(brewery: Brewery) -> bool:
+	return brewery.money >= hint_cost and super(brewery)
+
+
 func money_on_success(brewery: Brewery) -> float:
 	return super(brewery) - hint_cost
 

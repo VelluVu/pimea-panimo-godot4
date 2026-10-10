@@ -81,7 +81,7 @@ func process(data : CustomerData) -> String:
 	if best_batch == null or best_batch.amount_bottles < BOTTLES_SOLD_PER_TRANSACTION:
 		return _turn_away(data, wanted)
 	if refuses(best_batch.current_quality, data.min_quality):
-		return _refuse_bad_quality(data)
+		return _refuse_bad_quality(data, best_batch.current_quality)
 
 	# The net reputation change, including any bar fight below, is reported as
 	# one popup-friendly delta at the end.
@@ -135,7 +135,6 @@ func process(data : CustomerData) -> String:
 	var response_text : String = results[CustomerManager.KEY_RESPONSE]
 	if is_regular and results[CustomerManager.KEY_DELIGHTED]:
 		response_text = tr(REGULAR_RESPONSE_FORMAT) % response_text
-	response_text += QualityWishText.reject_suffix(best_batch.current_quality, data.min_quality)
 
 	if BarFightRules.breaks_out(data, wanted, bottles_sold, brewery.stats.multiplier(PerkStats.BAR_FIGHT_CHANCE), randf()):
 		_trigger_bar_fight(data, best_batch)
@@ -148,18 +147,14 @@ func process(data : CustomerData) -> String:
 	return response_text
 
 
-## Nothing in stock, or nothing that clears the customer's strict requirements:
-## they leave without buying. The penalty is per customer, and can be zero for
-## one who was never offered anything, like an Agentti whose cover story did not
-## match what is on tap.
 ## Below the customer's quality bar nothing is bought: their reject line says so.
 static func refuses(quality : float, min_quality : float) -> bool:
 	return quality < min_quality
 
 
 ## Nothing good enough on offer: no sale, the bad-quality reputation and risk, an unhappy
-## customer. The beer stays in storage.
-func _refuse_bad_quality(data : CustomerData) -> String:
+## customer. The beer stays in storage; the line tells how far the batch missed the bar.
+func _refuse_bad_quality(data : CustomerData, quality : float) -> String:
 	if brewery != null:
 		var reputation_before : int = brewery.reputation
 		brewery.change_reputation(data.rep_bad_quality, ReputationRules.Source.CUSTOMERS)
@@ -169,9 +164,13 @@ func _refuse_bad_quality(data : CustomerData) -> String:
 		BrewerySignals.brewery_state_changed.emit(brewery)
 		_spread_word(data, false, data.rep_bad_quality)
 		_update_standing(data, false, data.rep_bad_quality)
-	return tr(data.dialogue_reject)
+	return tr(data.dialogue_reject) + QualityWishText.reject_suffix(quality, data.min_quality)
 
 
+## Nothing in stock, or nothing that clears the customer's strict requirements:
+## they leave without buying. The penalty is per customer, and can be zero for
+## one who was never offered anything, like an Agentti whose cover story did not
+## match what is on tap.
 func _turn_away(data : CustomerData, wanted : int) -> String:
 	if brewery != null:
 		var reputation_before : int = brewery.reputation

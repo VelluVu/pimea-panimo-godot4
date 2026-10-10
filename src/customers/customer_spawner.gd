@@ -250,6 +250,8 @@ func _try_spawn_group_visit(forced_event_data: GroupVisitEventData) -> void:
 	var event_data: GroupVisitEventData = forced_event_data if forced_event_data != null else _pick_group_event()
 	if event_data == null or event_data.customer_data_options.is_empty():
 		return
+	if forced_event_data == null and CustomerRegistry.keeps_group_away(event_data):
+		return
 	BrewerySignals.group_visit_announced.emit(event_data.banner_text)
 	_group_visit.run(event_data, free_slot, counter_positions[free_slot])
 

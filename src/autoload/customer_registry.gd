@@ -71,6 +71,12 @@ func _kept_away(customer : CustomerData, brewery : Brewery) -> bool:
 	return brewery != null and customer.title == TITLE_AGENTTI and brewery.current_day < brewery.agentti_free_until_day
 
 
+## A group visit with any member the Don's protection keeps away stays out as a whole.
+func keeps_group_away(event_data : GroupVisitEventData) -> bool:
+	var brewery : Brewery = BrewEngine.current_brewery
+	return event_data.customer_data_options.any(func(customer : CustomerData) -> bool: return _kept_away(customer, brewery))
+
+
 ## Weighted by the agentti/mafioso appearance perks ("Terävä silmä"); every other
 ## title weighs 1.0, so without those perks this is a plain uniform pick.
 func _pick_weighted_customer(customers : Array[CustomerData]) -> CustomerData:

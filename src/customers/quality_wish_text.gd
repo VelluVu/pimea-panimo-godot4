@@ -16,7 +16,7 @@ static func reject_suffix(quality : float, min_quality : float) -> String:
 	var wanted : int = roundi(min_quality * 100.0)
 	# Rounding must not show a miss as equal to the bar (109.6 % vs 110 %).
 	var got : int = mini(roundi(quality * 100.0), wanted - 1)
-	return REJECT_SUFFIX_FORMAT % [got, wanted]
+	return UiText.of(REJECT_SUFFIX_FORMAT) % [got, wanted]
 
 
 ## A tooltip line naming the customers whose bar `quality` misses, each title once;
