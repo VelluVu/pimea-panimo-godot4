@@ -1246,14 +1246,14 @@ msgstr ""
 
 #: src/resources/customers/agentti.tres
 msgid ""
-"Ai, että ei täällä myydä mitään mitä tietäisin, noh harmin paikka, nähdään "
+"Ai, täällä ei myydäkään mitään, mistä tietäisin. No, harmin paikka. Nähdään "
 "vielä..."
 msgstr ""
-"Oh, so you don't sell anything I'd know about here. Well, what a pity, see "
+"Oh, so you don't sell anything I'd know about here. Well, what a pity. See "
 "you again..."
 
 #: src/resources/customers/agentti.tres
-msgid "Ei aivan sitä mitä etsin, mutta otan tämän näytteeksi."
+msgid "Ei aivan sitä, mitä etsin, mutta otan tämän näytteeksi."
 msgstr "Not quite what I was looking for, but I'll take this as a sample."
 
 #: src/resources/customers/agentti.tres
@@ -1265,7 +1265,7 @@ msgid "Hmm, %s. Otan pienen näytteen... tutkimuksia varten."
 msgstr "Hmm, %s. I'll take a small sample... for research purposes."
 
 #: src/resources/customers/agentti.tres
-msgid "Iltaa. Kuulin että täältä saa jotain laittomasti."
+msgid "Iltaa. Kuulin, että täältä saa jotain laittomasti."
 msgstr "Evening. I heard you can get something illegal here."
 
 #: src/resources/customers/agentti.tres
@@ -1382,8 +1382,8 @@ msgstr "Barbarian"
 
 #: src/resources/customers/barbaari.tres
 msgid ""
-"Barbaari aloitti riehumaan raivoissaan jäädessään ilman sopivaa olutta! "
-"Tuhoja kertyy %d kappaleen verran."
+"Barbaari alkoi riehua raivoissaan jäädessään ilman sopivaa olutta! Tuhoja "
+"kertyy %d kappaleen verran."
 msgstr ""
 "The barbarian went on a rampage, furious at being left without a proper "
 "beer! %d things got smashed."
@@ -1491,7 +1491,7 @@ msgid "Tää on ihan teollisuusjätettä. En koske tähän."
 msgstr "This is industrial waste. I won't touch it."
 
 #: src/resources/customers/hipsteri.tres
-msgid "Vihdoinkin joku joka ymmärtää humalaprofiileja."
+msgid "Vihdoinkin joku, joka ymmärtää humalaprofiileja."
 msgstr "Finally someone who understands hop profiles."
 
 #: src/resources/customers/kesamies.tres
@@ -1600,10 +1600,10 @@ msgstr "Delivery Robot"
 
 #: src/resources/customers/lahettirobotti.tres
 msgid ""
-"SKANNAUS KÄYNNISSÄ. Toimitustehtävä vaatii useita pulloja tämän päivän "
+"SKANNAUS KÄYNNISSÄ. Toimitustehtävä vaatii useita annoksia tämän päivän "
 "tilauskoodin mukaan."
 msgstr ""
-"SCAN IN PROGRESS. Today's order code requires several bottles for the "
+"SCAN IN PROGRESS. Today's order code requires several servings for the "
 "delivery task."
 
 #: src/resources/customers/lahettirobotti.tres
@@ -1631,7 +1631,7 @@ msgid "EI PAHA, JUODAAN LEIJONIEN KUNNIAKSI!"
 msgstr "NOT BAD, LET'S DRINK TO THE LIONS!"
 
 #: src/resources/customers/leijonafani.tres
-msgid "LEIJONAT ON UUSI MAAILMAN MESTARI! ANNA KALJAA!"
+msgid "LEIJONAT ON UUSI MAAILMANMESTARI! ANNA KALJAA!"
 msgstr "THE LIONS ARE THE NEW WORLD CHAMPIONS! GIVE ME BEER!"
 
 #: src/resources/customers/leijonafani.tres
@@ -1719,7 +1719,7 @@ msgid "Don lähettää kiitokset."
 msgstr "The Don sends his thanks."
 
 #: src/resources/customers/mafioso.tres
-msgid "Don on kiinnostunut liiketoiminnastanne. Näytä mitä teillä on."
+msgid "Don on kiinnostunut liiketoiminnastanne. Näytä, mitä teillä on."
 msgstr "The Don is interested in your business. Show me what you've got."
 
 #: src/resources/customers/mafioso.tres
@@ -1780,7 +1780,7 @@ msgstr "Not what I asked for, but I suppose something will come of it."
 
 #: src/resources/customers/mummeli.tres
 msgid ""
-"Ei täällä ollu mitään kunnon naisen juomaa. Palaan kun ootte oppineet "
+"Ei täällä ollu mitään kunnon naisen juomaa. Palaan, kun ootte oppineet "
 "jotain."
 msgstr ""
 "There was nothing here fit for a proper lady. I'll come back when you've "
@@ -1899,8 +1899,8 @@ msgid "Tämä ei ole pimeyttä, tämä on hukkaan heitettyä yötä."
 msgstr "This is not darkness, this is a wasted night."
 
 #: src/resources/customers/mustanmetallinmies.tres
-msgid "Tämä on pimeyttä pullossa. Kaunista. Kiitos."
-msgstr "This is darkness in a bottle. Beautiful. Thank you."
+msgid "Tämä on pimeyttä tuopissa. Kaunista. Kiitos."
+msgstr "This is darkness in a glass. Beautiful. Thank you."
 
 #: src/resources/customers/mustanmetallinmies_naaras.tres
 msgid "Mustanmetallinnainen"
@@ -1940,7 +1940,7 @@ msgstr "That %s looks like it fits the budget..."
 
 #: src/resources/customers/papparainen.tres
 msgid ""
-"Ei täällä ollu mitään kunnon miehen juomaa. Palaan kun ootte oppineet "
+"Ei täällä ollu mitään kunnon miehen juomaa. Palaan, kun ootte oppineet "
 "jotain."
 msgstr ""
 "There was nothing here fit for a proper man. I'll come back when you've "

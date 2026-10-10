@@ -35,5 +35,5 @@ bar_fight_chance = 1.0
 bar_fight_reputation_penalty = 6
 bar_fight_risk_penalty = 15
 bar_fight_max_bottles_broken = 3
-dialogue_bar_fight = "Barbaari aloitti riehumaan raivoissaan jäädessään ilman sopivaa olutta! Tuhoja kertyy %d kappaleen verran."
+dialogue_bar_fight = "Barbaari alkoi riehua raivoissaan jäädessään ilman sopivaa olutta! Tuhoja kertyy %d kappaleen verran."
 metadata/_custom_type_script = "uid://b2vqc8lkfjwic"
