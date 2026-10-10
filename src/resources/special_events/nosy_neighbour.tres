@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_neighbour")
 event_caller_name = "Naapurin Irma"
-intro_dialogue = "Teidän kellarista kuuluu kaikenlaista kolinaa... Mutta jos minulle tuotaisiin 10 annosta kotikaljaa, en ehkä muistaisi mitään. LVV-riski laskee 20."
+intro_dialogue = "Teidän kellarista kuuluu kaikenlaista kolinaa... Mutta jos minulle tuotaisiin {servings} annosta kotikaljaa, en ehkä muistaisi mitään. LVV-riski laskee {risk}."
 success_dialogue = "Kotikaljaa! Mitä kolinaa? En minä kuullut mitään."
 fail_dialogue = "Ei kotikaljaa? No, ehkä soitan sittenkin sille tarkastajalle."
 reject_dialogue = "Vai niin. Minä tästä sitten soittelen..."

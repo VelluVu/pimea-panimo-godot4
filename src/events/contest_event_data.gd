@@ -76,6 +76,11 @@ func try_fulfill(brewery: Brewery) -> bool:
 	return true
 
 
+## A placing still counts; only a loss does not.
+func counts_as_success() -> bool:
+	return outcome != Outcome.LOST
+
+
 func success_text() -> String:
 	match outcome:
 		Outcome.PLACED:

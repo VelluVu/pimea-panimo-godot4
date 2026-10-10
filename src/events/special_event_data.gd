@@ -67,9 +67,15 @@ func prepared(_brewery: Brewery, _bars: Array[BarContact]) -> SpecialEventData:
 	return self
 
 
-## The opening line, translated.
+## The opening line, translated, with its named numbers filled in (intro_values()).
 func intro_text() -> String:
-	return tr(intro_dialogue)
+	return tr(intro_dialogue).format(intro_values())
+
+
+## Numbers an intro line can quote by name, like {servings} or {risk}, taken from the
+## event's own data so a line never quotes a stale price after a balance change.
+func intro_values() -> Dictionary:
+	return {"servings": required_bottles, "money": reward_money, "risk": absi(reward_risk)}
 
 
 ## What is still missing while the goods are on their way, translated.
@@ -134,6 +140,12 @@ func on_rejected(_brewery: Brewery) -> void:
 ## The reply after a success; events whose outcome varies (a contest, a bet) pick a line.
 func success_text() -> String:
 	return success_dialogue
+
+
+## Whether a fulfilled request counts as a handled event (goals, achievements). A lost
+## bet or contest was carried out but went against the brewery.
+func counts_as_success() -> bool:
+	return true
 
 
 ## The reply after on_rejected().

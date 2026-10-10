@@ -7,7 +7,7 @@
 [resource]
 script = ExtResource("1_don")
 event_caller_name = "Don soittaa"
-intro_dialogue = "Sana on kiirinyt, että on eräs kellari, missä tehdään jotain hämärää. Teillä on varmaan tarvetta erityissuojelulle. 200 €."
+intro_dialogue = "Sana on kiirinyt, että on eräs kellari, missä tehdään jotain hämärää. Teillä on varmaan tarvetta erityissuojelulle. {cost} €."
 success_dialogue = "Viisas valinta. Tänään kukaan ei tule kyselemään."
 fail_dialogue = "Ei rahaa? Harmi. Toivottavasti mitään ei satu."
 reject_dialogue = "Ymmärrän. Pojat eivät sitten käy teillä hetkeen."

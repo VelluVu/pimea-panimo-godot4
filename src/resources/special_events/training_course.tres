@@ -9,7 +9,7 @@
 [resource]
 script = ExtResource("1_course")
 event_caller_name = "Kouluttaja Keke"
-intro_dialogue = "Baarimikoille olisi pikainen kurssi tarjolla, 100 € maksaisi... et tule katumaan."
+intro_dialogue = "Baarimikoille olisi pikainen kurssi tarjolla, {cost} € maksaisi... et tule katumaan."
 success_dialogue = "Kurssi käyty! Nyt osaat jotain uutta."
 fail_dialogue = "Ei ole varaa kouluttautua? No, ensi kerralla sitten."
 reject_dialogue = "Harmi. Tieto ei kasva tyhjästä."

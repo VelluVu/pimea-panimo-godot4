@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_favour")
 event_caller_name = "Valtuutettu Kettunen"
-intro_dialogue = "Tunnen LVV:n tarkastajan. Hän unohtaa paperisi, jos panimosi nimi komeilee vaalimainoksessani. Hinta: 25 mainetta, LVV-riski laskee 40."
+intro_dialogue = "Tunnen LVV:n tarkastajan. Hän unohtaa paperisi, jos panimosi nimi komeilee vaalimainoksessani. Hinta: {reputation} mainetta, LVV-riski laskee {risk}."
 success_dialogue = "Sovittu. Nimesi kampanjaan, paperisi silppuriin."
 fail_dialogue = "Nimesi ei vielä paina tarpeeksi. Palataan asiaan."
 reject_dialogue = "Ymmärrän. Kaikki eivät halua politiikkaan."

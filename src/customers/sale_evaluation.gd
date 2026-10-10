@@ -63,6 +63,15 @@ static func evaluate(customer : CustomerData, batch : BrewBatch, style_base_pric
 	}
 
 
+## Reputation (x) and risk (y) of refusing a batch below the bar: the flat bad-quality
+## penalty, growing the further below the bar the batch is.
+static func refusal(customer : CustomerData, quality : float) -> Vector2i:
+	var quality_margin : float = quality - customer.min_quality
+	return Vector2i(
+		customer.rep_bad_quality + quality_reputation(quality_margin, customer.quality_reputation_sensitivity),
+		risk_after_quality(customer.risk_bad_quality, roundi(quality_margin * customer.quality_risk_sensitivity)))
+
+
 static func quality_reputation(quality_margin : float, sensitivity : float) -> int:
 	return mini(roundi(quality_margin * sensitivity), QUALITY_REPUTATION_BONUS_MAX)
 
