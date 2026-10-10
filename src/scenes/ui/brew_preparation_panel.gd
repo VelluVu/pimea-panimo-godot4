@@ -19,7 +19,7 @@ const XP_POPUP_FORMAT : String = "+%d XP"
 const XP_POPUP_DURATION_SECONDS : float = 1.8
 const XP_POPUP_OFFSET : Vector2 = Vector2(6, 0)
 const XP_POPUP_FLOAT_DISTANCE : float = 35.0
-const REPUTATION_POPUP_FORMAT : String = "%+d Mainetta"
+const REPUTATION_POPUP_FORMAT : String = "%+d mainetta"
 ## Below the XP popup, so the two do not overlap.
 const REPUTATION_POPUP_STEP : Vector2 = Vector2(0, 20)
 

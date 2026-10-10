@@ -7,7 +7,7 @@ extends RefCounted
 const BONUS_NEUTRAL_TEXT : String = "-"
 const TOOLTIP_CURRENT_FORMAT : String = "Nyt:\n%s"
 const TOOLTIP_NEXT_LEVEL_EFFECT_FORMAT : String = "Tason %d jälkeen:\n%s"
-const TOOLTIP_NEXT_LEVEL_FORMAT : String = "Seuraava taso: %d maine"
+const TOOLTIP_NEXT_LEVEL_FORMAT : String = "Seuraava taso: %d mainetta"
 const TOOLTIP_MAXED_TEXT : String = "Taso enimmillään"
 const TOOLTIP_LOCKED_FORMAT : String = "Vaatii ensin: %s"
 const TOOLTIP_PREREQ_ALL_SEPARATOR : String = ", "

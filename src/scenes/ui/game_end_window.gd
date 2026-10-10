@@ -15,13 +15,13 @@ extends Panel
 ## reduced renown (Brewery.has_continued_past_survival). Busted and bankrupt open
 ## the game menu instead, as there is nothing left to play.
 
-const TITLE_BUSTED : String = "BUSTED!"
+const TITLE_BUSTED : String = "JÄIT KIINNI!"
 const TITLE_BANKRUPT : String = "KONKURSSI!"
 const TITLE_SURVIVED : String = "LEGENDA!"
 const TITLE_SEASON_OVER : String = "KAUSI PÄÄTTYI!"
 const TITLE_DEMO_OVER : String = "KIITOS PELAAMISESTA!"
 
-const MESSAGE_BUSTED : String = "Kolmas ratsia oli viimeinen. LVV takavarikoi kaiken ja sulki panimosi pysyvästi."
+const MESSAGE_BUSTED : String = "Viimeinen ratsia sinetöi kohtalosi. LVV takavarikoi kaiken ja sulki panimosi pysyvästi."
 const MESSAGE_BANKRUPT : String = "Rahat loppuivat ja varasto oli tyhjä. Panimosi ajautui konkurssiin."
 const MESSAGE_SURVIVED : String = "Selvisit kauden loppuun, ja kellarisi kaljasta tuli kaupunginosan legenda."
 const MESSAGE_SEASON_OVER : String = "Selvisit kauden loppuun, mutta legendaksi tarvitaan %d mainetta."

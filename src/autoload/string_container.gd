@@ -96,7 +96,7 @@ const FOLDER_SCAN_MESSAGE : String = "[IngredientDatabase] Start recursive folde
 const FOLDER_SCAN_COMPLETE_MESSAGE : String = "[IngredientDatabase] Database fully sorted! Total registered items: "
 
 const LVV_RAID_TITLE : String = "LVV-TARKASTUS!"
-const LVV_RAID_MESSAGE : String = "Alkoholitarkastajat ryntäsivät kellariin ja takavarikoivat %s annosta valmista olutta! Lisäksi kirjoittivat sakon: %.1f €, ja maineesi laski %s pistettä."
+const LVV_RAID_MESSAGE : String = "Alkoholitarkastajat ryntäsivät kellariin ja takavarikoivat %s annosta valmista olutta! Lisäksi he kirjoittivat sakon (%.1f €), ja maineesi laski %s pistettä."
 const LVV_RAID_CLOSE_TEXT : String = "Selvä..."
 
 ## RunPerk.get_stat_summary() lines — only the non-neutral fields are ever
@@ -141,8 +141,8 @@ const PERK_INGREDIENT_PRICE_STAT_STRING : String = "Raaka-aineiden hinnat: %s"
 const RUN_EFFECTS_TITLE : String = "Kauden tilastot"
 const RUN_EFFECTS_CLOSE_TEXT : String = "Sulje"
 const RUN_EFFECTS_RAID_THRESHOLD_STRING : String = "Ratsiakynnys tällä kaudella: %d riskiä"
-const RUN_EFFECTS_PERKS_HEADER : String = "Tämän kauden perkit (%d):"
-const RUN_EFFECTS_NO_PERKS_STRING : String = "Ei vielä perkkejä. Nouse tasolle 2 saadaksesi ensimmäisen."
+const RUN_EFFECTS_PERKS_HEADER : String = "Tämän kauden edut (%d):"
+const RUN_EFFECTS_NO_PERKS_STRING : String = "Ei vielä etuja. Nouse tasolle 2 saadaksesi ensimmäisen."
 const RUN_EFFECTS_PERK_ROW_FORMAT : String = "%s %s%s"
 const RUN_EFFECTS_PERK_ROW_COUNT_SUFFIX : String = " ×%d"
 const RUN_EFFECTS_TOTALS_HEADER : String = "Yhteisvaikutus:"
