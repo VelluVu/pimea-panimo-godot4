@@ -49,17 +49,17 @@ static func early_close(money_cost : float, reputation_cost : int, risk_relief :
 
 ## One short line per reputation jump for the shop entrance's popup, however many
 ## ingredients it unlocked.
-static func ingredients_unlocked(unlocked : Array[IngredientData]) -> String:
-	if unlocked.is_empty():
+static func ingredients_unlocked(ingredients : Array[IngredientData]) -> String:
+	if ingredients.is_empty():
 		return ""
-	if unlocked.size() == 1:
-		return UiText.of(INGREDIENT_UNLOCKED_FORMAT) % UiText.of(unlocked[0].name)
+	if ingredients.size() == 1:
+		return UiText.of(INGREDIENT_UNLOCKED_FORMAT) % UiText.of(ingredients[0].name)
 	var names : PackedStringArray = []
-	for ingredient : IngredientData in unlocked.slice(0, MAX_LISTED_INGREDIENTS):
+	for ingredient : IngredientData in ingredients.slice(0, MAX_LISTED_INGREDIENTS):
 		names.append(UiText.of(ingredient.name.trim_suffix(HOP_NAME_SUFFIX)))
 	var listed : String = ", ".join(names)
-	if unlocked.size() > MAX_LISTED_INGREDIENTS:
-		listed = MORE_INGREDIENTS_FORMAT % [listed, unlocked.size() - MAX_LISTED_INGREDIENTS]
+	if ingredients.size() > MAX_LISTED_INGREDIENTS:
+		listed = MORE_INGREDIENTS_FORMAT % [listed, ingredients.size() - MAX_LISTED_INGREDIENTS]
 	return UiText.of(INGREDIENTS_UNLOCKED_FORMAT) % listed
 
 
