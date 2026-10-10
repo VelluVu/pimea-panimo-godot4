@@ -2174,7 +2174,7 @@ msgstr "Ship a keg to a bar"
 
 #: src/resources/day_events/day_event_eukonkanto.tres
 msgid ""
-"Eukonkanto-kisat järjestetään tänään lähistöllä. Odotettavissa "
+"Eukonkantokisat järjestetään tänään lähistöllä. Odotettavissa "
 "testosteronintäyteisiä vahvoja asiakkaita ryhmittäin."
 msgstr ""
 "The wife-carrying championships are held nearby today. Expect groups of "
@@ -2182,11 +2182,11 @@ msgstr ""
 
 #: src/resources/day_events/day_event_harjakaiset.tres
 msgid ""
-"Läheisellä työmaalla vietetään harjakaisia tänään. Odotettavissa työläisiä "
-"raksoilta."
+"Läheisellä työmaalla vietetään tänään harjakaisia. Odotettavissa janoisia "
+"raksamiehiä."
 msgstr ""
-"A nearby building site celebrates its topping-out today. Expect workers "
-"from the building sites."
+"A nearby building site celebrates its topping-out today. Expect thirsty "
+"builders."
 
 #: src/resources/day_events/day_event_helleaalto.tres
 msgid ""
@@ -2228,7 +2228,7 @@ msgstr ""
 
 #: src/resources/day_events/day_event_mm_finaali.tres
 msgid ""
-"Leijonat pelaa tänään MM-finaalin. Jos kulta tulee, kellari täyttyy "
+"Leijonat pelaavat tänään MM-finaalin. Jos kulta tulee, kellari täyttyy "
 "fanikööristä."
 msgstr ""
 "The Lions play the World Championship final tonight. If they take gold, the "
@@ -2261,7 +2261,7 @@ msgstr ""
 "businessmen."
 
 #: src/resources/day_events/day_event_tuhoelaimet.tres
-msgid "Aamulla löytyy puraisujälkiä säkeistä. Jokin on käynyt varastossa yöllä."
+msgid "Säkeistä löytyi aamulla puremajälkiä. Jokin on käynyt varastossa yöllä."
 msgstr ""
 "Bite marks on the sacks this morning. Something got into storage during the "
 "night."
@@ -2272,7 +2272,7 @@ msgstr "Pests ate %d kg of malt from storage."
 
 #: src/resources/day_events/day_event_yllatystarkastus.tres
 msgid ""
-"LVV:n yllätystarkastusviikko alkaa tänään. Odotettavissa epäilyttäviä "
+"LVV:n yllätystarkastusviikko alkaa tänään. Odotettavissa epäilyttäviä, "
 "tummiin pukeutuneita kyttääjiä."
 msgstr ""
 "The LVV's surprise inspection week starts today. Expect suspicious snoops "
@@ -2280,8 +2280,8 @@ msgstr ""
 
 #: src/resources/day_events/day_event_zgen_festival.tres
 msgid ""
-"Sukupolvi Z:n apokalypsifestivaali käynnissä kaupungissa tänään. "
-"Odotettavissa runsaasti gen Z-asiakkaita."
+"Sukupolvi Z:n apokalypsifestivaali on tänään käynnissä kaupungissa. "
+"Odotettavissa runsaasti Z-sukupolven asiakkaita."
 msgstr ""
 "Generation Z's apocalypse festival is on in town today. Expect plenty of "
 "Gen Z customers."

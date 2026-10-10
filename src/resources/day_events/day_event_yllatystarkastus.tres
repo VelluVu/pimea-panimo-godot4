@@ -7,7 +7,7 @@
 [resource]
 script = ExtResource("1_event")
 event_name = "LVV:n yllätystarkastusviikko"
-announcement_text = "LVV:n yllätystarkastusviikko alkaa tänään. Odotettavissa epäilyttäviä tummiin pukeutuneita kyttääjiä."
+announcement_text = "LVV:n yllätystarkastusviikko alkaa tänään. Odotettavissa epäilyttäviä, tummiin pukeutuneita kyttääjiä."
 announcement_sound = ExtResource("snd_day_inspection")
 featured_group_event = ExtResource("2_group")
 featured_customer_titles = Array[String](["Agentti"])

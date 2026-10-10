@@ -7,7 +7,7 @@
 [resource]
 script = ExtResource("1_event")
 event_name = "Sukupolvi Z -festivaali"
-announcement_text = "Sukupolvi Z:n apokalypsifestivaali käynnissä kaupungissa tänään. Odotettavissa runsaasti gen Z-asiakkaita."
+announcement_text = "Sukupolvi Z:n apokalypsifestivaali on tänään käynnissä kaupungissa. Odotettavissa runsaasti Z-sukupolven asiakkaita."
 announcement_sound = ExtResource("snd_day_bass_drop")
 featured_group_event = ExtResource("2_group")
 featured_customer_titles = Array[String](["Gen Z"])
