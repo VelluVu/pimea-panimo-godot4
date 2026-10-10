@@ -7,7 +7,7 @@
 [resource]
 script = ExtResource("1_event")
 event_name = "Eukonkanto-kisat"
-announcement_text = "Eukonkanto-kisat järjestetään tänään lähistöllä. Odotettavissa testosteronintäyteisiä vahvoja asiakkaita ryhmittäin."
+announcement_text = "Eukonkantokisat järjestetään tänään lähistöllä. Odotettavissa testosteronintäyteisiä vahvoja asiakkaita ryhmittäin."
 announcement_sound = ExtResource("snd_day_wife_carrying")
 featured_group_event = ExtResource("2_group")
 featured_customer_titles = Array[String](["Barbaari"])

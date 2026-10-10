@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("1_event")
 event_name = "Tuhoeläimet varastossa"
-announcement_text = "Aamulla löytyy puraisujälkiä säkeistä. Jokin on käynyt varastossa yöllä."
+announcement_text = "Säkeistä löytyi aamulla puremajälkiä. Jokin on käynyt varastossa yöllä."
 weight = 1.0
 effect_type = 1
 effect_ingredient_type = 0
