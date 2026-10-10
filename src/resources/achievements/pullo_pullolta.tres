@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_achievement")
 achievement_id = "pullo_pullolta"
-title = "Pullo pullolta"
+title = "Tuoppi tuopilta"
 description = "Myy yhteensä 100 annosta."
 stat_key = &"bottles_sold"
 target_value = 100

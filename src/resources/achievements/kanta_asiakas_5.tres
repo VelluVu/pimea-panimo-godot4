@@ -6,7 +6,7 @@
 script = ExtResource("1_achievement")
 achievement_id = "kanta_asiakas_5"
 title = "Vakiporukka"
-description = "Saa yhteensä 5 kanta-asiakasta."
+description = "Hanki yhteensä 5 kanta-asiakasta."
 stat_key = &"regulars_gained"
 target_value = 5
 metadata/_custom_type_script = "res://src/systems/achievements/achievement_data.gd"
