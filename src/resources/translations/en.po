@@ -2931,8 +2931,8 @@ msgid "Kosketusnäytöllä pidä sormea kohteen päällä hetki."
 msgstr "On a touch screen, hold your finger on it for a moment."
 
 #: src/resources/ingredients/hops/cascade_hop.tres
-msgid "Amerikkalainen aromihumala, joka tuo sitruksista ja mäntyistä aromia."
-msgstr "American aroma hop with citrus and pine notes."
+msgid "Amerikkalainen aromihumala, sitruksinen ja mäntyinen."
+msgstr "American aroma hop, citrusy and piney."
 
 #: src/resources/ingredients/hops/cascade_hop.tres
 msgid "Cascade-humala"
@@ -3051,8 +3051,8 @@ msgid "ruskeaa mallasta"
 msgstr "brown malt"
 
 #: src/resources/ingredients/malts/caramell_malt.tres
-msgid "Erikoismallas, joka antaa väriä ja paahteista makua olueen."
-msgstr "A specialty malt that adds colour and a toasty flavour."
+msgid "Erikoismallas, joka tuo olueen väriä ja karamellista makua."
+msgstr "A specialty malt that adds colour and a caramel flavour."
 
 #: src/resources/ingredients/malts/caramell_malt.tres
 msgid "Karamellimallas"
@@ -3091,8 +3091,8 @@ msgid "Pale ale -mallas"
 msgstr "Pale Ale Malt"
 
 #: src/resources/ingredients/malts/pale_ale_malt.tres
-msgid "Pohjamallas antaa vähän maltaiden makua olueen."
-msgstr "A base malt that adds a little malt flavour."
+msgid "Pohjamallas, joka tuo olueen mietoa maltaista makua."
+msgstr "A base malt that adds a mild malty flavour."
 
 #: src/resources/ingredients/malts/pale_ale_malt.tres
 msgid "pale ale -mallasta"
@@ -3103,8 +3103,8 @@ msgid "Pilsner-mallas"
 msgstr "Pilsner Malt"
 
 #: src/resources/ingredients/malts/pilsner_malt.tres
-msgid "Pilsner-pohjamallas antaa maltaiden makua olueen."
-msgstr "A pilsner base malt that adds malt flavour."
+msgid "Vaalea pohjamallas, joka tuo olueen puhdasta maltaista makua."
+msgstr "A pale base malt that adds a clean malty flavour."
 
 #: src/resources/ingredients/malts/pilsner_malt.tres
 msgid "pilsner-mallasta"
@@ -3250,7 +3250,7 @@ msgid "Alehiiva"
 msgstr "Ale Yeast"
 
 #: src/resources/ingredients/yeasts/ale_yeast.tres
-msgid "Pintahiiva tuottaa aromikkaan oluen."
+msgid "Pintahiiva, joka tuottaa aromikkaan oluen."
 msgstr "A top-fermenting yeast that makes an aromatic beer."
 
 #: src/resources/ingredients/yeasts/alkoholiton_ale_hiiva.tres
@@ -3280,7 +3280,7 @@ msgid "Lagerhiiva"
 msgstr "Lager Yeast"
 
 #: src/resources/ingredients/yeasts/lager_yeast.tres
-msgid "Pohjahiiva tuottaa puhtaan raikkaan oluen."
+msgid "Pohjahiiva, joka tuottaa puhtaan, raikkaan oluen."
 msgstr "A bottom-fermenting yeast that makes a clean, crisp beer."
 
 #: src/resources/meta_unlocks/baarimestari.tres

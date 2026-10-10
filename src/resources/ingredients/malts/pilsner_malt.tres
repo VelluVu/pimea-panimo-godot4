@@ -8,6 +8,6 @@ ebc = 2
 id = 100
 name = "Pilsner-mallas"
 name_partitive = "pilsner-mallasta"
-description = "Pilsner-pohjamallas antaa maltaiden makua olueen."
+description = "Vaalea pohjamallas, joka tuo olueen puhdasta maltaista makua."
 base_price = 2
 metadata/_custom_type_script = "uid://dniwiyu5ynp71"
