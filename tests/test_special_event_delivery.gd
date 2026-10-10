@@ -46,6 +46,17 @@ func test_quality_request_counts_only_good_enough_batches() -> void:
 	assert_eq(event.delivery_progress(inventory), Vector2i(2, 3))
 
 
+func test_quality_request_line_names_quality_and_caps_storage() -> void:
+	var event := QualityChallengeEventData.new()
+	event.required_min_quality = 1.2
+	event.required_bottles = 3
+	var inventory := Inventory.new()
+	inventory.brew_batches.append(_make_batch(BeerStyle.Style.IPA, 40, 1.3))
+	var text: String = event.delivery_text(inventory)
+	assert_true(text.contains("120 %"), text)
+	assert_true(text.contains("3 / 3"), "a big batch reads as enough, not 40 / 3: " + text)
+
+
 func test_ingredient_request_counts_the_owned_amount() -> void:
 	var event := IngredientDonationEventData.new()
 	event.required_ingredient_id = 100
