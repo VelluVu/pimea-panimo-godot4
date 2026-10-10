@@ -3377,10 +3377,10 @@ msgstr "Brewmaster"
 #: src/resources/meta_unlocks/panimomestari.tres
 msgid ""
 "Vuosikymmenten kokemus mäskäyksestä ja annostelusta kiteytyy todelliseksi "
-"mestaruudeksi. Jokainen pano kypsyy pysyvästi nopeammin huippuunsa, ja "
-"laatu heikkenee sen jälkeen pysyvästi hitaammin."
+"mestaruudeksi. Jokainen erä kypsyy pysyvästi nopeammin huippuunsa, ja laatu "
+"heikkenee sen jälkeen pysyvästi hitaammin."
 msgstr ""
-"Decades of mashing and measuring turn into true mastery. Every brew "
+"Decades of mashing and measuring turn into true mastery. Every batch "
 "permanently peaks faster, and its quality permanently declines more slowly "
 "after that."
 
@@ -3423,11 +3423,13 @@ msgid "Rauhallinen kellari"
 msgstr "Quiet Cellar"
 
 #: src/resources/meta_unlocks/tarkka_pilkonta.tres
-msgid "Maltaat mylläytyvät tehokkaammin, ja syntyy vähemmän hukkaa. Suuremmat erät."
-msgstr "The malt mills more efficiently, with less waste. Bigger batches."
+msgid ""
+"Maltaat jauhautuvat tehokkaammin ja hukkaa syntyy vähemmän: erät ovat "
+"suurempia."
+msgstr "The malt mills more efficiently with less waste: batches are bigger."
 
 #: src/resources/meta_unlocks/tarkka_pilkonta.tres
-msgid "Parempi Mallasmylly"
+msgid "Parempi mallasmylly"
 msgstr "Better Malt Mill"
 
 #: src/resources/meta_unlocks/terava_silmae.tres

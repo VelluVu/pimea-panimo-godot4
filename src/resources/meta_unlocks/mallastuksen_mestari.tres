@@ -6,7 +6,7 @@
 script = ExtResource("1_unlock")
 perk_name = "Mäskäyksen mestari"
 description = "Hallitset mäskäyksen jo unissasi. Jokainen pano tuottaa pysyvästi merkittävästi enemmän annoksia."
-icon_placeholder = "🌽"
+icon_placeholder = "🔥"
 brew_yield_multiplier = 1.04
 stacks_additively = true
 path = 1
