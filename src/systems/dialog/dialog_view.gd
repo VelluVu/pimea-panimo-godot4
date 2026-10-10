@@ -35,6 +35,7 @@ const DRIFTING_NOTE_SECONDS : float = 3.5
 const DRIFTING_NOTE_OUTLINE_COLOR : Color = Color(0.05, 0.05, 0.05, 1)
 ## Bubbles stack by slot but stay below z 0, so every panel and window covers them.
 const BUBBLE_Z_BASE : int = -1000
+const STACKED_Z_OFFSET : int = 100
 
 ## Dialogue slot (int) -> BubbleEntry.
 var _bubbles : Dictionary = {}
@@ -192,11 +193,12 @@ func _place(entry : BubbleEntry, slot : int, speaker_pos : Vector2) -> void:
 	entry.width = entry.bubble.get_size().x
 	entry.height_step = BubbleLayout.choose_step(speaker_pos, entry.width, neighbors)
 	entry.bubble.global_position = _stacked_position(entry, neighbors)
-	entry.bubble.z_index = BUBBLE_Z_BASE + slot
+	# A lifted bubble's tail lies over the one below, so it draws on top.
+	entry.bubble.z_index = BUBBLE_Z_BASE + slot + (STACKED_Z_OFFSET if entry.height_step > 0 else 0)
 
 	var placed := Rect2(entry.bubble.global_position, entry.bubble.get_size())
 	for other : BubbleEntry in neighbors:
-		if placed.intersects(Rect2(other.bubble.global_position, other.bubble.get_size())):
+		if BubbleLayout.covers(placed, Rect2(other.bubble.global_position, other.bubble.get_size())):
 			_collapse(other)
 
 

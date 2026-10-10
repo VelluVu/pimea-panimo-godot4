@@ -62,9 +62,17 @@ func test_position_is_centered_above_the_speaker() -> void:
 	assert_eq(pos, Vector2(250.0, 300.0 + BubbleLayoutScript.OFFSET_Y))
 
 
-func test_a_stacked_bubble_sits_fully_above_the_highest_one_below() -> void:
+func test_a_stacked_bubble_rests_its_tail_on_the_highest_one_below() -> void:
 	var tops : Array[float] = [120.0, 100.0]
-	assert_eq(BubbleLayoutScript.stacked_y(tops, 50.0), 100.0 - 50.0 - BubbleLayoutScript.SIDE_GAP)
+	assert_eq(BubbleLayoutScript.stacked_y(tops, 50.0), 100.0 - 50.0 + BubbleLayoutScript.STACK_OVERLAP)
+
+
+func test_only_more_than_a_tail_of_overlap_covers_a_bubble() -> void:
+	var lower := Rect2(100.0, 100.0, 80.0, 50.0)
+	var tail_over := Rect2(100.0, 100.0 - 50.0 + BubbleLayoutScript.STACK_OVERLAP, 80.0, 50.0)
+	assert_false(BubbleLayoutScript.covers(tail_over, lower), "a stacked bubble's tail may lie over the one below")
+	assert_true(BubbleLayoutScript.covers(Rect2(110.0, 110.0, 80.0, 50.0), lower))
+	assert_false(BubbleLayoutScript.covers(Rect2(300.0, 100.0, 80.0, 50.0), lower), "side by side")
 
 
 func test_each_step_raises_the_bubble() -> void:
