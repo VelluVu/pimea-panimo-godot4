@@ -11,6 +11,9 @@ const MIN_VISIBLE_Y : float = 38.0
 ## Room kept between bubbles side by side.
 const SIDE_GAP : float = 4.0
 const MAX_STACK_STEPS : int = 1
+## How far a lifted bubble comes down over the one below: about its tail's height, so only
+## the tail covers the lower bubble's top edge and both texts stay clear.
+const STACK_OVERLAP : float = 14.0
 ## A collapsed bubble's badge sits this much lower than a bubble, closer to the speaker.
 const BADGE_DROP : float = 40.0
 
@@ -47,12 +50,19 @@ static func position_for(speaker_pos : Vector2, step : int, bubble_size : Vector
 
 
 ## Top edge for a bubble `height` tall stacked over open bubbles whose top edges are
-## `tops`, so it covers none of them. Below MIN_VISIBLE_Y it does not fit.
+## `tops`: its tail rests STACK_OVERLAP over the highest of them. Below MIN_VISIBLE_Y it
+## does not fit.
 static func stacked_y(tops : Array[float], height : float) -> float:
 	var highest : float = INF
 	for top : float in tops:
 		highest = minf(highest, top)
-	return highest - height - SIDE_GAP
+	return highest - height + STACK_OVERLAP
+
+
+## Whether two bubble rects overlap more than a stacked bubble's tail is allowed to.
+static func covers(rect : Rect2, other : Rect2) -> bool:
+	var shared : Rect2 = rect.intersection(other)
+	return shared.has_area() and shared.size.y > STACK_OVERLAP + 0.5
 
 
 ## Where a collapsed bubble's badge goes: centred over the speaker, below the bubbles.
