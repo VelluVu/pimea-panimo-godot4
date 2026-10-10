@@ -1,8 +1,8 @@
-[gd_resource type="Resource" script_class="CustomerData" format=3]
+[gd_resource type="Resource" script_class="CustomerData" format=3 uid="uid://c88sdthif3v8n"]
 
 [ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_lahettirobotti"]
-[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/lahettirobotti_anim.tres" id="2_sprite"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/robot_whir_loop.wav" id="snd_robot_whir_loop"]
+[ext_resource type="SpriteFrames" uid="uid://c61sl3ci2fog8" path="res://src/resources/sprite_frames/lahettirobotti_anim.tres" id="2_sprite"]
+[ext_resource type="AudioStream" uid="uid://bjvvcv4n4vv6h" path="res://assets/audio/sfx/synth/robot_whir_loop.wav" id="snd_robot_whir_loop"]
 
 [resource]
 script = ExtResource("1_lahettirobotti")
@@ -11,14 +11,15 @@ title = "Lähettirobotti"
 first_names = Array[String](["Yksikkö-7", "DLVR-3", "Botti-2", "R-9", "Kuriiri-5"])
 min_quality = 0.1
 budget_multiplier = 0.8
-primary_style = 1
-secondary_style = 0
 sprite_frames = ExtResource("2_sprite")
 randomize_skin = false
 randomize_hair = false
 randomize_clothes = false
 randomize_shoes = false
 carries_glass_out = false
+voice_pitch = 0.6
+makes_footsteps = false
+ambient_loop = ExtResource("snd_robot_whir_loop")
 dialogue_intro = "SKANNAUS KÄYNNISSÄ. Toimitustehtävä vaatii useita annoksia tämän päivän tilauskoodin mukaan."
 dialogue_success = "TEHTÄVÄ SUORITETTU. Kiitos, biologinen yhteistyökumppani."
 dialogue_fallback = "Hyväksyttävissä rajoissa. Jatkan toimitusreittiäni."
@@ -31,13 +32,9 @@ quality_tip_sensitivity = 0.1
 rep_bad_quality = -2
 rep_primary_style = 3
 rep_secondary_style = 1
-rep_wrong_style = -1
 quality_reputation_sensitivity = 1.0
 required_achievement_id = "kolme_vientieraa"
 randomizes_preference = true
 min_bottles_per_visit = 2
 max_bottles_per_visit = 4
-voice_pitch = 0.6
-makes_footsteps = false
-ambient_loop = ExtResource("snd_robot_whir_loop")
 metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

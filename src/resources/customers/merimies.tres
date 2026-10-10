@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="CustomerData" format=3]
+[gd_resource type="Resource" script_class="CustomerData" format=3 uid="uid://b28j1uj1ca2vj"]
 
 [ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_merimies"]
-[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/merimies_anim.tres" id="2_sprite"]
+[ext_resource type="SpriteFrames" uid="uid://2qqyx1myaegp" path="res://src/resources/sprite_frames/merimies_anim.tres" id="2_sprite"]
 
 [resource]
 script = ExtResource("1_merimies")
@@ -16,6 +16,7 @@ also_likes = Array[int]([2])
 sprite_frames = ExtResource("2_sprite")
 randomize_clothes = false
 randomize_shoes = false
+voice_pitch = 0.85
 dialogue_intro = "Ahoi! Laiva lähtee aamulla. Onko porttia, oikeaa Itämeren mustaa?"
 dialogue_success = "Tällä kelpaa purjehtia! Kuin kotisatamaan olisi palannut."
 dialogue_fallback = "Ei ihan porttia, mutta tummaa on. Kelpaa merimiehelle."
@@ -29,5 +30,4 @@ rep_primary_style = 6
 rep_secondary_style = 2
 min_reputation_to_appear = 25
 required_discovered_style = 9
-voice_pitch = 0.85
 metadata/_custom_type_script = "uid://b2vqc8lkfjwic"
