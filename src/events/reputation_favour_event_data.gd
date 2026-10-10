@@ -12,6 +12,12 @@ func get_weight(brewery: Brewery) -> float:
 	return affordable_weight(brewery.reputation, reputation_cost, super.get_weight(brewery))
 
 
+func intro_values() -> Dictionary:
+	var values: Dictionary = super()
+	values["reputation"] = reputation_cost
+	return values
+
+
 ## `base_weight`, or 0 so the favour is never offered to a player who cannot pay.
 static func affordable_weight(reputation: int, cost: int, base_weight: float) -> float:
 	return base_weight if reputation >= cost else 0.0

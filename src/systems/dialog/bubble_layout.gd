@@ -46,6 +46,15 @@ static func position_for(speaker_pos : Vector2, step : int, bubble_size : Vector
 		clampf(target_y, 0.0, maxf(0.0, viewport_size.y - bubble_size.y)))
 
 
+## Top edge for a bubble `height` tall stacked over open bubbles whose top edges are
+## `tops`, so it covers none of them. Below MIN_VISIBLE_Y it does not fit.
+static func stacked_y(tops : Array[float], height : float) -> float:
+	var highest : float = INF
+	for top : float in tops:
+		highest = minf(highest, top)
+	return highest - height - SIDE_GAP
+
+
 ## Where a collapsed bubble's badge goes: centred over the speaker, below the bubbles.
 static func badge_position_for(speaker_pos : Vector2, badge_size : Vector2, viewport_size : Vector2) -> Vector2:
 	return position_for(speaker_pos, 0, badge_size, viewport_size) + Vector2(0.0, BADGE_DROP)

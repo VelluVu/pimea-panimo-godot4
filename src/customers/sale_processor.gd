@@ -156,14 +156,15 @@ static func refuses(quality : float, min_quality : float) -> bool:
 ## customer. The beer stays in storage; the line tells how far the batch missed the bar.
 func _refuse_bad_quality(data : CustomerData, quality : float) -> String:
 	if brewery != null:
+		var penalty : Vector2i = SaleEvaluation.refusal(data, quality)
 		var reputation_before : int = brewery.reputation
-		brewery.change_reputation(data.rep_bad_quality, ReputationRules.Source.CUSTOMERS)
-		brewery.add_risk(data.risk_bad_quality)
+		brewery.change_reputation(penalty.x, ReputationRules.Source.CUSTOMERS)
+		brewery.add_risk(penalty.y)
 		BrewerySignals.customer_unhappy.emit()
 		BrewerySignals.sale_reputation_gained.emit(brewery.reputation - reputation_before)
 		BrewerySignals.brewery_state_changed.emit(brewery)
-		_spread_word(data, false, data.rep_bad_quality)
-		_update_standing(data, false, data.rep_bad_quality)
+		_spread_word(data, false, penalty.x)
+		_update_standing(data, false, penalty.x)
 	return tr(data.dialogue_reject) + QualityWishText.reject_suffix(quality, data.min_quality)
 
 

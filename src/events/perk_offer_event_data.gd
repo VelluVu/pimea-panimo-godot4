@@ -20,6 +20,12 @@ func get_weight(brewery: Brewery) -> float:
 	return super(brewery) if brewery.money >= offer_cost else 0.0
 
 
+func intro_values() -> Dictionary:
+	var values: Dictionary = super()
+	values["cost"] = offer_cost
+	return values
+
+
 func prepared(_brewery: Brewery, _bars: Array[BarContact]) -> SpecialEventData:
 	var rolled := duplicate() as PerkOfferEventData
 	rolled.rolled_perks = pick_perks(offered_perks, perk_count)

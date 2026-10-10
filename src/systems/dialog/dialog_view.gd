@@ -191,13 +191,34 @@ func _place(entry : BubbleEntry, slot : int, speaker_pos : Vector2) -> void:
 	entry.speaker_pos = speaker_pos
 	entry.width = entry.bubble.get_size().x
 	entry.height_step = BubbleLayout.choose_step(speaker_pos, entry.width, neighbors)
-	entry.bubble.global_position = BubbleLayout.position_for(speaker_pos, entry.height_step, entry.bubble.get_size(), get_viewport_rect().size)
+	entry.bubble.global_position = _stacked_position(entry, neighbors)
 	entry.bubble.z_index = BUBBLE_Z_BASE + slot
 
 	var placed := Rect2(entry.bubble.global_position, entry.bubble.get_size())
 	for other : BubbleEntry in neighbors:
 		if placed.intersects(Rect2(other.bubble.global_position, other.bubble.get_size())):
 			_collapse(other)
+
+
+## A lifted bubble goes fully above the lower bubbles it overlaps, so both stay readable;
+## without room for that it drops back to step 0 and the overlapped bubbles collapse.
+func _stacked_position(entry : BubbleEntry, neighbors : Array[BubbleEntry]) -> Vector2:
+	var bubble_size : Vector2 = entry.bubble.get_size()
+	var viewport_size : Vector2 = get_viewport_rect().size
+	var lifted : Vector2 = BubbleLayout.position_for(entry.speaker_pos, entry.height_step, bubble_size, viewport_size)
+	if entry.height_step == 0:
+		return lifted
+	var tops : Array[float] = []
+	for other : BubbleEntry in neighbors:
+		if other.height_step < entry.height_step and BubbleLayout.overlaps_x(entry.x, entry.width, other.x, other.width):
+			tops.append(other.bubble.global_position.y)
+	if tops.is_empty():
+		return lifted
+	var stacked_y : float = BubbleLayout.stacked_y(tops, bubble_size.y)
+	if stacked_y >= BubbleLayout.MIN_VISIBLE_Y:
+		return Vector2(lifted.x, stacked_y)
+	entry.height_step = 0
+	return BubbleLayout.position_for(entry.speaker_pos, 0, bubble_size, viewport_size)
 
 
 func _collapse(entry : BubbleEntry) -> void:

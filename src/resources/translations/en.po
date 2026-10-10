@@ -3916,9 +3916,9 @@ msgid "Hieno sijoitus! Ensi kerralla ehkä voitto."
 msgstr "A fine placing! Maybe a win next time."
 
 #: src/resources/special_events/beer_contest.tres
-msgid "Kisat lauantaina! Lähetätkö kolme annosta parastasi tuomaristolle?"
+msgid "Kisat lauantaina! Lähetätkö {servings} annosta parastasi tuomaristolle?"
 msgstr ""
-"Contest on Saturday! Will you send three servings of your best to the "
+"Contest on Saturday! Will you send {servings} servings of your best to the "
 "judges?"
 
 #: src/resources/special_events/beer_contest.tres
@@ -3939,11 +3939,11 @@ msgstr "A win! The judges were sold. The prize is yours."
 
 #: src/resources/special_events/brand_deal.tres
 msgid ""
-"Haluamme kasvosi energiajuomamainokseen! Maksamme 50 €, mutta maineesi "
-"kärsii (−15 mainetta)."
+"Haluamme kasvosi energiajuomamainokseen! Maksamme {money} €, mutta maineesi "
+"kärsii (−{reputation} mainetta)."
 msgstr ""
-"We want your face in an energy drink ad! We pay 50 €, but your reputation "
-"suffers (−15 reputation)."
+"We want your face in an energy drink ad! We pay {money} €, but your "
+"reputation suffers (−{reputation} reputation)."
 
 #: src/resources/special_events/brand_deal.tres
 msgid "Kukaan ei vielä tunnista sinua. Ehkä myöhemmin."
@@ -3967,11 +3967,11 @@ msgstr "Not enough... the dance goes dry."
 
 #: src/resources/special_events/dance_order.tres
 msgid ""
-"Lavatansseissa on illalla tuhat janoista! Tarvitaan 100 annosta "
+"Lavatansseissa on illalla tuhat janoista! Tarvitaan {servings} annosta "
 "bulkkilageria tai kotikaljaa."
 msgstr ""
-"A thousand thirsty dancers tonight! We need 100 servings of Bulk Lager or "
-"Homebrew."
+"A thousand thirsty dancers tonight! We need {servings} servings of Bulk "
+"Lager or Homebrew."
 
 #: src/resources/special_events/dance_order.tres
 msgid "Lavatanssien järjestäjä"
@@ -3996,10 +3996,10 @@ msgstr "No money? Pity. Let's hope nothing happens."
 #: src/resources/special_events/don_protection.tres
 msgid ""
 "Sana on kiirinyt, että on eräs kellari, missä tehdään jotain hämärää. "
-"Teillä on varmaan tarvetta erityissuojelulle. 200 €."
+"Teillä on varmaan tarvetta erityissuojelulle. {cost} €."
 msgstr ""
 "Word has it there's a certain cellar where something shady goes on. You'll "
-"surely be needing some special protection. 200 €."
+"surely be needing some special protection. {cost} €."
 
 #: src/resources/special_events/don_protection.tres
 msgid "Viisas valinta. Tänään kukaan ei tule kyselemään."
@@ -4026,8 +4026,8 @@ msgid "Selvä. Toivottavasti ne kestää."
 msgstr "Right. Hope they hold."
 
 #: src/resources/special_events/electrician.tres
-msgid "Sulakkeet on vähän niin ja näin... 50 € ja korjaan."
-msgstr "The fuses are a bit iffy... 50 € and I'll fix them."
+msgid "Sulakkeet on vähän niin ja näin... {cost} € ja korjaan."
+msgstr "The fuses are a bit iffy... {cost} € and I'll fix them."
 
 #: src/resources/special_events/electrician.tres
 msgid "Sähkömies Seppo"
@@ -4116,10 +4116,11 @@ msgstr "Deal. Your name in my campaign, your papers in the shredder."
 #: src/resources/special_events/lvv_favour.tres
 msgid ""
 "Tunnen LVV:n tarkastajan. Hän unohtaa paperisi, jos panimosi nimi komeilee "
-"vaalimainoksessani. Hinta: 25 mainetta, LVV-riski laskee 40."
+"vaalimainoksessani. Hinta: {reputation} mainetta, LVV-riski laskee {risk}."
 msgstr ""
 "I know the LVV inspector. He'll forget your papers if your brewery's name "
-"shines in my election ad. Price: 25 reputation, LVV risk drops by 40."
+"shines in my election ad. Price: {reputation} reputation, LVV risk drops by "
+"{risk}."
 
 #: src/resources/special_events/lvv_favour.tres
 msgid "Valtuutettu Kettunen"
@@ -4144,11 +4145,12 @@ msgstr "Irma the Neighbour"
 #: src/resources/special_events/nosy_neighbour.tres
 msgid ""
 "Teidän kellarista kuuluu kaikenlaista kolinaa... Mutta jos minulle "
-"tuotaisiin 10 annosta kotikaljaa, en ehkä muistaisi mitään. LVV-riski "
-"laskee 20."
+"tuotaisiin {servings} annosta kotikaljaa, en ehkä muistaisi mitään. "
+"LVV-riski laskee {risk}."
 msgstr ""
-"All sorts of clatter comes from your cellar... But if someone brought me 10 "
-"servings of homebrew, I might not remember a thing. LVV risk drops by 20."
+"All sorts of clatter comes from your cellar... But if someone brought me "
+"{servings} servings of homebrew, I might not remember a thing. LVV risk "
+"drops by {risk}."
 
 #: src/resources/special_events/nosy_neighbour.tres
 msgid "Vai niin. Minä tästä sitten soittelen..."
@@ -4168,10 +4170,10 @@ msgstr "The young never listen to the old."
 
 #: src/resources/special_events/old_master.tres
 msgid ""
-"Tuo minulle %d kiloa %s ja 50 €, niin kerron yhden vanhan panimomestarin "
-"salaisuuden."
+"Tuo minulle %d kiloa %s ja {cost} €, niin kerron yhden vanhan "
+"panimomestarin salaisuuden."
 msgstr ""
-"Bring me %d kilos of %s and 50 €, and I'll tell you an old brewmaster's "
+"Bring me %d kilos of %s and {cost} €, and I'll tell you an old brewmaster's "
 "secret."
 
 #: src/resources/special_events/old_master.tres
@@ -4210,10 +4212,10 @@ msgstr "No money for a renovation? Well, the cellar stays as it is then."
 
 #: src/resources/special_events/renovation.tres
 msgid ""
-"Nyt tarjolla 200 € remppa... laitetaas tilat kuntoon, niin on mukavampi "
+"Nyt tarjolla {cost} € remppa... laitetaas tilat kuntoon, niin on mukavampi "
 "jatkaa bisneksiä... köh"
 msgstr ""
-"Renovation on offer now, 200 €... let's fix the place up, nicer to keep "
+"Renovation on offer now, {cost} €... let's fix the place up, nicer to keep "
 "doing business... ahem"
 
 #: src/resources/special_events/renovation.tres
@@ -4269,8 +4271,8 @@ msgid "Miau... (Kissa katoaa pimeään.)"
 msgstr "Meow... (The cat disappears into the dark.)"
 
 #: src/resources/special_events/stray_cat.tres
-msgid "Miau? (Laiha kulkukissa katsoo ovelta. Ruokitaanko se, 10 €?)"
-msgstr "Meow? (A thin stray cat looks in from the door. Feed it, 10 €?)"
+msgid "Miau? (Laiha kulkukissa katsoo ovelta. Ruokitaanko se, {cost} €?)"
+msgstr "Meow? (A thin stray cat looks in from the door. Feed it, {cost} €?)"
 
 #: src/resources/special_events/stray_cat.tres
 msgid "Purr... (Kissa tekee tarkastuskierroksen panimon ympäri. Se jää taloon.)"
@@ -4278,10 +4280,10 @@ msgstr "Purr... (The cat makes an inspection round of the brewery. It's staying.
 
 #: src/resources/special_events/training_course.tres
 msgid ""
-"Baarimikoille olisi pikainen kurssi tarjolla, 100 € maksaisi... et tule "
+"Baarimikoille olisi pikainen kurssi tarjolla, {cost} € maksaisi... et tule "
 "katumaan."
 msgstr ""
-"There'd be a quick course for bartenders, 100 € it costs... you won't "
+"There'd be a quick course for bartenders, {cost} € it costs... you won't "
 "regret it."
 
 #: src/resources/special_events/training_course.tres

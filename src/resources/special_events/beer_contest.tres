@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_event")
 event_caller_name = "Olutkisan järjestäjä"
-intro_dialogue = "Kisat lauantaina! Lähetätkö kolme annosta parastasi tuomaristolle?"
+intro_dialogue = "Kisat lauantaina! Lähetätkö {servings} annosta parastasi tuomaristolle?"
 success_dialogue = "Voitto! Tuomaristo oli myyty. Palkinto on teidän."
 placed_dialogue = "Hieno sijoitus! Ensi kerralla ehkä voitto."
 lost_dialogue = "Tuomaristo ei syttynyt. Ensi kerralla paremmin."

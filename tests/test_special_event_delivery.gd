@@ -68,6 +68,32 @@ func test_ingredient_request_counts_the_owned_amount() -> void:
 	assert_eq(event.delivery_progress(inventory), Vector2i(3, 5))
 
 
+func test_a_lost_bet_or_contest_does_not_count_as_handled() -> void:
+	var bet := GambleEventData.new()
+	bet.won = false
+	assert_false(bet.counts_as_success())
+	bet.won = true
+	assert_true(bet.counts_as_success())
+	var contest := ContestEventData.new()
+	contest.outcome = ContestEventData.Outcome.LOST
+	assert_false(contest.counts_as_success())
+	contest.outcome = ContestEventData.Outcome.PLACED
+	assert_true(contest.counts_as_success(), "a placing still counts")
+	assert_true(SpecialEventData.new().counts_as_success())
+
+
+func test_intro_quotes_the_price_from_the_data() -> void:
+	var offer := PerkOfferEventData.new()
+	offer.intro_dialogue = "Kurssi maksaa {cost} €."
+	offer.offer_cost = 75
+	assert_eq(offer.intro_text(), "Kurssi maksaa 75 €.")
+	var favour := ReputationFavourEventData.new()
+	favour.intro_dialogue = "Hinta: {reputation} mainetta, LVV-riski laskee {risk}."
+	favour.reputation_cost = 25
+	favour.reward_risk = -40
+	assert_eq(favour.intro_text(), "Hinta: 25 mainetta, LVV-riski laskee 40.")
+
+
 func test_goods_wait_for_delivery_but_payments_settle_at_once() -> void:
 	assert_true(SpecialEventData.new().waits_for_delivery())
 	assert_true(QualityChallengeEventData.new().waits_for_delivery())

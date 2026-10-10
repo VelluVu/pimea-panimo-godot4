@@ -61,6 +61,10 @@ func success_text() -> String:
 	return success_dialogue if won else lost_dialogue
 
 
+func counts_as_success() -> bool:
+	return won
+
+
 ## The fullest batch on offer.
 func stake(inventory: Inventory) -> BrewBatch:
 	var best: BrewBatch = null

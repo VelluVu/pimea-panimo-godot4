@@ -16,6 +16,17 @@ func test_quality_reputation_is_capped_but_penalties_are_not() -> void:
 	assert_eq(SaleEvaluationScript.quality_reputation(-2.0, 4.0), -8)
 
 
+func test_refusal_costs_more_the_further_below_the_bar() -> void:
+	var customer := CustomerData.new()
+	customer.min_quality = 1.0
+	customer.rep_bad_quality = -3
+	customer.risk_bad_quality = 1
+	customer.quality_reputation_sensitivity = 4.0
+	customer.quality_risk_sensitivity = 2.0
+	assert_eq(SaleEvaluationScript.refusal(customer, 0.95), Vector2i(-3, 1), "a near miss costs the flat penalty")
+	assert_eq(SaleEvaluationScript.refusal(customer, 0.2), Vector2i(-6, 3))
+
+
 func test_quality_cannot_turn_risk_into_a_reward() -> void:
 	assert_eq(SaleEvaluationScript.risk_after_quality(2, 5), 0)
 	assert_eq(SaleEvaluationScript.risk_after_quality(2, 1), 1)

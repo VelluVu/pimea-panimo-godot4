@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_event")
 event_caller_name = "Lavatanssien järjestäjä"
-intro_dialogue = "Lavatansseissa on illalla tuhat janoista! Tarvitaan 100 annosta bulkkilageria tai kotikaljaa."
+intro_dialogue = "Lavatansseissa on illalla tuhat janoista! Tarvitaan {servings} annosta bulkkilageria tai kotikaljaa."
 success_dialogue = "Nyt riittää juomaa koko illaksi. Kiitos!"
 fail_dialogue = "Ei riittänyt... tanssit jäävät kuiviksi."
 reject_dialogue = "Selvä, haetaan muualta."

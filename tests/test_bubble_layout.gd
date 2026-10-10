@@ -62,6 +62,11 @@ func test_position_is_centered_above_the_speaker() -> void:
 	assert_eq(pos, Vector2(250.0, 300.0 + BubbleLayoutScript.OFFSET_Y))
 
 
+func test_a_stacked_bubble_sits_fully_above_the_highest_one_below() -> void:
+	var tops : Array[float] = [120.0, 100.0]
+	assert_eq(BubbleLayoutScript.stacked_y(tops, 50.0), 100.0 - 50.0 - BubbleLayoutScript.SIDE_GAP)
+
+
 func test_each_step_raises_the_bubble() -> void:
 	var base : Vector2 = BubbleLayoutScript.position_for(SPEAKER, 0, Vector2(100.0, 40.0), VIEWPORT)
 	var raised : Vector2 = BubbleLayoutScript.position_for(SPEAKER, 1, Vector2(100.0, 40.0), VIEWPORT)
