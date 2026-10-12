@@ -1,14 +1,53 @@
-# Pimeä Panimo (Dark Brewery) 🍻
+<p align="center">
+  <img src="dev/docs/images/banner.png" alt="Pimeä Panimo: a dark Finnish brewery" width="100%">
+</p>
 
-A 2D side-scrolling business management/crafting game built in **Godot 4 (GDScript)**, parodying Finnish alcohol bureaucracy and the murky world of bootleg brewing.
+<p align="center">
+  <a href="https://velluv.itch.io/pimea-panimo-demo"><img alt="Play on itch.io" src="https://img.shields.io/badge/Pelaa%20demoa-itch.io-f2c96b?style=for-the-badge&logo=itchdotio&logoColor=170f09&labelColor=2a2118"></a>
+  <a href="https://velluvu.github.io/pimea-panimo-godot4/"><img alt="Play in the browser" src="https://img.shields.io/badge/Play%20in%20browser-GitHub%20Pages-f2c96b?style=for-the-badge&logo=github&logoColor=ecdcb8&labelColor=2a2118"></a>
+  <img alt="Made with Godot 4.7" src="https://img.shields.io/badge/Godot-4.7-ecdcb8?style=for-the-badge&logo=godotengine&logoColor=ecdcb8&labelColor=2a2118">
+</p>
 
-**Play the demo in your browser** on [itch.io](https://velluv.itch.io/pimea-panimo-demo) or [GitHub Pages](https://velluvu.github.io/pimea-panimo-godot4/): a five-day season, in Finnish (English in the options).
-
-The player buys raw ingredients from a wholesaler, hauls them from the storage cabinet to the preparation table, tunes the ratios, and brews dynamically-generated beer styles (or dark moonshine) for the cellar shelf — all while dodging LVV risk and the inspectors who come knocking. Funny, unique customers wander in with orders and special requests. In-game currencies are **Money (Euros)**, **Reputation (Maine)**, and **LVV Risk (LVV-riski)**.
-
-> Code and comments are written in English; all in-game text and UI copy are in Finnish.
+<p align="center"><i>Kellarissa on pimeää, kattila kuplii ja ovelta kuuluu koputus.<br>
+Onko se asiakas, vai LVV:n tarkastaja?</i></p>
 
 ---
+
+## 🍺 Tervetuloa kellariin
+
+**Pimeä Panimo** is a humorous brewery management game from Finland. You run a not-quite-legal brewery in a dark cellar:
+pick malts, hops and yeast for your own beer styles, pour them for a parade of strange regulars, and keep one eye on the door,
+because the alcohol inspectors of **LVV** are always one rumour away.
+
+- 🧪 **Brew by feel, not by recipe.** Malts, hops and yeast mix into two dozen styles, from *kotikalja* to Baltic porter and sahti.
+- 🍻 **Serve the weirdest regulars in town.** Builders in hi-vis, a beer critic, a monk, a mafioso, a delivery robot, a lion fan, and plenty more, each with their own taste and requests.
+- 🚨 **Dodge the LVV.** Every sale raises the risk. Bribe, hide the stash or go legit with alcohol-free brews before the raid comes.
+- 📈 **Grow the cellar.** Bigger fermenters, more counter seats, cold conditioning, and the *Olutoppi* talents that carry over from season to season.
+- 🏆 **Climb the global leaderboard.** The browser demo has a shared top list. Can you out-brew everyone else in one short season?
+
+The game is in Finnish, with English in the options. The demo plays in any desktop or phone browser.
+
+## 📸 Kuvia kellarista
+
+<table>
+  <tr>
+    <td><img src="dev/docs/images/busy_evening.png" alt="A busy evening at the counter"></td>
+    <td><img src="dev/docs/images/special_request.png" alt="A special request from a customer"></td>
+  </tr>
+  <tr>
+    <td><img src="dev/docs/images/brewing.png" alt="Brewing a new batch"></td>
+    <td><img src="dev/docs/images/level_up.png" alt="Levelling up the brewery"></td>
+  </tr>
+</table>
+
+---
+
+<details>
+<summary><b>🔧 For developers: how the game is built</b></summary>
+
+<br>
+
+Built in **Godot 4 (GDScript)**. Code and comments are in English; all in-game text is Finnish, with an English translation.
 
 ## 💎 Architectural & Technical Highlights
 
@@ -76,13 +115,15 @@ Requires **Godot 4.7** (GL Compatibility renderer).
 godot --headless --path . --export-release "Web Demo" build/web/index.html
 ```
 
-The **Web Demo** preset sets the `demo` feature tag, which limits the season to five days (`DemoRules`). GitHub Pages is published by the *Web demo* workflow (Actions tab → Run workflow); for itch.io, zip the contents of `build/web/` and upload it as an HTML game. See [dev/docs/browser_demo_plan.md](dev/docs/browser_demo_plan.md).
+The **Web Demo** preset sets the `demo` feature tag, which ends the season when day 5 begins (`DemoRules`). GitHub Pages is published by the *Web demo* workflow (Actions tab → Run workflow); for itch.io, zip the contents of `build/web/` and upload it as an HTML game. See [dev/docs/browser_demo_plan.md](dev/docs/browser_demo_plan.md).
 
 ---
 
 ## 🤖 AI-Assisted Development
 
 This project uses a live **Godot Editor MCP plugin** (`addons/godot_ai/`) so an AI assistant can inspect the running scene tree, read runtime errors, and modify nodes directly in the editor rather than guessing at structure. See [CLAUDE.md](CLAUDE.md) for the full set of architecture rules, code style, and AI collaboration guidelines this repo follows.
+
+</details>
 
 ---
 
