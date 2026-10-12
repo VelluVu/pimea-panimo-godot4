@@ -11,17 +11,17 @@ extends RefCounted
 ## The blade tip hit the kettle wall; speed in pixels a second.
 signal knocked(speed : float)
 
-const POINTS : int = 15
+const POINTS : int = 19
 const SEGMENT : float = 12.0
 ## The first segments from the tip are the blade; the rest is the shaft.
 const BLADE_SEGMENTS : int = 2
 const TIP_SPRING : float = 320.0
-const TIP_DAMPING : float = 11.0
+const TIP_DAMPING : float = 15.0
 ## A loose paddle drifts back to rest much more gently.
 const REST_SPRING : float = 40.0
 ## The handle follows its spot behind the blade loosely, so the shaft swings.
 const HANDLE_SPRING : float = 90.0
-const HANDLE_DAMPING : float = 6.0
+const HANDLE_DAMPING : float = 11.0
 ## The shaft's lean: steep with the blade in the middle, nearly flat over the far rim
 ## with the blade at a wall (x is sideways, y upward, before normalizing).
 const LEAN_MIDDLE : Vector2 = Vector2(0.6, 0.75)
@@ -31,7 +31,7 @@ const BACK_LEAN_SCALE : float = 0.5
 ## Air and mash slow the free middle points, per second.
 const DRAG : float = 1.4
 ## How strongly each joint straightens per solver pass; low lets it bend.
-const BEND_STIFFNESS : float = 0.4
+const BEND_STIFFNESS : float = 0.55
 ## The two driven ends barely give way to the chain.
 const END_WEIGHT : float = 0.15
 const ITERATIONS : int = 6
