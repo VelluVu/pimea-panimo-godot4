@@ -552,7 +552,7 @@ func _build() -> void:
 	_result_label.add_theme_color_override("font_outline_color", Color.BLACK)
 	_result_label.add_theme_constant_override("outline_size", 6)
 	_result_label.position = Vector2(KETTLE_POSITION.x, RESULT_LABEL_Y)
-	_result_label.size = Vector2(KettleView.BODY_RECT.end.x, 40)
+	_result_label.size = Vector2(_kettle.size.x, 40)
 	add_child(_result_label)
 
 	_popups = BrewDayPopups.new()
