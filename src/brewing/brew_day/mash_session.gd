@@ -257,7 +257,7 @@ func _spawn_clump() -> void:
 	for attempt : int in 12:
 		var spot : Vector2 = Vector2.from_angle(_rng.randf() * TAU) * sqrt(_rng.randf()) * SPAWN_REACH
 		at = (LIQUID_SIZE / 2.0 + spot * LIQUID_SIZE / 2.0).round()
-		if clumps.all(func(clump : MashClump) -> bool: return clump.is_broken() or clump.position.distance_to(at) >= CLUMP_MIN_GAP):
+		if clumps.all(func(other : MashClump) -> bool: return other.is_broken() or other.position.distance_to(at) >= CLUMP_MIN_GAP):
 			break
 	var clump := MashClump.new(at, SWIPES_PER_CLUMP)
 	clumps.append(clump)

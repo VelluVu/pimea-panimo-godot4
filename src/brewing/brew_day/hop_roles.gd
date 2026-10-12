@@ -73,7 +73,7 @@ static func _split_grams(pairs : Array, contents : Dictionary) -> Array[BoilMark
 	for pair : Array in pairs:
 		var id : int = (pair[1] as HopData).id
 		var total : int = int(contents[id])
-		var share : int = total / int(uses[id])
+		var share : int = floori(float(total) / int(uses[id]))
 		# The first mark of a hop takes the remainder.
 		if not handed_out.has(id):
 			share += total % int(uses[id])

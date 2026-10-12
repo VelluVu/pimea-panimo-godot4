@@ -134,7 +134,7 @@ func _mark_color(mark : BoilMark) -> Color:
 		BoilMark.Result.MISS: return RED
 	if boil.is_boiling() and BoilSchedule.in_window(mark.kind, boil.counted, boil.window_widen):
 		# Blinks in steps while its window is open.
-		return TEXT_COLOR if int(Time.get_ticks_msec() / 150) % 2 == 0 else FLAME_COLOR
+		return TEXT_COLOR if floori(Time.get_ticks_msec() / 150.0) % 2 == 0 else FLAME_COLOR
 	return DIM_COLOR
 
 

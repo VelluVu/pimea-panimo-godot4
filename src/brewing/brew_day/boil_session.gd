@@ -130,7 +130,8 @@ func start_pour(id : int) -> void:
 		sacks[id] = maxf(0.0, sacks[id] - pieces)
 		_judge(own, timed, true, other, id)
 		return
-	var target : float = (own if own != null else other).grams if own != null or other != null else 0.0
+	var aimed : BoilMark = own if own != null else other
+	var target : float = float(aimed.grams) if aimed != null else 0.0
 	var rate : float = target / POUR_SECONDS_AT_TARGET if target > 0.0 else DEFAULT_POUR_RATE
 	_pours[id] = {"rate": rate, "grams": 0.0, "own": own, "timed": timed, "other": other}
 
