@@ -24,6 +24,8 @@ const ART : BrewDayArt = preload("res://src/resources/brew_day/brew_day_art.tres
 ## liquid is the ellipse inside it.
 const LIQUID_RECT : Rect2 = Rect2(Vector2(24, 44), MashSession.LIQUID_SIZE)
 const ELLIPSE_POINTS : int = 48
+## The liquid reaches this far under the kettle's rim, so no gap shows at its edge.
+const LIQUID_UNDER_RIM : float = 4.0
 ## The blade keeps a little inside the mouth.
 const PADDLE_MOUTH : Rect2 = Rect2(LIQUID_RECT.position + Vector2(4, 4), MashSession.LIQUID_SIZE - Vector2(8, 8))
 const PADDLE_REST : Vector2 = Vector2(196, 120)
@@ -61,8 +63,8 @@ const SHAKE_SCATTER : float = 60.0
 ## The sack's mouth pours into the kettle within this reach of the mouth's edges.
 const POUR_REACH_ABOVE : float = 110.0
 const POUR_INSET : float = 8.0
-## Where the lifted sack sprite's mouth is, for the falling pellets.
-const LIFTED_SACK_MOUTH : Vector2 = Vector2(27, 33)
+## Where the lifted sack sprite's mouth is (sprite pixels), for the falling pellets.
+const LIFTED_SACK_MOUTH : Vector2 = Vector2(13, 16)
 const PELLETS_PER_SECOND : float = 30.0
 const PELLET_GRAVITY : float = 420.0
 const PELLET_SIZE : Vector2 = Vector2(2, 2)
@@ -151,7 +153,7 @@ var _sparkles : Array = []
 
 
 func _ready() -> void:
-	custom_minimum_size = ART.kettle.get_size()
+	custom_minimum_size = ART.kettle.get_size() * BrewDayArt.KETTLE_SCALE
 	size = custom_minimum_size
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	_paddle.knocked.connect(paddle_knocked.emit)
@@ -219,7 +221,7 @@ func carry(id : int, color : Color, follow : bool) -> void:
 		return
 	var at : Vector2 = POUR_SPOTS[_carried.size() % POUR_SPOTS.size()]
 	if follow:
-		at = get_local_mouse_position() - ART.sack_lifted.get_size() / 2.0
+		at = get_local_mouse_position() - _lifted_size() / 2.0
 	_carried[id] = {"at": at, "target": at, "velocity": Vector2.ZERO, "follow": follow, "color": color}
 
 
@@ -235,14 +237,14 @@ func is_carrying(id : int) -> bool:
 ## Where the carried sack should hang: centred on `point`.
 func set_carry_target(id : int, point : Vector2) -> void:
 	if _carried.has(id):
-		_carried[id].target = point - ART.sack_lifted.get_size() / 2.0
+		_carried[id].target = point - _lifted_size() / 2.0
 
 
 ## True while the carried sack's mouth is above the kettle mouth, so it pours in.
 func is_over_mouth(id : int) -> bool:
 	if not _carried.has(id):
 		return false
-	var mouth : Vector2 = _carried[id].at + LIFTED_SACK_MOUTH
+	var mouth : Vector2 = _carried[id].at + LIFTED_SACK_MOUTH * BrewDayArt.PROP_SCALE
 	return mouth.x > LIQUID_RECT.position.x + POUR_INSET and mouth.x < LIQUID_RECT.end.x - POUR_INSET \
 		and mouth.y > LIQUID_RECT.position.y - POUR_REACH_ABOVE and mouth.y < LIQUID_RECT.end.y - POUR_INSET
 
@@ -380,7 +382,7 @@ func _shake(sack : Dictionary) -> float:
 ## A pellet falls from the sack's mouth into the wort below it; a shaken sack throws
 ## it off along its own motion, scattered, so it may land anywhere or miss.
 func _spawn_pellet(sack : Dictionary) -> void:
-	var start : Vector2 = sack.at + LIFTED_SACK_MOUTH + Vector2(randf_range(-3, 3), 0)
+	var start : Vector2 = sack.at + LIFTED_SACK_MOUTH * BrewDayArt.PROP_SCALE + Vector2(randf_range(-3, 3), 0)
 	var landing : float = LIQUID_RECT.position.y + randf_range(LANDING_DEPTH.x, LANDING_DEPTH.y)
 	var shake : float = _shake(sack)
 	var throw : Vector2 = (sack.velocity as Vector2) * SHAKE_THROW * shake
@@ -409,8 +411,8 @@ func _to_liquid(points : PackedVector2Array) -> PackedVector2Array:
 
 
 func _draw() -> void:
-	draw_texture(ART.kettle, Vector2.ZERO)
-	_fill_ellipse(_ellipse(LIQUID_RECT), liquid_color)
+	# The liquid and all in it go under the kettle sprite, so its rim hides their edges.
+	_fill_ellipse(_ellipse(LIQUID_RECT.grow(LIQUID_UNDER_RIM)), liquid_color)
 	_draw_trails()
 	_draw_blooms()
 	if bubbling:
@@ -422,11 +424,12 @@ func _draw() -> void:
 	if foam > 0.0:
 		var foam_size : Vector2 = (LIQUID_RECT.size * clampf(foam, 0.0, 1.0)).round()
 		_fill_ellipse(_ellipse(Rect2(LIQUID_RECT.get_center() - foam_size / 2.0, foam_size)), FOAM_COLOR)
+	_draw_rings()
+	draw_texture_rect(ART.kettle, Rect2(Vector2.ZERO, custom_minimum_size), false)
 	if glow_color.a > 0.0:
 		var outline : PackedVector2Array = _ellipse(LIQUID_RECT.grow(4))
 		outline.append(outline[0])
 		draw_polyline(outline, glow_color, 2.0)
-	_draw_rings()
 	_draw_paddle()
 	_draw_pours()
 
@@ -469,7 +472,7 @@ func _draw_pours() -> void:
 		var jitter : float = 0.0
 		if _shake(sack) > 0.0:
 			jitter = 1.0 if int(_clock * ANIMATION_FPS * 2.0) % 2 == 0 else -1.0
-		draw_texture(ART.sack_lifted, ((sack.at as Vector2) + Vector2(jitter, 0)).round())
+		draw_texture_rect(ART.sack_lifted, Rect2(((sack.at as Vector2) + Vector2(jitter, 0)).round(), _lifted_size()), false)
 	for pellet : Array in _pellets:
 		draw_rect(Rect2((pellet[0] as Vector2).round(), PELLET_SIZE), pellet[3])
 	for sparkle_entry : Array in _sparkles:
@@ -483,6 +486,10 @@ func _draw_pours() -> void:
 
 
 ## Snapped to whole pixels without repeating a point, which would break the fill.
+func _lifted_size() -> Vector2:
+	return ART.sack_lifted.get_size() * BrewDayArt.PROP_SCALE
+
+
 func _ellipse(rect : Rect2) -> PackedVector2Array:
 	var points := PackedVector2Array()
 	for i : int in ELLIPSE_POINTS:
@@ -505,14 +512,15 @@ func _fill_ellipse(points : PackedVector2Array, color : Color) -> void:
 ## while it flashes.
 func _draw_clump(clump : MashClump) -> void:
 	var frame_size := Vector2(ART.clump.get_height(), ART.clump.get_height())
-	var at : Vector2 = (LIQUID_RECT.position + clump.position - frame_size / 2.0).round()
+	var shown : Vector2 = frame_size * BrewDayArt.PROP_SCALE
+	var at : Vector2 = (LIQUID_RECT.position + clump.position - shown / 2.0).round()
 	var hit : bool = clump.swipes_left < MashSession.SWIPES_PER_CLUMP
 	var flashing : bool = _flashes.has(clump)
 	if flashing:
 		var shake : int = int(_clock * ANIMATION_FPS * 2.0)
 		at.x += 1.0 if shake % 2 == 0 else -1.0
 	var region := Rect2(Vector2(frame_size.x if hit else 0.0, 0.0), frame_size)
-	draw_texture_rect_region(ART.clump, Rect2(at, frame_size), region, FLASH_MODULATE if flashing else Color.WHITE)
+	draw_texture_rect_region(ART.clump, Rect2(at, shown), region, FLASH_MODULATE if flashing else Color.WHITE)
 
 
 ## Grain bits fly out from a broken clump in steps, then blink out.
@@ -539,7 +547,7 @@ func _draw_paddle() -> void:
 
 
 func _draw_turned(texture : Texture2D, center : Vector2, angle : float) -> void:
-	draw_set_transform(center.round(), angle)
+	draw_set_transform(center.round(), angle, Vector2.ONE * BrewDayArt.PROP_SCALE)
 	draw_texture(texture, -texture.get_size() / 2.0)
 	draw_set_transform(Vector2.ZERO)
 
