@@ -4,7 +4,8 @@ extends RefCounted
 ## Gives each of a style's hop additions one of the recipe's hops: the most bitter hop
 ## bitters, the style's preferred flavour goes to the later marks, and a one-hop recipe
 ## uses its hop everywhere. Hops left over join the last mark, so every gram has a place.
-## A hop used on several marks splits its grams between them.
+## A hop used on several marks splits its grams between them; a mark left with no grams
+## (a tiny dose split too far) is dropped, since it could never be hit.
 
 
 ## `table` maps ingredient id -> IngredientData. Returns the marks sorted by time, the
@@ -74,9 +75,11 @@ static func _split_grams(pairs : Array, contents : Dictionary) -> Array[BoilMark
 		var id : int = (pair[1] as HopData).id
 		var total : int = int(contents[id])
 		var share : int = floori(float(total) / int(uses[id]))
-		# The first mark of a hop takes the remainder.
-		if not handed_out.has(id):
-			share += total % int(uses[id])
-		handed_out[id] = true
-		marks.append(BoilMark.new(pair[0], id, share))
+		# The remainder goes a gram at a time to the hop's first marks.
+		var earlier : int = int(handed_out.get(id, 0))
+		if earlier < total % int(uses[id]):
+			share += 1
+		handed_out[id] = earlier + 1
+		if share > 0:
+			marks.append(BoilMark.new(pair[0], id, share))
 	return marks

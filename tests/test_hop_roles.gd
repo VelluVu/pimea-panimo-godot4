@@ -76,6 +76,16 @@ func test_one_hop_is_split_over_every_mark() -> void:
 	assert_eq(marks[0].grams, 11)
 
 
+func test_a_dose_too_small_to_split_drops_the_empty_marks() -> void:
+	var marks : Array[BoilMark] = HopRolesScript.assign({MAGNUM_ID: 20, CASCADE_ID: 2}, _table(),
+		_kinds([HopAddition.Kind.BITTERING, HopAddition.Kind.FLAVOR, HopAddition.Kind.AROMA, HopAddition.Kind.DRY_HOP]), HopData.FlavorProfile.CITRUS)
+	# 2 g over flavour, aroma and dry hop: a gram each to the first two, the dry hop dropped.
+	assert_eq(marks.size(), 3)
+	assert_true(marks.any(func(mark : BoilMark) -> bool: return mark.kind == HopAddition.Kind.AROMA))
+	for mark : BoilMark in marks:
+		assert_gt(mark.grams, 0)
+
+
 func test_a_style_without_hop_marks_still_boils_its_hops() -> void:
 	var marks : Array[BoilMark] = HopRolesScript.assign({CASCADE_ID: 10}, _table(), _kinds([]), HopData.FlavorProfile.NONE)
 	assert_eq(marks.size(), 1)
