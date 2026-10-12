@@ -10,6 +10,7 @@ const DARK_MALT_ID : int = 102 # EBC 60
 const HOP_ID : int = 201 # alpha 100, beta 50
 const YEAST_ID : int = 301
 const SPICE_ID : int = 212
+const BITTERING_HOP_ID : int = 200 # alpha 100, no aroma
 
 
 func suite_name() -> String:
@@ -32,7 +33,10 @@ func _make_ingredients() -> Dictionary:
 	yeast.type = IngredientData.IngredientType.YEAST
 	var spice := IngredientData.new()
 	spice.type = IngredientData.IngredientType.SPICE
-	return {MALT_ID: malt, DARK_MALT_ID: dark, HOP_ID: hop, YEAST_ID: yeast, SPICE_ID: spice}
+	var bittering := HopData.new()
+	bittering.type = IngredientData.IngredientType.HOP
+	bittering.alpha_acids = 100
+	return {MALT_ID: malt, DARK_MALT_ID: dark, HOP_ID: hop, YEAST_ID: yeast, SPICE_ID: spice, BITTERING_HOP_ID: bittering}
 
 
 func _make_mixture(contents : Dictionary) -> BrewMixtureScript:
@@ -102,6 +106,14 @@ func test_fits_requires_the_required_spice() -> void:
 	wants_spice.required_spice_id = SPICE_ID
 	assert_false(_make_mixture({MALT_ID: 3, YEAST_ID: 1}).fits(wants_spice), "no spice on the table")
 	assert_true(_make_mixture({MALT_ID: 3, SPICE_ID: 1, YEAST_ID: 1}).fits(wants_spice))
+
+
+func test_a_hop_forward_style_needs_an_aroma_hop() -> void:
+	var hop_forward := _make_style(0, 30, 0, 999)
+	hop_forward.requires_aroma_hop = true
+	assert_false(_make_mixture({MALT_ID: 3, BITTERING_HOP_ID: 3, YEAST_ID: 1}).fits(hop_forward), "bittering hops only")
+	assert_true(_make_mixture({MALT_ID: 3, BITTERING_HOP_ID: 3, HOP_ID: 1, YEAST_ID: 1}).fits(hop_forward))
+	assert_true(_make_mixture({MALT_ID: 3, BITTERING_HOP_ID: 3, YEAST_ID: 1}).fits(_make_style(0, 30, 0, 999)), "other styles do not care")
 
 
 func test_spice_adds_no_bitterness() -> void:

@@ -45,10 +45,17 @@ func fits(beer_style : BeerStyle) -> bool:
 		return false
 	if beer_style.required_spice_id != NO_REQUIRED_SPICE and not spice_ids.has(beer_style.required_spice_id):
 		return false
+	if beer_style.requires_aroma_hop and not has_aroma_hop():
+		return false
 	if malt_weight < beer_style.min_malt_weight:
 		return false
 	return final_ebc >= beer_style.min_ebc and final_ebc <= beer_style.max_ebc \
 			and final_ibu >= beer_style.min_ibu and final_ibu <= beer_style.max_ibu
+
+
+## True when at least one hop has an aroma of its own (any flavour profile).
+func has_aroma_hop() -> bool:
+	return hop_profiles.keys().any(func(profile : HopData.FlavorProfile) -> bool: return profile != HopData.FlavorProfile.NONE)
 
 
 func _add(id : int, data : IngredientData, amount : int) -> void:

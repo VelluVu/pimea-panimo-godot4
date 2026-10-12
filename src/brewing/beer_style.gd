@@ -47,6 +47,9 @@ enum Style {
 ## German styles keep the Reinheitsgebot: any spice costs BrewQuality.PURITY_LAW_PENALTY.
 @export var forbids_spices: bool = false
 @export var preferred_hop_profile: HopData.FlavorProfile = HopData.FlavorProfile.NONE
+## Hop-forward ales: brewed with only bittering hops (no flavour profile, like
+## Magnum) the beer is not this style, since it has no hop aroma at all.
+@export var requires_aroma_hop: bool = false
 
 @export_group("Alkoholi")
 ## Percent, e.g. 5.2 = 5.2 %. Shown on bottles and receipts; does not affect price.
