@@ -41,6 +41,10 @@ const PELLET_COLORS : Dictionary = {
 const JUNIPER_COLOR : Color = Color(0.4, 0.42, 0.8)
 ## Pellets in a tapped-in handful of spice.
 const SPICE_HANDFUL : int = 12
+## A sack starts wobbling this long before its mark opens.
+const CUE_LEAD : float = 1.5
+## The big call when a mark opens: the mark and the hop, e.g. "AROMI: Citra!".
+const CALL_TEXT : String = "%s: %s!"
 const NEXT_BUTTON_RECT : Rect2 = Rect2(520, 318, 108, 28)
 const MALTS_BUTTON_RECT : Rect2 = Rect2(12, 318, 140, 28)
 const RESULT_LABEL_Y : float = 96.0
@@ -94,6 +98,8 @@ var _sack_ids : Array[int] = []
 var _sack_buttons : Array[HopSackButton] = []
 ## Spice sacks already tipped in during this carry.
 var _spice_tipped : Dictionary = {}
+## Marks whose opening has been called out.
+var _called : Dictionary = {}
 var _malts_added : bool = false
 var _foam_warned : bool = false
 var _flameout_shown : bool = false
@@ -210,6 +216,8 @@ func _start_boil() -> void:
 	_boil.mark_resolved.connect(_on_mark_resolved)
 	_boil.stray_pour.connect(func(_id : int) -> void: _popups.show_line(BrewDayLines.STRAY_POUR_TEXT, BrewDayPopups.BAD_COLOR))
 	_boil.boil_completed.connect(_on_boil_completed)
+	_called.clear()
+	_boil.hop_stand_started.connect(func() -> void: _heat_button.disabled = true)
 	_header.text = tr(BOIL_HEADER_TEXT) % tr(_plan.style_name)
 	_hint.text = BOIL_HINT_TEXT
 	_hint.show()
@@ -473,6 +481,30 @@ func _pour_from_carried(id : int, left : float) -> bool:
 	return over
 
 
+## A sack's next open mark: wobbling while it is coming, blinking while it is open,
+## and called out from the kettle the moment it opens.
+func _cue_sack(button : HopSackButton, id : int) -> void:
+	button.cue = HopSackButton.Cue.NONE
+	if _stage != Stage.BOIL:
+		return
+	for mark : BoilMark in _boil.open_marks():
+		if mark.ingredient_id != id:
+			continue
+		var start : float = BoilSchedule.window_start(mark.kind, _boil.window_widen)
+		var open : bool = _boil.is_pouring_time() and BoilSchedule.in_window(mark.kind, _boil.counted, _boil.window_widen)
+		# The bittering hops are coming as the wort nears the boil.
+		var coming : bool = _boil.counted >= start - CUE_LEAD if _boil.is_pouring_time() \
+			else mark.kind == HopAddition.Kind.BITTERING and _boil.heat.temperature >= BoilSession.BOIL_MIN - 3.0
+		if not open and not coming:
+			continue
+		button.cue = HopSackButton.Cue.NOW if open else HopSackButton.Cue.SOON
+		button.cue_label = ThermoColumn.kind_label(mark.kind)
+		if open and not _called.has(mark):
+			_called[mark] = true
+			_popups.show_call(tr(CALL_TEXT) % [button.cue_label, _sack_name(id)], BrewDayPopups.GOOD_COLOR)
+		return
+
+
 ## The ingredient's name without the "-humala" ending, as the sacks show it.
 func _sack_name(id : int) -> String:
 	return tr(String(_plan.names.get(id, ""))).get_slice("-", 0)
@@ -529,6 +561,7 @@ func _refresh_sacks() -> void:
 		button.fill = left / maxf(1.0, float(totals.get(id, 1)))
 		_kettle.set_pouring(id, _pour_from_carried(id, left))
 		button.lifted = _kettle.is_carrying(id)
+		_cue_sack(button, id)
 		if _stage == Stage.BOIL:
 			button.disabled = left <= 0.0 and not _boil.is_pouring(id)
 

@@ -30,5 +30,7 @@ func test_the_dry_hop_is_not_in_the_boil() -> void:
 	assert_false(BoilScheduleScript.is_in_boil(HopAddition.Kind.DRY_HOP))
 
 
-func test_the_boil_ends_when_the_flameout_window_closes() -> void:
-	assert_eq(BoilScheduleScript.end_time(), BoilScheduleScript.window_end(HopAddition.Kind.AROMA))
+func test_the_aroma_window_lasts_the_hop_stand() -> void:
+	assert_eq(BoilScheduleScript.end_time(), BoilScheduleScript.BOIL_SECONDS + BoilScheduleScript.HOP_STAND_SECONDS)
+	assert_eq(BoilScheduleScript.window_end(HopAddition.Kind.AROMA), BoilScheduleScript.end_time())
+	assert_true(BoilScheduleScript.in_window(HopAddition.Kind.AROMA, BoilScheduleScript.BOIL_SECONDS + 2.5))

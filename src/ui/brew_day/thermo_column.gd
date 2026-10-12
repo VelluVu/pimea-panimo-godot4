@@ -108,7 +108,12 @@ func _draw_boil() -> void:
 	_band(BOIL_RANGE, BoilSession.BOIL_MIN, BoilSession.FOAM_FROM, BAND_COLOR)
 	_band(BOIL_RANGE, BoilSession.FOAM_FROM, BOIL_RANGE.y, FOAM_ZONE_COLOR)
 	var left : float = maxf(0.0, BoilSchedule.BOIL_SECONDS - boil.counted)
-	_row(0, tr(TIMER_TEXT) % left, TEXT_COLOR if boil.is_boiling() else DIM_COLOR)
+	var timer_color : Color = TEXT_COLOR if boil.is_boiling() else DIM_COLOR
+	# In the hop stand the timer counts the stand down, in flame colour.
+	if boil.phase == BoilSession.Phase.HOP_STAND:
+		left = maxf(0.0, BoilSchedule.end_time() - boil.counted)
+		timer_color = FLAME_COLOR
+	_row(0, tr(TIMER_TEXT) % left, timer_color)
 	for i : int in boil.marks.size():
 		var mark : BoilMark = boil.marks[i]
 		var unit : String = StringContainer.KPL if piece_ids.has(mark.ingredient_id) else StringContainer.G

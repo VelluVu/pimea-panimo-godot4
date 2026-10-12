@@ -2,8 +2,11 @@ class_name BoilSchedule
 extends RefCounted
 
 ## The boil's timeline in counted seconds; the clock stops whenever the boil does.
+## After BOIL_SECONDS the flame goes out and a hop stand follows, as in a real brewery:
+## the aroma hops go in then, with time to aim, and the clock no longer waits.
 
 const BOIL_SECONDS : float = 10.0
+const HOP_STAND_SECONDS : float = 3.0
 const WINDOW_HALF : float = 0.75
 ## The bittering hops go in as the boil starts, with a longer window to react in.
 const BITTERING_WINDOW : float = 1.5
@@ -30,9 +33,12 @@ static func window_start(kind : HopAddition.Kind, widen : float = 0.0) -> float:
 	return time_for(kind) - WINDOW_HALF - widen
 
 
+## The aroma window lasts the whole hop stand.
 static func window_end(kind : HopAddition.Kind, widen : float = 0.0) -> float:
 	if kind == HopAddition.Kind.BITTERING:
 		return BITTERING_WINDOW + widen
+	if kind == HopAddition.Kind.AROMA:
+		return end_time()
 	return time_for(kind) + WINDOW_HALF + widen
 
 
@@ -40,6 +46,6 @@ static func in_window(kind : HopAddition.Kind, at : float, widen : float = 0.0) 
 	return at >= window_start(kind, widen) and at <= window_end(kind, widen)
 
 
-## Pours are still taken until the flameout window closes.
+## The brew day ends when the hop stand does.
 static func end_time() -> float:
-	return BOIL_SECONDS + WINDOW_HALF
+	return BOIL_SECONDS + HOP_STAND_SECONDS

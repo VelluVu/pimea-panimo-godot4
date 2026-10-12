@@ -4,7 +4,9 @@ extends Button
 ## A hop or spice sack standing beside the kettle: its sprite (BrewDayArt.sack) going
 ## from full to half to almost empty, the pellets' colour showing at its neck, its key
 ## number, name and what is left. Holding it pours; while it is lifted over the kettle
-## (KettleView draws that) only a dark shadow stays in its place.
+## (KettleView draws that) only a dark shadow stays in its place. A sack whose mark is
+## coming wobbles with a yellow frame and the mark's name; while the mark is open it
+## blinks green, so the player can watch the sacks instead of the timer.
 
 const ART : BrewDayArt = preload("res://src/resources/brew_day/brew_day_art.tres")
 const SIZE : Vector2 = Vector2(104, 40)
@@ -21,6 +23,11 @@ const FONT_SIZE : int = 16
 const TEXT_COLOR : Color = Color(0.95, 0.9, 0.78)
 const DIM_COLOR : Color = Color(0.6, 0.56, 0.5)
 const HOVER_COLOR : Color = Color(0.98, 0.85, 0.45)
+const SOON_COLOR : Color = Color(0.98, 0.8, 0.3)
+const NOW_COLOR : Color = Color(0.5, 1.0, 0.45)
+const CUE_BLINK_FPS : float = 8.0
+
+enum Cue { NONE, SOON, NOW }
 
 var key_number : int = 1
 var sack_name : String = ""
@@ -29,6 +36,9 @@ var amount_text : String = ""
 var fill : float = 1.0
 var lifted : bool = false
 var pellet_color : Color = Color.GREEN
+var cue : Cue = Cue.NONE
+## The coming mark's name ("AROMI"), shown with the amount while cued.
+var cue_label : String = ""
 
 
 func _ready() -> void:
@@ -46,11 +56,22 @@ func _draw() -> void:
 	var frame : int = 0 if fill > FULL_FROM else (1 if fill > HALF_FROM else 2)
 	var frame_size := Vector2(ART.sack.get_width() / float(FRAMES), ART.sack.get_height())
 	var region := Rect2(Vector2(frame * frame_size.x, 0), frame_size)
-	draw_texture_rect_region(ART.sack, Rect2(Vector2.ZERO, frame_size), region, SHADOW_MODULATE if lifted else Color.WHITE)
+	var blink : bool = int(Time.get_ticks_msec() / 1000.0 * CUE_BLINK_FPS) % 2 == 0
+	var wobble := Vector2.ZERO
+	if cue != Cue.NONE and not lifted:
+		wobble.x = 1.0 if blink else -1.0
+	draw_texture_rect_region(ART.sack, Rect2(wobble, frame_size), region, SHADOW_MODULATE if lifted else Color.WHITE)
 	if not lifted and fill > 0.0:
-		draw_rect(Rect2(NECK_PELLETS.position + Vector2(0, NECK_TOPS[frame]), NECK_PELLETS.size), pellet_color)
+		draw_rect(Rect2(NECK_PELLETS.position + wobble + Vector2(0, NECK_TOPS[frame]), NECK_PELLETS.size), pellet_color)
+	var cue_color : Color = SOON_COLOR if cue == Cue.SOON else NOW_COLOR
+	if cue != Cue.NONE and not lifted and (cue == Cue.SOON or blink):
+		draw_rect(Rect2(Vector2.ZERO, frame_size).grow(-1), cue_color, false, 2.0)
 	var color : Color = DIM_COLOR if disabled else (HOVER_COLOR if is_hovered() else TEXT_COLOR)
 	var font : Font = get_theme_font(&"font", &"Label")
 	var width : float = SIZE.x - TEXT_X
 	draw_string(font, Vector2(TEXT_X, 17), "%d %s" % [key_number, sack_name], HORIZONTAL_ALIGNMENT_LEFT, width, FONT_SIZE, color)
-	draw_string(font, Vector2(TEXT_X, 34), amount_text, HORIZONTAL_ALIGNMENT_LEFT, width, FONT_SIZE, color)
+	var second_line : String = amount_text
+	if cue != Cue.NONE:
+		second_line = cue_label + " " + amount_text
+		color = cue_color
+	draw_string(font, Vector2(TEXT_X, 34), second_line, HORIZONTAL_ALIGNMENT_LEFT, width, FONT_SIZE, color)
