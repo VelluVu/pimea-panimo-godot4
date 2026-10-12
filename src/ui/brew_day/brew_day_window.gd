@@ -78,8 +78,8 @@ const BOIL_SOUND_BASE : float = 0.55
 ## steam at a rolling boil and thicker as the foam rises.
 const MASH_STEAM : float = 0.12
 const NEAR_BOIL_STEAM : float = 0.3
-const BOIL_STEAM : float = 0.5
-const FOAM_STEAM : float = 0.4
+const BOIL_STEAM : float = 0.35
+const FOAM_STEAM : float = 0.3
 
 enum Stage { MASH, MASH_DONE, BOIL, RESULT }
 
@@ -92,6 +92,8 @@ var _button_heat : bool = false
 var _key_heat : bool = false
 var _sack_ids : Array[int] = []
 var _sack_buttons : Array[HopSackButton] = []
+## Spice sacks already tipped in during this carry.
+var _spice_tipped : Dictionary = {}
 var _malts_added : bool = false
 var _foam_warned : bool = false
 var _flameout_shown : bool = false
@@ -426,18 +428,46 @@ func _on_sack_key(index : int, pressed : bool) -> void:
 	if _boil == null or _stage != Stage.BOIL or index >= _sack_ids.size():
 		return
 	if pressed:
-		_start_pour(_sack_ids[index])
+		_pick_up(_sack_ids[index], false)
 	else:
-		_boil.stop_pour(_sack_ids[index])
+		_put_down(_sack_ids[index])
 
 
-func _start_pour(id : int) -> void:
-	var has_some : bool = float(_boil.sacks.get(id, 0.0)) > 0.0
-	if has_some and not _boil.is_pouring(id):
+## Lifts a sack off its place: with the pointer it follows it, with its key it hangs
+## at its own spot over the mouth. It only pours while over the mouth.
+func _pick_up(id : int, follow : bool) -> void:
+	if _stage == Stage.BOIL and float(_boil.sacks.get(id, 0.0)) > 0.0:
+		_kettle.carry(id, _pellet_color(id), follow)
+
+
+func _put_down(id : int) -> void:
+	if _boil != null:
+		_boil.stop_pour(id)
+	_kettle.drop(id)
+	_spice_tipped.erase(id)
+
+
+## A carried sack pours while its mouth is over the kettle mouth: a pour starts as it
+## comes over (that is when its timing counts) and ends as it leaves. A spice sack
+## tips its handful in once.
+func _pour_from_carried(id : int, left : float) -> bool:
+	if not _kettle.is_carrying(id):
+		return false
+	_kettle.set_carry_target(id, _kettle.get_local_mouse_position())
+	var over : bool = _kettle.is_over_mouth(id) and left > 0.0
+	if _plan.piece_ids.has(id):
+		if over and not _spice_tipped.has(id):
+			_spice_tipped[id] = true
+			GUISignals.brew_day_sound.emit(SOUND_PLOP)
+			_kettle.drop_handful(id, SPICE_HANDFUL)
+			_boil.start_pour(id)
+		return false
+	if over and not _boil.is_pouring(id):
 		GUISignals.brew_day_sound.emit(SOUND_PLOP)
-		if _plan.piece_ids.has(id):
-			_kettle.drop_handful(_pellet_color(id), SPICE_HANDFUL)
-	_boil.start_pour(id)
+		_boil.start_pour(id)
+	elif not over and _boil.is_pouring(id):
+		_boil.stop_pour(id)
+	return over
 
 
 ## A sack's pellets take the colour of its first mark; juniper is its own blue.
@@ -451,10 +481,8 @@ func _pellet_color(id : int) -> Color:
 
 
 func _set_sacks_released() -> void:
-	if _boil == null:
-		return
 	for id : int in _sack_ids:
-		_boil.stop_pour(id)
+		_put_down(id)
 
 
 func _build_sacks() -> void:
@@ -468,12 +496,8 @@ func _build_sacks() -> void:
 		button.key_number = i + 1
 		button.sack_name = tr(String(_plan.names.get(id, ""))).get_slice("-", 0)
 		button.pellet_color = _pellet_color(id)
-		button.button_down.connect(func() -> void:
-			if _stage == Stage.BOIL:
-				_start_pour(id))
-		button.button_up.connect(func() -> void:
-			if _boil != null:
-				_boil.stop_pour(id))
+		button.button_down.connect(_pick_up.bind(id, true))
+		button.button_up.connect(_put_down.bind(id))
 		_sack_column.add_child(button)
 		_sack_buttons.append(button)
 	_sack_column.show()
@@ -495,9 +519,8 @@ func _refresh_sacks() -> void:
 		var button : HopSackButton = _sack_buttons[i]
 		button.amount_text = "%d %s" % [roundi(left), tr(unit)]
 		button.fill = left / maxf(1.0, float(totals.get(id, 1)))
-		var pouring : bool = _boil.is_pouring(id) and left > 0.0
-		button.lifted = pouring
-		_kettle.set_pouring(id, pouring, button.pellet_color)
+		_kettle.set_pouring(id, _pour_from_carried(id, left))
+		button.lifted = _kettle.is_carrying(id)
 		if _stage == Stage.BOIL:
 			button.disabled = left <= 0.0 and not _boil.is_pouring(id)
 
