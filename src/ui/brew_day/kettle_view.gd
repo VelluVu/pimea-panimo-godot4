@@ -6,8 +6,9 @@ extends Control
 ## the clumps, the foam and the paddle. The paddle is a springy stick (PaddleBody):
 ## pressing on the liquid puts its blade under the pointer, and the shaft swings around
 ## over the far rim behind it. The blade breaks the clumps; the shaft only pushes them.
-## In the boil a held sack hangs tilted over the mouth and its pellets drop into the
-## wort, each landing with a splash ring and a coloured bloom that fades into the wort.
+## In the boil a sack is carried over the mouth (following the pointer, a little behind)
+## and its pellets drop into the wort, each landing with a splash ring and a coloured
+## bloom that fades into the wort. Shaking it throws them diagonally to random spots.
 ## Stirring sets the wort swirling: the blooms ride the swirl around the kettle and
 ## leave coloured stripes behind them, and the swirl dies down slowly to the gentle
 ## turn of the rolling boil, which keeps drawing the stripes out. Steam rises over the
@@ -47,8 +48,19 @@ const FLASH_SECONDS : float = 0.25
 const BURST_SECONDS : float = 0.4
 const BURST_DOTS : int = 8
 const BURST_REACH : float = 16.0
-## Where lifted sacks hang over the mouth, one spot per sack pouring at once.
+## Where a sack lifted by its key hangs over the mouth, one spot per sack at once.
 const POUR_SPOTS : Array[Vector2] = [Vector2(78, 4), Vector2(170, 4), Vector2(124, -4)]
+## A carried sack follows the pointer this fast, so it feels a little heavy.
+const CARRY_FOLLOW : float = 16.0
+## A sack moving faster than this (pixels a second) is shaking; at SHAKE_FROM plus
+## SHAKE_RANGE it shakes fully: pellets pour twice as fast and fly off with its motion.
+const SHAKE_FROM : float = 220.0
+const SHAKE_RANGE : float = 400.0
+const SHAKE_THROW : float = 0.55
+const SHAKE_SCATTER : float = 60.0
+## The sack's mouth pours into the kettle within this reach of the mouth's edges.
+const POUR_REACH_ABOVE : float = 110.0
+const POUR_INSET : float = 8.0
 ## Where the lifted sack sprite's mouth is, for the falling pellets.
 const LIFTED_SACK_MOUTH : Vector2 = Vector2(27, 33)
 const PELLETS_PER_SECOND : float = 30.0
@@ -118,6 +130,9 @@ var _flashes : Dictionary = {}
 var _bursts : Array = []
 ## Ingredient id -> [pellet colour, pellets owed to the next frame].
 var _pours : Dictionary = {}
+## Ingredient id -> {at (sprite's top-left), target, velocity, follow, color} of each
+## sack lifted off its place.
+var _carried : Dictionary = {}
 ## [position, velocity, landing y, colour] of each falling pellet.
 var _pellets : Array = []
 ## [position, seconds left, colour] of splash rings.
@@ -197,22 +212,55 @@ func burst_clump(clump : MashClump) -> void:
 	_bursts.append([clump.position, BURST_SECONDS])
 
 
-## Starts or stops a sack pouring over the mouth; pellets keep coming while it pours.
-func set_pouring(id : int, pouring : bool, color : Color) -> void:
-	if not pouring:
+## Lifts a sack: one following the pointer starts under it, one lifted by its key
+## hangs at its own spot over the mouth.
+func carry(id : int, color : Color, follow : bool) -> void:
+	if _carried.has(id):
+		return
+	var at : Vector2 = POUR_SPOTS[_carried.size() % POUR_SPOTS.size()]
+	if follow:
+		at = get_local_mouse_position() - ART.sack_lifted.get_size() / 2.0
+	_carried[id] = {"at": at, "target": at, "velocity": Vector2.ZERO, "follow": follow, "color": color}
+
+
+func drop(id : int) -> void:
+	_carried.erase(id)
+	_pours.erase(id)
+
+
+func is_carrying(id : int) -> bool:
+	return _carried.has(id)
+
+
+## Where the carried sack should hang: centred on `point`.
+func set_carry_target(id : int, point : Vector2) -> void:
+	if _carried.has(id):
+		_carried[id].target = point - ART.sack_lifted.get_size() / 2.0
+
+
+## True while the carried sack's mouth is above the kettle mouth, so it pours in.
+func is_over_mouth(id : int) -> bool:
+	if not _carried.has(id):
+		return false
+	var mouth : Vector2 = _carried[id].at + LIFTED_SACK_MOUTH
+	return mouth.x > LIQUID_RECT.position.x + POUR_INSET and mouth.x < LIQUID_RECT.end.x - POUR_INSET \
+		and mouth.y > LIQUID_RECT.position.y - POUR_REACH_ABOVE and mouth.y < LIQUID_RECT.end.y - POUR_INSET
+
+
+## Starts or stops a carried sack's stream of pellets.
+func set_pouring(id : int, pouring : bool) -> void:
+	if not pouring or not _carried.has(id):
 		_pours.erase(id)
 	elif not _pours.has(id):
-		_pours[id] = [color, 0.0]
+		_pours[id] = [_carried[id].color, 0.0]
 
 
-func is_pouring(id : int) -> bool:
-	return _pours.has(id)
-
-
-## A handful dropped at once, like spices tipped in.
-func drop_handful(color : Color, count : int) -> void:
+## A handful tipped in at once from a carried sack, like spices.
+func drop_handful(id : int, count : int) -> void:
+	if not _carried.has(id):
+		return
 	for i : int in count:
-		_spawn_pellet(_pour_spot(_pours.size()), color)
+		_spawn_pellet(_carried[id])
 
 
 func sparkle(color : Color) -> void:
@@ -221,6 +269,7 @@ func sparkle(color : Color) -> void:
 
 func clear_pours() -> void:
 	_pours.clear()
+	_carried.clear()
 	_pellets.clear()
 	_rings.clear()
 	_blooms.clear()
@@ -229,19 +278,20 @@ func clear_pours() -> void:
 	_swirl = 0.0
 
 
-func _pour_spot(index : int) -> Vector2:
-	return POUR_SPOTS[index % POUR_SPOTS.size()]
-
-
 func _step_pours(delta : float) -> void:
-	var index : int = 0
+	for id : int in _carried:
+		var sack : Dictionary = _carried[id]
+		if sack.follow and delta > 0.0:
+			var before : Vector2 = sack.at
+			sack.at = (sack.at as Vector2).lerp(sack.target, minf(1.0, CARRY_FOLLOW * delta))
+			sack.velocity = (sack.at - before) / delta
 	for id : int in _pours:
 		var pour : Array = _pours[id]
-		pour[1] += PELLETS_PER_SECOND * delta
+		var sack : Dictionary = _carried[id]
+		pour[1] += PELLETS_PER_SECOND * (1.0 + _shake(sack)) * delta
 		while pour[1] >= 1.0:
 			pour[1] -= 1.0
-			_spawn_pellet(_pour_spot(index), pour[0])
-		index += 1
+			_spawn_pellet(sack)
 	for i : int in range(_pellets.size() - 1, -1, -1):
 		var pellet : Array = _pellets[i]
 		pellet[1].y += PELLET_GRAVITY * delta
@@ -322,11 +372,21 @@ func _from_unit(place : Vector2) -> Vector2:
 	return LIQUID_RECT.get_center() + place * LIQUID_RECT.size / 2.0
 
 
-## A pellet falls from the sack's mouth to a spot in the wort below it.
-func _spawn_pellet(spot : Vector2, color : Color) -> void:
-	var start : Vector2 = spot + LIFTED_SACK_MOUTH
+## 0 for a sack held still, up to 1 for one shaken hard.
+func _shake(sack : Dictionary) -> float:
+	return clampf(((sack.velocity as Vector2).length() - SHAKE_FROM) / SHAKE_RANGE, 0.0, 1.0)
+
+
+## A pellet falls from the sack's mouth into the wort below it; a shaken sack throws
+## it off along its own motion, scattered, so it may land anywhere or miss.
+func _spawn_pellet(sack : Dictionary) -> void:
+	var start : Vector2 = sack.at + LIFTED_SACK_MOUTH + Vector2(randf_range(-3, 3), 0)
 	var landing : float = LIQUID_RECT.position.y + randf_range(LANDING_DEPTH.x, LANDING_DEPTH.y)
-	_pellets.append([start + Vector2(randf_range(-3, 3), 0), Vector2(randf_range(-18, 18), randf_range(0, 30)), landing, color])
+	var shake : float = _shake(sack)
+	var throw : Vector2 = (sack.velocity as Vector2) * SHAKE_THROW * shake
+	throw += Vector2(randf_range(-1, 1), randf_range(-1, 0.5)) * SHAKE_SCATTER * shake
+	var velocity := Vector2(randf_range(-18, 18), randf_range(0, 30)) + throw
+	_pellets.append([start, velocity, landing, sack.color])
 
 
 func _land(at : Vector2, color : Color) -> void:
@@ -401,11 +461,15 @@ func _draw_rings() -> void:
 		draw_polyline(outline, (ring[2] as Color).lightened(0.5), 1.0)
 
 
-## The lifted sacks tilted over the mouth, the falling pellets and the sparkles of a
-## perfect addition rising out of the wort.
+## The carried sacks (jittering while shaken), the falling pellets and the sparkles of
+## a perfect addition rising out of the wort.
 func _draw_pours() -> void:
-	for index : int in _pours.size():
-		draw_texture(ART.sack_lifted, _pour_spot(index))
+	for id : int in _carried:
+		var sack : Dictionary = _carried[id]
+		var jitter : float = 0.0
+		if _shake(sack) > 0.0:
+			jitter = 1.0 if int(_clock * ANIMATION_FPS * 2.0) % 2 == 0 else -1.0
+		draw_texture(ART.sack_lifted, ((sack.at as Vector2) + Vector2(jitter, 0)).round())
 	for pellet : Array in _pellets:
 		draw_rect(Rect2((pellet[0] as Vector2).round(), PELLET_SIZE), pellet[3])
 	for sparkle_entry : Array in _sparkles:
