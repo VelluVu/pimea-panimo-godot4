@@ -20,7 +20,6 @@ const CONFIRM_CANCEL_TEXT : String = "Perutaanko keittopäivä? Raaka-aineet jä
 const CONFIRM_YES_TEXT : String = "Peru keitto"
 const CONFIRM_NO_TEXT : String = "Jatka"
 const RESULT_TEXT : String = "Laatu ×%.2f"
-const SACK_TEXT : String = "%d %s\n%d %s"
 const MASH_HINT_TEXT : String = "Pidä kattilan lämmitinnappia pohjassa, kunnes vesi on oikeassa lämmössä."
 const PADDLE_HINT_TEXT : String = "Vedä melaa paakkujen läpi, niin ne hajoavat."
 const BOIL_HINT_TEXT : String = "Pidä kattilan lämmitinnappia pohjassa, kunnes vierre on oikeassa lämmössä."
@@ -29,9 +28,19 @@ const BACKDROP_COLOR : Color = Color(0.03, 0.02, 0.04, 0.97)
 const KETTLE_POSITION : Vector2 = Vector2(170, 40)
 const HEAT_BUTTON_RECT : Rect2 = Rect2(260, 216, 100, 28)
 const THERMO_POSITION : Vector2 = Vector2(466, 40)
-const SACK_ROW_POSITION : Vector2 = Vector2(12, 306)
-const SACK_SIZE : Vector2 = Vector2(112, 40)
-const SACK_ROW_WIDTH : float = 500.0
+## The sacks stand in a column right beside the kettle.
+const SACK_COLUMN_POSITION : Vector2 = Vector2(KETTLE_POSITION.x - HopSackButton.SIZE.x - 8, 92)
+const SACK_GAP : int = 6
+## Pellet colours: the bittering hops darkest, the aroma hops brightest, like potions.
+const PELLET_COLORS : Dictionary = {
+	HopAddition.Kind.BITTERING: Color(0.2, 0.45, 0.16),
+	HopAddition.Kind.FLAVOR: Color(0.38, 0.7, 0.22),
+	HopAddition.Kind.AROMA: Color(0.62, 0.95, 0.32),
+	HopAddition.Kind.SPICE: Color(0.95, 0.56, 0.24),
+}
+const JUNIPER_COLOR : Color = Color(0.4, 0.42, 0.8)
+## Pellets in a tapped-in handful of spice.
+const SPICE_HANDFUL : int = 12
 const NEXT_BUTTON_RECT : Rect2 = Rect2(520, 318, 108, 28)
 const MALTS_BUTTON_RECT : Rect2 = Rect2(12, 318, 140, 28)
 const RESULT_LABEL_Y : float = 96.0
@@ -76,7 +85,7 @@ var _multiplier : float = BrewDayRules.NORMAL_MULTIPLIER
 var _button_heat : bool = false
 var _key_heat : bool = false
 var _sack_ids : Array[int] = []
-var _sack_buttons : Array[Button] = []
+var _sack_buttons : Array[HopSackButton] = []
 var _malts_added : bool = false
 var _foam_warned : bool = false
 var _flameout_shown : bool = false
@@ -93,7 +102,7 @@ var _malts_button : Button
 var _next_button : Button
 var _cancel_button : Button
 var _quick_button : Button
-var _sack_row : HBoxContainer
+var _sack_column : VBoxContainer
 var _result_label : Label
 var _popups : BrewDayPopups
 var _confirm : Panel
@@ -132,6 +141,7 @@ func open() -> void:
 
 func _close() -> void:
 	_set_sacks_released()
+	_kettle.clear_pours()
 	_popups.clear()
 	_confirm.hide()
 	hide()
@@ -174,7 +184,7 @@ func _start_mash() -> void:
 	_kettle.reset_paddle()
 	_malts_button.show()
 	_next_button.hide()
-	_sack_row.hide()
+	_sack_column.hide()
 	_result_label.hide()
 	_cancel_button.show()
 	_quick_button.show()
@@ -358,6 +368,7 @@ func _on_mark_resolved(mark : BoilMark) -> void:
 	var good : bool = mark.result == BoilMark.Result.FULL
 	if good:
 		GUISignals.brew_day_sound.emit(SOUND_MARK_HIT)
+		_kettle.sparkle(_pellet_color(mark.ingredient_id))
 	elif mark.result == BoilMark.Result.MISS:
 		GUISignals.brew_day_sound.emit(SOUND_MARK_MISS)
 	_popups.show_line(BrewDayLines.mark_line(mark), BrewDayPopups.GOOD_COLOR if good else BrewDayPopups.BAD_COLOR)
@@ -405,9 +416,22 @@ func _on_sack_key(index : int, pressed : bool) -> void:
 
 
 func _start_pour(id : int) -> void:
-	if float(_boil.sacks.get(id, 0.0)) > 0.0 and not _boil.is_pouring(id):
+	var has_some : bool = float(_boil.sacks.get(id, 0.0)) > 0.0
+	if has_some and not _boil.is_pouring(id):
 		GUISignals.brew_day_sound.emit(SOUND_PLOP)
+		if _plan.piece_ids.has(id):
+			_kettle.drop_handful(_pellet_color(id), SPICE_HANDFUL)
 	_boil.start_pour(id)
+
+
+## A sack's pellets take the colour of its first mark; juniper is its own blue.
+func _pellet_color(id : int) -> Color:
+	if id == BrewDayLines.JUNIPER_ID:
+		return JUNIPER_COLOR
+	for mark : BoilMark in _plan.marks:
+		if mark.ingredient_id == id:
+			return PELLET_COLORS.get(mark.kind, PELLET_COLORS[HopAddition.Kind.FLAVOR])
+	return PELLET_COLORS[HopAddition.Kind.FLAVOR]
 
 
 func _set_sacks_released() -> void:
@@ -418,39 +442,48 @@ func _set_sacks_released() -> void:
 
 
 func _build_sacks() -> void:
-	for button : Button in _sack_buttons:
+	for button : HopSackButton in _sack_buttons:
 		button.queue_free()
 	_sack_buttons.clear()
 	_sack_ids = _plan.sack_ids()
-	var width : float = minf(SACK_SIZE.x, SACK_ROW_WIDTH / maxi(_sack_ids.size(), 1) - 4.0)
 	for i : int in _sack_ids.size():
 		var id : int = _sack_ids[i]
-		var button := Button.new()
-		button.custom_minimum_size = Vector2(width, SACK_SIZE.y)
-		button.clip_text = true
-		button.focus_mode = Control.FOCUS_NONE
+		var button := HopSackButton.new()
+		button.key_number = i + 1
+		button.sack_name = tr(String(_plan.names.get(id, ""))).get_slice("-", 0)
+		button.pellet_color = _pellet_color(id)
 		button.button_down.connect(func() -> void:
 			if _stage == Stage.BOIL:
 				_start_pour(id))
 		button.button_up.connect(func() -> void:
 			if _boil != null:
 				_boil.stop_pour(id))
-		_sack_row.add_child(button)
+		_sack_column.add_child(button)
 		_sack_buttons.append(button)
-	_sack_row.show()
+	_sack_column.show()
 	_refresh_sacks()
 
 
+## The sacks' fill and text, and the kettle's pours: a sack pours while it is held and
+## still has something in it.
 func _refresh_sacks() -> void:
 	if _boil == null:
 		return
+	var totals : Dictionary = {}
+	for mark : BoilMark in _plan.marks:
+		totals[mark.ingredient_id] = int(totals.get(mark.ingredient_id, 0)) + mark.grams
 	for i : int in _sack_buttons.size():
 		var id : int = _sack_ids[i]
+		var left : float = float(_boil.sacks.get(id, 0.0))
 		var unit : String = StringContainer.KPL if _plan.piece_ids.has(id) else StringContainer.G
-		var name_text : String = tr(String(_plan.names.get(id, ""))).get_slice("-", 0)
-		_sack_buttons[i].text = tr(SACK_TEXT) % [i + 1, name_text, roundi(_boil.sacks.get(id, 0.0)), tr(unit)]
+		var button : HopSackButton = _sack_buttons[i]
+		button.amount_text = "%d %s" % [roundi(left), tr(unit)]
+		button.fill = left / maxf(1.0, float(totals.get(id, 1)))
+		var pouring : bool = _boil.is_pouring(id) and left > 0.0
+		button.lifted = pouring
+		_kettle.set_pouring(id, pouring, button.pellet_color)
 		if _stage == Stage.BOIL:
-			_sack_buttons[i].disabled = float(_boil.sacks.get(id, 0.0)) <= 0.0 and not _boil.is_pouring(id)
+			button.disabled = left <= 0.0 and not _boil.is_pouring(id)
 
 
 func _build() -> void:
@@ -508,9 +541,10 @@ func _build() -> void:
 	_quick_button.pressed.connect(_on_quick_pressed)
 	top_row.add_child(_quick_button)
 
-	_sack_row = HBoxContainer.new()
-	_sack_row.position = SACK_ROW_POSITION
-	add_child(_sack_row)
+	_sack_column = VBoxContainer.new()
+	_sack_column.position = SACK_COLUMN_POSITION
+	_sack_column.add_theme_constant_override("separation", SACK_GAP)
+	add_child(_sack_column)
 
 	_result_label = Label.new()
 	_result_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
