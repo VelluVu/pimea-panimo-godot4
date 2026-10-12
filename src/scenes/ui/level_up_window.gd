@@ -59,6 +59,9 @@ func _ready() -> void:
 	BrewerySignals.game_ended.connect(_on_game_ended)
 	GUISignals.game_menu_requested.connect(_on_game_menu_requested)
 	GUISignals.game_menu_closed.connect(_on_game_menu_closed)
+	# The brew day holds the cards back the same way the game menu does.
+	GUISignals.brew_day_opened.connect(_on_game_menu_requested)
+	GUISignals.brew_day_closed.connect(_on_game_menu_closed)
 	PauseLock.hold_while_visible(self)
 	hide()
 
