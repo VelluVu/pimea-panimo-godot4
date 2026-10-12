@@ -10,6 +10,9 @@ var ingredient_id : int = -1
 var grams : int = 0
 var time : float = 0.0
 var result : Result = Result.OPEN
+## A flavour or aroma mark given a hop with no aroma (a bittering hop like Magnum):
+## even a perfect pour of it is only half a hit.
+var bittering_only : bool = false
 
 
 func _init(new_kind : HopAddition.Kind = HopAddition.Kind.BITTERING, id : int = -1, amount : int = 0) -> void:

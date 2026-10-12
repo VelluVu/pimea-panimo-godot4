@@ -62,3 +62,13 @@ func test_each_boil_gets_fresh_marks() -> void:
 	var second : BoilSession = plan.new_boil()
 	assert_eq(second.marks[0].result, BoilMark.Result.OPEN)
 	assert_eq(plan.marks[0].result, BoilMark.Result.OPEN)
+
+
+func test_a_fresh_boil_keeps_the_bittering_only_flag() -> void:
+	var style : BeerStyle = _style()
+	style.hop_additions.assign([HopAddition.Kind.BITTERING, HopAddition.Kind.AROMA])
+	var table : Dictionary = _table()
+	(table[HOP_ID] as HopData).flavor_profile = HopData.FlavorProfile.NONE
+	var plan : BrewDayPlan = BrewDayPlanScript.create(style, {HOP_ID: 40}, table, 8)
+	var boil : BoilSession = plan.new_boil()
+	assert_true(boil.marks[1].bittering_only)

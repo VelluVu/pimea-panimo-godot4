@@ -5372,6 +5372,10 @@ msgid "Palvelin ei hyväksynyt tulosta."
 msgstr "The server did not accept the score."
 
 #: src/ui/brew_day/brew_day_lines.gd
+msgid "%s ei ole aromihumala."
+msgstr "%s is not an aroma hop."
+
+#: src/ui/brew_day/brew_day_lines.gd
 msgid "Aromit poreilevat kuin taikajuoma."
 msgstr "The aromas bubble like a magic potion."
 

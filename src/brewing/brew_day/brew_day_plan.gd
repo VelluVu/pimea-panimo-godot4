@@ -63,6 +63,7 @@ func new_boil() -> BoilSession:
 	var fresh : Array[BoilMark] = []
 	for mark : BoilMark in marks:
 		var copy := BoilMark.new(mark.kind, mark.ingredient_id, mark.grams)
+		copy.bittering_only = mark.bittering_only
 		fresh.append(copy)
 	var boil := BoilSession.new(fresh, piece_ids, burner_lag)
 	boil.gram_tolerance = gram_tolerance
