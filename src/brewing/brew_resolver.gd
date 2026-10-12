@@ -63,7 +63,7 @@ func compute_minimum_ingredients(beer_style : BeerStyle) -> Dictionary:
 	combo[beer_style.required_yeast_id] = 1
 
 	if beer_style.min_ibu > 0:
-		var hop_dose : Dictionary = RecipeSearch.find_hop_dose(_ingredients.all_hops(), beer_style.min_ibu, beer_style.max_ibu, beer_style.preferred_hop_profile)
+		var hop_dose : Dictionary = RecipeSearch.find_hop_dose(_ingredients.all_hops(), beer_style.min_ibu, beer_style.max_ibu, beer_style.preferred_hop_profile, beer_style.requires_aroma_hop)
 		if hop_dose.is_empty():
 			return {}
 		combo.merge(hop_dose)

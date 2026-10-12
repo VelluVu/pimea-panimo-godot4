@@ -105,8 +105,10 @@ const MAX_TARGET_ABOVE_MIN_IBU : float = 20.0
 ## A default recipe's hops, brewed the way a real brewer would: a small dose of the
 ## style's flavour hop plus the cheapest bittering hop (lowest price per alpha) to reach
 ## the IBU target. Only hops that need no reputation are picked for flavour, so the
-## recipe can always be bought; without one the recipe simply skips the flavour bonus.
-static func find_hop_dose(hops : Array[HopData], min_ibu : int, max_ibu : int, preferred_profile : HopData.FlavorProfile) -> Dictionary:
+## recipe can always be bought; without one the recipe simply skips the flavour bonus,
+## unless the style `needs_aroma`: then it takes the cheapest unlocked aroma hop of any
+## profile instead.
+static func find_hop_dose(hops : Array[HopData], min_ibu : int, max_ibu : int, preferred_profile : HopData.FlavorProfile, needs_aroma : bool = false) -> Dictionary:
 	var bittering : HopData = _cheapest_per_alpha(hops)
 	if bittering == null:
 		return {}
@@ -114,6 +116,10 @@ static func find_hop_dose(hops : Array[HopData], min_ibu : int, max_ibu : int, p
 	var dose : Dictionary = {}
 	var flavor_alpha : int = 0
 	var flavor : HopData = _cheapest_unlocked_with_profile(hops, preferred_profile)
+	if flavor == null and needs_aroma:
+		flavor = _cheapest_unlocked_aroma_hop(hops)
+	if flavor == null and needs_aroma:
+		return {}
 	if flavor != null:
 		dose[flavor.id] = FLAVOR_HOP_DOSE
 		flavor_alpha = flavor.alpha_acids * FLAVOR_HOP_DOSE
@@ -150,6 +156,16 @@ static func _cheapest_unlocked_with_profile(hops : Array[HopData], profile : Hop
 		if hop.flavor_profile != profile or hop.min_reputation > 0:
 			continue
 		if best == null or hop.base_price < best.base_price:
+			best = hop
+	return best
+
+
+static func _cheapest_unlocked_aroma_hop(hops : Array[HopData]) -> HopData:
+	var best : HopData = null
+	for hop in hops:
+		if hop.flavor_profile == HopData.FlavorProfile.NONE or hop.min_reputation > 0:
+			continue
+		if best == null or hop.base_price < best.base_price or (hop.base_price == best.base_price and hop.id < best.id):
 			best = hop
 	return best
 

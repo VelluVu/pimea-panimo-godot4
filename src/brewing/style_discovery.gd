@@ -25,6 +25,21 @@ func seed_from_meta() -> void:
 		ensure_default_recipe(brewery.resolver.get_beer_style(style), false)
 
 
+## The rules can change between builds: a default recipe that no longer brews its own
+## style (an IPA saved before IPAs needed an aroma hop) is worked out again. The
+## player's own recipes are left as they are.
+func refresh_default_recipes() -> void:
+	for recipe : BrewRecipe in brewery.saved_recipes:
+		if not recipe.is_default:
+			continue
+		var result : BrewResult = brewery.resolver.resolve_brew_style(recipe.ingredient_amounts)
+		if result != null and result.is_matched and result.beer_style.style == recipe.beer_style:
+			continue
+		var fresh : Dictionary = brewery.resolver.compute_minimum_ingredients(brewery.resolver.get_beer_style(recipe.beer_style))
+		if not fresh.is_empty():
+			recipe.ingredient_amounts = fresh
+
+
 func discover_style(style : BeerStyle.Style) -> void:
 	if brewery.discovered_styles.has(style):
 		return

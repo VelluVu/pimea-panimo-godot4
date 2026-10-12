@@ -48,6 +48,7 @@ func load_game() -> bool:
 		return false
 
 	BrewEngine.set_brewery(loaded)
+	StyleDiscovery.new(BrewEngine.current_brewery).refresh_default_recipes()
 	BrewEngine.current_brewery.emit_initial_values()
 	return true
 

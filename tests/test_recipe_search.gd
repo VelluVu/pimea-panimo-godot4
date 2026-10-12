@@ -114,6 +114,21 @@ func test_hop_dose_skips_a_flavour_hop_that_needs_reputation() -> void:
 	assert_false(RecipeSearchScript.find_hop_dose(hops, 20, 28, HopData.FlavorProfile.CITRUS).has(2))
 
 
+func test_a_style_needing_aroma_falls_back_to_any_unlocked_aroma_hop() -> void:
+	var locked := _hop(2, 5, 2, HopData.FlavorProfile.CITRUS)
+	locked.min_reputation = 15
+	var earthy := _hop(3, 5, 2, HopData.FlavorProfile.EARTHY)
+	var hops : Array[HopData] = [_hop(1, 16, 2), locked, earthy]
+	var dose : Dictionary = RecipeSearchScript.find_hop_dose(hops, 20, 28, HopData.FlavorProfile.CITRUS, true)
+	assert_true(dose.has(3), "an unlocked aroma hop stands in for the locked citrus one")
+	assert_false(dose.has(2))
+
+
+func test_a_style_needing_aroma_gets_no_dose_without_one() -> void:
+	var hops : Array[HopData] = [_hop(1, 16, 2)]
+	assert_eq(RecipeSearchScript.find_hop_dose(hops, 20, 28, HopData.FlavorProfile.CITRUS, true), {})
+
+
 func test_hop_dose_caps_the_target_for_a_wide_window() -> void:
 	# Centre of 40-200 is 120; the target is capped at 40 + 20 = 60.
 	var hops : Array[HopData] = [_hop(1, 10, 1)]
