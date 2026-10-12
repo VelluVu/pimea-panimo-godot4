@@ -4,7 +4,10 @@ extends RefCounted
 ## The boil: heat to a rolling boil and keep it there for the counted seconds while
 ## pouring the hop additions on their marks. Under BOIL_MIN the boil stops and so does
 ## the clock; over FOAM_FROM the foam rises, and a full kettle boils over. The hot break
-## and every hop pour make it foam harder, as they do in a real kettle.
+## and every hop pour make it foam harder, as they do in a real kettle. When the boil's
+## time is up the flame goes out for the hop stand (BoilSchedule): the burner no longer
+## answers, nothing boils over, the clock runs on, and it ends early once every mark is
+## done.
 ## Hold a sack to pour; the pour is judged on release: started in its window and within
 ## the gram tolerance is a full hit, one of the two a half, neither a miss.
 
@@ -14,9 +17,10 @@ signal boil_resumed()
 signal boiled_over()
 signal mark_resolved(mark : BoilMark)
 signal stray_pour(ingredient_id : int)
+signal hop_stand_started()
 signal boil_completed()
 
-enum Phase { RAMP, BOILING, DONE }
+enum Phase { RAMP, BOILING, HOP_STAND, DONE }
 
 const START_TEMPERATURE : float = 92.0
 const HEAT_RATE : float = 4.0
@@ -65,7 +69,7 @@ func _init(boil_marks : Array[BoilMark], piece_ids : Array[int] = [], burner_lag
 
 
 func set_heating(on : bool) -> void:
-	heat.heating = on
+	heat.heating = on and phase != Phase.HOP_STAND
 
 
 func is_boiling() -> bool:
@@ -84,7 +88,10 @@ func step(delta : float) -> void:
 	if phase == Phase.DONE:
 		return
 	heat.step(delta)
-	_step_foam(delta)
+	if phase == Phase.HOP_STAND:
+		foam = maxf(0.0, foam - FOAM_FALL * delta)
+	else:
+		_step_foam(delta)
 	for id : int in _pours:
 		var pour : Dictionary = _pours[id]
 		var grams : float = minf(pour.rate * delta, sacks[id])
@@ -95,6 +102,11 @@ func step(delta : float) -> void:
 			phase = Phase.BOILING
 			_boiling = true
 			boil_started.emit()
+		return
+	if phase == Phase.HOP_STAND:
+		counted += delta
+		_miss_passed_marks()
+		_try_finish()
 		return
 	if is_boiling() != _boiling:
 		_boiling = is_boiling()
@@ -107,11 +119,31 @@ func step(delta : float) -> void:
 	counted += delta
 	if is_in_band():
 		in_band_time += delta
+	_miss_passed_marks()
+	if counted >= BoilSchedule.BOIL_SECONDS:
+		phase = Phase.HOP_STAND
+		heat.heating = false
+		hop_stand_started.emit()
+		_try_finish()
+
+
+func _miss_passed_marks() -> void:
 	for mark : BoilMark in marks:
 		if mark.is_open() and counted > BoilSchedule.window_end(mark.kind, window_widen) + BoilSchedule.NEAR_MISS:
 			_resolve(mark, BoilMark.Result.MISS)
-	if counted >= BoilSchedule.end_time() and _pours.is_empty():
+
+
+## The stand ends when its time is up, or sooner once every mark is done; never in the
+## middle of a pour.
+func _try_finish() -> void:
+	if phase != Phase.HOP_STAND or not _pours.is_empty():
+		return
+	if counted >= BoilSchedule.end_time() or open_marks().is_empty():
 		_finish()
+
+
+func is_pouring_time() -> bool:
+	return phase == Phase.BOILING or phase == Phase.HOP_STAND
 
 
 func start_pour(id : int) -> void:
@@ -119,9 +151,9 @@ func start_pour(id : int) -> void:
 		return
 	var own : BoilMark = _nearest_open_mark(id)
 	# Before the boil starts every pour is early.
-	var timed : bool = phase == Phase.BOILING and own != null and BoilSchedule.in_window(own.kind, counted, window_widen)
+	var timed : bool = is_pouring_time() and own != null and BoilSchedule.in_window(own.kind, counted, window_widen)
 	var other : BoilMark = null
-	if own == null and phase == Phase.BOILING:
+	if own == null and is_pouring_time():
 		other = _open_mark_in_window()
 	if not _piece_ids.has(id):
 		foam += HOP_SURGE
@@ -144,13 +176,14 @@ func stop_pour(id : int) -> void:
 	var own : BoilMark = pour.own
 	var amount_right : bool = own != null and absf(pour.grams - own.grams) <= own.grams * gram_tolerance
 	_judge(own, pour.timed, amount_right, pour.other, id)
-	if phase == Phase.BOILING and counted >= BoilSchedule.end_time() and _pours.is_empty():
-		_finish()
+	_try_finish()
 
 
 ## Hop timing and boil control weigh the same; a boil with no marks is all control.
 func score() -> float:
-	var control : float = clampf(in_band_time / maxf(counted, 0.001) - boil_overs * BOIL_OVER_PENALTY, 0.0, 1.0)
+	# The hop stand is not boiling on purpose, so only the boil's own time counts.
+	var boil_time : float = minf(counted, BoilSchedule.BOIL_SECONDS)
+	var control : float = clampf(in_band_time / maxf(boil_time, 0.001) - boil_overs * BOIL_OVER_PENALTY, 0.0, 1.0)
 	if marks.is_empty():
 		return control
 	var points : float = 0.0

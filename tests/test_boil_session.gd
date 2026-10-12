@@ -55,6 +55,29 @@ func test_a_well_held_boil_with_no_marks_scores_high() -> void:
 	assert_gt(session.score(), 0.8)
 
 
+func test_the_hop_stand_takes_aroma_hops_after_the_boil() -> void:
+	var session : BoilSession = BoilSessionScript.new(_marks([[HopAddition.Kind.AROMA, HOP_ID, 10]]))
+	_until_counted(session, BoilSchedule.BOIL_SECONDS + 1.0)
+	assert_eq(session.phase, BoilSession.Phase.HOP_STAND)
+	session.set_heating(true)
+	assert_false(session.heat.heating, "the flame is out")
+	session.start_pour(HOP_ID)
+	for i : int in roundi(BoilSessionScript.POUR_SECONDS_AT_TARGET / STEP):
+		session.step(STEP)
+	session.stop_pour(HOP_ID)
+	assert_eq(session.marks[0].result, BoilMark.Result.FULL)
+	assert_eq(session.phase, BoilSession.Phase.DONE, "every mark done ends the stand early")
+
+
+func test_the_stand_ends_on_its_own_and_misses_what_is_left() -> void:
+	var session : BoilSession = BoilSessionScript.new(_marks([[HopAddition.Kind.AROMA, HOP_ID, 10]]))
+	_until_counted(session, BoilSchedule.BOIL_SECONDS + 0.1)
+	for i : int in roundi(BoilSchedule.HOP_STAND_SECONDS / STEP) + 5:
+		session.step(STEP)
+	assert_eq(session.phase, BoilSession.Phase.DONE)
+	assert_eq(session.marks[0].result, BoilMark.Result.MISS)
+
+
 func test_full_heat_boils_over() -> void:
 	var session : BoilSession = BoilSessionScript.new(_marks([]))
 	session.set_heating(true)
