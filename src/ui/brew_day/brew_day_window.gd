@@ -22,6 +22,7 @@ const CONFIRM_NO_TEXT : String = "Jatka"
 const RESULT_TEXT : String = "Laatu ×%.2f"
 const SACK_TEXT : String = "%d %s\n%d %s"
 const MASH_HINT_TEXT : String = "Pidä kattilan lämmitinnappia pohjassa, kunnes vesi on oikeassa lämmössä."
+const PADDLE_HINT_TEXT : String = "Vedä melaa paakkujen läpi, niin ne hajoavat."
 const BOIL_HINT_TEXT : String = "Pidä kattilan lämmitinnappia pohjassa, kunnes vierre on oikeassa lämmössä."
 
 const BACKDROP_COLOR : Color = Color(0.03, 0.02, 0.04, 0.97)
@@ -132,7 +133,12 @@ func _start_mash() -> void:
 	_malt_aroma_shown = false
 	_water_line_shown = false
 	_mash.clump_appeared.connect(_on_clump_appeared)
-	_mash.clump_broken.connect(func(_clump : MashClump) -> void: _popups.show_line(BrewDayLines.CLUMP_BROKEN_TEXT, BrewDayPopups.GOOD_COLOR))
+	_mash.clump_swiped.connect(_kettle.flash_clump)
+	_mash.clump_broken.connect(func(clump : MashClump) -> void:
+		_kettle.burst_clump(clump)
+		if _hint.text == PADDLE_HINT_TEXT:
+			_hint.hide()
+		_popups.show_line(BrewDayLines.CLUMP_BROKEN_TEXT, BrewDayPopups.GOOD_COLOR))
 	_mash.band_left.connect(_on_mash_band_left)
 	_mash.step_completed.connect(_on_step_completed)
 	_mash.mash_completed.connect(_on_mash_completed)
@@ -237,7 +243,8 @@ func _set_heating_inputs(button : bool, key : bool) -> void:
 		key = false
 	_button_heat = button
 	_key_heat = key
-	if button or key:
+	# The paddle hint stays until a clump breaks.
+	if (button or key) and _hint.text != PADDLE_HINT_TEXT:
 		_hint.hide()
 		if _stage == Stage.MASH and not _malts_added and not _water_line_shown:
 			_water_line_shown = true
@@ -269,6 +276,8 @@ func _on_malts_pressed() -> void:
 	_malts_added = true
 	_mash.add_malts()
 	_malts_button.hide()
+	_hint.text = PADDLE_HINT_TEXT
+	_hint.show()
 	_kettle.liquid_color = BeerColor.from_ebc(_plan.ebc).lerp(GRAIN_COLOR, MASH_CLOUD)
 	_popups.show_line(BrewDayLines.MALTS_IN_TEXT)
 
@@ -413,9 +422,9 @@ func _build() -> void:
 	_kettle = KettleView.new()
 	_kettle.position = KETTLE_POSITION
 	add_child(_kettle)
-	_kettle.paddle_moved.connect(func(at : Vector2) -> void:
+	_kettle.paddle_swept.connect(func(from : Vector2, to : Vector2) -> void:
 		if _mash != null and _stage != Stage.BOIL:
-			_mash.paddle_at(at))
+			_mash.paddle_swept(from, to))
 
 	_heat_button = _make_button(HEAT_BUTTON_TEXT, HEAT_BUTTON_RECT)
 	_heat_button.button_down.connect(func() -> void: _set_heating_inputs(true, _key_heat))

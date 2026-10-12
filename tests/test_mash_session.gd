@@ -120,3 +120,22 @@ func test_more_clumps_appear_later() -> void:
 	assert_eq(session.clumps.size(), 2)
 	_play_well(session, 30.0)
 	assert_gt(session.clumps.size(), 2)
+
+
+func test_a_paddle_swept_across_a_clump_swipes_it() -> void:
+	var session : MashSession = _session([65.0], 1)
+	session.add_malts()
+	var clump : MashClump = session.clumps[0]
+	var above : Vector2 = clump.position + Vector2(0, -40)
+	var below : Vector2 = clump.position + Vector2(0, 40)
+	# The blade crosses the clump although neither end is near it.
+	session.paddle_swept(above + Vector2(-30, 0), below + Vector2(30, 0))
+	session.paddle_swept(above + Vector2(-80, 0), below + Vector2(-80, 0))
+	assert_eq(clump.swipes_left, MashSessionScript.SWIPES_PER_CLUMP - 1)
+
+
+func test_clumps_spawn_inside_the_liquid() -> void:
+	var session : MashSession = _session([65.0], 5)
+	session.add_malts()
+	for clump : MashClump in session.clumps:
+		assert_true(Rect2(Vector2.ZERO, MashSessionScript.LIQUID_SIZE).has_point(clump.position))
