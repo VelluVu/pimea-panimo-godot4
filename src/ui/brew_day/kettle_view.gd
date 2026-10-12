@@ -1,8 +1,8 @@
 class_name KettleView
 extends Control
 
-## The brew day's kettle, drawn with placeholder shapes until the real sprites exist:
-## a round pot seen from the front and a little above, its oval mouth full of liquid,
+## The brew day's kettle: a round pot seen from the front and a little above (its sprite
+## in BrewDayArt), its oval mouth full of liquid,
 ## the clumps, the foam and the paddle. The paddle is a springy stick (PaddleBody):
 ## pressing on the liquid puts its blade under the pointer, and the shaft swings around
 ## over the far rim behind it. The blade breaks the clumps; the shaft only pushes them.
@@ -16,12 +16,10 @@ signal paddle_moved(before : PackedVector2Array, after : PackedVector2Array, bla
 ## The paddle hit a kettle wall; speed in pixels a second.
 signal paddle_knocked(speed : float)
 
-## The bounding box of the oval mouth; the liquid is the ellipse inside it.
+const ART : BrewDayArt = preload("res://src/resources/brew_day/brew_day_art.tres")
+## The bounding box of the oval mouth, the transparent hole in the kettle sprite; the
+## liquid is the ellipse inside it.
 const LIQUID_RECT : Rect2 = Rect2(Vector2(24, 44), MashSession.LIQUID_SIZE)
-const BODY_RECT : Rect2 = Rect2(12, 96, 256, 168)
-const BOTTOM_RECT : Rect2 = Rect2(12, 244, 256, 40)
-const RIM_WIDTH : float = 8.0
-const HANDLE_SIZE : Vector2 = Vector2(12, 28)
 const ELLIPSE_POINTS : int = 48
 ## The blade keeps a little inside the mouth.
 const PADDLE_MOUTH : Rect2 = Rect2(LIQUID_RECT.position + Vector2(4, 4), MashSession.LIQUID_SIZE - Vector2(8, 8))
@@ -29,17 +27,11 @@ const PADDLE_REST : Vector2 = Vector2(196, 120)
 ## Grabbing works a little outside the liquid too, at its edge.
 const GRAB_MARGIN : float = 10.0
 const SHAFT_WIDTH : float = 3.0
-const BLADE_WIDTH : float = 7.0
-const GRIP_SIZE : Vector2 = Vector2(6, 6)
-const CLUMP_RADIUS_PX : float = MashSession.CLUMP_RADIUS
 const WATER_COLOR : Color = Color(0.36, 0.45, 0.5)
-const BODY_COLOR : Color = Color(0.42, 0.44, 0.47)
-const BODY_SHADE : Color = Color(0.3, 0.31, 0.34)
-const RIM_COLOR : Color = Color(0.55, 0.57, 0.6)
-const CLUMP_COLOR : Color = Color(0.7, 0.55, 0.33)
 const CLUMP_LIGHT : Color = Color(0.85, 0.72, 0.48)
-const CLUMP_SHADE : Color = Color(0.42, 0.31, 0.18)
 const FLASH_COLOR : Color = Color(1, 0.97, 0.85)
+## A clump flashes by drawing its sprite brighter.
+const FLASH_MODULATE : Color = Color(1.8, 1.8, 1.6)
 const FOAM_COLOR : Color = Color(0.93, 0.89, 0.78)
 const PADDLE_COLOR : Color = Color(0.6, 0.42, 0.22)
 const PADDLE_SHADE : Color = Color(0.42, 0.28, 0.14)
@@ -53,7 +45,8 @@ const BURST_DOTS : int = 8
 const BURST_REACH : float = 16.0
 ## Where lifted sacks hang over the mouth, one spot per sack pouring at once.
 const POUR_SPOTS : Array[Vector2] = [Vector2(78, 4), Vector2(170, 4), Vector2(124, -4)]
-const LIFTED_SACK_SIZE : Vector2 = Vector2(26, 30)
+## Where the lifted sack sprite's mouth is, for the falling pellets.
+const LIFTED_SACK_MOUTH : Vector2 = Vector2(27, 33)
 const PELLETS_PER_SECOND : float = 30.0
 const PELLET_GRAVITY : float = 420.0
 const PELLET_SIZE : Vector2 = Vector2(2, 2)
@@ -129,7 +122,7 @@ var _sparkles : Array = []
 
 
 func _ready() -> void:
-	custom_minimum_size = BOTTOM_RECT.end + Vector2(HANDLE_SIZE.x, 0)
+	custom_minimum_size = ART.kettle.get_size()
 	size = custom_minimum_size
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	_paddle.knocked.connect(paddle_knocked.emit)
@@ -299,7 +292,7 @@ func _from_unit(place : Vector2) -> Vector2:
 
 ## A pellet falls from the sack's mouth to a spot in the wort below it.
 func _spawn_pellet(spot : Vector2, color : Color) -> void:
-	var start : Vector2 = spot + Vector2(LIFTED_SACK_SIZE.x * 0.7, LIFTED_SACK_SIZE.y)
+	var start : Vector2 = spot + LIFTED_SACK_MOUTH
 	var landing : float = LIQUID_RECT.position.y + randf_range(LANDING_DEPTH.x, LANDING_DEPTH.y)
 	_pellets.append([start + Vector2(randf_range(-3, 3), 0), Vector2(randf_range(-18, 18), randf_range(0, 30)), landing, color])
 
@@ -324,14 +317,7 @@ func _to_liquid(points : PackedVector2Array) -> PackedVector2Array:
 
 
 func _draw() -> void:
-	var handle_y : float = BODY_RECT.position.y + 50
-	draw_rect(Rect2(BODY_RECT.position.x - HANDLE_SIZE.x, handle_y, HANDLE_SIZE.x, HANDLE_SIZE.y), BODY_SHADE)
-	draw_rect(Rect2(BODY_RECT.end.x, handle_y, HANDLE_SIZE.x, HANDLE_SIZE.y), BODY_SHADE)
-	_fill_ellipse(_ellipse(BOTTOM_RECT), BODY_SHADE)
-	draw_rect(BODY_RECT, BODY_COLOR)
-	draw_rect(Rect2(BODY_RECT.end.x - 24, BODY_RECT.position.y, 24, BODY_RECT.size.y), BODY_SHADE)
-	_fill_ellipse(_ellipse(LIQUID_RECT.grow(RIM_WIDTH)), RIM_COLOR)
-	_fill_ellipse(_ellipse(LIQUID_RECT.grow(2)), BODY_SHADE)
+	draw_texture(ART.kettle, Vector2.ZERO)
 	_fill_ellipse(_ellipse(LIQUID_RECT), liquid_color)
 	_draw_trails()
 	_draw_blooms()
@@ -383,19 +369,11 @@ func _draw_rings() -> void:
 		draw_polyline(outline, (ring[2] as Color).lightened(0.5), 1.0)
 
 
-## The lifted sacks, tilted with their mouths down, the falling pellets and the
-## sparkles of a perfect addition rising out of the wort.
+## The lifted sacks tilted over the mouth, the falling pellets and the sparkles of a
+## perfect addition rising out of the wort.
 func _draw_pours() -> void:
-	var index : int = 0
-	for id : int in _pours:
-		var spot : Vector2 = _pour_spot(index)
-		draw_set_transform(spot + LIFTED_SACK_SIZE / 2.0, deg_to_rad(-35.0))
-		var body := Rect2(-LIFTED_SACK_SIZE / 2.0, LIFTED_SACK_SIZE)
-		draw_rect(body.grow(1), HopSackButton.TIE_COLOR)
-		draw_rect(body, HopSackButton.SACK_COLOR)
-		draw_rect(Rect2(body.position.x, body.end.y - 6, body.size.x, 6), _pours[id][0])
-		draw_set_transform(Vector2.ZERO)
-		index += 1
+	for index : int in _pours.size():
+		draw_texture(ART.sack_lifted, _pour_spot(index))
 	for pellet : Array in _pellets:
 		draw_rect(Rect2((pellet[0] as Vector2).round(), PELLET_SIZE), pellet[3])
 	for sparkle_entry : Array in _sparkles:
@@ -427,22 +405,18 @@ func _fill_ellipse(points : PackedVector2Array, color : Color) -> void:
 		draw_colored_polygon(points, color)
 
 
-## A lumpy blob of three circles; a hit one is smaller and paler, and shakes while it
-## flashes.
+## The clump sprite's first frame, or its second once hit; it shakes and brightens
+## while it flashes.
 func _draw_clump(clump : MashClump) -> void:
-	var at : Vector2 = LIQUID_RECT.position + clump.position
+	var frame_size := Vector2(ART.clump.get_height(), ART.clump.get_height())
+	var at : Vector2 = (LIQUID_RECT.position + clump.position - frame_size / 2.0).round()
 	var hit : bool = clump.swipes_left < MashSession.SWIPES_PER_CLUMP
-	var radius : float = roundf(CLUMP_RADIUS_PX * (0.65 if hit else 0.85))
 	var flashing : bool = _flashes.has(clump)
 	if flashing:
-		var frame : int = int(_clock * ANIMATION_FPS * 2.0)
-		at.x += 1.0 if frame % 2 == 0 else -1.0
-	var lumps : Array[Vector2] = [Vector2(-0.45, 0.1), Vector2(0.4, -0.15), Vector2(0.05, 0.35)]
-	for lump : Vector2 in lumps:
-		draw_circle((at + lump * radius + Vector2(1, 2)).round(), radius * 0.75, CLUMP_SHADE)
-	for lump : Vector2 in lumps:
-		draw_circle((at + lump * radius).round(), radius * 0.75, FLASH_COLOR if flashing else (CLUMP_LIGHT if hit else CLUMP_COLOR))
-	draw_rect(Rect2((at + Vector2(-radius * 0.4, -radius * 0.5)).round(), Vector2(2, 2)), CLUMP_LIGHT)
+		var shake : int = int(_clock * ANIMATION_FPS * 2.0)
+		at.x += 1.0 if shake % 2 == 0 else -1.0
+	var region := Rect2(Vector2(frame_size.x if hit else 0.0, 0.0), frame_size)
+	draw_texture_rect_region(ART.clump, Rect2(at, frame_size), region, FLASH_MODULATE if flashing else Color.WHITE)
 
 
 ## Grain bits fly out from a broken clump in steps, then blink out.
@@ -456,15 +430,22 @@ func _draw_bursts() -> void:
 			draw_rect(Rect2(at.round(), Vector2(2, 2)), CLUMP_LIGHT if i % 2 == 0 else FLASH_COLOR)
 
 
-## The bent shaft as a polyline, the blade at the tip wider, the grip a dark knob.
+## The bent shaft as a polyline; the blade and grip sprites turned along the stick.
 func _draw_paddle() -> void:
 	var points : PackedVector2Array = _paddle.points
-	draw_polyline(points, PADDLE_SHADE, SHAFT_WIDTH + 2.0)
-	draw_polyline(points, PADDLE_COLOR, SHAFT_WIDTH)
-	var blade : PackedVector2Array = points.slice(0, PaddleBody.BLADE_SEGMENTS + 1)
-	draw_polyline(blade, PADDLE_SHADE, BLADE_WIDTH + 2.0)
-	draw_polyline(blade, PADDLE_COLOR, BLADE_WIDTH)
-	draw_rect(Rect2(_paddle.handle() - GRIP_SIZE / 2.0, GRIP_SIZE), PADDLE_SHADE)
+	var shaft : PackedVector2Array = points.slice(PaddleBody.BLADE_SEGMENTS)
+	draw_polyline(shaft, PADDLE_SHADE, SHAFT_WIDTH + 2.0)
+	draw_polyline(shaft, PADDLE_COLOR, SHAFT_WIDTH)
+	var blade_end : Vector2 = points[PaddleBody.BLADE_SEGMENTS]
+	_draw_turned(ART.paddle_blade, (points[0] + blade_end) / 2.0, (points[0] - blade_end).angle())
+	var last : int = points.size() - 1
+	_draw_turned(ART.paddle_grip, points[last], (points[last] - points[last - 1]).angle())
+
+
+func _draw_turned(texture : Texture2D, center : Vector2, angle : float) -> void:
+	draw_set_transform(center.round(), angle)
+	draw_texture(texture, -texture.get_size() / 2.0)
+	draw_set_transform(Vector2.ZERO)
 
 
 func _draw_bubbles() -> void:

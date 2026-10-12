@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="BrewDayArt" format=3]
+
+[ext_resource type="Script" path="res://src/ui/brew_day/brew_day_art.gd" id="1_art"]
+[ext_resource type="Texture2D" path="res://assets/textures/brew_day/kettle.png" id="2_kettle"]
+[ext_resource type="Texture2D" path="res://assets/textures/brew_day/paddle_blade.png" id="3_blade"]
+[ext_resource type="Texture2D" path="res://assets/textures/brew_day/paddle_grip.png" id="4_grip"]
+[ext_resource type="Texture2D" path="res://assets/textures/brew_day/sack.png" id="5_sack"]
+[ext_resource type="Texture2D" path="res://assets/textures/brew_day/sack_lifted.png" id="6_lifted"]
+[ext_resource type="Texture2D" path="res://assets/textures/brew_day/clump.png" id="7_clump"]
+
+[resource]
+script = ExtResource("1_art")
+kettle = ExtResource("2_kettle")
+paddle_blade = ExtResource("3_blade")
+paddle_grip = ExtResource("4_grip")
+sack = ExtResource("5_sack")
+sack_lifted = ExtResource("6_lifted")
+clump = ExtResource("7_clump")
