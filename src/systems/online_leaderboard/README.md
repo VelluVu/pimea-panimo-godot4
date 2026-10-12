@@ -22,7 +22,8 @@ web export (Supabase allows cross-origin requests).
 
 Never let the key write the table. Enable row level security, allow `select` only, and
 insert through a `security definer` function that checks the score before storing it.
-This game's version is `dev/tools/leaderboard/demo_scores.sql`.
+This game has two boards: `dev/tools/leaderboard/demo_scores.sql` for the browser demo and
+`season_scores.sql` for the full game (hidden until `SEASON_BOARD_LIVE` in the wiring).
 
 ## Use it in a new project
 

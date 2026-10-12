@@ -126,7 +126,7 @@ def summary(args: argparse.Namespace) -> None:
             strategy, endings, sum(scores) / len(scores), scores[len(scores) // 2], 100 * ok / max(1, tried),
             [first_day_at(r, 60) for r in rs], [first_day_at(r, 100) for r in rs], [peak_rep(r) for r in rs], [r["final"]["day"] for r in rs]))
     if missing:
-        codes = {m: (Path(directory) / f"{m}.exit").read_text() if (Path(directory) / f"{m}.exit").exists() else "?" for m in missing}
+        codes = {m: (Path(args.dir) / f"{m}.exit").read_text() if (Path(args.dir) / f"{m}.exit").exists() else "?" for m in missing}
         print("runs without a report (crashed?), exit codes:", codes)
     print("errors:", errors.most_common(8) or "none")
 
