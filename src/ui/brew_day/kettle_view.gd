@@ -3,38 +3,28 @@ extends Control
 
 ## The brew day's kettle, drawn with placeholder shapes until the real sprites exist:
 ## the pot, the liquid seen from above, the clumps, the foam and the paddle. The paddle
-## hangs from a grip above the back rim and swings around it on a loose spring: dragging
-## pulls it toward the pointer, it overshoots and swings back, and it bounces off the
-## kettle walls. It also reaches in and out after the pointer, and its blade at the tip
-## is what breaks the clumps; the shaft only pushes them.
+## is a free, springy stick (PaddleBody): pressing on the liquid grabs its handle, which
+## chases the pointer while the blade end whips and bends behind it. Its blade breaks
+## the clumps; the shaft only pushes them.
 
-## The swing of one frame, in liquid pixels (see MashSession.paddle_swing).
-signal paddle_swung(pivot : Vector2, from_angle : float, to_angle : float, reach : Vector2, blade_length : float, angular_velocity : float)
-## The paddle hit a kettle wall; strength is its speed in radians a second.
-signal paddle_knocked(strength : float)
+## The stick moved this frame, in liquid pixels (see MashSession.paddle_moved).
+signal paddle_moved(before : PackedVector2Array, after : PackedVector2Array, blade_from : int, delta : float)
+## The paddle hit a kettle wall; speed in pixels a second.
+signal paddle_knocked(speed : float)
 
 const LIQUID_RECT : Rect2 = Rect2(Vector2(24, 12), MashSession.LIQUID_SIZE)
 const BODY_RECT : Rect2 = Rect2(12, 40, 256, 224)
 const RIM_RECT : Rect2 = Rect2(12, 112, 256, 12)
 const HANDLE_SIZE : Vector2 = Vector2(12, 28)
-const PADDLE_PIVOT : Vector2 = Vector2(140, -6)
-## Angles from straight down; positive swings to the right.
-const PADDLE_REST_ANGLE : float = deg_to_rad(38.0)
-const PADDLE_MAX_ANGLE : float = deg_to_rad(80.0)
-## A loose spring toward the pointer, damped little so it overshoots and wobbles.
-const PADDLE_SPRING : float = 140.0
-const PADDLE_DAMPING : float = 7.0
-const PADDLE_SUBSTEPS : int = 3
-const WALL_BOUNCE : float = 0.6
-const KNOCK_SOUND_SPEED : float = 2.5
-## How far the paddle reaches from the grip, following the pointer's distance.
-const PADDLE_REST_LENGTH : float = 80.0
-const PADDLE_MIN_LENGTH : float = 30.0
-const LENGTH_FOLLOW : float = 10.0
+## The stick stays a little inside the kettle mouth.
+const PADDLE_AREA : Rect2 = Rect2(Vector2(26, 14), MashSession.LIQUID_SIZE - Vector2(4, 4))
+const PADDLE_REST : Vector2 = Vector2(232, 24)
+const PADDLE_REST_DIRECTION : Vector2 = Vector2(-0.5, 1)
+## Grabbing works a little outside the liquid too, at its edge.
+const GRAB_MARGIN : float = 8.0
 const SHAFT_WIDTH : float = 3.0
 const BLADE_WIDTH : float = 7.0
-const BLADE_LENGTH : float = 22.0
-const GRIP_SIZE : Vector2 = Vector2(8, 6)
+const GRIP_SIZE : Vector2 = Vector2(6, 6)
 const CLUMP_RADIUS_PX : float = MashSession.CLUMP_RADIUS
 const WATER_COLOR : Color = Color(0.36, 0.45, 0.5)
 const BODY_COLOR : Color = Color(0.42, 0.44, 0.47)
@@ -63,12 +53,9 @@ var bubbling : bool = false
 ## Mirrors the thermometer needle's colour on the rim.
 var glow_color : Color = Color.TRANSPARENT
 
+var _paddle : PaddleBody = PaddleBody.new(PADDLE_AREA, PADDLE_REST, PADDLE_REST_DIRECTION)
 var _dragging : bool = false
-var _angle : float = PADDLE_REST_ANGLE
-var _angle_target : float = PADDLE_REST_ANGLE
-var _angular_velocity : float = 0.0
-var _length : float = PADDLE_REST_LENGTH
-var _length_target : float = PADDLE_REST_LENGTH
+var _target : Vector2 = PADDLE_REST
 var _clock : float = 0.0
 ## Clump -> seconds left of its hit flash.
 var _flashes : Dictionary = {}
@@ -80,20 +67,18 @@ func _ready() -> void:
 	custom_minimum_size = BODY_RECT.end + Vector2(HANDLE_SIZE.x, 0)
 	size = custom_minimum_size
 	mouse_filter = Control.MOUSE_FILTER_STOP
+	_paddle.knocked.connect(paddle_knocked.emit)
 
 
 func _process(delta : float) -> void:
 	if not is_visible_in_tree():
 		return
 	_clock += delta
-	var from_angle : float = _angle
-	_swing(delta)
-	_length = lerpf(_length, _length_target, minf(1.0, delta * LENGTH_FOLLOW))
-	# Only a held paddle stirs; swinging back to rest touches nothing.
+	var before : PackedVector2Array = _paddle.points.duplicate()
+	_paddle.step(delta, _target, _dragging)
+	# Only a held paddle stirs; drifting back to rest touches nothing.
 	if _dragging:
-		var reach : Vector2 = _reach()
-		if reach.y > reach.x:
-			paddle_swung.emit(PADDLE_PIVOT - LIQUID_RECT.position, from_angle, _angle, reach, BLADE_LENGTH, _angular_velocity)
+		paddle_moved.emit(_to_liquid(before), _to_liquid(_paddle.points), _paddle.blade_from(), delta)
 	for clump : MashClump in _flashes.keys():
 		_flashes[clump] -= delta
 		if _flashes[clump] <= 0.0:
@@ -108,26 +93,21 @@ func _process(delta : float) -> void:
 func _gui_input(event : InputEvent) -> void:
 	if event is InputEventMouseButton and (event as InputEventMouseButton).button_index == MOUSE_BUTTON_LEFT:
 		var button := event as InputEventMouseButton
-		if button.pressed and LIQUID_RECT.has_point(button.position):
+		if button.pressed and LIQUID_RECT.grow(GRAB_MARGIN).has_point(button.position):
 			_dragging = true
-			_aim_at(button.position)
+			_target = button.position
 		elif not button.pressed:
 			_dragging = false
-			_angle_target = PADDLE_REST_ANGLE
-			_length_target = PADDLE_REST_LENGTH
 		accept_event()
 	elif event is InputEventMouseMotion and _dragging:
-		_aim_at((event as InputEventMouseMotion).position)
+		_target = (event as InputEventMouseMotion).position
 		accept_event()
 
 
 func reset_paddle() -> void:
 	_dragging = false
-	_angle = PADDLE_REST_ANGLE
-	_angle_target = PADDLE_REST_ANGLE
-	_angular_velocity = 0.0
-	_length = PADDLE_REST_LENGTH
-	_length_target = PADDLE_REST_LENGTH
+	_target = PADDLE_REST
+	_paddle.reset()
 	_flashes.clear()
 	_bursts.clear()
 
@@ -141,60 +121,11 @@ func burst_clump(clump : MashClump) -> void:
 	_bursts.append([clump.position, BURST_SECONDS])
 
 
-func _aim_at(point : Vector2) -> void:
-	var offset : Vector2 = point - PADDLE_PIVOT
-	_angle_target = clampf(atan2(offset.x, offset.y), -PADDLE_MAX_ANGLE, PADDLE_MAX_ANGLE)
-	_length_target = maxf(PADDLE_MIN_LENGTH, offset.length())
-
-
-func _swing(delta : float) -> void:
-	var step : float = delta / PADDLE_SUBSTEPS
-	for i : int in PADDLE_SUBSTEPS:
-		var pull : float = PADDLE_SPRING * (_angle_target - _angle) - PADDLE_DAMPING * _angular_velocity
-		_angular_velocity += pull * step
-		_angle += _angular_velocity * step
-		if absf(_angle) > PADDLE_MAX_ANGLE:
-			_angle = signf(_angle) * PADDLE_MAX_ANGLE
-			if absf(_angular_velocity) >= KNOCK_SOUND_SPEED:
-				paddle_knocked.emit(absf(_angular_velocity))
-			_angular_velocity *= -WALL_BOUNCE
-
-
-## How far from the pivot the paddle enters the liquid and where its tip is: as far as
-## it reaches, but never through the far wall.
-func _reach() -> Vector2:
-	var blade : PackedVector2Array = _blade_in_liquid()
-	if blade.size() != 2:
-		return Vector2.ZERO
-	var enter : float = blade[0].distance_to(PADDLE_PIVOT)
-	var leave : float = blade[1].distance_to(PADDLE_PIVOT)
-	return Vector2(enter, clampf(_length, enter, leave))
-
-
-func _direction() -> Vector2:
-	return Vector2(sin(_angle), cos(_angle))
-
-
-## Where the paddle enters the liquid and where its tip stops at the far edge, or an
-## empty array when it misses the liquid.
-func _blade_in_liquid() -> PackedVector2Array:
-	var direction : Vector2 = _direction()
-	var enter : float = 0.0
-	var leave : float = INF
-	for axis : int in 2:
-		var low : float = LIQUID_RECT.position[axis]
-		var high : float = LIQUID_RECT.end[axis]
-		if absf(direction[axis]) < 0.00001:
-			if PADDLE_PIVOT[axis] < low or PADDLE_PIVOT[axis] > high:
-				return PackedVector2Array()
-			continue
-		var t1 : float = (low - PADDLE_PIVOT[axis]) / direction[axis]
-		var t2 : float = (high - PADDLE_PIVOT[axis]) / direction[axis]
-		enter = maxf(enter, minf(t1, t2))
-		leave = minf(leave, maxf(t1, t2))
-	if leave <= enter:
-		return PackedVector2Array()
-	return PackedVector2Array([PADDLE_PIVOT + direction * enter, PADDLE_PIVOT + direction * leave])
+func _to_liquid(points : PackedVector2Array) -> PackedVector2Array:
+	var moved := PackedVector2Array()
+	for point : Vector2 in points:
+		moved.append(point - LIQUID_RECT.position)
+	return moved
 
 
 func _draw() -> void:
@@ -250,16 +181,15 @@ func _draw_bursts() -> void:
 			draw_rect(Rect2(at.round(), Vector2(2, 2)), CLUMP_LIGHT if i % 2 == 0 else FLASH_COLOR)
 
 
+## The bent shaft as a polyline, the blade segments wider, the grip a dark knob.
 func _draw_paddle() -> void:
-	var direction : Vector2 = _direction()
-	var reach : Vector2 = _reach()
-	var tip : Vector2 = PADDLE_PIVOT + direction * (reach.y if reach.y > 0.0 else _length)
-	draw_line(PADDLE_PIVOT, tip, PADDLE_SHADE, SHAFT_WIDTH + 2.0)
-	draw_line(PADDLE_PIVOT, tip, PADDLE_COLOR, SHAFT_WIDTH)
-	var blade_start : Vector2 = tip - direction * minf(BLADE_LENGTH, tip.distance_to(PADDLE_PIVOT))
-	draw_line(blade_start, tip, PADDLE_SHADE, BLADE_WIDTH + 2.0)
-	draw_line(blade_start, tip, PADDLE_COLOR, BLADE_WIDTH)
-	draw_rect(Rect2(PADDLE_PIVOT - GRIP_SIZE / 2.0, GRIP_SIZE), PADDLE_SHADE)
+	var points : PackedVector2Array = _paddle.points
+	draw_polyline(points, PADDLE_SHADE, SHAFT_WIDTH + 2.0)
+	draw_polyline(points, PADDLE_COLOR, SHAFT_WIDTH)
+	var blade : PackedVector2Array = points.slice(_paddle.blade_from())
+	draw_polyline(blade, PADDLE_SHADE, BLADE_WIDTH + 2.0)
+	draw_polyline(blade, PADDLE_COLOR, BLADE_WIDTH)
+	draw_rect(Rect2(points[0] - GRIP_SIZE / 2.0, GRIP_SIZE), PADDLE_SHADE)
 
 
 func _draw_bubbles() -> void:

@@ -5,8 +5,8 @@ extends RefCounted
 ## then hold each step's temperature for its counted seconds. The clock starts with the
 ## malts and pauses while ramping to the next step. Clumps appear with the malts and a
 ## few more later; any left at the end cut the score. A clump breaks after a few hard
-## paddle swings through it; each hit knocks it away, a slow push only carries it along,
-## and the mash slowly swirls them around.
+## blows of the paddle's blade; each knocks it away, the shaft or a slow push only
+## carries it along, and the mash slowly swirls them around.
 
 signal malts_added()
 signal step_reached(index : int)
@@ -36,8 +36,10 @@ const LATE_CLUMPS_MAX : int = 2
 const LATE_CLUMP_EARLIEST : float = 2.0
 const LATE_CLUMP_LATEST : float = 8.0
 const SWIPES_PER_CLUMP : int = 3
-## A swing slower than this (radians a second) only pushes a clump along.
-const MIN_SWIPE_SPEED : float = 3.0
+## A blade slower than this (liquid pixels a second) only pushes a clump along.
+const MIN_SWIPE_SPEED : float = 280.0
+## In-between stick positions checked per frame, so a fast whip cannot skip a clump.
+const SWEEP_SAMPLES : int = 4
 ## Clump speeds in liquid pixels a second.
 const MAX_KNOCK_SPEED : float = 170.0
 const MAX_PUSH_SPEED : float = 60.0
@@ -136,38 +138,45 @@ func step(delta : float) -> void:
 				step_reached.emit(step_index)
 
 
-## The paddle turned from `from_angle` to `to_angle` around `pivot` (liquid pixels;
-## angles from straight down, positive to the right). In the liquid it covers distances
-## `reach.x` to `reach.y` from the pivot, the last `blade_length` of it being the blade.
-## Clumps in the swept arc are hit by a fast swing of the blade; the shaft and a slow
-## swing only push them. Checking the whole arc means a fast swing cannot jump over a
-## clump between frames.
-func paddle_swing(pivot : Vector2, from_angle : float, to_angle : float, reach : Vector2, blade_length : float, angular_velocity : float) -> void:
-	var low : float = minf(from_angle, to_angle)
-	var high : float = maxf(from_angle, to_angle)
+## The paddle moved from `before` to `after` in `delta` seconds: two polylines of the
+## same points in liquid pixels, handle first. Segments from index `blade_from` on are
+## the blade. A clump the moving stick touches is hit if the blade there was fast
+## enough, otherwise pushed along at the stick's speed.
+func paddle_moved(before : PackedVector2Array, after : PackedVector2Array, blade_from : int, delta : float) -> void:
+	if delta <= 0.0 or before.size() != after.size() or after.size() < 2:
+		return
 	for clump : MashClump in clumps:
 		if clump.is_broken() or clump.cooldown > 0.0:
 			continue
-		var offset : Vector2 = clump.position - pivot
-		var distance : float = offset.length()
-		if distance < reach.x - CLUMP_RADIUS or distance > reach.y + CLUMP_RADIUS:
+		for sample : int in range(1, SWEEP_SAMPLES + 1):
+			if _touch(clump, before, after, float(sample) / SWEEP_SAMPLES, blade_from, delta):
+				break
+
+
+func _touch(clump : MashClump, before : PackedVector2Array, after : PackedVector2Array, progress : float, blade_from : int, delta : float) -> bool:
+	for k : int in after.size() - 1:
+		var a : Vector2 = before[k].lerp(after[k], progress)
+		var b : Vector2 = before[k + 1].lerp(after[k + 1], progress)
+		var closest : Vector2 = Geometry2D.get_closest_point_to_segment(clump.position, a, b)
+		if closest.distance_to(clump.position) > CLUMP_RADIUS:
 			continue
-		var angle : float = atan2(offset.x, offset.y)
-		var half_width : float = asin(minf(1.0, CLUMP_RADIUS / maxf(distance, CLUMP_RADIUS)))
-		if angle + half_width < low or angle - half_width > high:
-			continue
-		# The blade's own velocity where it meets the clump.
-		var blade_velocity : Vector2 = Vector2(offset.y, -offset.x) * angular_velocity
-		var on_blade : bool = distance >= reach.y - blade_length - CLUMP_RADIUS
-		if not on_blade or absf(angular_velocity) < MIN_SWIPE_SPEED:
-			clump.velocity = blade_velocity.limit_length(MAX_PUSH_SPEED)
-			continue
-		clump.velocity = blade_velocity.limit_length(MAX_KNOCK_SPEED)
-		clump.cooldown = HIT_COOLDOWN
-		clump.swipes_left -= 1
-		clump_swiped.emit(clump)
-		if clump.is_broken():
-			clump_broken.emit(clump)
+		var along : float = 0.0 if a.is_equal_approx(b) else a.distance_to(closest) / a.distance_to(b)
+		var velocity : Vector2 = (after[k] - before[k]).lerp(after[k + 1] - before[k + 1], along) / delta
+		_strike(clump, velocity, k >= blade_from)
+		return true
+	return false
+
+
+func _strike(clump : MashClump, velocity : Vector2, on_blade : bool) -> void:
+	if not on_blade or velocity.length() < MIN_SWIPE_SPEED:
+		clump.velocity = velocity.limit_length(MAX_PUSH_SPEED)
+		return
+	clump.velocity = velocity.limit_length(MAX_KNOCK_SPEED)
+	clump.cooldown = HIT_COOLDOWN
+	clump.swipes_left -= 1
+	clump_swiped.emit(clump)
+	if clump.is_broken():
+		clump_broken.emit(clump)
 
 
 func clumps_left() -> int:
