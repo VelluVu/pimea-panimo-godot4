@@ -393,6 +393,100 @@ def topping_out():
     return mix(*knocks, at(0.55, cheer)), 0.55
 
 
+# --- brew day ---------------------------------------------------------------------
+
+def brew_burner():
+    """The gas burner under the kettle: a fluttering low roar with a thin hiss on top."""
+    s = 2.0 + 0.05
+    t = _t(s)
+    roar = lowpass(noise(s, hold=2), 700) * (0.85 + 0.15 * np.sin(2 * np.pi * 11.0 * t))
+    hiss = highpass(noise(s), 3000) * 0.12
+    return _seamless_loop(roar + hiss), 0.35
+
+
+def brew_boil():
+    """A rolling boil: a low churn and a steady run of popping bubbles."""
+    s = 2.0 + 0.05
+    churn = lowpass(noise(s, hold=3), 500) * 0.35
+    bubbles = []
+    t = 0.0
+    while t < s - 0.1:
+        length = rng.uniform(0.03, 0.06)
+        f0 = rng.uniform(180, 520)
+        bubble = triangle(sweep(f0, f0 * 1.8, length), length) * perc(length, 40) * rng.uniform(0.3, 0.7)
+        bubbles.append(at(t, bubble))
+        t += rng.uniform(0.03, 0.09)
+    return _seamless_loop(mix(churn, *bubbles)[:int(s * RATE)]), 0.35
+
+
+def _grain_ticks(seconds, count):
+    return [at(rng.uniform(0.0, seconds - 0.01), noise(0.004) * rng.uniform(0.4, 0.9)) for _ in range(count)]
+
+
+def brew_malt_pour():
+    """Crushed malt sliding out of the sack into the water."""
+    s = 1.0
+    grain = highpass(noise(s, hold=2), 1500) * env(s, 0.05, 0.3) * 0.6
+    rustle = lowpass(noise(s, hold=4), 1200) * env(s, 0.1, 0.4) * 0.4
+    return mix(grain, rustle, *_grain_ticks(s, 40))[:int(s * RATE)], 0.45
+
+
+def brew_hop_pour():
+    """Hop pellets trickling from the sack, looped while the sack is held."""
+    s = 1.0 + 0.05
+    rustle = highpass(noise(s, hold=3), 1200) * 0.4
+    return _seamless_loop(mix(rustle, *_grain_ticks(s, 30))[:int(s * RATE)]), 0.3
+
+
+def brew_plop():
+    s = 0.18
+    drop = triangle(sweep(900, 250, s, 0.6), s) * perc(s, 22) * 0.8
+    splash = highpass(noise(s), 2500) * perc(s, 35) * 0.3
+    return mix(drop, splash), 0.45
+
+
+def brew_clump_hit():
+    """The paddle smacking a dough ball."""
+    s = 0.14
+    thud = lowpass(noise(s, hold=5), 600) * perc(s, 30)
+    squelch = lowpass(square(sweep(220, 110, s), s, 0.3), 1500) * perc(s, 40) * 0.3
+    return mix(thud, squelch), 0.5
+
+
+def brew_clump_break():
+    s = 0.35
+    squish = lowpass(noise(s, hold=3), 1400) * perc(s, 14) * 0.7
+    sparkle = melody(["E6", "G#6", "B6"], 0.06, "square", 0.25) * 0.35
+    return mix(squish, at(0.05, sparkle)), 0.5
+
+
+def brew_paddle_knock():
+    """Wood on the steel kettle wall: a knock and a short metallic ring."""
+    s = 0.25
+    knock = triangle(sweep(700, 500, s), s) * perc(s, 35)
+    ring = lowpass(square(1480, s, 0.5), 3000) * perc(s, 18) * 0.15
+    return mix(knock, ring), 0.45
+
+
+def brew_boil_over():
+    s = 1.1
+    hiss = highpass(noise(s), 2000) * env(s, 0.02, 0.6) * 0.6
+    crackle = noise(s) * (rng.uniform(0.0, 1.0, int(s * RATE)) > 0.97) * env(s, 0.01, 0.5) * 0.8
+    return mix(hiss, crackle), 0.5
+
+
+def brew_step_done():
+    return melody(["E5", "B5"], 0.09, "triangle"), 0.45
+
+
+def brew_result_good():
+    return melody(["C5", "E5", "G5", "C6"], 0.08, "square", 0.25, cutoff=4000.0), 0.5
+
+
+def brew_result_low():
+    return melody(["E4", "C4"], 0.16, "triangle"), 0.45
+
+
 RECIPES = {
     "footstep": footstep,
     "babble_1": lambda: babble(1),
@@ -424,6 +518,18 @@ RECIPES = {
     "day_coffee": coffee,
     "day_wife_carrying": wife_carrying,
     "day_topping_out": topping_out,
+    "brew_burner_loop": brew_burner,
+    "brew_boil_loop": brew_boil,
+    "brew_malt_pour": brew_malt_pour,
+    "brew_hop_pour_loop": brew_hop_pour,
+    "brew_plop": brew_plop,
+    "brew_clump_hit": brew_clump_hit,
+    "brew_clump_break": brew_clump_break,
+    "brew_paddle_knock": brew_paddle_knock,
+    "brew_boil_over": brew_boil_over,
+    "brew_step_done": brew_step_done,
+    "brew_result_good": brew_result_good,
+    "brew_result_low": brew_result_low,
 }
 
 

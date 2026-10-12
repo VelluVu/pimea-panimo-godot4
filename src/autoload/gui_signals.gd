@@ -36,6 +36,13 @@ signal brew_day_finished(quality_multiplier : float)
 signal brew_day_opened()
 @warning_ignore("unused_signal")
 signal brew_day_closed()
+## A one-shot brew day sound, named by BrewDayWindow.SOUND_*.
+@warning_ignore("unused_signal")
+signal brew_day_sound(sound : StringName)
+## The brew day's looping sounds, every frame while it is open: burner power and boil
+## strength 0..1, and whether a hop sack is pouring.
+@warning_ignore("unused_signal")
+signal brew_day_loops(burner : float, boil : float, pouring : bool)
 
 @warning_ignore("unused_signal")
 signal warehouse_door_clicked()

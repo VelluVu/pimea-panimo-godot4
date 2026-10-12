@@ -50,6 +50,22 @@ const POPUP_ORIGIN_DROP : float = 34.0
 ## Heating key; the sacks use the number keys.
 const HEAT_KEY : Key = KEY_SPACE
 
+## The one-shot sounds, played by the audio wiring through GUISignals.brew_day_sound.
+const SOUND_MALTS : StringName = &"malts"
+const SOUND_PLOP : StringName = &"plop"
+const SOUND_CLUMP_HIT : StringName = &"clump_hit"
+const SOUND_CLUMP_BOUNCE : StringName = &"clump_bounce"
+const SOUND_CLUMP_BREAK : StringName = &"clump_break"
+const SOUND_PADDLE_KNOCK : StringName = &"paddle_knock"
+const SOUND_STEP_DONE : StringName = &"step_done"
+const SOUND_BOIL_OVER : StringName = &"boil_over"
+const SOUND_MARK_HIT : StringName = &"mark_hit"
+const SOUND_MARK_MISS : StringName = &"mark_miss"
+const SOUND_RESULT_GOOD : StringName = &"result_good"
+const SOUND_RESULT_LOW : StringName = &"result_low"
+## The boil loop starts at this level and grows with the foam.
+const BOIL_SOUND_BASE : float = 0.55
+
 enum Stage { MASH, MASH_DONE, BOIL, RESULT }
 
 var _plan : BrewDayPlan
@@ -133,9 +149,13 @@ func _start_mash() -> void:
 	_malt_aroma_shown = false
 	_water_line_shown = false
 	_mash.clump_appeared.connect(_on_clump_appeared)
-	_mash.clump_swiped.connect(_kettle.flash_clump)
+	_mash.clump_swiped.connect(func(clump : MashClump) -> void:
+		_kettle.flash_clump(clump)
+		GUISignals.brew_day_sound.emit(SOUND_CLUMP_HIT))
+	_mash.clump_bounced.connect(func(_clump : MashClump) -> void: GUISignals.brew_day_sound.emit(SOUND_CLUMP_BOUNCE))
 	_mash.clump_broken.connect(func(clump : MashClump) -> void:
 		_kettle.burst_clump(clump)
+		GUISignals.brew_day_sound.emit(SOUND_CLUMP_BREAK)
 		if _hint.text == PADDLE_HINT_TEXT:
 			_hint.hide()
 		_popups.show_line(BrewDayLines.CLUMP_BROKEN_TEXT, BrewDayPopups.GOOD_COLOR))
@@ -166,7 +186,9 @@ func _start_boil() -> void:
 	_boil = _plan.new_boil()
 	_boil.boil_started.connect(func() -> void: _popups.show_line(BrewDayLines.BOILING_TEXT, BrewDayPopups.GOOD_COLOR))
 	_boil.boil_stopped.connect(func() -> void: _popups.show_line(BrewDayLines.BOIL_STOPPED_TEXT, BrewDayPopups.BAD_COLOR))
-	_boil.boiled_over.connect(func() -> void: _popups.show_line(BrewDayLines.pick(BrewDayLines.BOILED_OVER), BrewDayPopups.BAD_COLOR))
+	_boil.boiled_over.connect(func() -> void:
+		GUISignals.brew_day_sound.emit(SOUND_BOIL_OVER)
+		_popups.show_line(BrewDayLines.pick(BrewDayLines.BOILED_OVER), BrewDayPopups.BAD_COLOR))
 	_boil.mark_resolved.connect(_on_mark_resolved)
 	_boil.stray_pour.connect(func(_id : int) -> void: _popups.show_line(BrewDayLines.STRAY_POUR_TEXT, BrewDayPopups.BAD_COLOR))
 	_boil.boil_completed.connect(_on_boil_completed)
@@ -189,7 +211,9 @@ func _show_result() -> void:
 	_multiplier = BrewDayRules.multiplier(BrewDayRules.final_score(_mash.score(), _boil.score()))
 	_result_label.text = tr(RESULT_TEXT) % _multiplier
 	_result_label.show()
-	_popups.show_line(BrewDayLines.result_line(_multiplier), BrewDayPopups.GOOD_COLOR if _multiplier >= BrewDayRules.NORMAL_MULTIPLIER else BrewDayPopups.BAD_COLOR)
+	var good : bool = _multiplier >= BrewDayRules.NORMAL_MULTIPLIER
+	_popups.show_line(BrewDayLines.result_line(_multiplier), BrewDayPopups.GOOD_COLOR if good else BrewDayPopups.BAD_COLOR)
+	GUISignals.brew_day_sound.emit(SOUND_RESULT_GOOD if good else SOUND_RESULT_LOW)
 	for button : Button in _sack_buttons:
 		button.disabled = true
 	_heat_button.disabled = true
@@ -200,7 +224,10 @@ func _show_result() -> void:
 
 
 func _process(delta : float) -> void:
-	if not visible or _confirm.visible:
+	if not visible:
+		return
+	if _confirm.visible:
+		GUISignals.brew_day_loops.emit(0.0, 0.0, false)
 		return
 	var heating : bool = _button_heat or _key_heat
 	if _stage == Stage.MASH or _stage == Stage.MASH_DONE:
@@ -219,6 +246,20 @@ func _process(delta : float) -> void:
 	_kettle.glow_color = glow if _stage != Stage.RESULT else Color.TRANSPARENT
 	_heat_button.modulate = Color.WHITE.lerp(ThermoColumn.FLAME_COLOR, (_boil.heat.power if _boil != null else _mash.heat.power) * 0.6)
 	_refresh_sacks()
+	_emit_loops()
+
+
+func _emit_loops() -> void:
+	var burner : float = 0.0
+	var boil : float = 0.0
+	var pouring : bool = false
+	if _stage != Stage.RESULT:
+		burner = _boil.heat.power if _boil != null else _mash.heat.power
+	if _boil != null and _stage == Stage.BOIL:
+		if _boil.is_boiling():
+			boil = BOIL_SOUND_BASE + (1.0 - BOIL_SOUND_BASE) * clampf(_boil.foam, 0.0, 1.0)
+		pouring = _sack_ids.any(func(id : int) -> bool: return _boil.is_pouring(id))
+	GUISignals.brew_day_loops.emit(burner, boil, pouring)
 
 
 func _input(event : InputEvent) -> void:
@@ -275,6 +316,7 @@ func _boil_lines() -> void:
 func _on_malts_pressed() -> void:
 	_malts_added = true
 	_mash.add_malts()
+	GUISignals.brew_day_sound.emit(SOUND_MALTS)
 	_malts_button.hide()
 	_hint.text = PADDLE_HINT_TEXT
 	_hint.show()
@@ -298,6 +340,7 @@ func _on_mash_band_left(too_hot : bool) -> void:
 
 
 func _on_step_completed(index : int) -> void:
+	GUISignals.brew_day_sound.emit(SOUND_STEP_DONE)
 	if index < _mash.steps.size() - 1:
 		_popups.show_line(BrewDayLines.STEP_DONE_TEXT, BrewDayPopups.GOOD_COLOR)
 
@@ -313,6 +356,10 @@ func _on_mash_completed() -> void:
 
 func _on_mark_resolved(mark : BoilMark) -> void:
 	var good : bool = mark.result == BoilMark.Result.FULL
+	if good:
+		GUISignals.brew_day_sound.emit(SOUND_MARK_HIT)
+	elif mark.result == BoilMark.Result.MISS:
+		GUISignals.brew_day_sound.emit(SOUND_MARK_MISS)
 	_popups.show_line(BrewDayLines.mark_line(mark), BrewDayPopups.GOOD_COLOR if good else BrewDayPopups.BAD_COLOR)
 
 
@@ -352,9 +399,15 @@ func _on_sack_key(index : int, pressed : bool) -> void:
 	if _boil == null or _stage != Stage.BOIL or index >= _sack_ids.size():
 		return
 	if pressed:
-		_boil.start_pour(_sack_ids[index])
+		_start_pour(_sack_ids[index])
 	else:
 		_boil.stop_pour(_sack_ids[index])
+
+
+func _start_pour(id : int) -> void:
+	if float(_boil.sacks.get(id, 0.0)) > 0.0 and not _boil.is_pouring(id):
+		GUISignals.brew_day_sound.emit(SOUND_PLOP)
+	_boil.start_pour(id)
 
 
 func _set_sacks_released() -> void:
@@ -378,7 +431,7 @@ func _build_sacks() -> void:
 		button.focus_mode = Control.FOCUS_NONE
 		button.button_down.connect(func() -> void:
 			if _stage == Stage.BOIL:
-				_boil.start_pour(id))
+				_start_pour(id))
 		button.button_up.connect(func() -> void:
 			if _boil != null:
 				_boil.stop_pour(id))
@@ -422,9 +475,10 @@ func _build() -> void:
 	_kettle = KettleView.new()
 	_kettle.position = KETTLE_POSITION
 	add_child(_kettle)
-	_kettle.paddle_swept.connect(func(from : Vector2, to : Vector2) -> void:
+	_kettle.paddle_knocked.connect(func(_strength : float) -> void: GUISignals.brew_day_sound.emit(SOUND_PADDLE_KNOCK))
+	_kettle.paddle_swung.connect(func(pivot : Vector2, from_angle : float, to_angle : float, reach : Vector2, blade_length : float, angular_velocity : float) -> void:
 		if _mash != null and _stage != Stage.BOIL:
-			_mash.paddle_swept(from, to))
+			_mash.paddle_swing(pivot, from_angle, to_angle, reach, blade_length, angular_velocity))
 
 	_heat_button = _make_button(HEAT_BUTTON_TEXT, HEAT_BUTTON_RECT)
 	_heat_button.button_down.connect(func() -> void: _set_heating_inputs(true, _key_heat))

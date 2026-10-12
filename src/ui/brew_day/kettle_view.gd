@@ -3,11 +3,15 @@ extends Control
 
 ## The brew day's kettle, drawn with placeholder shapes until the real sprites exist:
 ## the pot, the liquid seen from above, the clumps, the foam and the paddle. The paddle
-## hangs from a grip above the back rim and swings around it: dragging turns it toward
-## the pointer, a little behind like a real sweep, and the part in the liquid is what
-## touches the clumps.
+## hangs from a grip above the back rim and swings around it on a loose spring: dragging
+## pulls it toward the pointer, it overshoots and swings back, and it bounces off the
+## kettle walls. It also reaches in and out after the pointer, and its blade at the tip
+## is what breaks the clumps; the shaft only pushes them.
 
-signal paddle_swept(from : Vector2, to : Vector2)
+## The swing of one frame, in liquid pixels (see MashSession.paddle_swing).
+signal paddle_swung(pivot : Vector2, from_angle : float, to_angle : float, reach : Vector2, blade_length : float, angular_velocity : float)
+## The paddle hit a kettle wall; strength is its speed in radians a second.
+signal paddle_knocked(strength : float)
 
 const LIQUID_RECT : Rect2 = Rect2(Vector2(24, 12), MashSession.LIQUID_SIZE)
 const BODY_RECT : Rect2 = Rect2(12, 40, 256, 224)
@@ -17,7 +21,16 @@ const PADDLE_PIVOT : Vector2 = Vector2(140, -6)
 ## Angles from straight down; positive swings to the right.
 const PADDLE_REST_ANGLE : float = deg_to_rad(38.0)
 const PADDLE_MAX_ANGLE : float = deg_to_rad(80.0)
-const PADDLE_FOLLOW : float = 12.0
+## A loose spring toward the pointer, damped little so it overshoots and wobbles.
+const PADDLE_SPRING : float = 140.0
+const PADDLE_DAMPING : float = 7.0
+const PADDLE_SUBSTEPS : int = 3
+const WALL_BOUNCE : float = 0.6
+const KNOCK_SOUND_SPEED : float = 2.5
+## How far the paddle reaches from the grip, following the pointer's distance.
+const PADDLE_REST_LENGTH : float = 80.0
+const PADDLE_MIN_LENGTH : float = 30.0
+const LENGTH_FOLLOW : float = 10.0
 const SHAFT_WIDTH : float = 3.0
 const BLADE_WIDTH : float = 7.0
 const BLADE_LENGTH : float = 22.0
@@ -53,6 +66,9 @@ var glow_color : Color = Color.TRANSPARENT
 var _dragging : bool = false
 var _angle : float = PADDLE_REST_ANGLE
 var _angle_target : float = PADDLE_REST_ANGLE
+var _angular_velocity : float = 0.0
+var _length : float = PADDLE_REST_LENGTH
+var _length_target : float = PADDLE_REST_LENGTH
 var _clock : float = 0.0
 ## Clump -> seconds left of its hit flash.
 var _flashes : Dictionary = {}
@@ -70,12 +86,14 @@ func _process(delta : float) -> void:
 	if not is_visible_in_tree():
 		return
 	_clock += delta
-	_angle = lerp_angle(_angle, _angle_target, minf(1.0, delta * PADDLE_FOLLOW))
+	var from_angle : float = _angle
+	_swing(delta)
+	_length = lerpf(_length, _length_target, minf(1.0, delta * LENGTH_FOLLOW))
 	# Only a held paddle stirs; swinging back to rest touches nothing.
 	if _dragging:
-		var blade : PackedVector2Array = _blade_in_liquid()
-		if blade.size() == 2:
-			paddle_swept.emit(blade[0] - LIQUID_RECT.position, blade[1] - LIQUID_RECT.position)
+		var reach : Vector2 = _reach()
+		if reach.y > reach.x:
+			paddle_swung.emit(PADDLE_PIVOT - LIQUID_RECT.position, from_angle, _angle, reach, BLADE_LENGTH, _angular_velocity)
 	for clump : MashClump in _flashes.keys():
 		_flashes[clump] -= delta
 		if _flashes[clump] <= 0.0:
@@ -96,6 +114,7 @@ func _gui_input(event : InputEvent) -> void:
 		elif not button.pressed:
 			_dragging = false
 			_angle_target = PADDLE_REST_ANGLE
+			_length_target = PADDLE_REST_LENGTH
 		accept_event()
 	elif event is InputEventMouseMotion and _dragging:
 		_aim_at((event as InputEventMouseMotion).position)
@@ -106,6 +125,9 @@ func reset_paddle() -> void:
 	_dragging = false
 	_angle = PADDLE_REST_ANGLE
 	_angle_target = PADDLE_REST_ANGLE
+	_angular_velocity = 0.0
+	_length = PADDLE_REST_LENGTH
+	_length_target = PADDLE_REST_LENGTH
 	_flashes.clear()
 	_bursts.clear()
 
@@ -122,6 +144,31 @@ func burst_clump(clump : MashClump) -> void:
 func _aim_at(point : Vector2) -> void:
 	var offset : Vector2 = point - PADDLE_PIVOT
 	_angle_target = clampf(atan2(offset.x, offset.y), -PADDLE_MAX_ANGLE, PADDLE_MAX_ANGLE)
+	_length_target = maxf(PADDLE_MIN_LENGTH, offset.length())
+
+
+func _swing(delta : float) -> void:
+	var step : float = delta / PADDLE_SUBSTEPS
+	for i : int in PADDLE_SUBSTEPS:
+		var pull : float = PADDLE_SPRING * (_angle_target - _angle) - PADDLE_DAMPING * _angular_velocity
+		_angular_velocity += pull * step
+		_angle += _angular_velocity * step
+		if absf(_angle) > PADDLE_MAX_ANGLE:
+			_angle = signf(_angle) * PADDLE_MAX_ANGLE
+			if absf(_angular_velocity) >= KNOCK_SOUND_SPEED:
+				paddle_knocked.emit(absf(_angular_velocity))
+			_angular_velocity *= -WALL_BOUNCE
+
+
+## How far from the pivot the paddle enters the liquid and where its tip is: as far as
+## it reaches, but never through the far wall.
+func _reach() -> Vector2:
+	var blade : PackedVector2Array = _blade_in_liquid()
+	if blade.size() != 2:
+		return Vector2.ZERO
+	var enter : float = blade[0].distance_to(PADDLE_PIVOT)
+	var leave : float = blade[1].distance_to(PADDLE_PIVOT)
+	return Vector2(enter, clampf(_length, enter, leave))
 
 
 func _direction() -> Vector2:
@@ -204,9 +251,9 @@ func _draw_bursts() -> void:
 
 
 func _draw_paddle() -> void:
-	var blade : PackedVector2Array = _blade_in_liquid()
-	var tip : Vector2 = blade[1] if blade.size() == 2 else PADDLE_PIVOT + _direction() * LIQUID_RECT.size.y
 	var direction : Vector2 = _direction()
+	var reach : Vector2 = _reach()
+	var tip : Vector2 = PADDLE_PIVOT + direction * (reach.y if reach.y > 0.0 else _length)
 	draw_line(PADDLE_PIVOT, tip, PADDLE_SHADE, SHAFT_WIDTH + 2.0)
 	draw_line(PADDLE_PIVOT, tip, PADDLE_COLOR, SHAFT_WIDTH)
 	var blade_start : Vector2 = tip - direction * minf(BLADE_LENGTH, tip.distance_to(PADDLE_PIVOT))
