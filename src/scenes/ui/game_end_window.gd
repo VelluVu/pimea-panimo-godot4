@@ -40,6 +40,7 @@ const MENU_BUTTON_TEXT : String = "Valikkoon"
 @onready var breakdown_label : Label = %BreakdownLabel
 @onready var result_label : Label = %ResultLabel
 @onready var note_label : Label = %NoteLabel
+@onready var online_score_panel : OnlineScorePanel = %OnlineScorePanel
 @onready var close_button : Button = %CloseButton
 
 ## Set per ending: the close button continues the run or opens the game menu.
@@ -93,10 +94,11 @@ func _show_score(brewery : Brewery, ending_type : String) -> void:
 	var on_record : bool = not brewery.has_continued_past_survival
 	breakdown_label.visible = on_record
 	result_label.visible = on_record
+	var entry : Dictionary = RunScore.entry_for(brewery, ending_type)
+	online_score_panel.show_for(entry, on_record)
 	if not on_record:
 		return
 
-	var entry : Dictionary = RunScore.entry_for(brewery, ending_type)
 	breakdown_label.text = LeaderboardText.breakdown(entry)
 	var rank : int = LeaderboardManager.get_rank(entry["score"])
 	var lines : PackedStringArray = [tr(RANK_FORMAT) % rank]
