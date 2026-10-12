@@ -16,4 +16,7 @@ reputation_change = 3
 peak_days = 7
 shelf_life_days = 40
 aging_factor = 0.01
+mash_steps = Array[int]([65])
+mash_band = 2.0
+hop_additions = Array[int]([0])
 metadata/_custom_type_script = "uid://qpqfdi1wacne"

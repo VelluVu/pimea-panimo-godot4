@@ -18,10 +18,12 @@ func _init(owner : Brewery) -> void:
 
 func connect_signals() -> void:
 	GUISignals.start_brewing.connect(start_brew)
+	GUISignals.brew_day_finished.connect(start_brew)
 
 
 func disconnect_signals() -> void:
 	GUISignals.start_brewing.disconnect(start_brew)
+	GUISignals.brew_day_finished.disconnect(start_brew)
 
 
 ## Bottling always costs something: part of the raw yield is lost
@@ -40,7 +42,8 @@ func apply_bottling_costs(raw_yield : int) -> Dictionary:
 	}
 
 
-func start_brew() -> void:
+## `quality_multiplier` is what the brew day earned, see BrewDayRules.
+func start_brew(quality_multiplier : float = BrewDayRules.NORMAL_MULTIPLIER) -> void:
 	if brewery.brew_preparation.selected_contents.is_empty():
 		print(StringContainer.TABLE_EMPTY_ERROR)
 		return
@@ -61,7 +64,7 @@ func start_brew() -> void:
 	var new_batch := BrewBatch.new()
 	new_batch.beer_style = brew_report.beer_style
 	new_batch.amount_bottles = effective_yield
-	new_batch.original_quality = brew_report.original_quality + brewery.stats.total(PerkStats.QUALITY_BONUS)
+	new_batch.original_quality = snappedf((brew_report.original_quality + brewery.stats.total(PerkStats.QUALITY_BONUS)) * quality_multiplier, BrewResolver.QUALITY_PRECISION)
 	new_batch.current_quality = new_batch.original_quality
 	new_batch.final_ebc = brew_report.final_ebc
 	new_batch.final_ibu = brew_report.final_ibu

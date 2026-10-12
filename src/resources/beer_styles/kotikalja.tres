@@ -13,4 +13,7 @@ max_ebc = 4
 reputation_change = -1
 shelf_life_days = 40
 aging_factor = 0.01
+mash_steps = Array[int]([65])
+mash_band = 4.0
+hop_additions = Array[int]([])
 metadata/_custom_type_script = "uid://qpqfdi1wacne"

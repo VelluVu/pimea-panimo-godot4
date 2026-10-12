@@ -1,0 +1,69 @@
+class_name BrewDayPopups
+extends Control
+
+## The brew day's humour lines: each rises from the kettle mouth to the left, up or
+## right, then blinks out. Lines closer together than MIN_GAP wait their turn.
+
+const RISE : float = 36.0
+const SECONDS : float = 1.6
+const MIN_GAP : float = 0.5
+const MAX_QUEUE : int = 3
+const GOOD_COLOR : Color = Color(0.55, 0.95, 0.5)
+const BAD_COLOR : Color = Color(0.98, 0.45, 0.38)
+const PLAIN_COLOR : Color = Color(0.95, 0.88, 0.7)
+const DIRECTIONS : Array[Vector2] = [Vector2(-1, -0.6), Vector2(0, -1), Vector2(1, -0.6)]
+
+## Where the lines start, in this control's space.
+var origin : Vector2 = Vector2.ZERO
+## The lines stay inside these left and right edges.
+var bounds : Rect2 = Rect2(0, 0, 640, 360)
+
+var _queue : Array = []
+var _wait : float = 0.0
+
+
+func _ready() -> void:
+	mouse_filter = Control.MOUSE_FILTER_IGNORE
+	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+
+
+func show_line(text : String, color : Color = PLAIN_COLOR) -> void:
+	if text.is_empty() or _queue.size() >= MAX_QUEUE:
+		return
+	_queue.append([text, color])
+
+
+func clear() -> void:
+	_queue.clear()
+	for child : Node in get_children():
+		child.queue_free()
+
+
+func _process(delta : float) -> void:
+	_wait -= delta
+	if _wait > 0.0 or _queue.is_empty():
+		return
+	var entry : Array = _queue.pop_front()
+	_spawn(entry[0], entry[1])
+	_wait = MIN_GAP
+
+
+func _spawn(text : String, color : Color) -> void:
+	var label := Label.new()
+	label.text = tr(text)
+	label.add_theme_color_override("font_color", color)
+	label.add_theme_color_override("font_outline_color", Color.BLACK)
+	label.add_theme_constant_override("outline_size", 4)
+	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(label)
+	var direction : Vector2 = DIRECTIONS[randi() % DIRECTIONS.size()]
+	var width : float = label.get_minimum_size().x
+	var start : Vector2 = origin - Vector2(width * (0.5 - direction.x * 0.5), 0)
+	var end : Vector2 = start + direction * RISE
+	var shift : float = clampf(end.x, bounds.position.x, bounds.end.x - width) - end.x
+	start.x += shift
+	end.x += shift
+	label.position = start.round()
+	var tween : Tween = label.create_tween()
+	tween.tween_property(label, "position", end.round(), SECONDS)
+	tween.tween_callback(label.queue_free)

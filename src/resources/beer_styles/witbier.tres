@@ -20,4 +20,7 @@ max_ibu = 18
 reputation_change = 3
 shelf_life_days = 15
 aging_factor = -0.04
+mash_steps = Array[int]([45, 63, 72])
+mash_band = 2.0
+hop_additions = Array[int]([0, 2])
 metadata/_custom_type_script = "uid://qpqfdi1wacne"

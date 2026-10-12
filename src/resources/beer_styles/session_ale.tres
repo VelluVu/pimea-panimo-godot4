@@ -17,4 +17,7 @@ min_ibu = 10
 max_ibu = 20
 shelf_life_days = 20
 aging_factor = -0.03
+mash_steps = Array[int]([65])
+mash_band = 2.0
+hop_additions = Array[int]([0, 2, 4])
 metadata/_custom_type_script = "uid://qpqfdi1wacne"

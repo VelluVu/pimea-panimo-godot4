@@ -21,4 +21,7 @@ peak_days = 15
 shelf_life_days = 55
 aging_factor = 0.08
 aged_price_bonus = 0.25
+mash_steps = Array[int]([68])
+mash_band = 2.0
+hop_additions = Array[int]([0])
 metadata/_custom_type_script = "uid://qpqfdi1wacne"

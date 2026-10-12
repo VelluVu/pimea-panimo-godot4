@@ -93,6 +93,15 @@ func is_alcohol_free() -> bool:
 ## an expensive cellar beer (Imperial Stout) pays most after long aging. 0 = never.
 @export var aged_price_bonus: float = 0.0
 
+@export_group("Keittopäivä")
+## Mash step temperatures in °C, in order; one step is a single infusion.
+@export var mash_steps: Array[int] = [65]
+## How far from a step's temperature the mash still counts as right, in °C.
+@export var mash_band: float = 2.0
+## The hop additions of the boil, see HopAddition. Spices get their own mark whenever
+## the recipe has any, so they are not listed here.
+@export var hop_additions: Array[HopAddition.Kind] = [HopAddition.Kind.BITTERING]
+
 
 ## Coarse, bucketed color hint for RecipeLibraryWindow's locked-style rows
 ## — bucketed on the style's own EBC midpoint so a player gets a real
