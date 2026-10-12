@@ -21,9 +21,10 @@ func test_bittering_opens_with_the_boil() -> void:
 
 
 func test_other_windows_are_tight_and_can_widen() -> void:
-	assert_true(BoilScheduleScript.in_window(HopAddition.Kind.FLAVOR, 5.7))
-	assert_false(BoilScheduleScript.in_window(HopAddition.Kind.FLAVOR, 5.8))
-	assert_true(BoilScheduleScript.in_window(HopAddition.Kind.FLAVOR, 5.8, 0.1))
+	var flavor : float = BoilScheduleScript.time_for(HopAddition.Kind.FLAVOR)
+	assert_true(BoilScheduleScript.in_window(HopAddition.Kind.FLAVOR, flavor + 0.7))
+	assert_false(BoilScheduleScript.in_window(HopAddition.Kind.FLAVOR, flavor + 0.8))
+	assert_true(BoilScheduleScript.in_window(HopAddition.Kind.FLAVOR, flavor + 0.8, 0.1))
 
 
 func test_the_dry_hop_is_not_in_the_boil() -> void:

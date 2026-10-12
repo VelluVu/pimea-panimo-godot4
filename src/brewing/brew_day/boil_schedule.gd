@@ -5,8 +5,11 @@ extends RefCounted
 ## After BOIL_SECONDS the flame goes out and a hop stand follows, as in a real brewery:
 ## the aroma hops go in then, with time to aim, and the clock no longer waits.
 
-const BOIL_SECONDS : float = 10.0
+const BOIL_SECONDS : float = 15.0
 const HOP_STAND_SECONDS : float = 3.0
+## The flavour and spice marks as shares of the boil, so its length is one number.
+const FLAVOR_AT : float = 0.5
+const SPICE_AT : float = 0.85
 const WINDOW_HALF : float = 0.75
 ## The bittering hops go in as the boil starts, with a longer window to react in.
 const BITTERING_WINDOW : float = 1.5
@@ -17,8 +20,8 @@ const NEAR_MISS : float = 1.5
 static func time_for(kind : HopAddition.Kind) -> float:
 	match kind:
 		HopAddition.Kind.BITTERING: return 0.0
-		HopAddition.Kind.FLAVOR: return 5.0
-		HopAddition.Kind.SPICE: return 8.5
+		HopAddition.Kind.FLAVOR: return BOIL_SECONDS * FLAVOR_AT
+		HopAddition.Kind.SPICE: return BOIL_SECONDS * SPICE_AT
 		HopAddition.Kind.AROMA: return BOIL_SECONDS
 		_: return -1.0
 
