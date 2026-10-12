@@ -27,23 +27,28 @@ func _play_well(session : MashSession, seconds : float) -> void:
 		elapsed += STEP
 
 
-const PIVOT : Vector2 = Vector2(116, -18)
-const REACH : Vector2 = Vector2(0, 200)
-const BLADE : float = 200.0
+## A three-point stick whose last segment is the blade.
+const BLADE_FROM : int = 1
+## Seconds the sweep takes: 60 px in 0.05 s is a whip, in 2 s a nudge.
+const FAST : float = 0.05
+const SLOW : float = 2.0
 
 
-## One swing across the clump, fast or slow.
-func _swing_through(session : MashSession, clump : MashClump, speed : float) -> void:
-	var offset : Vector2 = clump.position - PIVOT
-	var angle : float = atan2(offset.x, offset.y)
-	session.paddle_swing(PIVOT, angle - 0.3, angle + 0.3, REACH, BLADE, speed)
+func _stick(x : float, top : float, middle : float, tip : float) -> PackedVector2Array:
+	return PackedVector2Array([Vector2(x, top), Vector2(x, middle), Vector2(x, tip)])
+
+
+## Sweeps the stick sideways across the clump, its blade at the clump's height.
+func _swing_through(session : MashSession, clump : MashClump, delta : float) -> void:
+	var at : Vector2 = clump.position
+	session.paddle_moved(_stick(at.x - 30.0, at.y - 50.0, at.y - 20.0, at.y + 10.0), _stick(at.x + 30.0, at.y - 50.0, at.y - 20.0, at.y + 10.0), BLADE_FROM, delta)
 
 
 func _break_all_clumps(session : MashSession) -> void:
 	for clump : MashClump in session.clumps:
 		for i : int in MashSessionScript.SWIPES_PER_CLUMP:
 			clump.cooldown = 0.0
-			_swing_through(session, clump, 8.0)
+			_swing_through(session, clump, FAST)
 
 
 func test_the_water_starts_under_the_malt_marker() -> void:
@@ -119,10 +124,10 @@ func test_a_clump_takes_several_hard_swings() -> void:
 	var clump : MashClump = session.clumps[0]
 	for i : int in MashSessionScript.SWIPES_PER_CLUMP - 1:
 		clump.cooldown = 0.0
-		_swing_through(session, clump, 8.0)
+		_swing_through(session, clump, FAST)
 	assert_false(clump.is_broken())
 	clump.cooldown = 0.0
-	_swing_through(session, clump, 8.0)
+	_swing_through(session, clump, FAST)
 	assert_true(clump.is_broken())
 
 
@@ -130,7 +135,7 @@ func test_a_slow_swing_only_pushes() -> void:
 	var session : MashSession = _session([65.0], 1)
 	session.add_malts()
 	var clump : MashClump = session.clumps[0]
-	_swing_through(session, clump, 1.0)
+	_swing_through(session, clump, SLOW)
 	assert_eq(clump.swipes_left, MashSessionScript.SWIPES_PER_CLUMP)
 	assert_gt(clump.velocity.length(), 0.0)
 
@@ -140,8 +145,8 @@ func test_a_hit_knocks_the_clump_away_and_waits_before_the_next() -> void:
 	session.add_malts()
 	var clump : MashClump = session.clumps[0]
 	var before : Vector2 = clump.position
-	_swing_through(session, clump, 8.0)
-	_swing_through(session, clump, 8.0)
+	_swing_through(session, clump, FAST)
+	_swing_through(session, clump, FAST)
 	assert_eq(clump.swipes_left, MashSessionScript.SWIPES_PER_CLUMP - 1, "the cooldown stops a double hit")
 	for i : int in 10:
 		session.step(STEP)
@@ -152,21 +157,19 @@ func test_the_shaft_only_pushes() -> void:
 	var session : MashSession = _session([65.0], 1)
 	session.add_malts()
 	var clump : MashClump = session.clumps[0]
-	var offset : Vector2 = clump.position - PIVOT
-	var angle : float = atan2(offset.x, offset.y)
-	# The blade is well past the clump, so only the shaft crosses it.
-	session.paddle_swing(PIVOT, angle - 0.3, angle + 0.3, Vector2(0, offset.length() + 60.0), 20.0, 8.0)
+	var at : Vector2 = clump.position
+	# The blade is below the clump, so only the shaft crosses it.
+	session.paddle_moved(_stick(at.x - 30.0, at.y - 20.0, at.y + 30.0, at.y + 60.0), _stick(at.x + 30.0, at.y - 20.0, at.y + 30.0, at.y + 60.0), BLADE_FROM, FAST)
 	assert_eq(clump.swipes_left, MashSessionScript.SWIPES_PER_CLUMP)
 	assert_gt(clump.velocity.length(), 0.0)
 
 
-func test_a_swing_beside_the_clump_misses() -> void:
+func test_a_sweep_beside_the_clump_misses() -> void:
 	var session : MashSession = _session([65.0], 1)
 	session.add_malts()
 	var clump : MashClump = session.clumps[0]
-	var offset : Vector2 = clump.position - PIVOT
-	var angle : float = atan2(offset.x, offset.y)
-	session.paddle_swing(PIVOT, angle + 0.5, angle + 0.9, REACH, BLADE, 8.0)
+	var at : Vector2 = clump.position
+	session.paddle_moved(_stick(at.x + 40.0, at.y - 50.0, at.y - 20.0, at.y + 10.0), _stick(at.x + 90.0, at.y - 50.0, at.y - 20.0, at.y + 10.0), BLADE_FROM, FAST)
 	assert_eq(clump.swipes_left, MashSessionScript.SWIPES_PER_CLUMP)
 
 

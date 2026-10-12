@@ -475,10 +475,10 @@ func _build() -> void:
 	_kettle = KettleView.new()
 	_kettle.position = KETTLE_POSITION
 	add_child(_kettle)
-	_kettle.paddle_knocked.connect(func(_strength : float) -> void: GUISignals.brew_day_sound.emit(SOUND_PADDLE_KNOCK))
-	_kettle.paddle_swung.connect(func(pivot : Vector2, from_angle : float, to_angle : float, reach : Vector2, blade_length : float, angular_velocity : float) -> void:
+	_kettle.paddle_knocked.connect(func(_speed : float) -> void: GUISignals.brew_day_sound.emit(SOUND_PADDLE_KNOCK))
+	_kettle.paddle_moved.connect(func(before : PackedVector2Array, after : PackedVector2Array, blade_from : int, delta : float) -> void:
 		if _mash != null and _stage != Stage.BOIL:
-			_mash.paddle_swing(pivot, from_angle, to_angle, reach, blade_length, angular_velocity))
+			_mash.paddle_moved(before, after, blade_from, delta))
 
 	_heat_button = _make_button(HEAT_BUTTON_TEXT, HEAT_BUTTON_RECT)
 	_heat_button.button_down.connect(func() -> void: _set_heating_inputs(true, _key_heat))
