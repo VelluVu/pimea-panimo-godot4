@@ -8,6 +8,8 @@ extends Control
 ## over the far rim behind it. The blade breaks the clumps; the shaft only pushes them.
 ## In the boil a held sack hangs tilted over the mouth and its pellets drop into the
 ## wort, each landing with a splash ring and a coloured bloom that fades into the wort.
+## Stirring sets the wort swirling: the blooms ride the swirl around the kettle and
+## leave coloured stripes behind them, and the swirl dies down slowly.
 
 ## The stick moved this frame, in liquid pixels (see MashSession.paddle_moved).
 signal paddle_moved(before : PackedVector2Array, after : PackedVector2Array, blade_from : int, delta : float)
@@ -59,11 +61,32 @@ const PELLET_SIZE : Vector2 = Vector2(2, 2)
 const LANDING_DEPTH : Vector2 = Vector2(18, 62)
 const RING_SECONDS : float = 0.45
 const RING_SIZE : Vector2 = Vector2(18, 8)
-const BLOOM_SECONDS : float = 2.4
+const BLOOM_SECONDS : float = 6.0
 const BLOOM_SIZE : Vector2 = Vector2(40, 18)
 ## Colour steps a bloom takes back to the wort's colour, instead of fading.
-const BLOOM_STEPS : int = 4
-const MAX_BLOOMS : int = 14
+const BLOOM_STEPS : int = 6
+const MAX_BLOOMS : int = 20
+## Blooms land this far from the middle at most (share of the mouth), so they stay
+## inside it all the way round a swirl.
+const BLOOM_REACH : float = 0.62
+## How quickly the wort takes up the paddle's circling, and how slowly it lets go.
+const STIR_GAIN : float = 3.0
+const SWIRL_DRAG : float = 0.35
+const MAX_SWIRL : float = 4.0
+## A swirling bloom drops a stripe stamp this often, once the swirl is this fast.
+const TRAIL_INTERVAL : float = 0.04
+const TRAIL_MIN_SWIRL : float = 0.3
+const TRAIL_SECONDS : float = 5.0
+const TRAIL_STEPS : int = 5
+const TRAIL_SIZE : Vector2 = Vector2(4, 2)
+const MAX_TRAILS : int = 320
+## The middle of the swirl turns faster than its edge, which pulls blooms apart.
+const SWIRL_CENTER_SPEED : float = 1.6
+## The stripes drift slower than the floating blooms, so a bloom draws its stripe
+## behind it instead of covering it.
+const TRAIL_DRIFT : float = 0.35
+## Stripe stamps scatter across this share of a bloom's width.
+const TRAIL_SPREAD : float = 0.6
 ## Each landed pellet tints the whole wort this much toward its colour.
 const WORT_TINT_PER_PELLET : float = 0.0025
 const SPARKLE_SECONDS : float = 0.8
@@ -90,9 +113,17 @@ var _bursts : Array = []
 var _pours : Dictionary = {}
 ## [position, velocity, landing y, colour] of each falling pellet.
 var _pellets : Array = []
-## [position, seconds left, colour] of splash rings and of blooms.
+## [position, seconds left, colour] of splash rings.
 var _rings : Array = []
+## [place, seconds left, colour] of blooms and stripe stamps; the place is relative to
+## the mouth's middle in a space where the mouth is a unit circle, so a swirl just
+## turns it.
 var _blooms : Array = []
+var _trails : Array = []
+## How fast the wort turns, in radians a second; positive is clockwise on screen.
+var _swirl : float = 0.0
+var _trail_clock : float = 0.0
+var _last_tip : Vector2 = PADDLE_REST
 ## [colour, seconds left] of the sparkles of a perfect addition.
 var _sparkles : Array = []
 
@@ -113,6 +144,7 @@ func _process(delta : float) -> void:
 	# Only a held paddle stirs; drifting back to rest touches nothing.
 	if _dragging:
 		paddle_moved.emit(_to_liquid(before), _to_liquid(_paddle.points), PaddleBody.POINTS - 1 - PaddleBody.BLADE_SEGMENTS, delta)
+	_stir(delta)
 	for clump : MashClump in _flashes.keys():
 		_flashes[clump] -= delta
 		if _flashes[clump] <= 0.0:
@@ -157,7 +189,6 @@ func burst_clump(clump : MashClump) -> void:
 	_bursts.append([clump.position, BURST_SECONDS])
 
 
-## Handle first and blade last, as MashSession.paddle_moved expects, in liquid pixels.
 ## Starts or stops a sack pouring over the mouth; pellets keep coming while it pours.
 func set_pouring(id : int, pouring : bool, color : Color) -> void:
 	if not pouring:
@@ -185,7 +216,9 @@ func clear_pours() -> void:
 	_pellets.clear()
 	_rings.clear()
 	_blooms.clear()
+	_trails.clear()
 	_sparkles.clear()
+	_swirl = 0.0
 
 
 func _pour_spot(index : int) -> Vector2:
@@ -208,13 +241,60 @@ func _step_pours(delta : float) -> void:
 		if pellet[0].y >= pellet[2]:
 			_land(pellet[0], pellet[3])
 			_pellets.remove_at(i)
-	# Rings, blooms and sparkles all keep their seconds left at index 1.
-	for list : Array in [_rings, _blooms, _sparkles]:
+	_swirl_wort(delta)
+	# Rings, blooms, stripes and sparkles all keep their seconds left at index 1.
+	for list : Array in [_rings, _blooms, _trails, _sparkles]:
 		for entry : Array in list:
 			entry[1] -= delta
 	_rings = _rings.filter(func(ring : Array) -> bool: return ring[1] > 0.0)
 	_blooms = _blooms.filter(func(bloom : Array) -> bool: return bloom[1] > 0.0)
+	_trails = _trails.filter(func(trail : Array) -> bool: return trail[1] > 0.0)
 	_sparkles = _sparkles.filter(func(sparkle_entry : Array) -> bool: return sparkle_entry[1] > 0.0)
+
+
+## The held blade's circling around the middle drives the swirl; it slows on its own.
+func _stir(delta : float) -> void:
+	var tip : Vector2 = _paddle.points[0]
+	if _dragging and delta > 0.0:
+		var place : Vector2 = _to_unit(tip)
+		var motion : Vector2 = (_to_unit(tip) - _to_unit(_last_tip)) / delta
+		if place.length() > 0.15:
+			var circling : float = place.cross(motion) / place.length_squared()
+			_swirl = lerpf(_swirl, clampf(circling, -MAX_SWIRL, MAX_SWIRL), minf(1.0, STIR_GAIN * delta))
+	_swirl *= exp(-SWIRL_DRAG * delta)
+	_last_tip = tip
+
+
+## Turns the blooms and stripes with the wort; swirling blooms leave stripes.
+func _swirl_wort(delta : float) -> void:
+	for bloom : Array in _blooms:
+		bloom[0] = _turned(bloom[0], delta, 1.0)
+	for trail : Array in _trails:
+		trail[0] = _turned(trail[0], delta, TRAIL_DRIFT)
+	_trail_clock += delta
+	if absf(_swirl) < TRAIL_MIN_SWIRL or _trail_clock < TRAIL_INTERVAL:
+		return
+	_trail_clock = 0.0
+	var spread : Vector2 = BLOOM_SIZE / LIQUID_RECT.size * TRAIL_SPREAD
+	for bloom : Array in _blooms:
+		if _trails.size() >= MAX_TRAILS:
+			_trails.pop_front()
+		var scatter := Vector2(randf_range(-spread.x, spread.x), randf_range(-spread.y, spread.y))
+		_trails.append([bloom[0] + scatter, TRAIL_SECONDS, bloom[2]])
+
+
+## A place turned by the swirl, faster near the middle; `share` slows it further.
+func _turned(place : Vector2, delta : float, share : float) -> Vector2:
+	var speed : float = _swirl * lerpf(SWIRL_CENTER_SPEED, 1.0, clampf(place.length(), 0.0, 1.0))
+	return place.rotated(speed * share * delta)
+
+
+func _to_unit(point : Vector2) -> Vector2:
+	return (point - LIQUID_RECT.get_center()) / (LIQUID_RECT.size / 2.0)
+
+
+func _from_unit(place : Vector2) -> Vector2:
+	return LIQUID_RECT.get_center() + place * LIQUID_RECT.size / 2.0
 
 
 ## A pellet falls from the sack's mouth to a spot in the wort below it.
@@ -228,22 +308,14 @@ func _land(at : Vector2, color : Color) -> void:
 	if not _paddle.inside_mouth(at).is_equal_approx(at):
 		return
 	_rings.append([at, RING_SECONDS, color])
-	if _bloom_fits(at):
+	if _to_unit(at).length() <= BLOOM_REACH:
 		if _blooms.size() >= MAX_BLOOMS:
 			_blooms.pop_front()
-		_blooms.append([at, BLOOM_SECONDS, color])
+		_blooms.append([_to_unit(at), BLOOM_SECONDS, color])
 	liquid_color = liquid_color.lerp(color, WORT_TINT_PER_PELLET)
 
 
-## A bloom only spreads where all of it stays inside the mouth.
-func _bloom_fits(at : Vector2) -> bool:
-	var half : Vector2 = BLOOM_SIZE / 2.0
-	for edge : Vector2 in [Vector2(-half.x, 0), Vector2(half.x, 0), Vector2(0, -half.y), Vector2(0, half.y)]:
-		if not _paddle.inside_mouth(at + edge).is_equal_approx(at + edge):
-			return false
-	return true
-
-
+## Handle first and blade last, as MashSession.paddle_moved expects, in liquid pixels.
 func _to_liquid(points : PackedVector2Array) -> PackedVector2Array:
 	var moved := PackedVector2Array()
 	for i : int in range(points.size() - 1, -1, -1):
@@ -261,6 +333,7 @@ func _draw() -> void:
 	_fill_ellipse(_ellipse(LIQUID_RECT.grow(RIM_WIDTH)), RIM_COLOR)
 	_fill_ellipse(_ellipse(LIQUID_RECT.grow(2)), BODY_SHADE)
 	_fill_ellipse(_ellipse(LIQUID_RECT), liquid_color)
+	_draw_trails()
 	_draw_blooms()
 	if bubbling:
 		_draw_bubbles()
@@ -287,8 +360,17 @@ func _draw_blooms() -> void:
 		var stepped : float = floorf(progress * BLOOM_STEPS) / BLOOM_STEPS
 		var color : Color = (bloom[2] as Color).lerp(liquid_color, stepped)
 		var bloom_size : Vector2 = (BLOOM_SIZE * lerpf(0.35, 1.0, stepped)).round()
-		var rect := Rect2(bloom[0] - bloom_size / 2.0, bloom_size)
+		var rect := Rect2(_from_unit(bloom[0]) - bloom_size / 2.0, bloom_size)
 		_fill_ellipse(_ellipse(rect), color)
+
+
+## Stripe stamps step back to the wort's colour like the blooms do.
+func _draw_trails() -> void:
+	for trail : Array in _trails:
+		var progress : float = 1.0 - trail[1] / TRAIL_SECONDS
+		var stepped : float = floorf(progress * TRAIL_STEPS) / TRAIL_STEPS
+		var color : Color = (trail[2] as Color).lerp(liquid_color, stepped)
+		draw_rect(Rect2((_from_unit(trail[0]) - TRAIL_SIZE / 2.0).round(), TRAIL_SIZE), color)
 
 
 func _draw_rings() -> void:
