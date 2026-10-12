@@ -57,7 +57,7 @@ func _ready() -> void:
 	quit_button.visible = not OS.has_feature("web")
 	add_child(TouchTooltip.new())
 	add_child(PortraitNotice.new())
-	add_child(LanguageSwitch.new())
+	_add_language_switch()
 	# Typing commands needs a keyboard, and the button takes a corner of a small screen.
 	$DevConsole.visible = not DisplayServer.is_touchscreen_available()
 	if DisplayServer.is_touchscreen_available():
@@ -134,6 +134,18 @@ func _on_options_button_pressed() -> void:
 func _on_quit_button_pressed() -> void:
 	GUISignals.menu_button_pressed.emit()
 	get_tree().quit()
+
+
+## The windows reach the top corner, so the switch steps aside while one is open.
+func _add_language_switch() -> void:
+	var language_switch := LanguageSwitch.new()
+	add_child(language_switch)
+	var windows : Array[Control] = [$OptionsWindow, $LeaderboardWindow, $OlutoppiWindow, $AchievementsWindow]
+	var refresh := func() -> void:
+		language_switch.visible = windows.all(func(window : Control) -> bool: return not window.visible)
+	for window : Control in windows:
+		window.visibility_changed.connect(refresh)
+	refresh.call()
 
 
 ## Finger-sized buttons; 32 is twice the pixel font's size, so the text stays sharp.
