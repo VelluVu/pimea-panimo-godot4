@@ -2,11 +2,15 @@ class_name BrewDayPopups
 extends Control
 
 ## The brew day's humour lines: each rises from the kettle mouth to the left, up or
-## right, then blinks out. Lines closer together than MIN_GAP wait their turn.
+## right, then blinks out. Lines closer together than MIN_GAP wait their turn, and a
+## line starts a row lower while earlier ones are still rising.
 
 const RISE : float = 36.0
 const SECONDS : float = 1.6
-const MIN_GAP : float = 0.5
+const MIN_GAP : float = 0.7
+## Lines still rising push a new one down by this much, a few rows deep.
+const ROW_STEP : float = 14.0
+const ROWS : int = 3
 const MAX_QUEUE : int = 3
 const GOOD_COLOR : Color = Color(0.55, 0.95, 0.5)
 const BAD_COLOR : Color = Color(0.98, 0.45, 0.38)
@@ -58,7 +62,8 @@ func _spawn(text : String, color : Color) -> void:
 	add_child(label)
 	var direction : Vector2 = DIRECTIONS[randi() % DIRECTIONS.size()]
 	var width : float = label.get_minimum_size().x
-	var start : Vector2 = origin - Vector2(width * (0.5 - direction.x * 0.5), 0)
+	var row : int = (get_child_count() - 1) % ROWS
+	var start : Vector2 = origin - Vector2(width * (0.5 - direction.x * 0.5), -row * ROW_STEP)
 	var end : Vector2 = start + direction * RISE
 	var shift : float = clampf(end.x, bounds.position.x, bounds.end.x - width) - end.x
 	start.x += shift

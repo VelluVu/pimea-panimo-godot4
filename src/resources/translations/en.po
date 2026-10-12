@@ -5567,6 +5567,10 @@ msgstr "Quick brew"
 msgid "VALMIS"
 msgstr "DONE"
 
+#: src/ui/brew_day/brew_day_window.gd
+msgid "Vedä melaa paakkujen läpi, niin ne hajoavat."
+msgstr "Drag the paddle through the lumps to break them."
+
 #: src/ui/brew_day/thermo_column.gd
 msgid "AROMI"
 msgstr "AROMA"

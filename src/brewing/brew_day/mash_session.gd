@@ -32,9 +32,13 @@ const LATE_CLUMPS_MAX : int = 2
 const LATE_CLUMP_EARLIEST : float = 2.0
 const LATE_CLUMP_LATEST : float = 8.0
 const SWIPES_PER_CLUMP : int = 2
-const CLUMP_RADIUS : float = 0.1
+## The liquid seen from above, in pixels; clumps and the paddle live in this space.
+const LIQUID_SIZE : Vector2 = Vector2(232, 104)
+const CLUMP_RADIUS : float = 11.0
+## Clumps keep this far from the liquid's edges.
+const CLUMP_MARGIN : Vector2 = Vector2(24, 18)
 const CLUMP_PENALTY : float = 0.06
-const CLUMP_MIN_GAP : float = 0.22
+const CLUMP_MIN_GAP : float = 40.0
 ## Each step is entered once it is this close below its temperature.
 const STEP_REACHED_MARGIN : float = 0.5
 
@@ -115,18 +119,25 @@ func step(delta : float) -> void:
 				step_reached.emit(step_index)
 
 
-## Moves the paddle tip to `at` (liquid 0..1 space); passing through a clump swipes it.
-func paddle_at(at : Vector2) -> void:
+## The paddle's blade is the segment from `from` to `to` (liquid pixels); sweeping it
+## into a clump and out again swipes it.
+func paddle_swept(from : Vector2, to : Vector2) -> void:
 	for clump : MashClump in clumps:
 		if clump.is_broken():
 			continue
-		var inside : bool = at.distance_to(clump.position) <= CLUMP_RADIUS
+		var closest : Vector2 = Geometry2D.get_closest_point_to_segment(clump.position, from, to)
+		var inside : bool = closest.distance_to(clump.position) <= CLUMP_RADIUS
 		if clump.paddle_inside and not inside:
 			clump.swipes_left -= 1
 			clump_swiped.emit(clump)
 			if clump.is_broken():
 				clump_broken.emit(clump)
 		clump.paddle_inside = inside
+
+
+## The paddle touching one point only.
+func paddle_at(at : Vector2) -> void:
+	paddle_swept(at, at)
 
 
 func clumps_left() -> int:
@@ -171,7 +182,7 @@ func _hold(delta : float) -> void:
 func _spawn_clump() -> void:
 	var at : Vector2 = Vector2.ZERO
 	for attempt : int in 12:
-		at = Vector2(_rng.randf_range(0.15, 0.85), _rng.randf_range(0.25, 0.8))
+		at = Vector2(_rng.randf_range(CLUMP_MARGIN.x, LIQUID_SIZE.x - CLUMP_MARGIN.x), _rng.randf_range(CLUMP_MARGIN.y, LIQUID_SIZE.y - CLUMP_MARGIN.y)).round()
 		if clumps.all(func(clump : MashClump) -> bool: return clump.is_broken() or clump.position.distance_to(at) >= CLUMP_MIN_GAP):
 			break
 	var clump := MashClump.new(at, SWIPES_PER_CLUMP)

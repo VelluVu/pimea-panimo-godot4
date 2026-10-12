@@ -2,7 +2,8 @@ class_name MashClump
 extends RefCounted
 
 ## A dough ball in the mash. The paddle breaks it by passing through it: entering and
-## leaving again counts as one swipe. Positions are in the liquid's 0..1 space.
+## leaving again counts as one swipe. Positions are in liquid pixels, see
+## MashSession.LIQUID_SIZE.
 
 var position : Vector2 = Vector2.ZERO
 var swipes_left : int = 2
