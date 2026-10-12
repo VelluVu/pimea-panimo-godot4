@@ -47,6 +47,8 @@ const WRONG_SACK_TEXT : String = "Väärät humalat, mutta hyvät tuoksut."
 const SPICES_IN_TEXT : String = "Mausteet sisään, tuoksuupa joululle."
 const JUNIPER_IN_TEXT : String = "Katajaa! Esi-isät olisivat ylpeitä."
 const FLAMEOUT_TEXT : String = "Liekit pois, niin aromit jää."
+## A bittering hop poured at a flavour or aroma mark; %s is the hop's name.
+const NOT_AROMA_HOP_TEXT : String = "%s ei ole aromihumala."
 const RESULT_PERFECT_TEXT : String = "Täydellinen keittopäivä!"
 const RESULT_GOOD_TEXT : String = "Kelpo erä."
 const RESULT_LOW_TEXT : String = "No, juotavaa se on."

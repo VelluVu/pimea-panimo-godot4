@@ -86,6 +86,15 @@ func test_a_dose_too_small_to_split_drops_the_empty_marks() -> void:
 		assert_gt(mark.grams, 0)
 
 
+func test_a_bittering_hop_on_an_aroma_mark_is_flagged() -> void:
+	var table : Dictionary = _table()
+	(table[MAGNUM_ID] as HopData).flavor_profile = HopData.FlavorProfile.NONE
+	var marks : Array[BoilMark] = HopRolesScript.assign({MAGNUM_ID: 30}, table,
+		_kinds([HopAddition.Kind.BITTERING, HopAddition.Kind.AROMA]), HopData.FlavorProfile.CITRUS)
+	assert_false(marks[0].bittering_only, "bittering is its job")
+	assert_true(marks[1].bittering_only)
+
+
 func test_a_style_without_hop_marks_still_boils_its_hops() -> void:
 	var marks : Array[BoilMark] = HopRolesScript.assign({CASCADE_ID: 10}, _table(), _kinds([]), HopData.FlavorProfile.NONE)
 	assert_eq(marks.size(), 1)

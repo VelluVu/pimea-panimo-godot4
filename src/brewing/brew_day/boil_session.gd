@@ -182,7 +182,7 @@ func _step_foam(delta : float) -> void:
 func _judge(own : BoilMark, timed : bool, amount_right : bool, other : BoilMark, id : int) -> void:
 	if own != null:
 		if timed and amount_right:
-			_resolve(own, BoilMark.Result.FULL)
+			_resolve(own, BoilMark.Result.HALF if own.bittering_only else BoilMark.Result.FULL)
 		elif timed or amount_right:
 			_resolve(own, BoilMark.Result.HALF)
 		else:

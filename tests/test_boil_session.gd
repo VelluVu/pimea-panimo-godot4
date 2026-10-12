@@ -70,6 +70,15 @@ func test_a_timed_pour_of_the_right_amount_is_a_full_hit() -> void:
 	assert_eq(session.marks[0].result, BoilMark.Result.FULL)
 
 
+func test_a_bittering_hop_at_an_aroma_mark_is_at_best_half() -> void:
+	var marks : Array[BoilMark] = _marks([[HopAddition.Kind.FLAVOR, HOP_ID, 30]])
+	marks[0].bittering_only = true
+	var session : BoilSession = BoilSessionScript.new(marks)
+	_until_counted(session, BoilSchedule.time_for(HopAddition.Kind.FLAVOR) - 0.3)
+	_pour(session, HOP_ID, BoilSessionScript.POUR_SECONDS_AT_TARGET)
+	assert_eq(session.marks[0].result, BoilMark.Result.HALF)
+
+
 func test_the_wrong_amount_is_half() -> void:
 	var session : BoilSession = BoilSessionScript.new(_marks([[HopAddition.Kind.BITTERING, HOP_ID, 30]]))
 	_until_counted(session, 0.1)

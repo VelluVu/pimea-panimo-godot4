@@ -383,6 +383,9 @@ func _on_mash_completed() -> void:
 
 
 func _on_mark_resolved(mark : BoilMark) -> void:
+	if mark.bittering_only and mark.result != BoilMark.Result.MISS:
+		_popups.show_line(tr(BrewDayLines.NOT_AROMA_HOP_TEXT) % _sack_name(mark.ingredient_id), BrewDayPopups.BAD_COLOR)
+		return
 	var good : bool = mark.result == BoilMark.Result.FULL
 	if good:
 		GUISignals.brew_day_sound.emit(SOUND_MARK_HIT)
@@ -470,6 +473,11 @@ func _pour_from_carried(id : int, left : float) -> bool:
 	return over
 
 
+## The ingredient's name without the "-humala" ending, as the sacks show it.
+func _sack_name(id : int) -> String:
+	return tr(String(_plan.names.get(id, ""))).get_slice("-", 0)
+
+
 ## A sack's pellets take the colour of its first mark; juniper is its own blue.
 func _pellet_color(id : int) -> Color:
 	if id == BrewDayLines.JUNIPER_ID:
@@ -494,7 +502,7 @@ func _build_sacks() -> void:
 		var id : int = _sack_ids[i]
 		var button := HopSackButton.new()
 		button.key_number = i + 1
-		button.sack_name = tr(String(_plan.names.get(id, ""))).get_slice("-", 0)
+		button.sack_name = _sack_name(id)
 		button.pellet_color = _pellet_color(id)
 		button.button_down.connect(_pick_up.bind(id, true))
 		button.button_up.connect(_put_down.bind(id))

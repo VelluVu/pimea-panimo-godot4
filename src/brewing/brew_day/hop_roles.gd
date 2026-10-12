@@ -50,6 +50,11 @@ static func assign(contents : Dictionary, table : Dictionary, kinds : Array[HopA
 	return marks
 
 
+## Flavour and aroma marks want a hop with an aroma of its own.
+static func is_late_kind(kind : HopAddition.Kind) -> bool:
+	return kind == HopAddition.Kind.FLAVOR or kind == HopAddition.Kind.AROMA
+
+
 ## Most bitter first; equal hops keep a stable order by id.
 static func _hops_in(contents : Dictionary, table : Dictionary) -> Array[HopData]:
 	var hops : Array[HopData] = []
@@ -81,5 +86,7 @@ static func _split_grams(pairs : Array, contents : Dictionary) -> Array[BoilMark
 			share += 1
 		handed_out[id] = earlier + 1
 		if share > 0:
-			marks.append(BoilMark.new(pair[0], id, share))
+			var mark := BoilMark.new(pair[0], id, share)
+			mark.bittering_only = is_late_kind(pair[0]) and (pair[1] as HopData).flavor_profile == HopData.FlavorProfile.NONE
+			marks.append(mark)
 	return marks
