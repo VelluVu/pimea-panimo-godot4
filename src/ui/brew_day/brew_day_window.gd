@@ -459,6 +459,14 @@ func _build() -> void:
 	backdrop.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(backdrop)
 
+	_kettle = KettleView.new()
+	_kettle.position = KETTLE_POSITION
+	add_child(_kettle)
+	_kettle.paddle_knocked.connect(func(_speed : float) -> void: GUISignals.brew_day_sound.emit(SOUND_PADDLE_KNOCK))
+	_kettle.paddle_moved.connect(func(before : PackedVector2Array, after : PackedVector2Array, blade_from : int, delta : float) -> void:
+		if _mash != null and _stage != Stage.BOIL:
+			_mash.paddle_moved(before, after, blade_from, delta))
+
 	_header = Label.new()
 	_header.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_header.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
@@ -471,14 +479,6 @@ func _build() -> void:
 	_hint.position.y = 22
 	_hint.modulate = ThermoColumn.DIM_COLOR
 	add_child(_hint)
-
-	_kettle = KettleView.new()
-	_kettle.position = KETTLE_POSITION
-	add_child(_kettle)
-	_kettle.paddle_knocked.connect(func(_speed : float) -> void: GUISignals.brew_day_sound.emit(SOUND_PADDLE_KNOCK))
-	_kettle.paddle_moved.connect(func(before : PackedVector2Array, after : PackedVector2Array, blade_from : int, delta : float) -> void:
-		if _mash != null and _stage != Stage.BOIL:
-			_mash.paddle_moved(before, after, blade_from, delta))
 
 	_heat_button = _make_button(HEAT_BUTTON_TEXT, HEAT_BUTTON_RECT)
 	_heat_button.button_down.connect(func() -> void: _set_heating_inputs(true, _key_heat))
