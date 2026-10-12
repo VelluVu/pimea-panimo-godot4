@@ -49,11 +49,12 @@ const WALL_BOUNCE : float = 0.55
 const BOUNCE_SOUND_SPEED : float = 60.0
 ## One swing can only hit a clump once.
 const HIT_COOLDOWN : float = 0.15
-## The liquid seen from above, in pixels; clumps and the paddle live in this space.
+## The kettle mouth's bounding box in pixels; the liquid is the ellipse inside it.
+## Clumps and the paddle live in this space.
 const LIQUID_SIZE : Vector2 = Vector2(232, 104)
 const CLUMP_RADIUS : float = 11.0
-## Clumps keep this far from the liquid's edges.
-const CLUMP_MARGIN : Vector2 = Vector2(24, 18)
+## New clumps appear within this share of the ellipse, away from its rim.
+const SPAWN_REACH : float = 0.75
 const CLUMP_PENALTY : float = 0.06
 const CLUMP_MIN_GAP : float = 40.0
 ## Each step is entered once it is this close below its temperature.
@@ -158,7 +159,8 @@ func _touch(clump : MashClump, before : PackedVector2Array, after : PackedVector
 		var a : Vector2 = before[k].lerp(after[k], progress)
 		var b : Vector2 = before[k + 1].lerp(after[k + 1], progress)
 		var closest : Vector2 = Geometry2D.get_closest_point_to_segment(clump.position, a, b)
-		if closest.distance_to(clump.position) > CLUMP_RADIUS:
+		# The shaft above the mash does not touch it.
+		if closest.distance_to(clump.position) > CLUMP_RADIUS or not is_in_liquid(closest):
 			continue
 		var along : float = 0.0 if a.is_equal_approx(b) else a.distance_to(closest) / a.distance_to(b)
 		var velocity : Vector2 = (after[k] - before[k]).lerp(after[k + 1] - before[k + 1], along) / delta
@@ -218,12 +220,16 @@ func _hold(delta : float) -> void:
 			phase = Phase.RAMP
 
 
+## True inside the liquid's ellipse.
+static func is_in_liquid(point : Vector2) -> bool:
+	return ((point - LIQUID_SIZE / 2.0) / (LIQUID_SIZE / 2.0)).length() <= 1.0
+
+
 ## The mash swirls the clumps slowly around its middle; knocks fade with the drag and
 ## the kettle wall bounces them back.
 func _move_clumps(delta : float) -> void:
 	var middle : Vector2 = LIQUID_SIZE / 2.0
-	var low : Vector2 = Vector2(CLUMP_RADIUS, CLUMP_RADIUS)
-	var high : Vector2 = LIQUID_SIZE - low
+	var half : Vector2 = middle - Vector2(CLUMP_RADIUS, CLUMP_RADIUS)
 	for clump : MashClump in clumps:
 		if clump.is_broken():
 			continue
@@ -233,18 +239,24 @@ func _move_clumps(delta : float) -> void:
 			clump.velocity += Vector2(-from_middle.y, from_middle.x).normalized() * SWIRL_ACCEL * delta
 		clump.velocity *= exp(-CLUMP_DRAG * delta)
 		clump.position += clump.velocity * delta
-		for axis : int in 2:
-			if clump.position[axis] < low[axis] or clump.position[axis] > high[axis]:
-				clump.position[axis] = clampf(clump.position[axis], low[axis], high[axis])
-				if absf(clump.velocity[axis]) >= BOUNCE_SOUND_SPEED:
-					clump_bounced.emit(clump)
-				clump.velocity[axis] *= -WALL_BOUNCE
+		var scaled : Vector2 = (clump.position - middle) / half
+		if scaled.length() <= 1.0:
+			continue
+		clump.position = middle + scaled.normalized() * half
+		# The ellipse's outward normal at that point.
+		var normal : Vector2 = ((clump.position - middle) / (half * half)).normalized()
+		var into_wall : float = clump.velocity.dot(normal)
+		if into_wall > 0.0:
+			if into_wall >= BOUNCE_SOUND_SPEED:
+				clump_bounced.emit(clump)
+			clump.velocity -= normal * into_wall * (1.0 + WALL_BOUNCE)
 
 
 func _spawn_clump() -> void:
 	var at : Vector2 = Vector2.ZERO
 	for attempt : int in 12:
-		at = Vector2(_rng.randf_range(CLUMP_MARGIN.x, LIQUID_SIZE.x - CLUMP_MARGIN.x), _rng.randf_range(CLUMP_MARGIN.y, LIQUID_SIZE.y - CLUMP_MARGIN.y)).round()
+		var spot : Vector2 = Vector2.from_angle(_rng.randf() * TAU) * sqrt(_rng.randf()) * SPAWN_REACH
+		at = (LIQUID_SIZE / 2.0 + spot * LIQUID_SIZE / 2.0).round()
 		if clumps.all(func(clump : MashClump) -> bool: return clump.is_broken() or clump.position.distance_to(at) >= CLUMP_MIN_GAP):
 			break
 	var clump := MashClump.new(at, SWIPES_PER_CLUMP)

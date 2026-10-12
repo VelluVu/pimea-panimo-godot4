@@ -181,7 +181,7 @@ func test_clumps_stay_in_the_kettle() -> void:
 	for i : int in 120:
 		session.step(STEP)
 	for clump : MashClump in session.clumps:
-		assert_true(Rect2(Vector2.ZERO, MashSessionScript.LIQUID_SIZE).has_point(clump.position))
+		assert_true(MashSessionScript.is_in_liquid(clump.position), str(clump.position))
 
 
 func test_more_clumps_appear_later() -> void:
@@ -197,4 +197,4 @@ func test_clumps_spawn_inside_the_liquid() -> void:
 	var session : MashSession = _session([65.0], 5)
 	session.add_malts()
 	for clump : MashClump in session.clumps:
-		assert_true(Rect2(Vector2.ZERO, MashSessionScript.LIQUID_SIZE).has_point(clump.position))
+		assert_true(MashSessionScript.is_in_liquid(clump.position), str(clump.position))

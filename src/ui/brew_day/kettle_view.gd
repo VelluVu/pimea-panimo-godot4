@@ -2,26 +2,28 @@ class_name KettleView
 extends Control
 
 ## The brew day's kettle, drawn with placeholder shapes until the real sprites exist:
-## the pot, the liquid seen from above, the clumps, the foam and the paddle. The paddle
-## is a free, springy stick (PaddleBody): pressing on the liquid grabs its handle, which
-## chases the pointer while the blade end whips and bends behind it. Its blade breaks
-## the clumps; the shaft only pushes them.
+## a round pot seen from the front and a little above, its oval mouth full of liquid,
+## the clumps, the foam and the paddle. The paddle is a springy stick (PaddleBody):
+## pressing on the liquid puts its blade under the pointer, and the shaft swings around
+## over the far rim behind it. The blade breaks the clumps; the shaft only pushes them.
 
 ## The stick moved this frame, in liquid pixels (see MashSession.paddle_moved).
 signal paddle_moved(before : PackedVector2Array, after : PackedVector2Array, blade_from : int, delta : float)
 ## The paddle hit a kettle wall; speed in pixels a second.
 signal paddle_knocked(speed : float)
 
-const LIQUID_RECT : Rect2 = Rect2(Vector2(24, 12), MashSession.LIQUID_SIZE)
-const BODY_RECT : Rect2 = Rect2(12, 40, 256, 224)
-const RIM_RECT : Rect2 = Rect2(12, 112, 256, 12)
+## The bounding box of the oval mouth; the liquid is the ellipse inside it.
+const LIQUID_RECT : Rect2 = Rect2(Vector2(24, 44), MashSession.LIQUID_SIZE)
+const BODY_RECT : Rect2 = Rect2(12, 96, 256, 168)
+const BOTTOM_RECT : Rect2 = Rect2(12, 244, 256, 40)
+const RIM_WIDTH : float = 8.0
 const HANDLE_SIZE : Vector2 = Vector2(12, 28)
-## The stick stays a little inside the kettle mouth.
-const PADDLE_AREA : Rect2 = Rect2(Vector2(26, 14), MashSession.LIQUID_SIZE - Vector2(4, 4))
-const PADDLE_REST : Vector2 = Vector2(232, 24)
-const PADDLE_REST_DIRECTION : Vector2 = Vector2(-0.5, 1)
+const ELLIPSE_POINTS : int = 48
+## The blade keeps a little inside the mouth.
+const PADDLE_MOUTH : Rect2 = Rect2(LIQUID_RECT.position + Vector2(4, 4), MashSession.LIQUID_SIZE - Vector2(8, 8))
+const PADDLE_REST : Vector2 = Vector2(196, 120)
 ## Grabbing works a little outside the liquid too, at its edge.
-const GRAB_MARGIN : float = 8.0
+const GRAB_MARGIN : float = 10.0
 const SHAFT_WIDTH : float = 3.0
 const BLADE_WIDTH : float = 7.0
 const GRIP_SIZE : Vector2 = Vector2(6, 6)
@@ -53,7 +55,7 @@ var bubbling : bool = false
 ## Mirrors the thermometer needle's colour on the rim.
 var glow_color : Color = Color.TRANSPARENT
 
-var _paddle : PaddleBody = PaddleBody.new(PADDLE_AREA, PADDLE_REST, PADDLE_REST_DIRECTION)
+var _paddle : PaddleBody = PaddleBody.new(PADDLE_MOUTH, PADDLE_REST)
 var _dragging : bool = false
 var _target : Vector2 = PADDLE_REST
 var _clock : float = 0.0
@@ -64,7 +66,7 @@ var _bursts : Array = []
 
 
 func _ready() -> void:
-	custom_minimum_size = BODY_RECT.end + Vector2(HANDLE_SIZE.x, 0)
+	custom_minimum_size = BOTTOM_RECT.end + Vector2(HANDLE_SIZE.x, 0)
 	size = custom_minimum_size
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	_paddle.knocked.connect(paddle_knocked.emit)
@@ -78,7 +80,7 @@ func _process(delta : float) -> void:
 	_paddle.step(delta, _target, _dragging)
 	# Only a held paddle stirs; drifting back to rest touches nothing.
 	if _dragging:
-		paddle_moved.emit(_to_liquid(before), _to_liquid(_paddle.points), _paddle.blade_from(), delta)
+		paddle_moved.emit(_to_liquid(before), _to_liquid(_paddle.points), PaddleBody.POINTS - 1 - PaddleBody.BLADE_SEGMENTS, delta)
 	for clump : MashClump in _flashes.keys():
 		_flashes[clump] -= delta
 		if _flashes[clump] <= 0.0:
@@ -93,7 +95,7 @@ func _process(delta : float) -> void:
 func _gui_input(event : InputEvent) -> void:
 	if event is InputEventMouseButton and (event as InputEventMouseButton).button_index == MOUSE_BUTTON_LEFT:
 		var button := event as InputEventMouseButton
-		if button.pressed and LIQUID_RECT.grow(GRAB_MARGIN).has_point(button.position):
+		if button.pressed and _paddle.inside_mouth(button.position).distance_to(button.position) <= GRAB_MARGIN:
 			_dragging = true
 			_target = button.position
 		elif not button.pressed:
@@ -121,22 +123,24 @@ func burst_clump(clump : MashClump) -> void:
 	_bursts.append([clump.position, BURST_SECONDS])
 
 
+## Handle first and blade last, as MashSession.paddle_moved expects, in liquid pixels.
 func _to_liquid(points : PackedVector2Array) -> PackedVector2Array:
 	var moved := PackedVector2Array()
-	for point : Vector2 in points:
-		moved.append(point - LIQUID_RECT.position)
+	for i : int in range(points.size() - 1, -1, -1):
+		moved.append(points[i] - LIQUID_RECT.position)
 	return moved
 
 
 func _draw() -> void:
-	var left_handle := Rect2(BODY_RECT.position.x - HANDLE_SIZE.x, BODY_RECT.position.y + 60, HANDLE_SIZE.x, HANDLE_SIZE.y)
-	var right_handle := Rect2(BODY_RECT.end.x, BODY_RECT.position.y + 60, HANDLE_SIZE.x, HANDLE_SIZE.y)
-	draw_rect(left_handle, BODY_SHADE)
-	draw_rect(right_handle, BODY_SHADE)
+	var handle_y : float = BODY_RECT.position.y + 50
+	draw_rect(Rect2(BODY_RECT.position.x - HANDLE_SIZE.x, handle_y, HANDLE_SIZE.x, HANDLE_SIZE.y), BODY_SHADE)
+	draw_rect(Rect2(BODY_RECT.end.x, handle_y, HANDLE_SIZE.x, HANDLE_SIZE.y), BODY_SHADE)
+	draw_colored_polygon(_ellipse(BOTTOM_RECT), BODY_SHADE)
 	draw_rect(BODY_RECT, BODY_COLOR)
-	draw_rect(Rect2(BODY_RECT.position + Vector2(BODY_RECT.size.x - 24, 0), Vector2(24, BODY_RECT.size.y)), BODY_SHADE)
-	draw_rect(LIQUID_RECT.grow(4), BODY_SHADE)
-	draw_rect(LIQUID_RECT, liquid_color)
+	draw_rect(Rect2(BODY_RECT.end.x - 24, BODY_RECT.position.y, 24, BODY_RECT.size.y), BODY_SHADE)
+	draw_colored_polygon(_ellipse(LIQUID_RECT.grow(RIM_WIDTH)), RIM_COLOR)
+	draw_colored_polygon(_ellipse(LIQUID_RECT.grow(2)), BODY_SHADE)
+	draw_colored_polygon(_ellipse(LIQUID_RECT), liquid_color)
 	if bubbling:
 		_draw_bubbles()
 	for clump : MashClump in clumps:
@@ -144,12 +148,21 @@ func _draw() -> void:
 			_draw_clump(clump)
 	_draw_bursts()
 	if foam > 0.0:
-		var foam_height : float = LIQUID_RECT.size.y * clampf(foam, 0.0, 1.0)
-		draw_rect(Rect2(LIQUID_RECT.position, Vector2(LIQUID_RECT.size.x, foam_height)), FOAM_COLOR)
-	_draw_paddle()
-	draw_rect(RIM_RECT, RIM_COLOR)
+		var foam_size : Vector2 = (LIQUID_RECT.size * clampf(foam, 0.0, 1.0)).round()
+		draw_colored_polygon(_ellipse(Rect2(LIQUID_RECT.get_center() - foam_size / 2.0, foam_size)), FOAM_COLOR)
 	if glow_color.a > 0.0:
-		draw_rect(LIQUID_RECT.grow(4), glow_color, false, 2.0)
+		var outline : PackedVector2Array = _ellipse(LIQUID_RECT.grow(4))
+		outline.append(outline[0])
+		draw_polyline(outline, glow_color, 2.0)
+	_draw_paddle()
+
+
+func _ellipse(rect : Rect2) -> PackedVector2Array:
+	var points := PackedVector2Array()
+	for i : int in ELLIPSE_POINTS:
+		var angle : float = TAU * i / ELLIPSE_POINTS
+		points.append((rect.get_center() + Vector2(cos(angle), sin(angle)) * rect.size / 2.0).round())
+	return points
 
 
 ## A lumpy blob of three circles; a hit one is smaller and paler, and shakes while it
@@ -181,15 +194,15 @@ func _draw_bursts() -> void:
 			draw_rect(Rect2(at.round(), Vector2(2, 2)), CLUMP_LIGHT if i % 2 == 0 else FLASH_COLOR)
 
 
-## The bent shaft as a polyline, the blade segments wider, the grip a dark knob.
+## The bent shaft as a polyline, the blade at the tip wider, the grip a dark knob.
 func _draw_paddle() -> void:
 	var points : PackedVector2Array = _paddle.points
 	draw_polyline(points, PADDLE_SHADE, SHAFT_WIDTH + 2.0)
 	draw_polyline(points, PADDLE_COLOR, SHAFT_WIDTH)
-	var blade : PackedVector2Array = points.slice(_paddle.blade_from())
+	var blade : PackedVector2Array = points.slice(0, PaddleBody.BLADE_SEGMENTS + 1)
 	draw_polyline(blade, PADDLE_SHADE, BLADE_WIDTH + 2.0)
 	draw_polyline(blade, PADDLE_COLOR, BLADE_WIDTH)
-	draw_rect(Rect2(points[0] - GRIP_SIZE / 2.0, GRIP_SIZE), PADDLE_SHADE)
+	draw_rect(Rect2(_paddle.handle() - GRIP_SIZE / 2.0, GRIP_SIZE), PADDLE_SHADE)
 
 
 func _draw_bubbles() -> void:
@@ -197,5 +210,5 @@ func _draw_bubbles() -> void:
 	var rng := RandomNumberGenerator.new()
 	for i : int in BUBBLE_COUNT:
 		rng.seed = hash(Vector2i(i, floori(frame / 3.0)))
-		var at := Vector2(rng.randf(), rng.randf())
-		draw_rect(Rect2((LIQUID_RECT.position + at * LIQUID_RECT.size).round(), Vector2(2, 2)), BUBBLE_COLOR)
+		var at : Vector2 = Vector2.from_angle(rng.randf() * TAU) * sqrt(rng.randf()) * 0.9
+		draw_rect(Rect2((LIQUID_RECT.get_center() + at * LIQUID_RECT.size / 2.0).round(), Vector2(2, 2)), BUBBLE_COLOR)
