@@ -57,6 +57,7 @@ func _ready() -> void:
 	quit_button.visible = not OS.has_feature("web")
 	add_child(TouchTooltip.new())
 	add_child(PortraitNotice.new())
+	add_child(LanguageSwitch.new())
 	# Typing commands needs a keyboard, and the button takes a corner of a small screen.
 	$DevConsole.visible = not DisplayServer.is_touchscreen_available()
 	if DisplayServer.is_touchscreen_available():

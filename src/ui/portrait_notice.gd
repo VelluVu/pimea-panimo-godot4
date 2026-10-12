@@ -6,8 +6,8 @@ extends CanvasLayer
 ## rotation lock on, turning does nothing, so a tap asks the browser for a fullscreen
 ## landscape instead (Android; iOS has no orientation lock). On a phone the first tap anywhere
 ## asks for the same once: itch.io's mobile frame can be larger than the screen and does not
-## follow the turn, while a fullscreen page always fills it. The game starts in Finnish and
-## the Options are behind this cover, so a Finnish notice repeats itself in English below.
+## follow the turn, while a fullscreen page always fills it. The game may start in Finnish and
+## the language buttons are behind this cover, so a Finnish notice repeats itself in English below.
 ## Add one to each scene's UI root.
 
 ## Above every window, the level-up cards and touch tooltips.
