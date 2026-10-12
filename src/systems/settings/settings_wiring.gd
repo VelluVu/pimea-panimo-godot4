@@ -16,9 +16,10 @@ func _init() -> void:
 	# The texts are written in Finnish and are their own translation keys, so Finnish
 	# needs no file; English comes from dev/tools/i18n.py's en.po.
 	supported_locales = ["fi", "en"]
-	# Finnish until the player picks English in Options.
-	fallback_locale = "fi"
-	follow_system_language = false
+	# Finnish for a Finnish system or browser, English for everyone else, until the
+	# player picks one on the main menu or in Options.
+	fallback_locale = "en"
+	follow_system_language = true
 	translation_paths = ["res://src/resources/translations/en.po"]
 	# Text built in code (the HUD, the goals panel) is rebuilt from the brewery state.
 	language_changed.connect(func(_locale: String) -> void:
