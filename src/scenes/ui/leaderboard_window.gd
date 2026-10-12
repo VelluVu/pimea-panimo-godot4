@@ -171,9 +171,9 @@ func _build_header_row() -> PanelContainer:
 	row.add_theme_constant_override("separation", COLUMN_SEPARATION)
 	var headers : PackedStringArray = HEADERS.duplicate()
 	if _global_tab:
-		headers[headers.size() - 1] = tr(GLOBAL_LAST_HEADER)
+		headers[headers.size() - 1] = GLOBAL_LAST_HEADER
 	for i : int in headers.size():
-		var label : Label = _cell(row, i, headers[i], HEADER_FONT_SIZE, MUTED_COLOR)
+		var label : Label = _cell(row, i, tr(headers[i]) if not headers[i].is_empty() else "", HEADER_FONT_SIZE, MUTED_COLOR)
 		label.horizontal_alignment = _column_alignment(i)
 	return _padded(row, Color.TRANSPARENT)
 

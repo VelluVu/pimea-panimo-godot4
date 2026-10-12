@@ -103,7 +103,7 @@ func _show_score(brewery : Brewery, ending_type : String) -> void:
 	var rank : int = LeaderboardManager.get_rank(entry["score"])
 	var lines : PackedStringArray = [tr(RANK_FORMAT) % rank]
 	if rank == 1:
-		lines.append(NEW_RECORD_TEXT)
+		lines.append(tr(NEW_RECORD_TEXT))
 	lines.append(tr(RENOWN_FORMAT) % RunScore.renown(entry["score"]))
 	result_label.text = "\n".join(lines)
 

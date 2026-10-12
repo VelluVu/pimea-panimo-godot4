@@ -1,39 +1,48 @@
 class_name OnlineLeaderboardWiring
 extends OnlineLeaderboard
 
-## This game's shared demo leaderboard: the Supabase project, the demo-only switch, the
-## run entry (RunScore.entry()) in and out of the server's columns, and the wording. The
-## server side is dev/tools/leaderboard/demo_scores.sql. A window that shows the list
-## adds one of these as a child.
+## This game's shared leaderboards: the Supabase project, which board this build uses,
+## the run entry (RunScore.entry()) in and out of the server's columns, and the wording.
+## The browser demo and the full game have their own tables, with the server side in
+## dev/tools/leaderboard/demo_scores.sql and season_scores.sql. A window that shows the
+## list adds one of these as a child.
 
 ## The online parts stay hidden while either is empty.
 const PROJECT_URL: String = "https://dagwyjxvspehgoailvju.supabase.co"
 const PUBLISHABLE_KEY: String = "sb_publishable_wS34tYQE-8pI74DiX6dvlQ_AqfUh2YI"
 
+## The full game's board stays hidden until the game is out; the demo's is always on.
+const SEASON_BOARD_LIVE: bool = false
+const DEMO_TABLE: String = "demo_scores"
+const DEMO_SUBMIT_FUNCTION: String = "submit_demo_score"
+const SEASON_TABLE: String = "season_scores"
+const SEASON_SUBMIT_FUNCTION: String = "submit_season_score"
+
 const OPTION_NICKNAME: String = "online_nickname"
-## The player's latest row on the server, to highlight it in the list.
-const OPTION_LAST_ROW_ID: String = "online_last_row_id"
+## The player's latest row on each board, to highlight it in the list.
+const OPTION_LAST_ROW_ID_PREFIX: String = "online_last_row_id_"
 
 const SUBMIT_FAILED_TEXT: String = "Lähetys epäonnistui. Tarkista verkkoyhteys ja yritä uudelleen."
 const BUSY_TEXT: String = "Palvelimella on ruuhkaa. Yritä hetken päästä uudelleen."
 const REJECTED_TEXT: String = "Palvelin ei hyväksynyt tulosta."
 const FETCH_FAILED_TEXT: String = "Listaa ei saatu ladattua. Tarkista verkkoyhteys."
-## The exception texts of submit_demo_score() in demo_scores.sql.
+## An exception text of the submit functions in the .sql files.
 const SERVER_BUSY: String = "busy"
 
 
 func _init() -> void:
 	base_url = PROJECT_URL
 	api_key = PUBLISHABLE_KEY
-	table = "demo_scores"
+	var demo: bool = DemoRules.is_demo()
+	table = DEMO_TABLE if demo else SEASON_TABLE
+	submit_function = DEMO_SUBMIT_FUNCTION if demo else SEASON_SUBMIT_FUNCTION
 	columns = "id,nickname,score,ending_type,days_survived,reputation,bottles,worth,created_at"
 	order = "score.desc,id.asc"
-	submit_function = "submit_demo_score"
 
 
-## Only the browser demo has the shared list, and test runs in developer mode stay off it.
+## Test runs in developer mode stay off the lists.
 func is_enabled() -> bool:
-	return is_configured() and DemoRules.is_demo() and not BrewEngine.is_developer_mode()
+	return is_configured() and (DemoRules.is_demo() or SEASON_BOARD_LIVE) and not BrewEngine.is_developer_mode()
 
 
 func submit_entry(nickname: String, entry: Dictionary) -> void:
@@ -82,8 +91,8 @@ func save_nickname(nickname: String) -> void:
 
 
 func last_row_id() -> int:
-	return int(SettingsManager.get_option(OPTION_LAST_ROW_ID, 0))
+	return int(SettingsManager.get_option(OPTION_LAST_ROW_ID_PREFIX + table, 0))
 
 
 func save_last_row_id(row_id: int) -> void:
-	SettingsManager.set_option(OPTION_LAST_ROW_ID, row_id)
+	SettingsManager.set_option(OPTION_LAST_ROW_ID_PREFIX + table, row_id)
