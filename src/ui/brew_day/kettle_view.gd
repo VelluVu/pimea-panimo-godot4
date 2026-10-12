@@ -9,7 +9,9 @@ extends Control
 ## In the boil a held sack hangs tilted over the mouth and its pellets drop into the
 ## wort, each landing with a splash ring and a coloured bloom that fades into the wort.
 ## Stirring sets the wort swirling: the blooms ride the swirl around the kettle and
-## leave coloured stripes behind them, and the swirl dies down slowly.
+## leave coloured stripes behind them, and the swirl dies down slowly to the gentle
+## turn of the rolling boil, which keeps drawing the stripes out. Steam rises over the
+## mouth (a shader child) as strongly as `steam` says.
 
 ## The stick moved this frame, in liquid pixels (see MashSession.paddle_moved).
 signal paddle_moved(before : PackedVector2Array, after : PackedVector2Array, blade_from : int, delta : float)
@@ -30,6 +32,8 @@ const SHAFT_WIDTH : float = 3.0
 const WATER_COLOR : Color = Color(0.36, 0.45, 0.5)
 const CLUMP_LIGHT : Color = Color(0.85, 0.72, 0.48)
 const FLASH_COLOR : Color = Color(1, 0.97, 0.85)
+## The steam rect: its bottom edge on the back half of the liquid, rising above the rim.
+const STEAM_RECT : Rect2 = Rect2(24, -56, 232, 170)
 ## A clump flashes by drawing its sprite brighter.
 const FLASH_MODULATE : Color = Color(1.8, 1.8, 1.6)
 const FOAM_COLOR : Color = Color(0.93, 0.89, 0.78)
@@ -54,11 +58,11 @@ const PELLET_SIZE : Vector2 = Vector2(2, 2)
 const LANDING_DEPTH : Vector2 = Vector2(18, 62)
 const RING_SECONDS : float = 0.45
 const RING_SIZE : Vector2 = Vector2(18, 8)
-const BLOOM_SECONDS : float = 6.0
+const BLOOM_SECONDS : float = 12.0
 const BLOOM_SIZE : Vector2 = Vector2(40, 18)
 ## Colour steps a bloom takes back to the wort's colour, instead of fading.
-const BLOOM_STEPS : int = 6
-const MAX_BLOOMS : int = 20
+const BLOOM_STEPS : int = 8
+const MAX_BLOOMS : int = 30
 ## Blooms land this far from the middle at most (share of the mouth), so they stay
 ## inside it all the way round a swirl.
 const BLOOM_REACH : float = 0.62
@@ -66,13 +70,15 @@ const BLOOM_REACH : float = 0.62
 const STIR_GAIN : float = 3.0
 const SWIRL_DRAG : float = 0.35
 const MAX_SWIRL : float = 4.0
+## A rolling boil keeps the wort turning at least this fast, in its current direction.
+const BOIL_SWIRL : float = 0.5
 ## A swirling bloom drops a stripe stamp this often, once the swirl is this fast.
-const TRAIL_INTERVAL : float = 0.04
+const TRAIL_INTERVAL : float = 0.08
 const TRAIL_MIN_SWIRL : float = 0.3
-const TRAIL_SECONDS : float = 5.0
-const TRAIL_STEPS : int = 5
+const TRAIL_SECONDS : float = 12.0
+const TRAIL_STEPS : int = 8
 const TRAIL_SIZE : Vector2 = Vector2(4, 2)
-const MAX_TRAILS : int = 320
+const MAX_TRAILS : int = 900
 ## The middle of the swirl turns faster than its edge, which pulls blooms apart.
 const SWIRL_CENTER_SPEED : float = 1.6
 ## The stripes drift slower than the floating blooms, so a bloom draws its stripe
@@ -93,6 +99,14 @@ var foam : float = 0.0
 var bubbling : bool = false
 ## Mirrors the thermometer needle's colour on the rim.
 var glow_color : Color = Color.TRANSPARENT
+## 0..1, how thick the steam over the mouth is.
+var steam : float = 0.0:
+	set(value):
+		steam = value
+		if _steam_material != null:
+			_steam_material.set_shader_parameter(&"intensity", value)
+
+var _steam_material : ShaderMaterial
 
 var _paddle : PaddleBody = PaddleBody.new(PADDLE_MOUTH, PADDLE_REST)
 var _dragging : bool = false
@@ -126,6 +140,7 @@ func _ready() -> void:
 	size = custom_minimum_size
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	_paddle.knocked.connect(paddle_knocked.emit)
+	_add_steam()
 
 
 func _process(delta : float) -> void:
@@ -245,7 +260,21 @@ func _step_pours(delta : float) -> void:
 	_sparkles = _sparkles.filter(func(sparkle_entry : Array) -> bool: return sparkle_entry[1] > 0.0)
 
 
-## The held blade's circling around the middle drives the swirl; it slows on its own.
+func _add_steam() -> void:
+	_steam_material = ShaderMaterial.new()
+	_steam_material.shader = ART.steam_shader
+	_steam_material.set_shader_parameter(&"rect_size", STEAM_RECT.size)
+	_steam_material.set_shader_parameter(&"intensity", steam)
+	var rect := ColorRect.new()
+	rect.material = _steam_material
+	rect.position = STEAM_RECT.position
+	rect.size = STEAM_RECT.size
+	rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(rect)
+
+
+## The held blade's circling around the middle drives the swirl; it slows on its own,
+## but never below the rolling boil's own turn.
 func _stir(delta : float) -> void:
 	var tip : Vector2 = _paddle.points[0]
 	if _dragging and delta > 0.0:
@@ -255,6 +284,9 @@ func _stir(delta : float) -> void:
 			var circling : float = place.cross(motion) / place.length_squared()
 			_swirl = lerpf(_swirl, clampf(circling, -MAX_SWIRL, MAX_SWIRL), minf(1.0, STIR_GAIN * delta))
 	_swirl *= exp(-SWIRL_DRAG * delta)
+	if bubbling and absf(_swirl) < BOIL_SWIRL:
+		var direction : float = signf(_swirl) if _swirl != 0.0 else 1.0
+		_swirl = move_toward(_swirl, BOIL_SWIRL * direction, BOIL_SWIRL * delta)
 	_last_tip = tip
 
 

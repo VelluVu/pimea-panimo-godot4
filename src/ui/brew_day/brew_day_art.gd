@@ -20,3 +20,5 @@ extends Resource
 @export var sack_lifted : Texture2D
 ## Two square frames side by side: a whole clump and one that has been hit.
 @export var clump : Texture2D
+## The steam over the mouth, pixel-strict (assets/shaders/brew_steam.gdshader).
+@export var steam_shader : Shader

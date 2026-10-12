@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" path="res://assets/textures/brew_day/sack.png" id="5_sack"]
 [ext_resource type="Texture2D" path="res://assets/textures/brew_day/sack_lifted.png" id="6_lifted"]
 [ext_resource type="Texture2D" path="res://assets/textures/brew_day/clump.png" id="7_clump"]
+[ext_resource type="Shader" path="res://assets/shaders/brew_steam.gdshader" id="8_steam"]
 
 [resource]
 script = ExtResource("1_art")
@@ -16,3 +17,4 @@ paddle_grip = ExtResource("4_grip")
 sack = ExtResource("5_sack")
 sack_lifted = ExtResource("6_lifted")
 clump = ExtResource("7_clump")
+steam_shader = ExtResource("8_steam")

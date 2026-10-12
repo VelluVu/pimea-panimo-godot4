@@ -74,6 +74,12 @@ const SOUND_RESULT_GOOD : StringName = &"result_good"
 const SOUND_RESULT_LOW : StringName = &"result_low"
 ## The boil loop starts at this level and grows with the foam.
 const BOIL_SOUND_BASE : float = 0.55
+## Steam: a faint haze over a hot mash, wisps as the wort nears the boil, thick
+## steam at a rolling boil and thicker as the foam rises.
+const MASH_STEAM : float = 0.12
+const NEAR_BOIL_STEAM : float = 0.3
+const BOIL_STEAM : float = 0.5
+const FOAM_STEAM : float = 0.4
 
 enum Stage { MASH, MASH_DONE, BOIL, RESULT }
 
@@ -251,12 +257,22 @@ func _process(delta : float) -> void:
 	if _boil != null:
 		_kettle.foam = _boil.foam
 		_kettle.bubbling = _boil.is_boiling()
+	_kettle.steam = _steam_level()
 	var glow : Color = _thermo.current_needle_color()
 	glow.a = GLOW_ALPHA
 	_kettle.glow_color = glow if _stage != Stage.RESULT else Color.TRANSPARENT
 	_heat_button.modulate = Color.WHITE.lerp(ThermoColumn.FLAME_COLOR, (_boil.heat.power if _boil != null else _mash.heat.power) * 0.6)
 	_refresh_sacks()
 	_emit_loops()
+
+
+func _steam_level() -> float:
+	if _boil == null:
+		return MASH_STEAM * clampf((_mash.heat.temperature - 50.0) / 20.0, 0.0, 1.0)
+	if _boil.is_boiling():
+		return BOIL_STEAM + FOAM_STEAM * clampf(_boil.foam, 0.0, 1.0)
+	var near : float = clampf((_boil.heat.temperature - (BoilSession.BOIL_MIN - 8.0)) / 8.0, 0.0, 1.0)
+	return NEAR_BOIL_STEAM * near
 
 
 func _emit_loops() -> void:
