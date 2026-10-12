@@ -31,6 +31,11 @@ signal brew_day_requested()
 ## The brew day is over; brews the table with the quality multiplier it earned.
 @warning_ignore("unused_signal")
 signal brew_day_finished(quality_multiplier : float)
+## The brew day window opened or closed; level-up cards wait while it is open.
+@warning_ignore("unused_signal")
+signal brew_day_opened()
+@warning_ignore("unused_signal")
+signal brew_day_closed()
 
 @warning_ignore("unused_signal")
 signal warehouse_door_clicked()

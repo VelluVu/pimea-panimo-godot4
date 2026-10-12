@@ -110,6 +110,7 @@ func open() -> void:
 	show()
 	move_to_front()
 	PauseLock.hold(self)
+	GUISignals.brew_day_opened.emit()
 
 
 func _close() -> void:
@@ -118,6 +119,7 @@ func _close() -> void:
 	_confirm.hide()
 	hide()
 	PauseLock.release(self)
+	GUISignals.brew_day_closed.emit()
 
 
 func _start_mash() -> void:
@@ -322,9 +324,10 @@ func _on_quick_pressed() -> void:
 	_finish(BrewDayRules.SKIP_MULTIPLIER)
 
 
+## The brew comes first, so a level-up from its XP queues until the window has closed.
 func _finish(multiplier : float) -> void:
-	_close()
 	GUISignals.brew_day_finished.emit(multiplier)
+	_close()
 
 
 func _toggle_confirm() -> void:
