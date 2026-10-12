@@ -4824,8 +4824,28 @@ msgid "Ei vielä ennätyksiä. Pelaa ensimmäinen kausi!"
 msgstr "No records yet. Play your first season!"
 
 #: src/scenes/ui/leaderboard_window.gd
+msgid "Ei vielä tuloksia. Ole ensimmäinen!"
+msgstr "No scores yet. Be the first!"
+
+#: src/scenes/ui/leaderboard_window.gd
+msgid "Ladataan..."
+msgstr "Loading..."
+
+#: src/scenes/ui/leaderboard_window.gd
+msgid "Maailmanlaajuinen"
+msgstr "Global"
+
+#: src/scenes/ui/leaderboard_window.gd
 msgid "Maine"
 msgstr "Reputation"
+
+#: src/scenes/ui/leaderboard_window.gd
+msgid "Nimi"
+msgstr "Name"
+
+#: src/scenes/ui/leaderboard_window.gd
+msgid "Paikallinen"
+msgstr "Local"
 
 #: src/scenes/ui/leaderboard_window.gd
 msgid "Pisteet"
@@ -4930,6 +4950,26 @@ msgstr "Marketing"
 #: src/scenes/ui/olutoppi_window.tscn
 msgid "Oluenpanotaito"
 msgstr "Brewing skill"
+
+#: src/scenes/ui/online_score_panel.gd
+msgid "Lähetetään..."
+msgstr "Sending..."
+
+#: src/scenes/ui/online_score_panel.gd
+msgid "Lähetä tulos"
+msgstr "Send score"
+
+#: src/scenes/ui/online_score_panel.gd
+msgid "Maailmanlaajuinen tulostaulukko"
+msgstr "Global leaderboard"
+
+#: src/scenes/ui/online_score_panel.gd
+msgid "Nimesi"
+msgstr "Your name"
+
+#: src/scenes/ui/online_score_panel.gd
+msgid "Sijoitus kaikista pelaajista: #%d / %d"
+msgstr "Rank among all players: #%d / %d"
 
 #: src/scenes/ui/options_window.gd
 msgid "English"
@@ -5314,6 +5354,22 @@ msgstr "Next ingredient type (Shift: previous)"
 #: src/systems/input/input_wiring.gd
 msgid "Valitse toiminto ja paina uutta näppäintä. Esc peruu."
 msgstr "Pick an action and press a new key. Esc cancels."
+
+#: src/systems/online_leaderboard/online_leaderboard_wiring.gd
+msgid "Listaa ei saatu ladattua. Tarkista verkkoyhteys."
+msgstr "Could not load the list. Check your connection."
+
+#: src/systems/online_leaderboard/online_leaderboard_wiring.gd
+msgid "Lähetys epäonnistui. Tarkista verkkoyhteys ja yritä uudelleen."
+msgstr "Sending failed. Check your connection and try again."
+
+#: src/systems/online_leaderboard/online_leaderboard_wiring.gd
+msgid "Palvelimella on ruuhkaa. Yritä hetken päästä uudelleen."
+msgstr "The server is busy. Try again in a moment."
+
+#: src/systems/online_leaderboard/online_leaderboard_wiring.gd
+msgid "Palvelin ei hyväksynyt tulosta."
+msgstr "The server did not accept the score."
 
 #: src/ui/brew_preview_text.gd
 msgid "Arvio: %s, EBC %d, IBU %d, laatu %d%%"

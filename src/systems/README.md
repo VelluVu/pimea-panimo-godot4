@@ -15,6 +15,7 @@ what you edit after copying the system.
 | `audio/` | Sound effect pool, looping music or playlist, a click on every button (has a wiring file) |
 | `console/` | Dev console: log, command line, command registry (has a wiring file) |
 | `input/` | Rebindable shortcuts, their save file and a rebinding tab (has a wiring file) |
+| `online_leaderboard/` | Shared leaderboard on Supabase: send a checked score, read the top (has a wiring file) |
 | `settings/` | Volume per audio bus, mutes and fullscreen, saved to a file (has a wiring file) |
 | `toast/` | Banner and toast presentation: flash, hold, fade, stacking |
 | `tooltip/` | Tooltips that wrap instead of clipping off-screen |
