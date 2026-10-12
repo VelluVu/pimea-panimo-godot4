@@ -33,6 +33,25 @@ extends Resource
 @export_group("Brewing")
 @export var sfx_brew_start: AudioStream
 
+@export_group("Brew day")
+## Loops: the burner while heating, the rolling boil, hops trickling from a held sack.
+@export var sfx_brew_burner_loop: AudioStream
+@export var sfx_brew_boil_loop: AudioStream
+@export var sfx_brew_hop_pour_loop: AudioStream
+@export var sfx_brew_malt_pour: AudioStream
+## Something landing in the kettle: a hop or spice pour starting.
+@export var sfx_brew_plop: AudioStream
+@export var sfx_brew_clump_hit: AudioStream
+@export var sfx_brew_clump_break: AudioStream
+## The paddle hitting the kettle wall.
+@export var sfx_brew_paddle_knock: AudioStream
+@export var sfx_brew_boil_over: AudioStream
+## A mash step done, or a hop mark hit.
+@export var sfx_brew_step_done: AudioStream
+@export var sfx_brew_result_good: AudioStream
+## A low result, or a hop mark missed.
+@export var sfx_brew_result_low: AudioStream
+
 @export_group("Special Events")
 @export var sfx_notification_ping: AudioStream
 

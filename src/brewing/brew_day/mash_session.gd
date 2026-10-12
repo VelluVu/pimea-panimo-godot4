@@ -4,7 +4,9 @@ extends RefCounted
 ## The mash: heat the water to the malt marker, add the malts (the temperature drops),
 ## then hold each step's temperature for its counted seconds. The clock starts with the
 ## malts and pauses while ramping to the next step. Clumps appear with the malts and a
-## few more later; any left at the end cut the score.
+## few more later; any left at the end cut the score. A clump breaks after a few hard
+## paddle swings through it; each hit knocks it away, a slow push only carries it along,
+## and the mash slowly swirls them around.
 
 signal malts_added()
 signal step_reached(index : int)
@@ -12,6 +14,8 @@ signal step_completed(index : int)
 signal mash_completed()
 signal clump_appeared(clump : MashClump)
 signal clump_swiped(clump : MashClump)
+## A clump hit the kettle wall hard enough to be heard.
+signal clump_bounced(clump : MashClump)
 signal clump_broken(clump : MashClump)
 signal band_left(too_hot : bool)
 signal band_entered()
@@ -31,7 +35,18 @@ const LATE_CLUMPS_MIN : int = 1
 const LATE_CLUMPS_MAX : int = 2
 const LATE_CLUMP_EARLIEST : float = 2.0
 const LATE_CLUMP_LATEST : float = 8.0
-const SWIPES_PER_CLUMP : int = 2
+const SWIPES_PER_CLUMP : int = 3
+## A swing slower than this (radians a second) only pushes a clump along.
+const MIN_SWIPE_SPEED : float = 3.0
+## Clump speeds in liquid pixels a second.
+const MAX_KNOCK_SPEED : float = 170.0
+const MAX_PUSH_SPEED : float = 60.0
+const CLUMP_DRAG : float = 2.5
+const SWIRL_ACCEL : float = 15.0
+const WALL_BOUNCE : float = 0.55
+const BOUNCE_SOUND_SPEED : float = 60.0
+## One swing can only hit a clump once.
+const HIT_COOLDOWN : float = 0.15
 ## The liquid seen from above, in pixels; clumps and the paddle live in this space.
 const LIQUID_SIZE : Vector2 = Vector2(232, 104)
 const CLUMP_RADIUS : float = 11.0
@@ -108,6 +123,8 @@ func step(delta : float) -> void:
 	if phase == Phase.DONE:
 		return
 	heat.step(delta)
+	if phase != Phase.WATER:
+		_move_clumps(delta)
 	match phase:
 		Phase.HOLD:
 			_hold(delta)
@@ -119,25 +136,38 @@ func step(delta : float) -> void:
 				step_reached.emit(step_index)
 
 
-## The paddle's blade is the segment from `from` to `to` (liquid pixels); sweeping it
-## into a clump and out again swipes it.
-func paddle_swept(from : Vector2, to : Vector2) -> void:
+## The paddle turned from `from_angle` to `to_angle` around `pivot` (liquid pixels;
+## angles from straight down, positive to the right). In the liquid it covers distances
+## `reach.x` to `reach.y` from the pivot, the last `blade_length` of it being the blade.
+## Clumps in the swept arc are hit by a fast swing of the blade; the shaft and a slow
+## swing only push them. Checking the whole arc means a fast swing cannot jump over a
+## clump between frames.
+func paddle_swing(pivot : Vector2, from_angle : float, to_angle : float, reach : Vector2, blade_length : float, angular_velocity : float) -> void:
+	var low : float = minf(from_angle, to_angle)
+	var high : float = maxf(from_angle, to_angle)
 	for clump : MashClump in clumps:
-		if clump.is_broken():
+		if clump.is_broken() or clump.cooldown > 0.0:
 			continue
-		var closest : Vector2 = Geometry2D.get_closest_point_to_segment(clump.position, from, to)
-		var inside : bool = closest.distance_to(clump.position) <= CLUMP_RADIUS
-		if clump.paddle_inside and not inside:
-			clump.swipes_left -= 1
-			clump_swiped.emit(clump)
-			if clump.is_broken():
-				clump_broken.emit(clump)
-		clump.paddle_inside = inside
-
-
-## The paddle touching one point only.
-func paddle_at(at : Vector2) -> void:
-	paddle_swept(at, at)
+		var offset : Vector2 = clump.position - pivot
+		var distance : float = offset.length()
+		if distance < reach.x - CLUMP_RADIUS or distance > reach.y + CLUMP_RADIUS:
+			continue
+		var angle : float = atan2(offset.x, offset.y)
+		var half_width : float = asin(minf(1.0, CLUMP_RADIUS / maxf(distance, CLUMP_RADIUS)))
+		if angle + half_width < low or angle - half_width > high:
+			continue
+		# The blade's own velocity where it meets the clump.
+		var blade_velocity : Vector2 = Vector2(offset.y, -offset.x) * angular_velocity
+		var on_blade : bool = distance >= reach.y - blade_length - CLUMP_RADIUS
+		if not on_blade or absf(angular_velocity) < MIN_SWIPE_SPEED:
+			clump.velocity = blade_velocity.limit_length(MAX_PUSH_SPEED)
+			continue
+		clump.velocity = blade_velocity.limit_length(MAX_KNOCK_SPEED)
+		clump.cooldown = HIT_COOLDOWN
+		clump.swipes_left -= 1
+		clump_swiped.emit(clump)
+		if clump.is_broken():
+			clump_broken.emit(clump)
 
 
 func clumps_left() -> int:
@@ -177,6 +207,29 @@ func _hold(delta : float) -> void:
 		else:
 			step_index += 1
 			phase = Phase.RAMP
+
+
+## The mash swirls the clumps slowly around its middle; knocks fade with the drag and
+## the kettle wall bounces them back.
+func _move_clumps(delta : float) -> void:
+	var middle : Vector2 = LIQUID_SIZE / 2.0
+	var low : Vector2 = Vector2(CLUMP_RADIUS, CLUMP_RADIUS)
+	var high : Vector2 = LIQUID_SIZE - low
+	for clump : MashClump in clumps:
+		if clump.is_broken():
+			continue
+		clump.cooldown = maxf(0.0, clump.cooldown - delta)
+		var from_middle : Vector2 = clump.position - middle
+		if from_middle.length() > 1.0:
+			clump.velocity += Vector2(-from_middle.y, from_middle.x).normalized() * SWIRL_ACCEL * delta
+		clump.velocity *= exp(-CLUMP_DRAG * delta)
+		clump.position += clump.velocity * delta
+		for axis : int in 2:
+			if clump.position[axis] < low[axis] or clump.position[axis] > high[axis]:
+				clump.position[axis] = clampf(clump.position[axis], low[axis], high[axis])
+				if absf(clump.velocity[axis]) >= BOUNCE_SOUND_SPEED:
+					clump_bounced.emit(clump)
+				clump.velocity[axis] *= -WALL_BOUNCE
 
 
 func _spawn_clump() -> void:

@@ -26,6 +26,18 @@
 [ext_resource type="AudioStream" uid="uid://drcs0nsvyn5q1" path="res://assets/audio/sfx/synth/pour.wav" id="snd_pour"]
 [ext_resource type="AudioStream" uid="uid://covirrtcco5o3" path="res://assets/audio/sfx/synth/toast.wav" id="snd_toast"]
 
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/brew_burner_loop.wav" id="bd_burner_loop"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/brew_boil_loop.wav" id="bd_boil_loop"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/brew_malt_pour.wav" id="bd_malt_pour"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/brew_hop_pour_loop.wav" id="bd_hop_pour_loop"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/brew_plop.wav" id="bd_plop"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/brew_clump_hit.wav" id="bd_clump_hit"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/brew_clump_break.wav" id="bd_clump_break"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/brew_paddle_knock.wav" id="bd_paddle_knock"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/brew_boil_over.wav" id="bd_boil_over"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/brew_step_done.wav" id="bd_step_done"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/brew_result_good.wav" id="bd_result_good"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/brew_result_low.wav" id="bd_result_low"]
 [resource]
 script = ExtResource("1_bank")
 menu_music = ExtResource("2_music1")
@@ -46,3 +58,15 @@ sfx_risk_tension_drone = ExtResource("11_drone")
 sfx_style_discovered = ExtResource("12_discovered")
 sfx_talent_purchased = ExtResource("15_talent")
 sfx_glass_shatter = ExtResource("14_clink")
+sfx_brew_burner_loop = ExtResource("bd_burner_loop")
+sfx_brew_boil_loop = ExtResource("bd_boil_loop")
+sfx_brew_malt_pour = ExtResource("bd_malt_pour")
+sfx_brew_hop_pour_loop = ExtResource("bd_hop_pour_loop")
+sfx_brew_plop = ExtResource("bd_plop")
+sfx_brew_clump_hit = ExtResource("bd_clump_hit")
+sfx_brew_clump_break = ExtResource("bd_clump_break")
+sfx_brew_paddle_knock = ExtResource("bd_paddle_knock")
+sfx_brew_boil_over = ExtResource("bd_boil_over")
+sfx_brew_step_done = ExtResource("bd_step_done")
+sfx_brew_result_good = ExtResource("bd_result_good")
+sfx_brew_result_low = ExtResource("bd_result_low")
