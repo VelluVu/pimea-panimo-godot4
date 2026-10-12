@@ -22,8 +22,15 @@ signal ship_batch_to_bar_requested(batch : BrewBatch, bar : BarContact)
 @warning_ignore("unused_signal")
 signal batch_hold_toggled(batch : BrewBatch)
 
+## Brews the table at once with a plain ×1.0 quality (bots, the console).
 @warning_ignore("unused_signal")
 signal start_brewing()
+## The player's Brew button: opens the brew day minigame for the table.
+@warning_ignore("unused_signal")
+signal brew_day_requested()
+## The brew day is over; brews the table with the quality multiplier it earned.
+@warning_ignore("unused_signal")
+signal brew_day_finished(quality_multiplier : float)
 
 @warning_ignore("unused_signal")
 signal warehouse_door_clicked()

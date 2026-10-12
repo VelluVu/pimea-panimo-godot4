@@ -45,6 +45,7 @@ func _ready() -> void:
 	_assert_default_visibility()
 	add_child(TouchTooltip.new())
 	add_child(PortraitNotice.new())
+	add_child(BrewDayWindow.new())
 	var touch_hints := TouchHints.new()
 	add_child(touch_hints)
 	if DisplayServer.is_touchscreen_available():

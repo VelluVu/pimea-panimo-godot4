@@ -190,4 +190,4 @@ func _on_remove_button_pressed() -> void:
 
 
 func _on_start_brew_button_pressed() -> void:
-	GUISignals.start_brewing.emit()
+	GUISignals.brew_day_requested.emit()

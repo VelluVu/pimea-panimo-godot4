@@ -5371,6 +5371,234 @@ msgstr "The server is busy. Try again in a moment."
 msgid "Palvelin ei hyväksynyt tulosta."
 msgstr "The server did not accept the score."
 
+#: src/ui/brew_day/brew_day_lines.gd
+msgid "Aromit poreilevat kuin taikajuoma."
+msgstr "The aromas bubble like a magic potion."
+
+#: src/ui/brew_day/brew_day_lines.gd
+msgid "Askel valmis! Seuraavaan lämpöön."
+msgstr "Step done! On to the next temperature."
+
+#: src/ui/brew_day/brew_day_lines.gd
+msgid "Entsyymit kuolivat sankarikuolemaan."
+msgstr "The enzymes died a hero's death."
+
+#: src/ui/brew_day/brew_day_lines.gd
+msgid "Entsyymit tekevät töitä. Sinä et."
+msgstr "The enzymes are working. You are not."
+
+#: src/ui/brew_day/brew_day_lines.gd
+msgid "Humalaloitsu onnistui!"
+msgstr "Hop spell successful!"
+
+#: src/ui/brew_day/brew_day_lines.gd
+msgid "Humalapommi!"
+msgstr "Hop bomb!"
+
+#: src/ui/brew_day/brew_day_lines.gd
+msgid "Humalat jäivät pussiin."
+msgstr "The hops stayed in the sack."
+
+#: src/ui/brew_day/brew_day_lines.gd
+msgid "Humalat lensivät kuin konfetti."
+msgstr "Hops flew like confetti."
+
+#: src/ui/brew_day/brew_day_lines.gd
+msgid "KIEHUU!"
+msgstr "IT'S BOILING!"
+
+#: src/ui/brew_day/brew_day_lines.gd
+msgid "Katajaa! Esi-isät olisivat ylpeitä."
+msgstr "Juniper! The ancestors would be proud."
+
+#: src/ui/brew_day/brew_day_lines.gd
+msgid "Katkerot kattilaan!"
+msgstr "Bittering hops in!"
+
+#: src/ui/brew_day/brew_day_lines.gd
+msgid "Kellarin lattia on nyt tahmea... pysyvästi."
+msgstr "The cellar floor is sticky now... forever."
+
+#: src/ui/brew_day/brew_day_lines.gd
+msgid "Kelpo erä."
+msgstr "A decent batch."
+
+#: src/ui/brew_day/brew_day_lines.gd
+msgid "Kiehuminen loppuu, lisää lämpöä!"
+msgstr "The boil is dying, more heat!"
+
+#: src/ui/brew_day/brew_day_lines.gd
+msgid "Kuumempi ei ole parempi. Paitsi saunassa."
+msgstr "Hotter is not better. Except in the sauna."
+
+#: src/ui/brew_day/brew_day_lines.gd
+msgid "Liekit pois, niin aromit jää."
+msgstr "Flames off, so the aromas stay."
+
+#: src/ui/brew_day/brew_day_lines.gd
+msgid "Liian kuumaa! Odota, odota..."
+msgstr "Too hot! Wait, wait..."
+
+#: src/ui/brew_day/brew_day_lines.gd
+msgid "Lämpömittarihan on kalibroitu, kai?"
+msgstr "The thermometer is calibrated, right?"
+
+#: src/ui/brew_day/brew_day_lines.gd
+msgid "Mallasta sisään, ja möykyt sileeks."
+msgstr "Malt in, and smooth out the lumps."
+
+#: src/ui/brew_day/brew_day_lines.gd
+msgid "Mausteet sisään, tuoksuupa joululle."
+msgstr "Spices in, smells like Christmas."
+
+#: src/ui/brew_day/brew_day_lines.gd
+msgid "Mäski jäähtyy. Kuten intosi."
+msgstr "The mash is cooling. Like your enthusiasm."
+
+#: src/ui/brew_day/brew_day_lines.gd
+msgid "Mäskin leipämäinen tuoksu täyttää kellarin."
+msgstr "The bready smell of the mash fills the cellar."
+
+#: src/ui/brew_day/brew_day_lines.gd
+msgid "Mäskäys valmis. Mallas antoi kaikkensa."
+msgstr "Mashing done. The malt gave its all."
+
+#: src/ui/brew_day/brew_day_lines.gd
+msgid "Naapuri haistaa tämän."
+msgstr "The neighbour can smell this."
+
+#: src/ui/brew_day/brew_day_lines.gd
+msgid "No, juotavaa se on."
+msgstr "Well, it's drinkable."
+
+#: src/ui/brew_day/brew_day_lines.gd
+msgid "Paakku eliminoitu!"
+msgstr "Lump eliminated!"
+
+#: src/ui/brew_day/brew_day_lines.gd
+msgid "Paakku! Pistä se sileeks!"
+msgstr "A lump! Smooth it out!"
+
+#: src/ui/brew_day/brew_day_lines.gd
+msgid "Paakut jäivät, tehokkuus kärsi."
+msgstr "Lumps were left, efficiency suffered."
+
+#: src/ui/brew_day/brew_day_lines.gd
+msgid "Säästeliäs panimo."
+msgstr "A thrifty brewery."
+
+#: src/ui/brew_day/brew_day_lines.gd
+msgid "Tärkkelys muuttuu sokeriksi."
+msgstr "Starch is turning into sugar."
+
+#: src/ui/brew_day/brew_day_lines.gd
+msgid "Tästä tulee katkeraa."
+msgstr "This is going to be bitter."
+
+#: src/ui/brew_day/brew_day_lines.gd
+msgid "Täydellinen keittopäivä!"
+msgstr "A perfect brew day!"
+
+#: src/ui/brew_day/brew_day_lines.gd
+msgid "Vesi lämpenee. Hitaasti mutta varmasti."
+msgstr "The water is warming. Slowly but surely."
+
+#: src/ui/brew_day/brew_day_lines.gd
+msgid "Väärät humalat, mutta hyvät tuoksut."
+msgstr "Wrong hops, but good smells."
+
+#: src/ui/brew_day/brew_day_lines.gd
+msgid "Ylikiehuminen, lattia lainehtii sokerilientä."
+msgstr "Boil-over, the floor is awash with sugary wort."
+
+#: src/ui/brew_day/brew_day_window.gd
+msgid "KEITTO · %s"
+msgstr "BOIL · %s"
+
+#: src/ui/brew_day/brew_day_window.gd
+msgid "KEITTOON"
+msgstr "TO THE BOIL"
+
+#: src/ui/brew_day/brew_day_window.gd
+msgid "Keitä heti ilman keittopäivää. Laatu ×%.2f."
+msgstr "Brew right away without the brew day. Quality ×%.2f."
+
+#: src/ui/brew_day/brew_day_window.gd
+msgid "LISÄÄ MALTAAT"
+msgstr "ADD MALTS"
+
+#: src/ui/brew_day/brew_day_window.gd
+msgid "Laatu ×%.2f"
+msgstr "Quality ×%.2f"
+
+#: src/ui/brew_day/brew_day_window.gd
+msgid "LÄMMITÄ"
+msgstr "HEAT"
+
+#: src/ui/brew_day/brew_day_window.gd
+msgid "MÄSKÄYS · %s"
+msgstr "MASH · %s"
+
+#: src/ui/brew_day/brew_day_window.gd
+msgid "Peru"
+msgstr "Cancel"
+
+#: src/ui/brew_day/brew_day_window.gd
+msgid "Peru keitto"
+msgstr "Cancel the brew"
+
+#: src/ui/brew_day/brew_day_window.gd
+msgid "Perutaanko keittopäivä? Raaka-aineet jäävät pöydälle."
+msgstr "Cancel the brew day? The ingredients stay on the table."
+
+#: src/ui/brew_day/brew_day_window.gd
+msgid "Pidä kattilan lämmitinnappia pohjassa, kunnes vesi on oikeassa lämmössä."
+msgstr "Hold the kettle's heat button until the water is at the right temperature."
+
+#: src/ui/brew_day/brew_day_window.gd
+msgid "Pidä kattilan lämmitinnappia pohjassa, kunnes vierre on oikeassa lämmössä."
+msgstr "Hold the kettle's heat button until the wort is at the right temperature."
+
+#: src/ui/brew_day/brew_day_window.gd
+msgid "Pikakeitto"
+msgstr "Quick brew"
+
+#: src/ui/brew_day/brew_day_window.gd
+msgid "VALMIS"
+msgstr "DONE"
+
+#: src/ui/brew_day/thermo_column.gd
+msgid "AROMI"
+msgstr "AROMA"
+
+#: src/ui/brew_day/thermo_column.gd
+msgid "KATKERO"
+msgstr "BITTER"
+
+#: src/ui/brew_day/thermo_column.gd
+msgid "Lämpötilassa %d %%"
+msgstr "On temperature %d %%"
+
+#: src/ui/brew_day/thermo_column.gd
+msgid "MAKU"
+msgstr "FLAVOUR"
+
+#: src/ui/brew_day/thermo_column.gd
+msgid "MAUSTE"
+msgstr "SPICE"
+
+#: src/ui/brew_day/thermo_column.gd
+msgid "Mallas %d°"
+msgstr "Malt %d°"
+
+#: src/ui/brew_day/thermo_column.gd
+msgid "Paakkuja: %d"
+msgstr "Lumps: %d"
+
+#: src/ui/brew_day/thermo_column.gd
+msgid "Vaahto %d %%"
+msgstr "Foam %d %%"
+
 #: src/ui/brew_preview_text.gd
 msgid "Arvio: %s, EBC %d, IBU %d, laatu %d%%"
 msgstr "Estimate: %s, EBC %d, IBU %d, quality %d%%"
