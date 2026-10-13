@@ -13,6 +13,14 @@ const HEAT_BUTTON_TEXT : String = "LÄMMITÄ"
 const MALT_SACK_TEXT : String = "Maltaat"
 ## Shown on the malt sack while the water is at the malt marker.
 const MALT_CUE_TEXT : String = "NYT"
+## The malt sack is carried and poured like a hop sack, under an id no ingredient has.
+const MALT_SACK_ID : int = -1
+## Seconds of pouring to empty the malt sack; the malts count as added when it is empty.
+const MALT_POUR_SECONDS : float = 2.0
+## How far the pour alone takes the water toward the mash colour; blending does the rest.
+const POUR_CLOUD : float = 0.3
+## The heater button is cold this many degrees under the target and fully warm at it.
+const WARM_SPAN : float = 15.0
 const TO_BOIL_BUTTON_TEXT : String = "KEITTOON"
 const FINISH_BUTTON_TEXT : String = "VALMIS"
 const CANCEL_BUTTON_TEXT : String = "Peru"
@@ -102,6 +110,9 @@ var _spice_tipped : Dictionary = {}
 ## Marks whose opening has been called out.
 var _called : Dictionary = {}
 var _malts_added : bool = false
+## Share of the malt sack still to pour, 1..0.
+var _malt_left : float = 1.0
+var _malt_sound_played : bool = false
 var _foam_warned : bool = false
 var _flameout_shown : bool = false
 var _malt_aroma_shown : bool = false
@@ -169,6 +180,8 @@ func _start_mash() -> void:
 	_mash = _plan.new_mash()
 	_boil = null
 	_malts_added = false
+	_malt_left = 1.0
+	_malt_sound_played = false
 	_foam_warned = false
 	_flameout_shown = false
 	_malt_aroma_shown = false
@@ -197,7 +210,9 @@ func _start_mash() -> void:
 	_kettle.foam = 0.0
 	_kettle.bubbling = false
 	_kettle.reset_paddle()
-	_malts_button.amount_text = "%d %s" % [_plan.malt_kg, tr(StringContainer.KG)]
+	_malts_button.fill = 1.0
+	_malts_button.lifted = false
+	_refresh_malt_amount()
 	_malts_button.show()
 	_next_button.hide()
 	_sack_column.hide()
@@ -262,6 +277,8 @@ func _process(delta : float) -> void:
 		_mash.set_heating(heating)
 		_mash.step(delta)
 		_mash_lines(delta, heating)
+		if _malts_added:
+			_kettle.liquid_color = KettleView.WATER_COLOR.lerp(_mash_color(), lerpf(POUR_CLOUD, 1.0, _mash.blend))
 	elif _stage == Stage.BOIL:
 		_boil.set_heating(heating)
 		_boil.step(delta)
@@ -274,10 +291,18 @@ func _process(delta : float) -> void:
 	glow.a = GLOW_ALPHA
 	_kettle.glow_color = glow if _stage != Stage.RESULT else Color.TRANSPARENT
 	_heat_button.heat = _boil.heat.power if _boil != null else _mash.heat.power
+	_heat_button.warmth = _kettle_warmth()
 	_heat_button.held = _key_heat and _stage != Stage.RESULT
+	_pour_malts(delta)
 	_cue_malts()
 	_refresh_sacks()
 	_emit_loops()
+
+
+func _kettle_warmth() -> float:
+	var temperature : float = _boil.heat.temperature if _boil != null else _mash.heat.temperature
+	var target : float = BoilSession.BOIL_MIN if _boil != null else _mash.target()
+	return clampf((temperature - (target - WARM_SPAN)) / WARM_SPAN, 0.0, 1.0)
 
 
 func _steam_level() -> float:
@@ -357,25 +382,64 @@ func _boil_lines() -> void:
 func _cue_malts() -> void:
 	if not _malts_button.visible:
 		return
-	var at_marker : bool = _stage == Stage.MASH and _mash.is_in_band()
+	var at_marker : bool = _stage == Stage.MASH and _mash.is_in_band() and not _kettle.is_carrying(MALT_SACK_ID)
 	_malts_button.cue = HopSackButton.Cue.NOW if at_marker else HopSackButton.Cue.NONE
 	_malts_button.cue_label = tr(MALT_CUE_TEXT)
 
 
-func _on_malts_pressed() -> void:
+## The carried malt sack pours while over the mouth, clouding the water a little as it
+## goes; the malts go in when it is empty and then blend in (MashSession.blend).
+func _pour_malts(delta : float) -> void:
+	if not _kettle.is_carrying(MALT_SACK_ID):
+		return
+	_kettle.set_carry_target(MALT_SACK_ID, _kettle.get_local_mouse_position())
+	var over : bool = _kettle.is_over_mouth(MALT_SACK_ID)
+	_kettle.set_pouring(MALT_SACK_ID, over)
+	if not over:
+		return
+	if not _malt_sound_played:
+		_malt_sound_played = true
+		GUISignals.brew_day_sound.emit(SOUND_MALTS)
+	_malt_left = maxf(0.0, _malt_left - delta / MALT_POUR_SECONDS)
+	_malts_button.fill = _malt_left
+	_refresh_malt_amount()
+	_kettle.liquid_color = KettleView.WATER_COLOR.lerp(_mash_color(), POUR_CLOUD * (1.0 - _malt_left))
+	if _malt_left <= 0.0:
+		_add_malts()
+
+
+func _pick_up_malts() -> void:
+	if _stage == Stage.MASH and not _malts_added:
+		_kettle.carry(MALT_SACK_ID, KettleView.CLUMP_LIGHT, true, false)
+		_malts_button.lifted = true
+
+
+func _put_down_malts() -> void:
+	_kettle.drop(MALT_SACK_ID)
+	_malts_button.lifted = false
+
+
+func _refresh_malt_amount() -> void:
+	_malts_button.amount_text = "%d %s" % [ceili(_plan.malt_kg * _malt_left), tr(StringContainer.KG)]
+
+
+func _mash_color() -> Color:
+	return BeerColor.from_ebc(_plan.ebc).lerp(GRAIN_COLOR, MASH_CLOUD)
+
+
+func _add_malts() -> void:
+	_put_down_malts()
 	_malts_added = true
 	_mash.add_malts()
-	GUISignals.brew_day_sound.emit(SOUND_MALTS)
 	_malts_button.hide()
 	_hint.text = PADDLE_HINT_TEXT
 	_hint.show()
-	_kettle.liquid_color = BeerColor.from_ebc(_plan.ebc).lerp(GRAIN_COLOR, MASH_CLOUD)
 	_popups.show_line(BrewDayLines.MALTS_IN_TEXT)
 
 
 func _on_clump_appeared(_clump : MashClump) -> void:
 	# The clumps of the dough-in itself come with the malts line.
-	if _malts_added and _mash.counted > 0.0:
+	if _mash.is_blended():
 		_popups.show_line(BrewDayLines.CLUMP_TEXT, BrewDayPopups.BAD_COLOR)
 
 
@@ -446,6 +510,7 @@ func _toggle_confirm() -> void:
 	if _confirm.visible:
 		_set_heating_inputs(false, false)
 		_set_sacks_released()
+		_put_down_malts()
 
 
 func _on_sack_key(index : int, pressed : bool) -> void:
@@ -623,7 +688,8 @@ func _build() -> void:
 	_malts_button.sack_name = MALT_SACK_TEXT
 	_malts_button.pellet_color = KettleView.CLUMP_LIGHT
 	_malts_button.position = SACK_COLUMN_POSITION
-	_malts_button.pressed.connect(_on_malts_pressed)
+	_malts_button.button_down.connect(_pick_up_malts)
+	_malts_button.button_up.connect(_put_down_malts)
 	add_child(_malts_button)
 	_next_button = _make_button(TO_BOIL_BUTTON_TEXT, NEXT_BUTTON_RECT)
 	_next_button.pressed.connect(_on_next_pressed)

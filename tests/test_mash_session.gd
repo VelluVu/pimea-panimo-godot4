@@ -44,6 +44,12 @@ func _swing_through(session : MashSession, clump : MashClump, delta : float) -> 
 	session.paddle_moved(_stick(at.x - 30.0, at.y - 50.0, at.y - 20.0, at.y + 10.0), _stick(at.x + 30.0, at.y - 50.0, at.y - 20.0, at.y + 10.0), BLADE_FROM, delta)
 
 
+## Adds the malts and blends them in at once, so the dough-in clumps are there.
+func _dough_in(session : MashSession) -> void:
+	session.add_malts()
+	session.blend_by(1.0)
+
+
 func _break_all_clumps(session : MashSession) -> void:
 	for clump : MashClump in session.clumps:
 		for i : int in MashSessionScript.SWIPES_PER_CLUMP:
@@ -69,7 +75,7 @@ func test_malts_drop_the_temperature_and_start_the_clock() -> void:
 	var session : MashSession = _session([65.0])
 	_play_well(session, 5.0)
 	var before : float = session.heat.temperature
-	session.add_malts()
+	_dough_in(session)
 	assert_eq(session.heat.temperature, before - MashSessionScript.MALT_DROP)
 	assert_eq(session.phase, MashSession.Phase.HOLD)
 	session.step(STEP)
@@ -79,7 +85,7 @@ func test_malts_drop_the_temperature_and_start_the_clock() -> void:
 func test_good_control_scores_high() -> void:
 	var session : MashSession = _session([65.0])
 	_play_well(session, 5.0)
-	session.add_malts()
+	_dough_in(session)
 	_play_well(session, 30.0)
 	assert_eq(session.phase, MashSession.Phase.DONE)
 	assert_gt(session.score(), 0.8)
@@ -87,7 +93,7 @@ func test_good_control_scores_high() -> void:
 
 func test_doing_nothing_scores_low() -> void:
 	var session : MashSession = _session([65.0])
-	session.add_malts()
+	_dough_in(session)
 	for i : int in 900:
 		session.step(STEP)
 	assert_true(session.score() < 0.3)
@@ -96,7 +102,7 @@ func test_doing_nothing_scores_low() -> void:
 func test_a_step_mash_ramps_without_counting() -> void:
 	var session : MashSession = _session([45.0, 63.0, 72.0])
 	_play_well(session, 5.0)
-	session.add_malts()
+	_dough_in(session)
 	_play_well(session, 60.0)
 	assert_eq(session.phase, MashSession.Phase.DONE)
 	assert_true(absf(session.counted - MashProgram.MASH_SECONDS) < 0.1, "ramps add no counted time")
@@ -108,7 +114,7 @@ func test_clumps_left_cut_the_score() -> void:
 	var lumpy : MashSession = _session([65.0], 3)
 	for session : MashSession in [clean, lumpy]:
 		_play_well(session, 5.0)
-		session.add_malts()
+		_dough_in(session)
 	_break_all_clumps(clean)
 	_play_well(clean, 30.0)
 	_play_well(lumpy, 30.0)
@@ -120,7 +126,7 @@ func test_clumps_left_cut_the_score() -> void:
 
 func test_a_clump_takes_several_hard_swings() -> void:
 	var session : MashSession = _session([65.0], 1)
-	session.add_malts()
+	_dough_in(session)
 	var clump : MashClump = session.clumps[0]
 	for i : int in MashSessionScript.SWIPES_PER_CLUMP - 1:
 		clump.cooldown = 0.0
@@ -133,7 +139,7 @@ func test_a_clump_takes_several_hard_swings() -> void:
 
 func test_a_slow_swing_only_pushes() -> void:
 	var session : MashSession = _session([65.0], 1)
-	session.add_malts()
+	_dough_in(session)
 	var clump : MashClump = session.clumps[0]
 	_swing_through(session, clump, SLOW)
 	assert_eq(clump.swipes_left, MashSessionScript.SWIPES_PER_CLUMP)
@@ -142,7 +148,7 @@ func test_a_slow_swing_only_pushes() -> void:
 
 func test_a_hit_knocks_the_clump_away_and_waits_before_the_next() -> void:
 	var session : MashSession = _session([65.0], 1)
-	session.add_malts()
+	_dough_in(session)
 	var clump : MashClump = session.clumps[0]
 	var before : Vector2 = clump.position
 	_swing_through(session, clump, FAST)
@@ -155,7 +161,7 @@ func test_a_hit_knocks_the_clump_away_and_waits_before_the_next() -> void:
 
 func test_the_shaft_only_pushes() -> void:
 	var session : MashSession = _session([65.0], 1)
-	session.add_malts()
+	_dough_in(session)
 	var clump : MashClump = session.clumps[0]
 	var at : Vector2 = clump.position
 	# The blade is below the clump, so only the shaft crosses it.
@@ -166,7 +172,7 @@ func test_the_shaft_only_pushes() -> void:
 
 func test_a_sweep_beside_the_clump_misses() -> void:
 	var session : MashSession = _session([65.0], 1)
-	session.add_malts()
+	_dough_in(session)
 	var clump : MashClump = session.clumps[0]
 	var at : Vector2 = clump.position
 	session.paddle_moved(_stick(at.x + 40.0, at.y - 50.0, at.y - 20.0, at.y + 10.0), _stick(at.x + 90.0, at.y - 50.0, at.y - 20.0, at.y + 10.0), BLADE_FROM, FAST)
@@ -175,7 +181,7 @@ func test_a_sweep_beside_the_clump_misses() -> void:
 
 func test_clumps_stay_in_the_kettle() -> void:
 	var session : MashSession = _session([65.0], 3)
-	session.add_malts()
+	_dough_in(session)
 	for clump : MashClump in session.clumps:
 		clump.velocity = Vector2(500, -500)
 	for i : int in 120:
@@ -184,10 +190,45 @@ func test_clumps_stay_in_the_kettle() -> void:
 		assert_true(MashSessionScript.is_in_liquid(clump.position), str(clump.position))
 
 
+func test_the_malts_blend_in_slowly_and_the_clumps_come_on_the_way() -> void:
+	var session : MashSession = _session([65.0], 3)
+	_play_well(session, 5.0)
+	session.add_malts()
+	assert_eq(session.clumps.size(), 0)
+	assert_false(session.is_blended())
+	session.step(1.0)
+	assert_true(absf(session.blend - 1.0 / MashSessionScript.BLEND_SECONDS) < 0.001)
+	session.blend_by(0.3 - session.blend)
+	assert_eq(session.clumps.size(), 1)
+	session.blend_by(0.75)
+	assert_true(session.is_blended())
+	assert_eq(session.clumps.size(), 3)
+
+
+func test_stirring_blends_the_malts_faster() -> void:
+	var still : MashSession = _session([65.0])
+	var stirred : MashSession = _session([65.0])
+	for session : MashSession in [still, stirred]:
+		session.add_malts()
+		session.step(1.0)
+	var middle : Vector2 = MashSessionScript.LIQUID_SIZE / 2.0
+	var before := PackedVector2Array([middle + Vector2(0, -200), middle + Vector2(-40, 0)])
+	var after := PackedVector2Array([middle + Vector2(0, -200), middle + Vector2(40, 0)])
+	stirred.paddle_moved(before, after, 1, 0.1)
+	assert_gt(stirred.blend, still.blend)
+
+
+func test_stirring_does_nothing_before_the_malts() -> void:
+	var session : MashSession = _session([65.0])
+	var middle : Vector2 = MashSessionScript.LIQUID_SIZE / 2.0
+	session.paddle_moved(PackedVector2Array([middle, middle]), PackedVector2Array([middle, middle + Vector2(40, 0)]), 1, 0.1)
+	assert_eq(session.blend, 0.0)
+
+
 func test_more_clumps_appear_later() -> void:
 	var session : MashSession = _session([65.0], 2)
 	_play_well(session, 5.0)
-	session.add_malts()
+	_dough_in(session)
 	assert_eq(session.clumps.size(), 2)
 	_play_well(session, 30.0)
 	assert_gt(session.clumps.size(), 2)
@@ -195,6 +236,6 @@ func test_more_clumps_appear_later() -> void:
 
 func test_clumps_spawn_inside_the_liquid() -> void:
 	var session : MashSession = _session([65.0], 5)
-	session.add_malts()
+	_dough_in(session)
 	for clump : MashClump in session.clumps:
 		assert_true(MashSessionScript.is_in_liquid(clump.position), str(clump.position))

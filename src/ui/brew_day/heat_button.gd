@@ -4,7 +4,8 @@ extends Button
 ## The kettle's burner button, drawn as a pixel frame of its own: cold iron at rest,
 ## glowing through ember red to hot orange as the burner power rises, and cooling back
 ## the same way after letting go. The colour moves in a few hard steps, like an old
-## palette swap. Iron holds its glow, so the colour cools slower than the burner. It sinks while held, by the pointer or by the heating key (held).
+## palette swap. Iron holds its glow, so the colour cools slower than the burner, and
+## it stays warm while the kettle is hot (warmth), cooling as the mash cools. It sinks while held, by the pointer or by the heating key (held).
 
 ## One row per heat step, coldest first: face, top edge, left edge, and the right edge with the lip.
 const PALETTE : Array[Array] = [
@@ -23,9 +24,13 @@ const LIP : int = 2
 const FONT_SIZE : int = 16
 ## Seconds for a full glow to fade back to cold iron.
 const COOL_SECONDS : float = 1.5
+## A hot kettle alone warms the button this far; only the burner makes it white hot.
+const WARMTH_SHARE : float = 0.79
 
 ## The burner power, 0..1.
 var heat : float = 0.0
+## How hot the kettle is against its target, 0..1.
+var warmth : float = 0.0
 var _glow : float = 0.0
 ## Held down by the heating key, so it sinks as if pressed.
 var held : bool = false
@@ -44,7 +49,7 @@ func _process(delta : float) -> void:
 
 
 func _draw() -> void:
-	var colors : Array = PALETTE[0 if disabled else mini(int(_glow * PALETTE.size()), PALETTE.size() - 1)]
+	var colors : Array = PALETTE[0 if disabled else mini(int(maxf(_glow, warmth * WARMTH_SHARE) * PALETTE.size()), PALETTE.size() - 1)]
 	var face : Color = colors[0]
 	var top : Color = colors[1]
 	var left : Color = colors[2]
