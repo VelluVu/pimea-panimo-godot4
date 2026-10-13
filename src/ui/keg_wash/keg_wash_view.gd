@@ -19,7 +19,7 @@ const HOOK_POSITION : Vector2 = Vector2(44, 92)
 ## The brush is held by its shaft: BRUSH_REST and `_brush` are that grip, and the bristle
 ## head hangs below it, leaning as the brush moves. It hangs from the hook by the hole at
 ## its top.
-const BRUSH_REST : Vector2 = Vector2(52, 122)
+const BRUSH_REST : Vector2 = Vector2(52, 120)
 ## On the sprite, in its own pixels: where the hand holds the shaft and where the head is.
 const BRUSH_GRIP_Y : float = 10.0
 const BRUSH_HEAD_Y : float = 28.0
@@ -30,10 +30,10 @@ const BRUSH_REST_RECT : Rect2 = Rect2(30, 96, 42, 72)
 const BRUSH_SPRING : float = 260.0
 const BRUSH_DAMPING : float = 18.0
 const TAP_POSITION : Vector2 = Vector2(586, 66)
-const TAP_SPOUT : Vector2 = TAP_POSITION + Vector2(11, 20)
+const TAP_SPOUT : Vector2 = TAP_POSITION + Vector2(14, 22)
 ## The nozzle hangs by the tap; the hose joins the bottom of its grip.
 const HOSE_REST : Vector2 = Vector2(604, 186)
-const NOZZLE_GRIP : Vector2 = Vector2(0, 28)
+const NOZZLE_GRIP : Vector2 = Vector2(0, 30)
 ## The hose shoots a jet this long out of the nozzle, up and a little toward the middle
 ## of the keg; it cleans where it lands.
 const JET_LENGTH : float = 60.0
@@ -43,8 +43,8 @@ const JET_CORE_COLOR : Color = Color(0.9, 0.97, 1.0, 0.95)
 const HOSE_REST_RECT : Rect2 = Rect2(586, 176, 36, 48)
 const BENCH_POSITION : Vector2 = Vector2(536, 300)
 ## The bottle stands on the bench; the mist leaves from its top left.
-const SPRAY_REST : Vector2 = Vector2(576, 268)
-const SPRAY_NOZZLE : Vector2 = Vector2(0, 6)
+const SPRAY_REST : Vector2 = Vector2(576, 264)
+const SPRAY_NOZZLE : Vector2 = Vector2(2, 8)
 ## The mist lands this far from the bottle's nozzle, aimed like the hose's jet.
 const SPRAY_DISTANCE : float = 40.0
 const SPRAY_REST_RECT : Rect2 = Rect2(566, 258, 44, 44)
