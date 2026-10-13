@@ -125,3 +125,51 @@ func test_a_half_done_wash_scores_partly_clean() -> void:
 	_scrub(session, AT, RulesScript.WORK[KegWashSpot.Kind.YEAST])
 	# Half the dirt scrubbed loose: half of the scrubbing share.
 	assert_true(is_equal_approx(session.cleanliness(), RulesScript.SCRUB_SHARE / 2.0))
+
+
+func _grimy_session() -> KegWashSession:
+	var stain := KegWashStain.new(AT, Vector2(40, 25), RulesScript.STAIN_COLORS[0])
+	return SessionScript.new([] as Array[KegWashSpot], [stain] as Array[KegWashStain], true)
+
+
+func _hose_everywhere(session : KegWashSession) -> void:
+	for cell : Vector2 in session.grime_cells:
+		session.rinse(cell, 1.0)
+
+
+func test_the_film_covers_the_whole_inside_and_a_stain_is_thicker() -> void:
+	var session : KegWashSession = _grimy_session()
+	assert_true(session.grime_cells.size() > 100)
+	assert_true(session.grime_left() > 0.99)
+	var thickest : float = 0.0
+	for amount : float in session.grime:
+		thickest = maxf(thickest, amount)
+	assert_eq(thickest, 1.0)
+
+
+func test_only_hosing_all_over_takes_the_grime_off() -> void:
+	var session : KegWashSession = _grimy_session()
+	var cleared : Array = []
+	session.stain_cleared.connect(func(stain : KegWashStain) -> void: cleared.append(stain))
+	session.rinse(AT, 1.0)
+	assert_true(session.grime_left() > 0.5, "one spot of water cleans one patch, not the keg")
+	assert_eq(cleared.size(), 0)
+	_hose_everywhere(session)
+	assert_eq(session.grime_left(), 0.0)
+	assert_eq(cleared.size(), 1)
+
+
+func test_the_sanitizer_does_not_stick_to_grime() -> void:
+	var session : KegWashSession = _grimy_session()
+	_spray_everywhere(session)
+	assert_eq(session.coverage(), 0.0)
+	_hose_everywhere(session)
+	_spray_everywhere(session)
+	assert_true(session.is_completed)
+
+
+func test_hosing_the_grime_counts_toward_the_rinse_share() -> void:
+	var session : KegWashSession = _grimy_session()
+	assert_true(is_equal_approx(session.cleanliness(), RulesScript.SCRUB_SHARE + RulesScript.RINSE_SHARE / 2.0))
+	_hose_everywhere(session)
+	assert_true(is_equal_approx(session.cleanliness(), RulesScript.SCRUB_SHARE + RulesScript.RINSE_SHARE))

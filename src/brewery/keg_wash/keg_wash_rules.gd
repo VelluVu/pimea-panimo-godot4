@@ -36,7 +36,26 @@ const COVERAGE_CELL : float = 16.0
 ## Coverage that counts as the whole keg.
 const FULL_COVERAGE : float = 0.97
 
-## Shares of the cleanliness: dirt scrubbed loose, dirt gone, inside sanitized.
+## Grime: a film over the whole inside, with thicker coloured stains on it, that only
+## the hose takes off, so the hose has to go all over the keg. Kept in cells this size.
+const STAIN_CELL : float = 8.0
+const FILM_AMOUNT : float = 0.5
+const FILM_COLOR : Color = Color(0.36, 0.31, 0.24)
+## Grime a hosed cell loses a second, and the hose's reach on it.
+const STAIN_RINSE_RATE : float = 3.0
+const STAIN_HOSE_RADIUS : float = 26.0
+## A cell this faint counts as clean.
+const STAIN_CLEAN_BELOW : float = 0.05
+const MIN_STAINS : int = 2
+const MAX_STAINS : int = 4
+## Stain sizes across, in pixels; the tilted keg squashes them to the opening's shape.
+const STAIN_SIZE_MIN : float = 30.0
+const STAIN_SIZE_MAX : float = 70.0
+## Old beer, hop slime, yeast.
+const STAIN_COLORS : Array[Color] = [Color(0.47, 0.31, 0.12), Color(0.35, 0.47, 0.16), Color(0.75, 0.66, 0.31)]
+
+## Shares of the cleanliness: dirt scrubbed loose, dirt and stains rinsed away, inside
+## sanitized.
 const SCRUB_SHARE : float = 0.6
 const RINSE_SHARE : float = 0.2
 const SPRAY_SHARE : float = 0.2
@@ -79,6 +98,17 @@ static func scrub_work(kind : KegWashSpot.Kind, length : float, speed : float) -
 
 static func cleanliness(scrubbed : float, gone : float, coverage : float) -> float:
 	return clampf(SCRUB_SHARE * scrubbed + RINSE_SHARE * gone + SPRAY_SHARE * coverage, 0.0, 1.0)
+
+
+## The stains in one dirty keg, anywhere inside the opening.
+static func roll_stains(rng : RandomNumberGenerator) -> Array[KegWashStain]:
+	var stains : Array[KegWashStain] = []
+	var squash : float = KegTunnel.OPENING_RADII.y / KegTunnel.OPENING_RADII.x
+	for i : int in rng.randi_range(MIN_STAINS, MAX_STAINS):
+		var at : Vector2 = KegTunnel.point_at(rng.randf() * TAU, sqrt(rng.randf()) * KegTunnel.SPOT_REACH)
+		var size : float = rng.randf_range(STAIN_SIZE_MIN, STAIN_SIZE_MAX)
+		stains.append(KegWashStain.new(at, Vector2(size, size * squash), STAIN_COLORS[rng.randi() % STAIN_COLORS.size()]))
+	return stains
 
 
 ## The things in one dirty keg, placed apart inside the opening.

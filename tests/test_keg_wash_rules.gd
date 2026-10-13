@@ -45,3 +45,13 @@ func test_the_hat_and_the_coconut_turn_up_once_at_most() -> void:
 			hats += 1 if spot.kind == KegWashSpot.Kind.HAT else 0
 			coconuts += 1 if spot.kind == KegWashSpot.Kind.COCONUT else 0
 		assert_true(hats <= 1 and coconuts <= 1)
+
+
+func test_a_keg_has_two_to_four_stains_inside_the_opening() -> void:
+	var rng := RandomNumberGenerator.new()
+	for seed_value : int in 40:
+		rng.seed = seed_value
+		var stains : Array[KegWashStain] = RulesScript.roll_stains(rng)
+		assert_true(stains.size() >= RulesScript.MIN_STAINS and stains.size() <= RulesScript.MAX_STAINS)
+		for stain : KegWashStain in stains:
+			assert_true(TunnelScript.is_inside(stain.center))

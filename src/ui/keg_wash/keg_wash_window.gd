@@ -94,6 +94,7 @@ func _next_keg() -> void:
 		_view.flash(spot)
 		GUISignals.keg_wash_sound.emit(SOUND_REMOVED))
 	_session.critter_fled.connect(func(_spot : KegWashSpot) -> void: GUISignals.keg_wash_sound.emit(SOUND_FLED))
+	_session.stain_cleared.connect(func(_stain : KegWashStain) -> void: GUISignals.keg_wash_sound.emit(SOUND_REMOVED))
 	_session.mistake.connect(_on_mistake)
 	_session.completed.connect(_on_completed)
 	_view.session = _session
