@@ -166,14 +166,9 @@ signal early_day_close_applied(money_cost: float, reputation_cost: int, risk_rel
 ## at once.
 @warning_ignore("unused_signal")
 signal customer_evicted(dialogue_slot: int)
-## Emitted by BatchDistributor when a batch is dumped for warehouse-clearing cash. Separate
-## from bottles_sold on purpose: it is not a customer sale (no reputation, XP, tip, goal
-## progress or receipt). BeerPatchPanel shows a payout popup.
-@warning_ignore("unused_signal")
-signal batch_bulk_sold(style_name: String, bottles: int, payout: float)
-## Emitted by BatchDistributor when a batch is shipped to a BarContact. Like
-## batch_bulk_sold it is not a real sale, but it carries risk_added because shipping does
-## raise risk. BeerPatchPanel shows a payout and risk popup.
+## Emitted by BatchDistributor when a batch is shipped to a BarContact. Not a customer
+## sale (no reputation, XP, tip or receipt), and it carries risk_added because shipping
+## raises risk. BeerPatchPanel shows a payout and risk popup.
 @warning_ignore("unused_signal")
 signal keg_shipped_to_bar(style_name: String, bar_name: String, bottles: int, payout: float, risk_added: int)
 ## Emitted by DayEventManager on each real day change (never day 1) with the DayEventData

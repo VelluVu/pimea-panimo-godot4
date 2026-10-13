@@ -1237,12 +1237,8 @@ msgid "Kuormapyörä"
 msgstr "Cargo Bike"
 
 #: src/resources/cellar_upgrades/9_kuormapyora.tres
-msgid ""
-"Viet tynnyrit baareihin itse. Lähetyksistä ja tukkumyynnistä jää enemmän "
-"käteen."
-msgstr ""
-"You deliver the kegs to the bars yourself. Shipments and bulk sales leave "
-"more in your pocket."
+msgid "Viet tynnyrit baareihin itse. Baarivienneistä jää enemmän käteen."
+msgstr "You deliver the kegs to the bars yourself. Bar shipments leave more in your pocket."
 
 #: src/resources/customers/agentti.tres
 msgid ""
@@ -2312,11 +2308,9 @@ msgstr "Wedding Planner's Word"
 
 #: src/resources/event_perks/haajarjestajan_suositus.tres
 msgid ""
-"Pekka kehuu panimoasi kaikille tutuilleen: halpamyynnin ja baarivientien "
-"tulot kasvavat hieman."
-msgstr ""
-"Pekka praises your brewery to everyone he knows: bulk sales and bar "
-"shipments pay a little more."
+"Pekka kehuu panimoasi kaikille tutuilleen: baarivientien tulot kasvavat "
+"hieman."
+msgstr "Pekka praises your brewery to everyone he knows: bar shipments pay a little more."
 
 #: src/resources/event_perks/jussin_tukkuhinnat.tres
 msgid "Jussin tukkuhinnat"
@@ -2751,10 +2745,8 @@ msgid "Tyytyväinen asiakas tuo kavereita ja voi ryhtyä kanta-asiakkaaksi."
 msgstr "A happy customer brings friends and can become a regular."
 
 #: src/resources/guide/03_myynti.tres
-msgid "Varaston Tynnyrit-välilehdeltä erän voi myydä tukkuun tai lähettää baariin."
-msgstr ""
-"From the Kegs tab in storage you can sell a batch wholesale or ship it to a "
-"bar."
+msgid "Varaston Tynnyrit-välilehdeltä erän voi lähettää baariin."
+msgstr "From the Kegs tab in storage you can ship a batch to a bar."
 
 #: src/resources/guide/04_maine.tres
 msgid ""
@@ -3448,11 +3440,9 @@ msgstr "Keen Eye"
 
 #: src/resources/meta_unlocks/tukkuhinnat.tres
 msgid ""
-"Neuvottelutaitosi ulottuu nyt myös myyntiin. Halpamyynnin ja baarivientien "
-"tulot ovat pysyvästi paremmat."
-msgstr ""
-"Your bargaining reaches sales now too. Bulk sales and bar shipments "
-"permanently earn more."
+"Neuvottelutaitosi ulottuu nyt myös myyntiin. Baarivientien tulot ovat "
+"pysyvästi paremmat."
+msgstr "Your bargaining reaches sales now too. Bar shipments permanently earn more."
 
 #: src/resources/meta_unlocks/tukkuhinnat.tres
 msgid "Tukkuhinnat"
@@ -3523,11 +3513,9 @@ msgstr "King of the District"
 
 #: src/resources/perks/alueen_kuningas.tres
 msgid ""
-"Jokainen baari kaupungissa haluaa tuotteitasi. Halpamyynnin ja "
-"baarivientien tulot ovat merkittävästi paremmat."
-msgstr ""
-"Every bar in town wants your products. Bulk sales and bar shipments earn "
-"significantly more."
+"Jokainen baari kaupungissa haluaa tuotteitasi. Baarivientien tulot ovat "
+"merkittävästi paremmat."
+msgstr "Every bar in town wants your products. Bar shipments earn significantly more."
 
 #: src/resources/perks/anteliaat_asiakkaat.tres
 msgid "Anteliaat asiakkaat"
@@ -3563,11 +3551,9 @@ msgstr "You keep a low profile, so the LVV's raid threshold rises a little."
 
 #: src/resources/perks/hyvat_suhteet.tres
 msgid ""
-"Baarien pitäjät tykästyivät olueesi. Halpamyynnin ja baarivientien tulot "
-"ovat hieman paremmat."
-msgstr ""
-"Bar owners took a liking to your beer. Bulk sales and bar shipments earn a "
-"little more."
+"Baarien pitäjät tykästyivät olueesi. Baarivientien tulot ovat hieman "
+"paremmat."
+msgstr "Bar owners took a liking to your beer. Bar shipments earn a little more."
 
 #: src/resources/perks/hyvat_suhteet.tres
 msgid "Hyvät suhteet"
@@ -3833,11 +3819,9 @@ msgstr ""
 
 #: src/resources/perks/tunnettu_toimittaja.tres
 msgid ""
-"Maineesi oluen toimittajana kiirii baarista toiseen: halpamyynnin ja "
-"baarivientien tulot ovat selvästi paremmat."
-msgstr ""
-"Your name as a beer supplier travels from bar to bar: bulk sales and bar "
-"shipments earn noticeably more."
+"Maineesi oluen toimittajana kiirii baarista toiseen: baarivientien tulot "
+"ovat selvästi paremmat."
+msgstr "Your name as a beer supplier travels from bar to bar: bar shipments earn noticeably more."
 
 #: src/resources/perks/tunnettu_toimittaja.tres
 msgid "Tunnettu toimittaja"
@@ -3856,12 +3840,8 @@ msgid "Vakaa maine"
 msgstr "Steady Reputation"
 
 #: src/resources/perks/vakiintunut_reitti.tres
-msgid ""
-"Toimituskohteesi vakiintuvat: halpamyynnin ja baarivientien tulot kasvavat "
-"tasaisesti."
-msgstr ""
-"Your delivery customers become regulars: bulk sales and bar shipments grow "
-"steadily."
+msgid "Toimituskohteesi vakiintuvat: baarivientien tulot kasvavat tasaisesti."
+msgstr "Your delivery customers become regulars: bar shipments grow steadily."
 
 #: src/resources/perks/vakiintunut_reitti.tres
 msgid "Vakiintunut reitti"
@@ -4385,6 +4365,10 @@ msgid "Maine: 0"
 msgstr "Reputation: 0"
 
 #: src/scenes/main.tscn
+msgid "Myy"
+msgstr "Sell"
+
+#: src/scenes/main.tscn
 msgid "Osta"
 msgstr "Buy"
 
@@ -4507,30 +4491,12 @@ msgid "Kohde:"
 msgstr "Destination:"
 
 #: src/scenes/ui/beer_batch_panel.gd
-msgid "Myy"
-msgstr "Sell"
-
-#: src/scenes/ui/beer_batch_panel.gd
-msgid ""
-"Myy koko erä kerralla varastosta. Hinta on paljon normaalia myyntihintaa "
-"halvempi, ja heikkolaatuinen tai vanhentunut erä voi tuottaa jopa tappiota "
-"raaka-aineiden hintaan nähden."
-msgstr ""
-"Sell the whole batch from storage at once. The price is far below a normal "
-"sale, and a poor or old batch can even sell for less than its ingredients "
-"cost."
-
-#: src/scenes/ui/beer_batch_panel.gd
 msgid "Vie"
 msgstr "Ship"
 
 #: src/scenes/ui/beer_batch_panel.gd
-msgid ""
-"Vie koko erä yllä valittuun baariin. Parempi hinta kuin halpamyynti, mutta "
-"nostaa LVV-riskiä toimituksen mukana."
-msgstr ""
-"Ship the whole batch to the bar selected above. A better price than a bulk "
-"sale, but each delivery raises the LVV risk."
+msgid "Vie koko erä yllä valittuun baariin. Nostaa LVV-riskiä toimituksen mukana."
+msgstr "Ship the whole batch to the bar selected above. Each delivery raises the LVV risk."
 
 #: src/scenes/ui/brew_preparation_panel.gd
 msgid "%+d mainetta"
@@ -5072,10 +5038,6 @@ msgid "Olutopin pysyvät bonukset (%d):"
 msgstr "Permanent Brewlore bonuses (%d):"
 
 #: src/scenes/ui/sale_flash_stack.gd
-msgid "Halpamyynti: %s x%d  +%.1f €"
-msgstr "Bulk sale: %s x%d  +%.1f €"
-
-#: src/scenes/ui/sale_flash_stack.gd
 msgid "Osa raaka-aineista säästyi panon yhteydessä!"
 msgstr "Some ingredients were saved during brewing!"
 
@@ -5164,10 +5126,6 @@ msgstr "Event log shown."
 #: src/systems/console/console_wiring.gd
 msgid "Tapahtumaloki piilotettu. Takaisin: loki näytä"
 msgstr "Event log hidden. Bring it back: loki näytä"
-
-#: src/systems/console/console_wiring.gd
-msgid "Tukkumyynti: %s, %d annosta, +%.1f €"
-msgstr "Bulk sale: %s, %d servings, +%.1f €"
 
 #: src/systems/console/console_wiring.gd
 msgid "Tynnyröinti (%s): %d annosta hukkui, markkinointi -%.1f €"
@@ -5870,8 +5828,8 @@ msgid "Viime päivät: %s"
 msgstr "Last days: %s"
 
 #: src/ui/money_text.gd
-msgid "tukku ja viennit"
-msgstr "wholesale and shipments"
+msgid "viennit baareihin"
+msgstr "bar shipments"
 
 #: src/ui/olutoppi_text.gd
 msgid ""

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_suositus")
 perk_name = "Hääjärjestäjän suositus"
-description = "Pekka kehuu panimoasi kaikille tutuilleen: halpamyynnin ja baarivientien tulot kasvavat hieman."
+description = "Pekka kehuu panimoasi kaikille tutuilleen: baarivientien tulot kasvavat hieman."
 icon_placeholder = "💍"
 distribution_income_multiplier = 1.05
 stacks_additively = true

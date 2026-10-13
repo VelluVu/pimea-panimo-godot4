@@ -26,7 +26,7 @@ func _ready() -> void:
 
 ## Same "only rebuild on an actual reputation change, keep the player's
 ## current pick" reasoning as IngredientOptionButton._on_brewery_state_
-## changed() — a bulk-sell/ship/sale fires brewery_state_changed far too
+## changed() — a ship/sale fires brewery_state_changed far too
 ## often to reset the selection on every one.
 var _last_reputation_seen : int = -1
 

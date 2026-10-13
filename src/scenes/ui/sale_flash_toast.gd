@@ -43,7 +43,7 @@ func initialize(entry : SaleReceiptEntry) -> void:
 
 
 ## Generic entry point for flashes that don't have a SaleReceiptEntry to
-## summarize — see SaleFlashStack's bulk-sell/ship-to-bar/bar-fight
+## summarize — see SaleFlashStack's ship-to-bar/bar-fight
 ## listeners, which aren't real customer sales but still deserve the same
 ## brief "something happened" notice. text_color defaults to the scene's
 ## own theme color (a sale); pass a warmer color for a bad-news flash like

@@ -1,14 +1,9 @@
 class_name BatchDistributor
 extends RefCounted
 
-## Moves finished batches out of the warehouse without a walk-in customer:
-## cheap bulk sell and shipping a keg to a BarContact. The payout math is static
-## so it stays unit-testable without a live Brewery.
-
-## Bulk-sell payout as a fraction of raw cost. Below 1.0 on purpose: it clears the
-## warehouse, it is not an income source. Quality is capped at 1.0, so spoiled
-## batches pay even less.
-const BULK_SELL_RATE : float = 0.5
+## Moves finished batches out of the warehouse without a walk-in customer by
+## shipping a keg to a BarContact. The payout math is static so it stays
+## unit-testable without a live Brewery.
 
 ## Quality clamp when shipping to a bar: a floor above 0 (bars expect drinkable
 ## beer) and a ceiling above 1.0 (an excellent batch earns a premium). The ceiling
@@ -25,40 +20,16 @@ func _init(owner : Brewery) -> void:
 
 
 func connect_signals() -> void:
-	GUISignals.bulk_sell_batch_requested.connect(_on_bulk_sell_batch_requested)
 	GUISignals.ship_batch_to_bar_requested.connect(_on_ship_batch_to_bar_requested)
 	GUISignals.batch_hold_toggled.connect(_on_batch_hold_toggled)
 
 
 func disconnect_signals() -> void:
-	GUISignals.bulk_sell_batch_requested.disconnect(_on_bulk_sell_batch_requested)
 	GUISignals.ship_batch_to_bar_requested.disconnect(_on_ship_batch_to_bar_requested)
 	GUISignals.batch_hold_toggled.disconnect(_on_batch_hold_toggled)
 
 
 ## Static so the payout math can be unit-tested without a live Brewery.
-static func calculate_bulk_sell_payout(raw_cost_per_bottle : float, quality : float, amount_bottles : int) -> float:
-	var quality_factor : float = clampf(quality, 0.0, 1.0)
-	return snappedf(raw_cost_per_bottle * BULK_SELL_RATE * quality_factor * amount_bottles, 0.1)
-
-
-## Dumps a whole batch for cash without a customer: no reputation, XP, tip or risk.
-func _on_bulk_sell_batch_requested(batch : BrewBatch) -> void:
-	if batch == null or not brewery.inventory.brew_batches.has(batch) or batch.amount_bottles <= 0:
-		return
-
-	var raw_cost_per_bottle : float = brewery.resolver.get_market_cost_per_bottle(batch.beer_style)
-	var payout : float = calculate_bulk_sell_payout(raw_cost_per_bottle, batch.current_quality, batch.amount_bottles)
-	payout = snappedf(payout * brewery.stats.multiplier(PerkStats.DISTRIBUTION_INCOME), 0.1)
-
-	brewery.change_money(payout, MoneyLedger.Source.SHIPMENTS)
-	BrewerySignals.batch_bulk_sold.emit(batch.get_style_name(), batch.amount_bottles, payout)
-
-	brewery.inventory.brew_batches.erase(batch)
-	BrewerySignals.brewery_state_changed.emit(brewery)
-
-
-## Static for the same reason as calculate_bulk_sell_payout().
 static func calculate_ship_payout(raw_cost_per_bottle : float, quality : float, amount_bottles : int, price_multiplier : float) -> float:
 	var quality_factor : float = clampf(quality, SHIP_TO_BAR_QUALITY_CLAMP_MIN, SHIP_TO_BAR_QUALITY_CLAMP_MAX)
 	return snappedf(raw_cost_per_bottle * price_multiplier * quality_factor * amount_bottles, 0.1)
