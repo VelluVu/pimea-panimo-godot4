@@ -11,6 +11,8 @@ const UNLOCK_POPUP_COLOR : Color = Color(0.55, 1.0, 0.55, 1)
 @onready var shop_label : Label = $ShopLabel
 
 var _unlock_tracker : ReputationUnlockTracker
+## The warehouse view lies over the shop door, so the door ignores the mouse meanwhile.
+var _warehouse_open : bool = false
 
 
 func _ready() -> void:
@@ -21,11 +23,21 @@ func _ready() -> void:
 	_reset_unlock_tracker(BrewEngine.current_brewery)
 	BrewEngine.brewery_changed.connect(_reset_unlock_tracker)
 	BrewerySignals.brewery_state_changed.connect(_on_brewery_state_changed)
+	GUISignals.warehouse_view_opened.connect(_set_warehouse_open.bind(true))
+	GUISignals.warehouse_view_closed.connect(_set_warehouse_open.bind(false))
 
 
 func activate_shop_panel() -> void:
 	shop_button.disabled = false
-	shop_button.mouse_filter = Control.MOUSE_FILTER_STOP
+	shop_button.mouse_filter = Control.MOUSE_FILTER_IGNORE if _warehouse_open else Control.MOUSE_FILTER_STOP
+
+
+func _set_warehouse_open(is_open : bool) -> void:
+	_warehouse_open = is_open
+	if is_open:
+		_on_shop_button_mouse_exited()
+	if not shop_button.disabled:
+		activate_shop_panel()
 
 
 ## A new or loaded run starts from its own reputation, so nothing it already had is
