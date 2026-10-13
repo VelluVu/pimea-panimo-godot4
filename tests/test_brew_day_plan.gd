@@ -46,6 +46,11 @@ func test_the_plan_reads_the_style_and_table() -> void:
 	assert_false(plan.piece_ids.has(HOP_ID))
 
 
+func test_the_malt_sack_counts_only_the_malts() -> void:
+	var plan : BrewDayPlan = BrewDayPlanScript.create(_style(), {HOP_ID: 40, BrewDayPlanScript.WHEAT_MALT_ID: 4, SPICE_ID: 1}, _table(), 8)
+	assert_eq(plan.malt_kg, 4)
+
+
 func test_the_dry_hop_leaves_the_boil_marks() -> void:
 	var plan : BrewDayPlan = BrewDayPlanScript.create(_style(), {HOP_ID: 40}, _table(), 8)
 	assert_eq(plan.marks.size(), 1)

@@ -10,7 +10,9 @@ extends Control
 const MASH_HEADER_TEXT : String = "MÄSKÄYS · %s"
 const BOIL_HEADER_TEXT : String = "KEITTO · %s"
 const HEAT_BUTTON_TEXT : String = "LÄMMITÄ"
-const ADD_MALTS_BUTTON_TEXT : String = "LISÄÄ MALTAAT"
+const MALT_SACK_TEXT : String = "Maltaat"
+## Shown on the malt sack while the water is at the malt marker.
+const MALT_CUE_TEXT : String = "NYT"
 const TO_BOIL_BUTTON_TEXT : String = "KEITTOON"
 const FINISH_BUTTON_TEXT : String = "VALMIS"
 const CANCEL_BUTTON_TEXT : String = "Peru"
@@ -46,7 +48,6 @@ const CUE_LEAD : float = 1.5
 ## The big call when a mark opens: the mark and the hop, e.g. "AROMI: Citra!".
 const CALL_TEXT : String = "%s: %s!"
 const NEXT_BUTTON_RECT : Rect2 = Rect2(520, 318, 108, 28)
-const MALTS_BUTTON_RECT : Rect2 = Rect2(12, 318, 140, 28)
 const RESULT_LABEL_Y : float = 96.0
 const FOAM_WARNING_FROM : float = 0.7
 ## Further than this over the band, a hot mash gets the harsher lines.
@@ -111,8 +112,8 @@ var _header : Label
 var _hint : Label
 var _kettle : KettleView
 var _thermo : ThermoColumn
-var _heat_button : Button
-var _malts_button : Button
+var _heat_button : HeatButton
+var _malts_button : HopSackButton
 var _next_button : Button
 var _cancel_button : Button
 var _quick_button : Button
@@ -196,6 +197,7 @@ func _start_mash() -> void:
 	_kettle.foam = 0.0
 	_kettle.bubbling = false
 	_kettle.reset_paddle()
+	_malts_button.amount_text = "%d %s" % [_plan.malt_kg, tr(StringContainer.KG)]
 	_malts_button.show()
 	_next_button.hide()
 	_sack_column.hide()
@@ -271,7 +273,9 @@ func _process(delta : float) -> void:
 	var glow : Color = _thermo.current_needle_color()
 	glow.a = GLOW_ALPHA
 	_kettle.glow_color = glow if _stage != Stage.RESULT else Color.TRANSPARENT
-	_heat_button.modulate = Color.WHITE.lerp(ThermoColumn.FLAME_COLOR, (_boil.heat.power if _boil != null else _mash.heat.power) * 0.6)
+	_heat_button.heat = _boil.heat.power if _boil != null else _mash.heat.power
+	_heat_button.held = _key_heat and _stage != Stage.RESULT
+	_cue_malts()
 	_refresh_sacks()
 	_emit_loops()
 
@@ -347,6 +351,15 @@ func _boil_lines() -> void:
 	if not _flameout_shown and _boil.counted >= BoilSchedule.BOIL_SECONDS:
 		_flameout_shown = true
 		_popups.show_line(BrewDayLines.FLAMEOUT_TEXT)
+
+
+## The malt sack blinks while the water is at the malt marker, like a hop sack at its mark.
+func _cue_malts() -> void:
+	if not _malts_button.visible:
+		return
+	var at_marker : bool = _stage == Stage.MASH and _mash.is_in_band()
+	_malts_button.cue = HopSackButton.Cue.NOW if at_marker else HopSackButton.Cue.NONE
+	_malts_button.cue_label = tr(MALT_CUE_TEXT)
 
 
 func _on_malts_pressed() -> void:
@@ -593,7 +606,11 @@ func _build() -> void:
 	_hint.modulate = ThermoColumn.DIM_COLOR
 	add_child(_hint)
 
-	_heat_button = _make_button(HEAT_BUTTON_TEXT, HEAT_BUTTON_RECT)
+	_heat_button = HeatButton.new()
+	_heat_button.label = HEAT_BUTTON_TEXT
+	_heat_button.position = HEAT_BUTTON_RECT.position
+	_heat_button.size = HEAT_BUTTON_RECT.size
+	add_child(_heat_button)
 	_heat_button.button_down.connect(func() -> void: _set_heating_inputs(true, _key_heat))
 	_heat_button.button_up.connect(func() -> void: _set_heating_inputs(false, _key_heat))
 
@@ -601,8 +618,13 @@ func _build() -> void:
 	_thermo.position = THERMO_POSITION
 	add_child(_thermo)
 
-	_malts_button = _make_button(ADD_MALTS_BUTTON_TEXT, MALTS_BUTTON_RECT)
+	_malts_button = HopSackButton.new()
+	_malts_button.key_number = 0
+	_malts_button.sack_name = MALT_SACK_TEXT
+	_malts_button.pellet_color = KettleView.CLUMP_LIGHT
+	_malts_button.position = SACK_COLUMN_POSITION
 	_malts_button.pressed.connect(_on_malts_pressed)
+	add_child(_malts_button)
 	_next_button = _make_button(TO_BOIL_BUTTON_TEXT, NEXT_BUTTON_RECT)
 	_next_button.pressed.connect(_on_next_pressed)
 

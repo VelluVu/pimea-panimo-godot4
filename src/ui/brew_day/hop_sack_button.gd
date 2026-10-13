@@ -1,7 +1,7 @@
 class_name HopSackButton
 extends Button
 
-## A hop or spice sack standing beside the kettle: its sprite (BrewDayArt.sack) going
+## A hop, spice or malt sack standing beside the kettle: its sprite (BrewDayArt.sack) going
 ## from full to half to almost empty, the pellets' colour showing at its neck, its key
 ## number, name and what is left. Holding it pours; while it is lifted over the kettle
 ## (KettleView draws that) only a dark shadow stays in its place. A sack whose mark is
@@ -29,6 +29,7 @@ const CUE_BLINK_FPS : float = 8.0
 
 enum Cue { NONE, SOON, NOW }
 
+## 0 for a sack without a key (the malts).
 var key_number : int = 1
 var sack_name : String = ""
 var amount_text : String = ""
@@ -71,7 +72,8 @@ func _draw() -> void:
 	var color : Color = DIM_COLOR if disabled else (HOVER_COLOR if is_hovered() else TEXT_COLOR)
 	var font : Font = get_theme_font(&"font", &"Label")
 	var width : float = SIZE.x - TEXT_X
-	draw_string(font, Vector2(TEXT_X, 17), "%d %s" % [key_number, sack_name], HORIZONTAL_ALIGNMENT_LEFT, width, FONT_SIZE, color)
+	var first_line : String = sack_name if key_number <= 0 else "%d %s" % [key_number, sack_name]
+	draw_string(font, Vector2(TEXT_X, 17), first_line, HORIZONTAL_ALIGNMENT_LEFT, width, FONT_SIZE, color)
 	var second_line : String = amount_text
 	if cue != Cue.NONE:
 		second_line = cue_label + " " + amount_text

@@ -19,6 +19,8 @@ var marks : Array[BoilMark] = []
 var piece_ids : Array[int] = []
 ## Ingredient id -> display name, for the sacks.
 var names : Dictionary = {}
+## All the malts together, for the malt sack.
+var malt_kg : int = 0
 
 
 ## `table` maps ingredient id -> IngredientData.
@@ -40,6 +42,8 @@ static func create(style : BeerStyle, contents : Dictionary, table : Dictionary,
 		if data == null:
 			continue
 		plan.names[id] = data.name
+		if data.type == IngredientData.IngredientType.MALT:
+			plan.malt_kg += int(contents[id])
 		if data.unit == IngredientData.UnitType.PIECE:
 			plan.piece_ids.append(id)
 	return plan
