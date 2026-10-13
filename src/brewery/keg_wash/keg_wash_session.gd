@@ -10,12 +10,14 @@ signal spot_loosened(spot : KegWashSpot)
 signal spot_removed(spot : KegWashSpot)
 signal critter_fled(spot : KegWashSpot)
 signal stain_cleared(stain : KegWashStain)
+## The hose has taken the grime off well enough; the rest is washed off with it.
+signal grime_rinsed()
 signal mistake(kind : Mistake)
 signal completed()
 
 ## Wrong moves the window answers with a humour line.
 enum Mistake {
-	## Hosing dirt that has not been scrubbed loose.
+	## Hosing dirt that has not been scrubbed loose, or a keg already rinsed.
 	WASTED_WATER,
 	## Scrubbing a keg with no stuck dirt left.
 	POLISHING,
@@ -91,22 +93,31 @@ func rinse(at : Vector2, delta : float) -> void:
 	if is_completed:
 		return
 	var on_stuck : bool = false
+	var washing : bool = false
 	for spot : KegWashSpot in spots:
 		if spot.position.distance_to(at) > KegWashRules.HOSE_RADIUS + KegWashRules.SPOT_RADIUS:
 			continue
 		if spot.state == KegWashSpot.State.LOOSE:
+			washing = true
 			spot.rinsed += delta
 			if spot.rinsed >= KegWashRules.RINSE_SECONDS:
 				_remove(spot)
 		elif spot.state == KegWashSpot.State.STUCK and not KegWashRules.is_critter(spot.kind):
 			on_stuck = true
-	_wasted_water = _wasted_water + delta if on_stuck else 0.0
+	var had_grime : bool = grime_left() > 0.0
+	for i : int in grime_cells.size():
+		if grime[i] > 0.0 and grime_cells[i].distance_to(at) <= KegWashRules.STAIN_HOSE_RADIUS:
+			washing = washing or grime[i] >= KegWashRules.STAIN_CLEAN_BELOW
+			grime[i] = maxf(0.0, grime[i] - KegWashRules.STAIN_RINSE_RATE * delta)
+	# Water on a keg with no grime left and nothing loose under the jet is wasted too.
+	var over_rinsing : bool = not washing and not had_grime and _grime_start > 0.0
+	_wasted_water = _wasted_water + delta if on_stuck or over_rinsing else 0.0
 	if _wasted_water >= KegWashRules.MISTAKE_DWELL:
 		_wasted_water = 0.0
 		mistake.emit(Mistake.WASTED_WATER)
-	for i : int in grime_cells.size():
-		if grime[i] > 0.0 and grime_cells[i].distance_to(at) <= KegWashRules.STAIN_HOSE_RADIUS:
-			grime[i] = maxf(0.0, grime[i] - KegWashRules.STAIN_RINSE_RATE * delta)
+	if had_grime and grime_left() <= KegWashRules.GRIME_DONE_SHARE:
+		grime.fill(0.0)
+		grime_rinsed.emit()
 	_check_stains()
 	_check_completed()
 

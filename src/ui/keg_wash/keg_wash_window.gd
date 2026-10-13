@@ -30,6 +30,7 @@ const SOUND_REMOVED : StringName = &"removed"
 const SOUND_FLED : StringName = &"fled"
 const SOUND_TOOL : StringName = &"tool"
 const SOUND_DONE : StringName = &"done"
+const SOUND_STAGE_DONE : StringName = &"stage_done"
 
 var _view : KegWashView
 var _session : KegWashSession
@@ -95,6 +96,9 @@ func _next_keg() -> void:
 		GUISignals.keg_wash_sound.emit(SOUND_REMOVED))
 	_session.critter_fled.connect(func(_spot : KegWashSpot) -> void: GUISignals.keg_wash_sound.emit(SOUND_FLED))
 	_session.stain_cleared.connect(func(_stain : KegWashStain) -> void: GUISignals.keg_wash_sound.emit(SOUND_REMOVED))
+	_session.grime_rinsed.connect(func() -> void:
+		_popups.show_line(KegWashLines.RINSED_TEXT, BrewDayPopups.GOOD_COLOR)
+		GUISignals.keg_wash_sound.emit(SOUND_STAGE_DONE))
 	_session.mistake.connect(_on_mistake)
 	_session.completed.connect(_on_completed)
 	_view.session = _session
