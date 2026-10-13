@@ -5808,8 +5808,8 @@ msgid "Eiköhän ne pöpöt jo kuollu."
 msgstr "Surely the germs are dead by now."
 
 #: src/ui/keg_wash/keg_wash_lines.gd
-msgid "Huuhdeltu! Nyt suihketta."
-msgstr "Rinsed! Now the spray."
+msgid "Huuhdeltu on! Nyt desinfiointi!"
+msgstr "Rinsed! Now to sanitize!"
 
 #: src/ui/keg_wash/keg_wash_lines.gd
 msgid "Meni jo kiillottamiseksi tuo hankaaminen."
