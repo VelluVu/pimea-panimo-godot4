@@ -21,6 +21,8 @@ const MIN_FINISH_CLEANLINESS : float = 0.05
 ## The finished keg stays in view this long before the next one.
 const NEXT_KEG_DELAY : float = 1.2
 const POPUP_ORIGIN : Vector2 = Vector2(320, 120)
+## The hint keeps clear of Lopeta pesu at the top left.
+const HINT_MARGIN : float = 96.0
 
 ## The one-shot sounds, played by the audio wiring through GUISignals.keg_wash_sound.
 const SOUND_LOOSENED : StringName = &"loosened"
@@ -177,8 +179,10 @@ func _build() -> void:
 	_hint = Label.new()
 	_hint.text = HINT_TEXT
 	_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_hint.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
-	_hint.position.y = 22
+	# Wraps, so the label never grows wider than the screen and slides off centre.
+	_hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_hint.position = Vector2(HINT_MARGIN, 22)
+	_hint.size = Vector2(640 - 2.0 * HINT_MARGIN, 0)
 	_hint.modulate = ThermoColumn.DIM_COLOR
 	_hint.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_hint)

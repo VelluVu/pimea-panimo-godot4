@@ -2,9 +2,9 @@ class_name KegWashView
 extends Control
 
 ## The keg wash table: the opened keg, the dirt in it and the three tools in their places.
-## Press a tool to pick it up; it follows the pointer, and holding the button down uses
-## it: the brush scrubs, the hose rinses, the bottle sprays. Pressing its place again (or
-## the right button) puts it back. The work goes to `session`.
+## Press a tool to pick it up; it follows the pointer, and while the button is held it is
+## in use (also straight after grabbing it): the brush scrubs, the hose rinses, the bottle
+## sprays. Pressing its place again (or the right button) puts it back. The work goes to `session`.
 
 signal tool_changed(tool : Tool)
 
@@ -104,9 +104,12 @@ func _gui_input(event : InputEvent) -> void:
 
 func _press(at : Vector2) -> void:
 	var picked : Tool = _tool_at(at)
-	if picked != Tool.NONE:
-		_set_tool(Tool.NONE if picked == _tool else picked)
+	if picked == _tool and picked != Tool.NONE:
+		_set_tool(Tool.NONE)
 		return
+	if picked != Tool.NONE:
+		_set_tool(picked)
+	# Grabbing a tool and keeping the button down uses it at once.
 	_using = _tool != Tool.NONE
 
 
