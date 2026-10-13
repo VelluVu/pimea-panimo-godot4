@@ -36,6 +36,10 @@ var grime : PackedFloat32Array = PackedFloat32Array()
 var grime_colors : PackedColorArray = PackedColorArray()
 var grime_stain : PackedInt32Array = PackedInt32Array()
 var _grime_start : float = 0.0
+## Seconds the hose has lingered on stuck dirt, and the sanitizer on a finished patch.
+var _wasted_water : float = 0.0
+var _germs_dead : float = 0.0
+var _polishing : float = 0.0
 ## Grid position -> grime cell index, for the sanitizer's quick look-up.
 var _grime_index : Dictionary = {}
 
@@ -74,7 +78,10 @@ func scrub(from : Vector2, to : Vector2, delta : float) -> void:
 		spot.work += KegWashRules.scrub_work(spot.kind, length, speed)
 		if spot.work >= KegWashRules.WORK[spot.kind]:
 			_loosen(spot)
-	if not touched_stuck and speed >= KegWashRules.MIN_SCRUB_SPEED and stuck_count() == 0:
+	var polishing : bool = not touched_stuck and speed >= KegWashRules.MIN_SCRUB_SPEED and stuck_count() == 0
+	_polishing = _polishing + delta if polishing else 0.0
+	if _polishing >= KegWashRules.MISTAKE_DWELL:
+		_polishing = 0.0
 		mistake.emit(Mistake.POLISHING)
 	_check_completed()
 
@@ -83,6 +90,7 @@ func scrub(from : Vector2, to : Vector2, delta : float) -> void:
 func rinse(at : Vector2, delta : float) -> void:
 	if is_completed:
 		return
+	var on_stuck : bool = false
 	for spot : KegWashSpot in spots:
 		if spot.position.distance_to(at) > KegWashRules.HOSE_RADIUS + KegWashRules.SPOT_RADIUS:
 			continue
@@ -91,7 +99,11 @@ func rinse(at : Vector2, delta : float) -> void:
 			if spot.rinsed >= KegWashRules.RINSE_SECONDS:
 				_remove(spot)
 		elif spot.state == KegWashSpot.State.STUCK and not KegWashRules.is_critter(spot.kind):
-			mistake.emit(Mistake.WASTED_WATER)
+			on_stuck = true
+	_wasted_water = _wasted_water + delta if on_stuck else 0.0
+	if _wasted_water >= KegWashRules.MISTAKE_DWELL:
+		_wasted_water = 0.0
+		mistake.emit(Mistake.WASTED_WATER)
 	for i : int in grime_cells.size():
 		if grime[i] > 0.0 and grime_cells[i].distance_to(at) <= KegWashRules.STAIN_HOSE_RADIUS:
 			grime[i] = maxf(0.0, grime[i] - KegWashRules.STAIN_RINSE_RATE * delta)
@@ -111,7 +123,9 @@ func sanitize(at : Vector2, delta : float) -> void:
 		hit_any = true
 		all_done = all_done and cell_coverage[i] >= 1.0
 		cell_coverage[i] = minf(1.0, cell_coverage[i] + KegWashRules.SPRAY_RATE * delta)
-	if hit_any and all_done:
+	_germs_dead = _germs_dead + delta if hit_any and all_done else 0.0
+	if _germs_dead >= KegWashRules.MISTAKE_DWELL:
+		_germs_dead = 0.0
 		mistake.emit(Mistake.GERMS_DEAD)
 	_check_completed()
 

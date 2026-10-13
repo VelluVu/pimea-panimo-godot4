@@ -29,6 +29,8 @@ const SPOT_RADIUS : float = 12.0
 const FLEE_RADIUS : float = 48.0
 const HOSE_RADIUS : float = 20.0
 const RINSE_SECONDS : float = 0.5
+## A tool works whenever it is over the keg, so a wrong move only counts once it lingers.
+const MISTAKE_DWELL : float = 0.5
 const SPRAY_RADIUS : float = 30.0
 ## Coverage a sprayed cell gains a second.
 const SPRAY_RATE : float = 3.0

@@ -85,6 +85,9 @@ func test_scrubbing_a_clean_keg_is_polishing() -> void:
 	session.mistake.connect(func(kind : KegWashSession.Mistake) -> void: mistakes.append(kind))
 	session.scrub(AT - STEP / 2.0, AT + STEP / 2.0, DT)
 	session.scrub(AT + Vector2(0, -80), AT + Vector2(20, -80), DT)
+	assert_false(mistakes.has(KegWashSession.Mistake.POLISHING), "passing over a clean keg is fine")
+	for i : int in 12:
+		session.scrub(AT + Vector2(0, -80), AT + Vector2(20, -80), DT)
 	assert_true(mistakes.has(KegWashSession.Mistake.POLISHING))
 
 
@@ -115,7 +118,9 @@ func test_spraying_a_finished_patch_says_the_germs_are_dead() -> void:
 	session.mistake.connect(func(kind : KegWashSession.Mistake) -> void: mistakes.append(kind))
 	var far : Vector2 = TunnelScript.OPENING_CENTER + Vector2(100, -40)
 	session.sanitize(far, 1.0)
-	session.sanitize(far, 0.1)
+	session.sanitize(far, 0.2)
+	assert_false(mistakes.has(KegWashSession.Mistake.GERMS_DEAD), "a quick pass over a finished patch is fine")
+	session.sanitize(far, RulesScript.MISTAKE_DWELL)
 	assert_true(mistakes.has(KegWashSession.Mistake.GERMS_DEAD))
 
 

@@ -5832,12 +5832,14 @@ msgid "Suihke"
 msgstr "Spray"
 
 #: src/ui/keg_wash/keg_wash_window.gd
-msgid "Hankaa harjalla, huuhtele letkulla ja viimeistele suihkeella."
-msgstr "Scrub with the brush, rinse with the hose and finish with the spray."
-
-#: src/ui/keg_wash/keg_wash_window.gd
 msgid "Lopeta pesu"
 msgstr "Stop washing"
+
+#: src/ui/keg_wash/keg_wash_window.gd
+msgid ""
+"Paina työkalua ja pidä pohjassa: hankaa harjalla, huuhtele letkulla ja "
+"viimeistele suihkeella."
+msgstr "Press a tool and hold it: scrub with the brush, rinse with the hose and finish with the spray."
 
 #: src/ui/keg_wash/keg_wash_window.gd
 msgid "Puhtaus %d %%"
