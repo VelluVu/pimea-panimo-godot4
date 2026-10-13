@@ -178,3 +178,27 @@ func test_hosing_the_grime_counts_toward_the_rinse_share() -> void:
 	assert_true(is_equal_approx(session.cleanliness(), RulesScript.SCRUB_SHARE + RulesScript.RINSE_SHARE / 2.0))
 	_hose_everywhere(session)
 	assert_true(is_equal_approx(session.cleanliness(), RulesScript.SCRUB_SHARE + RulesScript.RINSE_SHARE))
+
+
+func test_hosing_most_of_the_grime_is_good_enough() -> void:
+	var session : KegWashSession = _grimy_session()
+	var rinsed : Array = []
+	session.grime_rinsed.connect(func() -> void: rinsed.append(true))
+	# Every cell but the outermost rim ones.
+	for cell : Vector2 in session.grime_cells:
+		if TunnelScript.reach(cell) < 0.9:
+			session.rinse(cell, 1.0)
+	assert_eq(rinsed.size(), 1)
+	assert_eq(session.grime_left(), 0.0, "the last specks wash off with the rest")
+
+
+func test_hosing_a_rinsed_keg_wastes_water() -> void:
+	var session : KegWashSession = _grimy_session()
+	var mistakes : Array = []
+	session.mistake.connect(func(kind : KegWashSession.Mistake) -> void: mistakes.append(kind))
+	_hose_everywhere(session)
+	mistakes.clear()
+	session.rinse(AT, 0.2)
+	assert_false(mistakes.has(KegWashSession.Mistake.WASTED_WATER), "a quick pass is fine")
+	session.rinse(AT, RulesScript.MISTAKE_DWELL)
+	assert_true(mistakes.has(KegWashSession.Mistake.WASTED_WATER))

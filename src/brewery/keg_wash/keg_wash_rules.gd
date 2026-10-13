@@ -48,6 +48,9 @@ const STAIN_RINSE_RATE : float = 5.0
 const STAIN_HOSE_RADIUS : float = 34.0
 ## A cell this faint counts as clean.
 const STAIN_CLEAN_BELOW : float = 0.05
+## Grime left at or under this share counts as rinsed: the last specks by the rim wash off
+## with it, so nobody has to hunt for them.
+const GRIME_DONE_SHARE : float = 0.03
 const MIN_STAINS : int = 2
 const MAX_STAINS : int = 4
 ## Stain sizes across, in pixels; the tilted keg squashes them to the opening's shape.

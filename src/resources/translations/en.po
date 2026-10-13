@@ -5808,6 +5808,10 @@ msgid "Eiköhän ne pöpöt jo kuollu."
 msgstr "Surely the germs are dead by now."
 
 #: src/ui/keg_wash/keg_wash_lines.gd
+msgid "Huuhdeltu! Nyt suihketta."
+msgstr "Rinsed! Now the spray."
+
+#: src/ui/keg_wash/keg_wash_lines.gd
 msgid "Meni jo kiillottamiseksi tuo hankaaminen."
 msgstr "That scrubbing turned into polishing a while ago."
 
@@ -5839,7 +5843,9 @@ msgstr "Stop washing"
 msgid ""
 "Paina työkalua ja pidä pohjassa: hankaa harjalla, huuhtele letkulla ja "
 "viimeistele suihkeella."
-msgstr "Press a tool and hold it: scrub with the brush, rinse with the hose and finish with the spray."
+msgstr ""
+"Press a tool and hold it: scrub with the brush, rinse with the hose and "
+"finish with the spray."
 
 #: src/ui/keg_wash/keg_wash_window.gd
 msgid "Puhtaus %d %%"

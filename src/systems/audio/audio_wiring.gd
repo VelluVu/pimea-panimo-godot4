@@ -105,6 +105,7 @@ func _setup_brew_day_sounds() -> void:
 		KegWashWindow.SOUND_FLED: [bank.sfx_brew_clump_hit, -8.0],
 		KegWashWindow.SOUND_TOOL: [bank.sfx_brew_paddle_knock, -6.0],
 		KegWashWindow.SOUND_DONE: [bank.sfx_brew_result_good, 0.0],
+		KegWashWindow.SOUND_STAGE_DONE: [bank.sfx_brew_step_done, -2.0],
 	}
 
 
