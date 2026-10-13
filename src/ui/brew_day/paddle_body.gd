@@ -15,8 +15,10 @@ const POINTS : int = 19
 const SEGMENT : float = 12.0
 ## The first segments from the tip are the blade; the rest is the shaft.
 const BLADE_SEGMENTS : int = 2
-## The hand holds the shaft this many segments up from the tip, just above the blade.
-const GRIP_SEGMENTS : int = BLADE_SEGMENTS + 1
+## The hand holds the shaft this many segments up from the tip, about a third of the way:
+## far enough that the blade swings behind the hand like a long paddle, near enough that
+## the whole kettle stays reachable on screen.
+const GRIP_SEGMENTS : int = 6
 const TIP_SPRING : float = 320.0
 const TIP_DAMPING : float = 15.0
 ## A loose paddle drifts back to rest much more gently.
