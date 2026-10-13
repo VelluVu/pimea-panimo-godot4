@@ -23,7 +23,7 @@ const CRITTERS : Array[KegWashSpot.Kind] = [KegWashSpot.Kind.FLIES, KegWashSpot.
 ## Bees buzz around a while before they leave.
 const FLEE_SECONDS : Dictionary = {KegWashSpot.Kind.FLIES: 0.3, KegWashSpot.Kind.BEES: 1.2}
 
-const BRUSH_RADIUS : float = 16.0
+const BRUSH_RADIUS : float = 20.0
 const SPOT_RADIUS : float = 12.0
 ## Critters flee when the scrubbing brush comes this close.
 const FLEE_RADIUS : float = 48.0
@@ -31,9 +31,9 @@ const HOSE_RADIUS : float = 26.0
 const RINSE_SECONDS : float = 0.3
 ## A tool works whenever it is over the keg, so a wrong move only counts once it lingers.
 const MISTAKE_DWELL : float = 0.5
-const SPRAY_RADIUS : float = 30.0
+const SPRAY_RADIUS : float = 40.0
 ## Coverage a sprayed cell gains a second.
-const SPRAY_RATE : float = 3.0
+const SPRAY_RATE : float = 5.0
 const COVERAGE_CELL : float = 16.0
 ## Coverage that counts as the whole keg.
 const FULL_COVERAGE : float = 0.97

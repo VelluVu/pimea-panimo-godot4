@@ -16,7 +16,8 @@ const PROP_SCALE : int = 2
 ## Eight 14 x 14 frames side by side, in KegWashSpot.Kind order (yeast, gum, salmiakki,
 ## hat, coconut, flies, bees), then a loose clump of scrubbed dirt.
 @export var spots : Texture2D
-## 10 x 26, bristles at the bottom: the scrubbing point is the bottom centre.
+## 12 x 32: held by the shaft at BRUSH_GRIP_Y, the bristles at the bottom do the scrubbing
+## around BRUSH_HEAD_Y (KegWashView).
 @export var brush : Texture2D
 ## 8 x 14, the spraying tip at the top centre.
 @export var nozzle : Texture2D
