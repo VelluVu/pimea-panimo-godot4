@@ -34,8 +34,10 @@ var _card_buttons : Array[Button] = []
 var _card_icon_labels : Array[Label] = []
 var _card_header_labels : Array[Label] = []
 var _card_description_labels : Array[Label] = []
-## The game menu is open: an offer waits hidden under it, so the cards never cover the menu.
-var _menu_open : bool = false
+## Windows open over the game (the game menu, the brew day, the keg wash): an offer waits
+## hidden until all of them have closed, so the cards never cover one. Kept as a set, since
+## the game menu can open over the brew day.
+var _blockers : Dictionary = {} # StringName -> true
 
 
 func _ready() -> void:
@@ -57,11 +59,12 @@ func _ready() -> void:
 
 	BrewerySignals.level_up_reached.connect(_on_level_up_reached)
 	BrewerySignals.game_ended.connect(_on_game_ended)
-	GUISignals.game_menu_requested.connect(_on_game_menu_requested)
-	GUISignals.game_menu_closed.connect(_on_game_menu_closed)
-	# The brew day holds the cards back the same way the game menu does.
-	GUISignals.brew_day_opened.connect(_on_game_menu_requested)
-	GUISignals.brew_day_closed.connect(_on_game_menu_closed)
+	GUISignals.game_menu_requested.connect(_block.bind(&"menu"))
+	GUISignals.game_menu_closed.connect(_unblock.bind(&"menu"))
+	GUISignals.brew_day_opened.connect(_block.bind(&"brew_day"))
+	GUISignals.brew_day_closed.connect(_unblock.bind(&"brew_day"))
+	GUISignals.keg_wash_opened.connect(_block.bind(&"keg_wash"))
+	GUISignals.keg_wash_closed.connect(_unblock.bind(&"keg_wash"))
 	PauseLock.hold_while_visible(self)
 	hide()
 
@@ -79,7 +82,7 @@ func _on_level_up_reached(new_level : int) -> void:
 	_pending_levels.append(new_level)
 	var brewery := BrewEngine.current_brewery
 	var run_has_ended : bool = brewery != null and brewery.game_has_ended
-	if not visible and not run_has_ended and not _menu_open and _offered_perks.is_empty():
+	if not visible and not run_has_ended and _blockers.is_empty() and _offered_perks.is_empty():
 		_show_next_pending_level()
 
 
@@ -89,14 +92,16 @@ func _on_game_ended(_ending_type : String) -> void:
 		hide()
 
 
-func _on_game_menu_requested() -> void:
-	_menu_open = true
+func _block(blocker : StringName) -> void:
+	_blockers[blocker] = true
 	hide()
 
 
 ## Brings back the same cards, so opening the menu never rerolls an offer.
-func _on_game_menu_closed() -> void:
-	_menu_open = false
+func _unblock(blocker : StringName) -> void:
+	_blockers.erase(blocker)
+	if not _blockers.is_empty():
+		return
 	if not _offered_perks.is_empty():
 		_show_over_popups()
 	elif not _pending_levels.is_empty() and not _is_run_over():

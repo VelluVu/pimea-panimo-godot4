@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="KegWashArt" format=3]
+
+[ext_resource type="Script" path="res://src/ui/keg_wash/keg_wash_art.gd" id="1_art"]
+[ext_resource type="Texture2D" path="res://assets/textures/keg_wash/keg_tunnel.png" id="2_tunnel"]
+[ext_resource type="Texture2D" path="res://assets/textures/keg_wash/spots.png" id="3_spots"]
+[ext_resource type="Texture2D" path="res://assets/textures/keg_wash/brush.png" id="4_brush"]
+[ext_resource type="Texture2D" path="res://assets/textures/keg_wash/nozzle.png" id="5_nozzle"]
+[ext_resource type="Texture2D" path="res://assets/textures/keg_wash/spray.png" id="6_spray"]
+[ext_resource type="Texture2D" path="res://assets/textures/keg_wash/tap.png" id="7_tap"]
+[ext_resource type="Texture2D" path="res://assets/textures/keg_wash/hook.png" id="8_hook"]
+[ext_resource type="Texture2D" path="res://assets/textures/keg_wash/bench.png" id="9_bench"]
+
+[resource]
+script = ExtResource("1_art")
+tunnel = ExtResource("2_tunnel")
+spots = ExtResource("3_spots")
+brush = ExtResource("4_brush")
+nozzle = ExtResource("5_nozzle")
+spray = ExtResource("6_spray")
+tap = ExtResource("7_tap")
+hook = ExtResource("8_hook")
+bench = ExtResource("9_bench")

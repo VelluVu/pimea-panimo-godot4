@@ -5795,11 +5795,57 @@ msgstr ", %d dirty"
 msgid ""
 "Jokainen erä vie oman tynnyrinsä. Tyhjentynyt tynnyri palaa likaisena "
 "kellarin nurkkaan pestäväksi. Lisää tynnyreitä saa kellariparannuksista."
-msgstr "Every batch takes a keg of its own. An emptied keg comes back dirty to the cellar corner to be washed. More kegs come from the cellar upgrades."
+msgstr ""
+"Every batch takes a keg of its own. An emptied keg comes back dirty to the "
+"cellar corner to be washed. More kegs come from the cellar upgrades."
 
 #: src/ui/keg_count_text.gd
 msgid "Tynnyrit käytössä %d/%d"
 msgstr "Kegs in use %d/%d"
+
+#: src/ui/keg_wash/keg_wash_lines.gd
+msgid "Eiköhän ne pöpöt jo kuollu."
+msgstr "Surely the germs are dead by now."
+
+#: src/ui/keg_wash/keg_wash_lines.gd
+msgid "Meni jo kiillottamiseksi tuo hankaaminen."
+msgstr "That scrubbing turned into polishing a while ago."
+
+#: src/ui/keg_wash/keg_wash_lines.gd
+msgid "Noniin nyt on valmis"
+msgstr "Right, now it is done"
+
+#: src/ui/keg_wash/keg_wash_lines.gd
+msgid "Vesilasku kasvaa, mutta lika ei lähde."
+msgstr "The water bill grows, but the dirt stays put."
+
+#: src/ui/keg_wash/keg_wash_view.gd
+msgid "Harja"
+msgstr "Brush"
+
+#: src/ui/keg_wash/keg_wash_view.gd
+msgid "Letku"
+msgstr "Hose"
+
+#: src/ui/keg_wash/keg_wash_view.gd
+msgid "Suihke"
+msgstr "Spray"
+
+#: src/ui/keg_wash/keg_wash_window.gd
+msgid "Hankaa harjalla, huuhtele letkulla ja viimeistele suihkeella."
+msgstr "Scrub with the brush, rinse with the hose and finish with the spray."
+
+#: src/ui/keg_wash/keg_wash_window.gd
+msgid "Lopeta pesu"
+msgstr "Stop washing"
+
+#: src/ui/keg_wash/keg_wash_window.gd
+msgid "Puhtaus %d %%"
+msgstr "Clean %d %%"
+
+#: src/ui/keg_wash/keg_wash_window.gd
+msgid "TYNNYRIN PESU · %d/%d"
+msgstr "KEG WASH · %d/%d"
 
 #: src/ui/leaderboard_text.gd
 msgid "Annokset %d"
