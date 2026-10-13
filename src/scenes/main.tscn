@@ -130,7 +130,7 @@ size = Vector2(24, 14)
 size = Vector2(44, 32)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fluu8"]
-size = Vector2(62, 117)
+size = Vector2(84, 124)
 
 [node name="Main" type="Node" unique_id=1659433080]
 script = ExtResource("1_cjqg0")
@@ -151,7 +151,7 @@ position = Vector2(191, 169)
 script = ExtResource("2_jscy8")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="BreweryHoverArea" unique_id=386244976]
-polygon = PackedVector2Array(-19, 73, -19, -16, -63, -16, -63, -43, -53, -58, -35, -70, -8, -76, 23, -76, 41, -68, 55, -58, 65, -42, 64, 72)
+polygon = PackedVector2Array(-3, 73, -3, -16, -63, -16, -63, -43, -53, -58, -35, -70, -8, -76, 23, -76, 41, -68, 55, -58, 65, -42, 64, 72)
 
 [node name="Sprite2D" type="Sprite2D" parent="BreweryHoverArea" unique_id=82455851]
 light_mask = 3
@@ -1520,7 +1520,7 @@ position = Vector2(152, 259)
 script = ExtResource("67_68ujc")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WorldYSort/DirtyKegPile" unique_id=933718182]
-position = Vector2(-11, -50.5)
+position = Vector2(-6, -47)
 shape = SubResource("RectangleShape2D_fluu8")
 
 [node name="DirtyKeg2" type="Sprite2D" parent="WorldYSort/DirtyKegPile" unique_id=1625886467]
@@ -1549,6 +1549,14 @@ scale = Vector2(2, 2)
 texture = ExtResource("68_abmkx")
 centered = false
 offset = Vector2(-16, -32)
+
+[node name="DirtyKeg4" type="Sprite2D" parent="WorldYSort/DirtyKegPile" unique_id=492943428]
+unique_name_in_owner = true
+texture_filter = 1
+position = Vector2(-18, -4)
+rotation = 1.5707964
+scale = Vector2(2, 2)
+texture = ExtResource("68_abmkx")
 
 [node name="WarehouseWallOverlay" type="Polygon2D" parent="." unique_id=1022889779]
 z_index = 2
