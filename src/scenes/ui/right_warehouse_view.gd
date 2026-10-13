@@ -5,12 +5,13 @@ extends VBoxContainer
 ## navigation — a hover-only preview made it impossible to reach into the
 ## panel and hover an ingredient row for its stat tooltip before the panel
 ## itself disappeared. Ingredient storage and bottle storage are tabbed
-## instead of shown side by side, so the panel can stay narrow.
+## instead of shown side by side, so the panel can stay narrow. The tabs are toggle
+## buttons sharing the width, since a TabBar cannot stretch its tabs.
 
 const STORAGE_TAB_TEXT : String = "Varasto"
 const BOTTLES_TAB_TEXT : String = "Tynnyrit"
 
-@onready var tab_bar : TabBar = %TabBar
+@onready var tab_row : HBoxContainer = %TabRow
 @onready var ingredient_inventory_panel : Control = %IngredientInventoryPanel
 @onready var beer_batch_panel : Control = %BeerBatchPanel
 
@@ -18,11 +19,17 @@ const BOTTLES_TAB_TEXT : String = "Tynnyrit"
 func _ready() -> void:
 	GUISignals.warehouse_door_clicked.connect(_on_door_clicked)
 
-	tab_bar.clear_tabs()
-	tab_bar.add_tab(STORAGE_TAB_TEXT)
-	tab_bar.add_tab(BOTTLES_TAB_TEXT)
-	tab_bar.current_tab = 0
-	tab_bar.tab_changed.connect(_on_tab_changed)
+	var group := ButtonGroup.new()
+	for text : String in [STORAGE_TAB_TEXT, BOTTLES_TAB_TEXT]:
+		var tab := Button.new()
+		tab.text = text
+		tab.toggle_mode = true
+		tab.button_group = group
+		tab.focus_mode = Control.FOCUS_NONE
+		tab.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		tab.pressed.connect(_on_tab_changed.bind(tab_row.get_child_count()))
+		tab_row.add_child(tab)
+	(tab_row.get_child(0) as Button).button_pressed = true
 	_on_tab_changed(0)
 
 

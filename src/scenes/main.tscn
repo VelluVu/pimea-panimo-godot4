@@ -401,14 +401,11 @@ theme_override_constants/margin_bottom = 4
 layout_mode = 2
 mouse_filter = 2
 
-[node name="TabBar" type="TabBar" parent="GUI_CanvasLayer/GUI/Right_WarehouseView/Panel/MarginContainer/MainVBox" unique_id=1089975088]
+[node name="TabRow" type="HBoxContainer" parent="GUI_CanvasLayer/GUI/Right_WarehouseView/Panel/MarginContainer/MainVBox" unique_id=874789676]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 26)
 layout_mode = 2
-current_tab = 0
-tab_count = 2
-tab_0/title = "Varasto"
-tab_1/title = "Tynnyrit"
+theme_override_constants/separation = 2
 
 [node name="ContentVBox" type="HBoxContainer" parent="GUI_CanvasLayer/GUI/Right_WarehouseView/Panel/MarginContainer/MainVBox" unique_id=1126557767]
 layout_mode = 2
