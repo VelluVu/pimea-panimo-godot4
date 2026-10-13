@@ -99,6 +99,12 @@ func _setup_brew_day_sounds() -> void:
 		BrewDayWindow.SOUND_MARK_MISS: [bank.sfx_brew_result_low, -4.0],
 		BrewDayWindow.SOUND_RESULT_GOOD: [bank.sfx_brew_result_good, 0.0],
 		BrewDayWindow.SOUND_RESULT_LOW: [bank.sfx_brew_result_low, 0.0],
+		# The keg wash borrows the brew day's sounds until it has its own.
+		KegWashWindow.SOUND_LOOSENED: [bank.sfx_brew_clump_break, -2.0],
+		KegWashWindow.SOUND_REMOVED: [bank.sfx_brew_step_done, -6.0],
+		KegWashWindow.SOUND_FLED: [bank.sfx_brew_clump_hit, -8.0],
+		KegWashWindow.SOUND_TOOL: [bank.sfx_brew_paddle_knock, -6.0],
+		KegWashWindow.SOUND_DONE: [bank.sfx_brew_result_good, 0.0],
 	}
 
 
@@ -157,6 +163,7 @@ func _connect_signals() -> void:
 	# Not placed in the world: like the popup it belongs to, it should be heard at once.
 	BrewerySignals.critical_gain_shown.connect(play_sfx.bind(bank.sfx_critical_gain).unbind(1))
 	GUISignals.brew_day_sound.connect(_on_brew_day_sound)
+	GUISignals.keg_wash_sound.connect(_on_brew_day_sound)
 	GUISignals.brew_day_loops.connect(_on_brew_day_loops)
 	GUISignals.brew_day_closed.connect(_on_brew_day_loops.bind(0.0, 0.0, false))
 	BrewerySignals.glass_shattered.connect(func() -> void: play_sfx(bank.sfx_glass_shatter, 0.0, randf_range(SHATTER_PITCH_RANGE.x, SHATTER_PITCH_RANGE.y)))

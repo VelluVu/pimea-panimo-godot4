@@ -99,6 +99,14 @@ signal mouse_entered_dirty_keg_pile(is_entered : bool, count : int)
 ## The dirty keg pile was clicked: opens the keg wash.
 @warning_ignore("unused_signal")
 signal keg_wash_requested()
+## The keg wash window opened or closed; level-up cards wait while it is open.
+@warning_ignore("unused_signal")
+signal keg_wash_opened()
+@warning_ignore("unused_signal")
+signal keg_wash_closed()
+## A one-shot keg wash sound, named by KegWashWindow.SOUND_*.
+@warning_ignore("unused_signal")
+signal keg_wash_sound(sound : StringName)
 
 ## Touch screens have no hover: every hotspot's name label shows (true) or hides (false)
 ## at once, without the hover glow. See TouchHints.
