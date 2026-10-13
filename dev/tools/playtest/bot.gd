@@ -84,7 +84,7 @@ func _on_day_changed(_day: int) -> void:
 	for t: String in b.customer_standing:
 		if RegularRules.is_regular(b.customer_standing[t]):
 			regulars += 1
-	days.append({"day": b.current_day, "rep": b.reputation, "tier": tier.tier_name if tier else "", "money": snappedf(b.money, 0.1), "risk": b.risk, "raids": b.raid_count, "level": b.run_level, "regulars": regulars})
+	days.append({"day": b.current_day, "rep": b.reputation, "tier": tier.tier_name if tier else "", "money": snappedf(b.money, 0.1), "risk": b.risk, "raids": b.raid_count, "batches": b.inventory.brew_batches.size(), "level": b.run_level, "regulars": regulars})
 
 
 func _process(delta: float) -> void:
@@ -128,6 +128,7 @@ func _process(delta: float) -> void:
 		return
 	if _brew_cooldown <= 0.0 and _needs_brew(b):
 		_brew(b)
+	counts["peak_batches"] = maxi(counts.get("peak_batches", 0), b.inventory.brew_batches.size())
 	if cfg.strategy in EXPERTS:
 		_manage_cellar(b)
 		_buy_upgrade(b)
