@@ -50,10 +50,13 @@
 [ext_resource type="Script" uid="uid://dwc72b5x4eaw3" path="res://src/ui/receipt_machine_hover_area.gd" id="49_j2jfr"]
 [ext_resource type="Script" uid="uid://b0toudceq7ibd" path="res://src/scenes/ui/customer_book_label.gd" id="50_olp0l"]
 [ext_resource type="Script" uid="uid://dihcrv1yno5x5" path="res://src/ui/chalkboard_hover_area.gd" id="51_bu4jf"]
+[ext_resource type="Script" uid="uid://bdgp8p5s0uixg" path="res://src/scenes/ui/dirty_keg_pile_label.gd" id="52_fluu8"]
 [ext_resource type="Script" uid="uid://cbbayr0gg5kb5" path="res://src/customers/lvv_raid_spawner.gd" id="58_augu2"]
 [ext_resource type="Script" uid="uid://c1fy2446074o0" path="res://src/events/immersion_event_spawner.gd" id="59_t5ykj"]
 [ext_resource type="Texture2D" uid="uid://dwe4ql72sptwg" path="res://assets/textures/beer_dispenser_rack_48.png" id="60_beerrack"]
 [ext_resource type="Script" uid="uid://bt460kqjyukxg" path="res://src/ui/customer_book_hover_area.gd" id="61_fluu8"]
+[ext_resource type="Script" uid="uid://d1q0qg8qgxtey" path="res://src/ui/dirty_keg_pile.gd" id="67_68ujc"]
+[ext_resource type="Texture2D" uid="uid://bpsny2rj4ahl3" path="res://assets/textures/keg_wash/dirty_keg.png" id="68_abmkx"]
 [ext_resource type="Texture2D" uid="uid://b12vj0rmwdl8y" path="res://assets/textures/light_glow_32.png" id="70_lightglow"]
 [ext_resource type="Texture2D" uid="uid://dcrobw17uonit" path="res://assets/textures/pendant_lamp_24.png" id="71_pendantlamp"]
 [ext_resource type="Texture2D" uid="uid://b3yifds2n8sqd" path="res://assets/textures/light_cone_64x120.png" id="72_lightcone"]
@@ -125,6 +128,9 @@ size = Vector2(24, 14)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o7ddy"]
 size = Vector2(44, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_05g3k"]
+size = Vector2(53, 118)
 
 [node name="Main" type="Node" unique_id=1659433080]
 script = ExtResource("1_cjqg0")
@@ -1218,6 +1224,16 @@ theme_override_colors/font_color = Color(0.949, 0.788, 0.42, 1)
 horizontal_alignment = 1
 script = ExtResource("43_bu4jf")
 
+[node name="DirtyKegPileLabel" type="Label" parent="GUI_CanvasLayer/GUI" unique_id=124166997]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 128.0
+offset_right = 180.0
+offset_bottom = 146.0
+theme_override_colors/font_color = Color(0.949, 0.788, 0.42, 1)
+horizontal_alignment = 1
+script = ExtResource("52_fluu8")
+
 [node name="DayEventBanner" type="Label" parent="GUI_CanvasLayer/GUI" unique_id=747407770]
 visible = false
 modulate = Color(1, 1, 1, 0)
@@ -1416,9 +1432,6 @@ position = Vector2(491, 250)
 [node name="Keg3" parent="WorldYSort" unique_id=111073066 instance=ExtResource("47_1v6qk")]
 position = Vector2(461, 250)
 
-[node name="Keg4" parent="WorldYSort" unique_id=1949069283 instance=ExtResource("47_1v6qk")]
-position = Vector2(119, 259)
-
 [node name="LvvRaidSpawner" type="Node2D" parent="WorldYSort" unique_id=411121702]
 y_sort_enabled = true
 script = ExtResource("58_augu2")
@@ -1501,6 +1514,41 @@ position = Vector2(200, 85)
 
 [node name="End" type="Marker2D" parent="WorldYSort/ImmersionEventSpawner/BatPathMarkers" unique_id=979688027]
 position = Vector2(75, 60)
+
+[node name="DirtyKegPile" type="Area2D" parent="WorldYSort" unique_id=2096720517]
+position = Vector2(119, 259)
+script = ExtResource("67_68ujc")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldYSort/DirtyKegPile" unique_id=933718182]
+position = Vector2(-17.5, -53)
+shape = SubResource("RectangleShape2D_05g3k")
+
+[node name="DirtyKeg2" type="Sprite2D" parent="WorldYSort/DirtyKegPile" unique_id=1625886467]
+unique_name_in_owner = true
+texture_filter = 1
+position = Vector2(-24, 2)
+scale = Vector2(2, 2)
+texture = ExtResource("68_abmkx")
+centered = false
+offset = Vector2(-16, -32)
+
+[node name="DirtyKeg1" type="Sprite2D" parent="WorldYSort/DirtyKegPile" unique_id=777553892]
+unique_name_in_owner = true
+texture_filter = 1
+position = Vector2(0, 8)
+scale = Vector2(2, 2)
+texture = ExtResource("68_abmkx")
+centered = false
+offset = Vector2(-16, -32)
+
+[node name="DirtyKeg3" type="Sprite2D" parent="WorldYSort/DirtyKegPile" unique_id=1445407608]
+unique_name_in_owner = true
+texture_filter = 1
+position = Vector2(-12, -52)
+scale = Vector2(2, 2)
+texture = ExtResource("68_abmkx")
+centered = false
+offset = Vector2(-16, -32)
 
 [node name="WarehouseWallOverlay" type="Polygon2D" parent="." unique_id=1022889779]
 z_index = 2

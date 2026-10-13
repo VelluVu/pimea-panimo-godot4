@@ -93,6 +93,13 @@ signal mouse_entered_warehouse_hover_area(is_entered : bool)
 @warning_ignore("unused_signal")
 signal mouse_entered_customer_book_hover_area(is_entered : bool)
 
+## `count` is how many unwashed kegs the pile holds, for its label.
+@warning_ignore("unused_signal")
+signal mouse_entered_dirty_keg_pile(is_entered : bool, count : int)
+## The dirty keg pile was clicked: opens the keg wash.
+@warning_ignore("unused_signal")
+signal keg_wash_requested()
+
 ## Touch screens have no hover: every hotspot's name label shows (true) or hides (false)
 ## at once, without the hover glow. See TouchHints.
 @warning_ignore("unused_signal")

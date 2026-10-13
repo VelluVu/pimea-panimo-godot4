@@ -4666,6 +4666,10 @@ msgstr "Day summary"
 msgid "ei uusia"
 msgstr "none new"
 
+#: src/scenes/ui/dirty_keg_pile_label.gd
+msgid "Likaiset tynnyrit (%d)"
+msgstr "Dirty kegs (%d)"
+
 #: src/scenes/ui/game_end_window.gd
 msgid ""
 "Demo päättyi päivään %d. Koko pelissä kausi kestää %d päivää, ja Olutopin "
@@ -5782,6 +5786,20 @@ msgstr "Hops"
 #: src/ui/ingredient_book_text.gd
 msgid "Mausteet"
 msgstr "Spices"
+
+#: src/ui/keg_count_text.gd
+msgid ", likaisia %d"
+msgstr ", %d dirty"
+
+#: src/ui/keg_count_text.gd
+msgid ""
+"Jokainen erä vie oman tynnyrinsä. Tyhjentynyt tynnyri palaa likaisena "
+"kellarin nurkkaan pestäväksi. Lisää tynnyreitä saa kellariparannuksista."
+msgstr "Every batch takes a keg of its own. An emptied keg comes back dirty to the cellar corner to be washed. More kegs come from the cellar upgrades."
+
+#: src/ui/keg_count_text.gd
+msgid "Tynnyrit käytössä %d/%d"
+msgstr "Kegs in use %d/%d"
 
 #: src/ui/leaderboard_text.gd
 msgid "Annokset %d"

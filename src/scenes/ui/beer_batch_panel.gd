@@ -44,6 +44,7 @@ const ROW_LABEL_MIN_WIDTH : float = 50.0
 ## panel's own row-building below), and a single shared picker above the
 ## batch list is simpler than giving every row its own BarContact dropdown.
 var _bar_contact_option_button : BarContactOptionButton = null
+var _keg_count_label : TooltipLabel = null
 
 
 func _ready() -> void:
@@ -62,6 +63,13 @@ func _ready() -> void:
 	add_child(destination_row)
 	move_child(destination_row, 0)
 
+	_keg_count_label = TooltipLabel.new()
+	_keg_count_label.tooltip_text = KegCountText.TOOLTIP_TEXT
+	_keg_count_label.mouse_filter = Control.MOUSE_FILTER_PASS
+	_keg_count_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	add_child(_keg_count_label)
+	move_child(_keg_count_label, 0)
+
 	_update_beer_batches_ui()
 
 
@@ -78,6 +86,8 @@ func _update_beer_batches_ui() -> void:
 		
 	var inventory : Inventory = BrewEngine.current_brewery.inventory
 	var any_bottles_left : bool = false
+	var batch_count : int = inventory.brew_batches.size()
+	_keg_count_label.text = KegCountText.line(batch_count, batch_count + inventory.free_kegs.size(), inventory.dirty_keg_count())
 
 	for batch: BrewBatch in inventory.brew_batches:
 
