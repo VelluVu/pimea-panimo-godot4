@@ -41,6 +41,9 @@ const HOSE_SHINE : Color = Color(0.36, 0.62, 0.34)
 const WATER_COLOR : Color = Color(0.62, 0.8, 1.0, 0.85)
 const MIST_COLOR : Color = Color(0.85, 0.95, 1.0, 0.5)
 const SHEEN_COLOR : Color = Color(0.75, 0.9, 1.0, 0.12)
+## A full stain is nearly opaque; the thin film lets the steel show through.
+const GRIME_ALPHA_PER_AMOUNT : float = 0.9
+const GRIME_MAX_ALPHA : float = 0.85
 const SPARKLE_COLOR : Color = Color(1.0, 1.0, 0.95)
 const FLASH_SECONDS : float = 0.15
 ## The rim's lowest point, where rinse water runs out onto the floor.
@@ -212,6 +215,7 @@ func _draw() -> void:
 	_draw_sprite(ART.tap, TAP_POSITION, prop)
 	_draw_sprite(ART.tunnel, TUNNEL_POSITION, KegWashArt.TUNNEL_SCALE)
 	if session != null:
+		_draw_grime()
 		_draw_coverage()
 		_draw_spots()
 	if _puddle > 0.0:
@@ -223,6 +227,19 @@ func _draw() -> void:
 	_draw_tool_sprite(ART.spray, _spray_tip() - SPRAY_NOZZLE, _tool == Tool.SPRAY)
 	var brush_size : Vector2 = Vector2(ART.brush.get_size()) * prop
 	_draw_tool_sprite(ART.brush, _brush - Vector2(brush_size.x / 2.0, brush_size.y), _tool == Tool.BRUSH)
+
+
+## The grime film and stains, fading as the hose takes them off.
+func _draw_grime() -> void:
+	var half : float = KegWashRules.STAIN_CELL / 2.0
+	for i : int in session.grime_cells.size():
+		var amount : float = session.grime[i]
+		if amount < KegWashRules.STAIN_CLEAN_BELOW:
+			continue
+		var cell : Vector2 = session.grime_cells[i]
+		var color : Color = session.grime_colors[i].darkened(KegTunnel.depth(cell) * 0.3)
+		color.a = minf(GRIME_MAX_ALPHA, amount * GRIME_ALPHA_PER_AMOUNT)
+		draw_rect(Rect2(cell - Vector2(half, half), Vector2(half, half) * 2.0), color)
 
 
 func _draw_coverage() -> void:
