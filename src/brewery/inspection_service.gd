@@ -64,7 +64,10 @@ func check_for_raid() -> void:
 		if saved > 0:
 			batch.amount_bottles = saved
 			kept_batches.append(batch)
+	# The inspectors pour the beer out but leave the kegs, dirty.
+	var emptied_kegs : int = brewery.inventory.brew_batches.size() - kept_batches.size()
 	brewery.inventory.brew_batches = kept_batches
+	brewery.inventory.return_dirty_kegs(emptied_kegs)
 
 	# raid_count still counts prior raids, so this raid escalates from the earlier count.
 	var escalation : float = raid_escalation(brewery.raid_count)

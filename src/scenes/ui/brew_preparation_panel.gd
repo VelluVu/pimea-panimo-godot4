@@ -12,6 +12,7 @@ const SAVE_TOAST_FLASH_SECONDS : float = 0.15
 const SAVE_TOAST_HOLD_SECONDS : float = 1.2
 const SAVE_TOAST_FADE_SECONDS : float = 0.4
 const NO_ACTIVE_RECIPE_TEXT : String = "resepti:"
+const NO_FREE_KEG_TEXT : String = "Kaikissa tynnyreissä on olutta. Myy tai vie erä baariin, niin tynnyri vapautuu."
 
 ## Light blue on both XP popups (here and DialogWiring), apart from the gold money.
 const XP_POPUP_COLOR : Color = Color(0.4, 0.75, 1.0, 1)
@@ -154,3 +155,7 @@ func _update_preview(brewery : Brewery, prep_contents : Dictionary) -> void:
 	preview_label.text = BrewPreviewText.text(prep_contents.is_empty(), preview, style_known)
 	# Nothing would come out yet; the preview says what is missing.
 	start_brew_button.disabled = preview == null
+	# Every batch needs a keg of its own.
+	if not brewery.inventory.has_free_keg():
+		preview_label.text = NO_FREE_KEG_TEXT
+		start_brew_button.disabled = true

@@ -66,7 +66,7 @@ func try_fulfill(brewery: Brewery) -> bool:
 	outcome = judge(batch.current_quality + randf_range(-luck, luck), win_quality, place_quality)
 	batch.amount_bottles -= required_bottles
 	if batch.amount_bottles <= 0:
-		brewery.inventory.brew_batches.erase(batch)
+		brewery.inventory.remove_batch(batch)
 	match outcome:
 		Outcome.WON:
 			brewery.change_money(win_money, MoneyLedger.Source.EVENTS)

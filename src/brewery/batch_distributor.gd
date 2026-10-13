@@ -53,7 +53,7 @@ func _on_ship_batch_to_bar_requested(batch : BrewBatch, bar : BarContact) -> voi
 	brewery.add_risk(risk)
 	BrewerySignals.keg_shipped_to_bar.emit(batch.get_style_name(), bar.bar_name, batch.amount_bottles, payout, risk)
 
-	brewery.inventory.brew_batches.erase(batch)
+	brewery.inventory.remove_batch(batch)
 	BrewerySignals.brewery_state_changed.emit(brewery)
 
 

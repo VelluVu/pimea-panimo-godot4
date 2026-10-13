@@ -5,6 +5,7 @@ extends McpTestSuite
 
 const UpgradesScript := preload("res://src/brewery/cellar_upgrades.gd")
 const UpgradeScript := preload("res://src/brewery/cellar_upgrade_data.gd")
+const KEG_UPGRADE_MAX_LEVELS : int = 8
 
 
 func suite_name() -> String:
@@ -50,8 +51,10 @@ func test_shipped_upgrades_have_unique_ids_and_one_to_five_levels() -> void:
 	for upgrade : CellarUpgradeData in upgrades:
 		assert_false(ids.has(upgrade.upgrade_id), "duplicate id %s" % upgrade.upgrade_id)
 		ids[upgrade.upgrade_id] = true
-		assert_true(upgrade.max_level >= 1 and upgrade.max_level <= 5, "%s has %d levels" % [upgrade.upgrade_id, upgrade.max_level])
-		assert_true(_has_stat(upgrade), "%s has no stat" % upgrade.upgrade_id)
+		# Kegs are bought one at a time, so that upgrade may have more levels and no stat.
+		var max_levels : int = KEG_UPGRADE_MAX_LEVELS if upgrade.kegs_per_level > 0 else 5
+		assert_true(upgrade.max_level >= 1 and upgrade.max_level <= max_levels, "%s has %d levels" % [upgrade.upgrade_id, upgrade.max_level])
+		assert_true(_has_stat(upgrade) or upgrade.kegs_per_level > 0, "%s has no stat" % upgrade.upgrade_id)
 
 
 ## Reads the authored per-level steps as properties: in the editor the loaded .tres

@@ -128,9 +128,11 @@ func _process(delta: float) -> void:
 	if _brew_cooldown <= 0.0 and _needs_brew(b):
 		_brew(b)
 	counts["peak_batches"] = maxi(counts.get("peak_batches", 0), b.inventory.brew_batches.size())
+	_wash_kegs(b)
 	if cfg.strategy in EXPERTS:
 		_manage_cellar(b)
 		_buy_upgrade(b)
+	_free_a_keg(b)
 	if cfg.strategy in EXPERTS or _open_goal(DailyGoalData.GoalType.SHIP_TO_BAR) != -1:
 		_maybe_ship(b)
 
@@ -199,7 +201,17 @@ func _buys_lvv_relief(e: SpecialEventData) -> bool:
 	return e.weighs_by_risk or e.clears_risk or e.reward_risk < 0
 
 
+## Wants a brew and has an empty keg for it; counts the ticks a full cellar stopped one.
 func _needs_brew(b: Brewery) -> bool:
+	if not _wants_brew(b):
+		return false
+	if not b.inventory.has_free_keg():
+		_inc("keg_blocked_ticks")
+		return false
+	return true
+
+
+func _wants_brew(b: Brewery) -> bool:
 	if cfg.strategy == "minmax" and _is_last_day(b) and TimeManager.get_day_progress() >= LAST_BREW_PROGRESS:
 		return false
 	if cfg.strategy in EXPERTS:
@@ -345,6 +357,8 @@ func _pick_near_best(candidates: Array[BrewRecipe], scores: Array[float]) -> Bre
 
 ## Bottles an expert keeps for the counter before it ships or brews for bars.
 const COUNTER_STOCK: int = 40
+## A batch this small is a leftover worth shipping to free its keg.
+const LEFTOVER_SERVINGS: int = 20
 ## Cash an expert keeps before brewing a batch only to ship it.
 const EXPORT_BREW_RESERVE: float = 150.0
 ## Plain exports wait for the end of the day and stay under this share of the raid
@@ -610,9 +624,43 @@ const CELLAR_COUNTER_FLOOR: int = 10
 ## The cheapest next upgrade level, keeping UPGRADE_RESERVE for ingredients.
 const UPGRADE_RESERVE: float = 150.0
 
+## A full cellar blocks brewing: ships the smallest leftover batch to free its keg, the
+## way a player would rather than wait for the counter to drain it.
+func _free_a_keg(b: Brewery) -> void:
+	if b.inventory.has_free_keg() or _ship_cooldown > 0.0:
+		return
+	var smallest: BrewBatch = null
+	for batch: BrewBatch in b.inventory.brew_batches:
+		if not batch.held and batch.amount_bottles <= LEFTOVER_SERVINGS and (smallest == null or batch.amount_bottles < smallest.amount_bottles):
+			smallest = batch
+	if smallest == null:
+		return
+	var bar: BarContact = _best_bar(b, false, smallest.beer_style.is_alcohol_free())
+	if bar == null:
+		return
+	_ship_cooldown = 2.0
+	GUISignals.ship_batch_to_bar_requested.emit(smallest, bar)
+	_inc("leftover_ships")
+
+
+## Bots cannot play the washing minigame, so every dirty keg is washed spotless at once.
+func _wash_kegs(b: Brewery) -> void:
+	for i: int in b.inventory.dirty_keg_count():
+		GUISignals.keg_wash_finished.emit(KegRules.CLEAN)
+		_inc("kegs_washed")
+
+
 func _buy_upgrade(b: Brewery) -> void:
 	var best: CellarUpgradeData = null
 	var best_cost: int = 0
+	# A full cellar blocks brewing, so a new keg comes before anything else.
+	if not b.inventory.has_free_keg():
+		for upgrade: CellarUpgradeData in CellarUpgrades.all():
+			var keg_level: int = b.cellar_upgrade_levels.get(upgrade.upgrade_id, 0)
+			if upgrade.kegs_per_level > 0 and not CellarUpgradeRules.is_maxed(keg_level, upgrade.max_level) and b.money - upgrade.cost_for_next_level(keg_level) >= UPGRADE_RESERVE:
+				GUISignals.cellar_upgrade_requested.emit(upgrade.upgrade_id)
+				_inc("kegs_bought")
+				return
 	for upgrade: CellarUpgradeData in CellarUpgrades.all():
 		var level: int = b.cellar_upgrade_levels.get(upgrade.upgrade_id, 0)
 		if CellarUpgradeRules.is_maxed(level, upgrade.max_level):

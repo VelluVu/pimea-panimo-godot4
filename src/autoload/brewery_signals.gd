@@ -166,6 +166,12 @@ signal early_day_close_applied(money_cost: float, reputation_cost: int, risk_rel
 ## at once.
 @warning_ignore("unused_signal")
 signal customer_evicted(dialogue_slot: int)
+## Emitted by Inventory when batches leave the cellar: `count` empty kegs came back dirty.
+@warning_ignore("unused_signal")
+signal kegs_emptied(count: int)
+## Emitted by KegWasher when a dirty keg was washed to `cleanliness` (0 to 1).
+@warning_ignore("unused_signal")
+signal keg_washed(cleanliness: float)
 ## Emitted by BatchDistributor when a batch is shipped to a BarContact. Not a customer
 ## sale (no reputation, XP, tip or receipt), and it carries risk_added because shipping
 ## raises risk. BeerPatchPanel shows a payout and risk popup.

@@ -52,7 +52,7 @@ func try_fulfill(brewery: Brewery) -> bool:
 	if won:
 		brewery.change_money(snappedf(_counter_value(brewery, batch), 0.1), MoneyLedger.Source.EVENTS)
 	else:
-		brewery.inventory.brew_batches.erase(batch)
+		brewery.inventory.remove_batch(batch)
 	BrewerySignals.brewery_state_changed.emit(brewery)
 	return true
 

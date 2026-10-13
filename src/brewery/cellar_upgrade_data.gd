@@ -13,6 +13,8 @@ extends RunPerk
 ## Price of the first level; each next level costs cost_growth times the previous.
 @export var base_cost : int = 50
 @export var cost_growth : float = 1.8
+## Empty clean kegs each level adds to the cellar, see KegRules.
+@export var kegs_per_level : int = 0
 
 
 ## Price of the level after `level`, see CellarUpgradeRules.
