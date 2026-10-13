@@ -3,48 +3,15 @@
 [ext_resource type="FontFile" uid="uid://xfbjk7l1sd3n" path="res://assets/fonts/m5x7.ttf" id="1_qtffb"]
 [ext_resource type="FontFile" uid="uid://b51b16b2hykao" path="res://assets/fonts/twemoji/Twemoji.Mozilla.ttf" id="2_twemoji"]
 [ext_resource type="FontFile" uid="uid://dq8nfjdqbqec5" path="res://assets/fonts/noto_sans_symbols2/NotoSansSymbols2-Regular.ttf" id="3_symbols"]
-[ext_resource type="Texture2D" uid="uid://du31g2l2yuwb3" path="res://assets/textures/ui/button_normal.png" id="ui_button_normal"]
-[ext_resource type="Texture2D" uid="uid://blty1aqnd7gv" path="res://assets/textures/ui/button_hover.png" id="ui_button_hover"]
-[ext_resource type="Texture2D" uid="uid://8gtjj80nbtp" path="res://assets/textures/ui/button_pressed.png" id="ui_button_pressed"]
 [ext_resource type="Texture2D" uid="uid://c0oqendgsu212" path="res://assets/textures/ui/button_disabled.png" id="ui_button_disabled"]
 [ext_resource type="Texture2D" uid="uid://s2ox5yvkyanu" path="res://assets/textures/ui/button_focus.png" id="ui_button_focus"]
+[ext_resource type="Texture2D" uid="uid://blty1aqnd7gv" path="res://assets/textures/ui/button_hover.png" id="ui_button_hover"]
+[ext_resource type="Texture2D" uid="uid://du31g2l2yuwb3" path="res://assets/textures/ui/button_normal.png" id="ui_button_normal"]
+[ext_resource type="Texture2D" uid="uid://8gtjj80nbtp" path="res://assets/textures/ui/button_pressed.png" id="ui_button_pressed"]
 [ext_resource type="Texture2D" uid="uid://c1oyyse4gy0ti" path="res://assets/textures/ui/panel.png" id="ui_panel"]
-[ext_resource type="Texture2D" uid="uid://c6py3m2df4jmj" path="res://assets/textures/ui/slider_track.png" id="ui_slider_track"]
 [ext_resource type="Texture2D" uid="uid://c61jpe6s5sini" path="res://assets/textures/ui/slider_fill.png" id="ui_slider_fill"]
 [ext_resource type="Texture2D" uid="uid://do7i8r0dgf1bd" path="res://assets/textures/ui/slider_fill_hover.png" id="ui_slider_fill_hover"]
-
-[sub_resource type="StyleBoxTexture" id="btn_normal"]
-content_margin_left = 4.0
-content_margin_top = 3.0
-content_margin_right = 4.0
-content_margin_bottom = 5.0
-texture = ExtResource("ui_button_normal")
-texture_margin_left = 4.0
-texture_margin_top = 4.0
-texture_margin_right = 4.0
-texture_margin_bottom = 4.0
-
-[sub_resource type="StyleBoxTexture" id="btn_hover"]
-content_margin_left = 4.0
-content_margin_top = 3.0
-content_margin_right = 4.0
-content_margin_bottom = 5.0
-texture = ExtResource("ui_button_hover")
-texture_margin_left = 4.0
-texture_margin_top = 4.0
-texture_margin_right = 4.0
-texture_margin_bottom = 4.0
-
-[sub_resource type="StyleBoxTexture" id="btn_pressed"]
-content_margin_left = 4.0
-content_margin_top = 5.0
-content_margin_right = 4.0
-content_margin_bottom = 3.0
-texture = ExtResource("ui_button_pressed")
-texture_margin_left = 4.0
-texture_margin_top = 4.0
-texture_margin_right = 4.0
-texture_margin_bottom = 4.0
+[ext_resource type="Texture2D" uid="uid://c6py3m2df4jmj" path="res://assets/textures/ui/slider_track.png" id="ui_slider_track"]
 
 [sub_resource type="StyleBoxTexture" id="btn_disabled"]
 content_margin_left = 4.0
@@ -69,12 +36,38 @@ texture_margin_right = 2.0
 texture_margin_bottom = 2.0
 draw_center = false
 
-[sub_resource type="StyleBoxTexture" id="slider_track"]
-texture = ExtResource("ui_slider_track")
-texture_margin_left = 2.0
-texture_margin_top = 2.0
-texture_margin_right = 2.0
-texture_margin_bottom = 2.0
+[sub_resource type="StyleBoxTexture" id="btn_hover"]
+content_margin_left = 4.0
+content_margin_top = 3.0
+content_margin_right = 4.0
+content_margin_bottom = 5.0
+texture = ExtResource("ui_button_hover")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxTexture" id="btn_normal"]
+content_margin_left = 4.0
+content_margin_top = 3.0
+content_margin_right = 4.0
+content_margin_bottom = 5.0
+texture = ExtResource("ui_button_normal")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxTexture" id="btn_pressed"]
+content_margin_left = 4.0
+content_margin_top = 5.0
+content_margin_right = 4.0
+content_margin_bottom = 3.0
+texture = ExtResource("ui_button_pressed")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
 
 [sub_resource type="StyleBoxTexture" id="slider_fill"]
 texture = ExtResource("ui_slider_fill")
@@ -85,6 +78,13 @@ texture_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxTexture" id="slider_fill_hover"]
 texture = ExtResource("ui_slider_fill_hover")
+texture_margin_left = 2.0
+texture_margin_top = 2.0
+texture_margin_right = 2.0
+texture_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxTexture" id="slider_track"]
+texture = ExtResource("ui_slider_track")
 texture_margin_left = 2.0
 texture_margin_top = 2.0
 texture_margin_right = 2.0
@@ -111,6 +111,20 @@ texture_margin_right = 5.0
 texture_margin_bottom = 5.0
 expand_margin_right = 1.0
 expand_margin_bottom = 1.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xkb5p"]
+texture = ExtResource("ui_button_hover")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ykn37"]
+texture = ExtResource("ui_panel")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 5.0
+texture_margin_bottom = 5.0
 
 [sub_resource type="FontVariation" id="FontVariation_main"]
 fallbacks = Array[Font]([ExtResource("3_symbols"), ExtResource("2_twemoji")])
@@ -150,3 +164,10 @@ OptionButton/styles/normal = SubResource("btn_normal")
 OptionButton/styles/pressed = SubResource("btn_pressed")
 Panel/styles/panel = SubResource("panel_plain")
 PanelContainer/styles/panel = SubResource("panel_content")
+PopupMenu/colors/font_color = Color(0.9254902, 0.8627451, 0.72156864, 1)
+PopupMenu/colors/font_disabled_color = Color(0.5411765, 0.47843137, 0.36862746, 1)
+PopupMenu/colors/font_hover_color = Color(0.9490196, 0.7882353, 0.41960785, 1)
+PopupMenu/colors/font_outline_color = Color(0.08235294, 0.05490196, 0.03137255, 1)
+PopupMenu/constants/outline_size = 1
+PopupMenu/styles/hover = SubResource("StyleBoxTexture_xkb5p")
+PopupMenu/styles/panel = SubResource("StyleBoxTexture_ykn37")
