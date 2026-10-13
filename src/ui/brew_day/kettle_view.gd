@@ -45,6 +45,20 @@ const FLASH_MODULATE : Color = Color(1.8, 1.8, 1.6)
 const FOAM_COLOR : Color = Color(0.93, 0.89, 0.78)
 const PADDLE_COLOR : Color = Color(0.6, 0.42, 0.22)
 const PADDLE_SHADE : Color = Color(0.42, 0.28, 0.14)
+## The blade and the first stretch of shaft are under the wort: drawn under the clumps and
+## foam, tinted by the liquid, and shifted a little, as a stick looks bent in water.
+const SUBMERGED_SEGMENTS : int = PaddleBody.BLADE_SEGMENTS + 1
+const REFRACTION : Vector2 = Vector2(0, 2)
+## The liquid shows through the submerged part this much at full murk.
+const SUBMERGED_HIDE : float = 0.8
+## Ripples ring the spot where the shaft enters the liquid; a moving shaft leaves a wake.
+const RIPPLE_SECONDS : float = 0.7
+const RIPPLE_RADIUS : float = 10.0
+const RIPPLE_SQUASH : float = 0.45
+const WAKE_FROM_SPEED : float = 60.0
+const WAKE_PER_SPEED : float = 0.06
+const WAKE_MAX : float = 16.0
+const WAKE_SPREAD : float = 0.45
 const BUBBLE_COLOR : Color = Color(1, 1, 1, 0.5)
 ## Everything that moves on its own steps at this rate, like the rest of the pixel art.
 const ANIMATION_FPS : float = 10.0
@@ -111,6 +125,8 @@ const SPARKLE_RISE : float = 40.0
 const SPARKLE_COLOR : Color = Color(1.0, 0.85, 0.3)
 
 var liquid_color : Color = WATER_COLOR
+## How much the liquid hides what is under it, 0 (clear water) to 1 (thick mash).
+var murk : float = 0.3
 var clumps : Array[MashClump] = []
 var foam : float = 0.0
 var bubbling : bool = false
@@ -151,6 +167,8 @@ var _trails : Array = []
 var _swirl : float = 0.0
 var _trail_clock : float = 0.0
 var _last_tip : Vector2 = PADDLE_REST
+var _last_entry : Vector2 = PADDLE_REST
+var _entry_velocity : Vector2 = Vector2.ZERO
 ## [colour, seconds left] of the sparkles of a perfect addition.
 var _sparkles : Array = []
 
@@ -174,6 +192,10 @@ func _process(delta : float) -> void:
 	if _dragging:
 		paddle_moved.emit(_to_liquid(before), _to_liquid(_paddle.points), PaddleBody.POINTS - 1 - PaddleBody.BLADE_SEGMENTS, delta)
 	_stir(delta)
+	var entry : Vector2 = _paddle.points[SUBMERGED_SEGMENTS]
+	if delta > 0.0:
+		_entry_velocity = _entry_velocity.lerp((entry - _last_entry) / delta, minf(1.0, delta * 12.0))
+	_last_entry = entry
 	for clump : MashClump in _flashes.keys():
 		_flashes[clump] -= delta
 		if _flashes[clump] <= 0.0:
@@ -422,6 +444,8 @@ func _draw() -> void:
 	_fill_ellipse(_ellipse(LIQUID_RECT.grow(LIQUID_UNDER_RIM)), liquid_color)
 	_draw_trails()
 	_draw_blooms()
+	_draw_paddle_under()
+	_draw_entry_ripples()
 	if bubbling:
 		_draw_bubbles()
 	for clump : MashClump in clumps:
@@ -542,20 +566,56 @@ func _draw_bursts() -> void:
 
 
 ## The bent shaft as a polyline; the blade and grip sprites turned along the stick.
+## The shaft above the wort and the grip; the rest is drawn under the liquid.
 func _draw_paddle() -> void:
 	var points : PackedVector2Array = _paddle.points
-	var shaft : PackedVector2Array = points.slice(PaddleBody.BLADE_SEGMENTS)
+	var shaft : PackedVector2Array = points.slice(SUBMERGED_SEGMENTS)
 	draw_polyline(shaft, PADDLE_SHADE, SHAFT_WIDTH + 2.0)
 	draw_polyline(shaft, PADDLE_COLOR, SHAFT_WIDTH)
-	var blade_end : Vector2 = points[PaddleBody.BLADE_SEGMENTS]
-	_draw_turned(ART.paddle_blade, (points[0] + blade_end) / 2.0, (points[0] - blade_end).angle())
 	var last : int = points.size() - 1
 	_draw_turned(ART.paddle_grip, points[last], (points[last] - points[last - 1]).angle())
 
 
-func _draw_turned(texture : Texture2D, center : Vector2, angle : float) -> void:
+## The blade and the shaft's first stretch under the wort, tinted by it and shifted a
+## little at the waterline.
+func _draw_paddle_under() -> void:
+	var points : PackedVector2Array = _paddle.points
+	# Drawn see-through over the liquid, so a thick mash all but hides the blade.
+	var tint : Color = Color(1, 1, 1, 1.0 - clampf(murk, 0.0, 1.0) * SUBMERGED_HIDE)
+	var under : PackedVector2Array = PackedVector2Array()
+	for i : int in SUBMERGED_SEGMENTS + 1:
+		under.append(points[i] + REFRACTION)
+	draw_polyline(under, PADDLE_SHADE * tint, SHAFT_WIDTH + 2.0)
+	draw_polyline(under, PADDLE_COLOR * tint, SHAFT_WIDTH)
+	var blade_end : Vector2 = points[PaddleBody.BLADE_SEGMENTS] + REFRACTION
+	var tip : Vector2 = points[0] + REFRACTION
+	_draw_turned(ART.paddle_blade, (tip + blade_end) / 2.0, (tip - blade_end).angle(), tint)
+
+
+## Rings spread from where the shaft meets the liquid, in solid steps like the blooms, and
+## a moving shaft trails a V-shaped wake.
+func _draw_entry_ripples() -> void:
+	var entry : Vector2 = _paddle.points[SUBMERGED_SEGMENTS]
+	if not _paddle.inside_mouth(entry).is_equal_approx(entry):
+		return
+	var ripple : Color = liquid_color.lightened(0.5)
+	for offset : float in [0.0, 0.5]:
+		var progress : float = fmod(_clock / RIPPLE_SECONDS + offset, 1.0)
+		var radius : float = roundf(lerpf(2.0, RIPPLE_RADIUS, progress))
+		var ring : PackedVector2Array = _ellipse(Rect2(entry - Vector2(radius, radius * RIPPLE_SQUASH), Vector2(radius, radius * RIPPLE_SQUASH) * 2.0))
+		ring.append(ring[0])
+		draw_polyline(ring, Color(ripple, 1.0 - progress * 0.7), 2.0)
+	var speed : float = _entry_velocity.length()
+	if speed < WAKE_FROM_SPEED:
+		return
+	var back : Vector2 = -_entry_velocity.normalized() * minf(WAKE_MAX, speed * WAKE_PER_SPEED)
+	for side : float in [-WAKE_SPREAD, WAKE_SPREAD]:
+		draw_line(entry, entry + back.rotated(side), ripple, 2.0)
+
+
+func _draw_turned(texture : Texture2D, center : Vector2, angle : float, tint : Color = Color.WHITE) -> void:
 	draw_set_transform(center.round(), angle, Vector2.ONE * BrewDayArt.PROP_SCALE)
-	draw_texture(texture, -texture.get_size() / 2.0)
+	draw_texture(texture, -texture.get_size() / 2.0, tint)
 	draw_set_transform(Vector2.ZERO)
 
 
