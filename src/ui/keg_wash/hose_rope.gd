@@ -6,7 +6,8 @@ extends RefCounted
 ## last point is the nozzle, pinned wherever the hand (or the hook) holds it. A nozzle
 ## pulled further than the hose reaches stops at its full length.
 
-const POINTS : int = 28
+## Long enough to reach the far side of the keg from the tap, with some slack.
+const POINTS : int = 38
 const SEGMENT : float = 15.0
 const GRAVITY : float = 700.0
 ## Air slows the free points, per second.
