@@ -33,3 +33,13 @@ func test_no_segment_stretches_far_past_its_length() -> void:
 		rope.step(1.0 / 60.0, TAP + Vector2(-300, 150) + Vector2(sin(i * 0.3), 0) * 50.0)
 	for i : int in range(1, rope.points.size()):
 		assert_true(rope.points[i - 1].distance_to(rope.points[i]) <= RopeScript.SEGMENT * 1.25)
+
+
+func test_the_nozzle_reaches_every_part_of_the_keg() -> void:
+	var view_script : GDScript = load("res://src/ui/keg_wash/keg_wash_view.gd")
+	var spout : Vector2 = view_script.TAP_SPOUT
+	var grip : Vector2 = view_script.NOZZLE_GRIP
+	var rope : HoseRope = RopeScript.new(spout, spout + Vector2(0, 100))
+	for degrees : int in range(0, 360, 5):
+		var tip : Vector2 = KegTunnel.point_at(deg_to_rad(degrees), 1.0)
+		assert_true(rope.reachable(tip + grip).is_equal_approx(tip + grip), "the nozzle reaches %d degrees" % degrees)
