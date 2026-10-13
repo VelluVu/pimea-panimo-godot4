@@ -5,8 +5,7 @@ extends RefCounted
 ## their word.
 
 const FINISHED_TEXT : String = "Noniin nyt on valmis"
-## A placeholder until the developer's own line.
-const RINSED_TEXT : String = "Huuhdeltu! Nyt suihketta."
+const RINSED_TEXT : String = "Huuhdeltu on! Nyt desinfiointi!"
 const MISTAKE_TEXTS : Dictionary = {
 	KegWashSession.Mistake.WASTED_WATER: "Vesilasku kasvaa, mutta lika ei lähde.",
 	KegWashSession.Mistake.POLISHING: "Meni jo kiillottamiseksi tuo hankaaminen.",
