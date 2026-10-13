@@ -22,6 +22,8 @@ func _ready() -> void:
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
 	input_event.connect(_on_input_event)
+	GUISignals.warehouse_view_opened.connect(_set_covered.bind(true))
+	GUISignals.warehouse_view_closed.connect(_set_covered.bind(false))
 	modulate = HIDDEN_COLOR
 
 
@@ -46,3 +48,10 @@ func _on_mouse_exited() -> void:
 func _on_input_event(_viewport : Node, event : InputEvent, _shape_idx : int) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		GUISignals.recipe_library_requested.emit()
+
+
+## The warehouse view lies over the shelf, so it takes no hover meanwhile.
+func _set_covered(covered : bool) -> void:
+	input_pickable = not covered
+	if covered:
+		_on_mouse_exited()

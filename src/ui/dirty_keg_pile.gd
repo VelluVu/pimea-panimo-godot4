@@ -14,6 +14,9 @@ const MAX_SHOWN_KEGS : int = KegRules.START_KEGS
 @onready var _keg_sprites : Array[Sprite2D] = [%DirtyKeg1, %DirtyKeg2, %DirtyKeg3, %DirtyKeg4]
 
 var current_tween : Tween
+var _count : int = 0
+## The shop and brewery views lie over the pile, so it takes no hover meanwhile.
+var _covered : bool = false
 
 
 func _ready() -> void:
@@ -21,6 +24,8 @@ func _ready() -> void:
 	mouse_exited.connect(_on_mouse_exited)
 	input_event.connect(_on_input_event)
 	BrewerySignals.brewery_state_changed.connect(_on_brewery_state_changed)
+	GUISignals.bar_view_exited.connect(_set_covered.bind(true))
+	GUISignals.bar_view_entered.connect(_set_covered.bind(false))
 	modulate = HIDDEN_COLOR
 	_show_count(0)
 
@@ -30,11 +35,22 @@ func _on_brewery_state_changed(brewery : Brewery) -> void:
 
 
 func _show_count(count : int) -> void:
+	_count = count
 	for i : int in _keg_sprites.size():
 		_keg_sprites[i].visible = i < mini(count, MAX_SHOWN_KEGS)
 	visible = count > 0
-	input_pickable = count > 0
-	if count == 0:
+	_update_pickable()
+
+
+func _set_covered(covered : bool) -> void:
+	_covered = covered
+	_update_pickable()
+
+
+func _update_pickable() -> void:
+	input_pickable = _count > 0 and not _covered
+	if not input_pickable:
+		modulate = HIDDEN_COLOR
 		GUISignals.mouse_entered_dirty_keg_pile.emit(false, 0)
 
 
