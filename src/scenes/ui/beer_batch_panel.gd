@@ -19,24 +19,16 @@ const QUALITY_LABEL_STRING : String = "%s %s"
 const EMPTY_INVENTORY_TEXT : String = "Ei olutta myytävänä. Keitä lisää!"
 const EMPTY_INVENTORY_COLOR : Color = Color(0.9490196, 0.7882353, 0.41960785, 1) # matches DailyGoalsPanel.GOAL_PENDING_COLOR
 
-## Dumps the whole batch at once — see Brewery.BULK_SELL_RATE's docstring
-## for why this is a "clear the warehouse" action, not a real sale.
-## Short on purpose — RightWarehouseView's panel is only ~140px wide at
-## this game's base resolution (640x360), with two action buttons now
-## sharing each row alongside the batch label. Full context lives in the
-## tooltip below instead of the button face.
-const BULK_SELL_BUTTON_TEXT : String = "Myy"
 ## Hold toggle on each batch's name row, see BrewBatch.held.
 const HELD_ICON : String = "🔒"
 const RELEASED_ICON : String = "🔓"
 const HOLD_BUTTON_TOOLTIP : String = "Kellaroi: lukittua erää ei myydä tiskillä, joten se ehtii vanheta. Kellarioluet maksavat kypsinä enemmän. Paina uudestaan vapauttaaksesi."
-const BULK_SELL_BUTTON_TOOLTIP : String = "Myy koko erä kerralla varastosta. Hinta on paljon normaalia myyntihintaa halvempi, ja heikkolaatuinen tai vanhentunut erä voi tuottaa jopa tappiota raaka-aineiden hintaan nähden."
 
 const DESTINATION_LABEL_TEXT : String = "Kohde:"
 const SHIP_BUTTON_TEXT : String = "Vie"
 ## Finger-sized row buttons and destination dropdown.
 const ROW_BUTTON_SIZE : Vector2 = Vector2(40, 24)
-const SHIP_BUTTON_TOOLTIP : String = "Vie koko erä yllä valittuun baariin. Parempi hinta kuin halpamyynti, mutta nostaa LVV-riskiä toimituksen mukana."
+const SHIP_BUTTON_TOOLTIP : String = "Vie koko erä yllä valittuun baariin. Nostaa LVV-riskiä toimituksen mukana."
 
 ## Floor under the batch row label's width — without it, HBoxContainer's
 ## layout pass can hand the label (size_flags SIZE_EXPAND_FILL, sharing
@@ -115,12 +107,6 @@ func _update_beer_batches_ui() -> void:
 				batch.get_aging_trend_icon()
 			]
 
-			var bulk_sell_button := TooltipButton.new()
-			bulk_sell_button.text = BULK_SELL_BUTTON_TEXT
-			bulk_sell_button.tooltip_text = BULK_SELL_BUTTON_TOOLTIP
-			bulk_sell_button.custom_minimum_size = ROW_BUTTON_SIZE
-			bulk_sell_button.pressed.connect(func(): GUISignals.bulk_sell_batch_requested.emit(batch))
-
 			var ship_button := TooltipButton.new()
 			ship_button.text = SHIP_BUTTON_TEXT
 			ship_button.tooltip_text = SHIP_BUTTON_TOOLTIP
@@ -135,7 +121,6 @@ func _update_beer_batches_ui() -> void:
 			action_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			action_row.add_child(amount_label)
 			action_row.add_child(quality_label)
-			action_row.add_child(bulk_sell_button)
 			action_row.add_child(ship_button)
 
 			var hold_button := TooltipButton.new()

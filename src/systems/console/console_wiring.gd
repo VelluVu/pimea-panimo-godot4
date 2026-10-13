@@ -57,7 +57,6 @@ const TIER_ROSE_FORMAT: String = "[color=lightgreen]Maine nousi: %s[/color]"
 const TIER_FELL_FORMAT: String = "[color=orange]Maine laski: %s[/color]"
 const DECAY_FORMAT: String = "Maine hiipui yöllä: -%d (%s)"
 const LEVEL_UP_FORMAT: String = "[color=gold]Taso %d saavutettu![/color]"
-const BULK_SOLD_FORMAT: String = "Tukkumyynti: %s, %d annosta, +%.1f €"
 const SHIPPED_FORMAT: String = "Vienti: %s baariin %s, %d annosta, +%.1f €, LVV-riski %+d"
 const UPGRADE_FORMAT: String = "Kellariparannus: %s (taso %d)"
 const BAR_FIGHT_FORMAT: String = "[color=orange]Baaritappelu! %d annosta rikki.[/color]"
@@ -132,8 +131,6 @@ func _connect_log_sources() -> void:
 		_log_sale_note(tr(REGULAR_GAINED_FORMAT if is_regular else REGULAR_LOST_FORMAT) % tr(title)))
 	BrewerySignals.batch_stored.connect(func(style_name: String, bottles: int) -> void:
 		_log_event(tr(STORED_FORMAT) % [tr(style_name), bottles]))
-	BrewerySignals.batch_bulk_sold.connect(func(style_name: String, bottles: int, payout: float) -> void:
-		_log_event(tr(BULK_SOLD_FORMAT) % [tr(style_name), bottles, payout]))
 	BrewerySignals.keg_shipped_to_bar.connect(func(style_name: String, bar_name: String, bottles: int, payout: float, risk_added: int) -> void:
 		_log_event(tr(SHIPPED_FORMAT) % [tr(style_name), tr(bar_name), bottles, payout, risk_added]))
 	BrewerySignals.cellar_upgrade_purchased.connect(func(upgrade: CellarUpgradeData, level: int) -> void:

@@ -63,7 +63,6 @@ func _ready() -> void:
 	CustomerRegistry.customer_unlocked.connect(func(t: String) -> void: _note("unlocked %s" % t))
 	TimeManager.day_changed.connect(_on_day_changed)
 	BrewerySignals.beer_sale_breakdown.connect(func(e: SaleReceiptEntry) -> void: _inc("counter_money", roundi(e.net_income)); _inc("tip_money", roundi(e.tip_income)))
-	BrewerySignals.batch_bulk_sold.connect(func(_s: String, _n: int, pay: float) -> void: _inc("bulk_money", roundi(pay)))
 	BrewerySignals.keg_shipped_to_bar.connect(func(_s: String, _b: String, n: int, pay: float, _r: int) -> void: _inc("shipments"); _inc("shipped_bottles", n); _inc("shipped_money", roundi(pay)))
 	DailyGoalManager.daily_goal_resolved.connect(func(n: String, ok: bool, _m: int, _r: int, _x: int, _k: int) -> void: _inc("goals_ok" if ok else "goals_failed"); _inc(("goal_ok:" if ok else "goal_fail:") + n))
 
@@ -699,20 +698,15 @@ func _risk_points(b: Brewery, delta: int) -> float:
 
 ## Late on the last day, or as it closes early, turns everything the score would count
 ## as nothing into money: ships each batch to the best-paying bar the risk allows (a raid
-## now would still cost reputation and cash), bulk sells the rest and sells every ingredient.
+## now would still cost reputation and cash) and sells every ingredient.
 func _cash_out(b: Brewery, closing: bool = false) -> void:
 	if not _is_last_day(b) or not closing and TimeManager.get_day_progress() < CASH_OUT_PROGRESS:
 		return
 	for batch: BrewBatch in b.inventory.brew_batches.duplicate():
-		var raw_cost: float = b.resolver.get_market_cost_per_bottle(batch.beer_style)
 		var bar: BarContact = _richest_bar_below(b, INF if batch.beer_style.is_alcohol_free() else float(b.get_effective_raid_threshold()))
-		var bulk: float = BatchDistributor.calculate_bulk_sell_payout(raw_cost, batch.current_quality, batch.amount_bottles)
-		if bar != null and BatchDistributor.calculate_ship_payout(raw_cost, batch.current_quality, batch.amount_bottles, bar.price_multiplier) * batch.get_aged_price_multiplier() > bulk:
+		if bar != null:
 			GUISignals.ship_batch_to_bar_requested.emit(batch, bar)
 			_inc("cash_out_ships")
-		else:
-			GUISignals.bulk_sell_batch_requested.emit(batch)
-			_inc("cash_out_bulk")
 	for kind: Variant in b.inventory.items:
 		for id: int in b.inventory.items[kind].keys():
 			var amount: int = b.inventory.items[kind][id].amount

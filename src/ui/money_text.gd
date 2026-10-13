@@ -13,7 +13,7 @@ const LINE_INDENT : String = "  "
 
 const SALES_NAME : String = "myynti"
 const TIPS_NAME : String = "tipit"
-const SHIPMENTS_NAME : String = "tukku ja viennit"
+const SHIPMENTS_NAME : String = "viennit baareihin"
 const INGREDIENTS_NAME : String = "ainekset"
 const BREWING_NAME : String = "pullotus"
 const BILLS_NAME : String = "laskut"

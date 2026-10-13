@@ -26,7 +26,7 @@ enum Tier { COMMON, RARE, LEGENDARY }
 @export var tip_income_multiplier: float = 1.0
 ## Multiplies the raid threshold; above 1.0 gives more risk headroom.
 @export var raid_threshold_multiplier: float = 1.0
-## Multiplies bulk-sell and bar-shipment payouts, never counter sales.
+## Multiplies bar-shipment payouts, never counter sales.
 @export var distribution_income_multiplier: float = 1.0
 ## Multiplies ingredient prices at the shop; below 1.0 is cheaper.
 @export var ingredient_price_multiplier: float = 1.0
