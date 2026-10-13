@@ -15,6 +15,8 @@ const POINTS : int = 19
 const SEGMENT : float = 12.0
 ## The first segments from the tip are the blade; the rest is the shaft.
 const BLADE_SEGMENTS : int = 2
+## The hand holds the shaft this many segments up from the tip, just above the blade.
+const GRIP_SEGMENTS : int = BLADE_SEGMENTS + 1
 const TIP_SPRING : float = 320.0
 const TIP_DAMPING : float = 15.0
 ## A loose paddle drifts back to rest much more gently.
@@ -100,6 +102,17 @@ func handle_goal(tip : Vector2) -> Vector2:
 	var depth : float = clampf((tip.y - mouth.position.y) / mouth.size.y, 0.0, 1.0)
 	lean.y *= lerpf(BACK_LEAN_SCALE, 1.0, depth)
 	return tip + Vector2(side * lean.x, -lean.y).normalized() * stick_length()
+
+
+## Where the blade tip goes for the hand to hold the shaft at `grip`: back down the
+## shaft's lean by the grip's distance from the tip.
+func tip_for_grip(grip : Vector2) -> Vector2:
+	var toward_handle : Vector2 = (handle_goal(points[0]) - points[0]).normalized()
+	return grip - toward_handle * SEGMENT * GRIP_SEGMENTS
+
+
+func grip() -> Vector2:
+	return points[GRIP_SEGMENTS]
 
 
 func step(delta : float, target : Vector2, held : bool) -> void:
