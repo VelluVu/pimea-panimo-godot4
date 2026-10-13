@@ -40,6 +40,8 @@ func test_the_nozzle_reaches_every_part_of_the_keg() -> void:
 	var spout : Vector2 = view_script.TAP_SPOUT
 	var grip : Vector2 = view_script.NOZZLE_GRIP
 	var rope : HoseRope = RopeScript.new(spout, spout + Vector2(0, 100))
+	# The jet cleans where it lands, so the nozzle stays a jet's length short of the spot.
 	for degrees : int in range(0, 360, 5):
-		var tip : Vector2 = KegTunnel.point_at(deg_to_rad(degrees), 1.0)
-		assert_true(rope.reachable(tip + grip).is_equal_approx(tip + grip), "the nozzle reaches %d degrees" % degrees)
+		var spot : Vector2 = KegTunnel.point_at(deg_to_rad(degrees), 0.95)
+		var tip : Vector2 = spot - (view_script.jet_end(spot) - spot)
+		assert_true(rope.reachable(tip + grip).is_equal_approx(tip + grip), "the jet reaches %d degrees" % degrees)
