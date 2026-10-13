@@ -129,8 +129,8 @@ size = Vector2(24, 14)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o7ddy"]
 size = Vector2(44, 32)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_05g3k"]
-size = Vector2(53, 118)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fluu8"]
+size = Vector2(62, 117)
 
 [node name="Main" type="Node" unique_id=1659433080]
 script = ExtResource("1_cjqg0")
@@ -151,7 +151,7 @@ position = Vector2(191, 169)
 script = ExtResource("2_jscy8")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="BreweryHoverArea" unique_id=386244976]
-polygon = PackedVector2Array(-63, 73, -63, -43, -53, -58, -35, -70, -8, -76, 23, -76, 41, -68, 55, -58, 65, -42, 64, 72)
+polygon = PackedVector2Array(-19, 73, -19, -16, -63, -16, -63, -43, -53, -58, -35, -70, -8, -76, 23, -76, 41, -68, 55, -58, 65, -42, 64, 72)
 
 [node name="Sprite2D" type="Sprite2D" parent="BreweryHoverArea" unique_id=82455851]
 light_mask = 3
@@ -1226,9 +1226,9 @@ script = ExtResource("43_bu4jf")
 
 [node name="DirtyKegPileLabel" type="Label" parent="GUI_CanvasLayer/GUI" unique_id=124166997]
 layout_mode = 0
-offset_left = 50.0
+offset_left = 76.0
 offset_top = 128.0
-offset_right = 180.0
+offset_right = 206.0
 offset_bottom = 146.0
 theme_override_colors/font_color = Color(0.949, 0.788, 0.42, 1)
 horizontal_alignment = 1
@@ -1516,17 +1516,17 @@ position = Vector2(200, 85)
 position = Vector2(75, 60)
 
 [node name="DirtyKegPile" type="Area2D" parent="WorldYSort" unique_id=2096720517]
-position = Vector2(119, 259)
+position = Vector2(152, 259)
 script = ExtResource("67_68ujc")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WorldYSort/DirtyKegPile" unique_id=933718182]
-position = Vector2(-17.5, -53)
-shape = SubResource("RectangleShape2D_05g3k")
+position = Vector2(-11, -50.5)
+shape = SubResource("RectangleShape2D_fluu8")
 
 [node name="DirtyKeg2" type="Sprite2D" parent="WorldYSort/DirtyKegPile" unique_id=1625886467]
 unique_name_in_owner = true
 texture_filter = 1
-position = Vector2(-24, 2)
+position = Vector2(-22, 2)
 scale = Vector2(2, 2)
 texture = ExtResource("68_abmkx")
 centered = false
@@ -1544,7 +1544,7 @@ offset = Vector2(-16, -32)
 [node name="DirtyKeg3" type="Sprite2D" parent="WorldYSort/DirtyKegPile" unique_id=1445407608]
 unique_name_in_owner = true
 texture_filter = 1
-position = Vector2(-12, -52)
+position = Vector2(-11, -52)
 scale = Vector2(2, 2)
 texture = ExtResource("68_abmkx")
 centered = false
