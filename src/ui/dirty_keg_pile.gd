@@ -1,16 +1,17 @@
 class_name DirtyKegPile
 extends Area2D
 
-## The unwashed empty kegs in the cellar corner by the brewery door. Shows one to
-## MAX_SHOWN_KEGS keg sprites (the label tells the full count), lights up on hover like
-## the other cellar props and opens the keg wash on click. Hidden while every keg is clean.
+## The unwashed empty kegs in the cellar corner by the brewery door. Shows one keg sprite
+## per dirty keg up to MAX_SHOWN_KEGS, the season's starting kegs (the label tells the full
+## count), lights up on hover like the other cellar props and opens the keg wash on click.
+## Hidden while every keg is clean.
 
 const HOVER_GLOW_COLOR : Color = Color(1.3, 1.15, 0.8, 1.0)
 const HIDDEN_COLOR : Color = Color(1.0, 1.0, 1.0, 1.0)
 const TWEEN_DURATION_SECONDS : float = 0.15
-const MAX_SHOWN_KEGS : int = 3
+const MAX_SHOWN_KEGS : int = KegRules.START_KEGS
 
-@onready var _keg_sprites : Array[Sprite2D] = [%DirtyKeg1, %DirtyKeg2, %DirtyKeg3]
+@onready var _keg_sprites : Array[Sprite2D] = [%DirtyKeg1, %DirtyKeg2, %DirtyKeg3, %DirtyKeg4]
 
 var current_tween : Tween
 
