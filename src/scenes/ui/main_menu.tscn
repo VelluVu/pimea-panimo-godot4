@@ -63,7 +63,7 @@ mouse_filter = 2
 [node name="RootMenuView" type="VBoxContainer" parent="CenterContainer" unique_id=973884429]
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 4
 
 [node name="StartButton" type="Button" parent="CenterContainer/RootMenuView" unique_id=1282741896]
 unique_name_in_owner = true
@@ -103,7 +103,7 @@ text = "Lopeta peli"
 visible = false
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 4
 
 [node name="ContinueButton" type="Button" parent="CenterContainer/StartGameView" unique_id=1451946887]
 unique_name_in_owner = true
