@@ -8,7 +8,7 @@ extends Control
 ## meanwhile, and level-up cards wait until it closes.
 
 const HEADER_TEXT : String = "TYNNYRIN PESU · %d/%d"
-const HINT_TEXT : String = "Hankaa harjalla, huuhtele letkulla ja viimeistele suihkeella."
+const HINT_TEXT : String = "Paina työkalua ja pidä pohjassa: hankaa harjalla, huuhtele letkulla ja viimeistele suihkeella."
 const CLEANLINESS_TEXT : String = "Puhtaus %d %%"
 const FINISH_BUTTON_TEXT : String = "VALMIS"
 const STOP_BUTTON_TEXT : String = "Lopeta pesu"

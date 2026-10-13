@@ -2,9 +2,9 @@ class_name KegWashView
 extends Control
 
 ## The keg wash table: the opened keg, the dirt in it and the three tools in their places.
-## Press a tool to pick it up; it follows the pointer, and while the button is held it is
-## in use (also straight after grabbing it): the brush scrubs, the hose rinses, the bottle
-## sprays. Pressing its place again (or the right button) puts it back. The work goes to `session`.
+## Press a tool and hold: it follows the pointer and works over the keg (the brush scrubs,
+## the hose rinses, the bottle sprays); let go and it goes back to its place. The same with
+## a finger on a touch screen. The work goes to `session`.
 
 signal tool_changed(tool : Tool)
 
@@ -52,7 +52,6 @@ const RIM_BOTTOM : Vector2 = KegTunnel.OPENING_CENTER + Vector2(0, 100)
 var session : KegWashSession
 
 var _tool : Tool = Tool.NONE
-var _using : bool = false
 var _pointer : Vector2 = Vector2.ZERO
 var _brush : Vector2 = BRUSH_REST
 var _brush_velocity : Vector2 = Vector2.ZERO
@@ -95,25 +94,9 @@ func _gui_input(event : InputEvent) -> void:
 		_pointer = event.position
 	elif event is InputEventMouseButton:
 		_pointer = event.position
-		if event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
-			_set_tool(Tool.NONE)
-		elif event.button_index == MOUSE_BUTTON_LEFT:
-			if event.pressed:
-				_press(event.position)
-			else:
-				_using = false
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			_set_tool(_tool_at(event.position) if event.pressed else Tool.NONE)
 		accept_event()
-
-
-func _press(at : Vector2) -> void:
-	var picked : Tool = _tool_at(at)
-	if picked == _tool and picked != Tool.NONE:
-		_set_tool(Tool.NONE)
-		return
-	if picked != Tool.NONE:
-		_set_tool(picked)
-	# Grabbing a tool and keeping the button down uses it at once.
-	_using = _tool != Tool.NONE
 
 
 func _tool_at(at : Vector2) -> Tool:
@@ -127,7 +110,6 @@ func _tool_at(at : Vector2) -> Tool:
 
 
 func _set_tool(new_tool : Tool) -> void:
-	_using = false
 	if new_tool == _tool:
 		return
 	_tool = new_tool
@@ -160,7 +142,7 @@ func _step_brush(delta : float) -> void:
 	_brush += _brush_velocity * delta
 	if _tool != Tool.BRUSH:
 		_brush = _brush.lerp(BRUSH_REST, minf(1.0, delta * 12.0))
-	elif _using and session != null and KegTunnel.is_inside(_brush):
+	elif session != null and KegTunnel.is_inside(_brush):
 		session.scrub(before, _brush, delta)
 
 
@@ -168,7 +150,7 @@ func _step_hose(delta : float) -> void:
 	var tip_goal : Vector2 = _pointer if _tool == Tool.HOSE else HOSE_REST
 	_hose.step(delta, tip_goal + NOZZLE_GRIP)
 	var tip : Vector2 = _nozzle_tip()
-	var spraying : bool = _tool == Tool.HOSE and _using and KegTunnel.is_inside(tip)
+	var spraying : bool = _tool == Tool.HOSE and KegTunnel.is_inside(tip)
 	if spraying:
 		if session != null:
 			session.rinse(tip, delta)
@@ -179,7 +161,7 @@ func _step_hose(delta : float) -> void:
 
 
 func _step_spray(delta : float) -> void:
-	if _tool != Tool.SPRAY or not _using:
+	if _tool != Tool.SPRAY:
 		return
 	var at : Vector2 = _spray_tip()
 	if not KegTunnel.is_inside(at):
