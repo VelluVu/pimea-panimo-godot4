@@ -27,8 +27,8 @@ const BRUSH_RADIUS : float = 16.0
 const SPOT_RADIUS : float = 12.0
 ## Critters flee when the scrubbing brush comes this close.
 const FLEE_RADIUS : float = 48.0
-const HOSE_RADIUS : float = 20.0
-const RINSE_SECONDS : float = 0.5
+const HOSE_RADIUS : float = 26.0
+const RINSE_SECONDS : float = 0.3
 ## A tool works whenever it is over the keg, so a wrong move only counts once it lingers.
 const MISTAKE_DWELL : float = 0.5
 const SPRAY_RADIUS : float = 30.0
@@ -44,8 +44,8 @@ const STAIN_CELL : float = 8.0
 const FILM_AMOUNT : float = 0.5
 const FILM_COLOR : Color = Color(0.36, 0.31, 0.24)
 ## Grime a hosed cell loses a second, and the hose's reach on it.
-const STAIN_RINSE_RATE : float = 3.0
-const STAIN_HOSE_RADIUS : float = 26.0
+const STAIN_RINSE_RATE : float = 5.0
+const STAIN_HOSE_RADIUS : float = 34.0
 ## A cell this faint counts as clean.
 const STAIN_CLEAN_BELOW : float = 0.05
 const MIN_STAINS : int = 2

@@ -26,6 +26,12 @@ const TAP_SPOUT : Vector2 = TAP_POSITION + Vector2(11, 20)
 ## The nozzle hangs by the tap; the hose joins the bottom of its grip.
 const HOSE_REST : Vector2 = Vector2(604, 186)
 const NOZZLE_GRIP : Vector2 = Vector2(0, 28)
+## The hose shoots a jet this long out of the nozzle, up and a little toward the middle
+## of the keg; it cleans where it lands.
+const JET_LENGTH : float = 60.0
+const JET_LEAN : float = 0.35
+const JET_WIDTH : float = 5.0
+const JET_CORE_COLOR : Color = Color(0.9, 0.97, 1.0, 0.95)
 const HOSE_REST_RECT : Rect2 = Rect2(586, 176, 36, 48)
 const BENCH_POSITION : Vector2 = Vector2(536, 300)
 ## The bottle stands on the bench; the mist leaves from its top left.
@@ -59,6 +65,9 @@ var _hose : HoseRope = HoseRope.new(TAP_SPOUT, HOSE_REST + NOZZLE_GRIP)
 var _drops : Array[Dictionary] = []
 var _flashes : Dictionary = {} # KegWashSpot -> seconds left
 var _puddle : float = 0.0
+## Where the jet lands while the hose is in hand.
+var _jet_end : Vector2 = Vector2.ZERO
+var _jet_on : bool = false
 var _time : float = 0.0
 
 
@@ -150,14 +159,29 @@ func _step_hose(delta : float) -> void:
 	var tip_goal : Vector2 = _pointer if _tool == Tool.HOSE else HOSE_REST
 	_hose.step(delta, tip_goal + NOZZLE_GRIP)
 	var tip : Vector2 = _nozzle_tip()
-	var spraying : bool = _tool == Tool.HOSE and KegTunnel.is_inside(tip)
-	if spraying:
-		if session != null:
-			session.rinse(tip, delta)
-		_puddle = minf(1.0, _puddle + delta * 0.25)
-		for i : int in 3:
-			_drops.append({"position": tip, "velocity": Vector2(randf_range(-60, 60), randf_range(-90, -20)), "life": 0.35, "mist": false})
+	_jet_on = _tool == Tool.HOSE
+	if not _jet_on:
+		return
+	_jet_end = jet_end(tip)
+	# The jet's own spray along the way.
+	for i : int in 2:
+		var along : Vector2 = tip.lerp(_jet_end, randf())
+		_drops.append({"position": along, "velocity": Vector2(randf_range(-30, 30), randf_range(-20, 10)), "life": 0.2, "mist": false})
+	if not KegTunnel.is_inside(_jet_end):
+		return
+	if session != null:
+		session.rinse(_jet_end, delta)
+	_puddle = minf(1.0, _puddle + delta * 0.25)
+	for i : int in 6:
+		_drops.append({"position": _jet_end, "velocity": Vector2(randf_range(-90, 90), randf_range(-110, -20)), "life": 0.35, "mist": false})
+	for i : int in 2:
 		_drops.append({"position": RIM_BOTTOM + Vector2(randf_range(-30, 30), 0), "velocity": Vector2(randf_range(-10, 10), 40), "life": 0.5, "mist": false})
+
+
+## Where a jet from the nozzle tip at `tip` lands.
+static func jet_end(tip : Vector2) -> Vector2:
+	var lean : float = clampf((KegTunnel.OPENING_CENTER.x - tip.x) / KegTunnel.OPENING_RADII.x, -1.0, 1.0) * JET_LEAN
+	return tip + Vector2(lean, -1.0).normalized() * JET_LENGTH
 
 
 func _step_spray(delta : float) -> void:
@@ -206,6 +230,8 @@ func _draw() -> void:
 		draw_rect(Rect2((drop.position as Vector2).round(), Vector2(2, 2)), MIST_COLOR if drop.mist else WATER_COLOR)
 	_draw_hose()
 	_draw_tool_sprite(ART.nozzle, _nozzle_tip() - Vector2(ART.nozzle.get_width() * prop / 2.0, 0), _tool == Tool.HOSE)
+	if _jet_on:
+		_draw_jet()
 	_draw_tool_sprite(ART.spray, _spray_tip() - SPRAY_NOZZLE, _tool == Tool.SPRAY)
 	var brush_size : Vector2 = Vector2(ART.brush.get_size()) * prop
 	_draw_tool_sprite(ART.brush, _brush - Vector2(brush_size.x / 2.0, brush_size.y), _tool == Tool.BRUSH)
@@ -254,6 +280,19 @@ func _draw_spots() -> void:
 		if _flashes.has(spot):
 			tint = Color(1.6, 1.6, 1.6)
 		draw_texture_rect_region(ART.spots, Rect2((at - size / 2.0).round(), size), Rect2(frame * SPOT_FRAME, 0, SPOT_FRAME, SPOT_FRAME), tint)
+
+
+## A dense stream with a bright core, wobbling a little.
+func _draw_jet() -> void:
+	var tip : Vector2 = _nozzle_tip()
+	var points : PackedVector2Array = PackedVector2Array()
+	for i : int in 7:
+		var share : float = i / 6.0
+		var side : Vector2 = (_jet_end - tip).orthogonal().normalized() * sin(_time * 40.0 + share * 6.0) * share * 1.5
+		points.append(tip.lerp(_jet_end, share) + side)
+	draw_polyline(points, WATER_COLOR, JET_WIDTH)
+	draw_polyline(points, JET_CORE_COLOR, JET_WIDTH * 0.4)
+	draw_circle(_jet_end, JET_WIDTH, Color(WATER_COLOR, 0.6))
 
 
 func _draw_hose() -> void:
