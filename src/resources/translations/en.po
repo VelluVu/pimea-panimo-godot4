@@ -5528,10 +5528,6 @@ msgid "Keitä heti ilman keittopäivää. Laatu ×%.2f."
 msgstr "Brew right away without the brew day. Quality ×%.2f."
 
 #: src/ui/brew_day/brew_day_window.gd
-msgid "LISÄÄ MALTAAT"
-msgstr "ADD MALTS"
-
-#: src/ui/brew_day/brew_day_window.gd
 msgid "Laatu ×%.2f"
 msgstr "Quality ×%.2f"
 
@@ -5540,8 +5536,16 @@ msgid "LÄMMITÄ"
 msgstr "HEAT"
 
 #: src/ui/brew_day/brew_day_window.gd
+msgid "Maltaat"
+msgstr "Malts"
+
+#: src/ui/brew_day/brew_day_window.gd
 msgid "MÄSKÄYS · %s"
 msgstr "MASH · %s"
+
+#: src/ui/brew_day/brew_day_window.gd
+msgid "NYT"
+msgstr "NOW"
 
 #: src/ui/brew_day/brew_day_window.gd
 msgid "Peru"
@@ -5788,10 +5792,6 @@ msgstr "Price: %.2f € / %s"
 #: src/ui/ingredient_book_text.gd
 msgid "Humalat"
 msgstr "Hops"
-
-#: src/ui/ingredient_book_text.gd
-msgid "Maltaat"
-msgstr "Malts"
 
 #: src/ui/ingredient_book_text.gd
 msgid "Mausteet"
