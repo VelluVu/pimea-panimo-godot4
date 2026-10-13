@@ -9,6 +9,7 @@ extends Control
 ## In the boil a sack is carried over the mouth (following the pointer, a little behind)
 ## and its pellets drop into the wort, each landing with a splash ring and a coloured
 ## bloom that fades into the wort. Shaking it throws them diagonally to random spots.
+## The malt sack pours its grains into the mash the same way, without the blooms.
 ## Stirring sets the wort swirling: the blooms ride the swirl around the kettle and
 ## leave coloured stripes behind them, and the swirl dies down slowly to the gentle
 ## turn of the rolling boil, which keeps drawing the stripes out. Steam rises over the
@@ -135,7 +136,7 @@ var _pours : Dictionary = {}
 ## Ingredient id -> {at (sprite's top-left), target, velocity, follow, color} of each
 ## sack lifted off its place.
 var _carried : Dictionary = {}
-## [position, velocity, landing y, colour] of each falling pellet.
+## [position, velocity, landing y, colour, blooms] of each falling pellet.
 var _pellets : Array = []
 ## [position, seconds left, colour] of splash rings.
 var _rings : Array = []
@@ -215,14 +216,14 @@ func burst_clump(clump : MashClump) -> void:
 
 
 ## Lifts a sack: one following the pointer starts under it, one lifted by its key
-## hangs at its own spot over the mouth.
-func carry(id : int, color : Color, follow : bool) -> void:
+## hangs at its own spot over the mouth. Without blooms its pellets only splash.
+func carry(id : int, color : Color, follow : bool, blooms : bool = true) -> void:
 	if _carried.has(id):
 		return
 	var at : Vector2 = POUR_SPOTS[_carried.size() % POUR_SPOTS.size()]
 	if follow:
 		at = get_local_mouse_position() - _lifted_size() / 2.0
-	_carried[id] = {"at": at, "target": at, "velocity": Vector2.ZERO, "follow": follow, "color": color}
+	_carried[id] = {"at": at, "target": at, "velocity": Vector2.ZERO, "follow": follow, "color": color, "blooms": blooms}
 
 
 func drop(id : int) -> void:
@@ -299,7 +300,7 @@ func _step_pours(delta : float) -> void:
 		pellet[1].y += PELLET_GRAVITY * delta
 		pellet[0] += pellet[1] * delta
 		if pellet[0].y >= pellet[2]:
-			_land(pellet[0], pellet[3])
+			_land(pellet[0], pellet[3], pellet[4])
 			_pellets.remove_at(i)
 	_swirl_wort(delta)
 	# Rings, blooms, stripes and sparkles all keep their seconds left at index 1.
@@ -388,13 +389,15 @@ func _spawn_pellet(sack : Dictionary) -> void:
 	var throw : Vector2 = (sack.velocity as Vector2) * SHAKE_THROW * shake
 	throw += Vector2(randf_range(-1, 1), randf_range(-1, 0.5)) * SHAKE_SCATTER * shake
 	var velocity := Vector2(randf_range(-18, 18), randf_range(0, 30)) + throw
-	_pellets.append([start, velocity, landing, sack.color])
+	_pellets.append([start, velocity, landing, sack.color, sack.blooms])
 
 
-func _land(at : Vector2, color : Color) -> void:
+func _land(at : Vector2, color : Color, blooms : bool) -> void:
 	if not _paddle.inside_mouth(at).is_equal_approx(at):
 		return
 	_rings.append([at, RING_SECONDS, color])
+	if not blooms:
+		return
 	if _to_unit(at).length() <= BLOOM_REACH:
 		if _blooms.size() >= MAX_BLOOMS:
 			_blooms.pop_front()

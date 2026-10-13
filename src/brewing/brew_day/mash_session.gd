@@ -3,8 +3,9 @@ extends RefCounted
 
 ## The mash: heat the water to the malt marker, add the malts (the temperature drops),
 ## then hold each step's temperature for its counted seconds. The clock starts with the
-## malts and pauses while ramping to the next step. Clumps appear with the malts and a
-## few more later; any left at the end cut the score. A clump breaks after a few hard
+## malts and pauses while ramping to the next step. The malts then blend into the water
+## (blend, 0..1), slowly by themselves and faster with the paddle, and the dough-in
+## clumps appear as they blend; a few more come later. Any left at the end cut the score. A clump breaks after a few hard
 ## blows of the paddle's blade; each knocks it away, the shaft or a slow push only
 ## carries it along, and the mash slowly swirls them around.
 
@@ -57,6 +58,10 @@ const CLUMP_RADIUS : float = 11.0
 const SPAWN_REACH : float = 0.75
 const CLUMP_PENALTY : float = 0.06
 const CLUMP_MIN_GAP : float = 40.0
+## Seconds the malts take to blend in by themselves.
+const BLEND_SECONDS : float = 8.0
+## Blend gained per liquid pixel the blade travels, so stirring hard about halves the wait.
+const BLEND_PER_STIR_PIXEL : float = 1.0 / 2400.0
 ## Each step is entered once it is this close below its temperature.
 const STEP_REACHED_MARGIN : float = 0.5
 
@@ -70,8 +75,11 @@ var step_elapsed : float = 0.0
 var counted : float = 0.0
 var in_band_time : float = 0.0
 var clumps : Array[MashClump] = []
+## How far the malts have blended into the water, 0..1; 0 until they are added.
+var blend : float = 0.0
 
 var _dough_in_clumps : int = CLUMPS_AT_DOUGH_IN
+var _dough_in_spawned : int = 0
 var _late_clump_times : Array[float] = []
 var _rng : RandomNumberGenerator
 var _was_in_band : bool = true
@@ -115,8 +123,6 @@ func add_malts() -> void:
 	heat.temperature -= MALT_DROP
 	phase = Phase.HOLD
 	malts_added.emit()
-	for i : int in _dough_in_clumps:
-		_spawn_clump()
 	for i : int in _rng.randi_range(LATE_CLUMPS_MIN, LATE_CLUMPS_MAX):
 		_late_clump_times.append(_rng.randf_range(LATE_CLUMP_EARLIEST, LATE_CLUMP_LATEST))
 	_was_in_band = is_in_band()
@@ -127,6 +133,7 @@ func step(delta : float) -> void:
 		return
 	heat.step(delta)
 	if phase != Phase.WATER:
+		blend_by(delta / BLEND_SECONDS)
 		_move_clumps(delta)
 	match phase:
 		Phase.HOLD:
@@ -139,6 +146,20 @@ func step(delta : float) -> void:
 				step_reached.emit(step_index)
 
 
+## Blends the added malts further in; the dough-in clumps appear evenly along the way.
+func blend_by(amount : float) -> void:
+	if phase == Phase.WATER or blend >= 1.0:
+		return
+	blend = minf(1.0, blend + amount)
+	while _dough_in_spawned < _dough_in_clumps and blend >= float(_dough_in_spawned + 1) / (_dough_in_clumps + 1):
+		_dough_in_spawned += 1
+		_spawn_clump()
+
+
+func is_blended() -> bool:
+	return blend >= 1.0
+
+
 ## The paddle moved from `before` to `after` in `delta` seconds: two polylines of the
 ## same points in liquid pixels, handle first. Segments from index `blade_from` on are
 ## the blade. A clump the moving stick touches is hit if the blade there was fast
@@ -146,6 +167,9 @@ func step(delta : float) -> void:
 func paddle_moved(before : PackedVector2Array, after : PackedVector2Array, blade_from : int, delta : float) -> void:
 	if delta <= 0.0 or before.size() != after.size() or after.size() < 2:
 		return
+	# Stirring blends the malts: the blade tip's travel through the mash.
+	if is_in_liquid(after[after.size() - 1]):
+		blend_by(before[before.size() - 1].distance_to(after[after.size() - 1]) * BLEND_PER_STIR_PIXEL)
 	for clump : MashClump in clumps:
 		if clump.is_broken() or clump.cooldown > 0.0:
 			continue
