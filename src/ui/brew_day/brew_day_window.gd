@@ -67,6 +67,11 @@ const GLOW_ALPHA : float = 0.7
 const GRAIN_COLOR : Color = Color(0.45, 0.36, 0.24)
 const MASH_CLOUD : float = 0.45
 const BOIL_CLOUD : float = 0.25
+## How much each liquid hides the paddle's blade (KettleView.murk): clear water, the
+## blended mash, the boiling wort.
+const WATER_MURK : float = 0.3
+const MASH_MURK : float = 0.85
+const BOIL_MURK : float = 0.6
 ## The popups start inside the liquid and stay left of the column.
 const POPUP_ORIGIN_DROP : float = 34.0
 ## Heating key; the sacks use the number keys.
@@ -207,6 +212,7 @@ func _start_mash() -> void:
 	_thermo.boil = null
 	_kettle.clumps = _mash.clumps
 	_kettle.liquid_color = KettleView.WATER_COLOR
+	_kettle.murk = WATER_MURK
 	_kettle.foam = 0.0
 	_kettle.bubbling = false
 	_kettle.reset_paddle()
@@ -243,6 +249,7 @@ func _start_boil() -> void:
 	_thermo.piece_ids = _plan.piece_ids
 	_kettle.clumps = []
 	_kettle.liquid_color = BeerColor.from_ebc(_plan.ebc).lerp(GRAIN_COLOR, BOIL_CLOUD)
+	_kettle.murk = BOIL_MURK
 	_kettle.reset_paddle()
 	_next_button.hide()
 	_build_sacks()
@@ -279,6 +286,7 @@ func _process(delta : float) -> void:
 		_mash_lines(delta, heating)
 		if _malts_added:
 			_kettle.liquid_color = KettleView.WATER_COLOR.lerp(_mash_color(), lerpf(POUR_CLOUD, 1.0, _mash.blend))
+			_kettle.murk = lerpf(WATER_MURK, MASH_MURK, lerpf(POUR_CLOUD, 1.0, _mash.blend))
 	elif _stage == Stage.BOIL:
 		_boil.set_heating(heating)
 		_boil.step(delta)
@@ -404,6 +412,7 @@ func _pour_malts(delta : float) -> void:
 	_malts_button.fill = _malt_left
 	_refresh_malt_amount()
 	_kettle.liquid_color = KettleView.WATER_COLOR.lerp(_mash_color(), POUR_CLOUD * (1.0 - _malt_left))
+	_kettle.murk = lerpf(WATER_MURK, MASH_MURK, POUR_CLOUD * (1.0 - _malt_left))
 	if _malt_left <= 0.0:
 		_add_malts()
 
