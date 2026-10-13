@@ -47,6 +47,13 @@ texture_margin_top = 4.0
 texture_margin_right = 4.0
 texture_margin_bottom = 4.0
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_w30kt"]
+texture = ExtResource("ui_button_pressed")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+
 [sub_resource type="StyleBoxTexture" id="btn_normal"]
 content_margin_left = 4.0
 content_margin_top = 3.0
@@ -126,6 +133,62 @@ texture_margin_top = 4.0
 texture_margin_right = 5.0
 texture_margin_bottom = 5.0
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kduym"]
+texture = ExtResource("ui_button_disabled")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_t3kpi"]
+texture = ExtResource("ui_button_hover")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_v8yh7"]
+texture = ExtResource("ui_button_pressed")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_keqvf"]
+texture = ExtResource("ui_button_normal")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4fdfv"]
+texture = ExtResource("ui_panel")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 5.0
+texture_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rjiow"]
+texture = ExtResource("ui_button_hover")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_evdgs"]
+texture = ExtResource("ui_button_pressed")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hrld3"]
+texture = ExtResource("ui_button_normal")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+
 [sub_resource type="FontVariation" id="FontVariation_main"]
 fallbacks = Array[Font]([ExtResource("3_symbols"), ExtResource("2_twemoji")])
 base_font = ExtResource("1_qtffb")
@@ -143,6 +206,7 @@ Button/constants/outline_size = 1
 Button/styles/disabled = SubResource("btn_disabled")
 Button/styles/focus = SubResource("btn_focus")
 Button/styles/hover = SubResource("btn_hover")
+Button/styles/hover_pressed = SubResource("StyleBoxTexture_w30kt")
 Button/styles/normal = SubResource("btn_normal")
 Button/styles/pressed = SubResource("btn_pressed")
 HSlider/styles/grabber_area = SubResource("slider_fill")
@@ -171,3 +235,22 @@ PopupMenu/colors/font_outline_color = Color(0.08235294, 0.05490196, 0.03137255, 
 PopupMenu/constants/outline_size = 1
 PopupMenu/styles/hover = SubResource("StyleBoxTexture_xkb5p")
 PopupMenu/styles/panel = SubResource("StyleBoxTexture_ykn37")
+TabBar/colors/font_disabled_color = Color(0.5411765, 0.47843137, 0.36862746, 1)
+TabBar/colors/font_hovered_color = Color(0.9490196, 0.7882353, 0.41960785, 1)
+TabBar/colors/font_outline_color = Color(0.08235294, 0.05490196, 0.03137255, 1)
+TabBar/colors/font_selected_color = Color(0.9490196, 0.7882353, 0.41960785, 1)
+TabBar/colors/font_unselected_color = Color(0.9254902, 0.8627451, 0.72156864, 1)
+TabBar/constants/outline_size = 1
+TabBar/styles/tab_disabled = SubResource("StyleBoxTexture_kduym")
+TabBar/styles/tab_hovered = SubResource("StyleBoxTexture_t3kpi")
+TabBar/styles/tab_selected = SubResource("StyleBoxTexture_v8yh7")
+TabBar/styles/tab_unselected = SubResource("StyleBoxTexture_keqvf")
+TabContainer/colors/font_hovered_color = Color(0.9490196, 0.7882353, 0.41960785, 1)
+TabContainer/colors/font_outline_color = Color(0.08235294, 0.05490196, 0.03137255, 1)
+TabContainer/colors/font_selected_color = Color(0.9490196, 0.7882353, 0.41960785, 1)
+TabContainer/colors/font_unselected_color = Color(0.9254902, 0.8627451, 0.72156864, 1)
+TabContainer/constants/outline_size = 1
+TabContainer/styles/panel = SubResource("StyleBoxTexture_4fdfv")
+TabContainer/styles/tab_hovered = SubResource("StyleBoxTexture_rjiow")
+TabContainer/styles/tab_selected = SubResource("StyleBoxTexture_evdgs")
+TabContainer/styles/tab_unselected = SubResource("StyleBoxTexture_hrld3")
