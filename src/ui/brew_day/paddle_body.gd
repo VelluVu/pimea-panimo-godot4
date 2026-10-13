@@ -15,10 +15,12 @@ const POINTS : int = 19
 const SEGMENT : float = 12.0
 ## The first segments from the tip are the blade; the rest is the shaft.
 const BLADE_SEGMENTS : int = 2
-## The hand holds the shaft this many segments up from the tip, about a third of the way:
-## far enough that the blade swings behind the hand like a long paddle, near enough that
-## the whole kettle stays reachable on screen.
-const GRIP_SEGMENTS : int = 6
+## The hand holds the shaft this many segments up from the tip: far enough that the blade
+## trails the hand a little, near enough that it still goes where the hand points.
+const GRIP_SEGMENTS : int = 4
+## How quickly the hand-to-blade direction follows the shaft, per second. Smoothed, so the
+## blade never jumps when the handle swings over to the other rim.
+const GRIP_TURN : float = 6.0
 const TIP_SPRING : float = 320.0
 const TIP_DAMPING : float = 15.0
 ## A loose paddle drifts back to rest much more gently.
@@ -51,6 +53,8 @@ var rest : Vector2
 var _previous : PackedVector2Array = PackedVector2Array()
 var _tip_velocity : Vector2 = Vector2.ZERO
 var _handle_velocity : Vector2 = Vector2.ZERO
+## From the blade tip toward the hand, along the shaft.
+var _grip_direction : Vector2 = Vector2.UP
 
 
 func _init(kettle_mouth : Rect2, rest_tip : Vector2) -> void:
@@ -68,6 +72,7 @@ func reset() -> void:
 	_previous = points.duplicate()
 	_tip_velocity = Vector2.ZERO
 	_handle_velocity = Vector2.ZERO
+	_grip_direction = direction
 
 
 func handle() -> Vector2:
@@ -109,8 +114,7 @@ func handle_goal(tip : Vector2) -> Vector2:
 ## Where the blade tip goes for the hand to hold the shaft at `grip`: back down the
 ## shaft's lean by the grip's distance from the tip.
 func tip_for_grip(grip : Vector2) -> Vector2:
-	var toward_handle : Vector2 = (handle_goal(points[0]) - points[0]).normalized()
-	return grip - toward_handle * SEGMENT * GRIP_SEGMENTS
+	return grip - _grip_direction * SEGMENT * GRIP_SEGMENTS
 
 
 func grip() -> Vector2:
@@ -118,6 +122,9 @@ func grip() -> Vector2:
 
 
 func step(delta : float, target : Vector2, held : bool) -> void:
+	var shaft : Vector2 = points[GRIP_SEGMENTS] - points[0]
+	if shaft.length() > 0.001:
+		_grip_direction = _grip_direction.slerp(shaft.normalized(), minf(1.0, GRIP_TURN * delta)).normalized()
 	var dt : float = delta / SUBSTEPS
 	var goal : Vector2 = inside_mouth(target) if held else rest
 	var spring : float = TIP_SPRING if held else REST_SPRING

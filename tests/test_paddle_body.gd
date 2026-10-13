@@ -107,3 +107,16 @@ func test_holding_the_grip_puts_the_blade_below_the_hand() -> void:
 		paddle.step(STEP, paddle.tip_for_grip(hand), true)
 	assert_true(paddle.grip().distance_to(hand) < 8.0, str(paddle.grip()))
 	assert_true(paddle.points[0].y > hand.y, "the blade hangs below the hand")
+
+
+func test_the_blade_does_not_jump_when_the_hand_crosses_the_middle() -> void:
+	var paddle : PaddleBody = _paddle()
+	for i : int in 120:
+		paddle.step(STEP, paddle.tip_for_grip(Vector2(50, 30)), true)
+	var biggest : float = 0.0
+	for i : int in 180:
+		var hand : Vector2 = Vector2(50, 30).lerp(Vector2(190, 30), i / 179.0)
+		var before : Vector2 = paddle.points[0]
+		paddle.step(STEP, paddle.tip_for_grip(hand), true)
+		biggest = maxf(biggest, before.distance_to(paddle.points[0]))
+	assert_true(biggest < 6.0, "the blade moved %.1f px in one frame" % biggest)
