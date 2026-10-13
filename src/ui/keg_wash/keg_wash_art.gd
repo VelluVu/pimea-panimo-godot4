@@ -16,16 +16,16 @@ const PROP_SCALE : int = 2
 ## Eight 14 x 14 frames side by side, in KegWashSpot.Kind order (yeast, gum, salmiakki,
 ## hat, coconut, flies, bees), then a loose clump of scrubbed dirt.
 @export var spots : Texture2D
-## 12 x 32: held by the shaft at BRUSH_GRIP_Y, the bristles at the bottom do the scrubbing
-## around BRUSH_HEAD_Y (KegWashView).
+## 12 x 34: hangs from the hook by the hole at its top, held by the shaft at BRUSH_GRIP_Y;
+## the bristles at the bottom do the scrubbing around BRUSH_HEAD_Y (KegWashView).
 @export var brush : Texture2D
-## 8 x 14, the spraying tip at the top centre.
+## 8 x 16, the spraying tip at the top centre; the hose joins the bottom (NOZZLE_GRIP).
 @export var nozzle : Texture2D
-## 12 x 18, the mist leaves from the top left.
+## 14 x 20, the mist leaves from the nozzle at (1, 4) (SPRAY_NOZZLE).
 @export var spray : Texture2D
-## 12 x 10, the hose leaves from the spout at its bottom centre.
+## 14 x 12, the hose leaves from the spout at (7, 11) (TAP_SPOUT).
 @export var tap : Texture2D
-## 6 x 6, the brush hangs from it.
+## 8 x 8, the brush hangs from it.
 @export var hook : Texture2D
-## 50 x 8, the spray bottle stands on it.
+## 52 x 10, the spray bottle stands on it.
 @export var bench : Texture2D
