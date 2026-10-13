@@ -98,3 +98,12 @@ func test_a_loose_paddle_drifts_back_to_rest() -> void:
 	for i : int in 600:
 		paddle.step(STEP, Vector2.ZERO, false)
 	assert_true(paddle.points[0].distance_to(REST) < 5.0, str(paddle.points[0]))
+
+
+func test_holding_the_grip_puts_the_blade_below_the_hand() -> void:
+	var paddle : PaddleBody = _paddle()
+	var hand : Vector2 = Vector2(116, 40)
+	for i : int in 240:
+		paddle.step(STEP, paddle.tip_for_grip(hand), true)
+	assert_true(paddle.grip().distance_to(hand) < 8.0, str(paddle.grip()))
+	assert_true(paddle.points[0].y > hand.y, "the blade hangs below the hand")

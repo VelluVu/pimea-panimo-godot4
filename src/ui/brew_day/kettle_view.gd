@@ -30,8 +30,10 @@ const LIQUID_UNDER_RIM : float = 4.0
 ## The blade keeps a little inside the mouth.
 const PADDLE_MOUTH : Rect2 = Rect2(LIQUID_RECT.position + Vector2(4, 4), MashSession.LIQUID_SIZE - Vector2(8, 8))
 const PADDLE_REST : Vector2 = Vector2(196, 120)
-## Grabbing works a little outside the liquid too, at its edge.
+## Grabbing works a little outside the liquid too, at its edge, and anywhere on the
+## shaft near the hand's spot just above the blade.
 const GRAB_MARGIN : float = 10.0
+const GRIP_GRAB_RADIUS : float = 16.0
 const SHAFT_WIDTH : float = 3.0
 const WATER_COLOR : Color = Color(0.36, 0.45, 0.5)
 const CLUMP_LIGHT : Color = Color(0.85, 0.72, 0.48)
@@ -166,7 +168,8 @@ func _process(delta : float) -> void:
 		return
 	_clock += delta
 	var before : PackedVector2Array = _paddle.points.duplicate()
-	_paddle.step(delta, _target, _dragging)
+	# The pointer holds the shaft just above the blade, so the blade goes below it.
+	_paddle.step(delta, _paddle.tip_for_grip(_target) if _dragging else _target, _dragging)
 	# Only a held paddle stirs; drifting back to rest touches nothing.
 	if _dragging:
 		paddle_moved.emit(_to_liquid(before), _to_liquid(_paddle.points), PaddleBody.POINTS - 1 - PaddleBody.BLADE_SEGMENTS, delta)
@@ -186,7 +189,8 @@ func _process(delta : float) -> void:
 func _gui_input(event : InputEvent) -> void:
 	if event is InputEventMouseButton and (event as InputEventMouseButton).button_index == MOUSE_BUTTON_LEFT:
 		var button := event as InputEventMouseButton
-		if button.pressed and _paddle.inside_mouth(button.position).distance_to(button.position) <= GRAB_MARGIN:
+		var on_mouth : bool = _paddle.inside_mouth(button.position).distance_to(button.position) <= GRAB_MARGIN
+		if button.pressed and (on_mouth or _paddle.grip().distance_to(button.position) <= GRIP_GRAB_RADIUS):
 			_dragging = true
 			_target = button.position
 		elif not button.pressed:
