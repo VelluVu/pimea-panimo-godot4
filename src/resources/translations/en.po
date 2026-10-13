@@ -1158,6 +1158,14 @@ msgstr ""
 msgid "Äänieristys"
 msgstr "Soundproofing"
 
+#: src/resources/cellar_upgrades/11_lisaa_tynnyreita.tres
+msgid "Lisää tynnyreitä"
+msgstr "More kegs"
+
+#: src/resources/cellar_upgrades/11_lisaa_tynnyreita.tres
+msgid "Yksi tyhjä tynnyri lisää kellariin. Jokainen erä tarvitsee oman tynnyrinsä."
+msgstr "One more empty keg for the cellar. Every batch needs a keg of its own."
+
 #: src/resources/cellar_upgrades/1_isompi_kaymisastia.tres
 msgid "Isompi astia, enemmän annoksia samasta erästä."
 msgstr "A bigger vessel, more servings from the same batch."
@@ -1238,7 +1246,9 @@ msgstr "Cargo Bike"
 
 #: src/resources/cellar_upgrades/9_kuormapyora.tres
 msgid "Viet tynnyrit baareihin itse. Baarivienneistä jää enemmän käteen."
-msgstr "You deliver the kegs to the bars yourself. Bar shipments leave more in your pocket."
+msgstr ""
+"You deliver the kegs to the bars yourself. Bar shipments leave more in your "
+"pocket."
 
 #: src/resources/customers/agentti.tres
 msgid ""
@@ -2310,7 +2320,9 @@ msgstr "Wedding Planner's Word"
 msgid ""
 "Pekka kehuu panimoasi kaikille tutuilleen: baarivientien tulot kasvavat "
 "hieman."
-msgstr "Pekka praises your brewery to everyone he knows: bar shipments pay a little more."
+msgstr ""
+"Pekka praises your brewery to everyone he knows: bar shipments pay a little "
+"more."
 
 #: src/resources/event_perks/jussin_tukkuhinnat.tres
 msgid "Jussin tukkuhinnat"
@@ -3515,7 +3527,9 @@ msgstr "King of the District"
 msgid ""
 "Jokainen baari kaupungissa haluaa tuotteitasi. Baarivientien tulot ovat "
 "merkittävästi paremmat."
-msgstr "Every bar in town wants your products. Bar shipments earn significantly more."
+msgstr ""
+"Every bar in town wants your products. Bar shipments earn significantly "
+"more."
 
 #: src/resources/perks/anteliaat_asiakkaat.tres
 msgid "Anteliaat asiakkaat"
@@ -3821,7 +3835,9 @@ msgstr ""
 msgid ""
 "Maineesi oluen toimittajana kiirii baarista toiseen: baarivientien tulot "
 "ovat selvästi paremmat."
-msgstr "Your name as a beer supplier travels from bar to bar: bar shipments earn noticeably more."
+msgstr ""
+"Your name as a beer supplier travels from bar to bar: bar shipments earn "
+"noticeably more."
 
 #: src/resources/perks/tunnettu_toimittaja.tres
 msgid "Tunnettu toimittaja"
@@ -4496,7 +4512,9 @@ msgstr "Ship"
 
 #: src/scenes/ui/beer_batch_panel.gd
 msgid "Vie koko erä yllä valittuun baariin. Nostaa LVV-riskiä toimituksen mukana."
-msgstr "Ship the whole batch to the bar selected above. Each delivery raises the LVV risk."
+msgstr ""
+"Ship the whole batch to the bar selected above. Each delivery raises the "
+"LVV risk."
 
 #: src/scenes/ui/brew_preparation_panel.gd
 msgid "%+d mainetta"
@@ -4505,6 +4523,12 @@ msgstr "%+d reputation"
 #: src/scenes/ui/brew_preparation_panel.gd
 msgid "+%d XP"
 msgstr "+%d XP"
+
+#: src/scenes/ui/brew_preparation_panel.gd
+msgid ""
+"Kaikissa tynnyreissä on olutta. Myy tai vie erä baariin, niin tynnyri "
+"vapautuu."
+msgstr "Every keg is full of beer. Sell a batch or ship one to a bar to free a keg."
 
 #: src/scenes/ui/brew_preparation_panel.gd
 msgid "Raaka-aineet eivät sovi mihinkään oluttyyliin."
@@ -5726,6 +5750,10 @@ msgstr "Achievement unlocked: %s!"
 #: src/ui/gui_announcer.gd
 msgid "Uusi asiakas avattu: %s!"
 msgstr "New customer unlocked: %s!"
+
+#: src/ui/gui_announcer.gd
+msgid "Uusi likainen tynnyri pestäväksi"
+msgstr "A new dirty keg to wash"
 
 #: src/ui/gui_announcer.gd
 msgid "Uusi oluttyyli löydetty: %s!"

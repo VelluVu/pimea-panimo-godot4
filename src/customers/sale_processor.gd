@@ -127,7 +127,7 @@ func process(data : CustomerData) -> String:
 
 	best_batch.amount_bottles -= bottles_sold
 	if best_batch.amount_bottles <= 0:
-		brewery.inventory.brew_batches.erase(best_batch)
+		brewery.inventory.remove_batch(best_batch)
 
 	brewery.lifetime_bottles_sold += bottles_sold
 	BrewerySignals.bottles_sold.emit(bottles_sold)
@@ -221,7 +221,7 @@ func _trigger_bar_fight(data : CustomerData, batch : BrewBatch) -> void:
 		batch.amount_bottles = max(0, batch.amount_bottles - broken_bottles)
 
 		if batch.amount_bottles <= 0:
-			brewery.inventory.brew_batches.erase(batch)
+			brewery.inventory.remove_batch(batch)
 
 	BrewerySignals.bar_fight_triggered.emit(tr(data.dialogue_bar_fight) % broken_bottles)
 	BrewerySignals.bar_fight_started.emit(broken_bottles)

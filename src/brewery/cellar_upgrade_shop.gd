@@ -34,6 +34,7 @@ func _on_cellar_upgrade_requested(upgrade_id : String) -> void:
 
 	brewery.change_money(-cost, MoneyLedger.Source.UPGRADES)
 	brewery.cellar_upgrade_levels[upgrade_id] = level + 1
+	brewery.inventory.add_clean_kegs(upgrade.kegs_per_level)
 	BrewerySignals.cellar_upgrade_purchased.emit(upgrade, level + 1)
 	BrewerySignals.brewery_state_changed.emit(brewery)
 	brewery.check_bankruptcy()

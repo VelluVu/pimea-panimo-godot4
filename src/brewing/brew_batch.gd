@@ -15,6 +15,8 @@ extends Resource
 @export var amount_bottles: int = 45
 ## Kept in the cellar: customers skip it until the player releases it, so it can age.
 @export var held: bool = false
+## Cleanliness of the keg the batch was brewed into, see KegRules.
+@export var keg_cleanliness : float = 1.0
 @export var age_in_days: int = 0
 
 @export var precision_score : float = 1.0

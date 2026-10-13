@@ -20,6 +20,10 @@ signal ship_batch_to_bar_requested(batch : BrewBatch, bar : BarContact)
 @warning_ignore("unused_signal")
 signal batch_hold_toggled(batch : BrewBatch)
 
+## A keg wash is done: washes the dirtiest empty keg to `cleanliness` (0 to 1).
+@warning_ignore("unused_signal")
+signal keg_wash_finished(cleanliness : float)
+
 ## Brews the table at once with a plain ×1.0 quality (bots, the console).
 @warning_ignore("unused_signal")
 signal start_brewing()

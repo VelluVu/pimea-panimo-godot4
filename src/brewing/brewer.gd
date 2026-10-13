@@ -8,6 +8,7 @@ extends RefCounted
 ## Perk levels raise the odds, not this amount.
 const INGREDIENT_REFUND_FRACTION : float = 0.5
 const LOG_BREWED : String = "Successful brew batch: "
+const LOG_NO_FREE_KEG : String = "No empty keg for a new batch."
 
 var brewery : Brewery
 
@@ -47,6 +48,9 @@ func start_brew(quality_multiplier : float = BrewDayRules.NORMAL_MULTIPLIER) -> 
 	if brewery.brew_preparation.selected_contents.is_empty():
 		print(StringContainer.TABLE_EMPTY_ERROR)
 		return
+	if not brewery.inventory.has_free_keg():
+		print(LOG_NO_FREE_KEG)
+		return
 	
 	var brew_report : BrewResult = brewery.resolver.resolve_brew_style(brewery.brew_preparation.selected_contents)
 
@@ -76,7 +80,7 @@ func start_brew(quality_multiplier : float = BrewDayRules.NORMAL_MULTIPLIER) -> 
 	new_batch.peak_days_multiplier = brewery.stats.multiplier(PerkStats.PEAK_SPEED)
 	new_batch.decline_rate_multiplier = brewery.stats.multiplier(PerkStats.DECLINE_RATE)
 
-	brewery.inventory.brew_batches.append(new_batch)
+	brewery.inventory.add_batch(new_batch)
 
 	# Reputation comes only from a run's first brew of a style, so repeat brews cannot farm
 	# it, and a discovery never costs any; a failed brew costs its value every time.

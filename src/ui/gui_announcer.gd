@@ -14,6 +14,7 @@ const CUSTOMER_UNLOCKED_TOAST_FORMAT: String = "Uusi asiakas avattu: %s!"
 const CUSTOMERS_UNLOCKED_TOAST_FORMAT: String = "Uusia asiakkaita avattu: %s!"
 const REPUTATION_TIER_ROSE_TOAST_FORMAT: String = "Maineesi nousi: %s!"
 const REPUTATION_TIER_FELL_TOAST_FORMAT: String = "Maineesi laski: %s."
+const KEG_TO_WASH_TOAST_TEXT: String = "Uusi likainen tynnyri pestäväksi"
 const DISCOVERY_TOAST_FLASH_SECONDS: float = 0.15
 const DISCOVERY_TOAST_HOLD_SECONDS: float = 2.0
 ## Long toasts (a daily goal's reward line) stay up long enough to read.
@@ -89,6 +90,7 @@ func start() -> void:
 	BrewerySignals.brew_spiced.connect(_on_brew_spiced)
 	BrewerySignals.day_event_announced.connect(_on_day_event_announced)
 	BrewerySignals.lvv_hint_reached.connect(_on_lvv_hint_reached)
+	BrewerySignals.kegs_emptied.connect(_on_kegs_emptied)
 
 	# Shown while the day clock is still stopped, so the missing customers
 	# don't read as a bug. Ends by pointing at DailyGoalsPanel.
@@ -165,6 +167,10 @@ func _on_first_brew_hint_state_changed(_brewery: Brewery) -> void:
 
 	BrewerySignals.brewery_state_changed.disconnect(_on_first_brew_hint_state_changed)
 	_first_brew_hint.dismiss_early()
+
+
+func _on_kegs_emptied(_count: int) -> void:
+	_show_toast(tr(KEG_TO_WASH_TOAST_TEXT))
 
 
 func _on_lvv_hint_reached() -> void:

@@ -307,7 +307,7 @@ func _ready() -> void:
 	# not saved, so its pricing has to be re-synced here.
 	resolver.ingredient_price_multiplier = stats.multiplier(PerkStats.INGREDIENT_PRICE)
 
-	_services = [RecipeBook.new(self), IngredientTrader.new(self), BatchDistributor.new(self), Brewer.new(self), CellarUpgradeShop.new(self)]
+	_services = [RecipeBook.new(self), IngredientTrader.new(self), BatchDistributor.new(self), Brewer.new(self), CellarUpgradeShop.new(self), KegWasher.new(self)]
 	for service : Variant in _services:
 		service.connect_signals()
 

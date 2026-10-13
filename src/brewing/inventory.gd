@@ -3,9 +3,52 @@ extends Resource
 
 
 @export var brew_batches : Array[BrewBatch] = []
+## Cleanliness of every empty keg, see KegRules. A save made before kegs existed keeps
+## the starting kegs set in _init(), on top of the batches it already holds.
+@export var free_kegs : Array[float] = []
 
 # Sisäkkäinen sanakirja: Key: Script (MaltData/HopData) -> Value: Dictionary (Key: int (ID) -> Value: InventoryItem)
 @export var items : Dictionary = {}
+
+
+## Godot also calls _init() when loading a save, then overwrites the exported fields.
+func _init() -> void:
+	free_kegs = KegRules.starting_kegs()
+
+
+func has_free_keg() -> bool:
+	return not free_kegs.is_empty()
+
+
+func dirty_keg_count() -> int:
+	return KegRules.dirty_count(free_kegs)
+
+
+## Puts a new batch into the cleanest empty keg.
+func add_batch(batch : BrewBatch) -> void:
+	batch.keg_cleanliness = KegRules.take_cleanest(free_kegs)
+	brew_batches.append(batch)
+
+
+## Every way a batch leaves the cellar ends here, so its keg comes back dirty.
+func remove_batch(batch : BrewBatch) -> void:
+	if not brew_batches.has(batch):
+		return
+	brew_batches.erase(batch)
+	return_dirty_kegs(1)
+
+
+func return_dirty_kegs(count : int) -> void:
+	if count <= 0:
+		return
+	for i : int in count:
+		free_kegs.append(KegRules.DIRTY)
+	BrewerySignals.kegs_emptied.emit(count)
+
+
+func add_clean_kegs(count : int) -> void:
+	for i : int in count:
+		free_kegs.append(KegRules.CLEAN)
 
 
 func add_amount(ingredient : IngredientData, amount : int) -> void:

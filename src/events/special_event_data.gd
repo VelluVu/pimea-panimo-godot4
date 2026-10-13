@@ -191,7 +191,7 @@ func _settle(brewery: Brewery, taken: Dictionary) -> void:
 	for batch: BrewBatch in taken:
 		batch.amount_bottles -= taken[batch]
 		if batch.amount_bottles <= 0:
-			brewery.inventory.brew_batches.erase(batch)
+			brewery.inventory.remove_batch(batch)
 	brewery.change_money(snappedf(money, 0.1), MoneyLedger.Source.EVENTS)
 	brewery.change_reputation(reward_reputation, ReputationRules.Source.EVENTS)
 	if clears_risk:

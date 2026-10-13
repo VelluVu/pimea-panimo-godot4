@@ -34,5 +34,5 @@ static func spoil_bottles(inventory: Inventory, amount: int) -> int:
 	var removed: int = mini(batch.amount_bottles, amount)
 	batch.amount_bottles -= removed
 	if batch.amount_bottles <= 0:
-		inventory.brew_batches.erase(batch)
+		inventory.remove_batch(batch)
 	return removed
