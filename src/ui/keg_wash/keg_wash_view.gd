@@ -16,8 +16,16 @@ const SPOT_FRAME : int = 14
 const LOOSE_FRAME : int = 7
 
 const HOOK_POSITION : Vector2 = Vector2(44, 92)
-## The brush hangs from the hook with its bristles down.
-const BRUSH_REST : Vector2 = Vector2(51, 158)
+## The brush is held by its shaft: BRUSH_REST and `_brush` are that grip, and the bristle
+## head hangs below it, leaning as the brush moves. It hangs from the hook by the hole at
+## its top.
+const BRUSH_REST : Vector2 = Vector2(52, 122)
+## On the sprite, in its own pixels: where the hand holds the shaft and where the head is.
+const BRUSH_GRIP_Y : float = 10.0
+const BRUSH_HEAD_Y : float = 28.0
+## Lean per pixel a second of sideways speed, and the most it leans (radians).
+const BRUSH_TILT_PER_SPEED : float = 0.0015
+const BRUSH_MAX_TILT : float = 0.6
 const BRUSH_REST_RECT : Rect2 = Rect2(30, 96, 42, 72)
 const BRUSH_SPRING : float = 260.0
 const BRUSH_DAMPING : float = 18.0
@@ -37,6 +45,8 @@ const BENCH_POSITION : Vector2 = Vector2(536, 300)
 ## The bottle stands on the bench; the mist leaves from its top left.
 const SPRAY_REST : Vector2 = Vector2(576, 268)
 const SPRAY_NOZZLE : Vector2 = Vector2(0, 6)
+## The mist lands this far from the bottle's nozzle, aimed like the hose's jet.
+const SPRAY_DISTANCE : float = 40.0
 const SPRAY_REST_RECT : Rect2 = Rect2(566, 258, 44, 44)
 const TOOL_LABELS : Dictionary = {Tool.BRUSH: "Harja", Tool.HOSE: "Letku", Tool.SPRAY: "Suihke"}
 const LABEL_COLOR : Color = Color(0.95, 0.88, 0.7)
@@ -61,6 +71,7 @@ var _tool : Tool = Tool.NONE
 var _pointer : Vector2 = Vector2.ZERO
 var _brush : Vector2 = BRUSH_REST
 var _brush_velocity : Vector2 = Vector2.ZERO
+var _brush_tilt : float = 0.0
 var _hose : HoseRope = HoseRope.new(TAP_SPOUT, HOSE_REST + NOZZLE_GRIP)
 var _drops : Array[Dictionary] = []
 var _flashes : Dictionary = {} # KegWashSpot -> seconds left
@@ -85,6 +96,7 @@ func reset() -> void:
 	_set_tool(Tool.NONE)
 	_brush = BRUSH_REST
 	_brush_velocity = Vector2.ZERO
+	_brush_tilt = 0.0
 	_drops.clear()
 	_flashes.clear()
 	_puddle = 0.0
@@ -146,13 +158,21 @@ func _process(delta : float) -> void:
 
 func _step_brush(delta : float) -> void:
 	var goal : Vector2 = _pointer if _tool == Tool.BRUSH else BRUSH_REST
-	var before : Vector2 = _brush
+	var head_before : Vector2 = _brush_head()
 	_brush_velocity += (BRUSH_SPRING * (goal - _brush) - BRUSH_DAMPING * _brush_velocity) * delta
 	_brush += _brush_velocity * delta
+	var lean : float = clampf(_brush_velocity.x * BRUSH_TILT_PER_SPEED, -BRUSH_MAX_TILT, BRUSH_MAX_TILT)
+	_brush_tilt = lerpf(_brush_tilt, lean, minf(1.0, delta * 10.0))
 	if _tool != Tool.BRUSH:
 		_brush = _brush.lerp(BRUSH_REST, minf(1.0, delta * 12.0))
-	elif session != null and KegTunnel.is_inside(_brush):
-		session.scrub(before, _brush, delta)
+		_brush_tilt = lerpf(_brush_tilt, 0.0, minf(1.0, delta * 12.0))
+	elif session != null and KegTunnel.is_inside(_brush_head()):
+		session.scrub(head_before, _brush_head(), delta)
+
+
+## The middle of the bristles, below the hand on the shaft.
+func _brush_head() -> Vector2:
+	return _brush + Vector2(0, (BRUSH_HEAD_Y - BRUSH_GRIP_Y) * KegWashArt.PROP_SCALE).rotated(_brush_tilt)
 
 
 func _step_hose(delta : float) -> void:
@@ -180,20 +200,33 @@ func _step_hose(delta : float) -> void:
 
 ## Where a jet from the nozzle tip at `tip` lands.
 static func jet_end(tip : Vector2) -> Vector2:
-	var lean : float = clampf((KegTunnel.OPENING_CENTER.x - tip.x) / KegTunnel.OPENING_RADII.x, -1.0, 1.0) * JET_LEAN
-	return tip + Vector2(lean, -1.0).normalized() * JET_LENGTH
+	return _aimed(tip, JET_LENGTH)
+
+
+## Where the mist from the bottle's nozzle at `tip` lands.
+static func spray_end(tip : Vector2) -> Vector2:
+	return _aimed(tip, SPRAY_DISTANCE)
+
+
+## `distance` up from `from`, leaning a little toward the middle of the keg.
+static func _aimed(from : Vector2, distance : float) -> Vector2:
+	var lean : float = clampf((KegTunnel.OPENING_CENTER.x - from.x) / KegTunnel.OPENING_RADII.x, -1.0, 1.0) * JET_LEAN
+	return from + Vector2(lean, -1.0).normalized() * distance
 
 
 func _step_spray(delta : float) -> void:
 	if _tool != Tool.SPRAY:
 		return
-	var at : Vector2 = _spray_tip()
+	var tip : Vector2 = _spray_tip()
+	var at : Vector2 = spray_end(tip)
+	# A thin puff leaves the nozzle on the way to where the mist lands.
+	_drops.append({"position": tip.lerp(at, randf()), "velocity": (at - tip) * 1.5, "life": 0.2, "mist": true})
 	if not KegTunnel.is_inside(at):
 		return
 	if session != null:
 		session.sanitize(at, delta)
-	for i : int in 2:
-		var offset : Vector2 = Vector2(randf_range(-1, 1), randf_range(-1, 1)) * KegWashRules.SPRAY_RADIUS * 0.7
+	for i : int in 4:
+		var offset : Vector2 = Vector2(randf_range(-1, 1), randf_range(-1, 1)) * KegWashRules.SPRAY_RADIUS * 0.8
 		_drops.append({"position": at + offset, "velocity": offset * 0.6, "life": 0.5, "mist": true})
 
 
@@ -234,7 +267,9 @@ func _draw() -> void:
 		_draw_jet()
 	_draw_tool_sprite(ART.spray, _spray_tip() - SPRAY_NOZZLE, _tool == Tool.SPRAY)
 	var brush_size : Vector2 = Vector2(ART.brush.get_size()) * prop
-	_draw_tool_sprite(ART.brush, _brush - Vector2(brush_size.x / 2.0, brush_size.y), _tool == Tool.BRUSH)
+	draw_set_transform(_brush.round(), _brush_tilt)
+	_draw_tool_sprite(ART.brush, Vector2(-brush_size.x / 2.0, -BRUSH_GRIP_Y * prop), _tool == Tool.BRUSH)
+	draw_set_transform(Vector2.ZERO)
 
 
 ## The grime film and stains, fading as the hose takes them off.
