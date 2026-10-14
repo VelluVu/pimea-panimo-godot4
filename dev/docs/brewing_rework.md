@@ -89,7 +89,7 @@ Ranges are game ranges, set around the reference recipes and informed by BJCP 20
 
 | Style | Yeast | Base | Required | EBC | IBU | ABV | Reference recipe → EBC, ABV |
 |---|---|---|---|---|---|---|---|
-| Kotikalja | baking | – | – | 0-8 | 0-10 | 2.0-4.5 | 3 Pilsner → 4.9, 3.1 % |
+| Kotikalja | baking | – | – | 0-8 | 0-10 | 2.0-4.5 | 3 Pilsner → 4.9, 3.1 %, no hops (IBU from 0: anything below the middle counts as perfect) |
 | Bulkkilager | lager | Pilsner 80 % | – | 3-7 | 8-20 | 4.0-5.5 | 4 Pilsner → 6.0, 4.7 % |
 | Tumma Lager | lager | Pilsner 50 % | – | 28-55 | 8-34 | 4.0-5.9 | 3 Pilsner + 1 Tumma karamelli → 42.6, 4.5 % |
 | Pale Ale | ale | Pale ale 75 % | aroma hop | 6-19 | 12-39 | 4.0-6.2 | 4 Pale ale → 8.5, 4.3 % |
