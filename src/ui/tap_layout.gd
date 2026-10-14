@@ -14,11 +14,6 @@ const HANDLE_PITCH : int = 12
 ## The widest crossbar the counter has room for before the PC beside it: six taps at
 ## the full pitch, twelve 8 px apart.
 const MAX_BAR_WIDTH : int = 103
-## The drip tray reaches at least this far past the crossbar on each side.
-const TRAY_OVERHANG : int = 2
-## The tray's studs repeat every 3 px. A width one past a multiple of it puts the last
-## stud where the mirrored left end has its own, so both ends match.
-const TRAY_STUD_PITCH : int = 3
 
 
 ## Taps drawn for `kegs` owned; never fewer than one.
@@ -39,8 +34,10 @@ static func bar_width(taps : int) -> int:
 	return 2 * CAP_WIDTH + pitch(taps) * (taps - 1) + HANDLE_WIDTH
 
 
+## Whole pixels, so the pieces never round apart into a seam.
 static func bar_left(taps : int) -> float:
-	return -bar_width(taps) / 2.0
+	@warning_ignore("integer_division")
+	return float(-(bar_width(taps) / 2))
 
 
 static func handle_left(taps : int, index : int) -> float:
@@ -50,8 +47,3 @@ static func handle_left(taps : int, index : int) -> float:
 ## The x of a tap's spout centre, where the glass goes under.
 static func spout_x(taps : int, index : int) -> float:
 	return handle_left(taps, index) + HANDLE_WIDTH / 2.0
-
-
-static func tray_width(taps : int) -> int:
-	var width : int = bar_width(taps) + 2 * TRAY_OVERHANG
-	return width + posmod(1 - width, TRAY_STUD_PITCH)

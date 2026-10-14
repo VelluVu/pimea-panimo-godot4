@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cmcooja2ec681"
-path="res://.godot/imported/tap_tray_middle.png-85e2daf841768a74daf4cbcc1b89ec86.ctex"
+uid="uid://b7sgm48rs77sg"
+path="res://.godot/imported/tap_unit.png-1960d23fe39e66251303311802cbe32d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/textures/tap/tap_tray_middle.png"
-dest_files=["res://.godot/imported/tap_tray_middle.png-85e2daf841768a74daf4cbcc1b89ec86.ctex"]
+source_file="res://assets/textures/tap/tap_unit.png"
+dest_files=["res://.godot/imported/tap_unit.png-1960d23fe39e66251303311802cbe32d.ctex"]
 
 [params]
 

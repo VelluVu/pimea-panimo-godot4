@@ -30,14 +30,10 @@ func test_three_taps_match_the_old_sprite() -> void:
 	assert_eq(TapLayoutScript.bar_width(6), 75)
 
 
-func test_the_bar_is_centred_and_the_middle_tap_sits_on_the_centre() -> void:
+func test_the_bar_is_centred_on_whole_pixels() -> void:
 	for taps : int in [1, 3, 5]:
-		assert_eq(TapLayoutScript.spout_x(taps, taps / 2), 0.0)
-	assert_eq(TapLayoutScript.bar_left(4), -TapLayoutScript.bar_width(4) / 2.0)
-
-
-func test_the_tray_overhangs_the_bar_and_its_studs_end_in_step() -> void:
+		assert_true(absf(TapLayoutScript.spout_x(taps, taps / 2)) <= 0.5, "the middle tap sits on the centre")
 	for taps : int in range(1, TapLayoutScript.MAX_TAPS + 1):
-		var width : int = TapLayoutScript.tray_width(taps)
-		assert_true(width >= TapLayoutScript.bar_width(taps) + 2 * TapLayoutScript.TRAY_OVERHANG)
-		assert_eq(width % TapLayoutScript.TRAY_STUD_PITCH, 1, "%d taps" % taps)
+		var left : float = TapLayoutScript.bar_left(taps)
+		assert_eq(left, floorf(left), "%d taps" % taps)
+		assert_true(absf(left + TapLayoutScript.bar_width(taps) / 2.0) <= 0.5)
