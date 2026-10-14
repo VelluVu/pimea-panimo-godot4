@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_tohk6")
 style_name = "Amber Ale"
-description = "Meripihkan värinen ale, jossa karamellimallas ja humala kättelevät tasapuolisesti. Kuin pale ale, joka on käynyt saunassa."
+description = "Meripihkanvärinen pintahiivaolut, jossa maistuvat maltainen karamellisuus ja maltillinen humalan puraisu."
 locked_hint = "Meripihkan värinen ale, jossa karamelli ja humala ovat tasapainossa."
 style = 4
 fixed_price_per_bottle = 3.0

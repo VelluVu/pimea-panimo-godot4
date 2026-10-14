@@ -1212,11 +1212,9 @@ msgstr "An amber ale where caramel and hops are in balance."
 
 #: src/resources/beer_styles/amber_ale.tres
 msgid ""
-"Meripihkan värinen ale, jossa karamellimallas ja humala kättelevät "
-"tasapuolisesti. Kuin pale ale, joka on käynyt saunassa."
-msgstr ""
-"An amber ale where caramel malt and hops shake hands as equals. Like a pale "
-"ale that has been to the sauna."
+"Meripihkanvärinen pintahiivaolut, jossa maistuvat maltainen karamellisuus "
+"ja maltillinen humalan puraisu."
+msgstr "An amber top-fermented beer with malty caramel notes and a moderate hop bite."
 
 #: src/resources/beer_styles/baltic_portteri.tres
 msgid "Itämeren rannoilla lageroitu vahva ja tumma olut."
@@ -1224,11 +1222,10 @@ msgstr "A strong, dark beer lagered on the shores of the Baltic."
 
 #: src/resources/beer_styles/baltic_portteri.tres
 msgid ""
-"Itämeren rannoilla lageroitu vahva portteri. Tumma, pehmeä ja vähän kuin "
-"suklaata, joka on oppinut uimaan kylmässä vedessä."
-msgstr ""
-"A strong porter lagered on the shores of the Baltic. Dark, smooth and a bit "
-"like chocolate that learned to swim in cold water."
+"Pohjahiivalla käytetty vahva ja sysitumma olut, jossa maistuvat "
+"suodattamaton lakritsi, tumma suklaa ja kuivatut hedelmät ilman pistävää "
+"paahteisuutta."
+msgstr "A strong, pitch-dark bottom-fermented beer tasting of unfiltered liquorice, dark chocolate and dried fruit, without a sharp roast."
 
 #: src/resources/beer_styles/barleywine.tres
 msgid ""
@@ -1240,7 +1237,9 @@ msgstr ""
 
 #: src/resources/beer_styles/barleywine.tres
 msgid "Oluiden konjakki: hyvin vahva ja kypsyvä, ja vaatii valtavasti mallasta."
-msgstr "The cognac of beers: very strong and made to age, and it needs a huge amount of malt."
+msgstr ""
+"The cognac of beers: very strong and made to age, and it needs a huge "
+"amount of malt."
 
 #: src/resources/beer_styles/belgian_dubbel.tres
 msgid "Belgialaisen luostarin tumma olut: rusinaa ja kandisokeria."
@@ -1273,20 +1272,14 @@ msgid ""
 msgstr "A pale, easy lager that fills the shop shelves. Drunk cold and in quantity."
 
 #: src/resources/beer_styles/bulkkilager.tres
-msgid ""
-"Vaalea ja puhdas lager, jota juodaan enemmän kuin maistellaan. Kaikki "
-"kehuvat käsityöoluita, mutta tätä kuluu eniten."
-msgstr ""
-"A pale, clean lager that gets drunk more than tasted. Everyone praises "
-"craft beer, but this is what runs out first."
+msgid "Vaalea ja puhdas lager, mitä on halpa valmistaa, ja halpa myös janoiselle."
+msgstr "A pale, clean lager that is cheap to make, and cheap for the thirsty too."
 
 #: src/resources/beer_styles/doppelbock.tres
 msgid ""
-"Munkkien paastoajan nestemäinen leipä: täyteläinen, makea ja vahva. Vaatii "
-"ison mäskipadan ja vielä isomman janon."
-msgstr ""
-"The monks' liquid bread for Lent: full, sweet and strong. It needs a big "
-"mash tun and an even bigger thirst."
+"Erittäin tuhti ja pehmeä saksalainen vahva lager, jonka maku muistuttaa "
+"siirappista mallasleipää, karamellia ja kuivattuja tummia hedelmiä."
+msgstr "A very full, smooth, strong German lager whose taste recalls syrupy malt bread, caramel and dark dried fruit."
 
 #: src/resources/beer_styles/doppelbock.tres
 msgid "Munkkien paastoajan vahva ja maltainen lager. Tarvitsee paljon mallasta."
@@ -1305,12 +1298,8 @@ msgstr ""
 "autumn morning and fresh as a summer day."
 
 #: src/resources/beer_styles/helles.tres
-msgid ""
-"Münchenin vaalea lager: pehmeä, leipäinen ja vain hennosti katkera. "
-"Reinheitsgebot valvoo, ettei mitään ylimääräistä eksy kattilaan."
-msgstr ""
-"Munich's pale lager: soft, bready and only gently bitter. The "
-"Reinheitsgebot makes sure nothing extra sneaks into the kettle."
+msgid "Münchenin vaalea lager: pehmeä, leipäinen ja vain hennosti katkera."
+msgstr "Munich's pale lager: soft, bready and only gently bitter."
 
 #: src/resources/beer_styles/helles.tres
 msgid ""
@@ -1364,11 +1353,9 @@ msgstr "A homemade bread drink from grandma's kitchen, mild and sweet."
 
 #: src/resources/beer_styles/kotikalja.tres
 msgid ""
-"Mummon reseptin arkijuoma: leipää, hiivaa ja kärsivällisyyttä. Mieto ja "
-"makea, eikä kukaan ole koskaan saanut siitä kunnon humalaa."
-msgstr ""
-"Grandma's everyday drink: bread, yeast and patience. Mild and sweet, and "
-"nobody has ever got properly drunk on it."
+"Mummon reseptin mukaan: hiivaa, maltaista lientä, ja kärsivällisyyttä. "
+"Mieto ja makea, ei mitään ihmeellistä."
+msgstr "Made to grandma's recipe: yeast, malty wort, and patience. Mild and sweet, nothing special."
 
 #: src/resources/beer_styles/maitostout.tres
 msgid "Pehmeä ja makea musta olut, jonka makeus tulee maidosta."
@@ -1442,7 +1429,9 @@ msgstr ""
 msgid ""
 "Suomalainen talonpoikaisolut, siivilöity katajanoksien läpi ja käytetty "
 "leivinhiivalla."
-msgstr "A Finnish farmhouse beer, strained through juniper branches and fermented with baker's yeast."
+msgstr ""
+"A Finnish farmhouse beer, strained through juniper branches and fermented "
+"with baker's yeast."
 
 #: src/resources/beer_styles/saison.tres
 msgid ""
@@ -1460,7 +1449,9 @@ msgstr "The dry, spicy summer beer of Belgian farms."
 msgid ""
 "Skotlantilainen vahva ja maltainen olut. Väri tulee ripauksesta paahdettua "
 "ohraa."
-msgstr "A strong, malty Scottish beer. Its colour comes from a pinch of roasted barley."
+msgstr ""
+"A strong, malty Scottish beer. Its colour comes from a pinch of roasted "
+"barley."
 
 #: src/resources/beer_styles/scotch_ale.tres
 msgid ""
@@ -1500,11 +1491,9 @@ msgstr "An Austrian golden brown lager built on its own city's malt."
 
 #: src/resources/beer_styles/vienna_lager.tres
 msgid ""
-"Wienermaltaan kullanruskea lager, jossa on paahtoleipää ja kevyt makeus. "
-"Itävallan toiseksi paras lahja maailmalle valssin jälkeen."
-msgstr ""
-"A golden brown lager of Vienna malt, with toast and a light sweetness. "
-"Austria's second best gift to the world, after the waltz."
+"Viennamaltainen kullanruskea lager, jonka makuprofiiliin kuuluu paahtoleipä "
+"ja kevyt makeus."
+msgstr "A golden brown lager of Vienna malt, with toast and a light sweetness in its flavour."
 
 #: src/resources/beer_styles/witbier.tres
 msgid ""

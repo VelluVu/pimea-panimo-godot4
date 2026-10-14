@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_doppelbock")
 style_name = "Doppelbock"
-description = "Munkkien paastoajan nestemäinen leipä: täyteläinen, makea ja vahva. Vaatii ison mäskipadan ja vielä isomman janon."
+description = "Erittäin tuhti ja pehmeä saksalainen vahva lager, jonka maku muistuttaa siirappista mallasleipää, karamellia ja kuivattuja tummia hedelmiä."
 locked_hint = "Munkkien paastoajan vahva ja maltainen lager. Tarvitsee paljon mallasta."
 forbids_spices = true
 style = 10
