@@ -42,7 +42,7 @@ CONTENT_FIELDS = {
     "src/resources/ingredients": ("name", "name_partitive", "description"),
     "src/resources/daily_goals": ("goal_name",),
     "src/resources/reputation_tiers": ("tier_name", "description"),
-    "src/resources/beer_styles": ("style_name",),
+    "src/resources/beer_styles": ("style_name", "description"),
     "src/resources/bars": ("bar_name", "description"),
     "src/resources/cellar_upgrades": ("perk_name", "description"),
     "src/resources/perks": ("perk_name", "description"),

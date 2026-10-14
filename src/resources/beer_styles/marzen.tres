@@ -5,6 +5,7 @@
 [resource]
 script = ExtResource("1_marzen")
 style_name = "Märzen"
+description = "Maaliskuussa keitetty ja syksyn juhliin kypsytetty lager. Münchenin mallas antaa sille meripihkan värin ja leveän maltaisuuden."
 forbids_spices = true
 style = 8
 fixed_price_per_bottle = 3.0

@@ -5,6 +5,7 @@
 [resource]
 script = ExtResource("1_tigno")
 style_name = "Tumma Lager"
+description = "Münchenin tumma lager: maltainen, paahtoleipäinen ja pehmeä. Kelpaa niillekin, jotka väittävät inhoavansa tummaa olutta."
 preferred_spice_ids = Array[int]([406])
 style = 2
 fixed_price_per_bottle = 2.0

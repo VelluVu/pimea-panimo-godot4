@@ -5,6 +5,7 @@
 [resource]
 script = ExtResource("1_barleywine")
 style_name = "Barleywine"
+description = "Ohraviini on oluiden konjakki: vahva, makea ja tehty kypsymään. Kellarissa se vain paranee, toisin kuin panimomestari."
 style = 18
 profit_margin_multiplier = 1.5
 fixed_price_per_bottle = 5.0

@@ -5,6 +5,7 @@
 [resource]
 script = ExtResource("1_witbier")
 style_name = "Witbier"
+description = "Belgialainen vehnäolut, joka maustetaan korianterilla ja pomeranssinkuorella. Vaalea, samea ja mausteinen kuin joulupöydän reunalta."
 preferred_spice_ids = Array[int]([401, 402])
 style = 12
 profit_margin_multiplier = 1.1

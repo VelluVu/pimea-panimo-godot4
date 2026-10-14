@@ -5,6 +5,7 @@
 [resource]
 script = ExtResource("1_style")
 style_name = "Roggenbier"
+description = "Saksalainen ruisolut: mausteinen, leipäinen ja hieman tahmea. Kuin ruisleipä, jonka voi juoda."
 style = 25
 fixed_price_per_bottle = 3.0
 reputation_change = 4

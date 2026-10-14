@@ -5,6 +5,7 @@
 [resource]
 script = ExtResource("1_dubbel")
 style_name = "Belgian Dubbel"
+description = "Luostarin tumma olut, jossa on rusinaa, karamellia ja kandisokerin lämpöä. Munkit keittävät, me vain ihailemme."
 style = 15
 preferred_spice_ids = Array[int]([400])
 profit_margin_multiplier = 1.3
