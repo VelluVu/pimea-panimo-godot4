@@ -236,6 +236,10 @@ msgid "Märzen"
 msgstr "Märzen"
 
 #: src/autoload/string_container.gd
+msgid "Mäskipataan mahtuu lisää: %s kg"
+msgstr "Extra mash tun capacity: %s kg"
+
+#: src/autoload/string_container.gd
 msgid ""
 "Osumatarkkuus: %s%%\n"
 "Humalalajeja käytetty: %s\n"
@@ -1201,6 +1205,18 @@ msgstr "More kegs"
 #: src/resources/cellar_upgrades/11_lisaa_tynnyreita.tres
 msgid "Yksi tyhjä tynnyri lisää kellariin. Jokainen erä tarvitsee oman tynnyrinsä."
 msgstr "One more empty keg for the cellar. Every batch needs a keg of its own."
+
+#: src/resources/cellar_upgrades/12_parempi_maskipata.tres
+msgid ""
+"Isompi pata vetää enemmän mallasta, joten samasta 20 litrasta tulee "
+"vahvempaa olutta. Avaa raskaimmat tyylit."
+msgstr ""
+"A bigger tun takes more malt, so the same 20 litres make a stronger beer. "
+"Opens the heaviest styles."
+
+#: src/resources/cellar_upgrades/12_parempi_maskipata.tres
+msgid "Parempi Mäskipata"
+msgstr "Better Mash Tun"
 
 #: src/resources/cellar_upgrades/1_isompi_kaymisastia.tres
 msgid "Isompi astia, enemmän annoksia samasta erästä."
@@ -3102,7 +3118,9 @@ msgstr "A noble hop that gives beer a classic flavour."
 
 #: src/resources/ingredients/hops/warrior_hop.tres
 msgid "Amerikkalainen katkerohumala: puhdas ja pehmeä katkero ilman omaa aromia."
-msgstr "An American bittering hop: clean, smooth bitterness with no aroma of its own."
+msgstr ""
+"An American bittering hop: clean, smooth bitterness with no aroma of its "
+"own."
 
 #: src/resources/ingredients/hops/warrior_hop.tres
 msgid "Warrior-humala"
@@ -3162,7 +3180,9 @@ msgstr "Chocolate Malt"
 
 #: src/resources/ingredients/malts/chocolate_malt.tres
 msgid "Tummaksi paahdettu mallas, joka tuo suklaata ja kahvia. Pieni määrä riittää."
-msgstr "A dark roasted malt that brings chocolate and coffee. A little goes a long way."
+msgstr ""
+"A dark roasted malt that brings chocolate and coffee. A little goes a long "
+"way."
 
 #: src/resources/ingredients/malts/chocolate_malt.tres
 msgid "suklaamallasta"
@@ -3268,7 +3288,9 @@ msgstr "smoked malt"
 msgid ""
 "Kevyesti paahdettu pohjamallas, joka antaa kullanruskean värin ja leipäisen "
 "maun."
-msgstr "A lightly kilned base malt that gives a golden brown colour and a bready taste."
+msgstr ""
+"A lightly kilned base malt that gives a golden brown colour and a bready "
+"taste."
 
 #: src/resources/ingredients/malts/vienna_malt.tres
 msgid "Wienermallas"
@@ -4681,6 +4703,13 @@ msgid ""
 "Kaikissa tynnyreissä on olutta. Myy tai vie erä baariin, niin tynnyri "
 "vapautuu."
 msgstr "Every keg is full of beer. Sell a batch or ship one to a bar to free a keg."
+
+#: src/scenes/ui/brew_preparation_panel.gd
+msgid ""
+"Mäskipataan mahtuu enintään %d kg mallasta. Isompi pata löytyy "
+"parannuksista."
+msgstr ""
+"The mash tun holds at most %d kg of malt. A bigger one is in the upgrades."
 
 #: src/scenes/ui/brew_preparation_panel.gd
 msgid "Raaka-aineet eivät sovi mihinkään oluttyyliin."
@@ -6188,6 +6217,10 @@ msgstr "Needs a malt blend"
 #: src/ui/recipe_library_text.gd
 msgid "Vaatii myös: %s"
 msgstr "Also needs: %s"
+
+#: src/ui/recipe_library_text.gd
+msgid "Vaatii mäskipadan päivityksen"
+msgstr "Needs a mash tun upgrade"
 
 #: src/ui/recipe_library_text.gd
 msgid "Väri: %s"

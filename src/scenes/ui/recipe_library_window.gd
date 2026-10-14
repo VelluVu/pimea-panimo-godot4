@@ -137,7 +137,7 @@ func _build_known_style_row(brewery : Brewery, beer_style : BeerStyle) -> Button
 	row.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	row.add_theme_font_size_override("font_size", ROW_FONT_SIZE)
 	row.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	row.text = RecipeLibraryText.known_row(beer_style, _ingredient_name(beer_style.required_yeast_id), _required_malt_name(beer_style), _required_spice_name(beer_style), _preferred_spice_names(beer_style), _saved_recipe_count(brewery, beer_style.style))
+	row.text = RecipeLibraryText.known_row(beer_style, _ingredient_name(beer_style.required_yeast_id), _required_malt_name(beer_style), _required_spice_name(beer_style), _preferred_spice_names(beer_style), _saved_recipe_count(brewery, beer_style.style), _needs_mash_upgrade(brewery, beer_style))
 	row.pressed.connect(_select_style.bind(beer_style.style))
 	return row
 
@@ -148,7 +148,7 @@ func _build_locked_style_row(brewery : Brewery, beer_style : BeerStyle) -> Label
 	row.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	row.add_theme_font_size_override("font_size", ROW_FONT_SIZE)
 	var attracts_new_customer : bool = not MetaProgressManager.has_style(beer_style.style) and CustomerRegistry.is_style_customer_gate(beer_style.style)
-	row.text = RecipeLibraryText.locked_row(beer_style, _ingredient_name(beer_style.required_yeast_id), _required_malt_name(beer_style), needs_malt_blend, _required_spice_name(beer_style), attracts_new_customer, brewery.hinted_styles.has(beer_style.style))
+	row.text = RecipeLibraryText.locked_row(beer_style, _ingredient_name(beer_style.required_yeast_id), _required_malt_name(beer_style), needs_malt_blend, _required_spice_name(beer_style), attracts_new_customer, brewery.hinted_styles.has(beer_style.style), _needs_mash_upgrade(brewery, beer_style))
 	row.add_theme_color_override("font_color", LOCKED_ROW_COLOR)
 	return row
 
@@ -193,6 +193,10 @@ func _build_recipe_row(recipe : BrewRecipe, brewable : bool) -> Control:
 	load_button.pressed.connect(_on_recipe_load_button_pressed.bind(recipe))
 	row_hbox.add_child(load_button)
 	return row
+
+
+func _needs_mash_upgrade(brewery : Brewery, beer_style : BeerStyle) -> bool:
+	return not MashTun.holds(brewery.resolver.reference_malt_weight(beer_style), brewery.mash_capacity_kg())
 
 
 func _saved_recipe_count(brewery : Brewery, style : int) -> int:

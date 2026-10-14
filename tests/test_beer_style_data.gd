@@ -57,3 +57,20 @@ func test_every_style_value_has_its_data_file() -> void:
 func test_the_typical_abv_is_inside_the_range() -> void:
 	for beer_style : BeerStyle in _resolver().active_styles:
 		assert_true(beer_style.abv >= beer_style.min_abv and beer_style.abv <= beer_style.max_abv, beer_style.style_name)
+
+
+func test_a_fully_upgraded_mash_tun_holds_every_reference_recipe() -> void:
+	var upgrade : CellarUpgradeData = load("res://src/resources/cellar_upgrades/12_parempi_maskipata.tres")
+	var capacity : float = MashTun.capacity_kg(upgrade.extra_mash_capacity_kg * upgrade.max_level)
+	var resolver := _resolver()
+	for beer_style : BeerStyle in resolver.active_styles:
+		assert_true(MashTun.holds(resolver.reference_malt_weight(beer_style), capacity), beer_style.style_name)
+
+
+func test_the_basic_mash_tun_holds_most_styles() -> void:
+	var resolver := _resolver()
+	var fitting : int = 0
+	for beer_style : BeerStyle in resolver.active_styles:
+		if MashTun.holds(resolver.reference_malt_weight(beer_style), MashTun.BASE_CAPACITY_KG):
+			fitting += 1
+	assert_eq(fitting, 20, "the upgrade gates only the 7 strongest styles")

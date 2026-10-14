@@ -65,6 +65,11 @@ func compute_minimum_ingredients(beer_style : BeerStyle) -> Dictionary:
 	return recipe
 
 
+## Kilograms of malt in the style's reference recipe, for the mash tun (MashTun).
+func reference_malt_weight(beer_style : BeerStyle) -> float:
+	return BrewMixture.from_contents(beer_style.reference_recipe, _ingredients.table()).malt_weight
+
+
 ## True when the reference recipe uses more than one malt.
 func style_needs_malt_blend(beer_style : BeerStyle) -> bool:
 	var malt_count : int = 0
@@ -124,6 +129,7 @@ func _build_match_result(mixture : BrewMixture, beer_style : BeerStyle) -> BrewR
 	result.original_quality = snappedf(beer_style.original_quality * multiplier, QUALITY_PRECISION)
 	result.reputation_change = beer_style.reputation_change
 	result.abv = mixture.abv
+	result.malt_weight = mixture.malt_weight
 	result.is_matched = true
 	result.precision_score = precision
 	result.hop_diversity_count = mixture.hop_ids.size()
@@ -141,5 +147,6 @@ func _build_failed_result(mixture : BrewMixture) -> BrewResult:
 	result.original_quality = FAILED_BREW_QUALITY
 	result.reputation_change = FAILED_BREW_REPUTATION_CHANGE
 	result.abv = mixture.abv
+	result.malt_weight = mixture.malt_weight
 	result.is_matched = false
 	return result
