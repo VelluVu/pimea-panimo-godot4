@@ -1,32 +1,50 @@
 class_name RecipeLibraryText
 extends RefCounted
 
-## The style rows of the recipe library. A known style shows everything; a locked one
-## deliberately withholds the exact EBC/IBU ranges (the "brew it to find out" part) but
-## gives more to go on than the yeast alone: ABV is a fixed style property, so revealing it
-## spoils nothing, and the malt weight is only a floor. The color and bitterness hints are
-## coarse buckets, see BeerStyle.get_color_hint() and get_bitterness_hint().
+## The recipe book's text: the index buttons and a style's page. A known style shows its
+## whole recipe; a locked one withholds the exact ranges (the "brew it to find out"
+## part) and gives hints instead.
 
-## The name gets a line of its own so the list reads at a glance, and the numbers are split
-## over short lines that stay readable on a phone.
-const KNOWN_ROW_FORMAT : String = "%s\n%.1f%% ABV, hiiva: %s\nEBC %s, IBU %s"
-const SAVED_RECIPES_HINT_FORMAT : String = "Tallennettuja reseptejä: %d"
+const INDEX_KNOWN_FORMAT : String = "%s\n%.1f %%"
+const INDEX_RECIPES_FORMAT : String = "%s · reseptejä %d"
+const INDEX_LOCKED_FORMAT : String = "???\n%.1f %%"
+const LOCKED_TITLE : String = "???"
 const KNOWN_HEADER_FORMAT : String = "Löydetyt tyylit (%d/%d)"
 const LOCKED_HEADER_FORMAT : String = "Löytämättömät tyylit (%d)"
-const LOCKED_ROW_FORMAT : String = "??? (%.1f%% ABV)\nVaatii: hiiva %s, vähintään %d kg mallasta"
-## The hints below each go on their own line under the row.
+const SAVED_RECIPES_HEADER : String = "Tallennetut reseptit"
+const NO_SAVED_RECIPES : String = "Ei tallennettuja reseptejä."
+
+const STRENGTH_FORMAT : String = "Vahvuus: %s %% ABV"
+const COLOR_FORMAT : String = "Väri: EBC %s"
+const BITTERNESS_FORMAT : String = "Katkeruus: IBU %s"
+const YEAST_FORMAT : String = "Hiiva: %s"
+const BASE_MALT_FORMAT : String = "Pohjamallas: %s, vähintään %d %% maltaista"
+const REQUIRED_MALT_FORMAT : String = "Vaatii: %s"
+const REQUIRED_SPICE_FORMAT : String = "Vaatii myös: %s"
+const FAVOURITE_MALTS_FORMAT : String = "Suosikkimaltaat: %s"
 const HOP_HINT_FORMAT : String = "Suosikkihumalat: %s"
-const MALT_HINT_FORMAT : String = "Vaadittu mallas: %s"
-const REQUIRED_SPICE_HINT_FORMAT : String = "Vaatii myös: %s"
-const PREFERRED_SPICES_HINT_FORMAT : String = "Sopivat mausteet: %s"
+const AROMA_HOP_NEEDED : String = "Tarvitsee aromihumalan"
+const PREFERRED_SPICES_FORMAT : String = "Sopivat mausteet: %s"
 const PURITY_LAW_HINT : String = "Reinheitsgebot: ei mausteita"
+const MASH_FORMAT : String = "Mäskäys: %s"
+const MASH_STEP_FORMAT : String = "%d °C"
+const HOPPING_FORMAT : String = "Humalointi: %s"
+## The reference recipe needs more malt than the mash tun holds, see MashTun.
+const MASH_UPGRADE_HINT : String = "Vaatii mäskipadan päivityksen"
+
+const LOCKED_STRENGTH_FORMAT : String = "Vahvuus: noin %.1f %% ABV"
 const COLOR_HINT_FORMAT : String = "Väri: %s"
 const BITTERNESS_HINT_FORMAT : String = "Katkeruus: %s"
 const MALT_BLEND_HINT : String = "Vaatii mallasseoksen"
 const NEW_CUSTOMER_HINT : String = "Houkuttelee uuden asiakkaan"
-## The reference recipe needs more malt than the mash tun holds, see MashTun.
-const MASH_UPGRADE_HINT : String = "Vaatii mäskipadan päivityksen"
 const MASTER_HINT_FORMAT : String = "Aatun vinkki: EBC %s, IBU %s"
+
+const BITTERING_ADDITION_TEXT : String = "katkero"
+const FLAVOR_ADDITION_TEXT : String = "maku"
+const AROMA_ADDITION_TEXT : String = "aromi"
+const DRY_HOP_ADDITION_TEXT : String = "kuivahumala"
+const LIST_SEPARATOR : String = ", "
+const BASE_MALT_SEPARATOR : String = " / "
 ## BeerStyle's default max_ebc/max_ibu: the style sets no upper limit.
 const NO_UPPER_LIMIT : int = 999
 
@@ -39,40 +57,68 @@ static func locked_section_title(locked_count : int) -> String:
 	return UiText.of(LOCKED_HEADER_FORMAT) % locked_count
 
 
-static func known_row(beer_style : BeerStyle, yeast_name : String, required_malt_name : String, required_spice_name : String = "", preferred_spice_names : String = "", saved_recipe_count : int = 0, needs_mash_upgrade : bool = false) -> String:
-	var text : String = UiText.of(KNOWN_ROW_FORMAT) % [
-		UiText.of(beer_style.style_name), beer_style.abv, yeast_name,
-		value_range(beer_style.min_ebc, beer_style.max_ebc), value_range(beer_style.min_ibu, beer_style.max_ibu),
+## The index button: name and strength, and how many recipes are saved.
+static func index_label(entry : RecipeBookEntry) -> String:
+	if not entry.known:
+		return UiText.of(INDEX_LOCKED_FORMAT) % entry.beer_style.abv
+	var text : String = UiText.of(INDEX_KNOWN_FORMAT) % [UiText.of(entry.beer_style.style_name), entry.beer_style.abv]
+	if entry.saved_recipe_count > 0:
+		text = UiText.of(INDEX_RECIPES_FORMAT) % [text, entry.saved_recipe_count]
+	return text
+
+
+static func page_title(entry : RecipeBookEntry) -> String:
+	return UiText.of(entry.beer_style.style_name) if entry.known else UiText.of(LOCKED_TITLE)
+
+
+## A known style's page, one fact per line.
+static func known_lines(entry : RecipeBookEntry) -> PackedStringArray:
+	var style : BeerStyle = entry.beer_style
+	var lines : PackedStringArray = []
+	if not style.description.is_empty():
+		lines.append(UiText.of(style.description))
+	lines.append(UiText.of(STRENGTH_FORMAT) % abv_range(style.min_abv, style.max_abv))
+	lines.append(UiText.of(COLOR_FORMAT) % value_range(style.min_ebc, style.max_ebc))
+	lines.append(UiText.of(BITTERNESS_FORMAT) % value_range(style.min_ibu, style.max_ibu))
+	lines.append(UiText.of(YEAST_FORMAT) % entry.yeast_name)
+	if not entry.base_malt_names.is_empty():
+		lines.append(UiText.of(BASE_MALT_FORMAT) % [BASE_MALT_SEPARATOR.join(entry.base_malt_names), roundi(style.min_base_share * 100.0)])
+	_append_requirements(lines, entry)
+	if not entry.favourite_malt_names.is_empty():
+		lines.append(UiText.of(FAVOURITE_MALTS_FORMAT) % LIST_SEPARATOR.join(entry.favourite_malt_names))
+	_append_hops(lines, style)
+	if style.forbids_spices:
+		lines.append(UiText.of(PURITY_LAW_HINT))
+	elif not entry.preferred_spice_names.is_empty():
+		lines.append(UiText.of(PREFERRED_SPICES_FORMAT) % LIST_SEPARATOR.join(entry.preferred_spice_names))
+	lines.append(UiText.of(MASH_FORMAT) % mash_steps(style.mash_steps))
+	if not style.hop_additions.is_empty():
+		lines.append(UiText.of(HOPPING_FORMAT) % hop_additions(style.hop_additions))
+	if entry.needs_mash_upgrade:
+		lines.append(UiText.of(MASH_UPGRADE_HINT))
+	return lines
+
+
+## A locked style's page: hints, never the exact ranges unless the old master told them.
+static func locked_lines(entry : RecipeBookEntry) -> PackedStringArray:
+	var style : BeerStyle = entry.beer_style
+	var lines : PackedStringArray = [
+		UiText.of(LOCKED_STRENGTH_FORMAT) % style.abv,
+		UiText.of(COLOR_HINT_FORMAT) % UiText.of(BeerStyle.get_color_hint(style.min_ebc, style.max_ebc)),
+		UiText.of(BITTERNESS_HINT_FORMAT) % UiText.of(BeerStyle.get_bitterness_hint(style.min_ibu, style.max_ibu)),
+		UiText.of(YEAST_FORMAT) % entry.yeast_name,
 	]
-	text += _hop_and_malt_hints(beer_style, required_malt_name, required_spice_name)
-	if beer_style.forbids_spices:
-		text += "\n" + UiText.of(PURITY_LAW_HINT)
-	if not preferred_spice_names.is_empty():
-		text += "\n" + UiText.of(PREFERRED_SPICES_HINT_FORMAT) % preferred_spice_names
-	if saved_recipe_count > 0:
-		text += "\n" + UiText.of(SAVED_RECIPES_HINT_FORMAT) % saved_recipe_count
-	if needs_mash_upgrade:
-		text += "\n" + UiText.of(MASH_UPGRADE_HINT)
-	return text
-
-
-## `needs_malt_blend` only matters for a style with no single required malt.
-## `attracts_new_customer`: discovering the style unlocks a customer for good.
-## `hinted`: the old master told its exact ranges (StyleHintEventData).
-static func locked_row(beer_style : BeerStyle, yeast_name : String, required_malt_name : String, needs_malt_blend : bool, required_spice_name : String = "", attracts_new_customer : bool = false, hinted : bool = false, needs_mash_upgrade : bool = false) -> String:
-	var text : String = UiText.of(LOCKED_ROW_FORMAT) % [beer_style.abv, yeast_name, beer_style.min_malt_weight]
-	text += "\n" + UiText.of(COLOR_HINT_FORMAT) % BeerStyle.get_color_hint(beer_style.min_ebc, beer_style.max_ebc)
-	text += "\n" + UiText.of(BITTERNESS_HINT_FORMAT) % BeerStyle.get_bitterness_hint(beer_style.min_ibu, beer_style.max_ibu)
-	text += _hop_and_malt_hints(beer_style, required_malt_name, required_spice_name)
-	if beer_style.required_malt_id == BrewMixture.NO_REQUIRED_MALT and needs_malt_blend:
-		text += "\n" + UiText.of(MALT_BLEND_HINT)
-	if needs_mash_upgrade:
-		text += "\n" + UiText.of(MASH_UPGRADE_HINT)
-	if attracts_new_customer:
-		text += "\n" + UiText.of(NEW_CUSTOMER_HINT)
-	if hinted:
-		text += "\n" + UiText.of(MASTER_HINT_FORMAT) % [value_range(beer_style.min_ebc, beer_style.max_ebc), value_range(beer_style.min_ibu, beer_style.max_ibu)]
-	return text
+	_append_requirements(lines, entry)
+	if style.required_malt_id == BrewMixture.NO_REQUIRED_MALT and entry.needs_malt_blend:
+		lines.append(UiText.of(MALT_BLEND_HINT))
+	_append_hops(lines, style)
+	if entry.hinted:
+		lines.append(UiText.of(MASTER_HINT_FORMAT) % [value_range(style.min_ebc, style.max_ebc), value_range(style.min_ibu, style.max_ibu)])
+	if entry.needs_mash_upgrade:
+		lines.append(UiText.of(MASH_UPGRADE_HINT))
+	if entry.attracts_new_customer:
+		lines.append(UiText.of(NEW_CUSTOMER_HINT))
+	return lines
 
 
 ## "11-14", or "0+" when the style sets no upper limit.
@@ -82,15 +128,47 @@ static func value_range(min_value : int, max_value : int) -> String:
 	return "%d-%d" % [min_value, max_value]
 
 
-static func _hop_and_malt_hints(beer_style : BeerStyle, required_malt_name : String, required_spice_name : String) -> String:
-	var text : String = ""
-	if not beer_style.preferred_hop_profiles.is_empty():
+static func abv_range(min_abv : float, max_abv : float) -> String:
+	return "%.1f-%.1f" % [min_abv, max_abv]
+
+
+static func mash_steps(steps : Array[int]) -> String:
+	var parts : PackedStringArray = []
+	for temperature : int in steps:
+		parts.append(MASH_STEP_FORMAT % temperature)
+	return LIST_SEPARATOR.join(parts)
+
+
+static func hop_additions(kinds : Array[HopAddition.Kind]) -> String:
+	var parts : PackedStringArray = []
+	for kind : HopAddition.Kind in kinds:
+		var name : String = _addition_name(kind)
+		if not name.is_empty():
+			parts.append(UiText.of(name))
+	return LIST_SEPARATOR.join(parts)
+
+
+static func _addition_name(kind : HopAddition.Kind) -> String:
+	match kind:
+		HopAddition.Kind.BITTERING: return BITTERING_ADDITION_TEXT
+		HopAddition.Kind.FLAVOR: return FLAVOR_ADDITION_TEXT
+		HopAddition.Kind.AROMA: return AROMA_ADDITION_TEXT
+		HopAddition.Kind.DRY_HOP: return DRY_HOP_ADDITION_TEXT
+	return ""
+
+
+static func _append_requirements(lines : PackedStringArray, entry : RecipeBookEntry) -> void:
+	if not entry.required_malt_name.is_empty():
+		lines.append(UiText.of(REQUIRED_MALT_FORMAT) % entry.required_malt_name)
+	if not entry.required_spice_name.is_empty():
+		lines.append(UiText.of(REQUIRED_SPICE_FORMAT) % entry.required_spice_name)
+
+
+static func _append_hops(lines : PackedStringArray, style : BeerStyle) -> void:
+	if not style.preferred_hop_profiles.is_empty():
 		var names : PackedStringArray = []
-		for profile : HopData.FlavorProfile in beer_style.preferred_hop_profiles:
+		for profile : HopData.FlavorProfile in style.preferred_hop_profiles:
 			names.append(HopData.get_flavor_profile_display_name(profile))
-		text += "\n" + UiText.of(HOP_HINT_FORMAT) % ", ".join(names)
-	if beer_style.required_malt_id != BrewMixture.NO_REQUIRED_MALT:
-		text += "\n" + UiText.of(MALT_HINT_FORMAT) % required_malt_name
-	if beer_style.required_spice_id != BrewMixture.NO_REQUIRED_SPICE:
-		text += "\n" + UiText.of(REQUIRED_SPICE_HINT_FORMAT) % required_spice_name
-	return text
+		lines.append(UiText.of(HOP_HINT_FORMAT) % LIST_SEPARATOR.join(names))
+	if style.requires_aroma_hop:
+		lines.append(UiText.of(AROMA_HOP_NEEDED))
