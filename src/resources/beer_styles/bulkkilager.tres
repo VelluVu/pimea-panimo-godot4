@@ -5,6 +5,7 @@
 [resource]
 script = ExtResource("1_12rbt")
 style_name = "Bulkkilager"
+description = "Vaalea ja puhdas lager, jota juodaan enemmän kuin maistellaan. Kaikki kehuvat käsityöoluita, mutta tätä kuluu eniten."
 style = 1
 fixed_price_per_bottle = 2.0
 reputation_change = 3

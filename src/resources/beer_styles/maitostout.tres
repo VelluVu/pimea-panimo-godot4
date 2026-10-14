@@ -5,6 +5,7 @@
 [resource]
 script = ExtResource("1_maitostout")
 style_name = "Maitostout"
+description = "Pehmeä ja makea stout, jonka laktoosi jättää suuhun maitokahvin tuntua. Suklaamallas tekee siitä jälkiruoan pullossa."
 style = 23
 preferred_spice_ids = Array[int]([403, 404, 406])
 profit_margin_multiplier = 1.3

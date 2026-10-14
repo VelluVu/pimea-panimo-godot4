@@ -5,6 +5,7 @@
 [resource]
 script = ExtResource("1_strongdark")
 style_name = "Belgian Strong Dark Ale"
+description = "Belgian vahvimpia tummia oluita: tumma kandisiirappi tuo rusinaa, viikunaa ja voimaa. Siemaillaan hitaasti, tai muuten kaadutaan nopeasti."
 style = 16
 preferred_spice_ids = Array[int]([400])
 profit_margin_multiplier = 1.4

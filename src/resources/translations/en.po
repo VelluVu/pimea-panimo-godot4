@@ -1182,9 +1182,171 @@ msgstr ""
 msgid "Yökerho Varjo"
 msgstr "Club Shadow"
 
+#: src/resources/beer_styles/alkoholiton_ipa.tres
+msgid ""
+"Kaikki IPA:n humalat ilman humalaa päässä. Kuski kiittää, eikä LVV jaksa "
+"kiinnostua."
+msgstr "All the hops of an IPA without the buzz. The designated driver is grateful, and the LVV can't be bothered."
+
+#: src/resources/beer_styles/alkoholiton_lager.tres
+msgid ""
+"Vaalea lager, josta erikoishiiva jättää alkoholin pois. Tarjotaan saunan "
+"jälkeen niille, joiden pitää vielä ajaa kotiin."
+msgstr "A pale lager whose special yeast leaves out the alcohol. Served after the sauna to those who still have to drive home."
+
+#: src/resources/beer_styles/amber_ale.tres
+msgid ""
+"Meripihkan värinen ale, jossa karamellimallas ja humala kättelevät "
+"tasapuolisesti. Kuin pale ale, joka on käynyt saunassa."
+msgstr "An amber ale where caramel malt and hops shake hands as equals. Like a pale ale that has been to the sauna."
+
+#: src/resources/beer_styles/baltic_portteri.tres
+msgid ""
+"Itämeren rannoilla lageroitu vahva portteri. Tumma, pehmeä ja vähän kuin "
+"suklaata, joka on oppinut uimaan kylmässä vedessä."
+msgstr "A strong porter lagered on the shores of the Baltic. Dark, smooth and a bit like chocolate that learned to swim in cold water."
+
+#: src/resources/beer_styles/barleywine.tres
+msgid ""
+"Ohraviini on oluiden konjakki: vahva, makea ja tehty kypsymään. Kellarissa "
+"se vain paranee, toisin kuin panimomestari."
+msgstr "Barleywine is the cognac of beers: strong, sweet and made to age. It only improves in the cellar, unlike the brewmaster."
+
+#: src/resources/beer_styles/belgian_dubbel.tres
+msgid ""
+"Luostarin tumma olut, jossa on rusinaa, karamellia ja kandisokerin lämpöä. "
+"Munkit keittävät, me vain ihailemme."
+msgstr "A dark abbey beer with raisin, caramel and the warmth of candi sugar. The monks brew, we just admire."
+
+#: src/resources/beer_styles/belgian_strong_dark_ale.tres
+msgid ""
+"Belgian vahvimpia tummia oluita: tumma kandisiirappi tuo rusinaa, viikunaa "
+"ja voimaa. Siemaillaan hitaasti, tai muuten kaadutaan nopeasti."
+msgstr "One of Belgium's strongest dark beers: dark candi syrup brings raisin, fig and power. Sip it slowly, or fall over quickly."
+
+#: src/resources/beer_styles/bulkkilager.tres
+msgid ""
+"Vaalea ja puhdas lager, jota juodaan enemmän kuin maistellaan. Kaikki "
+"kehuvat käsityöoluita, mutta tätä kuluu eniten."
+msgstr "A pale, clean lager that gets drunk more than tasted. Everyone praises craft beer, but this is what runs out first."
+
+#: src/resources/beer_styles/doppelbock.tres
+msgid ""
+"Munkkien paastoajan nestemäinen leipä: täyteläinen, makea ja vahva. Vaatii "
+"ison mäskipadan ja vielä isomman janon."
+msgstr "The monks' liquid bread for Lent: full, sweet and strong. It needs a big mash tun and an even bigger thirst."
+
+#: src/resources/beer_styles/hefeweizen.tres
+msgid ""
+"Baijerilainen vehnäolut, jonka hiiva tuoksuu banaanilta ja neilikalta. "
+"Samea kuin syysaamu ja raikas kuin kesäpäivä."
+msgstr "A Bavarian wheat beer whose yeast smells of banana and clove. Hazy as an autumn morning and fresh as a summer day."
+
+#: src/resources/beer_styles/helles.tres
+msgid ""
+"Münchenin vaalea lager: pehmeä, leipäinen ja vain hennosti katkera. "
+"Reinheitsgebot valvoo, ettei mitään ylimääräistä eksy kattilaan."
+msgstr "Munich's pale lager: soft, bready and only gently bitter. The Reinheitsgebot makes sure nothing extra sneaks into the kettle."
+
+#: src/resources/beer_styles/imperial_stout.tres
+msgid ""
+"Tsaarin hovin musta ja vahva stout: suklaata, kahvia ja paahdetta. Kypsyy "
+"vuosia, mutta tässä kellarissa kuukaudet riittävät."
+msgstr "The black, strong stout of the Tsar's court: chocolate, coffee and roast. It ages for years, but in this cellar months will do."
+
 #: src/resources/beer_styles/ipa.tres
 msgid "India Pale Ale"
 msgstr "India Pale Ale"
+
+#: src/resources/beer_styles/ipa.tres
+msgid ""
+"Vahva ja reilusti humaloitu ale, alun perin keitetty kestämään laivamatka "
+"Intiaan. Nykyään se kestää lähinnä hipsterien kehut."
+msgstr "A strong, generously hopped ale, first brewed to survive the voyage to India. These days it mostly survives hipster praise."
+
+#: src/resources/beer_styles/irish_dry_stout.tres
+msgid ""
+"Irlantilainen kuiva stout: musta, kevyt ja paahteinen. Paahdettu ohra antaa "
+"sille terävän kahvisen katkeron, jota juodaan sateella."
+msgstr "An Irish dry stout: black, light and roasty. Roasted barley gives it a sharp, coffee-like bitterness meant for rainy days."
+
+#: src/resources/beer_styles/kotikalja.tres
+msgid ""
+"Mummon reseptin arkijuoma: leipää, hiivaa ja kärsivällisyyttä. Mieto ja "
+"makea, eikä kukaan ole koskaan saanut siitä kunnon humalaa."
+msgstr "Grandma's everyday drink: bread, yeast and patience. Mild and sweet, and nobody has ever got properly drunk on it."
+
+#: src/resources/beer_styles/maitostout.tres
+msgid ""
+"Pehmeä ja makea stout, jonka laktoosi jättää suuhun maitokahvin tuntua. "
+"Suklaamallas tekee siitä jälkiruoan pullossa."
+msgstr "A soft, sweet stout whose lactose leaves a feel of milky coffee. Chocolate malt makes it dessert in a bottle."
+
+#: src/resources/beer_styles/marzen.tres
+msgid ""
+"Maaliskuussa keitetty ja syksyn juhliin kypsytetty lager. Münchenin mallas "
+"antaa sille meripihkan värin ja leveän maltaisuuden."
+msgstr "A lager brewed in March and matured for the autumn feasts. Munich malt gives it an amber colour and broad maltiness."
+
+#: src/resources/beer_styles/pale_ale.tres
+msgid ""
+"Amerikkalainen vaalea ale, jonka humala tuoksuu sitrukselta. Raikas, "
+"katkera ja jokaisen pienpanimon ensimmäinen ylpeys."
+msgstr "An American pale ale whose hops smell of citrus. Fresh, bitter and every small brewery's first pride."
+
+#: src/resources/beer_styles/rauchbier.tres
+msgid ""
+"Bambergin savuolut, jonka mallas on kuivattu pyökkitulen yllä. Maistuu kuin "
+"savukinkku olisi päättänyt ryhtyä lageriksi."
+msgstr "Bamberg's smoked beer, made from malt dried over a beech fire. It tastes as if a smoked ham decided to become a lager."
+
+#: src/resources/beer_styles/roggenbier.tres
+msgid ""
+"Saksalainen ruisolut: mausteinen, leipäinen ja hieman tahmea. Kuin "
+"ruisleipä, jonka voi juoda."
+msgstr "A German rye beer: spicy, bready and a little sticky. Like rye bread you can drink."
+
+#: src/resources/beer_styles/sahti.tres
+msgid ""
+"Suomalainen talonpoikaisolut, joka siivilöidään katajanoksien läpi. "
+"Leivinhiiva, ruis ja kataja tekevät siitä vahvan, makean ja vähän pihkaisen."
+msgstr "A Finnish farmhouse beer strained through juniper branches. Baker's yeast, rye and juniper make it strong, sweet and a little resinous."
+
+#: src/resources/beer_styles/saison.tres
+msgid ""
+"Belgialaisten maatilojen kesäolut, keitetty pellolla raataville. Kuiva, "
+"mausteinen ja yllättävän vahva sadonkorjuujuomaksi."
+msgstr "The summer beer of Belgian farms, brewed for those toiling in the fields. Dry, spicy and surprisingly strong for a harvest drink."
+
+#: src/resources/beer_styles/scotch_ale.tres
+msgid ""
+"Skotlantilainen wee heavy: maltainen, makea ja vahva. Ripaus paahdettua "
+"ohraa antaa sille syvän ruskean värin ja kiltin lämmön."
+msgstr "A Scottish wee heavy: malty, sweet and strong. A pinch of roasted barley gives it a deep brown colour and the warmth of a kilt."
+
+#: src/resources/beer_styles/session_ale.tres
+msgid ""
+"Mieto ja humalainen ale pitkään iltaan. Vehnä pehmentää, myöhäiset humalat "
+"tuoksuvat, eikä aamu tunnu kamalalta."
+msgstr "A mild, hoppy ale for a long evening. Wheat softens it, the late hops smell lovely, and the morning doesn't feel terrible."
+
+#: src/resources/beer_styles/tumma_lager.tres
+msgid ""
+"Münchenin tumma lager: maltainen, paahtoleipäinen ja pehmeä. Kelpaa "
+"niillekin, jotka väittävät inhoavansa tummaa olutta."
+msgstr "Munich's dark lager: malty, toasty and smooth. Even people who claim to hate dark beer drink it."
+
+#: src/resources/beer_styles/vienna_lager.tres
+msgid ""
+"Wienermaltaan kullanruskea lager, jossa on paahtoleipää ja kevyt makeus. "
+"Itävallan toiseksi paras lahja maailmalle valssin jälkeen."
+msgstr "A golden brown lager of Vienna malt, with toast and a light sweetness. Austria's second best gift to the world, after the waltz."
+
+#: src/resources/beer_styles/witbier.tres
+msgid ""
+"Belgialainen vehnäolut, joka maustetaan korianterilla ja "
+"pomeranssinkuorella. Vaalea, samea ja mausteinen kuin joulupöydän reunalta."
+msgstr "A Belgian wheat beer spiced with coriander and orange peel. Pale, hazy and spicy, as if lifted from the edge of a Christmas table."
 
 #: src/resources/cellar_upgrades/10_aanieristys.tres
 msgid ""

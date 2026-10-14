@@ -5,6 +5,7 @@
 [resource]
 script = ExtResource("1_balticportteri")
 style_name = "Baltic Portteri"
+description = "Itämeren rannoilla lageroitu vahva portteri. Tumma, pehmeä ja vähän kuin suklaata, joka on oppinut uimaan kylmässä vedessä."
 style = 9
 preferred_spice_ids = Array[int]([403, 405, 406])
 profit_margin_multiplier = 1.3

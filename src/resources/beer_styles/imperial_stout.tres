@@ -5,6 +5,7 @@
 [resource]
 script = ExtResource("1_imperialstout")
 style_name = "Imperial Stout"
+description = "Tsaarin hovin musta ja vahva stout: suklaata, kahvia ja paahdetta. Kypsyy vuosia, mutta tässä kellarissa kuukaudet riittävät."
 style = 19
 preferred_spice_ids = Array[int]([403, 404, 405])
 profit_margin_multiplier = 1.5

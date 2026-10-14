@@ -5,6 +5,7 @@
 [resource]
 script = ExtResource("1_qu52c")
 style_name = "Kotikalja"
+description = "Mummon reseptin arkijuoma: leipää, hiivaa ja kärsivällisyyttä. Mieto ja makea, eikä kukaan ole koskaan saanut siitä kunnon humalaa."
 preferred_spice_ids = Array[int]([407])
 fixed_price_per_bottle = 1.0
 reputation_change = -1

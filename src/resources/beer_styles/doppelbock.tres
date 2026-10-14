@@ -5,6 +5,7 @@
 [resource]
 script = ExtResource("1_doppelbock")
 style_name = "Doppelbock"
+description = "Munkkien paastoajan nestemäinen leipä: täyteläinen, makea ja vahva. Vaatii ison mäskipadan ja vielä isomman janon."
 forbids_spices = true
 style = 10
 profit_margin_multiplier = 1.4
