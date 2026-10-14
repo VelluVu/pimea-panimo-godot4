@@ -19,6 +19,7 @@ mash_band = 2.0
 hop_additions = Array[int]([0, 2])
 required_yeast_id = 302
 required_malt_id = 103
+required_spice_id = 401
 base_malt_ids = Array[int]([100])
 min_base_share = 0.6
 preferred_hop_profiles = Array[int]([4])
