@@ -48,6 +48,9 @@ const STACK_ROW_OFFSET_PX : Vector2 = Vector2(0, -6)
 ## How long the slide to a tap and back takes. Short, so the pour keeps its timing with
 ## the customer's glass (Customer.show_counter_glass()).
 const TAP_SLIDE_SECONDS : float = 0.25
+## Where the beer stream falls in the serve_beer frames (x in the 48 px frame), under the
+## hand that pulls the tap.
+const POUR_STREAM_FRAME_X : float = 30.5
 
 ## The frames as drawn, kept for pours with no known beer.
 var _drawn_frames : SpriteFrames
@@ -76,6 +79,12 @@ func _play_random_idle() -> void:
 ## visibly speed the pour up for its rapid-fire one-by-one serving burst
 ## without that lingering into the next solo customer's pour — reset back to
 ## 1.0 the moment this returns to idle, below. A negative `ebc` pours the beer as drawn.
+## How far from home he must slide for his pour to fall at `global_x` (a tap's spout).
+func offset_to_pour_at(global_x : float) -> float:
+	var stream_from_origin : float = animated_sprite.position.x + (POUR_STREAM_FRAME_X + animated_sprite.offset.x) * animated_sprite.scale.x
+	return global_x - (get_parent().to_global(Vector2(_home_x, 0.0)).x + stream_from_origin * global_scale.x)
+
+
 ## `tap_offset` slides him that far from home to the tap he pours from.
 func play_serve_beer(speed_scale: float = 1.0, ebc: int = -1, tap_offset: float = 0.0) -> void:
 	_slide_to(_home_x + tap_offset)
