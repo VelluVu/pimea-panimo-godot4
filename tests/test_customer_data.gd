@@ -46,6 +46,15 @@ func test_meets_strict_requirements_respects_max_abv() -> void:
 	assert_false(customer.meets_strict_requirements(regular_style), "above max_required_abv should fail")
 
 
+func test_meets_strict_requirements_uses_the_batch_abv() -> void:
+	var customer := CustomerData.new()
+	customer.min_required_abv = 1.0
+	var kotikalja := BeerStyle.new()
+	kotikalja.abv = 2.8
+	assert_true(customer.meets_strict_requirements(kotikalja))
+	assert_false(customer.meets_strict_requirements(kotikalja, 0.2), "alcohol-free kotikalja is refused")
+
+
 func test_meets_strict_requirements_respects_max_price() -> void:
 	var customer := CustomerData.new()
 	customer.max_required_price = 2.5

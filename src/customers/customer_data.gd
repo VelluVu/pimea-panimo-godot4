@@ -162,11 +162,13 @@ func get_preference_score(style: BeerStyle.Style) -> float:
 
 
 ## False when the batch fails a hard gate; such a batch is never considered, whatever
-## its quality.
-func meets_strict_requirements(beer_style: BeerStyle) -> bool:
-	if min_required_abv >= 0.0 and beer_style.abv < min_required_abv:
+## its quality. `abv` is the batch's own (BrewBatch.get_abv()); negative uses the style's.
+func meets_strict_requirements(beer_style: BeerStyle, abv: float = -1.0) -> bool:
+	if abv < 0.0:
+		abv = beer_style.abv
+	if min_required_abv >= 0.0 and abv < min_required_abv:
 		return false
-	if max_required_abv >= 0.0 and beer_style.abv > max_required_abv:
+	if max_required_abv >= 0.0 and abv > max_required_abv:
 		return false
 	if max_required_price >= 0.0 and beer_style.fixed_price_per_bottle > max_required_price:
 		return false

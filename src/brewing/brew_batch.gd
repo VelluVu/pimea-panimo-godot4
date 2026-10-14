@@ -18,6 +18,8 @@ extends Resource
 ## Cleanliness of the keg the batch was brewed into, see KegRules.
 @export var keg_cleanliness : float = 1.0
 @export var age_in_days: int = 0
+## The batch's own ABV; STYLE_ABV (and saves from before this field) use the style's.
+@export var abv: float = STYLE_ABV
 
 @export var precision_score : float = 1.0
 @export var hop_diversity_count : int = 0
@@ -73,6 +75,17 @@ static func aging_progress(bonus : float, age : int, peak : int, shelf_life : in
 	var spoiled_ticks : int = age - peak - shelf_life
 	var fade : float = 1.0 - clampf(spoiled_ticks / AGED_BONUS_FADE_TICKS, 0.0, 1.0)
 	return clampf(float(age) / peak, 0.0, 1.0) * fade
+
+
+const STYLE_ABV : float = -1.0
+
+
+func get_abv() -> float:
+	return beer_style.abv if abv < 0.0 else abv
+
+
+func is_alcohol_free() -> bool:
+	return get_abv() <= BeerStyle.ALCOHOL_FREE_MAX_ABV
 
 
 func get_effective_peak_days() -> int:
@@ -161,7 +174,7 @@ func get_full_info_tooltip() -> String:
 		get_aging_trend_label(),
 		final_ebc,
 		final_ibu,
-		beer_style.abv
+		get_abv()
 	] + "\n" + get_quality_breakdown_tooltip() + _aged_price_line()
 
 

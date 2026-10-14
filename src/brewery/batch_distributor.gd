@@ -49,7 +49,7 @@ func _on_ship_batch_to_bar_requested(batch : BrewBatch, bar : BarContact) -> voi
 	payout = snappedf(payout * brewery.stats.multiplier(PerkStats.DISTRIBUTION_INCOME) * batch.get_aged_price_multiplier(), 0.1)
 
 	brewery.change_money(payout, MoneyLedger.Source.SHIPMENTS)
-	var risk : int = bar.risk_for(batch.beer_style)
+	var risk : int = bar.risk_for(batch.get_abv())
 	brewery.add_risk(risk)
 	BrewerySignals.keg_shipped_to_bar.emit(batch.get_style_name(), bar.bar_name, batch.amount_bottles, payout, risk)
 

@@ -473,14 +473,14 @@ func _maybe_ship(b: Brewery) -> void:
 	var pick_bar: BarContact = null
 	var pick_demand: float = INF
 	for batch: BrewBatch in b.inventory.brew_batches:
-		var ship_bar: BarContact = alcohol_free_bar if batch.beer_style.is_alcohol_free() else bar
+		var ship_bar: BarContact = alcohol_free_bar if batch.is_alcohol_free() else bar
 		if ship_bar == null:
 			continue
 		# Only a full keg counts for the goal.
 		if goal_open and not KegRules.is_full_keg(batch.amount_bottles):
 			continue
 		# Before the evening, calm ships only the alcohol-free kegs that lower the risk.
-		if calm_export and not goal_open and TimeManager.get_day_progress() < EXPORT_DAY_PROGRESS and not batch.beer_style.is_alcohol_free():
+		if calm_export and not goal_open and TimeManager.get_day_progress() < EXPORT_DAY_PROGRESS and not batch.is_alcohol_free():
 			continue
 		if not goal_open and (total - batch.amount_bottles < COUNTER_STOCK or _still_aging(batch)):
 			continue
@@ -635,7 +635,7 @@ func _free_a_keg(b: Brewery) -> void:
 			smallest = batch
 	if smallest == null:
 		return
-	var bar: BarContact = _best_bar(b, false, smallest.beer_style.is_alcohol_free())
+	var bar: BarContact = _best_bar(b, false, smallest.is_alcohol_free())
 	if bar == null:
 		return
 	_ship_cooldown = 2.0
@@ -751,7 +751,7 @@ func _cash_out(b: Brewery, closing: bool = false) -> void:
 	if not _is_last_day(b) or not closing and TimeManager.get_day_progress() < CASH_OUT_PROGRESS:
 		return
 	for batch: BrewBatch in b.inventory.brew_batches.duplicate():
-		var bar: BarContact = _richest_bar_below(b, INF if batch.beer_style.is_alcohol_free() else float(b.get_effective_raid_threshold()))
+		var bar: BarContact = _richest_bar_below(b, INF if batch.is_alcohol_free() else float(b.get_effective_raid_threshold()))
 		if bar != null:
 			GUISignals.ship_batch_to_bar_requested.emit(batch, bar)
 			_inc("cash_out_ships")
