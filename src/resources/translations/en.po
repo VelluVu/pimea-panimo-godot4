@@ -3630,11 +3630,11 @@ msgstr ""
 "taste."
 
 #: src/resources/ingredients/malts/vienna_malt.tres
-msgid "Vienna mallas"
+msgid "Vienna-mallas"
 msgstr "Vienna Malt"
 
 #: src/resources/ingredients/malts/vienna_malt.tres
-msgid "Vienna mallasta"
+msgid "Vienna-mallasta"
 msgstr "Vienna malt"
 
 #: src/resources/ingredients/malts/wheat_malt.tres
