@@ -4,7 +4,8 @@
 
 [resource]
 script = ExtResource("1_brown")
-ebc = 45
+ebc = 150
+extract = 0.7
 id = 105
 name = "Ruskea mallas"
 name_partitive = "ruskeaa mallasta"

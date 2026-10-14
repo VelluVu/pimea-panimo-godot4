@@ -788,7 +788,7 @@ script = ExtResource("5_tipki")
 
 [node name="ShopItemLabel" type="Label" parent="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer/IngredientSelectionElementList/ShopTypeSelector/IngredientRow" unique_id=344108055]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(60, 0)
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 1

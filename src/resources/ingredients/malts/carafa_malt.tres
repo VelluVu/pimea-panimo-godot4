@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="MaltData" format=3]
+
+[ext_resource type="Script" uid="uid://glh0u5xmw6sx" path="res://src/brewing/malt_data.gd" id="1_malt"]
+
+[resource]
+script = ExtResource("1_malt")
+ebc = 1150
+extract = 0.65
+pack_grams = 100
+id = 113
+name = "Carafa"
+name_partitive = "Carafaa"
+description = "Kuorittu musta mallas: väriä ja pehmeää paahdetta ilman karvautta."
+base_price = 1
+metadata/_custom_type_script = "uid://dniwiyu5ynp71"

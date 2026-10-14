@@ -39,6 +39,13 @@ func _table() -> Dictionary:
 	}
 
 
+func _profiles(profile : HopData.FlavorProfile) -> Array[HopData.FlavorProfile]:
+	var profiles : Array[HopData.FlavorProfile] = []
+	if profile != HopData.FlavorProfile.NONE:
+		profiles.append(profile)
+	return profiles
+
+
 func _kinds(list : Array) -> Array[HopAddition.Kind]:
 	var kinds : Array[HopAddition.Kind] = []
 	kinds.assign(list)
@@ -47,7 +54,7 @@ func _kinds(list : Array) -> Array[HopAddition.Kind]:
 
 func test_the_most_bitter_hop_bitters() -> void:
 	var marks : Array[BoilMark] = HopRolesScript.assign({MAGNUM_ID: 20, CASCADE_ID: 30, MALT_ID: 5}, _table(),
-		_kinds([HopAddition.Kind.BITTERING, HopAddition.Kind.AROMA]), HopData.FlavorProfile.CITRUS)
+		_kinds([HopAddition.Kind.BITTERING, HopAddition.Kind.AROMA]), _profiles(HopData.FlavorProfile.CITRUS))
 	assert_eq(marks.size(), 2)
 	assert_eq(marks[0].kind, HopAddition.Kind.BITTERING)
 	assert_eq(marks[0].ingredient_id, MAGNUM_ID)
@@ -57,7 +64,7 @@ func test_the_most_bitter_hop_bitters() -> void:
 
 func test_the_preferred_flavour_goes_to_the_late_marks() -> void:
 	var marks : Array[BoilMark] = HopRolesScript.assign({MAGNUM_ID: 20, CITRA_ID: 10, CASCADE_ID: 10}, _table(),
-		_kinds([HopAddition.Kind.BITTERING, HopAddition.Kind.AROMA]), HopData.FlavorProfile.CITRUS)
+		_kinds([HopAddition.Kind.BITTERING, HopAddition.Kind.AROMA]), _profiles(HopData.FlavorProfile.CITRUS))
 	var aroma : Array = marks.filter(func(mark : BoilMark) -> bool: return mark.kind == HopAddition.Kind.AROMA)
 	assert_eq(aroma[0].ingredient_id, CASCADE_ID)
 	# Citra has no mark of its own, so it joins the last one.
@@ -66,7 +73,7 @@ func test_the_preferred_flavour_goes_to_the_late_marks() -> void:
 
 func test_one_hop_is_split_over_every_mark() -> void:
 	var marks : Array[BoilMark] = HopRolesScript.assign({CASCADE_ID: 31}, _table(),
-		_kinds([HopAddition.Kind.BITTERING, HopAddition.Kind.FLAVOR, HopAddition.Kind.AROMA]), HopData.FlavorProfile.CITRUS)
+		_kinds([HopAddition.Kind.BITTERING, HopAddition.Kind.FLAVOR, HopAddition.Kind.AROMA]), _profiles(HopData.FlavorProfile.CITRUS))
 	assert_eq(marks.size(), 3)
 	var total : int = 0
 	for mark : BoilMark in marks:
@@ -78,7 +85,7 @@ func test_one_hop_is_split_over_every_mark() -> void:
 
 func test_a_dose_too_small_to_split_drops_the_empty_marks() -> void:
 	var marks : Array[BoilMark] = HopRolesScript.assign({MAGNUM_ID: 20, CASCADE_ID: 2}, _table(),
-		_kinds([HopAddition.Kind.BITTERING, HopAddition.Kind.FLAVOR, HopAddition.Kind.AROMA, HopAddition.Kind.DRY_HOP]), HopData.FlavorProfile.CITRUS)
+		_kinds([HopAddition.Kind.BITTERING, HopAddition.Kind.FLAVOR, HopAddition.Kind.AROMA, HopAddition.Kind.DRY_HOP]), _profiles(HopData.FlavorProfile.CITRUS))
 	# 2 g over flavour, aroma and dry hop: a gram each to the first two, the dry hop dropped.
 	assert_eq(marks.size(), 3)
 	assert_true(marks.any(func(mark : BoilMark) -> bool: return mark.kind == HopAddition.Kind.AROMA))
@@ -90,26 +97,26 @@ func test_a_bittering_hop_on_an_aroma_mark_is_flagged() -> void:
 	var table : Dictionary = _table()
 	(table[MAGNUM_ID] as HopData).flavor_profile = HopData.FlavorProfile.NONE
 	var marks : Array[BoilMark] = HopRolesScript.assign({MAGNUM_ID: 30}, table,
-		_kinds([HopAddition.Kind.BITTERING, HopAddition.Kind.AROMA]), HopData.FlavorProfile.CITRUS)
+		_kinds([HopAddition.Kind.BITTERING, HopAddition.Kind.AROMA]), _profiles(HopData.FlavorProfile.CITRUS))
 	assert_false(marks[0].bittering_only, "bittering is its job")
 	assert_true(marks[1].bittering_only)
 
 
 func test_a_style_without_hop_marks_still_boils_its_hops() -> void:
-	var marks : Array[BoilMark] = HopRolesScript.assign({CASCADE_ID: 10}, _table(), _kinds([]), HopData.FlavorProfile.NONE)
+	var marks : Array[BoilMark] = HopRolesScript.assign({CASCADE_ID: 10}, _table(), _kinds([]), _profiles(HopData.FlavorProfile.NONE))
 	assert_eq(marks.size(), 1)
 	assert_eq(marks[0].kind, HopAddition.Kind.BITTERING)
 
 
 func test_no_hops_means_no_hop_marks() -> void:
 	var marks : Array[BoilMark] = HopRolesScript.assign({MALT_ID: 5}, _table(),
-		_kinds([HopAddition.Kind.BITTERING]), HopData.FlavorProfile.NONE)
+		_kinds([HopAddition.Kind.BITTERING]), _profiles(HopData.FlavorProfile.NONE))
 	assert_true(marks.is_empty())
 
 
 func test_spices_get_their_own_mark_and_the_dry_hop_comes_last() -> void:
 	var marks : Array[BoilMark] = HopRolesScript.assign({MAGNUM_ID: 20, CASCADE_ID: 20, CORIANDER_ID: 2}, _table(),
-		_kinds([HopAddition.Kind.BITTERING, HopAddition.Kind.DRY_HOP]), HopData.FlavorProfile.CITRUS)
+		_kinds([HopAddition.Kind.BITTERING, HopAddition.Kind.DRY_HOP]), _profiles(HopData.FlavorProfile.CITRUS))
 	assert_eq(marks.size(), 3)
 	assert_eq(marks[1].kind, HopAddition.Kind.SPICE)
 	assert_eq(marks[1].grams, 2)

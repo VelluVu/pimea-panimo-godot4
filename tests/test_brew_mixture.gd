@@ -11,6 +11,7 @@ const HOP_ID : int = 201 # alpha 100, beta 50
 const YEAST_ID : int = 301
 const SPICE_ID : int = 212
 const BITTERING_HOP_ID : int = 200 # alpha 100, no aroma
+const PACK_MALT_ID : int = 111 # EBC 1000, sold in 100 g packs
 
 
 func suite_name() -> String:
@@ -31,12 +32,17 @@ func _make_ingredients() -> Dictionary:
 	hop.flavor_profile = HopData.FlavorProfile.CITRUS
 	var yeast := YeastData.new()
 	yeast.type = IngredientData.IngredientType.YEAST
+	yeast.attentuation_percent = 75
+	var pack_malt := MaltData.new()
+	pack_malt.type = IngredientData.IngredientType.MALT
+	pack_malt.ebc = 1000
+	pack_malt.pack_grams = 100
 	var spice := IngredientData.new()
 	spice.type = IngredientData.IngredientType.SPICE
 	var bittering := HopData.new()
 	bittering.type = IngredientData.IngredientType.HOP
 	bittering.alpha_acids = 100
-	return {MALT_ID: malt, DARK_MALT_ID: dark, HOP_ID: hop, YEAST_ID: yeast, SPICE_ID: spice, BITTERING_HOP_ID: bittering}
+	return {MALT_ID: malt, DARK_MALT_ID: dark, HOP_ID: hop, YEAST_ID: yeast, SPICE_ID: spice, BITTERING_HOP_ID: bittering, PACK_MALT_ID: pack_malt}
 
 
 func _make_mixture(contents : Dictionary) -> BrewMixtureScript:
@@ -54,10 +60,10 @@ func _make_style(min_ebc : int, max_ebc : int, min_ibu : int, max_ibu : int) -> 
 	return beer_style
 
 
-func test_totals_average_ebc_by_weight() -> void:
+func test_colour_follows_morey_not_a_plain_average() -> void:
 	var mixture := _make_mixture({MALT_ID: 2, DARK_MALT_ID: 1, YEAST_ID: 1})
-	assert_eq(mixture.malt_weight, 3)
-	assert_eq(mixture.final_ebc, 27) # (10 * 2 + 60) / 3
+	assert_eq(mixture.malt_weight, 3.0)
+	assert_eq(mixture.final_ebc, 17, "a plain average would say 27")
 	assert_eq(mixture.yeast_id, YEAST_ID)
 
 
@@ -121,3 +127,35 @@ func test_spice_adds_no_bitterness() -> void:
 	assert_eq(mixture.final_ibu, 0)
 	assert_eq(mixture.hop_amount, 0)
 	assert_true(mixture.spice_ids.has(SPICE_ID))
+
+
+func test_packs_count_as_tenths_of_a_kilo() -> void:
+	var mixture := _make_mixture({MALT_ID: 3, PACK_MALT_ID: 2, YEAST_ID: 1})
+	assert_true(is_equal_approx(mixture.malt_weight, 3.2))
+	assert_gt(mixture.final_ebc, 30, "200 g of roast malt darkens 3 kg a lot")
+
+
+func test_abv_comes_from_the_grist_and_the_yeast() -> void:
+	var mixture := _make_mixture({MALT_ID: 3, YEAST_ID: 1})
+	assert_true(is_equal_approx(mixture.abv, 3.3), str(mixture.abv))
+	assert_true(is_equal_approx(_make_mixture({MALT_ID: 6, YEAST_ID: 1}).abv, 6.5), "twice the malt, twice the alcohol")
+
+
+func test_fits_checks_the_abv_range() -> void:
+	var mixture := _make_mixture({MALT_ID: 3, YEAST_ID: 1})
+	var style := _make_style(0, 30, 0, 0)
+	style.min_abv = 3.3
+	assert_true(mixture.fits(style), "the edge counts")
+	style.min_abv = 4.0
+	assert_false(mixture.fits(style))
+
+
+func test_base_share_is_the_part_of_the_malt_weight() -> void:
+	var mixture := _make_mixture({MALT_ID: 3, DARK_MALT_ID: 1, YEAST_ID: 1})
+	assert_eq(mixture.base_share([MALT_ID]), 0.75)
+	var style := _make_style(0, 999, 0, 0)
+	style.base_malt_ids = [MALT_ID]
+	style.min_base_share = 0.75
+	assert_true(mixture.fits(style))
+	style.min_base_share = 0.8
+	assert_false(mixture.fits(style), "too little of the base malt")

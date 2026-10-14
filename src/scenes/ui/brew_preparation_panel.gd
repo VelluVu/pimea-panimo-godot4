@@ -2,7 +2,7 @@ class_name BrewPreparationPanel
 extends PanelContainer
 
 
-const INGREDIENT_LABEL_WITH_TARGET_STRING : String = "%s: %d/%d %s"
+const INGREDIENT_LABEL_WITH_TARGET_STRING : String = "%s: %s/%s %s"
 const RECIPE_SAVED_TOAST_FORMAT : String = "Resepti \"%s\" tallennettu!"
 const REJECT_TOAST_STRING : String = "Tuntematon oluttyyli. Keitä se ensin selvittääksesi reseptin!"
 const NO_STYLE_TOAST_STRING : String = "Raaka-aineet eivät sovi mihinkään oluttyyliin."
@@ -136,12 +136,12 @@ func _update_table_list_ui() -> void:
 		var required : int = recipe_target.get(id, 0)
 
 		if required > 0:
-			label.text = INGREDIENT_LABEL_WITH_TARGET_STRING % [tr(ingredient.name), on_table, required, ingredient.get_unit_string()]
+			label.text = INGREDIENT_LABEL_WITH_TARGET_STRING % [tr(ingredient.name), ingredient.amount_text(on_table), ingredient.amount_text(required), ingredient.get_unit_string()]
 			label.tooltip_text = tr(ingredient.description)
 			label.modulate = Color.LIME_GREEN if on_table >= required else Color.ORANGE
 			label.visible = true
 		elif on_table > 0:
-			label.text = StringContainer.INGREDIENT_LABEL_WITH_STAT_STRING % [tr(ingredient.name), on_table, ingredient.get_unit_string(), ingredient.get_stat_string()]
+			label.text = StringContainer.INGREDIENT_LABEL_WITH_STAT_STRING % [tr(ingredient.name), ingredient.amount_text(on_table), ingredient.get_unit_string(), ingredient.get_stat_string()]
 			label.tooltip_text = tr(ingredient.description)
 			label.modulate = ingredient.get_color()
 			label.visible = true

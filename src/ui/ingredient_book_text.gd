@@ -25,7 +25,7 @@ static func type_header(type : IngredientData.IngredientType) -> String:
 
 ## `price` is per unit after perks; `reputation` is the run's current reputation.
 static func lines(ingredient : IngredientData, price : float, reputation : int) -> PackedStringArray:
-	var result : PackedStringArray = [UiText.of(PRICE_FORMAT) % [price, ingredient.get_unit_string()]]
+	var result : PackedStringArray = [UiText.of(PRICE_FORMAT) % [price, ingredient.get_pack_string()]]
 	if ingredient.min_reputation > reputation:
 		result.append(UiText.of(LOCKED_FORMAT) % ingredient.min_reputation)
 	if not ingredient.description.is_empty():

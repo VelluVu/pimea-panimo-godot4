@@ -20,7 +20,7 @@ var piece_ids : Array[int] = []
 ## Ingredient id -> display name, for the sacks.
 var names : Dictionary = {}
 ## All the malts together, for the malt sack.
-var malt_kg : int = 0
+var malt_kg : float = 0.0
 
 
 ## `table` maps ingredient id -> IngredientData.
@@ -34,7 +34,7 @@ static func create(style : BeerStyle, contents : Dictionary, table : Dictionary,
 	# Wheat has no husk to keep the mash loose, so it clumps more.
 	if int(contents.get(WHEAT_MALT_ID, 0)) > 0:
 		plan.dough_in_clumps += MashSession.WHEAT_EXTRA_CLUMPS
-	for mark : BoilMark in HopRoles.assign(contents, table, style.hop_additions, style.preferred_hop_profile):
+	for mark : BoilMark in HopRoles.assign(contents, table, style.hop_additions, style.preferred_hop_profiles):
 		if BoilSchedule.is_in_boil(mark.kind):
 			plan.marks.append(mark)
 	for id : int in contents:
@@ -43,7 +43,7 @@ static func create(style : BeerStyle, contents : Dictionary, table : Dictionary,
 			continue
 		plan.names[id] = data.name
 		if data.type == IngredientData.IngredientType.MALT:
-			plan.malt_kg += int(contents[id])
+			plan.malt_kg += (data as MaltData).kg(int(contents[id])) if data is MaltData else float(contents[id])
 		if data.unit == IngredientData.UnitType.PIECE:
 			plan.piece_ids.append(id)
 	return plan

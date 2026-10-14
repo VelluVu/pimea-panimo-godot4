@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="HopData" format=3]
+
+[ext_resource type="Script" uid="uid://ccv8ohajnmhif" path="res://src/brewing/hop_data.gd" id="1_hop"]
+
+[resource]
+script = ExtResource("1_hop")
+alpha_acids = 5
+beta_acids = 3
+flavor_profile = 5
+id = 215
+name = "Styrian Golding -humala"
+description = "Slovenialainen maanläheinen aromihumala, jossa on valkopippuria ja yrttejä."
+base_price = 3
+unit = 1
+type = 1
+min_reputation = 15
+metadata/_custom_type_script = "uid://dniwiyu5ynp71"

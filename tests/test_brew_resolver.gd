@@ -45,11 +45,12 @@ func _make_ingredients() -> Dictionary:
 	yeast.id = YEAST_ID
 	yeast.type = IngredientData.IngredientType.YEAST
 	yeast.base_price = 5
+	yeast.attentuation_percent = 75
 
 	var alcohol_free_yeast := YeastData.new()
 	alcohol_free_yeast.id = ALCOHOL_FREE_YEAST_ID
 	alcohol_free_yeast.type = IngredientData.IngredientType.YEAST
-	alcohol_free_yeast.alcohol_free = true
+	alcohol_free_yeast.attentuation_percent = 8
 
 	return {MALT_LIGHT_ID: light, MALT_DARK_ID: dark, HOP_ID: hop, YEAST_ID: yeast, ALCOHOL_FREE_YEAST_ID: alcohol_free_yeast}
 
@@ -60,20 +61,22 @@ func _make_style(style : BeerStyle.Style, min_ibu : int, max_ibu : int, hop_prof
 	beer_style.required_yeast_id = YEAST_ID
 	beer_style.min_malt_weight = 3
 	beer_style.min_ebc = 0
-	beer_style.max_ebc = 30
+	beer_style.max_ebc = 20
 	beer_style.min_ibu = min_ibu
 	beer_style.max_ibu = max_ibu
-	beer_style.preferred_hop_profile = hop_profile
+	if hop_profile != HopData.FlavorProfile.NONE:
+		beer_style.preferred_hop_profiles = [hop_profile]
 	return beer_style
 
 
 func _make_resolver() -> BrewResolverScript:
 	var resolver := BrewResolverScript.new()
 	resolver.use_ingredients(_make_ingredients())
-	var styles : Array[BeerStyle] = [
-		_make_style(BeerStyle.Style.KOTIKALJA, 0, 0),
-		_make_style(BeerStyle.Style.IPA, 20, 100, HopData.FlavorProfile.CITRUS),
-	]
+	var kotikalja := _make_style(BeerStyle.Style.KOTIKALJA, 0, 0)
+	kotikalja.reference_recipe = {MALT_LIGHT_ID: 3, YEAST_ID: 1}
+	var ipa := _make_style(BeerStyle.Style.IPA, 20, 100, HopData.FlavorProfile.CITRUS)
+	ipa.reference_recipe = {MALT_LIGHT_ID: 3, HOP_ID: 3, YEAST_ID: 1}
+	var styles : Array[BeerStyle] = [kotikalja, ipa]
 	resolver.active_styles = styles
 	return resolver
 
@@ -103,23 +106,55 @@ func test_resolve_rejects_a_brew_without_yeast() -> void:
 
 
 func test_resolve_out_of_range_ebc_returns_the_failed_fallback() -> void:
-	# 3 x dark malt -> EBC 60, outside both styles' 0..30 window.
+	# 3 kg of the EBC 60 malt colours the beer to EBC 30 (Morey), past both styles' 20.
 	var result : BrewResult = _make_resolver().resolve_brew_style({MALT_DARK_ID: 3, YEAST_ID: 1})
 	assert_false(result.is_matched)
-	assert_eq(result.final_ebc, 60)
+	assert_eq(result.final_ebc, 30)
 	assert_eq(result.reputation_change, -1)
 	assert_eq(result.beer_style.style, BeerStyle.Style.KOTIKALJA)
-	assert_eq(result.abv, result.beer_style.abv)
 
 
-func test_failed_brew_with_alcohol_free_yeast_is_alcohol_free_kotikalja() -> void:
-	var resolver := _make_resolver()
-	resolver.get_beer_style(BeerStyle.Style.KOTIKALJA).abv = 2.8
-	var result : BrewResult = resolver.resolve_brew_style({MALT_LIGHT_ID: 3, ALCOHOL_FREE_YEAST_ID: 1})
+func test_a_brew_gets_the_abv_of_its_grist() -> void:
+	# 3 kg at extract 0.8: 33.2 gravity points; ale yeast ferments 75 % of them.
+	var result : BrewResult = _make_resolver().resolve_brew_style({MALT_LIGHT_ID: 3, YEAST_ID: 1})
+	assert_true(is_equal_approx(result.abv, 3.3), str(result.abv))
+
+
+func test_failed_brew_with_alcohol_free_yeast_stays_alcohol_free() -> void:
+	var result : BrewResult = _make_resolver().resolve_brew_style({MALT_LIGHT_ID: 3, ALCOHOL_FREE_YEAST_ID: 1})
 	assert_false(result.is_matched)
 	assert_eq(result.beer_style.style, BeerStyle.Style.KOTIKALJA)
-	assert_eq(result.abv, BrewResolverScript.ALCOHOL_FREE_FALLBACK_ABV)
 	assert_true(result.abv <= BeerStyle.ALCOHOL_FREE_MAX_ABV)
+
+
+func test_a_brew_outside_the_abv_range_does_not_match() -> void:
+	var resolver := _make_resolver()
+	resolver.get_beer_style(BeerStyle.Style.KOTIKALJA).max_abv = 3.0
+	assert_false(resolver.resolve_brew_style({MALT_LIGHT_ID: 3, YEAST_ID: 1}).is_matched, "3.3 % is too strong")
+
+
+func test_minimum_ingredients_are_the_reference_recipe() -> void:
+	var resolver := _make_resolver()
+	assert_eq(resolver.compute_minimum_ingredients(resolver.get_beer_style(BeerStyle.Style.IPA)), {MALT_LIGHT_ID: 3, HOP_ID: 3, YEAST_ID: 1})
+
+
+func test_a_reference_recipe_that_brews_another_style_gives_nothing() -> void:
+	var resolver := _make_resolver()
+	var ipa : BeerStyle = resolver.get_beer_style(BeerStyle.Style.IPA)
+	ipa.reference_recipe = {MALT_LIGHT_ID: 3, YEAST_ID: 1}
+	assert_eq(resolver.compute_minimum_ingredients(ipa), {})
+
+
+func test_styles_with_a_required_ingredient_are_checked_first() -> void:
+	var resolver := _make_resolver()
+	var wants_dark := _make_style(BeerStyle.Style.SAHTI, 0, 0)
+	wants_dark.required_malt_id = MALT_DARK_ID
+	var has_base := _make_style(BeerStyle.Style.HELLES, 0, 0)
+	has_base.base_malt_ids = [MALT_LIGHT_ID]
+	var styles : Array[BeerStyle] = [resolver.get_beer_style(BeerStyle.Style.KOTIKALJA), has_base, wants_dark]
+	resolver.active_styles = styles
+	resolver.prioritize_styles()
+	assert_eq(resolver.active_styles.map(func(s : BeerStyle) -> BeerStyle.Style: return s.style), [BeerStyle.Style.SAHTI, BeerStyle.Style.HELLES, BeerStyle.Style.KOTIKALJA])
 
 
 func test_style_cost_includes_ingredients_and_flat_consumables() -> void:

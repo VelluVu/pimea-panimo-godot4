@@ -50,8 +50,8 @@ func _on_buy_ingredient(ingredient_id : int, amount : int) -> void:
 
 
 func _track_tutorial_purchase(ingredient : IngredientData, amount : int) -> void:
-	if ingredient.type == IngredientData.IngredientType.MALT:
-		brewery.lifetime_malt_kg_bought += amount
+	if ingredient is MaltData:
+		brewery.lifetime_malt_kg_bought += floori((ingredient as MaltData).kg(amount))
 		return
 
 	var kotikalja : BeerStyle = brewery.resolver.get_beer_style(BeerStyle.Style.KOTIKALJA)

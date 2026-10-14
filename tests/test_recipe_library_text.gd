@@ -24,8 +24,12 @@ func _make_style() -> BeerStyle:
 
 func test_known_row_shows_the_name_abv_and_exact_ranges() -> void:
 	var text : String = RecipeLibraryTextScript.known_row(_make_style(), "Lagerhiiva", "")
-	assert_true(text.begins_with("Testiolut\n4.5% ABV, EBC 11-14, IBU 14-20"))
-	assert_true(text.contains("Lagerhiiva"))
+	assert_true(text.begins_with("Testiolut\n4.5% ABV, hiiva: Lagerhiiva\nEBC 11-14, IBU 14-20"))
+
+
+func test_value_range_shows_an_open_upper_limit_as_plus() -> void:
+	assert_eq(RecipeLibraryTextScript.value_range(11, 14), "11-14")
+	assert_eq(RecipeLibraryTextScript.value_range(0, RecipeLibraryTextScript.NO_UPPER_LIMIT), "0+")
 
 
 func test_known_row_adds_hop_and_malt_hints_only_when_the_style_has_them() -> void:
@@ -34,7 +38,7 @@ func test_known_row_adds_hop_and_malt_hints_only_when_the_style_has_them() -> vo
 	assert_false(plain.contains("Vaadittu mallas"), "no required malt id, so the name is ignored")
 
 	var beer_style := _make_style()
-	beer_style.preferred_hop_profile = HopData.FlavorProfile.CITRUS
+	beer_style.preferred_hop_profiles = [HopData.FlavorProfile.CITRUS]
 	beer_style.required_malt_id = 103
 	var hinted : String = RecipeLibraryTextScript.known_row(beer_style, "Y", "Vehnämallas")
 	assert_true(hinted.contains("Suosikkihumala"))

@@ -4,8 +4,7 @@
 
 [resource]
 script = ExtResource("1_alklager")
-attentuation_percent = 15
-alcohol_free = true
+attentuation_percent = 8
 id = 304
 name = "Alkoholiton lagerhiiva"
 description = "Erikoishiiva, joka pysäyttää käymisen ennen kuin alkoholia ehtii syntyä juuri lainkaan."

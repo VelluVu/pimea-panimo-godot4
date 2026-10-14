@@ -7,14 +7,15 @@ extends RefCounted
 ## spoils nothing, and the malt weight is only a floor. The color and bitterness hints are
 ## coarse buckets, see BeerStyle.get_color_hint() and get_bitterness_hint().
 
-## The name gets a line of its own so the list reads at a glance.
-const KNOWN_ROW_FORMAT : String = "%s\n%.1f%% ABV, EBC %s-%s, IBU %s-%s, hiiva: %s"
+## The name gets a line of its own so the list reads at a glance, and the numbers are split
+## over short lines that stay readable on a phone.
+const KNOWN_ROW_FORMAT : String = "%s\n%.1f%% ABV, hiiva: %s\nEBC %s, IBU %s"
 const SAVED_RECIPES_HINT_FORMAT : String = "Tallennettuja reseptejä: %d"
 const KNOWN_HEADER_FORMAT : String = "Löydetyt tyylit (%d/%d)"
 const LOCKED_HEADER_FORMAT : String = "Löytämättömät tyylit (%d)"
-const LOCKED_ROW_FORMAT : String = "??? (%.1f%% ABV) – vaatii: hiiva %s, vähintään %d kg mallasta"
+const LOCKED_ROW_FORMAT : String = "??? (%.1f%% ABV)\nVaatii: hiiva %s, vähintään %d kg mallasta"
 ## The hints below each go on their own line under the row.
-const HOP_HINT_FORMAT : String = "Suosikkihumala: %s"
+const HOP_HINT_FORMAT : String = "Suosikkihumalat: %s"
 const MALT_HINT_FORMAT : String = "Vaadittu mallas: %s"
 const REQUIRED_SPICE_HINT_FORMAT : String = "Vaatii myös: %s"
 const PREFERRED_SPICES_HINT_FORMAT : String = "Sopivat mausteet: %s"
@@ -23,7 +24,9 @@ const COLOR_HINT_FORMAT : String = "Väri: %s"
 const BITTERNESS_HINT_FORMAT : String = "Katkeruus: %s"
 const MALT_BLEND_HINT : String = "Vaatii mallasseoksen"
 const NEW_CUSTOMER_HINT : String = "Houkuttelee uuden asiakkaan"
-const MASTER_HINT_FORMAT : String = "Aatun vinkki: EBC %d-%d, IBU %d-%d"
+const MASTER_HINT_FORMAT : String = "Aatun vinkki: EBC %s, IBU %s"
+## BeerStyle's default max_ebc/max_ibu: the style sets no upper limit.
+const NO_UPPER_LIMIT : int = 999
 
 
 static func known_section_title(known_count : int, total_count : int) -> String:
@@ -36,9 +39,8 @@ static func locked_section_title(locked_count : int) -> String:
 
 static func known_row(beer_style : BeerStyle, yeast_name : String, required_malt_name : String, required_spice_name : String = "", preferred_spice_names : String = "", saved_recipe_count : int = 0) -> String:
 	var text : String = UiText.of(KNOWN_ROW_FORMAT) % [
-		UiText.of(beer_style.style_name), beer_style.abv,
-		beer_style.min_ebc, beer_style.max_ebc, beer_style.min_ibu, beer_style.max_ibu,
-		yeast_name,
+		UiText.of(beer_style.style_name), beer_style.abv, yeast_name,
+		value_range(beer_style.min_ebc, beer_style.max_ebc), value_range(beer_style.min_ibu, beer_style.max_ibu),
 	]
 	text += _hop_and_malt_hints(beer_style, required_malt_name, required_spice_name)
 	if beer_style.forbids_spices:
@@ -63,14 +65,24 @@ static func locked_row(beer_style : BeerStyle, yeast_name : String, required_mal
 	if attracts_new_customer:
 		text += "\n" + UiText.of(NEW_CUSTOMER_HINT)
 	if hinted:
-		text += "\n" + UiText.of(MASTER_HINT_FORMAT) % [beer_style.min_ebc, beer_style.max_ebc, beer_style.min_ibu, beer_style.max_ibu]
+		text += "\n" + UiText.of(MASTER_HINT_FORMAT) % [value_range(beer_style.min_ebc, beer_style.max_ebc), value_range(beer_style.min_ibu, beer_style.max_ibu)]
 	return text
+
+
+## "11-14", or "0+" when the style sets no upper limit.
+static func value_range(min_value : int, max_value : int) -> String:
+	if max_value >= NO_UPPER_LIMIT:
+		return "%d+" % min_value
+	return "%d-%d" % [min_value, max_value]
 
 
 static func _hop_and_malt_hints(beer_style : BeerStyle, required_malt_name : String, required_spice_name : String) -> String:
 	var text : String = ""
-	if beer_style.preferred_hop_profile != HopData.FlavorProfile.NONE:
-		text += "\n" + UiText.of(HOP_HINT_FORMAT) % HopData.get_flavor_profile_display_name(beer_style.preferred_hop_profile)
+	if not beer_style.preferred_hop_profiles.is_empty():
+		var names : PackedStringArray = []
+		for profile : HopData.FlavorProfile in beer_style.preferred_hop_profiles:
+			names.append(HopData.get_flavor_profile_display_name(profile))
+		text += "\n" + UiText.of(HOP_HINT_FORMAT) % ", ".join(names)
 	if beer_style.required_malt_id != BrewMixture.NO_REQUIRED_MALT:
 		text += "\n" + UiText.of(MALT_HINT_FORMAT) % required_malt_name
 	if beer_style.required_spice_id != BrewMixture.NO_REQUIRED_SPICE:

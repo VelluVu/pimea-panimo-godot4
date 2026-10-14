@@ -1,7 +1,7 @@
 class_name BrewingView
 extends Control
 
-const AMOUNT_FORMAT : String = "%d %s"
+const AMOUNT_FORMAT : String = "%s %s"
 const FILL_FROM_INVENTORY_BUTTON_TEXT : String = "Täytä resepti"
 ## Same height as the scene's other buttons, a comfortable finger target.
 const FILL_BUTTON_HEIGHT : float = 26.0
@@ -160,7 +160,7 @@ func _update_label() -> void:
 	if ingredient == null:
 		return
 
-	current_item_label.text = AMOUNT_FORMAT % [int(main_slider.value), ingredient.get_unit_string()]
+	current_item_label.text = AMOUNT_FORMAT % [ingredient.amount_text(int(main_slider.value)), ingredient.get_unit_string()]
 
 
 func _on_add_button_pressed() -> void:

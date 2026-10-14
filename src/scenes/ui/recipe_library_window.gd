@@ -10,12 +10,15 @@ const RECIPE_ROW_LOAD_BUTTON_TEXT : String = "Lataa"
 const BACK_BUTTON_TEXT : String = "< Takaisin"
 
 const NO_STYLE_SELECTED : int = -1
-const ROW_FONT_SIZE : int = 14
+## m5x7 is pixel-crisp only at multiples of 16; any other size smears on a phone.
+const ROW_FONT_SIZE : int = 16
+## Muted against the known rows but still readable on the dark panel.
+const LOCKED_ROW_COLOR : Color = Color(0.72, 0.66, 0.55)
 const RECIPE_BORDER_WIDTH : int = 2
 const RECIPE_CORNER_RADIUS : int = 4
 const RECIPE_BREWABLE_BORDER_COLOR : Color = Color(0.3, 0.85, 0.35)
 const RECIPE_MISSING_BORDER_COLOR : Color = Color(0.5, 0.5, 0.5)
-const SECTION_FONT_SIZE : int = 17
+const SECTION_FONT_SIZE : int = 16
 const SECTION_COLOR : Color = Color(0.949, 0.788, 0.42)
 
 @onready var title_label : Label = %TitleLabel
@@ -146,7 +149,7 @@ func _build_locked_style_row(brewery : Brewery, beer_style : BeerStyle) -> Label
 	row.add_theme_font_size_override("font_size", ROW_FONT_SIZE)
 	var attracts_new_customer : bool = not MetaProgressManager.has_style(beer_style.style) and CustomerRegistry.is_style_customer_gate(beer_style.style)
 	row.text = RecipeLibraryText.locked_row(beer_style, _ingredient_name(beer_style.required_yeast_id), _required_malt_name(beer_style), needs_malt_blend, _required_spice_name(beer_style), attracts_new_customer, brewery.hinted_styles.has(beer_style.style))
-	row.modulate = Color.DIM_GRAY
+	row.add_theme_color_override("font_color", LOCKED_ROW_COLOR)
 	return row
 
 

@@ -15,6 +15,7 @@ func _result(matched : bool) -> BrewResult:
 	result.is_matched = matched
 	result.final_ebc = 12
 	result.final_ibu = 15
+	result.abv = 4.6
 	result.original_quality = 1.2
 	var beer_style := BeerStyle.new()
 	beer_style.style_name = "Witbier"
@@ -32,7 +33,7 @@ func test_unbrewable_table_names_the_minimum() -> void:
 
 func test_no_match_shows_the_numbers() -> void:
 	var text : String = BrewPreviewTextScript.text(false, _result(false), false)
-	assert_true(text.contains("Ei täsmää") and text.contains("EBC 12") and text.contains("IBU 15"))
+	assert_true(text.contains("Ei täsmää") and text.contains("EBC 12") and text.contains("IBU 15") and text.contains("4.6 % ABV"))
 
 
 func test_unknown_style_keeps_its_name_secret() -> void:

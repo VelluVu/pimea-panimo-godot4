@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="HopData" format=3]
+
+[ext_resource type="Script" uid="uid://ccv8ohajnmhif" path="res://src/brewing/hop_data.gd" id="1_hop"]
+
+[resource]
+script = ExtResource("1_hop")
+alpha_acids = 8
+beta_acids = 4
+flavor_profile = 4
+id = 214
+name = "Perle-humala"
+description = "Saksalainen jalohumala, mausteinen ja minttuinen. Käy sekä katkeroksi että aromiksi."
+base_price = 3
+unit = 1
+type = 1
+min_reputation = 15
+metadata/_custom_type_script = "uid://dniwiyu5ynp71"

@@ -1,8 +1,8 @@
 class_name StylePricing
 extends RefCounted
 
-## What a style costs to make and what it sells for. Results are cached per style,
-## because the hop search behind the cost is brute force.
+## What a style costs to make and what it sells for, from its reference recipe. Results
+## are cached per style.
 
 ## Share of a batch's raw bottles lost to breakage, in real batches and in the cost.
 const BOTTLE_LOSS_RATE : float = 0.05
@@ -87,16 +87,6 @@ func price_breakdown(beer_style : BeerStyle) -> SaleBreakdown:
 	return breakdown
 
 
-## The cheapest malt combo, the required yeast and the cheapest hop dose that clear the
-## style's ranges. Deliberately not BrewResolver.compute_minimum_ingredients(), which
-## aims further into the IBU window and adds a flavour hop, so it costs a little more.
+## What the style's reference recipe costs at base prices.
 func _cheapest_recipe_cost(beer_style : BeerStyle) -> int:
-	var cost : int = _ingredients.combo_cost(_ingredients.find_malt_combo(beer_style))
-
-	var yeast_data : IngredientData = _ingredients.table().get(beer_style.required_yeast_id)
-	if yeast_data != null:
-		cost += yeast_data.base_price
-
-	if beer_style.min_ibu > 0:
-		cost += _ingredients.combo_cost(RecipeSearch.find_cheapest_hop_dose(_ingredients.all_hops(), beer_style.min_ibu, beer_style.max_ibu))
-	return cost
+	return _ingredients.combo_cost(beer_style.reference_recipe)

@@ -27,6 +27,9 @@ enum Style {
 	ALKOHOLITON_LAGER,
 	SAHTI,
 	MAITOSTOUT,
+	RAUCHBIER,
+	ROGGENBIER,
+	IRISH_DRY_STOUT,
 }
 
 @export var style_name: String = "Uusi oluttyyli"
@@ -46,14 +49,27 @@ enum Style {
 @export var preferred_spice_ids: Array[int] = []
 ## German styles keep the Reinheitsgebot: any spice costs BrewQuality.PURITY_LAW_PENALTY.
 @export var forbids_spices: bool = false
-@export var preferred_hop_profile: HopData.FlavorProfile = HopData.FlavorProfile.NONE
+## The grist's backbone: these malts together make at least min_base_share of the malt
+## weight (Märzen is mostly Münchenin, Hefeweizen mostly wheat). Empty = any grist.
+@export var base_malt_ids: Array[int] = []
+@export_range(0.0, 1.0, 0.05) var min_base_share: float = 0.0
+## Late hops with any of these profiles earn the flavour bonus, see BrewQuality.
+@export var preferred_hop_profiles: Array[HopData.FlavorProfile] = []
 ## Hop-forward ales: brewed with only bittering hops (no flavour profile, like
 ## Magnum) the beer is not this style, since it has no hop aroma at all.
 @export var requires_aroma_hop: bool = false
 
 @export_group("Alkoholi")
-## Percent, e.g. 5.2 = 5.2 %. Shown on bottles and receipts; does not affect price.
+## The style's typical strength, for the book and events. A batch's real ABV comes from
+## its grist (BrewBatch.abv), and must land inside min_abv-max_abv.
 @export var abv: float = 5.0
+@export var min_abv: float = 0.0
+@export var max_abv: float = 99.0
+
+@export_group("Resepti")
+## The style's reference recipe (id -> amount): it seeds the default recipe and sets the
+## cost price, and a test checks it brews this style.
+@export var reference_recipe: Dictionary[int, int] = {}
 
 ## At or under this ABV a style is alcohol-free: the LVV has no interest in it.
 const ALCOHOL_FREE_MAX_ABV: float = 0.5
@@ -61,6 +77,18 @@ const ALCOHOL_FREE_MAX_ABV: float = 0.5
 
 func is_alcohol_free() -> bool:
 	return abv <= ALCOHOL_FREE_MAX_ABV
+
+
+## Checked in this order: styles defined by a required ingredient first, then those
+## defined by their base malts, then the rest, so the most specific style wins.
+func match_priority() -> int:
+	if required_malt_id != BrewMixture.NO_REQUIRED_MALT or required_spice_id != BrewMixture.NO_REQUIRED_SPICE:
+		return 0
+	return 1 if not base_malt_ids.is_empty() else 2
+
+
+func has_preferred_hop_profile(profile : HopData.FlavorProfile) -> bool:
+	return profile != HopData.FlavorProfile.NONE and preferred_hop_profiles.has(profile)
 
 @export_group("Talous")
 ## Scales StylePricing.PROFIT_MARKUP_RATE, so laborious styles (IPA, Imperial Stout,
@@ -158,4 +186,7 @@ static func get_style_string_from_style(new_style : BeerStyle.Style) -> String:
 		Style.ALKOHOLITON_LAGER: return UiText.of(StringContainer.ALKOHOLITONLAGER)
 		Style.SAHTI: return UiText.of(StringContainer.SAHTI)
 		Style.MAITOSTOUT: return UiText.of(StringContainer.MAITOSTOUT)
+		Style.RAUCHBIER: return UiText.of(StringContainer.RAUCHBIER)
+		Style.ROGGENBIER: return UiText.of(StringContainer.ROGGENBIER)
+		Style.IRISH_DRY_STOUT: return UiText.of(StringContainer.IRISH_DRY_STOUT)
 		_: return UiText.of(StringContainer.TUNTEMATON)

@@ -5,6 +5,7 @@
 [resource]
 script = ExtResource("1_wheat")
 ebc = 4
+extract = 0.82
 id = 103
 name = "Vehnämallas"
 name_partitive = "vehnämallasta"

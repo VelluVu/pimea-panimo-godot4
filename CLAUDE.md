@@ -15,7 +15,7 @@ Five top-level folders: `addons/`, `assets/`, `src/`, `tests/` and `dev/`. Every
   - `src/scenes/` — Scenes and the scripts bound to their nodes (`main.tscn`, `customer.tscn`, `ui/` windows and panels). Keep these scripts thin; the logic lives in the folders below.
   - `src/autoload/` — Autoloads: the signal buses (`BrewerySignals`, `GUISignals`), registries and managers of cross-run state
   - One folder per gameplay system for its scripts (data classes, services, pure rules). New scripts go in the folder of the system they belong to:
-    - `src/brewing/` — recipes, ingredients, `BrewResolver` and its parts (`BrewMixture`, `BrewQuality`, `StylePricing`, `IngredientSource`), `RecipeSearch`, brewing, inventory
+    - `src/brewing/` — recipes, ingredients, `BrewResolver` and its parts (`BrewMixture`, `BrewFormulas`, `BrewQuality`, `StylePricing`, `IngredientSource`), brewing, inventory
     - `src/brewery/` — the `Brewery` run state and its services (raids, distribution, day rules)
     - `src/customers/` — customers, spawning, group visits, sales
     - `src/events/` — special, day and immersion events
@@ -26,7 +26,7 @@ Five top-level folders: `addons/`, `assets/`, `src/`, `tests/` and `dev/`. Every
   - `src/systems/` — Reusable systems, one self-contained folder each (`achievements/`, `audio/`, `dialog/`, `console/`, `goals/`, `input/`, `save/`, `settings/`, `toast/`, `tooltip/`, `toolkit/`). Copy a folder to another project and edit its `*_wiring.gd`. See the rule under Architecture.
   - `src/resources/` — All game content as custom `.tres` resources, one folder per type (`customers/`, `beer_styles/`, `ingredients/`, `perks/`, `daily_goals/`, ...), plus the `ResourceFolder` loader
 - `res://tests/` — Unit tests, one `test_<class>.gd` per class (the test runner only looks here)
-- `res://dev/` — Everything for developing, not shipped: `tools/` (scripts, see Tools), `docs/` (design references such as `beer_styles_reference.txt`) and `notes/` (local playtest notes, gitignored)
+- `res://dev/` — Everything for developing, not shipped: `tools/` (scripts, see Tools), `docs/` (design references such as `brewing_rework.md`, the brewing formulas and every style) and `notes/` (local playtest notes, gitignored)
 
 ## Architecture
 - **Architecture:** Component-based architecture. The UI (GUI) must remain decoupled from game logic; use local and global Signals to communicate between them. 
