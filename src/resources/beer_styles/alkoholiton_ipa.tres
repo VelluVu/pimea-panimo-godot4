@@ -6,6 +6,7 @@
 script = ExtResource("1_alkipa")
 style_name = "Alkoholiton IPA"
 description = "Kaikki IPA:n humalat ilman humalaa päässä. Kuski kiittää, eikä LVV jaksa kiinnostua."
+locked_hint = "Humalainen ale ilman alkoholia, keitetty erikoishiivalla."
 style = 20
 fixed_price_per_bottle = 3.5
 reputation_change = 2

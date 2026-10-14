@@ -6,6 +6,7 @@
 script = ExtResource("1_12rbt")
 style_name = "Bulkkilager"
 description = "Vaalea ja puhdas lager, jota juodaan enemmän kuin maistellaan. Kaikki kehuvat käsityöoluita, mutta tätä kuluu eniten."
+locked_hint = "Vaalea ja helppo lager, jota kaupan hyllyt notkuvat. Juodaan kylmänä ja paljon."
 style = 1
 fixed_price_per_bottle = 2.0
 reputation_change = 3

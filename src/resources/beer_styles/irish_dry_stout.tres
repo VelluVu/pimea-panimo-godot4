@@ -6,6 +6,7 @@
 script = ExtResource("1_style")
 style_name = "Irish Dry Stout"
 description = "Irlantilainen kuiva stout: musta, kevyt ja paahteinen. Paahdettu ohra antaa sille terävän kahvisen katkeron, jota juodaan sateella."
+locked_hint = "Irlantilainen kuiva ja kevyt musta olut, katkeroa paahdetusta ohrasta."
 style = 26
 fixed_price_per_bottle = 3.5
 reputation_change = 4

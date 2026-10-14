@@ -6,6 +6,7 @@
 script = ExtResource("1_hefeweizen")
 style_name = "Hefeweizen"
 description = "Baijerilainen vehnäolut, jonka hiiva tuoksuu banaanilta ja neilikalta. Samea kuin syysaamu ja raikas kuin kesäpäivä."
+locked_hint = "Baijerilainen samea vehnäolut, joka tuoksuu banaanilta ja neilikalta."
 forbids_spices = true
 style = 11
 profit_margin_multiplier = 1.1

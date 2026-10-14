@@ -138,3 +138,12 @@ func test_value_range_shows_an_open_upper_limit_as_plus() -> void:
 func test_section_titles_show_the_counts() -> void:
 	assert_eq(RecipeLibraryTextScript.known_section_title(3, 27), "Löydetyt tyylit (3/27)")
 	assert_eq(RecipeLibraryTextScript.locked_section_title(24), "Löytämättömät tyylit (24)")
+
+
+func test_a_locked_page_leads_with_its_hint_and_never_the_description() -> void:
+	var entry := _entry(false)
+	entry.beer_style.description = "Kuvaus oluesta."
+	assert_false(_page(entry).contains("Kuvaus oluesta."), "the description waits for the discovery")
+	entry.beer_style.locked_hint = "Vihje oluesta."
+	assert_true(_page(entry).begins_with("Vihje oluesta."))
+	assert_false(_page(_entry()).contains("Vihje"), "a known page has no hint")

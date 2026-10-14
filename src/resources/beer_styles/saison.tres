@@ -6,6 +6,7 @@
 script = ExtResource("1_saison")
 style_name = "Saison"
 description = "Belgialaisten maatilojen kesäolut, keitetty pellolla raataville. Kuiva, mausteinen ja yllättävän vahva sadonkorjuujuomaksi."
+locked_hint = "Belgialaisten maatilojen kuiva ja mausteinen kesäolut."
 preferred_spice_ids = Array[int]([401, 402])
 style = 14
 profit_margin_multiplier = 1.15

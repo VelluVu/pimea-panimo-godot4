@@ -6,6 +6,7 @@
 script = ExtResource("1_sessionale")
 style_name = "Session Ale"
 description = "Mieto ja humalainen ale pitkään iltaan. Vehnä pehmentää, myöhäiset humalat tuoksuvat, eikä aamu tunnu kamalalta."
+locked_hint = "Mieto ja humalainen ale pitkään iltaan, pehmennetty vehnällä."
 style = 13
 fixed_price_per_bottle = 2.2
 shelf_life_days = 20
