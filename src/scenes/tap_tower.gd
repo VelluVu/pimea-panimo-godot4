@@ -1,9 +1,9 @@
 class_name TapTower
 extends Node2D
 
-## The tap tower on the bar counter: one handle per batch on serve, each tinted with its
-## beer's colour, on a crossbar that widens with the taps (TapLayout). Drawn from the
-## tap art's parts, at the size of the old single sprite.
+## The tap tower on the bar counter: one tap per keg the brewery owns, on a crossbar that
+## widens with them (TapLayout). Batches on serve take the taps from the left, each handle
+## tinted with its beer's colour; spare taps stay grey. Drawn from the tap art's parts.
 
 const BAR_LEFT : Texture2D = preload("res://assets/textures/tap/tap_bar_left.png")
 const BAR_SEGMENT : Texture2D = preload("res://assets/textures/tap/tap_bar_segment.png")
@@ -25,6 +25,7 @@ const TRAY_TOP : int = 41 - 24
 ## An unused tap's handle.
 const IDLE_HANDLE_COLOR : Color = Color("8b9bb4")
 
+var _taps : int = 1
 var _colors : Array[Color] = []
 
 
@@ -32,14 +33,15 @@ func _ready() -> void:
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 
 
-## One colour per batch on serve, in tap order.
-func set_taps(colors : Array[Color]) -> void:
-	_colors = colors.slice(0, TapLayout.MAX_TAPS)
+## `kegs` owned, and one colour per batch on serve in tap order.
+func set_taps(kegs : int, colors : Array[Color]) -> void:
+	_taps = TapLayout.tap_count(kegs)
+	_colors = colors.slice(0, _taps)
 	queue_redraw()
 
 
 func tap_count() -> int:
-	return TapLayout.tap_count(_colors.size())
+	return _taps
 
 
 ## Global x of tap `index`'s spout.
