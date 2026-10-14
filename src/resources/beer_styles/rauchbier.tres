@@ -6,6 +6,7 @@
 script = ExtResource("1_style")
 style_name = "Rauchbier"
 description = "Bambergin savuolut, jonka mallas on kuivattu pyökkitulen yllä. Maistuu kuin savukinkku olisi päättänyt ryhtyä lageriksi."
+locked_hint = "Bambergin perinneolut, jonka mallas on kuivattu savussa."
 style = 24
 fixed_price_per_bottle = 3.0
 reputation_change = 4

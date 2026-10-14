@@ -6,6 +6,7 @@
 script = ExtResource("1_vienna")
 style_name = "Vienna Lager"
 description = "Wienermaltaan kullanruskea lager, jossa on paahtoleipää ja kevyt makeus. Itävallan toiseksi paras lahja maailmalle valssin jälkeen."
+locked_hint = "Itävaltalainen kullanruskea lager, jonka pohjana on oman kaupunkinsa mallas."
 style = 7
 fixed_price_per_bottle = 3.0
 reputation_change = 3

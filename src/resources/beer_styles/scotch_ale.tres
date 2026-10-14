@@ -6,6 +6,7 @@
 script = ExtResource("1_scotch")
 style_name = "Scotch Ale"
 description = "Skotlantilainen wee heavy: maltainen, makea ja vahva. Ripaus paahdettua ohraa antaa sille syvän ruskean värin ja kiltin lämmön."
+locked_hint = "Skotlantilainen vahva ja maltainen olut. Väri tulee ripauksesta paahdettua ohraa."
 style = 17
 profit_margin_multiplier = 1.3
 fixed_price_per_bottle = 4.0

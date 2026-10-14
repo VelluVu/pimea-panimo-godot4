@@ -6,6 +6,7 @@
 script = ExtResource("1_xidkb")
 style_name = "Pale Ale"
 description = "Amerikkalainen vaalea ale, jonka humala tuoksuu sitrukselta. Raikas, katkera ja jokaisen pienpanimon ensimmäinen ylpeys."
+locked_hint = "Amerikkalainen vaalea ale, jonka humala tuoksuu sitrukselta."
 style = 3
 fixed_price_per_bottle = 3.0
 reputation_change = 3

@@ -6,6 +6,7 @@
 script = ExtResource("1_helles")
 style_name = "Helles"
 description = "Münchenin vaalea lager: pehmeä, leipäinen ja vain hennosti katkera. Reinheitsgebot valvoo, ettei mitään ylimääräistä eksy kattilaan."
+locked_hint = "Perinteinen Etelä-Saksalainen vaalea lager olut, joka päiväinen terassijuoma."
 forbids_spices = true
 style = 6
 fixed_price_per_bottle = 2.8

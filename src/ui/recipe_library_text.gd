@@ -102,12 +102,15 @@ static func known_lines(entry : RecipeBookEntry) -> PackedStringArray:
 ## A locked style's page: hints, never the exact ranges unless the old master told them.
 static func locked_lines(entry : RecipeBookEntry) -> PackedStringArray:
 	var style : BeerStyle = entry.beer_style
-	var lines : PackedStringArray = [
+	var lines : PackedStringArray = []
+	if not style.locked_hint.is_empty():
+		lines.append(UiText.of(style.locked_hint))
+	lines.append_array([
 		UiText.of(LOCKED_STRENGTH_FORMAT) % style.abv,
 		UiText.of(COLOR_HINT_FORMAT) % UiText.of(BeerStyle.get_color_hint(style.min_ebc, style.max_ebc)),
 		UiText.of(BITTERNESS_HINT_FORMAT) % UiText.of(BeerStyle.get_bitterness_hint(style.min_ibu, style.max_ibu)),
 		UiText.of(YEAST_FORMAT) % entry.yeast_name,
-	]
+	])
 	_append_requirements(lines, entry)
 	if style.required_malt_id == BrewMixture.NO_REQUIRED_MALT and entry.needs_malt_blend:
 		lines.append(UiText.of(MALT_BLEND_HINT))

@@ -6,6 +6,7 @@
 script = ExtResource("1_alklager")
 style_name = "Alkoholiton Lager"
 description = "Vaalea lager, josta erikoishiiva jättää alkoholin pois. Tarjotaan saunan jälkeen niille, joiden pitää vielä ajaa kotiin."
+locked_hint = "Vaalea lager ilman alkoholia, erikoishiivan ansiosta."
 style = 21
 fixed_price_per_bottle = 2.8
 reputation_change = 2

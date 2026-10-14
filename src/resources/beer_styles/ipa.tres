@@ -6,6 +6,7 @@
 script = ExtResource("1_kckc3")
 style_name = "India Pale Ale"
 description = "Vahva ja reilusti humaloitu ale, alun perin keitetty kestämään laivamatka Intiaan. Nykyään se kestää lähinnä hipsterien kehut."
+locked_hint = "Vahva ja katkera ale, jonka humalat kestivät laivamatkan Intiaan."
 style = 5
 profit_margin_multiplier = 1.3
 fixed_price_per_bottle = 4.0
