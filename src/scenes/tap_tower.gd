@@ -6,7 +6,8 @@ extends Node2D
 ## tinted with its beer's colour; spare taps stay grey.
 ##
 ## Three pictures, each with an empty 1 px frame: one tap (handle, crossbar slice, spout),
-## the crossbar's left end (mirrored for the right), and the column with its tray.
+## the crossbar's left end (mirrored for the right), and the column with its tray. The
+## tray's first TapLayout.TRAY_PATTERN columns repeat to the crossbar's width.
 
 const UNIT : Texture2D = preload("res://assets/textures/tap/tap_unit.png")
 const END : Texture2D = preload("res://assets/textures/tap/tap_end.png")
@@ -16,6 +17,9 @@ const BASE : Texture2D = preload("res://assets/textures/tap/tap_base.png")
 const PART_PADDING : int = 1
 ## The handle's corner and size inside tap_unit.png's art, the part that gets tinted.
 const HANDLE_SIZE : Vector2 = Vector2(5, 9)
+## Rows of tap_base.png's art: the column and its foot, then the tray.
+const COLUMN_HEIGHT : int = 22
+const TRAY_HEIGHT : int = 6
 ## Rows of the old 48 px sprite, which was centred on this node.
 const UNIT_TOP : int = 4 - 24
 const END_TOP : int = 12 - 24
@@ -49,7 +53,8 @@ func spout_global_x(index : int) -> float:
 
 func _draw() -> void:
 	var taps : int = tap_count()
-	_draw_part(BASE, Vector2(-floorf(_size(BASE).x / 2.0), BASE_TOP))
+	_draw_region(BASE, Rect2(-floorf(_size(BASE).x / 2.0), BASE_TOP, _size(BASE).x, COLUMN_HEIGHT), Vector2.ZERO)
+	_draw_tray(taps)
 	var left : float = TapLayout.bar_left(taps)
 	var right_end : float = left + TapLayout.bar_width(taps) - TapLayout.CAP_WIDTH
 	for i : int in taps:
@@ -64,6 +69,18 @@ func _draw() -> void:
 	draw_set_transform(Vector2(right_end + _size(END).x, 0.0), 0.0, Vector2(-1.0, 1.0))
 	_draw_part(END, Vector2(0.0, END_TOP))
 	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
+
+
+## The tray's pattern repeated to TapLayout.tray_width(), the last copy cut to fit.
+func _draw_tray(taps : int) -> void:
+	var width : int = TapLayout.tray_width(taps)
+	@warning_ignore("integer_division")
+	var x : float = -(width / 2)
+	var end : float = x + width
+	while x < end:
+		var piece : float = minf(TapLayout.TRAY_PATTERN, end - x)
+		_draw_region(BASE, Rect2(x, BASE_TOP + COLUMN_HEIGHT, piece, TRAY_HEIGHT), Vector2(0, COLUMN_HEIGHT))
+		x += piece
 
 
 ## The art inside a picture's empty frame.
