@@ -2206,6 +2206,10 @@ msgstr "Brew IPA"
 msgid "Keitä kotikaljaa"
 msgstr "Brew Homebrew"
 
+#: src/resources/daily_goals/keita_uusi_tyyli.tres
+msgid "Keitä uusi tyyli"
+msgstr "Brew a new style"
+
 #: src/resources/daily_goals/myy_paljon_pulloja.tres
 msgid "Myy annoksia"
 msgstr "Sell servings"
@@ -4681,6 +4685,10 @@ msgid "Kohde:"
 msgstr "Destination:"
 
 #: src/scenes/ui/beer_batch_panel.gd
+msgid "Uutuus! %s"
+msgstr "New! %s"
+
+#: src/scenes/ui/beer_batch_panel.gd
 msgid "Vie"
 msgstr "Ship"
 
@@ -4708,8 +4716,7 @@ msgstr "Every keg is full of beer. Sell a batch or ship one to a bar to free a k
 msgid ""
 "Mäskipataan mahtuu enintään %d kg mallasta. Isompi pata löytyy "
 "parannuksista."
-msgstr ""
-"The mash tun holds at most %d kg of malt. A bigger one is in the upgrades."
+msgstr "The mash tun holds at most %d kg of malt. A bigger one is in the upgrades."
 
 #: src/scenes/ui/brew_preparation_panel.gd
 msgid "Raaka-aineet eivät sovi mihinkään oluttyyliin."
@@ -5948,6 +5955,10 @@ msgstr "New beer style discovered: %s!"
 msgid "Uusia asiakkaita avattu: %s!"
 msgstr "New customers unlocked: %s!"
 
+#: src/ui/gui_announcer.gd
+msgid "Uutuus: kauden ensimmäinen %s! Erä myy tiskillä +%d %% hintaan."
+msgstr "New this season: the first %s! The batch sells at +%d %% at the counter."
+
 #: src/ui/ingredient_book_text.gd
 msgid "Avautuu maineella %d"
 msgstr "Unlocks at reputation %d"
@@ -6087,6 +6098,10 @@ msgstr "Days %d × %d"
 #: src/ui/leaderboard_text.gd
 msgid "Selvisi"
 msgstr "Survived"
+
+#: src/ui/leaderboard_text.gd
+msgid "Tyylit %d × %d"
+msgstr "Styles %d × %d"
 
 #: src/ui/money_text.gd
 msgid "Eilen %+.1f €"

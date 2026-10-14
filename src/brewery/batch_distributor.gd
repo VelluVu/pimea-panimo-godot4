@@ -30,9 +30,9 @@ func disconnect_signals() -> void:
 
 
 ## Static so the payout math can be unit-tested without a live Brewery.
-static func calculate_ship_payout(raw_cost_per_bottle : float, quality : float, amount_bottles : int, price_multiplier : float) -> float:
+static func calculate_ship_payout(wholesale_price_per_bottle : float, quality : float, amount_bottles : int, price_multiplier : float) -> float:
 	var quality_factor : float = clampf(quality, SHIP_TO_BAR_QUALITY_CLAMP_MIN, SHIP_TO_BAR_QUALITY_CLAMP_MAX)
-	return snappedf(raw_cost_per_bottle * price_multiplier * quality_factor * amount_bottles, 0.1)
+	return snappedf(wholesale_price_per_bottle * price_multiplier * quality_factor * amount_bottles, 0.1)
 
 
 ## Ships a whole batch to a bar. Raises risk, since the beer now circulates outside
@@ -44,8 +44,8 @@ func _on_ship_batch_to_bar_requested(batch : BrewBatch, bar : BarContact) -> voi
 	if brewery.reputation < bar.required_reputation:
 		return
 
-	var raw_cost_per_bottle : float = brewery.resolver.get_market_cost_per_bottle(batch.beer_style)
-	var payout : float = calculate_ship_payout(raw_cost_per_bottle, batch.current_quality, batch.amount_bottles, bar.price_multiplier)
+	var wholesale_price : float = brewery.resolver.get_wholesale_price_per_bottle(batch.beer_style)
+	var payout : float = calculate_ship_payout(wholesale_price, batch.current_quality, batch.amount_bottles, bar.price_multiplier)
 	payout = snappedf(payout * brewery.stats.multiplier(PerkStats.DISTRIBUTION_INCOME) * batch.get_aged_price_multiplier(), 0.1)
 
 	brewery.change_money(payout, MoneyLedger.Source.SHIPMENTS)

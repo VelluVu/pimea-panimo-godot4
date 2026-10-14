@@ -80,9 +80,9 @@ func style_needs_malt_blend(beer_style : BeerStyle) -> bool:
 	return malt_count > 1
 
 
-## The cost at full shop prices, see StylePricing.market_cost_per_bottle().
-func get_market_cost_per_bottle(beer_style : BeerStyle) -> float:
-	return _pricing.market_cost_per_bottle(beer_style)
+## What a bar pays per serving, see StylePricing.wholesale_price_per_bottle().
+func get_wholesale_price_per_bottle(beer_style : BeerStyle) -> float:
+	return _pricing.wholesale_price_per_bottle(beer_style)
 
 
 func get_style_cost_per_bottle(beer_style : BeerStyle) -> float:

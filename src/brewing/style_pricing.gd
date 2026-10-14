@@ -14,6 +14,8 @@ const CONSUMABLES_COST_PER_BOTTLE : float = 0.10
 const PROFIT_MARKUP_RATE : float = 0.5
 ## Floor under the markup, so cheap styles like Kotikalja still show a real profit.
 const MIN_PROFIT_PER_BOTTLE : float = 0.5
+## Share of the list price a bar pays, see wholesale_price_per_bottle().
+const WHOLESALE_SHARE : float = 0.25
 
 ## Set by Brewery per run and whenever a perk changes it, so costs match what the player
 ## pays. A change drops the cached costs and prices.
@@ -26,7 +28,6 @@ var ingredient_price_multiplier : float = 1.0:
 
 var _ingredients : IngredientSource
 var _cost_cache : Dictionary = {}
-var _market_cost_cache : Dictionary = {}
 var _breakdown_cache : Dictionary = {}
 
 
@@ -59,12 +60,10 @@ func cost_per_bottle(beer_style : BeerStyle) -> float:
 	return _cost_cache[beer_style.style]
 
 
-## The cost at full shop prices, whatever the player's perks: what the beer is worth to a
-## bar or a wholesaler (BatchDistributor), so a cheaper shop never lowers their payouts.
-func market_cost_per_bottle(beer_style : BeerStyle) -> float:
-	if not _market_cost_cache.has(beer_style.style):
-		_market_cost_cache[beer_style.style] = _cost_at(beer_style, 1.0)
-	return _market_cost_cache[beer_style.style]
+## What a bar pays for a serving before its own multiplier and the quality: a share of
+## the list price, so neither a recipe's cost nor the player's shop discount moves it.
+func wholesale_price_per_bottle(beer_style : BeerStyle) -> float:
+	return price_breakdown(beer_style).price_per_bottle * WHOLESALE_SHARE
 
 
 func _cost_at(beer_style : BeerStyle, price_multiplier : float) -> float:

@@ -36,7 +36,7 @@ func _init() -> void:
 	var demo: bool = DemoRules.is_demo()
 	table = DEMO_TABLE if demo else SEASON_TABLE
 	submit_function = DEMO_SUBMIT_FUNCTION if demo else SEASON_SUBMIT_FUNCTION
-	columns = "id,nickname,score,ending_type,days_survived,reputation,bottles,worth,created_at"
+	columns = "id,nickname,score,ending_type,days_survived,reputation,bottles,worth,styles_brewed,created_at"
 	order = "score.desc,id.asc"
 
 
@@ -53,6 +53,7 @@ func submit_entry(nickname: String, entry: Dictionary) -> void:
 		"p_reputation": entry.get("reputation", 0),
 		"p_bottles": entry.get("lifetime_bottles_sold", 0),
 		"p_worth": entry.get("worth", 0.0),
+		"p_styles": entry.get("styles_brewed", 0),
 		"p_score": entry.get("score", 0),
 		"p_score_version": LeaderboardManager.SCORE_VERSION,
 	})
@@ -68,6 +69,7 @@ static func entry_from_row(row: Dictionary) -> Dictionary:
 		"reputation": int(row.get("reputation", 0)),
 		"lifetime_bottles_sold": int(row.get("bottles", 0)),
 		"worth": float(row.get("worth", 0.0)),
+		"styles_brewed": int(row.get("styles_brewed", 0)),
 		"bonus": 0,
 		"score": int(row.get("score", 0)),
 		"date": str(row.get("created_at", "")).left(19),

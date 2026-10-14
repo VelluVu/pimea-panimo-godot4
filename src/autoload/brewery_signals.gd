@@ -66,6 +66,10 @@ signal brew_xp_gained(amount: int)
 ## failed brew) changed. BrewPreparationPanel shows it beside the XP popup.
 @warning_ignore("unused_signal")
 signal brew_reputation_gained(amount: int)
+## Emitted by Brewer.start_brew() for the season's first batch of a style, a novelty
+## (FirstBrewRules), after beer_brewed.
+@warning_ignore("unused_signal")
+signal season_first_brew(style: int, style_name: String)
 ## Emitted by SaleProcessor with the exact XP a sale granted. It carries no position:
 ## callers that know their customer (Customer, GroupVisitDirector) capture it around their
 ## own process_auto_sale() call, then emit xp_popup_requested with a position.

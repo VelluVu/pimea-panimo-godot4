@@ -20,9 +20,14 @@ create table if not exists public.demo_scores (
 	reputation integer not null check (reputation between -1000 and 1000),
 	bottles integer not null check (bottles between 0 and 3000),
 	worth numeric(10, 1) not null check (worth between 0 and 20000),
+	-- Styles brewed this season (RunScore.STYLE_POINTS each); 27 exist.
+	styles_brewed integer not null default 0 check (styles_brewed between 0 and 40),
 	score_version integer not null,
 	created_at timestamptz not null default now()
 );
+
+alter table public.demo_scores add column if not exists styles_brewed integer not null default 0
+	check (styles_brewed between 0 and 40);
 
 create index if not exists demo_scores_score_idx on public.demo_scores (score desc, id);
 
@@ -37,6 +42,9 @@ grant select on public.demo_scores to anon, authenticated;
 revoke insert, update, delete on public.demo_scores from anon, authenticated;
 
 
+-- The function before score version 6 had no p_styles; drop it so it cannot be called.
+drop function if exists public.submit_demo_score(text, text, integer, integer, integer, numeric, integer, integer);
+
 create or replace function public.submit_demo_score(
 	p_nickname text,
 	p_ending_type text,
@@ -44,6 +52,7 @@ create or replace function public.submit_demo_score(
 	p_reputation integer,
 	p_bottles integer,
 	p_worth numeric,
+	p_styles integer,
 	p_score integer,
 	p_score_version integer
 ) returns json
@@ -52,7 +61,7 @@ security definer
 set search_path = public
 as $$
 declare
-	expected_version constant integer := 5;
+	expected_version constant integer := 6;
 	-- RunScore: DAY_POINTS, REPUTATION_POINTS, BOTTLE_POINTS, WORTH_POINTS_PER_EURO.
 	v_counts_reputation boolean := p_ending_type not in ('busted', 'bankrupt');
 	v_worth numeric := round(greatest(p_worth, 0), 1);
@@ -73,13 +82,17 @@ begin
 		+ case when v_counts_reputation
 			then greatest(p_reputation, 0) * 10 + round(v_worth * 0.3)::integer
 			else 0 end;
+	if p_styles is null or p_styles < 0 or p_styles > 40 then
+		raise exception 'styles';
+	end if;
+	expected_score := expected_score + p_styles * 50;
 	-- The game rounds the unrounded worth, so allow one point either way.
 	if abs(expected_score - p_score) > 1 then
 		raise exception 'score';
 	end if;
 
-	insert into demo_scores (nickname, score, ending_type, days_survived, reputation, bottles, worth, score_version)
-	values (v_nickname, p_score, p_ending_type, p_days_survived, p_reputation, p_bottles, v_worth, p_score_version)
+	insert into demo_scores (nickname, score, ending_type, days_survived, reputation, bottles, worth, styles_brewed, score_version)
+	values (v_nickname, p_score, p_ending_type, p_days_survived, p_reputation, p_bottles, v_worth, p_styles, p_score_version)
 	returning id into new_id;
 
 	return json_build_object(
@@ -90,5 +103,5 @@ begin
 end;
 $$;
 
-revoke all on function public.submit_demo_score(text, text, integer, integer, integer, numeric, integer, integer) from public;
-grant execute on function public.submit_demo_score(text, text, integer, integer, integer, numeric, integer, integer) to anon, authenticated;
+revoke all on function public.submit_demo_score(text, text, integer, integer, integer, numeric, integer, integer, integer) from public;
+grant execute on function public.submit_demo_score(text, text, integer, integer, integer, numeric, integer, integer, integer) to anon, authenticated;

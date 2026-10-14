@@ -119,7 +119,7 @@ func _known_styles(brewery: Brewery, min_abv: float, max_abv: float) -> Array[Be
 ## same perks and aging a real sale gets), then the share between.
 func _payout(brewery: Brewery, batch: BrewBatch) -> float:
 	var aged: float = batch.get_aged_price_multiplier()
-	var export_payout: float = BatchDistributor.calculate_ship_payout(brewery.resolver.get_market_cost_per_bottle(batch.beer_style), batch.current_quality, batch.amount_bottles, export_price_multiplier) \
+	var export_payout: float = BatchDistributor.calculate_ship_payout(brewery.resolver.get_wholesale_price_per_bottle(batch.beer_style), batch.current_quality, batch.amount_bottles, export_price_multiplier) \
 			* brewery.stats.multiplier(PerkStats.DISTRIBUTION_INCOME) * aged
 	var pub_income: float = brewery.resolver.get_price_breakdown(batch.beer_style).price_per_bottle \
 			* brewery.stats.multiplier(PerkStats.COUNTER_PRICE) * aged * batch.amount_bottles

@@ -89,7 +89,8 @@ func process(data : CustomerData) -> String:
 
 	var breakdown : SaleBreakdown = brewery.resolver.get_price_breakdown(best_batch.beer_style)
 	# The marketing perk marks up this sale's price only, never the shared breakdown.
-	var counter_price : float = breakdown.price_per_bottle * brewery.stats.multiplier(PerkStats.COUNTER_PRICE) * best_batch.get_aged_price_multiplier()
+	var counter_price : float = breakdown.price_per_bottle * brewery.stats.multiplier(PerkStats.COUNTER_PRICE) * best_batch.get_aged_price_multiplier() \
+			* FirstBrewRules.price_multiplier(best_batch.novelty)
 	var results : Dictionary = data.evaluate_brew_batch(best_batch, counter_price)
 
 	var bottles_sold : int = mini(wanted, best_batch.amount_bottles)
