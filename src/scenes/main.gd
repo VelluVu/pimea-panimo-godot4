@@ -26,8 +26,8 @@ func _on_brewery_state_changed(brewery: Brewery) -> void:
 	keg_row.show_kegs(_tap_batches.size())
 
 
-## The bartender pours at the sold batch's tap; an unknown batch pours where he stands.
+## The bartender pours under the sold batch's tap; an unknown batch pours where he stands.
 func _on_beer_sale_breakdown(entry: SaleReceiptEntry) -> void:
 	var tap: int = _tap_batches.find(entry.batch)
-	var offset: float = 0.0 if tap < 0 else tap_tower.spout_global_x(tap) - tap_tower.global_position.x
+	var offset: float = 0.0 if tap < 0 else bartender.offset_to_pour_at(tap_tower.spout_global_x(tap))
 	bartender.play_serve_beer(1.0, entry.beer_ebc, offset)
