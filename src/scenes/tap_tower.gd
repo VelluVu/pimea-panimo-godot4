@@ -12,7 +12,6 @@ const SPOUT : Texture2D = preload("res://assets/textures/tap/tap_spout.png")
 const STEM : Texture2D = preload("res://assets/textures/tap/tap_stem.png")
 const TRAY_LEFT : Texture2D = preload("res://assets/textures/tap/tap_tray_left.png")
 const TRAY_MIDDLE : Texture2D = preload("res://assets/textures/tap/tap_tray_middle.png")
-const TRAY_RIGHT : Texture2D = preload("res://assets/textures/tap/tap_tray_right.png")
 
 ## Rows of the old 48 px sprite, which was centred on this node.
 const HANDLE_TOP : int = 4 - 24
@@ -75,13 +74,17 @@ func _draw_bar(taps : int) -> void:
 	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
 
 
+## Like the crossbar, the right end is the left one mirrored; TapLayout.tray_width()
+## keeps the studs in step with it.
 func _draw_tray(taps : int) -> void:
 	var left : float = -TapLayout.tray_width(taps) / 2.0
-	var right : float = left + TapLayout.tray_width(taps) - TRAY_RIGHT.get_width()
+	var right : float = left + TapLayout.tray_width(taps) - TRAY_LEFT.get_width()
 	draw_texture(TRAY_LEFT, Vector2(left, TRAY_TOP))
 	var x : float = left + TRAY_LEFT.get_width()
 	while x < right:
 		var width : float = minf(TRAY_MIDDLE.get_width(), right - x)
 		draw_texture_rect_region(TRAY_MIDDLE, Rect2(x, TRAY_TOP, width, TRAY_MIDDLE.get_height()), Rect2(0, 0, width, TRAY_MIDDLE.get_height()))
 		x += width
-	draw_texture(TRAY_RIGHT, Vector2(right, TRAY_TOP))
+	draw_set_transform(Vector2(right + TRAY_LEFT.get_width(), 0.0), 0.0, Vector2(-1.0, 1.0))
+	draw_texture(TRAY_LEFT, Vector2(0.0, TRAY_TOP))
+	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
