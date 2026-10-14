@@ -2,24 +2,38 @@ class_name TapLayout
 extends RefCounted
 
 ## Where the tap tower's parts go for a number of taps (TapTower draws them): a
-## crossbar that grows by one handle pitch per tap, centred on the tower's origin.
-## Pixel sizes are the tap art's, see assets/textures/tap/.
+## crossbar that grows by one handle pitch per tap, centred on the tower's origin. Past
+## the counter's room the pitch tightens instead, so twelve taps still fit. Pixel sizes
+## are the tap art's, see assets/textures/tap/.
 
-const MAX_TAPS : int = 6
+## One tap per keg the brewery owns: KegRules.START_KEGS plus the keg upgrade's levels.
+const MAX_TAPS : int = 12
 const CAP_WIDTH : int = 5
 const HANDLE_WIDTH : int = 5
 const HANDLE_PITCH : int = 12
+## The widest crossbar the counter has room for: six taps at the full pitch, twelve with
+## a pixel between their handles.
+const MAX_BAR_WIDTH : int = 81
 ## The drip tray reaches this far past the crossbar on each side.
 const TRAY_OVERHANG : int = 2
 
 
-## Taps drawn for `batches_on_serve`; an empty bar still shows one, unused.
-static func tap_count(batches_on_serve : int) -> int:
-	return clampi(batches_on_serve, 1, MAX_TAPS)
+## Taps drawn for `kegs` owned; never fewer than one.
+static func tap_count(kegs : int) -> int:
+	return clampi(kegs, 1, MAX_TAPS)
+
+
+## Handle spacing for `taps`: the full pitch while it fits, tighter after.
+static func pitch(taps : int) -> int:
+	if taps <= 1:
+		return HANDLE_PITCH
+	@warning_ignore("integer_division")
+	var fitting : int = (MAX_BAR_WIDTH - 2 * CAP_WIDTH - HANDLE_WIDTH) / (taps - 1)
+	return mini(HANDLE_PITCH, fitting)
 
 
 static func bar_width(taps : int) -> int:
-	return 2 * CAP_WIDTH + HANDLE_PITCH * (taps - 1) + HANDLE_WIDTH
+	return 2 * CAP_WIDTH + pitch(taps) * (taps - 1) + HANDLE_WIDTH
 
 
 static func bar_left(taps : int) -> float:
@@ -27,7 +41,7 @@ static func bar_left(taps : int) -> float:
 
 
 static func handle_left(taps : int, index : int) -> float:
-	return bar_left(taps) + CAP_WIDTH + HANDLE_PITCH * index
+	return bar_left(taps) + CAP_WIDTH + pitch(taps) * index
 
 
 ## The x of a tap's spout centre, where the glass goes under.

@@ -16,6 +16,11 @@ func _init() -> void:
 	free_kegs = KegRules.starting_kegs()
 
 
+## Every keg the brewery owns: the empty ones and those holding a batch.
+func total_kegs() -> int:
+	return free_kegs.size() + brew_batches.size()
+
+
 func has_free_keg() -> bool:
 	return not free_kegs.is_empty()
 
