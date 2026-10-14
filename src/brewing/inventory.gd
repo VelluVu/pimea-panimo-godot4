@@ -170,6 +170,16 @@ func count_bottles() -> int:
 	return total
 
 
+## Different styles customers can buy right now: batches with servings left that are
+## not held in the cellar to age.
+func styles_on_tap() -> int:
+	var styles : Dictionary = {}
+	for batch : BrewBatch in brew_batches:
+		if batch.amount_bottles > 0 and not batch.held:
+			styles[batch.beer_style.style] = true
+	return styles.size()
+
+
 ## One aging tick for every batch in the cellar.
 func age_batches() -> void:
 	for batch : BrewBatch in brew_batches:
