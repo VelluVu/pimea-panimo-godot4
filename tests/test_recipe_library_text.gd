@@ -97,3 +97,9 @@ func test_known_row_counts_saved_recipes_only_when_there_are_some() -> void:
 func test_section_titles_show_the_counts() -> void:
 	assert_eq(RecipeLibraryTextScript.known_section_title(5, 24), "Löydetyt tyylit (5/24)")
 	assert_eq(RecipeLibraryTextScript.locked_section_title(19), "Löytämättömät tyylit (19)")
+
+
+func test_a_style_too_heavy_for_the_mash_tun_says_so() -> void:
+	assert_false(RecipeLibraryTextScript.known_row(_make_style(), "Y", "").contains("mäskipadan"))
+	assert_true(RecipeLibraryTextScript.known_row(_make_style(), "Y", "", "", "", 0, true).ends_with("Vaatii mäskipadan päivityksen"))
+	assert_true(RecipeLibraryTextScript.locked_row(_make_style(), "Y", "", false, "", false, false, true).contains("Vaatii mäskipadan päivityksen"))

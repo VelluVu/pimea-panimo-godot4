@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="CellarUpgradeData" format=3]
+
+[ext_resource type="Script" uid="uid://vrs3bafxturw" path="res://src/brewery/cellar_upgrade_data.gd" id="1_upgrade"]
+
+[resource]
+script = ExtResource("1_upgrade")
+upgrade_id = "maskipata"
+sort_order = 12
+max_level = 2
+base_cost = 120
+cost_growth = 2.0
+perk_name = "Parempi Mäskipata"
+description = "Isompi pata vetää enemmän mallasta, joten samasta 20 litrasta tulee vahvempaa olutta. Avaa raskaimmat tyylit."
+icon_placeholder = "🍲"
+extra_mash_capacity_kg = 2
+stacks_additively = true

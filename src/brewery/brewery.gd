@@ -254,6 +254,11 @@ func apply_perk(perk : RunPerk) -> void:
 
 
 ## The raid threshold after this run's modifier and perks.
+## Kilograms of malt one brew can hold, see MashTun.
+func mash_capacity_kg() -> float:
+	return MashTun.capacity_kg(int(stats.total(PerkStats.EXTRA_MASH_CAPACITY)))
+
+
 func get_effective_raid_threshold() -> int:
 	return ReputationRules.raid_threshold(stats.raid_threshold(LVV_RAID_THRESHOLD), get_reputation_tier())
 

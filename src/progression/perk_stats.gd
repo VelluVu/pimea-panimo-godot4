@@ -41,6 +41,7 @@ const EXTRA_DAILY_GOAL_ROLLS := &"extra_daily_goal_rolls"
 const RAID_SAVED_BOTTLE_SHARE := &"raid_saved_bottle_share"
 const WALK_IN_COMPANY_CHANCE := &"walk_in_company_chance"
 const WALK_IN_COMPANY_BONUS := &"walk_in_company_bonus"
+const EXTRA_MASH_CAPACITY := &"extra_mash_capacity_kg"
 
 ## How a stat is stored and shown. MULTIPLIER is neutral at 1.0 and shown as
 ## a percentage change, PERCENT_ADD is a flat fraction neutral at 0 and shown
@@ -81,6 +82,7 @@ static func definitions() -> Array[Dictionary]:
 		{"stat": RAID_SAVED_BOTTLE_SHARE, "kind": Kind.PERCENT_ADD, "text": StringContainer.PERK_RAID_SAVED_BOTTLE_SHARE_STAT_STRING},
 		{"stat": EXTRA_COUNTER_SLOTS, "kind": Kind.COUNT, "text": StringContainer.PERK_EXTRA_COUNTER_SLOTS_STAT_STRING},
 		{"stat": EXTRA_DAILY_GOAL_ROLLS, "kind": Kind.COUNT, "text": StringContainer.PERK_EXTRA_DAILY_GOAL_ROLLS_STAT_STRING},
+		{"stat": EXTRA_MASH_CAPACITY, "kind": Kind.COUNT, "text": StringContainer.PERK_EXTRA_MASH_CAPACITY_STAT_STRING},
 	]
 
 

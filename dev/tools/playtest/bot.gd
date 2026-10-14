@@ -308,6 +308,8 @@ func _expert_recipe(b: Brewery) -> BrewRecipe:
 	var candidates: Array[BrewRecipe] = []
 	var scores: Array[float] = []
 	for style: BeerStyle in b.resolver.active_styles:
+		if not _fits_mash_tun(b, style):
+			continue
 		var ingredients: Dictionary = _with_spices(b, style, b.resolver.compute_minimum_ingredients(style))
 		if ingredients.is_empty() or not _all_unlocked(b, ingredients):
 			continue
@@ -368,10 +370,15 @@ const EXPORT_DAY_PROGRESS: float = 0.85
 const EXPORT_RISK_SHARE: float = 0.5
 
 
+## The style's reference recipe fits the mash tun the bot has bought so far.
+func _fits_mash_tun(b: Brewery, style: BeerStyle) -> bool:
+	return MashTun.holds(b.resolver.reference_malt_weight(style), b.mash_capacity_kg())
+
+
 ## A minimum recipe for `style` if the unlocked ingredients and the cash allow it.
 func _style_recipe(b: Brewery, style: BeerStyle.Style) -> BrewRecipe:
 	var beer_style: BeerStyle = b.resolver.get_beer_style(style)
-	if beer_style == null:
+	if beer_style == null or not _fits_mash_tun(b, beer_style):
 		return null
 	var ingredients: Dictionary = _with_spices(b, beer_style, b.resolver.compute_minimum_ingredients(beer_style))
 	if ingredients.is_empty() or not _all_unlocked(b, ingredients) or _missing_cost_of(b, ingredients) + _reserve(b) > b.money:

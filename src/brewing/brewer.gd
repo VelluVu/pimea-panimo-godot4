@@ -9,6 +9,7 @@ extends RefCounted
 const INGREDIENT_REFUND_FRACTION : float = 0.5
 const LOG_BREWED : String = "Successful brew batch: "
 const LOG_NO_FREE_KEG : String = "No empty keg for a new batch."
+const LOG_MASH_TUN_FULL : String = "The mash tun cannot hold this much malt."
 
 var brewery : Brewery
 
@@ -56,6 +57,9 @@ func start_brew(quality_multiplier : float = BrewDayRules.NORMAL_MULTIPLIER) -> 
 
 	# Not brewable yet: the ingredients stay on the table rather than being lost.
 	if brew_report == null:
+		return
+	if not MashTun.holds(brew_report.malt_weight, brewery.mash_capacity_kg()):
+		print(LOG_MASH_TUN_FULL)
 		return
 
 	# The yield perk multiplies the raw yield, before bottling loss.

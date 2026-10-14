@@ -69,6 +69,8 @@ enum Tier { COMMON, RARE, LEGENDARY }
 @export var walk_in_company_chance: float = 0.0
 ## Extra customers in such a company beyond the usual one.
 @export var walk_in_company_bonus: int = 0
+## Kilograms of malt the mash tun holds beyond MashTun.BASE_CAPACITY_KG.
+@export var extra_mash_capacity_kg: int = 0
 
 ## When true, multiplier stats add their delta from 1.0 instead of
 ## multiplying, so repeat picks grow in a straight line.

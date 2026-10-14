@@ -3,6 +3,7 @@ extends PanelContainer
 
 
 const INGREDIENT_LABEL_WITH_TARGET_STRING : String = "%s: %s/%s %s"
+const MASH_TUN_FULL_FORMAT : String = "Mäskipataan mahtuu enintään %d kg mallasta. Isompi pata löytyy parannuksista."
 const RECIPE_SAVED_TOAST_FORMAT : String = "Resepti \"%s\" tallennettu!"
 const REJECT_TOAST_STRING : String = "Tuntematon oluttyyli. Keitä se ensin selvittääksesi reseptin!"
 const NO_STYLE_TOAST_STRING : String = "Raaka-aineet eivät sovi mihinkään oluttyyliin."
@@ -158,4 +159,7 @@ func _update_preview(brewery : Brewery, prep_contents : Dictionary) -> void:
 	# Every batch needs a keg of its own.
 	if not brewery.inventory.has_free_keg():
 		preview_label.text = NO_FREE_KEG_TEXT
+		start_brew_button.disabled = true
+	elif preview != null and not MashTun.holds(preview.malt_weight, brewery.mash_capacity_kg()):
+		preview_label.text = tr(MASH_TUN_FULL_FORMAT) % roundi(brewery.mash_capacity_kg())
 		start_brew_button.disabled = true

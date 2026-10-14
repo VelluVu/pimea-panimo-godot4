@@ -9,6 +9,8 @@ extends Resource
 @export var reputation_change : int = 0
 ## Computed from the grist, see BrewFormulas.
 @export var abv : float = 0.0
+## Kilograms of malt and sugar, checked against the mash tun (MashTun).
+@export var malt_weight : float = 0.0
 ## A batch is one 20L keg; at 0.44L per serving that's ~45 servings once
 ## StylePricing.BOTTLE_LOSS_RATE's loss is applied — see
 ## get_effective_bottle_yield(). 47 raw so the after-loss number lands on
