@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cdgvscv7fmbwr"
-path="res://.godot/imported/tap_tray_left.png-3233e587f080b887536c7d53405f4c00.ctex"
+uid="uid://bl3y8gthhi8tn"
+path="res://.godot/imported/tap_base.png-7242c104bd8e57e444845aa911570687.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/textures/tap/tap_tray_left.png"
-dest_files=["res://.godot/imported/tap_tray_left.png-3233e587f080b887536c7d53405f4c00.ctex"]
+source_file="res://assets/textures/tap/tap_base.png"
+dest_files=["res://.godot/imported/tap_base.png-7242c104bd8e57e444845aa911570687.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c8qe5efdncgld"
-path="res://.godot/imported/tap_spout.png-7cbcfd89ba0d7c429ef9ab1c17143fd7.ctex"
+uid="uid://8xpnqwl16w7f"
+path="res://.godot/imported/tap_end.png-4d160864badf6ee9c4b365ee7fe5936e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/textures/tap/tap_spout.png"
-dest_files=["res://.godot/imported/tap_spout.png-7cbcfd89ba0d7c429ef9ab1c17143fd7.ctex"]
+source_file="res://assets/textures/tap/tap_end.png"
+dest_files=["res://.godot/imported/tap_end.png-4d160864badf6ee9c4b365ee7fe5936e.ctex"]
 
 [params]
 

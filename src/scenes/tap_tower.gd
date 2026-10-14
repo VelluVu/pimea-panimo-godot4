@@ -3,23 +3,23 @@ extends Node2D
 
 ## The tap tower on the bar counter: one tap per keg the brewery owns, on a crossbar that
 ## widens with them (TapLayout). Batches on serve take the taps from the left, each handle
-## tinted with its beer's colour; spare taps stay grey. Drawn from the tap art's parts.
+## tinted with its beer's colour; spare taps stay grey.
+##
+## Three pictures, each with an empty 1 px frame: one tap (handle, crossbar slice, spout),
+## the crossbar's left end (mirrored for the right), and the column with its tray.
 
-const BAR_LEFT : Texture2D = preload("res://assets/textures/tap/tap_bar_left.png")
-const BAR_SEGMENT : Texture2D = preload("res://assets/textures/tap/tap_bar_segment.png")
-const HANDLE : Texture2D = preload("res://assets/textures/tap/tap_handle.png")
-const SPOUT : Texture2D = preload("res://assets/textures/tap/tap_spout.png")
-const STEM : Texture2D = preload("res://assets/textures/tap/tap_stem.png")
-const TRAY_LEFT : Texture2D = preload("res://assets/textures/tap/tap_tray_left.png")
-const TRAY_MIDDLE : Texture2D = preload("res://assets/textures/tap/tap_tray_middle.png")
+const UNIT : Texture2D = preload("res://assets/textures/tap/tap_unit.png")
+const END : Texture2D = preload("res://assets/textures/tap/tap_end.png")
+const BASE : Texture2D = preload("res://assets/textures/tap/tap_base.png")
 
+## Every picture has an empty 1 px frame; only the art inside counts.
+const PART_PADDING : int = 1
+## The handle's corner and size inside tap_unit.png's art, the part that gets tinted.
+const HANDLE_SIZE : Vector2 = Vector2(5, 9)
 ## Rows of the old 48 px sprite, which was centred on this node.
-const HANDLE_TOP : int = 4 - 24
-const BAR_CAP_TOP : int = 12 - 24
-const BAR_TOP : int = 13 - 24
-const SPOUT_TOP : int = 19 - 24
-const STEM_TOP : int = 19 - 24
-const TRAY_TOP : int = 41 - 24
+const UNIT_TOP : int = 4 - 24
+const END_TOP : int = 12 - 24
+const BASE_TOP : int = 19 - 24
 ## An unused tap's handle.
 const IDLE_HANDLE_COLOR : Color = Color("8b9bb4")
 
@@ -49,42 +49,33 @@ func spout_global_x(index : int) -> float:
 
 func _draw() -> void:
 	var taps : int = tap_count()
-	_draw_tray(taps)
-	draw_texture(STEM, Vector2(-STEM.get_width() / 2.0, STEM_TOP))
-	_draw_bar(taps)
-	for i : int in taps:
-		var left : float = TapLayout.handle_left(taps, i)
-		var color : Color = _colors[i] if i < _colors.size() else IDLE_HANDLE_COLOR
-		draw_texture(HANDLE, Vector2(left, HANDLE_TOP), color)
-		draw_texture(SPOUT, Vector2(left + 1, SPOUT_TOP))
-
-
-func _draw_bar(taps : int) -> void:
+	_draw_part(BASE, Vector2(-floorf(_size(BASE).x / 2.0), BASE_TOP))
 	var left : float = TapLayout.bar_left(taps)
-	var right : float = left + TapLayout.bar_width(taps) - TapLayout.CAP_WIDTH
-	draw_texture(BAR_LEFT, Vector2(left, BAR_CAP_TOP))
-	var x : float = left + TapLayout.CAP_WIDTH
-	while x < right:
-		var width : float = minf(BAR_SEGMENT.get_width(), right - x)
-		draw_texture_rect_region(BAR_SEGMENT, Rect2(x, BAR_TOP, width, BAR_SEGMENT.get_height()), Rect2(0, 0, width, BAR_SEGMENT.get_height()))
-		x += width
+	var right_end : float = left + TapLayout.bar_width(taps) - TapLayout.CAP_WIDTH
+	for i : int in taps:
+		# Taps closer than a whole picture overlap; the last one stops at the right end.
+		var x : float = TapLayout.handle_left(taps, i)
+		var width : float = minf(_size(UNIT).x, right_end - x)
+		_draw_region(UNIT, Rect2(x, UNIT_TOP, width, _size(UNIT).y), Vector2.ZERO)
+		var color : Color = _colors[i] if i < _colors.size() else IDLE_HANDLE_COLOR
+		_draw_region(UNIT, Rect2(Vector2(x, UNIT_TOP), HANDLE_SIZE), Vector2.ZERO, color)
+	_draw_part(END, Vector2(left, END_TOP))
 	# The right end is the left one mirrored, so both ends match.
-	draw_set_transform(Vector2(right + TapLayout.CAP_WIDTH, 0.0), 0.0, Vector2(-1.0, 1.0))
-	draw_texture(BAR_LEFT, Vector2(0.0, BAR_CAP_TOP))
+	draw_set_transform(Vector2(right_end + _size(END).x, 0.0), 0.0, Vector2(-1.0, 1.0))
+	_draw_part(END, Vector2(0.0, END_TOP))
 	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
 
 
-## Like the crossbar, the right end is the left one mirrored; TapLayout.tray_width()
-## keeps the studs in step with it.
-func _draw_tray(taps : int) -> void:
-	var left : float = -TapLayout.tray_width(taps) / 2.0
-	var right : float = left + TapLayout.tray_width(taps) - TRAY_LEFT.get_width()
-	draw_texture(TRAY_LEFT, Vector2(left, TRAY_TOP))
-	var x : float = left + TRAY_LEFT.get_width()
-	while x < right:
-		var width : float = minf(TRAY_MIDDLE.get_width(), right - x)
-		draw_texture_rect_region(TRAY_MIDDLE, Rect2(x, TRAY_TOP, width, TRAY_MIDDLE.get_height()), Rect2(0, 0, width, TRAY_MIDDLE.get_height()))
-		x += width
-	draw_set_transform(Vector2(right + TRAY_LEFT.get_width(), 0.0), 0.0, Vector2(-1.0, 1.0))
-	draw_texture(TRAY_LEFT, Vector2(0.0, TRAY_TOP))
-	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
+## The art inside a picture's empty frame.
+func _size(texture : Texture2D) -> Vector2:
+	return texture.get_size() - Vector2(2 * PART_PADDING, 2 * PART_PADDING)
+
+
+func _draw_part(texture : Texture2D, at : Vector2) -> void:
+	_draw_region(texture, Rect2(at, _size(texture)), Vector2.ZERO)
+
+
+## Draws the art from `art_offset` inside the frame into `target`, at the target's size.
+func _draw_region(texture : Texture2D, target : Rect2, art_offset : Vector2, color : Color = Color.WHITE) -> void:
+	var source := Rect2(Vector2(PART_PADDING, PART_PADDING) + art_offset, target.size)
+	draw_texture_rect_region(texture, target, source, color)
