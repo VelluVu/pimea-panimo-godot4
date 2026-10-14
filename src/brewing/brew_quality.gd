@@ -26,11 +26,18 @@ static func range_precision(value : float, min_v : float, max_v : float) -> floa
 	return clampf(1.0 - absf(value - center) / half_range, 0.0, 1.0)
 
 
+## A style whose IBU starts at 0 can be brewed without hops: below the middle, less is never worse.
+static func ibu_precision(ibu : float, min_ibu : float, max_ibu : float) -> float:
+	if min_ibu <= 0.0 and ibu <= (min_ibu + max_ibu) / 2.0:
+		return 1.0
+	return range_precision(ibu, min_ibu, max_ibu)
+
+
 static func precision_score(mixture : BrewMixture, beer_style : BeerStyle) -> float:
 	var ebc_precision : float = range_precision(mixture.final_ebc, beer_style.min_ebc, beer_style.max_ebc)
-	var ibu_precision : float = range_precision(mixture.final_ibu, beer_style.min_ibu, beer_style.max_ibu)
+	var ibu_score : float = ibu_precision(mixture.final_ibu, beer_style.min_ibu, beer_style.max_ibu)
 	var abv_precision : float = range_precision(mixture.abv, beer_style.min_abv, beer_style.max_abv)
-	return (ebc_precision + ibu_precision + abv_precision) / 3.0
+	return (ebc_precision + ibu_score + abv_precision) / 3.0
 
 
 ## Rewards a mix where alpha and beta acids are close to each other.

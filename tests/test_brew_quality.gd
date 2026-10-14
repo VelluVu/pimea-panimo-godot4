@@ -33,6 +33,12 @@ func test_range_precision_is_clamped_outside_range() -> void:
 	assert_eq(BrewQualityScript.range_precision(5, 10, 30), 0.0)
 
 
+func test_ibu_from_zero_needs_no_hops() -> void:
+	assert_eq(BrewQualityScript.ibu_precision(0, 0, 10), 1.0, "no hops is as good as the middle")
+	assert_eq(BrewQualityScript.ibu_precision(10, 0, 10), 0.0, "too bitter still costs")
+	assert_eq(BrewQualityScript.ibu_precision(10, 10, 30), 0.0, "other styles keep the plain window")
+
+
 func test_range_precision_handles_degenerate_range() -> void:
 	assert_eq(BrewQualityScript.range_precision(999, 10, 10), 1.0)
 
