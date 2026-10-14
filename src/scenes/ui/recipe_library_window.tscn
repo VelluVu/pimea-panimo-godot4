@@ -1,10 +1,10 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://dfxsisxcex8tj"]
 
 [ext_resource type="Script" uid="uid://dqsdc4x3gpckg" path="res://src/scenes/ui/recipe_library_window.gd" id="26_2wyq8"]
 
 [node name="RecipeLibraryWindow" type="Panel" unique_id=209127793]
 visible = false
-layout_mode = 0
+anchors_preset = -1
 anchor_left = 0.15
 anchor_top = 0.1
 anchor_right = 0.85
@@ -34,17 +34,11 @@ mouse_filter = 2
 layout_mode = 2
 mouse_filter = 2
 
-[node name="BackButton" type="Button" parent="MarginContainer/MainVBox/HeaderHBox" unique_id=641351891]
-unique_name_in_owner = true
-visible = false
-layout_mode = 2
-text = "< Takaisin"
-
 [node name="TitleLabel" type="Label" parent="MarginContainer/MainVBox/HeaderHBox" unique_id=756339535]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 32
 text = "Reseptikirja"
 
 [node name="CloseButton" type="Button" parent="MarginContainer/MainVBox/HeaderHBox" unique_id=1140883821]
@@ -63,3 +57,21 @@ layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 theme_override_constants/separation = 6
+
+[node name="BottomHBox" type="HBoxContainer" parent="MarginContainer/MainVBox" unique_id=1784933722]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="BackButton" type="Button" parent="MarginContainer/MainVBox/BottomHBox" unique_id=641351891]
+unique_name_in_owner = true
+layout_mode = 2
+text = "< Takaisin"
+
+[node name="Spacer" type="Control" parent="MarginContainer/MainVBox/BottomHBox" unique_id=1635507171]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="LoadButton" type="Button" parent="MarginContainer/MainVBox/BottomHBox" unique_id=1288690493]
+unique_name_in_owner = true
+layout_mode = 2

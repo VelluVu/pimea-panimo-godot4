@@ -34,6 +34,8 @@ enum Style {
 
 @export var style_name: String = "Uusi oluttyyli"
 @export var style: Style = Style.KOTIKALJA
+## A few sentences for the recipe book; empty shows nothing.
+@export_multiline var description: String = ""
 
 @export_group("Vaatimukset")
 @export var required_yeast_id: int = 301 # Esim. 301=Lager, 302=Ale

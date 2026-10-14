@@ -1,7 +1,7 @@
 @tool
 extends McpTestSuite
 
-## Unit tests for RecipeLibraryText: what a known and a locked style row reveal.
+## Unit tests for RecipeLibraryText: the recipe book's index buttons and style pages.
 
 const RecipeLibraryTextScript := preload("res://src/ui/recipe_library_text.gd")
 
@@ -14,17 +14,120 @@ func _make_style() -> BeerStyle:
 	var beer_style := BeerStyle.new()
 	beer_style.style_name = "Testiolut"
 	beer_style.abv = 4.5
+	beer_style.min_abv = 4.0
+	beer_style.max_abv = 5.5
 	beer_style.min_ebc = 11
 	beer_style.max_ebc = 14
 	beer_style.min_ibu = 14
 	beer_style.max_ibu = 20
-	beer_style.min_malt_weight = 3
+	beer_style.mash_steps = [63, 72]
+	var additions : Array[HopAddition.Kind] = [HopAddition.Kind.BITTERING, HopAddition.Kind.AROMA]
+	beer_style.hop_additions = additions
 	return beer_style
 
 
-func test_known_row_shows_the_name_abv_and_exact_ranges() -> void:
-	var text : String = RecipeLibraryTextScript.known_row(_make_style(), "Lagerhiiva", "")
-	assert_true(text.begins_with("Testiolut\n4.5% ABV, hiiva: Lagerhiiva\nEBC 11-14, IBU 14-20"))
+func _entry(known : bool = true) -> RecipeBookEntry:
+	var entry := RecipeBookEntry.new()
+	entry.beer_style = _make_style()
+	entry.known = known
+	entry.yeast_name = "Lagerhiiva"
+	return entry
+
+
+func _page(entry : RecipeBookEntry) -> String:
+	var lines : PackedStringArray = RecipeLibraryTextScript.known_lines(entry) if entry.known else RecipeLibraryTextScript.locked_lines(entry)
+	return "\n".join(lines)
+
+
+func test_a_known_index_button_shows_name_strength_and_recipes() -> void:
+	var entry := _entry()
+	assert_eq(RecipeLibraryTextScript.index_label(entry), "Testiolut\n4.5 %")
+	entry.saved_recipe_count = 2
+	assert_eq(RecipeLibraryTextScript.index_label(entry), "Testiolut\n4.5 % · reseptejä 2")
+
+
+func test_a_locked_index_button_hides_the_name() -> void:
+	assert_eq(RecipeLibraryTextScript.index_label(_entry(false)), "???\n4.5 %")
+	assert_eq(RecipeLibraryTextScript.page_title(_entry(false)), "???")
+
+
+func test_a_known_page_shows_the_exact_recipe() -> void:
+	var text : String = _page(_entry())
+	assert_contains(text, "Vahvuus: 4.0-5.5 % ABV")
+	assert_contains(text, "Väri: EBC 11-14")
+	assert_contains(text, "Katkeruus: IBU 14-20")
+	assert_contains(text, "Hiiva: Lagerhiiva")
+	assert_contains(text, "Mäskäys: 63 °C, 72 °C")
+	assert_contains(text, "Humalointi: katkero, aromi")
+
+
+func test_a_known_page_names_base_malts_favourites_and_requirements() -> void:
+	var entry := _entry()
+	entry.beer_style.min_base_share = 0.5
+	entry.base_malt_names = ["Münchenin mallas"]
+	entry.favourite_malt_names = ["Münchenin mallas", "Wienermallas"]
+	entry.required_spice_name = "Laktoosi"
+	var text : String = _page(entry)
+	assert_contains(text, "Pohjamallas: Münchenin mallas, vähintään 50 % maltaista")
+	assert_contains(text, "Suosikkimaltaat: Münchenin mallas, Wienermallas")
+	assert_contains(text, "Vaatii myös: Laktoosi")
+
+
+func test_hops_are_listed_and_an_aroma_hop_noted() -> void:
+	var entry := _entry()
+	entry.beer_style.preferred_hop_profiles = [HopData.FlavorProfile.CITRUS]
+	entry.beer_style.requires_aroma_hop = true
+	var text : String = _page(entry)
+	assert_contains(text, "Suosikkihumalat:")
+	assert_contains(text, "Tarvitsee aromihumalan")
+
+
+func test_the_purity_law_replaces_the_spices() -> void:
+	var entry := _entry()
+	entry.preferred_spice_names = ["Korianteri"]
+	assert_contains(_page(entry), "Sopivat mausteet: Korianteri")
+	entry.beer_style.forbids_spices = true
+	assert_contains(_page(entry), "Reinheitsgebot: ei mausteita")
+	assert_false(_page(entry).contains("Korianteri"))
+
+
+func test_a_description_leads_the_page_when_written() -> void:
+	var entry := _entry()
+	assert_false(_page(entry).begins_with("Kuvaus"))
+	entry.beer_style.description = "Kuvaus oluesta."
+	assert_true(_page(entry).begins_with("Kuvaus oluesta."))
+
+
+func test_a_locked_page_withholds_the_exact_ranges() -> void:
+	var text : String = _page(_entry(false))
+	assert_contains(text, "Vahvuus: noin 4.5 % ABV")
+	assert_contains(text, "Väri: %s" % BeerStyle.get_color_hint(11, 14))
+	assert_false(text.contains("EBC"), "the exact EBC range stays hidden")
+	assert_false(text.contains("14-20"), "the exact IBU range stays hidden")
+
+
+func test_the_old_master_reveals_the_ranges_of_a_locked_style() -> void:
+	var entry := _entry(false)
+	entry.hinted = true
+	assert_contains(_page(entry), "Aatun vinkki: EBC 11-14, IBU 14-20")
+
+
+func test_locked_hints_only_when_they_apply() -> void:
+	var entry := _entry(false)
+	assert_false(_page(entry).contains("Vaatii mallasseoksen"))
+	assert_false(_page(entry).contains("Houkuttelee uuden asiakkaan"))
+	entry.needs_malt_blend = true
+	entry.attracts_new_customer = true
+	assert_contains(_page(entry), "Vaatii mallasseoksen")
+	assert_true(_page(entry).ends_with("Houkuttelee uuden asiakkaan"))
+
+
+func test_a_style_too_heavy_for_the_mash_tun_says_so() -> void:
+	for known : bool in [true, false]:
+		var entry := _entry(known)
+		assert_false(_page(entry).contains("mäskipadan"))
+		entry.needs_mash_upgrade = true
+		assert_contains(_page(entry), "Vaatii mäskipadan päivityksen")
 
 
 func test_value_range_shows_an_open_upper_limit_as_plus() -> void:
@@ -32,74 +135,6 @@ func test_value_range_shows_an_open_upper_limit_as_plus() -> void:
 	assert_eq(RecipeLibraryTextScript.value_range(0, RecipeLibraryTextScript.NO_UPPER_LIMIT), "0+")
 
 
-func test_known_row_adds_hop_and_malt_hints_only_when_the_style_has_them() -> void:
-	var plain : String = RecipeLibraryTextScript.known_row(_make_style(), "Y", "Vehnämallas")
-	assert_false(plain.contains("Suosikkihumala"))
-	assert_false(plain.contains("Vaadittu mallas"), "no required malt id, so the name is ignored")
-
-	var beer_style := _make_style()
-	beer_style.preferred_hop_profiles = [HopData.FlavorProfile.CITRUS]
-	beer_style.required_malt_id = 103
-	var hinted : String = RecipeLibraryTextScript.known_row(beer_style, "Y", "Vehnämallas")
-	assert_true(hinted.contains("Suosikkihumala"))
-	assert_true(hinted.contains("Vaadittu mallas: Vehnämallas"))
-
-
-func test_locked_row_withholds_the_exact_ranges() -> void:
-	var text : String = RecipeLibraryTextScript.locked_row(_make_style(), "Lagerhiiva", "", false)
-	assert_true(text.begins_with("??? (4.5% ABV)"))
-	assert_true(text.contains("vähintään 3 kg mallasta"))
-	assert_false(text.contains("EBC"), "the exact EBC range must stay hidden")
-	assert_false(text.contains("14-20"), "the exact IBU range must stay hidden")
-
-
-func test_locked_row_gives_color_and_bitterness_buckets() -> void:
-	var text : String = RecipeLibraryTextScript.locked_row(_make_style(), "Y", "", false)
-	assert_true(text.contains("Väri: %s" % BeerStyle.get_color_hint(11, 14)))
-	assert_true(text.contains("Katkeruus: %s" % BeerStyle.get_bitterness_hint(14, 20)))
-
-
-func test_locked_row_mentions_a_malt_blend_only_without_a_required_malt() -> void:
-	var beer_style := _make_style()
-	assert_true(RecipeLibraryTextScript.locked_row(beer_style, "Y", "", true).contains("Vaatii mallasseoksen"))
-	assert_false(RecipeLibraryTextScript.locked_row(beer_style, "Y", "", false).contains("Vaatii mallasseoksen"))
-
-	beer_style.required_malt_id = 103
-	var text : String = RecipeLibraryTextScript.locked_row(beer_style, "Y", "Vehnämallas", true)
-	assert_false(text.contains("Vaatii mallasseoksen"), "a single required malt replaces the blend hint")
-	assert_true(text.contains("Vaadittu mallas: Vehnämallas"))
-
-
-func test_locked_row_teases_a_new_customer_only_when_asked() -> void:
-	assert_false(RecipeLibraryTextScript.locked_row(_make_style(), "Y", "", false).contains("Houkuttelee uuden asiakkaan"))
-	assert_true(RecipeLibraryTextScript.locked_row(_make_style(), "Y", "", false, "", true).ends_with("Houkuttelee uuden asiakkaan"))
-
-
-func test_known_row_lists_preferred_spices_when_given() -> void:
-	var plain : String = RecipeLibraryTextScript.known_row(_make_style(), "Y", "")
-	assert_false(plain.contains("Korianteri"))
-	var spiced : String = RecipeLibraryTextScript.known_row(_make_style(), "Y", "", "", "Korianteri, Pomeranssinkuori")
-	assert_true(spiced.contains("Korianteri, Pomeranssinkuori"))
-
-
-func test_known_row_warns_about_the_purity_law() -> void:
-	var beer_style := _make_style()
-	assert_false(RecipeLibraryTextScript.known_row(beer_style, "Y", "").contains("Reinheitsgebot"))
-	beer_style.forbids_spices = true
-	assert_true(RecipeLibraryTextScript.known_row(beer_style, "Y", "").contains("Reinheitsgebot"))
-
-
-func test_known_row_counts_saved_recipes_only_when_there_are_some() -> void:
-	assert_false(RecipeLibraryTextScript.known_row(_make_style(), "Y", "").contains("Tallennettuja"))
-	assert_true(RecipeLibraryTextScript.known_row(_make_style(), "Y", "", "", "", 2).ends_with("Tallennettuja reseptejä: 2"))
-
-
 func test_section_titles_show_the_counts() -> void:
-	assert_eq(RecipeLibraryTextScript.known_section_title(5, 24), "Löydetyt tyylit (5/24)")
-	assert_eq(RecipeLibraryTextScript.locked_section_title(19), "Löytämättömät tyylit (19)")
-
-
-func test_a_style_too_heavy_for_the_mash_tun_says_so() -> void:
-	assert_false(RecipeLibraryTextScript.known_row(_make_style(), "Y", "").contains("mäskipadan"))
-	assert_true(RecipeLibraryTextScript.known_row(_make_style(), "Y", "", "", "", 0, true).ends_with("Vaatii mäskipadan päivityksen"))
-	assert_true(RecipeLibraryTextScript.locked_row(_make_style(), "Y", "", false, "", false, false, true).contains("Vaatii mäskipadan päivityksen"))
+	assert_eq(RecipeLibraryTextScript.known_section_title(3, 27), "Löydetyt tyylit (3/27)")
+	assert_eq(RecipeLibraryTextScript.locked_section_title(24), "Löytämättömät tyylit (24)")

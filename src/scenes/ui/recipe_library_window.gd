@@ -1,41 +1,46 @@
 class_name RecipeLibraryWindow
 extends Panel
 
-## The recipe book: a list of styles (known ones open their saved recipes, locked ones
-## only hint) and, per known style, its saved recipes with a button to load each.
-## Pauses the game while open, so it runs while paused and handles its own Esc.
+## The recipe book: an index of every style (known ones by name, locked ones as "???"),
+## and a page per style. A known style's page shows its recipe and lists the saved
+## recipes to pick one from; a locked one's page gives hints. The text is
+## RecipeLibraryText's. Pauses the game while open, so it runs while paused and handles
+## its own Esc.
 
-const NO_RECIPES_FOR_STYLE_STRING : String = "Ei tallennettuja reseptejä tälle tyylille."
-const RECIPE_ROW_LOAD_BUTTON_TEXT : String = "Lataa"
 const BACK_BUTTON_TEXT : String = "< Takaisin"
+const LOAD_BUTTON_TEXT : String = "Lataa resepti"
+const MISSING_INGREDIENTS_FORMAT : String = "%s (raaka-aineita puuttuu)"
 
 const NO_STYLE_SELECTED : int = -1
 ## m5x7 is pixel-crisp only at multiples of 16; any other size smears on a phone.
-const ROW_FONT_SIZE : int = 16
-## Muted against the known rows but still readable on the dark panel.
-const LOCKED_ROW_COLOR : Color = Color(0.72, 0.66, 0.55)
-const RECIPE_BORDER_WIDTH : int = 2
-const RECIPE_CORNER_RADIUS : int = 4
-const RECIPE_BREWABLE_BORDER_COLOR : Color = Color(0.3, 0.85, 0.35)
-const RECIPE_MISSING_BORDER_COLOR : Color = Color(0.5, 0.5, 0.5)
-const SECTION_FONT_SIZE : int = 16
+const TEXT_FONT_SIZE : int = 16
 const SECTION_COLOR : Color = Color(0.949, 0.788, 0.42)
+## Muted against the known styles but still readable on the dark panel.
+const LOCKED_COLOR : Color = Color(0.72, 0.66, 0.55)
+const INDEX_COLUMNS : int = 2
+const SWATCH_SIZE : int = 8
 
 @onready var title_label : Label = %TitleLabel
 @onready var close_button : Button = %CloseButton
 @onready var back_button : Button = %BackButton
+@onready var load_button : Button = %LoadButton
+@onready var bottom_bar : HBoxContainer = %BottomHBox
 @onready var rows_vbox : VBoxContainer = %RowsVBox
 
 var selected_style : int = NO_STYLE_SELECTED
+var _selected_recipe : BrewRecipe = null
+## Swatch textures by colour, so reopening the book reuses them.
+static var _swatches : Dictionary = {}
 
 
 func _ready() -> void:
-	title_label.text = StringContainer.RECIPE_LIBRARY_TITLE
 	close_button.text = StringContainer.RECIPE_LIBRARY_CLOSE_TEXT
 	back_button.text = BACK_BUTTON_TEXT
+	load_button.text = LOAD_BUTTON_TEXT
 
 	close_button.pressed.connect(_on_close_button_pressed)
 	back_button.pressed.connect(_select_style.bind(NO_STYLE_SELECTED))
+	load_button.pressed.connect(_on_load_button_pressed)
 	GUISignals.recipe_library_requested.connect(_on_recipe_library_requested)
 	BrewerySignals.brewery_state_changed.connect(_on_state_changed)
 	BrewerySignals.style_discovered.connect(_on_state_changed)
@@ -61,20 +66,20 @@ func _on_recipe_library_requested() -> void:
 	if visible:
 		_on_close_button_pressed()
 		return
-	selected_style = NO_STYLE_SELECTED
-	_refresh_rows()
+	_select_style(NO_STYLE_SELECTED)
 	show()
 
 
 ## Bound to two signals with different arguments, so it takes none of them.
 func _on_state_changed(_ignored : Variant = null) -> void:
 	if visible:
-		_refresh_rows()
+		_refresh()
 
 
 func _select_style(style : int) -> void:
 	selected_style = style
-	_refresh_rows()
+	_selected_recipe = null
+	_refresh()
 
 
 func _on_close_button_pressed() -> void:
@@ -82,13 +87,15 @@ func _on_close_button_pressed() -> void:
 	hide()
 
 
-func _on_recipe_load_button_pressed(recipe : BrewRecipe) -> void:
-	GUISignals.load_recipe_requested.emit(recipe)
+func _on_load_button_pressed() -> void:
+	if _selected_recipe == null:
+		return
+	GUISignals.load_recipe_requested.emit(_selected_recipe)
 	selected_style = NO_STYLE_SELECTED
 	hide()
 
 
-func _refresh_rows() -> void:
+func _refresh() -> void:
 	for child : Node in rows_vbox.get_children():
 		child.queue_free()
 
@@ -96,15 +103,17 @@ func _refresh_rows() -> void:
 	if brewery == null:
 		return
 
-	back_button.visible = selected_style != NO_STYLE_SELECTED
-	if selected_style == NO_STYLE_SELECTED:
-		_build_style_list_rows(brewery)
+	var on_page : bool = selected_style != NO_STYLE_SELECTED
+	bottom_bar.visible = on_page
+	if on_page:
+		_build_page(brewery, brewery.resolver.get_beer_style(selected_style as BeerStyle.Style))
 	else:
-		_build_recipe_detail_rows(brewery)
+		title_label.text = StringContainer.RECIPE_LIBRARY_TITLE
+		_build_index(brewery)
 
 
-## Discovered styles first, so the ones the player can brew are on top.
-func _build_style_list_rows(brewery : Brewery) -> void:
+## Known styles first by name, then the locked ones from mild to strong.
+func _build_index(brewery : Brewery) -> void:
 	var known : Array[BeerStyle] = []
 	var locked : Array[BeerStyle] = []
 	for beer_style : BeerStyle in brewery.resolver.active_styles:
@@ -112,119 +121,138 @@ func _build_style_list_rows(brewery : Brewery) -> void:
 			known.append(beer_style)
 		else:
 			locked.append(beer_style)
+	known.sort_custom(func(a : BeerStyle, b : BeerStyle) -> bool: return UiText.of(a.style_name) < UiText.of(b.style_name))
+	locked.sort_custom(func(a : BeerStyle, b : BeerStyle) -> bool: return a.abv < b.abv)
 
-	rows_vbox.add_child(_build_section_label(RecipeLibraryText.known_section_title(known.size(), known.size() + locked.size())))
-	for beer_style : BeerStyle in known:
-		rows_vbox.add_child(_build_known_style_row(brewery, beer_style))
+	rows_vbox.add_child(_section_label(RecipeLibraryText.known_section_title(known.size(), known.size() + locked.size())))
+	rows_vbox.add_child(_index_grid(brewery, known))
 	if locked.is_empty():
 		return
-	rows_vbox.add_child(HSeparator.new())
-	rows_vbox.add_child(_build_section_label(RecipeLibraryText.locked_section_title(locked.size())))
-	for beer_style : BeerStyle in locked:
-		rows_vbox.add_child(_build_locked_style_row(brewery, beer_style))
+	rows_vbox.add_child(_section_label(RecipeLibraryText.locked_section_title(locked.size())))
+	rows_vbox.add_child(_index_grid(brewery, locked))
 
 
-func _build_section_label(text : String) -> Label:
-	var label := Label.new()
-	label.text = text
-	label.add_theme_font_size_override("font_size", SECTION_FONT_SIZE)
-	label.add_theme_color_override("font_color", SECTION_COLOR)
+func _index_grid(brewery : Brewery, styles : Array[BeerStyle]) -> GridContainer:
+	var grid := GridContainer.new()
+	grid.columns = INDEX_COLUMNS
+	for beer_style : BeerStyle in styles:
+		var entry : RecipeBookEntry = _entry(brewery, beer_style)
+		var button := Button.new()
+		button.text = RecipeLibraryText.index_label(entry)
+		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		button.size_flags_horizontal = SIZE_EXPAND_FILL
+		button.icon = _swatch(BeerColor.from_ebc(roundi((beer_style.min_ebc + mini(beer_style.max_ebc, RecipeLibraryText.NO_UPPER_LIMIT)) / 2.0)))
+		button.add_theme_font_size_override("font_size", TEXT_FONT_SIZE)
+		if not entry.known:
+			button.add_theme_color_override("font_color", LOCKED_COLOR)
+		button.pressed.connect(_select_style.bind(beer_style.style))
+		grid.add_child(button)
+	return grid
+
+
+func _build_page(brewery : Brewery, beer_style : BeerStyle) -> void:
+	var entry : RecipeBookEntry = _entry(brewery, beer_style)
+	title_label.text = RecipeLibraryText.page_title(entry)
+	var lines : PackedStringArray = RecipeLibraryText.known_lines(entry) if entry.known else RecipeLibraryText.locked_lines(entry)
+	for line : String in lines:
+		rows_vbox.add_child(_text_label(line, Color.WHITE if entry.known else LOCKED_COLOR))
+	load_button.disabled = true
+	if entry.known:
+		_build_saved_recipes(brewery, beer_style)
+
+
+## The style's saved recipes as a pick list; "Lataa resepti" loads the picked one.
+func _build_saved_recipes(brewery : Brewery, beer_style : BeerStyle) -> void:
+	rows_vbox.add_child(_section_label(RecipeLibraryText.SAVED_RECIPES_HEADER))
+	var recipes : Array[BrewRecipe] = []
+	for recipe : BrewRecipe in brewery.saved_recipes:
+		if recipe.beer_style == beer_style.style:
+			recipes.append(recipe)
+	if recipes.is_empty():
+		rows_vbox.add_child(_text_label(RecipeLibraryText.NO_SAVED_RECIPES, LOCKED_COLOR))
+		return
+	var group := ButtonGroup.new()
+	for recipe : BrewRecipe in recipes:
+		var button := Button.new()
+		button.toggle_mode = true
+		button.button_group = group
+		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		button.add_theme_font_size_override("font_size", TEXT_FONT_SIZE)
+		var recipe_name : String = RecipeNameText.display(recipe)
+		button.text = recipe_name if recipe.is_covered_by(brewery.inventory) else tr(MISSING_INGREDIENTS_FORMAT) % recipe_name
+		button.toggled.connect(_on_recipe_toggled.bind(recipe))
+		rows_vbox.add_child(button)
+	# A single recipe is picked already, so loading it is one tap.
+	if recipes.size() == 1:
+		(rows_vbox.get_child(rows_vbox.get_child_count() - 1) as Button).button_pressed = true
+
+
+func _on_recipe_toggled(pressed : bool, recipe : BrewRecipe) -> void:
+	if pressed:
+		_selected_recipe = recipe
+	elif _selected_recipe == recipe:
+		_selected_recipe = null
+	load_button.disabled = _selected_recipe == null
+
+
+func _entry(brewery : Brewery, beer_style : BeerStyle) -> RecipeBookEntry:
+	var entry := RecipeBookEntry.new()
+	entry.beer_style = beer_style
+	entry.known = brewery.is_style_known(beer_style.style)
+	entry.yeast_name = _ingredient_name(beer_style.required_yeast_id)
+	for id : int in beer_style.base_malt_ids:
+		entry.base_malt_names.append(_ingredient_name(id))
+	if beer_style.required_malt_id != BrewMixture.NO_REQUIRED_MALT:
+		entry.required_malt_name = _ingredient_name(beer_style.required_malt_id)
+	if beer_style.required_spice_id != BrewMixture.NO_REQUIRED_SPICE:
+		entry.required_spice_name = _ingredient_name(beer_style.required_spice_id)
+	entry.favourite_malt_names = _favourite_malt_names(beer_style)
+	for spice_id : int in beer_style.preferred_spice_ids:
+		entry.preferred_spice_names.append(_ingredient_name(spice_id))
+	entry.saved_recipe_count = brewery.saved_recipes.filter(func(recipe : BrewRecipe) -> bool: return recipe.beer_style == beer_style.style).size()
+	entry.needs_mash_upgrade = not MashTun.holds(brewery.resolver.reference_malt_weight(beer_style), brewery.mash_capacity_kg())
+	if not entry.known:
+		entry.needs_malt_blend = beer_style.required_malt_id == BrewMixture.NO_REQUIRED_MALT and brewery.resolver.style_needs_malt_blend(beer_style)
+		entry.attracts_new_customer = not MetaProgressManager.has_style(beer_style.style) and CustomerRegistry.is_style_customer_gate(beer_style.style)
+		entry.hinted = brewery.hinted_styles.has(beer_style.style)
+	return entry
+
+
+## The reference recipe's malts, most used first.
+func _favourite_malt_names(beer_style : BeerStyle) -> PackedStringArray:
+	var malts : Array[MaltData] = []
+	for id : int in beer_style.reference_recipe:
+		var malt := IngredientDatabase.get_item_by_id(id) as MaltData
+		if malt != null:
+			malts.append(malt)
+	malts.sort_custom(func(a : MaltData, b : MaltData) -> bool: return a.kg(beer_style.reference_recipe[a.id]) > b.kg(beer_style.reference_recipe[b.id]))
+	var names : PackedStringArray = []
+	for malt : MaltData in malts:
+		names.append(tr(malt.name))
+	return names
+
+
+func _section_label(text : String) -> Label:
+	var label := _text_label(text, SECTION_COLOR)
+	label.autowrap_mode = TextServer.AUTOWRAP_OFF
 	return label
 
 
-func _build_known_style_row(brewery : Brewery, beer_style : BeerStyle) -> Button:
-	var row := Button.new()
-	row.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	row.add_theme_font_size_override("font_size", ROW_FONT_SIZE)
-	row.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	row.text = RecipeLibraryText.known_row(beer_style, _ingredient_name(beer_style.required_yeast_id), _required_malt_name(beer_style), _required_spice_name(beer_style), _preferred_spice_names(beer_style), _saved_recipe_count(brewery, beer_style.style), _needs_mash_upgrade(brewery, beer_style))
-	row.pressed.connect(_select_style.bind(beer_style.style))
-	return row
+func _text_label(text : String, color : Color) -> Label:
+	var label := Label.new()
+	label.text = text
+	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	label.add_theme_font_size_override("font_size", TEXT_FONT_SIZE)
+	label.add_theme_color_override("font_color", color)
+	return label
 
 
-func _build_locked_style_row(brewery : Brewery, beer_style : BeerStyle) -> Label:
-	var needs_malt_blend : bool = beer_style.required_malt_id == BrewMixture.NO_REQUIRED_MALT and brewery.resolver.style_needs_malt_blend(beer_style)
-	var row := Label.new()
-	row.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	row.add_theme_font_size_override("font_size", ROW_FONT_SIZE)
-	var attracts_new_customer : bool = not MetaProgressManager.has_style(beer_style.style) and CustomerRegistry.is_style_customer_gate(beer_style.style)
-	row.text = RecipeLibraryText.locked_row(beer_style, _ingredient_name(beer_style.required_yeast_id), _required_malt_name(beer_style), needs_malt_blend, _required_spice_name(beer_style), attracts_new_customer, brewery.hinted_styles.has(beer_style.style), _needs_mash_upgrade(brewery, beer_style))
-	row.add_theme_color_override("font_color", LOCKED_ROW_COLOR)
-	return row
-
-
-func _build_recipe_detail_rows(brewery : Brewery) -> void:
-	var recipes : Array[BrewRecipe] = []
-	for recipe : BrewRecipe in brewery.saved_recipes:
-		if recipe.beer_style == selected_style:
-			recipes.append(recipe)
-
-	if recipes.is_empty():
-		var empty_label := Label.new()
-		empty_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		empty_label.text = NO_RECIPES_FOR_STYLE_STRING
-		rows_vbox.add_child(empty_label)
-		return
-
-	for recipe : BrewRecipe in recipes:
-		rows_vbox.add_child(_build_recipe_row(recipe, recipe.is_covered_by(brewery.inventory)))
-
-
-## The border is green when the inventory covers the recipe, grey when something is missing.
-func _build_recipe_row(recipe : BrewRecipe, brewable : bool) -> Control:
-	var border := StyleBoxFlat.new()
-	border.bg_color = Color(0, 0, 0, 0)
-	border.set_border_width_all(RECIPE_BORDER_WIDTH)
-	border.set_corner_radius_all(RECIPE_CORNER_RADIUS)
-	border.border_color = RECIPE_BREWABLE_BORDER_COLOR if brewable else RECIPE_MISSING_BORDER_COLOR
-
-	var row := PanelContainer.new()
-	row.add_theme_stylebox_override("panel", border)
-	var row_hbox := HBoxContainer.new()
-	row.add_child(row_hbox)
-
-	var name_label := Label.new()
-	name_label.text = RecipeNameText.display(recipe)
-	name_label.size_flags_horizontal = SIZE_EXPAND_FILL
-	row_hbox.add_child(name_label)
-
-	var load_button := Button.new()
-	load_button.text = RECIPE_ROW_LOAD_BUTTON_TEXT
-	load_button.pressed.connect(_on_recipe_load_button_pressed.bind(recipe))
-	row_hbox.add_child(load_button)
-	return row
-
-
-func _needs_mash_upgrade(brewery : Brewery, beer_style : BeerStyle) -> bool:
-	return not MashTun.holds(brewery.resolver.reference_malt_weight(beer_style), brewery.mash_capacity_kg())
-
-
-func _saved_recipe_count(brewery : Brewery, style : int) -> int:
-	var count : int = 0
-	for recipe : BrewRecipe in brewery.saved_recipes:
-		if recipe.beer_style == style:
-			count += 1
-	return count
-
-
-## Empty for a style with no single required malt, which the row text ignores.
-func _preferred_spice_names(beer_style : BeerStyle) -> String:
-	var names : PackedStringArray = []
-	for spice_id : int in beer_style.preferred_spice_ids:
-		names.append(_ingredient_name(spice_id))
-	return ", ".join(names)
-
-
-func _required_spice_name(beer_style : BeerStyle) -> String:
-	if beer_style.required_spice_id == BrewMixture.NO_REQUIRED_SPICE:
-		return ""
-	return _ingredient_name(beer_style.required_spice_id)
-
-
-func _required_malt_name(beer_style : BeerStyle) -> String:
-	if beer_style.required_malt_id == BrewMixture.NO_REQUIRED_MALT:
-		return ""
-	return _ingredient_name(beer_style.required_malt_id)
+static func _swatch(color : Color) -> Texture2D:
+	if not _swatches.has(color):
+		var image := Image.create(SWATCH_SIZE, SWATCH_SIZE, false, Image.FORMAT_RGBA8)
+		image.fill(color)
+		_swatches[color] = ImageTexture.create_from_image(image)
+	return _swatches[color]
 
 
 func _ingredient_name(ingredient_id : int) -> String:

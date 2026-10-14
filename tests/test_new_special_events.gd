@@ -57,5 +57,8 @@ func test_the_old_masters_tip_shows_in_the_recipe_library() -> void:
 	style.max_ebc = 50
 	style.min_ibu = 16
 	style.max_ibu = 26
-	assert_false(RecipeLibraryText.locked_row(style, "Lagerhiiva", "", false).contains("30-50"))
-	assert_true(RecipeLibraryText.locked_row(style, "Lagerhiiva", "", false, "", false, true).contains("EBC 30-50, IBU 16-26"))
+	var entry := RecipeBookEntry.new()
+	entry.beer_style = style
+	assert_false("".join(RecipeLibraryText.locked_lines(entry)).contains("30-50"))
+	entry.hinted = true
+	assert_true("".join(RecipeLibraryText.locked_lines(entry)).contains("EBC 30-50, IBU 16-26"))

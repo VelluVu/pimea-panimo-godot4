@@ -5226,16 +5226,16 @@ msgid "Kuitit"
 msgstr "Receipts"
 
 #: src/scenes/ui/recipe_library_window.gd
+msgid "%s (raaka-aineita puuttuu)"
+msgstr "%s (ingredients missing)"
+
+#: src/scenes/ui/recipe_library_window.gd
 msgid "< Takaisin"
 msgstr "< Back"
 
 #: src/scenes/ui/recipe_library_window.gd
-msgid "Ei tallennettuja reseptejä tälle tyylille."
-msgstr "No saved recipes for this style."
-
-#: src/scenes/ui/recipe_library_window.gd
-msgid "Lataa"
-msgstr "Load"
+msgid "Lataa resepti"
+msgstr "Load recipe"
 
 #: src/scenes/ui/recipe_shelf_label.gd
 msgid "Reseptit"
@@ -6168,34 +6168,36 @@ msgid "Käännä puhelin vaakatasoon."
 msgstr "Turn your phone sideways."
 
 #: src/ui/recipe_library_text.gd
-msgid ""
-"%s\n"
-"%.1f%% ABV, hiiva: %s\n"
-"EBC %s, IBU %s"
-msgstr ""
-"%s\n"
-"%.1f%% ABV, yeast: %s\n"
-"EBC %s, IBU %s"
-
-#: src/ui/recipe_library_text.gd
-msgid ""
-"??? (%.1f%% ABV)\n"
-"Vaatii: hiiva %s, vähintään %d kg mallasta"
-msgstr ""
-"??? (%.1f%% ABV)\n"
-"Needs: yeast %s, at least %d kg of malt"
+msgid "%s · reseptejä %d"
+msgstr "%s · recipes %d"
 
 #: src/ui/recipe_library_text.gd
 msgid "Aatun vinkki: EBC %s, IBU %s"
 msgstr "Aatu's tip: EBC %s, IBU %s"
 
 #: src/ui/recipe_library_text.gd
+msgid "Ei tallennettuja reseptejä."
+msgstr "No saved recipes."
+
+#: src/ui/recipe_library_text.gd
+msgid "Hiiva: %s"
+msgstr "Yeast: %s"
+
+#: src/ui/recipe_library_text.gd
 msgid "Houkuttelee uuden asiakkaan"
 msgstr "Attracts a new customer"
 
 #: src/ui/recipe_library_text.gd
+msgid "Humalointi: %s"
+msgstr "Hopping: %s"
+
+#: src/ui/recipe_library_text.gd
 msgid "Katkeruus: %s"
 msgstr "Bitterness: %s"
+
+#: src/ui/recipe_library_text.gd
+msgid "Katkeruus: IBU %s"
+msgstr "Bitterness: IBU %s"
 
 #: src/ui/recipe_library_text.gd
 msgid "Löydetyt tyylit (%d/%d)"
@@ -6204,6 +6206,14 @@ msgstr "Discovered styles (%d/%d)"
 #: src/ui/recipe_library_text.gd
 msgid "Löytämättömät tyylit (%d)"
 msgstr "Undiscovered styles (%d)"
+
+#: src/ui/recipe_library_text.gd
+msgid "Mäskäys: %s"
+msgstr "Mash: %s"
+
+#: src/ui/recipe_library_text.gd
+msgid "Pohjamallas: %s, vähintään %d %% maltaista"
+msgstr "Base malt: %s, at least %d %% of the malt"
 
 #: src/ui/recipe_library_text.gd
 msgid "Reinheitsgebot: ei mausteita"
@@ -6218,12 +6228,16 @@ msgid "Suosikkihumalat: %s"
 msgstr "Favourite hops: %s"
 
 #: src/ui/recipe_library_text.gd
-msgid "Tallennettuja reseptejä: %d"
-msgstr "Saved recipes: %d"
+msgid "Suosikkimaltaat: %s"
+msgstr "Favourite malts: %s"
 
 #: src/ui/recipe_library_text.gd
-msgid "Vaadittu mallas: %s"
-msgstr "Required malt: %s"
+msgid "Tallennetut reseptit"
+msgstr "Saved recipes"
+
+#: src/ui/recipe_library_text.gd
+msgid "Tarvitsee aromihumalan"
+msgstr "Needs an aroma hop"
 
 #: src/ui/recipe_library_text.gd
 msgid "Vaatii mallasseoksen"
@@ -6238,8 +6252,40 @@ msgid "Vaatii mäskipadan päivityksen"
 msgstr "Needs a mash tun upgrade"
 
 #: src/ui/recipe_library_text.gd
+msgid "Vaatii: %s"
+msgstr "Needs: %s"
+
+#: src/ui/recipe_library_text.gd
+msgid "Vahvuus: %s %% ABV"
+msgstr "Strength: %s %% ABV"
+
+#: src/ui/recipe_library_text.gd
+msgid "Vahvuus: noin %.1f %% ABV"
+msgstr "Strength: about %.1f %% ABV"
+
+#: src/ui/recipe_library_text.gd
 msgid "Väri: %s"
 msgstr "Colour: %s"
+
+#: src/ui/recipe_library_text.gd
+msgid "Väri: EBC %s"
+msgstr "Colour: EBC %s"
+
+#: src/ui/recipe_library_text.gd
+msgid "aromi"
+msgstr "aroma"
+
+#: src/ui/recipe_library_text.gd
+msgid "katkero"
+msgstr "bittering"
+
+#: src/ui/recipe_library_text.gd
+msgid "kuivahumala"
+msgstr "dry hop"
+
+#: src/ui/recipe_library_text.gd
+msgid "maku"
+msgstr "flavour"
 
 #: src/ui/recipe_name_text.gd
 msgid "%s (perusresepti)"
