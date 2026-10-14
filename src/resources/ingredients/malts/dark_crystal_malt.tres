@@ -4,7 +4,8 @@
 
 [resource]
 script = ExtResource("1_darkcrystal")
-ebc = 140
+ebc = 300
+extract = 0.7
 id = 107
 name = "Tumma karamellimallas"
 name_partitive = "tummaa karamellimallasta"

@@ -140,6 +140,10 @@ msgid "Imperial Stout"
 msgstr "Imperial Stout"
 
 #: src/autoload/string_container.gd
+msgid "Irish Dry Stout"
+msgstr "Irish Dry Stout"
+
+#: src/autoload/string_container.gd
 msgid "Jakelutulot: %s"
 msgstr "Distribution income: %s"
 
@@ -282,8 +286,16 @@ msgid "Ratsioiden sietokyky: %s"
 msgstr "Raid tolerance: %s"
 
 #: src/autoload/string_container.gd
+msgid "Rauchbier"
+msgstr "Rauchbier"
+
+#: src/autoload/string_container.gd
 msgid "Reseptikirja"
 msgstr "Recipe book"
+
+#: src/autoload/string_container.gd
+msgid "Roggenbier"
+msgstr "Roggenbier"
 
 #: src/autoload/string_container.gd
 msgid "Ryhmäasiakkaiden saapumisväli: %s"
@@ -1001,6 +1013,14 @@ msgstr "Put your first batch of IPA on the shelf."
 msgid "Tyyli löydetty: IPA"
 msgstr "Style discovered: IPA"
 
+#: src/resources/achievements/tyyli_irishdrystout.tres
+msgid "Pane hyllyyn ensimmäinen erä tyyliä Irish Dry Stout."
+msgstr "Put your first batch of Irish Dry Stout on the shelf."
+
+#: src/resources/achievements/tyyli_irishdrystout.tres
+msgid "Tyyli löydetty: Irish Dry Stout"
+msgstr "Style discovered: Irish Dry Stout"
+
 #: src/resources/achievements/tyyli_kotikalja.tres
 msgid "Pane hyllyyn ensimmäinen erä tyyliä Kotikalja."
 msgstr "Put your first batch of Homebrew on the shelf."
@@ -1032,6 +1052,22 @@ msgstr "Put your first batch of Pale Ale on the shelf."
 #: src/resources/achievements/tyyli_paleale.tres
 msgid "Tyyli löydetty: Pale Ale"
 msgstr "Style discovered: Pale Ale"
+
+#: src/resources/achievements/tyyli_rauchbier.tres
+msgid "Pane hyllyyn ensimmäinen erä tyyliä Rauchbier."
+msgstr "Put your first batch of Rauchbier on the shelf."
+
+#: src/resources/achievements/tyyli_rauchbier.tres
+msgid "Tyyli löydetty: Rauchbier"
+msgstr "Style discovered: Rauchbier"
+
+#: src/resources/achievements/tyyli_roggenbier.tres
+msgid "Pane hyllyyn ensimmäinen erä tyyliä Roggenbier."
+msgstr "Put your first batch of Roggenbier on the shelf."
+
+#: src/resources/achievements/tyyli_roggenbier.tres
+msgid "Tyyli löydetty: Roggenbier"
+msgstr "Style discovered: Roggenbier"
 
 #: src/resources/achievements/tyyli_sahti.tres
 msgid "Pane hyllyyn ensimmäinen erä tyyliä Sahti."
@@ -2982,6 +3018,14 @@ msgstr "Fuggle Hops"
 msgid "Perinteinen englantilainen humala, maanläheinen ja hedelmäinen."
 msgstr "A traditional English hop, earthy and fruity."
 
+#: src/resources/ingredients/hops/galaxy_hop.tres
+msgid "Australialainen aromihumala, joka tuoksuu passionhedelmältä ja persikalta."
+msgstr "An Australian aroma hop that smells of passion fruit and peach."
+
+#: src/resources/ingredients/hops/galaxy_hop.tres
+msgid "Galaxy-humala"
+msgstr "Galaxy Hops"
+
 #: src/resources/ingredients/hops/hallertau_hop.tres
 msgid "Hallertau-humala"
 msgstr "Hallertau Hops"
@@ -3006,6 +3050,24 @@ msgstr "Mosaic Hops"
 msgid "Trooppinen ja marjainen humala, hyvin monipuolinen aromeiltaan."
 msgstr "A tropical, berry-like hop with very varied aromas."
 
+#: src/resources/ingredients/hops/nelson_sauvin_hop.tres
+msgid "Nelson Sauvin -humala"
+msgstr "Nelson Sauvin Hops"
+
+#: src/resources/ingredients/hops/nelson_sauvin_hop.tres
+msgid "Uusiseelantilainen aromihumala: valkoviiniä ja karviaista."
+msgstr "A New Zealand aroma hop: white wine and gooseberry."
+
+#: src/resources/ingredients/hops/perle_hop.tres
+msgid "Perle-humala"
+msgstr "Perle Hops"
+
+#: src/resources/ingredients/hops/perle_hop.tres
+msgid ""
+"Saksalainen jalohumala, mausteinen ja minttuinen. Käy sekä katkeroksi että "
+"aromiksi."
+msgstr "A German noble hop, spicy and minty. Works for both bitterness and aroma."
+
 #: src/resources/ingredients/hops/saaz_hop.tres
 msgid "Klassinen tsekkiläinen jalohumala, mieto ja mausteinen."
 msgstr "A classic Czech noble hop, mild and spicy."
@@ -3022,6 +3084,14 @@ msgstr "A versatile hop that brings wood and fruitiness."
 msgid "Simcoe-humala"
 msgstr "Simcoe Hops"
 
+#: src/resources/ingredients/hops/styrian_golding_hop.tres
+msgid "Slovenialainen maanläheinen aromihumala, jossa on valkopippuria ja yrttejä."
+msgstr "A Slovenian earthy aroma hop with white pepper and herbs."
+
+#: src/resources/ingredients/hops/styrian_golding_hop.tres
+msgid "Styrian Golding -humala"
+msgstr "Styrian Golding Hops"
+
 #: src/resources/ingredients/hops/tettnanger_hop.tres
 msgid "Tettnanger-humala"
 msgstr "Tettnanger Hops"
@@ -3029,6 +3099,14 @@ msgstr "Tettnanger Hops"
 #: src/resources/ingredients/hops/tettnanger_hop.tres
 msgid "Tämä jalohumala antaa oluelle klassista makua."
 msgstr "A noble hop that gives beer a classic flavour."
+
+#: src/resources/ingredients/hops/warrior_hop.tres
+msgid "Amerikkalainen katkerohumala: puhdas ja pehmeä katkero ilman omaa aromia."
+msgstr "An American bittering hop: clean, smooth bitterness with no aroma of its own."
+
+#: src/resources/ingredients/hops/warrior_hop.tres
+msgid "Warrior-humala"
+msgstr "Warrior Hops"
 
 #: src/resources/ingredients/malts/biscuit_malt.tres
 msgid "Keksimallas"
@@ -3054,6 +3132,18 @@ msgstr "Brown Malt"
 msgid "ruskeaa mallasta"
 msgstr "brown malt"
 
+#: src/resources/ingredients/malts/carafa_malt.tres
+msgid "Carafa"
+msgstr "Carafa"
+
+#: src/resources/ingredients/malts/carafa_malt.tres
+msgid "Carafaa"
+msgstr "Carafa"
+
+#: src/resources/ingredients/malts/carafa_malt.tres
+msgid "Kuorittu musta mallas: väriä ja pehmeää paahdetta ilman karvautta."
+msgstr "A dehusked black malt: colour and smooth roast without harshness."
+
 #: src/resources/ingredients/malts/caramell_malt.tres
 msgid "Erikoismallas, joka tuo olueen väriä ja karamellista makua."
 msgstr "A specialty malt that adds colour and a caramel flavour."
@@ -3065,6 +3155,30 @@ msgstr "Caramel Malt"
 #: src/resources/ingredients/malts/caramell_malt.tres
 msgid "karamellimallasta"
 msgstr "caramel malt"
+
+#: src/resources/ingredients/malts/chocolate_malt.tres
+msgid "Suklaamallas"
+msgstr "Chocolate Malt"
+
+#: src/resources/ingredients/malts/chocolate_malt.tres
+msgid "Tummaksi paahdettu mallas, joka tuo suklaata ja kahvia. Pieni määrä riittää."
+msgstr "A dark roasted malt that brings chocolate and coffee. A little goes a long way."
+
+#: src/resources/ingredients/malts/chocolate_malt.tres
+msgid "suklaamallasta"
+msgstr "chocolate malt"
+
+#: src/resources/ingredients/malts/dark_candi_syrup.tres
+msgid "Belgialainen tumma sokerisiirappi. Käy kokonaan ja antaa rusinaa ja väriä."
+msgstr "A dark Belgian sugar syrup. Ferments completely and adds raisin and colour."
+
+#: src/resources/ingredients/malts/dark_candi_syrup.tres
+msgid "Tumma kandisiirappi"
+msgstr "Dark Candi Syrup"
+
+#: src/resources/ingredients/malts/dark_candi_syrup.tres
+msgid "tummaa kandisiirappia"
+msgstr "dark candi syrup"
 
 #: src/resources/ingredients/malts/dark_crystal_malt.tres
 msgid "Tumma karamellimallas"
@@ -3114,6 +3228,30 @@ msgstr "A pale base malt that adds a clean malty flavour."
 msgid "pilsner-mallasta"
 msgstr "pilsner malt"
 
+#: src/resources/ingredients/malts/roasted_barley.tres
+msgid "Mallastamaton, mustaksi paahdettu ohra. Kuivan stoutin terävä paahteisuus."
+msgstr "Unmalted barley roasted black. The sharp roast of a dry stout."
+
+#: src/resources/ingredients/malts/roasted_barley.tres
+msgid "Paahdettu ohra"
+msgstr "Roasted Barley"
+
+#: src/resources/ingredients/malts/roasted_barley.tres
+msgid "paahdettua ohraa"
+msgstr "roasted barley"
+
+#: src/resources/ingredients/malts/rye_malt.tres
+msgid "Mausteinen ja hieman tahmea mallas. Sahdin ja ruisoluen sydän."
+msgstr "A spicy, slightly sticky malt. The heart of sahti and rye beer."
+
+#: src/resources/ingredients/malts/rye_malt.tres
+msgid "Ruismallas"
+msgstr "Rye Malt"
+
+#: src/resources/ingredients/malts/rye_malt.tres
+msgid "ruismallasta"
+msgstr "rye malt"
+
 #: src/resources/ingredients/malts/smoked_malt.tres
 msgid "Avotulella savustettu mallas, joka tuo olueen savuisen maun."
 msgstr "Malt smoked over an open fire for a smoky flavour."
@@ -3125,6 +3263,20 @@ msgstr "Smoked Malt"
 #: src/resources/ingredients/malts/smoked_malt.tres
 msgid "savumallasta"
 msgstr "smoked malt"
+
+#: src/resources/ingredients/malts/vienna_malt.tres
+msgid ""
+"Kevyesti paahdettu pohjamallas, joka antaa kullanruskean värin ja leipäisen "
+"maun."
+msgstr "A lightly kilned base malt that gives a golden brown colour and a bready taste."
+
+#: src/resources/ingredients/malts/vienna_malt.tres
+msgid "Wienermallas"
+msgstr "Vienna Malt"
+
+#: src/resources/ingredients/malts/vienna_malt.tres
+msgid "wienermallasta"
+msgstr "Vienna malt"
 
 #: src/resources/ingredients/malts/wheat_malt.tres
 msgid "Vehnämallas"
@@ -5598,16 +5750,16 @@ msgid "Vaahto %d %%"
 msgstr "Foam %d %%"
 
 #: src/ui/brew_preview_text.gd
-msgid "Arvio: %s, EBC %d, IBU %d, laatu %d%%"
-msgstr "Estimate: %s, EBC %d, IBU %d, quality %d%%"
+msgid "Arvio: %s, EBC %d, IBU %d, %.1f %% ABV, laatu %d%%"
+msgstr "Estimate: %s, EBC %d, IBU %d, %.1f %% ABV, quality %d%%"
 
 #: src/ui/brew_preview_text.gd
-msgid "Arvio: tuntematon tyyli täsmää! (EBC %d, IBU %d)"
-msgstr "Estimate: an unknown style matches! (EBC %d, IBU %d)"
+msgid "Arvio: tuntematon tyyli täsmää! (EBC %d, IBU %d, %.1f %% ABV)"
+msgstr "Estimate: an unknown style matches! (EBC %d, IBU %d, %.1f %% ABV)"
 
 #: src/ui/brew_preview_text.gd
-msgid "Ei täsmää vielä mihinkään tyyliin. (EBC %d, IBU %d)"
-msgstr "Doesn't match any style yet. (EBC %d, IBU %d)"
+msgid "Ei täsmää vielä mihinkään tyyliin. (EBC %d, IBU %d, %.1f %% ABV)"
+msgstr "Doesn't match any style yet. (EBC %d, IBU %d, %.1f %% ABV)"
 
 #: src/ui/brew_preview_text.gd
 msgid "Lisää raaka-aineita nähdäksesi arvion."
@@ -5974,18 +6126,24 @@ msgstr "Turn your phone sideways."
 #: src/ui/recipe_library_text.gd
 msgid ""
 "%s\n"
-"%.1f%% ABV, EBC %s-%s, IBU %s-%s, hiiva: %s"
+"%.1f%% ABV, hiiva: %s\n"
+"EBC %s, IBU %s"
 msgstr ""
 "%s\n"
-"%.1f%% ABV, EBC %s-%s, IBU %s-%s, yeast: %s"
+"%.1f%% ABV, yeast: %s\n"
+"EBC %s, IBU %s"
 
 #: src/ui/recipe_library_text.gd
-msgid "??? (%.1f%% ABV) – vaatii: hiiva %s, vähintään %d kg mallasta"
-msgstr "??? (%.1f%% ABV) – needs: yeast %s, at least %d kg of malt"
+msgid ""
+"??? (%.1f%% ABV)\n"
+"Vaatii: hiiva %s, vähintään %d kg mallasta"
+msgstr ""
+"??? (%.1f%% ABV)\n"
+"Needs: yeast %s, at least %d kg of malt"
 
 #: src/ui/recipe_library_text.gd
-msgid "Aatun vinkki: EBC %d-%d, IBU %d-%d"
-msgstr "Aatu's tip: EBC %d-%d, IBU %d-%d"
+msgid "Aatun vinkki: EBC %s, IBU %s"
+msgstr "Aatu's tip: EBC %s, IBU %s"
 
 #: src/ui/recipe_library_text.gd
 msgid "Houkuttelee uuden asiakkaan"
@@ -6012,8 +6170,8 @@ msgid "Sopivat mausteet: %s"
 msgstr "Good spices: %s"
 
 #: src/ui/recipe_library_text.gd
-msgid "Suosikkihumala: %s"
-msgstr "Favourite hop: %s"
+msgid "Suosikkihumalat: %s"
+msgstr "Favourite hops: %s"
 
 #: src/ui/recipe_library_text.gd
 msgid "Tallennettuja reseptejä: %d"

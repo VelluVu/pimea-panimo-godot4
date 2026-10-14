@@ -10,7 +10,7 @@ extends RefCounted
 
 ## `table` maps ingredient id -> IngredientData. Returns the marks sorted by time, the
 ## dry hop marks included (they go in on their own in the fermentor).
-static func assign(contents : Dictionary, table : Dictionary, kinds : Array[HopAddition.Kind], preferred_profile : HopData.FlavorProfile) -> Array[BoilMark]:
+static func assign(contents : Dictionary, table : Dictionary, kinds : Array[HopAddition.Kind], preferred_profiles : Array[HopData.FlavorProfile]) -> Array[BoilMark]:
 	var hops : Array[HopData] = _hops_in(contents, table)
 	var pairs : Array = []
 	if not hops.is_empty():
@@ -26,8 +26,8 @@ static func assign(contents : Dictionary, table : Dictionary, kinds : Array[HopA
 			pairs.append([HopAddition.Kind.BITTERING, hops[0]])
 		var late_hops : Array[HopData] = hops.slice(1) if bittering and hops.size() > 1 else hops.duplicate()
 		late_hops.sort_custom(func(a : HopData, b : HopData) -> bool:
-			var a_preferred : bool = a.flavor_profile == preferred_profile
-			var b_preferred : bool = b.flavor_profile == preferred_profile
+			var a_preferred : bool = preferred_profiles.has(a.flavor_profile)
+			var b_preferred : bool = preferred_profiles.has(b.flavor_profile)
 			if a_preferred != b_preferred:
 				return a_preferred
 			return _more_bitter(a, b))

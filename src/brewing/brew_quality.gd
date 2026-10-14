@@ -29,7 +29,8 @@ static func range_precision(value : float, min_v : float, max_v : float) -> floa
 static func precision_score(mixture : BrewMixture, beer_style : BeerStyle) -> float:
 	var ebc_precision : float = range_precision(mixture.final_ebc, beer_style.min_ebc, beer_style.max_ebc)
 	var ibu_precision : float = range_precision(mixture.final_ibu, beer_style.min_ibu, beer_style.max_ibu)
-	return (ebc_precision + ibu_precision) / 2.0
+	var abv_precision : float = range_precision(mixture.abv, beer_style.min_abv, beer_style.max_abv)
+	return (ebc_precision + ibu_precision + abv_precision) / 3.0
 
 
 ## Rewards a mix where alpha and beta acids are close to each other.
@@ -47,8 +48,7 @@ static func hop_diversity_bonus(mixture : BrewMixture) -> float:
 static func flavor_matched(mixture : BrewMixture, beer_style : BeerStyle) -> bool:
 	if beer_style.required_spice_id != BrewMixture.NO_REQUIRED_SPICE and mixture.spice_ids.has(beer_style.required_spice_id):
 		return true
-	return beer_style.preferred_hop_profile != HopData.FlavorProfile.NONE \
-			and mixture.hop_profiles.has(beer_style.preferred_hop_profile)
+	return mixture.hop_profiles.keys().any(beer_style.has_preferred_hop_profile)
 
 
 ## Negative when a spice breaks the style's Reinheitsgebot.

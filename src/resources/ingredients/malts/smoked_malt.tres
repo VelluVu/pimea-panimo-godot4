@@ -5,6 +5,7 @@
 [resource]
 script = ExtResource("1_smoked")
 ebc = 6
+extract = 0.78
 id = 108
 name = "Savumallas"
 name_partitive = "savumallasta"

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MaltData" format=3]
+
+[ext_resource type="Script" uid="uid://glh0u5xmw6sx" path="res://src/brewing/malt_data.gd" id="1_malt"]
+
+[resource]
+script = ExtResource("1_malt")
+ebc = 7
+extract = 0.78
+id = 110
+name = "Ruismallas"
+name_partitive = "ruismallasta"
+description = "Mausteinen ja hieman tahmea mallas. Sahdin ja ruisoluen sydän."
+base_price = 3
+metadata/_custom_type_script = "uid://dniwiyu5ynp71"

@@ -11,6 +11,7 @@ const MASH_HEADER_TEXT : String = "MÄSKÄYS · %s"
 const BOIL_HEADER_TEXT : String = "KEITTO · %s"
 const HEAT_BUTTON_TEXT : String = "LÄMMITÄ"
 const MALT_SACK_TEXT : String = "Maltaat"
+const MALT_AMOUNT_FORMAT : String = "%s %s"
 ## Shown on the malt sack while the water is at the malt marker.
 const MALT_CUE_TEXT : String = "NYT"
 ## The malt sack is carried and poured like a hop sack, under an id no ingredient has.
@@ -429,7 +430,7 @@ func _put_down_malts() -> void:
 
 
 func _refresh_malt_amount() -> void:
-	_malts_button.amount_text = "%d %s" % [ceili(_plan.malt_kg * _malt_left), tr(StringContainer.KG)]
+	_malts_button.amount_text = MALT_AMOUNT_FORMAT % [String.num(_plan.malt_kg * _malt_left, 1), tr(StringContainer.KG)]
 
 
 func _mash_color() -> Color:

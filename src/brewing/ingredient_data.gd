@@ -41,6 +41,16 @@ func get_unit_string() -> String:
 	return tr(StringContainer.KPL)
 
 
+## The number shown for `amount` units, in get_unit_string() units.
+func amount_text(amount : int) -> String:
+	return str(amount)
+
+
+## What one bought unit is, for prices ("€ / kg").
+func get_pack_string() -> String:
+	return get_unit_string()
+
+
 func get_stat_string() -> String:
 	return ""
 

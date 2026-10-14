@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="BeerStyle" format=3]
+
+[ext_resource type="Script" uid="uid://qpqfdi1wacne" path="res://src/brewing/beer_style.gd" id="1_style"]
+
+[resource]
+script = ExtResource("1_style")
+style_name = "Rauchbier"
+style = 24
+fixed_price_per_bottle = 3.0
+reputation_change = 4
+peak_days = 5
+shelf_life_days = 35
+aging_factor = 0.03
+mash_steps = Array[int]([63, 72])
+mash_band = 2.0
+hop_additions = Array[int]([0, 2])
+required_yeast_id = 301
+required_malt_id = 108
+base_malt_ids = Array[int]([108])
+min_base_share = 0.3
+preferred_hop_profiles = Array[int]([4])
+abv = 5.7
+min_abv = 4.8
+max_abv = 6.4
+min_ebc = 12
+max_ebc = 43
+min_ibu = 20
+max_ibu = 30
+reference_recipe = Dictionary[int, int]({104: 2, 108: 2, 109: 1, 200: 10, 201: 18, 301: 1})
+metadata/_custom_type_script = "uid://qpqfdi1wacne"

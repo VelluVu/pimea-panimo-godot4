@@ -1,7 +1,7 @@
 class_name ShopView
 extends VBoxContainer
 
-const AMOUNT_PRICE_FORMAT : String = "%d %s - %d €"
+const AMOUNT_PRICE_FORMAT : String = "%s %s - %d €"
 
 ## Same "float off the right edge of the button" treatment
 ## BrewPreparationPanel uses for its "+X XP" popup at "Pane", applied here
@@ -113,7 +113,7 @@ func _update_label() -> void:
 
 	var effective_price : float = ingredient.base_price * BrewEngine.current_brewery.stats.multiplier(PerkStats.INGREDIENT_PRICE)
 	var total_price : int = roundi(effective_price * main_slider.value)
-	current_item_label.text = AMOUNT_PRICE_FORMAT % [int(main_slider.value), ingredient.get_unit_string(), total_price]
+	current_item_label.text = AMOUNT_PRICE_FORMAT % [ingredient.amount_text(int(main_slider.value)), ingredient.get_unit_string(), total_price]
 
 
 ## Floats a "-X €" popup off the right edge of the "Osta" button — see

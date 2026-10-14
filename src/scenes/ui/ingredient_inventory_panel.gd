@@ -49,7 +49,7 @@ func _update_ingredient_list() -> void:
 		if item != null:
 			var current_amount: int = inventory.items[ingredient.type][ingredient.id].amount
 			
-			label.text = AMOUNT_FORMAT % [tr(ingredient.name), current_amount, ingredient.get_unit_string()]
+			label.text = AMOUNT_FORMAT % [tr(ingredient.name), ingredient.amount_text(current_amount), ingredient.get_unit_string()]
 			label.tooltip_text = ingredient.get_tooltip_text()
 			label.visible = true
 		else:

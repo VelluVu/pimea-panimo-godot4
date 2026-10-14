@@ -5,9 +5,6 @@ extends Resource
 const FAILED_BREW_REPUTATION_CHANGE : int = -1
 const FAILED_BREW_QUALITY : float = 1.0
 const QUALITY_PRECISION : float = 0.01
-const REQUIRED_SPICE_DOSE : int = 2
-## A failed brew is sold as kotikalja, but an alcohol-free yeast never made any alcohol.
-const ALCOHOL_FREE_FALLBACK_ABV : float = 0.2
 
 const LOG_LOADED_STYLES : String = "Ladattu yhteensä %s oluttyyliä datasta:"
 
@@ -55,34 +52,25 @@ func resolve_brew_style(prep_contents : Dictionary) -> BrewResult:
 	return _build_failed_result(mixture)
 
 
-## A bare-minimum combo that brews `beer_style`, used to seed default recipes; {} if
-## none exists. Re-checked through resolve_brew_style(): styles match in load order,
-## so a combo could land in an earlier, wider style instead.
+## The style's reference recipe, used to seed default recipes; {} if it is missing or no
+## longer brews the style (re-checked, since styles are first-match-wins).
 func compute_minimum_ingredients(beer_style : BeerStyle) -> Dictionary:
-	var combo : Dictionary = _ingredients.find_malt_combo(beer_style)
-	if combo.is_empty():
+	if beer_style.reference_recipe.is_empty():
 		return {}
-	combo[beer_style.required_yeast_id] = 1
-
-	if beer_style.min_ibu > 0:
-		var hop_dose : Dictionary = RecipeSearch.find_hop_dose(_ingredients.all_hops(), beer_style.min_ibu, beer_style.max_ibu, beer_style.preferred_hop_profile, beer_style.requires_aroma_hop)
-		if hop_dose.is_empty():
-			return {}
-		combo.merge(hop_dose)
-	if beer_style.required_spice_id != BrewMixture.NO_REQUIRED_SPICE:
-		combo[beer_style.required_spice_id] = REQUIRED_SPICE_DOSE
-
-	var result : BrewResult = resolve_brew_style(combo)
+	var recipe : Dictionary = {}
+	recipe.merge(beer_style.reference_recipe)
+	var result : BrewResult = resolve_brew_style(recipe)
 	if result == null or not result.is_matched or result.beer_style.style != beer_style.style:
 		return {}
-	return combo
+	return recipe
 
 
-## Reuses compute_minimum_ingredients() so it always agrees with the seeded default recipe.
+## True when the reference recipe uses more than one malt.
 func style_needs_malt_blend(beer_style : BeerStyle) -> bool:
 	var malt_count : int = 0
-	for id : int in compute_minimum_ingredients(beer_style):
-		if _ingredients.table()[id].type == IngredientData.IngredientType.MALT:
+	for id : int in beer_style.reference_recipe:
+		var data : IngredientData = _ingredients.table().get(id)
+		if data != null and data.type == IngredientData.IngredientType.MALT:
 			malt_count += 1
 	return malt_count > 1
 
@@ -108,19 +96,18 @@ func get_style_base_price(beer_style : BeerStyle) -> float:
 
 func _load_all_beer_styles() -> void:
 	active_styles.assign(ResourceFolder.load_all(StringContainer.PATH_TO_BREW_STYLES, BeerStyle))
-	_prioritize_required_malt_styles()
+	prioritize_styles()
 	print(LOG_LOADED_STYLES % str(active_styles.size()))
 
 
-## resolve_brew_style() is first-match-wins, so styles that require a specific malt go
-## first: a wide catch-all like Pale Ale would otherwise swallow them by filename order.
-## Order within each group is kept.
-func _prioritize_required_malt_styles() -> void:
-	var requires_malt : Callable = func(beer_style : BeerStyle) -> bool:
-		return beer_style.required_malt_id != BrewMixture.NO_REQUIRED_MALT or beer_style.required_spice_id != BrewMixture.NO_REQUIRED_SPICE
-	var with_required_malt : Array = active_styles.filter(requires_malt)
-	var without_required_malt : Array = active_styles.filter(func(beer_style : BeerStyle) -> bool: return not requires_malt.call(beer_style))
-	active_styles.assign(with_required_malt + without_required_malt)
+## resolve_brew_style() is first-match-wins, so the most specific styles go first (see
+## BeerStyle.match_priority()): a wide style would otherwise swallow them by filename
+## order. Order within each group is kept.
+func prioritize_styles() -> void:
+	var ordered : Array[BeerStyle] = []
+	for priority : int in 3:
+		ordered.append_array(active_styles.filter(func(beer_style : BeerStyle) -> bool: return beer_style.match_priority() == priority))
+	active_styles = ordered
 
 
 func _build_match_result(mixture : BrewMixture, beer_style : BeerStyle) -> BrewResult:
@@ -136,7 +123,7 @@ func _build_match_result(mixture : BrewMixture, beer_style : BeerStyle) -> BrewR
 	result.final_ibu = mixture.final_ibu
 	result.original_quality = snappedf(beer_style.original_quality * multiplier, QUALITY_PRECISION)
 	result.reputation_change = beer_style.reputation_change
-	result.abv = beer_style.abv
+	result.abv = mixture.abv
 	result.is_matched = true
 	result.precision_score = precision
 	result.hop_diversity_count = mixture.hop_ids.size()
@@ -153,9 +140,6 @@ func _build_failed_result(mixture : BrewMixture) -> BrewResult:
 	result.final_ibu = mixture.final_ibu
 	result.original_quality = FAILED_BREW_QUALITY
 	result.reputation_change = FAILED_BREW_REPUTATION_CHANGE
-	if mixture.yeast_alcohol_free:
-		result.abv = ALCOHOL_FREE_FALLBACK_ABV
-	elif result.beer_style != null:
-		result.abv = result.beer_style.abv
+	result.abv = mixture.abv
 	result.is_matched = false
 	return result

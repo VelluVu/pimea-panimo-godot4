@@ -4,7 +4,8 @@
 
 [resource]
 script = ExtResource("1_biscuit")
-ebc = 55
+ebc = 50
+extract = 0.75
 id = 106
 name = "Keksimallas"
 name_partitive = "keksimallasta"
