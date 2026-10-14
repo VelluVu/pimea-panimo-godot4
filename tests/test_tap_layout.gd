@@ -37,3 +37,10 @@ func test_the_bar_is_centred_on_whole_pixels() -> void:
 		var left : float = TapLayoutScript.bar_left(taps)
 		assert_eq(left, floorf(left), "%d taps" % taps)
 		assert_true(absf(left + TapLayoutScript.bar_width(taps) / 2.0) <= 0.5)
+
+
+func test_the_tray_overhangs_the_bar_and_ends_on_its_pattern() -> void:
+	for taps : int in range(1, TapLayoutScript.MAX_TAPS + 1):
+		var width : int = TapLayoutScript.tray_width(taps)
+		assert_true(width >= TapLayoutScript.bar_width(taps) + 2 * TapLayoutScript.TRAY_OVERHANG)
+		assert_eq(width % TapLayoutScript.TRAY_PATTERN, 1, "%d taps" % taps)
