@@ -101,7 +101,7 @@ Ranges are game ranges, set around the reference recipes and informed by BJCP 20
 | Baltic Portteri | lager | – | – | 35-70 | 20-40 | 6.2-9.5 | 2 Münchenin + 2 Pilsner + 1 Vienna + 1 Tumma karamelli → 46.9, 6.8 % |
 | Doppelbock | lager | – | – | 12-34 | 16-26 | 6.8-10.0 | 3 Münchenin + 2 Pilsner + 1 Vienna + 1 Karamelli → 25.0, 8.0 % |
 | Hefeweizen | ale | Vehnä 50 % | – | 4-14 | 8-15 | 4.0-5.8 | 2 Vehnä + 2 Pilsner → 6.4, 4.4 % |
-| Witbier | ale | Pilsner 60 % | Vehnä | 3-10 | 8-20 | 4.0-5.2 | 3 Pilsner + 1 Vehnä → 6.2, 4.4 % |
+| Witbier | ale | Pilsner 60 % | Vehnä + Korianteri + Pomeranssinkuori | 3-10 | 8-20 | 4.0-5.2 | 3 Pilsner + 1 Vehnä → 6.2, 4.4 % |
 | Session Ale | ale | Pale ale 60 % | Vehnä | 4-14 | 8-25 | 3.0-4.6 | 2 Pale ale + 1 Vehnä → 6.5, 3.3 % |
 | Saison | ale | Pilsner 60 % | – | 6-19 | 16-35 | 5.3-7.5 | 4 Pilsner + 1 Münchenin → 10.2, 5.5 % |
 | Belgian Dubbel | ale | Pils/Pale 70 % | – | 20-50 | 15-25 | 6.3-7.9 | 5 Pale ale + 1 Münchenin + 1 Tumma karamelli → 46.7, 7.4 % |

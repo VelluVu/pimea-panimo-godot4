@@ -46,7 +46,7 @@ static func hop_diversity_bonus(mixture : BrewMixture) -> float:
 
 
 static func flavor_matched(mixture : BrewMixture, beer_style : BeerStyle) -> bool:
-	if beer_style.required_spice_id != BrewMixture.NO_REQUIRED_SPICE and mixture.spice_ids.has(beer_style.required_spice_id):
+	if beer_style.required_spice_ids.any(func(id : int) -> bool: return mixture.spice_ids.has(id)):
 		return true
 	return mixture.hop_profiles.keys().any(beer_style.has_preferred_hop_profile)
 

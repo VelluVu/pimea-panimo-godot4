@@ -64,7 +64,7 @@ func test_multiplier_is_clamped_and_rewards_flavor_match() -> void:
 
 func test_required_spice_on_the_table_counts_as_flavor_match() -> void:
 	var beer_style := BeerStyle.new()
-	beer_style.required_spice_id = 212
+	beer_style.required_spice_ids = [212]
 	var mixture := _make_mixture(0.0, 0.0, 0)
 	assert_false(BrewQualityScript.flavor_matched(mixture, beer_style))
 	mixture.spice_ids[212] = true

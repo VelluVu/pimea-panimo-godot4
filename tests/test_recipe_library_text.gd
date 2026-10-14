@@ -66,7 +66,7 @@ func test_a_known_page_names_base_malts_favourites_and_requirements() -> void:
 	entry.beer_style.min_base_share = 0.5
 	entry.base_malt_names = ["Münchenin mallas"]
 	entry.favourite_malt_names = ["Münchenin mallas", "Vienna-mallas"]
-	entry.required_spice_name = "Laktoosi"
+	entry.required_spice_names = ["Laktoosi"]
 	var text : String = _page(entry)
 	assert_contains(text, "Pohjamallas: Münchenin mallas, vähintään 50 % maltaista")
 	assert_contains(text, "Suosikkimaltaat: Münchenin mallas, Vienna-mallas")
