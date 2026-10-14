@@ -20,7 +20,7 @@ func test_many_taps_tighten_instead_of_overflowing_the_counter() -> void:
 	assert_eq(TapLayoutScript.pitch(6), TapLayoutScript.HANDLE_PITCH)
 	assert_true(TapLayoutScript.pitch(12) < TapLayoutScript.HANDLE_PITCH)
 	assert_true(TapLayoutScript.bar_width(12) <= TapLayoutScript.MAX_BAR_WIDTH)
-	assert_true(TapLayoutScript.pitch(12) > TapLayoutScript.HANDLE_WIDTH, "handles never touch")
+	assert_eq(TapLayoutScript.pitch(12), 8, "twelve taps keep a 3 px gap")
 
 
 func test_three_taps_match_the_old_sprite() -> void:

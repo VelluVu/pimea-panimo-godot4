@@ -7,7 +7,6 @@ extends Node2D
 
 const BAR_LEFT : Texture2D = preload("res://assets/textures/tap/tap_bar_left.png")
 const BAR_SEGMENT : Texture2D = preload("res://assets/textures/tap/tap_bar_segment.png")
-const BAR_RIGHT : Texture2D = preload("res://assets/textures/tap/tap_bar_right.png")
 const HANDLE : Texture2D = preload("res://assets/textures/tap/tap_handle.png")
 const SPOUT : Texture2D = preload("res://assets/textures/tap/tap_spout.png")
 const STEM : Texture2D = preload("res://assets/textures/tap/tap_stem.png")
@@ -70,7 +69,10 @@ func _draw_bar(taps : int) -> void:
 		var width : float = minf(BAR_SEGMENT.get_width(), right - x)
 		draw_texture_rect_region(BAR_SEGMENT, Rect2(x, BAR_TOP, width, BAR_SEGMENT.get_height()), Rect2(0, 0, width, BAR_SEGMENT.get_height()))
 		x += width
-	draw_texture(BAR_RIGHT, Vector2(right, BAR_CAP_TOP))
+	# The right end is the left one mirrored, so both ends match.
+	draw_set_transform(Vector2(right + TapLayout.CAP_WIDTH, 0.0), 0.0, Vector2(-1.0, 1.0))
+	draw_texture(BAR_LEFT, Vector2(0.0, BAR_CAP_TOP))
+	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
 
 
 func _draw_tray(taps : int) -> void:

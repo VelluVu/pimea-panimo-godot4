@@ -11,9 +11,9 @@ const MAX_TAPS : int = 12
 const CAP_WIDTH : int = 5
 const HANDLE_WIDTH : int = 5
 const HANDLE_PITCH : int = 12
-## The widest crossbar the counter has room for: six taps at the full pitch, twelve with
-## a pixel between their handles.
-const MAX_BAR_WIDTH : int = 81
+## The widest crossbar the counter has room for before the PC beside it: six taps at
+## the full pitch, twelve 8 px apart.
+const MAX_BAR_WIDTH : int = 103
 ## The drip tray reaches this far past the crossbar on each side.
 const TRAY_OVERHANG : int = 2
 
