@@ -48,3 +48,21 @@ func test_group_multiplier_only_affects_group_bounds() -> void:
 func test_group_bounds_respect_their_floor() -> void:
 	var bounds := SpawnPacing.group_bounds(10000.0, 0.1, 0.1)
 	assert_eq(bounds, Vector2(SpawnPacing.GROUP_EVENT_FLOOR_SECONDS, SpawnPacing.GROUP_EVENT_FLOOR_SECONDS))
+
+
+func test_a_varied_tap_list_draws_walk_ins_a_little_faster() -> void:
+	var one := SpawnPacing.walk_in_bounds(0.0, 1.0, 1)
+	var three := SpawnPacing.walk_in_bounds(0.0, 1.0, 3)
+	assert_true(three.y < one.y)
+	assert_true(is_equal_approx(three.y, one.y / 1.1), "two extra styles: +10 % flow")
+
+
+func test_tap_flow_stops_growing_at_the_cap() -> void:
+	var at_cap : float = SpawnPacing.tap_factor(1 + SpawnPacing.TAP_FLOW_MAX_EXTRA_STYLES)
+	assert_eq(SpawnPacing.tap_factor(20), at_cap)
+	assert_true(is_equal_approx(at_cap, 1.0 / 1.25))
+
+
+func test_an_empty_or_single_tap_changes_nothing() -> void:
+	assert_eq(SpawnPacing.tap_factor(0), 1.0)
+	assert_eq(SpawnPacing.tap_factor(1), 1.0)

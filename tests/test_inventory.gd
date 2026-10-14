@@ -141,3 +141,23 @@ func test_age_batches_on_an_empty_cellar_does_nothing() -> void:
 	Inventory.new().age_batches()
 	assert_true(true)
 
+
+
+func _batch(style : BeerStyle.Style, bottles : int, held : bool = false) -> BrewBatch:
+	var beer_style := BeerStyle.new()
+	beer_style.style = style
+	var batch := BrewBatch.new()
+	batch.beer_style = beer_style
+	batch.amount_bottles = bottles
+	batch.held = held
+	return batch
+
+
+func test_styles_on_tap_counts_styles_for_sale_once() -> void:
+	var inventory := Inventory.new()
+	inventory.brew_batches.append(_batch(BeerStyle.Style.IPA, 20))
+	inventory.brew_batches.append(_batch(BeerStyle.Style.IPA, 10))
+	inventory.brew_batches.append(_batch(BeerStyle.Style.HELLES, 5))
+	inventory.brew_batches.append(_batch(BeerStyle.Style.SAHTI, 30, true))
+	inventory.brew_batches.append(_batch(BeerStyle.Style.SAISON, 0))
+	assert_eq(inventory.styles_on_tap(), 2, "held and empty batches are not on tap")
