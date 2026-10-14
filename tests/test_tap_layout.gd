@@ -36,5 +36,8 @@ func test_the_bar_is_centred_and_the_middle_tap_sits_on_the_centre() -> void:
 	assert_eq(TapLayoutScript.bar_left(4), -TapLayoutScript.bar_width(4) / 2.0)
 
 
-func test_the_tray_overhangs_the_bar() -> void:
-	assert_eq(TapLayoutScript.tray_width(6), TapLayoutScript.bar_width(6) + 2 * TapLayoutScript.TRAY_OVERHANG)
+func test_the_tray_overhangs_the_bar_and_its_studs_end_in_step() -> void:
+	for taps : int in range(1, TapLayoutScript.MAX_TAPS + 1):
+		var width : int = TapLayoutScript.tray_width(taps)
+		assert_true(width >= TapLayoutScript.bar_width(taps) + 2 * TapLayoutScript.TRAY_OVERHANG)
+		assert_eq(width % TapLayoutScript.TRAY_STUD_PITCH, 1, "%d taps" % taps)
