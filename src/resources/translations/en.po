@@ -1308,10 +1308,8 @@ msgid "Münchenin vaalea lager: pehmeä, leipäinen ja vain hennosti katkera."
 msgstr "Munich's pale lager: soft, bready and only gently bitter."
 
 #: src/resources/beer_styles/helles.tres
-msgid ""
-"Perinteinen Etelä-Saksalainen vaalea lager olut, joka päiväinen "
-"terassijuoma."
-msgstr "A traditional southern German pale lager, an everyday terrace drink."
+msgid "Perinteinen eteläsaksalainen vaalea lagerolut, jokapäiväinen terassijuoma."
+msgstr "A traditional pale lager from southern Germany, an everyday terrace drink."
 
 #: src/resources/beer_styles/imperial_stout.tres
 msgid "Tsaarin hovin musta ja erittäin vahva olut: suklaata ja kahvia."
