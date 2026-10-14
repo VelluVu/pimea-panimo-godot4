@@ -10,6 +10,7 @@ const DARK_MALT_ID : int = 102 # EBC 60
 const HOP_ID : int = 201 # alpha 100, beta 50
 const YEAST_ID : int = 301
 const SPICE_ID : int = 212
+const SECOND_SPICE_ID : int = 401
 const BITTERING_HOP_ID : int = 200 # alpha 100, no aroma
 const PACK_MALT_ID : int = 111 # EBC 1000, sold in 100 g packs
 
@@ -39,10 +40,12 @@ func _make_ingredients() -> Dictionary:
 	pack_malt.pack_grams = 100
 	var spice := IngredientData.new()
 	spice.type = IngredientData.IngredientType.SPICE
+	var second_spice := IngredientData.new()
+	second_spice.type = IngredientData.IngredientType.SPICE
 	var bittering := HopData.new()
 	bittering.type = IngredientData.IngredientType.HOP
 	bittering.alpha_acids = 100
-	return {MALT_ID: malt, DARK_MALT_ID: dark, HOP_ID: hop, YEAST_ID: yeast, SPICE_ID: spice, BITTERING_HOP_ID: bittering, PACK_MALT_ID: pack_malt}
+	return {MALT_ID: malt, DARK_MALT_ID: dark, HOP_ID: hop, YEAST_ID: yeast, SPICE_ID: spice, BITTERING_HOP_ID: bittering, PACK_MALT_ID: pack_malt, SECOND_SPICE_ID: second_spice}
 
 
 func _make_mixture(contents : Dictionary) -> BrewMixtureScript:
@@ -109,9 +112,16 @@ func test_fits_requires_matching_yeast_and_malt() -> void:
 
 func test_fits_requires_the_required_spice() -> void:
 	var wants_spice := _make_style(0, 30, 0, 999)
-	wants_spice.required_spice_id = SPICE_ID
+	wants_spice.required_spice_ids = [SPICE_ID]
 	assert_false(_make_mixture({MALT_ID: 3, YEAST_ID: 1}).fits(wants_spice), "no spice on the table")
 	assert_true(_make_mixture({MALT_ID: 3, SPICE_ID: 1, YEAST_ID: 1}).fits(wants_spice))
+
+
+func test_fits_requires_every_required_spice() -> void:
+	var wants_two := _make_style(0, 30, 0, 999)
+	wants_two.required_spice_ids = [SPICE_ID, SECOND_SPICE_ID]
+	assert_false(_make_mixture({MALT_ID: 3, SPICE_ID: 1, YEAST_ID: 1}).fits(wants_two), "one of the two is missing")
+	assert_true(_make_mixture({MALT_ID: 3, SPICE_ID: 1, SECOND_SPICE_ID: 1, YEAST_ID: 1}).fits(wants_two))
 
 
 func test_a_hop_forward_style_needs_an_aroma_hop() -> void:

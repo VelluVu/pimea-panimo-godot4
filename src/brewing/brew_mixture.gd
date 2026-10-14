@@ -6,7 +6,6 @@ extends RefCounted
 const MIN_MALT_WEIGHT : int = 3
 const NO_YEAST : int = -1
 const NO_REQUIRED_MALT : int = -1
-const NO_REQUIRED_SPICE : int = -1
 const ALPHA_ACIDS_PER_IBU : float = 10.0
 
 ## Kilograms of malt and sugar on the table.
@@ -49,7 +48,7 @@ func fits(beer_style : BeerStyle) -> bool:
 		return false
 	if beer_style.required_malt_id != NO_REQUIRED_MALT and not malt_ids.has(beer_style.required_malt_id):
 		return false
-	if beer_style.required_spice_id != NO_REQUIRED_SPICE and not spice_ids.has(beer_style.required_spice_id):
+	if not beer_style.required_spice_ids.all(func(id : int) -> bool: return spice_ids.has(id)):
 		return false
 	if beer_style.requires_aroma_hop and not has_aroma_hop():
 		return false

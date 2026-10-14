@@ -163,8 +163,8 @@ static func _addition_name(kind : HopAddition.Kind) -> String:
 static func _append_requirements(lines : PackedStringArray, entry : RecipeBookEntry) -> void:
 	if not entry.required_malt_name.is_empty():
 		lines.append(UiText.of(REQUIRED_MALT_FORMAT) % entry.required_malt_name)
-	if not entry.required_spice_name.is_empty():
-		lines.append(UiText.of(REQUIRED_SPICE_FORMAT) % entry.required_spice_name)
+	if not entry.required_spice_names.is_empty():
+		lines.append(UiText.of(REQUIRED_SPICE_FORMAT) % LIST_SEPARATOR.join(entry.required_spice_names))
 
 
 static func _append_hops(lines : PackedStringArray, style : BeerStyle) -> void:

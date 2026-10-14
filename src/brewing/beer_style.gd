@@ -46,9 +46,10 @@ enum Style {
 ## real recipe is defined by one malt (Hefeweizen and Witbier need wheat malt). See
 ## BrewMixture.fits().
 @export var required_malt_id: int = -1
-## -1 = none. A spice that must be on the table, like required_malt_id (Sahti
-## needs juniper). It also counts as the style's flavour match in BrewQuality.
-@export var required_spice_id: int = -1
+## Spices that must all be on the table, like required_malt_id (Sahti needs juniper,
+## Witbier coriander and orange peel). Any of them counts as the style's flavour match
+## in BrewQuality.
+@export var required_spice_ids: Array[int] = []
 ## Optional spices that each add BrewQuality.SPICE_MATCH_STEP when on the table.
 @export var preferred_spice_ids: Array[int] = []
 ## German styles keep the Reinheitsgebot: any spice costs BrewQuality.PURITY_LAW_PENALTY.
@@ -86,7 +87,7 @@ func is_alcohol_free() -> bool:
 ## Checked in this order: styles defined by a required ingredient first, then those
 ## defined by their base malts, then the rest, so the most specific style wins.
 func match_priority() -> int:
-	if required_malt_id != BrewMixture.NO_REQUIRED_MALT or required_spice_id != BrewMixture.NO_REQUIRED_SPICE:
+	if required_malt_id != BrewMixture.NO_REQUIRED_MALT or not required_spice_ids.is_empty():
 		return 0
 	return 1 if not base_malt_ids.is_empty() else 2
 

@@ -9,7 +9,7 @@ var known : bool = false
 var yeast_name : String = ""
 var base_malt_names : PackedStringArray = []
 var required_malt_name : String = ""
-var required_spice_name : String = ""
+var required_spice_names : PackedStringArray = []
 ## The reference recipe's malts, most used first.
 var favourite_malt_names : PackedStringArray = []
 var preferred_spice_names : PackedStringArray = []

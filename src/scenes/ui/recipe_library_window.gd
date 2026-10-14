@@ -204,8 +204,8 @@ func _entry(brewery : Brewery, beer_style : BeerStyle) -> RecipeBookEntry:
 		entry.base_malt_names.append(_ingredient_name(id))
 	if beer_style.required_malt_id != BrewMixture.NO_REQUIRED_MALT:
 		entry.required_malt_name = _ingredient_name(beer_style.required_malt_id)
-	if beer_style.required_spice_id != BrewMixture.NO_REQUIRED_SPICE:
-		entry.required_spice_name = _ingredient_name(beer_style.required_spice_id)
+	for spice_id : int in beer_style.required_spice_ids:
+		entry.required_spice_names.append(_ingredient_name(spice_id))
 	entry.favourite_malt_names = _favourite_malt_names(beer_style)
 	for spice_id : int in beer_style.preferred_spice_ids:
 		entry.preferred_spice_names.append(_ingredient_name(spice_id))
