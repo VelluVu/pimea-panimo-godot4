@@ -18,6 +18,8 @@ extends Resource
 ## Cleanliness of the keg the batch was brewed into, see KegRules.
 @export var keg_cleanliness : float = 1.0
 @export var age_in_days: int = 0
+## The season's first batch of its style, see FirstBrewRules.
+@export var novelty: bool = false
 ## The batch's own ABV; STYLE_ABV (and saves from before this field) use the style's.
 @export var abv: float = STYLE_ABV
 

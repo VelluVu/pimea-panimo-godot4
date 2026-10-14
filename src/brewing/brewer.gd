@@ -69,8 +69,10 @@ func start_brew(quality_multiplier : float = BrewDayRules.NORMAL_MULTIPLIER) -> 
 	var bottles_lost : int = bottling.bottles_lost
 	var label_cost : float = bottling.label_cost
 
+	var first_this_season : bool = brew_report.is_matched and not brewery.brewed_styles.has(brew_report.beer_style.style)
 	var new_batch := BrewBatch.new()
 	new_batch.beer_style = brew_report.beer_style
+	new_batch.novelty = first_this_season
 	new_batch.amount_bottles = effective_yield
 	new_batch.original_quality = snappedf((brew_report.original_quality + brewery.stats.total(PerkStats.QUALITY_BONUS)) * quality_multiplier, BrewResolver.QUALITY_PRECISION)
 	new_batch.current_quality = new_batch.original_quality
@@ -92,7 +94,7 @@ func start_brew(quality_multiplier : float = BrewDayRules.NORMAL_MULTIPLIER) -> 
 	var brew_reputation : int = 0
 	if not brew_report.is_matched:
 		brew_reputation = brewery.change_reputation(brew_report.reputation_change, ReputationRules.Source.BREWING)
-	elif not brewery.brewed_styles.has(brew_report.beer_style.style):
+	elif first_this_season:
 		brewery.brewed_styles[brew_report.beer_style.style] = true
 		brew_reputation = brewery.change_reputation(maxi(0, brew_report.reputation_change), ReputationRules.Source.BREWING)
 	if brew_reputation != 0:
@@ -112,8 +114,12 @@ func start_brew(quality_multiplier : float = BrewDayRules.NORMAL_MULTIPLIER) -> 
 		var brew_xp : int = Brewery.XP_PER_SUCCESSFUL_BREW
 		if is_new_discovery:
 			brew_xp += Brewery.XP_PER_NEW_STYLE_DISCOVERY_BONUS
+		if first_this_season:
+			brew_xp += FirstBrewRules.xp_bonus(brew_report.beer_style)
 		brewery.add_xp(brew_xp)
 		BrewerySignals.brew_xp_gained.emit(brew_xp)
+		if first_this_season:
+			BrewerySignals.season_first_brew.emit(brew_report.beer_style.style, brew_report.beer_style.style_name)
 
 	_roll_ingredient_refund()
 	brewery.brew_preparation.clear_preparation()

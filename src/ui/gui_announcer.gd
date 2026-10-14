@@ -15,6 +15,7 @@ const CUSTOMERS_UNLOCKED_TOAST_FORMAT: String = "Uusia asiakkaita avattu: %s!"
 const REPUTATION_TIER_ROSE_TOAST_FORMAT: String = "Maineesi nousi: %s!"
 const REPUTATION_TIER_FELL_TOAST_FORMAT: String = "Maineesi laski: %s."
 const KEG_TO_WASH_TOAST_TEXT: String = "Uusi likainen tynnyri pestäväksi"
+const NOVELTY_TOAST_FORMAT: String = "Uutuus: kauden ensimmäinen %s! Erä myy tiskillä +%d %% hintaan."
 const DISCOVERY_TOAST_FLASH_SECONDS: float = 0.15
 const DISCOVERY_TOAST_HOLD_SECONDS: float = 2.0
 ## Long toasts (a daily goal's reward line) stay up long enough to read.
@@ -88,6 +89,7 @@ func start() -> void:
 	BrewerySignals.reputation_tier_changed.connect(_on_reputation_tier_changed)
 	BrewerySignals.group_visit_announced.connect(_on_group_visit_announced)
 	BrewerySignals.brew_spiced.connect(_on_brew_spiced)
+	BrewerySignals.season_first_brew.connect(_on_season_first_brew)
 	BrewerySignals.day_event_announced.connect(_on_day_event_announced)
 	BrewerySignals.lvv_hint_reached.connect(_on_lvv_hint_reached)
 	BrewerySignals.kegs_emptied.connect(_on_kegs_emptied)
@@ -97,6 +99,10 @@ func start() -> void:
 	if TimeManager.day_timer.is_stopped():
 		BrewerySignals.brewery_state_changed.connect(_on_first_brew_hint_state_changed)
 		_first_brew_hint.present(FIRST_BREW_HINT_TEXT)
+
+
+func _on_season_first_brew(_style: int, style_name: String) -> void:
+	_show_toast(tr(NOVELTY_TOAST_FORMAT) % [UiText.of(style_name), roundi(FirstBrewRules.NOVELTY_PRICE_BONUS * 100.0)])
 
 
 func _on_brew_spiced(style_name: String, spice_bonus: float) -> void:

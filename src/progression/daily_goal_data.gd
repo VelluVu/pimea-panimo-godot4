@@ -13,6 +13,8 @@ enum GoalType {
 	UNHAPPY_CUSTOMERS_MAX,
 	## Full kegs (KegRules.is_full_keg) shipped to any BarContact today (BrewerySignals.keg_shipped_to_bar).
 	SHIP_TO_BAR,
+	## The season's first batch of any style (BrewerySignals.season_first_brew).
+	NEW_STYLE_BREW,
 }
 
 @export var goal_type : GoalType = GoalType.EARN_MONEY

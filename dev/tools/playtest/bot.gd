@@ -491,9 +491,10 @@ func _maybe_ship(b: Brewery) -> void:
 			continue
 		if not goal_open and (total - batch.amount_bottles < COUNTER_STOCK or _still_aging(batch)):
 			continue
-		var raw_cost: float = b.resolver.get_market_cost_per_bottle(batch.beer_style)
-		var payout: float = BatchDistributor.calculate_ship_payout(raw_cost, batch.current_quality, batch.amount_bottles, ship_bar.price_multiplier) * b.stats.multiplier(PerkStats.DISTRIBUTION_INCOME) * batch.get_aged_price_multiplier()
-		if not goal_open and payout < raw_cost * batch.amount_bottles:
+		var wholesale: float = b.resolver.get_wholesale_price_per_bottle(batch.beer_style)
+		var payout: float = BatchDistributor.calculate_ship_payout(wholesale, batch.current_quality, batch.amount_bottles, ship_bar.price_multiplier) * b.stats.multiplier(PerkStats.DISTRIBUTION_INCOME) * batch.get_aged_price_multiplier()
+		# Not worth shipping below what the batch cost to brew.
+		if not goal_open and payout < b.resolver.get_style_cost_per_bottle(batch.beer_style) * batch.amount_bottles:
 			continue
 		var demand: float = _expert_demand(b, batch.beer_style.style, in_stock)
 		if demand < pick_demand:

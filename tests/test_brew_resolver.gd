@@ -184,10 +184,11 @@ func test_a_new_price_multiplier_drops_cached_costs() -> void:
 	assert_true(resolver.get_style_cost_per_bottle(style) < full, "a cheaper shop lowers the cached cost")
 
 
-func test_market_cost_ignores_the_players_shop_discount() -> void:
+func test_bars_pay_a_share_of_the_list_price_whatever_the_discount() -> void:
 	var resolver := _make_resolver()
 	var style : BeerStyle = resolver.get_beer_style(BeerStyle.Style.KOTIKALJA)
-	var market : float = resolver.get_market_cost_per_bottle(style)
+	style.fixed_price_per_bottle = 2.0
+	var wholesale : float = resolver.get_wholesale_price_per_bottle(style)
+	assert_true(is_equal_approx(wholesale, 2.0 * StylePricing.WHOLESALE_SHARE))
 	resolver.ingredient_price_multiplier = 0.5
-	assert_true(is_equal_approx(resolver.get_market_cost_per_bottle(style), market), "bars pay by the beer, not the player's discount")
-	assert_true(resolver.get_style_cost_per_bottle(style) < market)
+	assert_true(is_equal_approx(resolver.get_wholesale_price_per_bottle(style), wholesale), "bars pay by the beer, not the player's discount")

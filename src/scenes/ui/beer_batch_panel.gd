@@ -7,6 +7,8 @@ extends VBoxContainer
 ## names pushed the bottle count past the ellipsis. The count never clips;
 ## the quality label next to it gives way instead.
 const NAME_LABEL_STRING : String = "🍺 %s (%.1f%%)"
+## A novelty batch's label, see FirstBrewRules.
+const NOVELTY_LABEL_FORMAT : String = "Uutuus! %s"
 const AMOUNT_LABEL_STRING : String = "%d annosta"
 const QUALITY_LABEL_STRING : String = "%s %s"
 ## Shown when there's nothing left to sell — without this the panel just
@@ -96,6 +98,8 @@ func _update_beer_batches_ui() -> void:
 
 			var name_label := _make_batch_label(batch)
 			name_label.text = NAME_LABEL_STRING % [batch.get_style_name(), batch.get_abv()]
+			if batch.novelty:
+				name_label.text = tr(NOVELTY_LABEL_FORMAT) % name_label.text
 
 			if batch.beer_style.style == BeerStyle.Style.KOTIKALJA:
 				name_label.modulate = Color.DARK_GRAY

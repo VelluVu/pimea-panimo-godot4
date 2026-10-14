@@ -149,3 +149,28 @@ style descriptions (after tuning).
    achievements, translations). Every reference recipe resolves to itself.
 3. UI amounts for 100 g packs; bot playtests for balance.
 4. Recipe book rework, then style descriptions.
+
+## Balance pass (2026-10-14)
+
+Measured with the playtest bots, 30-36 runs per batch.
+
+- **Reference recipes** use Magnum for most of the bitterness and 5 g of a favourite
+  aroma hop: hops cost 2-5 € a gram, and 20-40 g aroma doses made Witbier cost more than
+  it sells for. Every recipe now costs 25-60 % of its price.
+- **Ranges are centred on the reference recipes** (same widths): the reference recipe
+  scores precision 0.84-1.0. Re-centring needed four separations: Doppelbock EBC up to 29
+  and Portteri from 30, Imperial Stout from EBC 45, Portteri from 5.6 % ABV, Saison from
+  5.1 % ABV. Only the intended overlaps remain.
+- **Exports** pay StylePricing.WHOLESALE_SHARE (25 %) of the list price, not the
+  recipe's cost, so changing a recipe cannot move export income.
+- **Customers** whose favourites were all behind the mash tun got a reachable second
+  choice: Barbaari Baltic Portteri, Munkki Saison.
+- **Careless play fails by design** (developer's call): bots that ignore LVV risk (greedy,
+  variety, cheap) get busted every run, because good recipes raise reputation and higher
+  reputation tiers lower the raid limit. Judge balance by the risk-aware bots (careful,
+  gourmet, expert, calm, minmax); all of them survive.
+- **First brew of each style every season** (FirstBrewRules), also for styles known from
+  earlier seasons: the batch is a novelty ("Uutuus!") that sells +25 % at the counter, the
+  brew pays 10 XP per point of the style's reputation_change, the daily goal "Keitä uusi
+  tyyli" rewards it, and the season score gives RunScore.STYLE_POINTS (50) per style
+  brewed (score version 6, both leaderboard SQL files updated).

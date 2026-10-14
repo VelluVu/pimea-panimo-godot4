@@ -25,6 +25,7 @@ func _ready() -> void:
 	goal_pool.assign(ResourceFolder.load_all(DAILY_GOAL_FOLDER_PATH, DailyGoalData).filter(func(goal : DailyGoalData) -> bool: return not goal.retired))
 	BrewerySignals.brewery_state_changed.connect(_on_brewery_state_changed)
 	BrewerySignals.beer_brewed.connect(func(style : int) -> void: add_progress(DailyGoalData.GoalType.BREW_STYLE, 1, style))
+	BrewerySignals.season_first_brew.connect(func(_style : int, _name : String) -> void: add_progress(DailyGoalData.GoalType.NEW_STYLE_BREW, 1))
 	BrewerySignals.bottles_sold.connect(func(amount : int) -> void: add_progress(DailyGoalData.GoalType.SELL_BOTTLES, amount))
 	BrewerySignals.beer_sale_breakdown.connect(func(entry : SaleReceiptEntry) -> void: add_progress(DailyGoalData.GoalType.EARN_MONEY, roundi(entry.net_income)))
 	BrewerySignals.customer_unhappy.connect(add_progress.bind(DailyGoalData.GoalType.UNHAPPY_CUSTOMERS_MAX, 1))

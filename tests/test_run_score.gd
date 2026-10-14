@@ -90,3 +90,24 @@ func test_debt_is_not_negative_worth() -> void:
 func test_rescore_keeps_the_worth() -> void:
 	var entry : Dictionary = RunScoreScript.entry(15, 120, 400, DayRulesScript.ENDING_SURVIVED, 2500.0)
 	assert_eq(RunScoreScript.rescore(entry), entry["score"])
+
+
+func test_every_style_brewed_this_season_adds_points() -> void:
+	var plain : int = RunScoreScript.score(10, 20, 30, DayRulesScript.ENDING_SEASON_OVER)
+	assert_eq(RunScoreScript.score(10, 20, 30, DayRulesScript.ENDING_SEASON_OVER, 0.0, 4), plain + 4 * RunScoreScript.STYLE_POINTS)
+
+
+func test_styles_count_even_when_the_run_fails() -> void:
+	assert_eq(RunScoreScript.score(5, 100, 0, "busted", 0.0, 3), 5 * 100 + 3 * RunScoreScript.STYLE_POINTS)
+
+
+func test_rescore_keeps_the_styles() -> void:
+	var entry : Dictionary = RunScoreScript.entry(15, 120, 400, DayRulesScript.ENDING_SEASON_OVER, 500.0, 9)
+	assert_eq(entry.styles_brewed, 9)
+	assert_eq(RunScoreScript.rescore(entry), entry.score)
+
+
+func test_an_old_entry_without_styles_rescores_unchanged() -> void:
+	var entry : Dictionary = RunScoreScript.entry(15, 120, 400, DayRulesScript.ENDING_SEASON_OVER, 500.0)
+	entry.erase("styles_brewed")
+	assert_eq(RunScoreScript.rescore(entry), entry.score)
