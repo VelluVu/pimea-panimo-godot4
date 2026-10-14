@@ -174,3 +174,18 @@ func test_aging_progress_reaches_one_at_the_peak() -> void:
 
 func test_aging_progress_fades_once_spoiling() -> void:
 	assert_eq(BrewBatch.aging_progress(0.3, 10 + 30 + 5, 10, 30), 0.5)
+
+
+func test_abv_defaults_to_the_style() -> void:
+	var batch := _make_batch(0, 10, 0.0)
+	batch.beer_style.abv = 2.8
+	assert_eq(batch.get_abv(), 2.8)
+	assert_false(batch.is_alcohol_free())
+
+
+func test_own_abv_overrides_the_style() -> void:
+	var batch := _make_batch(0, 10, 0.0)
+	batch.beer_style.abv = 2.8
+	batch.abv = 0.2
+	assert_eq(batch.get_abv(), 0.2)
+	assert_true(batch.is_alcohol_free())

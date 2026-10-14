@@ -31,6 +31,6 @@ extends Resource
 const ALCOHOL_FREE_SHIPMENT_RISK : int = -3
 
 
-## LVV risk of shipping `beer_style` here, see ALCOHOL_FREE_SHIPMENT_RISK.
-func risk_for(beer_style : BeerStyle) -> int:
-	return ALCOHOL_FREE_SHIPMENT_RISK if beer_style.is_alcohol_free() else risk_per_shipment
+## LVV risk of shipping a keg of `abv` here, see ALCOHOL_FREE_SHIPMENT_RISK.
+func risk_for(abv : float) -> int:
+	return ALCOHOL_FREE_SHIPMENT_RISK if abv <= BeerStyle.ALCOHOL_FREE_MAX_ABV else risk_per_shipment

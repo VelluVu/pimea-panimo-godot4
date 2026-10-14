@@ -17,6 +17,7 @@ const MALT_LIGHT_ID : int = 101 # EBC 10, price 2
 const MALT_DARK_ID : int = 102 # EBC 60, price 3
 const HOP_ID : int = 201 # alpha 100 -> 10 IBU per unit, citrus
 const YEAST_ID : int = 301
+const ALCOHOL_FREE_YEAST_ID : int = 304
 
 
 func _make_ingredients() -> Dictionary:
@@ -45,7 +46,12 @@ func _make_ingredients() -> Dictionary:
 	yeast.type = IngredientData.IngredientType.YEAST
 	yeast.base_price = 5
 
-	return {MALT_LIGHT_ID: light, MALT_DARK_ID: dark, HOP_ID: hop, YEAST_ID: yeast}
+	var alcohol_free_yeast := YeastData.new()
+	alcohol_free_yeast.id = ALCOHOL_FREE_YEAST_ID
+	alcohol_free_yeast.type = IngredientData.IngredientType.YEAST
+	alcohol_free_yeast.alcohol_free = true
+
+	return {MALT_LIGHT_ID: light, MALT_DARK_ID: dark, HOP_ID: hop, YEAST_ID: yeast, ALCOHOL_FREE_YEAST_ID: alcohol_free_yeast}
 
 
 func _make_style(style : BeerStyle.Style, min_ibu : int, max_ibu : int, hop_profile : HopData.FlavorProfile = HopData.FlavorProfile.NONE) -> BeerStyle:
@@ -103,6 +109,17 @@ func test_resolve_out_of_range_ebc_returns_the_failed_fallback() -> void:
 	assert_eq(result.final_ebc, 60)
 	assert_eq(result.reputation_change, -1)
 	assert_eq(result.beer_style.style, BeerStyle.Style.KOTIKALJA)
+	assert_eq(result.abv, result.beer_style.abv)
+
+
+func test_failed_brew_with_alcohol_free_yeast_is_alcohol_free_kotikalja() -> void:
+	var resolver := _make_resolver()
+	resolver.get_beer_style(BeerStyle.Style.KOTIKALJA).abv = 2.8
+	var result : BrewResult = resolver.resolve_brew_style({MALT_LIGHT_ID: 3, ALCOHOL_FREE_YEAST_ID: 1})
+	assert_false(result.is_matched)
+	assert_eq(result.beer_style.style, BeerStyle.Style.KOTIKALJA)
+	assert_eq(result.abv, BrewResolverScript.ALCOHOL_FREE_FALLBACK_ABV)
+	assert_true(result.abv <= BeerStyle.ALCOHOL_FREE_MAX_ABV)
 
 
 func test_style_cost_includes_ingredients_and_flat_consumables() -> void:

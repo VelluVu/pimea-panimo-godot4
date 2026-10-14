@@ -14,6 +14,7 @@ var hop_amount : int = 0
 var alpha_acids : float = 0.0
 var beta_acids : float = 0.0
 var yeast_id : int = NO_YEAST
+var yeast_alcohol_free : bool = false
 var final_ebc : int = 0
 var final_ibu : int = 0
 ## Ids and profiles present with a non-zero amount, whatever the amount.
@@ -66,6 +67,7 @@ func _add(id : int, data : IngredientData, amount : int) -> void:
 			_add_hop(id, data as HopData, amount)
 		IngredientData.IngredientType.YEAST:
 			yeast_id = id
+			yeast_alcohol_free = data is YeastData and (data as YeastData).alcohol_free
 		IngredientData.IngredientType.SPICE:
 			if amount > 0:
 				spice_ids[id] = true

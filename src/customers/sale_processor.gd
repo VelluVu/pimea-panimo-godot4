@@ -30,7 +30,7 @@ static func find_best_batch(batches : Array[BrewBatch], data : CustomerData) -> 
 	for batch : BrewBatch in batches:
 		if batch.amount_bottles <= 0 or batch.held:
 			continue
-		if not data.meets_strict_requirements(batch.beer_style):
+		if not data.meets_strict_requirements(batch.beer_style, batch.get_abv()):
 			continue
 		var score : float = data.get_preference_score(batch.beer_style.style)
 		if batch.current_quality >= data.min_quality:

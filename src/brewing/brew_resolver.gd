@@ -6,6 +6,8 @@ const FAILED_BREW_REPUTATION_CHANGE : int = -1
 const FAILED_BREW_QUALITY : float = 1.0
 const QUALITY_PRECISION : float = 0.01
 const REQUIRED_SPICE_DOSE : int = 2
+## A failed brew is sold as kotikalja, but an alcohol-free yeast never made any alcohol.
+const ALCOHOL_FREE_FALLBACK_ABV : float = 0.2
 
 const LOG_LOADED_STYLES : String = "Ladattu yhteensä %s oluttyyliä datasta:"
 
@@ -134,6 +136,7 @@ func _build_match_result(mixture : BrewMixture, beer_style : BeerStyle) -> BrewR
 	result.final_ibu = mixture.final_ibu
 	result.original_quality = snappedf(beer_style.original_quality * multiplier, QUALITY_PRECISION)
 	result.reputation_change = beer_style.reputation_change
+	result.abv = beer_style.abv
 	result.is_matched = true
 	result.precision_score = precision
 	result.hop_diversity_count = mixture.hop_ids.size()
@@ -150,5 +153,9 @@ func _build_failed_result(mixture : BrewMixture) -> BrewResult:
 	result.final_ibu = mixture.final_ibu
 	result.original_quality = FAILED_BREW_QUALITY
 	result.reputation_change = FAILED_BREW_REPUTATION_CHANGE
+	if mixture.yeast_alcohol_free:
+		result.abv = ALCOHOL_FREE_FALLBACK_ABV
+	elif result.beer_style != null:
+		result.abv = result.beer_style.abv
 	result.is_matched = false
 	return result

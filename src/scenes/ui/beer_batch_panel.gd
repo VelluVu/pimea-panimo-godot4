@@ -95,7 +95,7 @@ func _update_beer_batches_ui() -> void:
 			any_bottles_left = true
 
 			var name_label := _make_batch_label(batch)
-			name_label.text = NAME_LABEL_STRING % [batch.get_style_name(), batch.beer_style.abv]
+			name_label.text = NAME_LABEL_STRING % [batch.get_style_name(), batch.get_abv()]
 
 			if batch.beer_style.style == BeerStyle.Style.KOTIKALJA:
 				name_label.modulate = Color.DARK_GRAY
@@ -177,6 +177,6 @@ func _make_batch_label(batch: BrewBatch) -> TooltipLabel:
 func _possible_buyers(batch : BrewBatch) -> Array[CustomerData]:
 	var buyers : Array[CustomerData] = []
 	for customer : CustomerData in CustomerRegistry.get_eligible_customers():
-		if customer.meets_strict_requirements(batch.beer_style):
+		if customer.meets_strict_requirements(batch.beer_style, batch.get_abv()):
 			buyers.append(customer)
 	return buyers

@@ -72,6 +72,7 @@ func start_brew(quality_multiplier : float = BrewDayRules.NORMAL_MULTIPLIER) -> 
 	new_batch.current_quality = new_batch.original_quality
 	new_batch.final_ebc = brew_report.final_ebc
 	new_batch.final_ibu = brew_report.final_ibu
+	new_batch.abv = brew_report.abv
 	new_batch.precision_score = brew_report.precision_score
 	new_batch.hop_diversity_count = brew_report.hop_diversity_count
 	new_batch.hop_balance_bonus = brew_report.hop_balance_bonus
