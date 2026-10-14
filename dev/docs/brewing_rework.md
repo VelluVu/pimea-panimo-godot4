@@ -64,7 +64,7 @@ packs** (shown as "0,3 kg").
 | 106 | Keksi | 50 | 0.75 | kg | was 55 |
 | 107 | Tumma karamelli | 300 | 0.70 | kg | was 140 |
 | 108 | Savu | 6 | 0.78 | kg | |
-| 109 | **Vienna mallas** | 8 | 0.79 | kg | new |
+| 109 | **Vienna-mallas** | 8 | 0.79 | kg | new |
 | 110 | **Ruismallas** | 7 | 0.78 | kg | new |
 | 111 | **Suklaamallas** | 1000 | 0.65 | 100 g | new |
 | 112 | **Paahdettu ohra** | 1400 | 0.60 | 100 g | new |
