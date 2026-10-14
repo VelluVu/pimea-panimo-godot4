@@ -52,10 +52,11 @@
 [ext_resource type="Script" uid="uid://dihcrv1yno5x5" path="res://src/ui/chalkboard_hover_area.gd" id="51_bu4jf"]
 [ext_resource type="Script" uid="uid://bdgp8p5s0uixg" path="res://src/scenes/ui/dirty_keg_pile_label.gd" id="52_fluu8"]
 [ext_resource type="Script" uid="uid://cbbayr0gg5kb5" path="res://src/customers/lvv_raid_spawner.gd" id="58_augu2"]
+[ext_resource type="Script" uid="uid://b174yxqoekl5i" path="res://src/scenes/tap_tower.gd" id="59_abmkx"]
 [ext_resource type="Script" uid="uid://c1fy2446074o0" path="res://src/events/immersion_event_spawner.gd" id="59_t5ykj"]
-[ext_resource type="Texture2D" uid="uid://dwe4ql72sptwg" path="res://assets/textures/beer_dispenser_rack_48.png" id="60_beerrack"]
 [ext_resource type="Script" uid="uid://bt460kqjyukxg" path="res://src/ui/customer_book_hover_area.gd" id="61_fluu8"]
 [ext_resource type="Script" uid="uid://d1q0qg8qgxtey" path="res://src/ui/dirty_keg_pile.gd" id="67_68ujc"]
+[ext_resource type="Script" uid="uid://divk0hld1wq12" path="res://src/scenes/keg_row.gd" id="68_05g3k"]
 [ext_resource type="Texture2D" uid="uid://bpsny2rj4ahl3" path="res://assets/textures/keg_wash/dirty_keg.png" id="68_abmkx"]
 [ext_resource type="Texture2D" uid="uid://b12vj0rmwdl8y" path="res://assets/textures/light_glow_32.png" id="70_lightglow"]
 [ext_resource type="Texture2D" uid="uid://dcrobw17uonit" path="res://assets/textures/pendant_lamp_24.png" id="71_pendantlamp"]
@@ -1343,9 +1344,9 @@ position = Vector2(102, -29)
 texture = ExtResource("18_0ld40")
 script = ExtResource("7_og1vs")
 
-[node name="BeerDispenserRack_Prop" type="Sprite2D" parent="WorldYSort/BarTable/BarTable_Sprite2D" unique_id=119017109]
+[node name="TapTower" type="Node2D" parent="WorldYSort/BarTable/BarTable_Sprite2D" unique_id=1639847367]
 position = Vector2(31, -37)
-texture = ExtResource("60_beerrack")
+script = ExtResource("59_abmkx")
 
 [node name="ReceiptMachineHoverArea" type="Area2D" parent="WorldYSort/BarTable/BarTable_Sprite2D" unique_id=1649942093]
 position = Vector2(-96, -23)
@@ -1421,15 +1422,6 @@ polygon = PackedVector2Array(-6, -1, 6, -1, 6, 1, -6, 1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WorldYSort/ChalkboardHoverArea" unique_id=1239359706]
 shape = SubResource("RectangleShape2D_o7ddy")
-
-[node name="Keg" parent="WorldYSort" unique_id=1939711803 instance=ExtResource("47_1v6qk")]
-position = Vector2(523, 250)
-
-[node name="Keg2" parent="WorldYSort" unique_id=414387128 instance=ExtResource("47_1v6qk")]
-position = Vector2(491, 250)
-
-[node name="Keg3" parent="WorldYSort" unique_id=111073066 instance=ExtResource("47_1v6qk")]
-position = Vector2(461, 250)
 
 [node name="LvvRaidSpawner" type="Node2D" parent="WorldYSort" unique_id=411121702]
 y_sort_enabled = true
@@ -1556,6 +1548,28 @@ position = Vector2(-18, -4)
 rotation = 1.5707964
 scale = Vector2(2, 2)
 texture = ExtResource("68_abmkx")
+
+[node name="KegRow" type="Node2D" parent="WorldYSort" unique_id=2100241702]
+y_sort_enabled = true
+script = ExtResource("68_05g3k")
+
+[node name="Keg3" parent="WorldYSort/KegRow" unique_id=111073066 instance=ExtResource("47_1v6qk")]
+position = Vector2(461, 250)
+
+[node name="Keg2" parent="WorldYSort/KegRow" unique_id=414387128 instance=ExtResource("47_1v6qk")]
+position = Vector2(491, 250)
+
+[node name="Keg" parent="WorldYSort/KegRow" unique_id=1939711803 instance=ExtResource("47_1v6qk")]
+position = Vector2(523, 250)
+
+[node name="Keg4" parent="WorldYSort/KegRow" unique_id=79533705 instance=ExtResource("47_1v6qk")]
+position = Vector2(476, 238)
+
+[node name="Keg5" parent="WorldYSort/KegRow" unique_id=886183170 instance=ExtResource("47_1v6qk")]
+position = Vector2(507, 238)
+
+[node name="Keg6" parent="WorldYSort/KegRow" unique_id=730942802 instance=ExtResource("47_1v6qk")]
+position = Vector2(538, 238)
 
 [node name="WarehouseWallOverlay" type="Polygon2D" parent="." unique_id=1022889779]
 z_index = 2

@@ -170,13 +170,21 @@ func count_bottles() -> int:
 	return total
 
 
-## Different styles customers can buy right now: batches with servings left that are
-## not held in the cellar to age.
-func styles_on_tap() -> int:
-	var styles : Dictionary = {}
+## Batches customers can buy right now: servings left and not held in the cellar to
+## age. Each one is a keg behind the counter with its own tap.
+func batches_on_serve() -> Array[BrewBatch]:
+	var serving : Array[BrewBatch] = []
 	for batch : BrewBatch in brew_batches:
 		if batch.amount_bottles > 0 and not batch.held:
-			styles[batch.beer_style.style] = true
+			serving.append(batch)
+	return serving
+
+
+## Different styles customers can buy right now, see batches_on_serve().
+func styles_on_tap() -> int:
+	var styles : Dictionary = {}
+	for batch : BrewBatch in batches_on_serve():
+		styles[batch.beer_style.style] = true
 	return styles.size()
 
 

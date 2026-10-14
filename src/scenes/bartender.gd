@@ -45,8 +45,15 @@ const STACK_BASE_OFFSET_PX : Vector2 = Vector2(-20, 5)
 const STACK_COLUMN_OFFSET_PX : Vector2 = Vector2(-7, 0)
 const STACK_ROW_OFFSET_PX : Vector2 = Vector2(0, -6)
 
+## How long the slide to a tap and back takes. Short, so the pour keeps its timing with
+## the customer's glass (Customer.show_counter_glass()).
+const TAP_SLIDE_SECONDS : float = 0.25
+
 ## The frames as drawn, kept for pours with no known beer.
 var _drawn_frames : SpriteFrames
+## Where he stands when not pouring.
+var _home_x : float = 0.0
+var _slide : Tween
 
 
 func _ready() -> void:
@@ -55,6 +62,7 @@ func _ready() -> void:
 	add_child(listener)
 	listener.make_current()
 	_drawn_frames = animated_sprite.sprite_frames
+	_home_x = position.x
 	animated_sprite.animation_finished.connect(_on_animation_finished)
 	animated_sprite.play(ANIM_IDLE)
 
@@ -68,7 +76,9 @@ func _play_random_idle() -> void:
 ## visibly speed the pour up for its rapid-fire one-by-one serving burst
 ## without that lingering into the next solo customer's pour — reset back to
 ## 1.0 the moment this returns to idle, below. A negative `ebc` pours the beer as drawn.
-func play_serve_beer(speed_scale: float = 1.0, ebc: int = -1) -> void:
+## `tap_offset` slides him that far from home to the tap he pours from.
+func play_serve_beer(speed_scale: float = 1.0, ebc: int = -1, tap_offset: float = 0.0) -> void:
+	_slide_to(_home_x + tap_offset)
 	animated_sprite.sprite_frames = _drawn_frames if ebc < 0 else BeerColor.pour_sprite_frames(_drawn_frames, ebc)
 	animated_sprite.speed_scale = speed_scale
 	animated_sprite.play(ANIM_SERVE_BEER)
@@ -78,7 +88,17 @@ func play_serve_beer(speed_scale: float = 1.0, ebc: int = -1) -> void:
 func _on_animation_finished() -> void:
 	if animated_sprite.animation == ANIM_SERVE_BEER:
 		animated_sprite.speed_scale = 1.0
+		_slide_to(_home_x)
 	_play_random_idle()
+
+
+func _slide_to(x : float) -> void:
+	if is_equal_approx(position.x, x):
+		return
+	if _slide != null:
+		_slide.kill()
+	_slide = create_tween()
+	_slide.tween_property(self, "position:x", x, TAP_SLIDE_SECONDS).set_trans(Tween.TRANS_SINE)
 
 
 ## Global position for the Nth glass in a group order's on-counter stack —

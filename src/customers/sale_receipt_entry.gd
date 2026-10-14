@@ -24,6 +24,9 @@ extends Resource
 @export var beer_ebc : int = -1
 ## Above 1.0 when the batch sold at its aging premium (BrewBatch.get_aged_price_multiplier()).
 @export var aged_price_multiplier : float = 1.0
+## The batch sold from, for the bartender's walk to its tap. Not saved: only the sale
+## that is happening needs it.
+var batch : BrewBatch = null
 
 const SUMMARY_FORMAT : String = "%s x%d"
 const BREAKDOWN_FORMAT : String = "Raaka-aineet: %.2f €\nKate: %.2f €\n= Hinta/annos: %.2f €"
