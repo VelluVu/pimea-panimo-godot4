@@ -1214,7 +1214,9 @@ msgstr "An amber ale where caramel and hops are in balance."
 msgid ""
 "Meripihkanvärinen pintahiivaolut, jossa maistuvat maltainen karamellisuus "
 "ja maltillinen humalan puraisu."
-msgstr "An amber top-fermented beer with malty caramel notes and a moderate hop bite."
+msgstr ""
+"An amber top-fermented beer with malty caramel notes and a moderate hop "
+"bite."
 
 #: src/resources/beer_styles/baltic_portteri.tres
 msgid "Itämeren rannoilla lageroitu vahva ja tumma olut."
@@ -1225,7 +1227,9 @@ msgid ""
 "Pohjahiivalla käytetty vahva ja sysitumma olut, jossa maistuvat "
 "suodattamaton lakritsi, tumma suklaa ja kuivatut hedelmät ilman pistävää "
 "paahteisuutta."
-msgstr "A strong, pitch-dark bottom-fermented beer tasting of unfiltered liquorice, dark chocolate and dried fruit, without a sharp roast."
+msgstr ""
+"A strong, pitch-dark bottom-fermented beer tasting of unfiltered liquorice, "
+"dark chocolate and dried fruit, without a sharp roast."
 
 #: src/resources/beer_styles/barleywine.tres
 msgid ""
@@ -1279,7 +1283,9 @@ msgstr "A pale, clean lager that is cheap to make, and cheap for the thirsty too
 msgid ""
 "Erittäin tuhti ja pehmeä saksalainen vahva lager, jonka maku muistuttaa "
 "siirappista mallasleipää, karamellia ja kuivattuja tummia hedelmiä."
-msgstr "A very full, smooth, strong German lager whose taste recalls syrupy malt bread, caramel and dark dried fruit."
+msgstr ""
+"A very full, smooth, strong German lager whose taste recalls syrupy malt "
+"bread, caramel and dark dried fruit."
 
 #: src/resources/beer_styles/doppelbock.tres
 msgid "Munkkien paastoajan vahva ja maltainen lager. Tarvitsee paljon mallasta."
@@ -1355,7 +1361,9 @@ msgstr "A homemade bread drink from grandma's kitchen, mild and sweet."
 msgid ""
 "Mummon reseptin mukaan: hiivaa, maltaista lientä, ja kärsivällisyyttä. "
 "Mieto ja makea, ei mitään ihmeellistä."
-msgstr "Made to grandma's recipe: yeast, malty wort, and patience. Mild and sweet, nothing special."
+msgstr ""
+"Made to grandma's recipe: yeast, malty wort, and patience. Mild and sweet, "
+"nothing special."
 
 #: src/resources/beer_styles/maitostout.tres
 msgid "Pehmeä ja makea musta olut, jonka makeus tulee maidosta."
@@ -1493,7 +1501,9 @@ msgstr "An Austrian golden brown lager built on its own city's malt."
 msgid ""
 "Viennamaltainen kullanruskea lager, jonka makuprofiiliin kuuluu paahtoleipä "
 "ja kevyt makeus."
-msgstr "A golden brown lager of Vienna malt, with toast and a light sweetness in its flavour."
+msgstr ""
+"A golden brown lager of Vienna malt, with toast and a light sweetness in "
+"its flavour."
 
 #: src/resources/beer_styles/witbier.tres
 msgid ""
@@ -3620,11 +3630,11 @@ msgstr ""
 "taste."
 
 #: src/resources/ingredients/malts/vienna_malt.tres
-msgid "Wienermallas"
+msgid "Vienna mallas"
 msgstr "Vienna Malt"
 
 #: src/resources/ingredients/malts/vienna_malt.tres
-msgid "wienermallasta"
+msgid "Vienna mallasta"
 msgstr "Vienna malt"
 
 #: src/resources/ingredients/malts/wheat_malt.tres
