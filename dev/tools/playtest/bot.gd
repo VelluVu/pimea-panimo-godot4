@@ -18,7 +18,8 @@ extends Node
 ## finish the tutorial, ship surplus batches to bars, pick level-up cards by value and
 ## play closer to the raid line when a raid would be survivable.
 ## Every bot chases daily goals unless --goals=0: it brews a brew-style goal's style
-## from its minimum recipe (what the recipe library's hints lead a player to), ships a
+## from its minimum recipe (what the recipe library's hints lead a player to), brews the
+## cheapest style not yet brewed this season for a new-style goal, ships a
 ## batch to the safest bar for a ship-to-bar goal and takes a risk-free favour for a
 ## special-event goal. The other goal types follow from playing well.
 
@@ -320,7 +321,7 @@ func _expert_recipe(b: Brewery) -> BrewRecipe:
 		if score <= 0.0:
 			continue
 		if not b.brewed_styles.has(style.style):
-			score += maxi(0, style.reputation_change)
+			score += _novelty_value(b, style)
 		score += b.resolver.get_style_base_price(style) - b.resolver.get_style_cost_per_bottle(style)
 		# Half the aged bonus: the bot waits for it, and sells some young.
 		score += b.resolver.get_style_base_price(style) * style.aged_price_bonus * 0.5
@@ -335,6 +336,15 @@ func _expert_recipe(b: Brewery) -> BrewRecipe:
 	if best != null and cfg.strategy in TUNERS:
 		best.ingredient_amounts = _tune_for_quality(b, best.beer_style, best.ingredient_amounts)
 	return best
+
+
+## A season's first batch of a style (FirstBrewRules): the reputation of a first brew and
+## the Uutuus premium, and for minmax the run score's points per style, in reputation.
+func _novelty_value(b: Brewery, style: BeerStyle) -> float:
+	var value: float = maxi(0, style.reputation_change) + b.resolver.get_style_base_price(style) * FirstBrewRules.NOVELTY_PRICE_BONUS
+	if cfg.strategy == "minmax":
+		value += float(RunScore.STYLE_POINTS) / REP_POINTS
+	return value
 
 
 ## Styles scoring at least this share of the best are all in the running.
@@ -401,7 +411,8 @@ func _with_spices(b: Brewery, style: BeerStyle, ingredients: Dictionary) -> Dict
 			break
 		var spice: IngredientData = IngredientDatabase.get_item_by_id(spice_id)
 		if spice != null and spice.min_reputation <= b.reputation:
-			spiced[spice_id] = 1
+			# Keeps a required spice's amount from the reference recipe.
+			spiced[spice_id] = maxi(1, spiced.get(spice_id, 0))
 			added += 1
 	return spiced
 
@@ -421,9 +432,36 @@ func _open_goal(kind: DailyGoalData.GoalType) -> int:
 ## A recipe for an open brew-this-style goal, if it can be brewed now.
 func _goal_style_recipe(b: Brewery) -> BrewRecipe:
 	var slot: int = _open_goal(DailyGoalData.GoalType.BREW_STYLE)
-	if slot == -1:
-		return null
-	return _style_recipe(b, (DailyGoalManager.active_goals[slot] as DailyGoalData).target_style)
+	if slot != -1:
+		return _style_recipe(b, (DailyGoalManager.active_goals[slot] as DailyGoalData).target_style)
+	if _open_goal(DailyGoalData.GoalType.NEW_STYLE_BREW) != -1:
+		return _cheapest_new_style_recipe(b)
+	return null
+
+
+## The cheapest style not brewed this season: any style for the experts, a saved
+## recipe's style for the others, who only brew what they know.
+func _cheapest_new_style_recipe(b: Brewery) -> BrewRecipe:
+	var styles: Array[BeerStyle.Style] = []
+	if cfg.strategy in EXPERTS:
+		for style: BeerStyle in b.resolver.active_styles:
+			styles.append(style.style)
+	else:
+		for r: BrewRecipe in b.saved_recipes:
+			styles.append(r.beer_style)
+	var best: BrewRecipe = null
+	var best_cost: int = 0
+	for style: BeerStyle.Style in styles:
+		if b.brewed_styles.has(style):
+			continue
+		var recipe: BrewRecipe = _style_recipe(b, style)
+		if recipe == null:
+			continue
+		var cost: int = _missing_cost_of(b, recipe.ingredient_amounts)
+		if best == null or cost < best_cost:
+			best = recipe
+			best_cost = cost
+	return best
 
 
 ## Share of the raid threshold where the expert closes the day. A spare strike or a hidden
