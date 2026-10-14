@@ -1550,18 +1550,8 @@ scale = Vector2(2, 2)
 texture = ExtResource("68_abmkx")
 
 [node name="KegRow" type="Node2D" parent="WorldYSort" unique_id=2100241702]
-y_sort_enabled = true
 position = Vector2(-16, 7)
 script = ExtResource("68_05g3k")
-
-[node name="Keg3" parent="WorldYSort/KegRow" unique_id=111073066 instance=ExtResource("47_1v6qk")]
-position = Vector2(461, 250)
-
-[node name="Keg2" parent="WorldYSort/KegRow" unique_id=414387128 instance=ExtResource("47_1v6qk")]
-position = Vector2(491, 250)
-
-[node name="Keg" parent="WorldYSort/KegRow" unique_id=1939711803 instance=ExtResource("47_1v6qk")]
-position = Vector2(523, 250)
 
 [node name="Keg4" parent="WorldYSort/KegRow" unique_id=79533705 instance=ExtResource("47_1v6qk")]
 position = Vector2(476, 238)
@@ -1571,6 +1561,15 @@ position = Vector2(507, 238)
 
 [node name="Keg6" parent="WorldYSort/KegRow" unique_id=730942802 instance=ExtResource("47_1v6qk")]
 position = Vector2(538, 238)
+
+[node name="Keg3" parent="WorldYSort/KegRow" unique_id=111073066 instance=ExtResource("47_1v6qk")]
+position = Vector2(461, 250)
+
+[node name="Keg2" parent="WorldYSort/KegRow" unique_id=414387128 instance=ExtResource("47_1v6qk")]
+position = Vector2(491, 250)
+
+[node name="Keg" parent="WorldYSort/KegRow" unique_id=1939711803 instance=ExtResource("47_1v6qk")]
+position = Vector2(523, 250)
 
 [node name="WarehouseWallOverlay" type="Polygon2D" parent="." unique_id=1022889779]
 z_index = 2
