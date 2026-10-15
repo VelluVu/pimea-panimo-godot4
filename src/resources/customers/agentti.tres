@@ -1,11 +1,11 @@
 [gd_resource type="Resource" script_class="CustomerData" format=3 uid="uid://dtg3fntafwt27"]
 
 [ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_agentti"]
+[ext_resource type="Script" uid="uid://dq66tbectyal5" path="res://src/customers/taste_rule.gd" id="1_vc3bs"]
 [ext_resource type="SpriteFrames" uid="uid://4hf7kyk1mcmb" path="res://src/resources/sprite_frames/agentti_anim.tres" id="2_sprite"]
 
 [resource]
 script = ExtResource("1_agentti")
-tip_base_chance = 0.05
 customer_name = "Asko"
 title = "Agentti"
 first_names = Array[String](["Asko", "Aaro", "Antti", "Anssi", "Unto"])
@@ -26,6 +26,7 @@ dialogue_reject = "Selvä. Tämäkään ei mennyt hukkaan."
 dialogue_no_match = "Ai, täällä ei myydäkään mitään, mistä tietäisin. No, harmin paikka. Nähdään vielä..."
 dialogue_preview_format = "Hmm, %s. Otan pienen näytteen... tutkimuksia varten."
 dialogue_nothing_available = "Ei mitään epäilyttävää? Raporttiin tulee aika ohut luku..."
+tip_base_chance = 0.05
 min_reputation_to_appear = 70
 randomizes_preference = true
 primary_match_risk_multiplier = 2.5

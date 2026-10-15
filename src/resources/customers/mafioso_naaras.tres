@@ -1,11 +1,11 @@
 [gd_resource type="Resource" script_class="CustomerData" format=3 uid="uid://dp1ufkaootw4e"]
 
+[ext_resource type="Script" uid="uid://dq66tbectyal5" path="res://src/customers/taste_rule.gd" id="1_gqp57"]
 [ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_mafioso_naaras"]
 [ext_resource type="SpriteFrames" uid="uid://crgt8jnl6vhpb" path="res://src/resources/sprite_frames/mafioso_naaras_anim.tres" id="2_sprite"]
 
 [resource]
 script = ExtResource("1_mafioso_naaras")
-tip_base_chance = 0.25
 customer_name = "Sofia"
 title = "Mafioso"
 first_names = Array[String](["Sofia", "Rosa", "Luciana", "Bella", "Carmela", "Vera"])
@@ -27,6 +27,7 @@ dialogue_wrong_style = "Don lähettää kiitokset."
 dialogue_reject = "Tämä oli virhe sinulta."
 dialogue_preview_format = "%s. Katsotaan, kelpaako se Donille."
 dialogue_nothing_available = "Don ei näe täällä mitään, mistä kannattaisi maksaa..."
+tip_base_chance = 0.25
 quality_tip_sensitivity = 0.5
 rep_primary_style = 8
 risk_wrong_style = 0

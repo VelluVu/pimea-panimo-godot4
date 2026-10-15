@@ -2,17 +2,13 @@
 
 [ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_merimies"]
 [ext_resource type="SpriteFrames" uid="uid://2qqyx1myaegp" path="res://src/resources/sprite_frames/merimies_anim.tres" id="2_sprite"]
-[ext_resource type="Script" path="res://src/customers/taste_rule.gd" id="taste_script"]
 [ext_resource type="Resource" path="res://src/resources/taste_rules/baltic_portteri.tres" id="taste_baltic_portteri"]
-[ext_resource type="Resource" path="res://src/resources/taste_rules/portterit_ja_stoutit.tres" id="taste_portterit_ja_stoutit"]
 [ext_resource type="Resource" path="res://src/resources/taste_rules/bulkkilager.tres" id="taste_bulkkilager"]
+[ext_resource type="Resource" path="res://src/resources/taste_rules/portterit_ja_stoutit.tres" id="taste_portterit_ja_stoutit"]
+[ext_resource type="Script" uid="uid://dq66tbectyal5" path="res://src/customers/taste_rule.gd" id="taste_script"]
 
 [resource]
 script = ExtResource("1_merimies")
-tip_base_chance = 0.15
-favourite_rules = Array[ExtResource("taste_script")]([ExtResource("taste_baltic_portteri")])
-second_rules = Array[ExtResource("taste_script")]([ExtResource("taste_portterit_ja_stoutit")])
-last_resort_rules = Array[ExtResource("taste_script")]([ExtResource("taste_bulkkilager")])
 customer_name = "Aarne"
 title = "Merimies"
 first_names = Array[String](["Aarne", "Eino", "Valto", "Ruben", "Kaapo", "Holger", "Viljo"])
@@ -20,6 +16,9 @@ min_quality = 1.0
 budget_multiplier = 1.2
 primary_style = 9
 secondary_style = 23
+favourite_rules = Array[ExtResource("taste_script")]([ExtResource("taste_baltic_portteri")])
+second_rules = Array[ExtResource("taste_script")]([ExtResource("taste_portterit_ja_stoutit")])
+last_resort_rules = Array[ExtResource("taste_script")]([ExtResource("taste_bulkkilager")])
 sprite_frames = ExtResource("2_sprite")
 randomize_clothes = false
 randomize_shoes = false
@@ -32,6 +31,7 @@ dialogue_reject = "Tämä maistuu pilssivedeltä. Viekää takaisin."
 dialogue_no_match = "Ei porttia eikä mitään tummaa? Lähden takaisin laivaan."
 dialogue_preview_format = "%s... sopisiko se myrskyiseen yöhön?"
 dialogue_nothing_available = "Tyhjät hyllyt kuin laivan ruuma kotimatkalla..."
+tip_base_chance = 0.15
 quality_tip_sensitivity = 0.5
 rep_primary_style = 6
 rep_secondary_style = 2
