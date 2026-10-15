@@ -270,7 +270,7 @@ func _brew(b: Brewery) -> void:
 			demand[c.primary_style] = demand.get(c.primary_style, 0) + 2
 			demand[c.secondary_style] = demand.get(c.secondary_style, 0) + 1
 	var in_stock: Dictionary = {}
-	for batch: BrewBatch in b.inventory.brew_batches:
+	for batch: BrewBatch in b.inventory.brew_batches + b.inventory.fermenting:
 		in_stock[batch.beer_style.style] = true
 
 	var best: BrewRecipe = null
@@ -325,8 +325,9 @@ func _expert_recipe(b: Brewery) -> BrewRecipe:
 		if cfg.strategy in TUNERS:
 			forced.ingredient_amounts = _tune_for_quality(b, forced.beer_style, forced.ingredient_amounts)
 		return forced
+	# A fermenting brew is stock on its way, so the bot does not brew that style again.
 	var in_stock: Dictionary = {}
-	for batch: BrewBatch in b.inventory.brew_batches:
+	for batch: BrewBatch in b.inventory.brew_batches + b.inventory.fermenting:
 		if batch.held:
 			continue
 		in_stock[batch.beer_style.style] = in_stock.get(batch.beer_style.style, 0) + batch.amount_bottles
