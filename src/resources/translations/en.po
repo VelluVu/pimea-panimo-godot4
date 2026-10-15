@@ -1577,7 +1577,9 @@ msgstr "More kegs"
 msgid ""
 "Yksi tyhjä tynnyri ja yksi hana lisää. Jokainen erä tarvitsee oman "
 "tynnyrinsä, ja jokainen hana tuo yhden tyylin tiskille."
-msgstr "One more empty keg and one more tap. Every batch needs a keg of its own, and every tap puts one more style on the counter."
+msgstr ""
+"One more empty keg and one more tap. Every batch needs a keg of its own, "
+"and every tap puts one more style on the counter."
 
 #: src/resources/cellar_upgrades/12_parempi_maskipata.tres
 msgid ""
@@ -5142,6 +5144,10 @@ msgid "Kohde:"
 msgstr "Destination:"
 
 #: src/scenes/ui/beer_batch_panel.gd
+msgid "Pilalla: %s"
+msgstr "Spoiled: %s"
+
+#: src/scenes/ui/beer_batch_panel.gd
 msgid "Uutuus! %s"
 msgstr "New! %s"
 
@@ -5154,6 +5160,10 @@ msgid "Vie koko erä yllä valittuun baariin. Nostaa LVV-riskiä toimituksen muk
 msgstr ""
 "Ship the whole batch to the bar selected above. Each delivery raises the "
 "LVV risk."
+
+#: src/scenes/ui/beer_batch_panel.gd
+msgid "Vähän hapan %s"
+msgstr "Slightly sour %s"
 
 #: src/scenes/ui/beer_batch_panel.gd
 msgid "⏳ %s käymässä, %d s"
@@ -6409,6 +6419,14 @@ msgstr "%s left of %s today"
 #: src/ui/gui_announcer.gd
 msgid "%s happani likaisessa tynnyrissä!"
 msgstr "%s soured in a dirty keg!"
+
+#: src/ui/gui_announcer.gd
+msgid "%s happani pahasti likaisessa tynnyrissä!"
+msgstr "%s soured badly in a dirty keg!"
+
+#: src/ui/gui_announcer.gd
+msgid "%s happani vähän likaisessa tynnyrissä."
+msgstr "%s soured a little in a dirty keg."
 
 #: src/ui/gui_announcer.gd
 msgid "%s valmis tynnyriin"

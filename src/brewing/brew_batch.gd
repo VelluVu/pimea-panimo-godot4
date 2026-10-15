@@ -21,6 +21,8 @@ extends Resource
 @export var ferment_seconds_left : float = 0.0
 ## Soured in a dirty keg, see sour().
 @export var infected : bool = false
+## Share of quality the souring took; 0 on a save from before souring had strengths.
+@export var sour_loss : float = 0.0
 @export var age_in_days: int = 0
 ## The season's first batch of its style, see FirstBrewRules.
 @export var novelty: bool = false
@@ -201,12 +203,23 @@ func _aged_price_line() -> String:
 ## currently every 30s of real time) rather than once per in-game day — see
 ## BeerStyle.peak_days' docstring for why the "_days" naming stuck around
 ## anyway.
-## A dirty keg soured the batch: it keeps only part of its quality.
-func sour() -> void:
+## A dirty keg soured the batch: `loss` is the share of quality it takes, see
+## FermentationRules.sour_loss().
+func sour(loss : float) -> void:
 	infected = true
-	original_quality = snappedf(original_quality * FermentationRules.INFECTED_QUALITY_MULTIPLIER, BrewResolver.QUALITY_PRECISION)
+	sour_loss = loss
+	original_quality = snappedf(original_quality * (1.0 - loss), BrewResolver.QUALITY_PRECISION)
 	current_quality = original_quality
 	_calculate_current_quality()
+
+
+## An old save's soured batch has no recorded loss; it lost 30 %, a clear sour.
+func get_sour_level() -> FermentationRules.SourLevel:
+	if not infected:
+		return FermentationRules.SourLevel.NONE
+	if sour_loss <= 0.0:
+		return FermentationRules.SourLevel.CLEAR
+	return FermentationRules.sour_level(sour_loss)
 
 
 func age_one_day() -> void:

@@ -17,7 +17,9 @@ const REPUTATION_TIER_FELL_TOAST_FORMAT: String = "Maineesi laski: %s."
 const KEG_TO_WASH_TOAST_TEXT: String = "Uusi likainen tynnyri pestäväksi"
 const FERMENTING_TOAST_FORMAT: String = "Uusi %s-erä käymässä"
 const FERMENTED_TOAST_FORMAT: String = "%s valmis tynnyriin"
+const LIGHTLY_SOURED_TOAST_FORMAT: String = "%s happani vähän likaisessa tynnyrissä."
 const SOURED_TOAST_FORMAT: String = "%s happani likaisessa tynnyrissä!"
+const BADLY_SOURED_TOAST_FORMAT: String = "%s happani pahasti likaisessa tynnyrissä!"
 const NOVELTY_TOAST_FORMAT: String = "Uutuus: kauden ensimmäinen %s! Erä myy tiskillä +%d %% hintaan."
 const DISCOVERY_TOAST_FLASH_SECONDS: float = 0.15
 const DISCOVERY_TOAST_HOLD_SECONDS: float = 2.0
@@ -192,7 +194,14 @@ func _on_fermentation_started(style_name: String) -> void:
 
 
 func _on_batch_fermented(batch: BrewBatch) -> void:
-	var format : String = SOURED_TOAST_FORMAT if batch.infected else FERMENTED_TOAST_FORMAT
+	var format : String = FERMENTED_TOAST_FORMAT
+	match batch.get_sour_level():
+		FermentationRules.SourLevel.LIGHT:
+			format = LIGHTLY_SOURED_TOAST_FORMAT
+		FermentationRules.SourLevel.CLEAR:
+			format = SOURED_TOAST_FORMAT
+		FermentationRules.SourLevel.STRONG:
+			format = BADLY_SOURED_TOAST_FORMAT
 	_show_toast(tr(format) % UiText.of(batch.beer_style.style_name))
 
 

@@ -7,8 +7,10 @@ extends VBoxContainer
 ## names pushed the bottle count past the ellipsis. The count never clips;
 ## the quality label next to it gives way instead.
 const NAME_LABEL_STRING : String = "🍺 %s (%.1f%%)"
-## A batch soured by a dirty keg, see BrewBatch.infected.
+## A batch soured by a dirty keg, by how badly, see BrewBatch.get_sour_level().
+const LIGHT_SOUR_LABEL_FORMAT : String = "Vähän hapan %s"
 const SOUR_LABEL_FORMAT : String = "Hapan %s"
+const STRONG_SOUR_LABEL_FORMAT : String = "Pilalla: %s"
 ## A brew still fermenting, see Fermenter. Shown above the kegs.
 const FERMENTING_LABEL_FORMAT : String = "⏳ %s käymässä, %d s"
 const FERMENTING_TOOLTIP : String = "Erä käy. Kun se on valmis, se menee puhtaimpaan tyhjään tynnyriin. Likainen tynnyri voi hapattaa sen."
@@ -131,8 +133,13 @@ func _update_beer_batches_ui() -> void:
 
 			var name_label := _make_batch_label(batch)
 			name_label.text = NAME_LABEL_STRING % [batch.get_style_name(), batch.get_abv()]
-			if batch.infected:
-				name_label.text = tr(SOUR_LABEL_FORMAT) % name_label.text
+			match batch.get_sour_level():
+				FermentationRules.SourLevel.LIGHT:
+					name_label.text = tr(LIGHT_SOUR_LABEL_FORMAT) % name_label.text
+				FermentationRules.SourLevel.CLEAR:
+					name_label.text = tr(SOUR_LABEL_FORMAT) % name_label.text
+				FermentationRules.SourLevel.STRONG:
+					name_label.text = tr(STRONG_SOUR_LABEL_FORMAT) % name_label.text
 			if batch.novelty:
 				name_label.text = tr(NOVELTY_LABEL_FORMAT) % name_label.text
 
