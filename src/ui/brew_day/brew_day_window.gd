@@ -698,7 +698,7 @@ func _build() -> void:
 
 	_malts_button = HopSackButton.new()
 	_malts_button.key_number = 0
-	_malts_button.sack_name = MALT_SACK_TEXT
+	_malts_button.sack_name = tr(MALT_SACK_TEXT)
 	_malts_button.pellet_color = KettleView.CLUMP_LIGHT
 	_malts_button.position = SACK_COLUMN_POSITION
 	_malts_button.button_down.connect(_pick_up_malts)
