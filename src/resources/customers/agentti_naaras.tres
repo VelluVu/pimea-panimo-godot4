@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_agentti_naaras")
+tip_base_chance = 0.05
 customer_name = "Elina"
 title = "Agentti"
 first_names = Array[String](["Ilona", "Veera", "Tuula", "Anni", "Roosa"])

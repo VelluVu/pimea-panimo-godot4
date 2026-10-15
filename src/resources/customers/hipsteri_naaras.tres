@@ -8,6 +8,7 @@
 
 [resource]
 script = ExtResource("1_hipsteri_naaras")
+tip_base_chance = 0.15
 favourite_rules = Array[ExtResource("taste_script")]([ExtResource("taste_aromihumaloidut")])
 last_resort_rules = Array[ExtResource("taste_script")]([ExtResource("taste_laatuoluet")])
 customer_name = "Hilkka"

@@ -4,9 +4,9 @@
 
 [resource]
 script = ExtResource("1_baarimikon")
+tip_chance = 0.15
 perk_name = "Baarimikon charmi"
-description = "Baarimikkosi oppii jutustelemaan asiakkaiden kanssa tiskin yli, ja tipit kasvavat huomattavasti."
+description = "Baarimikkosi oppii jutustelemaan asiakkaiden kanssa tiskin yli, ja asiakkaat jättävät tippiä selvästi useammin."
 icon_placeholder = "😏"
 tier = 2
-tip_income_multiplier = 1.75
 tip_double_chance = 0.05

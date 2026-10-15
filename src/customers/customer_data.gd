@@ -91,6 +91,9 @@ const NOT_TO_TASTE: float = -1.0
 @export var accepted_styles: Array[BeerStyle.Style] = []
 
 @export_group("Tippaus")
+## Chance of a tip before quality and taste, like a crit chance. Generous spenders
+## (Mafioso) start higher, see SaleEvaluation.tip_chance().
+@export var tip_base_chance: float = SaleEvaluation.DEFAULT_TIP_BASE_CHANCE
 ## Tip per quality point above min_quality, scaled by budget_multiplier. Zero or below
 ## means this customer never tips (see Opiskelija).
 @export var quality_tip_sensitivity: float = 0.3
@@ -261,5 +264,6 @@ func minds_purity_law(batch: BrewBatch) -> bool:
 
 
 ## See SaleEvaluation. The caller passes `style_base_price`, so no autoload is needed.
-func evaluate_brew_batch(batch: BrewBatch, style_base_price: float = 3.0) -> Dictionary:
-	return SaleEvaluation.evaluate(self, batch, style_base_price)
+## `tip_chance_bonus` is the perks' PerkStats.TIP_CHANCE.
+func evaluate_brew_batch(batch: BrewBatch, style_base_price: float = 3.0, tip_roll: float = randf(), tip_chance_bonus: float = 0.0) -> Dictionary:
+	return SaleEvaluation.evaluate(self, batch, style_base_price, tip_roll, tip_chance_bonus)

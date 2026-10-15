@@ -127,6 +127,7 @@ const PERK_EXTRA_COUNTER_SLOTS_STAT_STRING : String = "Lisää tiskipaikkoja: %s
 const PERK_EXTRA_MASH_CAPACITY_STAT_STRING : String = "Mäskipataan mahtuu lisää: %s kg"
 const PERK_EXTRA_DAILY_GOAL_ROLLS_STAT_STRING : String = "Päivätavoitteita päivässä: %s"
 const PERK_TIP_DOUBLE_CHANCE_STAT_STRING : String = "Mahdollisuus tuplatippiin: %s"
+const PERK_TIP_CHANCE_STAT_STRING : String = "Tippimahdollisuus: %s"
 const PERK_BAR_FIGHT_CHANCE_STAT_STRING : String = "Tappelun todennäköisyys: %s"
 ## Explains PerkStats.value_text() wherever perk values are listed.
 const PERK_VALUE_LEGEND : String = "+ % lasketaan yhteen, × kertoo kokonaisuuden."

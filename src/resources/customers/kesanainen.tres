@@ -8,6 +8,7 @@
 
 [resource]
 script = ExtResource("1_kesanainen")
+tip_base_chance = 0.15
 favourite_rules = Array[ExtResource("taste_script")]([ExtResource("taste_kesaoluet")])
 last_resort_rules = Array[ExtResource("taste_script")]([ExtResource("taste_bulkkilager")])
 rolls_favourite = true
