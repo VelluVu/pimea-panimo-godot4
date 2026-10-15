@@ -6,6 +6,9 @@ extends Resource
 ## Cleanliness of every empty keg, see KegRules. A save made before kegs existed keeps
 ## the starting kegs set in _init(), on top of the batches it already holds.
 @export var free_kegs : Array[float] = []
+## Brews still fermenting. Each one reserves an empty keg, see has_free_keg(), and takes
+## the cleanest empty keg when it is done, see finish_fermenting().
+@export var fermenting : Array[BrewBatch] = []
 
 # Sisäkkäinen sanakirja: Key: Script (MaltData/HopData) -> Value: Dictionary (Key: int (ID) -> Value: InventoryItem)
 @export var items : Dictionary = {}
@@ -22,11 +25,26 @@ func total_kegs() -> int:
 
 
 func has_free_keg() -> bool:
-	return not free_kegs.is_empty()
+	return free_kegs.size() > fermenting.size()
+
+
+## Kegs holding a batch or reserved for a fermenting one.
+func kegs_in_use() -> int:
+	return brew_batches.size() + fermenting.size()
 
 
 func dirty_keg_count() -> int:
 	return KegRules.dirty_count(free_kegs)
+
+
+func start_fermenting(batch : BrewBatch) -> void:
+	fermenting.append(batch)
+
+
+## Moves a fermented batch into the cleanest empty keg.
+func finish_fermenting(batch : BrewBatch) -> void:
+	fermenting.erase(batch)
+	add_batch(batch)
 
 
 ## Puts a new batch into the cleanest empty keg.

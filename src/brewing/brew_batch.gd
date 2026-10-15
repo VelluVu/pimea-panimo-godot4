@@ -17,6 +17,10 @@ extends Resource
 @export var held: bool = false
 ## Cleanliness of the keg the batch was brewed into, see KegRules.
 @export var keg_cleanliness : float = 1.0
+## Fermentation time left; a batch in Inventory.fermenting has no keg yet. See FermentationRules.
+@export var ferment_seconds_left : float = 0.0
+## Soured in a dirty keg, see sour().
+@export var infected : bool = false
 @export var age_in_days: int = 0
 ## The season's first batch of its style, see FirstBrewRules.
 @export var novelty: bool = false
@@ -197,6 +201,14 @@ func _aged_price_line() -> String:
 ## currently every 30s of real time) rather than once per in-game day — see
 ## BeerStyle.peak_days' docstring for why the "_days" naming stuck around
 ## anyway.
+## A dirty keg soured the batch: it keeps only part of its quality.
+func sour() -> void:
+	infected = true
+	original_quality = snappedf(original_quality * FermentationRules.INFECTED_QUALITY_MULTIPLIER, BrewResolver.QUALITY_PRECISION)
+	current_quality = original_quality
+	_calculate_current_quality()
+
+
 func age_one_day() -> void:
 	age_in_days += 1
 	_calculate_current_quality()

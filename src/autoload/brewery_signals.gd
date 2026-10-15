@@ -47,8 +47,19 @@ signal special_event_resolved(succeeded: bool, event_data: SpecialEventData)
 signal group_visit_announced(banner_text: String)
 @warning_ignore("unused_signal")
 signal batch_bottled(bottles_lost: int, label_cost: float, style_name: String)
-## Emitted by Brewer once a brewed batch's bottles are in storage. The warehouse door
-## floats it up.
+## Emitted by Fermenter when a brew starts fermenting (not for the run's first brew,
+## which skips fermentation).
+@warning_ignore("unused_signal")
+signal fermentation_started(style_name: String)
+## Emitted by Fermenter after every fermentation tick, so the warehouse can show the time left.
+@warning_ignore("unused_signal")
+signal fermentation_ticked()
+## Emitted by Fermenter when a batch has fermented and gone into a keg; `batch.infected`
+## tells whether the keg soured it.
+@warning_ignore("unused_signal")
+signal batch_fermented(batch: BrewBatch)
+## Emitted by Fermenter once a fermented batch's bottles are in storage. The warehouse
+## door floats it up.
 @warning_ignore("unused_signal")
 signal batch_stored(style_name: String, bottles: int)
 @warning_ignore("unused_signal")

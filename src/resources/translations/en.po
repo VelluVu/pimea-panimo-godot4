@@ -386,6 +386,10 @@ msgid "Vienna Lager"
 msgstr "Vienna Lager"
 
 #: src/autoload/string_container.gd
+msgid "Vähemmän hapantumista: %s"
+msgstr "Less souring: %s"
+
+#: src/autoload/string_container.gd
 msgid "Witbier"
 msgstr "Witbier"
 
@@ -1626,8 +1630,12 @@ msgid "Puhdistusvälineet"
 msgstr "Cleaning Gear"
 
 #: src/resources/cellar_upgrades/5_puhdistusvalineet.tres
-msgid "Puhtaat astiat, puhtaampi maku. Koskee uusia eriä."
-msgstr "Clean vessels, cleaner taste. Applies to new batches."
+msgid ""
+"Puhtaat astiat, puhtaampi maku. Koskee uusia eriä, ja likainen tynnyri "
+"happanee niissä harvemmin."
+msgstr ""
+"Clean gear, cleaner taste. Applies to new batches, and a dirty keg sours "
+"them less often."
 
 #: src/resources/cellar_upgrades/6_ilmoitustaulu.tres
 msgid "Ilmoitustaulu"
@@ -5081,6 +5089,18 @@ msgstr "No beer to sell. Brew more!"
 
 #: src/scenes/ui/beer_batch_panel.gd
 msgid ""
+"Erä käy. Kun se on valmis, se menee puhtaimpaan tyhjään tynnyriin. Likainen "
+"tynnyri voi hapattaa sen."
+msgstr ""
+"The batch is fermenting. When it is done, it goes into the cleanest empty "
+"keg. A dirty keg can sour it."
+
+#: src/scenes/ui/beer_batch_panel.gd
+msgid "Hapan %s"
+msgstr "Sour %s"
+
+#: src/scenes/ui/beer_batch_panel.gd
+msgid ""
 "Kellaroi: lukittua erää ei myydä tiskillä, joten se ehtii vanheta. "
 "Kellarioluet maksavat kypsinä enemmän. Paina uudestaan vapauttaaksesi."
 msgstr ""
@@ -5104,6 +5124,10 @@ msgid "Vie koko erä yllä valittuun baariin. Nostaa LVV-riskiä toimituksen muk
 msgstr ""
 "Ship the whole batch to the bar selected above. Each delivery raises the "
 "LVV risk."
+
+#: src/scenes/ui/beer_batch_panel.gd
+msgid "⏳ %s käymässä, %d s"
+msgstr "⏳ %s fermenting, %d s"
 
 #: src/scenes/ui/brew_preparation_panel.gd
 msgid "%+d mainetta"
@@ -6337,6 +6361,14 @@ msgid "Päivää jäljellä %s / %s"
 msgstr "%s left of %s today"
 
 #: src/ui/gui_announcer.gd
+msgid "%s happani likaisessa tynnyrissä!"
+msgstr "%s soured in a dirty keg!"
+
+#: src/ui/gui_announcer.gd
+msgid "%s valmis tynnyriin"
+msgstr "%s is ready in a keg"
+
+#: src/ui/gui_announcer.gd
 msgid "LVV-riski nousee. Panimokirjan ohjeet kertovat, miten sen pitää kurissa."
 msgstr ""
 "LVV risk is rising. The Brewery book's Guide tells you how to keep it in "
@@ -6365,6 +6397,10 @@ msgstr "Achievements unlocked: %s!"
 #: src/ui/gui_announcer.gd
 msgid "Saavutus avattu: %s!"
 msgstr "Achievement unlocked: %s!"
+
+#: src/ui/gui_announcer.gd
+msgid "Uusi %s-erä käymässä"
+msgstr "New %s batch fermenting"
 
 #: src/ui/gui_announcer.gd
 msgid "Uusi asiakas avattu: %s!"

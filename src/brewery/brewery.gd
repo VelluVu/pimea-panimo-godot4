@@ -101,6 +101,8 @@ var game_has_ended : bool = false
 @export var lifetime_malt_kg_bought : int = 0
 @export var tutorial_bought_yeast : bool = false
 @export var tutorial_brewed_kotikalja : bool = false
+## Set by the run's first brew, which skips fermentation, see FermentationRules.duration().
+@export var has_brewed : bool = false
 ## The Don's protection (ProtectionEventData): no Agentti walks in before this day, and
 ## Mafioso walk-ins weigh mafioso_cut_multiplier before mafioso_cut_until_day.
 @export var agentti_free_until_day : int = 0

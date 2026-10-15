@@ -32,6 +32,7 @@ const AGENTTI_APPEARANCE := &"agentti_appearance_multiplier"
 const MAFIOSO_APPEARANCE := &"mafioso_appearance_multiplier"
 const TIP_DOUBLE_CHANCE := &"tip_double_chance"
 const TIP_CHANCE := &"tip_chance"
+const INFECTION_REDUCTION := &"infection_reduction"
 const BAR_FIGHT_CHANCE := &"bar_fight_chance_multiplier"
 const COUNTER_PRICE := &"counter_price_multiplier"
 const SALE_RISK := &"sale_risk_multiplier"
@@ -74,6 +75,7 @@ static func definitions() -> Array[Dictionary]:
 		{"stat": AGENTTI_APPEARANCE, "kind": Kind.MULTIPLIER, "text": StringContainer.PERK_AGENTTI_APPEARANCE_STAT_STRING},
 		{"stat": MAFIOSO_APPEARANCE, "kind": Kind.MULTIPLIER, "text": StringContainer.PERK_MAFIOSO_APPEARANCE_STAT_STRING},
 		{"stat": TIP_CHANCE, "kind": Kind.PERCENT_ADD, "text": StringContainer.PERK_TIP_CHANCE_STAT_STRING},
+		{"stat": INFECTION_REDUCTION, "kind": Kind.PERCENT_ADD, "text": StringContainer.PERK_INFECTION_REDUCTION_STAT_STRING},
 		{"stat": TIP_DOUBLE_CHANCE, "kind": Kind.PERCENT_ADD, "text": StringContainer.PERK_TIP_DOUBLE_CHANCE_STAT_STRING},
 		{"stat": BAR_FIGHT_CHANCE, "kind": Kind.MULTIPLIER, "text": StringContainer.PERK_BAR_FIGHT_CHANCE_STAT_STRING},
 		{"stat": COUNTER_PRICE, "kind": Kind.MULTIPLIER, "text": StringContainer.PERK_COUNTER_PRICE_STAT_STRING},

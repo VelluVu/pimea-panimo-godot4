@@ -89,7 +89,10 @@ func start_brew(quality_multiplier : float = BrewDayRules.NORMAL_MULTIPLIER) -> 
 	new_batch.decline_rate_multiplier = brewery.stats.multiplier(PerkStats.DECLINE_RATE)
 	BatchTraits.apply(new_batch, brewery.brew_preparation.selected_contents, brewery.resolver.ingredient_table())
 
-	brewery.inventory.add_batch(new_batch)
+	# A save from before fermentation has no has_brewed, but its batches show it brewed.
+	var is_first_brew : bool = not brewery.has_brewed and brewery.inventory.brew_batches.is_empty()
+	Fermenter.new(brewery).start(new_batch, FermentationRules.duration(is_first_brew))
+	brewery.has_brewed = true
 
 	# Reputation comes only from a run's first brew of a style, so repeat brews cannot farm
 	# it, and a discovery never costs any; a failed brew costs its value every time.
@@ -128,7 +131,6 @@ func start_brew(quality_multiplier : float = BrewDayRules.NORMAL_MULTIPLIER) -> 
 	brewery.brew_preparation.clear_preparation()
 	print(LOG_BREWED, BeerStyle.get_style_string_from_style(brew_report.beer_style.style))
 	BrewerySignals.batch_bottled.emit(bottles_lost, label_cost, brew_report.beer_style.style_name)
-	BrewerySignals.batch_stored.emit(brew_report.beer_style.style_name, effective_yield)
 	BrewerySignals.brewery_state_changed.emit(brewery)
 
 

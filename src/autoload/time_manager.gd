@@ -12,12 +12,15 @@ const DAY_END_CUSTOMER_RETRY_SECONDS : float = 5.0
 ## independent of day length and early closes on purpose: shortening a day should
 ## not change how fast beer ages.
 const AGING_TICK_SECONDS : float = 30.0
+## Fermentation counts down in steps this long, see Fermenter.
+const FERMENT_TICK_SECONDS : float = 1.0
 
 const LOG_DAY_CHANGED : String = "--- DAY CHANGED: Day %s starts ---"
 
 @export var day_duration_seconds : float = 300
 var day_timer: Timer
 var aging_timer: Timer
+var ferment_timer: Timer
 
 
 func _ready() -> void:
@@ -33,6 +36,12 @@ func _ready() -> void:
 	aging_timer.one_shot = false
 	aging_timer.timeout.connect(_on_aging_tick)
 	aging_timer.start(AGING_TICK_SECONDS)
+
+	ferment_timer = Timer.new()
+	add_child(ferment_timer)
+	ferment_timer.one_shot = false
+	ferment_timer.timeout.connect(_on_ferment_tick)
+	ferment_timer.start(FERMENT_TICK_SECONDS)
 
 	GUISignals.close_day_requested.connect(force_advance_day)
 	BrewerySignals.brewery_state_changed.connect(_on_brewery_state_changed)
@@ -72,6 +81,12 @@ func _on_aging_tick() -> void:
 
 	brewery.inventory.age_batches()
 	BrewerySignals.brewery_state_changed.emit(brewery)
+
+
+func _on_ferment_tick() -> void:
+	var brewery := BrewEngine.current_brewery
+	if brewery != null:
+		Fermenter.new(brewery).tick(FERMENT_TICK_SECONDS)
 
 
 ## The automatic timer has no player to confirm with, so it waits a short beat and
@@ -116,6 +131,7 @@ func _advance_day() -> void:
 
 	brewery.today_sale_receipts.clear()
 
+	Fermenter.new(brewery).finish_all()
 	_charge_daily_utility_bills(brewery)
 	brewery.close_money_day()
 	_apply_reputation_decay(brewery)
@@ -195,8 +211,10 @@ func get_seconds_left() -> float:
 func pause_time() -> void:
 	day_timer.paused = true
 	aging_timer.paused = true
+	ferment_timer.paused = true
 
 
 func resume_time() -> void:
 	day_timer.paused = false
 	aging_timer.paused = false
+	ferment_timer.paused = false
