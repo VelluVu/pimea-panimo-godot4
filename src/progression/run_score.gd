@@ -7,7 +7,9 @@ extends RefCounted
 
 const DAY_POINTS : int = 100
 const REPUTATION_POINTS : int = 10
-const BOTTLE_POINTS : int = 1
+## One point per this many servings sold. Whole points by integer division, the same
+## way the leaderboard's SQL recomputes them.
+const SERVINGS_PER_POINT : int = 2
 ## Reaching the target day as a legend must always beat any run that did not.
 const SURVIVAL_BONUS : int = 1500
 ## Endings that close the brewery for good. Their reputation and the brewery's worth earn
@@ -15,10 +17,10 @@ const SURVIVAL_BONUS : int = 1500
 const FAILED_ENDINGS : PackedStringArray = ["busted", "bankrupt"]
 ## The brewery's worth (money plus what its cellar upgrades cost) in points per euro.
 ## Counting the upgrades too means buying one never lowers the score.
-const WORTH_POINTS_PER_EURO : float = 0.3
+const WORTH_POINTS_PER_EURO : float = 0.5
 ## Per style brewed this season (Brewery.brewed_styles), so the board rewards brewing the
 ## range, not one safe style. Counted like servings, also when the run fails.
-const STYLE_POINTS : int = 50
+const STYLE_POINTS : int = 100
 
 const RENOWN_DIVISOR : float = 20.0
 ## A bust already costs the run, so it still pays a little.
@@ -43,12 +45,17 @@ static func reputation_points(reputation : int, ending_type : String) -> int:
 	return maxi(0, reputation) * REPUTATION_POINTS if counts_reputation(ending_type) else 0
 
 
+@warning_ignore("integer_division")
+static func bottle_points(bottles : int) -> int:
+	return maxi(0, bottles) / SERVINGS_PER_POINT
+
+
 static func worth_points(worth : float, ending_type : String) -> int:
 	return roundi(maxf(0.0, worth) * WORTH_POINTS_PER_EURO) if counts_reputation(ending_type) else 0
 
 
 static func base_points(day : int, reputation : int, bottles : int, ending_type : String, worth : float = 0.0, styles : int = 0) -> int:
-	return scored_days(day) * DAY_POINTS + reputation_points(reputation, ending_type) + bottles * BOTTLE_POINTS + bonus(ending_type) + worth_points(worth, ending_type) \
+	return scored_days(day) * DAY_POINTS + reputation_points(reputation, ending_type) + bottle_points(bottles) + bonus(ending_type) + worth_points(worth, ending_type) \
 			+ styles * STYLE_POINTS
 
 
@@ -62,7 +69,7 @@ static func renown(run_score : int) -> int:
 
 ## Renown for one night after the run was scored: that day's points and bottles, at a reduced rate.
 static func continued_day_renown(bottles_sold_that_day : int) -> int:
-	var points : int = DAY_POINTS + bottles_sold_that_day * BOTTLE_POINTS
+	var points : int = DAY_POINTS + bottle_points(bottles_sold_that_day)
 	return roundi(points / RENOWN_DIVISOR * CONTINUED_RENOWN_RATE)
 
 

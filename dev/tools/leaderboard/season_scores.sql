@@ -61,7 +61,7 @@ security definer
 set search_path = public
 as $$
 declare
-	expected_version constant integer := 6;
+	expected_version constant integer := 7;
 	-- RunScore: DAY_POINTS, REPUTATION_POINTS, BOTTLE_POINTS, WORTH_POINTS_PER_EURO, STYLE_POINTS,
 	-- SURVIVAL_BONUS; Brewery.SURVIVAL_MIN_REPUTATION.
 	v_counts_reputation boolean := p_ending_type not in ('busted', 'bankrupt');
@@ -88,14 +88,14 @@ begin
 		raise exception 'ending';
 	end if;
 
-	expected_score := p_days_survived * 100 + p_bottles + v_bonus
+	expected_score := p_days_survived * 100 + greatest(p_bottles, 0) / 2 + v_bonus
 		+ case when v_counts_reputation
-			then greatest(p_reputation, 0) * 10 + round(v_worth * 0.3)::integer
+			then greatest(p_reputation, 0) * 10 + round(v_worth * 0.5)::integer
 			else 0 end;
 	if p_styles is null or p_styles < 0 or p_styles > 40 then
 		raise exception 'styles';
 	end if;
-	expected_score := expected_score + p_styles * 50;
+	expected_score := expected_score + p_styles * 100;
 	-- The game rounds the unrounded worth, so allow one point either way.
 	if abs(expected_score - p_score) > 1 then
 		raise exception 'score';
