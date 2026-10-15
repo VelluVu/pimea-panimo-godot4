@@ -4675,6 +4675,42 @@ msgstr "Your beer is known all over town. So is your address."
 msgid "Pimeästä panimosta kerrotaan tarinoita. Osa niistä on jopa totta."
 msgstr "People tell stories about the dark brewery. Some of them are even true."
 
+#: src/resources/sour_reactions/sour_reactions.tres
+msgid "Hmm, tässä on jotain hapanta. Uusi trendi?"
+msgstr "Hmm, there's something sour in this. A new trend?"
+
+#: src/resources/sour_reactions/sour_reactions.tres
+msgid "Joku on unohtanut pestä tynnyrin. Joku, eli sinä."
+msgstr "Someone forgot to wash the keg. Someone, meaning you."
+
+#: src/resources/sour_reactions/sour_reactions.tres
+msgid "Kuka tähän laittoi sitruunaa?"
+msgstr "Who put lemon in this?"
+
+#: src/resources/sour_reactions/sour_reactions.tres
+msgid "Kuolinsyy: likainen tynnyri."
+msgstr "Cause of death: a dirty keg."
+
+#: src/resources/sour_reactions/sour_reactions.tres
+msgid "Naama menee ihan suppuun."
+msgstr "My whole face just puckered up."
+
+#: src/resources/sour_reactions/sour_reactions.tres
+msgid "Onko tämä tarkoituksella näin kirpeää?"
+msgstr "Is it meant to be this tart?"
+
+#: src/resources/sour_reactions/sour_reactions.tres
+msgid "Tämä on etikkaa. Laitan tätä ensi kerralla salaattiin."
+msgstr "This is vinegar. Next time I'll put it on a salad."
+
+#: src/resources/sour_reactions/sour_reactions.tres
+msgid "Tämähän on hapanta! Olitko pessyt tynnyrin?"
+msgstr "This is sour! Did you wash the keg?"
+
+#: src/resources/sour_reactions/sour_reactions.tres
+msgid "Vähän kuin hapankaali, mutta juotavaa."
+msgstr "A bit like sauerkraut, but drinkable."
+
 #: src/resources/special_events/beer_contest.tres
 msgid "Ei näytettä? Kisat menevät ilman teitä."
 msgstr "No sample? The contest goes on without you."

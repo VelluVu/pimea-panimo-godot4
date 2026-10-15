@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="SourReactions" format=3]
+
+[ext_resource type="Script" path="res://src/customers/sour_reactions.gd" id="1_sour"]
+
+[resource]
+script = ExtResource("1_sour")
+light_lines = Array[String](["Onko tämä tarkoituksella näin kirpeää?", "Hmm, tässä on jotain hapanta. Uusi trendi?", "Vähän kuin hapankaali, mutta juotavaa."])
+sour_lines = Array[String](["Tämähän on hapanta! Olitko pessyt tynnyrin?", "Kuka tähän laittoi sitruunaa?", "Naama menee ihan suppuun."])
+spoiled_lines = Array[String](["Tämä on etikkaa. Laitan tätä ensi kerralla salaattiin.", "Kuolinsyy: likainen tynnyri.", "Joku on unohtanut pestä tynnyrin. Joku, eli sinä."])
