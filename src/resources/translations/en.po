@@ -354,6 +354,10 @@ msgid "Tipit: +%d %%"
 msgstr "Tips: +%d %%"
 
 #: src/autoload/string_container.gd
+msgid "Tippimahdollisuus: %s"
+msgstr "Tip chance: %s"
+
+#: src/autoload/string_container.gd
 msgid "Tiskimyynnin hinnat: %s"
 msgstr "Counter prices: %s"
 
@@ -2804,8 +2808,8 @@ msgid "Asiakaspalvelukurssi"
 msgstr "Customer Service Course"
 
 #: src/resources/event_perks/kurssi_asiakaspalvelu.tres
-msgid "Keke opetti hymyilemään oikeaan aikaan: tipit ovat hieman isompia."
-msgstr "Keke taught you to smile at the right moment: tips are a little bigger."
+msgid "Keke opetti hymyilemään oikeaan aikaan: tippiä tulee hieman useammin."
+msgstr "Keke taught you to smile at the right moment: tips come a little more often."
 
 #: src/resources/event_perks/kurssi_pikapalvelu.tres
 msgid "Keke opetti nopean palvelun salat: asiakkaita tulee hieman tiheämmin."
@@ -4122,11 +4126,11 @@ msgstr ""
 
 #: src/resources/perks/baarimikon_charmi.tres
 msgid ""
-"Baarimikkosi oppii jutustelemaan asiakkaiden kanssa tiskin yli, ja tipit "
-"kasvavat huomattavasti."
+"Baarimikkosi oppii jutustelemaan asiakkaiden kanssa tiskin yli, ja "
+"asiakkaat jättävät tippiä selvästi useammin."
 msgstr ""
-"Your bartender learns to chat with customers over the counter, and tips "
-"grow noticeably."
+"Your bartender learns to chat with customers across the counter, and they "
+"leave tips clearly more often."
 
 #: src/resources/perks/baarimikon_charmi.tres
 msgid "Baarimikon charmi"

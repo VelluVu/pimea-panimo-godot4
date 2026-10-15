@@ -159,7 +159,7 @@ func _sell(data : CustomerData, batch : BrewBatch, wanted : int, is_regular : bo
 	# The marketing perk marks up this sale's price only, never the shared breakdown.
 	var counter_price : float = breakdown.price_per_bottle * brewery.stats.multiplier(PerkStats.COUNTER_PRICE) * batch.get_aged_price_multiplier() \
 			* FirstBrewRules.price_multiplier(batch.novelty)
-	var results : Dictionary = data.evaluate_brew_batch(batch, counter_price)
+	var results : Dictionary = data.evaluate_brew_batch(batch, counter_price, randf(), brewery.stats.total(PerkStats.TIP_CHANCE))
 
 	var bottles_sold : int = mini(wanted, batch.amount_bottles)
 

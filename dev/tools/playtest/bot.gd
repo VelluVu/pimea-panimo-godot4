@@ -561,7 +561,7 @@ func _maybe_ship(b: Brewery) -> void:
 const CARD_WEIGHTS: Dictionary = {
 	&"reputation_gain_multiplier": 100.0, &"spawn_interval_multiplier": -120.0,
 	&"group_event_interval_multiplier": -50.0, &"counter_price_multiplier": 40.0,
-	&"tip_income_multiplier": 20.0, &"tip_double_chance": 30.0, &"quality_bonus": 50.0,
+	&"tip_income_multiplier": 20.0, &"tip_chance": 40.0, &"tip_double_chance": 30.0, &"quality_bonus": 50.0,
 	&"ingredient_price_multiplier": -30.0, &"brew_yield_multiplier": 20.0,
 	&"distribution_income_multiplier": 20.0, &"ingredient_refund_chance": 20.0,
 	&"raid_threshold_multiplier": 40.0, &"extra_raid_strikes": 3.0, &"raid_hidden_batch_count": 2.0,

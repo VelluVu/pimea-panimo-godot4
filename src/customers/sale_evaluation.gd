@@ -3,18 +3,31 @@ extends RefCounted
 
 ## A customer's reaction to one batch, as a dictionary of CustomerManager.KEY_* values.
 ## Every customer pays the same fixed price for a style: style match and quality only
-## move reputation and risk, plus a tip when quality beats the customer's own bar.
+## move reputation and risk, plus a chance of a tip when quality beats the customer's
+## own bar and the beer is to their taste.
 
-## Flat tip floor per quality point, so a clear overshoot is felt on cheap styles
-## where the proportional tip rounds to nothing.
-const MIN_TIP_PER_QUALITY_POINT : float = 1.0
+## A tip works like a crit: a small base chance (CustomerData.tip_base_chance), raised
+## by quality above the customer's own bar, by how much they like the style and by perks
+## (PerkStats.TIP_CHANCE). A beer that is not to their taste gets tried and left, no tip.
+const DEFAULT_TIP_BASE_CHANCE : float = 0.1
+const TIP_CHANCE_PER_MARGIN : float = 0.6
+const FAVOURITE_TIP_CHANCE : float = 0.15
+const SECOND_CHOICE_TIP_CHANCE : float = 0.05
+const TIP_CHANCE_MAX : float = 0.9
+## Quality above the bar counts up to this much, for the chance and the size alike, so a
+## customer with a very low bar cannot turn any decent beer into a huge tip.
+const TIP_MARGIN_MAX : float = 0.5
+## A tip is this share of the price plus the quality margin, times the customer's
+## sensitivity and budget: an expensive, well-made beer earns the biggest tips.
+const TIP_BASE_SHARE : float = 0.5
 ## Caps the reputation a sale earns for quality above the bar. Uncapped, customers with
 ## a very low bar (Opiskelija, Raksamies) gave almost double reputation for any decent
 ## beer. Penalties stay uncapped.
 const QUALITY_REPUTATION_BONUS_MAX : int = 2
 
 
-static func evaluate(customer : CustomerData, batch : BrewBatch, style_base_price : float) -> Dictionary:
+## `tip_roll` (0 to 1) decides whether this sale tips, see tip_chance().
+static func evaluate(customer : CustomerData, batch : BrewBatch, style_base_price : float, tip_roll : float = randf(), tip_chance_bonus : float = 0.0) -> Dictionary:
 	var quality : float = batch.current_quality
 	var score : float = customer.get_batch_preference(batch)
 
@@ -45,7 +58,9 @@ static func evaluate(customer : CustomerData, batch : BrewBatch, style_base_pric
 	reputation += quality_reputation(quality_margin, customer.quality_reputation_sensitivity)
 	risk = risk_after_quality(risk, roundi(quality_margin * customer.quality_risk_sensitivity))
 	var income : float = income_for(style_base_price)
-	var tip : float = tip_for(income, quality_margin, customer.quality_tip_sensitivity, customer.budget_multiplier)
+	var tip : float = 0.0
+	if tip_roll < tip_chance(customer.tip_base_chance, quality_margin, score, tip_chance_bonus):
+		tip = tip_for(income, quality_margin, customer.quality_tip_sensitivity, customer.budget_multiplier)
 
 	if customer.minds_purity_law(batch):
 		reputation = customer.rep_purity_law_broken
@@ -100,11 +115,19 @@ static func income_for(style_base_price : float) -> float:
 	return maxf(0.1, snappedf(style_base_price, 0.1))
 
 
-## Only above the bar. The flat floor keeps an overshoot on a cheap style from rounding
-## away; the proportional tip wins once the price is high. Sensitivity <= 0 never tips.
+## Only above the bar and for beer to the customer's taste (`preference`, see
+## CustomerData.get_batch_preference()). `bonus` is the perks' PerkStats.TIP_CHANCE.
+static func tip_chance(base_chance : float, quality_margin : float, preference : float, bonus : float = 0.0) -> float:
+	if quality_margin <= 0.0 or preference < 0.5:
+		return 0.0
+	var taste : float = FAVOURITE_TIP_CHANCE if preference >= 1.0 else SECOND_CHOICE_TIP_CHANCE
+	var chance : float = base_chance + minf(quality_margin, TIP_MARGIN_MAX) * TIP_CHANCE_PER_MARGIN + taste + bonus
+	return clampf(chance, 0.0, TIP_CHANCE_MAX)
+
+
+## The tip per serving when the customer tips. Sensitivity <= 0 never tips.
 static func tip_for(income : float, quality_margin : float, sensitivity : float, budget_multiplier : float) -> float:
 	if quality_margin <= 0.0 or sensitivity <= 0.0:
 		return 0.0
-	var proportional_tip : float = income * quality_margin * sensitivity
-	var floor_tip : float = quality_margin * MIN_TIP_PER_QUALITY_POINT
-	return maxf(0.0, snappedf(maxf(proportional_tip, floor_tip) * budget_multiplier, 0.1))
+	var share : float = TIP_BASE_SHARE + minf(quality_margin, TIP_MARGIN_MAX)
+	return maxf(0.0, snappedf(income * share * sensitivity * budget_multiplier, 0.1))
