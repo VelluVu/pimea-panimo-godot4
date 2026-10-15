@@ -24,6 +24,8 @@ const TIP_BASE_SHARE : float = 0.5
 ## a very low bar (Opiskelija, Raksamies) gave almost double reputation for any decent
 ## beer. Penalties stay uncapped.
 const QUALITY_REPUTATION_BONUS_MAX : int = 2
+## What customers say about a soured batch they bought anyway.
+const SOUR_REACTIONS : SourReactions = preload("res://src/resources/sour_reactions/sour_reactions.tres")
 
 
 ## `tip_roll` (0 to 1) decides whether this sale tips, see tip_chance().
@@ -64,6 +66,14 @@ static func evaluate(customer : CustomerData, batch : BrewBatch, style_base_pric
 	var tip : float = 0.0
 	if tip_roll < tip_chance(customer.tip_base_chance, quality_margin, score, tip_chance_bonus):
 		tip = tip_for(income, quality_margin, customer.quality_tip_sensitivity, customer.budget_multiplier)
+
+	# A soured batch they still bought gets a word about the sourness; only a light
+	# sour can still delight anyone.
+	var sour_level : FermentationRules.SourLevel = batch.get_sour_level()
+	if sour_level != FermentationRules.SourLevel.NONE and quality >= customer.min_quality:
+		response = SOUR_REACTIONS.line_for(sour_level)
+		if sour_level != FermentationRules.SourLevel.LIGHT:
+			delighted = false
 
 	if customer.minds_purity_law(batch):
 		reputation = customer.rep_purity_law_broken

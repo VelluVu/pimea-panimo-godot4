@@ -63,6 +63,7 @@ CONTENT_FIELDS = {
 CONTENT_ARRAY_FIELDS = {
     "src/resources/group_events": ("chant_texts",),
     "src/resources/guide": ("lines",),
+    "src/resources/sour_reactions": ("light_lines", "sour_lines", "spoiled_lines"),
     "src/resources/special_events": ("caller_names",),
 }
 SKIP_DIRS = ["src/console", "src/systems/console", "src/resources", "addons", "tests", "dev"]
