@@ -99,11 +99,14 @@ func _apply_direct_effect(event : DayEventData) -> void:
 
 
 ## day_event_none.tres carries a much higher weight, which makes "nothing special"
-## the common day.
+## the common day. An event whose customers are all still locked never comes.
 func _pick_weighted_event() -> DayEventData:
+	var available_titles : Array = []
+	for customer : CustomerData in CustomerRegistry.get_eligible_customers():
+		available_titles.append(customer.title)
 	var weights : Array[float] = []
 	for event : DayEventData in day_event_pool:
-		weights.append(event.weight)
+		weights.append(event.weight if event.has_audience(available_titles) else 0.0)
 	return WeightedPicker.pick(day_event_pool, weights) as DayEventData
 
 

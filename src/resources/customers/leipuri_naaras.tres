@@ -2,9 +2,16 @@
 
 [ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_leipuri_naaras"]
 [ext_resource type="SpriteFrames" uid="uid://5uy3tugf5yd8" path="res://src/resources/sprite_frames/leipuri_naaras_anim.tres" id="2_sprite"]
+[ext_resource type="Script" path="res://src/customers/taste_rule.gd" id="taste_script"]
+[ext_resource type="Resource" path="res://src/resources/taste_rules/maustetut.tres" id="taste_maustetut"]
+[ext_resource type="Resource" path="res://src/resources/taste_rules/hedelmaiset_humalat.tres" id="taste_hedelmaiset_humalat"]
+[ext_resource type="Resource" path="res://src/resources/taste_rules/maltaiset.tres" id="taste_maltaiset"]
 
 [resource]
 script = ExtResource("1_leipuri_naaras")
+favourite_rules = Array[ExtResource("taste_script")]([ExtResource("taste_maustetut")])
+last_resort_rules = Array[ExtResource("taste_script")]([ExtResource("taste_hedelmaiset_humalat"), ExtResource("taste_maltaiset")])
+required_achievement_id = "maustetut_3"
 customer_name = "Leena"
 title = "Leipuri"
 first_names = Array[String](["Leena", "Pirkko", "Raili", "Saimi", "Hilja", "Martta"])
@@ -12,7 +19,6 @@ min_quality = 0.9
 budget_multiplier = 1.1
 primary_style = 23
 secondary_style = 17
-also_likes = Array[int]([15])
 sprite_frames = ExtResource("2_sprite")
 randomize_clothes = false
 voice_pitch = 1.235

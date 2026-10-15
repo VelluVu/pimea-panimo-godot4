@@ -103,3 +103,11 @@ func test_shipped_day_events_never_cover_the_whole_day() -> void:
 	dir.list_dir_end()
 
 	assert_true(checked >= 9, "expected at least the 9 shipped day events, found %d" % checked)
+
+
+func test_an_event_needs_one_of_its_customers() -> void:
+	var event := DayEventData.new()
+	assert_true(event.has_audience([]), "an event without featured customers always fits")
+	event.featured_customer_titles = ["Papparainen", "Mummeli"]
+	assert_false(event.has_audience(["Raksamies"]))
+	assert_true(event.has_audience(["Raksamies", "Mummeli"]))

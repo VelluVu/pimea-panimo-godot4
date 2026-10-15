@@ -95,5 +95,13 @@ enum EffectType { NONE, INGREDIENT_LOSS, BOTTLE_SPOILAGE }
 @export_multiline var effect_toast_format : String = ""
 
 
+## False for an event about customers none of whom can come yet (`available_titles`),
+## so a harbour day never comes before the first sailor is unlocked.
+func has_audience(available_titles : Array) -> bool:
+	if featured_customer_titles.is_empty():
+		return true
+	return featured_customer_titles.any(func(title : String) -> bool: return available_titles.has(title))
+
+
 func get_effect_amount() -> int:
 	return randi_range(effect_amount_min, effect_amount_max)

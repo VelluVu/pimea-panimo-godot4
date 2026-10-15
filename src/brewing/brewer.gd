@@ -86,6 +86,7 @@ func start_brew(quality_multiplier : float = BrewDayRules.NORMAL_MULTIPLIER) -> 
 	new_batch.spice_bonus = brew_report.spice_bonus
 	new_batch.peak_days_multiplier = brewery.stats.multiplier(PerkStats.PEAK_SPEED)
 	new_batch.decline_rate_multiplier = brewery.stats.multiplier(PerkStats.DECLINE_RATE)
+	BatchTraits.apply(new_batch, brewery.brew_preparation.selected_contents, brewery.resolver.ingredient_table())
 
 	brewery.inventory.add_batch(new_batch)
 
@@ -108,6 +109,7 @@ func start_brew(quality_multiplier : float = BrewDayRules.NORMAL_MULTIPLIER) -> 
 		if brew_report.beer_style.style == BeerStyle.Style.KOTIKALJA:
 			brewery.tutorial_brewed_kotikalja = true
 		BrewerySignals.beer_brewed.emit(brew_report.beer_style.style)
+		BrewerySignals.batch_brewed.emit(new_batch)
 		if brew_report.spice_bonus != 0.0:
 			BrewerySignals.brew_spiced.emit(brew_report.beer_style.style_name, brew_report.spice_bonus)
 

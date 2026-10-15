@@ -41,6 +41,13 @@ const STAT_REGULARS_GAINED : StringName = &"regulars_gained"
 const STAT_AGED_SALES : StringName = &"aged_sales"
 ## Ratchet: customer types met, the customer book's list (kept across seasons).
 const STAT_CUSTOMERS_MET : StringName = &"customers_met"
+## Batches by what went into them, for the customers they unlock (Barbaari,
+## Mustanmetallinmies, Leipuri). The limits match those customers' TasteRule .tres files.
+const STAT_STRONG_BATCHES : StringName = &"strong_batches"
+const STAT_DARK_BATCHES : StringName = &"dark_batches"
+const STAT_SPICED_BATCHES : StringName = &"spiced_batches"
+const STRONG_ABV_OVER : float = 7.0
+const DARK_EBC_MIN : int = 30
 
 const ENDING_SURVIVED : String = "survived"
 
@@ -59,6 +66,7 @@ func _ready() -> void:
 	BrewerySignals.special_event_resolved.connect(_on_special_event_resolved)
 	BrewerySignals.brewery_state_changed.connect(_on_brewery_state_changed)
 	BrewerySignals.beer_brewed.connect(increment_stat.bind(STAT_BATCHES_BREWED, 1).unbind(1))
+	BrewerySignals.batch_brewed.connect(_on_batch_brewed)
 	BrewerySignals.bottles_sold.connect(func(amount : int) -> void: increment_stat(STAT_BOTTLES_SOLD, amount))
 	BrewerySignals.sale_tip_gained.connect(_on_sale_tip_gained)
 	BrewerySignals.group_visit_announced.connect(increment_stat.bind(STAT_GROUP_VISITS, 1).unbind(1))
@@ -89,6 +97,23 @@ static func style_stat_key(style : int) -> StringName:
 	return StringName("style_discovered_%d" % style)
 
 
+## One stat per style for the batches brewed of it (bulkkia_5 unlocks Leijonafani).
+static func style_brew_stat_key(style : int) -> StringName:
+	return StringName("style_brewed_%d" % style)
+
+
+## The batch stats one brewed batch adds to, see STAT_STRONG_BATCHES.
+static func batch_stats(batch : BrewBatch) -> Array[StringName]:
+	var keys : Array[StringName] = [style_brew_stat_key(batch.beer_style.style)]
+	if batch.get_abv() > STRONG_ABV_OVER:
+		keys.append(STAT_STRONG_BATCHES)
+	if batch.final_ebc >= DARK_EBC_MIN:
+		keys.append(STAT_DARK_BATCHES)
+	if batch.spiced:
+		keys.append(STAT_SPICED_BATCHES)
+	return keys
+
+
 ## Split out of _on_brewery_state_changed() so it can be tested with
 ## hand-built IngredientData, without the IngredientDatabase autoload.
 static func count_unlocked_hops(ingredients : Array, reputation : int) -> int:
@@ -105,6 +130,11 @@ func _on_keg_shipped_to_bar(_style_name : String, _bar_name : String, _bottles :
 
 func _on_style_discovered(style : int) -> void:
 	increment_stat(style_stat_key(style))
+
+
+func _on_batch_brewed(batch : BrewBatch) -> void:
+	for key : StringName in batch_stats(batch):
+		increment_stat(key)
 
 
 func _on_special_event_resolved(succeeded : bool, event_data : SpecialEventData) -> void:

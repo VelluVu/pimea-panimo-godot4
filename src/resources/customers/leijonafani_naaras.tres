@@ -5,6 +5,7 @@
 
 [resource]
 script = ExtResource("1_leijonafani")
+required_achievement_id = "bulkkia_5"
 customer_name = "Sisko"
 title = "Leijonafani"
 first_names = Array[String](["Sisko", "Riitta", "Marja", "Tuija", "Pirjo"])

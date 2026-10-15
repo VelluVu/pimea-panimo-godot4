@@ -2,9 +2,13 @@
 
 [ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_turisti"]
 [ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/saksalainen_turisti_naaras_anim.tres" id="2_sprite"]
+[ext_resource type="Script" path="res://src/customers/taste_rule.gd" id="taste_script"]
+[ext_resource type="Resource" path="res://src/resources/taste_rules/saksalaiset.tres" id="taste_saksalaiset"]
 
 [resource]
 script = ExtResource("1_turisti")
+favourite_rules = Array[ExtResource("taste_script")]([ExtResource("taste_saksalaiset")])
+rolls_favourite = true
 customer_name = "Heidi"
 title = "Saksalainen turisti"
 first_names = Array[String](["Heidi", "Greta", "Ursula", "Petra", "Ingrid", "Gisela"])
@@ -32,7 +36,6 @@ quality_reputation_sensitivity = 4.5
 min_reputation_to_appear = 20
 required_discovered_style = 6
 max_bottles_per_visit = 3
-accepted_styles = Array[int]([1, 2, 6, 7, 8, 9, 10, 11])
 dialogue_purity_law_broken = "Was ist das?! Gewürze im Bier? Das ist gegen das Reinheitsgebot! Unglaublich!"
 voice_pitch = 1.235
 metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

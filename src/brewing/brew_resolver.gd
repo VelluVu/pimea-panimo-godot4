@@ -33,6 +33,11 @@ func use_ingredients(table : Dictionary) -> void:
 	_ingredients.inject(table)
 
 
+## Ingredient id -> IngredientData, the injected table or IngredientDatabase's.
+func ingredient_table() -> Dictionary:
+	return _ingredients.table()
+
+
 func get_beer_style(style : BeerStyle.Style) -> BeerStyle:
 	for beer_style : BeerStyle in active_styles:
 		if beer_style.style == style:

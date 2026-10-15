@@ -713,6 +713,14 @@ msgstr "Know the Whole Town"
 msgid "Tapaa kaikki 23 asiakastyyppiä."
 msgstr "Meet all 23 customer types."
 
+#: src/resources/achievements/bulkkia_5.tres
+msgid "Kansan kalja"
+msgstr "The People's Lager"
+
+#: src/resources/achievements/bulkkia_5.tres
+msgid "Pane viisi erää Bulkkilageria."
+msgstr "Brew five batches of Bulkkilager."
+
 #: src/resources/achievements/ensimmainen_satsi.tres
 msgid "Ensimmäinen olut"
 msgstr "First Beer"
@@ -845,6 +853,14 @@ msgstr "Spice Master"
 msgid "Pane 25 erää sopivilla mausteilla."
 msgstr "Brew 25 batches with suitable spices."
 
+#: src/resources/achievements/maustetut_3.tres
+msgid "Maustekauppias"
+msgstr "Spice Merchant"
+
+#: src/resources/achievements/maustetut_3.tres
+msgid "Pane kolme erää mausteiden kanssa."
+msgstr "Brew three batches with spices."
+
 #: src/resources/achievements/panimon_pyorittaja.tres
 msgid "Keitä 50 oluterää."
 msgstr "Brew 50 batches of beer."
@@ -912,6 +928,14 @@ msgstr "Factory Outlet"
 #: src/resources/achievements/tippipurkki.tres
 msgid "Kerää tippejä yhteensä 50 €."
 msgstr "Collect 50 € in tips in total."
+
+#: src/resources/achievements/tummat_3.tres
+msgid "Pane kolme tummaa erää (vähintään 30 EBC)."
+msgstr "Brew three dark batches (at least 30 EBC)."
+
+#: src/resources/achievements/tummat_3.tres
+msgid "Pimeyden ruhtinas"
+msgstr "Prince of Darkness"
 
 #: src/resources/achievements/tyyli_alkoholitonipa.tres
 msgid "Pane hyllyyn ensimmäinen erä tyyliä Alkoholiton IPA."
@@ -1128,6 +1152,14 @@ msgstr "Put your first batch of Witbier on the shelf."
 #: src/resources/achievements/tyyli_witbier.tres
 msgid "Tyyli löydetty: Witbier"
 msgstr "Style discovered: Witbier"
+
+#: src/resources/achievements/vahva_era.tres
+msgid "Pane erä, jossa on yli 7 % alkoholia."
+msgstr "Brew a batch with over 7 % alcohol."
+
+#: src/resources/achievements/vahva_era.tres
+msgid "Tujua tavaraa"
+msgstr "Strong Stuff"
 
 #: src/resources/achievements/verboten.tres
 msgid "Mausta saksalaista olutta. Baijerin herttua ei ilahtunut."
@@ -6237,6 +6269,10 @@ msgid "Enintään %.2f € annokselta"
 msgstr "At most %.2f € per serving"
 
 #: src/ui/customer_book_text.gd
+msgid "Hätävaralla: %s"
+msgstr "As a last resort: %s"
+
+#: src/ui/customer_book_text.gd
 msgid "Juo vain: %s"
 msgstr "Only drinks: %s"
 
@@ -6249,8 +6285,16 @@ msgid "Laatutoive: vähintään %d %%"
 msgstr "Quality wish: at least %d %%"
 
 #: src/ui/customer_book_text.gd
+msgid "Muuta ei juo."
+msgstr "Drinks nothing else."
+
+#: src/ui/customer_book_text.gd
 msgid "Suosikki laskee LVV-riskiä"
 msgstr "Favourite lowers LVV risk"
+
+#: src/ui/customer_book_text.gd
+msgid "Suosikki vaihtelee joka käynnillä: %s"
+msgstr "Favourite changes every visit: %s"
 
 #: src/ui/customer_book_text.gd
 msgid "Suosikki: %s"
@@ -6263,6 +6307,10 @@ msgstr "Favourite: changes every visit"
 #: src/ui/customer_book_text.gd
 msgid "Vähintään %.1f %% alkoholia"
 msgstr "At least %.1f %% alcohol"
+
+#: src/ui/customer_book_text.gd
+msgid "muut samasta joukosta"
+msgstr "the rest of the same group"
 
 #: src/ui/day_clock_text.gd
 msgid "Kello %s, valot sammuvat klo %s"
