@@ -11,5 +11,5 @@ base_cost = 150
 cost_growth = 1.0
 kegs_per_level = 1
 perk_name = "Lisää tynnyreitä"
-description = "Yksi tyhjä tynnyri lisää kellariin. Jokainen erä tarvitsee oman tynnyrinsä."
+description = "Yksi tyhjä tynnyri ja yksi hana lisää. Jokainen erä tarvitsee oman tynnyrinsä, ja jokainen hana tuo yhden tyylin tiskille."
 icon_placeholder = "🛢️"

@@ -193,11 +193,15 @@ func count_bottles() -> int:
 	return total
 
 
-## Batches customers can buy right now: servings left and not held in the cellar to
-## age. Each one is a keg behind the counter with its own tap.
+## Batches customers can buy right now: servings left, not held in the cellar to age, and
+## on one of the taps (KegRules.tap_count()). The oldest go on tap first; the rest wait in
+## the warehouse and take a tap when one runs empty.
 func batches_on_serve() -> Array[BrewBatch]:
 	var serving : Array[BrewBatch] = []
+	var taps : int = KegRules.tap_count(total_kegs())
 	for batch : BrewBatch in brew_batches:
+		if serving.size() >= taps:
+			break
 		if batch.amount_bottles > 0 and not batch.held:
 			serving.append(batch)
 	return serving

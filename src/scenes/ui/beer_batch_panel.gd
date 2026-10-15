@@ -15,6 +15,8 @@ const FERMENTING_TOOLTIP : String = "Erä käy. Kun se on valmis, se menee puhta
 ## A novelty batch's label, see FirstBrewRules.
 const NOVELTY_LABEL_FORMAT : String = "Uutuus! %s"
 const AMOUNT_LABEL_STRING : String = "%d annosta"
+## A full keg waiting for a free tap, see Inventory.batches_on_serve().
+const SPARE_AMOUNT_FORMAT : String = "%d annosta, varalla"
 const QUALITY_LABEL_STRING : String = "%s %s"
 ## Shown when there's nothing left to sell — without this the panel just
 ## goes quiet with no explanation. Customer traffic keeps arriving even
@@ -107,7 +109,8 @@ func _update_beer_batches_ui() -> void:
 		
 	var inventory : Inventory = BrewEngine.current_brewery.inventory
 	var any_bottles_left : bool = false
-	_keg_count_label.text = KegCountText.line(inventory.kegs_in_use(), inventory.total_kegs(), inventory.dirty_keg_count())
+	_keg_count_label.text = KegCountText.line(KegRules.tap_count(inventory.total_kegs()), inventory.kegs_in_use(), inventory.total_kegs(), inventory.dirty_keg_count())
+	var on_tap : Array[BrewBatch] = inventory.batches_on_serve()
 
 	for batch : BrewBatch in inventory.fermenting:
 		var fermenting_label := TooltipLabel.new()
@@ -143,7 +146,8 @@ func _update_beer_batches_ui() -> void:
 			amount_label.text_overrun_behavior = TextServer.OVERRUN_NO_TRIMMING
 			amount_label.size_flags_horizontal = Control.SIZE_FILL
 			amount_label.custom_minimum_size = Vector2.ZERO
-			amount_label.text = tr(AMOUNT_LABEL_STRING) % batch.amount_bottles
+			var waiting : bool = not batch.held and not on_tap.has(batch)
+			amount_label.text = tr(SPARE_AMOUNT_FORMAT if waiting else AMOUNT_LABEL_STRING) % batch.amount_bottles
 
 			var quality_label := _make_batch_label(batch)
 			quality_label.custom_minimum_size = Vector2.ZERO

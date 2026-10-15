@@ -59,3 +59,9 @@ func test_nothing_to_wash_when_every_keg_is_clean() -> void:
 
 func test_dirty_count_counts_every_unfinished_wash() -> void:
 	assert_eq(KegRulesScript.dirty_count([0.0, 0.99, 1.0] as Array[float]), 2)
+
+
+func test_the_spare_kegs_have_no_taps() -> void:
+	assert_eq(KegRulesScript.tap_count(KegRulesScript.START_KEGS), KegRulesScript.START_TAPS)
+	assert_eq(KegRulesScript.tap_count(12), 12 - KegRulesScript.SPARE_KEGS)
+	assert_eq(KegRulesScript.tap_count(0), 1)

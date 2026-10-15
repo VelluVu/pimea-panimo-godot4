@@ -1574,8 +1574,10 @@ msgid "Lisää tynnyreitä"
 msgstr "More kegs"
 
 #: src/resources/cellar_upgrades/11_lisaa_tynnyreita.tres
-msgid "Yksi tyhjä tynnyri lisää kellariin. Jokainen erä tarvitsee oman tynnyrinsä."
-msgstr "One more empty keg for the cellar. Every batch needs a keg of its own."
+msgid ""
+"Yksi tyhjä tynnyri ja yksi hana lisää. Jokainen erä tarvitsee oman "
+"tynnyrinsä, ja jokainen hana tuo yhden tyylin tiskille."
+msgstr "One more empty keg and one more tap. Every batch needs a keg of its own, and every tap puts one more style on the counter."
 
 #: src/resources/cellar_upgrades/12_parempi_maskipata.tres
 msgid ""
@@ -1593,7 +1595,9 @@ msgstr "Better Mash Tun"
 msgid ""
 "Pesee jokaisen tyhjentyneen tynnyrin puhtaaksi itsestään. Ostetaan kerran "
 "ja jää kellariin kaikille tuleville kausille."
-msgstr "Washes every emptied keg spotless on its own. Bought once, it stays in the cellar for every season to come."
+msgstr ""
+"Washes every emptied keg spotless on its own. Bought once, it stays in the "
+"cellar for every season to come."
 
 #: src/resources/cellar_upgrades/13_tynnyrinpesukone.tres
 msgid "Tynnyrinpesukone"
@@ -1607,7 +1611,9 @@ msgstr "Automatic kettle"
 msgid ""
 "Mäskää ja keittää itse, aina täydellisesti. Keittopäivää ei tarvitse "
 "pelata. Ostetaan kerran ja jää kellariin kaikille tuleville kausille."
-msgstr "Mashes and boils by itself, always perfectly. No need to play the brew day. Bought once, it stays in the cellar for every season to come."
+msgstr ""
+"Mashes and boils by itself, always perfectly. No need to play the brew day. "
+"Bought once, it stays in the cellar for every season to come."
 
 #: src/resources/cellar_upgrades/1_isompi_kaymisastia.tres
 msgid "Isompi astia, enemmän annoksia samasta erästä."
@@ -5104,6 +5110,10 @@ msgid "%d annosta"
 msgstr "%d servings"
 
 #: src/scenes/ui/beer_batch_panel.gd
+msgid "%d annosta, varalla"
+msgstr "%d servings, waiting"
+
+#: src/scenes/ui/beer_batch_panel.gd
 msgid "Ei olutta myytävänä. Keitä lisää!"
 msgstr "No beer to sell. Brew more!"
 
@@ -6483,16 +6493,20 @@ msgid ", likaisia %d"
 msgstr ", %d dirty"
 
 #: src/ui/keg_count_text.gd
-msgid ""
-"Jokainen erä vie oman tynnyrinsä. Tyhjentynyt tynnyri palaa likaisena "
-"kellarin nurkkaan pestäväksi. Lisää tynnyreitä saa kellariparannuksista."
-msgstr ""
-"Every batch takes a keg of its own. An emptied keg comes back dirty to the "
-"cellar corner to be washed. More kegs come from the cellar upgrades."
+msgid "Hanat %d, tynnyrit käytössä %d/%d"
+msgstr "Taps %d, kegs in use %d/%d"
 
 #: src/ui/keg_count_text.gd
-msgid "Tynnyrit käytössä %d/%d"
-msgstr "Kegs in use %d/%d"
+msgid ""
+"Jokainen erä vie oman tynnyrinsä. Hanoja on kaksi vähemmän kuin tynnyreitä: "
+"ylimääräiset täydet tynnyrit odottavat varalla ja menevät hanaan, kun hanan "
+"tynnyri tyhjenee. Tyhjentynyt tynnyri palaa likaisena kellarin nurkkaan "
+"pestäväksi. Lisää tynnyreitä ja hanoja saa kellariparannuksista."
+msgstr ""
+"Every batch takes a keg of its own. There are two taps fewer than kegs: "
+"extra full kegs wait in the warehouse and go on tap when a tap's keg runs "
+"empty. An emptied keg comes back dirty to the cellar corner to be washed. "
+"More kegs and taps come from the cellar upgrades."
 
 #: src/ui/keg_wash/keg_wash_lines.gd
 msgid "Eiköhän ne pöpöt jo kuollu."
