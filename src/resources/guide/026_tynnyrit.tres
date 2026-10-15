@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="GuideSection" format=3]
+
+[ext_resource type="Script" path="res://src/ui/guide_section.gd" id="1_guide"]
+
+[resource]
+script = ExtResource("1_guide")
+order = 26
+title = "Tynnyrit ja hanat"
+lines = Array[String](["Jokainen erä vie oman tynnyrinsä. Tyhjentynyt tynnyri palaa likaisena pestäväksi.", "Hanoja on kaksi vähemmän kuin tynnyreitä. Ylimääräiset täydet tynnyrit odottavat varalla ja menevät hanaan, kun hanan tynnyri tyhjenee, joten seuraavan erän voi panna etukäteen.", "Hanaan menevät vanhimmat lukitsemattomat tynnyrit. Lukittu tynnyri jää kellariin vanhenemaan, ja sen hanaan tulee varalla oleva tynnyri.", "Mitä useampi eri tyyli on hanassa, sitä tiheämmin asiakkaita tulee. Lisää tynnyreitä tuo yhden tynnyrin ja yhden hanan lisää."])

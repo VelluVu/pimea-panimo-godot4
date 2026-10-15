@@ -13,6 +13,10 @@ const CUSTOMERS_TAB_TEXT : String = "Asiakkaat"
 const INGREDIENTS_TAB_TEXT : String = "Raaka-aineet"
 const GUIDE_TAB_TEXT : String = "Ohjeet"
 const GUIDE_FOLDER_PATH : String = "res://src/resources/guide/"
+const GUIDE_INDEX_TITLE : String = "Aiheet"
+const GUIDE_BACK_TEXT : String = "< Takaisin"
+const GUIDE_INDEX_COLUMNS : int = 2
+const NO_GUIDE_PAGE : int = -1
 const REGULAR_TAG : String = "(kanta-asiakas)"
 const NAME_FONT_SIZE : int = 16
 const DETAIL_FONT_SIZE : int = 14
@@ -34,6 +38,8 @@ const MUTED_COLOR : Color = Color(0.75, 0.73, 0.67, 1)
 
 var _tab_bar : TabBar
 var _guide_sections : Array[GuideSection] = []
+## Index into _guide_sections of the open Ohjeet page; NO_GUIDE_PAGE shows the contents.
+var _guide_page : int = NO_GUIDE_PAGE
 
 
 func _ready() -> void:
@@ -56,12 +62,16 @@ func _ready() -> void:
 	main_vbox.move_child(_tab_bar, scroll_container.get_index())
 	_tab_bar.tab_changed.connect(func(_tab : int) -> void:
 		GUISignals.tab_switched.emit()
+		_guide_page = NO_GUIDE_PAGE
 		_refresh_rows())
 
 
 ## The paused tree no longer reaches gui.gd's key handlers, so this closes itself.
 func _input(event : InputEvent) -> void:
-	if visible and (event.is_action_pressed(InputManager.ACTION_CANCEL) or event.is_action_pressed(InputManager.ACTION_TOGGLE_BREWERY_BOOK)):
+	if visible and event.is_action_pressed(InputManager.ACTION_CANCEL) and _guide_page != NO_GUIDE_PAGE:
+		_open_guide_page(NO_GUIDE_PAGE)
+		get_viewport().set_input_as_handled()
+	elif visible and (event.is_action_pressed(InputManager.ACTION_CANCEL) or event.is_action_pressed(InputManager.ACTION_TOGGLE_BREWERY_BOOK)):
 		_on_close_button_pressed()
 		get_viewport().set_input_as_handled()
 
@@ -71,6 +81,7 @@ func _on_customer_book_requested() -> void:
 	if visible:
 		_on_close_button_pressed()
 		return
+	_guide_page = NO_GUIDE_PAGE
 	_refresh_rows()
 	show()
 
@@ -111,11 +122,38 @@ func _build_ingredient_rows() -> void:
 		rows_vbox.add_child(_make_label("\n".join(lines), DETAIL_FONT_SIZE))
 
 
+## The contents, one button per topic like the recipe book's index, or one topic's page.
 func _build_guide_rows() -> void:
-	for section : GuideSection in _guide_sections:
-		rows_vbox.add_child(_make_header(tr(section.title)))
-		for line : String in section.lines:
-			rows_vbox.add_child(_make_label(tr(line), DETAIL_FONT_SIZE))
+	if _guide_page == NO_GUIDE_PAGE:
+		rows_vbox.add_child(_make_header(tr(GUIDE_INDEX_TITLE)))
+		var grid := GridContainer.new()
+		grid.columns = GUIDE_INDEX_COLUMNS
+		for i : int in _guide_sections.size():
+			var button := Button.new()
+			button.text = tr(_guide_sections[i].title)
+			button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+			button.size_flags_horizontal = SIZE_EXPAND_FILL
+			button.add_theme_font_size_override("font_size", NAME_FONT_SIZE)
+			button.pressed.connect(_open_guide_page.bind(i))
+			grid.add_child(button)
+		rows_vbox.add_child(grid)
+		return
+
+	var section : GuideSection = _guide_sections[_guide_page]
+	var back := Button.new()
+	back.text = GUIDE_BACK_TEXT
+	back.size_flags_horizontal = SIZE_SHRINK_BEGIN
+	back.pressed.connect(_open_guide_page.bind(NO_GUIDE_PAGE))
+	rows_vbox.add_child(back)
+	rows_vbox.add_child(_make_header(tr(section.title)))
+	for line : String in section.lines:
+		rows_vbox.add_child(_make_label(tr(line), DETAIL_FONT_SIZE))
+
+
+func _open_guide_page(page : int) -> void:
+	_guide_page = page
+	GUISignals.tab_switched.emit()
+	_refresh_rows()
 
 
 func _make_header(text : String) -> Label:

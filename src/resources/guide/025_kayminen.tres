@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="GuideSection" format=3]
+
+[ext_resource type="Script" path="res://src/ui/guide_section.gd" id="1_guide"]
+
+[resource]
+script = ExtResource("1_guide")
+order = 25
+title = "Käyminen ja hapantuminen"
+lines = Array[String](["Pantu erä käy ensin noin minuutin. Käyvät erät näkyvät Tynnyrit-välilehdellä, ja valmis erä menee puhtaimpaan tyhjään tynnyriin.", "Kauden ensimmäinen erä on valmis heti. Päivän lopussa kaikki käyvät erät valmistuvat.", "Likainen tynnyri voi hapattaa erän. Mitä likaisempi tynnyri, sitä useammin ja pahemmin olut happanee: vähän hapan, hapan tai pilalla.", "Tyhjät tynnyrit kertyvät kellarin nurkkaan likaisina. Pese ne ennen kuin käyminen loppuu, niin erä menee puhtaaseen tynnyriin. Puhdistusvälineet vähentävät hapantumista."])

@@ -4,6 +4,6 @@
 
 [resource]
 script = ExtResource("1_guide")
-order = 3
+order = 30
 title = "Myynti ja asiakkaat"
-lines = Array[String](["Asiakkaat ostavat annoksia varaston tynnyreistä. Suosikkityyli tuo enemmän mainetta ja tippejä.", "Nirsot asiakkaat haluavat tietyn laadun. Asiakkaat-välilehti kertoo, mistä kukin pitää.", "Tyytyväinen asiakas tuo kavereita ja voi ryhtyä kanta-asiakkaaksi.", "Varaston Tynnyrit-välilehdeltä erän voi lähettää baariin."])
+lines = Array[String](["Asiakkaat ostavat annoksia hanassa olevista tynnyreistä. Suosikkityyli tuo enemmän mainetta ja tippejä.", "Nirsot asiakkaat haluavat tietyn laadun. Asiakkaat-välilehti kertoo, mistä kukin pitää.", "Tyytyväinen asiakas tuo kavereita ja voi ryhtyä kanta-asiakkaaksi.", "Varaston Tynnyrit-välilehdeltä erän voi lähettää baariin."])

@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="GuideSection" format=3]
+
+[ext_resource type="Script" path="res://src/ui/guide_section.gd" id="1_guide"]
+
+[resource]
+script = ExtResource("1_guide")
+order = 27
+title = "Koneet"
+lines = Array[String](["Tynnyrinpesukone ja Automaattikattila ovat kalliita kellariparannuksia. Kerran ostettuina ne jäävät kellariin kaikille tuleville kausille.", "Pesukone pesee jokaisen tyhjentyneen tynnyrin itse. Automaattikattila keittää ilman keittopäivää, aina täydellisesti.", "Koneet voi kytkeä päälle ja pois kellarin parannuksista. Valinta muistetaan seuraavillakin kausilla."])
