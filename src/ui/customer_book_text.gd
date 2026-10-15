@@ -10,6 +10,10 @@ const SECOND_FORMAT : String = "Käy myös: %s"
 const VARYING_FAVOURITE_TEXT : String = "Suosikki: vaihtelee joka käynnillä"
 const ANY_STYLE_TEXT : String = "Ei suosikkia: ottaa mitä tahansa hyllystä löytyy"
 const ACCEPTED_FORMAT : String = "Juo vain: %s"
+const ROLLED_FAVOURITE_FORMAT : String = "Suosikki vaihtelee joka käynnillä: %s"
+const SAME_GROUP_TEXT : String = "muut samasta joukosta"
+const LAST_RESORT_FORMAT : String = "Hätävaralla: %s"
+const NOTHING_ELSE_TEXT : String = "Muuta ei juo."
 const QUALITY_FORMAT : String = "Laatutoive: vähintään %d %%"
 const MIN_ABV_FORMAT : String = "Vähintään %.1f %% alkoholia"
 const MAX_ABV_FORMAT : String = "Enintään %.1f %% alkoholia"
@@ -26,7 +30,9 @@ static func lines(data : CustomerData, met : bool, style_names : Dictionary) -> 
 		result.append(NOT_MET_TEXT)
 		return result
 
-	if data.picks_at_random:
+	if data.uses_taste_tiers():
+		result.append_array(tier_lines(data))
+	elif data.picks_at_random:
 		result.append(ANY_STYLE_TEXT)
 	elif data.randomizes_preference:
 		result.append(VARYING_FAVOURITE_TEXT)
@@ -53,6 +59,34 @@ static func lines(data : CustomerData, met : bool, style_names : Dictionary) -> 
 	if data.risk_primary_style < 0 and not data.randomizes_preference and not data.picks_at_random:
 		result.append(UiText.of(LOWERS_RISK_TEXT))
 	return result
+
+
+## Favourite, second and last resort tiers by their TasteRule labels.
+static func tier_lines(data : CustomerData) -> PackedStringArray:
+	var result : PackedStringArray = []
+	var favourites : String = _labels(data.favourite_rules)
+	if data.rolls_favourite:
+		result.append(UiText.of(ROLLED_FAVOURITE_FORMAT) % favourites)
+	else:
+		result.append(UiText.of(FAVOURITE_FORMAT) % favourites)
+	var seconds : PackedStringArray = []
+	if data.rolls_favourite:
+		seconds.append(UiText.of(SAME_GROUP_TEXT))
+	if not data.second_rules.is_empty():
+		seconds.append(_labels(data.second_rules))
+	if not seconds.is_empty():
+		result.append(UiText.of(SECOND_FORMAT) % LIST_SEPARATOR.join(seconds))
+	if not data.last_resort_rules.is_empty():
+		result.append(UiText.of(LAST_RESORT_FORMAT) % _labels(data.last_resort_rules))
+	result.append(UiText.of(NOTHING_ELSE_TEXT))
+	return result
+
+
+static func _labels(rules : Array[TasteRule]) -> String:
+	var labels : PackedStringArray = []
+	for rule : TasteRule in rules:
+		labels.append(rule.label)
+	return LIST_SEPARATOR.join(labels)
 
 
 static func locked_line(locked_count : int) -> String:

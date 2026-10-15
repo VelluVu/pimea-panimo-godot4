@@ -2,16 +2,19 @@
 
 [ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_papparainen"]
 [ext_resource type="SpriteFrames" uid="uid://cdtsken2cyskv" path="res://src/resources/sprite_frames/papparainen_anim.tres" id="2_sprite"]
+[ext_resource type="Script" path="res://src/customers/taste_rule.gd" id="taste_script"]
+[ext_resource type="Resource" path="res://src/resources/taste_rules/vanhan_ajan.tres" id="taste_vanhan_ajan"]
 
 [resource]
 script = ExtResource("1_papparainen")
+favourite_rules = Array[ExtResource("taste_script")]([ExtResource("taste_vanhan_ajan")])
+rolls_favourite = true
 customer_name = "Aarne"
 title = "Papparainen"
 first_names = Array[String](["Aarne", "Eino", "Toivo", "Väinö", "Onni", "Yrjö"])
 min_quality = 1.05
 primary_style = 22
 secondary_style = 7
-also_likes = Array[int]([10])
 sprite_frames = ExtResource("2_sprite")
 randomize_skin = false
 randomize_hair = false

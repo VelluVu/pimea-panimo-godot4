@@ -339,3 +339,86 @@ func test_customer_without_the_line_ignores_the_purity_law() -> void:
 	var batch := _make_batch(BeerStyle.Style.BULKKILAGER, 1.0)
 	batch.spice_bonus = -0.1
 	assert_eq(customer.evaluate_brew_batch(batch)[CustomerManager.KEY_RESPONSE], customer.dialogue_success)
+
+
+func _tier_batch(style : BeerStyle.Style, abv : float = 5.0) -> BrewBatch:
+	var beer_style := BeerStyle.new()
+	beer_style.style = style
+	beer_style.abv = abv
+	var batch := BrewBatch.new()
+	batch.beer_style = beer_style
+	batch.abv = abv
+	return batch
+
+
+func _styles_rule(styles : Array[BeerStyle.Style]) -> TasteRule:
+	var rule := TasteRule.new()
+	rule.styles = styles
+	return rule
+
+
+func _sailor() -> CustomerData:
+	var customer := CustomerData.new()
+	customer.favourite_rules = [_styles_rule([BeerStyle.Style.BALTIC_PORTTERI])]
+	customer.second_rules = [_styles_rule([BeerStyle.Style.BALTIC_PORTTERI, BeerStyle.Style.IMPERIAL_STOUT])]
+	customer.last_resort_rules = [_styles_rule([BeerStyle.Style.BULKKILAGER])]
+	return customer
+
+
+func test_taste_tiers_score_favourite_second_and_last_resort() -> void:
+	var customer := _sailor()
+	assert_eq(customer.get_batch_preference(_tier_batch(BeerStyle.Style.BALTIC_PORTTERI)), 1.0)
+	assert_eq(customer.get_batch_preference(_tier_batch(BeerStyle.Style.IMPERIAL_STOUT)), 0.5)
+	assert_eq(customer.get_batch_preference(_tier_batch(BeerStyle.Style.BULKKILAGER)), 0.0)
+	assert_eq(customer.get_batch_preference(_tier_batch(BeerStyle.Style.IPA)), CustomerData.NOT_TO_TASTE)
+
+
+func test_a_batch_outside_every_tier_is_not_accepted() -> void:
+	var customer := _sailor()
+	assert_true(customer.accepts_batch(_tier_batch(BeerStyle.Style.BULKKILAGER)))
+	assert_false(customer.accepts_batch(_tier_batch(BeerStyle.Style.IPA)))
+
+
+func test_without_tiers_the_batch_preference_follows_the_styles() -> void:
+	var customer := CustomerData.new()
+	customer.primary_style = BeerStyle.Style.IPA
+	assert_eq(customer.get_batch_preference(_tier_batch(BeerStyle.Style.IPA)), 1.0)
+	assert_true(customer.accepts_batch(_tier_batch(BeerStyle.Style.SAHTI)))
+
+
+func test_a_rolled_favourite_leaves_the_rest_of_its_group_second() -> void:
+	var customer := CustomerData.new()
+	customer.favourite_rules = [_styles_rule([BeerStyle.Style.HELLES, BeerStyle.Style.MARZEN])]
+	customer.rolls_favourite = true
+	customer.roll_favourite([BeerStyle.Style.MARZEN])
+	assert_eq(customer.primary_style, BeerStyle.Style.MARZEN, "only Märzen has been found")
+	assert_eq(customer.get_batch_preference(_tier_batch(BeerStyle.Style.MARZEN)), 1.0)
+	assert_eq(customer.get_batch_preference(_tier_batch(BeerStyle.Style.HELLES)), 0.5)
+
+
+func test_roll_favourite_uses_the_whole_group_before_any_is_found() -> void:
+	var customer := CustomerData.new()
+	customer.favourite_rules = [_styles_rule([BeerStyle.Style.HELLES])]
+	customer.rolls_favourite = true
+	customer.primary_style = BeerStyle.Style.IPA
+	customer.roll_favourite([])
+	assert_eq(customer.primary_style, BeerStyle.Style.HELLES)
+
+
+func test_roll_favourite_is_a_noop_when_disabled() -> void:
+	var customer := CustomerData.new()
+	customer.favourite_rules = [_styles_rule([BeerStyle.Style.HELLES])]
+	customer.primary_style = BeerStyle.Style.IPA
+	customer.roll_favourite([BeerStyle.Style.HELLES])
+	assert_eq(customer.primary_style, BeerStyle.Style.IPA)
+
+
+func test_shipped_tier_customers_load_their_rules() -> void:
+	for file : String in DirAccess.get_files_at("res://src/resources/customers/"):
+		if not file.ends_with(".tres"):
+			continue
+		var data : CustomerData = load("res://src/resources/customers/" + file)
+		for rule : TasteRule in data.favourite_rules + data.second_rules + data.last_resort_rules:
+			assert_true(rule != null and not rule.label.is_empty(), "%s has a broken taste rule" % file)
+		if data.rolls_favourite:
+			assert_false(data.favourite_rules.is_empty(), "%s rolls a favourite from no rules" % file)

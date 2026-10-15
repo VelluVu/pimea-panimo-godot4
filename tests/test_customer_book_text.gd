@@ -78,3 +78,30 @@ func test_a_risk_lowering_favourite_is_mentioned() -> void:
 	var sober := _customer("Zgen")
 	sober.risk_primary_style = -2
 	assert_true(TextScript.lines(sober, true, NAMES).has("Suosikki laskee LVV-riskiä"))
+
+
+func _rule(label : String) -> TasteRule:
+	var rule := TasteRule.new()
+	rule.label = label
+	return rule
+
+
+func test_taste_tiers_replace_the_style_lines() -> void:
+	var data := _customer("Merimies")
+	data.favourite_rules = [_rule("Baltic Portteri")]
+	data.second_rules = [_rule("portterit ja stoutit")]
+	data.last_resort_rules = [_rule("Bulkkilager")]
+	var lines : PackedStringArray = TextScript.lines(data, true, NAMES)
+	assert_true(lines.has("Suosikki: Baltic Portteri"))
+	assert_true(lines.has("Käy myös: portterit ja stoutit"))
+	assert_true(lines.has("Hätävaralla: Bulkkilager"))
+	assert_true(lines.has("Muuta ei juo."))
+
+
+func test_a_rolled_favourite_names_its_group() -> void:
+	var data := _customer("Saksalainen turisti")
+	data.favourite_rules = [_rule("saksalaiset oluet")]
+	data.rolls_favourite = true
+	var lines : PackedStringArray = TextScript.lines(data, true, NAMES)
+	assert_true(lines.has("Suosikki vaihtelee joka käynnillä: saksalaiset oluet"))
+	assert_true(lines.has("Käy myös: muut samasta joukosta"))

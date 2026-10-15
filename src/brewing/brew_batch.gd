@@ -28,6 +28,10 @@ extends Resource
 @export var hop_balance_bonus : float = 0.0
 @export var flavor_matched : bool = false
 @export var spice_bonus : float = 0.0
+## What went into the batch, see BatchTraits. Older saves have none of it.
+@export var spiced : bool = false
+@export var malt_ids : Array[int] = []
+@export var late_hop_profiles : Array[HopData.FlavorProfile] = []
 
 ## Snapshotted once from Brewery.get_peak_speed_multiplier()/
 ## get_decline_rate_multiplier() when this batch is brewed (see

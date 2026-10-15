@@ -181,6 +181,6 @@ func _make_batch_label(batch: BrewBatch) -> TooltipLabel:
 func _possible_buyers(batch : BrewBatch) -> Array[CustomerData]:
 	var buyers : Array[CustomerData] = []
 	for customer : CustomerData in CustomerRegistry.get_eligible_customers():
-		if customer.meets_strict_requirements(batch.beer_style, batch.get_abv()):
+		if customer.accepts_batch(batch):
 			buyers.append(customer)
 	return buyers

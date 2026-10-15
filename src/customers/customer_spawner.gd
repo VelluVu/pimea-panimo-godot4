@@ -227,9 +227,10 @@ func _try_spawn_walk_in(forced_data: CustomerData) -> bool:
 	var data: CustomerData = forced_data if forced_data != null else CustomerManager.get_random_customer_data()
 	if data == null:
 		return false
-	if data.randomizes_preference:
+	if data.randomizes_preference or data.rolls_favourite:
 		data = data.duplicate()
 		data.reroll_preference(_active_styles())
+		data.roll_favourite(MetaProgressManager.get_discovered_styles())
 
 	var new_customer: Customer = CUSTOMER_SCENE.instantiate()
 	add_child(new_customer)

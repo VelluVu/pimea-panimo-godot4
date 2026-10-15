@@ -6,6 +6,8 @@ enum BarFightTrigger { RANDOM, NOT_ENOUGH_BEER, BOUGHT_MANY }
 
 const DEFAULT_TITLE: String = "Asiakas"
 const DEFAULT_NAMES: Array[String] = ["Matti", "Maija", "Pekka", "Liisa", "Antti"]
+## get_batch_preference() for a batch no taste tier takes.
+const NOT_TO_TASTE: float = -1.0
 
 @export_group("Customer Profile")
 @export var customer_name: String = "Anonyymi"
@@ -20,6 +22,18 @@ const DEFAULT_NAMES: Array[String] = ["Matti", "Maija", "Pekka", "Liisa", "Antti
 ## Further styles liked as much as secondary_style. Unlike accepted_styles, every other
 ## style stays on the menu (the metalheads also like Baltic Porter).
 @export var also_likes: Array[BeerStyle.Style] = []
+
+## Taste tiers: a non-empty favourite_rules replaces the style fields above. A batch
+## matching a favourite rule is the favourite, a second rule the second choice and a last
+## resort rule sells with dialogue_wrong_style; anything else is refused. primary_style
+## and secondary_style stay as hints for the bots and the walk-in after a brew.
+@export_group("Maku")
+@export var favourite_rules: Array[TasteRule] = []
+@export var second_rules: Array[TasteRule] = []
+@export var last_resort_rules: Array[TasteRule] = []
+## Each visit one style of favourite_rules becomes primary_style (see roll_favourite()):
+## only that style is the favourite, the rest of the tier counts as the second choice.
+@export var rolls_favourite: bool = false
 
 @export_group("Ulkoasu")
 @export var sprite_frames: SpriteFrames = null
@@ -165,6 +179,47 @@ func get_preference_score(style: BeerStyle.Style) -> float:
 	elif style == secondary_style or also_likes.has(style) or accepted_styles.has(style):
 		return 0.5
 	return 0.0
+
+
+func uses_taste_tiers() -> bool:
+	return not favourite_rules.is_empty()
+
+
+## Like get_preference_score() but for one batch, so taste tiers can look at its
+## spices, hops and strength. NOT_TO_TASTE when no tier takes it.
+func get_batch_preference(batch : BrewBatch) -> float:
+	if not uses_taste_tiers():
+		return get_preference_score(batch.beer_style.style)
+	if TasteRule.any_matches(favourite_rules, batch):
+		return 0.5 if rolls_favourite and batch.beer_style.style != primary_style else 1.0
+	if TasteRule.any_matches(second_rules, batch):
+		return 0.5
+	if TasteRule.any_matches(last_resort_rules, batch):
+		return 0.0
+	return NOT_TO_TASTE
+
+
+## The strict gates plus the taste tiers: a batch outside every tier is never considered.
+func accepts_batch(batch : BrewBatch) -> bool:
+	return meets_strict_requirements(batch.beer_style, batch.get_abv()) and get_batch_preference(batch) > NOT_TO_TASTE
+
+
+## Picks this visit's favourite from the styles of favourite_rules the player has found
+## (`discovered`, any season), or from all of them before any is found.
+func roll_favourite(discovered : Array) -> void:
+	if not rolls_favourite:
+		return
+	var pool : Array[BeerStyle.Style] = []
+	for rule : TasteRule in favourite_rules:
+		for style : BeerStyle.Style in rule.styles:
+			if not pool.has(style):
+				pool.append(style)
+	var found : Array[BeerStyle.Style] = []
+	found.assign(pool.filter(func(style : BeerStyle.Style) -> bool: return discovered.has(style)))
+	if not found.is_empty():
+		pool = found
+	if not pool.is_empty():
+		primary_style = pool.pick_random()
 
 
 ## False when the batch fails a hard gate; such a batch is never considered, whatever

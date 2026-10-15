@@ -53,10 +53,12 @@ static func formation_offset(index : int, group_size : int, spacing : float) -> 
 
 
 ## The crowd's order: a copy (the shared resource stays untouched) scaled by crowd size.
-static func build_order_data(options : Array[CustomerData], member_count : int, styles : Array[BeerStyle]) -> CustomerData:
+## `discovered` is the styles found in any season, for a favourite rolled from a group.
+static func build_order_data(options : Array[CustomerData], member_count : int, styles : Array[BeerStyle], discovered : Array = []) -> CustomerData:
 	var order_data : CustomerData = options.pick_random().duplicate()
 	if order_data.randomizes_preference:
 		order_data.reroll_preference(styles)
+	order_data.roll_favourite(discovered)
 	order_data.min_bottles_per_visit *= member_count
 	order_data.max_bottles_per_visit *= member_count
 	order_data.bar_fight_min_bottles_bought *= member_count
@@ -212,7 +214,7 @@ func _order(visit : GroupVisit, resume_seconds : float) -> bool:
 	if resume_seconds < 0.0:
 		if not visit.has_anyone_here():
 			return false
-		visit.order_data = build_order_data(visit.event_data.customer_data_options, visit.size(), _active_styles.call())
+		visit.order_data = build_order_data(visit.event_data.customer_data_options, visit.size(), _active_styles.call(), MetaProgressManager.get_discovered_styles())
 		_say(visit, SPEECH_FORMAT % [_group_label(visit), tr(visit.order_data.dialogue_intro)])
 		resume_seconds = Customer.PREVIEW_DELAY_SECONDS
 	if not await _wait(visit, resume_seconds):

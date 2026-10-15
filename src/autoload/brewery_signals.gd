@@ -25,6 +25,10 @@ signal beer_sale_breakdown(entry: SaleReceiptEntry)
 signal recipe_save_rejected(reason: int, same_recipe_name: String)
 @warning_ignore("unused_signal")
 signal beer_brewed(style: int)
+## Emitted by Brewer right after beer_brewed with the new batch, for stats that need its
+## ABV, colour or spices (AchievementWiring).
+@warning_ignore("unused_signal")
+signal batch_brewed(batch: BrewBatch)
 ## Emitted by Brewer for a matched brew whose spices changed its quality: positive for
 ## suitable spices, negative for a broken Reinheitsgebot.
 @warning_ignore("unused_signal")

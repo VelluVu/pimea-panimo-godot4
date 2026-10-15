@@ -32,7 +32,7 @@ static func find_best_batch(batches : Array[BrewBatch], data : CustomerData) -> 
 	for batch : BrewBatch in batches:
 		if not _on_offer(batch, data):
 			continue
-		var score : float = data.get_preference_score(batch.beer_style.style)
+		var score : float = data.get_batch_preference(batch)
 		if batch.current_quality >= data.min_quality:
 			score += QUALITY_BONUS_WEIGHT
 		if score > best_score:
@@ -68,7 +68,7 @@ static func pick_batches(batches : Array[BrewBatch], data : CustomerData, count 
 
 
 static func _on_offer(batch : BrewBatch, data : CustomerData) -> bool:
-	return batch.amount_bottles > 0 and not batch.held and data.meets_strict_requirements(batch.beer_style, batch.get_abv())
+	return batch.amount_bottles > 0 and not batch.held and data.accepts_batch(batch)
 
 
 ## Income, tip and reputation for `bottles_sold` bottles. `results` is

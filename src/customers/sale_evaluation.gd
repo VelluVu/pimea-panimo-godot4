@@ -16,7 +16,7 @@ const QUALITY_REPUTATION_BONUS_MAX : int = 2
 
 static func evaluate(customer : CustomerData, batch : BrewBatch, style_base_price : float) -> Dictionary:
 	var quality : float = batch.current_quality
-	var score : float = customer.get_preference_score(batch.beer_style.style)
+	var score : float = customer.get_batch_preference(batch)
 
 	var reputation : int
 	var risk : int

@@ -2,9 +2,15 @@
 
 [ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_kesanainen"]
 [ext_resource type="SpriteFrames" uid="uid://cvp5587xdml64" path="res://src/resources/sprite_frames/kesanainen_anim.tres" id="2_sprite"]
+[ext_resource type="Script" path="res://src/customers/taste_rule.gd" id="taste_script"]
+[ext_resource type="Resource" path="res://src/resources/taste_rules/kesaoluet.tres" id="taste_kesaoluet"]
+[ext_resource type="Resource" path="res://src/resources/taste_rules/bulkkilager.tres" id="taste_bulkkilager"]
 
 [resource]
 script = ExtResource("1_kesanainen")
+favourite_rules = Array[ExtResource("taste_script")]([ExtResource("taste_kesaoluet")])
+last_resort_rules = Array[ExtResource("taste_script")]([ExtResource("taste_bulkkilager")])
+rolls_favourite = true
 customer_name = "Saana"
 title = "Kesänainen"
 first_names = Array[String](["Saana", "Iida", "Vilma", "Sonja", "Emmi", "Aino"])

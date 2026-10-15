@@ -160,7 +160,7 @@ func test_shipped_achievements_watch_a_stat_the_manager_feeds() -> void:
 		script = script.get_base_script()
 	var ids : Dictionary = {}
 	for achievement : AchievementData in ResourceFolder.load_all("res://src/resources/achievements/", AchievementData):
-		var style_stat : bool = String(achievement.stat_key).begins_with("style_discovered_")
+		var style_stat : bool = String(achievement.stat_key).begins_with("style_discovered_") or String(achievement.stat_key).begins_with("style_brewed_")
 		assert_true(style_stat or fed.has(achievement.stat_key), "%s watches unfed stat %s" % [achievement.achievement_id, achievement.stat_key])
 		assert_false(ids.has(achievement.achievement_id), "duplicate id %s" % achievement.achievement_id)
 		ids[achievement.achievement_id] = true
@@ -217,3 +217,26 @@ func test_only_a_survived_ending_counts_as_a_survived_run() -> void:
 	assert_eq(manager.get_stat(AchievementManagerScript.STAT_RUNS_SURVIVED), 0)
 	manager._on_game_ended(AchievementManagerScript.ENDING_SURVIVED)
 	assert_eq(manager.get_stat(AchievementManagerScript.STAT_RUNS_SURVIVED), 1)
+
+
+func _brewed(style : BeerStyle.Style, abv : float, ebc : int, spiced : bool) -> BrewBatch:
+	var beer_style := BeerStyle.new()
+	beer_style.style = style
+	var batch := BrewBatch.new()
+	batch.beer_style = beer_style
+	batch.abv = abv
+	batch.final_ebc = ebc
+	batch.spiced = spiced
+	return batch
+
+
+func test_batch_stats_count_style_strength_colour_and_spices() -> void:
+	var plain : Array[StringName] = AchievementManagerScript.batch_stats(_brewed(BeerStyle.Style.BULKKILAGER, 4.7, 6, false))
+	assert_eq(plain, [&"style_brewed_1"] as Array[StringName])
+	var stout : Array[StringName] = AchievementManagerScript.batch_stats(_brewed(BeerStyle.Style.IMPERIAL_STOUT, 10.4, 80, true))
+	assert_true(stout.has(&"strong_batches"))
+	assert_true(stout.has(&"dark_batches"))
+	assert_true(stout.has(&"spiced_batches"))
+	var seven : Array[StringName] = AchievementManagerScript.batch_stats(_brewed(BeerStyle.Style.SCOTCH_ALE, 7.0, 29, false))
+	assert_false(seven.has(&"strong_batches"), "exactly 7 % is not over 7")
+	assert_false(seven.has(&"dark_batches"), "29 EBC is not dark")

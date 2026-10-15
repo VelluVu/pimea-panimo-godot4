@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="AchievementData" format=3]
+
+[ext_resource type="Script" path="res://src/systems/achievements/achievement_data.gd" id="1_achievement"]
+
+[resource]
+script = ExtResource("1_achievement")
+achievement_id = "bulkkia_5"
+title = "Kansan kalja"
+description = "Pane viisi erää Bulkkilageria."
+stat_key = &"style_brewed_1"
+target_value = 5
+metadata/_custom_type_script = "res://src/systems/achievements/achievement_data.gd"
