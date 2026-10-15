@@ -42,7 +42,7 @@ func _finish(batch : BrewBatch) -> void:
 	brewery.inventory.finish_fermenting(batch)
 	var chance : float = FermentationRules.infection_chance(batch.keg_cleanliness, brewery.stats.chance(PerkStats.INFECTION_REDUCTION))
 	if chance > 0.0 and randf() < chance:
-		batch.sour()
+		batch.sour(FermentationRules.sour_loss(batch.keg_cleanliness, randf()))
 	BrewerySignals.batch_fermented.emit(batch)
 	BrewerySignals.batch_stored.emit(batch.beer_style.style_name, batch.amount_bottles)
 	BrewerySignals.brewery_state_changed.emit(brewery)

@@ -81,9 +81,31 @@ func test_a_fermented_batch_takes_the_cleanest_keg() -> void:
 	assert_eq(inventory.free_kegs.size(), 2)
 
 
-func test_a_soured_batch_keeps_part_of_its_quality() -> void:
+func test_a_soured_batch_loses_its_share_of_quality() -> void:
 	var batch := _make_batch(1.2)
-	batch.sour()
+	batch.sour(0.25)
 	assert_true(batch.infected)
-	assert_near(batch.original_quality, 1.2 * FermentationRulesScript.INFECTED_QUALITY_MULTIPLIER, 0.01)
+	assert_near(batch.original_quality, 0.9, 0.01)
 	assert_near(batch.current_quality, batch.original_quality, 0.01)
+	assert_eq(batch.get_sour_level(), FermentationRulesScript.SourLevel.CLEAR)
+
+
+func test_a_dirtier_keg_sours_worse() -> void:
+	assert_near(FermentationRulesScript.sour_loss(KegRules.DIRTY, 1.0), FermentationRulesScript.MAX_SOUR_LOSS, 0.0001)
+	assert_near(FermentationRulesScript.sour_loss(KegRules.DIRTY, 0.0), FermentationRulesScript.MAX_SOUR_LOSS * FermentationRulesScript.MIN_SOUR_ROLL, 0.0001)
+	assert_near(FermentationRulesScript.sour_loss(0.5, 1.0), FermentationRulesScript.MAX_SOUR_LOSS * 0.5, 0.0001)
+	assert_eq(FermentationRulesScript.sour_loss(KegRules.CLEAN, 1.0), 0.0)
+
+
+func test_the_loss_sets_the_sour_level() -> void:
+	assert_eq(FermentationRulesScript.sour_level(0.05), FermentationRulesScript.SourLevel.LIGHT)
+	assert_eq(FermentationRulesScript.sour_level(0.15), FermentationRulesScript.SourLevel.CLEAR)
+	assert_eq(FermentationRulesScript.sour_level(0.25), FermentationRulesScript.SourLevel.CLEAR)
+	assert_eq(FermentationRulesScript.sour_level(0.3), FermentationRulesScript.SourLevel.STRONG)
+
+
+func test_an_old_soured_batch_counts_as_clearly_sour() -> void:
+	var batch := _make_batch()
+	batch.infected = true
+	assert_eq(batch.get_sour_level(), FermentationRulesScript.SourLevel.CLEAR)
+	assert_eq(_make_batch().get_sour_level(), FermentationRulesScript.SourLevel.NONE)
