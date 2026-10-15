@@ -4680,36 +4680,36 @@ msgid "Hmm, tässä on jotain hapanta. Uusi trendi?"
 msgstr "Hmm, there's something sour in this. A new trend?"
 
 #: src/resources/sour_reactions/sour_reactions.tres
-msgid "Joku on unohtanut pestä tynnyrin. Joku, eli sinä."
-msgstr "Someone forgot to wash the keg. Someone, meaning you."
-
-#: src/resources/sour_reactions/sour_reactions.tres
 msgid "Kuka tähän laittoi sitruunaa?"
 msgstr "Who put lemon in this?"
 
 #: src/resources/sour_reactions/sour_reactions.tres
-msgid "Kuolinsyy: likainen tynnyri."
-msgstr "Cause of death: a dirty keg."
+msgid "Kuuluukohan tämän olla näin kirpsakkaa?"
+msgstr "Is this supposed to be this tangy?"
+
+#: src/resources/sour_reactions/sour_reactions.tres
+msgid "Miten tämä on vihreää, onko se radioaktiivista?"
+msgstr "Why is this green, is it radioactive?"
 
 #: src/resources/sour_reactions/sour_reactions.tres
 msgid "Naama menee ihan suppuun."
 msgstr "My whole face just puckered up."
 
 #: src/resources/sour_reactions/sour_reactions.tres
-msgid "Onko tämä tarkoituksella näin kirpeää?"
-msgstr "Is it meant to be this tart?"
+msgid "Oho, maistuupas oudolle, melkein kuin mahahapot."
+msgstr "Whoa, that tastes odd, almost like stomach acid."
 
 #: src/resources/sour_reactions/sour_reactions.tres
-msgid "Tämä on etikkaa. Laitan tätä ensi kerralla salaattiin."
-msgstr "This is vinegar. Next time I'll put it on a salad."
+msgid "Viemärivettäkö tähän käytettiin?"
+msgstr "Was this made with sewer water?"
 
 #: src/resources/sour_reactions/sour_reactions.tres
-msgid "Tämähän on hapanta! Olitko pessyt tynnyrin?"
-msgstr "This is sour! Did you wash the keg?"
+msgid "Väkevä vivahde tässä."
+msgstr "Quite a strong note in this one."
 
 #: src/resources/sour_reactions/sour_reactions.tres
-msgid "Vähän kuin hapankaali, mutta juotavaa."
-msgstr "A bit like sauerkraut, but drinkable."
+msgid "Yöks, en kyllä hapanolutta tilannut."
+msgstr "Yuck, I didn't order a sour beer."
 
 #: src/resources/special_events/beer_contest.tres
 msgid "Ei näytettä? Kisat menevät ilman teitä."
