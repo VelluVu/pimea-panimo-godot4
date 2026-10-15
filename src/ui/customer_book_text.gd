@@ -8,6 +8,7 @@ const NOT_MET_TEXT : String = "Ei vielä tavattu. Palvele kerran, niin opit hän
 const FAVOURITE_FORMAT : String = "Suosikki: %s"
 const SECOND_FORMAT : String = "Käy myös: %s"
 const VARYING_FAVOURITE_TEXT : String = "Suosikki: vaihtelee joka käynnillä"
+const ANY_STYLE_TEXT : String = "Ei suosikkia: ottaa mitä tahansa hyllystä löytyy"
 const ACCEPTED_FORMAT : String = "Juo vain: %s"
 const QUALITY_FORMAT : String = "Laatutoive: vähintään %d %%"
 const MIN_ABV_FORMAT : String = "Vähintään %.1f %% alkoholia"
@@ -25,7 +26,9 @@ static func lines(data : CustomerData, met : bool, style_names : Dictionary) -> 
 		result.append(NOT_MET_TEXT)
 		return result
 
-	if data.randomizes_preference:
+	if data.picks_at_random:
+		result.append(ANY_STYLE_TEXT)
+	elif data.randomizes_preference:
 		result.append(VARYING_FAVOURITE_TEXT)
 	else:
 		result.append(UiText.of(FAVOURITE_FORMAT) % style_names.get(data.primary_style, ""))
@@ -47,7 +50,7 @@ static func lines(data : CustomerData, met : bool, style_names : Dictionary) -> 
 	if data.max_required_price >= 0.0:
 		result.append(UiText.of(MAX_PRICE_FORMAT) % data.max_required_price)
 	# The only sales that pay off risk; without this line players never learn it.
-	if data.risk_primary_style < 0 and not data.randomizes_preference:
+	if data.risk_primary_style < 0 and not data.randomizes_preference and not data.picks_at_random:
 		result.append(UiText.of(LOWERS_RISK_TEXT))
 	return result
 

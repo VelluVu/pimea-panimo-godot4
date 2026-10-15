@@ -100,13 +100,14 @@ func _pick_weighted_customer(customers : Array[CustomerData]) -> CustomerData:
 
 ## Picks a customer who wants this style (primary preferred, then secondary) for the
 ## instant walk-in after a matching brew. Skips randomizes_preference customers, whose
-## preference is rerolled on spawn. Falls back to any random customer.
+## preference is rerolled on spawn, and picks_at_random ones, who have none. Falls back
+## to any random customer.
 func get_customer_for_style(style: BeerStyle.Style) -> CustomerData:
 	var primary_matches : Array[CustomerData] = []
 	var secondary_matches : Array[CustomerData] = []
 
 	for customer in customer_pool:
-		if customer.randomizes_preference:
+		if customer.randomizes_preference or customer.picks_at_random:
 			continue
 		if not is_eligible(customer):
 			continue

@@ -11,6 +11,8 @@ const BOTTLES_SOLD_PER_TRANSACTION : int = 1
 ## they refuse it (_refuse_bad_quality), so the choice must not settle for it.
 const QUALITY_BONUS_WEIGHT : float = 10.0
 const REGULAR_RESPONSE_FORMAT : String = "Taas täällä! %s"
+const KEY_REPUTATION_GAIN : String = "reputation_gain"
+const KEY_BOTTLES_SOLD : String = "bottles_sold"
 
 
 var brewery : Brewery
@@ -28,9 +30,7 @@ static func find_best_batch(batches : Array[BrewBatch], data : CustomerData) -> 
 	var best_score : float = -1.0
 
 	for batch : BrewBatch in batches:
-		if batch.amount_bottles <= 0 or batch.held:
-			continue
-		if not data.meets_strict_requirements(batch.beer_style, batch.get_abv()):
+		if not _on_offer(batch, data):
 			continue
 		var score : float = data.get_preference_score(batch.beer_style.style)
 		if batch.current_quality >= data.min_quality:
@@ -39,6 +39,36 @@ static func find_best_batch(batches : Array[BrewBatch], data : CustomerData) -> 
 			best_score = score
 			best_batch = batch
 	return best_batch
+
+
+## The batches the customer buys from: the best one, or for a picks_at_random customer up
+## to `count` random batches of different styles that clear their bar. With none clearing
+## it, the best batch comes back so the customer can refuse it.
+static func pick_batches(batches : Array[BrewBatch], data : CustomerData, count : int = 1) -> Array[BrewBatch]:
+	var picks : Array[BrewBatch] = []
+	if data.picks_at_random:
+		var candidates : Array[BrewBatch] = []
+		for batch : BrewBatch in batches:
+			if _on_offer(batch, data) and batch.current_quality >= data.min_quality:
+				candidates.append(batch)
+		candidates.shuffle()
+		var styles_taken : Array[BeerStyle.Style] = []
+		for batch : BrewBatch in candidates:
+			if picks.size() >= count:
+				break
+			if styles_taken.has(batch.beer_style.style):
+				continue
+			styles_taken.append(batch.beer_style.style)
+			picks.append(batch)
+	if picks.is_empty():
+		var best : BrewBatch = find_best_batch(batches, data)
+		if best != null:
+			picks.append(best)
+	return picks
+
+
+static func _on_offer(batch : BrewBatch, data : CustomerData) -> bool:
+	return batch.amount_bottles > 0 and not batch.held and data.meets_strict_requirements(batch.beer_style, batch.get_abv())
 
 
 ## Income, tip and reputation for `bottles_sold` bottles. `results` is
@@ -61,39 +91,77 @@ static func calculate_sale(results : Dictionary, bottles_sold : int, tip_multipl
 	return outcome
 
 
-## Public so a customer can preview its pick as a dialogue beat before the sale
-## resolves; the decision itself stays with the customer.
-func find_best_batch_for(data : CustomerData) -> BrewBatch:
+## Public so a customer can preview its picks before the sale. Rolls how many styles this
+## visit buys (see pick_batches()), so it is called once and the result handed to process().
+func pick_batches_for(data : CustomerData) -> Array[BrewBatch]:
 	if brewery == null:
-		return null
-	return find_best_batch(brewery.inventory.brew_batches, data)
+		return []
+	return pick_batches(brewery.inventory.brew_batches, data, randi_range(1, maxi(1, data.max_styles_per_visit)))
 
 
-## Returns the customer's spoken response.
-func process(data : CustomerData) -> String:
+## Returns the customer's spoken response. `picks` are the batches the customer already
+## previewed; any that sold out meanwhile are dropped, and none left means a fresh pick.
+func process(data : CustomerData, picks : Array[BrewBatch] = []) -> String:
 	if data.browses_only:
 		return tr(data.dialogue_no_match)
 	var is_regular : bool = RegularRules.is_regular(brewery.customer_standing.get(data.title, 0)) if brewery != null else false
 	var wanted : int = randi_range(data.min_bottles_per_visit, data.max_bottles_per_visit)
 	if is_regular:
 		wanted += RegularRules.EXTRA_BOTTLES
-	var best_batch : BrewBatch = find_best_batch_for(data)
-	if best_batch == null or best_batch.amount_bottles < BOTTLES_SOLD_PER_TRANSACTION:
+	var batches : Array[BrewBatch] = []
+	for batch : BrewBatch in picks:
+		if brewery != null and brewery.inventory.brew_batches.has(batch) and _on_offer(batch, data):
+			batches.append(batch)
+	if batches.is_empty():
+		batches = pick_batches_for(data)
+	if batches.is_empty() or batches[0].amount_bottles < BOTTLES_SOLD_PER_TRANSACTION:
 		return _turn_away(data, wanted)
-	if refuses(best_batch.current_quality, data.min_quality):
-		return _refuse_bad_quality(data, best_batch.current_quality)
+	if refuses(batches[0].current_quality, data.min_quality):
+		return _refuse_bad_quality(data, batches[0].current_quality)
 
 	# The net reputation change, including any bar fight below, is reported as
 	# one popup-friendly delta at the end.
 	var reputation_before : int = brewery.reputation
+	var response_text : String = ""
+	var delighted : bool = false
+	var reputation_gain : int = 0
+	var bottles_sold : int = 0
+	var last_batch : BrewBatch = null
+	for batch : BrewBatch in batches:
+		if refuses(batch.current_quality, data.min_quality):
+			continue
+		var results : Dictionary = _sell(data, batch, wanted, is_regular)
+		if response_text.is_empty():
+			response_text = results[CustomerManager.KEY_RESPONSE]
+		delighted = delighted or results[CustomerManager.KEY_DELIGHTED]
+		reputation_gain += results[KEY_REPUTATION_GAIN]
+		bottles_sold += results[KEY_BOTTLES_SOLD]
+		last_batch = batch
 
-	var breakdown : SaleBreakdown = brewery.resolver.get_price_breakdown(best_batch.beer_style)
+	if is_regular and delighted:
+		response_text = tr(REGULAR_RESPONSE_FORMAT) % response_text
+
+	if BarFightRules.breaks_out(data, wanted * batches.size(), bottles_sold, brewery.stats.multiplier(PerkStats.BAR_FIGHT_CHANCE), randf()):
+		_trigger_bar_fight(data, last_batch)
+
+	BrewerySignals.sale_reputation_gained.emit(brewery.reputation - reputation_before)
+	BrewerySignals.brewery_state_changed.emit(brewery)
+	_spread_word(data, delighted, reputation_gain)
+	_update_standing(data, delighted, reputation_gain)
+	BrewerySignals.customer_served.emit(data)
+	return response_text
+
+
+## Sells up to `wanted` bottles from one batch and applies money, reputation, risk and
+## xp. Returns evaluate_brew_batch()'s results plus KEY_REPUTATION_GAIN and KEY_BOTTLES_SOLD.
+func _sell(data : CustomerData, batch : BrewBatch, wanted : int, is_regular : bool) -> Dictionary:
+	var breakdown : SaleBreakdown = brewery.resolver.get_price_breakdown(batch.beer_style)
 	# The marketing perk marks up this sale's price only, never the shared breakdown.
-	var counter_price : float = breakdown.price_per_bottle * brewery.stats.multiplier(PerkStats.COUNTER_PRICE) * best_batch.get_aged_price_multiplier() \
-			* FirstBrewRules.price_multiplier(best_batch.novelty)
-	var results : Dictionary = data.evaluate_brew_batch(best_batch, counter_price)
+	var counter_price : float = breakdown.price_per_bottle * brewery.stats.multiplier(PerkStats.COUNTER_PRICE) * batch.get_aged_price_multiplier() \
+			* FirstBrewRules.price_multiplier(batch.novelty)
+	var results : Dictionary = data.evaluate_brew_batch(batch, counter_price)
 
-	var bottles_sold : int = mini(wanted, best_batch.amount_bottles)
+	var bottles_sold : int = mini(wanted, batch.amount_bottles)
 
 	var outcome : SaleOutcome = calculate_sale(
 		results,
@@ -107,13 +175,13 @@ func process(data : CustomerData) -> String:
 	brewery.change_reputation(outcome.reputation_gain, ReputationRules.Source.CUSTOMERS)
 	if outcome.reputation_gain < 0:
 		BrewerySignals.customer_unhappy.emit()
-	var risk_multiplier : float = best_batch.get_aged_risk_multiplier() * brewery.stats.multiplier(PerkStats.SALE_RISK)
+	var risk_multiplier : float = batch.get_aged_risk_multiplier() * brewery.stats.multiplier(PerkStats.SALE_RISK)
 	brewery.add_risk(SaleEvaluation.discreet_risk(results[CustomerManager.KEY_RISK], risk_multiplier, randf()))
 	var sale_xp : int = Brewery.XP_PER_BOTTLE_SOLD * bottles_sold
 	brewery.add_xp(sale_xp)
 	BrewerySignals.sale_xp_gained.emit(sale_xp)
 	BrewerySignals.sale_tip_gained.emit(outcome.tip_income)
-	BrewerySignals.sale_popup_tiers_rated.emit(PopupTierRules.tip_tier(outcome.tip_income, outcome.gross_income, outcome.tip_doubled), best_batch.current_quality)
+	BrewerySignals.sale_popup_tiers_rated.emit(PopupTierRules.tip_tier(outcome.tip_income, outcome.gross_income, outcome.tip_doubled), batch.current_quality)
 
 	var receipt_entry := SaleReceiptEntry.new()
 	receipt_entry.breakdown = breakdown
@@ -121,32 +189,22 @@ func process(data : CustomerData) -> String:
 	receipt_entry.gross_income = outcome.gross_income
 	receipt_entry.tip_income = outcome.tip_income
 	receipt_entry.net_income = outcome.net_income
-	receipt_entry.beer_ebc = best_batch.final_ebc
-	receipt_entry.batch = best_batch
-	receipt_entry.aged_price_multiplier = best_batch.get_aged_price_multiplier()
+	receipt_entry.beer_ebc = batch.final_ebc
+	receipt_entry.batch = batch
+	receipt_entry.aged_price_multiplier = batch.get_aged_price_multiplier()
 	brewery.today_sale_receipts.append(receipt_entry)
 	BrewerySignals.beer_sale_breakdown.emit(receipt_entry)
 
-	best_batch.amount_bottles -= bottles_sold
-	if best_batch.amount_bottles <= 0:
-		brewery.inventory.remove_batch(best_batch)
+	batch.amount_bottles -= bottles_sold
+	if batch.amount_bottles <= 0:
+		brewery.inventory.remove_batch(batch)
 
 	brewery.lifetime_bottles_sold += bottles_sold
 	BrewerySignals.bottles_sold.emit(bottles_sold)
 
-	var response_text : String = results[CustomerManager.KEY_RESPONSE]
-	if is_regular and results[CustomerManager.KEY_DELIGHTED]:
-		response_text = tr(REGULAR_RESPONSE_FORMAT) % response_text
-
-	if BarFightRules.breaks_out(data, wanted, bottles_sold, brewery.stats.multiplier(PerkStats.BAR_FIGHT_CHANCE), randf()):
-		_trigger_bar_fight(data, best_batch)
-
-	BrewerySignals.sale_reputation_gained.emit(brewery.reputation - reputation_before)
-	BrewerySignals.brewery_state_changed.emit(brewery)
-	_spread_word(data, results[CustomerManager.KEY_DELIGHTED], outcome.reputation_gain)
-	_update_standing(data, results[CustomerManager.KEY_DELIGHTED], outcome.reputation_gain)
-	BrewerySignals.customer_served.emit(data)
-	return response_text
+	results[KEY_REPUTATION_GAIN] = outcome.reputation_gain
+	results[KEY_BOTTLES_SOLD] = bottles_sold
+	return results
 
 
 ## Below the customer's quality bar nothing is bought: their reject line says so.

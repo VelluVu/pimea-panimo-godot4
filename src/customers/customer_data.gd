@@ -111,6 +111,12 @@ const DEFAULT_NAMES: Array[String] = ["Matti", "Maija", "Pekka", "Liisa", "Antti
 
 @export_group("Erikoiskäytös")
 @export var randomizes_preference: bool = false
+## No taste of their own: picks random batches that clear min_quality, and every style
+## counts as the favourite (see Perusasiakas). See SaleProcessor.pick_batches().
+@export var picks_at_random: bool = false
+## Only with picks_at_random: buys from 1 to this many different styles in one visit,
+## min/max_bottles_per_visit from each.
+@export var max_styles_per_visit: int = 1
 @export var primary_match_risk_multiplier: float = 1.0
 ## Like the strict ABV gate, but preference-based: a batch matching neither the primary
 ## nor the secondary style is invisible to this customer (see Agentti, an undercover
@@ -154,7 +160,7 @@ func generate_display_name() -> String:
 ## An accepted style that is not a favourite scores like the secondary one: a customer
 ## who only ever buys from accepted_styles should not call any of them the wrong style.
 func get_preference_score(style: BeerStyle.Style) -> float:
-	if style == primary_style:
+	if picks_at_random or style == primary_style:
 		return 1.0
 	elif style == secondary_style or also_likes.has(style) or accepted_styles.has(style):
 		return 0.5
