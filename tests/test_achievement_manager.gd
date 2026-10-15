@@ -252,3 +252,40 @@ func test_spiced_styles_count_each_style_once() -> void:
 	manager._on_batch_brewed(_brewed(BeerStyle.Style.WITBIER, 4.4, 6, true))
 	manager._on_batch_brewed(_brewed(BeerStyle.Style.SAISON, 5.5, 10, false))
 	assert_eq(manager.get_stat(AchievementManagerScript.STAT_SPICED_STYLES), 2, "an unspiced Saison does not count")
+
+
+func test_hand_washes_and_spotless_ones_are_counted() -> void:
+	var manager : AchievementManagerScript = track(_make_manager())
+	manager._on_keg_wash_finished(0.6)
+	manager._on_keg_wash_finished(KegRules.CLEAN)
+	assert_eq(manager.get_stat(AchievementManagerScript.STAT_KEGS_HAND_WASHED), 2)
+	assert_eq(manager.get_stat(AchievementManagerScript.STAT_SPOTLESS_WASHES), 1)
+
+
+func test_the_washer_and_the_last_keg_level_are_noted() -> void:
+	var manager : AchievementManagerScript = track(_make_manager())
+	var washer := CellarUpgradeData.new()
+	washer.upgrade_id = CellarMachines.KEG_WASHER
+	washer.max_level = 1
+	var kegs := CellarUpgradeData.new()
+	kegs.upgrade_id = "lisaa_tynnyreita"
+	kegs.kegs_per_level = 1
+	kegs.max_level = 8
+	manager._on_cellar_upgrade_purchased(kegs, 7)
+	assert_eq(manager.get_stat(AchievementManagerScript.STAT_KEGS_MAXED), 0)
+	manager._on_cellar_upgrade_purchased(kegs, 8)
+	manager._on_cellar_upgrade_purchased(washer, 1)
+	assert_eq(manager.get_stat(AchievementManagerScript.STAT_KEGS_MAXED), 1)
+	assert_eq(manager.get_stat(AchievementManagerScript.STAT_WASHER_BOUGHT), 1)
+
+
+func test_only_a_spoiled_batch_counts() -> void:
+	var manager : AchievementManagerScript = track(_make_manager())
+	var batch := BrewBatch.new()
+	batch.beer_style = BeerStyle.new()
+	batch.sour(0.1)
+	manager._on_batch_fermented(batch)
+	assert_eq(manager.get_stat(AchievementManagerScript.STAT_SPOILED_BATCHES), 0)
+	batch.sour(0.3)
+	manager._on_batch_fermented(batch)
+	assert_eq(manager.get_stat(AchievementManagerScript.STAT_SPOILED_BATCHES), 1)

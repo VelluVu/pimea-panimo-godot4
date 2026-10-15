@@ -52,6 +52,20 @@ extends Resource
 ## A low result, or a hop mark missed.
 @export var sfx_brew_result_low: AudioStream
 
+@export_group("Keg wash")
+## Grime loosened by the brush, grime or a stain rinsed off, a critter fleeing the keg.
+@export var sfx_keg_scrub: AudioStream
+@export var sfx_keg_splash: AudioStream
+@export var sfx_keg_skitter: AudioStream
+## A tool knocking the keg as it is picked up.
+@export var sfx_keg_clank: AudioStream
+## A keg washed spotless.
+@export var sfx_keg_shine: AudioStream
+
+@export_group("Fermentation")
+@export var sfx_ferment_bubble: AudioStream
+@export var sfx_soured: AudioStream
+
 @export_group("Special Events")
 @export var sfx_notification_ping: AudioStream
 

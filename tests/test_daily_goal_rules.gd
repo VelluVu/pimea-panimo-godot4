@@ -67,3 +67,20 @@ func test_success_rewards_scale_with_the_day() -> void:
 	var effects : Dictionary = RulesScript.resolution_effects(goal, true, true, 3)
 	# Day 3 is 1 + 0.5 * 2 = 2x.
 	assert_eq(effects, {"money": 40, "reputation": 10, "xp": 60, "risk": 0})
+
+func _wash_goal() -> DailyGoalData:
+	var goal := DailyGoalData.new()
+	goal.goal_type = DailyGoalData.GoalType.WASH_KEGS
+	goal.min_day = 2
+	return goal
+
+
+func test_a_goal_waits_for_its_first_day() -> void:
+	assert_false(RulesScript.can_offer(_wash_goal(), 1, false))
+	assert_true(RulesScript.can_offer(_wash_goal(), 2, false))
+
+
+func test_no_wash_goal_while_the_washer_runs() -> void:
+	assert_false(RulesScript.can_offer(_wash_goal(), 5, true))
+	var other := DailyGoalData.new()
+	assert_true(RulesScript.can_offer(other, 5, true))
