@@ -2,16 +2,12 @@
 
 [ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_kesamies"]
 [ext_resource type="SpriteFrames" uid="uid://ccvv6ao3q7jyv" path="res://src/resources/sprite_frames/kesamies_anim.tres" id="2_sprite"]
-[ext_resource type="Script" path="res://src/customers/taste_rule.gd" id="taste_script"]
-[ext_resource type="Resource" path="res://src/resources/taste_rules/kesaoluet.tres" id="taste_kesaoluet"]
 [ext_resource type="Resource" path="res://src/resources/taste_rules/bulkkilager.tres" id="taste_bulkkilager"]
+[ext_resource type="Resource" path="res://src/resources/taste_rules/kesaoluet.tres" id="taste_kesaoluet"]
+[ext_resource type="Script" uid="uid://dq66tbectyal5" path="res://src/customers/taste_rule.gd" id="taste_script"]
 
 [resource]
 script = ExtResource("1_kesamies")
-tip_base_chance = 0.15
-favourite_rules = Array[ExtResource("taste_script")]([ExtResource("taste_kesaoluet")])
-last_resort_rules = Array[ExtResource("taste_script")]([ExtResource("taste_bulkkilager")])
-rolls_favourite = true
 customer_name = "Ville"
 title = "Kesämies"
 first_names = Array[String](["Ville", "Jussi", "Sampsa", "Elmeri", "Tatu", "Make"])
@@ -19,6 +15,9 @@ min_quality = 0.3
 budget_multiplier = 1.2
 primary_style = 11
 secondary_style = 12
+favourite_rules = Array[ExtResource("taste_script")]([ExtResource("taste_kesaoluet")])
+last_resort_rules = Array[ExtResource("taste_script")]([ExtResource("taste_bulkkilager")])
+rolls_favourite = true
 sprite_frames = ExtResource("2_sprite")
 randomize_skin = false
 randomize_hair = false
@@ -32,6 +31,7 @@ dialogue_reject = "Tää näyttää ihan surkeelta kuvissa, en voi ottaa tätä.
 dialogue_no_match = "Ei täällä ollu mitään kesäistä. Täytyy etsiä parempi valokuvapaikka."
 dialogue_preview_format = "Ooh, %s! Tää näyttää kuvassa tosi hyvältä..."
 dialogue_nothing_available = "Hmm, ei mitään kesäistä, tästä ei tuu hyvää otosta..."
+tip_base_chance = 0.15
 quality_tip_sensitivity = 0.5
 rep_primary_style = 4
 rep_secondary_style = 1

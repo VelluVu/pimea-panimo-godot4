@@ -8,7 +8,6 @@
 
 [resource]
 script = ExtResource("1_turisti")
-tip_base_chance = 0.2
 customer_name = "Heidi"
 title = "Saksalainen turisti"
 first_names = Array[String](["Heidi", "Greta", "Ursula", "Petra", "Ingrid", "Gisela"])
@@ -33,6 +32,7 @@ dialogue_reject = "Nein, nein, nein! Das ist kein Bier, das ist ein Unfall!"
 dialogue_no_match = "Kein Lager, kein Bier! Hier gibt es nichts für mich. Auf Wiedersehen!"
 dialogue_preview_format = "Oh, ein %s! Das sieht gut aus..."
 dialogue_nothing_available = "Ach, hier gibt es wohl nichts Richtiges für mich..."
+tip_base_chance = 0.2
 quality_tip_sensitivity = 0.5
 rep_secondary_style = 1
 quality_reputation_sensitivity = 4.5

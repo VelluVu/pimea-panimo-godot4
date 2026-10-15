@@ -68,7 +68,7 @@
 [ext_resource type="PackedScene" path="res://src/scenes/ui/day_recap_window.tscn" id="x_dayrecapwindow"]
 [ext_resource type="PackedScene" path="res://src/scenes/ui/game_end_window.tscn" id="x_gameendwindow"]
 [ext_resource type="PackedScene" path="res://src/scenes/ui/lvv_raid_window.tscn" id="x_lvvraidwindow"]
-[ext_resource type="PackedScene" path="res://src/scenes/ui/recipe_library_window.tscn" id="x_recipelibrarywindow"]
+[ext_resource type="PackedScene" uid="uid://dfxsisxcex8tj" path="res://src/scenes/ui/recipe_library_window.tscn" id="x_recipelibrarywindow"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_yf5fn"]
 blend_mode = 1
@@ -1169,6 +1169,7 @@ vertical_alignment = 1
 autowrap_mode = 3
 
 [node name="RecipeLibraryWindow" parent="GUI_CanvasLayer/GUI" unique_id=209127793 instance=ExtResource("x_recipelibrarywindow")]
+anchors_preset = 0
 
 [node name="RecipeShelfLabel" type="Label" parent="GUI_CanvasLayer/GUI" unique_id=997152250]
 layout_mode = 1
