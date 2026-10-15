@@ -3,7 +3,9 @@ extends RefCounted
 
 ## Gives each of a style's hop additions one of the recipe's hops: the most bitter hop
 ## bitters, the style's preferred flavour goes to the later marks, and a one-hop recipe
-## uses its hop everywhere. Hops left over join the last mark, so every gram has a place.
+## uses its hop everywhere. Hops left over join the last mark, so every gram has a place;
+## on a style with only a bittering mark, a leftover aroma hop gets a flavour mark instead
+## (Tettnanger next to Magnum in a Bulkkilager flavours it, it does not bitter it).
 ## A hop used on several marks splits its grams between them; a mark left with no grams
 ## (a tiny dose split too far) is dropped, since it could never be hit.
 
@@ -36,7 +38,8 @@ static func assign(contents : Dictionary, table : Dictionary, kinds : Array[HopA
 		var last_kind : HopAddition.Kind = late_kinds.back() if not late_kinds.is_empty() else HopAddition.Kind.BITTERING
 		for hop : HopData in hops:
 			if not pairs.any(func(pair : Array) -> bool: return pair[1] == hop):
-				pairs.append([last_kind, hop])
+				var has_aroma : bool = hop.flavor_profile != HopData.FlavorProfile.NONE
+				pairs.append([HopAddition.Kind.FLAVOR if late_kinds.is_empty() and has_aroma else last_kind, hop])
 
 	var marks : Array[BoilMark] = _split_grams(pairs, contents)
 	for id : int in contents:
