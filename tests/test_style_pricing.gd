@@ -43,3 +43,18 @@ func test_calculate_price_breakdown_cheap_style_clears_the_profit_floor() -> voi
 	# Kotikalja's real raw cost (~0.36 EUR) gives a proportional profit of a few cents.
 	var breakdown := StylePricingScript.calculate_price_breakdown("Kotikalja", 2.8, 0.36)
 	assert_true(is_equal_approx(breakdown.profit_per_bottle, StylePricingScript.MIN_PROFIT_PER_BOTTLE), "profit_per_bottle")
+
+
+## Every shipped style earns at least what its reference recipe costs (price >= 2 x cost)
+## at base ingredient prices, so no fixed price undercuts the work of brewing it.
+func test_shipped_fixed_prices_earn_at_least_their_cost() -> void:
+	var table : Dictionary = {}
+	for folder : String in ["hops", "malts", "spices", "yeasts"]:
+		for data : IngredientData in ResourceFolder.load_all("res://src/resources/ingredients/%s/" % folder, IngredientData):
+			table[data.id] = data
+	var source := IngredientSource.new()
+	source.inject(table)
+	var pricing := StylePricingScript.new(source)
+	for style : BeerStyle in ResourceFolder.load_all("res://src/resources/beer_styles/", BeerStyle):
+		var cost : float = pricing.cost_per_bottle(style)
+		assert_true(style.fixed_price_per_bottle - cost >= cost, "%s: price %.2f, cost %.2f" % [style.style_name, style.fixed_price_per_bottle, cost])
