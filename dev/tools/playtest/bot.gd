@@ -58,6 +58,7 @@ func _ready() -> void:
 	BrewerySignals.early_day_close_applied.connect(func(money: float, _rep: int, _relief: int, _count: int) -> void: _inc("early_close_money", roundi(money)))
 	BrewerySignals.customer_unhappy.connect(func() -> void: _inc("unhappy"))
 	BrewerySignals.customer_served.connect(func(d: CustomerData) -> void: _inc("served:" + d.title))
+	BrewerySignals.batch_brewed.connect(_count_batch_traits)
 	BrewerySignals.bottles_sold.connect(func(n: int) -> void: _inc("bottles", n))
 	BrewerySignals.bar_fight_triggered.connect(func(_m: String) -> void: _inc("bar_fights"))
 	BrewerySignals.game_ended.connect(func(t: String) -> void: ending = t)
@@ -66,6 +67,17 @@ func _ready() -> void:
 	BrewerySignals.beer_sale_breakdown.connect(func(e: SaleReceiptEntry) -> void: _inc("counter_money", roundi(e.net_income)); _inc("tip_money", roundi(e.tip_income)))
 	BrewerySignals.keg_shipped_to_bar.connect(func(_s: String, _b: String, n: int, pay: float, _r: int) -> void: _inc("shipments"); _inc("shipped_bottles", n); _inc("shipped_money", roundi(pay)))
 	DailyGoalManager.daily_goal_resolved.connect(func(n: String, ok: bool, _m: int, _r: int, _x: int, _k: int) -> void: _inc("goals_ok" if ok else "goals_failed"); _inc(("goal_ok:" if ok else "goal_fail:") + n))
+
+
+## What the taste-tier customers look for, see TasteRule.
+func _count_batch_traits(batch: BrewBatch) -> void:
+	for key: StringName in AchievementWiring.batch_stats(batch):
+		if not String(key).begins_with("style_brewed_"):
+			_inc(String(key))
+	for profile: HopData.FlavorProfile in [HopData.FlavorProfile.CITRUS, HopData.FlavorProfile.TROPICAL, HopData.FlavorProfile.PINE]:
+		if batch.late_hop_profiles.has(profile):
+			_inc("modern_late_hop_batches")
+			break
 
 
 func _inc(key: String, n: int = 1) -> void:
@@ -317,7 +329,7 @@ func _expert_recipe(b: Brewery) -> BrewRecipe:
 		var cost: int = _missing_cost_of(b, ingredients)
 		if cost + _reserve(b) > b.money:
 			continue
-		var score: float = _expert_demand(b, style.style, in_stock)
+		var score: float = _expert_demand(b, style.style, in_stock, _probe_batch(b, style, ingredients))
 		if score <= 0.0:
 			continue
 		if not b.brewed_styles.has(style.style):
@@ -534,7 +546,7 @@ func _maybe_ship(b: Brewery) -> void:
 		# Not worth shipping below what the batch cost to brew.
 		if not goal_open and payout < b.resolver.get_style_cost_per_bottle(batch.beer_style) * batch.amount_bottles:
 			continue
-		var demand: float = _expert_demand(b, batch.beer_style.style, in_stock)
+		var demand: float = _expert_demand(b, batch.beer_style.style, in_stock, batch)
 		if demand < pick_demand:
 			pick_demand = demand
 			pick = batch
@@ -628,29 +640,98 @@ func _quality_of(b: Brewery, combo: Dictionary, style: BeerStyle.Style) -> float
 
 
 ## Reputation the style earns from the customers who can show up, counting the ones a
-## first brew of it would unlock (like the Hipster after an IPA). A customer whose
-## favourite is already well stocked counts for little, so the bot covers every taste.
+## first brew of it would unlock (like the Hipster after an IPA) or that it brings closer
+## to an unlock achievement (five Bulkkilager batches for the Leijonafani). A customer
+## whose wishes are already well stocked counts for little, so the bot covers every taste.
+## Taste-tier customers judge `probe`, the batch the bot would brew: its ABV, colour,
+## spices and late hops. A rolled favourite is one style of its group, so each group
+## style is the favourite only for that share of the visits.
 ## Each sale's LVV risk counts too, more as the risk nears the raid line, so customers
 ## whose sales pay risk off (Zgen, Alfagen) are worth unlocking when risk runs high.
-func _expert_demand(b: Brewery, style: BeerStyle.Style, in_stock: Dictionary) -> float:
+func _expert_demand(b: Brewery, style: BeerStyle.Style, in_stock: Dictionary, probe: BrewBatch) -> float:
 	var risk_weight: float = RISK_POINT_WEIGHT * b.risk / maxf(1.0, b.get_effective_raid_threshold())
 	var demand: float = 0.0
 	for c: CustomerData in CustomerRegistry.customer_pool:
-		var unlocks: bool = c.required_discovered_style == style and b.reputation >= c.min_reputation_to_appear
-		if not CustomerRegistry.is_eligible(c) and not unlocks:
+		var eligible: bool = CustomerRegistry.is_eligible(c)
+		var unlock_share: float = 0.0 if eligible else _unlock_share(b, c, style, probe)
+		if not eligible and unlock_share <= 0.0:
 			continue
-		var served: float = 0.2 if in_stock.get(c.primary_style, 0) >= 10 else 1.0
+		var served: float = _served_share(b, c, in_stock)
 		var favourite_value: float = maxf(0.0, 2.0 + c.rep_primary_style - c.risk_primary_style * risk_weight)
+		var second_value: float = maxf(0.0, 1.0 + c.rep_secondary_style - c.risk_secondary_style * risk_weight) * 0.5
 		# Unlocking a customer is worth half their favourite's value, whatever they think
-		# of the unlocking style (the old folks unlock with Vienna but want Sahti).
-		if unlocks and not CustomerRegistry.is_eligible(c):
-			demand += favourite_value * 0.5
-		var preference: float = c.get_preference_score(style)
+		# of the unlocking style (the old folks unlock with Sahti, the fan with Bulkkilager).
+		demand += favourite_value * 0.5 * unlock_share
+		if not c.accepts_batch(probe):
+			continue
+		if c.rolls_favourite and TasteRule.any_matches(c.favourite_rules, probe):
+			var favourite_share: float = 1.0 / maxf(1.0, _rolled_group_size(c))
+			demand += (favourite_value * favourite_share + second_value * (1.0 - favourite_share)) * served
+			continue
+		var preference: float = c.get_batch_preference(probe)
 		if preference >= 1.0:
 			demand += favourite_value * served
 		elif preference >= 0.5:
-			demand += maxf(0.0, 1.0 + c.rep_secondary_style - c.risk_secondary_style * risk_weight) * served * 0.5
+			demand += second_value * served
 	return demand
+
+
+## The batch a recipe makes, for the taste tiers: the resolved ABV, colour and quality,
+## and what went in (BatchTraits).
+func _probe_batch(b: Brewery, style: BeerStyle, ingredients: Dictionary) -> BrewBatch:
+	var probe := BrewBatch.new()
+	probe.beer_style = style
+	probe.final_ebc = roundi((style.min_ebc + style.max_ebc) / 2.0)
+	var result: BrewResult = b.resolver.resolve_brew_style(ingredients)
+	if result != null:
+		probe.abv = result.abv
+		probe.final_ebc = result.final_ebc
+		probe.current_quality = result.original_quality
+	BatchTraits.apply(probe, ingredients, b.resolver.ingredient_table())
+	return probe
+
+
+## How much a brew of `style` (`probe`) does towards unlocking `c`: 1 when its first brew
+## unlocks them, a share of the batches still missing when it counts towards their unlock
+## achievement, else 0. Reputation must already allow them.
+func _unlock_share(b: Brewery, c: CustomerData, style: BeerStyle.Style, probe: BrewBatch) -> float:
+	if b.reputation < c.min_reputation_to_appear:
+		return 0.0
+	var style_found: bool = c.required_discovered_style < 0 or MetaProgressManager.has_style(c.required_discovered_style)
+	var achieved: bool = c.required_achievement_id == "" or AchievementManager.is_unlocked(c.required_achievement_id)
+	if not style_found and c.required_discovered_style == style and achieved:
+		return 1.0
+	if not style_found or achieved:
+		return 0.0
+	for achievement: AchievementData in AchievementManager.achievement_pool:
+		if achievement.achievement_id != c.required_achievement_id:
+			continue
+		if not AchievementWiring.batch_stats(probe).has(achievement.stat_key):
+			return 0.0
+		return 1.0 / maxf(1.0, achievement.target_value - AchievementManager.get_stat(achievement.stat_key))
+	return 0.0
+
+
+## 0.2 when the customer's wishes already have 10 servings on the counter, else 1.
+func _served_share(b: Brewery, c: CustomerData, in_stock: Dictionary) -> float:
+	if not c.uses_taste_tiers():
+		return 0.2 if in_stock.get(c.primary_style, 0) >= 10 else 1.0
+	var bottles: int = 0
+	for batch: BrewBatch in b.inventory.brew_batches:
+		if not batch.held and c.accepts_batch(batch) and c.get_batch_preference(batch) >= 0.5:
+			bottles += batch.amount_bottles
+	return 0.2 if bottles >= 10 else 1.0
+
+
+## The styles a rolled favourite is drawn from (CustomerData.roll_favourite()).
+func _rolled_group_size(c: CustomerData) -> int:
+	var pool: Array = []
+	for rule: TasteRule in c.favourite_rules:
+		for group_style: BeerStyle.Style in rule.styles:
+			if not pool.has(group_style):
+				pool.append(group_style)
+	var found: int = pool.filter(func(group_style: int) -> bool: return MetaProgressManager.has_style(group_style)).size()
+	return found if found > 0 else pool.size()
 
 
 ## What one point of sale risk costs in reputation points at the raid line.
