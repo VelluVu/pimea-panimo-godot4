@@ -641,7 +641,7 @@ func _quality_of(b: Brewery, combo: Dictionary, style: BeerStyle.Style) -> float
 
 ## Reputation the style earns from the customers who can show up, counting the ones a
 ## first brew of it would unlock (like the Hipster after an IPA) or that it brings closer
-## to an unlock achievement (five Bulkkilager batches for the Leijonafani). A customer
+## to an unlock achievement (five Bulkkilager batches for the Leijonafani, a new spiced style for the Leipuri). A customer
 ## whose wishes are already well stocked counts for little, so the bot covers every taste.
 ## Taste-tier customers judge `probe`, the batch the bot would brew: its ABV, colour,
 ## spices and late hops. A rolled favourite is one style of its group, so each group
@@ -706,7 +706,7 @@ func _unlock_share(b: Brewery, c: CustomerData, style: BeerStyle.Style, probe: B
 	for achievement: AchievementData in AchievementManager.achievement_pool:
 		if achievement.achievement_id != c.required_achievement_id:
 			continue
-		if not AchievementWiring.batch_stats(probe).has(achievement.stat_key):
+		if not AchievementManager.stats_for(probe).has(achievement.stat_key):
 			return 0.0
 		return 1.0 / maxf(1.0, achievement.target_value - AchievementManager.get_stat(achievement.stat_key))
 	return 0.0

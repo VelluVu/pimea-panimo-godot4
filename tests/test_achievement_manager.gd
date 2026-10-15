@@ -240,3 +240,15 @@ func test_batch_stats_count_style_strength_colour_and_spices() -> void:
 	var seven : Array[StringName] = AchievementManagerScript.batch_stats(_brewed(BeerStyle.Style.SCOTCH_ALE, 7.0, 29, false))
 	assert_false(seven.has(&"strong_batches"), "exactly 7 % is not over 7")
 	assert_false(seven.has(&"dark_batches"), "29 EBC is not dark")
+
+
+func test_spiced_styles_count_each_style_once() -> void:
+	var manager : AchievementManagerScript = _make_manager()
+	manager._on_batch_brewed(_brewed(BeerStyle.Style.KOTIKALJA, 3.1, 5, true))
+	manager._on_batch_brewed(_brewed(BeerStyle.Style.KOTIKALJA, 3.1, 5, true))
+	manager._on_batch_brewed(_brewed(BeerStyle.Style.KOTIKALJA, 3.1, 5, true))
+	assert_eq(manager.get_stat(AchievementManagerScript.STAT_SPICED_STYLES), 1, "three spiced Kotikalja batches are one style")
+	assert_eq(manager.get_stat(AchievementManagerScript.STAT_SPICED_BATCHES), 3)
+	manager._on_batch_brewed(_brewed(BeerStyle.Style.WITBIER, 4.4, 6, true))
+	manager._on_batch_brewed(_brewed(BeerStyle.Style.SAISON, 5.5, 10, false))
+	assert_eq(manager.get_stat(AchievementManagerScript.STAT_SPICED_STYLES), 2, "an unspiced Saison does not count")

@@ -15,6 +15,8 @@ extends Resource
 @export var needs_spices : bool = false
 ## Non-empty: an aroma or dry hop of one of these flavours went in (BatchTraits).
 @export var late_hop_profiles : Array[HopData.FlavorProfile] = []
+## Non-empty: a hop of one of these flavours went in at any point of the boil.
+@export var hop_profiles : Array[HopData.FlavorProfile] = []
 ## Non-empty: the batch was brewed with at least one of these malts.
 @export var malt_ids : Array[int] = []
 ## -1 = no limit. A batch below this does not count for this rule.
@@ -31,6 +33,8 @@ func matches(batch : BrewBatch) -> bool:
 	if needs_spices and not batch.spiced:
 		return false
 	if not late_hop_profiles.is_empty() and not late_hop_profiles.any(func(profile : HopData.FlavorProfile) -> bool: return batch.late_hop_profiles.has(profile)):
+		return false
+	if not hop_profiles.is_empty() and not hop_profiles.any(func(profile : HopData.FlavorProfile) -> bool: return batch.hop_profiles.has(profile)):
 		return false
 	if not malt_ids.is_empty() and not malt_ids.any(func(id : int) -> bool: return batch.malt_ids.has(id)):
 		return false

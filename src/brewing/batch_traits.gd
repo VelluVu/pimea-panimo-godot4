@@ -12,6 +12,7 @@ static func apply(batch : BrewBatch, contents : Dictionary, table : Dictionary) 
 	batch.spiced = has_spices(contents, table)
 	batch.malt_ids = malt_ids(contents, table)
 	batch.late_hop_profiles = late_hop_profiles(batch.beer_style, contents, table)
+	batch.hop_profiles = hop_profiles(contents, table)
 
 
 static func has_spices(contents : Dictionary, table : Dictionary) -> bool:
@@ -30,6 +31,17 @@ static func malt_ids(contents : Dictionary, table : Dictionary) -> Array[int]:
 			ids.append(id)
 	ids.sort()
 	return ids
+
+
+## The flavours of every hop in the batch, whenever it goes in.
+static func hop_profiles(contents : Dictionary, table : Dictionary) -> Array[HopData.FlavorProfile]:
+	var profiles : Array[HopData.FlavorProfile] = []
+	for id : int in contents:
+		var hop : HopData = table.get(id) as HopData
+		if hop != null and int(contents[id]) > 0 and hop.flavor_profile != HopData.FlavorProfile.NONE and not profiles.has(hop.flavor_profile):
+			profiles.append(hop.flavor_profile)
+	profiles.sort()
+	return profiles
 
 
 ## The flavours of the hops that go in as aroma or dry hops, as the brew day assigns

@@ -858,8 +858,8 @@ msgid "Maustekauppias"
 msgstr "Spice Merchant"
 
 #: src/resources/achievements/maustetut_3.tres
-msgid "Pane kolme erää mausteiden kanssa."
-msgstr "Brew three batches with spices."
+msgid "Pane kolme eri oluttyyliä mausteiden kanssa."
+msgstr "Brew three different beer styles with spices."
 
 #: src/resources/achievements/panimon_pyorittaja.tres
 msgid "Keitä 50 oluterää."
