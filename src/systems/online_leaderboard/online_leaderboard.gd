@@ -49,6 +49,10 @@ func _send(action: StringName, url: String, method: HTTPClient.Method, body: Str
 		return
 	var http := HTTPRequest.new()
 	http.timeout = timeout_seconds
+	# In a browser the fetch API has already unpacked a gzipped reply, and Godot's own
+	# unpacking then fails (RESULT_BODY_DECOMPRESS_FAILED) as soon as the reply is big
+	# enough for the server to compress.
+	http.accept_gzip = not OS.has_feature("web")
 	add_child(http)
 	http.request_completed.connect(func(result: int, code: int, _headers: PackedStringArray, data: PackedByteArray) -> void:
 		http.queue_free()
