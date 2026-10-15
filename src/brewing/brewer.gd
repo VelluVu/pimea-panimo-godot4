@@ -84,6 +84,7 @@ func start_brew(quality_multiplier : float = BrewDayRules.NORMAL_MULTIPLIER) -> 
 	new_batch.hop_balance_bonus = brew_report.hop_balance_bonus
 	new_batch.flavor_matched = brew_report.flavor_matched
 	new_batch.spice_bonus = brew_report.spice_bonus
+	new_batch.unsuited_spice_penalty = brew_report.unsuited_spice_penalty
 	new_batch.peak_days_multiplier = brewery.stats.multiplier(PerkStats.PEAK_SPEED)
 	new_batch.decline_rate_multiplier = brewery.stats.multiplier(PerkStats.DECLINE_RATE)
 	BatchTraits.apply(new_batch, brewery.brew_preparation.selected_contents, brewery.resolver.ingredient_table())

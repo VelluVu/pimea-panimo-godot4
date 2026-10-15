@@ -28,7 +28,9 @@ extends Resource
 @export var hop_balance_bonus : float = 0.0
 @export var flavor_matched : bool = false
 @export var spice_bonus : float = 0.0
+@export var unsuited_spice_penalty : float = 0.0
 ## What went into the batch, see BatchTraits. Older saves have none of it.
+## True when a spice that suits the style went in (BatchTraits.has_suitable_spice()).
 @export var spiced : bool = false
 @export var malt_ids : Array[int] = []
 @export var late_hop_profiles : Array[HopData.FlavorProfile] = []
@@ -162,7 +164,7 @@ func get_quality_breakdown_tooltip() -> String:
 		hop_diversity_count,
 		roundi(hop_balance_bonus * 100),
 		flavor_matched_string,
-		roundi(spice_bonus * 100),
+		roundi((spice_bonus - unsuited_spice_penalty) * 100),
 	]
 
 

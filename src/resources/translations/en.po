@@ -858,8 +858,8 @@ msgid "Maustekauppias"
 msgstr "Spice Merchant"
 
 #: src/resources/achievements/maustetut_3.tres
-msgid "Pane kolme eri oluttyyliä mausteiden kanssa."
-msgstr "Brew three different beer styles with spices."
+msgid "Pane kolme eri oluttyyliä niihin sopivilla mausteilla."
+msgstr "Brew three different beer styles with spices that suit them."
 
 #: src/resources/achievements/panimon_pyorittaja.tres
 msgid "Keitä 50 oluterää."
@@ -6793,6 +6793,10 @@ msgstr "Spices: +%d %%"
 #: src/ui/spice_preview_text.gd
 msgid "Reinheitsgebot rikottu: -%d %%"
 msgstr "Reinheitsgebot broken: -%d %%"
+
+#: src/ui/spice_preview_text.gd
+msgid "Sopimaton mauste: -%d %%"
+msgstr "Unsuited spice: -%d %%"
 
 #: src/ui/toast_text.gd
 msgid "%s epäonnistui: %d maine / +%d LVV-riski"

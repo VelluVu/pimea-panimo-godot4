@@ -112,3 +112,25 @@ func test_any_spice_breaks_the_purity_law() -> void:
 	assert_eq(BrewQualityScript.spice_bonus(mixture, beer_style), 0.0)
 	mixture.spice_ids[401] = true
 	assert_eq(BrewQualityScript.spice_bonus(mixture, beer_style), -BrewQualityScript.PURITY_LAW_PENALTY)
+
+
+func test_unsuited_spices_cost_quality_each() -> void:
+	var beer_style := BeerStyle.new()
+	beer_style.preferred_spice_ids = [401]
+	beer_style.required_spice_ids = [212]
+	var mixture := _make_mixture(0.0, 0.0, 0)
+	mixture.spice_ids[401] = true
+	mixture.spice_ids[212] = true
+	assert_eq(BrewQualityScript.unsuited_spice_penalty(mixture, beer_style), 0.0, "needed and liked spices cost nothing")
+	mixture.spice_ids[406] = true
+	mixture.spice_ids[404] = true
+	assert_eq(BrewQualityScript.unsuited_spice_penalty(mixture, beer_style), 2 * BrewQualityScript.UNSUITED_SPICE_PENALTY)
+
+
+func test_a_german_style_pays_only_the_purity_law() -> void:
+	var beer_style := BeerStyle.new()
+	beer_style.forbids_spices = true
+	var mixture := _make_mixture(0.0, 0.0, 0)
+	mixture.spice_ids[406] = true
+	assert_eq(BrewQualityScript.unsuited_spice_penalty(mixture, beer_style), 0.0)
+	assert_eq(BrewQualityScript.spice_bonus(mixture, beer_style), -BrewQualityScript.PURITY_LAW_PENALTY)
