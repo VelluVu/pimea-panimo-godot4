@@ -4,6 +4,6 @@
 
 [resource]
 script = ExtResource("1_sour")
-light_lines = Array[String](["Onko tämä tarkoituksella näin kirpeää?", "Hmm, tässä on jotain hapanta. Uusi trendi?", "Vähän kuin hapankaali, mutta juotavaa."])
-sour_lines = Array[String](["Tämähän on hapanta! Olitko pessyt tynnyrin?", "Kuka tähän laittoi sitruunaa?", "Naama menee ihan suppuun."])
-spoiled_lines = Array[String](["Tämä on etikkaa. Laitan tätä ensi kerralla salaattiin.", "Kuolinsyy: likainen tynnyri.", "Joku on unohtanut pestä tynnyrin. Joku, eli sinä."])
+light_lines = Array[String](["Kuuluukohan tämän olla näin kirpsakkaa?", "Hmm, tässä on jotain hapanta. Uusi trendi?", "Väkevä vivahde tässä."])
+sour_lines = Array[String](["Yöks, en kyllä hapanolutta tilannut.", "Kuka tähän laittoi sitruunaa?", "Naama menee ihan suppuun."])
+spoiled_lines = Array[String](["Viemärivettäkö tähän käytettiin?", "Miten tämä on vihreää, onko se radioaktiivista?", "Oho, maistuupas oudolle, melkein kuin mahahapot."])
