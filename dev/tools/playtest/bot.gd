@@ -857,7 +857,7 @@ func _event_points(b: Brewery, e: SpecialEventData) -> float:
 ## and some reputation.
 func _bottle_points(b: Brewery, batch: BrewBatch) -> float:
 	var price: float = b.resolver.get_price_breakdown(batch.beer_style).price_per_bottle * batch.get_aged_price_multiplier()
-	return price * WORTH_POINTS + RunScore.BOTTLE_POINTS + REP_PER_BOTTLE * REP_POINTS
+	return price * WORTH_POINTS + 1.0 / RunScore.SERVINGS_PER_POINT + REP_PER_BOTTLE * REP_POINTS
 
 
 ## Score cost of changing risk by `delta`: each point weighs more the nearer the raid

@@ -61,8 +61,8 @@ security definer
 set search_path = public
 as $$
 declare
-	expected_version constant integer := 6;
-	-- RunScore: DAY_POINTS, REPUTATION_POINTS, BOTTLE_POINTS, WORTH_POINTS_PER_EURO.
+	expected_version constant integer := 7;
+	-- RunScore: DAY_POINTS, REPUTATION_POINTS, SERVINGS_PER_POINT, WORTH_POINTS_PER_EURO.
 	v_counts_reputation boolean := p_ending_type not in ('busted', 'bankrupt');
 	v_worth numeric := round(greatest(p_worth, 0), 1);
 	expected_score integer;
@@ -78,14 +78,14 @@ begin
 		raise exception 'busy';
 	end if;
 
-	expected_score := p_days_survived * 100 + p_bottles
+	expected_score := p_days_survived * 100 + greatest(p_bottles, 0) / 2
 		+ case when v_counts_reputation
-			then greatest(p_reputation, 0) * 10 + round(v_worth * 0.3)::integer
+			then greatest(p_reputation, 0) * 10 + round(v_worth * 0.5)::integer
 			else 0 end;
 	if p_styles is null or p_styles < 0 or p_styles > 40 then
 		raise exception 'styles';
 	end if;
-	expected_score := expected_score + p_styles * 50;
+	expected_score := expected_score + p_styles * 100;
 	-- The game rounds the unrounded worth, so allow one point either way.
 	if abs(expected_score - p_score) > 1 then
 		raise exception 'score';

@@ -6475,8 +6475,8 @@ msgid "TYNNYRIN PESU · %d/%d"
 msgstr "KEG WASH · %d/%d"
 
 #: src/ui/leaderboard_text.gd
-msgid "Annokset %d"
-msgstr "Servings %d"
+msgid "Annokset %d: +%d"
+msgstr "Servings %d: +%d"
 
 #: src/ui/leaderboard_text.gd
 msgid "Demo"

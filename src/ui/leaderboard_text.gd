@@ -14,7 +14,7 @@ const ENDING_DEMO_OVER : String = "Demo"
 const DAYS_LINE : String = "Päivät %d × %d"
 const REPUTATION_LINE : String = "Maine %d × %d"
 const REPUTATION_UNSCORED_LINE : String = "Maine %d: ei pisteitä"
-const BOTTLES_LINE : String = "Annokset %d"
+const BOTTLES_LINE : String = "Annokset %d: +%d"
 const WORTH_LINE : String = "Panimon arvo %d €: +%d"
 const STYLES_LINE : String = "Tyylit %d × %d"
 const BONUS_LINE : String = "Legendabonus +%d"
@@ -67,7 +67,7 @@ static func breakdown_lines(entry : Dictionary) -> PackedStringArray:
 	var lines : PackedStringArray = [
 		UiText.of(DAYS_LINE) % [entry.get("days_survived", 0), RunScore.DAY_POINTS],
 		_reputation_line(entry),
-		UiText.of(BOTTLES_LINE) % entry.get("lifetime_bottles_sold", 0),
+		UiText.of(BOTTLES_LINE) % [entry.get("lifetime_bottles_sold", 0), RunScore.bottle_points(entry.get("lifetime_bottles_sold", 0))],
 	]
 	var worth_points : int = RunScore.worth_points(entry.get("worth", 0.0), entry.get("ending_type", ""))
 	if worth_points > 0:
