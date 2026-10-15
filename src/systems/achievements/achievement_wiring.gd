@@ -46,6 +46,9 @@ const STAT_CUSTOMERS_MET : StringName = &"customers_met"
 const STAT_STRONG_BATCHES : StringName = &"strong_batches"
 const STAT_DARK_BATCHES : StringName = &"dark_batches"
 const STAT_SPICED_BATCHES : StringName = &"spiced_batches"
+## Styles brewed with spices at least once (maustetut_3 unlocks Leipuri): the tutorial
+## Kotikalja with rye bread is one style, not three batches.
+const STAT_SPICED_STYLES : StringName = &"spiced_styles"
 const STRONG_ABV_OVER : float = 7.0
 const DARK_EBC_MIN : int = 30
 
@@ -114,6 +117,19 @@ static func batch_stats(batch : BrewBatch) -> Array[StringName]:
 	return keys
 
 
+static func spiced_style_stat_key(style : int) -> StringName:
+	return StringName("spiced_style_%d" % style)
+
+
+## batch_stats() plus STAT_SPICED_STYLES when the batch is the first spiced one of its style.
+func stats_for(batch : BrewBatch) -> Array[StringName]:
+	var keys : Array[StringName] = batch_stats(batch)
+	if batch.spiced and get_stat(spiced_style_stat_key(batch.beer_style.style)) == 0:
+		keys.append(spiced_style_stat_key(batch.beer_style.style))
+		keys.append(STAT_SPICED_STYLES)
+	return keys
+
+
 ## Split out of _on_brewery_state_changed() so it can be tested with
 ## hand-built IngredientData, without the IngredientDatabase autoload.
 static func count_unlocked_hops(ingredients : Array, reputation : int) -> int:
@@ -133,7 +149,7 @@ func _on_style_discovered(style : int) -> void:
 
 
 func _on_batch_brewed(batch : BrewBatch) -> void:
-	for key : StringName in batch_stats(batch):
+	for key : StringName in stats_for(batch):
 		increment_stat(key)
 
 

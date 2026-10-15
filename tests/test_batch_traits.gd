@@ -81,3 +81,8 @@ func test_apply_fills_the_batch() -> void:
 	assert_true(batch.spiced)
 	assert_eq(batch.malt_ids, [PILSNER_ID] as Array[int])
 	assert_eq(batch.late_hop_profiles, [HopData.FlavorProfile.CITRUS] as Array[HopData.FlavorProfile])
+
+
+func test_hop_profiles_include_bittering_hops_with_a_flavour() -> void:
+	var profiles : Array[HopData.FlavorProfile] = BatchTraits.hop_profiles({MAGNUM_ID: 20, CASCADE_ID: 5, PILSNER_ID: 4}, _table())
+	assert_eq(profiles, [HopData.FlavorProfile.CITRUS] as Array[HopData.FlavorProfile], "Magnum has no flavour")

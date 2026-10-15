@@ -77,3 +77,12 @@ func test_any_matches_is_an_or() -> void:
 	assert_true(TasteRule.any_matches(rules, _batch(BeerStyle.Style.HELLES)))
 	assert_true(TasteRule.any_matches(rules, _batch(BeerStyle.Style.DOPPELBOCK, 8.0)))
 	assert_false(TasteRule.any_matches(rules, _batch(BeerStyle.Style.IPA)))
+
+
+func test_hop_profiles_look_at_every_hop() -> void:
+	var rule := TasteRule.new()
+	rule.hop_profiles = [HopData.FlavorProfile.NOBLE]
+	var batch := _batch(BeerStyle.Style.BULKKILAGER)
+	assert_false(rule.matches(batch))
+	batch.hop_profiles = [HopData.FlavorProfile.NOBLE]
+	assert_true(rule.matches(batch), "a noble bittering hop counts, though the style has no late hops")
