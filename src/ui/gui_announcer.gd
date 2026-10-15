@@ -181,6 +181,9 @@ func _on_first_brew_hint_state_changed(_brewery: Brewery) -> void:
 
 
 func _on_kegs_emptied(_count: int) -> void:
+	var brewery : Brewery = BrewEngine.current_brewery
+	if brewery != null and brewery.machine_active(CellarMachines.KEG_WASHER):
+		return
 	_show_toast(tr(KEG_TO_WASH_TOAST_TEXT))
 
 

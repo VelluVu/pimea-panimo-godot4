@@ -95,6 +95,9 @@ var game_has_ended : bool = false
 @export var customer_standing : Dictionary = {} # String -> int
 ## Cellar upgrades bought this run, see CellarUpgradeShop.
 @export var cellar_upgrade_levels : Dictionary = {} # CellarUpgradeData.upgrade_id -> level
+## Machines bought in an earlier season and switched off by the player, see CellarMachines.
+@export var owned_machines : Array[String] = []
+@export var machines_off : Array[String] = []
 
 ## First-brew tutorial progress. One-way latches, so a step stays done after
 ## its ingredients are used up. tutorial_complete() derives from these.
@@ -158,6 +161,22 @@ func _init() -> void:
 
 	discovery.seed_from_meta()
 	_seed_meta_perks()
+	_seed_meta_machines()
+
+
+func _seed_meta_machines() -> void:
+	if MetaProgressManager == null:
+		return
+	owned_machines.assign(MetaProgressManager.get_owned_machines())
+	machines_off.assign(MetaProgressManager.get_machines_off())
+
+
+func owns_machine(upgrade_id : String) -> bool:
+	return CellarMachines.is_owned(upgrade_id, cellar_upgrade_levels, owned_machines)
+
+
+func machine_active(upgrade_id : String) -> bool:
+	return CellarMachines.is_active(upgrade_id, cellar_upgrade_levels, owned_machines, machines_off)
 
 
 func _seed_meta_perks() -> void:

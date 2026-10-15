@@ -158,6 +158,9 @@ func open() -> void:
 	var report : BrewResult = brewery.resolver.resolve_brew_style(contents)
 	if report == null:
 		return
+	if brewery.machine_active(CellarMachines.AUTO_KETTLE):
+		GUISignals.brew_day_finished.emit(BrewDayRules.AUTO_KETTLE_MULTIPLIER)
+		return
 	var table : Dictionary = {}
 	for id : int in contents:
 		table[id] = IngredientDatabase.get_item_by_id(id)

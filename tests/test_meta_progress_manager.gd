@@ -334,3 +334,34 @@ func test_shipped_meta_unlocks_cover_every_path() -> void:
 	assert_true(seen_paths.has(MetaUnlockData.Path.BAR_WORK), "no shipped node for BAR_WORK")
 	assert_true(seen_paths.has(MetaUnlockData.Path.BREWING), "no shipped node for BREWING")
 	assert_true(seen_paths.has(MetaUnlockData.Path.MARKETING), "no shipped node for MARKETING")
+
+
+func _make_upgrade(id : String, is_machine : bool) -> CellarUpgradeData:
+	var upgrade := CellarUpgradeData.new()
+	upgrade.upgrade_id = id
+	upgrade.is_machine = is_machine
+	return upgrade
+
+
+func test_a_bought_machine_is_kept_for_later_seasons() -> void:
+	var manager := _make_manager()
+	manager._on_cellar_upgrade_purchased(_make_upgrade("tynnyrinpesukone", true), 1)
+	manager._on_cellar_upgrade_purchased(_make_upgrade("tynnyrinpesukone", true), 1)
+	assert_eq(manager.get_owned_machines(), ["tynnyrinpesukone"])
+	manager.free()
+
+
+func test_an_ordinary_upgrade_is_not_kept() -> void:
+	var manager := _make_manager()
+	manager._on_cellar_upgrade_purchased(_make_upgrade("kaymisastia", false), 1)
+	assert_true(manager.get_owned_machines().is_empty())
+	manager.free()
+
+
+func test_a_machine_switch_is_remembered() -> void:
+	var manager := _make_manager()
+	manager._on_machine_switched("automaattikattila", false)
+	assert_eq(manager.get_machines_off(), ["automaattikattila"])
+	manager._on_machine_switched("automaattikattila", true)
+	assert_true(manager.get_machines_off().is_empty())
+	manager.free()
