@@ -123,13 +123,14 @@ func _on_brewery_state_changed(brewery: Brewery) -> void:
 	
 
 ## What the customer would buy, so it can preview its pick before the sale.
-func find_best_batch_for(data: CustomerData) -> BrewBatch:
-	return SaleProcessor.new(BrewEngine.current_brewery).find_best_batch_for(data)
+func pick_batches_for(data: CustomerData) -> Array[BrewBatch]:
+	return SaleProcessor.new(BrewEngine.current_brewery).pick_batches_for(data)
 
 
-## Resolves the customer's purchase and returns their spoken response.
-func process_auto_sale(data: CustomerData) -> String:
-	return SaleProcessor.new(BrewEngine.current_brewery).process(data)
+## Resolves the customer's purchase and returns their spoken response. `picks` are the
+## batches it previewed, see SaleProcessor.process().
+func process_auto_sale(data: CustomerData, picks: Array[BrewBatch] = []) -> String:
+	return SaleProcessor.new(BrewEngine.current_brewery).process(data, picks)
 
 
 func spawn_normal_customer(forced_data: CustomerData = null) -> void:

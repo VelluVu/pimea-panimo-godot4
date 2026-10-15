@@ -710,8 +710,8 @@ msgid "Koko kylä tuttu"
 msgstr "Know the Whole Town"
 
 #: src/resources/achievements/asiakaskirja_kaikki.tres
-msgid "Tapaa kaikki 22 asiakastyyppiä."
-msgstr "Meet all 22 customer types."
+msgid "Tapaa kaikki 23 asiakastyyppiä."
+msgstr "Meet all 23 customer types."
 
 #: src/resources/achievements/ensimmainen_satsi.tres
 msgid "Ensimmäinen olut"
@@ -2294,6 +2294,42 @@ msgstr "This is darkness in a glass. Beautiful. Thank you."
 #: src/resources/customers/mustanmetallinmies_naaras.tres
 msgid "Mustanmetallinnainen"
 msgstr "Black Metal Woman"
+
+#: src/resources/customers/normaali_mies.tres
+msgid "Ei kyllä kelpaa tällainen, sori."
+msgstr "Sorry, this won't do."
+
+#: src/resources/customers/normaali_mies.tres
+msgid "Hmm, ei taida olla mitään juotavaa..."
+msgstr "Hmm, doesn't look like there's anything to drink..."
+
+#: src/resources/customers/normaali_mies.tres
+msgid "Hyvää on. Kiitti!"
+msgstr "That's good. Thanks!"
+
+#: src/resources/customers/normaali_mies.tres
+msgid "Ihan ok."
+msgstr "It's okay."
+
+#: src/resources/customers/normaali_mies.tres
+msgid "Käy tää."
+msgstr "This'll do."
+
+#: src/resources/customers/normaali_mies.tres
+msgid "Moi. Mitäs hyvää teillä tänään on?"
+msgstr "Hi. What's good today?"
+
+#: src/resources/customers/normaali_mies.tres
+msgid "Otetaanpa vaikka %s."
+msgstr "I'll have %s, then."
+
+#: src/resources/customers/normaali_mies.tres
+msgid "Perusasiakas"
+msgstr "Average Joe"
+
+#: src/resources/customers/normaali_mies.tres
+msgid "Tyhjät hyllyt? No, käyn sitten muualla."
+msgstr "Empty shelves? Well, I'll go somewhere else then."
 
 #: src/resources/customers/opiskelija.tres
 msgid "Hmm, ei mitään opiskelijabudjetille sopivaa..."
@@ -4869,6 +4905,10 @@ msgstr "Evening. Just a routine visit. It smells awfully malty in here..."
 msgid "LVV-tarkastaja"
 msgstr "LVV inspector"
 
+#: src/scenes/customer.gd
+msgid " ja "
+msgstr " and "
+
 #: src/scenes/main.tscn
 msgid "Häädä asiakkaat ja aloita uusi päivä"
 msgstr "Send the customers home and start a new day"
@@ -6179,6 +6219,10 @@ msgstr "tip +%.1f €"
 #: src/ui/customer_book_text.gd
 msgid "%d asiakastyyppiä vielä tuntematta."
 msgstr "%d customer types still unknown."
+
+#: src/ui/customer_book_text.gd
+msgid "Ei suosikkia: ottaa mitä tahansa hyllystä löytyy"
+msgstr "No favourite: takes whatever is on the shelf"
 
 #: src/ui/customer_book_text.gd
 msgid "Ei vielä tavattu. Palvele kerran, niin opit hänen makunsa."

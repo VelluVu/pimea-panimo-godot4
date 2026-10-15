@@ -103,6 +103,53 @@ func test_quality_bonus_breaks_a_tie_between_equal_styles() -> void:
 	assert_eq(SaleProcessorScript.find_best_batch(_batches([poor, good]), customer), good)
 
 
+func _random_picker(min_quality : float = 0.3) -> CustomerData:
+	var customer := CustomerData.new()
+	customer.picks_at_random = true
+	customer.min_quality = min_quality
+	return customer
+
+
+func test_a_regular_customer_picks_only_the_best_batch() -> void:
+	var customer := _customer(BeerStyle.Style.IPA, BeerStyle.Style.HELLES)
+	var ipa := _batch(BeerStyle.Style.IPA, 10)
+	var helles := _batch(BeerStyle.Style.HELLES, 10)
+	assert_eq(SaleProcessorScript.pick_batches(_batches([helles, ipa]), customer, 2), _batches([ipa]))
+
+
+func test_a_random_picker_takes_different_styles() -> void:
+	var lager := _batch(BeerStyle.Style.BULKKILAGER, 10)
+	var second_lager := _batch(BeerStyle.Style.BULKKILAGER, 10)
+	var ipa := _batch(BeerStyle.Style.IPA, 10)
+	for i : int in 20:
+		var picks : Array[BrewBatch] = SaleProcessorScript.pick_batches(_batches([lager, second_lager, ipa]), _random_picker(), 2)
+		assert_eq(picks.size(), 2)
+		assert_true(picks.has(ipa), "two picks of different styles must include the only IPA")
+
+
+func test_a_random_picker_stops_at_the_count() -> void:
+	var lager := _batch(BeerStyle.Style.BULKKILAGER, 10)
+	var ipa := _batch(BeerStyle.Style.IPA, 10)
+	assert_eq(SaleProcessorScript.pick_batches(_batches([lager, ipa]), _random_picker(), 1).size(), 1)
+
+
+func test_a_random_picker_skips_batches_below_the_bar() -> void:
+	var poor := _batch(BeerStyle.Style.BULKKILAGER, 10, 0.1)
+	var good := _batch(BeerStyle.Style.IPA, 10, 0.9)
+	for i : int in 20:
+		assert_eq(SaleProcessorScript.pick_batches(_batches([poor, good]), _random_picker(), 2), _batches([good]))
+
+
+func test_a_random_picker_falls_back_to_the_best_batch_to_refuse() -> void:
+	var poor := _batch(BeerStyle.Style.BULKKILAGER, 10, 0.1)
+	assert_eq(SaleProcessorScript.pick_batches(_batches([poor]), _random_picker(), 2), _batches([poor]))
+	assert_true(SaleProcessorScript.pick_batches(_batches([]), _random_picker(), 2).is_empty())
+
+
+func test_a_random_picker_likes_every_style() -> void:
+	assert_eq(_random_picker().get_preference_score(BeerStyle.Style.SAHTI), 1.0)
+
+
 func _results(income : float, tip : float, reputation : int) -> Dictionary:
 	return {
 		CustomerManager.KEY_INCOME: income,

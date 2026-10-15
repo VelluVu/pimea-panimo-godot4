@@ -12,6 +12,8 @@ const PER_CHARACTER_DISPLAY_TIME_SECONDS : float = 0.04
 const MAX_DISPLAY_TIME_SECONDS : float = 9.0
 
 const PREVIEW_DELAY_SECONDS : float = 2.0
+## Joins the style names when a customer previews more than one batch.
+const PREVIEW_STYLE_JOINER : String = " ja "
 
 ## Seconds between footsteps while a walk animation plays.
 const FOOTSTEP_INTERVAL_SECONDS : float = 0.32
@@ -66,6 +68,8 @@ var _phase_timer: SceneTreeTimer
 var _glass_timer: SceneTreeTimer
 var _bubble_text: String = ""
 var _beer_ebc: int = -1
+## The batches named in the preview, so the sale buys the same ones.
+var _picked_batches: Array[BrewBatch] = []
 var _exit_position: Vector2
 ## Where a group member walks for their glass before leaving; INF when not.
 var _pickup_target: Vector2 = Vector2.INF
@@ -311,10 +315,13 @@ func _enter_counter_phase(phase: CustomerSnapshot.Phase, text: String, next: Cal
 
 ## Shows the batch the customer will pick before the sale resolves.
 func _on_preview_timeout() -> void:
-	var previewed_batch : BrewBatch = CustomerManager.find_best_batch_for(customer_data)
+	_picked_batches = CustomerManager.pick_batches_for(customer_data)
 	var preview_text : String
-	if previewed_batch != null and not customer_data.browses_only:
-		preview_text = tr(customer_data.dialogue_preview_format) % previewed_batch.get_style_name()
+	if not _picked_batches.is_empty() and not customer_data.browses_only:
+		var style_names : PackedStringArray = []
+		for batch : BrewBatch in _picked_batches:
+			style_names.append(batch.get_style_name())
+		preview_text = tr(customer_data.dialogue_preview_format) % tr(PREVIEW_STYLE_JOINER).join(style_names)
 	else:
 		preview_text = tr(customer_data.dialogue_nothing_available)
 
@@ -326,7 +333,7 @@ func _on_sale_timeout() -> void:
 	# process_auto_sale() is synchronous, so signals fired during it belong to this sale.
 	var outcome := SaleOutcomeCapture.new()
 	outcome.start()
-	var response_text := CustomerManager.process_auto_sale(customer_data)
+	var response_text := CustomerManager.process_auto_sale(customer_data, _picked_batches)
 	outcome.stop()
 
 	fill_glasses(outcome.beer_ebc)

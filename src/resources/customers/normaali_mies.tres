@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="CustomerData" format=3 uid="uid://8dqjijksve58"]
+
+[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_normaali_mies"]
+[ext_resource type="SpriteFrames" uid="uid://0ryxc2j2gaiy" path="res://src/resources/sprite_frames/normaali_mies_anim.tres" id="2_sprite"]
+
+[resource]
+script = ExtResource("1_normaali_mies")
+customer_name = "Matti"
+title = "Perusasiakas"
+first_names = Array[String](["Matti", "Mikko", "Jari", "Timo", "Petri", "Janne"])
+min_quality = 0.3
+sprite_frames = ExtResource("2_sprite")
+randomize_skin = false
+randomize_hair = false
+randomize_clothes = false
+randomize_shoes = false
+dialogue_intro = "Moi. Mitäs hyvää teillä tänään on?"
+dialogue_success = "Hyvää on. Kiitti!"
+dialogue_fallback = "Käy tää."
+dialogue_wrong_style = "Ihan ok."
+dialogue_reject = "Ei kyllä kelpaa tällainen, sori."
+dialogue_no_match = "Tyhjät hyllyt? No, käyn sitten muualla."
+dialogue_preview_format = "Otetaanpa vaikka %s."
+dialogue_nothing_available = "Hmm, ei taida olla mitään juotavaa..."
+rep_primary_style = 2
+risk_primary_style = 1
+picks_at_random = true
+max_styles_per_visit = 2
+metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

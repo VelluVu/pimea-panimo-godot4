@@ -3,7 +3,9 @@ extends RefCounted
 
 ## Records the xp, reputation and tip that BrewerySignals reports while one
 ## synchronous sale runs, so the customer can show popups for exactly its own
-## sale. Call start() before the sale and stop() right after it.
+## sale. Call start() before the sale and stop() right after it. A customer buying
+## several styles (CustomerData.max_styles_per_visit) sells each batch on its own, so the
+## xp, tip and income add up.
 
 ## What a sale did to the customer's opinion of the cellar, shown as a popup over them.
 enum Note { FRIEND_RECOMMENDED, BAD_REVIEW, BECAME_REGULAR, LOST_REGULAR }
@@ -63,7 +65,7 @@ func emit_reputation_and_money_popups(position: Vector2) -> void:
 
 
 func _on_xp(amount: int) -> void:
-	xp = amount
+	xp += amount
 
 
 func _on_reputation(amount: int) -> void:
@@ -71,7 +73,7 @@ func _on_reputation(amount: int) -> void:
 
 
 func _on_tip(amount: float) -> void:
-	tip = amount
+	tip += amount
 
 
 func _on_bar_fight(broken_bottles: int) -> void:
@@ -80,7 +82,7 @@ func _on_bar_fight(broken_bottles: int) -> void:
 
 func _on_sale_breakdown(entry: SaleReceiptEntry) -> void:
 	beer_ebc = entry.beer_ebc
-	income = entry.gross_income
+	income += entry.gross_income
 
 
 func _on_friend_recommended(_data: CustomerData) -> void:
