@@ -54,7 +54,8 @@ func test_shipped_upgrades_have_unique_ids_and_one_to_five_levels() -> void:
 		# Kegs are bought one at a time, so that upgrade may have more levels and no stat.
 		var max_levels : int = KEG_UPGRADE_MAX_LEVELS if upgrade.kegs_per_level > 0 else 5
 		assert_true(upgrade.max_level >= 1 and upgrade.max_level <= max_levels, "%s has %d levels" % [upgrade.upgrade_id, upgrade.max_level])
-		assert_true(_has_stat(upgrade) or upgrade.kegs_per_level > 0, "%s has no stat" % upgrade.upgrade_id)
+		# A machine works through CellarMachines, not a perk stat.
+		assert_true(_has_stat(upgrade) or upgrade.kegs_per_level > 0 or upgrade.is_machine, "%s has no stat" % upgrade.upgrade_id)
 
 
 ## Reads the authored per-level steps as properties: in the editor the loaded .tres

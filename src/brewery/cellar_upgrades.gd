@@ -25,7 +25,8 @@ static func find(upgrade_id : String, upgrades : Array[CellarUpgradeData]) -> Ce
 
 
 ## Money spent on the levels in `levels`, so selling an upgrade's worth back into the
-## score (RunScore) never makes buying it a loss.
+## score (RunScore) never makes buying it a loss. A machine owned from an earlier season
+## is not in `levels`, so only the season that paid for it counts it.
 static func invested_value(levels : Dictionary, upgrades : Array[CellarUpgradeData]) -> int:
 	var total : int = 0
 	for upgrade : CellarUpgradeData in upgrades:

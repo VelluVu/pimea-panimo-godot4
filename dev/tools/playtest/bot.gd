@@ -803,7 +803,8 @@ func _buy_upgrade(b: Brewery) -> void:
 				return
 	for upgrade: CellarUpgradeData in CellarUpgrades.all():
 		var level: int = b.cellar_upgrade_levels.get(upgrade.upgrade_id, 0)
-		if CellarUpgradeRules.is_maxed(level, upgrade.max_level):
+		# Bots already wash spotless and brew without the brew day, so a machine buys nothing.
+		if upgrade.is_machine or CellarUpgradeRules.is_maxed(level, upgrade.max_level):
 			continue
 		var cost: int = upgrade.cost_for_next_level(level)
 		if b.money - cost >= UPGRADE_RESERVE and (best == null or cost < best_cost):

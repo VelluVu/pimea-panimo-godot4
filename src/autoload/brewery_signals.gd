@@ -225,6 +225,9 @@ signal ingredients_refunded()
 ## Emitted by CellarUpgradeShop after a cellar upgrade is bought; `level` is its new level.
 @warning_ignore("unused_signal")
 signal cellar_upgrade_purchased(upgrade: CellarUpgradeData, level: int)
+## Emitted by CellarUpgradeShop when the player switches an owned machine on or off.
+@warning_ignore("unused_signal")
+signal machine_switched(upgrade_id: String, enabled: bool)
 ## Emitted by SaleProcessor after a customer bought something, and by
 ## GroupVisitDirector for the other types in a mixed group; the Asiakaskirja
 ## remembers the customer type as met (CustomerUnlockTracker).

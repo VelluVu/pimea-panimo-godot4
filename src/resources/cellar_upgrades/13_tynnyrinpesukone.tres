@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="CellarUpgradeData" format=3]
+
+[ext_resource type="Script" uid="uid://vrs3bafxturw" path="res://src/brewery/cellar_upgrade_data.gd" id="1_upgrade"]
+
+[resource]
+script = ExtResource("1_upgrade")
+upgrade_id = "tynnyrinpesukone"
+sort_order = 13
+max_level = 1
+base_cost = 400
+is_machine = true
+perk_name = "Tynnyrinpesukone"
+description = "Pesee jokaisen tyhjentyneen tynnyrin puhtaaksi itsestään. Ostetaan kerran ja jää kellariin kaikille tuleville kausille."
+icon_placeholder = "🫧"

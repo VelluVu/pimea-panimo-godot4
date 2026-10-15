@@ -15,6 +15,9 @@ const SECTION : String = "meta_progress"
 const KEY_DISCOVERED_STYLES : String = "discovered_styles"
 const KEY_RENOWN : String = "renown"
 const KEY_UNLOCKED_LEVELS : String = "unlocked_levels"
+## Machines bought in any season, and the ones the player switched off, see CellarMachines.
+const KEY_MACHINES : String = "machines"
+const KEY_MACHINES_OFF : String = "machines_off"
 
 const UNLOCK_FOLDER_PATH : String = "res://src/resources/meta_unlocks/"
 
@@ -32,6 +35,8 @@ func _ready() -> void:
 	BrewerySignals.style_discovered.connect(_on_style_discovered)
 	BrewerySignals.game_ended.connect(_on_game_ended)
 	TimeManager.day_changed.connect(_on_day_changed)
+	BrewerySignals.cellar_upgrade_purchased.connect(_on_cellar_upgrade_purchased)
+	BrewerySignals.machine_switched.connect(_on_machine_switched)
 
 
 func has_style(style : int) -> bool:
@@ -113,7 +118,34 @@ func purchase_next_level(unlock_id : String) -> bool:
 	return true
 
 
-## Wipes renown, purchased talents and discovered styles, in memory and on disk.
+func get_owned_machines() -> Array:
+	return _config.get_value(SECTION, KEY_MACHINES, [])
+
+
+func get_machines_off() -> Array:
+	return _config.get_value(SECTION, KEY_MACHINES_OFF, [])
+
+
+func _on_cellar_upgrade_purchased(upgrade : CellarUpgradeData, _level : int) -> void:
+	if not upgrade.is_machine or get_owned_machines().has(upgrade.upgrade_id):
+		return
+	var machines : Array = get_owned_machines()
+	machines.append(upgrade.upgrade_id)
+	_config.set_value(SECTION, KEY_MACHINES, machines)
+	_save()
+
+
+## The switch is remembered for every later season too.
+func _on_machine_switched(upgrade_id : String, enabled : bool) -> void:
+	var off : Array = get_machines_off()
+	off.erase(upgrade_id)
+	if not enabled:
+		off.append(upgrade_id)
+	_config.set_value(SECTION, KEY_MACHINES_OFF, off)
+	_save()
+
+
+## Wipes renown, purchased talents, machines and discovered styles, in memory and on disk.
 func reset_progress() -> void:
 	_config.clear()
 	_save()

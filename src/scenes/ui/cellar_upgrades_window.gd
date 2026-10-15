@@ -52,6 +52,7 @@ func _refresh_rows() -> void:
 
 func _build_row(upgrade : CellarUpgradeData, brewery : Brewery) -> Control:
 	var level : int = brewery.cellar_upgrade_levels.get(upgrade.upgrade_id, 0)
+	var owned_machine : bool = upgrade.is_machine and brewery.owns_machine(upgrade.upgrade_id)
 	var row := HBoxContainer.new()
 	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
@@ -59,12 +60,26 @@ func _build_row(upgrade : CellarUpgradeData, brewery : Brewery) -> Control:
 	texts.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	texts.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	texts.add_theme_constant_override("separation", 0)
-	texts.add_child(_make_label("%s %s" % [upgrade.icon_placeholder, CellarUpgradeText.title_line(upgrade, level)], NAME_FONT_SIZE))
+	var title : String = tr(upgrade.perk_name) if upgrade.is_machine else CellarUpgradeText.title_line(upgrade, level)
+	texts.add_child(_make_label("%s %s" % [upgrade.icon_placeholder, title], NAME_FONT_SIZE))
 	var description : Label = _make_label(tr(upgrade.description), DETAIL_FONT_SIZE)
 	description.add_theme_color_override("font_color", MUTED_COLOR)
 	texts.add_child(description)
-	texts.add_child(_make_label(CellarUpgradeText.effect_lines(upgrade, level), DETAIL_FONT_SIZE))
+	var effect : String = CellarUpgradeText.machine_line(owned_machine) if upgrade.is_machine else CellarUpgradeText.effect_lines(upgrade, level)
+	texts.add_child(_make_label(effect, DETAIL_FONT_SIZE))
 	row.add_child(texts)
+
+	if owned_machine:
+		var switch := TooltipButton.new()
+		switch.custom_minimum_size = Vector2(BUY_BUTTON_WIDTH, 0)
+		switch.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		switch.toggle_mode = true
+		switch.button_pressed = brewery.machine_active(upgrade.upgrade_id)
+		switch.text = CellarUpgradeText.machine_button_text(switch.button_pressed)
+		switch.tooltip_text = CellarUpgradeText.MACHINE_SWITCH_TOOLTIP
+		switch.pressed.connect(func() -> void: GUISignals.machine_switch_requested.emit(upgrade.upgrade_id))
+		row.add_child(switch)
+		return row
 
 	var buy_button := Button.new()
 	buy_button.custom_minimum_size = Vector2(BUY_BUTTON_WIDTH, 0)

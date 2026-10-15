@@ -1589,6 +1589,26 @@ msgstr ""
 msgid "Parempi Mäskipata"
 msgstr "Better Mash Tun"
 
+#: src/resources/cellar_upgrades/13_tynnyrinpesukone.tres
+msgid ""
+"Pesee jokaisen tyhjentyneen tynnyrin puhtaaksi itsestään. Ostetaan kerran "
+"ja jää kellariin kaikille tuleville kausille."
+msgstr "Washes every emptied keg spotless on its own. Bought once, it stays in the cellar for every season to come."
+
+#: src/resources/cellar_upgrades/13_tynnyrinpesukone.tres
+msgid "Tynnyrinpesukone"
+msgstr "Keg washer"
+
+#: src/resources/cellar_upgrades/14_automaattikattila.tres
+msgid "Automaattikattila"
+msgstr "Automatic kettle"
+
+#: src/resources/cellar_upgrades/14_automaattikattila.tres
+msgid ""
+"Mäskää ja keittää itse, aina täydellisesti. Keittopäivää ei tarvitse "
+"pelata. Ostetaan kerran ja jää kellariin kaikille tuleville kausille."
+msgstr "Mashes and boils by itself, always perfectly. No need to play the brew day. Bought once, it stays in the cellar for every season to come."
+
 #: src/resources/cellar_upgrades/1_isompi_kaymisastia.tres
 msgid "Isompi astia, enemmän annoksia samasta erästä."
 msgstr "A bigger vessel, more servings from the same batch."
@@ -5641,10 +5661,6 @@ msgstr ""
 "(creativecommons.org/licenses/by/4.0). Line metrics fitted to the game font."
 
 #: src/scenes/ui/options_window.tscn
-msgid "Pois"
-msgstr "Off"
-
-#: src/scenes/ui/options_window.tscn
 msgid "Päävolyymi"
 msgstr "Master volume"
 
@@ -6237,12 +6253,32 @@ msgid "Tarvitset ainakin 3 kg mallasta ja hiivan."
 msgstr "You need at least 3 kg of malt and a yeast."
 
 #: src/ui/cellar_upgrade_text.gd
+msgid "Ei vielä omistuksessa."
+msgstr "Not owned yet."
+
+#: src/ui/cellar_upgrade_text.gd
+msgid "Kytke kone päälle tai pois. Valinta muistetaan myös seuraavilla kausilla."
+msgstr "Switch the machine on or off. The choice is kept for later seasons too."
+
+#: src/ui/cellar_upgrade_text.gd
 msgid "Nyt: %s"
 msgstr "Now: %s"
 
 #: src/ui/cellar_upgrade_text.gd
+msgid "Omistat koneen, se pysyy kaikilla kausilla."
+msgstr "You own the machine; it stays for every season."
+
+#: src/ui/cellar_upgrade_text.gd
 msgid "Osta %d €"
 msgstr "Buy %d €"
+
+#: src/ui/cellar_upgrade_text.gd
+msgid "Pois"
+msgstr "Off"
+
+#: src/ui/cellar_upgrade_text.gd
+msgid "Päällä"
+msgstr "On"
 
 #: src/ui/cellar_upgrade_text.gd
 msgid "Seuraava taso: %s"

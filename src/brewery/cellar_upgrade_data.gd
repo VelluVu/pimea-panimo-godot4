@@ -15,6 +15,9 @@ extends RunPerk
 @export var cost_growth : float = 1.8
 ## Empty clean kegs each level adds to the cellar, see KegRules.
 @export var kegs_per_level : int = 0
+## A machine is bought once and owned in every later season, with an on/off switch;
+## see CellarMachines.
+@export var is_machine : bool = false
 
 
 ## Price of the level after `level`, see CellarUpgradeRules.

@@ -9,10 +9,24 @@ const MAXED_TEXT : String = "Täysi"
 const NOW_FORMAT : String = "Nyt: %s"
 const NEXT_FORMAT : String = "Seuraava taso: %s"
 const NONE_TEXT : String = "ei vielä"
+## A machine owned from any season, see CellarMachines.
+const MACHINE_ON_TEXT : String = "Päällä"
+const MACHINE_OFF_TEXT : String = "Pois"
+const MACHINE_OWNED_TEXT : String = "Omistat koneen, se pysyy kaikilla kausilla."
+const MACHINE_NOT_OWNED_TEXT : String = "Ei vielä omistuksessa."
+const MACHINE_SWITCH_TOOLTIP : String = "Kytke kone päälle tai pois. Valinta muistetaan myös seuraavilla kausilla."
 
 
 static func title_line(upgrade : CellarUpgradeData, level : int) -> String:
 	return UiText.of(LEVEL_FORMAT) % [UiText.of(upgrade.perk_name), level, upgrade.max_level]
+
+
+static func machine_button_text(active : bool) -> String:
+	return UiText.of(MACHINE_ON_TEXT if active else MACHINE_OFF_TEXT)
+
+
+static func machine_line(owned : bool) -> String:
+	return UiText.of(MACHINE_OWNED_TEXT if owned else MACHINE_NOT_OWNED_TEXT)
 
 
 static func button_text(upgrade : CellarUpgradeData, level : int) -> String:
