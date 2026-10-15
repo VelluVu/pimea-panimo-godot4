@@ -7,6 +7,11 @@ extends VBoxContainer
 ## names pushed the bottle count past the ellipsis. The count never clips;
 ## the quality label next to it gives way instead.
 const NAME_LABEL_STRING : String = "🍺 %s (%.1f%%)"
+## A batch soured by a dirty keg, see BrewBatch.infected.
+const SOUR_LABEL_FORMAT : String = "Hapan %s"
+## A brew still fermenting, see Fermenter. Shown above the kegs.
+const FERMENTING_LABEL_FORMAT : String = "⏳ %s käymässä, %d s"
+const FERMENTING_TOOLTIP : String = "Erä käy. Kun se on valmis, se menee puhtaimpaan tyhjään tynnyriin. Likainen tynnyri voi hapattaa sen."
 ## A novelty batch's label, see FirstBrewRules.
 const NOVELTY_LABEL_FORMAT : String = "Uutuus! %s"
 const AMOUNT_LABEL_STRING : String = "%d annosta"
@@ -47,10 +52,14 @@ const ROW_LABEL_MIN_WIDTH : float = 50.0
 ## batch list is simpler than giving every row its own BarContact dropdown.
 var _bar_contact_option_button : BarContactOptionButton = null
 var _keg_count_label : TooltipLabel = null
+## Fermenting batch -> its row label; updated every fermentation tick without a rebuild,
+## so a hovered tooltip stays put.
+var _fermenting_labels : Dictionary = {}
 
 
 func _ready() -> void:
 	BrewerySignals.brewery_state_changed.connect(_on_brewery_state_changed)
+	BrewerySignals.fermentation_ticked.connect(_on_fermentation_ticked)
 
 	var destination_row := HBoxContainer.new()
 	destination_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -79,17 +88,38 @@ func _on_brewery_state_changed(_brewery: Brewery) -> void:
 	_update_beer_batches_ui()
 
 
+func _on_fermentation_ticked() -> void:
+	for batch : BrewBatch in _fermenting_labels:
+		(_fermenting_labels[batch] as Label).text = _fermenting_text(batch)
+
+
+func _fermenting_text(batch : BrewBatch) -> String:
+	return tr(FERMENTING_LABEL_FORMAT) % [batch.get_style_name(), ceili(batch.ferment_seconds_left)]
+
+
 func _update_beer_batches_ui() -> void:
 	for child in beer_batch_list_vbox.get_children():
 		child.queue_free()
+	_fermenting_labels.clear()
 		
 	if BrewEngine.current_brewery == null: 
 		return
 		
 	var inventory : Inventory = BrewEngine.current_brewery.inventory
 	var any_bottles_left : bool = false
-	var batch_count : int = inventory.brew_batches.size()
-	_keg_count_label.text = KegCountText.line(batch_count, batch_count + inventory.free_kegs.size(), inventory.dirty_keg_count())
+	_keg_count_label.text = KegCountText.line(inventory.kegs_in_use(), inventory.total_kegs(), inventory.dirty_keg_count())
+
+	for batch : BrewBatch in inventory.fermenting:
+		var fermenting_label := TooltipLabel.new()
+		fermenting_label.mouse_filter = Control.MOUSE_FILTER_STOP
+		fermenting_label.clip_text = true
+		fermenting_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+		fermenting_label.add_theme_font_size_override("font_size", 16)
+		fermenting_label.modulate = Color(1, 1, 1, 0.7)
+		fermenting_label.tooltip_text = FERMENTING_TOOLTIP
+		fermenting_label.text = _fermenting_text(batch)
+		_fermenting_labels[batch] = fermenting_label
+		beer_batch_list_vbox.add_child(fermenting_label)
 
 	for batch: BrewBatch in inventory.brew_batches:
 
@@ -98,6 +128,8 @@ func _update_beer_batches_ui() -> void:
 
 			var name_label := _make_batch_label(batch)
 			name_label.text = NAME_LABEL_STRING % [batch.get_style_name(), batch.get_abv()]
+			if batch.infected:
+				name_label.text = tr(SOUR_LABEL_FORMAT) % name_label.text
 			if batch.novelty:
 				name_label.text = tr(NOVELTY_LABEL_FORMAT) % name_label.text
 

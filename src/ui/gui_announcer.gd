@@ -15,6 +15,9 @@ const CUSTOMERS_UNLOCKED_TOAST_FORMAT: String = "Uusia asiakkaita avattu: %s!"
 const REPUTATION_TIER_ROSE_TOAST_FORMAT: String = "Maineesi nousi: %s!"
 const REPUTATION_TIER_FELL_TOAST_FORMAT: String = "Maineesi laski: %s."
 const KEG_TO_WASH_TOAST_TEXT: String = "Uusi likainen tynnyri pestäväksi"
+const FERMENTING_TOAST_FORMAT: String = "Uusi %s-erä käymässä"
+const FERMENTED_TOAST_FORMAT: String = "%s valmis tynnyriin"
+const SOURED_TOAST_FORMAT: String = "%s happani likaisessa tynnyrissä!"
 const NOVELTY_TOAST_FORMAT: String = "Uutuus: kauden ensimmäinen %s! Erä myy tiskillä +%d %% hintaan."
 const DISCOVERY_TOAST_FLASH_SECONDS: float = 0.15
 const DISCOVERY_TOAST_HOLD_SECONDS: float = 2.0
@@ -93,6 +96,8 @@ func start() -> void:
 	BrewerySignals.day_event_announced.connect(_on_day_event_announced)
 	BrewerySignals.lvv_hint_reached.connect(_on_lvv_hint_reached)
 	BrewerySignals.kegs_emptied.connect(_on_kegs_emptied)
+	BrewerySignals.fermentation_started.connect(_on_fermentation_started)
+	BrewerySignals.batch_fermented.connect(_on_batch_fermented)
 
 	# Shown while the day clock is still stopped, so the missing customers
 	# don't read as a bug. Ends by pointing at DailyGoalsPanel.
@@ -177,6 +182,15 @@ func _on_first_brew_hint_state_changed(_brewery: Brewery) -> void:
 
 func _on_kegs_emptied(_count: int) -> void:
 	_show_toast(tr(KEG_TO_WASH_TOAST_TEXT))
+
+
+func _on_fermentation_started(style_name: String) -> void:
+	_show_toast(tr(FERMENTING_TOAST_FORMAT) % UiText.of(style_name))
+
+
+func _on_batch_fermented(batch: BrewBatch) -> void:
+	var format : String = SOURED_TOAST_FORMAT if batch.infected else FERMENTED_TOAST_FORMAT
+	_show_toast(tr(format) % UiText.of(batch.beer_style.style_name))
 
 
 func _on_lvv_hint_reached() -> void:

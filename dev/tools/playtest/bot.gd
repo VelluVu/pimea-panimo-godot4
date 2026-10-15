@@ -229,17 +229,30 @@ func _wants_brew(b: Brewery) -> bool:
 		return false
 	if cfg.strategy in EXPERTS:
 		# Held batches are aging, not for sale, so they do not count as counter stock.
-		if b.inventory.count_bottles() - _held_bottles(b) < COUNTER_STOCK or b.inventory.brew_batches.size() < 3:
+		if _bottles_and_brewing(b) - _held_bottles(b) < COUNTER_STOCK or _batches_and_brewing(b) < 3:
 			return true
 		if not b.tutorial_complete() or _goal_style_recipe(b) != null:
 			return true
 		# Brews extra batches to ship while the risk and the cash allow it.
-		return b.inventory.brew_batches.size() < 5 and b.money >= EXPORT_BREW_RESERVE and _best_bar(b) != null
+		return _batches_and_brewing(b) < 5 and b.money >= EXPORT_BREW_RESERVE and _best_bar(b) != null
 	if _goal_style_recipe(b) != null:
 		return true
 	if cfg.strategy in ["variety", "careful"]:
-		return b.inventory.count_bottles() < 30 or b.inventory.brew_batches.size() < 2
-	return b.inventory.count_bottles() < 15
+		return _bottles_and_brewing(b) < 30 or _batches_and_brewing(b) < 2
+	return _bottles_and_brewing(b) < 15
+
+
+## Brews still fermenting count as stock on its way, so a bot does not brew again
+## while the last one ferments.
+func _batches_and_brewing(b: Brewery) -> int:
+	return b.inventory.kegs_in_use()
+
+
+func _bottles_and_brewing(b: Brewery) -> int:
+	var bottles: int = b.inventory.count_bottles()
+	for batch: BrewBatch in b.inventory.fermenting:
+		bottles += batch.amount_bottles
+	return bottles
 
 
 func _brew(b: Brewery) -> void:

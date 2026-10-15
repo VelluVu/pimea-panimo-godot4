@@ -154,11 +154,11 @@ func _cmd_keita(args: PackedStringArray) -> void:
 		_log(tr(RECIPE_NOT_FOUND_MESSAGE) % [" ".join(Array(args)), _saved_recipe_names(brewery)])
 		return
 
-	var batches_before : int = brewery.inventory.brew_batches.size()
+	var batches_before : int = brewery.inventory.kegs_in_use()
 	GUISignals.load_recipe_requested.emit(matched)
 	GUISignals.start_brewing.emit()
 
-	if brewery.inventory.brew_batches.size() > batches_before:
+	if brewery.inventory.kegs_in_use() > batches_before:
 		_log(tr(BREWING_MESSAGE) % RecipeNameText.display(matched))
 	else:
 		_log(tr(BREWING_FAILED_MESSAGE) % RecipeNameText.display(matched))

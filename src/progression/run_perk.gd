@@ -44,6 +44,8 @@ enum Tier { COMMON, RARE, LEGENDARY }
 @export var agentti_appearance_multiplier: float = 1.0
 ## Multiplies how often a Mafioso customer is picked.
 @export var mafioso_appearance_multiplier: float = 1.0
+## Cuts the chance a dirty keg sours a batch (0 to 1, summed), see FermentationRules.
+@export var infection_reduction: float = 0.0
 ## Added to every sale's chance of a tip (0 to 1, summed), see SaleEvaluation.tip_chance().
 @export var tip_chance: float = 0.0
 ## Chance (0 to 1, summed and capped) that a sale's tip is doubled.
