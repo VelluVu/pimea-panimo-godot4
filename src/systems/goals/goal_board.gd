@@ -149,7 +149,9 @@ func _resolve_goal(slot_index : int, succeeded : bool, apply_penalty : bool = tr
 func _assign_new_goal(slot_index : int) -> void:
 	var new_goal : GoalData = null
 	if _can_roll_goals() and get_rolls_left() != 0:
-		new_goal = GoalRules.pick_new_goal(goal_pool, active_goals)
+		var offered : Array[GoalData] = []
+		offered.assign(goal_pool.filter(_can_offer))
+		new_goal = GoalRules.pick_new_goal(offered, active_goals)
 
 	if new_goal != null:
 		rolls_used += 1
@@ -157,6 +159,11 @@ func _assign_new_goal(slot_index : int) -> void:
 	else:
 		_slots[slot_index].clear()
 	goal_progress_changed.emit()
+
+
+## Override: whether `goal` may be rolled right now (a goal that only fits later on).
+func _can_offer(_goal : GoalData) -> bool:
+	return true
 
 
 ## Override: whether goals may be rolled right now (false leaves slots empty).

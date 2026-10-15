@@ -31,6 +31,7 @@ func _ready() -> void:
 	BrewerySignals.customer_unhappy.connect(add_progress.bind(DailyGoalData.GoalType.UNHAPPY_CUSTOMERS_MAX, 1))
 	BrewerySignals.special_event_resolved.connect(_on_special_event_resolved)
 	BrewerySignals.keg_shipped_to_bar.connect(_on_keg_shipped_to_bar)
+	BrewerySignals.keg_washed.connect(func(_cleanliness : float) -> void: add_progress(DailyGoalData.GoalType.WASH_KEGS, 1))
 	BrewEngine.brewery_changed.connect(_load_from_brewery)
 	BrewEngine.brewery_about_to_save.connect(_flush_to_brewery)
 	# A slot left empty by yesterday's limit gets its goal in the morning.
@@ -67,6 +68,11 @@ func _on_special_event_resolved(succeeded : bool, _event_data : SpecialEventData
 		add_progress(DailyGoalData.GoalType.SPECIAL_EVENT, 1)
 	else:
 		fail_kind_without_penalty(DailyGoalData.GoalType.SPECIAL_EVENT)
+
+
+func _can_offer(goal : GoalData) -> bool:
+	var brewery : Brewery = BrewEngine.current_brewery
+	return brewery != null and DailyGoalRules.can_offer(goal as DailyGoalData, brewery.current_day, brewery.machine_active(CellarMachines.KEG_WASHER))
 
 
 func _can_roll_goals() -> bool:

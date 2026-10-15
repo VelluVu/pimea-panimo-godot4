@@ -38,6 +38,13 @@
 [ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/brew_step_done.wav" id="bd_step_done"]
 [ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/brew_result_good.wav" id="bd_result_good"]
 [ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/brew_result_low.wav" id="bd_result_low"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/keg_scrub.wav" id="kw_keg_scrub"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/keg_splash.wav" id="kw_keg_splash"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/keg_skitter.wav" id="kw_keg_skitter"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/keg_clank.wav" id="kw_keg_clank"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/keg_shine.wav" id="kw_keg_shine"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/ferment_bubble.wav" id="kw_ferment_bubble"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/soured.wav" id="kw_soured"]
 [resource]
 script = ExtResource("1_bank")
 menu_music = ExtResource("2_music1")
@@ -70,3 +77,10 @@ sfx_brew_boil_over = ExtResource("bd_boil_over")
 sfx_brew_step_done = ExtResource("bd_step_done")
 sfx_brew_result_good = ExtResource("bd_result_good")
 sfx_brew_result_low = ExtResource("bd_result_low")
+sfx_keg_scrub = ExtResource("kw_keg_scrub")
+sfx_keg_splash = ExtResource("kw_keg_splash")
+sfx_keg_skitter = ExtResource("kw_keg_skitter")
+sfx_keg_clank = ExtResource("kw_keg_clank")
+sfx_keg_shine = ExtResource("kw_keg_shine")
+sfx_ferment_bubble = ExtResource("kw_ferment_bubble")
+sfx_soured = ExtResource("kw_soured")

@@ -15,6 +15,8 @@ enum GoalType {
 	SHIP_TO_BAR,
 	## The season's first batch of any style (BrewerySignals.season_first_brew).
 	NEW_STYLE_BREW,
+	## Dirty kegs washed today (BrewerySignals.keg_washed).
+	WASH_KEGS,
 }
 
 @export var goal_type : GoalType = GoalType.EARN_MONEY
@@ -22,6 +24,8 @@ enum GoalType {
 @export var target_style : BeerStyle.Style = BeerStyle.Style.BULKKILAGER
 ## Never rolled again, but kept so a save holding this goal still loads.
 @export var retired : bool = false
+## Not rolled before this day of the season, see DailyGoalRules.can_offer().
+@export var min_day : int = 1
 
 @export_group("Palkkio (onnistuminen)")
 @export var reward_money : int = 20

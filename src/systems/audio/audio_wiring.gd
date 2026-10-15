@@ -99,12 +99,11 @@ func _setup_brew_day_sounds() -> void:
 		BrewDayWindow.SOUND_MARK_MISS: [bank.sfx_brew_result_low, -4.0],
 		BrewDayWindow.SOUND_RESULT_GOOD: [bank.sfx_brew_result_good, 0.0],
 		BrewDayWindow.SOUND_RESULT_LOW: [bank.sfx_brew_result_low, 0.0],
-		# The keg wash borrows the brew day's sounds until it has its own.
-		KegWashWindow.SOUND_LOOSENED: [bank.sfx_brew_clump_break, -2.0],
-		KegWashWindow.SOUND_REMOVED: [bank.sfx_brew_step_done, -6.0],
-		KegWashWindow.SOUND_FLED: [bank.sfx_brew_clump_hit, -8.0],
-		KegWashWindow.SOUND_TOOL: [bank.sfx_brew_paddle_knock, -6.0],
-		KegWashWindow.SOUND_DONE: [bank.sfx_brew_result_good, 0.0],
+		KegWashWindow.SOUND_LOOSENED: [bank.sfx_keg_scrub, -2.0],
+		KegWashWindow.SOUND_REMOVED: [bank.sfx_keg_splash, -4.0],
+		KegWashWindow.SOUND_FLED: [bank.sfx_keg_skitter, -4.0],
+		KegWashWindow.SOUND_TOOL: [bank.sfx_keg_clank, -6.0],
+		KegWashWindow.SOUND_DONE: [bank.sfx_keg_shine, 0.0],
 		KegWashWindow.SOUND_STAGE_DONE: [bank.sfx_brew_step_done, -2.0],
 	}
 
@@ -155,6 +154,10 @@ func _connect_signals() -> void:
 	MetaProgressManager.talent_purchased.connect(play_sfx.bind(bank.sfx_talent_purchased).unbind(1))
 	# On the batch, not the button: a mix that brews nothing stays silent.
 	BrewerySignals.batch_stored.connect(play_sfx.bind(bank.sfx_brew_start).unbind(2))
+	BrewerySignals.fermentation_started.connect(play_sfx.bind(bank.sfx_ferment_bubble).unbind(1))
+	BrewerySignals.batch_fermented.connect(func(batch : BrewBatch) -> void:
+		if batch.infected:
+			play_sfx(bank.sfx_soured))
 	BrewerySignals.customer_stepped.connect(_on_customer_stepped)
 	BrewerySignals.customer_spoke.connect(_on_customer_spoke)
 	BrewerySignals.beer_poured.connect(func(at: Vector2, speed_scale: float) -> void: play_sfx_at(bank.sfx_pour, at, POUR_VOLUME_DB, minf(speed_scale, POUR_MAX_PITCH)))

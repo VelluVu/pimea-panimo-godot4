@@ -49,6 +49,14 @@ const STAT_SPICED_BATCHES : StringName = &"spiced_batches"
 ## Styles brewed with spices at least once (maustetut_3 unlocks Leipuri): the tutorial
 ## Kotikalja with rye bread is one style, not three batches.
 const STAT_SPICED_STYLES : StringName = &"spiced_styles"
+## Kegs washed in the keg wash minigame, and the ones left spotless; the
+## Tynnyrinpesukone's washes do not count.
+const STAT_KEGS_HAND_WASHED : StringName = &"kegs_hand_washed"
+const STAT_SPOTLESS_WASHES : StringName = &"spotless_washes"
+## 1 once bought: the Tynnyrinpesukone, and every level of the keg upgrade.
+const STAT_WASHER_BOUGHT : StringName = &"washer_bought"
+const STAT_KEGS_MAXED : StringName = &"kegs_maxed"
+const STAT_SPOILED_BATCHES : StringName = &"spoiled_batches"
 const STRONG_ABV_OVER : float = 7.0
 const DARK_EBC_MIN : int = 30
 
@@ -78,6 +86,9 @@ func _ready() -> void:
 	BrewerySignals.level_up_reached.connect(func(level : int) -> void: set_stat_if_higher(STAT_HIGHEST_LEVEL, level))
 	BrewerySignals.game_ended.connect(_on_game_ended)
 	BrewerySignals.brew_spiced.connect(_on_brew_spiced)
+	GUISignals.keg_wash_finished.connect(_on_keg_wash_finished)
+	BrewerySignals.cellar_upgrade_purchased.connect(_on_cellar_upgrade_purchased)
+	BrewerySignals.batch_fermented.connect(_on_batch_fermented)
 	BrewerySignals.regular_status_changed.connect(_on_regular_status_changed)
 	BrewerySignals.beer_sale_breakdown.connect(_on_beer_sale_breakdown)
 	# CustomerRegistry marks the customer met first: it is the earlier autoload.
@@ -168,6 +179,24 @@ func _on_sale_tip_gained(amount : float) -> void:
 	var cents : int = roundi(amount * 100.0)
 	if cents > 0:
 		increment_stat(STAT_TIPS_CENTS, cents)
+
+
+func _on_keg_wash_finished(cleanliness : float) -> void:
+	increment_stat(STAT_KEGS_HAND_WASHED)
+	if cleanliness >= KegRules.CLEAN:
+		increment_stat(STAT_SPOTLESS_WASHES)
+
+
+func _on_cellar_upgrade_purchased(upgrade : CellarUpgradeData, level : int) -> void:
+	if upgrade.upgrade_id == CellarMachines.KEG_WASHER:
+		set_stat_if_higher(STAT_WASHER_BOUGHT, 1)
+	elif upgrade.kegs_per_level > 0 and CellarUpgradeRules.is_maxed(level, upgrade.max_level):
+		set_stat_if_higher(STAT_KEGS_MAXED, 1)
+
+
+func _on_batch_fermented(batch : BrewBatch) -> void:
+	if batch.get_sour_level() == FermentationRules.SourLevel.STRONG:
+		increment_stat(STAT_SPOILED_BATCHES)
 
 
 func _on_brew_spiced(_style_name : String, spice_bonus : float) -> void:

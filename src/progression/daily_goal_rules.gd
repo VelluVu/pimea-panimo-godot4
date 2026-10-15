@@ -26,3 +26,11 @@ static func resolution_effects(goal : DailyGoalData, succeeded : bool, apply_pen
 		effects.reputation = -goal.penalty_reputation
 		effects.risk = goal.penalty_risk
 	return effects
+
+
+## Whether `goal` may be rolled on `day`. A wash goal is never offered while the
+## Tynnyrinpesukone runs, since the machine would finish it on its own.
+static func can_offer(goal : DailyGoalData, day : int, washer_running : bool) -> bool:
+	if day < goal.min_day:
+		return false
+	return not (washer_running and goal.goal_type == DailyGoalData.GoalType.WASH_KEGS)

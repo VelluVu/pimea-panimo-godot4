@@ -487,7 +487,68 @@ def brew_result_low():
     return melody(["E4", "C4"], 0.16, "triangle"), 0.45
 
 
+def keg_scrub():
+    """The spring brush loosening grime: a short bristly scratch."""
+    s = 0.22
+    scratch = highpass(noise(s, hold=2), 1800) * env(s, 0.01, 0.08) * 0.7
+    rasp = lowpass(square(sweep(140, 110, s), s, 0.2), 900) * perc(s, 14) * 0.25
+    return mix(scratch, rasp), 0.45
+
+
+def keg_splash():
+    """Rinsed grime washing off the keg wall."""
+    s = 0.35
+    wash = lowpass(noise(s), 2600) * env(s, 0.005, 0.25) * 0.7
+    drops = mix(*[at(rng.uniform(0.05, 0.25), triangle(sweep(f, f * 1.6, 0.04), 0.04) * perc(0.04, 50) * 0.4)
+                  for f in rng.uniform(600, 1400, 4)])
+    return mix(wash, drops)[:int(s * RATE)], 0.4
+
+
+def keg_skitter():
+    """A critter fleeing out of the keg: quick tiny footsteps and a squeak."""
+    steps = mix(*[at(i * 0.035, highpass(noise(0.015), 3000) * perc(0.015, 120) * 0.6) for i in range(6)])
+    squeak = triangle(sweep(1800, 2600, 0.08), 0.08) * env(0.08, 0.005, 0.04) * 0.4
+    return mix(steps, at(0.2, squeak)), 0.35
+
+
+def keg_clank():
+    """A tool knocking the hollow steel keg."""
+    s = 0.5
+    ring = mix(triangle(310, s) * 0.5, triangle(527, s) * 0.3, triangle(911, s) * 0.15) * perc(s, 9)
+    hit = noise(0.01) * 0.5
+    return mix(ring, hit), 0.4
+
+
+def keg_shine():
+    """A keg washed spotless: a bright glint and sparkle."""
+    glint = melody(["E6", "B6", "E7"], 0.06, "triangle")
+    sparkle = mix(*[at(0.12 + i * 0.05, square(note(n), 0.05, 0.25) * perc(0.05, 40) * 0.25)
+                    for i, n in enumerate(["B6", "G#6", "E7", "B6"])])
+    return mix(glint, sparkle), 0.45
+
+
+def ferment_bubble():
+    """An airlock: two lazy blubs as a brew starts fermenting."""
+    def blub(f0):
+        return triangle(sweep(f0, f0 * 2.2, 0.09), 0.09) * env(0.09, 0.005, 0.05)
+    return mix(blub(170), at(0.22, blub(210) * 0.8)), 0.45
+
+
+def soured():
+    """A batch gone sour: a sagging, slightly wobbly 'wah-wah'."""
+    wobble = 1.0 + 0.02 * np.sin(2 * np.pi * 7 * _t(0.7))
+    wah = lowpass(square(sweep(330, 200, 0.7) * wobble, 0.7, 0.3), 1400) * env(0.7, 0.02, 0.2)
+    return wah, 0.4
+
+
 RECIPES = {
+    "keg_scrub": keg_scrub,
+    "keg_splash": keg_splash,
+    "keg_skitter": keg_skitter,
+    "keg_clank": keg_clank,
+    "keg_shine": keg_shine,
+    "ferment_bubble": ferment_bubble,
+    "soured": soured,
     "footstep": footstep,
     "babble_1": lambda: babble(1),
     "babble_2": lambda: babble(2),

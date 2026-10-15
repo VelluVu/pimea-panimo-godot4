@@ -729,6 +729,14 @@ msgstr "The People's Lager"
 msgid "Pane viisi erää Bulkkilageria."
 msgstr "Brew five batches of Bulkkilager."
 
+#: src/resources/achievements/ensimmainen_pesu.tres
+msgid "Ensimmäinen pesu"
+msgstr "First wash"
+
+#: src/resources/achievements/ensimmainen_pesu.tres
+msgid "Pese tynnyri omin käsin."
+msgstr "Wash a keg by hand."
+
 #: src/resources/achievements/ensimmainen_satsi.tres
 msgid "Ensimmäinen olut"
 msgstr "First Beer"
@@ -736,6 +744,14 @@ msgstr "First Beer"
 #: src/resources/achievements/ensimmainen_satsi.tres
 msgid "Keitä ensimmäinen olut."
 msgstr "Brew your first beer."
+
+#: src/resources/achievements/etikkatehdas.tres
+msgid "Anna erän mennä pilalle likaisessa tynnyrissä."
+msgstr "Let a batch spoil in a dirty keg."
+
+#: src/resources/achievements/etikkatehdas.tres
+msgid "Etikkatehdas"
+msgstr "Vinegar works"
 
 #: src/resources/achievements/humalat_10.tres
 msgid "Avaa 10 humalalajiketta maineen avulla."
@@ -808,6 +824,22 @@ msgstr "Send three shipments to bars."
 #: src/resources/achievements/kolme_vientieraa.tres
 msgid "Vakiotoimittaja"
 msgstr "Regular Supplier"
+
+#: src/resources/achievements/kone_hoitaa.tres
+msgid "Kone hoitaa"
+msgstr "Let the machine do it"
+
+#: src/resources/achievements/kone_hoitaa.tres
+msgid "Osta Tynnyrinpesukone."
+msgstr "Buy the keg washer."
+
+#: src/resources/achievements/kuin_uusi.tres
+msgid "Kuin uusi"
+msgstr "Good as new"
+
+#: src/resources/achievements/kuin_uusi.tres
+msgid "Pese tynnyri täysin puhtaaksi."
+msgstr "Wash a keg spotless."
 
 #: src/resources/achievements/kylan_puheenaihe.tres
 msgid "Nosta maine 100:aan yhden kauden aikana."
@@ -925,6 +957,14 @@ msgstr "Survive an LVV raid."
 msgid "Tarkastettu"
 msgstr "Inspected"
 
+#: src/resources/achievements/taysi_kellari.tres
+msgid "Osta kaikki lisätynnyrit."
+msgstr "Buy every extra keg."
+
+#: src/resources/achievements/taysi_kellari.tres
+msgid "Täysi kellari"
+msgstr "Full cellar"
+
 #: src/resources/achievements/tehtaanmyymala.tres
 msgid "Myy yhteensä 500 annosta."
 msgstr "Sell 500 servings in total."
@@ -944,6 +984,14 @@ msgstr "Brew three dark batches (at least 30 EBC)."
 #: src/resources/achievements/tummat_3.tres
 msgid "Pimeyden ruhtinas"
 msgstr "Prince of Darkness"
+
+#: src/resources/achievements/tynnyrien_kiillottaja.tres
+msgid "Pese 25 tynnyriä omin käsin."
+msgstr "Wash 25 kegs by hand."
+
+#: src/resources/achievements/tynnyrien_kiillottaja.tres
+msgid "Tynnyrien kiillottaja"
+msgstr "Keg polisher"
 
 #: src/resources/achievements/tyyli_alkoholitonipa.tres
 msgid "Pane hyllyyn ensimmäinen erä tyyliä Alkoholiton IPA."
@@ -2657,6 +2705,10 @@ msgstr "Sell servings"
 msgid "Ei tyytymättömiä"
 msgstr "No unhappy customers"
 
+#: src/resources/daily_goals/pese_tynnyreita.tres
+msgid "Pese tynnyreitä"
+msgstr "Wash kegs"
+
 #: src/resources/daily_goals/tienaa_paljon_rahaa.tres
 msgid "Tienaa rahaa"
 msgstr "Earn money"
@@ -3179,13 +3231,116 @@ msgstr ""
 "The Close doors button ends the day early. It costs a little money and "
 "reputation, but lowers the LVV risk."
 
+#: src/resources/guide/025_kayminen.tres
+msgid ""
+"Kauden ensimmäinen erä on valmis heti. Päivän lopussa kaikki käyvät erät "
+"valmistuvat."
+msgstr ""
+"The season's first batch is ready at once. At the end of the day every "
+"fermenting batch is finished."
+
+#: src/resources/guide/025_kayminen.tres
+msgid "Käyminen ja hapantuminen"
+msgstr "Fermentation and souring"
+
+#: src/resources/guide/025_kayminen.tres
+msgid ""
+"Likainen tynnyri voi hapattaa erän. Mitä likaisempi tynnyri, sitä useammin "
+"ja pahemmin olut happanee: vähän hapan, hapan tai pilalla."
+msgstr ""
+"A dirty keg can sour the batch. The dirtier the keg, the more often and the "
+"worse the beer sours: slightly sour, sour or spoiled."
+
+#: src/resources/guide/025_kayminen.tres
+msgid ""
+"Pantu erä käy ensin noin minuutin. Käyvät erät näkyvät "
+"Tynnyrit-välilehdellä, ja valmis erä menee puhtaimpaan tyhjään tynnyriin."
+msgstr ""
+"A new batch ferments for about a minute first. Fermenting batches show in "
+"the Tynnyrit tab, and a finished batch goes into the cleanest empty keg."
+
+#: src/resources/guide/025_kayminen.tres
+msgid ""
+"Tyhjät tynnyrit kertyvät kellarin nurkkaan likaisina. Pese ne ennen kuin "
+"käyminen loppuu, niin erä menee puhtaaseen tynnyriin. Puhdistusvälineet "
+"vähentävät hapantumista."
+msgstr ""
+"Empty kegs pile up dirty in the cellar corner. Wash them before "
+"fermentation ends, and the batch goes into a clean keg. Cleaning gear "
+"reduces souring."
+
+#: src/resources/guide/026_tynnyrit.tres
+msgid ""
+"Hanaan menevät vanhimmat lukitsemattomat tynnyrit. Lukittu tynnyri jää "
+"kellariin vanhenemaan, ja sen hanaan tulee varalla oleva tynnyri."
+msgstr ""
+"The oldest unlocked kegs go on tap. A locked keg stays in the cellar to "
+"age, and a reserve keg takes its tap."
+
+#: src/resources/guide/026_tynnyrit.tres
+msgid ""
+"Hanoja on kaksi vähemmän kuin tynnyreitä. Ylimääräiset täydet tynnyrit "
+"odottavat varalla ja menevät hanaan, kun hanan tynnyri tyhjenee, joten "
+"seuraavan erän voi panna etukäteen."
+msgstr ""
+"There are two taps fewer than kegs. Extra full kegs wait in reserve and go "
+"on tap when a tap's keg runs empty, so you can brew the next batch ahead."
+
+#: src/resources/guide/026_tynnyrit.tres
+msgid ""
+"Jokainen erä vie oman tynnyrinsä. Tyhjentynyt tynnyri palaa likaisena "
+"pestäväksi."
+msgstr ""
+"Every batch takes a keg of its own. An emptied keg comes back dirty to be "
+"washed."
+
+#: src/resources/guide/026_tynnyrit.tres
+msgid ""
+"Mitä useampi eri tyyli on hanassa, sitä tiheämmin asiakkaita tulee. Lisää "
+"tynnyreitä tuo yhden tynnyrin ja yhden hanan lisää."
+msgstr ""
+"The more different styles on tap, the more often customers come. Lisää "
+"tynnyreitä adds one keg and one tap."
+
+#: src/resources/guide/026_tynnyrit.tres
+msgid "Tynnyrit ja hanat"
+msgstr "Kegs and taps"
+
+#: src/resources/guide/027_koneet.tres
+msgid "Koneet"
+msgstr "Machines"
+
+#: src/resources/guide/027_koneet.tres
+msgid ""
+"Koneet voi kytkeä päälle ja pois kellarin parannuksista. Valinta muistetaan "
+"seuraavillakin kausilla."
+msgstr ""
+"The machines can be switched on and off in the cellar upgrades. The choice "
+"is kept for later seasons too."
+
+#: src/resources/guide/027_koneet.tres
+msgid ""
+"Pesukone pesee jokaisen tyhjentyneen tynnyrin itse. Automaattikattila "
+"keittää ilman keittopäivää, aina täydellisesti."
+msgstr ""
+"The washer washes every emptied keg by itself. The automatic kettle brews "
+"without the brew day, always perfectly."
+
+#: src/resources/guide/027_koneet.tres
+msgid ""
+"Tynnyrinpesukone ja Automaattikattila ovat kalliita kellariparannuksia. "
+"Kerran ostettuina ne jäävät kellariin kaikille tuleville kausille."
+msgstr ""
+"The keg washer and the automatic kettle are expensive cellar upgrades. Once "
+"bought, they stay in the cellar for every season to come."
+
 #: src/resources/guide/02_keittaminen.tres
 msgid ""
-"Avaa keittola, lisää raaka-aineet pöydälle ja paina Pane. Valmis tynnyri "
-"menee varastoon."
+"Avaa keittola, lisää raaka-aineet pöydälle ja paina Pane. Erä käy hetken ja "
+"menee sitten tynnyriin varastoon."
 msgstr ""
-"Open the brewhouse, add ingredients to the table and press Brew. The "
-"finished keg goes into storage."
+"Open the brewhouse, put the ingredients on the table and press Pane. The "
+"batch ferments for a while and then goes into a keg in the warehouse."
 
 #: src/resources/guide/02_keittaminen.tres
 msgid ""
@@ -3229,11 +3384,11 @@ msgstr ""
 
 #: src/resources/guide/03_myynti.tres
 msgid ""
-"Asiakkaat ostavat annoksia varaston tynnyreistä. Suosikkityyli tuo enemmän "
-"mainetta ja tippejä."
+"Asiakkaat ostavat annoksia hanassa olevista tynnyreistä. Suosikkityyli tuo "
+"enemmän mainetta ja tippejä."
 msgstr ""
-"Customers buy servings from the kegs in storage. Their favourite style "
-"brings more reputation and tips."
+"Customers buy servings from the kegs on tap. Their favourite style brings "
+"more reputation and tips."
 
 #: src/resources/guide/03_myynti.tres
 msgid "Myynti ja asiakkaat"
@@ -5242,6 +5397,14 @@ msgid "(kanta-asiakas)"
 msgstr "(regular)"
 
 #: src/scenes/ui/customer_book_window.gd
+msgid "< Takaisin"
+msgstr "< Back"
+
+#: src/scenes/ui/customer_book_window.gd
+msgid "Aiheet"
+msgstr "Topics"
+
+#: src/scenes/ui/customer_book_window.gd
 msgid "Asiakkaat"
 msgstr "Customers"
 
@@ -5695,10 +5858,6 @@ msgstr "Receipts"
 #: src/scenes/ui/recipe_library_window.gd
 msgid "%s (raaka-aineita puuttuu)"
 msgstr "%s (ingredients missing)"
-
-#: src/scenes/ui/recipe_library_window.gd
-msgid "< Takaisin"
-msgstr "< Back"
 
 #: src/scenes/ui/recipe_library_window.gd
 msgid "Lataa resepti"
