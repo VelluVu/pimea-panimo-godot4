@@ -152,7 +152,7 @@ func _process(delta: float) -> void:
 
 ## Holds a young batch of a style that pays more aged (BeerStyle.aged_price_bonus) until
 ## its peak, but never the last beer the counter has: a customer with nothing to buy
-## leaves unhappy.
+## leaves unhappy. Spare kegs count too, since one goes on tap when the held keg leaves.
 func _manage_cellar(b: Brewery) -> void:
 	for batch: BrewBatch in b.inventory.brew_batches:
 		var aging: bool = _still_aging(batch)
@@ -726,13 +726,14 @@ func _unlock_share(b: Brewery, c: CustomerData, style: BeerStyle.Style, probe: B
 	return 0.0
 
 
-## 0.2 when the customer's wishes already have 10 servings on the counter, else 1.
+## 0.2 when the customer's wishes already have 10 servings on tap, else 1. A spare keg
+## waiting for a tap does not serve anyone yet.
 func _served_share(b: Brewery, c: CustomerData, in_stock: Dictionary) -> float:
 	if not c.uses_taste_tiers():
 		return 0.2 if in_stock.get(c.primary_style, 0) >= 10 else 1.0
 	var bottles: int = 0
-	for batch: BrewBatch in b.inventory.brew_batches:
-		if not batch.held and c.accepts_batch(batch) and c.get_batch_preference(batch) >= 0.5:
+	for batch: BrewBatch in b.inventory.batches_on_serve():
+		if c.accepts_batch(batch) and c.get_batch_preference(batch) >= 0.5:
 			bottles += batch.amount_bottles
 	return 0.2 if bottles >= 10 else 1.0
 
