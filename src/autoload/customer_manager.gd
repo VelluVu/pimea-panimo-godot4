@@ -12,7 +12,7 @@ const KEY_DELIGHTED = "delighted"
 
 ## Default cost of turning a customer away with nothing to sell them: small,
 ## but not free, since they complain on the way out.
-const NO_MATCH_REPUTATION_PENALTY : int = 1
+const NO_MATCH_REPUTATION_PENALTY : int = 2
 const NO_MATCH_RISK_PENALTY : int = 1
 
 ## Used until a spawner reports how many counter positions it really has.

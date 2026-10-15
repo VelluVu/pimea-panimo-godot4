@@ -13,6 +13,9 @@ const FRIEND_DELAY_MIN_SECONDS: float = 8.0
 const FRIEND_DELAY_MAX_SECONDS: float = 16.0
 ## Added to the wait for the next walk-in.
 const BAD_REVIEW_DELAY_SECONDS: float = 25.0
+## Reputation a bad review costs on top of the visit's own penalty. Only a refusal or an
+## empty-handed visit spreads one: a customer who bought something keeps quiet.
+const BAD_REVIEW_REPUTATION_PENALTY: int = 1
 
 
 ## `roll` is randf(). A delighted customer never spreads a bad review.

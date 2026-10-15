@@ -55,7 +55,10 @@ static func evaluate(customer : CustomerData, batch : BrewBatch, style_base_pric
 
 	# Zero at the bar, positive above it, negative in the bad-quality branch.
 	var quality_margin : float = quality - customer.min_quality
-	reputation += quality_reputation(quality_margin, customer.quality_reputation_sensitivity)
+	# A beer they did not want earns nothing for being well made: the wrong style always
+	# costs reputation, so serving one easy style to everyone does not pay.
+	if score >= 0.5:
+		reputation += quality_reputation(quality_margin, customer.quality_reputation_sensitivity)
 	risk = risk_after_quality(risk, roundi(quality_margin * customer.quality_risk_sensitivity))
 	var income : float = income_for(style_base_price)
 	var tip : float = 0.0
