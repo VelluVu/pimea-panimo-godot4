@@ -108,6 +108,27 @@ func test_a_style_without_hop_marks_still_boils_its_hops() -> void:
 	assert_eq(marks[0].kind, HopAddition.Kind.BITTERING)
 
 
+func test_a_leftover_aroma_hop_flavours_a_bittering_only_style() -> void:
+	var table : Dictionary = _table()
+	(table[MAGNUM_ID] as HopData).flavor_profile = HopData.FlavorProfile.NONE
+	var marks : Array[BoilMark] = HopRolesScript.assign({MAGNUM_ID: 7, CASCADE_ID: 5}, table,
+		_kinds([HopAddition.Kind.BITTERING]), _profiles(HopData.FlavorProfile.NOBLE))
+	assert_eq(marks.size(), 2)
+	assert_eq(marks[0].kind, HopAddition.Kind.BITTERING)
+	assert_eq(marks[0].ingredient_id, MAGNUM_ID)
+	assert_eq(marks[1].kind, HopAddition.Kind.FLAVOR)
+	assert_eq(marks[1].ingredient_id, CASCADE_ID)
+
+
+func test_a_leftover_bittering_hop_stays_on_the_bittering_mark() -> void:
+	var table : Dictionary = _table()
+	(table[CASCADE_ID] as HopData).flavor_profile = HopData.FlavorProfile.NONE
+	var marks : Array[BoilMark] = HopRolesScript.assign({MAGNUM_ID: 7, CASCADE_ID: 5}, table,
+		_kinds([HopAddition.Kind.BITTERING]), _profiles(HopData.FlavorProfile.NONE))
+	for mark : BoilMark in marks:
+		assert_eq(mark.kind, HopAddition.Kind.BITTERING)
+
+
 func test_no_hops_means_no_hop_marks() -> void:
 	var marks : Array[BoilMark] = HopRolesScript.assign({MALT_ID: 5}, _table(),
 		_kinds([HopAddition.Kind.BITTERING]), _profiles(HopData.FlavorProfile.NONE))
