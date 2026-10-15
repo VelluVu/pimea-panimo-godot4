@@ -13,6 +13,8 @@ const FLAVOR_MATCH_BONUS : float = 0.1
 const SPICE_MATCH_STEP : float = 0.05
 const SPICE_MATCH_MAX : float = 0.1
 const PURITY_LAW_PENALTY : float = 0.1
+## Per spice the style neither needs nor likes, so spicing a beer at random never pays.
+const UNSUITED_SPICE_PENALTY : float = 0.05
 const MIN_MULTIPLIER : float = 0.5
 const MAX_MULTIPLIER : float = 1.5
 
@@ -67,6 +69,18 @@ static func spice_bonus(mixture : BrewMixture, beer_style : BeerStyle) -> float:
 		if mixture.spice_ids.has(spice_id):
 			matched += 1
 	return minf(matched * SPICE_MATCH_STEP, SPICE_MATCH_MAX)
+
+
+## Quality lost to spices that do not suit the style. German styles pay the Reinheitsgebot
+## in spice_bonus() instead.
+static func unsuited_spice_penalty(mixture : BrewMixture, beer_style : BeerStyle) -> float:
+	if beer_style.forbids_spices:
+		return 0.0
+	var unsuited : int = 0
+	for spice_id : int in mixture.spice_ids:
+		if not beer_style.preferred_spice_ids.has(spice_id) and not beer_style.required_spice_ids.has(spice_id):
+			unsuited += 1
+	return unsuited * UNSUITED_SPICE_PENALTY
 
 
 static func multiplier(mixture : BrewMixture, precision : float, balance_bonus : float, flavor_match : bool, spice_match_bonus : float = 0.0) -> float:

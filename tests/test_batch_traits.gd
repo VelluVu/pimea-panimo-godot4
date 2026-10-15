@@ -46,10 +46,15 @@ func _style(kinds : Array[HopAddition.Kind]) -> BeerStyle:
 	return style
 
 
-func test_spices_are_found_only_when_some_went_in() -> void:
-	assert_true(BatchTraits.has_spices({PILSNER_ID: 4, CORIANDER_ID: 10}, _table()))
-	assert_false(BatchTraits.has_spices({PILSNER_ID: 4, CORIANDER_ID: 0}, _table()))
-	assert_false(BatchTraits.has_spices({PILSNER_ID: 4}, _table()))
+func test_only_a_spice_the_style_likes_or_needs_counts() -> void:
+	var style := BeerStyle.new()
+	style.preferred_spice_ids = [CORIANDER_ID]
+	assert_true(BatchTraits.has_suitable_spice(style, {PILSNER_ID: 4, CORIANDER_ID: 10}))
+	assert_false(BatchTraits.has_suitable_spice(style, {PILSNER_ID: 4, CORIANDER_ID: 0}))
+	assert_false(BatchTraits.has_suitable_spice(style, {PILSNER_ID: 4, 406: 5}), "coffee does not suit it")
+	var needs := BeerStyle.new()
+	needs.required_spice_ids = [CORIANDER_ID]
+	assert_true(BatchTraits.has_suitable_spice(needs, {CORIANDER_ID: 10}))
 
 
 func test_malt_ids_lists_only_malts_sorted() -> void:
@@ -77,6 +82,7 @@ func test_a_hop_without_aroma_adds_no_late_flavour() -> void:
 func test_apply_fills_the_batch() -> void:
 	var batch := BrewBatch.new()
 	batch.beer_style = _style([HopAddition.Kind.BITTERING, HopAddition.Kind.AROMA])
+	batch.beer_style.preferred_spice_ids = [CORIANDER_ID]
 	BatchTraits.apply(batch, {PILSNER_ID: 4, MAGNUM_ID: 20, CASCADE_ID: 20, CORIANDER_ID: 5}, _table())
 	assert_true(batch.spiced)
 	assert_eq(batch.malt_ids, [PILSNER_ID] as Array[int])

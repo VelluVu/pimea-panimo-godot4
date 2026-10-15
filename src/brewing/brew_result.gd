@@ -23,3 +23,5 @@ extends Resource
 @export var hop_balance_bonus : float = 0.0
 @export var flavor_matched : bool = false
 @export var spice_bonus : float = 0.0
+## Quality lost to spices the style does not like, see BrewQuality.unsuited_spice_penalty().
+@export var unsuited_spice_penalty : float = 0.0

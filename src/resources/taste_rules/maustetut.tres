@@ -4,6 +4,6 @@
 
 [resource]
 script = ExtResource("1_rule")
-label = "maustetut oluet"
+label = "maustetut oluet (tyyliin sopivilla mausteilla)"
 needs_spices = true
 metadata/_custom_type_script = "res://src/customers/taste_rule.gd"

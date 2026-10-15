@@ -9,16 +9,19 @@ const LATE_HOP_KINDS : Array[HopAddition.Kind] = [HopAddition.Kind.AROMA, HopAdd
 
 ## `contents` maps ingredient id -> amount, `table` id -> IngredientData.
 static func apply(batch : BrewBatch, contents : Dictionary, table : Dictionary) -> void:
-	batch.spiced = has_spices(contents, table)
+	batch.spiced = has_suitable_spice(batch.beer_style, contents)
 	batch.malt_ids = malt_ids(contents, table)
 	batch.late_hop_profiles = late_hop_profiles(batch.beer_style, contents, table)
 	batch.hop_profiles = hop_profiles(contents, table)
 
 
-static func has_spices(contents : Dictionary, table : Dictionary) -> bool:
+## A spice the style needs or likes went in: coffee in a Baltic Portteri counts, coffee
+## in an IPA does not, so the Leipuri never rewards spicing a beer at random.
+static func has_suitable_spice(style : BeerStyle, contents : Dictionary) -> bool:
+	if style == null:
+		return false
 	for id : int in contents:
-		var data : IngredientData = table.get(id)
-		if data != null and data.type == IngredientData.IngredientType.SPICE and int(contents[id]) > 0:
+		if int(contents[id]) > 0 and (style.preferred_spice_ids.has(id) or style.required_spice_ids.has(id)):
 			return true
 	return false
 
