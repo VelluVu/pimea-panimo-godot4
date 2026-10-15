@@ -7,10 +7,16 @@ extends RefCounted
 ## Every batch sits in a keg of its own, so a brew needs an empty one. Empty kegs are kept
 ## as their cleanliness, 0 (just emptied) to 1 (washed spotless). Dirt never grows while a
 ## keg waits.
+##
+## The bar has a tap for every keg but SPARE_KEGS: full kegs past the taps wait in the
+## warehouse, so the player can brew ahead, and go on tap when a tap's keg runs empty.
 
 const MIN_SERVINGS : int = 40
-## Kegs a season starts with; the cellar upgrade buys more.
-const START_KEGS : int = 4
+## Taps a season starts with; the keg upgrade adds a keg and a tap per level.
+const START_TAPS : int = 2
+## Kegs that wait in the warehouse, full or empty, on top of the ones on tap.
+const SPARE_KEGS : int = 2
+const START_KEGS : int = START_TAPS + SPARE_KEGS
 const DIRTY : float = 0.0
 const CLEAN : float = 1.0
 
@@ -24,6 +30,11 @@ static func starting_kegs() -> Array[float]:
 	for i : int in START_KEGS:
 		kegs.append(CLEAN)
 	return kegs
+
+
+## Taps on the bar for `total_kegs` kegs owned.
+static func tap_count(total_kegs : int) -> int:
+	return maxi(1, total_kegs - SPARE_KEGS)
 
 
 static func is_dirty(cleanliness : float) -> bool:

@@ -6,7 +6,7 @@ extends RefCounted
 ## the counter's room the pitch tightens instead, so twelve taps still fit. Pixel sizes
 ## are the tap art's, see assets/textures/tap/.
 
-## One tap per keg the brewery owns: KegRules.START_KEGS plus the keg upgrade's levels.
+## One tap per keg the brewery owns but the spares, see KegRules.tap_count().
 const MAX_TAPS : int = 12
 const CAP_WIDTH : int = 5
 const HANDLE_WIDTH : int = 5

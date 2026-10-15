@@ -96,7 +96,7 @@ static func calculate_sale(results : Dictionary, bottles_sold : int, tip_multipl
 func pick_batches_for(data : CustomerData) -> Array[BrewBatch]:
 	if brewery == null:
 		return []
-	return pick_batches(brewery.inventory.brew_batches, data, randi_range(1, maxi(1, data.max_styles_per_visit)))
+	return pick_batches(brewery.inventory.batches_on_serve(), data, randi_range(1, maxi(1, data.max_styles_per_visit)))
 
 
 ## Returns the customer's spoken response. `picks` are the batches the customer already

@@ -9,8 +9,8 @@ extends SaveSlot
 ## extends this.
 
 ## Version 0 -> 1 needed no migration step. 1 -> 2 dropped the run modifier, which is
-## stripped from the file text before loading (LegacySaveText).
-const SAVE_VERSION: int = 2
+## stripped from the file text before loading (LegacySaveText). 2 -> 3 adds the spare kegs.
+const SAVE_VERSION: int = 3
 
 ## Endings that finish the run for good. The season endings ("survived",
 ## "season_over") are left out on purpose: the player can keep playing.
@@ -51,6 +51,16 @@ func load_game() -> bool:
 	StyleDiscovery.new(BrewEngine.current_brewery).refresh_default_recipes()
 	BrewEngine.current_brewery.emit_initial_values()
 	return true
+
+
+func _migrate(resource: Resource, from_version: int) -> void:
+	var brewery := resource as Brewery
+	if brewery == null:
+		return
+	# Every keg used to have its own tap. The bar keeps those taps, so the warehouse's
+	# spare kegs come on top.
+	if from_version < 3:
+		brewery.inventory.add_clean_kegs(KegRules.SPARE_KEGS)
 
 
 ## Rewrites saves from older builds that Godot could not load at all, see LegacySaveText.

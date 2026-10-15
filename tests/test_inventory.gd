@@ -161,3 +161,41 @@ func test_styles_on_tap_counts_styles_for_sale_once() -> void:
 	inventory.brew_batches.append(_batch(BeerStyle.Style.SAHTI, 30, true))
 	inventory.brew_batches.append(_batch(BeerStyle.Style.SAISON, 0))
 	assert_eq(inventory.styles_on_tap(), 2, "held and empty batches are not on tap")
+
+
+## Two taps: four kegs owned (KegRules.SPARE_KEGS of them spare), none of them empty.
+func _two_tap_inventory() -> Inventory:
+	var inventory := Inventory.new()
+	inventory.free_kegs = [] as Array[float]
+	return inventory
+
+
+func test_full_kegs_past_the_taps_wait_in_the_warehouse() -> void:
+	var inventory := _two_tap_inventory()
+	var first := _batch(BeerStyle.Style.IPA, 20)
+	var second := _batch(BeerStyle.Style.HELLES, 20)
+	var spare := _batch(BeerStyle.Style.SAHTI, 20)
+	inventory.brew_batches.assign([first, second, spare, _batch(BeerStyle.Style.SAISON, 20)])
+	assert_eq(inventory.batches_on_serve(), [first, second] as Array[BrewBatch])
+	assert_eq(inventory.styles_on_tap(), 2)
+
+
+func test_a_spare_keg_takes_the_tap_of_an_emptied_one() -> void:
+	var inventory := _two_tap_inventory()
+	var first := _batch(BeerStyle.Style.IPA, 20)
+	var second := _batch(BeerStyle.Style.HELLES, 20)
+	var spare := _batch(BeerStyle.Style.SAHTI, 20)
+	inventory.brew_batches.assign([first, second, spare])
+	inventory.free_kegs = [KegRules.CLEAN] as Array[float]
+	first.amount_bottles = 0
+	assert_eq(inventory.batches_on_serve(), [second, spare] as Array[BrewBatch])
+
+
+func test_a_held_keg_leaves_its_tap_to_a_spare() -> void:
+	var inventory := _two_tap_inventory()
+	var aging := _batch(BeerStyle.Style.IPA, 20, true)
+	var second := _batch(BeerStyle.Style.HELLES, 20)
+	var spare := _batch(BeerStyle.Style.SAHTI, 20)
+	inventory.brew_batches.assign([aging, second, spare])
+	inventory.free_kegs = [KegRules.CLEAN] as Array[float]
+	assert_eq(inventory.batches_on_serve(), [second, spare] as Array[BrewBatch])
