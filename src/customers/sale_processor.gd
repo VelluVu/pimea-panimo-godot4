@@ -144,9 +144,9 @@ func process(data : CustomerData, picks : Array[BrewBatch] = []) -> String:
 	if BarFightRules.breaks_out(data, wanted * batches.size(), bottles_sold, brewery.stats.multiplier(PerkStats.BAR_FIGHT_CHANCE), randf()):
 		_trigger_bar_fight(data, last_batch)
 
+	_spread_word(data, delighted, reputation_gain, false)
 	BrewerySignals.sale_reputation_gained.emit(brewery.reputation - reputation_before)
 	BrewerySignals.brewery_state_changed.emit(brewery)
-	_spread_word(data, delighted, reputation_gain)
 	_update_standing(data, delighted, reputation_gain)
 	BrewerySignals.customer_served.emit(data)
 	return response_text
@@ -221,9 +221,9 @@ func _refuse_bad_quality(data : CustomerData, quality : float) -> String:
 		brewery.change_reputation(penalty.x, ReputationRules.Source.CUSTOMERS)
 		brewery.add_risk(penalty.y)
 		BrewerySignals.customer_unhappy.emit()
+		_spread_word(data, false, penalty.x)
 		BrewerySignals.sale_reputation_gained.emit(brewery.reputation - reputation_before)
 		BrewerySignals.brewery_state_changed.emit(brewery)
-		_spread_word(data, false, penalty.x)
 		_update_standing(data, false, penalty.x)
 	return tr(data.dialogue_reject) + QualityWishText.reject_suffix(quality, data.min_quality)
 
@@ -241,9 +241,9 @@ func _turn_away(data : CustomerData, wanted : int) -> String:
 		# A customer who fights over missing beer does it right here, before leaving.
 		if BarFightRules.breaks_out(data, wanted, 0, brewery.stats.multiplier(PerkStats.BAR_FIGHT_CHANCE), randf()):
 			_trigger_bar_fight(data, null)
+		_spread_word(data, false, -data.no_match_reputation_penalty)
 		BrewerySignals.sale_reputation_gained.emit(brewery.reputation - reputation_before)
 		BrewerySignals.brewery_state_changed.emit(brewery)
-		_spread_word(data, false, -data.no_match_reputation_penalty)
 		_update_standing(data, false, -data.no_match_reputation_penalty)
 	return tr(data.dialogue_no_match)
 
@@ -258,11 +258,13 @@ func _update_standing(data : CustomerData, delighted : bool, reputation_gain : i
 		BrewerySignals.regular_status_changed.emit(data.title, RegularRules.is_regular(after))
 
 
-func _spread_word(data : CustomerData, delighted : bool, reputation_gain : int) -> void:
-	match WordOfMouthRules.outcome(delighted, reputation_gain, randf()):
+## `left_unhappy` is a refusal or an empty-handed visit, the only ones that spread a bad review.
+func _spread_word(data : CustomerData, delighted : bool, reputation_gain : int, left_unhappy : bool = true) -> void:
+	match WordOfMouthRules.outcome(delighted, reputation_gain if left_unhappy else maxi(0, reputation_gain), randf()):
 		WordOfMouthRules.Outcome.FRIEND:
 			BrewerySignals.friend_recommended.emit(data)
 		WordOfMouthRules.Outcome.BAD_REVIEW:
+			brewery.change_reputation(-WordOfMouthRules.BAD_REVIEW_REPUTATION_PENALTY, ReputationRules.Source.CUSTOMERS)
 			BrewerySignals.bad_review_spread.emit()
 
 

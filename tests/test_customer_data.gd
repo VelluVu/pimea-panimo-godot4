@@ -151,7 +151,7 @@ func test_evaluate_brew_batch_penalizes_wrong_style() -> void:
 	var result := customer.evaluate_brew_batch(batch, 3.0, 0.0)
 	assert_eq(result[CustomerManager.KEY_INCOME], 3, "income") # fixed price even for a wrong-style sale
 	assert_eq(result[CustomerManager.KEY_TIP], 0.0, "tip") # nobody tips for a beer they did not want
-	assert_eq(result[CustomerManager.KEY_REPUTATION], 1, "reputation") # -1 flat, margin 0.5 * 4.0 -> +2
+	assert_eq(result[CustomerManager.KEY_REPUTATION], -1, "reputation") # -1 flat; a well-made wrong style earns no quality bonus
 	assert_eq(result[CustomerManager.KEY_RISK], 1, "risk") # 2 flat, margin 0.5 * 2.0 -> -1
 	assert_eq(result[CustomerManager.KEY_RESPONSE], customer.dialogue_wrong_style, "response")
 
