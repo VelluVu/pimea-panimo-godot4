@@ -19,8 +19,11 @@ it is, its colour and bitterness, and its yeast.
 - **Strength:** gravity points = Σ(kg × extract × 384 × efficiency) / 20, efficiency 0.72
   for malts, 1.0 for sugar. ABV = points × yeast attenuation × 0.131. Each batch keeps its
   own ABV (`BrewBatch.abv`); the style's `abv` is only its typical value for the book.
-- **Bitterness:** unchanged, IBU = Σ(alpha × grams) / 10. Hop timing (late hops bitter
-  less) is a later step.
+- **Bitterness:** IBU = Σ(alpha × grams × utilisation) / 10, where HopRoles puts each hop
+  on one of the style's marks and the mark sets the utilisation (`HopUtilization`, from
+  Tinseth's boil-time term 1 − e^(−0.04 t) relative to 60 min): bittering 1.0, flavour
+  (15 min) 0.5, aroma (flame-out stand, ~2.5 min) 0.1, dry hop 0. So the same hops give
+  each style its own IBU. Wort gravity (Tinseth's bigness factor) is left out.
 
 ## Resolver rules
 

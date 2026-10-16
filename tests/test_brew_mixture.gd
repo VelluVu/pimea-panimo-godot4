@@ -27,6 +27,7 @@ func _make_ingredients() -> Dictionary:
 	dark.type = IngredientData.IngredientType.MALT
 	dark.ebc = 60
 	var hop := HopData.new()
+	hop.id = HOP_ID
 	hop.type = IngredientData.IngredientType.HOP
 	hop.alpha_acids = 100
 	hop.beta_acids = 50
@@ -43,6 +44,7 @@ func _make_ingredients() -> Dictionary:
 	var second_spice := IngredientData.new()
 	second_spice.type = IngredientData.IngredientType.SPICE
 	var bittering := HopData.new()
+	bittering.id = BITTERING_HOP_ID
 	bittering.type = IngredientData.IngredientType.HOP
 	bittering.alpha_acids = 100
 	return {MALT_ID: malt, DARK_MALT_ID: dark, HOP_ID: hop, YEAST_ID: yeast, SPICE_ID: spice, BITTERING_HOP_ID: bittering, PACK_MALT_ID: pack_malt, SECOND_SPICE_ID: second_spice}
@@ -95,6 +97,18 @@ func test_fits_checks_ebc_and_ibu_windows() -> void:
 	assert_true(mixture.fits(_make_style(0, 30, 10, 30)))
 	assert_false(mixture.fits(_make_style(20, 30, 10, 30)), "EBC below window")
 	assert_false(mixture.fits(_make_style(0, 30, 30, 60)), "IBU below window")
+
+
+func test_late_hop_marks_bitter_less() -> void:
+	var mixture := _make_mixture({MALT_ID: 3, HOP_ID: 2, YEAST_ID: 1})
+	var boiled := _make_style(0, 30, 0, 999)
+	boiled.hop_additions = [HopAddition.Kind.BITTERING]
+	var late := _make_style(0, 30, 0, 999)
+	late.hop_additions = [HopAddition.Kind.AROMA]
+	assert_eq(mixture.ibu_for(boiled), mixture.final_ibu, "a bittering mark boils the whole hour")
+	assert_true(mixture.ibu_for(late) < mixture.final_ibu / 5.0,"an aroma mark barely bitters")
+	late.min_ibu = 15
+	assert_false(mixture.fits(late), "the style's own timing decides the fit")
 
 
 func test_fits_requires_matching_yeast_and_malt() -> void:

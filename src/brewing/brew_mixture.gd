@@ -15,6 +15,7 @@ var alpha_acids : float = 0.0
 var beta_acids : float = 0.0
 var yeast_id : int = NO_YEAST
 var final_ebc : int = 0
+## Bitterness if every hop boiled the whole hour; a style's own timing gives ibu_for().
 var final_ibu : int = 0
 var abv : float = 0.0
 ## Ids and profiles present with a non-zero amount, whatever the amount.
@@ -28,11 +29,17 @@ var _malt_kg : Dictionary = {}
 var _color_units : float = 0.0
 var _gravity_points : float = 0.0
 var _attenuation : float = 0.0
+var _contents : Dictionary = {}
+var _table : Dictionary = {}
+## Style -> IBU with the style's hop timing.
+var _style_ibu : Dictionary = {}
 
 
 ## `contents` is id -> amount; `ingredients` is id -> IngredientData.
 static func from_contents(contents : Dictionary, ingredients : Dictionary) -> BrewMixture:
 	var mixture := BrewMixture.new()
+	mixture._contents = contents
+	mixture._table = ingredients
 	for id : int in contents:
 		mixture._add(id, ingredients[id], contents[id])
 	mixture._compute_totals()
@@ -57,8 +64,19 @@ func fits(beer_style : BeerStyle) -> bool:
 	if not beer_style.base_malt_ids.is_empty() and base_share(beer_style.base_malt_ids) < beer_style.min_base_share:
 		return false
 	return final_ebc >= beer_style.min_ebc and final_ebc <= beer_style.max_ebc \
-			and final_ibu >= beer_style.min_ibu and final_ibu <= beer_style.max_ibu \
+			and ibu_for(beer_style) >= beer_style.min_ibu and ibu_for(beer_style) <= beer_style.max_ibu \
 			and is_equal_approx(abv, clampf(abv, beer_style.min_abv, beer_style.max_abv))
+
+
+## Bitterness as this style brews it: HopRoles puts each hop on one of the style's marks,
+## and late marks bitter less (HopUtilization).
+func ibu_for(beer_style : BeerStyle) -> int:
+	if hop_amount <= 0:
+		return 0
+	if not _style_ibu.has(beer_style):
+		var marks : Array[BoilMark] = HopRoles.assign(_contents, _table, beer_style.hop_additions, beer_style.preferred_hop_profiles)
+		_style_ibu[beer_style] = HopUtilization.ibu(marks, _table)
+	return _style_ibu[beer_style]
 
 
 ## Share of the malt weight made of `ids`, 0 to 1.

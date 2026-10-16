@@ -131,7 +131,7 @@ func _build_match_result(mixture : BrewMixture, beer_style : BeerStyle) -> BrewR
 	var result := BrewResult.new()
 	result.beer_style = beer_style
 	result.final_ebc = mixture.final_ebc
-	result.final_ibu = mixture.final_ibu
+	result.final_ibu = mixture.ibu_for(beer_style)
 	result.original_quality = snappedf(beer_style.original_quality * multiplier, QUALITY_PRECISION)
 	result.reputation_change = beer_style.reputation_change
 	result.abv = mixture.abv
