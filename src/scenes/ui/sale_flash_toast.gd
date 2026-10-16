@@ -21,17 +21,7 @@ const MAX_WIDTH : float = 180.0
 @onready var margin_container : MarginContainer = $MarginContainer
 
 
-## Panel's own mouse_filter defaults to STOP and was never overridden in
-## the scene — harmless while this only ever sat over empty background,
-## but SaleFlashStack's toast column overlaps RightWarehouseView's batch
-## rows, and a live toast (in front by sibling order) was silently
-## swallowing clicks meant for the "Myy"/"Vie" buttons underneath it for
-## its whole ~2.5s lifetime. A non-interactive notice should never be able
-## to eat a click for anything, so every node in this scene explicitly
-## ignores the mouse — matches this project's existing convention of
-## setting mouse_filter = IGNORE explicitly on layout-only nodes rather
-## than relying on a class default (see e.g. BeerBatchScrollContainer/
-## BeerBatchListVBox in right_warehouse_view.tscn).
+## The toast column overlaps the warehouse rows, so no node here may eat their clicks.
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	margin_container.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -42,12 +32,8 @@ func initialize(entry : SaleReceiptEntry) -> void:
 	initialize_text(tr(LABEL_FORMAT) % [entry.get_summary_text(), entry.net_income])
 
 
-## Generic entry point for flashes that don't have a SaleReceiptEntry to
-## summarize — see SaleFlashStack's ship-to-bar/bar-fight
-## listeners, which aren't real customer sales but still deserve the same
-## brief "something happened" notice. text_color defaults to the scene's
-## own theme color (a sale); pass a warmer color for a bad-news flash like
-## a bar fight so it doesn't read as identical to a payout.
+## A flash without a SaleReceiptEntry (shipping, bar fights). Pass a warmer text_color
+## for bad news so it doesn't read as a payout.
 func initialize_text(text : String, text_color : Color = Color.WHITE) -> void:
 	label.text = text
 	label.modulate = text_color

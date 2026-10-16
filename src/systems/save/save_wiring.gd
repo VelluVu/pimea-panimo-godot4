@@ -1,12 +1,10 @@
 class_name SaveWiring
 extends SaveSlot
 
-## This game's run save: the one file to edit after copying the save system.
-## Saves BrewEngine.current_brewery. Almost all run state is already a Resource
-## with @export fields, so the whole graph serializes as is. Autoloads that keep
-## live run state elsewhere (TimeManager's day countdown) write it onto the
-## Brewery on BrewEngine.brewery_about_to_save. The game's SaveManager autoload
-## extends this.
+## This game's run save, the file to edit after copying the system. Saves
+## BrewEngine.current_brewery, which serializes as is; autoloads keeping run state
+## elsewhere (TimeManager's countdown) write it onto the Brewery on
+## BrewEngine.brewery_about_to_save. SaveManager extends this.
 
 ## Version 0 -> 1 needed no migration step. 1 -> 2 dropped the run modifier, which is
 ## stripped from the file text before loading (LegacySaveText). 2 -> 3 adds the spare kegs.

@@ -1,11 +1,9 @@
 class_name GoalData
 extends Resource
 
-## One goal a GoalBoard can roll into a slot. An "achieve" goal succeeds when its
-## progress reaches the target and fails if the period ends first; an "avoid" goal
-## fails the moment progress passes the target and succeeds if it never does.
-## A project extends this with its own kinds and rewards, overriding get_kind(),
-## is_avoid() and matches().
+## One goal for a GoalBoard slot. "Achieve" succeeds on reaching the target and fails if
+## the period ends first; "avoid" fails on passing it and succeeds otherwise. A project
+## extends this, overriding get_kind(), is_avoid() and matches().
 
 @export var goal_name : String = ""
 @export var target_amount : int = 1

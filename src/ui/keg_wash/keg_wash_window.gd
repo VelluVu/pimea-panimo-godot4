@@ -1,11 +1,9 @@
 class_name KegWashWindow
 extends Control
 
-## The keg wash minigame. Clicking the dirty keg pile opens it: the dirty kegs come up one
-## at a time, and each finished one goes back to the cellar as clean as it was left
-## (GUISignals.keg_wash_finished). Valmis takes the keg as it is now; Lopeta pesu (or Esc)
-## stops, and the keg on the table goes back to the pile unwashed. The game is paused
-## meanwhile, and level-up cards wait until it closes.
+## The keg wash minigame, opened from the dirty keg pile: kegs come up one at a time and
+## Valmis sends each back as clean as it is (GUISignals.keg_wash_finished). Lopeta pesu
+## (or Esc) returns the one on the table unwashed. Pauses the game; level-up cards wait.
 
 const HEADER_TEXT : String = "TYNNYRIN PESU · %d/%d"
 const HINT_TEXT : String = "Paina työkalua ja pidä pohjassa: hankaa harjalla, huuhtele letkulla ja viimeistele suihkeella."

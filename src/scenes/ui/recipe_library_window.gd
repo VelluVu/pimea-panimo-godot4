@@ -1,11 +1,9 @@
 class_name RecipeLibraryWindow
 extends Panel
 
-## The recipe book: an index of every style (known ones by name, locked ones as "???"),
-## and a page per style. A known style's page shows its recipe and lists the saved
-## recipes to pick one from; a locked one's page gives hints. The text is
-## RecipeLibraryText's. Pauses the game while open, so it runs while paused and handles
-## its own Esc.
+## The recipe book: an index of every style (locked ones as "???") and a page per style,
+## with its recipe and saved recipes, or hints if locked; text from RecipeLibraryText.
+## Pauses the game, so it runs while paused and handles its own Esc.
 
 const BACK_BUTTON_TEXT : String = "< Takaisin"
 const LOAD_BUTTON_TEXT : String = "Lataa resepti"

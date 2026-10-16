@@ -1,11 +1,9 @@
 class_name DialogWiring
 extends Node
 
-## THE FILE TO EDIT WHEN THIS SYSTEM MOVES TO ANOTHER PROJECT. It is the only place in
-## this folder that knows the project: it connects the project's own signals to
-## DialogView's interface and holds the project's popup wording. Everything else in the
-## folder works unchanged. DialogView adds this as a child, so the connections go away
-## with it.
+## THE FILE TO EDIT WHEN THIS SYSTEM MOVES TO ANOTHER PROJECT: the only one here that
+## knows the project. It connects the project's signals to DialogView and holds the popup
+## wording. DialogView adds it as a child, so the connections go with it.
 
 ## Popups come out of the customer's shoulders, measured on Opiskelija from its feet:
 ## XP and reputation grow out of the left shoulder, the money out of the right one.

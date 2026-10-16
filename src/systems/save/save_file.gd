@@ -1,16 +1,10 @@
 class_name SaveFile
 extends RefCounted
 
-## Crash-safe read/write of one saved Resource. Knows nothing about Brewery
-## or any autoload, so it can be unit-tested with any Resource.
-##
-## write() never touches the live save until the new one is fully on disk:
-## it saves to a temp file, copies the current save to a backup, then renames
-## the temp file into place. read() falls back to that backup when the main
-## file is missing or unreadable, so one bad write can't lose the run.
-##
-## ResourceSaver picks its format from the extension, so every sibling path
-## keeps a .tres ending.
+## Crash-safe read/write of one saved Resource, independent of the game. write() saves to
+## a temp file, backs up the current save, then renames the temp into place; read() falls
+## back to the backup. Every sibling path keeps .tres, since ResourceSaver picks the
+## format from the extension.
 
 static func temp_path(path : String) -> String:
 	return path.get_basename() + ".tmp.tres"

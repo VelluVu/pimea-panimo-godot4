@@ -1,12 +1,9 @@
 class_name LvvAgent
 extends Node2D
 
-## One member of an LVV raid squad (see LvvRaidSpawner): walks in down the stairs and through
-## the spawner's waypoints to the warehouse doorway, seizes a keg, then walks the same route
-## back out and up the stairs. Each leg's animation and flip come from its direction (see
-## _tween_leg()), so the markers can be moved in the editor without changing this script.
-## Simpler than Customer.walk_complex_route(): no dialogue or CustomerData, and the outbound
-## stairs leg uses walk_away.
+## One LVV raider (LvvRaidSpawner): walks down the stairs and the spawner's waypoints to
+## the warehouse, seizes a keg and walks back. Each leg's animation comes from its
+## direction (_tween_leg()), so the markers move freely in the editor.
 
 signal raid_sequence_finished
 

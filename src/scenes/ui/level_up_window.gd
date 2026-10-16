@@ -1,21 +1,9 @@
 class_name LevelUpWindow
 extends Panel
 
-## Mid-run "you leveled up, pick a perk" popup — see Brewery.add_xp()/
-## apply_perk() and RunPerk. Cards of icon + header + description, click
-## to choose, three choices per offer.
-##
-## Pauses the whole SceneTree while a choice is on screen — same pattern
-## as GameEndWindow/OptionsWindow (see their docstrings): needs
-## process_mode = PROCESS_MODE_ALWAYS set on this node's instance in
-## main.tscn so its own card buttons still work while paused, and a
-## z_index of 100 so the cards cover every other window.
-##
-## Applies the chosen perk directly to BrewEngine.current_brewery itself
-## (like SaleReceiptLogWindow already reaches into brewery state
-## directly) rather than emitting the choice upward — nothing else needs
-## to react to which perk was picked, so there's no orchestrator this
-## needs to report back to.
+## The "pick a perk" popup on level-up (Brewery.add_xp()), three cards per offer. Pauses
+## the tree while open, so the instance needs PROCESS_MODE_ALWAYS, and z_index 100 to
+## cover every window. Applies the perk to the brewery itself: nothing else reacts to it.
 
 const CARD_COUNT : int = 3
 const TITLE_FORMAT : String = "Taso %d!"
@@ -69,15 +57,9 @@ func _ready() -> void:
 	hide()
 
 
-## A level-up crossing the same tick as the run actually ending (the final
-## sale of the run both leveled up and cleared the survival bar) shouldn't
-## make the player click through a perk choice before they even see the
-## result — GameEndWindow always wins. Guards both possible signal orders:
-## if level_up_reached fires first, the game_has_ended check here stops it
-## from showing at all; if game_ended fires first, _on_game_ended() below
-## hides it before it can cover the end screen. Either way the level stays
-## queued in _pending_levels and resolves normally the next time a level-up
-## fires with no ending in the way (see "Jatka pelaamista").
+## The end screen always wins over a level-up in the same tick: game_has_ended stops it
+## here, and _on_game_ended() hides one already shown. The level stays in _pending_levels
+## for the next level-up if the player continues.
 func _on_level_up_reached(new_level : int) -> void:
 	_pending_levels.append(new_level)
 	var brewery := BrewEngine.current_brewery

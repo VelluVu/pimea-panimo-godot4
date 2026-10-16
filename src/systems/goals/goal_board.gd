@@ -1,11 +1,9 @@
 class_name GoalBoard
 extends Node
 
-## A few concurrent goals rolled from a pool, each in its own slot. Progress
-## events advance matching slots; a goal settles the moment it succeeds (achieve)
-## or fails (avoid), and end_period() settles the rest. Settling always rolls the
-## slot's replacement. The project feeds progress and pays rewards in its wiring
-## subclass, through the hooks at the bottom.
+## A few concurrent goals rolled from a pool, one per slot. A goal settles the moment it
+## succeeds (achieve) or fails (avoid), end_period() settles the rest, and settling rolls
+## a replacement. The wiring subclass feeds progress and pays rewards via the hooks below.
 
 ## A slot's goal settled. Fired after the replacement was rolled.
 signal goal_resolved(goal : GoalData, succeeded : bool)

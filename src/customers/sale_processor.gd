@@ -71,11 +71,9 @@ static func _on_offer(batch : BrewBatch, data : CustomerData) -> bool:
 	return batch.amount_bottles > 0 and not batch.held and data.accepts_batch(batch)
 
 
-## Income, tip and reputation for `bottles_sold` bottles. `results` is
-## CustomerData.evaluate_brew_batch()'s per-bottle answer. Amounts are snapped
-## to 0.1 so repeated float maths cannot leave noise in the till. There is no
-## tax: the fixed price plus any tip is exactly what lands in the till. A
-## doubled tip is rolled after the tip multiplier, so it keeps every other bonus.
+## Income, tip and reputation for `bottles_sold` servings of `results`
+## (CustomerData.evaluate_brew_batch()). Snapped to 0.1 so float noise stays out of the
+## till. The doubled tip is rolled after the multiplier, so it keeps every other bonus.
 static func calculate_sale(results : Dictionary, bottles_sold : int, tip_multiplier : float, tip_double_chance : float, reputation_multiplier : float) -> SaleOutcome:
 	var outcome := SaleOutcome.new()
 	outcome.gross_income = snappedf(results[CustomerManager.KEY_INCOME] * bottles_sold, 0.1)

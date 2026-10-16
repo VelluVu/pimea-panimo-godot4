@@ -1,12 +1,9 @@
 class_name GameMenuWindow
 extends Panel
 
-## In-game pause menu: resume, settings, achievements, leaderboard, a new run and
-## back to the main menu (the last two behind a confirmation). The only place a run
-## is left from, so GameEndWindow can stay informative. Pauses the SceneTree while
-## open, so the instance needs process_mode = ALWAYS. While the settings,
-## achievements or leaderboard window is up this menu hides itself and comes back
-## when that window closes.
+## The pause menu: resume, settings, achievements, leaderboard, new run and main menu
+## (the last two confirmed). The only way out of a run. Pauses the tree, so process_mode
+## is ALWAYS; it hides while a window it opened is up and returns when that closes.
 
 const MAIN_MENU_SCENE_PATH: String = "res://src/scenes/ui/main_menu.tscn"
 const GAME_SCENE_PATH: String = "res://src/scenes/main.tscn"

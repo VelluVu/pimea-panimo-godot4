@@ -72,16 +72,9 @@ func _on_tab_changed(tab_index : int) -> void:
 	option_button.populate_ingredient_option_menu()
 
 
-## Called by BrewingView/ShopView whenever their view is actually opened
-## (see GuiViewSwitcher) — without this, the
-## malt/hop/yeast tab and the selected ingredient both just carry over
-## from whatever GUISignals.active_ingredient_changed last touched
-## globally (which the OTHER view's own selector also listens to and
-## fires), rather than resetting to a known, predictable starting point
-## every time the view is (re)entered. Calling _on_tab_changed(0)
-## directly instead of just setting current_tab (TabBar only emits
-## tab_changed on an actual change, so re-selecting an already-0 tab
-## would otherwise silently skip the reset).
+## Called when BrewingView or ShopView opens, so each starts on the first tab instead of
+## whatever the other view last selected. Calls _on_tab_changed(0) directly because
+## TabBar emits nothing when the tab is already 0.
 func reset_to_first_tab() -> void:
 	tab_bar.current_tab = 0
 	_on_tab_changed(0)

@@ -1,11 +1,9 @@
 class_name RunPerk
 extends Resource
 
-## A buff picked on level-up (see LevelUpWindow) or granted permanently by a
-## MetaUnlockData. Perks accumulate over a run and only ever strengthen it.
-##
-## Every stat defaults to neutral (1.0 for multipliers, 0 for flat values), so
-## any number of perks combine. PerkStats lists the stats and how they show.
+## A buff picked on level-up (LevelUpWindow) or bought as a MetaUnlockData. Perks
+## accumulate over a run and only strengthen it. Every stat defaults to neutral (1.0 for
+## multipliers, 0 for flat values), so any number combine; PerkStats lists the stats.
 
 @export var perk_name: String = ""
 @export var description: String = ""

@@ -1,11 +1,9 @@
 class_name TouchHints
 extends Node
 
-## Touch screens have no hover, so the cellar's clickable spots never show their names.
-## On a touch screen the names show for a moment when a run starts and at the start of
-## each day, once the cellar is in view (after the day recap closes). Names only: the
-## hover glow would read as the finger touching something. A ? button beside the game
-## menu button shows them again on demand.
+## Touch screens have no hover, so the cellar's spot names show for a moment at run start
+## and each day start (after the recap), and on the ? button. Names only: a glow would
+## read as the finger touching something.
 
 const SHOW_SECONDS : float = 2.5
 ## Lets a view switch or a closing window settle first.

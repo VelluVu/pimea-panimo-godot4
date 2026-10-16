@@ -1,13 +1,8 @@
 class_name SaleReceiptLogWindow
 extends Panel
 
-## The receipt library: today's sales, reviewable whenever the player wants
-## — no timers, nothing disappears. Opened from a button next to MoneyLabel
-## (see GUISignals.receipt_log_requested); cleared alongside
-## Brewery.today_sale_receipts at day change. Each row toggles its own
-## breakdown open/closed on click and stays that way until toggled again or
-## the day rolls over — a manual version of the same collapsed/expanded
-## idea the old transient popup used, minus any expiry.
+## The receipt log: today's sales, reviewable at leisure and cleared at day change
+## (GUISignals.receipt_log_requested). Each row toggles its breakdown on click.
 
 const TITLE_TEXT : String = "Päivän kuitit"
 const CLOSE_BUTTON_TEXT : String = "Sulje"

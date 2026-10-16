@@ -1,12 +1,9 @@
 class_name AchievementTracker
 extends Node
 
-## Lifetime stat counters and the achievements that watch them, kept in one
-## ConfigFile that outlives every run. A stat either counts up
-## (increment_stat()) or only ever ratchets to a new high (set_stat_if_higher()),
-## and every write checks the pool for achievements that just reached their
-## target. Unlocks are permanent until reset_progress(). The project feeds the
-## stats and fills achievement_pool in its wiring subclass.
+## Lifetime stats and the achievements watching them, in one ConfigFile that outlives
+## every run. A stat counts up (increment_stat()) or ratchets (set_stat_if_higher()), and
+## every write unlocks what reached its target. The wiring subclass feeds the stats.
 
 signal achievement_unlocked(achievement_id : String, title : String)
 

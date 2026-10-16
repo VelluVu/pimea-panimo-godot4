@@ -42,21 +42,12 @@ extends Resource
 @export var late_hop_profiles : Array[HopData.FlavorProfile] = []
 @export var hop_profiles : Array[HopData.FlavorProfile] = []
 
-## Snapshotted once from Brewery.get_peak_speed_multiplier()/
-## get_decline_rate_multiplier() when this batch is brewed (see
-## RunPerk.peak_speed_multiplier's docstring for why these are captured
-## here instead of read from active_perks continuously) — neutral 1.0
-## defaults mean an untouched batch (or a save from before this field
-## existed) ages exactly as it always did.
+## Snapshotted from the perks when the batch is brewed (see RunPerk.peak_speed_multiplier),
+## so later perks don't change it. 1.0 ages as normal, which also covers old saves.
 @export var peak_days_multiplier : float = 1.0
 @export var decline_rate_multiplier : float = 1.0
 
 
-## BeerStyle.peak_days scaled by this batch's own peak_days_multiplier —
-## the actual number of days this specific batch takes to reach peak
-## quality, used by both _calculate_current_quality() and
-## get_aging_trend_icon() so the visible trend arrow always agrees with
-## the quality number actually being shown.
 ## Quality lost per aging tick once the shelf life is over, for styles that age well.
 const SPOILAGE_PER_TICK : float = 0.02
 ## Ticks over which the aged price bonus fades once the batch starts to spoil (a day).
@@ -103,6 +94,7 @@ func is_alcohol_free() -> bool:
 	return get_abv() <= BeerStyle.ALCOHOL_FREE_MAX_ABV
 
 
+## Days to peak for this batch; the quality and the trend arrow both use it.
 func get_effective_peak_days() -> int:
 	return roundi(beer_style.peak_days * peak_days_multiplier)
 
@@ -115,12 +107,8 @@ const AGING_TREND_RISING : String = "▲"
 const AGING_TREND_PLATEAU : String = "▶"
 const AGING_TREND_DECLINING : String = "▼"
 
-## Whether quality is still rising toward peak, holding at its plateau, or
-## has moved into post-shelf-life decline — mirrors the three phases in
-## _calculate_current_quality() below. Purely presentational: lets
-## BeerBatchPanel show players "hold this" vs. "sell this now" at a glance
-## instead of the trend only being inferable by watching the quality
-## number change over several aging ticks.
+## Whether quality is rising toward peak, holding, or declining past shelf life (the
+## phases of _calculate_current_quality()), so BeerBatchPanel can say "hold" or "sell now".
 func get_aging_trend_icon() -> String:
 	var effective_peak_days : int = get_effective_peak_days()
 	if age_in_days < effective_peak_days:
@@ -199,10 +187,6 @@ func _aged_price_line() -> String:
 	return "\n" + tr(AGED_PRICE_FORMAT) % [roundi((get_aged_price_multiplier() - 1.0) * 100.0), roundi(beer_style.aged_price_bonus * 100.0)]
 
 
-## Called once per TimeManager aging tick (TimeManager.AGING_TICK_SECONDS,
-## currently every 30s of real time) rather than once per in-game day — see
-## BeerStyle.peak_days' docstring for why the "_days" naming stuck around
-## anyway.
 ## A dirty keg soured the batch: `loss` is the share of quality it takes, see
 ## FermentationRules.sour_loss().
 func sour(loss : float) -> void:
@@ -222,6 +206,7 @@ func get_sour_level() -> FermentationRules.SourLevel:
 	return FermentationRules.sour_level(sour_loss)
 
 
+## Called on every TimeManager aging tick, not once a day (see BeerStyle.peak_days).
 func age_one_day() -> void:
 	age_in_days += 1
 	_calculate_current_quality()

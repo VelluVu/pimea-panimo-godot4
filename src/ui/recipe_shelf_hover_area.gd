@@ -1,15 +1,8 @@
 class_name RecipeShelfHoverArea
 extends Area2D
 
-## In-world "hover and light up" trigger for the recipe library — a small
-## wall shelf (ShelfPlank) holding a row of the game's existing beer
-## bottle sprite (Bottle1..4, same res://assets/textures/beer_bottle_8x8.png
-## and 3x scale Customer.gd already uses for the held-bottle sprite, so it
-## reads consistently with the rest of the game's pixel scale). Mirrors
-## BreweryHoverArea/WarehouseHoverArea's exact glow/click pattern — see
-## those for the established convention — rather than a floating UI
-## button, per the push to make more of the panel-opening buttons feel
-## like part of the room instead of screen-edge chrome.
+## Hover-and-glow trigger for the recipe library: a wall shelf of beer bottles, part of
+## the room instead of a screen-edge button. Same pattern as BreweryHoverArea.
 
 const HOVER_GLOW_COLOR : Color = Color(1.3, 1.15, 0.8, 1.0)
 const HIDDEN_COLOR : Color = Color(1.0, 1.0, 1.0, 1.0)

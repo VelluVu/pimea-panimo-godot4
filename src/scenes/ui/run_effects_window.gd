@@ -1,17 +1,9 @@
 class_name RunEffectsWindow
 extends Panel
 
-## The player-facing "why is this run going the way it is" stat sheet —
-## opened from a button next to ReceiptLogButton (see
-## GUISignals.run_effects_requested). Shows the real numbers behind
-## everything RunPerk only describes in flavor text: the actual current
-## LVV raid threshold, every
-## active perk, and the combined totals those perks add up to (see
-## Brewery.get_quality_bonus()/get_reputation_gain_multiplier()/
-## get_tip_income_multiplier()) — since perks stack and a single card's own
-## number isn't the number that actually matters once two or three are
-## active. No timers, nothing here expires; always reflects live state,
-## same "reviewable whenever" idea as SaleReceiptLogWindow.
+## The run's stat sheet (GUISignals.run_effects_requested): the real LVV raid threshold,
+## every active perk and their combined totals, since stacked perks matter more than any
+## one card. Always reflects live state.
 
 const HEADER_FONT_SIZE : int = 15
 const SECTION_SPACING : float = 10.0

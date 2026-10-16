@@ -32,23 +32,15 @@ func _ready() -> void:
 	main_slider.value_changed.connect(_on_slider_changed)
 	upgrades_button.pressed.connect(func() -> void: GUISignals.cellar_upgrades_requested.emit())
 	GUISignals.active_ingredient_changed.connect(_on_ingredient_selected_globally)
-	# Affordability (what _update_slider() below computes from) changes on
-	# every purchase/sale, but previously only refreshed when an
-	# ingredient was newly selected — a big sale finishing in the
-	# background while browsing the shop wouldn't unlock a higher max
-	# until the player reselected. Same fix as BrewingView's slider.
+	# Affordability changes on every purchase or sale, not only on selecting an ingredient.
 	BrewerySignals.brewery_state_changed.connect(_on_brewery_state_changed)
 	BrewerySignals.ingredient_purchased.connect(_on_ingredient_purchased)
 	BrewerySignals.ingredient_purchase_locked.connect(func(_name: String, required_reputation: int) -> void:
 		_float_popup(tr(LOCKED_POPUP_FORMAT) % required_reputation))
 	BrewerySignals.ingredient_purchase_underfunded.connect(func(_name: String, price: int, _money: float) -> void:
 		_float_popup(tr(UNDERFUNDED_POPUP_FORMAT) % price))
-	# BrewingView's own IngredientOptionButton listens to this same
-	# global active_ingredient_changed signal, so adding something to the
-	# brew table over there leaves current_id here pointing at whatever
-	# was last touched globally — reset to a known starting point (tab 0
-	# = malt, first enabled item = Pilsner malt) every time this view is
-	# actually opened. Same fix as BrewingView's tab reset.
+	# BrewingView's selector fires the same global signal, so reset to malt each time this
+	# view opens.
 	visibility_changed.connect(_on_visibility_changed)
 	_update_label()
 

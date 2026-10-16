@@ -397,11 +397,9 @@ func show_beer_glass() -> void:
 	beer_glass_sprite.show()
 
 
-## Slides the glass from the bartender to its resting spot on the counter. Pops in at
-## rest position if there is no Bartender. Runs top_level so it stays put if the
-## customer walks (undone in hide_counter_glass()).
-## rest_position_override (global) rests it in the bartender's stack instead; group
-## orders use this, and a shorter slide_duration_seconds. Vector2.INF means no override.
+## Slides the glass from the bartender to its spot on the counter (or pops it in with no
+## Bartender). top_level keeps it put if the customer walks. A rest_position_override
+## (global, Vector2.INF for none) puts it in the bartender's stack for group orders.
 func show_counter_glass(slide_duration_seconds: float = GLASS_SLIDE_DURATION_SECONDS, rest_position_override: Vector2 = Vector2.INF) -> void:
 	var rest_position : Vector2 = rest_position_override if rest_position_override != Vector2.INF else to_global(counter_glass_sprite.position)
 	var bartender := get_tree().get_first_node_in_group(Bartender.BARTENDER_GROUP) as Bartender

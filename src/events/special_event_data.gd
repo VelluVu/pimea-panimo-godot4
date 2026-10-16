@@ -1,13 +1,10 @@
 class_name SpecialEventData
 extends Resource
 
-## Base special event: "bring N bottles of style X". Subclasses override
-## try_fulfill() to implement a different mechanic entirely (quality
-## thresholds, paying a bribe, donating raw ingredients, ...) while reusing
-## the shared dialogue/reward/timeout fields and _settle() below.
-## A request for goods waits after "Joo" (delivery_seconds) and completes itself once
-## the stock is there (SpecialEventWindow); one that costs money or reputation settles
-## on "Joo" (waits_for_delivery()).
+## Base special event: "bring N servings of style X". Subclasses override try_fulfill()
+## for other mechanics and reuse the dialogue, reward and timeout fields and _settle().
+## A request for goods waits after "Joo" (delivery_seconds) and completes once the stock
+## is there; one that costs money or reputation settles at once (waits_for_delivery()).
 
 
 @export var event_caller_name: String = "Kaljabisnesmies"

@@ -1,19 +1,10 @@
 class_name GameEndWindow
 extends Panel
 
-## Modal end-of-run screen for all three endings — see
-## Brewery.trigger_ending() and BrewerySignals.game_ended. Unlike
-## LvvRaidWindow/DayRecapWindow (which just show/hide while the game keeps
-## running underneath), this pauses the whole SceneTree so nothing else
-## (customers, timers, spawners) keeps going behind it — the run is over.
-## Needs PROCESS_MODE_ALWAYS on this root node so its buttons still
-## receive input while paused; its children inherit that by default.
-##
-## Informative only: a new run or the main menu are picked from GameMenuWindow, so
-## the player cannot leave a run by accident. The season endings ("survived",
-## "season_over") continue the run: it is already scored, so playing on only earns
-## reduced renown (Brewery.has_continued_past_survival). Busted and bankrupt open
-## the game menu instead, as there is nothing left to play.
+## Modal end screen for every ending (BrewerySignals.game_ended). Pauses the tree since
+## the run is over, so its root needs PROCESS_MODE_ALWAYS. Informative only: leaving the
+## run goes through GameMenuWindow. The season endings can continue for reduced renown;
+## busted and bankrupt open the game menu instead.
 
 const TITLE_BUSTED : String = "JÄIT KIINNI!"
 const TITLE_BANKRUPT : String = "KONKURSSI!"
@@ -117,11 +108,9 @@ func _on_close_button_pressed() -> void:
 		GUISignals.game_menu_requested.emit()
 
 
-## Resumes the same run exactly as it was, already scored: only reduced nightly
-## renown from here on (MetaProgressManager). Clears game_has_ended so busted/bankrupt can
-## still end things later, but latches has_continued_past_survival so the
-## survived ending itself can never fire again this run (see
-## DayRules.season_ending()).
+## Resumes the run, already scored, for reduced nightly renown. Clears game_has_ended so
+## busted or bankrupt can still end it, and latches has_continued_past_survival so the
+## survived ending never fires again (DayRules.season_ending()).
 func _continue_run() -> void:
 	var brewery := BrewEngine.current_brewery
 	if brewery == null:
