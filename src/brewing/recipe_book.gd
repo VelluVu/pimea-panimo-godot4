@@ -82,6 +82,8 @@ func _on_load_recipe_requested(recipe : BrewRecipe) -> void:
 		var wanted : int = recipe.ingredient_amounts[ingredient_id]
 		var item : InventoryItem = brewery.inventory.get_item_by_id(ingredient_id)
 		var available : int = item.amount if item else 0
+		if available <= 0:
+			continue
 		var withdrawn : int = brewery.inventory.withdraw_item_by_id(ingredient_id, min(wanted, available))
 
 		if withdrawn > 0:

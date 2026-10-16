@@ -186,6 +186,10 @@ signal save_recipe_requested()
 signal load_recipe_requested(recipe : BrewRecipe)
 @warning_ignore("unused_signal")
 signal fill_recipe_from_inventory_requested()
+## The shop's "buy what's missing": everything the loaded recipe needs beyond the table
+## and the warehouse, bought at once or not at all.
+@warning_ignore("unused_signal")
+signal buy_missing_for_recipe_requested()
 
 @warning_ignore("unused_signal")
 signal cellar_upgrades_requested()

@@ -17,11 +17,13 @@ func _init(owner : Brewery) -> void:
 func connect_signals() -> void:
 	GUISignals.buy_ingredient.connect(_on_buy_ingredient)
 	GUISignals.sell_ingredient.connect(_on_sell_ingredient)
+	GUISignals.buy_missing_for_recipe_requested.connect(_on_buy_missing_for_recipe_requested)
 
 
 func disconnect_signals() -> void:
 	GUISignals.buy_ingredient.disconnect(_on_buy_ingredient)
 	GUISignals.sell_ingredient.disconnect(_on_sell_ingredient)
+	GUISignals.buy_missing_for_recipe_requested.disconnect(_on_buy_missing_for_recipe_requested)
 
 
 func _on_buy_ingredient(ingredient_id : int, amount : int) -> void:
@@ -45,6 +47,32 @@ func _on_buy_ingredient(ingredient_id : int, amount : int) -> void:
 	brewery.inventory.add_amount(ingredient, amount)
 	_track_tutorial_purchase(ingredient, amount)
 	BrewerySignals.ingredient_purchased.emit(buy_price)
+	BrewerySignals.brewery_state_changed.emit(brewery)
+	brewery.check_bankruptcy()
+
+
+## Buys everything the loaded recipe still needs, all or nothing: a locked ingredient or
+## too little money buys none of it, and says why like a single purchase does.
+func _on_buy_missing_for_recipe_requested() -> void:
+	var to_buy : Dictionary = RecipeShopping.missing(brewery.brew_preparation.active_recipe_target, brewery.owned_ingredient_amounts())
+	if to_buy.is_empty():
+		return
+	var table : Dictionary = brewery.resolver.ingredient_table()
+	var locked : IngredientData = RecipeShopping.first_locked(to_buy, table, brewery.reputation)
+	if locked != null:
+		BrewerySignals.ingredient_purchase_locked.emit(locked.name, locked.min_reputation)
+		return
+	var price : float = RecipeShopping.cost(to_buy, table, brewery.stats.multiplier(PerkStats.INGREDIENT_PRICE))
+	if brewery.money < price:
+		BrewerySignals.ingredient_purchase_underfunded.emit(brewery.brew_preparation.active_recipe_style_name, price, brewery.money)
+		return
+
+	brewery.change_money(-price, MoneyLedger.Source.INGREDIENTS)
+	for id : int in to_buy:
+		var ingredient : IngredientData = table[id]
+		brewery.inventory.add_amount(ingredient, to_buy[id])
+		_track_tutorial_purchase(ingredient, to_buy[id])
+	BrewerySignals.ingredient_purchased.emit(price)
 	BrewerySignals.brewery_state_changed.emit(brewery)
 	brewery.check_bankruptcy()
 
