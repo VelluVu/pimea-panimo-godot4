@@ -31,6 +31,7 @@ const MAITOSTOUT : String = "Maitostout"
 const RAUCHBIER : String = "Rauchbier"
 const ROGGENBIER : String = "Roggenbier"
 const IRISH_DRY_STOUT : String = "Irish Dry Stout"
+const PILSNER : String = "Pilsner"
 
 const KG : String = "kg"
 const G : String = "g"

@@ -5,6 +5,6 @@
 [resource]
 script = ExtResource("1_rule")
 label = "lagerit jaloilla humalilla (Saaz, Hallertau, Tettnanger, Perle)"
-styles = Array[int]([1, 2, 6, 7, 8, 10, 21, 24])
+styles = Array[int]([1, 2, 6, 7, 8, 10, 21, 24, 27])
 hop_profiles = Array[int]([4])
 metadata/_custom_type_script = "res://src/customers/taste_rule.gd"

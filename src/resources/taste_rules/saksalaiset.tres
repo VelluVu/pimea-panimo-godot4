@@ -5,5 +5,5 @@
 [resource]
 script = ExtResource("1_rule")
 label = "saksalaiset oluet"
-styles = Array[int]([6, 8, 10, 11, 24, 25])
+styles = Array[int]([6, 8, 10, 11, 24, 25, 27])
 metadata/_custom_type_script = "res://src/customers/taste_rule.gd"
