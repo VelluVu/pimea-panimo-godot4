@@ -1,7 +1,7 @@
 @tool
 extends McpTestSuite
 
-## Unit tests for BrewQuality: range precision and the hop bonuses, on hand-built mixtures.
+## Unit tests for BrewQuality: range precision, hop layers and the spice bonuses.
 
 const BrewQualityScript := preload("res://src/brewing/brew_quality.gd")
 const BrewMixtureScript := preload("res://src/brewing/brew_mixture.gd")
@@ -43,29 +43,69 @@ func test_range_precision_handles_degenerate_range() -> void:
 	assert_eq(BrewQualityScript.range_precision(999, 10, 10), 1.0)
 
 
-func test_hop_balance_bonus_is_zero_without_both_acids() -> void:
-	assert_eq(BrewQualityScript.hop_balance_bonus(_make_mixture(0.0, 5.0, 1)), 0.0)
-	assert_eq(BrewQualityScript.hop_balance_bonus(_make_mixture(5.0, 0.0, 1)), 0.0)
+## A real mixture of hops: Magnum (alpha 16, no aroma), a citrus hop and a noble hop.
+func _hop_mixture(contents : Dictionary) -> BrewMixtureScript:
+	var table : Dictionary = {}
+	for spec : Array in [[200, 16, HopData.FlavorProfile.NONE], [203, 6, HopData.FlavorProfile.CITRUS], [201, 5, HopData.FlavorProfile.NOBLE]]:
+		var hop := HopData.new()
+		hop.id = spec[0]
+		hop.type = IngredientData.IngredientType.HOP
+		hop.alpha_acids = spec[1]
+		hop.flavor_profile = spec[2]
+		table[hop.id] = hop
+	return BrewMixtureScript.from_contents(contents, table)
 
 
-func test_hop_balance_bonus_peaks_when_acids_match() -> void:
-	assert_true(is_equal_approx(BrewQualityScript.hop_balance_bonus(_make_mixture(4.0, 4.0, 1)), BrewQualityScript.HOP_BALANCE_WEIGHT))
+func _style(kinds : Array, profiles : Array) -> BeerStyle:
+	var style := BeerStyle.new()
+	style.hop_additions.assign(kinds)
+	style.preferred_hop_profiles.assign(profiles)
+	return style
 
 
-func test_hop_diversity_bonus_is_capped() -> void:
-	assert_eq(BrewQualityScript.hop_diversity_bonus(_make_mixture(1.0, 1.0, 1)), 0.0)
-	assert_eq(BrewQualityScript.hop_diversity_bonus(_make_mixture(1.0, 1.0, 20)), BrewQualityScript.HOP_DIVERSITY_MAX)
+func test_every_well_filled_layer_counts() -> void:
+	var ipa : BeerStyle = _style([HopAddition.Kind.BITTERING, HopAddition.Kind.FLAVOR, HopAddition.Kind.AROMA], [HopData.FlavorProfile.CITRUS])
+	assert_eq(BrewQualityScript.good_hop_layers(_hop_mixture({200: 20, 203: 40}), ipa), 3, "Magnum bitters, the citrus hop fills both late layers")
+	assert_eq(BrewQualityScript.good_hop_layers(_hop_mixture({200: 20, 201: 40}), ipa), 1, "a noble hop does not suit a citrus style")
+	assert_eq(BrewQualityScript.good_hop_layers(_hop_mixture({203: 60}), ipa), 2, "a low-alpha hop is no bittering hop")
+
+
+func test_a_pinch_is_not_a_layer() -> void:
+	var ipa : BeerStyle = _style([HopAddition.Kind.BITTERING, HopAddition.Kind.AROMA], [HopData.FlavorProfile.CITRUS])
+	assert_eq(BrewQualityScript.good_hop_layers(_hop_mixture({200: 20, 203: 2}), ipa), 1)
+
+
+func test_hop_forward_styles_reward_layers_more_and_classic_ones_the_malt() -> void:
+	var hoppy : BeerStyle = _style([HopAddition.Kind.BITTERING, HopAddition.Kind.FLAVOR, HopAddition.Kind.AROMA], [HopData.FlavorProfile.NOBLE])
+	var classic : BeerStyle = _style([HopAddition.Kind.BITTERING, HopAddition.Kind.AROMA], [HopData.FlavorProfile.NOBLE])
+	assert_true(BrewQualityScript.is_hop_forward(hoppy))
+	assert_false(BrewQualityScript.is_hop_forward(classic))
+	var mixture := _hop_mixture({200: 20, 201: 40})
+	assert_true(is_equal_approx(BrewQualityScript.hop_layer_bonus(mixture, hoppy), 3 * BrewQualityScript.HOP_LAYER_STEP))
+	assert_true(is_equal_approx(BrewQualityScript.hop_layer_bonus(mixture, classic), 2 * BrewQualityScript.CLASSIC_HOP_LAYER_STEP))
+	assert_true(BrewQualityScript.multiplier(classic, 1.0, 0.0, false) > BrewQualityScript.multiplier(hoppy, 1.0, 0.0, false), "a spot-on classic grist counts for more")
+
+
+func test_more_than_three_hop_varieties_fit_no_style() -> void:
+	var style : BeerStyle = _style([HopAddition.Kind.BITTERING], [])
+	style.required_yeast_id = BrewMixtureScript.NO_YEAST
+	style.min_malt_weight = 0
+	style.max_ebc = 999
+	style.max_abv = 99.0
+	var mixture := _hop_mixture({200: 1, 201: 1, 203: 1})
+	assert_true(mixture.fits(style))
+	mixture.hop_ids[999] = true
+	assert_false(mixture.fits(style))
 
 
 func test_multiplier_is_neutral_at_neutral_precision_without_bonuses() -> void:
-	var mixture := _make_mixture(0.0, 0.0, 0)
-	assert_true(is_equal_approx(BrewQualityScript.multiplier(mixture, BrewQualityScript.NEUTRAL_PRECISION, 0.0, false), 1.0))
+	assert_true(is_equal_approx(BrewQualityScript.multiplier(BeerStyle.new(), BrewQualityScript.NEUTRAL_PRECISION, 0.0, false), 1.0))
 
 
 func test_multiplier_is_clamped_and_rewards_flavor_match() -> void:
-	var mixture := _make_mixture(0.0, 0.0, 0)
-	assert_true(BrewQualityScript.multiplier(mixture, 1.0, 0.0, true) > BrewQualityScript.multiplier(mixture, 1.0, 0.0, false))
-	assert_true(BrewQualityScript.multiplier(mixture, 1.0, 5.0, true) <= BrewQualityScript.MAX_MULTIPLIER)
+	var style := BeerStyle.new()
+	assert_true(BrewQualityScript.multiplier(style, 1.0, 0.0, true) > BrewQualityScript.multiplier(style, 1.0, 0.0, false))
+	assert_true(BrewQualityScript.multiplier(style, 1.0, 5.0, true) <= BrewQualityScript.MAX_MULTIPLIER)
 
 
 func test_required_spice_on_the_table_counts_as_flavor_match() -> void:
@@ -98,9 +138,9 @@ func test_unrelated_spice_gives_no_bonus() -> void:
 
 
 func test_multiplier_adds_the_spice_bonus() -> void:
-	var mixture := _make_mixture(0.0, 0.0, 0)
-	var without : float = BrewQualityScript.multiplier(mixture, BrewQualityScript.NEUTRAL_PRECISION, 0.0, false)
-	var with_spice : float = BrewQualityScript.multiplier(mixture, BrewQualityScript.NEUTRAL_PRECISION, 0.0, false, 0.1)
+	var style := BeerStyle.new()
+	var without : float = BrewQualityScript.multiplier(style, BrewQualityScript.NEUTRAL_PRECISION, 0.0, false)
+	var with_spice : float = BrewQualityScript.multiplier(style, BrewQualityScript.NEUTRAL_PRECISION, 0.0, false, 0.1)
 	assert_true(is_equal_approx(with_spice - without, 0.1))
 
 

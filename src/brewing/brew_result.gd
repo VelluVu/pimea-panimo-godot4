@@ -20,7 +20,9 @@ extends Resource
 
 @export var precision_score : float = 1.0
 @export var hop_diversity_count : int = 0
-@export var hop_balance_bonus : float = 0.0
+## Hop layers filled well, out of the style's hop marks (BrewQuality.good_hop_layers()).
+@export var hop_layers : int = 0
+@export var hop_layer_slots : int = 0
 @export var flavor_matched : bool = false
 @export var spice_bonus : float = 0.0
 ## Quality lost to spices the style does not like, see BrewQuality.unsuited_spice_penalty().

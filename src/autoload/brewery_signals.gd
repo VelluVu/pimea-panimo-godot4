@@ -23,6 +23,9 @@ signal beer_sale_breakdown(entry: SaleReceiptEntry)
 ## reason is a RecipeSaveRules.Rejection; same_recipe_name is set for DUPLICATE.
 @warning_ignore("unused_signal")
 signal recipe_save_rejected(reason: int, same_recipe_name: String)
+## The brewing table already holds BrewMixture.MAX_HOP_VARIETIES hops and refused another.
+@warning_ignore("unused_signal")
+signal hop_variety_limit_reached(limit: int)
 @warning_ignore("unused_signal")
 signal beer_brewed(style: int)
 ## Emitted by Brewer right after beer_brewed with the new batch, for stats that need its

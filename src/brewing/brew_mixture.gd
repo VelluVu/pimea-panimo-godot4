@@ -7,6 +7,8 @@ const MIN_MALT_WEIGHT : int = 3
 const NO_YEAST : int = -1
 const NO_REQUIRED_MALT : int = -1
 const ALPHA_ACIDS_PER_IBU : float = 10.0
+## More hop varieties than this in one beer do not fit any style.
+const MAX_HOP_VARIETIES : int = 3
 
 ## Kilograms of malt and sugar on the table.
 var malt_weight : float = 0.0
@@ -31,7 +33,8 @@ var _gravity_points : float = 0.0
 var _attenuation : float = 0.0
 var _contents : Dictionary = {}
 var _table : Dictionary = {}
-## Style -> IBU with the style's hop timing.
+## Style -> its hop marks (HopRoles), and the IBU they give.
+var _style_marks : Dictionary = {}
 var _style_ibu : Dictionary = {}
 
 
@@ -51,6 +54,8 @@ func is_brewable() -> bool:
 
 
 func fits(beer_style : BeerStyle) -> bool:
+	if hop_ids.size() > MAX_HOP_VARIETIES:
+		return false
 	if yeast_id != beer_style.required_yeast_id:
 		return false
 	if beer_style.required_malt_id != NO_REQUIRED_MALT and not malt_ids.has(beer_style.required_malt_id):
@@ -74,9 +79,20 @@ func ibu_for(beer_style : BeerStyle) -> int:
 	if hop_amount <= 0:
 		return 0
 	if not _style_ibu.has(beer_style):
-		var marks : Array[BoilMark] = HopRoles.assign(_contents, _table, beer_style.hop_additions, beer_style.preferred_hop_profiles)
-		_style_ibu[beer_style] = HopUtilization.ibu(marks, _table)
+		_style_ibu[beer_style] = HopUtilization.ibu(hop_marks(beer_style), _table)
 	return _style_ibu[beer_style]
+
+
+## Which hop goes on which of the style's marks, and how much (HopRoles).
+func hop_marks(beer_style : BeerStyle) -> Array[BoilMark]:
+	if not _style_marks.has(beer_style):
+		_style_marks[beer_style] = HopRoles.assign(_contents, _table, beer_style.hop_additions, beer_style.preferred_hop_profiles)
+	return _style_marks[beer_style]
+
+
+## The ingredient table this mixture was built from, id -> IngredientData.
+func ingredient(id : int) -> IngredientData:
+	return _table.get(id)
 
 
 ## Share of the malt weight made of `ids`, 0 to 1.
