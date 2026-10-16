@@ -262,6 +262,10 @@ msgid "Piilotettuja eriä ratsiassa: %s"
 msgstr "Batches hidden in a raid: %s"
 
 #: src/autoload/string_container.gd
+msgid "Pilsner"
+msgstr "Pilsner"
+
+#: src/autoload/string_container.gd
 msgid "Päivätavoitteita päivässä: %s"
 msgstr "Daily goals per day: %s"
 
@@ -1486,6 +1490,18 @@ msgid ""
 msgstr ""
 "An American pale ale whose hops smell of citrus. Fresh, bitter and every "
 "small brewery's first pride."
+
+#: src/resources/beer_styles/pilsner.tres
+msgid ""
+"Kirkas ja kuiva vaalea lager, jonka katkeruus ja tuoksu tulevat "
+"saksalaisista jalohumalista."
+msgstr "A clear, dry pale lager that owes its bitterness and scent to German noble hops."
+
+#: src/resources/beer_styles/pilsner.tres
+msgid ""
+"Saksalainen pils: kirkas, kuiva ja raikkaan katkera vaalea lager, jonka "
+"jalohumala tuoksuu kukkaiselta."
+msgstr "A German pils: a clear, dry and crisply bitter pale lager with the floral scent of noble hops."
 
 #: src/resources/beer_styles/rauchbier.tres
 msgid "Bambergin perinneolut, jonka mallas on kuivattu savussa."
@@ -5747,7 +5763,9 @@ msgstr "Buy missing: %.2f €"
 msgid ""
 "Ostaa kerralla kaiken, mitä ladattu resepti vielä tarvitsee pöydän ja "
 "varaston lisäksi."
-msgstr "Buys everything the loaded recipe still needs beyond the table and the storage, in one go."
+msgstr ""
+"Buys everything the loaded recipe still needs beyond the table and the "
+"storage, in one go."
 
 #: src/scenes/ui/left_shop_view.gd
 msgid "Vaatii %d mainetta"

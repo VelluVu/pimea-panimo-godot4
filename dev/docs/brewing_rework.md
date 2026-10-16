@@ -101,6 +101,7 @@ Carafa and roasted barley, so a recipe can use a few percent of them.
 | Amber Ale | ale | Pale ale 60 % | – | 20-35 | 25-39 | 4.5-6.2 | 4 Pale ale + 0.8 Karamelli + 0.3 Keksi → 19, 5.5 % |
 | IPA | ale | Pale ale 70 % | aroma hop | 8-28 | 40-70 | 5.5-7.5 | 5 Pale ale + 1 Münchenin → 13.5, 6.5 % |
 | Helles | lager | Pilsner 50 % | – | 8-14 | 14-22 | 4.2-5.6 | 4 Pilsner + 0.3 Karamelli → 10, 5.0 % |
+| **Pilsner** (new, German) | lager | Pilsner 80 % | aroma hop | 4-9 | 24-40 | 4.4-5.4 | 4 Pilsner, Magnum 12 g + Tettnanger 70 g → 6, 4.7 %, 30 IBU |
 | Vienna Lager | lager | Vienna 60 % | – | 8-25 | 18-30 | 4.2-5.9 | 3 Vienna + 1 Münchenin → 12.0, 4.6 % |
 | Märzen | lager | Münchenin 50 % | – | 14-33 | 18-28 | 5.2-6.6 | 3 Münchenin + 1 Vienna + 1 Pilsner → 16.4, 5.7 % |
 | Baltic Portteri | lager | – | – | 35-70 | 20-40 | 6.2-9.5 | 3 Münchenin + 2 Pilsner + 0.5 Tumma karamelli + 0.1 Carafa + 0.1 Suklaa → 54, 6.4 % |
@@ -127,6 +128,7 @@ Favourite hops (book info; profiles count for the flavour bonus):
 | Style | Bittering | Aroma / flavour profiles |
 |---|---|---|
 | Bulkkilager, Tumma Lager | Magnum or European | Noble |
+| Pilsner | Magnum or German noble | Noble (Tettnanger, Hallertau), more than Bulkkilager |
 | Pale Ale | mainly Magnum or Warrior | Citrus, Tropical, Pine (American), Earthy (English) |
 | Amber Ale | Magnum, Warrior | Citrus, Tropical, Pine, Earthy |
 | IPA | mainly Magnum or Warrior | Citrus, Tropical, Pine (American), Earthy (English) |
