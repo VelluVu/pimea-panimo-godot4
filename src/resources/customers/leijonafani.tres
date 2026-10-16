@@ -2,6 +2,10 @@
 
 [ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_leijonafani"]
 [ext_resource type="SpriteFrames" uid="uid://bhorgiowd3rgd" path="res://src/resources/sprite_frames/leijonafani_anim.tres" id="2_sprite"]
+[ext_resource type="Resource" path="res://src/resources/taste_rules/pilsner.tres" id="taste_pilsner"]
+[ext_resource type="Resource" path="res://src/resources/taste_rules/bulkkilager.tres" id="taste_bulkkilager"]
+[ext_resource type="Resource" path="res://src/resources/taste_rules/jalot_lagerit.tres" id="taste_jalot_lagerit"]
+[ext_resource type="Script" uid="uid://dq66tbectyal5" path="res://src/customers/taste_rule.gd" id="taste_script"]
 
 [resource]
 script = ExtResource("1_leijonafani")
@@ -26,7 +30,12 @@ dialogue_no_match = "MÖRKÖ EI LYÖNYT SISÄÄN! NÄHDÄÄN TORILLA!"
 dialogue_preview_format = "%s! SE ON SAMA KUIN KULTAMITALI! ANNA SITÄ!"
 dialogue_nothing_available = "MITÄ HÄH?! EI MITÄÄN JUOTAVAA?! PAHEMPI KUIN JATKOAIKATAPPIO!"
 min_reputation_to_appear = 25
-randomizes_preference = true
+randomizes_preference = false
+primary_style = 27
+secondary_style = 1
+favourite_rules = Array[ExtResource("taste_script")]([ExtResource("taste_pilsner")])
+second_rules = Array[ExtResource("taste_script")]([ExtResource("taste_bulkkilager")])
+last_resort_rules = Array[ExtResource("taste_script")]([ExtResource("taste_jalot_lagerit")])
 max_bottles_per_visit = 3
 bar_fight_trigger = 2
 bar_fight_chance = 1.0
