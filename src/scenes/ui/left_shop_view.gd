@@ -1,7 +1,7 @@
 class_name ShopView
 extends VBoxContainer
 
-const AMOUNT_PRICE_FORMAT : String = "%s %s - %d €"
+const AMOUNT_PRICE_FORMAT : String = "%s %s - %.2f €"
 
 ## Same "float off the right edge of the button" treatment
 ## BrewPreparationPanel uses for its "+X XP" popup at "Pane", applied here
@@ -13,7 +13,7 @@ const MONEY_POPUP_OFFSET : Vector2 = Vector2(6, 0)
 const MONEY_POPUP_FLOAT_DISTANCE : float = 35.0
 ## Why a purchase failed, floated from the same spot instead of a toast.
 const LOCKED_POPUP_FORMAT : String = "Vaatii %d mainetta"
-const UNDERFUNDED_POPUP_FORMAT : String = "Ei varaa: %d €"
+const UNDERFUNDED_POPUP_FORMAT : String = "Ei varaa: %.2f €"
 
 @onready var current_item_label : Label = %ShopItemLabel
 @onready var ingredient_type_selector : IngredientTypeSelector = %ShopTypeSelector
@@ -37,7 +37,7 @@ func _ready() -> void:
 	BrewerySignals.ingredient_purchased.connect(_on_ingredient_purchased)
 	BrewerySignals.ingredient_purchase_locked.connect(func(_name: String, required_reputation: int) -> void:
 		_float_popup(tr(LOCKED_POPUP_FORMAT) % required_reputation))
-	BrewerySignals.ingredient_purchase_underfunded.connect(func(_name: String, price: int, _money: float) -> void:
+	BrewerySignals.ingredient_purchase_underfunded.connect(func(_name: String, price: float, _money: float) -> void:
 		_float_popup(tr(UNDERFUNDED_POPUP_FORMAT) % price))
 	# BrewingView's selector fires the same global signal, so reset to malt each time this
 	# view opens.
@@ -104,7 +104,7 @@ func _update_label() -> void:
 		return
 
 	var effective_price : float = ingredient.base_price * BrewEngine.current_brewery.stats.multiplier(PerkStats.INGREDIENT_PRICE)
-	var total_price : int = roundi(effective_price * main_slider.value)
+	var total_price : float = snappedf(effective_price * main_slider.value, 0.01)
 	current_item_label.text = AMOUNT_PRICE_FORMAT % [ingredient.amount_text(int(main_slider.value)), ingredient.get_unit_string(), total_price]
 
 

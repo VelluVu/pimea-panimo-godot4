@@ -65,6 +65,7 @@ func _build_ui() -> void:
 	_price_spin = SpinBox.new()
 	_price_spin.min_value = 0
 	_price_spin.max_value = 999
+	_price_spin.step = 0.01
 	_price_spin.value = 5
 	vbox.add_child(_row("Hinta (€)", _price_spin))
 
@@ -179,7 +180,7 @@ func _on_confirmed() -> void:
 	resource.id = int(_id_spin.value)
 	resource.name = display_name
 	resource.description = _description_edit.text.strip_edges()
-	resource.base_price = int(_price_spin.value)
+	resource.base_price = _price_spin.value
 	resource.type = [IngredientData.IngredientType.MALT, IngredientData.IngredientType.HOP, IngredientData.IngredientType.YEAST][_type_option.selected]
 
 	var path := folder + display_name.to_snake_case() + ".tres"

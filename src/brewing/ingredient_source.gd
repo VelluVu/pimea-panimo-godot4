@@ -19,8 +19,8 @@ func table() -> Dictionary:
 
 
 ## What a combo (id -> amount) costs at base prices.
-func combo_cost(combo : Dictionary) -> int:
-	var cost : int = 0
+func combo_cost(combo : Dictionary) -> float:
+	var cost : float = 0.0
 	for id : int in combo:
 		var data : IngredientData = table().get(id)
 		if data != null:
