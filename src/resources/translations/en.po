@@ -6372,16 +6372,8 @@ msgid "LÄMMITÄ"
 msgstr "HEAT"
 
 #: src/ui/brew_day/brew_day_window.gd
-msgid "Maltaat"
-msgstr "Malts"
-
-#: src/ui/brew_day/brew_day_window.gd
 msgid "MÄSKÄYS · %s"
 msgstr "MASH · %s"
-
-#: src/ui/brew_day/brew_day_window.gd
-msgid "NYT"
-msgstr "NOW"
 
 #: src/ui/brew_day/brew_day_window.gd
 msgid "Peru"
@@ -6414,6 +6406,14 @@ msgstr "DONE"
 #: src/ui/brew_day/brew_day_window.gd
 msgid "Vedä melaa paakkujen läpi, niin ne hajoavat."
 msgstr "Drag the paddle through the lumps to break them."
+
+#: src/ui/brew_day/malt_sack_button.gd
+msgid "Maltaat"
+msgstr "Malts"
+
+#: src/ui/brew_day/malt_sack_button.gd
+msgid "NYT"
+msgstr "NOW"
 
 #: src/ui/brew_day/thermo_column.gd
 msgid "AROMI"

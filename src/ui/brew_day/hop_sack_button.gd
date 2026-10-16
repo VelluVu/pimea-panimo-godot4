@@ -1,12 +1,9 @@
 class_name HopSackButton
 extends Button
 
-## A hop, spice or malt sack standing beside the kettle: its sprite (BrewDayArt.sack) going
-## from full to half to almost empty, the pellets' colour showing at its neck, its key
-## number, name and what is left. Holding it pours; while it is lifted over the kettle
-## (KettleView draws that) only a dark shadow stays in its place. A sack whose mark is
-## coming wobbles with a yellow frame and the mark's name; while the mark is open it
-## blinks green, so the player can watch the sacks instead of the timer.
+## A sack beside the kettle: its sprite emptying in three steps, its pellet colour, key,
+## name and amount left. Holding it pours; lifted, only its shadow stays. A sack whose
+## mark is coming wobbles with a yellow frame; while the mark is open it blinks green.
 
 const ART : BrewDayArt = preload("res://src/resources/brew_day/brew_day_art.tres")
 const SIZE : Vector2 = Vector2(104, 40)

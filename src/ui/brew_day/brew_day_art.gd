@@ -1,12 +1,9 @@
 class_name BrewDayArt
 extends Resource
 
-## The brew day's sprites, so swapping one is a matter of editing its PNG in
-## assets/textures/brew_day/ (or reassigning it here). They are drawn small and shown
-## scaled up, like the game's other sprites: the kettle 4x, the props 2x. The liquid,
-## foam, bubbles, hop blooms, stripes, pellets and the bent shaft stay drawn in code,
-## since they move and change colour. Keep each sprite's size, or the parts the code
-## places on it shift.
+## The brew day's sprites, so swapping one means editing its PNG in
+## assets/textures/brew_day/. Kettle shown 4x, props 2x; the moving, colour-changing
+## parts stay drawn in code. Keep each sprite's size, or the parts placed on it shift.
 
 const KETTLE_SCALE : int = 4
 const PROP_SCALE : int = 2

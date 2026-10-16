@@ -1,19 +1,10 @@
 class_name KettleView
 extends Control
 
-## The brew day's kettle: a round pot seen from the front and a little above (its sprite
-## in BrewDayArt), its oval mouth full of liquid,
-## the clumps, the foam and the paddle. The paddle is a springy stick (PaddleBody):
-## pressing on the liquid puts its blade under the pointer, and the shaft swings around
-## over the far rim behind it. The blade breaks the clumps; the shaft only pushes them.
-## In the boil a sack is carried over the mouth (following the pointer, a little behind)
-## and its pellets drop into the wort, each landing with a splash ring and a coloured
-## bloom that fades into the wort. Shaking it throws them diagonally to random spots.
-## The malt sack pours its grains into the mash the same way, without the blooms.
-## Stirring sets the wort swirling: the blooms ride the swirl around the kettle and
-## leave coloured stripes behind them, and the swirl dies down slowly to the gentle
-## turn of the rolling boil, which keeps drawing the stripes out. Steam rises over the
-## mouth (a shader child) as strongly as `steam` says.
+## The kettle seen from the front and a little above, its mouth full of liquid, clumps,
+## foam and the springy paddle (PaddleBody): the blade breaks clumps, the shaft only
+## pushes them. Carried sacks drop pellets or grains with splash rings (and hop blooms);
+## stirring swirls the blooms into stripes. Steam (a shader child) follows `steam`.
 
 ## The stick moved this frame, in liquid pixels (see MashSession.paddle_moved).
 signal paddle_moved(before : PackedVector2Array, after : PackedVector2Array, blade_from : int, delta : float)
