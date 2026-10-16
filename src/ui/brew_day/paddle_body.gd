@@ -1,12 +1,9 @@
 class_name PaddleBody
 extends RefCounted
 
-## The brew day paddle as a springy, slightly bendy stick: a chain of points held at
-## a fixed spacing, with joints that pull back toward straight. points[0] is the blade
-## tip, which follows the pointer on a loose spring inside the kettle mouth. The handle
-## end leans up and out over the rim on the side away from the blade, and chases that
-## spot with a lag: moving the blade across the mouth swings the shaft over the top to
-## the other side. A wild sweep bends the stick before it straightens out again.
+## The paddle as a springy chain of points pulled back toward straight. points[0], the
+## blade, follows the pointer on a loose spring; the handle leans out over the far rim
+## and chases it with a lag, so sweeping the blade across swings the shaft over the top.
 
 ## The blade tip hit the kettle wall; speed in pixels a second.
 signal knocked(speed : float)

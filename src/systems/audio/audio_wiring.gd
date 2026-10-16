@@ -41,7 +41,7 @@ var _last_toast_frame: int = -1
 var _burner_player: AudioStreamPlayer
 var _boil_player: AudioStreamPlayer
 var _hop_pour_player: AudioStreamPlayer
-## BrewDayWindow.SOUND_* -> [stream, volume_db].
+## BrewDaySound constants -> [stream, volume_db].
 var _brew_sounds: Dictionary = {}
 var _last_brew_sound_msec: Dictionary = {}
 
@@ -87,18 +87,18 @@ func _setup_brew_day_sounds() -> void:
 	_boil_player = _add_loop_player(bank.sfx_brew_boil_loop)
 	_hop_pour_player = _add_loop_player(bank.sfx_brew_hop_pour_loop)
 	_brew_sounds = {
-		BrewDayWindow.SOUND_MALTS: [bank.sfx_brew_malt_pour, 0.0],
-		BrewDayWindow.SOUND_PLOP: [bank.sfx_brew_plop, -2.0],
-		BrewDayWindow.SOUND_CLUMP_HIT: [bank.sfx_brew_clump_hit, 0.0],
-		BrewDayWindow.SOUND_CLUMP_BOUNCE: [bank.sfx_brew_clump_hit, -10.0],
-		BrewDayWindow.SOUND_CLUMP_BREAK: [bank.sfx_brew_clump_break, 0.0],
-		BrewDayWindow.SOUND_PADDLE_KNOCK: [bank.sfx_brew_paddle_knock, -3.0],
-		BrewDayWindow.SOUND_STEP_DONE: [bank.sfx_brew_step_done, -2.0],
-		BrewDayWindow.SOUND_BOIL_OVER: [bank.sfx_brew_boil_over, 0.0],
-		BrewDayWindow.SOUND_MARK_HIT: [bank.sfx_brew_step_done, -2.0],
-		BrewDayWindow.SOUND_MARK_MISS: [bank.sfx_brew_result_low, -4.0],
-		BrewDayWindow.SOUND_RESULT_GOOD: [bank.sfx_brew_result_good, 0.0],
-		BrewDayWindow.SOUND_RESULT_LOW: [bank.sfx_brew_result_low, 0.0],
+		BrewDaySound.MALTS: [bank.sfx_brew_malt_pour, 0.0],
+		BrewDaySound.PLOP: [bank.sfx_brew_plop, -2.0],
+		BrewDaySound.CLUMP_HIT: [bank.sfx_brew_clump_hit, 0.0],
+		BrewDaySound.CLUMP_BOUNCE: [bank.sfx_brew_clump_hit, -10.0],
+		BrewDaySound.CLUMP_BREAK: [bank.sfx_brew_clump_break, 0.0],
+		BrewDaySound.PADDLE_KNOCK: [bank.sfx_brew_paddle_knock, -3.0],
+		BrewDaySound.STEP_DONE: [bank.sfx_brew_step_done, -2.0],
+		BrewDaySound.BOIL_OVER: [bank.sfx_brew_boil_over, 0.0],
+		BrewDaySound.MARK_HIT: [bank.sfx_brew_step_done, -2.0],
+		BrewDaySound.MARK_MISS: [bank.sfx_brew_result_low, -4.0],
+		BrewDaySound.RESULT_GOOD: [bank.sfx_brew_result_good, 0.0],
+		BrewDaySound.RESULT_LOW: [bank.sfx_brew_result_low, 0.0],
 		KegWashWindow.SOUND_LOOSENED: [bank.sfx_keg_scrub, -2.0],
 		KegWashWindow.SOUND_REMOVED: [bank.sfx_keg_splash, -4.0],
 		KegWashWindow.SOUND_FLED: [bank.sfx_keg_skitter, -4.0],

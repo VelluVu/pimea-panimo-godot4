@@ -38,7 +38,7 @@ signal brew_day_finished(quality_multiplier : float)
 signal brew_day_opened()
 @warning_ignore("unused_signal")
 signal brew_day_closed()
-## A one-shot brew day sound, named by BrewDayWindow.SOUND_*.
+## A one-shot brew day sound, named by a BrewDaySound constant.
 @warning_ignore("unused_signal")
 signal brew_day_sound(sound : StringName)
 ## The brew day's looping sounds, every frame while it is open: burner power and boil
