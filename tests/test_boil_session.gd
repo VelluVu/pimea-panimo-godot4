@@ -34,10 +34,11 @@ func _until_counted(session : BoilSession, at : float) -> void:
 		_hold_boil(session, STEP)
 
 
-func _pour(session : BoilSession, id : int, seconds : float) -> void:
-	session.start_pour(id)
+## Sacks are keyed by their mark's index.
+func _pour(session : BoilSession, sack : int, seconds : float) -> void:
+	session.start_pour(sack)
 	_hold_boil(session, seconds)
-	session.stop_pour(id)
+	session.stop_pour(sack)
 
 
 func test_the_clock_waits_for_the_boil() -> void:
@@ -61,10 +62,10 @@ func test_the_hop_stand_takes_aroma_hops_after_the_boil() -> void:
 	assert_eq(session.phase, BoilSession.Phase.HOP_STAND)
 	session.set_heating(true)
 	assert_false(session.heat.heating, "the flame is out")
-	session.start_pour(HOP_ID)
+	session.start_pour(0)
 	for i : int in roundi(BoilSessionScript.POUR_SECONDS_AT_TARGET / STEP):
 		session.step(STEP)
-	session.stop_pour(HOP_ID)
+	session.stop_pour(0)
 	assert_eq(session.marks[0].result, BoilMark.Result.FULL)
 	assert_eq(session.phase, BoilSession.Phase.DONE, "every mark done ends the stand early")
 
@@ -89,7 +90,7 @@ func test_full_heat_boils_over() -> void:
 func test_a_timed_pour_of_the_right_amount_is_a_full_hit() -> void:
 	var session : BoilSession = BoilSessionScript.new(_marks([[HopAddition.Kind.BITTERING, HOP_ID, 30]]))
 	_until_counted(session, 0.1)
-	_pour(session, HOP_ID, BoilSessionScript.POUR_SECONDS_AT_TARGET)
+	_pour(session, 0, BoilSessionScript.POUR_SECONDS_AT_TARGET)
 	assert_eq(session.marks[0].result, BoilMark.Result.FULL)
 
 
@@ -98,14 +99,14 @@ func test_a_bittering_hop_at_an_aroma_mark_is_at_best_half() -> void:
 	marks[0].bittering_only = true
 	var session : BoilSession = BoilSessionScript.new(marks)
 	_until_counted(session, BoilSchedule.time_for(HopAddition.Kind.FLAVOR) - 0.3)
-	_pour(session, HOP_ID, BoilSessionScript.POUR_SECONDS_AT_TARGET)
+	_pour(session, 0, BoilSessionScript.POUR_SECONDS_AT_TARGET)
 	assert_eq(session.marks[0].result, BoilMark.Result.HALF)
 
 
 func test_the_wrong_amount_is_half() -> void:
 	var session : BoilSession = BoilSessionScript.new(_marks([[HopAddition.Kind.BITTERING, HOP_ID, 30]]))
 	_until_counted(session, 0.1)
-	_pour(session, HOP_ID, 0.3)
+	_pour(session, 0, 0.3)
 	assert_eq(session.marks[0].result, BoilMark.Result.HALF)
 
 
@@ -121,16 +122,16 @@ func test_a_pour_far_from_any_mark_is_lost() -> void:
 	var strays : Array = []
 	session.stray_pour.connect(func(id : int) -> void: strays.append(id))
 	_until_counted(session, 2.0)
-	_pour(session, HOP_ID, 0.4)
+	_pour(session, 0, 0.4)
 	assert_eq(strays, [HOP_ID])
-	assert_true(session.sacks[HOP_ID] < 30.0)
+	assert_true(session.sacks[0] < 30.0)
 	assert_eq(session.marks[0].result, BoilMark.Result.OPEN)
 
 
 func test_the_wrong_sack_on_a_mark_is_half() -> void:
 	var session : BoilSession = BoilSessionScript.new(_marks([[HopAddition.Kind.BITTERING, HOP_ID, 30], [HopAddition.Kind.AROMA, AROMA_HOP_ID, 10]]))
 	_until_counted(session, 0.2)
-	_pour(session, AROMA_HOP_ID, 0.5)
+	_pour(session, 1, 0.5)
 	assert_eq(session.marks[0].result, BoilMark.Result.HALF)
 
 
@@ -138,17 +139,17 @@ func test_spices_go_in_with_one_tap() -> void:
 	var piece_ids : Array[int] = [SPICE_ID]
 	var session : BoilSession = BoilSessionScript.new(_marks([[HopAddition.Kind.SPICE, SPICE_ID, 2]]), piece_ids)
 	_until_counted(session, BoilSchedule.time_for(HopAddition.Kind.SPICE))
-	session.start_pour(SPICE_ID)
+	session.start_pour(0)
 	assert_eq(session.marks[0].result, BoilMark.Result.FULL)
-	assert_eq(session.sacks[SPICE_ID], 0.0)
+	assert_eq(session.sacks[0], 0.0)
 
 
 func test_every_mark_hit_scores_high() -> void:
 	var session : BoilSession = BoilSessionScript.new(_marks([[HopAddition.Kind.BITTERING, HOP_ID, 30], [HopAddition.Kind.AROMA, AROMA_HOP_ID, 10]]))
 	_until_counted(session, 0.1)
-	_pour(session, HOP_ID, BoilSessionScript.POUR_SECONDS_AT_TARGET)
+	_pour(session, 0, BoilSessionScript.POUR_SECONDS_AT_TARGET)
 	_until_counted(session, BoilSchedule.time_for(HopAddition.Kind.AROMA) - 0.5)
-	_pour(session, AROMA_HOP_ID, BoilSessionScript.POUR_SECONDS_AT_TARGET)
+	_pour(session, 1, BoilSessionScript.POUR_SECONDS_AT_TARGET)
 	_hold_boil(session, 5.0)
 	assert_eq(session.phase, BoilSession.Phase.DONE)
 	assert_gt(session.score(), 0.8)
@@ -157,4 +158,22 @@ func test_every_mark_hit_scores_high() -> void:
 func test_the_dry_hop_stays_out_of_the_boil() -> void:
 	var session : BoilSession = BoilSessionScript.new(_marks([[HopAddition.Kind.DRY_HOP, HOP_ID, 30]]))
 	assert_true(session.marks.is_empty())
-	assert_false(session.sacks.has(HOP_ID))
+	assert_true(session.sacks.is_empty())
+
+
+func test_a_hop_on_two_marks_gets_a_sack_for_each() -> void:
+	var session : BoilSession = BoilSessionScript.new(_marks([[HopAddition.Kind.FLAVOR, AROMA_HOP_ID, 12], [HopAddition.Kind.AROMA, AROMA_HOP_ID, 2]]))
+	assert_eq(session.sacks, {0: 12.0, 1: 2.0})
+	_until_counted(session, BoilSchedule.time_for(HopAddition.Kind.AROMA) - 0.3)
+	# Pouring the small sack to the bottom is exactly its mark's grams.
+	_pour(session, 1, BoilSessionScript.POUR_SECONDS_AT_TARGET * 3.0)
+	assert_eq(session.sacks[1], 0.0)
+	assert_eq(session.marks[1].result, BoilMark.Result.FULL)
+	assert_eq(session.sacks[0], 12.0, "the other sack is untouched")
+
+
+func test_a_same_hop_sack_stands_in_for_its_twin() -> void:
+	var session : BoilSession = BoilSessionScript.new(_marks([[HopAddition.Kind.FLAVOR, AROMA_HOP_ID, 10], [HopAddition.Kind.AROMA, AROMA_HOP_ID, 10]]))
+	_until_counted(session, BoilSchedule.time_for(HopAddition.Kind.AROMA) - 0.3)
+	_pour(session, 0, BoilSessionScript.POUR_SECONDS_AT_TARGET)
+	assert_eq(session.marks[1].result, BoilMark.Result.FULL, "the flavour sack still counts for the aroma mark")

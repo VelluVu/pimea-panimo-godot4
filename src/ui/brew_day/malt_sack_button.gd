@@ -56,7 +56,7 @@ func step(delta : float, at_marker : bool) -> void:
 		return
 	var carried : bool = kettle.is_carrying(SACK_ID)
 	cue = Cue.NOW if at_marker and not carried else Cue.NONE
-	cue_label = tr(CUE_TEXT)
+	cue_label = tr(CUE_TEXT) if cue == Cue.NOW else ""
 	if carried:
 		_pour(delta)
 

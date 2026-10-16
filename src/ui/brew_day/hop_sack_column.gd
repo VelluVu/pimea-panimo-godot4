@@ -1,9 +1,10 @@
 class_name HopSackColumn
 extends VBoxContainer
 
-## The boil's hop and spice sacks in a column beside the kettle. A sack lifts with the
-## pointer or its number key and pours while carried over the kettle mouth; it cues its
-## next mark (wobbling as it comes, blinking while open). The window drives it each frame.
+## The boil's hop and spice sacks in a column beside the kettle, one per mark (the boil's
+## sack keys). A sack lifts with the pointer or its number key and pours while carried
+## over the kettle mouth; it cues its mark (wobbling as it comes, blinking while open).
+## The window drives it each frame.
 
 ## A mark opened: its kind ("AROMI") and the sack's name, for the window's big call.
 signal mark_opened(mark : BoilMark, kind_label : String, sack_name : String)
@@ -22,10 +23,7 @@ var kettle : KettleView
 var _plan : BrewDayPlan
 var _boil : BoilSession
 var _active : bool = false
-var _ids : Array[int] = []
 var _buttons : Array[HopSackButton] = []
-## Grams (or pieces) each sack starts with.
-var _totals : Dictionary = {}
 ## Spice sacks already tipped in during this carry.
 var _spice_tipped : Dictionary = {}
 
@@ -34,7 +32,7 @@ func _ready() -> void:
 	add_theme_constant_override("separation", GAP)
 
 
-## Fills the column with the boil's sacks, keyed 1, 2, ... in the plan's order.
+## Fills the column with the boil's sacks, keyed 1, 2, ... in the order of their marks.
 func start(plan : BrewDayPlan, boil : BoilSession) -> void:
 	_plan = plan
 	_boil = boil
@@ -42,18 +40,15 @@ func start(plan : BrewDayPlan, boil : BoilSession) -> void:
 	for button : HopSackButton in _buttons:
 		button.queue_free()
 	_buttons.clear()
-	_ids = plan.sack_ids()
-	_totals.clear()
-	for mark : BoilMark in plan.marks:
-		_totals[mark.ingredient_id] = int(_totals.get(mark.ingredient_id, 0)) + mark.grams
-	for i : int in _ids.size():
-		var id : int = _ids[i]
+	for sack : int in boil.marks.size():
+		var mark : BoilMark = boil.marks[sack]
 		var button := HopSackButton.new()
-		button.key_number = i + 1
-		button.sack_name = sack_name(id)
-		button.pellet_color = pellet_color(id)
-		button.button_down.connect(_pick_up.bind(id, true))
-		button.button_up.connect(_put_down.bind(id))
+		button.key_number = sack + 1
+		button.sack_name = sack_name(mark.ingredient_id)
+		button.pellet_color = BrewDayLook.pellet_color(mark)
+		button.cue_label = ThermoColumn.kind_label(mark.kind)
+		button.button_down.connect(_pick_up.bind(sack, true))
+		button.button_up.connect(_put_down.bind(sack))
 		add_child(button)
 		_buttons.append(button)
 	show()
@@ -76,30 +71,27 @@ func finish() -> void:
 
 
 func release_all() -> void:
-	for id : int in _ids:
-		_put_down(id)
+	for sack : int in _buttons.size():
+		_put_down(sack)
 
 
 ## A number key lifts its sack straight over the mouth; letting go puts it down.
 func press_key(index : int, pressed : bool) -> void:
-	if not _active or index >= _ids.size():
+	if not _active or index >= _buttons.size():
 		return
 	if pressed:
-		_pick_up(_ids[index], false)
+		_pick_up(index, false)
 	else:
-		_put_down(_ids[index])
+		_put_down(index)
 
 
 func is_pouring() -> bool:
-	return _boil != null and _ids.any(func(id : int) -> bool: return _boil.is_pouring(id))
+	return _boil != null and _boil.sacks.keys().any(func(sack : int) -> bool: return _boil.is_pouring(sack))
 
 
-func sack_name(id : int) -> String:
-	return BrewDayLook.sack_name(String(_plan.names.get(id, "")))
-
-
-func pellet_color(id : int) -> Color:
-	return BrewDayLook.pellet_color(id, _plan.marks)
+## The ingredient's name as its sacks show it.
+func sack_name(ingredient_id : int) -> String:
+	return BrewDayLook.sack_name(String(_plan.names.get(ingredient_id, "")))
 
 
 ## The sacks' fill and text, and the kettle's pours: a sack pours while it is held and
@@ -107,75 +99,74 @@ func pellet_color(id : int) -> Color:
 func refresh() -> void:
 	if _boil == null:
 		return
-	for i : int in _buttons.size():
-		var id : int = _ids[i]
-		var left : float = float(_boil.sacks.get(id, 0.0))
-		var unit : String = StringContainer.KPL if _plan.piece_ids.has(id) else StringContainer.G
-		var button : HopSackButton = _buttons[i]
+	for sack : int in _buttons.size():
+		var mark : BoilMark = _boil.marks[sack]
+		var left : float = float(_boil.sacks.get(sack, 0.0))
+		var unit : String = StringContainer.KPL if _is_pieces(sack) else StringContainer.G
+		var button : HopSackButton = _buttons[sack]
 		button.amount_text = "%d %s" % [roundi(left), tr(unit)]
-		button.fill = left / maxf(1.0, float(_totals.get(id, 1)))
-		kettle.set_pouring(id, _pour_from_carried(id, left))
-		button.lifted = kettle.is_carrying(id)
-		_cue(button, id)
+		button.fill = left / maxf(1.0, float(mark.grams))
+		kettle.set_pouring(sack, _pour_from_carried(sack, left))
+		button.lifted = kettle.is_carrying(sack)
+		_cue(button, mark)
 		if _active:
-			button.disabled = left <= 0.0 and not _boil.is_pouring(id)
+			button.disabled = left <= 0.0 and not _boil.is_pouring(sack)
 
 
 ## Lifts a sack off its place: with the pointer it follows it, with its key it hangs
 ## at its own spot over the mouth. It only pours while over the mouth.
-func _pick_up(id : int, follow : bool) -> void:
-	if _active and float(_boil.sacks.get(id, 0.0)) > 0.0:
-		kettle.carry(id, pellet_color(id), follow)
+func _pick_up(sack : int, follow : bool) -> void:
+	if _active and float(_boil.sacks.get(sack, 0.0)) > 0.0:
+		kettle.carry(sack, BrewDayLook.pellet_color(_boil.marks[sack]), follow)
 
 
-func _put_down(id : int) -> void:
+func _put_down(sack : int) -> void:
 	if _boil != null:
-		_boil.stop_pour(id)
-	kettle.drop(id)
-	_spice_tipped.erase(id)
+		_boil.stop_pour(sack)
+	kettle.drop(sack)
+	_spice_tipped.erase(sack)
+
+
+func _is_pieces(sack : int) -> bool:
+	return _plan.piece_ids.has(_boil.marks[sack].ingredient_id)
 
 
 ## A carried sack pours while its mouth is over the kettle mouth: a pour starts as it
 ## comes over (that is when its timing counts) and ends as it leaves. A spice sack
 ## tips its handful in once.
-func _pour_from_carried(id : int, left : float) -> bool:
-	if not kettle.is_carrying(id):
+func _pour_from_carried(sack : int, left : float) -> bool:
+	if not kettle.is_carrying(sack):
 		return false
-	kettle.set_carry_target(id, kettle.get_local_mouse_position())
-	var over : bool = kettle.is_over_mouth(id) and left > 0.0
-	if _plan.piece_ids.has(id):
-		if over and not _spice_tipped.has(id):
-			_spice_tipped[id] = true
+	kettle.set_carry_target(sack, kettle.get_local_mouse_position())
+	var over : bool = kettle.is_over_mouth(sack) and left > 0.0
+	if _is_pieces(sack):
+		if over and not _spice_tipped.has(sack):
+			_spice_tipped[sack] = true
 			BrewDaySound.play(BrewDaySound.PLOP)
-			kettle.drop_handful(id, SPICE_HANDFUL)
-			_boil.start_pour(id)
+			kettle.drop_handful(sack, SPICE_HANDFUL)
+			_boil.start_pour(sack)
 		return false
-	if over and not _boil.is_pouring(id):
+	if over and not _boil.is_pouring(sack):
 		BrewDaySound.play(BrewDaySound.PLOP)
-		_boil.start_pour(id)
-	elif not over and _boil.is_pouring(id):
-		_boil.stop_pour(id)
+		_boil.start_pour(sack)
+	elif not over and _boil.is_pouring(sack):
+		_boil.stop_pour(sack)
 	return over
 
 
-## A sack's next open mark: wobbling while it is coming, blinking while it is open,
-## and reported the moment it opens.
-func _cue(button : HopSackButton, id : int) -> void:
+## A sack's mark: wobbling while it is coming, blinking while it is open, and reported
+## the moment it opens.
+func _cue(button : HopSackButton, mark : BoilMark) -> void:
 	button.cue = HopSackButton.Cue.NONE
-	if not _active:
+	if not _active or not mark.is_open():
 		return
-	for mark : BoilMark in _boil.open_marks():
-		if mark.ingredient_id != id:
-			continue
-		var start : float = BoilSchedule.window_start(mark.kind, _boil.window_widen)
-		var open : bool = _boil.is_pouring_time() and BoilSchedule.in_window(mark.kind, _boil.counted, _boil.window_widen)
-		# The bittering hops are coming as the wort nears the boil.
-		var coming : bool = _boil.counted >= start - CUE_LEAD if _boil.is_pouring_time() \
-			else mark.kind == HopAddition.Kind.BITTERING and _boil.heat.temperature >= BoilSession.BOIL_MIN - BITTERING_CUE_DEGREES
-		if not open and not coming:
-			continue
-		button.cue = HopSackButton.Cue.NOW if open else HopSackButton.Cue.SOON
-		button.cue_label = ThermoColumn.kind_label(mark.kind)
-		if open:
-			mark_opened.emit(mark, button.cue_label, sack_name(id))
+	var start : float = BoilSchedule.window_start(mark.kind, _boil.window_widen)
+	var open : bool = _boil.is_pouring_time() and BoilSchedule.in_window(mark.kind, _boil.counted, _boil.window_widen)
+	# The bittering hops are coming as the wort nears the boil.
+	var coming : bool = _boil.counted >= start - CUE_LEAD if _boil.is_pouring_time() \
+		else mark.kind == HopAddition.Kind.BITTERING and _boil.heat.temperature >= BoilSession.BOIL_MIN - BITTERING_CUE_DEGREES
+	if not open and not coming:
 		return
+	button.cue = HopSackButton.Cue.NOW if open else HopSackButton.Cue.SOON
+	if open:
+		mark_opened.emit(mark, button.cue_label, sack_name(mark.ingredient_id))

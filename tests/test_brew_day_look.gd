@@ -18,12 +18,11 @@ func _mark(id : int, kind : HopAddition.Kind) -> BoilMark:
 	return mark
 
 
-func test_pellets_take_their_first_marks_colour() -> void:
-	var marks : Array[BoilMark] = [_mark(5, HopAddition.Kind.BITTERING), _mark(5, HopAddition.Kind.AROMA), _mark(6, HopAddition.Kind.AROMA)]
-	assert_eq(LookScript.pellet_color(5, marks), LookScript.PELLET_COLORS[HopAddition.Kind.BITTERING])
-	assert_eq(LookScript.pellet_color(6, marks), LookScript.PELLET_COLORS[HopAddition.Kind.AROMA])
-	assert_eq(LookScript.pellet_color(99, marks), LookScript.PELLET_COLORS[HopAddition.Kind.FLAVOR], "no mark falls back to flavour")
-	assert_eq(LookScript.pellet_color(BrewDayLines.JUNIPER_ID, marks), LookScript.JUNIPER_COLOR)
+func test_pellets_take_their_marks_colour() -> void:
+	assert_eq(LookScript.pellet_color(_mark(5, HopAddition.Kind.BITTERING)), LookScript.PELLET_COLORS[HopAddition.Kind.BITTERING])
+	assert_eq(LookScript.pellet_color(_mark(5, HopAddition.Kind.AROMA)), LookScript.PELLET_COLORS[HopAddition.Kind.AROMA])
+	assert_eq(LookScript.pellet_color(_mark(5, HopAddition.Kind.DRY_HOP)), LookScript.PELLET_COLORS[HopAddition.Kind.FLAVOR], "no colour of its own falls back to flavour")
+	assert_eq(LookScript.pellet_color(_mark(BrewDayLines.JUNIPER_ID, HopAddition.Kind.FLAVOR)), LookScript.JUNIPER_COLOR)
 
 
 func test_sack_name_drops_the_hop_ending() -> void:
