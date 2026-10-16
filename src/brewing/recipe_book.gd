@@ -125,6 +125,9 @@ func _on_fill_recipe_from_inventory_requested() -> void:
 
 
 func _on_add_ingredient_to_brew_preparation(ingredient_id : int, amount : int) -> void:
+	if _would_exceed_hop_varieties(ingredient_id):
+		BrewerySignals.hop_variety_limit_reached.emit(BrewMixture.MAX_HOP_VARIETIES)
+		return
 	var final_amount : int =  brewery.inventory.withdraw_item_by_id(ingredient_id, amount)
 	
 	if final_amount <= 0:
@@ -132,6 +135,16 @@ func _on_add_ingredient_to_brew_preparation(ingredient_id : int, amount : int) -
 	
 	brewery.brew_preparation.add_to_table(ingredient_id, final_amount)
 	BrewerySignals.brewery_state_changed.emit(brewery)
+
+
+## A new hop variety when the table already holds the most a beer can take.
+func _would_exceed_hop_varieties(ingredient_id : int) -> bool:
+	var table : Dictionary = brewery.resolver.ingredient_table()
+	var contents : Dictionary = brewery.brew_preparation.selected_contents
+	if not table.get(ingredient_id) is HopData or contents.has(ingredient_id):
+		return false
+	var hops : int = contents.keys().filter(func(id : int) -> bool: return table.get(id) is HopData).size()
+	return hops >= BrewMixture.MAX_HOP_VARIETIES
 
 
 func _on_remove_ingredient_from_brew_preparation(ingredient_id : int, amount : int) -> void:

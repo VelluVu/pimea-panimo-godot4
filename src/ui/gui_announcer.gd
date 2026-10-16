@@ -15,6 +15,7 @@ const REPUTATION_TIER_FELL_TOAST_FORMAT: String = "Maineesi laski: %s."
 const KEG_TO_WASH_TOAST_TEXT: String = "Uusi likainen tynnyri pestäväksi"
 const FERMENTING_TOAST_FORMAT: String = "Uusi %s-erä käymässä"
 const FERMENTED_TOAST_FORMAT: String = "%s valmis tynnyriin"
+const HOP_VARIETY_LIMIT_TOAST_FORMAT: String = "Enintään %d humalalajiketta samaan olueen."
 const LIGHTLY_SOURED_TOAST_FORMAT: String = "%s happani vähän likaisessa tynnyrissä."
 const SOURED_TOAST_FORMAT: String = "%s happani likaisessa tynnyrissä!"
 const BADLY_SOURED_TOAST_FORMAT: String = "%s happani pahasti likaisessa tynnyrissä!"
@@ -96,6 +97,7 @@ func start() -> void:
 	BrewerySignals.day_event_announced.connect(_on_day_event_announced)
 	BrewerySignals.lvv_hint_reached.connect(_on_lvv_hint_reached)
 	BrewerySignals.kegs_emptied.connect(_on_kegs_emptied)
+	BrewerySignals.hop_variety_limit_reached.connect(func(limit: int) -> void: _show_toast(tr(HOP_VARIETY_LIMIT_TOAST_FORMAT) % limit))
 	BrewerySignals.fermentation_started.connect(_on_fermentation_started)
 	BrewerySignals.batch_fermented.connect(_on_batch_fermented)
 

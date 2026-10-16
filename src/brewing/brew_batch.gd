@@ -31,7 +31,11 @@ extends Resource
 
 @export var precision_score : float = 1.0
 @export var hop_diversity_count : int = 0
+## Old saves only: the retired alpha/beta balance bonus.
 @export var hop_balance_bonus : float = 0.0
+## Hop layers filled well, out of the style's hop marks.
+@export var hop_layers : int = 0
+@export var hop_layer_slots : int = 0
 @export var flavor_matched : bool = false
 @export var spice_bonus : float = 0.0
 @export var unsuited_spice_penalty : float = 0.0
@@ -155,8 +159,8 @@ func get_quality_breakdown_tooltip() -> String:
 
 	return tr(StringContainer.BREW_QUALITY_BREAKDOWN_TOOLTIP) % [
 		roundi(precision_score * 100),
-		hop_diversity_count,
-		roundi(hop_balance_bonus * 100),
+		hop_layers,
+		hop_layer_slots,
 		flavor_matched_string,
 		roundi((spice_bonus - unsuited_spice_penalty) * 100),
 	]

@@ -242,14 +242,12 @@ msgstr "Extra mash tun capacity: %s kg"
 #: src/autoload/string_container.gd
 msgid ""
 "Osumatarkkuus: %s%%\n"
-"Humalalajeja käytetty: %s\n"
-"Humalatasapaino-bonus: %s%%\n"
+"Humalakerrokset: %s/%s\n"
 "Makuosuma: %s\n"
 "Maustebonus: %s%%"
 msgstr ""
-"Precision: %s%%\n"
-"Hop varieties used: %s\n"
-"Hop balance bonus: %s%%\n"
+"Accuracy: %s%%\n"
+"Hop layers: %s/%s\n"
 "Flavour match: %s\n"
 "Spice bonus: %s%%"
 
@@ -1495,13 +1493,17 @@ msgstr ""
 msgid ""
 "Kirkas ja kuiva vaalea lager, jonka katkeruus ja tuoksu tulevat "
 "saksalaisista jalohumalista."
-msgstr "A clear, dry pale lager that owes its bitterness and scent to German noble hops."
+msgstr ""
+"A clear, dry pale lager that owes its bitterness and scent to German noble "
+"hops."
 
 #: src/resources/beer_styles/pilsner.tres
 msgid ""
 "Saksalainen pils: kirkas, kuiva ja raikkaan katkera vaalea lager, jonka "
 "jalohumala tuoksuu kukkaiselta."
-msgstr "A German pils: a clear, dry and crisply bitter pale lager with the floral scent of noble hops."
+msgstr ""
+"A German pils: a clear, dry and crisply bitter pale lager with the floral "
+"scent of noble hops."
 
 #: src/resources/beer_styles/rauchbier.tres
 msgid "Bambergin perinneolut, jonka mallas on kuivattu savussa."
@@ -6658,6 +6660,10 @@ msgstr "%s soured a little in a dirty keg."
 #: src/ui/gui_announcer.gd
 msgid "%s valmis tynnyriin"
 msgstr "%s is ready in a keg"
+
+#: src/ui/gui_announcer.gd
+msgid "Enintään %d humalalajiketta samaan olueen."
+msgstr "At most %d hop varieties in one beer."
 
 #: src/ui/gui_announcer.gd
 msgid "LVV-riski nousee. Panimokirjan ohjeet kertovat, miten sen pitää kurissa."

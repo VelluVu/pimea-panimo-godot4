@@ -1,14 +1,26 @@
 class_name BrewQuality
 extends RefCounted
 
-## How well a mixture hits a style it already fits: precision inside the EBC/IBU
-## windows plus hop and spice bonuses, folded into one quality multiplier.
+## How well a mixture hits a style it already fits, folded into one quality multiplier.
+## Hop-forward styles (three or more hop marks) are about layered hopping: each layer
+## filled with a fitting hop adds to the quality. Classic styles are about the malt and
+## gentle hops, so hitting the style's colour, bitterness and strength counts for more
+## and a hop layer for less.
 
+## How much hitting the middle of the EBC, IBU and ABV windows moves the quality.
 const PRECISION_WEIGHT : float = 0.4
+const CLASSIC_PRECISION_WEIGHT : float = 0.6
 const NEUTRAL_PRECISION : float = 0.5
-const HOP_DIVERSITY_STEP : float = 0.05
-const HOP_DIVERSITY_MAX : float = 0.15
-const HOP_BALANCE_WEIGHT : float = 0.1
+## A style with at least this many hop marks is hop-forward.
+const HOP_FORWARD_MARKS : int = 3
+## Quality per hop layer filled well: a high-alpha hop bittering, a hop of the style's
+## preferred profile on each later mark.
+const HOP_LAYER_STEP : float = 0.04
+const CLASSIC_HOP_LAYER_STEP : float = 0.02
+## A bittering hop counts as one at this alpha acid percentage (Magnum, Warrior, Citra).
+const HIGH_ALPHA : int = 10
+## A layer of fewer grams than this is a pinch, not a layer.
+const MIN_LAYER_GRAMS : int = 5
 const FLAVOR_MATCH_BONUS : float = 0.1
 const SPICE_MATCH_STEP : float = 0.05
 const SPICE_MATCH_MAX : float = 0.1
@@ -35,23 +47,39 @@ static func ibu_precision(ibu : float, min_ibu : float, max_ibu : float) -> floa
 	return range_precision(ibu, min_ibu, max_ibu)
 
 
+static func is_hop_forward(beer_style : BeerStyle) -> bool:
+	return beer_style.hop_additions.size() >= HOP_FORWARD_MARKS
+
+
+## The style's hop layers (its boil and dry hop marks) the recipe fills well.
+static func good_hop_layers(mixture : BrewMixture, beer_style : BeerStyle) -> int:
+	var good : int = 0
+	for mark : BoilMark in mixture.hop_marks(beer_style):
+		var hop : HopData = mixture.ingredient(mark.ingredient_id) as HopData
+		if hop == null or mark.grams < MIN_LAYER_GRAMS:
+			continue
+		if mark.kind == HopAddition.Kind.BITTERING:
+			if hop.alpha_acids >= HIGH_ALPHA:
+				good += 1
+		elif beer_style.has_preferred_hop_profile(hop.flavor_profile):
+			good += 1
+	return good
+
+
+static func hop_layer_bonus(mixture : BrewMixture, beer_style : BeerStyle) -> float:
+	var step : float = HOP_LAYER_STEP if is_hop_forward(beer_style) else CLASSIC_HOP_LAYER_STEP
+	return good_hop_layers(mixture, beer_style) * step
+
+
+static func precision_weight(beer_style : BeerStyle) -> float:
+	return PRECISION_WEIGHT if is_hop_forward(beer_style) else CLASSIC_PRECISION_WEIGHT
+
+
 static func precision_score(mixture : BrewMixture, beer_style : BeerStyle) -> float:
 	var ebc_precision : float = range_precision(mixture.final_ebc, beer_style.min_ebc, beer_style.max_ebc)
 	var ibu_score : float = ibu_precision(mixture.ibu_for(beer_style), beer_style.min_ibu, beer_style.max_ibu)
 	var abv_precision : float = range_precision(mixture.abv, beer_style.min_abv, beer_style.max_abv)
 	return (ebc_precision + ibu_score + abv_precision) / 3.0
-
-
-## Rewards a mix where alpha and beta acids are close to each other.
-static func hop_balance_bonus(mixture : BrewMixture) -> float:
-	if mixture.alpha_acids <= 0.0 or mixture.beta_acids <= 0.0:
-		return 0.0
-	var ratio : float = minf(mixture.alpha_acids, mixture.beta_acids) / maxf(mixture.alpha_acids, mixture.beta_acids)
-	return ratio * HOP_BALANCE_WEIGHT
-
-
-static func hop_diversity_bonus(mixture : BrewMixture) -> float:
-	return clampf((mixture.hop_ids.size() - 1) * HOP_DIVERSITY_STEP, 0.0, HOP_DIVERSITY_MAX)
 
 
 static func flavor_matched(mixture : BrewMixture, beer_style : BeerStyle) -> bool:
@@ -83,9 +111,9 @@ static func unsuited_spice_penalty(mixture : BrewMixture, beer_style : BeerStyle
 	return unsuited * UNSUITED_SPICE_PENALTY
 
 
-static func multiplier(mixture : BrewMixture, precision : float, balance_bonus : float, flavor_match : bool, spice_match_bonus : float = 0.0) -> float:
-	var value : float = 1.0 + (precision - NEUTRAL_PRECISION) * PRECISION_WEIGHT
-	value += hop_diversity_bonus(mixture) + balance_bonus + spice_match_bonus
+static func multiplier(beer_style : BeerStyle, precision : float, layer_bonus : float, flavor_match : bool, spice_match_bonus : float = 0.0) -> float:
+	var value : float = 1.0 + (precision - NEUTRAL_PRECISION) * precision_weight(beer_style)
+	value += layer_bonus + spice_match_bonus
 	if flavor_match:
 		value += FLAVOR_MATCH_BONUS
 	return clampf(value, MIN_MULTIPLIER, MAX_MULTIPLIER)

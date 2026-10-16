@@ -122,11 +122,11 @@ func prioritize_styles() -> void:
 
 func _build_match_result(mixture : BrewMixture, beer_style : BeerStyle) -> BrewResult:
 	var precision : float = BrewQuality.precision_score(mixture, beer_style)
-	var balance_bonus : float = BrewQuality.hop_balance_bonus(mixture)
+	var layer_bonus : float = BrewQuality.hop_layer_bonus(mixture, beer_style)
 	var flavor_matched : bool = BrewQuality.flavor_matched(mixture, beer_style)
 	var spice_bonus : float = BrewQuality.spice_bonus(mixture, beer_style)
 	var unsuited_spice_penalty : float = BrewQuality.unsuited_spice_penalty(mixture, beer_style)
-	var multiplier : float = BrewQuality.multiplier(mixture, precision, balance_bonus, flavor_matched, spice_bonus - unsuited_spice_penalty)
+	var multiplier : float = BrewQuality.multiplier(beer_style, precision, layer_bonus, flavor_matched, spice_bonus - unsuited_spice_penalty)
 
 	var result := BrewResult.new()
 	result.beer_style = beer_style
@@ -139,7 +139,8 @@ func _build_match_result(mixture : BrewMixture, beer_style : BeerStyle) -> BrewR
 	result.is_matched = true
 	result.precision_score = precision
 	result.hop_diversity_count = mixture.hop_ids.size()
-	result.hop_balance_bonus = balance_bonus
+	result.hop_layers = BrewQuality.good_hop_layers(mixture, beer_style)
+	result.hop_layer_slots = beer_style.hop_additions.size()
 	result.flavor_matched = flavor_matched
 	result.spice_bonus = spice_bonus
 	result.unsuited_spice_penalty = unsuited_spice_penalty
