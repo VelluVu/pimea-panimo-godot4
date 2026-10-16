@@ -56,8 +56,7 @@ func test_the_dry_hop_leaves_the_boil_marks() -> void:
 	assert_eq(plan.marks.size(), 1)
 	assert_eq(plan.marks[0].kind, HopAddition.Kind.BITTERING)
 	assert_eq(plan.marks[0].grams, 20)
-	assert_eq(plan.sack_ids().size(), 1)
-	assert_eq(plan.sack_ids()[0], HOP_ID)
+	assert_eq(plan.new_boil().sacks.size(), 1, "no sack for the dry hop")
 
 
 func test_each_boil_gets_fresh_marks() -> void:

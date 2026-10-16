@@ -298,7 +298,7 @@ func _on_mark_resolved(mark : BoilMark) -> void:
 		return
 	if mark.result == BoilMark.Result.FULL:
 		BrewDaySound.play(BrewDaySound.MARK_HIT)
-		_kettle.sparkle(_sacks.pellet_color(mark.ingredient_id))
+		_kettle.sparkle(BrewDayLook.pellet_color(mark))
 	elif mark.result == BoilMark.Result.MISS:
 		BrewDaySound.play(BrewDaySound.MARK_MISS)
 

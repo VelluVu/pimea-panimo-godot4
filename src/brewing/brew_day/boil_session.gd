@@ -43,7 +43,9 @@ var in_band_time : float = 0.0
 var foam : float = 0.0
 var boil_overs : int = 0
 var marks : Array[BoilMark] = []
-## Ingredient id -> grams (or pieces) still in the sack.
+## Every mark has a sack of its own, keyed by the mark's index in `marks`, holding
+## exactly its grams (or pieces): emptying the sack is the right amount, even when one
+## hop is split over several marks.
 var sacks : Dictionary = {}
 var gram_tolerance : float = GRAM_TOLERANCE
 var window_widen : float = 0.0
@@ -58,8 +60,8 @@ func _init(boil_marks : Array[BoilMark], piece_ids : Array[int] = [], burner_lag
 	for mark : BoilMark in boil_marks:
 		if not BoilSchedule.is_in_boil(mark.kind):
 			continue
+		sacks[marks.size()] = float(mark.grams)
 		marks.append(mark)
-		sacks[mark.ingredient_id] = float(sacks.get(mark.ingredient_id, 0.0)) + mark.grams
 	_piece_ids = piece_ids.duplicate()
 	heat = KettleHeat.new(START_TEMPERATURE, HEAT_RATE, LOSS_RATE, burner_lag)
 
@@ -76,8 +78,8 @@ func is_in_band() -> bool:
 	return heat.temperature >= BOIL_MIN and heat.temperature <= FOAM_FROM
 
 
-func is_pouring(id : int) -> bool:
-	return _pours.has(id)
+func is_pouring(sack : int) -> bool:
+	return _pours.has(sack)
 
 
 func step(delta : float) -> void:
@@ -88,10 +90,10 @@ func step(delta : float) -> void:
 		foam = maxf(0.0, foam - FOAM_FALL * delta)
 	else:
 		_step_foam(delta)
-	for id : int in _pours:
-		var pour : Dictionary = _pours[id]
-		var grams : float = minf(pour.rate * delta, sacks[id])
-		sacks[id] -= grams
+	for sack : int in _pours:
+		var pour : Dictionary = _pours[sack]
+		var grams : float = minf(pour.rate * delta, sacks[sack])
+		sacks[sack] -= grams
 		pour.grams += grams
 	if phase == Phase.RAMP:
 		if is_boiling():
@@ -142,10 +144,11 @@ func is_pouring_time() -> bool:
 	return phase == Phase.BOILING or phase == Phase.HOP_STAND
 
 
-func start_pour(id : int) -> void:
-	if phase == Phase.DONE or _pours.has(id) or float(sacks.get(id, 0.0)) <= 0.0:
+func start_pour(sack : int) -> void:
+	if phase == Phase.DONE or _pours.has(sack) or float(sacks.get(sack, 0.0)) <= 0.0:
 		return
-	var own : BoilMark = _nearest_open_mark(id)
+	var id : int = marks[sack].ingredient_id
+	var own : BoilMark = _own_mark(sack)
 	# Before the boil starts every pour is early.
 	var timed : bool = is_pouring_time() and own != null and BoilSchedule.in_window(own.kind, counted, window_widen)
 	var other : BoilMark = null
@@ -154,24 +157,24 @@ func start_pour(id : int) -> void:
 	if not _piece_ids.has(id):
 		foam += HOP_SURGE
 	if _piece_ids.has(id):
-		var pieces : float = own.grams if own != null else sacks[id]
-		sacks[id] = maxf(0.0, sacks[id] - pieces)
+		var pieces : float = own.grams if own != null else sacks[sack]
+		sacks[sack] = maxf(0.0, sacks[sack] - pieces)
 		_judge(own, timed, true, other, id)
 		return
 	var aimed : BoilMark = own if own != null else other
 	var target : float = float(aimed.grams) if aimed != null else 0.0
 	var rate : float = target / POUR_SECONDS_AT_TARGET if target > 0.0 else DEFAULT_POUR_RATE
-	_pours[id] = {"rate": rate, "grams": 0.0, "own": own, "timed": timed, "other": other}
+	_pours[sack] = {"rate": rate, "grams": 0.0, "own": own, "timed": timed, "other": other}
 
 
-func stop_pour(id : int) -> void:
-	if not _pours.has(id):
+func stop_pour(sack : int) -> void:
+	if not _pours.has(sack):
 		return
-	var pour : Dictionary = _pours[id]
-	_pours.erase(id)
+	var pour : Dictionary = _pours[sack]
+	_pours.erase(sack)
 	var own : BoilMark = pour.own
 	var amount_right : bool = own != null and absf(pour.grams - own.grams) <= own.grams * gram_tolerance
-	_judge(own, pour.timed, amount_right, pour.other, id)
+	_judge(own, pour.timed, amount_right, pour.other, marks[sack].ingredient_id)
 	_try_finish()
 
 
@@ -222,19 +225,25 @@ func _judge(own : BoilMark, timed : bool, amount_right : bool, other : BoilMark,
 		stray_pour.emit(id)
 
 
-## The sack's open mark closest in time, if the pour is near enough to count as a try.
-func _nearest_open_mark(id : int) -> BoilMark:
+## The sack's own mark when the pour is near enough to count as a try; otherwise the
+## nearest open mark of the same hop, so its sacks stand in for each other.
+func _own_mark(sack : int) -> BoilMark:
+	var mark : BoilMark = marks[sack]
+	if mark.is_open() and _is_near(mark):
+		return mark
 	var best : BoilMark = null
-	for mark : BoilMark in marks:
-		if not mark.is_open() or mark.ingredient_id != id:
+	for other : BoilMark in marks:
+		if not other.is_open() or other.ingredient_id != mark.ingredient_id or not _is_near(other):
 			continue
-		var start : float = BoilSchedule.window_start(mark.kind, window_widen) - BoilSchedule.NEAR_MISS
-		var end : float = BoilSchedule.window_end(mark.kind, window_widen) + BoilSchedule.NEAR_MISS
-		if counted < start or counted > end:
-			continue
-		if best == null or absf(mark.time - counted) < absf(best.time - counted):
-			best = mark
+		if best == null or absf(other.time - counted) < absf(best.time - counted):
+			best = other
 	return best
+
+
+func _is_near(mark : BoilMark) -> bool:
+	var start : float = BoilSchedule.window_start(mark.kind, window_widen) - BoilSchedule.NEAR_MISS
+	var end : float = BoilSchedule.window_end(mark.kind, window_widen) + BoilSchedule.NEAR_MISS
+	return counted >= start and counted <= end
 
 
 func _open_mark_in_window() -> BoilMark:

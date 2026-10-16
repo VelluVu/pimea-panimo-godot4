@@ -49,15 +49,6 @@ static func create(style : BeerStyle, contents : Dictionary, table : Dictionary,
 	return plan
 
 
-## The sacks in the order their first mark comes.
-func sack_ids() -> Array[int]:
-	var ids : Array[int] = []
-	for mark : BoilMark in marks:
-		if not ids.has(mark.ingredient_id):
-			ids.append(mark.ingredient_id)
-	return ids
-
-
 func new_mash(rng : RandomNumberGenerator = null) -> MashSession:
 	return MashSession.new(mash_steps, mash_band, burner_lag, dough_in_clumps, rng)
 

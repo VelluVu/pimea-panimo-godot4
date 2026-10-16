@@ -38,14 +38,11 @@ const FOAM_STEAM : float = 0.3
 const BOIL_SOUND_BASE : float = 0.55
 
 
-## A sack's pellets take the colour of its first mark; juniper is its own blue.
-static func pellet_color(id : int, marks : Array[BoilMark]) -> Color:
-	if id == BrewDayLines.JUNIPER_ID:
+## A sack's pellets take the colour of its mark; juniper is its own blue.
+static func pellet_color(mark : BoilMark) -> Color:
+	if mark.ingredient_id == BrewDayLines.JUNIPER_ID:
 		return JUNIPER_COLOR
-	for mark : BoilMark in marks:
-		if mark.ingredient_id == id:
-			return PELLET_COLORS.get(mark.kind, PELLET_COLORS[HopAddition.Kind.FLAVOR])
-	return PELLET_COLORS[HopAddition.Kind.FLAVOR]
+	return PELLET_COLORS.get(mark.kind, PELLET_COLORS[HopAddition.Kind.FLAVOR])
 
 
 ## The ingredient's name without the "-humala" ending, as the sacks show it.

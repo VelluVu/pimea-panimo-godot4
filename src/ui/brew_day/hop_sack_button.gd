@@ -6,7 +6,7 @@ extends Button
 ## mark is coming wobbles with a yellow frame; while the mark is open it blinks green.
 
 const ART : BrewDayArt = preload("res://src/resources/brew_day/brew_day_art.tres")
-const SIZE : Vector2 = Vector2(104, 40)
+const SIZE : Vector2 = Vector2(124, 40)
 const FRAMES : int = 3
 ## Above these shares of the sack left, the full or the half frame shows.
 const FULL_FROM : float = 0.66
@@ -35,7 +35,7 @@ var fill : float = 1.0
 var lifted : bool = false
 var pellet_color : Color = Color.GREEN
 var cue : Cue = Cue.NONE
-## The coming mark's name ("AROMI"), shown with the amount while cued.
+## The sack's mark ("AROMI"), shown before the amount; brighter while cued.
 var cue_label : String = ""
 
 
@@ -71,8 +71,7 @@ func _draw() -> void:
 	var width : float = SIZE.x - TEXT_X
 	var first_line : String = sack_name if key_number <= 0 else "%d %s" % [key_number, sack_name]
 	draw_string(font, Vector2(TEXT_X, 17), first_line, HORIZONTAL_ALIGNMENT_LEFT, width, FONT_SIZE, color)
-	var second_line : String = amount_text
+	var second_line : String = amount_text if cue_label.is_empty() else cue_label + " " + amount_text
 	if cue != Cue.NONE:
-		second_line = cue_label + " " + amount_text
 		color = cue_color
 	draw_string(font, Vector2(TEXT_X, 34), second_line, HORIZONTAL_ALIGNMENT_LEFT, width, FONT_SIZE, color)
