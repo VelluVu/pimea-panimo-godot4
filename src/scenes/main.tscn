@@ -204,11 +204,10 @@ texture = ExtResource("70_lightglow")
 texture_scale = 3.7
 
 [node name="Light_WarehouseDoor" type="PointLight2D" parent="Lights" unique_id=88800004]
-position = Vector2(600, 200)
+position = Vector2(596, 213)
 color = Color(1, 0.78, 0.42, 1)
-energy = 1.1
 texture = ExtResource("70_lightglow")
-texture_scale = 10.0
+texture_scale = 7.0
 
 [node name="Light_BreweryCone" type="PointLight2D" parent="Lights" unique_id=1498362605]
 position = Vector2(191, 220)
