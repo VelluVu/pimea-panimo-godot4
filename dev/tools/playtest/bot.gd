@@ -276,7 +276,7 @@ func _brew(b: Brewery) -> void:
 	var best: BrewRecipe = null
 	var best_score: float = -INF
 	for r: BrewRecipe in b.saved_recipes:
-		var cost: int = _missing_cost(b, r)
+		var cost: float = _missing_cost(b, r)
 		if cost + _reserve(b) > b.money:
 			continue
 		var score: float
@@ -340,7 +340,7 @@ func _expert_recipe(b: Brewery) -> BrewRecipe:
 		var ingredients: Dictionary = _with_spices(b, style, b.resolver.compute_minimum_ingredients(style))
 		if ingredients.is_empty() or not _all_unlocked(b, ingredients):
 			continue
-		var cost: int = _missing_cost_of(b, ingredients)
+		var cost: float = _missing_cost_of(b, ingredients)
 		if cost + _reserve(b) > b.money:
 			continue
 		var score: float = _expert_demand(b, style.style, in_stock, _probe_batch(b, style, ingredients))
@@ -476,14 +476,14 @@ func _cheapest_new_style_recipe(b: Brewery) -> BrewRecipe:
 		for r: BrewRecipe in b.saved_recipes:
 			styles.append(r.beer_style)
 	var best: BrewRecipe = null
-	var best_cost: int = 0
+	var best_cost: float = 0.0
 	for style: BeerStyle.Style in styles:
 		if b.brewed_styles.has(style):
 			continue
 		var recipe: BrewRecipe = _style_recipe(b, style)
 		if recipe == null:
 			continue
-		var cost: int = _missing_cost_of(b, recipe.ingredient_amounts)
+		var cost: float = _missing_cost_of(b, recipe.ingredient_amounts)
 		if best == null or cost < best_cost:
 			best = recipe
 			best_cost = cost
@@ -631,6 +631,9 @@ func _tune_for_quality(b: Brewery, style: BeerStyle.Style, start: Dictionary) ->
 				else:
 					combo[id] = amount
 				if _missing_cost_of(b, combo) + _reserve(b) > b.money:
+					continue
+				# A recipe the mash tun cannot hold is never brewed, only bought for again.
+				if not MashTun.holds(BrewMixture.from_contents(combo, IngredientDatabase.database).malt_weight, b.mash_capacity_kg()):
 					continue
 				var quality: float = _quality_of(b, combo, style)
 				if quality > candidate_quality:
@@ -924,17 +927,17 @@ func _reserve(b: Brewery) -> int:
 	return 1 if b.inventory.brew_batches.is_empty() else 10
 
 
-func _missing_cost(b: Brewery, r: BrewRecipe) -> int:
+func _missing_cost(b: Brewery, r: BrewRecipe) -> float:
 	return _missing_cost_of(b, r.ingredient_amounts)
 
 
-func _missing_cost_of(b: Brewery, ingredients: Dictionary) -> int:
-	var cost: int = 0
+func _missing_cost_of(b: Brewery, ingredients: Dictionary) -> float:
+	var cost: float = 0.0
 	for id: int in ingredients:
 		var missing: int = maxi(0, ingredients[id] - _owned(b, id))
 		cost += IngredientDatabase.get_item_by_id(id).base_price * missing
 	# Perks' price changes are folded into this stat, as the trader charges it.
-	return roundi(cost * b.stats.multiplier(PerkStats.INGREDIENT_PRICE))
+	return snappedf(cost * b.stats.multiplier(PerkStats.INGREDIENT_PRICE), 0.01)
 
 
 func _owned(b: Brewery, id: int) -> int:
