@@ -1,11 +1,9 @@
 class_name SaleOutcomeCapture
 extends RefCounted
 
-## Records the xp, reputation and tip that BrewerySignals reports while one
-## synchronous sale runs, so the customer can show popups for exactly its own
-## sale. Call start() before the sale and stop() right after it. A customer buying
-## several styles (CustomerData.max_styles_per_visit) sells each batch on its own, so the
-## xp, tip and income add up.
+## Records the xp, reputation and tip BrewerySignals reports during one synchronous sale,
+## so the customer pops up exactly its own numbers. Call start() before and stop() after;
+## a customer buying several styles adds them up.
 
 ## What a sale did to the customer's opinion of the cellar, shown as a popup over them.
 enum Note { FRIEND_RECOMMENDED, BAD_REVIEW, BECAME_REGULAR, LOST_REGULAR }

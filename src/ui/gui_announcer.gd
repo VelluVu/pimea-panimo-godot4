@@ -1,11 +1,9 @@
 class_name GuiAnnouncer
 extends Node
 
-## Turns game events into on-screen text: short toasts (unlocks, goal results,
-## purchase failures), stacked by ToastStack, and the passive flash/hold/fade
-## banners (group visit, day event forecast, first-brew hint). GUI owns the
-## labels and calls start() once the tree is ready; the banners' presentation
-## lives in BannerPresenter.
+## Turns game events into on-screen text: toasts (unlocks, goals, failed purchases)
+## stacked by ToastStack, and the flash/hold/fade banners (BannerPresenter). GUI owns
+## the labels and calls start() once the tree is ready.
 
 const DISCOVERY_TOAST_FORMAT: String = "Uusi oluttyyli löydetty: %s!"
 const ACHIEVEMENT_UNLOCKED_TOAST_FORMAT: String = "Saavutus avattu: %s!"

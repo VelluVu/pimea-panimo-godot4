@@ -58,13 +58,8 @@ func _on_style_discovered(style: int) -> void:
 	_styles_discovered_today.append(BeerStyle.get_style_string_from_style(style))
 
 
-## Only successes count toward the recap line — a failed goal still fires
-## daily_goal_resolved (see DailyGoalManager), it just shouldn't read as an
-## achievement. Goals resolve continuously through the day (reactively) as
-## well as right at this same day boundary (DailyGoalManager's own
-## day_changed handler resolving whatever's still pending), so a busy day
-## can rack up more than the ACTIVE_GOAL_COUNT=3 concurrent slots by the
-## time this recap shows — no cap here, unlike the old fixed 2-goal count.
+## Counts only successes. Goals resolve all day as well as at day end, so the count can
+## pass ACTIVE_GOAL_COUNT; there is no cap.
 func _on_daily_goal_resolved(_goal_name : String, succeeded : bool, _money : int, _reputation : int, _xp : int, _risk : int) -> void:
 	if succeeded:
 		_goals_rewarded_today += 1

@@ -1,12 +1,8 @@
 class_name ReceiptMachineHoverArea
 extends Area2D
 
-## In-world "hover and light up" trigger for the receipt log ("Kuitit") —
-## a small black receipt machine (MachineBody) with a torn paper strip
-## (ReceiptStrip) and a status light (MachineButton), all simple flat
-## polygon shapes as a placeholder pending real Aseprite art. Mirrors
-## RecipeShelfHoverArea's exact glow/click/label pattern — see that
-## class's docstring for the established convention this follows.
+## Hover-and-glow trigger for the receipt log ("Kuitit"), a small receipt machine; same
+## pattern as RecipeShelfHoverArea.
 
 const HOVER_GLOW_COLOR : Color = Color(1.3, 1.15, 0.8, 1.0)
 const HIDDEN_COLOR : Color = Color(1.0, 1.0, 1.0, 1.0)

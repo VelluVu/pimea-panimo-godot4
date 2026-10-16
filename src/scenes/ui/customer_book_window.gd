@@ -1,11 +1,9 @@
 class_name CustomerBookWindow
 extends Panel
 
-## The Panimokirja, opened from the notebook on the counter
-## (GUISignals.customer_book_requested). Three tabs: every customer type unlocked in any
-## run with the tastes of the ones served; every ingredient with price and stats; and the
-## Ohjeet, a short guide to the game (GuideSection resources). The reference that touch
-## screens, without hover tooltips, need most.
+## The Panimokirja (GUISignals.customer_book_requested), opened from the counter's
+## notebook. Tabs: unlocked customers with the tastes of those served, every ingredient,
+## and the Ohjeet guide (GuideSection). Touch screens without tooltips need it most.
 
 const TITLE_TEXT : String = "Panimokirja"
 const CLOSE_TEXT : String = "Sulje"

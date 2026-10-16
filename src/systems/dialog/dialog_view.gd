@@ -83,11 +83,9 @@ func close_bubble(slot : int) -> void:
 	_bubbles.erase(slot)
 
 
-## A brief flourish that pops out, drifts up and fades out. Independent of the bubble
-## slots. A louder `emphasis` is bigger (and shakes when CRITICAL), like a critical hit.
-## With `delay_seconds` the popup waits hidden first, so popups can follow each other.
-## `anchor_edge` is the edge of the text that sits on `anchor_pos` (at the text's middle
-## height): RIGHT grows the text out to the left of it, LEFT out to the right.
+## A popup that pops out, drifts up and fades, apart from the bubbles. A louder `emphasis`
+## is bigger (CRITICAL shakes). `delay_seconds` waits hidden first, so popups can follow
+## each other. `anchor_edge` is the text edge on `anchor_pos`: RIGHT grows leftward.
 func show_popup(text : String, color : Color, anchor_pos : Vector2, emphasis : Emphasis = Emphasis.NORMAL, delay_seconds : float = 0.0, anchor_edge : HorizontalAlignment = HORIZONTAL_ALIGNMENT_LEFT) -> void:
 	var popup := Label.new()
 	popup.text = text

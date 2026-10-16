@@ -115,12 +115,8 @@ func has_preferred_hop_profile(profile : HopData.FlavorProfile) -> bool:
 @export var original_quality: float = 1.0
 @export var reputation_change: int = 2
 
-## Despite the "_days" naming (kept to avoid a mass rename across every
-## beer style .tres file), these count TimeManager aging ticks, not
-## calendar days — see TimeManager.AGING_TICK_SECONDS and _on_aging_tick().
-## One tick is a fixed real-time interval, independent of in-game day
-## length, so cellar aging progresses continuously instead of jumping once
-## per day close.
+## Despite "_days", these count TimeManager aging ticks (AGING_TICK_SECONDS of real
+## time), so aging runs continuously; the name stayed to spare every style .tres.
 @export_group("Kellarointi & Kypsytys")
 @export var peak_days: int = 0
 @export var shelf_life_days: int = 14

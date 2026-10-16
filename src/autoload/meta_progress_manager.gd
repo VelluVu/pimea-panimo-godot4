@@ -1,9 +1,7 @@
 extends Node
 
-## Progress that survives a single run, in its own ConfigFile like LeaderboardManager: the
-## styles ever discovered, the renown currency earned per run, and which MetaUnlockData
-## nodes were bought with it. See StyleDiscovery.seed_from_meta() and
-## Brewery._seed_meta_perks() for how it feeds a new run. The tree's rules are in
+## Progress that outlives a run, in its own ConfigFile: discovered styles, the renown
+## earned per run and the MetaUnlockData levels bought with it. The tree's rules are in
 ## MetaUnlockRules.
 
 ## Renown went up or was spent, so open views can redraw.

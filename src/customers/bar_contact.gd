@@ -1,12 +1,9 @@
 class_name BarContact
 extends Resource
 
-## A distribution outlet the player can ship a finished BrewBatch to from
-## the warehouse view — see BatchDistributor. Pays less than a real customer
-## sale at the counter (no reputation/XP/tip) and every shipment adds LVV
-## risk, since it's product moving outside the player's own cellar. Loaded from res://src/resources/bars/
-## by CustomerRegistry, the same folder-scan pattern it already uses for
-## CustomerData/SpecialEventData/GroupVisitEventData.
+## A bar the player can ship a finished batch to from the warehouse (BatchDistributor).
+## Pays less than a counter sale, with no reputation, XP or tip, and every shipment adds
+## LVV risk. Loaded from res://src/resources/bars/ by CustomerRegistry.
 
 @export var bar_name : String = ""
 @export_multiline var description : String = ""

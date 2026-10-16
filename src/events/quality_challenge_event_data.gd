@@ -1,12 +1,9 @@
 class_name QualityChallengeEventData
 extends SpecialEventData
 
-## "Bring me your best" — unlike the base bottle-request event, style
-## doesn't matter here, only current_quality. Rewards skilled brewing
-## (precision/hop diversity/balance) directly, since that's what drives
-## current_quality up. The critic buys what is left of the best batch good enough
-## (a partial batch just pays less) for a share of its counter price, and grants
-## granted_perk scaled by its quality.
+## "Bring me your best": only current_quality counts, not the style. The critic buys
+## what is left of the best batch good enough, for a share of its counter price, and
+## grants granted_perk scaled by its quality.
 
 @export var required_min_quality: float = 1.2
 ## Quality at which granted_perk is given at full strength.

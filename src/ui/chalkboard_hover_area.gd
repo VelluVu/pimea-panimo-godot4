@@ -1,12 +1,8 @@
 class_name ChalkboardHoverArea
 extends Area2D
 
-## In-world "hover and light up" trigger for the run stats ("Tilastot") —
-## a small wall chalkboard (BoardFrame/BoardSurface) with a few chalk
-## strokes (ChalkLine1..3) as a placeholder pending real Aseprite art.
-## Mirrors RecipeShelfHoverArea/ReceiptMachineHoverArea's exact
-## glow/click/label pattern — see RecipeShelfHoverArea's docstring for the
-## established convention this follows.
+## Hover-and-glow trigger for the run stats ("Tilastot"), a wall chalkboard; same
+## pattern as RecipeShelfHoverArea.
 
 const HOVER_GLOW_COLOR : Color = Color(1.3, 1.15, 0.8, 1.0)
 const HIDDEN_COLOR : Color = Color(1.0, 1.0, 1.0, 1.0)

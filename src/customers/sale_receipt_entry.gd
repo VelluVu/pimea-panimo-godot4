@@ -1,16 +1,9 @@
 class_name SaleReceiptEntry
 extends Resource
 
-## One completed sale, kept in Brewery.today_sale_receipts for the player
-## to review at their own pace (the receipt library dropdown), cleared each
-## day by TimeManager._advance_day(). Also the payload of
-## BrewerySignals.beer_sale_breakdown, so the brief flash toast
-## (SaleFlashToast) reads it too — one source of truth for how a sale's
-## numbers are formatted, shared by both UIs.
-##
-## No tax_amount field: this cellar operation doesn't remit anything to
-## the state, so there's nothing to split off gross_income at sale time —
-## see SaleBreakdown and CustomerManager.process_auto_sale().
+## One completed sale, kept in Brewery.today_sale_receipts for the receipt log and
+## cleared each day. Also the payload of BrewerySignals.beer_sale_breakdown, so the flash
+## toast formats a sale the same way.
 
 @export var breakdown : SaleBreakdown
 @export var bottles_sold : int = 0

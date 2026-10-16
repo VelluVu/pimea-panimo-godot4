@@ -1,12 +1,9 @@
 class_name Bartender
 extends Node2D
 
-## Static fixture standing behind the bar counter — unlike Customer, never
-## walks or rotates (only a south-facing sprite exists), so this is just an
-## idle/serve_beer animation player with a public method-down API. No
-## signals of its own: nothing needs to react to the bartender, callers
-## (see main.tscn) just tell it what to play. It is also where the player
-## listens from: world sounds are panned and faded by their distance to the bar.
+## Stands behind the bar playing idle and serve animations on command; it never walks.
+## It is also where the player listens from: world sounds pan and fade by their distance
+## to it.
 
 const ANIM_IDLE : StringName = &"idle"
 const ANIM_IDLE_SHOULDERS : StringName = &"idle_shoulders"
@@ -24,22 +21,12 @@ const IDLE_WEIGHTS : Array[float] = [3.0, 2.0, 1.0]
 const BARTENDER_GROUP : StringName = &"bartender"
 
 @onready var animated_sprite : AnimatedSprite2D = $AnimatedSprite2D
-## Hand-off point for the counter-glass slide-in (see Customer.
-## show_counter_glass()) — roughly where the bartender's hands are, not
-## his Node2D origin, so the glass starts sliding from a believable spot
-## instead of his general body position. Separate Marker2D rather than
-## just tuning the origin so it stays adjustable without touching
-## AnimatedSprite2D's own transform.
+## Where the counter glass starts its slide: his hands, not his origin. A marker so it
+## can be moved without touching the sprite's transform.
 @onready var serve_marker : Marker2D = $ServeMarker
 
-## A group order's whole round stacks together right on the counter (see
-## get_stack_position()) instead of each glass sliding out to its own,
-## now far-back member — STACK_ROW_SIZE wraps the stack into a new row
-## every 4 glasses so a big lauma's round grows into a compact pile
-## instead of sprawling sideways across the whole bar top. Anchored left of
-## serve_marker (camera-left, i.e. negative x) and growing further left
-## from there, so the pile sits over open counter space to the bartender's
-## own left instead of overlapping his sprite or the till further right.
+## A group's round piles up on the counter left of serve_marker, wrapping every
+## STACK_ROW_SIZE glasses, so a big crowd's round stays compact and off his sprite.
 const STACK_ROW_SIZE : int = 4
 const STACK_BASE_OFFSET_PX : Vector2 = Vector2(-20, 5)
 const STACK_COLUMN_OFFSET_PX : Vector2 = Vector2(-7, 0)
@@ -74,18 +61,15 @@ func _play_random_idle() -> void:
 	animated_sprite.play(WeightedPicker.pick(IDLE_ANIMS, IDLE_WEIGHTS) as StringName)
 
 
-## Plays the one-shot serving animation, then returns to idle on its own.
-## speed_scale lets a group order (GroupVisitDirector._run_shared_group_order())
-## visibly speed the pour up for its rapid-fire one-by-one serving burst
-## without that lingering into the next solo customer's pour — reset back to
-## 1.0 the moment this returns to idle, below. A negative `ebc` pours the beer as drawn.
 ## How far from home he must slide for his pour to fall at `global_x` (a tap's spout).
 func offset_to_pour_at(global_x : float) -> float:
 	var stream_from_origin : float = animated_sprite.position.x + (POUR_STREAM_FRAME_X + animated_sprite.offset.x) * animated_sprite.scale.x
 	return global_x - (get_parent().to_global(Vector2(_home_x, 0.0)).x + stream_from_origin * global_scale.x)
 
 
-## `tap_offset` slides him that far from home to the tap he pours from.
+## Plays the serve animation, then idles. speed_scale speeds up a group's pours and resets
+## on idle. A negative `ebc` pours the beer as drawn; `tap_offset` slides him that far
+## from home to the tap he pours from.
 func play_serve_beer(speed_scale: float = 1.0, ebc: int = -1, tap_offset: float = 0.0) -> void:
 	_slide_to(_home_x + tap_offset)
 	animated_sprite.sprite_frames = _drawn_frames if ebc < 0 else BeerColor.pour_sprite_frames(_drawn_frames, ebc)

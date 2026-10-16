@@ -1,15 +1,10 @@
 class_name KegRules
 extends RefCounted
 
-## A batch is one 20 L keg (BrewResult.bottle_yield, 45 servings fresh). Any batch can be
-## shipped, but only a nearly full one counts as a keg for the "Vie tynnyri baariin" goal.
-##
-## Every batch sits in a keg of its own, so a brew needs an empty one. Empty kegs are kept
-## as their cleanliness, 0 (just emptied) to 1 (washed spotless). Dirt never grows while a
-## keg waits.
-##
-## The bar has a tap for every keg but SPARE_KEGS: full kegs past the taps wait in the
-## warehouse, so the player can brew ahead, and go on tap when a tap's keg runs empty.
+## A batch is one 20 L keg, and every brew needs an empty one. Empty kegs keep their
+## cleanliness, 0 (just emptied) to 1 (spotless); dirt never grows while one waits.
+## Only a nearly full batch counts as a keg for the "Vie tynnyri baariin" goal. The bar
+## has a tap per keg but SPARE_KEGS, so full kegs past the taps wait in the warehouse.
 
 const MIN_SERVINGS : int = 40
 ## Taps a season starts with; the keg upgrade adds a keg and a tap per level.

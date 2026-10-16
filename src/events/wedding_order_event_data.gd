@@ -1,12 +1,9 @@
 class_name WeddingOrderEventData
 extends SpecialEventData
 
-## A wedding wants a light beer (required_style) and an alcohol-free one, both rolled
-## from the styles the player knows each time it shows up (prepared()). The amount
-## does not matter: it takes the best batch on offer of each (_best_batch_of()),
-## pays more than shipping them to the best bar would but less than the pub price,
-## and grants a perk.
-## intro_dialogue takes the two style names (%s, %s).
+## A wedding wants a light beer and an alcohol-free one, rolled from the known styles
+## each visit (prepared()), and takes the best batch of each. Pays more than the best
+## bar, less than the pub, and grants a perk. intro_dialogue takes both names (%s, %s).
 
 const DELIVERY_FORMAT: String = "Toimita %s ja %s, määrällä ei väliä.\nVarastossa: %d ja %d annosta"
 const REQUIREMENT_FORMAT: String = "%s ja %s"

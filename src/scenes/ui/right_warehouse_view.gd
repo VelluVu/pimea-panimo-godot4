@@ -1,12 +1,9 @@
 class_name RightWarehouseView
 extends VBoxContainer
 
-## Independent click-to-pin panel, decoupled from Shop/Brewing view
-## navigation — a hover-only preview made it impossible to reach into the
-## panel and hover an ingredient row for its stat tooltip before the panel
-## itself disappeared. Ingredient storage and bottle storage are tabbed
-## instead of shown side by side, so the panel can stay narrow. The tabs are toggle
-## buttons sharing the width, since a TabBar cannot stretch its tabs.
+## A click-to-pin panel apart from the shop and brewing views, since a hover preview
+## vanished before its rows' tooltips could be reached. Ingredients and kegs are tabs to
+## keep it narrow: toggle buttons sharing the width, as a TabBar cannot stretch its tabs.
 
 const STORAGE_TAB_TEXT : String = "Varasto"
 const BOTTLES_TAB_TEXT : String = "Tynnyrit"

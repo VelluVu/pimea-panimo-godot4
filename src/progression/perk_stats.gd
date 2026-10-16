@@ -1,19 +1,10 @@
 class_name PerkStats
 extends RefCounted
 
-## Read-only view that folds every active RunPerk into one effective number
-## per stat. Replaces the ~20 hand-written
-## Brewery.get_X_multiplier() getters: a new perk axis is now just a new
-## RunPerk field (plus a stat-summary line) and never touches Brewery.
-##
-## Holds references, not copies, so it always reflects the perks it was
-## built from. Get one through Brewery.stats, which rebuilds it per access
-## because a loaded save replaces Brewery.active_perks wholesale.
-##
-## Three combination modes, matching how each RunPerk field is documented:
-## multiplier() stacks multiplicatively (or additively, see RunPerk.
-## stacks_additively), total() sums flat values, chance() sums then clamps
-## to 0..1.
+## Read-only view folding every active RunPerk into one number per stat, so a new perk
+## axis is just a RunPerk field and a stat line. Get it through Brewery.stats, rebuilt
+## per access since a loaded save swaps active_perks. multiplier() multiplies (or adds,
+## see RunPerk.stacks_additively), total() sums, chance() sums and clamps to 0..1.
 
 ## Stat names are the RunPerk field they read.
 const QUALITY_BONUS := &"quality_bonus"
@@ -94,8 +85,6 @@ static func neutral_value(kind : Kind) -> float:
 	return 1.0 if kind == Kind.MULTIPLIER else 0.0
 
 
-## The whole number a stat line shows: the percentage change, the percentage,
-## or the count.
 ## A stat value as the player reads it, Diablo style: additive values show as "+15 %"
 ## (summed into one pool), multiplicative ones as "×1.15" (each multiplies the total).
 ## Only MULTIPLIER stats can be multiplicative; the other kinds always add up.
@@ -111,6 +100,7 @@ static func value_text(kind : Kind, value : float, additive : bool) -> String:
 			return COUNT_FORMAT % display_number(kind, value)
 
 
+## The whole number a stat line shows: the percentage change, the percentage or the count.
 static func display_number(kind : Kind, value : float) -> int:
 	match kind:
 		Kind.MULTIPLIER:

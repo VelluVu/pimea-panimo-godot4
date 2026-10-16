@@ -1,17 +1,10 @@
 class_name LvvRaidSpawner
 extends Node2D
 
-## Reacts to Brewery's own raid trigger (BrewerySignals.lvv_raid_triggered)
-## with a visual squad of LvvAgents: walk in down the stairs, then through
-## route_waypoints (see below) to line up with and walk into the warehouse
-## doorway, each seize a keg, then walk back out. Uses its own
-## EntryMarker/StairsMarker/route markers/PickupMarker (siblings of this
-## node in main.tscn) instead of reusing CustomerSpawner's — fully
-## independent and freely draggable in the editor without touching the
-## customer walk-in path. The actual confiscation/fine/reputation math
-## already happened synchronously in Brewery — this is purely the
-## dramatization, ending in lvv_raid_recap_ready once the squad has fully
-## left, which is what LvvRaidWindow actually shows the recap on.
+## Plays out a raid Brewery already settled (BrewerySignals.lvv_raid_triggered): a squad
+## of LvvAgents walks down the stairs, along the route markers into the warehouse, seizes
+## kegs and leaves. The markers are its own, so they move without touching the customer
+## path. Emits lvv_raid_recap_ready once the squad is gone.
 
 const LVV_AGENT_SCENE : PackedScene = preload("res://src/scenes/lvv_agent.tscn")
 
@@ -27,25 +20,15 @@ const AGENT_SPAWN_STAGGER_SECONDS : float = 0.5
 @onready var entry_marker : Marker2D = $EntryMarker
 @onready var stairs_marker : Marker2D = $StairsMarker
 
-## Route from the stairs bottom into the warehouse, walked in this exact
-## order (then reversed for the way out) — see LvvAgent.walk_in_and_seize()/
-## _tween_leg(), which derives each leg's animation (walk_right vs
-## walk_towards/walk_away) purely from the direction between consecutive
-## points. WarehouseAlignMarker lines the squad up on the same floor-level X
-## as the doorway; WarehouseDoorwayMarker is the doorway threshold itself
-## (walked to with walk_away, appearing to head into the room, and where
-## WarehouseWallOverlay's polygon — see main.tscn — visually occludes them
-## like StairsWallOverlay does for the stairs). Add, remove, or drag any of
-## these three (or PickupMarker) in the editor; nothing here needs to change.
+## The route from the stairs into the warehouse, walked in order and reversed on the way
+## out. Each leg's animation comes from its direction (LvvAgent._tween_leg()), so the
+## markers can be added, removed or dragged in the editor freely.
 @onready var warehouse_align_marker : Marker2D = $WarehouseAlignMarker
 @onready var warehouse_doorway_marker : Marker2D = $WarehouseDoorwayMarker
 @onready var pickup_marker : Marker2D = $PickupMarker
 
-## The raid under way, or null. Also guards against a second raid firing (extremely
-## unlikely given Brewery.risk is reset to 0 on trigger, but risk-reset happens
-## synchronously while this coroutine is still mid-flight): if it somehow does, skip the
-## visual and hand the recap straight through rather than running two squads on top of
-## each other or dropping the recap entirely.
+## The raid under way, or null. If a second raid fires mid-walk, its recap goes straight
+## through instead of running two squads at once.
 var _raid : LvvRaidSnapshot
 var _agents : Array[LvvAgent] = []
 var _stagger_timer : SceneTreeTimer

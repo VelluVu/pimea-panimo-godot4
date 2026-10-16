@@ -1,15 +1,9 @@
 class_name BarContactOptionButton
 extends OptionButton
 
-## Shared "which bar am I shipping to" picker sitting once above
-## BeerPatchPanel's batch rows — each row's own "Lähetä baariin" button
-## ships to whatever this control currently has selected, rather than
-## every row carrying its own full picker (no room for that in
-## RightWarehouseView's narrow tabbed layout). Mirrors
-## IngredientOptionButton's locked-item pattern: every BarContact in
-## CustomerRegistry.bar_contact_pool is listed, the ones the player's
-## reputation hasn't unlocked yet are shown disabled instead of hidden, so
-## the picker itself previews what's coming.
+## One shared "ship to which bar" picker above the batch rows; every row's ship button
+## uses its selection, as there is no room for a picker per row. Bars the reputation
+## hasn't unlocked show disabled, previewing what's coming.
 
 const TOOLTIP_FORMAT : String = "%s\nMaksukerroin: x%.2f raaka-aineiden hinnasta\nLVV-riski per toimitus: +%d (alkoholittomat %+d)"
 

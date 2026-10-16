@@ -14,11 +14,8 @@ enum UnitType { KILOGRAM, GRAM, PIECE }
 @export var type: IngredientType
 
 @export_group("Saatavuus")
-## Minimum Brewery.reputation needed to buy this ingredient — mirrors
-## CustomerData.min_reputation_to_appear. Only hops and spices use a non-zero value;
-## malts/yeasts stay at 0 since they're structural (required_yeast_id is a
-## hard per-style requirement), so gating them would block entire style
-## categories rather than just adding flavor variety as a reward.
+## Reputation needed to buy this. Only hops and spices use it: gating malts or yeasts
+## would lock whole styles out instead of adding variety.
 @export var min_reputation: int = 0
 
 

@@ -1,13 +1,10 @@
 class_name LeaderboardWindow
 extends Panel
 
-## The leaderboard as a table, rebuilt from LeaderboardManager each time it opens:
-## podium colors for the top three, the ending in its own color, the score breakdown
-## in each row's tooltip and a tag on the run recorded this session. Opened by
-## GUISignals.leaderboard_requested from the main menu and the in-game menu;
-## process_mode is ALWAYS so it works while the game menu pauses the tree.
-## Where the shared demo list exists (OnlineLeaderboardWiring), tabs switch between
-## this player's runs and everyone's top runs.
+## The leaderboard table, rebuilt on open: podium colours, endings in colour, the score
+## breakdown in tooltips and a tag on this session's run. With the shared list
+## (OnlineLeaderboardWiring), tabs switch between own and everyone's runs. process_mode
+## is ALWAYS so it works under the paused game menu.
 
 const TITLE_TEXT : String = "Ennätykset"
 const CLOSE_BUTTON_TEXT : String = "Sulje"

@@ -1,11 +1,9 @@
 class_name ImmersionEventSpawner
 extends Node2D
 
-## Decorative background vignettes (a mouse chased by a cat, ...) played every few
-## minutes. No gameplay effect. The adopted cellar cat (Brewery.cellar_cat_adopted) walks
-## on its own, more frequent timer, so a cat the player paid for is actually seen.
-## Each ImmersionVignetteData names its actors and the child node whose Marker2Ds
-## form the route.
+## Decorative background vignettes (a mouse chased by a cat, ...) every few minutes, with
+## no gameplay effect. An adopted cellar cat walks on its own, more frequent timer so it
+## is actually seen. Each ImmersionVignetteData names its actors and its route node.
 
 const MIN_INTERVAL_SECONDS : float = 240.0
 const MAX_INTERVAL_SECONDS : float = 480.0

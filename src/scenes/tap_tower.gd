@@ -1,13 +1,10 @@
 class_name TapTower
 extends Node2D
 
-## The tap tower on the bar counter: one tap per keg the brewery owns, on a crossbar that
-## widens with them (TapLayout). Batches on serve take the taps from the left, each handle
-## tinted with its beer's colour; spare taps stay grey.
-##
-## Three pictures, each with an empty 1 px frame: one tap (handle, crossbar slice, spout),
-## the crossbar's left end (mirrored for the right), and the column with its tray. The
-## tray's first TapLayout.TRAY_PATTERN columns repeat to the crossbar's width.
+## One tap per owned keg on a crossbar that widens with them (TapLayout). Batches on
+## serve take taps from the left, handles tinted with their beer; spare taps stay grey.
+## Built from three pictures with a 1 px empty frame: tap, crossbar end (mirrored) and
+## column; the tray's first TapLayout.TRAY_PATTERN columns repeat to the crossbar's width.
 
 const UNIT : Texture2D = preload("res://assets/textures/tap/tap_unit.png")
 const END : Texture2D = preload("res://assets/textures/tap/tap_end.png")

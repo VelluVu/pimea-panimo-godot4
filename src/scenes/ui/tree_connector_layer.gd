@@ -1,18 +1,9 @@
 class_name TreeConnectorLayer
 extends Control
 
-## Draws a straight line between each node and every one of its
-## prerequisites, in the same local coordinate space the node Buttons are
-## absolutely positioned in (see olutoppi_window.tscn's TreeArea — this
-## layer is that area's first child, so it draws behind the buttons).
-## Purely decorative: mouse_filter is set to IGNORE in the .tscn so it
-## never intercepts clicks meant for the buttons on top of it.
-##
-## OlutoppiWindow computes each connection's endpoints once in _ready()
-## (node centers never move — geometry comes straight from the buttons'
-## own hand-authored positions in the .tscn) but rebuilds the "unlocked"
-## flags fresh on every _refresh() and calls set_connections() again —
-## simplest correct option given each path only has a handful of edges.
+## Draws a line from each node to each of its prerequisites, behind the buttons in
+## TreeArea's space (mouse_filter IGNORE in the scene). OlutoppiWindow computes the
+## endpoints once and resends the unlocked flags on every refresh.
 
 const LINE_COLOR_LOCKED : Color = Color(0.55, 0.47, 0.38, 0.8)
 const LINE_COLOR_UNLOCKED : Color = Color(0.949, 0.788, 0.42, 1.0)

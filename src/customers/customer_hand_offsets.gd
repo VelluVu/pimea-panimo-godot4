@@ -1,15 +1,10 @@
 class_name CustomerHandOffsets
 extends RefCounted
 
-## Per-frame hand position for the held beer glass during ANIM_WALK_TOWARDS
-## (Customer-local space, matching AnimatedSprite2D's centered=false/
-## offset=(-16,-32)/scale=4 transform). That animation is always played with
-## flip_h=true, so the customer's own RIGHT hand, which stays steady at hip
-## height across the 4 frames of a plain walk cycle, ends up screen-left. The
-## default x values are that steady hand's texture position run through the
-## same mirror flip_h applies (screen_x = 64 - 4*tx), plus a +9 nudge toward
-## center so the glass doesn't float off the body. Archetypes whose walk pose
-## doesn't fit the "one steady hand" assumption get a dedicated table below.
+## Per-frame hand position for the held glass during ANIM_WALK_TOWARDS, in Customer-local
+## space. That walk plays flipped, so the steady right hand ends up screen-left; the
+## defaults are its mirrored texture position (screen_x = 64 - 4*tx) nudged 9 px inward.
+## Archetypes whose walk has no steady hand get their own table below.
 
 const DEFAULT_OFFSETS : Array[Vector2] = [
 	Vector2(-23, -46),

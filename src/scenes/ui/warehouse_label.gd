@@ -1,11 +1,8 @@
 class_name WarehouseLabel
 extends Label
 
-## Hover label for WarehouseHoverArea (opens Right_WarehouseView, the
-## owned-ingredients panel — see GUISignals.warehouse_door_clicked). Same
-## self-contained pattern as RecipeShelfLabel/ReceiptMachineLabel/
-## ChalkboardLabel: listens to its own world-hover-area signal, shows/hides
-## itself.
+## Hover label for WarehouseHoverArea, like RecipeShelfLabel: shows and hides itself on
+## its hover area's signal.
 
 const LABEL_TEXT : String = "Varasto"
 

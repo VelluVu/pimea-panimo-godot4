@@ -1,15 +1,11 @@
 class_name BoilSession
 extends RefCounted
 
-## The boil: heat to a rolling boil and keep it there for the counted seconds while
-## pouring the hop additions on their marks. Under BOIL_MIN the boil stops and so does
-## the clock; over FOAM_FROM the foam rises, and a full kettle boils over. The hot break
-## and every hop pour make it foam harder, as they do in a real kettle. When the boil's
-## time is up the flame goes out for the hop stand (BoilSchedule): the burner no longer
-## answers, nothing boils over, the clock runs on, and it ends early once every mark is
-## done.
-## Hold a sack to pour; the pour is judged on release: started in its window and within
-## the gram tolerance is a full hit, one of the two a half, neither a miss.
+## The boil: hold a rolling boil for the counted seconds and pour the hops on their marks.
+## Under BOIL_MIN the clock stops; over FOAM_FROM it foams, harder after the hot break and
+## each pour, and a full kettle boils over. Then the flame goes out for the hop stand,
+## which ends once every mark is done. A pour is judged on release: in its window and
+## within the gram tolerance hits, one of the two is a half.
 
 signal boil_started()
 signal boil_stopped()

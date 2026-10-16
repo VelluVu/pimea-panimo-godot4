@@ -25,11 +25,8 @@ const TIER_WEIGHTS : Dictionary = {
 }
 
 
-## Rolls up to `count` distinct perks (no repeats within this one offer —
-## repeats across separate level-ups, stacking the same perk twice over a
-## run, are fine and expected), weighted by TIER_WEIGHTS instead of a flat
-## shuffle — legendary perks are rare draws, not evenly-odds ones. Clamped
-## to pool size.
+## Rolls up to `count` distinct perks, weighted by TIER_WEIGHTS so legendaries are rare.
+## Only one offer is kept unique; repeats across level-ups are fine.
 static func get_random_perks(count : int) -> Array[RunPerk]:
 	if pool.is_empty():
 		return [RunPerk.new()]

@@ -1,13 +1,10 @@
 class_name MashSession
 extends RefCounted
 
-## The mash: heat the water to the malt marker, add the malts (the temperature drops),
-## then hold each step's temperature for its counted seconds. The clock starts with the
-## malts and pauses while ramping to the next step. The malts then blend into the water
-## (blend, 0..1), slowly by themselves and faster with the paddle, and the dough-in
-## clumps appear as they blend; a few more come later. Any left at the end cut the score. A clump breaks after a few hard
-## blows of the paddle's blade; each knocks it away, the shaft or a slow push only
-## carries it along, and the mash slowly swirls them around.
+## The mash: heat to the malt marker, add the malts (the temperature drops), then hold
+## each step's temperature for its seconds; the clock pauses while ramping. The malts blend
+## in slowly, faster with the paddle, throwing up clumps that cut the score if left. The
+## blade breaks a clump in a few hard blows; the shaft or a slow push only carries it.
 
 signal malts_added()
 signal step_reached(index : int)

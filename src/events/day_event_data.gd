@@ -1,17 +1,10 @@
 class_name DayEventData
 extends Resource
 
-## A day-level flavor roll: DayEventManager picks one of these in secret at
-## the start of every day (from day 2 onward — day 1 already has its own
-## first-brew tutorial banner and shouldn't compete with it) and announces
-## announcement_text so the player knows what to expect, without ever
-## showing the roll itself. For its active window (a fraction of the day,
-## not the whole day — see window_fraction_min/max) it biases both the
-## group-visit roll and the solo walk-in roll toward featured_group_event/
-## featured_customer_titles, then quietly reverts to normal. Most days
-## should land on a low-key "nothing special" entry (see day_event_none.tres)
-## with a much higher weight than the named events, so a named event
-## actually landing still feels like something.
+## A day's secret roll, announced by DayEventManager from day 2 on. For part of the day
+## (window_fraction_min/max) it biases group and solo walk-ins toward its featured
+## customers, then reverts. Most days should land on the heavily weighted "nothing
+## special" entry, so a named event still feels like something.
 
 
 @export var event_name : String = ""
@@ -42,20 +35,14 @@ extends Resource
 ## CustomerRegistry.get_random_customer_data(). Irrelevant when
 ## featured_customer_titles is empty.
 @export_range(0.0, 1.0) var solo_customer_bias_chance : float = 0.55
-## Chance the group-visit timer's roll uses featured_group_event instead of
-## the normal random pool pick, while the window is active — see
-## CustomerSpawner._pick_group_event(). Not 1.0: even a themed
-## day should occasionally surprise the player with an unrelated group
-## instead of reading as 100% on-rails.
+## Chance a group visit is featured_group_event instead of a random pick while the
+## window is open. Under 1.0 so a themed day can still surprise.
 @export_range(0.0, 1.0) var featured_group_event_chance : float = 0.75
 
 @export_group("Ajoitus")
-## The event's active window, as a fraction of TimeManager.day_duration_seconds
-## (there's no literal in-game "hour" — the day clock is just a 0-1
-## progress fraction, see TimeManager.get_day_progress()) — randomized
-## within this per-event range so two days with the same event don't
-## always feel identical. Deliberately well under 1.0: this should color
-## part of the day, not take it over (see this class's own docstring).
+## The active window as a fraction of the day (TimeManager.get_day_progress()), rolled
+## in this range so the same event varies. Keep it well under 1.0: it colours part of
+## the day, not all of it.
 @export_range(0.0, 1.0) var window_fraction_min : float = 0.3
 @export_range(0.0, 1.0) var window_fraction_max : float = 0.5
 ## How long after day start the window begins, same fraction basis as
@@ -73,12 +60,8 @@ func get_start_delay_fraction() -> float:
 	return randf_range(start_delay_fraction_min, start_delay_fraction_max)
 
 
-## A same-day misfortune (stock eaten, bottles spoiled) instead of a themed
-## rush of customers — fires once, immediately when this event is rolled
-## (see DayEventEffects), entirely separate from the
-## featured_group_event/featured_customer_titles bias window above. NONE for
-## every existing themed/customer-bias event; only the "unfortunate" pool
-## entries set this.
+## A one-off misfortune (stock eaten, servings spoiled) fired when the event is rolled
+## (DayEventEffects), apart from the bias window. Only the unfortunate pool sets it.
 enum EffectType { NONE, INGREDIENT_LOSS, BOTTLE_SPOILAGE }
 
 @export_group("Suora vaikutus")

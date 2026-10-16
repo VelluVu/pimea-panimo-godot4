@@ -1,11 +1,9 @@
 #DayEventManager (Autoload)
 extends Node
 
-## Rolls a day event on every TimeManager.day_changed, announces it at once and
-## turns its customer bias on for a random window that covers only part of the day.
-## Keyed on day_changed, not a swapped Brewery, so a continued save is not read as
-## a new day (the DailyGoalManager bug); it just has no event until the next day.
-## Day 1 never gets one either, which keeps it clear of the first-brew hint.
+## Rolls a day event on every TimeManager.day_changed, announces it and turns its customer
+## bias on for part of the day. Keyed on day_changed, not a new Brewery, so a continued
+## save is not read as a new day. Day 1 has none, to keep clear of the first-brew hint.
 
 @export var day_event_folder_path : String = "res://src/resources/day_events/"
 

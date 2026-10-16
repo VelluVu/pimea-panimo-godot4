@@ -1,13 +1,9 @@
 class_name PortraitNotice
 extends CanvasLayer
 
-## The game is built for landscape. On a touch screen held upright this covers the screen,
-## asks the player to turn the phone and holds the pause until they do. With the phone's
-## rotation lock on, turning does nothing, so a tap asks the browser for a fullscreen
-## landscape instead (Android; iOS has no orientation lock). On a phone the first tap anywhere
-## asks for the same once: itch.io's mobile frame can be larger than the screen and does not
-## follow the turn, while a fullscreen page always fills it. The game may start in Finnish and
-## the language buttons are behind this cover, so a Finnish notice repeats itself in English below.
+## Covers a touch screen held upright, asks to turn it and holds the pause until then.
+## A tap asks for fullscreen landscape (for rotation lock and itch.io's oversized mobile
+## frame). The Finnish notice repeats in English, as the language buttons are behind it.
 ## Add one to each scene's UI root.
 
 ## Above every window, the level-up cards and touch tooltips.

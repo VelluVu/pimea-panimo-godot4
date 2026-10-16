@@ -1,12 +1,9 @@
 class_name AchievementsWindow
 extends Panel
 
-## Shows every achievement as a grid of tiles, unlocked ones first. Details
-## and progress are in each tile's tooltip. Rebuilt from AchievementManager
-## each time the window opens.
-## Opened by GUISignals.achievements_requested from the main menu and the
-## in-game menu; process_mode must be ALWAYS on the instance so it still works
-## while the tree is paused behind the game menu.
+## Every achievement as a tile grid, unlocked first, details in the tooltips; rebuilt on
+## open. Opened from both menus (GUISignals.achievements_requested); process_mode is
+## ALWAYS so it works while the game menu pauses the tree.
 
 const TITLE_FORMAT: String = "Saavutukset (%d/%d)"
 const CLOSE_BUTTON_TEXT: String = "Sulje"

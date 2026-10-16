@@ -20,13 +20,8 @@ const AMOUNT_LABEL_STRING : String = "%d annosta"
 ## A full keg waiting for a free tap, see Inventory.batches_on_serve().
 const SPARE_AMOUNT_FORMAT : String = "%d annosta, varalla"
 const QUALITY_LABEL_STRING : String = "%s %s"
-## Shown when there's nothing left to sell — without this the panel just
-## goes quiet with no explanation. Customer traffic keeps arriving even
-## now (CustomerSpawner no longer withholds spawning on empty inventory
-## past the player's first brew — see its spawn_walk_in()
-## docstring), it just gets turned away, costing reputation/risk, so this
-## label is the only warning the player gets before that starts happening.
-## See playtest_notes_2.txt.
+## Shown when nothing is left to sell: customers still come and get turned away, costing
+## reputation, so this is the player's only warning.
 const EMPTY_INVENTORY_TEXT : String = "Ei olutta myytävänä. Keitä lisää!"
 const EMPTY_INVENTORY_COLOR : Color = Color(0.9490196, 0.7882353, 0.41960785, 1) # matches DailyGoalsPanel.GOAL_PENDING_COLOR
 
@@ -41,13 +36,8 @@ const SHIP_BUTTON_TEXT : String = "Vie"
 const ROW_BUTTON_SIZE : Vector2 = Vector2(40, 24)
 const SHIP_BUTTON_TOOLTIP : String = "Vie koko erä yllä valittuun baariin. Nostaa LVV-riskiä toimituksen mukana."
 
-## Floor under the batch row label's width — without it, HBoxContainer's
-## layout pass can hand the label (size_flags SIZE_EXPAND_FILL, sharing
-## the row with two buttons) a near-zero width before settling, and word
-## wrap under a near-zero width blows the row up to hundreds of pixels
-## tall instead of the intended one or two lines. See get_full_info_tooltip()
-## for where the batch's full stats still live once the label itself
-## clips.
+## Floor under the row label's width: a near-zero width mid-layout makes word wrap blow
+## the row up to hundreds of pixels. The full stats stay in the tooltip.
 const ROW_LABEL_MIN_WIDTH : float = 50.0
 
 ## Built once in _ready() rather than in the scene — RightWarehouseView's

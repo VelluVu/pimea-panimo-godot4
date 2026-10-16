@@ -57,11 +57,9 @@ func is_counter_crowded() -> bool:
 	return slots.customers().size() > CROWDED_COUNTER_SIZE
 
 
-## Throws out everyone still being served when the day is force-closed.
-## queue_free() cancels a solo customer's sale: their whole sequence is a chain
-## of timers and tweens bound to the node. A group order is one coroutine
-## instead, cancelled by its own member-validity check in
-## GroupVisitDirector._run_shared_group_order().
+## Throws out everyone still being served when the day is force-closed. queue_free()
+## cancels a solo sale (its timers and tweens are bound to the node); a group order's
+## coroutine stops on its own member-validity check.
 func evict_active_customers() -> void:
 	if not slots.has_customers():
 		return

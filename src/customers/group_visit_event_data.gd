@@ -1,25 +1,15 @@
 class_name GroupVisitEventData
 extends Resource
 
-## A crowd walk-in: one big announcement banner, then a burst of customers
-## (all sharing a single CustomerData archetype) who all cluster at one
-## shared counter position instead of spreading across the usual slots.
-## The crowd acts as a single unit rather than N independent customers: one
-## shared speech bubble carries the optional walking chant, the intro, and
-## the sale result, and one shared order (customer_data's own bottle range
-## scaled by group size) is placed against the shared inventory — not N
-## separate per-member sales.
+## A crowd walk-in: one banner, then a burst of customers clustered at one counter spot.
+## The crowd acts as one: a shared speech bubble for chant, intro and result, and one
+## order (the archetype's range scaled by group size) instead of a sale per member.
 
 
 @export_multiline var banner_text: String = ""
-## Interchangeable archetype variants for this crowd (e.g. an archetype's
-## male and naaras CustomerData) — each member picks one at random when
-## spawned (see GroupVisitDirector.run()), so a group reads
-## as a mixed crowd instead of every member sharing one identical sprite.
-## The shared order itself (see GroupVisitDirector._run_shared_group_order())
-## also picks one at random to duplicate — safe because sibling variants
-## are expected to share the same title/stats and only differ in sprite,
-## name, and flavor dialogue.
+## Variants of one archetype (say its male and female CustomerData), picked at random per
+## member so the crowd looks mixed. The shared order copies a random one too, so variants
+## must share title and stats and differ only in sprite, name and lines.
 @export var customer_data_options: Array[CustomerData] = []
 
 @export_group("Ryhmän koko")

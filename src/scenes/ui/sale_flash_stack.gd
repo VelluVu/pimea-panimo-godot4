@@ -1,15 +1,9 @@
 class_name SaleFlashStack
 extends VBoxContainer
 
-## Spawns a brief SaleFlashToast for every sale, plus any other "something
-## just happened" incident (currently: bar fights — see
-## BrewerySignals.bar_fight_triggered) that used to be buried in a
-## customer's own dialogue bubble instead of getting its own notice.
-## Self-contained: connects to BrewerySignals directly. No coordination
-## needed between toasts — each one manages its own hold/fade and frees
-## itself; the VBoxContainer just stacks whatever's currently alive, which
-## is exactly what lets an overlapping sale and bar fight show as two
-## separate stacked toasts instead of one clobbering the other.
+## A brief SaleFlashToast for every sale and other incidents such as bar fights. Each
+## toast fades and frees itself and the VBoxContainer stacks the live ones, so overlapping
+## events show as separate toasts.
 
 
 const SALE_FLASH_TOAST_SCENE : PackedScene = preload("res://src/scenes/ui/sale_flash_toast.tscn")
