@@ -125,18 +125,18 @@ Favourite hops (book info; profiles count for the flavour bonus):
 | Style | Bittering | Aroma / flavour profiles |
 |---|---|---|
 | Bulkkilager, Tumma Lager | Magnum or European | Noble |
-| Pale Ale | any | Citrus, Tropical |
+| Pale Ale | mainly Magnum or Warrior | Citrus, Tropical, Pine (American), Earthy (English) |
 | Amber Ale | Magnum, Warrior | Citrus, Tropical, Pine, Earthy |
-| IPA | Magnum, Citra, Warrior | Citrus, Tropical, Pine |
+| IPA | mainly Magnum or Warrior | Citrus, Tropical, Pine (American), Earthy (English) |
 | Helles, Vienna, Märzen, Doppelbock, Portteri | Magnum, Saaz | Noble (Hallertau, Tettnanger, Saaz, Perle) |
 | Hefeweizen, Witbier | German noble | Noble |
-| Session Ale | none (late hops only) | Citrus, Tropical, Pine, Earthy |
+| Session Ale | Magnum, Warrior (a small charge) | Citrus, Tropical, Pine, Earthy |
 | Saison | European | Earthy, Noble (Fuggle, Styrian Golding, Saaz, Hallertau) |
 | Dubbel, Strong Dark | noble | Noble |
 | Scotch Ale | English | Earthy |
 | Barleywine | American or English | Citrus, Tropical, Pine, Earthy |
 | Imperial Stout | Magnum | Citrus, Pine, Earthy |
-| Alkoholiton IPA | Magnum, Warrior | Citrus, Tropical, Pine |
+| Alkoholiton IPA | mainly Magnum or Warrior | Citrus, Tropical, Pine (American), Earthy (English) |
 | Alkoholiton Lager | Magnum, Warrior | Noble |
 | Sahti | none | Noble (flavour only) |
 | Maitostout | English or Magnum | Earthy |
