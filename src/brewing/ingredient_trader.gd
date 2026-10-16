@@ -34,7 +34,7 @@ func _on_buy_ingredient(ingredient_id : int, amount : int) -> void:
 		BrewerySignals.ingredient_purchase_locked.emit(ingredient.name, ingredient.min_reputation)
 		return
 
-	var buy_price : int = roundi(ingredient.base_price * amount * brewery.stats.multiplier(PerkStats.INGREDIENT_PRICE))
+	var buy_price : float = snappedf(ingredient.base_price * amount * brewery.stats.multiplier(PerkStats.INGREDIENT_PRICE), 0.01)
 
 	if brewery.money < buy_price:
 		print(StringContainer.RESOURCE_ERROR % [brewery.money, buy_price, StringContainer.MONEY_STRING])
@@ -71,7 +71,7 @@ func _on_sell_ingredient(ingredient_id : int, amount : int) -> void:
 		BrewerySignals.ingredient_sale_failed.emit(ingredient.name, amount, held.amount if held != null else 0)
 		return
 		
-	var sell_price : float = snappedf(final_amount * ingredient.base_price * brewery.stats.multiplier(PerkStats.INGREDIENT_PRICE) * SELL_BACK_RATE, 0.1)
+	var sell_price : float = snappedf(final_amount * ingredient.base_price * brewery.stats.multiplier(PerkStats.INGREDIENT_PRICE) * SELL_BACK_RATE, 0.01)
 	brewery.change_money(sell_price, MoneyLedger.Source.INGREDIENTS)
 	print(LOG_SOLD % [final_amount, sell_price])
 	BrewerySignals.brewery_state_changed.emit(brewery)

@@ -9,7 +9,7 @@ const TRADE_FAILED_MESSAGE: String = "[color=orange]%s epäonnistui: %s[/color]"
 
 const PURCHASE_LOCKED_REASON: String = "%s vaatii mainetta %d"
 
-const PURCHASE_UNDERFUNDED_REASON: String = "%s maksaa %d €, rahaa %.1f €"
+const PURCHASE_UNDERFUNDED_REASON: String = "%s maksaa %.2f €, rahaa %.2f €"
 
 const SALE_FAILED_REASON: String = "%s: pyydetty %d, varastossa %d"
 
@@ -62,7 +62,7 @@ func _on_purchase_locked(ingredient_name: String, required_reputation: int) -> v
 	_trade_failure_reason = tr(PURCHASE_LOCKED_REASON) % [tr(ingredient_name), required_reputation]
 
 
-func _on_purchase_underfunded(ingredient_name: String, price: int, money: float) -> void:
+func _on_purchase_underfunded(ingredient_name: String, price: float, money: float) -> void:
 	_trade_failure_reason = tr(PURCHASE_UNDERFUNDED_REASON) % [tr(ingredient_name), price, money]
 
 

@@ -434,8 +434,8 @@ msgid "parhaimmillaan"
 msgstr "at its best"
 
 #: src/console/player_commands.gd
-msgid "%s maksaa %d €, rahaa %.1f €"
-msgstr "%s costs %d €, you have %.1f €"
+msgid "%s maksaa %.2f €, rahaa %.2f €"
+msgstr "%s costs %.2f €, you have %.2f €"
 
 #: src/console/player_commands.gd
 msgid "%s vaatii mainetta %d"
@@ -5732,8 +5732,8 @@ msgid "Täytä resepti"
 msgstr "Fill recipe"
 
 #: src/scenes/ui/left_shop_view.gd
-msgid "Ei varaa: %d €"
-msgstr "Can't afford: %d €"
+msgid "Ei varaa: %.2f €"
+msgstr "Can't afford: %.2f €"
 
 #: src/scenes/ui/left_shop_view.gd
 msgid "Vaatii %d mainetta"

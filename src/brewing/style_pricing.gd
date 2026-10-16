@@ -87,5 +87,5 @@ func price_breakdown(beer_style : BeerStyle) -> SaleBreakdown:
 
 
 ## What the style's reference recipe costs at base prices.
-func _cheapest_recipe_cost(beer_style : BeerStyle) -> int:
+func _cheapest_recipe_cost(beer_style : BeerStyle) -> float:
 	return _ingredients.combo_cost(beer_style.reference_recipe)

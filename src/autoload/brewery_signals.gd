@@ -170,7 +170,7 @@ signal ingredient_purchase_locked(ingredient_name: String, required_reputation: 
 ## Emitted by IngredientTrader when the player cannot afford the price. Unlike the
 ## lock, the shop does not prevent this, so it explains the failed click.
 @warning_ignore("unused_signal")
-signal ingredient_purchase_underfunded(ingredient_name: String, price: int, money: float)
+signal ingredient_purchase_underfunded(ingredient_name: String, price: float, money: float)
 ## Emitted by IngredientTrader when the requested amount cannot be withdrawn (stock is
 ## all-or-nothing). Lets listeners, today only DevConsole, report why nothing sold.
 @warning_ignore("unused_signal")
