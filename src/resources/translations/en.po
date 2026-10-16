@@ -5736,6 +5736,20 @@ msgid "Ei varaa: %.2f €"
 msgstr "Can't afford: %.2f €"
 
 #: src/scenes/ui/left_shop_view.gd
+msgid "Osta puuttuvat"
+msgstr "Buy missing"
+
+#: src/scenes/ui/left_shop_view.gd
+msgid "Osta puuttuvat: %.2f €"
+msgstr "Buy missing: %.2f €"
+
+#: src/scenes/ui/left_shop_view.gd
+msgid ""
+"Ostaa kerralla kaiken, mitä ladattu resepti vielä tarvitsee pöydän ja "
+"varaston lisäksi."
+msgstr "Buys everything the loaded recipe still needs beyond the table and the storage, in one go."
+
+#: src/scenes/ui/left_shop_view.gd
 msgid "Vaatii %d mainetta"
 msgstr "Needs %d reputation"
 
