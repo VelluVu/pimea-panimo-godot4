@@ -10,5 +10,6 @@ id = 107
 name = "Tumma karamellimallas"
 name_partitive = "tummaa karamellimallasta"
 description = "Voimakkaasti paahdettu karamellimallas tummille ja väkeville oluille."
-base_price = 5
+base_price = 0.5
+pack_grams = 100
 metadata/_custom_type_script = "uid://dniwiyu5ynp71"
