@@ -37,7 +37,7 @@ static func ibu_precision(ibu : float, min_ibu : float, max_ibu : float) -> floa
 
 static func precision_score(mixture : BrewMixture, beer_style : BeerStyle) -> float:
 	var ebc_precision : float = range_precision(mixture.final_ebc, beer_style.min_ebc, beer_style.max_ebc)
-	var ibu_score : float = ibu_precision(mixture.final_ibu, beer_style.min_ibu, beer_style.max_ibu)
+	var ibu_score : float = ibu_precision(mixture.ibu_for(beer_style), beer_style.min_ibu, beer_style.max_ibu)
 	var abv_precision : float = range_precision(mixture.abv, beer_style.min_abv, beer_style.max_abv)
 	return (ebc_precision + ibu_score + abv_precision) / 3.0
 
