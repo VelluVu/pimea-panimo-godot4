@@ -62,6 +62,8 @@ func _input(event : InputEvent) -> void:
 
 func _on_ingredient_selected_globally(id: int) -> void:
 	current_id = id
+	# The last amount means nothing for another ingredient (25 g of hops is not 25 kg of malt).
+	main_slider.value = 0
 	_update_slider()
 	_update_label()
 	_update_quick_row()
