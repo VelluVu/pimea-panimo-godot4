@@ -60,6 +60,9 @@ enum Style {
 ## weight (Märzen is mostly Münchenin, Hefeweizen mostly wheat). Empty = any grist.
 @export var base_malt_ids: Array[int] = []
 @export_range(0.0, 1.0, 0.05) var min_base_share: float = 0.0
+## The malts beyond the base that give the style its character (Münchenin in a Helles,
+## Carafa in a Dunkel): each in the grist adds BrewQuality.MALT_MATCH_STEP.
+@export var preferred_malt_ids: Array[int] = []
 ## Late hops with any of these profiles earn the flavour bonus, see BrewQuality.
 @export var preferred_hop_profiles: Array[HopData.FlavorProfile] = []
 ## Hop-forward ales: brewed with only bittering hops (no flavour profile, like

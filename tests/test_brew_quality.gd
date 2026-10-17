@@ -77,6 +77,19 @@ func test_noble_styles_can_bitter_with_their_noble_hop() -> void:
 	assert_eq(BrewQualityScript.good_hop_layers(_hop_mixture({203: 60}), ipa), 2, "only noble hops get the classic bittering pass")
 
 
+func test_the_styles_own_malts_add_quality_up_to_a_cap() -> void:
+	var dunkel := BeerStyle.new()
+	dunkel.preferred_malt_ids.assign([104, 113, 102])
+	var mixture := BrewMixtureScript.new()
+	assert_eq(BrewQualityScript.malt_bonus(mixture, dunkel), 0.0, "no character malt, no bonus")
+	mixture.malt_ids[104] = true
+	assert_true(is_equal_approx(BrewQualityScript.malt_bonus(mixture, dunkel), BrewQualityScript.MALT_MATCH_STEP))
+	mixture.malt_ids[113] = true
+	mixture.malt_ids[102] = true
+	assert_true(is_equal_approx(BrewQualityScript.malt_bonus(mixture, dunkel), BrewQualityScript.MALT_MATCH_MAX), "three malts stop at the cap")
+	assert_true(BrewQualityScript.multiplier(dunkel, 0.5, 0.0, false, 0.0, BrewQualityScript.MALT_MATCH_MAX) > BrewQualityScript.multiplier(dunkel, 0.5, 0.0, false), "the bonus raises the quality")
+
+
 func test_a_pinch_is_not_a_layer() -> void:
 	var ipa : BeerStyle = _style([HopAddition.Kind.BITTERING, HopAddition.Kind.AROMA], [HopData.FlavorProfile.CITRUS])
 	assert_eq(BrewQualityScript.good_hop_layers(_hop_mixture({200: 20, 203: 2}), ipa), 1)

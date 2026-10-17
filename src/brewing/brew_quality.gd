@@ -27,6 +27,10 @@ const SPICE_MATCH_MAX : float = 0.1
 const PURITY_LAW_PENALTY : float = 0.1
 ## Per spice the style neither needs nor likes, so spicing a beer at random never pays.
 const UNSUITED_SPICE_PENALTY : float = 0.05
+## Per character malt of the style in the grist, capped, so the right malts pay a little
+## on top of hitting the colour and strength.
+const MALT_MATCH_STEP : float = 0.03
+const MALT_MATCH_MAX : float = 0.06
 const MIN_MULTIPLIER : float = 0.5
 const MAX_MULTIPLIER : float = 1.5
 
@@ -119,9 +123,14 @@ static func unsuited_spice_penalty(mixture : BrewMixture, beer_style : BeerStyle
 	return unsuited * UNSUITED_SPICE_PENALTY
 
 
-static func multiplier(beer_style : BeerStyle, precision : float, layer_bonus : float, flavor_match : bool, spice_match_bonus : float = 0.0) -> float:
+static func malt_bonus(mixture : BrewMixture, beer_style : BeerStyle) -> float:
+	var matched : int = beer_style.preferred_malt_ids.filter(func(id : int) -> bool: return mixture.malt_ids.has(id)).size()
+	return minf(matched * MALT_MATCH_STEP, MALT_MATCH_MAX)
+
+
+static func multiplier(beer_style : BeerStyle, precision : float, layer_bonus : float, flavor_match : bool, spice_match_bonus : float = 0.0, malt_match_bonus : float = 0.0) -> float:
 	var value : float = 1.0 + (precision - NEUTRAL_PRECISION) * precision_weight(beer_style)
-	value += layer_bonus + spice_match_bonus
+	value += layer_bonus + spice_match_bonus + malt_match_bonus
 	if flavor_match:
 		value += FLAVOR_MATCH_BONUS
 	return clampf(value, MIN_MULTIPLIER, MAX_MULTIPLIER)

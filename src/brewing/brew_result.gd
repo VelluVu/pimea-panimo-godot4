@@ -27,3 +27,5 @@ extends Resource
 @export var spice_bonus : float = 0.0
 ## Quality lost to spices the style does not like, see BrewQuality.unsuited_spice_penalty().
 @export var unsuited_spice_penalty : float = 0.0
+## Quality from the style's character malts, see BrewQuality.malt_bonus().
+@export var malt_bonus : float = 0.0
