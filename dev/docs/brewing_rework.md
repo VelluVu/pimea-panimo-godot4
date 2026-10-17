@@ -102,6 +102,7 @@ Carafa and roasted barley, so a recipe can use a few percent of them.
 | IPA | ale | Pale ale 70 % | aroma hop | 8-28 | 40-70 | 5.5-7.5 | 5 Pale ale + 1 Münchenin → 13.5, 6.5 % |
 | Helles | lager | Pilsner 50 % | – | 8-14 | 14-22 | 4.2-5.6 | 4 Pilsner + 0.3 Karamelli → 10, 5.0 % |
 | **Pilsner** (new, German) | lager | Pilsner 80 % | aroma hop | 4-9 | 24-40 | 4.4-5.4 | 4 Pilsner, Magnum 12 g + Tettnanger 70 g → 6, 4.7 %, 30 IBU |
+| **Tšekkiläinen pilsner** (new) | lager | Pilsner 85 % | Saaz only | 5-12 | 30-50 | 4.2-5.8 | 4 Pilsner + 0.2 Karamelli, Saaz 180 g → 9, 4.9 %, 38 IBU (140-220 g Saaz fits; any other hop makes it a German Pilsner) |
 | Vienna Lager | lager | Vienna 60 % | – | 8-25 | 18-30 | 4.2-5.9 | 3 Vienna + 1 Münchenin → 12.0, 4.6 % |
 | Märzen | lager | Münchenin 50 % | – | 14-33 | 18-28 | 5.2-6.6 | 3 Münchenin + 1 Vienna + 1 Pilsner → 16.4, 5.7 % |
 | Baltic Portteri | lager | – | – | 35-70 | 20-40 | 6.2-9.5 | 3 Münchenin + 2 Pilsner + 0.5 Tumma karamelli + 0.1 Carafa + 0.1 Suklaa → 54, 6.4 % |
@@ -129,6 +130,7 @@ Favourite hops (book info; profiles count for the flavour bonus):
 |---|---|---|
 | Bulkkilager, Tumma Lager | Magnum or European | Noble |
 | Pilsner | Magnum or German noble | Noble (Tettnanger, Hallertau), more than Bulkkilager |
+| Tšekkiläinen pilsner | Saaz | Saaz on every mark, 140 g and up |
 | Pale Ale | mainly Magnum or Warrior | Citrus, Tropical, Pine (American), Earthy (English) |
 | Amber Ale | Magnum, Warrior | Citrus, Tropical, Pine, Earthy |
 | IPA | mainly Magnum or Warrior | Citrus, Tropical, Pine (American), Earthy (English) |

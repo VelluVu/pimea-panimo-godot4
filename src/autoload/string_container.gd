@@ -32,6 +32,7 @@ const RAUCHBIER : String = "Rauchbier"
 const ROGGENBIER : String = "Roggenbier"
 const IRISH_DRY_STOUT : String = "Irish Dry Stout"
 const PILSNER : String = "Pilsner"
+const CZECH_PILSNER : String = "Tšekkiläinen pilsner"
 
 const KG : String = "kg"
 const G : String = "g"
@@ -63,7 +64,6 @@ const INGREDIENT_LOCKED_ERROR : String = "Ainesosa ERROR: %s vaatii vähintään
 
 const LEADERBOARD_BUTTON_TEXT : String = "Ennätykset"
 
-const HOP_FLAVOR_STRING : String = "Maku: %s"
 const HOP_FLAVOR_CITRUS : String = "Sitruksinen"
 const HOP_FLAVOR_TROPICAL : String = "Trooppinen"
 const HOP_FLAVOR_PINE : String = "Mäntyinen"

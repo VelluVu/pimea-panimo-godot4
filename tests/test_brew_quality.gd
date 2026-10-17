@@ -70,6 +70,13 @@ func test_every_well_filled_layer_counts() -> void:
 	assert_eq(BrewQualityScript.good_hop_layers(_hop_mixture({203: 60}), ipa), 2, "a low-alpha hop is no bittering hop")
 
 
+func test_noble_styles_can_bitter_with_their_noble_hop() -> void:
+	var pils : BeerStyle = _style([HopAddition.Kind.BITTERING, HopAddition.Kind.FLAVOR, HopAddition.Kind.AROMA], [HopData.FlavorProfile.NOBLE])
+	var ipa : BeerStyle = _style([HopAddition.Kind.BITTERING, HopAddition.Kind.FLAVOR, HopAddition.Kind.AROMA], [HopData.FlavorProfile.CITRUS])
+	assert_eq(BrewQualityScript.good_hop_layers(_hop_mixture({201: 120}), pils), 3, "an all-noble pils fills every layer")
+	assert_eq(BrewQualityScript.good_hop_layers(_hop_mixture({203: 60}), ipa), 2, "only noble hops get the classic bittering pass")
+
+
 func test_a_pinch_is_not_a_layer() -> void:
 	var ipa : BeerStyle = _style([HopAddition.Kind.BITTERING, HopAddition.Kind.AROMA], [HopData.FlavorProfile.CITRUS])
 	assert_eq(BrewQualityScript.good_hop_layers(_hop_mixture({200: 20, 203: 2}), ipa), 1)

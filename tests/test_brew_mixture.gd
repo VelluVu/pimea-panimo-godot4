@@ -146,6 +146,15 @@ func test_a_hop_forward_style_needs_an_aroma_hop() -> void:
 	assert_true(_make_mixture({MALT_ID: 3, BITTERING_HOP_ID: 3, YEAST_ID: 1}).fits(_make_style(0, 30, 0, 999)), "other styles do not care")
 
 
+func test_an_only_hops_style_takes_nothing_else() -> void:
+	var all_one_hop := _make_style(0, 30, 0, 999)
+	all_one_hop.only_hop_ids = [HOP_ID]
+	assert_true(_make_mixture({MALT_ID: 3, HOP_ID: 3, YEAST_ID: 1}).fits(all_one_hop))
+	assert_false(_make_mixture({MALT_ID: 3, HOP_ID: 3, BITTERING_HOP_ID: 1, YEAST_ID: 1}).fits(all_one_hop), "one other hop is enough to break it")
+	assert_false(_make_mixture({MALT_ID: 3, YEAST_ID: 1}).fits(all_one_hop), "no hops at all is not all Saaz")
+	assert_eq(all_one_hop.match_priority(), 0, "checked before the wider styles")
+
+
 func test_spice_adds_no_bitterness() -> void:
 	var mixture := _make_mixture({MALT_ID: 3, SPICE_ID: 5, YEAST_ID: 1})
 	assert_eq(mixture.final_ibu, 0)

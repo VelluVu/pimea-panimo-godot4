@@ -31,6 +31,7 @@ enum Style {
 	ROGGENBIER,
 	IRISH_DRY_STOUT,
 	PILSNER,
+	CZECH_PILSNER,
 }
 
 @export var style_name: String = "Uusi oluttyyli"
@@ -64,6 +65,9 @@ enum Style {
 ## Hop-forward ales: brewed with only bittering hops (no flavour profile, like
 ## Magnum) the beer is not this style, since it has no hop aroma at all.
 @export var requires_aroma_hop: bool = false
+## When set, these are the only hops allowed and at least one must be in (a Czech pils
+## is all Saaz); any other hop makes the batch some other style.
+@export var only_hop_ids: Array[int] = []
 
 @export_group("Alkoholi")
 ## The style's typical strength, for the book and events. A batch's real ABV comes from
@@ -88,7 +92,7 @@ func is_alcohol_free() -> bool:
 ## Checked in this order: styles defined by a required ingredient first, then those
 ## defined by their base malts, then the rest, so the most specific style wins.
 func match_priority() -> int:
-	if required_malt_id != BrewMixture.NO_REQUIRED_MALT or not required_spice_ids.is_empty():
+	if required_malt_id != BrewMixture.NO_REQUIRED_MALT or not required_spice_ids.is_empty() or not only_hop_ids.is_empty():
 		return 0
 	return 1 if not base_malt_ids.is_empty() else 2
 
@@ -192,4 +196,5 @@ static func get_style_string_from_style(new_style : BeerStyle.Style) -> String:
 		Style.ROGGENBIER: return UiText.of(StringContainer.ROGGENBIER)
 		Style.IRISH_DRY_STOUT: return UiText.of(StringContainer.IRISH_DRY_STOUT)
 		Style.PILSNER: return UiText.of(StringContainer.PILSNER)
+		Style.CZECH_PILSNER: return UiText.of(StringContainer.CZECH_PILSNER)
 		_: return UiText.of(StringContainer.TUNTEMATON)

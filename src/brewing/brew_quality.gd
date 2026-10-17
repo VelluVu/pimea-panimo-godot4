@@ -59,11 +59,19 @@ static func good_hop_layers(mixture : BrewMixture, beer_style : BeerStyle) -> in
 		if hop == null or mark.grams < MIN_LAYER_GRAMS:
 			continue
 		if mark.kind == HopAddition.Kind.BITTERING:
-			if hop.alpha_acids >= HIGH_ALPHA:
+			if is_good_bittering_hop(hop, beer_style):
 				good += 1
 		elif beer_style.has_preferred_hop_profile(hop.flavor_profile):
 			good += 1
 	return good
+
+
+## Noble-hop styles are traditionally bittered with their own noble hop (a Czech pils is
+## all Saaz), it just takes more grams.
+static func is_good_bittering_hop(hop : HopData, beer_style : BeerStyle) -> bool:
+	if hop.alpha_acids >= HIGH_ALPHA:
+		return true
+	return hop.flavor_profile == HopData.FlavorProfile.NOBLE and beer_style.has_preferred_hop_profile(HopData.FlavorProfile.NOBLE)
 
 
 static func hop_layer_bonus(mixture : BrewMixture, beer_style : BeerStyle) -> float:
