@@ -99,21 +99,21 @@ Carafa and roasted barley, so a recipe can use a few percent of them.
 |---|---|---|---|---|---|---|---|
 | Kotikalja | baking | – | – | 0-8 | 0-10 | 2.0-4.5 | 3 Pilsner → 4.9, 3.1 %, no hops (IBU from 0: anything below the middle counts as perfect) |
 | Bulkkilager | lager | Pilsner 80 % | – | 3-7 | 8-20 | 4.0-5.5 | 4 Pilsner → 6.0, 4.7 % |
-| Tumma Lager | lager | Münchenin 50 % | – | 28-55 | 8-34 | 4.0-5.9 | 3 Münchenin + 1 Pilsner + 0.2 Carafa → 41, 4.8 % |
+| Tumma Lager | lager | Münchenin 50 % | – | 30-56 | 9-35 | 3.5-5.5 | 4 Münchenin + 0.2 Carafa → 43, 4.7 % (a Munich Dunkel) |
 | Pale Ale | ale | Pale ale 75 % | aroma hop | 6-19 | 12-39 | 4.0-6.2 | 4 Pale ale → 8.5, 4.3 % |
 | Amber Ale | ale | Pale ale 60 % | – | 20-35 | 25-39 | 4.5-6.2 | 4 Pale ale + 0.8 Karamelli + 0.3 Keksi → 19, 5.5 % |
-| IPA | ale | Pale ale 70 % | aroma hop | 8-28 | 40-70 | 5.5-7.5 | 5 Pale ale + 1 Münchenin → 13.5, 6.5 % |
+| IPA | ale | Pale ale 70 % | aroma hop | 3-23 | 40-70 | 5.5-7.5 | 5 Pale ale + 0.5 Münchenin + 0.2 Karamelli → 14, 6.2 % |
 | Helles | lager | Pilsner 50 % | – | 7-13 | 14-22 | 3.9-5.3 | 3 Pilsner + 1 Münchenin → 9, 4.7 % (caramel instead of Münchenin also fits) |
 | **Pilsner** (new, German) | lager | Pilsner 80 % | aroma hop | 4-9 | 24-40 | 4.4-5.4 | 4 Pilsner, Magnum 12 g + Tettnanger 70 g → 6, 4.7 %, 30 IBU |
 | **Tšekkiläinen pilsner** (new) | lager | Pilsner 85 % | Saaz only | 5-12 | 30-50 | 4.2-5.8 | 4 Pilsner + 0.2 Karamelli, Saaz 180 g → 9, 4.9 %, 38 IBU (140-220 g Saaz fits; any other hop makes it a German Pilsner) |
-| Vienna Lager | lager | Vienna 60 % | – | 8-25 | 18-30 | 4.2-5.9 | 3 Vienna + 1 Münchenin → 12.0, 4.6 % |
+| Vienna Lager | lager | Vienna 60 % | – | 4-20 | 17-29 | 4.2-5.6 | 3.5 Vienna + 0.5 Münchenin + 0.2 Karamelli → 13, 4.8 % |
 | Märzen | lager | Münchenin 50 % | – | 14-33 | 18-28 | 5.2-6.6 | 3 Münchenin + 1 Vienna + 1 Pilsner → 16.4, 5.7 % |
 | Baltic Portteri | lager | – | – | 35-70 | 20-40 | 6.2-9.5 | 3 Münchenin + 2 Pilsner + 0.5 Tumma karamelli + 0.1 Carafa + 0.1 Suklaa → 54, 6.4 % |
-| Doppelbock | lager | – | – | 12-34 | 16-26 | 6.8-10.0 | 3 Münchenin + 2 Pilsner + 1 Vienna + 0.5 Karamelli → 21, 7.4 % |
-| Hefeweizen | ale | Vehnä 50 % | – | 4-14 | 8-15 | 4.0-5.8 | 2 Vehnä + 2 Pilsner → 6.4, 4.4 % |
-| Witbier | ale | Pilsner 60 % | Vehnä + Korianteri + Pomeranssinkuori | 3-10 | 8-20 | 3.8-5.5 | 3 Pilsner + 2 Vehnä → 7, 5.5 % |
-| Session Ale | ale | Pale ale 60 % | Vehnä | 4-14 | 8-25 | 3.0-4.6 | 2 Pale ale + 1 Vehnä → 6.5, 3.3 % |
-| Saison | ale | Pilsner 60 % | – | 6-19 | 16-35 | 5.3-7.5 | 4 Pilsner + 1 Münchenin → 10.2, 5.5 % |
+| Doppelbock | lager | – | – | 14-29 | 17-27 | 6.4-9.6 | 4.5 Münchenin + 2 Pilsner + 0.3 Karamelli → 22, 7.8 % |
+| Hefeweizen | ale | Vehnä 50 % | – | 1-11 | 8-16 | 4.0-6.0 | 2.5 Vehnä + 2 Pilsner → 7, 5.0 % |
+| Witbier | ale | Pilsner 40 % | Vehnä + Korianteri + Pomeranssinkuori | 2-10 | 8-20 | 4.2-5.8 | 2 Pilsner + 2.5 Vehnä (stands in for raw wheat) |
+| Session Ale | ale | Pale ale 60 % | Vehnä | 2-12 | 8-26 | 2.5-4.1 | 3 Pale ale + 0.5 Vehnä → 8, 3.8 % |
+| Saison | ale | Pilsner 60 % | – | 4-16 | 16-34 | 5.1-6.6 | 4 Pilsner + 0.5 Vehnä + 0.5 Münchenin → 9, 5.5 % |
 | Belgian Dubbel | ale | Pils/Pale 70 % | – | 20-50 | 15-25 | 6.3-7.9 | 5 Pilsner + 1 kandisiirappi + 0.5 Tumma karamelli → 46, 7.3 % |
 | Belgian Strong Dark | ale | Pils/Pale/Vienna 60 % | Tumma kandisiirappi | 24-50 | 20-35 | 8.0-11.0 | 6 Pilsner + 1 Münchenin + 1 siirappi + 0.5 Karamelli → 37, 9.5 % |
 | Scotch Ale | ale | Pale ale 75 % | Paahdettu ohra | 28-49 | 15-30 | 6.5-9.0 | 6 Pale ale + 0.7 Karamelli + 0.1 ohra → 34, 7.3 % |
@@ -123,8 +123,8 @@ Carafa and roasted barley, so a recipe can use a few percent of them.
 | Alkoholiton Lager | NA lager | Pilsner 70 % | – | 3-10 | 8-22 | 0-0.5 | 3 Pilsner → 4.9, 0.4 % |
 | Sahti | baking | – | Ruis + Katajanoksat | 8-43 | 0-15 | 6.5-11.0 | 3 Pilsner + 2 Münchenin + 2 Vienna + 1 Ruis → 17.2, 8.0 % |
 | Maitostout | ale | – | Laktoosi | 50-160 | 15-40 | 4.0-6.5 | 4 Pale ale + 0.5 Karamelli + 0.5 Suklaa → 63, 5.3 % |
-| **Rauchbier** (new) | lager | Savu 30 % | Savu | 12-43 | 20-30 | 4.8-6.4 | 2 Savu + 2 Münchenin + 1 Vienna → 14.8, 5.7 % |
-| **Roggenbier** (new) | ale | Ruis 50 % | Ruis | 10-37 | 10-20 | 4.2-6.0 | 2 Ruis + 1 Pilsner + 1 Münchenin → 10.9, 4.3 % |
+| **Rauchbier** (new) | lager | Savu 30 % | Savu | 0-30 | 20-30 | 4.8-6.4 | 3 Savu + 2 Münchenin → 15, 5.7 % |
+| **Roggenbier** (new) | ale | Ruis 50 % | Ruis | 18-40 | 10-20 | 4.2-6.0 | 2.5 Ruis + 1 Münchenin + 0.5 Pilsner + 0.3 Karamelli + 0.1 Suklaa (copper-brown, as real ones) |
 | **Irish Dry Stout** (new) | ale | Pale ale 60 % | Paahdettu ohra | 50-100 | 25-45 | 3.8-5.0 | 4 Pale ale + 0.5 ohra → 75.9, 4.8 % |
 
 Favourite hops (book info; profiles count for the flavour bonus):
@@ -136,11 +136,11 @@ Favourite hops (book info; profiles count for the flavour bonus):
 | Tšekkiläinen pilsner | Saaz | Saaz on every mark, 140 g and up |
 | Pale Ale | mainly Magnum or Warrior | Citrus, Tropical, Pine (American), Earthy (English) |
 | Amber Ale | Magnum, Warrior | Citrus, Tropical, Pine, Earthy |
-| IPA | mainly Magnum or Warrior | Citrus, Tropical, Pine (American), Earthy (English) |
+| IPA | ale | Pale ale 70 % | aroma hop | 3-23 | 40-70 | 5.5-7.5 | 5 Pale ale + 0.5 Münchenin + 0.2 Karamelli → 14, 6.2 % |
 | Helles, Vienna, Märzen, Doppelbock, Portteri | Magnum, Saaz | Noble (Hallertau, Tettnanger, Saaz, Perle) |
 | Hefeweizen, Witbier | German noble | Noble |
-| Session Ale | Magnum, Warrior (a small charge) | Citrus, Tropical, Pine, Earthy |
-| Saison | European | Earthy, Noble (Fuggle, Styrian Golding, Saaz, Hallertau) |
+| Session Ale | ale | Pale ale 60 % | Vehnä | 2-12 | 8-26 | 2.5-4.1 | 3 Pale ale + 0.5 Vehnä → 8, 3.8 % |
+| Saison | ale | Pilsner 60 % | – | 4-16 | 16-34 | 5.1-6.6 | 4 Pilsner + 0.5 Vehnä + 0.5 Münchenin → 9, 5.5 % |
 | Dubbel, Strong Dark | noble | Noble |
 | Scotch Ale | English | Earthy |
 | Barleywine | American or English | Citrus, Tropical, Pine, Earthy |
