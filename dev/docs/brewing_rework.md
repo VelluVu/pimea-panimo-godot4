@@ -55,9 +55,9 @@ default recipe, sets the cost price, and a test checks that it resolves to its o
 
 Malts come in three pack sizes by how they are used: base malts (Pilsner, Pale ale,
 Savu, candi syrup) by the **kilogram**; malts used both as a base and in small amounts
-(Vehnä, Münchenin, Vienna, Ruis) in **500 g packs** (save version 5); specialty malts
-(Karamelli, Ruskea, Keksi, Tumma karamelli and the dark roasts) in **100 g packs** (save
-version 4). Amounts show in kilograms ("0.5 kg").
+(Vehnä, Vienna, Ruis) in **500 g packs** (save version 5); specialty malts (Karamelli,
+Ruskea, Keksi, Tumma karamelli and the dark roasts) and Münchenin, which seasons many
+styles by a few hundred grams, in **100 g packs** (save versions 4 and 6). Amounts show in kilograms ("0.5 kg").
 
 | Id | Malt | EBC | Extract | Unit | Note |
 |---|---|---|---|---|---|
@@ -65,7 +65,7 @@ version 4). Amounts show in kilograms ("0.5 kg").
 | 101 | Pale ale | 6 | 0.80 | kg | was 4 |
 | 102 | Karamelli | 60 | 0.74 | 100 g | was 20 |
 | 103 | Vehnä | 4 | 0.82 | 500 g | |
-| 104 | Münchenin | 20 | 0.78 | 500 g | was 30 |
+| 104 | Münchenin | 20 | 0.78 | 100 g | was 30 |
 | 105 | Ruskea | 150 | 0.70 | 100 g | was 45 |
 | 106 | Keksi | 50 | 0.75 | 100 g | was 55 |
 | 107 | Tumma karamelli | 300 | 0.70 | 100 g | was 140 |
@@ -103,7 +103,7 @@ Carafa and roasted barley, so a recipe can use a few percent of them.
 | Pale Ale | ale | Pale ale 75 % | aroma hop | 6-19 | 12-39 | 4.0-6.2 | 4 Pale ale → 8.5, 4.3 % |
 | Amber Ale | ale | Pale ale 60 % | – | 20-35 | 25-39 | 4.5-6.2 | 4 Pale ale + 0.8 Karamelli + 0.3 Keksi → 19, 5.5 % |
 | IPA | ale | Pale ale 70 % | aroma hop | 3-23 | 40-70 | 5.5-7.5 | 5 Pale ale + 0.5 Münchenin + 0.2 Karamelli → 14, 6.2 % |
-| Helles | lager | Pilsner 50 % | – | 7-13 | 14-22 | 3.9-5.3 | 3 Pilsner + 1 Münchenin → 9, 4.7 % (caramel instead of Münchenin also fits) |
+| Helles | lager | Pilsner 50 % | – | 7-11 | 14-22 | 4.3-5.7 | 4 Pilsner + 0.4 Münchenin → 8, 5.1 % (caramel instead of Münchenin also fits) |
 | **Pilsner** (new, German) | lager | Pilsner 80 % | aroma hop | 4-9 | 24-40 | 4.4-5.4 | 4 Pilsner, Magnum 12 g + Tettnanger 70 g → 6, 4.7 %, 30 IBU |
 | **Tšekkiläinen pilsner** (new) | lager | Pilsner 85 % | Saaz only | 5-12 | 30-50 | 4.2-5.8 | 4 Pilsner + 0.2 Karamelli, Saaz 180 g → 9, 4.9 %, 38 IBU (140-220 g Saaz fits; any other hop makes it a German Pilsner) |
 | Vienna Lager | lager | Vienna 60 % | – | 4-20 | 17-29 | 4.2-5.6 | 3.5 Vienna + 0.5 Münchenin + 0.2 Karamelli → 13, 4.8 % |

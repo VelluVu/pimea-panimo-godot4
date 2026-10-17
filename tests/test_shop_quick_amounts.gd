@@ -24,8 +24,13 @@ func test_malts_step_by_their_own_unit() -> void:
 	pack.type = IngredientData.IngredientType.MALT
 	pack.pack_grams = 100
 	assert_eq(QuickScript.steps(kilo), QuickScript.KILO_STEPS)
-	assert_eq(QuickScript.steps(pack), QuickScript.PACK_STEPS)
-	assert_eq(pack.amount_text(QuickScript.PACK_STEPS[1]), "0.5", "five packs read as half a kilo")
+	assert_eq(QuickScript.steps(pack), QuickScript.SMALL_PACK_STEPS)
+	assert_eq(pack.amount_text(QuickScript.SMALL_PACK_STEPS[1]), "0.5", "five packs read as half a kilo")
+	assert_eq(pack.amount_text(QuickScript.SMALL_PACK_STEPS[2]), "1.0", "and ten as a kilo")
+	var half := MaltData.new()
+	half.type = IngredientData.IngredientType.MALT
+	half.pack_grams = 500
+	assert_eq(QuickScript.steps(half), QuickScript.PACK_STEPS)
 	assert_eq(QuickScript.max_units(kilo), QuickScript.MAX_UNITS)
 
 
