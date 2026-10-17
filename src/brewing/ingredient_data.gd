@@ -44,6 +44,11 @@ func amount_text(amount : int) -> String:
 	return str(amount)
 
 
+## Units the shop and brewing sliders move at a time.
+func amount_step() -> int:
+	return 1
+
+
 ## What one bought unit is, for prices ("€ / kg").
 func get_pack_string() -> String:
 	return get_unit_string()

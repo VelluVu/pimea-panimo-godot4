@@ -142,6 +142,7 @@ func _update_slider() -> void:
 	if ingredient == null:
 		return
 	
+	main_slider.step = ingredient.amount_step()
 	var player_money : float = BrewEngine.current_brewery.money
 	var effective_price : float = ingredient.base_price * BrewEngine.current_brewery.stats.multiplier(PerkStats.INGREDIENT_PRICE)
 

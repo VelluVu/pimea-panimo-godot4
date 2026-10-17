@@ -17,9 +17,17 @@ const USE_AROMA : String = "Aromi"
 const USE_DUAL : String = "Katkeroiva ja aromi"
 const USE_NOBLE : String = "Aromi, katkeroi perinteisiä oluita"
 
+## Hops go by 10 g: a low-alpha hop can bitter where 10 g of Magnum would overshoot,
+## so every style can still be hit, with far fewer amounts to choose from.
+const GRAM_STEP : int = 10
+
 @export var alpha_acids : int
 @export var beta_acids : int
 @export var flavor_profile : FlavorProfile = FlavorProfile.NONE
+
+
+func amount_step() -> int:
+	return GRAM_STEP
 
 
 func get_stat_string() -> String:

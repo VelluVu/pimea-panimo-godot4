@@ -38,6 +38,14 @@ func test_every_style_has_a_reference_recipe_of_known_ingredients() -> void:
 			assert_true(table.has(id), "%s uses unknown ingredient %d" % [beer_style.style_name, id])
 
 
+func test_reference_hops_come_in_whole_hop_steps() -> void:
+	var table : Dictionary = _ingredients()
+	for beer_style : BeerStyle in _resolver().active_styles:
+		for id : int in beer_style.reference_recipe:
+			if (table[id] as IngredientData).type == IngredientData.IngredientType.HOP:
+				assert_eq(beer_style.reference_recipe[id] % HopData.GRAM_STEP, 0, "%s: %d g of hop %d" % [beer_style.style_name, beer_style.reference_recipe[id], id])
+
+
 func test_every_reference_recipe_brews_its_own_style() -> void:
 	var resolver := _resolver()
 	for beer_style : BeerStyle in resolver.active_styles:

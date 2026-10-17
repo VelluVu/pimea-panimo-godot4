@@ -77,6 +77,11 @@ styles by a few hundred grams, in **100 g packs** (save versions 4 and 6). Amoun
 | 113 | **Carafa** | 1150 | 0.65 | 100 g | new, dehusked black malt |
 | 114 | **Tumma kandisiirappi** | 175 | 0.70 (sugar) | kg | new, 100 % fermentable |
 
+Hops are bought and added in **10 g steps** (HopData.GRAM_STEP). Where 10 g of Magnum
+would overshoot a low IBU window, a noble or other low-alpha hop bitters instead, so every
+style can still be hit; the reference recipes in the style files follow the 10 g grid (the
+hop amounts quoted in the style table below predate it).
+
 | Id | Hop | Alpha | Beta | Profile | New |
 |---|---|---|---|---|---|
 | 213 | Warrior | 16 | 5 | none (bittering) | yes |

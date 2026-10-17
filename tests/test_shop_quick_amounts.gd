@@ -13,7 +13,9 @@ func suite_name() -> String:
 func test_hops_step_in_grams_and_allow_bigger_buys() -> void:
 	var hop := HopData.new()
 	hop.type = IngredientData.IngredientType.HOP
-	assert_eq(QuickScript.steps(hop), [10, 25, 100] as Array[int])
+	assert_eq(QuickScript.steps(hop), [10, 50, 100] as Array[int])
+	for step : int in QuickScript.steps(hop):
+		assert_eq(step % hop.amount_step(), 0, "every quick amount is whole hop steps")
 	assert_eq(QuickScript.max_units(hop), QuickScript.MAX_GRAMS)
 
 
