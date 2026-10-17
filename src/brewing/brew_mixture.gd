@@ -64,6 +64,8 @@ func fits(beer_style : BeerStyle) -> bool:
 		return false
 	if beer_style.requires_aroma_hop and not has_aroma_hop():
 		return false
+	if not beer_style.only_hop_ids.is_empty() and (hop_ids.is_empty() or not hop_ids.keys().all(beer_style.only_hop_ids.has)):
+		return false
 	if malt_weight < beer_style.min_malt_weight:
 		return false
 	if not beer_style.base_malt_ids.is_empty() and base_share(beer_style.base_malt_ids) < beer_style.min_base_share:

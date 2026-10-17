@@ -1,0 +1,33 @@
+[gd_resource type="Resource" script_class="BeerStyle" format=3]
+
+[ext_resource type="Script" uid="uid://qpqfdi1wacne" path="res://src/brewing/beer_style.gd" id="1_czech_pilsner"]
+
+[resource]
+script = ExtResource("1_czech_pilsner")
+style_name = "Tšekkiläinen pilsner"
+description = "Böömin alkuperäinen pils: kullankeltainen, pehmeän maltainen lager, jonka katkeruus ja mausteinen tuoksu tulevat pelkästä Saaz-humalasta. Humalaa ei säästellä."
+locked_hint = "Kultainen lager Böömistä, jonka jokainen humala on samaa paikallista lajiketta."
+style = 28
+fixed_price_per_bottle = 3.2
+reputation_change = 3
+peak_days = 3
+shelf_life_days = 30
+aging_factor = 0.02
+mash_steps = Array[int]([63, 72])
+mash_band = 2.0
+hop_additions = Array[int]([0, 1, 2])
+required_yeast_id = 301
+base_malt_ids = Array[int]([100])
+min_base_share = 0.85
+preferred_hop_profiles = Array[int]([4])
+requires_aroma_hop = true
+only_hop_ids = Array[int]([205])
+abv = 4.8
+min_abv = 4.2
+max_abv = 5.8
+min_ebc = 5
+max_ebc = 12
+min_ibu = 30
+max_ibu = 50
+reference_recipe = Dictionary[int, int]({100: 4, 102: 2, 205: 180, 301: 1})
+metadata/_custom_type_script = "uid://qpqfdi1wacne"

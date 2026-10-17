@@ -41,18 +41,29 @@ func test_yeast_stat_string_includes_attenuation() -> void:
 	assert_eq(yeast.get_stat_string(), StringContainer.YEAST_STAT_STRING % 75)
 
 
-func test_hop_stat_string_without_flavor_profile() -> void:
+func test_bittering_hop_shows_its_use() -> void:
 	var hop := HopData.new()
-	hop.alpha_acids = 12
+	hop.alpha_acids = 16
 	hop.beta_acids = 4
 	hop.flavor_profile = HopData.FlavorProfile.NONE
-	assert_eq(hop.get_stat_string(), StringContainer.HOP_STAT_STRING % [12, 4])
+	var expected := StringContainer.HOP_STAT_STRING % [16, 4] + "
+" + HopData.USE_FORMAT % HopData.USE_BITTERING
+	assert_eq(hop.get_stat_string(), expected)
 
 
-func test_hop_stat_string_includes_flavor_profile_when_set() -> void:
+func test_aroma_hop_shows_use_and_flavor() -> void:
 	var hop := HopData.new()
 	hop.alpha_acids = 12
 	hop.beta_acids = 4
 	hop.flavor_profile = HopData.FlavorProfile.CITRUS
-	var expected := StringContainer.HOP_STAT_STRING % [12, 4] + "\n" + StringContainer.HOP_FLAVOR_STRING % HopData.get_flavor_profile_display_name(HopData.FlavorProfile.CITRUS)
+	var expected := StringContainer.HOP_STAT_STRING % [12, 4] + "
+" + HopData.USE_FLAVOR_FORMAT % [HopData.USE_DUAL, HopData.get_flavor_profile_display_name(HopData.FlavorProfile.CITRUS)]
 	assert_eq(hop.get_stat_string(), expected)
+
+
+func test_hop_use_follows_aroma_and_alpha() -> void:
+	assert_eq(HopData.use_of(16, HopData.FlavorProfile.NONE), HopData.Use.BITTERING, "no aroma only bitters")
+	assert_eq(HopData.use_of(4, HopData.FlavorProfile.NONE), HopData.Use.BITTERING, "even a mild hop without aroma")
+	assert_eq(HopData.use_of(HopData.DUAL_ALPHA_MIN - 1, HopData.FlavorProfile.EARTHY), HopData.Use.AROMA)
+	assert_eq(HopData.use_of(4, HopData.FlavorProfile.NOBLE), HopData.Use.NOBLE, "Saaz bitters the classic beers")
+	assert_eq(HopData.use_of(HopData.DUAL_ALPHA_MIN, HopData.FlavorProfile.CITRUS), HopData.Use.DUAL)

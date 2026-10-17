@@ -216,10 +216,6 @@ msgid "Maitostout"
 msgstr "Milk Stout"
 
 #: src/autoload/string_container.gd
-msgid "Maku: %s"
-msgstr "Flavour: %s"
-
-#: src/autoload/string_container.gd
 msgid "Mestarillinen"
 msgstr "Masterful"
 
@@ -384,6 +380,10 @@ msgid "Tämän kauden edut (%d):"
 msgstr "This season's perks (%d):"
 
 #: src/autoload/string_container.gd
+msgid "Tšekkiläinen pilsner"
+msgstr "Czech Pilsner"
+
+#: src/autoload/string_container.gd
 msgid "Vienna Lager"
 msgstr "Vienna Lager"
 
@@ -434,6 +434,30 @@ msgstr "still maturing"
 #: src/brewing/brew_batch.gd
 msgid "parhaimmillaan"
 msgstr "at its best"
+
+#: src/brewing/hop_data.gd
+msgid "Aromi"
+msgstr "Aroma"
+
+#: src/brewing/hop_data.gd
+msgid "Aromi, katkeroi perinteisiä oluita"
+msgstr "Aroma, bitters classic beers"
+
+#: src/brewing/hop_data.gd
+msgid "Katkeroiva"
+msgstr "Bittering"
+
+#: src/brewing/hop_data.gd
+msgid "Katkeroiva ja aromi"
+msgstr "Bittering and aroma"
+
+#: src/brewing/hop_data.gd
+msgid "Käyttö: %s"
+msgstr "Use: %s"
+
+#: src/brewing/hop_data.gd
+msgid "Käyttö: %s / Maku: %s"
+msgstr "Use: %s / Flavour: %s"
 
 #: src/console/player_commands.gd
 msgid "%s maksaa %.2f €, rahaa %.2f €"
@@ -1368,6 +1392,19 @@ msgstr "A pale, easy lager that fills the shop shelves. Drunk cold and in quanti
 #: src/resources/beer_styles/bulkkilager.tres
 msgid "Vaalea ja puhdas lager, mitä on halpa valmistaa, ja halpa myös janoiselle."
 msgstr "A pale, clean lager that is cheap to make, and cheap for the thirsty too."
+
+#: src/resources/beer_styles/czech_pilsner.tres
+msgid ""
+"Böömin alkuperäinen pils: kullankeltainen, pehmeän maltainen lager, jonka "
+"katkeruus ja mausteinen tuoksu tulevat pelkästä Saaz-humalasta. Humalaa ei "
+"säästellä."
+msgstr "The original pils from Bohemia: a golden, softly malty lager whose bitterness and spicy aroma come from Saaz alone. The hops are not spared."
+
+#: src/resources/beer_styles/czech_pilsner.tres
+msgid ""
+"Kultainen lager Böömistä, jonka jokainen humala on samaa paikallista "
+"lajiketta."
+msgstr "A golden lager from Bohemia, every hop of it the same local variety."
 
 #: src/resources/beer_styles/doppelbock.tres
 msgid ""
