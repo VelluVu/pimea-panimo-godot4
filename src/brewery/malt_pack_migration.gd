@@ -4,7 +4,8 @@ extends RefCounted
 ## Malts that went from whole kilos to smaller packs: an older save's amounts of them are
 ## multiplied to keep the same weight, in the warehouse, in saved recipes and on the
 ## brewing table. Save version 4 sells the specialty malts in 100 g packs, version 5 the
-## malts used both as a base and in small amounts in 500 g packs.
+## malts used both as a base and in small amounts in 500 g packs, and version 6 moves
+## Münchenin on to 100 g packs, since a few hundred grams of it seasons many styles.
 
 ## Caramel, brown, biscuit and dark caramel malt.
 const PACKED_IDS : Array[int] = [102, 105, 106, 107]
@@ -12,6 +13,9 @@ const PACKS_PER_KILO : int = 10
 ## Wheat, Münchenin, Vienna and rye malt.
 const HALF_KILO_IDS : Array[int] = [103, 104, 109, 110]
 const HALF_KILO_PACKS : int = 2
+## Münchenin, from 500 g to 100 g packs.
+const SMALL_PACK_IDS : Array[int] = [104]
+const SMALL_PACKS_PER_HALF_KILO : int = 5
 
 
 static func migrate(brewery : Brewery, ids : Array[int] = PACKED_IDS, factor : int = PACKS_PER_KILO) -> void:

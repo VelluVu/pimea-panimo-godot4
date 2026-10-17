@@ -45,8 +45,19 @@ func test_half_kilo_malts_double_in_old_saves() -> void:
 
 func test_the_half_kilo_malts_are_sold_by_the_half_kilo() -> void:
 	for id : int in MigrationScript.HALF_KILO_IDS:
+		if MigrationScript.SMALL_PACK_IDS.has(id):
+			continue
 		var malt : MaltData = load(_malt_path(id))
 		assert_eq(malt.pack_grams, 500, "malt %d" % id)
+
+
+func test_munich_from_a_v4_save_keeps_its_weight_through_both_steps() -> void:
+	var contents : Dictionary = {MUNICH_ID: 3}
+	MigrationScript.scale(contents, MigrationScript.HALF_KILO_IDS, MigrationScript.HALF_KILO_PACKS)
+	MigrationScript.scale(contents, MigrationScript.SMALL_PACK_IDS, MigrationScript.SMALL_PACKS_PER_HALF_KILO)
+	assert_eq(contents[MUNICH_ID], 30, "3 kg of Münchenin is thirty 100 g packs")
+	var malt : MaltData = load(_malt_path(MUNICH_ID))
+	assert_eq(malt.pack_grams, 100)
 
 
 func _malt_path(id : int) -> String:
