@@ -3281,8 +3281,10 @@ msgstr ""
 "on the last day and you still have money, your brewery becomes a legend."
 
 #: src/resources/guide/01_kausi.tres
-msgid "Päivä kestää viisi minuuttia. Joka yö maksat sähköstä ja vedestä 8 €."
-msgstr "A day lasts five minutes. Every night you pay 8 € for electricity and water."
+msgid ""
+"Päivä kestää viisi minuuttia. Joka yö ensimmäistä lukuun ottamatta maksat "
+"sähköstä ja vedestä 8 €."
+msgstr "A day lasts five minutes. Every night except the first you pay 8 € for electricity and water."
 
 #: src/resources/guide/01_kausi.tres
 msgid ""
@@ -3487,7 +3489,9 @@ msgstr "Reputation unlocks new ingredients and brings new customers."
 msgid ""
 "Maine hiipuu joka yö, sitä nopeammin mitä korkeammalla olet, joten huipulla "
 "pysyminen vaatii työtä."
-msgstr "Reputation fades every night, faster the higher you are, so staying at the top takes work."
+msgstr ""
+"Reputation fades every night, faster the higher you are, so staying at the "
+"top takes work."
 
 #: src/resources/guide/04_maine.tres
 msgid ""
@@ -3501,7 +3505,9 @@ msgstr ""
 msgid ""
 "Maine myös palkitsee: Kylän puheenaiheena asiakkaita tulee tiheämmin, "
 "Kaupungin kuuluisuutena tiskihinnat nousevat 10 % ja Legendaarisena 20 %."
-msgstr "Reputation also pays: as the Talk of the Town customers come more often, as a Local Celebrity counter prices rise 10 % and as Legendary 20 %."
+msgstr ""
+"Reputation also pays: as the Talk of the Town customers come more often, as "
+"a Local Celebrity counter prices rise 10 % and as Legendary 20 %."
 
 #: src/resources/guide/05_lvv.tres
 msgid ""
@@ -3602,6 +3608,10 @@ msgid ""
 msgstr ""
 "×: multiplies the total. Two ×1.15 tip perks give 1.15 × 1.15 = ×1.32, more "
 "than two +15 % perks."
+
+#: src/resources/guide/06_tasot.tres
+msgid "Epäonnistunut tavoite maksaa vähän mainetta, paitsi ensimmäisenä päivänä."
+msgstr "A failed goal costs a little reputation, except on the first day."
 
 #: src/resources/guide/06_tasot.tres
 msgid ""

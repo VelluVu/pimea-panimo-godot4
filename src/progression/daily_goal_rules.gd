@@ -14,15 +14,20 @@ static func reputation_progress(reputation : int, baseline : int) -> int:
 
 ## What resolving a goal pays or costs on `day`, as {money, reputation, xp, risk}.
 ## Success pays money, reputation and xp. A genuine failure costs reputation and
-## risk. `apply_penalty` false is the "tried in good faith" failure (a special
-## event whose stock was missing): the goal still fails, but nothing changes.
+## risk, except on the first PENALTY_FREE_DAYS. `apply_penalty` false is the "tried in
+## good faith" failure (a special event whose stock was missing): the goal still
+## fails, but nothing changes.
+## Day 1 is for learning: its failed goals cost nothing, successes still pay.
+const PENALTY_FREE_DAYS : int = 1
+
+
 static func resolution_effects(goal : DailyGoalData, succeeded : bool, apply_penalty : bool, day : int) -> Dictionary:
 	var effects : Dictionary = {"money": 0, "reputation": 0, "xp": 0, "risk": 0}
 	if succeeded:
 		effects.money = goal.get_effective_reward_money(day)
 		effects.reputation = goal.get_effective_reward_reputation(day)
 		effects.xp = goal.get_effective_reward_xp(day)
-	elif apply_penalty:
+	elif apply_penalty and day > PENALTY_FREE_DAYS:
 		effects.reputation = -goal.penalty_reputation
 		effects.risk = goal.penalty_risk
 	return effects

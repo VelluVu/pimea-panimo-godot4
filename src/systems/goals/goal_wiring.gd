@@ -16,6 +16,9 @@ const ACTIVE_GOAL_COUNT : int = 3
 const DAILY_GOAL_ROLLS : int = 5
 const NO_EFFECTS : Dictionary = {"money": 0, "reputation": 0, "xp": 0, "risk": 0}
 
+## True while the morning settles yesterday's goals, see _goal_day().
+var _settling_day : bool = false
+
 
 func _init() -> void:
 	set_slot_count(ACTIVE_GOAL_COUNT)
@@ -35,7 +38,7 @@ func _ready() -> void:
 	BrewEngine.brewery_changed.connect(_load_from_brewery)
 	BrewEngine.brewery_about_to_save.connect(_flush_to_brewery)
 	# A slot left empty by yesterday's limit gets its goal in the morning.
-	TimeManager.day_changed.connect(func(_day : int) -> void: end_period(); fill_empty_slots())
+	TimeManager.day_changed.connect(_on_day_changed)
 	# The boot-time Brewery was created before this autoload existed.
 	if BrewEngine.current_brewery != null:
 		_load_from_brewery(BrewEngine.current_brewery)
@@ -90,6 +93,19 @@ func _current_day() -> int:
 	return BrewEngine.current_brewery.current_day
 
 
+func _on_day_changed(_day : int) -> void:
+	_settling_day = true
+	end_period()
+	_settling_day = false
+	fill_empty_slots()
+
+
+## The day a goal being resolved belongs to: the clock has already moved on when the
+## day's leftover goals are settled in the morning.
+func _goal_day(brewery : Brewery) -> int:
+	return brewery.current_day - 1 if _settling_day else brewery.current_day
+
+
 ## REPUTATION_GAIN goals measure from the reputation at the moment they are rolled.
 func _baseline_for(_goal : GoalData) -> int:
 	return BrewEngine.current_brewery.reputation
@@ -101,7 +117,7 @@ func _before_replace(goal : GoalData, succeeded : bool, apply_penalty : bool) ->
 	var brewery : Brewery = BrewEngine.current_brewery
 	if brewery == null:
 		return NO_EFFECTS
-	var effects : Dictionary = DailyGoalRules.resolution_effects(goal as DailyGoalData, succeeded, apply_penalty, brewery.current_day)
+	var effects : Dictionary = DailyGoalRules.resolution_effects(goal as DailyGoalData, succeeded, apply_penalty, _goal_day(brewery))
 	if effects.reputation != 0:
 		brewery.change_reputation(effects.reputation, ReputationRules.Source.GOALS)
 	if succeeded:

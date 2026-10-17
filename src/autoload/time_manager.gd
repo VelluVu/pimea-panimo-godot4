@@ -175,9 +175,9 @@ func _apply_risk_decay(brewery : Brewery) -> void:
 	BrewerySignals.brewery_state_changed.emit(brewery)
 
 
-## Skipped until the tutorial is complete, see DayRules.DAILY_ELECTRICITY_COST.
+## Skipped until the tutorial is complete and on the first night, see DayRules.
 func _charge_daily_utility_bills(brewery : Brewery) -> void:
-	if not brewery.tutorial_complete():
+	if not brewery.tutorial_complete() or not DayRules.bills_due(brewery.current_day):
 		return
 
 	var total : int = DayRules.daily_bill_total()
