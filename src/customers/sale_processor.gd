@@ -154,8 +154,8 @@ func process(data : CustomerData, picks : Array[BrewBatch] = []) -> String:
 ## xp. Returns evaluate_brew_batch()'s results plus KEY_REPUTATION_GAIN and KEY_BOTTLES_SOLD.
 func _sell(data : CustomerData, batch : BrewBatch, wanted : int, is_regular : bool) -> Dictionary:
 	var breakdown : SaleBreakdown = brewery.resolver.get_price_breakdown(batch.beer_style)
-	# The marketing perk marks up this sale's price only, never the shared breakdown.
-	var counter_price : float = breakdown.price_per_bottle * brewery.stats.multiplier(PerkStats.COUNTER_PRICE) * batch.get_aged_price_multiplier() \
+	# The marketing perk and the tier mark up this sale's price only, never the shared breakdown.
+	var counter_price : float = breakdown.price_per_bottle * brewery.counter_price_multiplier() * batch.get_aged_price_multiplier() \
 			* FirstBrewRules.price_multiplier(batch.novelty)
 	var results : Dictionary = data.evaluate_brew_batch(batch, counter_price, randf(), brewery.stats.total(PerkStats.TIP_CHANCE))
 

@@ -119,7 +119,7 @@ func _payout(brewery: Brewery, batch: BrewBatch) -> float:
 	var export_payout: float = BatchDistributor.calculate_ship_payout(brewery.resolver.get_wholesale_price_per_bottle(batch.beer_style), batch.current_quality, batch.amount_bottles, export_price_multiplier) \
 			* brewery.stats.multiplier(PerkStats.DISTRIBUTION_INCOME) * aged
 	var pub_income: float = brewery.resolver.get_price_breakdown(batch.beer_style).price_per_bottle \
-			* brewery.stats.multiplier(PerkStats.COUNTER_PRICE) * aged * batch.amount_bottles
+			* brewery.counter_price_multiplier() * aged * batch.amount_bottles
 	return reward_between(export_payout, pub_income, pub_share, min_over_export)
 
 

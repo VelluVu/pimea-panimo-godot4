@@ -9,3 +9,4 @@ min_reputation = 50
 description = "Mummotkin puhuvat panimostasi kaupan kassajonossa."
 raid_threshold_penalty = 5
 daily_decay_percent = 0.02
+spawn_speed_bonus = 0.1

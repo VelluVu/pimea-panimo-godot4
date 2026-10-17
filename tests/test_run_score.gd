@@ -78,6 +78,12 @@ func test_the_brewerys_worth_adds_points() -> void:
 	assert_eq(with_worth - without, roundi(1000.0 * RunScoreScript.WORTH_POINTS_PER_EURO))
 
 
+func test_upgrades_are_worth_more_than_the_same_money() -> void:
+	assert_eq(RunScoreScript.worth_of(1000.0, 0.0), 500.0, "cash counts at half")
+	assert_eq(RunScoreScript.worth_of(0.0, 1000.0), 1000.0, "upgrades count at what they cost")
+	assert_eq(RunScoreScript.worth_of(200.0, 300.0), 400.0)
+
+
 func test_a_failed_run_scores_no_worth() -> void:
 	assert_eq(RunScoreScript.worth_points(5000.0, "busted"), 0)
 	assert_eq(RunScoreScript.worth_points(5000.0, "bankrupt"), 0)

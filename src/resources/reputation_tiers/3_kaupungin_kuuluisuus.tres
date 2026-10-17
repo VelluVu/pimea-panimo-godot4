@@ -9,3 +9,5 @@ min_reputation = 100
 description = "Oluesi tunnetaan kaupungilla. Niin myös osoitteesi."
 raid_threshold_penalty = 10
 daily_decay_percent = 0.04
+counter_price_bonus = 0.1
+spawn_speed_bonus = 0.1

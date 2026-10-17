@@ -6,4 +6,4 @@
 script = ExtResource("1_guide")
 order = 40
 title = "Maine"
-lines = Array[String](["Maine kasvaa myynneistä ja tavoitteista. Mitä korkeampi maine, sitä hitaammin se kasvaa.", "Maine avaa uusia raaka-aineita ja tuo uusia asiakkaita.", "Kuuluisa panimo herättää myös LVV:n huomion, joten korkeampi maine laskee ratsiarajaa."])
+lines = Array[String](["Maine kasvaa myynneistä ja tavoitteista. Mitä korkeampi maine, sitä hitaammin se kasvaa.", "Maine avaa uusia raaka-aineita ja tuo uusia asiakkaita.", "Kuuluisa panimo herättää myös LVV:n huomion, joten korkeampi maine laskee ratsiarajaa.", "Maine myös palkitsee: Kylän puheenaiheena asiakkaita tulee tiheämmin, Kaupungin kuuluisuutena tiskihinnat nousevat 10 % ja Legendaarisena 20 %.", "Maine hiipuu joka yö, sitä nopeammin mitä korkeammalla olet, joten huipulla pysyminen vaatii työtä."])

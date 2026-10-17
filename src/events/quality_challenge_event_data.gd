@@ -80,7 +80,7 @@ func _on_offer(batch: BrewBatch) -> bool:
 
 func _counter_price(brewery: Brewery, batch: BrewBatch) -> float:
 	return brewery.resolver.get_price_breakdown(batch.beer_style).price_per_bottle \
-			* brewery.stats.multiplier(PerkStats.COUNTER_PRICE) * batch.get_aged_price_multiplier()
+			* brewery.counter_price_multiplier() * batch.get_aged_price_multiplier()
 
 
 ## min_strength at the quality bar, rising to full at best, and never past it.
