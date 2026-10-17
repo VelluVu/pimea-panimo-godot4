@@ -10,5 +10,6 @@ id = 109
 name = "Vienna-mallas"
 name_partitive = "Vienna-mallasta"
 description = "Kevyesti paahdettu pohjamallas, joka antaa kullanruskean värin ja leipäisen maun."
-base_price = 2
+base_price = 1.0
+pack_grams = 500
 metadata/_custom_type_script = "uid://dniwiyu5ynp71"

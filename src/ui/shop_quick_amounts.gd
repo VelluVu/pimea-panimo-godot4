@@ -6,7 +6,7 @@ extends RefCounted
 
 const GRAM_STEPS : Array[int] = [10, 25, 100]
 const KILO_STEPS : Array[int] = [1, 5]
-## 100 g packs: 0.1 and 0.5 kg.
+## One and five packs: 0.1 and 0.5 kg of 100 g packs, 0.5 and 2.5 kg of 500 g packs.
 const PACK_STEPS : Array[int] = [1, 5]
 const PIECE_STEPS : Array[int] = [1, 5]
 ## Hops go by the gram, so they need more room than kilos or packs.
