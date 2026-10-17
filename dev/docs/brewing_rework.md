@@ -100,7 +100,7 @@ Carafa and roasted barley, so a recipe can use a few percent of them.
 | Pale Ale | ale | Pale ale 75 % | aroma hop | 6-19 | 12-39 | 4.0-6.2 | 4 Pale ale → 8.5, 4.3 % |
 | Amber Ale | ale | Pale ale 60 % | – | 20-35 | 25-39 | 4.5-6.2 | 4 Pale ale + 0.8 Karamelli + 0.3 Keksi → 19, 5.5 % |
 | IPA | ale | Pale ale 70 % | aroma hop | 8-28 | 40-70 | 5.5-7.5 | 5 Pale ale + 1 Münchenin → 13.5, 6.5 % |
-| Helles | lager | Pilsner 50 % | – | 8-14 | 14-22 | 4.2-5.6 | 4 Pilsner + 0.3 Karamelli → 10, 5.0 % |
+| Helles | lager | Pilsner 50 % | – | 7-13 | 14-22 | 3.9-5.3 | 3 Pilsner + 1 Münchenin → 9, 4.7 % (caramel instead of Münchenin also fits) |
 | **Pilsner** (new, German) | lager | Pilsner 80 % | aroma hop | 4-9 | 24-40 | 4.4-5.4 | 4 Pilsner, Magnum 12 g + Tettnanger 70 g → 6, 4.7 %, 30 IBU |
 | **Tšekkiläinen pilsner** (new) | lager | Pilsner 85 % | Saaz only | 5-12 | 30-50 | 4.2-5.8 | 4 Pilsner + 0.2 Karamelli, Saaz 180 g → 9, 4.9 %, 38 IBU (140-220 g Saaz fits; any other hop makes it a German Pilsner) |
 | Vienna Lager | lager | Vienna 60 % | – | 8-25 | 18-30 | 4.2-5.9 | 3 Vienna + 1 Münchenin → 12.0, 4.6 % |
