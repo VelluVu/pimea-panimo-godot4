@@ -58,6 +58,11 @@ func get_stat_string() -> String:
 	return ""
 
 
+## One short line for tight lists like the brewing table; the tooltip has the rest.
+func get_short_stat_string() -> String:
+	return get_stat_string()
+
+
 ## The translated description followed by the stats, as the shop and inventory show it.
 func get_tooltip_text() -> String:
 	return tr(description) + "\n" + get_stat_string()

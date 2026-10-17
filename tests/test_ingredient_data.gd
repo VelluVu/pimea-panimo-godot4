@@ -67,3 +67,19 @@ func test_hop_use_follows_aroma_and_alpha() -> void:
 	assert_eq(HopData.use_of(HopData.DUAL_ALPHA_MIN - 1, HopData.FlavorProfile.EARTHY), HopData.Use.AROMA)
 	assert_eq(HopData.use_of(4, HopData.FlavorProfile.NOBLE), HopData.Use.NOBLE, "Saaz bitters the classic beers")
 	assert_eq(HopData.use_of(HopData.DUAL_ALPHA_MIN, HopData.FlavorProfile.CITRUS), HopData.Use.DUAL)
+
+
+func test_a_hops_short_line_is_alpha_and_use() -> void:
+	var hop := HopData.new()
+	hop.alpha_acids = 5
+	hop.flavor_profile = HopData.FlavorProfile.NOBLE
+	assert_eq(hop.get_short_stat_string(), HopData.SHORT_FORMAT % [5, HopData.SHORT_AROMA])
+	hop.alpha_acids = 16
+	hop.flavor_profile = HopData.FlavorProfile.NONE
+	assert_eq(hop.get_short_stat_string(), HopData.SHORT_FORMAT % [16, HopData.SHORT_BITTERING])
+
+
+func test_other_ingredients_keep_their_stat_line_short() -> void:
+	var malt := MaltData.new()
+	malt.ebc = 3
+	assert_eq(malt.get_short_stat_string(), malt.get_stat_string())

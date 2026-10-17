@@ -461,6 +461,10 @@ msgstr "Use: %s"
 msgid "Käyttö: %s / Maku: %s"
 msgstr "Use: %s / Flavour: %s"
 
+#: src/brewing/hop_data.gd
+msgid "katkero ja aromi"
+msgstr "bittering and aroma"
+
 #: src/console/player_commands.gd
 msgid "%s maksaa %.2f €, rahaa %.2f €"
 msgstr "%s costs %.2f €, you have %.2f €"
