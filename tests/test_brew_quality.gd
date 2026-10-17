@@ -67,14 +67,15 @@ func test_every_well_filled_layer_counts() -> void:
 	var ipa : BeerStyle = _style([HopAddition.Kind.BITTERING, HopAddition.Kind.FLAVOR, HopAddition.Kind.AROMA], [HopData.FlavorProfile.CITRUS])
 	assert_eq(BrewQualityScript.good_hop_layers(_hop_mixture({200: 20, 203: 40}), ipa), 3, "Magnum bitters, the citrus hop fills both late layers")
 	assert_eq(BrewQualityScript.good_hop_layers(_hop_mixture({200: 20, 201: 40}), ipa), 1, "a noble hop does not suit a citrus style")
-	assert_eq(BrewQualityScript.good_hop_layers(_hop_mixture({203: 60}), ipa), 2, "a low-alpha hop is no bittering hop")
+	assert_eq(BrewQualityScript.good_hop_layers(_hop_mixture({201: 60}), ipa), 0, "a noble hop neither bitters nor flavours a citrus style")
 
 
-func test_noble_styles_can_bitter_with_their_noble_hop() -> void:
+func test_a_style_can_bitter_with_its_own_aroma_hop() -> void:
 	var pils : BeerStyle = _style([HopAddition.Kind.BITTERING, HopAddition.Kind.FLAVOR, HopAddition.Kind.AROMA], [HopData.FlavorProfile.NOBLE])
 	var ipa : BeerStyle = _style([HopAddition.Kind.BITTERING, HopAddition.Kind.FLAVOR, HopAddition.Kind.AROMA], [HopData.FlavorProfile.CITRUS])
 	assert_eq(BrewQualityScript.good_hop_layers(_hop_mixture({201: 120}), pils), 3, "an all-noble pils fills every layer")
-	assert_eq(BrewQualityScript.good_hop_layers(_hop_mixture({203: 60}), ipa), 2, "only noble hops get the classic bittering pass")
+	assert_eq(BrewQualityScript.good_hop_layers(_hop_mixture({203: 60}), ipa), 3, "an all-Cascade citrus beer bitters with Cascade")
+	assert_eq(BrewQualityScript.good_hop_layers(_hop_mixture({201: 120}), ipa), 0, "but not with a hop of another flavour")
 
 
 func test_the_styles_own_malts_add_quality_up_to_a_cap() -> void:

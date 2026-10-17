@@ -70,12 +70,12 @@ static func good_hop_layers(mixture : BrewMixture, beer_style : BeerStyle) -> in
 	return good
 
 
-## Noble-hop styles are traditionally bittered with their own noble hop (a Czech pils is
+## Traditional styles are often bittered with their own aroma hop (a Czech pils is
 ## all Saaz), it just takes more grams.
 static func is_good_bittering_hop(hop : HopData, beer_style : BeerStyle) -> bool:
 	if hop.alpha_acids >= HIGH_ALPHA:
 		return true
-	return hop.flavor_profile == HopData.FlavorProfile.NOBLE and beer_style.has_preferred_hop_profile(HopData.FlavorProfile.NOBLE)
+	return beer_style.has_preferred_hop_profile(hop.flavor_profile)
 
 
 static func hop_layer_bonus(mixture : BrewMixture, beer_style : BeerStyle) -> float:
