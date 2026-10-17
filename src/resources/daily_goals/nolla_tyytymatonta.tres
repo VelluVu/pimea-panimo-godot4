@@ -7,6 +7,7 @@ script = ExtResource("1_goal")
 goal_name = "Ei tyytymättömiä"
 goal_type = 5
 target_amount = 0
+retired = true
 progress_format = "%d/%d"
 reward_money = 40
 reward_reputation = 8
