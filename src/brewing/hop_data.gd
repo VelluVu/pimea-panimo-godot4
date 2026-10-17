@@ -16,6 +16,10 @@ const USE_BITTERING : String = "Katkeroiva"
 const USE_AROMA : String = "Aromi"
 const USE_DUAL : String = "Katkeroiva ja aromi"
 const USE_NOBLE : String = "Aromi, katkeroi perinteisiä oluita"
+const SHORT_FORMAT : String = "%d %%, %s"
+const SHORT_BITTERING : String = "katkero"
+const SHORT_AROMA : String = "aromi"
+const SHORT_DUAL : String = "katkero ja aromi"
 
 ## Hops go by 10 g: a low-alpha hop can bitter where 10 g of Magnum would overshoot,
 ## so every style can still be hit, with far fewer amounts to choose from.
@@ -36,6 +40,18 @@ func get_stat_string() -> String:
 	if flavor_profile == FlavorProfile.NONE:
 		return base_stats + "\n" + tr(USE_FORMAT) % use_name
 	return base_stats + "\n" + tr(USE_FLAVOR_FORMAT) % [use_name, get_flavor_profile_display_name(flavor_profile)]
+
+
+## Alpha acids and the use, e.g. "5 %, aromi".
+func get_short_stat_string() -> String:
+	return tr(SHORT_FORMAT) % [alpha_acids, get_short_use_name(use_of(alpha_acids, flavor_profile))]
+
+
+static func get_short_use_name(use : Use) -> String:
+	match use:
+		Use.BITTERING: return UiText.of(SHORT_BITTERING)
+		Use.DUAL: return UiText.of(SHORT_DUAL)
+		_: return UiText.of(SHORT_AROMA)
 
 
 static func use_of(alpha : int, profile : FlavorProfile) -> Use:
