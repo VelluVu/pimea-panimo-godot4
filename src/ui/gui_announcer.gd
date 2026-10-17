@@ -75,6 +75,8 @@ func setup(toast_label: Label, group_visit_label: Label, day_event_label: Label,
 	_toasts.min_hold_seconds = TOAST_MIN_HOLD_SECONDS
 	_toasts.max_hold_seconds = TOAST_MAX_HOLD_SECONDS
 	_toasts.max_visible = TOAST_MAX_VISIBLE
+	BannerPresenter.add_backing(group_visit_label)
+	BannerPresenter.add_backing(day_event_label)
 	_group_visit_banner = BannerPresenter.new(group_visit_label, GROUP_VISIT_BANNER_FLASH_SECONDS, GROUP_VISIT_BANNER_HOLD_SECONDS, GROUP_VISIT_BANNER_FADE_SECONDS)
 	# Plain alpha fade-in, not the overexposed flash: it's the day's forecast,
 	# not an in-the-moment arrival.
