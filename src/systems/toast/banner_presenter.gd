@@ -13,6 +13,12 @@ const TRANSPARENT_COLOR : Color = Color(1.0, 1.0, 1.0, 0.0)
 ## anchor (see _fit_height()). The floor keeps a short banner from shrinking below a two-line box.
 const MIN_HALF_HEIGHT : float = 50.0
 const VERTICAL_PADDING : float = 6.0
+## A dark box behind a banner that appears over the busy bar, so speech bubbles and
+## customers behind it don't mix into the text. It fades with the label.
+const BACKING_COLOR : Color = Color(0.05, 0.035, 0.02, 0.82)
+const BACKING_BORDER_COLOR : Color = Color(0.36, 0.27, 0.15, 0.9)
+const BACKING_MARGIN : float = 10.0
+const BACKING_CORNER_RADIUS : int = 3
 
 var _label : Label
 var _flash_seconds : float
@@ -23,6 +29,17 @@ var _bright_flash : bool
 var _hide_when_done : bool
 var _on_finished : Callable
 var _tween : Tween
+
+
+## Gives `label` the dark backing box, see BACKING_COLOR.
+static func add_backing(label : Label) -> void:
+	var box := StyleBoxFlat.new()
+	box.bg_color = BACKING_COLOR
+	box.border_color = BACKING_BORDER_COLOR
+	box.set_border_width_all(1)
+	box.set_corner_radius_all(BACKING_CORNER_RADIUS)
+	box.set_content_margin_all(BACKING_MARGIN)
+	label.add_theme_stylebox_override(&"normal", box)
 
 
 ## bright_flash: an overexposed flash that settles to normal, versus a plain alpha fade-in.
