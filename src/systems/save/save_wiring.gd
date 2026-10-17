@@ -8,8 +8,9 @@ extends SaveSlot
 
 ## Version 0 -> 1 needed no migration step. 1 -> 2 dropped the run modifier, which is
 ## stripped from the file text before loading (LegacySaveText). 2 -> 3 adds the spare kegs.
-## 3 -> 4 counts four specialty malts in 100 g packs (MaltPackMigration).
-const SAVE_VERSION: int = 4
+## 3 -> 4 counts four specialty malts in 100 g packs, 4 -> 5 wheat, Münchenin, Vienna
+## and rye in 500 g packs (MaltPackMigration).
+const SAVE_VERSION: int = 5
 
 ## Endings that finish the run for good. The season endings ("survived",
 ## "season_over") are left out on purpose: the player can keep playing.
@@ -62,6 +63,8 @@ func _migrate(resource: Resource, from_version: int) -> void:
 		brewery.inventory.add_clean_kegs(KegRules.SPARE_KEGS)
 	if from_version < 4:
 		MaltPackMigration.migrate(brewery)
+	if from_version < 5:
+		MaltPackMigration.migrate(brewery, MaltPackMigration.HALF_KILO_IDS, MaltPackMigration.HALF_KILO_PACKS)
 
 
 ## Rewrites saves from older builds that Godot could not load at all, see LegacySaveText.

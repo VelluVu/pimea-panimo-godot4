@@ -53,22 +53,25 @@ default recipe, sets the cost price, and a test checks that it resolves to its o
 
 ## Ingredients
 
-Malt amounts stay in whole kilograms, except dark roast malts, which come in **100 g
-packs** (shown as "0,3 kg").
+Malts come in three pack sizes by how they are used: base malts (Pilsner, Pale ale,
+Savu, candi syrup) by the **kilogram**; malts used both as a base and in small amounts
+(Vehnä, Münchenin, Vienna, Ruis) in **500 g packs** (save version 5); specialty malts
+(Karamelli, Ruskea, Keksi, Tumma karamelli and the dark roasts) in **100 g packs** (save
+version 4). Amounts show in kilograms ("0.5 kg").
 
 | Id | Malt | EBC | Extract | Unit | Note |
 |---|---|---|---|---|---|
 | 100 | Pilsner | 3 | 0.81 | kg | was 2 |
 | 101 | Pale ale | 6 | 0.80 | kg | was 4 |
-| 102 | Karamelli | 60 | 0.74 | kg | was 20 |
-| 103 | Vehnä | 4 | 0.82 | kg | |
-| 104 | Münchenin | 20 | 0.78 | kg | was 30 |
-| 105 | Ruskea | 150 | 0.70 | kg | was 45 |
-| 106 | Keksi | 50 | 0.75 | kg | was 55 |
-| 107 | Tumma karamelli | 300 | 0.70 | kg | was 140 |
+| 102 | Karamelli | 60 | 0.74 | 100 g | was 20 |
+| 103 | Vehnä | 4 | 0.82 | 500 g | |
+| 104 | Münchenin | 20 | 0.78 | 500 g | was 30 |
+| 105 | Ruskea | 150 | 0.70 | 100 g | was 45 |
+| 106 | Keksi | 50 | 0.75 | 100 g | was 55 |
+| 107 | Tumma karamelli | 300 | 0.70 | 100 g | was 140 |
 | 108 | Savu | 6 | 0.78 | kg | |
-| 109 | **Vienna-mallas** | 8 | 0.79 | kg | new |
-| 110 | **Ruismallas** | 7 | 0.78 | kg | new |
+| 109 | **Vienna-mallas** | 8 | 0.79 | 500 g | new |
+| 110 | **Ruismallas** | 7 | 0.78 | 500 g | new |
 | 111 | **Suklaamallas** | 1000 | 0.65 | 100 g | new |
 | 112 | **Paahdettu ohra** | 1400 | 0.60 | 100 g | new |
 | 113 | **Carafa** | 1150 | 0.65 | 100 g | new, dehusked black malt |
