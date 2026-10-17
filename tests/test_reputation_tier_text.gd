@@ -37,3 +37,15 @@ func test_fame_costs_are_listed_only_when_set() -> void:
 	var text : String = ReputationTierTextScript.tooltip(500, tier, null)
 	assert_true(text.contains("ratsiakynnys -10"))
 	assert_true(text.contains("5 %"))
+
+
+func test_fame_rewards_are_listed_only_when_set() -> void:
+	var plain : String = ReputationTierTextScript.tooltip(10, _tier("Tuntematon", 0), null)
+	assert_false(plain.contains("Tiskihinnat"))
+	assert_false(plain.contains("tiheämmin"))
+	var famous := _tier("Legendaarinen", 160)
+	famous.counter_price_bonus = 0.2
+	famous.spawn_speed_bonus = 0.1
+	var text : String = ReputationTierTextScript.tooltip(170, famous, null)
+	assert_true(text.contains("Tiskihinnat +20 %"))
+	assert_true(text.contains("Asiakkaita tulee 10 % tiheämmin"))

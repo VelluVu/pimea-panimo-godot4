@@ -9,3 +9,5 @@ min_reputation = 160
 description = "Pimeästä panimosta kerrotaan tarinoita. Osa niistä on jopa totta."
 raid_threshold_penalty = 15
 daily_decay_percent = 0.06
+counter_price_bonus = 0.2
+spawn_speed_bonus = 0.1

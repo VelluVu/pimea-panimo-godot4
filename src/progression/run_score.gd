@@ -18,6 +18,7 @@ const FAILED_ENDINGS : PackedStringArray = ["busted", "bankrupt"]
 ## The brewery's worth (money plus what its cellar upgrades cost) in points per euro.
 ## Counting the upgrades too means buying one never lowers the score.
 const WORTH_POINTS_PER_EURO : float = 0.5
+const MONEY_WORTH_SHARE : float = 0.5
 ## Per style brewed this season (Brewery.brewed_styles), so the board rewards brewing the
 ## range, not one safe style. Counted like servings, also when the run fails.
 const STYLE_POINTS : int = 100
@@ -98,6 +99,11 @@ static func entry_for(brewery : Brewery, ending_type : String) -> Dictionary:
 	return entry(brewery.current_day, brewery.reputation, brewery.lifetime_bottles_sold, ending_type, brewery_worth(brewery), brewery.brewed_styles.size())
 
 
-## Money plus what the cellar upgrades cost.
 static func brewery_worth(brewery : Brewery) -> float:
-	return brewery.money + CellarUpgrades.invested_value(brewery.cellar_upgrade_levels, CellarUpgrades.all())
+	return worth_of(brewery.money, CellarUpgrades.invested_value(brewery.cellar_upgrade_levels, CellarUpgrades.all()))
+
+
+## Upgrades count at what they cost, money left over at MONEY_WORTH_SHARE, so building
+## the cellar out scores better than sitting on cash.
+static func worth_of(money : float, invested : float) -> float:
+	return money * MONEY_WORTH_SHARE + invested

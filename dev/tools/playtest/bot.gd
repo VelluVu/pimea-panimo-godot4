@@ -822,8 +822,9 @@ func _buy_upgrade(b: Brewery) -> void:
 		_note("upgrade %s" % best.upgrade_id)
 
 
-## Score points per euro of worth and per reputation point, from RunScore.
-const WORTH_POINTS: float = RunScore.WORTH_POINTS_PER_EURO
+## Score points per euro of cash (money counts at RunScore.MONEY_WORTH_SHARE of the
+## brewery's worth) and per reputation point, from RunScore.
+const WORTH_POINTS: float = RunScore.WORTH_POINTS_PER_EURO * RunScore.MONEY_WORTH_SHARE
 const REP_POINTS: float = RunScore.REPUTATION_POINTS
 ## Reputation a counter bottle earns on average, for valuing bottles an event takes.
 const REP_PER_BOTTLE: float = 0.5

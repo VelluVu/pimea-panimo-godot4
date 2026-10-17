@@ -288,6 +288,18 @@ func get_reputation_tier() -> ReputationTier:
 	return ReputationTiers.tier_for(reputation, ReputationTiers.all())
 
 
+## Counter prices after the marketing perks and the fame of the reputation tier.
+func counter_price_multiplier() -> float:
+	var tier : ReputationTier = get_reputation_tier()
+	return stats.multiplier(PerkStats.COUNTER_PRICE) * (1.0 + (tier.counter_price_bonus if tier != null else 0.0))
+
+
+## Gaps between customers after the perks and the reputation tier's draw.
+func spawn_interval_multiplier() -> float:
+	var tier : ReputationTier = get_reputation_tier()
+	return stats.multiplier(PerkStats.SPAWN_INTERVAL) * (1.0 - (tier.spawn_speed_bonus if tier != null else 0.0))
+
+
 ## Call after anything that can drain money. See BankruptcyRules: a run ends only
 ## when no known recipe can be brewed any more.
 func check_bankruptcy() -> void:

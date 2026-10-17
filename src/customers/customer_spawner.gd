@@ -266,12 +266,12 @@ func _free_slot() -> int:
 
 
 func _start_next_walk_in_timer() -> void:
-	var bounds := SpawnPacing.walk_in_bounds(_reputation(), _perk_multiplier(PerkStats.SPAWN_INTERVAL), _styles_on_tap())
+	var bounds := SpawnPacing.walk_in_bounds(_reputation(), _spawn_interval_multiplier(), _styles_on_tap())
 	walk_in_timer.start(randf_range(bounds.x, bounds.y))
 
 
 func _start_next_group_event_timer() -> void:
-	var bounds := SpawnPacing.group_bounds(_reputation(), _perk_multiplier(PerkStats.SPAWN_INTERVAL), _perk_multiplier(PerkStats.GROUP_EVENT_INTERVAL))
+	var bounds := SpawnPacing.group_bounds(_reputation(), _spawn_interval_multiplier(), _perk_multiplier(PerkStats.GROUP_EVENT_INTERVAL))
 	group_event_timer.start(randf_range(bounds.x, bounds.y))
 
 
@@ -283,6 +283,11 @@ func _styles_on_tap() -> int:
 func _reputation() -> float:
 	var brewery: Brewery = BrewEngine.current_brewery
 	return 0.0 if brewery == null else float(brewery.reputation)
+
+
+func _spawn_interval_multiplier() -> float:
+	var brewery: Brewery = BrewEngine.current_brewery
+	return 1.0 if brewery == null else brewery.spawn_interval_multiplier()
 
 
 func _perk_multiplier(stat: StringName) -> float:

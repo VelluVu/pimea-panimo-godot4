@@ -1527,7 +1527,10 @@ msgid ""
 "Vaalea ale, jossa humala saa loistaa: raikas, katkera ja jokaisen "
 "pienpanimon ensimmäinen ylpeys. Amerikkalaiset humalat tuovat sitrusta ja "
 "havua, englantilaiset maanläheistä pehmeyttä."
-msgstr "A pale ale that lets the hops shine: crisp, bitter and every small brewery's first pride. American hops bring citrus and pine, English ones an earthy softness."
+msgstr ""
+"A pale ale that lets the hops shine: crisp, bitter and every small "
+"brewery's first pride. American hops bring citrus and pine, English ones an "
+"earthy softness."
 
 #: src/resources/beer_styles/pilsner.tres
 msgid ""
@@ -3482,11 +3485,23 @@ msgstr "Reputation unlocks new ingredients and brings new customers."
 
 #: src/resources/guide/04_maine.tres
 msgid ""
+"Maine hiipuu joka yö, sitä nopeammin mitä korkeammalla olet, joten huipulla "
+"pysyminen vaatii työtä."
+msgstr "Reputation fades every night, faster the higher you are, so staying at the top takes work."
+
+#: src/resources/guide/04_maine.tres
+msgid ""
 "Maine kasvaa myynneistä ja tavoitteista. Mitä korkeampi maine, sitä "
 "hitaammin se kasvaa."
 msgstr ""
 "Reputation grows from sales and goals. The higher it is, the slower it "
 "grows."
+
+#: src/resources/guide/04_maine.tres
+msgid ""
+"Maine myös palkitsee: Kylän puheenaiheena asiakkaita tulee tiheämmin, "
+"Kaupungin kuuluisuutena tiskihinnat nousevat 10 % ja Legendaarisena 20 %."
+msgstr "Reputation also pays: as the Talk of the Town customers come more often, as a Local Celebrity counter prices rise 10 % and as Legendary 20 %."
 
 #: src/resources/guide/05_lvv.tres
 msgid ""
@@ -7108,6 +7123,10 @@ msgid "aikainen sulkeminen"
 msgstr "early closing"
 
 #: src/ui/reputation_tier_text.gd
+msgid "Asiakkaita tulee %d %% tiheämmin"
+msgstr "Customers come %d %% more often"
+
+#: src/ui/reputation_tier_text.gd
 msgid "Korkein maine saavutettu."
 msgstr "Highest reputation reached."
 
@@ -7122,6 +7141,10 @@ msgstr "Reputation fades %d %% every night"
 #: src/ui/reputation_tier_text.gd
 msgid "Seuraava: %s (%d mainetta)"
 msgstr "Next: %s (%d reputation)"
+
+#: src/ui/reputation_tier_text.gd
+msgid "Tiskihinnat +%d %%"
+msgstr "Counter prices +%d %%"
 
 #: src/ui/risk_text.gd
 msgid "%d riskiä ennen ratsiaa"
