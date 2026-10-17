@@ -10,8 +10,8 @@ var yeast_name : String = ""
 var base_malt_names : PackedStringArray = []
 var required_malt_name : String = ""
 var required_spice_names : PackedStringArray = []
-## The reference recipe's malts, most used first.
-var favourite_malt_names : PackedStringArray = []
+## The style's character malts (BeerStyle.preferred_malt_ids), which add quality.
+var character_malt_names : PackedStringArray = []
 var preferred_spice_names : PackedStringArray = []
 var saved_recipe_count : int = 0
 var needs_mash_upgrade : bool = false

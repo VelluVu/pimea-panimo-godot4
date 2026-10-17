@@ -21,7 +21,7 @@ const YEAST_FORMAT : String = "Hiiva: %s"
 const BASE_MALT_FORMAT : String = "Pohjamallas: %s, vähintään %d %% maltaista"
 const REQUIRED_MALT_FORMAT : String = "Vaatii: %s"
 const REQUIRED_SPICE_FORMAT : String = "Vaatii myös: %s"
-const FAVOURITE_MALTS_FORMAT : String = "Suosikkimaltaat: %s"
+const CHARACTER_MALTS_FORMAT : String = "Tyylin maltaat (+%d %% laatua kukin): %s"
 const HOP_HINT_FORMAT : String = "Suosikkihumalat: %s"
 const AROMA_HOP_NEEDED : String = "Tarvitsee aromihumalan"
 const PREFERRED_SPICES_FORMAT : String = "Sopivat mausteet: %s"
@@ -84,8 +84,8 @@ static func known_lines(entry : RecipeBookEntry) -> PackedStringArray:
 	if not entry.base_malt_names.is_empty():
 		lines.append(UiText.of(BASE_MALT_FORMAT) % [BASE_MALT_SEPARATOR.join(entry.base_malt_names), roundi(style.min_base_share * 100.0)])
 	_append_requirements(lines, entry)
-	if not entry.favourite_malt_names.is_empty():
-		lines.append(UiText.of(FAVOURITE_MALTS_FORMAT) % LIST_SEPARATOR.join(entry.favourite_malt_names))
+	if not entry.character_malt_names.is_empty():
+		lines.append(UiText.of(CHARACTER_MALTS_FORMAT) % [roundi(BrewQuality.MALT_MATCH_STEP * 100.0), LIST_SEPARATOR.join(entry.character_malt_names)])
 	_append_hops(lines, style)
 	if style.forbids_spices:
 		lines.append(UiText.of(PURITY_LAW_HINT))
