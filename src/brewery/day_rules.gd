@@ -22,6 +22,15 @@ const ENDING_SEASON_OVER : String = "season_over"
 const NIGHTLY_RISK_DECAY : int = 15
 
 
+## Nights that cost nothing, so a newcomer's first experiment never ends in debt.
+const FREE_NIGHTS : int = 1
+
+
+## Whether the night before `new_day` is billed: the first FREE_NIGHTS are not.
+static func bills_due(new_day : int) -> bool:
+	return new_day > FREE_NIGHTS + 1
+
+
 static func daily_bill_total() -> int:
 	return DAILY_ELECTRICITY_COST + DAILY_WATER_COST
 

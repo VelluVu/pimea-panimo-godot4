@@ -51,8 +51,13 @@ func test_success_pays_money_reputation_and_xp_but_no_risk() -> void:
 
 
 func test_failure_costs_reputation_and_risk_but_pays_nothing() -> void:
-	var effects : Dictionary = RulesScript.resolution_effects(_reward_goal(), false, true, 1)
+	var effects : Dictionary = RulesScript.resolution_effects(_reward_goal(), false, true, 2)
 	assert_eq(effects, {"money": 0, "reputation": -3, "xp": 0, "risk": 4})
+
+
+func test_a_failure_on_the_first_day_costs_nothing() -> void:
+	var effects : Dictionary = RulesScript.resolution_effects(_reward_goal(), false, true, 1)
+	assert_eq(effects, {"money": 0, "reputation": 0, "xp": 0, "risk": 0})
 
 
 func test_a_good_faith_failure_changes_nothing() -> void:

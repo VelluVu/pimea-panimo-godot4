@@ -19,6 +19,11 @@ func test_the_daily_bill_is_electricity_plus_water() -> void:
 	assert_gt(DayRulesScript.daily_bill_total(), 0)
 
 
+func test_the_first_night_is_free() -> void:
+	assert_false(DayRulesScript.bills_due(2), "the night after day 1")
+	assert_true(DayRulesScript.bills_due(3))
+
+
 func test_the_season_ends_as_survived_on_the_target_day_with_enough_reputation_and_money() -> void:
 	var day : int = DayRulesScript.SURVIVAL_DAY_TARGET
 	assert_eq(DayRulesScript.season_ending(day, ENOUGH_REPUTATION, 10.0, false, false), DayRulesScript.ENDING_SURVIVED)
