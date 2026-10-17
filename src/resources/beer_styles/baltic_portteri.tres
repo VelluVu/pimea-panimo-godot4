@@ -29,5 +29,5 @@ max_ebc = 64
 min_ibu = 20
 max_ibu = 40
 preferred_malt_ids = Array[int]([107, 111, 113])
-reference_recipe = Dictionary[int, int]({100: 2, 104: 30, 107: 5, 111: 1, 113: 1, 200: 10, 206: 70, 301: 1})
+reference_recipe = Dictionary[int, int]({100: 2, 104: 30, 107: 5, 111: 1, 113: 1, 200: 10, 205: 70, 301: 1})
 metadata/_custom_type_script = "uid://qpqfdi1wacne"
