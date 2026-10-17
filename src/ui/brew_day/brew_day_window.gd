@@ -8,6 +8,9 @@ extends Control
 
 const MASH_HEADER_TEXT : String = "MÄSKÄYS · %s"
 const BOIL_HEADER_TEXT : String = "KEITTO · %s"
+## A style not yet discovered keeps its name hidden until the brew reveals it, like
+## the brewing preview does.
+const UNKNOWN_STYLE_TEXT : String = "Tuntematon tyyli"
 const HEAT_BUTTON_TEXT : String = "LÄMMITÄ"
 const TO_BOIL_BUTTON_TEXT : String = "KEITTOON"
 const FINISH_BUTTON_TEXT : String = "VALMIS"
@@ -90,6 +93,8 @@ func open() -> void:
 	_plan = BrewDayPlan.create(report.beer_style, contents, table, report.final_ebc)
 	if not report.is_matched:
 		_plan.style_name = StringContainer.TUNTEMATON
+	elif not brewery.is_style_known(report.beer_style.style):
+		_plan.style_name = UNKNOWN_STYLE_TEXT
 	_start_mash()
 	show()
 	move_to_front()

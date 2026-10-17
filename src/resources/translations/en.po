@@ -3284,7 +3284,9 @@ msgstr ""
 msgid ""
 "Päivä kestää viisi minuuttia. Joka yö ensimmäistä lukuun ottamatta maksat "
 "sähköstä ja vedestä 8 €."
-msgstr "A day lasts five minutes. Every night except the first you pay 8 € for electricity and water."
+msgstr ""
+"A day lasts five minutes. Every night except the first you pay 8 € for "
+"electricity and water."
 
 #: src/resources/guide/01_kausi.tres
 msgid ""
@@ -6501,6 +6503,10 @@ msgstr "Hold the kettle's heat button until the wort is at the right temperature
 #: src/ui/brew_day/brew_day_window.gd
 msgid "Pikakeitto"
 msgstr "Quick brew"
+
+#: src/ui/brew_day/brew_day_window.gd
+msgid "Tuntematon tyyli"
+msgstr "Unknown style"
 
 #: src/ui/brew_day/brew_day_window.gd
 msgid "VALMIS"
