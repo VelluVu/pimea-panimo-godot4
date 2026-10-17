@@ -27,5 +27,5 @@ min_ebc = 2
 max_ebc = 8
 min_ibu = 8
 max_ibu = 22
-reference_recipe = Dictionary[int, int]({100: 3, 200: 9, 201: 15, 304: 1})
+reference_recipe = Dictionary[int, int]({100: 3, 206: 70, 304: 1})
 metadata/_custom_type_script = "uid://qpqfdi1wacne"

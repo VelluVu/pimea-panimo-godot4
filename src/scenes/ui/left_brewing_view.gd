@@ -121,6 +121,7 @@ func _update_slider() -> void:
 	var prep_amount : int = BrewEngine.current_brewery.brew_preparation.selected_contents.get(current_id, 0)
 	var max_available : int = max(inventory_amount, prep_amount)
 
+	main_slider.step = IngredientDatabase.get_item_by_id(current_id).amount_step()
 	main_slider.max_value = max_available
 	main_slider.value = min(main_slider.value, max_available)
 

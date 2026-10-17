@@ -4,7 +4,7 @@ extends RefCounted
 ## The shop's quick-amount buttons and the most one purchase can take, by how an
 ## ingredient is sold, so a phone needs a tap or two instead of a long slider drag.
 
-const GRAM_STEPS : Array[int] = [10, 25, 100]
+const GRAM_STEPS : Array[int] = [10, 50, 100]
 const KILO_STEPS : Array[int] = [1, 5]
 ## 100 g packs: 0.1, 0.5 and 1 kg, so Münchenin bought as a base malt is still quick.
 const SMALL_PACK_STEPS : Array[int] = [1, 5, 10]

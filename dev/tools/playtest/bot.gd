@@ -607,7 +607,7 @@ func _perk_value(b: Brewery, perk: RunPerk) -> float:
 	return value
 
 
-## Hill climb: adds or removes one unit of an ingredient while that raises the quality and
+## Hill climb: adds or removes one step of an ingredient (10 g of hops) while that raises the quality and
 ## the style still resolves the same.
 func _tune_for_quality(b: Brewery, style: BeerStyle.Style, start: Dictionary) -> Dictionary:
 	var ids: Array[int] = []
@@ -621,7 +621,8 @@ func _tune_for_quality(b: Brewery, style: BeerStyle.Style, start: Dictionary) ->
 		var candidate: Dictionary = {}
 		var candidate_quality: float = best_quality + 0.001
 		for id: int in ids:
-			for delta: int in [1, -1]:
+			var unit: int = IngredientDatabase.database[id].amount_step()
+			for delta: int in [unit, -unit]:
 				var combo: Dictionary = best.duplicate()
 				var amount: int = combo.get(id, 0) + delta
 				if amount < 0:
