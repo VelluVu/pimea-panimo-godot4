@@ -39,6 +39,8 @@ extends Resource
 @export var flavor_matched : bool = false
 @export var spice_bonus : float = 0.0
 @export var unsuited_spice_penalty : float = 0.0
+## Quality from the style's character malts; 0 on older saves.
+@export var malt_bonus : float = 0.0
 ## What went into the batch, see BatchTraits. Older saves have none of it.
 ## True when a spice that suits the style went in (BatchTraits.has_suitable_spice()).
 @export var spiced : bool = false
@@ -163,6 +165,7 @@ func get_quality_breakdown_tooltip() -> String:
 		hop_layer_slots,
 		flavor_matched_string,
 		roundi((spice_bonus - unsuited_spice_penalty) * 100),
+		roundi(malt_bonus * 100),
 	]
 
 

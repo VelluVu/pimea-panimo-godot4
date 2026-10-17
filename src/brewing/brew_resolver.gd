@@ -126,7 +126,8 @@ func _build_match_result(mixture : BrewMixture, beer_style : BeerStyle) -> BrewR
 	var flavor_matched : bool = BrewQuality.flavor_matched(mixture, beer_style)
 	var spice_bonus : float = BrewQuality.spice_bonus(mixture, beer_style)
 	var unsuited_spice_penalty : float = BrewQuality.unsuited_spice_penalty(mixture, beer_style)
-	var multiplier : float = BrewQuality.multiplier(beer_style, precision, layer_bonus, flavor_matched, spice_bonus - unsuited_spice_penalty)
+	var malt_bonus : float = BrewQuality.malt_bonus(mixture, beer_style)
+	var multiplier : float = BrewQuality.multiplier(beer_style, precision, layer_bonus, flavor_matched, spice_bonus - unsuited_spice_penalty, malt_bonus)
 
 	var result := BrewResult.new()
 	result.beer_style = beer_style
@@ -144,6 +145,7 @@ func _build_match_result(mixture : BrewMixture, beer_style : BeerStyle) -> BrewR
 	result.flavor_matched = flavor_matched
 	result.spice_bonus = spice_bonus
 	result.unsuited_spice_penalty = unsuited_spice_penalty
+	result.malt_bonus = malt_bonus
 	return result
 
 

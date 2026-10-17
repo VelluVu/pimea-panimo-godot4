@@ -240,12 +240,14 @@ msgid ""
 "Osumatarkkuus: %s%%\n"
 "Humalakerrokset: %s/%s\n"
 "Makuosuma: %s\n"
-"Maustebonus: %s%%"
+"Maustebonus: %s%%\n"
+"Tyylin maltaat: +%s%%"
 msgstr ""
 "Accuracy: %s%%\n"
 "Hop layers: %s/%s\n"
 "Flavour match: %s\n"
-"Spice bonus: %s%%"
+"Spice bonus: %s%%\n"
+"Style malts: +%s%%"
 
 #: src/autoload/string_container.gd
 msgid "Pale Ale"
@@ -3705,7 +3707,9 @@ msgstr "Hallertauer Mittelfrüh Hops"
 msgid ""
 "Hallertaun alkuperäinen jalohumala: hienostunut, kukkainen ja hennosti "
 "mausteinen. Klassinen valinta saksalaisiin lagereihin."
-msgstr "The original noble hop of the Hallertau: refined, floral and gently spicy. A classic choice for German lagers."
+msgstr ""
+"The original noble hop of the Hallertau: refined, floral and gently spicy. "
+"A classic choice for German lagers."
 
 #: src/resources/ingredients/hops/magnum_hop.tres
 msgid "Magnum-humala"
@@ -6541,6 +6545,10 @@ msgstr "Add ingredients to see an estimate."
 #: src/ui/brew_preview_text.gd
 msgid "Tarvitset ainakin 3 kg mallasta ja hiivan."
 msgstr "You need at least 3 kg of malt and a yeast."
+
+#: src/ui/brew_preview_text.gd
+msgid "Tyylin maltaat: +%d %%"
+msgstr "Style malts: +%d %%"
 
 #: src/ui/cellar_upgrade_text.gd
 msgid "Ei vielä omistuksessa."
