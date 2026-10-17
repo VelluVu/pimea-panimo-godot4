@@ -1519,16 +1519,15 @@ msgid "Maaliskuussa keitetty ja syksyn olutjuhliin kypsytetty lager."
 msgstr "A lager brewed in March and matured for the autumn beer festivals."
 
 #: src/resources/beer_styles/pale_ale.tres
-msgid "Amerikkalainen vaalea ale, jonka humala tuoksuu sitrukselta."
-msgstr "An American pale ale whose hops smell of citrus."
+msgid "Vaalea ale, jossa humala saa loistaa."
+msgstr "A pale ale that lets the hops shine."
 
 #: src/resources/beer_styles/pale_ale.tres
 msgid ""
-"Amerikkalainen vaalea ale, jonka humala tuoksuu sitrukselta. Raikas, "
-"katkera ja jokaisen pienpanimon ensimmäinen ylpeys."
-msgstr ""
-"An American pale ale whose hops smell of citrus. Fresh, bitter and every "
-"small brewery's first pride."
+"Vaalea ale, jossa humala saa loistaa: raikas, katkera ja jokaisen "
+"pienpanimon ensimmäinen ylpeys. Amerikkalaiset humalat tuovat sitrusta ja "
+"havua, englantilaiset maanläheistä pehmeyttä."
+msgstr "A pale ale that lets the hops shine: crisp, bitter and every small brewery's first pride. American hops bring citrus and pine, English ones an earthy softness."
 
 #: src/resources/beer_styles/pilsner.tres
 msgid ""

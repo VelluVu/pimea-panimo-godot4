@@ -105,7 +105,7 @@ Carafa and roasted barley, so a recipe can use a few percent of them.
 | Kotikalja | baking | – | – | 0-8 | 0-10 | 2.0-4.5 | 3 Pilsner → 4.9, 3.1 %, no hops (IBU from 0: anything below the middle counts as perfect) |
 | Bulkkilager | lager | Pilsner 80 % | – | 3-7 | 8-20 | 4.0-5.5 | 4 Pilsner → 6.0, 4.7 % |
 | Tumma Lager | lager | Münchenin 50 % | – | 30-56 | 9-35 | 3.5-5.5 | 4 Münchenin + 0.2 Carafa → 43, 4.7 % (a Munich Dunkel) |
-| Pale Ale | ale | Pale ale 75 % | aroma hop | 6-19 | 12-39 | 4.0-6.2 | 4 Pale ale → 8.5, 4.3 % |
+| Pale Ale | ale | Pale ale 75 % | aroma hop | 8-15 | 25-45 | 4.4-6.2 | 4 Pale ale + 0.3 Karamelli + 0.3 Münchenin, Magnum 20 g + Cascade 60 g → 13, 5.0 % (American or English hops both fit) |
 | Amber Ale | ale | Pale ale 60 % | – | 20-35 | 25-39 | 4.5-6.2 | 4 Pale ale + 0.8 Karamelli + 0.3 Keksi → 19, 5.5 % |
 | IPA | ale | Pale ale 70 % | aroma hop | 3-23 | 40-70 | 5.5-7.5 | 5 Pale ale + 0.5 Münchenin + 0.2 Karamelli → 14, 6.2 % |
 | Helles | lager | Pilsner 50 % | – | 7-11 | 14-22 | 4.3-5.7 | 4 Pilsner + 0.4 Münchenin → 8, 5.1 % (caramel instead of Münchenin also fits) |
@@ -139,7 +139,7 @@ Favourite hops (book info; profiles count for the flavour bonus):
 | Bulkkilager, Tumma Lager | Magnum or European | Noble |
 | Pilsner | Magnum or German noble | Noble (Tettnanger, Hallertauer Mittelfrüh), more than Bulkkilager |
 | Tšekkiläinen pilsner | Saaz | Saaz on every mark, 140 g and up |
-| Pale Ale | mainly Magnum or Warrior | Citrus, Tropical, Pine (American), Earthy (English) |
+| Pale Ale | Magnum (or Chinook) | Citrus, Tropical, Pine (American), Earthy (English); default recipe Cascade |
 | Amber Ale | Magnum, Warrior | Citrus, Tropical, Pine, Earthy |
 | IPA | ale | Pale ale 70 % | aroma hop | 3-23 | 40-70 | 5.5-7.5 | 5 Pale ale + 0.5 Münchenin + 0.2 Karamelli → 14, 6.2 % |
 | Helles, Vienna, Märzen, Doppelbock, Portteri | Magnum, Saaz | Noble (Hallertauer Mittelfrüh, Tettnanger, Saaz, Perle) |
