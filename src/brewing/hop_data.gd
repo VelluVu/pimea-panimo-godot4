@@ -4,9 +4,10 @@ extends IngredientData
 
 enum FlavorProfile { NONE, CITRUS, TROPICAL, PINE, NOBLE, EARTHY }
 ## What the hop is good for. Flavour and aroma marks score the same for any hop with an
-## aroma (HopRoles), so there is no separate flavour use. A mild noble hop also bitters
-## the noble-hop styles (BrewQuality.is_good_bittering_hop).
-enum Use { BITTERING, AROMA, DUAL, NOBLE }
+## aroma (HopRoles), so there is no separate flavour use. A mild aroma hop can still
+## bitter the styles that prefer its flavour (BrewQuality.is_good_bittering_hop), as
+## suppliers class Saaz or Fuggle as aroma hops that tradition also bitters with.
+enum Use { BITTERING, AROMA, DUAL }
 
 ## From this much alpha up an aroma hop bitters well too, as real dual-purpose hops do.
 const DUAL_ALPHA_MIN : int = 8
@@ -15,7 +16,6 @@ const USE_FLAVOR_FORMAT : String = "Käyttö: %s / Maku: %s"
 const USE_BITTERING : String = "Katkeroiva"
 const USE_AROMA : String = "Aromi"
 const USE_DUAL : String = "Katkeroiva ja aromi"
-const USE_NOBLE : String = "Aromi, katkeroi perinteisiä oluita"
 const SHORT_FORMAT : String = "%d %%, %s"
 const SHORT_BITTERING : String = "katkero"
 const SHORT_AROMA : String = "aromi"
@@ -57,16 +57,13 @@ static func get_short_use_name(use : Use) -> String:
 static func use_of(alpha : int, profile : FlavorProfile) -> Use:
 	if profile == FlavorProfile.NONE:
 		return Use.BITTERING
-	if alpha >= DUAL_ALPHA_MIN:
-		return Use.DUAL
-	return Use.NOBLE if profile == FlavorProfile.NOBLE else Use.AROMA
+	return Use.DUAL if alpha >= DUAL_ALPHA_MIN else Use.AROMA
 
 
 static func get_use_display_name(use : Use) -> String:
 	match use:
 		Use.BITTERING: return UiText.of(USE_BITTERING)
 		Use.AROMA: return UiText.of(USE_AROMA)
-		Use.NOBLE: return UiText.of(USE_NOBLE)
 		_: return UiText.of(USE_DUAL)
 
 

@@ -65,7 +65,7 @@ func test_hop_use_follows_aroma_and_alpha() -> void:
 	assert_eq(HopData.use_of(16, HopData.FlavorProfile.NONE), HopData.Use.BITTERING, "no aroma only bitters")
 	assert_eq(HopData.use_of(4, HopData.FlavorProfile.NONE), HopData.Use.BITTERING, "even a mild hop without aroma")
 	assert_eq(HopData.use_of(HopData.DUAL_ALPHA_MIN - 1, HopData.FlavorProfile.EARTHY), HopData.Use.AROMA)
-	assert_eq(HopData.use_of(4, HopData.FlavorProfile.NOBLE), HopData.Use.NOBLE, "Saaz bitters the classic beers")
+	assert_eq(HopData.use_of(4, HopData.FlavorProfile.NOBLE), HopData.Use.AROMA, "suppliers class Saaz as an aroma hop")
 	assert_eq(HopData.use_of(HopData.DUAL_ALPHA_MIN, HopData.FlavorProfile.CITRUS), HopData.Use.DUAL)
 
 

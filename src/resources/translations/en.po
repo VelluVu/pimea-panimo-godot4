@@ -442,10 +442,6 @@ msgid "Aromi"
 msgstr "Aroma"
 
 #: src/brewing/hop_data.gd
-msgid "Aromi, katkeroi perinteisiä oluita"
-msgstr "Aroma, bitters classic beers"
-
-#: src/brewing/hop_data.gd
 msgid "Katkeroiva"
 msgstr "Bittering"
 
@@ -3410,6 +3406,13 @@ msgid ""
 msgstr ""
 "Open the brewhouse, put the ingredients on the table and press Pane. The "
 "batch ferments for a while and then goes into a keg in the warehouse."
+
+#: src/resources/guide/02_keittaminen.tres
+msgid ""
+"Humalan alfahapot kertovat, kuinka paljon se katkeroi. Tyylin omalla "
+"aromihumalalla voi myös katkeroida, kuten perinteisissä oluissa tehdään, se "
+"vain vaatii enemmän grammoja."
+msgstr "A hop's alpha acids tell how much it bitters. You can also bitter with the style's own aroma hop, as traditional beers do, it just takes more grams."
 
 #: src/resources/guide/02_keittaminen.tres
 msgid ""
