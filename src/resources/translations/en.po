@@ -1398,7 +1398,9 @@ msgid ""
 "Böömin alkuperäinen pils: kullankeltainen, pehmeän maltainen lager, jonka "
 "katkeruus ja mausteinen tuoksu tulevat pelkästä Saaz-humalasta. Humalaa ei "
 "säästellä."
-msgstr "The original pils from Bohemia: a golden, softly malty lager whose bitterness and spicy aroma come from Saaz alone. The hops are not spared."
+msgstr ""
+"The original pils from Bohemia: a golden, softly malty lager whose "
+"bitterness and spicy aroma come from Saaz alone. The hops are not spared."
 
 #: src/resources/beer_styles/czech_pilsner.tres
 msgid ""
@@ -3696,12 +3698,14 @@ msgid "Galaxy-humala"
 msgstr "Galaxy Hops"
 
 #: src/resources/ingredients/hops/hallertau_hop.tres
-msgid "Hallertau-humala"
-msgstr "Hallertau Hops"
+msgid "Hallertauer Mittelfrüh -humala"
+msgstr "Hallertauer Mittelfrüh Hops"
 
 #: src/resources/ingredients/hops/hallertau_hop.tres
-msgid "Saksalainen jalohumala, hienostunut ja kukkainen."
-msgstr "A German noble hop, refined and floral."
+msgid ""
+"Hallertaun alkuperäinen jalohumala: hienostunut, kukkainen ja hennosti "
+"mausteinen. Klassinen valinta saksalaisiin lagereihin."
+msgstr "The original noble hop of the Hallertau: refined, floral and gently spicy. A classic choice for German lagers."
 
 #: src/resources/ingredients/hops/magnum_hop.tres
 msgid "Magnum-humala"

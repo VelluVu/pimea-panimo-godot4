@@ -132,12 +132,12 @@ Favourite hops (book info; profiles count for the flavour bonus):
 | Style | Bittering | Aroma / flavour profiles |
 |---|---|---|
 | Bulkkilager, Tumma Lager | Magnum or European | Noble |
-| Pilsner | Magnum or German noble | Noble (Tettnanger, Hallertau), more than Bulkkilager |
+| Pilsner | Magnum or German noble | Noble (Tettnanger, Hallertauer Mittelfrüh), more than Bulkkilager |
 | Tšekkiläinen pilsner | Saaz | Saaz on every mark, 140 g and up |
 | Pale Ale | mainly Magnum or Warrior | Citrus, Tropical, Pine (American), Earthy (English) |
 | Amber Ale | Magnum, Warrior | Citrus, Tropical, Pine, Earthy |
 | IPA | ale | Pale ale 70 % | aroma hop | 3-23 | 40-70 | 5.5-7.5 | 5 Pale ale + 0.5 Münchenin + 0.2 Karamelli → 14, 6.2 % |
-| Helles, Vienna, Märzen, Doppelbock, Portteri | Magnum, Saaz | Noble (Hallertau, Tettnanger, Saaz, Perle) |
+| Helles, Vienna, Märzen, Doppelbock, Portteri | Magnum, Saaz | Noble (Hallertauer Mittelfrüh, Tettnanger, Saaz, Perle) |
 | Hefeweizen, Witbier | German noble | Noble |
 | Session Ale | ale | Pale ale 60 % | Vehnä | 2-12 | 8-26 | 2.5-4.1 | 3 Pale ale + 0.5 Vehnä → 8, 3.8 % |
 | Saison | ale | Pilsner 60 % | – | 4-16 | 16-34 | 5.1-6.6 | 4 Pilsner + 0.5 Vehnä + 0.5 Münchenin → 9, 5.5 % |
