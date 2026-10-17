@@ -204,7 +204,8 @@ func _entry(brewery : Brewery, beer_style : BeerStyle) -> RecipeBookEntry:
 		entry.required_malt_name = _ingredient_name(beer_style.required_malt_id)
 	for spice_id : int in beer_style.required_spice_ids:
 		entry.required_spice_names.append(_ingredient_name(spice_id))
-	entry.favourite_malt_names = _favourite_malt_names(beer_style)
+	for malt_id : int in beer_style.preferred_malt_ids:
+		entry.character_malt_names.append(_ingredient_name(malt_id))
 	for spice_id : int in beer_style.preferred_spice_ids:
 		entry.preferred_spice_names.append(_ingredient_name(spice_id))
 	entry.saved_recipe_count = brewery.saved_recipes.filter(func(recipe : BrewRecipe) -> bool: return recipe.beer_style == beer_style.style).size()
@@ -214,20 +215,6 @@ func _entry(brewery : Brewery, beer_style : BeerStyle) -> RecipeBookEntry:
 		entry.attracts_new_customer = not MetaProgressManager.has_style(beer_style.style) and CustomerRegistry.is_style_customer_gate(beer_style.style)
 		entry.hinted = brewery.hinted_styles.has(beer_style.style)
 	return entry
-
-
-## The reference recipe's malts, most used first.
-func _favourite_malt_names(beer_style : BeerStyle) -> PackedStringArray:
-	var malts : Array[MaltData] = []
-	for id : int in beer_style.reference_recipe:
-		var malt := IngredientDatabase.get_item_by_id(id) as MaltData
-		if malt != null:
-			malts.append(malt)
-	malts.sort_custom(func(a : MaltData, b : MaltData) -> bool: return a.kg(beer_style.reference_recipe[a.id]) > b.kg(beer_style.reference_recipe[b.id]))
-	var names : PackedStringArray = []
-	for malt : MaltData in malts:
-		names.append(tr(malt.name))
-	return names
 
 
 func _section_label(text : String) -> Label:

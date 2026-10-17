@@ -3412,7 +3412,9 @@ msgid ""
 "Humalan alfahapot kertovat, kuinka paljon se katkeroi. Tyylin omalla "
 "aromihumalalla voi myös katkeroida, kuten perinteisissä oluissa tehdään, se "
 "vain vaatii enemmän grammoja."
-msgstr "A hop's alpha acids tell how much it bitters. You can also bitter with the style's own aroma hop, as traditional beers do, it just takes more grams."
+msgstr ""
+"A hop's alpha acids tell how much it bitters. You can also bitter with the "
+"style's own aroma hop, as traditional beers do, it just takes more grams."
 
 #: src/resources/guide/02_keittaminen.tres
 msgid ""
@@ -7078,16 +7080,16 @@ msgid "Suosikkihumalat: %s"
 msgstr "Favourite hops: %s"
 
 #: src/ui/recipe_library_text.gd
-msgid "Suosikkimaltaat: %s"
-msgstr "Favourite malts: %s"
-
-#: src/ui/recipe_library_text.gd
 msgid "Tallennetut reseptit"
 msgstr "Saved recipes"
 
 #: src/ui/recipe_library_text.gd
 msgid "Tarvitsee aromihumalan"
 msgstr "Needs an aroma hop"
+
+#: src/ui/recipe_library_text.gd
+msgid "Tyylin maltaat (+%d %% laatua kukin): %s"
+msgstr "Style malts (+%d %% quality each): %s"
 
 #: src/ui/recipe_library_text.gd
 msgid "Vaatii mallasseoksen"
