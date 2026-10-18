@@ -1,9 +1,8 @@
 class_name DialogView
 extends Control
 
-## Speech bubbles (one per slot) and floating popups, independent of any game. Drive it
-## with show_bubble(), close_bubble() and show_popup(). Everything that ties it to a
-## project (its signals, its popup wording) lives in DialogWiring, which this adds as a child.
+## Speech bubbles (one per slot) and floating popups, independent of any game:
+## show_bubble(), close_bubble(), show_popup(). Project ties live in DialogWiring.
 
 ## A popup appeared on screen, after its delay if it had one.
 signal popup_shown(emphasis : Emphasis, global_pos : Vector2)
@@ -54,8 +53,8 @@ func _ready() -> void:
 	add_child(wiring)
 
 
-## Shows `text` in the bubble of `slot`, above `speaker_pos` (global). Showing again on
-## the same slot replaces the text and restarts the timer. A negative slot is ignored.
+## Shows `text` in `slot`'s bubble above `speaker_pos` (global); again on the same slot
+## replaces it. A negative slot is ignored.
 func show_bubble(text : String, slot : int, speaker_pos : Vector2, display_time : float, fade_time : float) -> void:
 	if slot < 0:
 		return
@@ -83,9 +82,8 @@ func close_bubble(slot : int) -> void:
 	_bubbles.erase(slot)
 
 
-## A popup that pops out, drifts up and fades, apart from the bubbles. A louder `emphasis`
-## is bigger (CRITICAL shakes). `delay_seconds` waits hidden first, so popups can follow
-## each other. `anchor_edge` is the text edge on `anchor_pos`: RIGHT grows leftward.
+## A popup that pops out, drifts up and fades; louder `emphasis` is bigger, CRITICAL shakes.
+## `delay_seconds` waits hidden first; `anchor_edge` RIGHT grows leftward.
 func show_popup(text : String, color : Color, anchor_pos : Vector2, emphasis : Emphasis = Emphasis.NORMAL, delay_seconds : float = 0.0, anchor_edge : HorizontalAlignment = HORIZONTAL_ALIGNMENT_LEFT) -> void:
 	var popup := Label.new()
 	popup.text = text
@@ -126,9 +124,7 @@ static func _edge_x(width : float, anchor_edge : HorizontalAlignment) -> float:
 			return 0.0
 
 
-## A calmer line than show_popup(): outlined, it rises slowly from `anchor_pos` (its
-## bottom centre) and fades over the last part of the way. For news from a place, not
-## a customer, like a door.
+## A calmer, outlined line rising slowly from `anchor_pos`, for news from a place (a door).
 func show_drifting_note(text : String, color : Color, anchor_pos : Vector2) -> void:
 	var note := Label.new()
 	note.text = text
@@ -177,8 +173,8 @@ func _shake(tween : Tween, popup : Label, global_pos : Vector2) -> void:
 	tween.tween_property(popup, "global_position", global_pos, POPUP_SHAKE_STEP_SECONDS)
 
 
-## The newest line always shows in full: an open bubble it still overlaps after stacking
-## collapses into a badge (SpeechBubble.collapse()).
+## The newest line always shows in full; a bubble it still overlaps after stacking
+## collapses into a badge.
 func _place(entry : BubbleEntry, slot : int, speaker_pos : Vector2) -> void:
 	var neighbors : Array[BubbleEntry] = []
 	for other_slot : int in _bubbles:
@@ -200,8 +196,8 @@ func _place(entry : BubbleEntry, slot : int, speaker_pos : Vector2) -> void:
 			_collapse(other)
 
 
-## A lifted bubble goes fully above the lower bubbles it overlaps, so both stay readable;
-## without room for that it drops back to step 0 and the overlapped bubbles collapse.
+## A lifted bubble goes fully above those it overlaps; without room it drops to step 0 and
+## they collapse.
 func _stacked_position(entry : BubbleEntry, neighbors : Array[BubbleEntry]) -> Vector2:
 	var bubble_size : Vector2 = entry.bubble.get_size()
 	var viewport_size : Vector2 = get_viewport_rect().size

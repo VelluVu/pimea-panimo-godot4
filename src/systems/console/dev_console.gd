@@ -1,10 +1,9 @@
 class_name DevConsole
 extends Panel
 
-## A collapsible, resizable console panel: a running log and a command line. Independent of
-## any game: feed it with log_line(), give it commands through `registry`, and set
-## `open_action` and `cancel_action` (InputMap actions). Everything project-specific lives in
-## ConsoleWiring, which this adds as a child.
+## A collapsible, resizable console: a log and a command line, independent of any game.
+## Feed log_line(), register commands on `registry`, set open_action and cancel_action; the
+## project's parts live in ConsoleWiring.
 
 const COLLAPSE_ICON: String = "▼"
 const EXPAND_ICON: String = "▲"
@@ -70,9 +69,8 @@ func _ready() -> void:
 	_apply_collapsed_state()
 
 
-## Deliberately _input(), not _unhandled_input(): it re-reads the field's focus on every
-## keypress. The open key opens/focuses the console, or types normally while the field has
-## focus. The cancel key closes it before anything else can treat it as a cancel.
+## _input(), not _unhandled_input(): it re-reads focus on every key. The open key opens or
+## focuses, or types while the field has focus; cancel closes it first.
 func _input(event: InputEvent) -> void:
 	if open_action != &"" and event.is_action_pressed(open_action):
 		if input_line_edit.has_focus():
@@ -93,9 +91,8 @@ func is_console_active() -> bool:
 	return not _is_collapsed or input_line_edit.has_focus()
 
 
-## Appends one BBCode line to the log. A `category` lets the host hide a kind of line
-## (set_category_hidden) without losing it: hidden lines come back when shown again.
-## Each category keeps its own MAX_LOG_LINES, so chatty lines never push out the others.
+## Appends a BBCode line. A `category` can be hidden (set_category_hidden) without losing
+## its lines, each category capped at MAX_LOG_LINES on its own.
 func log_line(bbcode_line: String, category: StringName = &"") -> void:
 	_log_entries.append([bbcode_line, category])
 	var oldest: int = _oldest_beyond_cap(category)
@@ -219,8 +216,7 @@ func _header_size() -> Vector2:
 	return %HeaderHBox.get_combined_minimum_size() + Vector2(12.0, 10.0)
 
 
-## Drag-resize from the top-left corner; the bottom-right corner stays anchored. Only while
-## expanded: the handle is hidden when collapsed.
+## Drag-resize from the top-left corner, the bottom-right staying anchored; only expanded.
 func _on_resize_handle_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
@@ -249,8 +245,7 @@ func _apply_focus_style(is_focused: bool) -> void:
 	input_line_edit.add_theme_stylebox_override("focus", box)
 
 
-## LogScroll does the scrolling (LogLabel just fits its content). Its max_value only
-## updates after layout, so wait a frame before snapping to the bottom.
+## LogScroll's max_value updates after layout, so wait a frame before scrolling down.
 func _scroll_log_to_bottom() -> void:
 	# A line logged while the menu's console is being freed has no tree to wait on.
 	if not is_inside_tree():

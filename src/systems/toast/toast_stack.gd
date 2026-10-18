@@ -1,8 +1,8 @@
 class_name ToastStack
 extends RefCounted
 
-## Shows toasts stacked, newest on top, so a burst is never overwritten. Every toast is its
-## own copy of the template label, presented by its own BannerPresenter and freed once faded.
+## Toasts stacked newest on top, each its own copy of the template label and presenter,
+## freed once faded.
 
 const STACK_SEPARATION: int = 2
 ## Added to a toast shown again while its first copy is still up, instead of a second copy.
@@ -14,8 +14,7 @@ var _flash_seconds: float
 var _hold_seconds: float
 var _fade_seconds: float
 
-## Longer text stays up longer: hold = hold_seconds + this per character, clamped to
-## min/max_hold_seconds. Zero keeps every toast at the same hold_seconds.
+## Hold grows by this per character, clamped to min/max_hold_seconds; 0 = fixed hold.
 var hold_per_character: float = 0.0
 var min_hold_seconds: float = 0.0
 var max_hold_seconds: float = INF
@@ -27,8 +26,7 @@ var _showing: Array[BannerPresenter] = []
 var _repeats: Dictionary = {}
 
 
-## The template label supplies the look and the stack's screen rect; it is hidden and stays
-## as the prototype. Must be in the tree.
+## The template supplies the look and the stack's rect; it stays hidden. Must be in the tree.
 func _init(template: Label, flash_seconds: float, hold_seconds: float, fade_seconds: float) -> void:
 	_template = template
 	_flash_seconds = flash_seconds
@@ -65,8 +63,8 @@ func _present(shown_text: String, text: String, count: int) -> void:
 	label.show()
 	label.custom_minimum_size.y = _template.offset_bottom - _template.offset_top
 	_stack.add_child(label)
-	# Newest on top: toasts dismissed early keep their slot while they fade, so a burst
-	# appended at the bottom would creep down the screen over other UI.
+	# Newest on top: early-dismissed toasts keep their slot while fading, so appending would
+	# creep the stack down the screen.
 	_stack.move_child(label, 0)
 
 	_make_room()

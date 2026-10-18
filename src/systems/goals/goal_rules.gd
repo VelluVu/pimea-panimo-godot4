@@ -1,8 +1,7 @@
 class_name GoalRules
 extends RefCounted
 
-## The pure decisions behind a GoalBoard, with no state or signals, so they can be
-## unit-tested.
+## The pure decisions behind a GoalBoard, for tests.
 
 enum Outcome { PENDING, SUCCEEDED, FAILED }
 
@@ -24,10 +23,8 @@ static func matching_slots(goals : Array[GoalData], kind : int, detail : int = -
 	return slots
 
 
-## A random pool goal whose kind no active slot already has, so concurrent goals
-## differ in kind and tiers of one goal never show together. `active_goals`
-## includes the slot being replaced, so its replacement is a different kind too.
-## Null when the pool has nothing left.
+## A random pool goal of a kind no active slot has (the slot being replaced included), or
+## null when the pool has nothing left.
 static func pick_new_goal(pool : Array[GoalData], active_goals : Array[GoalData]) -> GoalData:
 	var active_kinds : Dictionary = {}
 	for goal : GoalData in active_goals:

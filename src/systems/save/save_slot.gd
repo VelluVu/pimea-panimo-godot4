@@ -1,9 +1,8 @@
 class_name SaveSlot
 extends Node
 
-## One saved Resource in one file, written through SaveFile and stamped with a version:
-## newer saves are refused, older ones migrated. Saves on close when save_on_quit is set.
-## The wiring subclass overrides save_game() and load_game().
+## One saved Resource, written through SaveFile and versioned: newer saves refused, older
+## migrated. The wiring overrides save_game() and load_game().
 
 var save_path: String = "user://savegame.tres"
 ## Bump whenever a saved field is renamed, removed or changes meaning, and add

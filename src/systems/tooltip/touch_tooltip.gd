@@ -1,10 +1,8 @@
 class_name TouchTooltip
 extends CanvasLayer
 
-## Tooltips for touch screens, which have no hover: pressing and holding a Control shows its
-## tooltip above the finger; it closes soon after the finger lifts, or on the next tap. Add
-## one to each scene's UI root. Only reacts to mouse events emulated from touch, so mouse
-## players see no change.
+## Touch tooltips: press and hold a Control to show its tooltip above the finger, closing
+## soon after lifting. Only reacts to touch-emulated mouse events.
 
 ## Above every window and the level-up cards.
 const LAYER: int = 120

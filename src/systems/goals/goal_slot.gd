@@ -1,9 +1,7 @@
 class_name GoalSlot
 extends RefCounted
 
-## One of a GoalBoard's concurrent slots: the goal and its tracking state. A null
-## goal means the slot is empty: rolling is not allowed yet, or the pool ran out
-## of distinct kinds.
+## One GoalBoard slot: the goal and its tracking. A null goal is an empty slot.
 
 var goal : GoalData = null
 var progress : int = 0

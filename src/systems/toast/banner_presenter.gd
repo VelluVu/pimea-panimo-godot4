@@ -1,20 +1,19 @@
 class_name BannerPresenter
 extends RefCounted
 
-## Flash, hold and fade presentation for one passive Label (a banner, hint or toast).
-## Each banner is one presenter configured with its own timing and look. Purely visual:
-## no input, no game state. The label must be in the scene tree when present() is called.
+## Flash, hold and fade for one passive Label (a banner, hint or toast), one presenter per
+## banner. Purely visual. The label must be in the tree when present() is called.
 
 const FLASH_COLOR : Color = Color(1.4, 1.4, 1.0, 1.0)
 const SETTLED_COLOR : Color = Color(1.0, 1.0, 1.0, 1.0)
 const TRANSPARENT_COLOR : Color = Color(1.0, 1.0, 1.0, 0.0)
 
-## The label is anchored top == bottom == 0.5, so its offsets are a half-height around the
-## anchor (see _fit_height()). The floor keeps a short banner from shrinking below a two-line box.
+## Offsets are a half-height around the centred anchor (_fit_height()); this floor keeps a
+## two-line box.
 const MIN_HALF_HEIGHT : float = 50.0
 const VERTICAL_PADDING : float = 6.0
-## A dark box behind a banner that appears over the busy bar, so speech bubbles and
-## customers behind it don't mix into the text. It fades with the label.
+## A dark box behind a banner over the busy bar, so bubbles behind it do not mix into the
+## text. Fades with the label.
 const BACKING_COLOR : Color = Color(0.05, 0.035, 0.02, 0.82)
 const BACKING_BORDER_COLOR : Color = Color(0.36, 0.27, 0.15, 0.9)
 const BACKING_MARGIN : float = 10.0
@@ -42,9 +41,8 @@ static func add_backing(label : Label) -> void:
 	label.add_theme_stylebox_override(&"normal", box)
 
 
-## bright_flash: an overexposed flash that settles to normal, versus a plain alpha fade-in.
-## fit_to_text: grow the label's offsets to its wrapped text height. hide_when_done: also
-## hide() the label at the end. on_finished runs after the fade, dismiss_early()'s included.
+## bright_flash: an overexposed flash instead of a fade-in. fit_to_text: grow to the wrapped
+## text. hide_when_done: hide() at the end. on_finished runs after the fade.
 func _init(label : Label, flash_seconds : float, hold_seconds : float, fade_seconds : float, bright_flash : bool = true, fit_to_text : bool = true, hide_when_done : bool = false, on_finished : Callable = Callable()) -> void:
 	_label = label
 	_flash_seconds = flash_seconds
@@ -104,8 +102,7 @@ func _kill_tween() -> void:
 		_tween = null
 
 
-## Long text can wrap into more lines than the box holds, and a Label never resizes its own
-## rect: re-measure the wrapped height and grow the symmetric offsets to match.
+## A Label never resizes its own rect, so wrapped text grows the offsets here.
 func _fit_height() -> void:
 	var font : Font = _label.get_theme_font("font")
 	var font_size : int = _label.get_theme_font_size("font_size")

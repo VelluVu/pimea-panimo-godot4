@@ -1,9 +1,8 @@
 class_name BubbleLayout
 extends RefCounted
 
-## Where a speech bubble goes. Bubbles that would overlap side by side stack one step up,
-## at most MAX_STACK_STEPS; past that the older bubble collapses into a small badge instead
-## (DialogView), so a busy counter never grows a tall pile.
+## Where a speech bubble goes: overlapping ones stack up to MAX_STACK_STEPS, past that the
+## older collapses into a badge, so a busy counter never piles high.
 
 const OFFSET_Y : float = -180.0
 const STAIR_STEP : float = 34.0
@@ -11,8 +10,7 @@ const MIN_VISIBLE_Y : float = 38.0
 ## Room kept between bubbles side by side.
 const SIDE_GAP : float = 4.0
 const MAX_STACK_STEPS : int = 1
-## How far a lifted bubble comes down over the one below: about its tail's height, so only
-## the tail covers the lower bubble's top edge and both texts stay clear.
+## A lifted bubble comes down over the one below by about its tail, so both texts stay clear.
 const STACK_OVERLAP : float = 14.0
 ## A collapsed bubble's badge sits this much lower than a bubble, closer to the speaker.
 const BADGE_DROP : float = 40.0
@@ -39,8 +37,7 @@ static func choose_step(speaker_pos : Vector2, width : float, others : Array[Bub
 	return step
 
 
-## Centered over the speaker, then clamped fully inside the viewport: a wide bubble or a
-## speaker at a screen edge must not push it off screen.
+## Centred over the speaker and clamped inside the viewport.
 static func position_for(speaker_pos : Vector2, step : int, bubble_size : Vector2, viewport_size : Vector2) -> Vector2:
 	var target_x : float = speaker_pos.x - bubble_size.x * 0.5
 	var target_y : float = speaker_pos.y + OFFSET_Y - step * STAIR_STEP
@@ -49,9 +46,8 @@ static func position_for(speaker_pos : Vector2, step : int, bubble_size : Vector
 		clampf(target_y, 0.0, maxf(0.0, viewport_size.y - bubble_size.y)))
 
 
-## Top edge for a bubble `height` tall stacked over open bubbles whose top edges are
-## `tops`: its tail rests STACK_OVERLAP over the highest of them. Below MIN_VISIBLE_Y it
-## does not fit.
+## Top edge for a bubble stacked over open bubbles at `tops`, its tail STACK_OVERLAP over the
+## highest; below MIN_VISIBLE_Y it does not fit.
 static func stacked_y(tops : Array[float], height : float) -> float:
 	var highest : float = INF
 	for top : float in tops:

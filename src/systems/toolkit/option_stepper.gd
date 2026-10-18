@@ -1,9 +1,8 @@
 class_name OptionStepper
 extends RefCounted
 
-## Puts < and > buttons around an OptionButton, so the next or previous item is one tap
-## away without opening the list. Skips disabled items, wraps around at the ends, and emits
-## item_selected like a pick from the list would.
+## < and > buttons around an OptionButton: skip disabled items, wrap at the ends, emit
+## item_selected.
 ##   OptionStepper.wrap(my_option_button)
 
 const BUTTON_SIZE: Vector2 = Vector2(26, 26)

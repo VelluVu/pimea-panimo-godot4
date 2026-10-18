@@ -1,9 +1,8 @@
 class_name InputWiring
 extends InputBindings
 
-## This project's shortcuts and their Finnish wording: the one file to edit after copying
-## the input system. The game's InputManager autoload extends this, so game code reads
-## the action names as InputManager.ACTION_*.
+## This project's shortcuts and wording: the file to edit after copying the input system.
+## InputManager extends it, so game code reads InputManager.ACTION_*.
 
 const ACTION_CANCEL: StringName = &"menu_cancel"
 const ACTION_OPEN_CONSOLE: StringName = &"open_console"

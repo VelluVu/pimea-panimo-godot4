@@ -1,10 +1,8 @@
 class_name AudioPlayback
 extends Node
 
-## Sound effects, music and UI clicks. Sound effects share a small pool so overlapping
-## ones don't cut each other off; music is either one looping track or a shuffled
-## playlist. Both keep playing while the tree is paused, since menus pause it. The
-## project picks the buses, the click and what to play in its wiring subclass.
+## Sound effects, music and UI clicks. Effects share a pool so overlaps don't cut off; music
+## loops one track or shuffles a playlist. Both play on while menus pause the tree.
 
 var sfx_bus: StringName = &"SFX"
 var music_bus: StringName = &"Music"

@@ -1,10 +1,9 @@
 class_name GoalWiring
 extends GoalBoard
 
-## This game's daily goals: the one file to edit after copying the goals system.
-## Feeds progress from BrewerySignals, ends the period on TimeManager.day_changed,
-## pays rewards to the Brewery and keeps the slots on the Brewery so they are saved
-## with the run. The game's DailyGoalManager autoload extends this.
+## This game's daily goals: the file to edit after copying the goals system. Feeds progress
+## from BrewerySignals, ends the period on day_changed, pays rewards and keeps the slots on
+## the Brewery for the save.
 
 ## With the paid amounts, for the toast and the day recap.
 signal daily_goal_resolved(goal_name: String, succeeded: bool, money: int, reputation: int, xp: int, risk: int)
@@ -64,8 +63,8 @@ func _on_keg_shipped_to_bar(_style_name : String, _bar_name : String, bottles : 
 		add_progress(DailyGoalData.GoalType.SHIP_TO_BAR, 1)
 
 
-## A failed special event fails an active SPECIAL_EVENT goal outright, without a
-## penalty: the brewery tried, it just lacked what was asked for.
+## A failed special event fails an active SPECIAL_EVENT goal without penalty: the brewery
+## tried.
 func _on_special_event_resolved(succeeded : bool, _event_data : SpecialEventData) -> void:
 	if succeeded:
 		add_progress(DailyGoalData.GoalType.SPECIAL_EVENT, 1)
@@ -139,8 +138,7 @@ func _after_replace(goal : GoalData, succeeded : bool, apply_penalty : bool, con
 	daily_goal_resolved.emit(goal.goal_name, succeeded, effects.money, effects.reputation, effects.xp, effects.risk)
 
 
-## A new run and a save from before goals were persisted both hold the defaults
-## (null and 0), so one path covers a new run and a loaded one.
+## A new run and an old save both hold the defaults, so one path covers both.
 func _load_from_brewery(brewery : Brewery) -> void:
 	for i : int in get_slot_count():
 		load_slot(i, brewery.active_daily_goals[i], brewery.daily_goal_progress[i],

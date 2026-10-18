@@ -1,10 +1,8 @@
 class_name SaveFile
 extends RefCounted
 
-## Crash-safe read/write of one saved Resource, independent of the game. write() saves to
-## a temp file, backs up the current save, then renames the temp into place; read() falls
-## back to the backup. Every sibling path keeps .tres, since ResourceSaver picks the
-## format from the extension.
+## Crash-safe read and write of one saved Resource: write to a temp file, back up the save,
+## rename into place; read() falls back to the backup. Paths keep .tres for ResourceSaver.
 
 static func temp_path(path : String) -> String:
 	return path.get_basename() + ".tmp.tres"

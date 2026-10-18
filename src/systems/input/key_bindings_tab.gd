@@ -1,9 +1,8 @@
 class_name KeyBindingsTab
 extends VBoxContainer
 
-## A settings tab that lists every rebindable action with its key. Built from the
-## InputBindings passed to setup(), so a new action shows up without touching a scene.
-## The owner forwards key presses to try_capture() from its _input().
+## A settings tab of every rebindable action and its key, built from the InputBindings, so a
+## new action needs no scene change. The owner forwards keys to try_capture().
 
 const BINDING_BUTTON_MIN_WIDTH : float = 110.0
 

@@ -1,9 +1,9 @@
 class_name GoalBoard
 extends Node
 
-## A few concurrent goals rolled from a pool, one per slot. A goal settles the moment it
-## succeeds (achieve) or fails (avoid), end_period() settles the rest, and settling rolls
-## a replacement. The wiring subclass feeds progress and pays rewards via the hooks below.
+## Concurrent goals rolled from a pool, one per slot. A goal settles when it succeeds
+## (achieve) or fails (avoid), end_period() settles the rest, and settling rolls a
+## replacement. The wiring feeds progress and pays rewards via the hooks.
 
 ## A slot's goal settled. Fired after the replacement was rolled.
 signal goal_resolved(goal : GoalData, succeeded : bool)
@@ -85,9 +85,8 @@ func get_rolls_left() -> int:
 	return -1 if limit < 0 else maxi(0, limit - rolls_used)
 
 
-## Settles every active goal: a surviving avoid goal succeeds, an unfinished
-## achieve goal ran out of time. Starts a new period, so the replacements count
-## towards the next period's roll limit.
+## Settles every goal (a surviving avoid goal succeeds, an unfinished achieve goal fails)
+## and starts a new period for the roll limit.
 func end_period() -> void:
 	rolls_used = 0
 	for i : int in _slots.size():
@@ -129,10 +128,9 @@ func _check_outcome(slot_index : int) -> void:
 			_resolve_goal(slot_index, false)
 
 
-## The replacement is rolled between the two hooks: a reward that changes the
-## state a new goal snapshots goes in _before_replace(), anything that can feed
-## progress back into the board goes in _after_replace(), or a goal could see its
-## own reward and settle again.
+## The replacement rolls between the hooks: rewards that change what a new goal snapshots go
+## in _before_replace(), anything feeding progress back in _after_replace(), or a goal could
+## see its own reward.
 func _resolve_goal(slot_index : int, succeeded : bool, apply_penalty : bool = true) -> void:
 	var goal : GoalData = _slots[slot_index].goal
 	if goal == null:
