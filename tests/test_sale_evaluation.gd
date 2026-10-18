@@ -84,3 +84,12 @@ func test_discreet_risk_rounds_the_fraction_by_its_odds() -> void:
 
 func test_discreet_risk_leaves_calming_sales_alone() -> void:
 	assert_eq(SaleEvaluation.discreet_risk(-2, 0.5, 0.0), -2)
+
+
+func test_a_customer_refuses_beer_below_their_bar() -> void:
+	var customer := CustomerData.new()
+	customer.min_quality = 1.0
+	assert_true(SaleEvaluationScript.refuses(customer, 0.9))
+	assert_false(SaleEvaluationScript.refuses(customer, 1.0), "exactly at the bar is good enough")
+	customer.buys_below_bar = true
+	assert_false(SaleEvaluationScript.refuses(customer, 0.5), "a connoisseur buys it anyway")
