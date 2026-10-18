@@ -1,9 +1,8 @@
 class_name KettleHeat
 extends RefCounted
 
-## The burner and the liquid's temperature. The burner follows the heat button with a
-## lag, so heat keeps coming a moment after letting go, and the kettle loses heat all
-## the time, so holding a temperature means pulsing the button.
+## The burner follows the heat button with a lag and the kettle always loses heat, so
+## holding a temperature means pulsing the button.
 
 const MIN_TEMPERATURE : float = 15.0
 

@@ -12,8 +12,7 @@ func _init(owner : Brewery) -> void:
 	brewery = owner
 
 
-## Pre-seeds styles found in earlier runs so a new run starts knowing what the
-## player already knows. A loading save overwrites this with its own values.
+## Pre-seeds styles found in earlier runs; a loading save overwrites them.
 ## MetaProgressManager is null while BrewEngine builds its boot-time Brewery.
 func seed_from_meta() -> void:
 	if MetaProgressManager == null:
@@ -25,9 +24,8 @@ func seed_from_meta() -> void:
 		ensure_default_recipe(brewery.resolver.get_beer_style(style), false)
 
 
-## Default recipes follow the current reference recipes, so a save from an older build
-## gets the new ones (10 g hops, half-kilo malts, realistic grists). The player never
-## edits a default recipe, so nothing of theirs is lost; their own recipes stay as saved.
+## Default recipes follow the current reference recipes, so older saves get the new ones.
+## Players never edit a default recipe; their own recipes stay as saved.
 func refresh_default_recipes() -> void:
 	for recipe : BrewRecipe in brewery.saved_recipes:
 		if not recipe.is_default:
@@ -46,10 +44,8 @@ func discover_style(style : BeerStyle.Style) -> void:
 	BrewerySignals.style_discovered.emit(style)
 
 
-## Guarantees a style has a saved default recipe of its minimum ingredients,
-## returning the existing one if present. `emit_state_changed` is false from
-## Brewery._init(): it also runs while a save loads, and must not broadcast
-## half-built state.
+## The style's default recipe, made if missing. `emit_state_changed` is false from
+## Brewery._init(), which also runs mid-load and must not broadcast half-built state.
 func ensure_default_recipe(beer_style : BeerStyle, emit_state_changed : bool = true) -> BrewRecipe:
 	if beer_style == null:
 		return null

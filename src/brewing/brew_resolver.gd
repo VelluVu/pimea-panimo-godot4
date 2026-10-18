@@ -99,8 +99,7 @@ func get_price_breakdown(beer_style : BeerStyle) -> SaleBreakdown:
 	return _pricing.price_breakdown(beer_style)
 
 
-## The list price that a customer's evaluate_brew_batch() scales by quality, budget
-## and preference.
+## The list price at the counter, before the counter's multipliers.
 func get_style_base_price(beer_style : BeerStyle) -> float:
 	return _pricing.price_breakdown(beer_style).price_per_bottle
 
@@ -111,9 +110,8 @@ func _load_all_beer_styles() -> void:
 	print(LOG_LOADED_STYLES % str(active_styles.size()))
 
 
-## resolve_brew_style() is first-match-wins, so the most specific styles go first (see
-## BeerStyle.match_priority()): a wide style would otherwise swallow them by filename
-## order. Order within each group is kept.
+## First match wins, so the most specific styles go first (BeerStyle.match_priority());
+## order within a group is kept.
 func prioritize_styles() -> void:
 	var ordered : Array[BeerStyle] = []
 	for priority : int in 3:

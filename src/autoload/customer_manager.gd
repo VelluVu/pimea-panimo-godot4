@@ -1,4 +1,3 @@
-#CustomerManager (Autoload)
 extends Node
 
 
@@ -10,8 +9,7 @@ const KEY_RESPONSE = "response"
 ## True when the customer got their primary style at or above their quality bar.
 const KEY_DELIGHTED = "delighted"
 
-## Default cost of turning a customer away with nothing to sell them: small,
-## but not free, since they complain on the way out.
+## Turning a customer away with nothing to sell costs a little: they complain leaving.
 const NO_MATCH_REPUTATION_PENALTY : int = 2
 const NO_MATCH_RISK_PENALTY : int = 1
 
@@ -29,8 +27,7 @@ func _ready() -> void:
 	BrewerySignals.beer_brewed.connect(_on_beer_brewed)
 
 
-## A matching brew brings an immediate walk-in who wants that style, instead of
-## waiting for the ambient timer to roll one.
+## A matching brew brings an instant walk-in who wants that style.
 func _on_beer_brewed(style: int) -> void:
 	spawn_normal_customer(CustomerRegistry.get_customer_for_style(style))
 
@@ -57,9 +54,8 @@ func is_counter_crowded() -> bool:
 	return slots.customers().size() > CROWDED_COUNTER_SIZE
 
 
-## Throws out everyone still being served when the day is force-closed. queue_free()
-## cancels a solo sale (its timers and tweens are bound to the node); a group order's
-## coroutine stops on its own member-validity check.
+## Throws out everyone at a forced day close. queue_free() cancels a solo sale; a group
+## order stops on its own member check.
 func evict_active_customers() -> void:
 	if not slots.has_customers():
 		return
@@ -120,13 +116,12 @@ func _on_brewery_state_changed(brewery: Brewery) -> void:
 		active_spawner.start_spawning()
 	
 
-## What the customer would buy, so it can preview its pick before the sale.
+## For the customer's preview before the sale.
 func pick_batches_for(data: CustomerData) -> Array[BrewBatch]:
 	return SaleProcessor.new(BrewEngine.current_brewery).pick_batches_for(data)
 
 
-## Resolves the customer's purchase and returns their spoken response. `picks` are the
-## batches it previewed, see SaleProcessor.process().
+## The customer's spoken response; `picks` are the batches it previewed.
 func process_auto_sale(data: CustomerData, picks: Array[BrewBatch] = []) -> String:
 	return SaleProcessor.new(BrewEngine.current_brewery).process(data, picks)
 

@@ -1,11 +1,9 @@
 class_name BoilSession
 extends RefCounted
 
-## The boil: hold a rolling boil for the counted seconds and pour the hops on their marks.
-## Under BOIL_MIN the clock stops; over FOAM_FROM it foams, harder after the hot break and
-## each pour, and a full kettle boils over. Then the flame goes out for the hop stand,
-## which ends once every mark is done. A pour is judged on release: in its window and
-## within the gram tolerance hits, one of the two is a half.
+## Hold a rolling boil for the counted seconds and pour the hops on their marks. Too cool
+## stops the clock, too hot foams and boils over. A pour is judged on release: in its
+## window and on its grams hits, one of the two is a half.
 
 signal boil_started()
 signal boil_stopped()
@@ -43,9 +41,8 @@ var in_band_time : float = 0.0
 var foam : float = 0.0
 var boil_overs : int = 0
 var marks : Array[BoilMark] = []
-## Every mark has a sack of its own, keyed by the mark's index in `marks`, holding
-## exactly its grams (or pieces): emptying the sack is the right amount, even when one
-## hop is split over several marks.
+## One sack per mark (keyed by its index in `marks`) holding exactly its grams, so an
+## emptied sack is right even when a hop is split over marks.
 var sacks : Dictionary = {}
 var gram_tolerance : float = GRAM_TOLERANCE
 var window_widen : float = 0.0

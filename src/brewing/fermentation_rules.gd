@@ -1,10 +1,9 @@
 class_name FermentationRules
 extends RefCounted
 
-## A brew ferments for a while before it goes into a keg. The keg is picked when
-## fermentation ends, so a keg washed meanwhile still helps. A dirty keg can sour the
-## batch: the chance grows with the dirt, and cleaning perks cut it. How badly it sours is
-## rolled too, and dirt makes it worse.
+## A brew ferments for a while; its keg is picked when it ends, so a keg washed meanwhile
+## still helps. A dirty keg can sour it, more often and worse the dirtier; cleaning perks
+## cut the chance.
 
 enum SourLevel { NONE, LIGHT, CLEAR, STRONG }
 

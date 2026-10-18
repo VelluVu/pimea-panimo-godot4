@@ -1,4 +1,3 @@
-#SpecialEventManager (Autoload)
 extends Node
 
 signal special_event_triggered(event_data: SpecialEventData)
@@ -66,10 +65,7 @@ func process_accept(event_data: SpecialEventData) -> String:
 		return event_data.fail_dialogue
 
 
-## Only reachable via SpecialEventWindow's timeout, not a player choice —
-## the window no longer offers a decline button (the brewery always says
-## "Joo"; see try_fulfill/fail_dialogue for how a genuine lack of stock
-## already gets handled instead).
+## Only the window's timeout gets here: the player let the offer pass.
 func process_reject(event_data: SpecialEventData) -> String:
 	if BrewEngine.current_brewery != null:
 		event_data.on_rejected(BrewEngine.current_brewery)

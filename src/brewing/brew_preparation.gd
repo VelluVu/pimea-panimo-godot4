@@ -2,10 +2,10 @@ class_name BrewPreparation
 extends Resource
 
 
-# Avain: int (Ingredient ID) -> Arvo: int (Määrä fyysisesti pöydällä juuri nyt)
+# Ingredient id -> amount on the table now.
 @export var selected_contents: Dictionary = {}
 
-# Avain: int (Ingredient ID) -> Arvo: int (Ladatun reseptin vaatima määrä), tyhjä jos reseptiä ei ole ladattu
+# Ingredient id -> amount the loaded recipe needs; empty without one.
 @export var active_recipe_target: Dictionary = {}
 @export var active_recipe_style_name: String = "" # Beer style display name only — panel space is tight, the recipe's own name (e.g. "#1", "(perusresepti)") doesn't fit.
 

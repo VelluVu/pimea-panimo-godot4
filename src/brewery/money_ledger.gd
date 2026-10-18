@@ -1,9 +1,8 @@
 class_name MoneyLedger
 extends RefCounted
 
-## Where the run's money came from and went, for the top bar's money tooltip: today's
-## totals per Source and the net of the last few days. Brewery.change_money() records
-## into its money_today, and TimeManager closes the day after the night's bills.
+## Where the run's money came from and went, for the money tooltip: today's totals per
+## Source and the last days' net. TimeManager closes the day after the night's bills.
 
 enum Source { OTHER, SALES, TIPS, SHIPMENTS, INGREDIENTS, BREWING, BILLS, UPGRADES, LVV, EVENTS, GOALS }
 

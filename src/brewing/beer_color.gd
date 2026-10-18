@@ -1,9 +1,8 @@
 class_name BeerColor
 extends RefCounted
 
-## A beer's colour from its EBC, in flat Endesga 32 steps rather than a blend so the
-## pixel art keeps its palette. Also repaints the liquid of a glass texture and of the
-## bartender's pour.
+## A beer's colour from its EBC, in flat Endesga 32 steps so the pixel art keeps its
+## palette. Also repaints the liquid in glass and pour textures.
 
 ## Upper EBC bound of each band, paired with BAND_COLORS; darker past the last one.
 const BAND_MAX_EBC : Array[int] = [8, 16, 26, 40, 60, 90]

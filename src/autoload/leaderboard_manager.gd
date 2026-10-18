@@ -1,4 +1,3 @@
-#LeaderboardManager (Autoload)
 extends Node
 
 ## Past-run results in their own ConfigFile, one entry per run, scored by RunScore.
@@ -8,10 +7,8 @@ const SECTION : String = "leaderboard"
 const KEY_ENTRIES : String = "entries"
 const MAX_ENTRIES : int = 20
 
-## Entries scored with an older formula are moved out of the list, not mixed into it,
-## unless they keep every part of their score (RESCORABLE_VERSION and later): those are
-## scored again with RunScore.rescore(). Entries from before the brewery's worth was
-## stored rescore without it.
+## Older entries are rescored with RunScore.rescore() when they keep every part of their
+## score (RESCORABLE_VERSION on), else archived out of the list.
 const SCORE_VERSION : int = 8
 const RESCORABLE_VERSION : int = 2
 const KEY_ARCHIVED_ENTRIES : String = "archived_entries"
@@ -78,9 +75,7 @@ func get_entries() -> Array:
 	return _config.get_value(SECTION, KEY_ENTRIES, [])
 
 
-## 1-based position `score` would land at among the currently saved
-## entries (not counting itself) — used right after a run is recorded to
-## show "Sijoitus: #N" / "UUSI ENNÄTYS!" on the end screen.
+## 1-based rank `score` would get among the saved entries, for the end screen.
 func get_rank(score : int) -> int:
 	var entries : Array = get_entries()
 	var rank : int = 1

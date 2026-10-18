@@ -28,9 +28,8 @@ func disconnect_signals() -> void:
 	GUISignals.brew_day_finished.disconnect(start_brew)
 
 
-## Bottling always costs something: part of the raw yield is lost
-## (BOTTLE_LOSS_RATE) and every bottle needs a label. Shared with the dev
-## console's batch cheats so both charge the same.
+## Part of the raw yield is lost and every bottle needs a label. The console's batch cheats
+## share it, so both charge the same.
 func apply_bottling_costs(raw_yield : int) -> Dictionary:
 	var effective_yield : int = StylePricing.get_effective_bottle_yield(raw_yield)
 	var bottles_lost : int = raw_yield - effective_yield

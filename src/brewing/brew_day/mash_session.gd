@@ -1,10 +1,9 @@
 class_name MashSession
 extends RefCounted
 
-## The mash: heat to the malt marker, add the malts (the temperature drops), then hold
-## each step's temperature for its seconds; the clock pauses while ramping. The malts blend
-## in slowly, faster with the paddle, throwing up clumps that cut the score if left. The
-## blade breaks a clump in a few hard blows; the shaft or a slow push only carries it.
+## Heat to the malt marker, add the malts (the temperature drops), then hold each step's
+## temperature; the clock pauses while ramping. Blending throws up clumps that cut the
+## score; the blade breaks them in a few hard blows.
 
 signal malts_added()
 signal step_reached(index : int)
@@ -157,10 +156,8 @@ func is_blended() -> bool:
 	return blend >= 1.0
 
 
-## The paddle moved from `before` to `after` in `delta` seconds: two polylines of the
-## same points in liquid pixels, handle first. Segments from index `blade_from` on are
-## the blade. A clump the moving stick touches is hit if the blade there was fast
-## enough, otherwise pushed along at the stick's speed.
+## The paddle moved from `before` to `after` (liquid pixels, handle first; the blade from
+## `blade_from`). A fast blade hits a clump it touches; anything slower pushes it.
 func paddle_moved(before : PackedVector2Array, after : PackedVector2Array, blade_from : int, delta : float) -> void:
 	if delta <= 0.0 or before.size() != after.size() or after.size() < 2:
 		return

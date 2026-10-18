@@ -1,16 +1,12 @@
-#TimeManager (Autoload)
 extends Node
 
 signal day_changed(new_day : int)
 
-## How long to wait before rechecking when the day timer runs out while a
-## customer is still mid-sale. Long enough to cover a normal sale's sequence.
+## A sale still under way when the day runs out: recheck after this long.
 const DAY_END_CUSTOMER_RETRY_SECONDS : float = 5.0
 
-## Cellar aging ticks on this fixed real-time interval, not once per day close, so
-## quality moves while the player is playing (about 10 ticks per 300s day). It is
-## independent of day length and early closes on purpose: shortening a day should
-## not change how fast beer ages.
+## Aging ticks in real time, so beer ages at the same pace whatever the day length or an
+## early close.
 const AGING_TICK_SECONDS : float = 30.0
 ## Fermentation counts down in steps this long, see Fermenter.
 const FERMENT_TICK_SECONDS : float = 1.0
@@ -49,25 +45,20 @@ func _ready() -> void:
 	BrewEngine.brewery_changed.connect(_on_brewery_changed)
 
 
-## A different run became current. The autoload's clock outlives the run, so stop
-## the previous one's and re-derive it: a new game stays stopped (free practice
-## time, first-brew hint) while a loaded save with a batch resumes.
+## The clock outlives a run: a new game stays stopped (free practice until the first
+## brew), a loaded save with a batch resumes.
 func _on_brewery_changed(brewery: Brewery) -> void:
 	day_timer.stop()
 	_on_brewery_state_changed(brewery)
 
 
-## Starts the day clock once there is a brewed batch: a fresh run's first brew, or
-## a loaded save that already has one. Idempotent, so later state changes never
-## restart it. Resumes from the saved time left rather than a full day, see
-## Brewery.day_time_remaining_seconds.
+## Starts the day clock once a batch exists, from the saved time left. Idempotent.
 func _on_brewery_state_changed(brewery: Brewery) -> void:
 	if day_timer.is_stopped() and not brewery.inventory.brew_batches.is_empty():
 		day_timer.start(DayRules.clock_start_seconds(brewery.day_time_remaining_seconds, day_duration_seconds))
 
 
-## Starts the clock without waiting for a brewed batch: dev mode skips the
-## tutorial gate. Idempotent, so it never restarts a running clock.
+## Dev mode starts the clock without the first brew. Idempotent.
 func start_clock_immediately() -> void:
 	if day_timer.is_stopped():
 		day_timer.start(day_duration_seconds)
@@ -89,8 +80,7 @@ func _on_ferment_tick() -> void:
 		Fermenter.new(brewery).tick(FERMENT_TICK_SECONDS)
 
 
-## The automatic timer has no player to confirm with, so it waits a short beat and
-## rechecks instead of ending the day under a customer who is mid-sale.
+## No player to confirm with, so it rechecks shortly instead of ending the day mid-sale.
 func _on_day_timeout() -> void:
 	if CustomerManager.has_active_customers():
 		day_timer.start(DAY_END_CUSTOMER_RETRY_SECONDS)
@@ -100,10 +90,8 @@ func _on_day_timeout() -> void:
 	_advance_day()
 
 
-## Forces a day to pass now: the dev console's "day" command, and the close-day
-## confirmation. Charges the early-close cost first, using how much of today's
-## timer was spent as the earliness. Does nothing before the clock has started:
-## a stray click during free practice must not cost a penalty.
+## Passes a day now (console "day", close-day button), charging the early close first.
+## Nothing before the clock starts, so a stray click in free practice costs nothing.
 func force_advance_day() -> void:
 	if day_timer.is_stopped():
 		return
@@ -187,8 +175,7 @@ func _charge_daily_utility_bills(brewery : Brewery) -> void:
 	brewery.check_bankruptcy()
 
 
-## Writes the time left on the day clock onto the Brewery before a save. A stopped
-## clock keeps the -1.0 "not started" marker.
+## Writes the time left onto the Brewery before a save; a stopped clock keeps -1.0.
 func sync_remaining_time_to_brewery(brewery : Brewery) -> void:
 	if day_timer.is_stopped():
 		return

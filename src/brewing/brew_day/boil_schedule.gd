@@ -1,9 +1,8 @@
 class_name BoilSchedule
 extends RefCounted
 
-## The boil's timeline in counted seconds; the clock stops whenever the boil does.
-## After BOIL_SECONDS the flame goes out and a hop stand follows, as in a real brewery:
-## the aroma hops go in then, with time to aim, and the clock no longer waits.
+## The boil's timeline in counted seconds; the clock stops whenever the boil does. After
+## BOIL_SECONDS comes a hop stand: the aroma hops go in and the clock runs on.
 
 const BOIL_SECONDS : float = 15.0
 const HOP_STAND_SECONDS : float = 3.0

@@ -1,8 +1,8 @@
 class_name LegacySaveText
 extends RefCounted
 
-## Text fixes for saves written by older builds that would otherwise fail to load at
-## all, so they cannot wait for SaveSlot's _migrate(), which runs after loading.
+## Text fixes for older saves that would not load at all, so SaveSlot's _migrate() (after
+## loading) is too late.
 
 ## Run modifier cards were removed: a save still links its card's .tres, and a missing
 ## [ext_resource] makes Godot reject the whole file.

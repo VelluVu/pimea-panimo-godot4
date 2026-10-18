@@ -1,11 +1,9 @@
 class_name MaltPackMigration
 extends RefCounted
 
-## Malts that went from whole kilos to smaller packs: an older save's amounts of them are
-## multiplied to keep the same weight, in the warehouse, in saved recipes and on the
-## brewing table. Save version 4 sells the specialty malts in 100 g packs, version 5 the
-## malts used both as a base and in small amounts in 500 g packs, and version 6 moves
-## Münchenin on to 100 g packs, since a few hundred grams of it seasons many styles.
+## Malts that moved from whole kilos to smaller packs: an older save's amounts are scaled to
+## the same weight in the warehouse, recipes and table. Save version 4: specialty malts in
+## 100 g, 5: dual-use malts in 500 g, 6: Münchenin in 100 g.
 
 ## Caramel, brown, biscuit and dark caramel malt.
 const PACKED_IDS : Array[int] = [102, 105, 106, 107]

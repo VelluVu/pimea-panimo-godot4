@@ -1,9 +1,8 @@
 class_name CellarMachines
 extends RefCounted
 
-## Machines are cellar upgrades bought once with a season's money. Every later season
-## starts with them owned (MetaProgressManager keeps them), and each has an on/off
-## switch in the cellar upgrades window. See CellarUpgradeData.is_machine.
+## Machines are cellar upgrades bought once and owned in every later season
+## (MetaProgressManager), each with an on/off switch.
 
 ## Washes every emptied keg spotless, so the keg wash minigame is never needed.
 const KEG_WASHER : String = "tynnyrinpesukone"

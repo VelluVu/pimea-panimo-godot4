@@ -1,10 +1,9 @@
 class_name KegRules
 extends RefCounted
 
-## A batch is one 20 L keg, and every brew needs an empty one. Empty kegs keep their
-## cleanliness, 0 (just emptied) to 1 (spotless); dirt never grows while one waits.
-## Only a nearly full batch counts as a keg for the "Vie tynnyri baariin" goal. The bar
-## has a tap per keg but SPARE_KEGS, so full kegs past the taps wait in the warehouse.
+## A batch is one 20 L keg; every brew needs an empty one, clean 0 (just emptied) to 1
+## (spotless). Only a nearly full batch counts for "Vie tynnyri baariin". The bar has a
+## tap per keg but SPARE_KEGS; full kegs past the taps wait in the warehouse.
 
 const MIN_SERVINGS : int = 40
 ## Taps a season starts with; the keg upgrade adds a keg and a tap per level.
@@ -40,8 +39,8 @@ static func dirty_count(kegs : Array[float]) -> int:
 	return kegs.filter(is_dirty).size()
 
 
-## Removes the cleanest keg from `kegs` and returns its cleanliness. A batch made with no
-## keg free (only the developer cheats do that) gets a clean one out of thin air.
+## Takes the cleanest keg from `kegs` and returns its cleanliness; with none (developer
+## cheats) a clean one appears.
 static func take_cleanest(kegs : Array[float]) -> float:
 	if kegs.is_empty():
 		return CLEAN

@@ -40,9 +40,8 @@ static func get_effective_bottle_yield(raw_yield : int) -> int:
 	return maxi(1, raw_yield - roundi(raw_yield * BOTTLE_LOSS_RATE))
 
 
-## price = raw cost + max(raw cost * PROFIT_MARKUP_RATE, MIN_PROFIT_PER_BOTTLE)
-## * profit_margin_multiplier. Static and independent of IngredientDatabase so it can
-## be unit-tested. `abv` is for display only.
+## Raw cost plus max(cost x PROFIT_MARKUP_RATE, MIN_PROFIT_PER_BOTTLE) x
+## profit_margin_multiplier. Static for tests; `abv` is for display only.
 static func calculate_price_breakdown(style_name : String, abv : float, raw_cost_per_bottle : float, profit_margin_multiplier : float = 1.0) -> SaleBreakdown:
 	var breakdown := SaleBreakdown.new()
 	breakdown.style_name = style_name

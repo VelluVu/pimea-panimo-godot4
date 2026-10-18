@@ -103,8 +103,7 @@ const LVV_RAID_TITLE : String = "LVV-TARKASTUS!"
 const LVV_RAID_MESSAGE : String = "Alkoholitarkastajat ryntäsivät kellariin ja takavarikoivat %s annosta valmista olutta! Lisäksi he kirjoittivat sakon (%.1f €), ja maineesi laski %s pistettä."
 const LVV_RAID_CLOSE_TEXT : String = "Selvä..."
 
-## RunPerk.get_stat_summary() lines — only the non-neutral fields are ever
-## shown (see that function), so every perk's numbers are always positive.
+## RunPerk.get_stat_summary() lines; only non-neutral fields show, so they are positive.
 const PERK_QUALITY_STAT_STRING : String = "Laatu: %s"
 const PERK_REPUTATION_STAT_STRING : String = "Maineen kertymä: %s"
 const PERK_TIP_STAT_STRING : String = "Tipit: %s"
@@ -134,9 +133,7 @@ const PERK_BAR_FIGHT_CHANCE_STAT_STRING : String = "Tappelun todennäköisyys: %
 ## Explains PerkStats.value_text() wherever perk values are listed.
 const PERK_VALUE_LEGEND : String = "+ % lasketaan yhteen, × kertoo kokonaisuuden."
 
-## RunPerk.get_tier_label() — shown on LevelUpWindow's cards (color-coded
-## via RunPerk.get_tier_color()) so a level-up's rarity is actually visible
-## instead of every perk offer looking the same.
+## RunPerk.get_tier_label(), on LevelUpWindow's cards in the tier colour.
 const PERK_TIER_COMMON : String = "Tavallinen"
 const PERK_TIER_RARE : String = "Harvinainen"
 const PERK_TIER_LEGENDARY : String = "Legendaarinen"

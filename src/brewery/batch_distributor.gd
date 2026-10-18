@@ -1,13 +1,10 @@
 class_name BatchDistributor
 extends RefCounted
 
-## Moves finished batches out of the warehouse without a walk-in customer by
-## shipping a keg to a BarContact. The payout math is static so it stays
-## unit-testable without a live Brewery.
+## Ships a keg to a BarContact instead of selling it at the counter.
 
-## Quality clamp when shipping to a bar: a floor above 0 (bars expect drinkable
-## beer) and a ceiling above 1.0 (an excellent batch earns a premium). The ceiling
-## is BrewQuality.MAX_MULTIPLIER, so a fully tuned recipe is paid in full.
+## Quality clamp for a bar's payout: drinkable beer at least, and up to
+## BrewQuality.MAX_MULTIPLIER, so a fully tuned recipe is paid in full.
 const SHIP_TO_BAR_QUALITY_CLAMP_MIN : float = 0.3
 
 const SHIP_TO_BAR_QUALITY_CLAMP_MAX : float = 1.5
@@ -29,15 +26,14 @@ func disconnect_signals() -> void:
 	GUISignals.batch_hold_toggled.disconnect(_on_batch_hold_toggled)
 
 
-## Static so the payout math can be unit-tested without a live Brewery.
+## Static for tests.
 static func calculate_ship_payout(wholesale_price_per_bottle : float, quality : float, amount_bottles : int, price_multiplier : float) -> float:
 	var quality_factor : float = clampf(quality, SHIP_TO_BAR_QUALITY_CLAMP_MIN, SHIP_TO_BAR_QUALITY_CLAMP_MAX)
 	return snappedf(wholesale_price_per_bottle * price_multiplier * quality_factor * amount_bottles, 0.1)
 
 
-## Ships a whole batch to a bar. Raises risk, since the beer now circulates outside
-## the cellar, unless it is alcohol-free (BarContact.risk_for()). Refuses a bar the
-## player's reputation has not unlocked.
+## Ships a whole batch to a bar the reputation has unlocked. Raises risk unless the beer is
+## alcohol-free (BarContact.risk_for()).
 func _on_ship_batch_to_bar_requested(batch : BrewBatch, bar : BarContact) -> void:
 	if batch == null or bar == null or not brewery.inventory.brew_batches.has(batch) or batch.amount_bottles <= 0:
 		return

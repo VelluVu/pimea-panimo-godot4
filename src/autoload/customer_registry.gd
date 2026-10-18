@@ -1,8 +1,6 @@
-#CustomerRegistry (Autoload)
 extends Node
 
-## Fired once per customer title, the first time all of its appearance gates are met,
-## across every run ever played. See CustomerUnlockTracker.
+## Once per customer title, the first time its appearance gates are met in any run.
 signal customer_unlocked(title : String)
 
 const WARNING_POOL_EMPTY = "CustomerRegistry: Customer pool is empty!"
@@ -38,9 +36,8 @@ func _ready() -> void:
 	_rescan_unlocks()
 
 
-## During an active day event, rerolls toward its featured titles at the event's own
-## bias chance. Falls back to the normal eligible pool if the roll misses, no event is
-## active, or no featured title is currently eligible.
+## During a day event, rerolls toward its featured titles at the event's bias chance,
+## else the normal pool.
 func get_random_customer_data() -> CustomerData:
 	if customer_pool.is_empty():
 		return null
@@ -77,8 +74,7 @@ func keeps_group_away(event_data : GroupVisitEventData) -> bool:
 	return event_data.customer_data_options.any(func(customer : CustomerData) -> bool: return _kept_away(customer, brewery))
 
 
-## Weighted by the agentti/mafioso appearance perks ("Terävä silmä"); every other
-## title weighs 1.0, so without those perks this is a plain uniform pick.
+## Weighted by the agentti/mafioso appearance perks; everyone else weighs 1.0.
 func _pick_weighted_customer(customers : Array[CustomerData]) -> CustomerData:
 	var brewery : Brewery = BrewEngine.current_brewery
 	if brewery == null:
@@ -98,10 +94,8 @@ func _pick_weighted_customer(customers : Array[CustomerData]) -> CustomerData:
 	return WeightedPicker.pick(customers, weights) as CustomerData
 
 
-## Picks a customer who wants this style (primary preferred, then secondary) for the
-## instant walk-in after a matching brew. Skips randomizes_preference and rolls_favourite
-## customers, whose favourite is rolled on spawn, and picks_at_random ones, who have none.
-## Falls back to any random customer.
+## A customer who wants this style, for the walk-in after a matching brew. Customers with
+## a rolled or no favourite are skipped; falls back to any customer.
 func get_customer_for_style(style: BeerStyle.Style) -> CustomerData:
 	var primary_matches : Array[CustomerData] = []
 	var secondary_matches : Array[CustomerData] = []

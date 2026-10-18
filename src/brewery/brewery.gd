@@ -3,9 +3,8 @@ extends Resource
 
 
 const LVV_RAID_THRESHOLD : int = 100
-## Reputation needed for the "survived" ending, so scraping through the last
-## day on the ropes doesn't read as a win. Set above the rarer-customer tier
-## (CustomerData.min_reputation_to_appear = 70) to take sustained reputation.
+## Reputation the "survived" ending needs, above the rarer customers' 70, so scraping
+## through the last day does not read as a win.
 const SURVIVAL_MIN_REPUTATION : int = 100
 
 const TUTORIAL_MALT_TARGET_KG : int = 3
@@ -17,23 +16,20 @@ const LVV_INSPECTOR_VISIT_RISK : int = 45
 const XP_PER_SUCCESSFUL_BREW : int = 20
 const XP_PER_NEW_STYLE_DISCOVERY_BONUS : int = 20
 const XP_PER_BOTTLE_SOLD : int = 3
-## Level n needs BASE + (n - 1) * GROWTH xp: a quick first level-up that
-## slows steadily over a long run.
+## Level n needs BASE + (n - 1) * GROWTH xp: a quick first level, slower after.
 const XP_LEVEL_BASE : int = 40
 const XP_LEVEL_GROWTH_PER_LEVEL : int = 20
 
 
-## Which SaveWiring.SAVE_VERSION wrote this brewery; 0 for saves that
-## predate versioning.
+## The SaveWiring.SAVE_VERSION that wrote this brewery; 0 before versioning.
 @export var save_version : int = 0
 @export var inventory : Inventory
 @export var current_day : int = 1
 ## Never resets; only feeds the end-of-run summary.
 @export var lifetime_bottles_sold : int = 0
 
-## The active daily goals and their progress, index-aligned with
-## DailyGoalManager's slots. DailyGoalManager owns the logic and writes these
-## just before a save so they survive a load.
+## The daily goals and their progress, index-aligned with DailyGoalManager's slots, which
+## writes them before a save.
 @export var active_daily_goals : Array[DailyGoalData] = [null, null, null]
 @export var daily_goal_progress : Array[int] = [0, 0, 0]
 @export var daily_goal_reputation_baseline : Array[int] = [0, 0, 0]
@@ -41,17 +37,14 @@ const XP_LEVEL_GROWTH_PER_LEVEL : int = 20
 ## Daily goals rolled today, against GoalWiring.DAILY_GOAL_ROLLS.
 @export var daily_goal_rolls_used : int = 0
 
-## Snapshot of the day timer, written before each save. -1.0 means the clock
-## has not started. Without it a load restarts the full day, so quitting and
-## continuing near day's end refunded the rest of it.
+## The day timer's time left, written before each save; -1.0 = not started. Without it a
+## load restarted the full day.
 @export var day_time_remaining_seconds : float = -1.0
-## Amounts are snapped to 0.1 (beer prices are not whole euros). The 20 EUR
-## start clears the 8 EUR tutorial recipe with little room, keeping the early
-## bankruptcy risk real.
+## Snapped to 0.1. The 20 EUR start just clears the 8 EUR tutorial recipe, so early
+## bankruptcy stays a real risk.
 @export var money: float = 20.0
-## Solo customers and crowd visits in the cellar when the run was saved, each frozen
-## mid-visit. CustomerSpawner writes them before a save and resumes them after a load, so
-## leaving to the menu and continuing picks every visit up exactly where it was.
+## Customers and crowds in the cellar at the save, each frozen mid-visit, so continuing
+## picks every visit up where it was (CustomerSpawner).
 @export var cellar_customers : Array[CustomerSnapshot] = []
 @export var cellar_groups : Array[GroupVisitSnapshot] = []
 ## Walk-ins already on their way (a recommended friend, a walk-in's company): each
@@ -59,8 +52,8 @@ const XP_LEVEL_GROWTH_PER_LEVEL : int = 20
 @export var scheduled_walk_ins : Array[Dictionary] = []
 @export var lvv_raid : LvvRaidSnapshot
 @export var open_special_events : Array[SpecialEventSnapshot] = []
-## Seconds left on the cellar's clocks when saved, -1 when one was not running, so the
-## next walk-in, crowd and special event come when they would have.
+## Seconds left on the cellar's clocks at the save (-1 = not running), so the next walk-in,
+## crowd and special event come when they would have.
 @export var walk_in_time_left : float = -1.0
 @export var group_visit_time_left : float = -1.0
 @export var special_event_time_left : float = -1.0
@@ -73,12 +66,11 @@ const XP_LEVEL_GROWTH_PER_LEVEL : int = 20
 @export var raid_count : int = 0
 ## Times the player closed the day manually. Never resets.
 @export var early_closes_count : int = 0
-## Latched by trigger_ending() so two endings met on the same tick cannot both
-## fire. Not saved: the end screen blocks play, and continuing clears it.
+## Latched so two endings on the same tick cannot both fire. Not saved: the end screen
+## blocks play, and continuing clears it.
 var game_has_ended : bool = false
-## Set when the player picks "Jatka pelaamista" after the season ending, so it
-## never fires again. The run is already scored: nothing after it reaches the
-## leaderboard, and each night pays only reduced renown (RunScore).
+## Set by "Jatka pelaamista" after the season ending. The run is already scored; each later
+## night pays only reduced renown (RunScore).
 @export var has_continued_past_survival : bool = false
 ## lifetime_bottles_sold already paid out in renown, for continued play's nightly renown.
 @export var renown_bottles_counted : int = 0
@@ -87,7 +79,7 @@ var game_has_ended : bool = false
 @export var active_perks : Array[RunPerk] = []
 @export var brew_preparation : BrewPreparation
 @export var saved_recipes : Array[BrewRecipe] = []
-@export var discovered_styles : Dictionary = {} # Avain: BeerStyle.Style -> Arvo: true
+@export var discovered_styles : Dictionary = {} # BeerStyle.Style -> true
 ## Styles brewed this run. Unlike discovered_styles it is not seeded from earlier
 ## runs, so each run's first brew of a style can still earn reputation.
 @export var brewed_styles : Dictionary = {} # BeerStyle.Style -> true
@@ -122,23 +114,21 @@ var game_has_ended : bool = false
 
 ## Runtime only, not saved.
 var resolver : BrewResolver = null
-## The tier last toasted, see ReputationTiers.announced_tier(). Runtime only: after a
-## load it starts from the current tier.
+## The tier last toasted (ReputationTiers.announced_tier()); runtime only.
 var _announced_tier : ReputationTier = null
 
 ## Today's sales for the receipt log window; cleared each day, not saved.
 var today_sale_receipts : Array[SaleReceiptEntry] = []
 
-## Effective perk and cellar upgrade numbers, see PerkStats. Rebuilt on each
-## access because a loaded save replaces active_perks wholesale.
+## Effective perk and upgrade numbers (PerkStats), rebuilt on each access since a load
+## replaces active_perks.
 var stats : PerkStats:
 	get:
 		var perks : Array[RunPerk] = active_perks.duplicate()
 		perks.append_array(CellarUpgrades.perks_for(cellar_upgrade_levels, CellarUpgrades.all()))
 		return PerkStats.new(perks)
 
-## Services holding the Brewery's behaviour. They connect their own GUISignals
-## handlers in _ready() and release them in disconnect_signals().
+## The services that hold the Brewery's behaviour, each with its own GUISignals handlers.
 var _services : Array = []
 
 
@@ -151,8 +141,7 @@ func _init() -> void:
 	resolver.ingredient_price_multiplier = stats.multiplier(PerkStats.INGREDIENT_PRICE)
 	discovered_styles[BeerStyle.Style.KOTIKALJA] = true
 
-	# Kotikalja is known from the start, so it never goes through
-	# discover_style() and needs its default recipe seeded here.
+	# Kotikalja is known from the start, so its default recipe is seeded here.
 	var discovery := StyleDiscovery.new(self)
 	var kotikalja_recipe : BrewRecipe = discovery.ensure_default_recipe(resolver.get_beer_style(BeerStyle.Style.KOTIKALJA), false)
 	if kotikalja_recipe != null:
@@ -229,8 +218,8 @@ func close_money_day() -> void:
 	money_today = {}
 
 
-## Gains shrink as reputation grows (ReputationRules); losses apply in full.
-## Returns the change actually applied. `source` feeds the day recap's breakdown.
+## Gains shrink as reputation grows (ReputationRules); losses apply in full. Returns the
+## change applied; `source` is for the day recap.
 func change_reputation(amount : int, source : ReputationRules.Source = ReputationRules.Source.OTHER) -> int:
 	var before : int = reputation
 	reputation = ReputationRules.apply(reputation, amount)
@@ -248,13 +237,12 @@ func change_reputation(amount : int, source : ReputationRules.Source = Reputatio
 	return applied
 
 
-## Static so the curve can be unit-tested without a live Brewery.
+## Static for tests.
 static func xp_required_for_level(level : int) -> int:
 	return XP_LEVEL_BASE + (level - 1) * XP_LEVEL_GROWTH_PER_LEVEL
 
 
-## A while loop so one large grant that crosses several thresholds still
-## fires one level_up_reached (and one perk choice) per level.
+## Loops so a grant crossing several levels fires level_up_reached once per level.
 func add_xp(amount : int) -> void:
 	if amount <= 0:
 		return
@@ -274,7 +262,6 @@ func apply_perk(perk : RunPerk) -> void:
 	BrewerySignals.brewery_state_changed.emit(self)
 
 
-## The raid threshold after this run's modifier and perks.
 ## Kilograms of malt one brew can hold, see MashTun.
 func mash_capacity_kg() -> float:
 	return MashTun.capacity_kg(int(stats.total(PerkStats.EXTRA_MASH_CAPACITY)))
@@ -300,8 +287,8 @@ func spawn_interval_multiplier() -> float:
 	return stats.multiplier(PerkStats.SPAWN_INTERVAL) * (1.0 - (tier.spawn_speed_bonus if tier != null else 0.0))
 
 
-## Call after anything that can drain money. See BankruptcyRules: a run ends only
-## when no known recipe can be brewed any more.
+## Call after anything that drains money. A run ends only when no known recipe can be
+## brewed (BankruptcyRules).
 func check_bankruptcy() -> void:
 	if money > 0.0 or inventory.count_bottles() > 0:
 		return
@@ -341,8 +328,8 @@ func trigger_ending(ending_type : String) -> void:
 
 
 func _ready() -> void:
-	# A loaded save replaces active_perks after _init(), and the resolver is
-	# not saved, so its pricing has to be re-synced here.
+	# A load replaces active_perks after _init() and the resolver is not saved, so its
+	# pricing is re-synced here.
 	resolver.ingredient_price_multiplier = stats.multiplier(PerkStats.INGREDIENT_PRICE)
 
 	_services = [RecipeBook.new(self), IngredientTrader.new(self), BatchDistributor.new(self), Brewer.new(self), CellarUpgradeShop.new(self), KegWasher.new(self)]
@@ -350,8 +337,7 @@ func _ready() -> void:
 		service.connect_signals()
 
 
-## Call on the outgoing Brewery before BrewEngine replaces it, otherwise it
-## stays connected to GUISignals and keeps handling player actions.
+## Call on the outgoing Brewery, or it keeps handling GUISignals.
 func disconnect_signals() -> void:
 	for service : Variant in _services:
 		service.disconnect_signals()
