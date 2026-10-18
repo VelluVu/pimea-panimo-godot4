@@ -1,15 +1,11 @@
 class_name ImmersionVignetteData
 extends Resource
 
-## A purely decorative background scene: some actors walking one waypoint
-## path across the floor. Every .tres in res://src/resources/immersion_vignettes/
-## is picked up by ImmersionEventSpawner at startup, so a new vignette is a
-## data file, not code.
+## A decorative scene: actors walking one waypoint path. Every .tres in its folder is
+## picked up at startup, so a new vignette is data, not code.
 
 @export var vignette_name : String = ""
-## Name of the Node2D child of ImmersionEventSpawner whose Marker2D children
-## form the path (walked in child order, first = spawn, last = despawn).
-## Lets different vignettes use different routes.
+## The ImmersionEventSpawner child whose Marker2Ds form the path, in child order.
 @export var path_node_name : StringName = &"PathMarkers"
 @export var actors : Array[ImmersionActorData] = []
 ## Relative chance among all vignettes when the spawner picks one.

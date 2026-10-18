@@ -1,9 +1,8 @@
 class_name SpecialEventPresenter
 extends RefCounted
 
-## Opens a special event window in `container` whenever SpecialEventManager triggers one,
-## and keeps open windows across a save (Brewery.open_special_events).
-## Game-side: this used to live in DialogView, which is now project-independent.
+## Opens a special event window whenever SpecialEventManager triggers one, and keeps open
+## windows across a save.
 
 const SPECIAL_EVENT_WINDOW_SCENE : PackedScene = preload("res://src/scenes/ui/special_event_window.tscn")
 

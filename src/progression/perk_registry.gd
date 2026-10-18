@@ -1,8 +1,7 @@
 class_name PerkRegistry
 extends RefCounted
 
-## Static pool of every RunPerk, filled in _static_init().
-## A plain class rather than an autoload: perks are only rolled on a level-up.
+## Every RunPerk, loaded once. A plain class: perks are only rolled on a level-up.
 
 const PERK_FOLDER_PATH : String = "res://src/resources/perks/"
 const WARNING_POOL_EMPTY : String = "PerkRegistry: Perk pool is empty!"
@@ -16,8 +15,7 @@ static func _static_init() -> void:
 		push_warning(WARNING_POOL_EMPTY)
 
 
-## Per-perk draw weights. With the current pool a card is legendary about 2.5 %
-## of the time, so roughly one level-up in 14 offers one (was one in 5).
+## Per-perk draw weights: about one level-up in 14 offers a legendary.
 const TIER_WEIGHTS : Dictionary = {
 	RunPerk.Tier.COMMON: 30,
 	RunPerk.Tier.RARE: 10,
@@ -25,8 +23,7 @@ const TIER_WEIGHTS : Dictionary = {
 }
 
 
-## Rolls up to `count` distinct perks, weighted by TIER_WEIGHTS so legendaries are rare.
-## Only one offer is kept unique; repeats across level-ups are fine.
+## Up to `count` different perks, weighted by tier.
 static func get_random_perks(count : int) -> Array[RunPerk]:
 	if pool.is_empty():
 		return [RunPerk.new()]

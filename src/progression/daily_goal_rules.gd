@@ -1,23 +1,17 @@
 class_name DailyGoalRules
 extends RefCounted
 
-## This game's daily goal maths, with no state, signals or autoloads, so it can be
-## unit-tested. Outcomes, matching and picking are the goals system's GoalRules.
+## This game's daily goal maths, stateless for tests; outcomes and picking are GoalRules.
 
 
-## REPUTATION_GAIN progress is the gain since the goal was rolled. Reputation can
-## also fall (a bad sale, a raid), so it is re-derived from the snapshot each
-## time instead of accumulated.
+## Gain since the goal was rolled, re-derived each time since reputation can also fall.
 static func reputation_progress(reputation : int, baseline : int) -> int:
 	return maxi(0, reputation - baseline)
 
 
-## What resolving a goal pays or costs on `day`, as {money, reputation, xp, risk}.
-## Success pays money, reputation and xp. A genuine failure costs reputation and
-## risk, except on the first PENALTY_FREE_DAYS. `apply_penalty` false is the "tried in
-## good faith" failure (a special event whose stock was missing): the goal still
-## fails, but nothing changes.
-## Day 1 is for learning: its failed goals cost nothing, successes still pay.
+## A goal's outcome on `day` is {money, reputation, xp, risk}: success pays, a failure costs
+## reputation and risk. `apply_penalty` false (stock missing for an event) fails without
+## cost. Day 1 is for learning: its failures cost nothing.
 const PENALTY_FREE_DAYS : int = 1
 
 
@@ -33,8 +27,7 @@ static func resolution_effects(goal : DailyGoalData, succeeded : bool, apply_pen
 	return effects
 
 
-## Whether `goal` may be rolled on `day`. A wash goal is never offered while the
-## Tynnyrinpesukone runs, since the machine would finish it on its own.
+## Whether `goal` may roll on `day`; no wash goal while the Tynnyrinpesukone runs.
 static func can_offer(goal : DailyGoalData, day : int, washer_running : bool) -> bool:
 	if day < goal.min_day:
 		return false

@@ -1,15 +1,13 @@
 class_name GoalStatus
 extends RefCounted
 
-## How a goal line reads at a glance: each stat judges itself. Pure rules, so
-## DailyGoalsPanel only maps a State to a colour.
+## How a goal line reads at a glance; DailyGoalsPanel only maps a State to a colour.
 
 ## WARNING: an avoid goal at its limit, still passable but one miss from failing.
 enum State { PENDING, MET, FAILING, WARNING }
 
-## "Just one more sale" nudge: an achieve goal that crossed this share of its target
-## without meeting it yet. Never applies to avoid goals, where pulsing "getting
-## closer to failing" would send the wrong signal.
+## An achieve goal past this share of its target pulses "one more". Never for avoid goals,
+## where getting closer is getting worse.
 const NEAR_MISS_PROGRESS_RATIO : float = 0.8
 
 
@@ -29,8 +27,7 @@ static func run_reputation(reputation : int, min_reputation : int, money_in_dang
 	return from_met(reputation >= min_reputation)
 
 
-## Avoid goals read as a danger meter (at the limit = warning; past it the goal has
-## already failed and left its slot), achieve goals as progress.
+## Avoid goals read as a danger meter, achieve goals as progress.
 static func daily_goal(goal_type : DailyGoalData.GoalType, progress : int, target : int) -> State:
 	if goal_type == DailyGoalData.GoalType.UNHAPPY_CUSTOMERS_MAX:
 		return State.WARNING if progress > 0 and progress >= target else State.PENDING

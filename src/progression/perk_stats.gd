@@ -1,10 +1,9 @@
 class_name PerkStats
 extends RefCounted
 
-## Read-only view folding every active RunPerk into one number per stat, so a new perk
-## axis is just a RunPerk field and a stat line. Get it through Brewery.stats, rebuilt
-## per access since a loaded save swaps active_perks. multiplier() multiplies (or adds,
-## see RunPerk.stacks_additively), total() sums, chance() sums and clamps to 0..1.
+## Every active RunPerk folded into one number per stat, so a new perk axis is a field and a
+## stat line. multiplier() multiplies (or adds, stacks_additively), total() sums, chance()
+## sums and clamps to 0..1.
 
 ## Stat names are the RunPerk field they read.
 const QUALITY_BONUS := &"quality_bonus"
@@ -36,9 +35,8 @@ const WALK_IN_COMPANY_CHANCE := &"walk_in_company_chance"
 const WALK_IN_COMPANY_BONUS := &"walk_in_company_bonus"
 const EXTRA_MASH_CAPACITY := &"extra_mash_capacity_kg"
 
-## How a stat is stored and shown. MULTIPLIER is neutral at 1.0 and shown as
-## a percentage change, PERCENT_ADD is a flat fraction neutral at 0 and shown
-## as a percentage, COUNT is a whole number neutral at 0.
+## MULTIPLIER is neutral at 1.0, shown as a change; PERCENT_ADD a fraction neutral at 0;
+## COUNT a whole number.
 enum Kind { MULTIPLIER, PERCENT_ADD, COUNT }
 
 const ADDITIVE_PERCENT_FORMAT : String = "%+d %%"
@@ -46,8 +44,8 @@ const MULTIPLICATIVE_FORMAT : String = "×%.2f"
 const COUNT_FORMAT : String = "%+d"
 
 
-## Every perk stat in display order, with the Finnish line that shows it.
-## The one place a new stat is registered besides its RunPerk field.
+## Every stat in display order with its Finnish line; with the RunPerk field, the only place
+## a new stat is registered.
 static func definitions() -> Array[Dictionary]:
 	return [
 		{"stat": QUALITY_BONUS, "kind": Kind.PERCENT_ADD, "text": StringContainer.PERK_QUALITY_STAT_STRING},
@@ -85,9 +83,7 @@ static func neutral_value(kind : Kind) -> float:
 	return 1.0 if kind == Kind.MULTIPLIER else 0.0
 
 
-## A stat value as the player reads it, Diablo style: additive values show as "+15 %"
-## (summed into one pool), multiplicative ones as "×1.15" (each multiplies the total).
-## Only MULTIPLIER stats can be multiplicative; the other kinds always add up.
+## Diablo style: additive values as "+15 %", multiplicative ones as "x1.15".
 static func value_text(kind : Kind, value : float, additive : bool) -> String:
 	match kind:
 		Kind.MULTIPLIER:
@@ -111,8 +107,8 @@ static func display_number(kind : Kind, value : float) -> int:
 			return roundi(value)
 
 
-## A per-level authored value scaled to `level`: multipliers are re-based from
-## neutral, flat values and counts multiply straight through.
+## A per-level value scaled to `level`: multipliers re-based from neutral, others multiplied
+## straight.
 static func scale_per_level(kind : Kind, per_level : float, level : int) -> Variant:
 	match kind:
 		Kind.MULTIPLIER:

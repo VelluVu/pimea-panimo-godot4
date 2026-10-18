@@ -1,9 +1,8 @@
 class_name StyleHintEventData
 extends IngredientDonationEventData
 
-## An old master trades a tip for malt and hint_cost: one undiscovered style he has not
-## hinted yet, rolled per visit, shows its exact EBC and IBU in the recipe library from
-## then on (Brewery.hinted_styles). Never offered once nothing is left to tell.
+## An old master trades a tip for malt and hint_cost: an undiscovered, untold style shows
+## its exact EBC and IBU in the recipe library from then on. Gone once nothing is left.
 
 @export var hint_cost: int = 50
 ## Rolled by prepared() and saved with an open window.
@@ -35,8 +34,7 @@ static func untold_styles(brewery: Brewery) -> Array[BeerStyle.Style]:
 	return found
 
 
-## The intro takes the amount and the malt in the partitive (%d, %s): "5 kiloa savumallasta",
-## and his fee as {cost}.
+## The amount and malt in the partitive (%d, %s: "5 kiloa savumallasta"), his fee as {cost}.
 func intro_text() -> String:
 	var ingredient: IngredientData = IngredientDatabase.get_item_by_id(required_ingredient_id)
 	var malt: String = ""

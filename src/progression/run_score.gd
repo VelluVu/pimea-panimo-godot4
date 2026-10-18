@@ -1,26 +1,22 @@
 class_name RunScore
 extends RefCounted
 
-## The run's leaderboard score and the Olutoppi renown paid for it. A run is scored
-## once, at its first ending (the latest is day DayRules.SURVIVAL_DAY_TARGET), so
-## playing on afterwards can never raise it; continued days only pay reduced renown.
+## The run's score and the renown paid for it. Scored once, at its first ending, so playing
+## on never raises it; continued nights only pay reduced renown.
 
 const DAY_POINTS : int = 100
 const REPUTATION_POINTS : int = 10
-## One point per this many servings sold. Whole points by integer division, the same
-## way the leaderboard's SQL recomputes them.
+## One point per this many servings, by integer division like the board's SQL.
 const SERVINGS_PER_POINT : int = 2
 ## Reaching the target day as a legend must always beat any run that did not.
 const SURVIVAL_BONUS : int = 1500
-## Endings that close the brewery for good. Their reputation and the brewery's worth earn
-## no points, so a run that got caught or went bankrupt never outscores one that made it.
+## Endings that close the brewery: no points for reputation or worth, so a failed run never
+## outscores one that made it.
 const FAILED_ENDINGS : PackedStringArray = ["busted", "bankrupt"]
-## The brewery's worth (money plus what its cellar upgrades cost) in points per euro.
-## Counting the upgrades too means buying one never lowers the score.
+## Points per euro of worth (money and cellar upgrades), so buying one never lowers the score.
 const WORTH_POINTS_PER_EURO : float = 0.5
 const MONEY_WORTH_SHARE : float = 0.5
-## Per style brewed this season (Brewery.brewed_styles), so the board rewards brewing the
-## range, not one safe style. Counted like servings, also when the run fails.
+## Per style brewed this season, so the range pays, not one safe style.
 const STYLE_POINTS : int = 100
 
 const RENOWN_DIVISOR : float = 20.0
@@ -74,8 +70,8 @@ static func continued_day_renown(bottles_sold_that_day : int) -> int:
 	return roundi(points / RENOWN_DIVISOR * CONTINUED_RENOWN_RATE)
 
 
-## The run's score with its parts, as stored on the leaderboard (LeaderboardText shows
-## it). An empty `ending_type` is the run in progress, without the survival bonus.
+## The score with its parts, as the leaderboard stores it. An empty `ending_type` is the run
+## in progress, without the survival bonus.
 static func entry(day : int, reputation : int, bottles : int, ending_type : String, worth : float = 0.0, styles : int = 0) -> Dictionary:
 	return {
 		"ending_type": ending_type,

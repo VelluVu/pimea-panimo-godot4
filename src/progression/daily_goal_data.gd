@@ -1,9 +1,8 @@
 class_name DailyGoalData
 extends GoalData
 
-## One daily goal of this game, auto-loaded from res://src/resources/daily_goals/:
-## a new goal is just another .tres. The goal kind is its GoalType. Every type is an
-## "achieve" goal except UNHAPPY_CUSTOMERS_MAX, an "avoid" goal (see GoalData).
+## One daily goal, loaded from its folder: a new goal is another .tres. Every GoalType is an
+## "achieve" goal except UNHAPPY_CUSTOMERS_MAX, an "avoid" one (GoalData).
 enum GoalType {
 	BREW_STYLE,
 	SELL_BOTTLES,

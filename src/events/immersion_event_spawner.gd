@@ -1,9 +1,8 @@
 class_name ImmersionEventSpawner
 extends Node2D
 
-## Decorative background vignettes (a mouse chased by a cat, ...) every few minutes, with
-## no gameplay effect. An adopted cellar cat walks on its own, more frequent timer so it
-## is actually seen. Each ImmersionVignetteData names its actors and its route node.
+## Decorative vignettes (a mouse chased by a cat) every few minutes, no gameplay. An
+## adopted cellar cat walks on its own, more frequent timer so it is seen.
 
 const MIN_INTERVAL_SECONDS : float = 240.0
 const MAX_INTERVAL_SECONDS : float = 480.0
@@ -12,18 +11,16 @@ const CAT_MAX_INTERVAL_SECONDS : float = 120.0
 
 const VIGNETTE_DIR : String = "res://src/resources/immersion_vignettes/"
 
-## Same foot-anchored setup as customer.tscn's AnimatedSprite2D: position is
-## the sprite's feet, so y-sorting against kegs and customers reads correctly.
+## Feet-anchored like customer.tscn, so y-sorting against kegs and customers works.
 const SPRITE_OFFSET : Vector2 = Vector2(-16, -32)
-## Actors fade in at the start of a route and out at its end, so a route that
-## begins or ends on screen does not pop.
+## Fades at a route's ends, so one that starts or ends on screen does not pop.
 const FADE_SECONDS : float = 0.5
 ## Above customers (z 1); same as the wall overlays in main.tscn.
 const FLYING_Z_INDEX : int = 2
 
 const SOUND_BUS : StringName = &"SFX"
 const SOUND_VOLUME_DB : float = -4.0
-## Part of the crossing the sound may land in: not while the critter is still fading in or out.
+## Where in the crossing the sound may land: not while fading.
 const SOUND_WINDOW : Vector2 = Vector2(0.2, 0.7)
 
 ## Lets the console's "cat" command find this node without an autoload.
@@ -63,8 +60,8 @@ func _apply_depth_scale(sprite : AnimatedSprite2D, base_scale : Vector2) -> void
 	sprite.scale = base_scale * VignettePath.depth_scale_factor(sprite.global_position.y)
 
 
-## The console's "cat" and "vignette" commands: plays `vignette`, or a random one
-## when null. Re-rolls the timer so a second vignette does not follow moments later.
+## The console's "cat" and "vignette": plays `vignette` (random when null) and re-rolls
+## the timer so another does not follow at once.
 func force_trigger(vignette : ImmersionVignetteData = null) -> void:
 	_run_vignette(vignette if vignette != null else _pick_vignette())
 	_start_next_timer()
@@ -159,8 +156,8 @@ func _cross(actor : ImmersionActorData, points : PackedVector2Array) -> void:
 
 	var durations : PackedFloat32Array = VignettePath.segment_durations(points, actor.crossing_seconds)
 	var tween := sprite.create_tween()
-	# The start delay lives in the sprite's own tween, so a scene change mid-wait just
-	# frees it instead of resuming a coroutine on a freed spawner.
+	# The delay lives in the sprite's tween, so a scene change frees it instead of resuming a
+	# coroutine on a freed spawner.
 	if actor.start_delay_seconds > 0.0:
 		sprite.hide()
 		tween.tween_interval(actor.start_delay_seconds)
@@ -177,8 +174,7 @@ func _cross(actor : ImmersionActorData, points : PackedVector2Array) -> void:
 	_maybe_make_sound(actor, sprite)
 
 
-## A child player, so the sound comes from where the critter is at that moment and
-## goes away with it.
+## A child player, so the sound comes from the critter and leaves with it.
 func _maybe_make_sound(actor : ImmersionActorData, sprite : AnimatedSprite2D) -> void:
 	if actor.sounds.is_empty() or randf() >= actor.sound_chance:
 		return

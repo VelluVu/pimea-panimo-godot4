@@ -1,9 +1,8 @@
 class_name RiskBribeEventData
 extends SpecialEventData
 
-## The one direct way to bring LVV risk down: pay money (and usually a little
-## reputation) instead of beer. Its .tres sets weighs_by_risk, so it comes more often as
-## risk climbs.
+## The one direct way to lower LVV risk: pay money (and usually some reputation). Weighs by
+## risk, so it comes more often as risk climbs.
 
 @export var bribe_cost: int = 40
 
