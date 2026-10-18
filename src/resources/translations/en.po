@@ -5094,11 +5094,14 @@ msgstr "Nothing special here. Try again when you have something really good."
 
 #: src/resources/special_events/quality_critic.tres
 msgid ""
-"Kuulin, että täällä keitetään jotain erikoista. Näytä minulle parhaasi, en "
-"tyydy keskinkertaiseen! Ostan koko erän."
+"Kuulin, että täällä keitetään jotain erikoista. Näytä minulle parhaasi, "
+"vähintään {quality} % laatua! Ostan koko erän ja maksan hyvin. Mutta jos "
+"lupaat etkä tuo, kirjoitan siitä (−{fail_reputation} mainetta)."
 msgstr ""
-"I heard something special is brewed here. Show me your best, I won't settle "
-"for mediocre! I'll buy the whole batch."
+"I heard something special is brewed here. Show me your best, at least "
+"{quality} % quality! I'll buy the whole batch and pay well. But if you "
+"promise and don't deliver, I'll write about it (−{fail_reputation} "
+"reputation)."
 
 #: src/resources/special_events/quality_critic.tres
 msgid "Olutarvostelija Matti"

@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("1_critic")
 event_caller_name = "Olutarvostelija Matti"
-intro_dialogue = "Kuulin, että täällä keitetään jotain erikoista. Näytä minulle parhaasi, en tyydy keskinkertaiseen! Ostan koko erän."
+intro_dialogue = "Kuulin, että täällä keitetään jotain erikoista. Näytä minulle parhaasi, vähintään {quality} % laatua! Ostan koko erän ja maksan hyvin. Mutta jos lupaat etkä tuo, kirjoitan siitä (−{fail_reputation} mainetta)."
 success_dialogue = "Vaikuttavaa käsityötä! Tästä saa täydet tähdet."
 fail_dialogue = "Ei tässä ole mitään erikoista. Yritä uudestaan, kun on jotain oikeasti hyvää."
 reject_dialogue = "Turha tuhlata aikaani sitten."
@@ -17,5 +17,7 @@ reward_reputation = 25
 reward_risk = 0
 clears_risk = false
 required_min_quality = 1.2
+counter_share = 1.5
+fail_reputation_penalty = 15
 granted_perk = ExtResource("2_perk")
 metadata/_custom_type_script = "uid://ctrwas4g08sal"

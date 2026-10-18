@@ -154,7 +154,10 @@ func _timeout_event() -> void:
 
 
 func _expire() -> void:
+	var brewery: Brewery = BrewEngine.current_brewery
+	var before: Array = _resources_of(brewery)
 	_answer(SpecialEventManager.process_expired(event_data))
+	_pop_rewards(before, _resources_of(brewery), brewery)
 
 
 func _answer(response: String) -> void:

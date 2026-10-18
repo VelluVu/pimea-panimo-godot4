@@ -25,6 +25,9 @@ extends Resource
 @export var reward_reputation: int = 10
 @export var reward_risk: int = 5
 @export var clears_risk: bool = false
+## Reputation lost when "Joo" was said but the goods never came. Most requests cost
+## nothing then; one that was promised something special (the critic) remembers.
+@export var fail_reputation_penalty: int = 0
 ## Given on each success; event perks live in src/resources/event_perks/, outside the
 ## perks folder, so they never show up on a level-up card.
 @export var granted_perk: RunPerk
@@ -72,7 +75,8 @@ func intro_text() -> String:
 ## Numbers an intro line can quote by name, like {servings} or {risk}, taken from the
 ## event's own data so a line never quotes a stale price after a balance change.
 func intro_values() -> Dictionary:
-	return {"servings": required_bottles, "money": reward_money, "risk": absi(reward_risk)}
+	return {"servings": required_bottles, "money": reward_money, "risk": absi(reward_risk),
+			"fail_reputation": fail_reputation_penalty}
 
 
 ## What is still missing while the goods are on their way, translated.
@@ -132,6 +136,12 @@ func servings_taken(brewery: Brewery) -> Dictionary:
 ## Called when the player lets the offer pass (the window times out); most events shrug.
 func on_rejected(_brewery: Brewery) -> void:
 	pass
+
+
+## An accepted request that was never fulfilled.
+func on_failed(brewery: Brewery) -> void:
+	if fail_reputation_penalty != 0:
+		brewery.change_reputation(-fail_reputation_penalty, ReputationRules.Source.EVENTS)
 
 
 ## The reply after a success; events whose outcome varies (a contest, a bet) pick a line.
