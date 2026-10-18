@@ -93,6 +93,7 @@ func test_among_good_enough_beers_the_preferred_style_wins() -> void:
 func test_a_customer_refuses_beer_below_their_bar() -> void:
 	assert_true(SaleProcessorScript.refuses(0.9, 1.0))
 	assert_false(SaleProcessorScript.refuses(1.0, 1.0), "exactly at the bar is good enough")
+	assert_false(SaleProcessorScript.refuses(0.5, 1.0, true), "a connoisseur buys it anyway")
 
 
 func test_quality_bonus_breaks_a_tie_between_equal_styles() -> void:

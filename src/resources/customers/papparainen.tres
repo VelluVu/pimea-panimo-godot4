@@ -12,6 +12,7 @@ customer_name = "Aarne"
 title = "Papparainen"
 first_names = Array[String](["Aarne", "Eino", "Toivo", "Väinö", "Onni", "Yrjö"])
 min_quality = 1.05
+buys_below_bar = true
 primary_style = 22
 secondary_style = 7
 favourite_rules = Array[ExtResource("taste_script")]([ExtResource("taste_vanhan_ajan")])

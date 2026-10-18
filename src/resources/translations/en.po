@@ -649,6 +649,10 @@ msgstr "%s group (%d people)"
 msgid "Liian heikkoa: %s"
 msgstr "Not good enough for: %s"
 
+#: src/customers/sale_evaluation.gd
+msgid "Menee se, mutta odotin parempaa."
+msgstr "It goes down, but I expected better."
+
 #: src/customers/sale_processor.gd
 msgid "Taas täällä! %s"
 msgstr "Back again! %s"

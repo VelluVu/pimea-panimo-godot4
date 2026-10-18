@@ -114,7 +114,7 @@ func process(data : CustomerData, picks : Array[BrewBatch] = []) -> String:
 		batches = pick_batches_for(data)
 	if batches.is_empty() or batches[0].amount_bottles < BOTTLES_SOLD_PER_TRANSACTION:
 		return _turn_away(data, wanted)
-	if refuses(batches[0].current_quality, data.min_quality):
+	if refuses(batches[0].current_quality, data.min_quality, data.buys_below_bar):
 		return _refuse_bad_quality(data, batches[0].current_quality)
 
 	# The net reputation change, including any bar fight below, is reported as
@@ -126,7 +126,7 @@ func process(data : CustomerData, picks : Array[BrewBatch] = []) -> String:
 	var bottles_sold : int = 0
 	var last_batch : BrewBatch = null
 	for batch : BrewBatch in batches:
-		if refuses(batch.current_quality, data.min_quality):
+		if refuses(batch.current_quality, data.min_quality, data.buys_below_bar):
 			continue
 		var results : Dictionary = _sell(data, batch, wanted, is_regular)
 		if response_text.is_empty():
@@ -205,9 +205,10 @@ func _sell(data : CustomerData, batch : BrewBatch, wanted : int, is_regular : bo
 	return results
 
 
-## Below the customer's quality bar nothing is bought: their reject line says so.
-static func refuses(quality : float, min_quality : float) -> bool:
-	return quality < min_quality
+## Below the customer's quality bar nothing is bought: their reject line says so. A
+## connoisseur (`buys_below_bar`) buys it anyway, grumbling (SaleEvaluation).
+static func refuses(quality : float, min_quality : float, buys_below_bar : bool = false) -> bool:
+	return quality < min_quality and not buys_below_bar
 
 
 ## Nothing good enough on offer: no sale, the bad-quality reputation and risk, an unhappy

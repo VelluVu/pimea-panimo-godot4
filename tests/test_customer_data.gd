@@ -121,6 +121,27 @@ func test_evaluate_brew_batch_rejects_below_min_quality() -> void:
 	assert_false(result[CustomerManager.KEY_DELIGHTED], "delighted")
 
 
+func test_a_connoisseur_buys_below_the_bar_for_minus_one_and_no_tip() -> void:
+	var customer := CustomerData.new()
+	customer.buys_below_bar = true
+	customer.min_quality = 1.1
+	var result := customer.evaluate_brew_batch(_make_batch(customer.primary_style, 0.9), 3.0, 0.0)
+	assert_eq(result[CustomerManager.KEY_INCOME], 3.0, "income")
+	assert_eq(result[CustomerManager.KEY_TIP], 0.0, "tip")
+	assert_eq(result[CustomerManager.KEY_REPUTATION], SaleEvaluation.BELOW_BAR_REPUTATION, "the favourite earns nothing below the bar")
+	assert_false(result[CustomerManager.KEY_DELIGHTED], "delighted")
+	assert_eq(result[CustomerManager.KEY_RESPONSE], SaleEvaluation.BELOW_BAR_LINE + QualityWishText.reject_suffix(0.9, 1.1), "response")
+
+
+func test_a_connoisseur_below_the_bar_keeps_a_worse_wrong_style_penalty() -> void:
+	var customer := CustomerData.new()
+	customer.buys_below_bar = true
+	customer.min_quality = 1.1
+	customer.rep_wrong_style = -2
+	var result := customer.evaluate_brew_batch(_make_batch(BeerStyle.Style.IMPERIAL_STOUT, 0.9), 3.0, 0.0)
+	assert_eq(result[CustomerManager.KEY_REPUTATION], -2)
+
+
 func test_evaluate_brew_batch_rewards_primary_style_match() -> void:
 	var customer := CustomerData.new()
 	var batch := _make_batch(BeerStyle.Style.BULKKILAGER, 1.0)

@@ -24,6 +24,10 @@ const TIP_BASE_SHARE : float = 0.5
 ## a very low bar (Opiskelija, Raksamies) gave almost double reputation for any decent
 ## beer. Penalties stay uncapped.
 const QUALITY_REPUTATION_BONUS_MAX : int = 2
+## A connoisseur's (CustomerData.buys_below_bar) sale below their bar: at most this much
+## reputation, no tip, and the grumble below instead of their usual line.
+const BELOW_BAR_REPUTATION : int = -1
+const BELOW_BAR_LINE : String = "Menee se, mutta odotin parempaa."
 ## What customers say about a soured batch they bought anyway.
 const SOUR_REACTIONS : SourReactions = preload("res://src/resources/sour_reactions/sour_reactions.tres")
 
@@ -37,7 +41,8 @@ static func evaluate(customer : CustomerData, batch : BrewBatch, style_base_pric
 	var risk : int
 	var response : String
 	var delighted : bool = false
-	if quality < customer.min_quality:
+	var below_bar : bool = quality < customer.min_quality
+	if below_bar and not customer.buys_below_bar:
 		reputation = customer.rep_bad_quality
 		risk = customer.risk_bad_quality
 		response = customer.dialogue_reject
@@ -59,7 +64,13 @@ static func evaluate(customer : CustomerData, batch : BrewBatch, style_base_pric
 	var quality_margin : float = quality - customer.min_quality
 	# A beer they did not want earns nothing for being well made: the wrong style always
 	# costs reputation, so serving one easy style to everyone does not pay.
-	if score >= 0.5:
+	var suffix : String = ""
+	if below_bar and customer.buys_below_bar:
+		reputation = mini(reputation, BELOW_BAR_REPUTATION)
+		delighted = false
+		response = BELOW_BAR_LINE
+		suffix = QualityWishText.reject_suffix(quality, customer.min_quality)
+	elif score >= 0.5:
 		reputation += quality_reputation(quality_margin, customer.quality_reputation_sensitivity)
 	risk = risk_after_quality(risk, roundi(quality_margin * customer.quality_risk_sensitivity))
 	var income : float = income_for(style_base_price)
@@ -86,7 +97,7 @@ static func evaluate(customer : CustomerData, batch : BrewBatch, style_base_pric
 		CustomerManager.KEY_TIP: tip,
 		CustomerManager.KEY_REPUTATION: reputation,
 		CustomerManager.KEY_RISK: risk,
-		CustomerManager.KEY_RESPONSE: UiText.of(response),
+		CustomerManager.KEY_RESPONSE: UiText.of(response) + suffix,
 		CustomerManager.KEY_DELIGHTED: delighted,
 	}
 

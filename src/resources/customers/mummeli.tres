@@ -12,6 +12,7 @@ customer_name = "Aino"
 title = "Mummeli"
 first_names = Array[String](["Aino", "Elna", "Hilja", "Impi", "Siiri", "Tyyne"])
 min_quality = 1.05
+buys_below_bar = true
 primary_style = 22
 secondary_style = 7
 favourite_rules = Array[ExtResource("taste_script")]([ExtResource("taste_vanhan_ajan")])

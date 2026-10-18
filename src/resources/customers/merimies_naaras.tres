@@ -13,6 +13,7 @@ customer_name = "Signe"
 title = "Merimies"
 first_names = Array[String](["Signe", "Tyyne", "Helmi", "Asta", "Ragni", "Elli"])
 min_quality = 1.0
+buys_below_bar = true
 budget_multiplier = 1.2
 primary_style = 9
 secondary_style = 23
