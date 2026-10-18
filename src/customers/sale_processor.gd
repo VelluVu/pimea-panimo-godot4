@@ -1,15 +1,12 @@
 class_name SaleProcessor
 extends RefCounted
 
-## Resolves one customer's purchase against a Brewery: picks the batch, works
+## Resolves one customer's purchase against a Brewery: picks the batch (BatchChoice), works
 ## out income, tip and reputation, applies them, and reports through
 ## BrewerySignals. The batch choice and the money maths are static so they can
 ## be unit-tested without a live run.
 
 const BOTTLES_SOLD_PER_TRANSACTION : int = 1
-## A batch good enough for the customer always beats one that is not: below their bar
-## they refuse it (_refuse_bad_quality), so the choice must not settle for it.
-const QUALITY_BONUS_WEIGHT : float = 10.0
 const REGULAR_RESPONSE_FORMAT : String = "Taas täällä! %s"
 const KEY_REPUTATION_GAIN : String = "reputation_gain"
 const KEY_BOTTLES_SOLD : String = "bottles_sold"
@@ -21,54 +18,6 @@ var brewery : Brewery
 ## `owner` may be null when no run is active: nothing is in stock then.
 func _init(owner : Brewery) -> void:
 	brewery = owner
-
-
-## The batch the customer would buy from, or null. A strict requirement makes a
-## batch invisible to the customer, not just a worse option.
-static func find_best_batch(batches : Array[BrewBatch], data : CustomerData) -> BrewBatch:
-	var best_batch : BrewBatch = null
-	var best_score : float = -1.0
-
-	for batch : BrewBatch in batches:
-		if not _on_offer(batch, data):
-			continue
-		var score : float = data.get_batch_preference(batch)
-		if batch.current_quality >= data.min_quality:
-			score += QUALITY_BONUS_WEIGHT
-		if score > best_score:
-			best_score = score
-			best_batch = batch
-	return best_batch
-
-
-## The batches the customer buys from: the best one, or for a picks_at_random customer up
-## to `count` random batches of different styles that clear their bar. With none clearing
-## it, the best batch comes back so the customer can refuse it.
-static func pick_batches(batches : Array[BrewBatch], data : CustomerData, count : int = 1) -> Array[BrewBatch]:
-	var picks : Array[BrewBatch] = []
-	if data.picks_at_random:
-		var candidates : Array[BrewBatch] = []
-		for batch : BrewBatch in batches:
-			if _on_offer(batch, data) and batch.current_quality >= data.min_quality:
-				candidates.append(batch)
-		candidates.shuffle()
-		var styles_taken : Array[BeerStyle.Style] = []
-		for batch : BrewBatch in candidates:
-			if picks.size() >= count:
-				break
-			if styles_taken.has(batch.beer_style.style):
-				continue
-			styles_taken.append(batch.beer_style.style)
-			picks.append(batch)
-	if picks.is_empty():
-		var best : BrewBatch = find_best_batch(batches, data)
-		if best != null:
-			picks.append(best)
-	return picks
-
-
-static func _on_offer(batch : BrewBatch, data : CustomerData) -> bool:
-	return batch.amount_bottles > 0 and not batch.held and data.accepts_batch(batch)
 
 
 ## Income, tip and reputation for `bottles_sold` servings of `results`
@@ -90,11 +39,11 @@ static func calculate_sale(results : Dictionary, bottles_sold : int, tip_multipl
 
 
 ## Public so a customer can preview its picks before the sale. Rolls how many styles this
-## visit buys (see pick_batches()), so it is called once and the result handed to process().
+## visit buys (see BatchChoice.pick_batches()), so it is called once and the result handed to process().
 func pick_batches_for(data : CustomerData) -> Array[BrewBatch]:
 	if brewery == null:
 		return []
-	return pick_batches(brewery.inventory.batches_on_serve(), data, randi_range(1, maxi(1, data.max_styles_per_visit)))
+	return BatchChoice.pick_batches(brewery.inventory.batches_on_serve(), data, randi_range(1, maxi(1, data.max_styles_per_visit)))
 
 
 ## Returns the customer's spoken response. `picks` are the batches the customer already
@@ -108,13 +57,13 @@ func process(data : CustomerData, picks : Array[BrewBatch] = []) -> String:
 		wanted += RegularRules.EXTRA_BOTTLES
 	var batches : Array[BrewBatch] = []
 	for batch : BrewBatch in picks:
-		if brewery != null and brewery.inventory.brew_batches.has(batch) and _on_offer(batch, data):
+		if brewery != null and brewery.inventory.brew_batches.has(batch) and BatchChoice.on_offer(batch, data):
 			batches.append(batch)
 	if batches.is_empty():
 		batches = pick_batches_for(data)
 	if batches.is_empty() or batches[0].amount_bottles < BOTTLES_SOLD_PER_TRANSACTION:
 		return _turn_away(data, wanted)
-	if refuses(batches[0].current_quality, data.min_quality, data.buys_below_bar):
+	if SaleEvaluation.refuses(data, batches[0].current_quality):
 		return _refuse_bad_quality(data, batches[0].current_quality)
 
 	# The net reputation change, including any bar fight below, is reported as
@@ -126,7 +75,7 @@ func process(data : CustomerData, picks : Array[BrewBatch] = []) -> String:
 	var bottles_sold : int = 0
 	var last_batch : BrewBatch = null
 	for batch : BrewBatch in batches:
-		if refuses(batch.current_quality, data.min_quality, data.buys_below_bar):
+		if SaleEvaluation.refuses(data, batch.current_quality):
 			continue
 		var results : Dictionary = _sell(data, batch, wanted, is_regular)
 		if response_text.is_empty():
@@ -203,12 +152,6 @@ func _sell(data : CustomerData, batch : BrewBatch, wanted : int, is_regular : bo
 	results[KEY_REPUTATION_GAIN] = outcome.reputation_gain
 	results[KEY_BOTTLES_SOLD] = bottles_sold
 	return results
-
-
-## Below the customer's quality bar nothing is bought: their reject line says so. A
-## connoisseur (`buys_below_bar`) buys it anyway, grumbling (SaleEvaluation).
-static func refuses(quality : float, min_quality : float, buys_below_bar : bool = false) -> bool:
-	return quality < min_quality and not buys_below_bar
 
 
 ## Nothing good enough on offer: no sale, the bad-quality reputation and risk, an unhappy

@@ -41,8 +41,8 @@ static func evaluate(customer : CustomerData, batch : BrewBatch, style_base_pric
 	var risk : int
 	var response : String
 	var delighted : bool = false
-	var below_bar : bool = quality < customer.min_quality
-	if below_bar and not customer.buys_below_bar:
+	var below_bar : bool = not clears_bar(customer, quality)
+	if refuses(customer, quality):
 		reputation = customer.rep_bad_quality
 		risk = customer.risk_bad_quality
 		response = customer.dialogue_reject
@@ -100,6 +100,16 @@ static func evaluate(customer : CustomerData, batch : BrewBatch, style_base_pric
 		CustomerManager.KEY_RESPONSE: UiText.of(response) + suffix,
 		CustomerManager.KEY_DELIGHTED: delighted,
 	}
+
+
+static func clears_bar(customer : CustomerData, quality : float) -> bool:
+	return quality >= customer.min_quality
+
+
+## Below the customer's quality bar nothing is bought: their reject line says so. A
+## connoisseur (CustomerData.buys_below_bar) buys it anyway, grumbling.
+static func refuses(customer : CustomerData, quality : float) -> bool:
+	return not clears_bar(customer, quality) and not customer.buys_below_bar
 
 
 ## Reputation (x) and risk (y) of refusing a batch below the bar: the flat bad-quality

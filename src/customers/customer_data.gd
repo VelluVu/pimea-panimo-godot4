@@ -80,7 +80,7 @@ const NOT_TO_TASTE: float = -1.0
 @export_multiline var dialogue_nothing_available: String = "Eipä taida olla mitään sopivaa..."
 
 ## A hard gate, not a preference. A batch outside a set bound is invisible to this
-## customer however good it is, see SaleProcessor.find_best_batch().
+## customer however good it is, see BatchChoice.find_best_batch().
 @export_group("Tiukat vaatimukset")
 ## -1 = no limit. E.g. 5.0 rejects anything under 5% ABV (see Barbaari).
 @export var min_required_abv: float = -1.0
@@ -132,7 +132,7 @@ const NOT_TO_TASTE: float = -1.0
 @export_group("Erikoiskäytös")
 @export var randomizes_preference: bool = false
 ## No taste of their own: picks random batches that clear min_quality, and every style
-## counts as the favourite (see Perusasiakas). See SaleProcessor.pick_batches().
+## counts as the favourite (see Perusasiakas). See BatchChoice.pick_batches().
 @export var picks_at_random: bool = false
 ## Only with picks_at_random: buys from 1 to this many different styles in one visit,
 ## min/max_bottles_per_visit from each.
