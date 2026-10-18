@@ -1,8 +1,8 @@
 class_name ShopQuickAmounts
 extends RefCounted
 
-## The shop's quick-amount buttons and the most one purchase can take, by how an
-## ingredient is sold, so a phone needs a tap or two instead of a long slider drag.
+## The shop's quick-amount buttons and its largest purchase, by how an ingredient is sold,
+## so a phone needs a tap instead of a long drag.
 
 const GRAM_STEPS : Array[int] = [10, 50, 100]
 const KILO_STEPS : Array[int] = [1, 5]

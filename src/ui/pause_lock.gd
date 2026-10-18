@@ -1,9 +1,8 @@
 class_name PauseLock
 extends RefCounted
 
-## Shares the SceneTree pause between windows: the tree stays paused while any
-## holder still holds it, so closing one window no longer unpauses another
-## (the level-up cards, the game menu and Options used to fight over it).
+## Shares the tree's pause between windows: paused while any holder holds it, so closing
+## one window no longer unpauses another.
 
 static var _holder_ids: Array[int] = []
 

@@ -1,9 +1,8 @@
 class_name BrewDayPopups
 extends Control
 
-## The brew day's humour lines: each rises from the kettle mouth to the left, up or
-## right, then blinks out. Lines closer together than MIN_GAP wait their turn, and a
-## line starts a row lower while earlier ones are still rising.
+## The brew day's humour lines: each rises from the kettle mouth and blinks out, waiting its
+## turn (MIN_GAP) and starting lower while earlier ones still rise.
 
 const RISE : float = 36.0
 const SECONDS : float = 1.6

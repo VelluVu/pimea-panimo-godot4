@@ -1,9 +1,8 @@
 class_name RecipeLibraryText
 extends RefCounted
 
-## The recipe book's text: the index buttons and a style's page. A known style shows its
-## whole recipe; a locked one withholds the exact ranges (the "brew it to find out"
-## part) and gives hints instead.
+## The recipe book's text. A known style shows its whole recipe; a locked one gives hints
+## instead of the exact ranges.
 
 const INDEX_KNOWN_FORMAT : String = "%s\n%.1f %%"
 const INDEX_RECIPES_FORMAT : String = "%s · reseptejä %d"

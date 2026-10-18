@@ -1,8 +1,8 @@
 class_name LanguageSwitch
 extends HBoxContainer
 
-## One button per supported language in a corner of the main menu, so a player who
-## cannot read the menu's language does not have to find Options first.
+## A button per language in a main menu corner, so a player who cannot read the menu's
+## language need not find Options.
 
 const MARGIN : float = 6.0
 ## Twice the pixel font's size on touch screens, like the menu buttons.

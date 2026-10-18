@@ -1,9 +1,8 @@
 class_name BrewPreviewText
 extends RefCounted
 
-## The brewing table's live preview: what pressing "Pane" would brew, from the same
-## BrewResolver result a real brew uses, so players can tune a recipe before spending
-## ingredients instead of finding out from a failed brew.
+## The brewing table's preview from the same BrewResolver result a real brew uses, so a
+## recipe can be tuned before spending ingredients.
 
 const EMPTY_TEXT : String = "Lisää raaka-aineita nähdäksesi arvion."
 const NOT_ENOUGH_TEXT : String = "Tarvitset ainakin 3 kg mallasta ja hiivan."

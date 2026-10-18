@@ -1,8 +1,7 @@
 class_name ChalkboardHoverArea
 extends Area2D
 
-## Hover-and-glow trigger for the run stats ("Tilastot"), a wall chalkboard; same
-## pattern as RecipeShelfHoverArea.
+## Hover-and-glow trigger for the run stats ("Tilastot"), a wall chalkboard.
 
 const HOVER_GLOW_COLOR : Color = Color(1.3, 1.15, 0.8, 1.0)
 const HIDDEN_COLOR : Color = Color(1.0, 1.0, 1.0, 1.0)

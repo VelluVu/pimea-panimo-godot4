@@ -1,10 +1,8 @@
 class_name FermentingTankEffect
 extends Node2D
 
-## Bubbles on the back room's middle unitank while a brew ferments: they rise from the
-## airlock on top and inside the sight glass. Drawn pixel by pixel and stepped at a low
-## frame rate, like the rest of the pixel art. Sits under the tank's Sprite2D, in its
-## centred coordinates.
+## Bubbles on the back room's middle unitank while a brew ferments, from the airlock and in
+## the sight glass. Pixel by pixel at a low frame rate, in the tank sprite's space.
 
 ## Ten steps a second, like the brew day's shaders.
 const STEP_SECONDS : float = 0.1

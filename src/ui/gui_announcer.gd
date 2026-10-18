@@ -1,9 +1,8 @@
 class_name GuiAnnouncer
 extends Node
 
-## Turns game events into on-screen text: toasts (unlocks, goals, failed purchases)
-## stacked by ToastStack, and the flash/hold/fade banners (BannerPresenter). GUI owns
-## the labels and calls start() once the tree is ready.
+## Turns game events into toasts (ToastStack) and flash/hold/fade banners (BannerPresenter).
+## GUI owns the labels and calls start().
 
 const DISCOVERY_TOAST_FORMAT: String = "Uusi oluttyyli löydetty: %s!"
 const ACHIEVEMENT_UNLOCKED_TOAST_FORMAT: String = "Saavutus avattu: %s!"
@@ -35,14 +34,12 @@ const GROUP_VISIT_BANNER_FLASH_SECONDS: float = 0.2
 const GROUP_VISIT_BANNER_HOLD_SECONDS: float = 4.0
 const GROUP_VISIT_BANNER_FADE_SECONDS: float = 0.8
 
-## Held longer than a group visit's one-liner, shorter than FIRST_BREW_HINT: it repeats
-## on every day a named event lands.
+## Shorter than the first-brew hint: it repeats on every day a named event lands.
 const DAY_EVENT_BANNER_FLASH_SECONDS: float = 0.25
 const DAY_EVENT_BANNER_HOLD_SECONDS: float = 6.0
 const DAY_EVENT_BANNER_FADE_SECONDS: float = 1.0
 
-## Same banner language as group visits, held much longer since it is a paragraph
-## read once at the start of a run. Purely passive.
+## The group banner's style, held long: a paragraph read once at run start.
 const FIRST_BREW_HINT_TEXT: String = "Ovet ovat vielä hetken kiinni. Osta raaka-aineet ja pane ensimmäinen olut rauhassa."
 const FIRST_BREW_HINT_FLASH_SECONDS: float = 0.25
 const FIRST_BREW_HINT_HOLD_SECONDS: float = 12.0
@@ -57,8 +54,8 @@ var _day_event_banner: BannerPresenter
 var _first_brew_hint: BannerPresenter
 var _day_recap_window: DayRecapWindow
 
-## Bumped on every announcement so a banner still waiting out the recap
-## window is dropped if a newer day's announcement arrives first.
+## Bumped per announcement, so a banner still waiting out the recap is dropped for a newer
+## day's.
 var _day_event_announce_serial: int = 0
 ## Unlocks that land in the same frame share one toast; flushed at the frame's end.
 var _pending_achievements: Array[String] = []
@@ -78,8 +75,7 @@ func setup(toast_label: Label, group_visit_label: Label, day_event_label: Label,
 	BannerPresenter.add_backing(group_visit_label)
 	BannerPresenter.add_backing(day_event_label)
 	_group_visit_banner = BannerPresenter.new(group_visit_label, GROUP_VISIT_BANNER_FLASH_SECONDS, GROUP_VISIT_BANNER_HOLD_SECONDS, GROUP_VISIT_BANNER_FADE_SECONDS)
-	# Plain alpha fade-in, not the overexposed flash: it's the day's forecast,
-	# not an in-the-moment arrival.
+	# A plain fade-in, not the flash: it is a forecast, not an arrival.
 	_day_event_banner = BannerPresenter.new(day_event_label, DAY_EVENT_BANNER_FLASH_SECONDS, DAY_EVENT_BANNER_HOLD_SECONDS, DAY_EVENT_BANNER_FADE_SECONDS, false)
 	# Natural end and early dismissal both hide it and hand off to the goals panel.
 	_first_brew_hint = BannerPresenter.new(first_brew_hint_label, FIRST_BREW_HINT_FLASH_SECONDS, FIRST_BREW_HINT_HOLD_SECONDS, FIRST_BREW_HINT_FADE_SECONDS, true, true, true, goals_panel.draw_attention)
@@ -103,8 +99,7 @@ func start() -> void:
 	BrewerySignals.fermentation_started.connect(_on_fermentation_started)
 	BrewerySignals.batch_fermented.connect(_on_batch_fermented)
 
-	# Shown while the day clock is still stopped, so the missing customers
-	# don't read as a bug. Ends by pointing at DailyGoalsPanel.
+	# Shown while the clock is stopped, so the missing customers do not read as a bug.
 	if TimeManager.day_timer.is_stopped():
 		BrewerySignals.brewery_state_changed.connect(_on_first_brew_hint_state_changed)
 		_first_brew_hint.present(FIRST_BREW_HINT_TEXT)
@@ -158,8 +153,8 @@ func _on_group_visit_announced(banner_text: String) -> void:
 	_group_visit_banner.present(tr(banner_text))
 
 
-## The day's forecast banner (see DayEventManager). It waits for the recap window,
-## since both react to TimeManager.day_changed and the banner would fade in on top of it.
+## The day's forecast banner waits for the recap window, which reacts to the same
+## day_changed.
 func _on_day_event_announced(event: DayEventData) -> void:
 	_day_event_announce_serial += 1
 	var serial: int = _day_event_announce_serial
@@ -174,8 +169,7 @@ func _on_day_event_announced(event: DayEventData) -> void:
 	GUISignals.day_event_banner_shown.emit(event)
 
 
-## Dismisses the hint once the clock starts (first brew done). One-shot, and hands
-## off to DailyGoalsPanel like the natural fade-out.
+## Dismisses the hint once the clock starts, handing off to DailyGoalsPanel.
 func _on_first_brew_hint_state_changed(_brewery: Brewery) -> void:
 	if TimeManager.day_timer.is_stopped():
 		return

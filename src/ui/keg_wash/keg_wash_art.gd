@@ -1,23 +1,20 @@
 class_name KegWashArt
 extends Resource
 
-## The keg wash's sprites, so swapping one is a matter of editing its PNG in
-## assets/textures/keg_wash/. Drawn small and shown scaled up like the game's other
-## sprites: the keg 4x, everything else 2x. The water, mist, sparkles and the hose itself
-## stay drawn in code. Keep each sprite's size, or the parts the code places on it shift.
+## The keg wash's sprites (assets/textures/keg_wash/): keg at 4x, the rest 2x; water, mist,
+## sparkles and the hose are drawn in code. Keep each sprite's size.
 
 const TUNNEL_SCALE : int = 4
 const PROP_SCALE : int = 2
 
-## 92 x 62, the opened keg seen from the front, tilted toward the player. Its opening and
-## far bottom must stay where KegTunnel expects them (drawn at TUNNEL_SCALE from
-## KegWashView.TUNNEL_POSITION).
+## 92 x 62, the opened keg tilted toward the player; its opening and bottom must stay where
+## KegTunnel expects them.
 @export var tunnel : Texture2D
 ## Eight 14 x 14 frames side by side, in KegWashSpot.Kind order (yeast, gum, salmiakki,
 ## hat, coconut, flies, bees), then a loose clump of scrubbed dirt.
 @export var spots : Texture2D
-## 12 x 34: hangs from the hook by the hole at its top, held by the shaft at BRUSH_GRIP_Y;
-## the bristles at the bottom do the scrubbing around BRUSH_HEAD_Y (KegWashView).
+## 12 x 34: hangs from the hook by its top hole, held at BRUSH_GRIP_Y, scrubbing around
+## BRUSH_HEAD_Y.
 @export var brush : Texture2D
 ## 8 x 16, the spraying tip at the top centre; the hose joins the bottom (NOZZLE_GRIP).
 @export var nozzle : Texture2D

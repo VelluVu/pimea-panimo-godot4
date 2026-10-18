@@ -1,8 +1,7 @@
 class_name OlutoppiNodeView
 extends RefCounted
 
-## The labels inside one Olutoppi node square, and its hover look: a node the player can
-## buy right now grows a little and brightens under the mouse.
+## One Olutoppi node's labels and hover look: a buyable node grows and brightens.
 
 const HOVER_SCALE : Vector2 = Vector2(1.08, 1.08)
 ## Above 1.0 so the labels brighten too; warm to match the gold level text.
@@ -25,8 +24,7 @@ func _init(node_button : Button) -> void:
 	button.mouse_exited.connect(_set_hovered.bind(false))
 
 
-## Call after the button's disabled state changes, so a node that was just bought to
-## its max (or can no longer be afforded) drops the hover look under the mouse.
+## Call after the disabled state changes, so a node just maxed drops its hover look.
 func refresh_availability() -> void:
 	button.mouse_default_cursor_shape = Control.CURSOR_ARROW if button.disabled else Control.CURSOR_POINTING_HAND
 	if button.disabled:

@@ -1,9 +1,8 @@
 class_name SpicePreviewText
 extends RefCounted
 
-## The brewing preview's spice line: the bonus from suitable spices, or the
-## Reinheitsgebot penalty, and the cost of spices the style does not like. Empty when
-## the spices change nothing.
+## The preview's spice line: suitable spices' bonus or the Reinheitsgebot penalty, and
+## unsuited spices' cost. Empty when spices change nothing.
 
 const BONUS_FORMAT : String = "Mausteet: +%d %%"
 const PURITY_LAW_FORMAT : String = "Reinheitsgebot rikottu: -%d %%"

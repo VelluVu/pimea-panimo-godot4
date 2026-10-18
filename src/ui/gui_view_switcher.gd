@@ -1,9 +1,8 @@
 class_name GuiViewSwitcher
 extends RefCounted
 
-## Switches the GUI between its three main views: bar (neutral), shop and
-## brewery. GUI owns the nodes and hands them in; this owns which panels each
-## view shows and announces bar_view_entered/exited so hover areas can gate input.
+## Switches between the bar, shop and brewery views, showing each view's panels and
+## announcing bar_view_entered/exited so hover areas can gate input.
 
 var _shop_view: ShopView
 var _brewery_view: BrewingView
@@ -44,10 +43,8 @@ func show_shop() -> void:
 	GUISignals.bar_view_exited.emit()
 
 
-## The shop entrance stays active here, unlike show_shop(): from the brewery the
-## player can click straight through to the shop. Deliberately not symmetric:
-## BreweryHoverArea only accepts input in the bar view, so there is no click from
-## the shop straight to the brewery, avoiding an accidental swap mid-shopping.
+## The shop entrance stays active, so the brewery can click straight to the shop. Not the
+## other way round, so a mid-shopping misclick never swaps views.
 func show_brewery() -> void:
 	_shop_view.hide()
 	_shop_entrance_panel.activate_shop_panel()

@@ -1,8 +1,7 @@
 class_name RiskText
 extends RefCounted
 
-## The top bar's LVV risk: the label, when it turns red, and the hover tooltip. The raid
-## comes at the run's own threshold (perks and fame move it), never at a fixed 100.
+## The top bar's LVV risk: label, red warning and tooltip, at the run's own threshold.
 
 const LABEL_FORMAT : String = "LVV-riski: %d/%d"
 ## The label turns red this close to the threshold.
@@ -27,8 +26,8 @@ static func is_warning(risk : int, threshold : int) -> bool:
 	return risk >= threshold - WARNING_MARGIN
 
 
-## `perk_change` and `fame_penalty` are how far perks and the reputation tier moved the
-## threshold from `base`; the breakdown line only shows when one of them did.
+## `perk_change` and `fame_penalty` moved the threshold from `base`; the breakdown shows
+## only when one did.
 static func tooltip(risk : int, threshold : int, base : int, perk_change : int, fame_penalty : int,
 		raid_count : int, raid_limit : int, next_fine : float, next_reputation_penalty : int) -> String:
 	var lines : PackedStringArray = [

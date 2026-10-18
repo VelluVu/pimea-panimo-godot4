@@ -1,9 +1,8 @@
 class_name HeatButton
 extends Button
 
-## The burner button as its own pixel frame: cold iron at rest, glowing through ember red
-## to orange with the burner power, in a few hard palette steps. Iron cools slower than
-## the burner and stays warm while the kettle is hot. It sinks while held (pointer or key).
+## The burner button: cold iron at rest, glowing ember red to orange with the burner in hard
+## palette steps, cooling slower than the burner. Sinks while held.
 
 ## One row per heat step, coldest first: face, top edge, left edge, and the right edge with the lip.
 const PALETTE : Array[Array] = [

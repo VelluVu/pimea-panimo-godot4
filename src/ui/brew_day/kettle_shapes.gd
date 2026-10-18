@@ -1,9 +1,8 @@
 class_name KettleShapes
 extends RefCounted
 
-## Pixel-snapped ellipses for the kettle's drawing, and the mouth's unit space: the
-## liquid's middle at the origin and its edge on the unit circle, so a swirl just
-## rotates a place.
+## Pixel-snapped ellipses for the kettle, and the mouth's unit space (middle at the origin,
+## edge on the unit circle), so a swirl just rotates a place.
 
 const ELLIPSE_POINTS : int = 48
 

@@ -1,15 +1,13 @@
 class_name BrewDayArt
 extends Resource
 
-## The brew day's sprites, so swapping one means editing its PNG in
-## assets/textures/brew_day/. Kettle shown 4x, props 2x; the moving, colour-changing
-## parts stay drawn in code. Keep each sprite's size, or the parts placed on it shift.
+## The brew day's sprites (assets/textures/brew_day/): kettle at 4x, props 2x; moving parts
+## are drawn in code. Keep each sprite's size, or placed parts shift.
 
 const KETTLE_SCALE : int = 4
 const PROP_SCALE : int = 2
 
-## 70 x 71. The oval mouth must stay a transparent hole at (6, 11), 58 x 26: the
-## liquid is drawn under it and shows through, its edge hidden under the rim.
+## 70 x 71; the mouth stays a transparent hole at (6, 11), 58 x 26, the liquid drawn under it.
 @export var kettle : Texture2D
 ## 13 x 5: the blade along +x, its tip at the right end; drawn turned with the stick.
 @export var paddle_blade : Texture2D

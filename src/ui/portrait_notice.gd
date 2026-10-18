@@ -1,10 +1,9 @@
 class_name PortraitNotice
 extends CanvasLayer
 
-## Covers a touch screen held upright, asks to turn it and holds the pause until then.
-## A tap asks for fullscreen landscape (for rotation lock and itch.io's oversized mobile
-## frame). The Finnish notice repeats in English, as the language buttons are behind it.
-## Add one to each scene's UI root.
+## Covers an upright touch screen and holds the pause until turned. A tap asks for
+## fullscreen landscape (rotation lock, itch's mobile frame). Repeats in English, as the
+## language buttons are behind it.
 
 ## Above every window, the level-up cards and touch tooltips.
 const LAYER : int = 127

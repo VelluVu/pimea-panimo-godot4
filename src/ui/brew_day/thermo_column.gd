@@ -1,9 +1,8 @@
 class_name ThermoColumn
 extends Control
 
-## The brew day's information column beside the kettle, all of it around one vertical
-## thermometer: the accuracy and clumps on top, the needle and target band on the bar,
-## the steps (mash) or hop marks (boil) beside it, the burner strip under it.
+## The info column beside the kettle around one thermometer: accuracy and clumps on top,
+## needle and band on the bar, steps or hop marks beside it, the burner under it.
 
 const BAR_RECT : Rect2 = Rect2(8, 34, 16, 176)
 const FLAME_RECT : Rect2 = Rect2(8, 214, 16, 6)
