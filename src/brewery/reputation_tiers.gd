@@ -28,9 +28,8 @@ static func tier_for(reputation: int, tiers: Array[ReputationTier]) -> Reputatio
 	return reached
 
 
-## The tier to announce after a change, given the one announced last. A rise is
-## announced at once; a drop only once reputation is DROP_MARGIN below the announced
-## tier's start, so hovering at a boundary does not toast up and down all day.
+## The tier to announce after a change. A rise is announced at once, a drop only
+## DROP_MARGIN below the tier's start, so a boundary does not toast up and down.
 static func announced_tier(announced: ReputationTier, reputation: int, tiers: Array[ReputationTier]) -> ReputationTier:
 	var actual: ReputationTier = tier_for(reputation, tiers)
 	if announced == null or actual == null:

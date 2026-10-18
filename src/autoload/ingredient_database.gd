@@ -1,4 +1,3 @@
-#IngredientDatabase (autoload)
 extends Node
 
 const LOG_FOUND_INGREDIENT : String = "[IngredientDatabase] found from subfolder: %s (ID: %s)"

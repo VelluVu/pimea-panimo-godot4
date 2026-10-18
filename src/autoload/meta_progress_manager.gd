@@ -1,8 +1,7 @@
 extends Node
 
-## Progress that outlives a run, in its own ConfigFile: discovered styles, the renown
-## earned per run and the MetaUnlockData levels bought with it. The tree's rules are in
-## MetaUnlockRules.
+## Progress that outlives a run, in its own ConfigFile: discovered styles, renown and the
+## Olutoppi levels bought with it (rules in MetaUnlockRules).
 
 ## Renown went up or was spent, so open views can redraw.
 signal renown_changed(renown : int)
@@ -22,8 +21,7 @@ const UNLOCK_FOLDER_PATH : String = "res://src/resources/meta_unlocks/"
 var unlock_pool : Array[MetaUnlockData] = []
 
 var _config : ConfigFile = ConfigFile.new()
-## Overridable so tests that really write (add_renown(), purchase_next_level()) can use a
-## throwaway file instead of user://meta_progress.cfg.
+## Tests that really save point this at a throwaway file.
 var _save_path : String = SAVE_PATH
 
 
@@ -75,7 +73,7 @@ func meets_prerequisites(unlock_id : String) -> bool:
 	return unlock != null and MetaUnlockRules.meets_prerequisites(unlock, get_unlocked_levels())
 
 
-## Public because OlutoppiWindow needs the same by-id lookup.
+## Public for OlutoppiWindow.
 func find_unlock(unlock_id : String) -> MetaUnlockData:
 	for candidate : MetaUnlockData in unlock_pool:
 		if candidate.unlock_id == unlock_id:
@@ -83,8 +81,7 @@ func find_unlock(unlock_id : String) -> MetaUnlockData:
 	return null
 
 
-## Every invested node's level scaled into a fresh RunPerk, ready to fold into a new
-## Brewery's active_perks.
+## Every bought node's level as a fresh RunPerk for a new Brewery.
 func get_active_perks() -> Array[RunPerk]:
 	var active : Array[RunPerk] = []
 	var levels : Dictionary = get_unlocked_levels()
@@ -95,9 +92,8 @@ func get_active_perks() -> Array[RunPerk]:
 	return active
 
 
-## Spends renown on a node's next level. False, with nothing spent, when it cannot be
-## bought (see MetaUnlockRules.can_purchase()); callers should still check that first to
-## keep a node's square disabled.
+## Spends renown on a node's next level; false, spending nothing, when it cannot be
+## bought (MetaUnlockRules.can_purchase()).
 func purchase_next_level(unlock_id : String) -> bool:
 	# The browser demo shows the talent tree but sells nothing from it.
 	if DemoRules.is_demo():

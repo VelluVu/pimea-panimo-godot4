@@ -10,7 +10,7 @@ extends Resource
 ## the cleanest empty keg when it is done, see finish_fermenting().
 @export var fermenting : Array[BrewBatch] = []
 
-# Sisäkkäinen sanakirja: Key: Script (MaltData/HopData) -> Value: Dictionary (Key: int (ID) -> Value: InventoryItem)
+# Script (MaltData, HopData...) -> {id -> InventoryItem}
 @export var items : Dictionary = {}
 
 
@@ -123,7 +123,6 @@ func withdraw_item(ingredient : IngredientData, amount : int) -> int:
 
 func has_item(ingredient : IngredientData) -> bool:
 	if not items.has(ingredient.type) or not items[ingredient.type].has(ingredient.id):
-		#print(StringContainer.INVALID_ID_ERROR % [StringContainer.INVENTORY_STRING , ingredient.id, StringContainer.LIST_STRING])
 		return false
 	return true
 
@@ -134,7 +133,6 @@ func has_item_by_id(id: int) -> bool:
 		return false
 	
 	if not items.has(ingredient.type) or not items[ingredient.type].has(id):
-		#print(StringContainer.INVALID_ID_ERROR % [StringContainer.INVENTORY_STRING , id, StringContainer.LIST_STRING])
 		return false
 		
 	return true
@@ -193,9 +191,8 @@ func count_bottles() -> int:
 	return total
 
 
-## Batches customers can buy right now: servings left, not held in the cellar to age, and
-## on one of the taps (KegRules.tap_count()). The oldest go on tap first; the rest wait in
-## the warehouse and take a tap when one runs empty.
+## What customers can buy now: servings left, not held, and on a tap (KegRules.tap_count()).
+## The oldest go on tap first; the rest wait for a tap to empty.
 func batches_on_serve() -> Array[BrewBatch]:
 	var serving : Array[BrewBatch] = []
 	var taps : int = KegRules.tap_count(total_kegs())

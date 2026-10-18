@@ -1,9 +1,8 @@
 class_name KegTunnel
 extends RefCounted
 
-## The opened keg as the wash window shows it: tilted toward the player, so its opening
-## is a wide ellipse and the far bottom a small one inside it. In window pixels, matching
-## keg_tunnel.png drawn at KegWashArt.TUNNEL_SCALE.
+## The opened keg tilted toward the player: its opening a wide ellipse, the far bottom a
+## small one inside, in window pixels (keg_tunnel.png at TUNNEL_SCALE).
 
 const OPENING_CENTER : Vector2 = Vector2(320, 202)
 const OPENING_RADII : Vector2 = Vector2(164, 104)

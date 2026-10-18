@@ -1,11 +1,9 @@
 class_name BrewQuality
 extends RefCounted
 
-## How well a mixture hits a style it already fits, folded into one quality multiplier.
-## Hop-forward styles (three or more hop marks) are about layered hopping: each layer
-## filled with a fitting hop adds to the quality. Classic styles are about the malt and
-## gentle hops, so hitting the style's colour, bitterness and strength counts for more
-## and a hop layer for less.
+## How well a mixture hits a style it already fits, as one quality multiplier. Hop-forward
+## styles (three or more hop marks) reward layered hopping; classic ones the colour,
+## bitterness and strength more, and a hop layer less.
 
 ## How much hitting the middle of the EBC, IBU and ABV windows moves the quality.
 const PRECISION_WEIGHT : float = 0.4
@@ -27,8 +25,7 @@ const SPICE_MATCH_MAX : float = 0.1
 const PURITY_LAW_PENALTY : float = 0.1
 ## Per spice the style neither needs nor likes, so spicing a beer at random never pays.
 const UNSUITED_SPICE_PENALTY : float = 0.05
-## Per character malt of the style in the grist, capped, so the right malts pay a little
-## on top of hitting the colour and strength.
+## Per character malt of the style in the grist, capped.
 const MALT_MATCH_STEP : float = 0.03
 const MALT_MATCH_MAX : float = 0.06
 ## A recipe that fits the style but hits nothing of it well. A by-the-book recipe lands

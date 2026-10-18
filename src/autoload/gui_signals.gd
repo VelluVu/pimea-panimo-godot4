@@ -1,4 +1,3 @@
-#class_name GuiSignals (autoload)
 extends Node
 
 @warning_ignore("unused_signal")
@@ -24,7 +23,7 @@ signal batch_hold_toggled(batch : BrewBatch)
 @warning_ignore("unused_signal")
 signal keg_wash_finished(cleanliness : float)
 
-## Brews the table at once with a plain ×1.0 quality (bots, the console).
+## Brews the table at once at BrewDayRules.NORMAL_MULTIPLIER (bots, the console).
 @warning_ignore("unused_signal")
 signal start_brewing()
 ## The player's Brew button: opens the brew day minigame for the table.

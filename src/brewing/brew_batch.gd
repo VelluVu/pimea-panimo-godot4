@@ -9,9 +9,7 @@ extends Resource
 
 @export var original_quality: float = 1.0
 @export var current_quality : float = 1.0
-## Schema default only — a real batch's value always comes from Brewery.
-## start_brew()'s effective_yield (see BrewResult.bottle_yield's docstring
-## for the 20L-keg/0.44L-serving math behind 45).
+## Schema default only; a real batch gets Brewer's effective yield (BrewResult.bottle_yield).
 @export var amount_bottles: int = 45
 ## Kept in the cellar: customers skip it until the player releases it, so it can age.
 @export var held: bool = false
@@ -41,15 +39,15 @@ extends Resource
 @export var unsuited_spice_penalty : float = 0.0
 ## Quality from the style's character malts; 0 on older saves.
 @export var malt_bonus : float = 0.0
-## What went into the batch, see BatchTraits. Older saves have none of it.
-## True when a spice that suits the style went in (BatchTraits.has_suitable_spice()).
+## What went into the batch (BatchTraits); none on older saves. True when a spice that
+## suits the style went in.
 @export var spiced : bool = false
 @export var malt_ids : Array[int] = []
 @export var late_hop_profiles : Array[HopData.FlavorProfile] = []
 @export var hop_profiles : Array[HopData.FlavorProfile] = []
 
-## Snapshotted from the perks when the batch is brewed (see RunPerk.peak_speed_multiplier),
-## so later perks don't change it. 1.0 ages as normal, which also covers old saves.
+## Taken from the perks at brewing, so later perks do not change it. 1.0 = normal aging,
+## also for old saves.
 @export var peak_days_multiplier : float = 1.0
 @export var decline_rate_multiplier : float = 1.0
 
@@ -58,8 +56,8 @@ extends Resource
 const SPOILAGE_PER_TICK : float = 0.02
 ## Ticks over which the aged price bonus fades once the batch starts to spoil (a day).
 const AGED_BONUS_FADE_TICKS : float = 10.0
-## Share of a sale's LVV risk an aged batch saves at its peak: connoisseurs are discreet,
-## so a calm, aging cellar draws less attention than one pouring volume.
+## Share of a sale's LVV risk an aged batch saves at its peak: an aging cellar draws less
+## attention than one pouring volume.
 const AGED_RISK_DISCOUNT : float = 0.5
 
 
@@ -135,8 +133,7 @@ const AGING_TREND_RISING : String = "▲"
 const AGING_TREND_PLATEAU : String = "▶"
 const AGING_TREND_DECLINING : String = "▼"
 
-## Whether quality is rising toward peak, holding, or declining past shelf life (the
-## phases of _calculate_current_quality()), so BeerBatchPanel can say "hold" or "sell now".
+## Rising toward the peak, holding or declining, so BeerBatchPanel can say hold or sell.
 func get_aging_trend_icon() -> String:
 	var effective_peak_days : int = get_effective_peak_days()
 	if age_in_days < effective_peak_days:
@@ -153,8 +150,7 @@ const AGING_TREND_RISING_LABEL : String = "kypsyy vielä"
 const AGING_TREND_PLATEAU_LABEL : String = "parhaimmillaan"
 const AGING_TREND_DECLINING_LABEL : String = "heikkenee"
 
-## Plain-language counterpart to get_aging_trend_icon() for the tooltip —
-## the row itself only has room for the bare arrow.
+## The words for get_aging_trend_icon(), for the tooltip.
 func get_aging_trend_label() -> String:
 	match get_aging_trend_icon():
 		AGING_TREND_RISING:
@@ -194,10 +190,7 @@ func get_quality_breakdown_tooltip() -> String:
 const AGED_PRICE_FORMAT : String = "Kypsytyslisä hintaan: +%d %% (enintään +%d %%)"
 const FULL_INFO_TOOLTIP_HEADER_FORMAT : String = "Laatu: %s%% (%s %s, %s)\nEBC: %s | IBU: %s | ABV: %.1f%%"
 
-## Combines the header stats (quality/EBC/IBU/ABV) that used to sit in the
-## batch row's visible text with the existing breakdown tooltip, so the
-## row itself can stay to a single compact line. Spells out the aging
-## trend arrow in words here since the row has no room to.
+## The header stats and the quality breakdown in one tooltip, so the row stays one line.
 func get_full_info_tooltip() -> String:
 	return tr(FULL_INFO_TOOLTIP_HEADER_FORMAT) % [
 		roundi(current_quality * 100),

@@ -1,4 +1,3 @@
-#class_name BrewEngine (autoload)
 extends Node
 
 ## A different Brewery just became current (new game or load). Autoloads that
@@ -28,8 +27,7 @@ func _init() -> void:
 	start_new_game()
 
 
-## The one place a Brewery becomes current. Disconnects the outgoing one first,
-## otherwise it keeps handling GUISignals.
+## Disconnects the outgoing Brewery first, or it keeps handling GUISignals.
 func set_brewery(brewery : Brewery) -> void:
 	if current_brewery != null:
 		current_brewery.disconnect_signals()

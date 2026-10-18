@@ -1,4 +1,3 @@
-#class_name BrewerySignals (Autoload)
 extends Node
 
 @warning_ignore("unused_signal")
@@ -9,9 +8,8 @@ signal dialogue_pushed(text: String, is_special: bool, slot_index: int, characte
 signal style_discovered(style: int)
 @warning_ignore("unused_signal")
 signal lvv_raid_triggered(confiscated_bottles: int, fine_amount: float, reputation_lost: int)
-## Same payload as lvv_raid_triggered, delayed until the raid squad (LvvRaidSpawner) has
-## finished walking in, seizing kegs and leaving. LvvRaidWindow listens to this, so the
-## recap lands after the player has watched the raid.
+## lvv_raid_triggered's payload once the raid squad has left, so LvvRaidWindow's recap
+## comes after the player has watched the raid.
 @warning_ignore("unused_signal")
 signal lvv_raid_recap_ready(confiscated_bottles: int, fine_amount: float, reputation_lost: int)
 @warning_ignore("unused_signal")
@@ -28,85 +26,67 @@ signal recipe_save_rejected(reason: int, same_recipe_name: String)
 signal hop_variety_limit_reached(limit: int)
 @warning_ignore("unused_signal")
 signal beer_brewed(style: int)
-## Emitted by Brewer right after beer_brewed with the new batch, for stats that need its
-## ABV, colour or spices (AchievementWiring).
+## Right after beer_brewed, for stats that need the batch (AchievementWiring).
 @warning_ignore("unused_signal")
 signal batch_brewed(batch: BrewBatch)
-## Emitted by Brewer for a matched brew whose spices changed its quality: positive for
-## suitable spices, negative for a broken Reinheitsgebot.
+## A matched brew's spices changed its quality: positive for suitable ones, negative for
+## a broken Reinheitsgebot.
 @warning_ignore("unused_signal")
 signal brew_spiced(style_name: String, spice_bonus: float)
-## Emitted by SaleProcessor when a sale goes badly for the customer: rejected on quality,
-## wrong style, or nothing in stock. DailyGoalManager reads it for UNHAPPY_CUSTOMERS_MAX.
+## A sale went badly for the customer: refused on quality, wrong style or nothing in stock.
 @warning_ignore("unused_signal")
 signal customer_unhappy()
-## Emitted by SpecialEventManager.process_accept() with whether the event was
-## fulfilled. `event_data` says which event resolved, so AchievementManager can tell a
-## RiskBribeEventData success from other special events. A connected method may take
-## fewer parameters than the signal emits.
+## Whether an accepted special event was fulfilled; `event_data` tells which one.
 @warning_ignore("unused_signal")
 signal special_event_resolved(succeeded: bool, event_data: SpecialEventData)
 @warning_ignore("unused_signal")
 signal group_visit_announced(banner_text: String)
 @warning_ignore("unused_signal")
 signal batch_bottled(bottles_lost: int, label_cost: float, style_name: String)
-## Emitted by Fermenter when a brew starts fermenting (not for the run's first brew,
-## which skips fermentation).
+## A brew started fermenting (the run's first brew skips it).
 @warning_ignore("unused_signal")
 signal fermentation_started(style_name: String)
-## Emitted by Fermenter after every fermentation tick, so the warehouse can show the time left.
+## After every fermentation tick, for the warehouse's time left.
 @warning_ignore("unused_signal")
 signal fermentation_ticked()
-## Emitted by Fermenter when a batch has fermented and gone into a keg; `batch.infected`
-## tells whether the keg soured it.
+## A batch fermented into its keg; `batch.infected` tells whether the keg soured it.
 @warning_ignore("unused_signal")
 signal batch_fermented(batch: BrewBatch)
-## Emitted by Fermenter once a fermented batch's bottles are in storage. The warehouse
-## door floats it up.
+## A fermented batch's servings are in storage; the warehouse door floats it up.
 @warning_ignore("unused_signal")
 signal batch_stored(style_name: String, bottles: int)
 @warning_ignore("unused_signal")
 signal daily_bills_paid(electricity: int, water: int, total: int)
-## Emitted once per run by Brewery.trigger_ending(). `ending_type` is "busted", "bankrupt"
-## "survived" or "season_over" (the last two on the season's last day). See GameEndWindow.
+## Once per run from Brewery.trigger_ending(): "busted", "bankrupt", "survived" or
+## "season_over".
 @warning_ignore("unused_signal")
 signal game_ended(ending_type: String)
-## Emitted once per level gained by Brewery.add_xp(). LevelUpWindow rolls its own perk
-## choices when it hears this.
+## Once per level gained; LevelUpWindow rolls its perk choices.
 @warning_ignore("unused_signal")
 signal level_up_reached(new_level: int)
-## Emitted by Brewer.start_brew() with the exact XP the brew granted (run_xp wraps on a
-## level-up, so it cannot be diffed). BrewPreparationPanel shows a "+X XP" popup at the
-## brew button.
+## The exact XP a brew granted (run_xp wraps on a level-up, so it cannot be diffed).
 @warning_ignore("unused_signal")
 signal brew_xp_gained(amount: int)
-## Emitted by Brewer.start_brew() with the reputation a first brew of a style (or a
-## failed brew) changed. BrewPreparationPanel shows it beside the XP popup.
+## The reputation a brew changed: a season's first of a style, or a failed brew.
 @warning_ignore("unused_signal")
 signal brew_reputation_gained(amount: int)
-## Emitted by Brewer.start_brew() for the season's first batch of a style, a novelty
-## (FirstBrewRules), after beer_brewed.
+## The season's first batch of a style, a novelty (FirstBrewRules).
 @warning_ignore("unused_signal")
 signal season_first_brew(style: int, style_name: String)
-## Emitted by SaleProcessor with the exact XP a sale granted. It carries no position:
-## callers that know their customer (Customer, GroupVisitDirector) capture it around their
-## own process_auto_sale() call, then emit xp_popup_requested with a position.
+## A sale's exact XP, without a position: the customer captures it around its sale and
+## emits xp_popup_requested with one.
 @warning_ignore("unused_signal")
 signal sale_xp_gained(amount: int)
-## Emitted by whoever knows where to show an XP popup, once they have paired a captured
-## sale_xp_gained amount with a position. DialogView places it.
+## A captured sale_xp_gained paired with a position; DialogView shows it.
 @warning_ignore("unused_signal")
 signal xp_popup_requested(amount: int, position: Vector2, tier: PopupTierRules.Tier)
-## Emitted by SaleProcessor with a sale's net reputation change, after any bar-fight
-## penalty. Same capture-and-pair pattern as sale_xp_gained.
+## A sale's net reputation change, bar fight included. Captured like sale_xp_gained.
 @warning_ignore("unused_signal")
 signal sale_reputation_gained(amount: int)
-## Emitted by Brewery.change_reputation() with every non-zero change actually applied,
-## tagged with where it came from (ReputationRules.Source). DayRecapWindow sums them.
+## Every non-zero reputation change applied, by ReputationRules.Source, for DayRecapWindow.
 @warning_ignore("unused_signal")
 signal reputation_changed(amount: int, source: ReputationRules.Source)
-## Emitted by Brewery.change_reputation() when reputation crosses into another
-## ReputationTier, up (`rose`) or down.
+## Reputation crossed into another ReputationTier, up (`rose`) or down.
 @warning_ignore("unused_signal")
 signal reputation_tier_changed(tier: ReputationTier, rose: bool)
 ## Emitted by TimeManager at a day change with the reputation that `tier`'s daily decay took.
@@ -115,77 +95,61 @@ signal reputation_decayed(amount: int, tier: ReputationTier)
 ## Emitted by TimeManager at a day change with the LVV risk the night took (DayRules).
 @warning_ignore("unused_signal")
 signal risk_decayed(amount: int)
-## Emitted by Brewery the first time in a season LVV risk reaches LVV_HINT_RISK; the
-## GUI explains the risk and how to keep it down.
+## LVV risk first reached LVV_HINT_RISK this season; the GUI explains the risk.
 @warning_ignore("unused_signal")
 signal lvv_hint_reached()
-## Emitted by AdoptionEventData when the player keeps the stray cat; ImmersionEventSpawner
-## sends it on its first walk and keeps it strolling through the cellar.
+## The player kept the stray cat; ImmersionEventSpawner sends it strolling.
 @warning_ignore("unused_signal")
 signal cellar_cat_adopted()
-## Emitted by Brewery whenever LVV risk rises at or above LVV_INSPECTOR_VISIT_RISK until the
-## inspector has visited; CustomerSpawner sends him in and sets Brewery.lvv_inspector_visited.
+## LVV risk is at LVV_INSPECTOR_VISIT_RISK or more and the inspector has not come yet.
 @warning_ignore("unused_signal")
 signal lvv_inspector_visit_due(brewery: Brewery)
-## Emitted by SaleProcessor when a delighted customer recommends the cellar; the
-## spawner sends in a friend of the same kind (WordOfMouthRules).
+## A delighted customer recommends the cellar; a friend of the same kind follows.
 @warning_ignore("unused_signal")
 signal friend_recommended(data: CustomerData)
-## Emitted by SaleProcessor when an unhappy customer spreads a bad review; the
-## spawner delays the next walk-in.
+## An unhappy customer spreads a bad review; the next walk-in comes later.
 @warning_ignore("unused_signal")
 signal bad_review_spread()
-## Emitted by SaleProcessor when a customer type becomes a regular or stops being
-## one (RegularRules).
+## A customer type became a regular or stopped being one (RegularRules).
 @warning_ignore("unused_signal")
 signal regular_status_changed(customer_title: String, is_regular: bool)
-## Emitted by SaleProcessor with a sale's tip income. Same pattern as sale_reputation_gained.
+## A sale's tip income, captured like sale_reputation_gained.
 @warning_ignore("unused_signal")
 signal sale_tip_gained(amount: float)
-## Emitted like xp_popup_requested, for reputation. DialogView shows it just below the
-## XP popup.
+## Like xp_popup_requested, for reputation; shown just below the XP popup.
 @warning_ignore("unused_signal")
 signal reputation_popup_requested(amount: int, position: Vector2, tier: PopupTierRules.Tier)
-## Emitted like xp_popup_requested, for what the bottles cost and the tip on top.
-## DialogView shows the tip once the income popup has faded.
+## Like xp_popup_requested, for the income and the tip; the tip shows once the income
+## popup has faded.
 @warning_ignore("unused_signal")
 signal money_popup_requested(income: float, tip: float, position: Vector2, tip_tier: PopupTierRules.Tier)
-## Emitted by SaleProcessor after sale_tip_gained with how loud the tip popup is and the
-## quality of the beer sold, which sets how loud the XP and reputation popups are.
+## How loud the tip popup is, and the quality sold, which sets how loud the XP and
+## reputation popups are.
 @warning_ignore("unused_signal")
 signal sale_popup_tiers_rated(tip_tier: PopupTierRules.Tier, beer_quality: float)
-## Emitted by SaleOutcomeCapture with a sale's word of mouth or regular status change,
-## shown over the customer instead of a toast.
+## A sale's word of mouth or regular status change, shown over the customer.
 @warning_ignore("unused_signal")
 signal customer_note_popup_requested(note: SaleOutcomeCapture.Note, position: Vector2)
 ## Emitted by DialogWiring when a critical popup appears, once per frame, at the customer.
 @warning_ignore("unused_signal")
 signal critical_gain_shown(position: Vector2)
-## Emitted by IngredientTrader with the exact amount charged. ShopView shows a "-X €"
-## popup at the buy button.
+## The exact amount a purchase cost, for the shop's popup.
 @warning_ignore("unused_signal")
 signal ingredient_purchased(cost: float)
-## Emitted by IngredientTrader when reputation locks the ingredient. The shop dropdown
-## already disables locked entries, so players rarely reach this; it replaces a
-## silent print().
+## Reputation locks the ingredient. The shop already disables it, so this is rare.
 @warning_ignore("unused_signal")
 signal ingredient_purchase_locked(ingredient_name: String, required_reputation: int)
-## Emitted by IngredientTrader when the player cannot afford the price. Unlike the
-## lock, the shop does not prevent this, so it explains the failed click.
+## The player cannot afford it; the shop allows the click, so this explains it.
 @warning_ignore("unused_signal")
 signal ingredient_purchase_underfunded(ingredient_name: String, price: float, money: float)
-## Emitted by IngredientTrader when the requested amount cannot be withdrawn (stock is
-## all-or-nothing). Lets listeners, today only DevConsole, report why nothing sold.
+## Not enough stock to withdraw (all or nothing); DevConsole reports why.
 @warning_ignore("unused_signal")
 signal ingredient_sale_failed(ingredient_name: String, requested: int, in_stock: int)
-## Emitted by InspectionService.apply_early_close_cost() when the player closes the day
-## early: it costs money and reputation but relieves some LVV risk.
+## Closing the day early cost money and reputation and relieved some LVV risk.
 @warning_ignore("unused_signal")
 signal early_day_close_applied(money_cost: float, reputation_cost: int, risk_relief: int, close_count: int)
-## Emitted by CustomerManager.evict_active_customers() for each customer thrown out when the
-## day is force-closed. Carries dialogue_slot, not the counter slot: a group shares one
-## counter slot but each member keeps its own dialogue_slot. DialogView clears that bubble
-## at once.
+## A customer thrown out at a forced day close. Carries dialogue_slot, since group members
+## share a counter slot but not a bubble.
 @warning_ignore("unused_signal")
 signal customer_evicted(dialogue_slot: int)
 ## Emitted by Inventory when batches leave the cellar: `count` empty kegs came back dirty.
@@ -194,35 +158,27 @@ signal kegs_emptied(count: int)
 ## Emitted by KegWasher when a dirty keg was washed to `cleanliness` (0 to 1).
 @warning_ignore("unused_signal")
 signal keg_washed(cleanliness: float)
-## Emitted by BatchDistributor when a batch is shipped to a BarContact. Not a customer
-## sale (no reputation, XP, tip or receipt), and it carries risk_added because shipping
-## raises risk. BeerPatchPanel shows a payout and risk popup.
+## A batch shipped to a BarContact: not a customer sale (no reputation, XP, tip or
+## receipt), and shipping raises risk.
 @warning_ignore("unused_signal")
 signal keg_shipped_to_bar(style_name: String, bar_name: String, bottles: int, payout: float, risk_added: int)
-## Emitted by DayEventManager on each real day change (never day 1) with the DayEventData
-## it rolled in secret. GUI shows its announcement as a banner. It is a forecast: the
-## spawn-bias window opens later, per the event's own timing.
+## The day event rolled at a day change (never day 1), for the banner. A forecast: its
+## customer bias starts later.
 @warning_ignore("unused_signal")
 signal day_event_announced(event: DayEventData)
-## Emitted by SaleProcessor when a sale becomes a bar fight. `message` is the
-## customer's own bar-fight line with the broken-bottle count filled in. SaleFlashStack
-## shows it as its own toast, not in the customer's speech bubble.
+## A sale turned into a bar fight; `message` is the customer's own line, shown as a toast.
 @warning_ignore("unused_signal")
 signal bar_fight_triggered(message: String)
-## Emitted by SaleProcessor next to bar_fight_triggered, so the customer who started it can
-## play the rampage with one thrown glass per broken bottle.
+## Next to bar_fight_triggered, so the customer throws one glass per broken bottle.
 @warning_ignore("unused_signal")
 signal bar_fight_started(broken_bottles: int)
 ## A glass thrown in a bar fight hit the floor, for the shatter sound.
 @warning_ignore("unused_signal")
 signal glass_shattered()
-## Emitted by DayEventManager when the day's event has a direct effect that actually
-## landed. `message` is its effect_toast_format with the lost amount filled in,
-## shown as its own toast.
+## The day event's direct effect landed; `message` names the loss, shown as a toast.
 @warning_ignore("unused_signal")
 signal day_event_effect_triggered(message: String)
-## Emitted by Brewer when the refund perk's roll succeeds and something was refunded. No
-## payload; shown as a good-news toast.
+## The refund perk returned ingredients.
 @warning_ignore("unused_signal")
 signal ingredients_refunded()
 ## Emitted by CellarUpgradeShop after a cellar upgrade is bought; `level` is its new level.
@@ -231,16 +187,13 @@ signal cellar_upgrade_purchased(upgrade: CellarUpgradeData, level: int)
 ## Emitted by CellarUpgradeShop when the player switches an owned machine on or off.
 @warning_ignore("unused_signal")
 signal machine_switched(upgrade_id: String, enabled: bool)
-## Emitted by SaleProcessor after a customer bought something, and by
-## GroupVisitDirector for the other types in a mixed group; the Asiakaskirja
-## remembers the customer type as met (CustomerUnlockTracker).
+## A customer type bought something, so the Asiakaskirja marks it as met.
 @warning_ignore("unused_signal")
 signal customer_served(data: CustomerData)
 ## A walking customer put a foot down, for the footstep sound.
 @warning_ignore("unused_signal")
 signal customer_stepped(position: Vector2)
-## A customer or a group said something out loud, for the babble sound. `voice_pitch`
-## is the speaker's CustomerData.voice_pitch.
+## A customer or group spoke, for the babble sound at `voice_pitch`.
 @warning_ignore("unused_signal")
 signal customer_spoke(position: Vector2, voice_pitch: float)
 ## The bartender started pouring; `speed_scale` is the pour animation's speed.

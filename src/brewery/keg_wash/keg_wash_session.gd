@@ -1,10 +1,9 @@
 class_name KegWashSession
 extends RefCounted
 
-## Washing one dirty keg. The brush scrubs dirt loose (and knocks out the hat and the
-## coconut, and shoos the critters), the hose rinses loose dirt and the grime film off the
-## whole inside, and the sanitizer covers the inside, though never over dirt or grime. The keg is done when it is
-## spotless and fully covered; cleanliness() scores a wash stopped before that.
+## Washing one dirty keg: the brush scrubs dirt loose (and knocks out the hat and the
+## coconut, shoos critters), the hose rinses dirt and grime, the sanitizer covers what is
+## clean. cleanliness() scores a wash stopped early.
 
 signal spot_loosened(spot : KegWashSpot)
 signal spot_removed(spot : KegWashSpot)

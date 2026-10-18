@@ -1,9 +1,8 @@
 class_name CellarUpgradeData
 extends RunPerk
 
-## A cellar upgrade bought with money during a run, up to max_level times. Like
-## MetaUnlockData, every inherited RunPerk stat is authored as its per-level step and
-## scaled with scaled_copy(), so the upgrade feeds PerkStats like any other perk.
+## A cellar upgrade bought during a run, up to max_level times. Its RunPerk stats are
+## per-level steps scaled by scaled_copy(), so it feeds PerkStats like any perk.
 
 ## Stable key for Brewery.cellar_upgrade_levels and the save. Must be unique.
 @export var upgrade_id : String = ""

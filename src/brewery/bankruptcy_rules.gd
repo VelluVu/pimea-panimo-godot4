@@ -1,9 +1,8 @@
 class_name BankruptcyRules
 extends RefCounted
 
-## When a run is truly lost: no bottles and no way to brew even one known recipe.
-## Brewing itself needs no cash (labels may push money below zero), so owned
-## ingredients count, and so does what selling the rest back would raise.
+## A run is lost only with no servings and no way to brew a known recipe. Brewing needs no
+## cash (labels may push money below zero), so owned ingredients and their resale count.
 
 
 static func is_bankrupt(money : float, bottles : int, owned : Dictionary, recipes : Array[Dictionary], buy_prices : Dictionary, sell_prices : Dictionary) -> bool:

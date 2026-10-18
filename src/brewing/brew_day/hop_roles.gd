@@ -1,10 +1,9 @@
 class_name HopRoles
 extends RefCounted
 
-## Gives each hop addition one of the recipe's hops: the most bitter one bitters, the
-## style's preferred flavour takes the later marks, leftovers join the last mark (or a
-## flavour mark on a bittering-only style). A hop on several marks splits its grams, and
-## a mark left with no grams is dropped, since it could never be hit.
+## Gives each hop addition a recipe hop: the most bitter one bitters, the style's flavour
+## takes the later marks, leftovers join the last. A hop on several marks splits its
+## grams; a mark left with none is dropped.
 
 
 ## `table` maps ingredient id -> IngredientData. Returns the marks sorted by time, the

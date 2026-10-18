@@ -1,9 +1,7 @@
-#DayEventManager (Autoload)
 extends Node
 
-## Rolls a day event on every TimeManager.day_changed, announces it and turns its customer
-## bias on for part of the day. Keyed on day_changed, not a new Brewery, so a continued
-## save is not read as a new day. Day 1 has none, to keep clear of the first-brew hint.
+## Rolls a day event on every TimeManager.day_changed (so a loaded save is not a new day)
+## and turns its customer bias on for part of the day. None on day 1.
 
 @export var day_event_folder_path : String = "res://src/resources/day_events/"
 
@@ -83,8 +81,7 @@ func _on_window_end() -> void:
 	_window_active = false
 
 
-## The one-off stock hit, separate from the delayed bias window. Silent when
-## nothing was lost or no run is active.
+## The one-off stock hit; silent when nothing was lost.
 func _apply_direct_effect(event : DayEventData) -> void:
 	var brewery : Brewery = BrewEngine.current_brewery
 	if brewery == null:
@@ -96,8 +93,8 @@ func _apply_direct_effect(event : DayEventData) -> void:
 	BrewerySignals.brewery_state_changed.emit(brewery)
 
 
-## day_event_none.tres carries a much higher weight, which makes "nothing special"
-## the common day. An event whose customers are all still locked never comes.
+## day_event_none.tres weighs most, so most days are plain. An event whose customers are
+## all locked never comes.
 func _pick_weighted_event() -> DayEventData:
 	var available_titles : Array = []
 	for customer : CustomerData in CustomerRegistry.get_eligible_customers():

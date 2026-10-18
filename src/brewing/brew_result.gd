@@ -11,10 +11,7 @@ extends Resource
 @export var abv : float = 0.0
 ## Kilograms of malt and sugar, checked against the mash tun (MashTun).
 @export var malt_weight : float = 0.0
-## A batch is one 20L keg; at 0.44L per serving that's ~45 servings once
-## StylePricing.BOTTLE_LOSS_RATE's loss is applied — see
-## get_effective_bottle_yield(). 47 raw so the after-loss number lands on
-## 45, not the raw figure itself.
+## One 20 L keg at 0.44 L a serving is about 45 after BOTTLE_LOSS_RATE: 47 raw lands on 45.
 @export var bottle_yield : int = 47
 @export var is_matched : bool = true
 

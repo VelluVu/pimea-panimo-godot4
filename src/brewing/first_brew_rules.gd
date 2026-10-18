@@ -1,10 +1,9 @@
 class_name FirstBrewRules
 extends RefCounted
 
-## The season's first batch of each style is a novelty ("Uutuus"): it earns XP that grows
-## with how demanding the style is, and sells at a premium at the counter. It counts every
-## season, whatever earlier seasons discovered, so a veteran still gains from brewing
-## across the whole range instead of repeating a few safe styles.
+## The season's first batch of each style is a novelty ("Uutuus"): XP by how demanding the
+## style is, and a counter premium. Every season counts, so veterans keep brewing the
+## whole range.
 
 ## Extra share of the counter price a novelty batch sells for.
 const NOVELTY_PRICE_BONUS : float = 0.25

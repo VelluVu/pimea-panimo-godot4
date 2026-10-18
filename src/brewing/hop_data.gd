@@ -3,10 +3,9 @@ extends IngredientData
 
 
 enum FlavorProfile { NONE, CITRUS, TROPICAL, PINE, NOBLE, EARTHY }
-## What the hop is good for. Flavour and aroma marks score the same for any hop with an
-## aroma (HopRoles), so there is no separate flavour use. A mild aroma hop can still
-## bitter the styles that prefer its flavour (BrewQuality.is_good_bittering_hop), as
-## suppliers class Saaz or Fuggle as aroma hops that tradition also bitters with.
+## What the hop is good for. Flavour and aroma marks score the same for any aroma hop, so
+## there is no flavour use. A mild aroma hop still bitters styles that prefer its flavour
+## (BrewQuality.is_good_bittering_hop), as Saaz does in a Czech pils.
 enum Use { BITTERING, AROMA, DUAL }
 
 ## From this much alpha up an aroma hop bitters well too, as real dual-purpose hops do.

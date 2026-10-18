@@ -1,9 +1,8 @@
 class_name KegWashRules
 extends RefCounted
 
-## The keg wash's numbers: what each kind of dirt takes, how a wash is scored and what a
-## dirty keg holds. Dirt is scrubbed loose with the brush, then rinsed away with the hose;
-## the hat and the coconut come out whole, and flies and bees flee from the brush.
+## The keg wash's numbers. The brush scrubs dirt loose and the hose rinses it away; the hat
+## and the coconut come out whole, and critters flee the brush.
 
 ## Brush stroke (pixels) that scrubs each kind loose; the hat pops out at once.
 const WORK : Dictionary = {
@@ -38,8 +37,8 @@ const COVERAGE_CELL : float = 16.0
 ## Coverage that counts as the whole keg.
 const FULL_COVERAGE : float = 0.97
 
-## Grime: a film over the whole inside, with thicker coloured stains on it, that only
-## the hose takes off, so the hose has to go all over the keg. Kept in cells this size.
+## Grime: a film over the whole inside with thicker stains; only the hose takes it off.
+## Kept in cells this size.
 const STAIN_CELL : float = 8.0
 const FILM_AMOUNT : float = 0.5
 const FILM_COLOR : Color = Color(0.36, 0.31, 0.24)
@@ -48,8 +47,7 @@ const STAIN_RINSE_RATE : float = 5.0
 const STAIN_HOSE_RADIUS : float = 34.0
 ## A cell this faint counts as clean.
 const STAIN_CLEAN_BELOW : float = 0.05
-## Grime left at or under this share counts as rinsed: the last specks by the rim wash off
-## with it, so nobody has to hunt for them.
+## Grime at or under this share counts as rinsed, so nobody hunts for the last specks.
 const GRIME_DONE_SHARE : float = 0.03
 const MIN_STAINS : int = 2
 const MAX_STAINS : int = 4

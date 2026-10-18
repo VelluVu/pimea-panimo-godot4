@@ -4,16 +4,13 @@ extends RefCounted
 ## LVV raids and the manual early-close penalty. Stateless: Brewery creates one per call.
 
 const LVV_RAID_FINE_PERCENT : float = 0.3
-## One raid never fines more than this. A share of money alone grew to 800+ EUR late
-## in a run, which no other cost comes near.
+## One raid never fines more; a share of money alone grew to 800+ EUR late in a run.
 const LVV_RAID_FINE_MAX : float = 200.0
 
-## Each prior raid adds this multiple of the base fine and reputation penalty
-## (raid 2 doubles it, raid 3 triples it).
+## Each prior raid adds this multiple of the base fine and penalty (raid 2 doubles it).
 const LVV_RAID_ESCALATION_PER_RAID : float = 1.0
 
-## Caps the escalation at its raid-3 value. Uncapped, the 4th raid granted by an
-## extra-strikes perk would fine 120% of money and force bankruptcy.
+## Caps the escalation at raid 3's, or an extra-strikes perk's 4th raid forces bankruptcy.
 const LVV_RAID_MAX_ESCALATION : float = 3.0
 
 ## The raid that brings raid_count to this ends the run.
@@ -26,8 +23,7 @@ const EARLY_CLOSE_BASE_REPUTATION_COST : int = 1
 
 ## Cost growth per prior manual close: the 2nd costs 1.5x, the 3rd 2.0x.
 const EARLY_CLOSE_ESCALATION_PER_CLOSE : float = 0.5
-## Caps the escalation, so closing early stays usable as an emergency brake. Uncapped, a
-## player who closed early often paid more each time until the run spiralled down.
+## Caps the escalation, so closing early stays an emergency brake instead of a spiral.
 const EARLY_CLOSE_MAX_ESCALATION : float = 3.0
 
 ## Risk relief at earliness 1.0. Not escalated by repeat closes.
@@ -111,9 +107,8 @@ static func raid_fine(money : float, escalation : float) -> float:
 	return minf(LVV_RAID_FINE_MAX, snappedf(maxf(0.0, money) * LVV_RAID_FINE_PERCENT * escalation, 0.1))
 
 
-## `earliness` runs from 0 (closed as the timer would have ended anyway) to 1
-## (closed at the start of the day). Trades sales time for lower risk, at a cost
-## that grows with each manual close.
+## `earliness` is 0 (closed as the timer would have ended) to 1 (closed at dawn). Trades
+## sales time for lower risk, at a cost growing with each manual close.
 func apply_early_close_cost(earliness : float) -> void:
 	earliness = clampf(earliness, 0.0, 1.0)
 	var escalation : float = early_close_escalation(brewery.early_closes_count)
