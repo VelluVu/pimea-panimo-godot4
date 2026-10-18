@@ -13,8 +13,7 @@ var slot : int
 ## Shared by every member, so evicting any of them clears the group's bubble.
 var dialogue_slot : int
 var counter_position : Vector2
-## In walk-in order; index 0 is the representative. Members can be freed mid-visit, so
-## check is_instance_valid() before use.
+## In walk-in order, index 0 speaks for the group. Members can be freed mid-visit.
 var members : Array = []
 
 var stage : Stage = Stage.SPAWNING

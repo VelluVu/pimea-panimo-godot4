@@ -1,9 +1,8 @@
 class_name PopupTierRules
 extends RefCounted
 
-## How loud a sale's gain popups are, like a critical hit in an RPG. Tips are judged
-## against what the bottles cost, so a big tip feels big on cheap and dear styles alike;
-## reputation and XP follow the quality of the beer sold.
+## How loud a sale's gain popups are, like an RPG crit. Tips are judged against the price,
+## so a big tip feels big on any style; reputation and XP follow the quality sold.
 
 enum Tier { NORMAL, BIG, CRITICAL }
 

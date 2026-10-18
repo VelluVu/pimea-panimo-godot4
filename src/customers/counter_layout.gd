@@ -1,9 +1,8 @@
 class_name CounterLayout
 extends RefCounted
 
-## Where customers stand at the counter. Up to the number of hand-placed markers the
-## markers are used as they are; past that, the spots are spread evenly over the same
-## span, so every extra spot tightens the spacing.
+## Where customers stand at the counter: the hand-placed markers, or past their count the
+## same span spread evenly.
 
 
 ## `markers` are the hand-placed spots in slot order. Returns `count` spots in slot

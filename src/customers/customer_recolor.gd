@@ -1,9 +1,8 @@
 class_name CustomerRecolor
 extends RefCounted
 
-## Builds the palette-swap material for a customer's sprite: each body part's
-## base color maps to a target color, which is either the archetype's own
-## color or a random one when the CustomerData flags that part as randomized.
+## The palette-swap material for a customer's sprite: each body part's base colour maps to
+## the archetype's own colour or, when flagged, a random one.
 
 const SHADER : Shader = preload("res://assets/shaders/customer_recolor.gdshader")
 const HAIR_SATURATION_RANGE : Vector2 = Vector2(0.55, 0.9)

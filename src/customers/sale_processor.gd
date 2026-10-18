@@ -1,10 +1,8 @@
 class_name SaleProcessor
 extends RefCounted
 
-## Resolves one customer's purchase against a Brewery: picks the batch (BatchChoice), works
-## out income, tip and reputation, applies them, and reports through
-## BrewerySignals. The batch choice and the money maths are static so they can
-## be unit-tested without a live run.
+## Resolves one customer's purchase against a Brewery: income, tip and reputation, applied
+## and reported through BrewerySignals. The money maths are static for tests.
 
 const BOTTLES_SOLD_PER_TRANSACTION : int = 1
 const REGULAR_RESPONSE_FORMAT : String = "Taas täällä! %s"
@@ -20,9 +18,8 @@ func _init(owner : Brewery) -> void:
 	brewery = owner
 
 
-## Income, tip and reputation for `bottles_sold` servings of `results`
-## (CustomerData.evaluate_brew_batch()). Snapped to 0.1 so float noise stays out of the
-## till. The doubled tip is rolled after the multiplier, so it keeps every other bonus.
+## Income, tip and reputation for `bottles_sold` servings, snapped to 0.1. The doubled tip
+## rolls after the multiplier, so it keeps every other bonus.
 static func calculate_sale(results : Dictionary, bottles_sold : int, tip_multiplier : float, tip_double_chance : float, reputation_multiplier : float) -> SaleOutcome:
 	var outcome := SaleOutcome.new()
 	outcome.gross_income = snappedf(results[CustomerManager.KEY_INCOME] * bottles_sold, 0.1)
@@ -38,16 +35,16 @@ static func calculate_sale(results : Dictionary, bottles_sold : int, tip_multipl
 	return outcome
 
 
-## Public so a customer can preview its picks before the sale. Rolls how many styles this
-## visit buys (see BatchChoice.pick_batches()), so it is called once and the result handed to process().
+## Rolls how many styles this visit buys, so it is called once for the preview and the
+## result handed to process().
 func pick_batches_for(data : CustomerData) -> Array[BrewBatch]:
 	if brewery == null:
 		return []
 	return BatchChoice.pick_batches(brewery.inventory.batches_on_serve(), data, randi_range(1, maxi(1, data.max_styles_per_visit)))
 
 
-## Returns the customer's spoken response. `picks` are the batches the customer already
-## previewed; any that sold out meanwhile are dropped, and none left means a fresh pick.
+## The customer's spoken response. `picks` are the previewed batches; any sold out
+## meanwhile drop, and none left means a fresh pick.
 func process(data : CustomerData, picks : Array[BrewBatch] = []) -> String:
 	if data.browses_only:
 		return tr(data.dialogue_no_match)
@@ -66,8 +63,7 @@ func process(data : CustomerData, picks : Array[BrewBatch] = []) -> String:
 	if SaleEvaluation.refuses(data, batches[0].current_quality):
 		return _refuse_bad_quality(data, batches[0].current_quality)
 
-	# The net reputation change, including any bar fight below, is reported as
-	# one popup-friendly delta at the end.
+	# The net reputation change, bar fight included, is reported as one popup at the end.
 	var reputation_before : int = brewery.reputation
 	var response_text : String = ""
 	var delighted : bool = false
@@ -99,8 +95,8 @@ func process(data : CustomerData, picks : Array[BrewBatch] = []) -> String:
 	return response_text
 
 
-## Sells up to `wanted` bottles from one batch and applies money, reputation, risk and
-## xp. Returns evaluate_brew_batch()'s results plus KEY_REPUTATION_GAIN and KEY_BOTTLES_SOLD.
+## Sells up to `wanted` servings from one batch and applies money, reputation, risk and xp.
+## Returns the evaluation plus KEY_REPUTATION_GAIN and KEY_BOTTLES_SOLD.
 func _sell(data : CustomerData, batch : BrewBatch, wanted : int, is_regular : bool) -> Dictionary:
 	var breakdown : SaleBreakdown = brewery.resolver.get_price_breakdown(batch.beer_style)
 	# The marketing perk and the tier mark up this sale's price only, never the shared breakdown.
@@ -154,8 +150,8 @@ func _sell(data : CustomerData, batch : BrewBatch, wanted : int, is_regular : bo
 	return results
 
 
-## Nothing good enough on offer: no sale, the bad-quality reputation and risk, an unhappy
-## customer. The beer stays in storage; the line tells how far the batch missed the bar.
+## Nothing good enough: no sale, the bad-quality penalty, an unhappy customer; the line
+## tells how far the batch missed.
 func _refuse_bad_quality(data : CustomerData, quality : float) -> String:
 	if brewery != null:
 		var penalty : Vector2i = SaleEvaluation.refusal(data, quality)
@@ -170,10 +166,8 @@ func _refuse_bad_quality(data : CustomerData, quality : float) -> String:
 	return tr(data.dialogue_reject) + QualityWishText.reject_suffix(quality, data.min_quality)
 
 
-## Nothing in stock, or nothing that clears the customer's strict requirements:
-## they leave without buying. The penalty is per customer, and can be zero for
-## one who was never offered anything, like an Agentti whose cover story did not
-## match what is on tap.
+## Nothing in stock or nothing that clears a strict requirement: they leave. The penalty is
+## per customer, zero for an Agentti whose cover story found nothing.
 func _turn_away(data : CustomerData, wanted : int) -> String:
 	if brewery != null:
 		var reputation_before : int = brewery.reputation
@@ -210,9 +204,8 @@ func _spread_word(data : CustomerData, delighted : bool, reputation_gain : int, 
 			BrewerySignals.bad_review_spread.emit()
 
 
-## Reported through bar_fight_triggered as its own toast, not the customer's spoken
-## line. `batch` is the one just sold from, or null when the customer was turned away;
-## then the broken bottles come from a random batch in the cellar, if there is any.
+## Shown as its own toast. `batch` is the one sold from, or null when turned away; then the
+## broken bottles come from a random batch in the cellar.
 func _trigger_bar_fight(data : CustomerData, batch : BrewBatch) -> void:
 	brewery.change_reputation(-data.bar_fight_reputation_penalty, ReputationRules.Source.CUSTOMERS)
 	brewery.add_risk(data.bar_fight_risk_penalty)

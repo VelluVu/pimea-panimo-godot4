@@ -1,9 +1,8 @@
 class_name MirroredAnimation
 extends RefCounted
 
-## Plays a sprite animation facing either way. Flipping the sprite writes any lettering
-## backwards (Kriitikko's K), so a sheet can carry hand-fixed "<name>_mirrored" frames
-## that are played instead; every other sheet is just flipped.
+## Plays a sprite animation facing either way. Flipping writes lettering backwards
+## (Kriitikko's K), so a sheet may carry hand-fixed "<name>_mirrored" frames instead.
 
 const SUFFIX : String = "_mirrored"
 

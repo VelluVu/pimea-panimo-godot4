@@ -1,9 +1,8 @@
 class_name RegularRules
 extends RefCounted
 
-## Customer types remember how they were treated this run. Delighted visits build
-## standing, bad ones cost twice as much; enough standing makes the type a regular
-## (kanta-asiakas) who buys more and tips better.
+## Customer types remember their treatment this run: delighted visits build standing, bad
+## ones cost twice; enough makes a regular (kanta-asiakas) who buys more and tips better.
 
 const STANDING_PER_DELIGHTED_VISIT: int = 1
 const STANDING_PER_BAD_VISIT: int = -2

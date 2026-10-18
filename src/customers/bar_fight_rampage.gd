@@ -1,9 +1,8 @@
 class_name BarFightRampage
 extends RefCounted
 
-## The visible side of a bar fight: the customer flashes red, stomps back and forth in
-## front of the counter and hurls one glass per broken bottle, each shattering on the
-## floor. Purely visual; SaleProcessor already applied the fight's costs.
+## The visible bar fight: the customer flashes red, stomps in front of the counter and
+## hurls one glass per broken bottle. Purely visual; SaleProcessor applied the costs.
 
 const RAGE_COLOR: Color = Color(1.0, 0.3, 0.25)
 const FLASH_SECONDS: float = 0.24
@@ -15,8 +14,8 @@ const RETURN_SECONDS: float = 0.15
 ## How long play() runs, for callers that start it without awaiting.
 const DURATION_SECONDS: float = STOMPS * STOMP_SECONDS + RETURN_SECONDS
 
-## Where the glass leaves the customer's hand, relative to their feet. Low and flat on
-## purpose: the customer's speech bubble sits above their head and would hide a high arc.
+## Where the glass leaves the hand, from the feet. Low and flat, so the speech bubble above
+## the head hides no arc.
 const THROW_HAND_OFFSET: Vector2 = Vector2(0.0, -40.0)
 const THROW_MIN_DISTANCE: float = 80.0
 const THROW_MAX_DISTANCE: float = 170.0
@@ -37,10 +36,8 @@ const SHARD_SPREAD: float = 36.0
 const SHARD_SECONDS: float = 0.5
 
 
-## Plays the rampage; await it to know when it is over. The sprite gets the red flash,
-## facing and walk animation, the actor is the node that moves. A loaded rampage starts
-## at `first_stomp`; `on_stomp` hears the index of each stomp still to come once the
-## previous one is under way, so the caller can save its progress.
+## Plays the rampage; await it. `sprite` flashes and animates, `actor` moves. A loaded
+## rampage starts at `first_stomp`; `on_stomp` hears each next stomp's index for the save.
 static func play(actor: Node2D, sprite: AnimatedSprite2D, glass_texture: Texture2D, glass_count: int, first_stomp: int = 0, on_stomp: Callable = Callable()) -> void:
 	if first_stomp >= STOMPS:
 		return

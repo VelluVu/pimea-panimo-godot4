@@ -1,10 +1,8 @@
 class_name WalkInRules
 extends RefCounted
 
-## How many customers one walk-in tick brings. Usually one; now and then the walk-in
-## arrives with company, the others following a moment apart. Perks and Olutoppi
-## talents raise the chance (walk_in_company_chance) and the company's size
-## (walk_in_company_bonus).
+## How many customers one walk-in tick brings: usually one, now and then with company a
+## moment apart. walk_in_company_chance and walk_in_company_bonus raise the odds and size.
 
 const BASE_COMPANY_CHANCE : float = 0.02
 const COMPANY_SIZE : int = 2

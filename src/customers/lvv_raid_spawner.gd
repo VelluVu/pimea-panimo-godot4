@@ -1,34 +1,27 @@
 class_name LvvRaidSpawner
 extends Node2D
 
-## Plays out a raid Brewery already settled (BrewerySignals.lvv_raid_triggered): a squad
-## of LvvAgents walks down the stairs, along the route markers into the warehouse, seizes
-## kegs and leaves. The markers are its own, so they move without touching the customer
-## path. Emits lvv_raid_recap_ready once the squad is gone.
+## Plays out a raid Brewery already settled: a squad of LvvAgents walks into the warehouse
+## along its own markers, seizes kegs and leaves, then emits lvv_raid_recap_ready.
 
 const LVV_AGENT_SCENE : PackedScene = preload("res://src/scenes/lvv_agent.tscn")
 
 const MIN_AGENTS : int = 2
 const MAX_AGENTS : int = 3
-## Staggered spawn, same idea as CustomerSpawner's group walk-in stagger —
-## a squad flooding in all on the same frame reads as a glitch, not a raid.
+## A squad appearing on one frame reads as a glitch, not a raid.
 const AGENT_SPAWN_STAGGER_SECONDS : float = 0.5
 
-## Off-screen-ish spot each agent first appears at before descending
-## EntryMarker/StairsMarker's stairs leg — same idea as CustomerSpawner's
-## own root position doubling as its customers' spawn point.
+## Where each agent appears before the stairs.
 @onready var entry_marker : Marker2D = $EntryMarker
 @onready var stairs_marker : Marker2D = $StairsMarker
 
-## The route from the stairs into the warehouse, walked in order and reversed on the way
-## out. Each leg's animation comes from its direction (LvvAgent._tween_leg()), so the
-## markers can be added, removed or dragged in the editor freely.
+## The route into the warehouse, walked in order and back out reversed. Each leg's
+## animation follows its direction, so the markers can be moved freely.
 @onready var warehouse_align_marker : Marker2D = $WarehouseAlignMarker
 @onready var warehouse_doorway_marker : Marker2D = $WarehouseDoorwayMarker
 @onready var pickup_marker : Marker2D = $PickupMarker
 
-## The raid under way, or null. If a second raid fires mid-walk, its recap goes straight
-## through instead of running two squads at once.
+## The raid under way, or null. A second raid mid-walk sends its recap straight through.
 var _raid : LvvRaidSnapshot
 var _agents : Array[LvvAgent] = []
 var _stagger_timer : SceneTreeTimer
@@ -52,8 +45,8 @@ func _on_lvv_raid_triggered(confiscated_bottles : int, fine_amount : float, repu
 	_run_raid(raid)
 
 
-## A fresh raid starts with no agents in; a loaded one puts its agents back where they
-## were on their route and sends the rest in on the stagger they had left.
+## A loaded raid puts its agents back on their routes and sends the rest on the stagger
+## they had left.
 func _run_raid(raid : LvvRaidSnapshot) -> void:
 	_raid = raid
 	_agents.clear()

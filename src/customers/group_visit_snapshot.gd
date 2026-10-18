@@ -1,9 +1,7 @@
 class_name GroupVisitSnapshot
 extends Resource
 
-## One crowd visit frozen mid-visit for the save (Brewery.cellar_groups), like
-## CustomerSnapshot for a solo customer. GroupVisit.snapshot() fills it and
-## GroupVisitDirector.resume() plays it back from the same stage.
+## One crowd visit frozen for the save, like CustomerSnapshot for a solo customer.
 
 @export var event_data : GroupVisitEventData
 @export var slot : int = -1

@@ -1,8 +1,7 @@
 class_name QualityWishText
 extends RefCounted
 
-## Shows customers' quality bars in the same percent the batch tooltip uses, so a
-## quality rejection can be understood and avoided instead of feeling random.
+## Customers' quality bars in the batch tooltip's percent, so a refusal can be understood.
 
 const REJECT_SUFFIX_FORMAT : String = " (Laatu %d %%, toivoi %d %%)"
 const TOO_WEAK_FORMAT : String = "Liian heikkoa: %s"

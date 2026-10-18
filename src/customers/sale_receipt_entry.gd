@@ -1,24 +1,20 @@
 class_name SaleReceiptEntry
 extends Resource
 
-## One completed sale, kept in Brewery.today_sale_receipts for the receipt log and
-## cleared each day. Also the payload of BrewerySignals.beer_sale_breakdown, so the flash
-## toast formats a sale the same way.
+## One sale, kept for the day's receipt log and sent as BrewerySignals.beer_sale_breakdown,
+## so the flash toast formats it the same way.
 
 @export var breakdown : SaleBreakdown
 @export var bottles_sold : int = 0
 @export var gross_income : float = 0.0
-## Untaxed gratuity, paid only when the batch's quality exceeded this
-## customer's own expectations — see CustomerData.evaluate_brew_batch.
+## Paid only when the quality beat this customer's bar.
 @export var tip_income : float = 0.0
 @export var net_income : float = 0.0
-## EBC of the batch sold from, so the customer's glass shows the beer's colour.
-## -1 = unknown (receipts saved before this field).
+## For the glass colour; -1 on receipts saved before this field.
 @export var beer_ebc : int = -1
 ## Above 1.0 when the batch sold at its aging premium (BrewBatch.get_aged_price_multiplier()).
 @export var aged_price_multiplier : float = 1.0
-## The batch sold from, for the bartender's walk to its tap. Not saved: only the sale
-## that is happening needs it.
+## For the bartender's walk to its tap; not saved.
 var batch : BrewBatch = null
 
 const SUMMARY_FORMAT : String = "%s x%d"
