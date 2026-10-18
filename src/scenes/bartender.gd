@@ -33,7 +33,7 @@ const STACK_COLUMN_OFFSET_PX : Vector2 = Vector2(-7, 0)
 const STACK_ROW_OFFSET_PX : Vector2 = Vector2(0, -6)
 
 ## How long the slide to a tap and back takes. Short, so the pour keeps its timing with
-## the customer's glass (Customer.show_counter_glass()).
+## the customer's glass (CustomerGlasses.slide_to_counter()).
 const TAP_SLIDE_SECONDS : float = 0.25
 ## Where the hand that pulls the tap is in the serve_beer frames (x in the 48 px frame);
 ## this point goes to the spout. Tuned by eye in the game.
