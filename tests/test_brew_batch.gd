@@ -189,3 +189,22 @@ func test_own_abv_overrides_the_style() -> void:
 	batch.abv = 0.2
 	assert_eq(batch.get_abv(), 0.2)
 	assert_true(batch.is_alcohol_free())
+
+
+func test_from_result_carries_the_brew_and_the_final_quality() -> void:
+	var result := BrewResult.new()
+	result.beer_style = BeerStyle.new()
+	result.final_ebc = 12
+	result.abv = 5.2
+	result.hop_layers = 2
+	result.malt_bonus = 0.03
+	result.original_quality = 1.4
+	var batch := BrewBatch.from_result(result, 30, 0.95)
+	assert_eq(batch.beer_style, result.beer_style)
+	assert_eq(batch.amount_bottles, 30)
+	assert_eq(batch.original_quality, 0.95, "the final quality, not the resolver's")
+	assert_eq(batch.current_quality, 0.95)
+	assert_eq(batch.final_ebc, 12)
+	assert_eq(batch.abv, 5.2)
+	assert_eq(batch.hop_layers, 2)
+	assert_eq(batch.malt_bonus, 0.03)

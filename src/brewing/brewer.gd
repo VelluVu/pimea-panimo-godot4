@@ -70,23 +70,9 @@ func start_brew(quality_multiplier : float = BrewDayRules.NORMAL_MULTIPLIER) -> 
 	var label_cost : float = bottling.label_cost
 
 	var first_this_season : bool = brew_report.is_matched and not brewery.brewed_styles.has(brew_report.beer_style.style)
-	var new_batch := BrewBatch.new()
-	new_batch.beer_style = brew_report.beer_style
+	var quality : float = snappedf((brew_report.original_quality + brewery.stats.total(PerkStats.QUALITY_BONUS)) * quality_multiplier, BrewResolver.QUALITY_PRECISION)
+	var new_batch := BrewBatch.from_result(brew_report, effective_yield, quality)
 	new_batch.novelty = first_this_season
-	new_batch.amount_bottles = effective_yield
-	new_batch.original_quality = snappedf((brew_report.original_quality + brewery.stats.total(PerkStats.QUALITY_BONUS)) * quality_multiplier, BrewResolver.QUALITY_PRECISION)
-	new_batch.current_quality = new_batch.original_quality
-	new_batch.final_ebc = brew_report.final_ebc
-	new_batch.final_ibu = brew_report.final_ibu
-	new_batch.abv = brew_report.abv
-	new_batch.precision_score = brew_report.precision_score
-	new_batch.hop_diversity_count = brew_report.hop_diversity_count
-	new_batch.hop_layers = brew_report.hop_layers
-	new_batch.hop_layer_slots = brew_report.hop_layer_slots
-	new_batch.flavor_matched = brew_report.flavor_matched
-	new_batch.spice_bonus = brew_report.spice_bonus
-	new_batch.unsuited_spice_penalty = brew_report.unsuited_spice_penalty
-	new_batch.malt_bonus = brew_report.malt_bonus
 	new_batch.peak_days_multiplier = brewery.stats.multiplier(PerkStats.PEAK_SPEED)
 	new_batch.decline_rate_multiplier = brewery.stats.multiplier(PerkStats.DECLINE_RATE)
 	BatchTraits.apply(new_batch, brewery.brew_preparation.selected_contents, brewery.resolver.ingredient_table())
@@ -96,8 +82,20 @@ func start_brew(quality_multiplier : float = BrewDayRules.NORMAL_MULTIPLIER) -> 
 	Fermenter.new(brewery).start(new_batch, FermentationRules.duration(is_first_brew))
 	brewery.has_brewed = true
 
-	# Reputation comes only from a run's first brew of a style, so repeat brews cannot farm
-	# it, and a discovery never costs any; a failed brew costs its value every time.
+	_award_brew_reputation(brew_report, first_this_season)
+	if brew_report.is_matched:
+		_reward_matched_brew(brew_report, new_batch, first_this_season)
+
+	_roll_ingredient_refund()
+	brewery.brew_preparation.clear_preparation()
+	print(LOG_BREWED, BeerStyle.get_style_string_from_style(brew_report.beer_style.style))
+	BrewerySignals.batch_bottled.emit(bottles_lost, label_cost, brew_report.beer_style.style_name)
+	BrewerySignals.brewery_state_changed.emit(brewery)
+
+
+## Reputation comes only from a run's first brew of a style, so repeat brews cannot farm
+## it, and a discovery never costs any; a failed brew costs its value every time.
+func _award_brew_reputation(brew_report : BrewResult, first_this_season : bool) -> void:
 	var brew_reputation : int = 0
 	if not brew_report.is_matched:
 		brew_reputation = brewery.change_reputation(brew_report.reputation_change, ReputationRules.Source.BREWING)
@@ -107,33 +105,29 @@ func start_brew(quality_multiplier : float = BrewDayRules.NORMAL_MULTIPLIER) -> 
 	if brew_reputation != 0:
 		BrewerySignals.brew_reputation_gained.emit(brew_reputation)
 
-	if brew_report.is_matched:
-		var is_new_discovery : bool = not brewery.discovered_styles.has(brew_report.beer_style.style)
-		StyleDiscovery.new(brewery).discover_style(brew_report.beer_style.style)
-		if is_new_discovery:
-			RecipeBook.new(brewery).save_recipe(brew_report.beer_style, brewery.brew_preparation.selected_contents.duplicate())
-		if brew_report.beer_style.style == BeerStyle.Style.KOTIKALJA:
-			brewery.tutorial_brewed_kotikalja = true
-		BrewerySignals.beer_brewed.emit(brew_report.beer_style.style)
-		BrewerySignals.batch_brewed.emit(new_batch)
-		if brew_report.spice_bonus != 0.0:
-			BrewerySignals.brew_spiced.emit(brew_report.beer_style.style_name, brew_report.spice_bonus)
 
-		var brew_xp : int = Brewery.XP_PER_SUCCESSFUL_BREW
-		if is_new_discovery:
-			brew_xp += Brewery.XP_PER_NEW_STYLE_DISCOVERY_BONUS
-		if first_this_season:
-			brew_xp += FirstBrewRules.xp_bonus(brew_report.beer_style)
-		brewery.add_xp(brew_xp)
-		BrewerySignals.brew_xp_gained.emit(brew_xp)
-		if first_this_season:
-			BrewerySignals.season_first_brew.emit(brew_report.beer_style.style, brew_report.beer_style.style_name)
+## A brew that hit a style: discovery and its recipe, the tutorial step, signals and xp.
+func _reward_matched_brew(brew_report : BrewResult, new_batch : BrewBatch, first_this_season : bool) -> void:
+	var is_new_discovery : bool = not brewery.discovered_styles.has(brew_report.beer_style.style)
+	StyleDiscovery.new(brewery).discover_style(brew_report.beer_style.style)
+	if is_new_discovery:
+		RecipeBook.new(brewery).save_recipe(brew_report.beer_style, brewery.brew_preparation.selected_contents.duplicate())
+	if brew_report.beer_style.style == BeerStyle.Style.KOTIKALJA:
+		brewery.tutorial_brewed_kotikalja = true
+	BrewerySignals.beer_brewed.emit(brew_report.beer_style.style)
+	BrewerySignals.batch_brewed.emit(new_batch)
+	if brew_report.spice_bonus != 0.0:
+		BrewerySignals.brew_spiced.emit(brew_report.beer_style.style_name, brew_report.spice_bonus)
 
-	_roll_ingredient_refund()
-	brewery.brew_preparation.clear_preparation()
-	print(LOG_BREWED, BeerStyle.get_style_string_from_style(brew_report.beer_style.style))
-	BrewerySignals.batch_bottled.emit(bottles_lost, label_cost, brew_report.beer_style.style_name)
-	BrewerySignals.brewery_state_changed.emit(brewery)
+	var brew_xp : int = Brewery.XP_PER_SUCCESSFUL_BREW
+	if is_new_discovery:
+		brew_xp += Brewery.XP_PER_NEW_STYLE_DISCOVERY_BONUS
+	if first_this_season:
+		brew_xp += FirstBrewRules.xp_bonus(brew_report.beer_style)
+	brewery.add_xp(brew_xp)
+	BrewerySignals.brew_xp_gained.emit(brew_xp)
+	if first_this_season:
+		BrewerySignals.season_first_brew.emit(brew_report.beer_style.style, brew_report.beer_style.style_name)
 
 
 ## Must run before clear_preparation() empties the table it reads.
