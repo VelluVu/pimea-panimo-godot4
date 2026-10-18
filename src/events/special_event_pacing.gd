@@ -1,9 +1,8 @@
 class_name SpecialEventPacing
 extends RefCounted
 
-## How long until the next special event. It can shorten as LVV risk climbs, but
-## MAX_RISK_SPEEDUP is 0: with it, risk-lowering events crowded out the rest for good
-## players (bot playtests, 2026-10-09). The risk weighting alone favours them now.
+## How long until the next special event. MAX_RISK_SPEEDUP is 0: with it, risk-lowering
+## events crowded out the rest (bot playtests, 2026-10-09); the risk weighting is enough.
 
 const BASE_INTERVAL_SECONDS: float = 300.0
 ## At the raid threshold the wait is this much shorter.

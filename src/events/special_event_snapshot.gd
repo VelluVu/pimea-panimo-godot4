@@ -1,8 +1,7 @@
 class_name SpecialEventSnapshot
 extends Resource
 
-## A special event window open when the run was saved (Brewery.open_special_events), so a
-## loaded run shows it again with the time it had left. SpecialEventWindow fills it.
+## A special event window open at the save, shown again with its time left.
 
 @export var event_data : SpecialEventData
 ## Seconds left to answer; unused once answered.

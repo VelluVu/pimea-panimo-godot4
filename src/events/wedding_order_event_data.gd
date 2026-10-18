@@ -1,9 +1,8 @@
 class_name WeddingOrderEventData
 extends SpecialEventData
 
-## A wedding wants a light beer and an alcohol-free one, rolled from the known styles
-## each visit (prepared()), and takes the best batch of each. Pays more than the best
-## bar, less than the pub, and grants a perk. intro_dialogue takes both names (%s, %s).
+## A wedding wants a light and an alcohol-free beer, rolled from known styles per visit,
+## and takes the best batch of each. Pays between the best bar and the pub, plus a perk.
 
 const DELIVERY_FORMAT: String = "Toimita %s ja %s, määrällä ei väliä.\nVarastossa: %d ja %d annosta"
 const REQUIREMENT_FORMAT: String = "%s ja %s"
@@ -112,8 +111,8 @@ func _known_styles(brewery: Brewery, min_abv: float, max_abv: float) -> Array[Be
 	return known
 
 
-## What the whole batch would bring shipped to the best bar, and sold in the pub (with the
-## same perks and aging a real sale gets), then the share between.
+## The whole batch's best bar payout and pub income (with a real sale's perks and aging),
+## then the share between.
 func _payout(brewery: Brewery, batch: BrewBatch) -> float:
 	var aged: float = batch.get_aged_price_multiplier()
 	var export_payout: float = BatchDistributor.calculate_ship_payout(brewery.resolver.get_wholesale_price_per_bottle(batch.beer_style), batch.current_quality, batch.amount_bottles, export_price_multiplier) \

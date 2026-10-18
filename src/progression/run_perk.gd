@@ -1,9 +1,8 @@
 class_name RunPerk
 extends Resource
 
-## A buff picked on level-up (LevelUpWindow) or bought as a MetaUnlockData. Perks
-## accumulate over a run and only strengthen it. Every stat defaults to neutral (1.0 for
-## multipliers, 0 for flat values), so any number combine; PerkStats lists the stats.
+## A buff from a level-up or bought as a MetaUnlockData; perks only strengthen a run. Every
+## stat defaults to neutral, so any number combine (PerkStats lists them).
 
 @export var perk_name: String = ""
 @export var description: String = ""
@@ -11,8 +10,7 @@ extends Resource
 ## Placeholder until real art exists.
 @export var icon_placeholder: String = "⭐"
 
-## Weights PerkRegistry.get_random_perks() and colours the LevelUpWindow card.
-## It does not change the stats. Values are tuned assuming repeat picks compound.
+## Weights the level-up roll and colours the card; no effect on stats.
 enum Tier { COMMON, RARE, LEGENDARY }
 @export var tier: Tier = Tier.COMMON
 
@@ -74,18 +72,15 @@ enum Tier { COMMON, RARE, LEGENDARY }
 ## Kilograms of malt the mash tun holds beyond MashTun.BASE_CAPACITY_KG.
 @export var extra_mash_capacity_kg: int = 0
 
-## When true, multiplier stats add their delta from 1.0 instead of
-## multiplying, so repeat picks grow in a straight line.
+## Multiplier stats add their delta from 1.0 instead, so repeat picks grow linearly.
 @export var stacks_additively: bool = false
 
-## Set on the copies MetaUnlockData makes of Olutoppi nodes. Exported so a loaded run
-## still tells them apart from level-up picks.
+## Set on Olutoppi copies, exported so a loaded run tells them from level-up picks.
 @export var is_permanent: bool = false
 
 
-## Combines one stat over a list of perks: multiplicative by default, additive
-## for perks with stacks_additively. `base` is the starting value (PerkStats
-## passes 1.0). Static so it is testable without a Brewery.
+## One stat over a list of perks: multiplied, or added for stacks_additively perks. Static
+## for tests.
 static func combine_stacking(base : float, perks : Array[RunPerk], field_getter : Callable) -> float:
 	var multiplier : float = base
 	var additive_bonus : float = 0.0
@@ -100,15 +95,14 @@ static func combine_stacking(base : float, perks : Array[RunPerk], field_getter 
 	return multiplier + additive_bonus
 
 
-## A fresh perk with every stat scaled to `level`, for perks whose stats are authored
-## per level (see PerkStats.scale_per_level()). Never mutates self: such resources are
-## shared by every run.
+## A fresh copy with every per-level stat scaled to `level`. Never mutates self: runs share
+## the resource.
 func scaled_copy(level : int) -> RunPerk:
 	return _copy_with(func(kind : PerkStats.Kind, value : float) -> Variant: return PerkStats.scale_per_level(kind, value, level))
 
 
-## A fresh perk with every stat moved `strength` (0 to 1) of the way from neutral, for
-## a reward that grows with how well something went. Counts round down.
+## A fresh copy moved `strength` (0 to 1) of the way from neutral, for a reward that grows
+## with how well something went. Counts round down.
 func strength_copy(strength : float) -> RunPerk:
 	return _copy_with(func(kind : PerkStats.Kind, value : float) -> Variant:
 		var neutral : float = PerkStats.neutral_value(kind)

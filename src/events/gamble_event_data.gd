@@ -1,9 +1,8 @@
 class_name GambleEventData
 extends SpecialEventData
 
-## A bet with a sailor: the stake is your fullest batch on offer (not held). A win pays
-## the batch's counter value and you keep it; a loss takes the whole batch. Better beer
-## tips the odds, from base_win_chance by quality_edge per quality point above 1.0.
+## A bet with a sailor over your fullest batch on offer: a win pays its counter value and
+## you keep it, a loss takes it. Each quality point above 1.0 adds quality_edge.
 
 @export var base_win_chance: float = 0.5
 @export var quality_edge: float = 0.2
@@ -34,8 +33,8 @@ func servings_taken(brewery: Brewery) -> Dictionary:
 	return {batch: batch.amount_bottles} if batch != null else {}
 
 
-## Expected winnings for the playtest bot: the counter value at the win chance, plus the
-## batch's own value back when it is kept (servings_taken() already counts it as lost).
+## Expected winnings for the bot: the counter value at the win chance, plus the batch back
+## when kept (servings_taken() counts it as lost).
 func money_on_success(brewery: Brewery) -> float:
 	var batch: BrewBatch = stake(brewery.inventory)
 	if batch == null:

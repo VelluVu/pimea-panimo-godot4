@@ -1,16 +1,15 @@
 class_name QualityChallengeEventData
 extends SpecialEventData
 
-## "Bring me your best": only current_quality counts, not the style. The critic buys
-## what is left of the best batch good enough, for a share of its counter price, and
-## grants granted_perk scaled by its quality.
+## "Bring me your best": only quality counts, not style. The critic buys the whole best
+## batch good enough and grants granted_perk scaled by its quality.
 
 @export var required_min_quality: float = 1.2
 ## Quality at which granted_perk is given at full strength.
 @export var best_quality: float = 1.6
 ## Strength of granted_perk at required_min_quality.
 @export var min_perk_strength: float = 0.25
-## Share of what the batch would bring at the counter.
+## Share of the batch's counter value the critic pays.
 @export var counter_share: float = 0.9
 
 const REQUIREMENT_FORMAT: String = "olutta, laatu vähintään %d %%"

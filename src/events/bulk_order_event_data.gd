@@ -1,9 +1,8 @@
 class_name BulkOrderEventData
 extends SpecialEventData
 
-## A big order (the dance hall): required_bottles servings in all of any accepted_styles,
-## taken from as many batches on offer (not held) as it needs, fullest first. Pays
-## pub_share of the pub price per serving on top of reward_money.
+## A big order (the dance hall): required_bottles servings of any accepted_styles from the
+## fullest batches on offer, paying pub_share of the pub price per serving plus reward_money.
 
 const STYLE_SEPARATOR: String = " tai "
 

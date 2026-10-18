@@ -1,10 +1,9 @@
 class_name PerkOfferEventData
 extends SpecialEventData
 
-## Someone sells an improvement (Keke's bartender course, the renovator's job): pay
-## offer_cost on "Joo" and get perk_count different perks, rolled from offered_perks each
-## time the event shows up (prepared()), as is the caller's name from caller_names.
-## Only offered to a player who can pay.
+## Someone sells an improvement (Keke's course, the renovator): pay offer_cost on "Joo" for
+## perk_count perks rolled from offered_perks per visit. Offered only to a player who can
+## pay.
 
 @export var offer_cost: int = 100
 ## Kept out of the perks folder so they never show up on a level-up card.

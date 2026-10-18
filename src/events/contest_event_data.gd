@@ -1,9 +1,8 @@
 class_name ContestEventData
 extends SpecialEventData
 
-## A beer contest: send required_bottles servings of your best batch on offer (not held).
-## Its quality plus a little luck decides the outcome: a win pays win_money and
-## win_reputation, a place place_reputation, and anything less nothing.
+## A beer contest: your best batch on offer, judged by quality plus a little luck. A win
+## pays win_money and win_reputation, a place place_reputation.
 
 enum Outcome { NONE, LOST, PLACED, WON }
 

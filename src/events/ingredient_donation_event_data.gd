@@ -1,10 +1,9 @@
 class_name IngredientDonationEventData
 extends SpecialEventData
 
-## Asks for raw ingredients from the warehouse instead of beer. With rolls_ingredient the
-## ingredient is rolled from rolled_type each visit and named in intro_dialogue (%s, %d).
-## With price_markup above 0 the buyer pays the shop price plus the markup instead of
-## only reward_money. Grants granted_perk.
+## Asks for warehouse ingredients instead of beer. rolls_ingredient rolls one of rolled_type
+## per visit, named in intro_dialogue (%s, %d); price_markup over 0 pays the shop price
+## plus the markup. Grants granted_perk.
 
 @export var required_ingredient_id: int = 100
 @export var required_ingredient_amount: int = 5

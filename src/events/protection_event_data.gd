@@ -1,9 +1,8 @@
 class_name ProtectionEventData
 extends PerkOfferEventData
 
-## The Don's protection: paying keeps the Agentti away for agent_free_days (today, by
-## default) on top of the offered perk; letting the call pass makes Mafioso walk-ins
-## rarer (mafioso_cut) for mafioso_cut_days, as the Don's men stay away.
+## The Don's protection: paying keeps the Agentti away for agent_free_days and grants the
+## perk; letting it pass makes Mafioso walk-ins rarer for mafioso_cut_days.
 
 @export var agent_free_days: int = 1
 @export var mafioso_cut_days: int = 2

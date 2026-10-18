@@ -1,10 +1,9 @@
 class_name SpecialEventData
 extends Resource
 
-## Base special event: "bring N servings of style X". Subclasses override try_fulfill()
-## for other mechanics and reuse the dialogue, reward and timeout fields and _settle().
-## A request for goods waits after "Joo" (delivery_seconds) and completes once the stock
-## is there; one that costs money or reputation settles at once (waits_for_delivery()).
+## Base special event: "bring N servings of style X". Subclasses override try_fulfill() and
+## reuse the rest. Goods wait after "Joo" (delivery_seconds); a payment settles at once
+## (waits_for_delivery()).
 
 
 @export var event_caller_name: String = "Kaljabisnesmies"
@@ -25,30 +24,24 @@ extends Resource
 @export var reward_reputation: int = 10
 @export var reward_risk: int = 5
 @export var clears_risk: bool = false
-## Reputation lost when "Joo" was said but the goods never came. Most requests cost
-## nothing then; one that was promised something special (the critic) remembers.
+## Reputation lost when "Joo" was said but the goods never came (the critic).
 @export var fail_reputation_penalty: int = 0
-## Given on each success; event perks live in src/resources/event_perks/, outside the
-## perks folder, so they never show up on a level-up card.
+## Given on each success. Event perks live outside the perks folder, off level-up cards.
 @export var granted_perk: RunPerk
-## Grows likelier as LVV risk climbs (see risk_weight()). Set on events that lower risk,
-## so a player close to a raid sees a way out more often.
+## Likelier as LVV risk climbs (risk_weight()), on events that lower risk.
 @export var weighs_by_risk: bool = false
 
 ## How many times as likely a weighs_by_risk event is at the raid threshold as at risk 0.
 const MAX_RISK_WEIGHT_MULTIPLIER: float = 2.0
 
 
-## Relative odds of this event being the one CustomerRegistry.
-## get_random_special_event() rolls: 1.0, or risk_weight() for a weighs_by_risk
-## event. Override in a subclass to bias it further (ReputationFavourEventData
-## drops to 0 when the player cannot pay).
+## Relative odds of this event being rolled: 1.0, or risk_weight() for weighs_by_risk.
+## Subclasses bias it further (a favour drops to 0 when it cannot be paid).
 func get_weight(brewery: Brewery) -> float:
 	return risk_weight(brewery) if weighs_by_risk else 1.0
 
 
-## 1.0 at no risk, rising linearly to MAX_RISK_WEIGHT_MULTIPLIER at the effective raid
-## threshold and capped there. Still a weighted roll, never a sure thing.
+## 1.0 at no risk, rising to MAX_RISK_WEIGHT_MULTIPLIER at the raid threshold.
 static func risk_weight(brewery: Brewery) -> float:
 	return 1.0 + risk_fraction(brewery) * (MAX_RISK_WEIGHT_MULTIPLIER - 1.0)
 
@@ -72,8 +65,8 @@ func intro_text() -> String:
 	return tr(intro_dialogue).format(intro_values())
 
 
-## Numbers an intro line can quote by name, like {servings} or {risk}, taken from the
-## event's own data so a line never quotes a stale price after a balance change.
+## Numbers an intro line quotes by name ({servings}, {risk}), from the event's own data, so
+## a line never quotes a stale price.
 func intro_values() -> Dictionary:
 	return {"servings": required_bottles, "money": reward_money, "risk": absi(reward_risk),
 			"fail_reputation": fail_reputation_penalty}
@@ -106,10 +99,8 @@ func requirement_name() -> String:
 	return BeerStyle.get_style_string_from_style(required_style)
 
 
-## Attempts to satisfy this event against the given brewery, applying its
-## side effects (consuming stock, changing money/reputation/risk) only on
-## success. Returns whether it succeeded. Override in subclasses for a
-## different requirement; call _settle() once the requirement is met.
+## Settles the event if its requirement is met, else changes nothing. Subclasses override
+## it for other requirements and call _settle().
 func try_fulfill(brewery: Brewery) -> bool:
 	var taken: Dictionary = servings_taken(brewery)
 	if taken.is_empty():
@@ -118,14 +109,13 @@ func try_fulfill(brewery: Brewery) -> bool:
 	return true
 
 
-## What a success would pay right now. Subclasses that price the goods override it;
-## the playtest bot reads it too, so it always matches what _settle() pays.
+## What a success would pay now; the bot reads it too, so it matches _settle().
 func money_on_success(_brewery: Brewery) -> float:
 	return reward_money
 
 
 ## The batches a success would take, BrewBatch -> servings; empty when the goods are not
-## there. Requests for something other than beer leave it empty.
+## there or the request is not beer.
 func servings_taken(brewery: Brewery) -> Dictionary:
 	var batch: BrewBatch = _find_batch_by_style(brewery.inventory, required_style)
 	if batch == null or batch.amount_bottles < required_bottles:
@@ -149,8 +139,8 @@ func success_text() -> String:
 	return success_dialogue
 
 
-## Whether a fulfilled request counts as a handled event (goals, achievements). A lost
-## bet or contest was carried out but went against the brewery.
+## Whether a fulfilled request counts as handled (goals, achievements); a lost bet or
+## contest does not.
 func counts_as_success() -> bool:
 	return true
 
