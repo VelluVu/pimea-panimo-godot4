@@ -36,6 +36,8 @@ func _init() -> void:
 	submit_function = DEMO_SUBMIT_FUNCTION if demo else SEASON_SUBMIT_FUNCTION
 	columns = "id,nickname,score,ending_type,days_survived,reputation,bottles,worth,styles_brewed,created_at"
 	order = "score.desc,id.asc"
+	# Older rows stay in the table but leave the list: their scores used other rules.
+	filter = "score_version=eq.%d" % LeaderboardManager.SCORE_VERSION
 
 
 ## Test runs in developer mode stay off the lists.

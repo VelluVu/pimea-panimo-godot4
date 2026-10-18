@@ -61,7 +61,7 @@ security definer
 set search_path = public
 as $$
 declare
-	expected_version constant integer := 7;
+	expected_version constant integer := 8;
 	-- RunScore: DAY_POINTS, REPUTATION_POINTS, BOTTLE_POINTS, WORTH_POINTS_PER_EURO, STYLE_POINTS,
 	-- SURVIVAL_BONUS; Brewery.SURVIVAL_MIN_REPUTATION.
 	v_counts_reputation boolean := p_ending_type not in ('busted', 'bankrupt');
