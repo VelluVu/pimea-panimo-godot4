@@ -9,7 +9,7 @@ web export (Supabase allows cross-origin requests).
 | Call | What it does |
 |---|---|
 | `base_url`, `api_key` | The project URL and its publishable (anon) key |
-| `table`, `columns`, `order` | What `fetch_top()` reads, in PostgREST terms (`order = "score.desc,id.asc"`) |
+| `table`, `columns`, `order`, `filter` | What `fetch_top()` reads, in PostgREST terms (`order = "score.desc,id.asc"`, `filter = "score_version=eq.8"`) |
 | `submit_function` | The server function `submit()` calls |
 | `is_configured()` | False until the URL and key are set |
 | `submit(payload)` | POSTs the payload as the function's named arguments; replies in `submitted(result)` |

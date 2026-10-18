@@ -61,7 +61,7 @@ security definer
 set search_path = public
 as $$
 declare
-	expected_version constant integer := 7;
+	expected_version constant integer := 8;
 	-- RunScore: DAY_POINTS, REPUTATION_POINTS, SERVINGS_PER_POINT, WORTH_POINTS_PER_EURO.
 	v_counts_reputation boolean := p_ending_type not in ('busted', 'bankrupt');
 	v_worth numeric := round(greatest(p_worth, 0), 1);

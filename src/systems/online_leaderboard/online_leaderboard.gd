@@ -23,6 +23,8 @@ var table: String = ""
 var columns: String = "*"
 ## The order of the list, as PostgREST writes it: "score.desc,id.asc".
 var order: String = ""
+## Rows fetch_top() keeps, as a PostgREST filter ("score_version=eq.8"); empty keeps all.
+var filter: String = ""
 ## The server function that checks and stores a score.
 var submit_function: String = ""
 var timeout_seconds: float = 10.0
@@ -40,6 +42,8 @@ func submit(payload: Dictionary) -> void:
 
 func fetch_top(limit: int) -> void:
 	var url: String = "%s/rest/v1/%s?select=%s&order=%s&limit=%d" % [base_url, table, columns, order, limit]
+	if not filter.is_empty():
+		url += "&" + filter
 	_send(ACTION_FETCH, url, HTTPClient.METHOD_GET, "")
 
 
