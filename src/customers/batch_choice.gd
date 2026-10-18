@@ -26,9 +26,8 @@ static func find_best_batch(batches : Array[BrewBatch], data : CustomerData) -> 
 	return best_batch
 
 
-## The batches the customer buys from: the best one, or for a picks_at_random customer up
-## to `count` random batches of different styles that clear their bar. With none clearing
-## it, the best batch comes back so the customer can refuse it.
+## The best batch, or for a picks_at_random customer up to `count` random batches of
+## different styles that clear the bar. With none clearing it, the best batch, to refuse.
 static func pick_batches(batches : Array[BrewBatch], data : CustomerData, count : int = 1) -> Array[BrewBatch]:
 	var picks : Array[BrewBatch] = []
 	if data.picks_at_random:

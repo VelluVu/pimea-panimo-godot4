@@ -1,10 +1,8 @@
 class_name CustomerUnlockTracker
 extends RefCounted
 
-## Decides which customers may appear and announces each customer title once,
-## ever. In-run availability resets every run (reputation), but the announcement
-## is permanent progress, persisted like AchievementManager and
-## MetaProgressManager so it never repeats.
+## Which customers may appear, and each title's one-time unlock announcement. Availability
+## is per run (reputation); announcements are saved so they never repeat.
 
 ## A customer title's appearance gates were all met for the first time.
 signal customer_unlocked(title: String)
@@ -25,9 +23,8 @@ func _init(save_path: String = DEFAULT_SAVE_PATH) -> void:
 	_config.load(_save_path) # a missing file just leaves the config empty
 
 
-## True once all appearance gates pass: reputation (per run), style discovery and
-## achievement unlock (both permanent). The single source of truth for "can this
-## customer appear".
+## True once every appearance gate passes: reputation (per run), style discovery and
+## achievement (permanent). The one answer to "can this customer appear".
 func is_eligible(customer: CustomerData) -> bool:
 	var current_reputation: int = 0
 	if BrewEngine.current_brewery != null:
@@ -38,8 +35,7 @@ func is_eligible(customer: CustomerData) -> bool:
 		and _meets_achievement_requirement(customer)
 
 
-## Announces every eligible customer whose title has not been announced yet.
-## Gendered variants sharing a title count as one reveal.
+## Announces every eligible title not announced yet; gendered variants share a title.
 func announce_newly_unlocked(customers: Array[CustomerData]) -> void:
 	var announced: Array = get_announced_titles()
 	for customer: CustomerData in customers:

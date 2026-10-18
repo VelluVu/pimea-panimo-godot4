@@ -1,9 +1,8 @@
 class_name LvvRaidSnapshot
 extends Resource
 
-## An LVV raid squad under way, frozen for the save (Brewery.lvv_raid). The fine and the
-## seized bottles are already in the saved run; this keeps the squad's walk and the recap
-## it ends in. LvvRaidSpawner fills it and plays it back.
+## A raid squad under way, frozen for the save. The fine and seizure are already in the
+## saved run; this keeps the squad's walk and the recap it ends in.
 
 @export var confiscated_bottles : int = 0
 @export var fine_amount : float = 0.0

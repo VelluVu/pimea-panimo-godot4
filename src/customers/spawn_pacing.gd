@@ -1,9 +1,8 @@
 class_name SpawnPacing
 extends RefCounted
 
-## How long the cellar waits for the next walk-in or group visit. Reputation and
-## spawn perks shorten both waits, never below each kind's floor; a varied tap list
-## shortens the walk-in wait a little more.
+## How long the cellar waits for the next walk-in or group. Reputation and perks shorten
+## both, never below each floor; more styles on tap shorten the walk-in wait a little.
 
 const WALK_IN_INTERVAL_MIN_SECONDS: float = 30.0
 const WALK_IN_INTERVAL_MAX_SECONDS: float = 90.0

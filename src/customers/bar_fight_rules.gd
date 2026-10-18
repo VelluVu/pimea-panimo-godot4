@@ -1,9 +1,8 @@
 class_name BarFightRules
 extends RefCounted
 
-## When a customer's visit turns into a bar fight. Each fighting customer has a trigger
-## (CustomerData.bar_fight_trigger); once it is met, bar_fight_chance (scaled by perks)
-## decides whether the fight really breaks out.
+## When a visit turns into a bar fight: the customer's trigger
+## (CustomerData.bar_fight_trigger) must be met, then bar_fight_chance, scaled by perks.
 
 
 ## `wanted` is how many bottles the customer came for, `bought` how many they got
@@ -18,7 +17,7 @@ static func is_triggered(trigger: CustomerData.BarFightTrigger, wanted: int, bou
 	return bought > 0
 
 
-## `roll` is a uniform random number in [0, 1), passed in so this stays testable.
+## `roll` is randf(), passed in for tests.
 static func breaks_out(data: CustomerData, wanted: int, bought: int, chance_multiplier: float, roll: float) -> bool:
 	if data.bar_fight_chance <= 0.0:
 		return false

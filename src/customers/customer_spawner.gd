@@ -85,9 +85,8 @@ func resume_spawning() -> void:
 	start_spawning()
 
 
-## No empty-inventory check on purpose: the first-brew gate lives in CustomerManager.
-## Later, running out of stock means customers are turned away, costing reputation and
-## risk.
+## No stock check: the first-brew gate is in CustomerManager, and later an empty cellar
+## turns customers away, costing reputation and risk.
 func spawn_walk_in(forced_data: CustomerData = null) -> void:
 	if _paused:
 		return
@@ -98,8 +97,8 @@ func spawn_walk_in(forced_data: CustomerData = null) -> void:
 		_spawn_company()
 
 
-## Now and then a walk-in brings company, see WalkInRules. Each companion is its own
-## random customer and needs its own free counter spot.
+## Now and then a walk-in brings company (WalkInRules), each a random customer with its own
+## counter spot.
 func _spawn_company() -> void:
 	var brewery: Brewery = BrewEngine.current_brewery
 	if brewery == null:
@@ -124,8 +123,8 @@ func _schedule_walk_in(data: CustomerData, seconds: float) -> void:
 		_try_spawn_walk_in(data)
 
 
-## A crowd shares one counter slot and spawns staggered so it floods in. Like a
-## walk-in there is no stock check: a group that finds nothing leaves empty-handed.
+## A crowd shares one counter slot and comes staggered. No stock check: a group that finds
+## nothing leaves empty-handed.
 func spawn_group_visit(forced_event_data: GroupVisitEventData = null) -> void:
 	if _paused:
 		return
@@ -138,8 +137,8 @@ func _on_friend_recommended(data: CustomerData) -> void:
 	_schedule_walk_in(data, randf_range(WordOfMouthRules.FRIEND_DELAY_MIN_SECONDS, WordOfMouthRules.FRIEND_DELAY_MAX_SECONDS))
 
 
-## Walks in alone and leaves the walk-in timer alone. With the counter full or the doors
-## shut he tries again on the next rise in risk.
+## Walks in alone. With the counter full or the doors shut he tries again on the next risk
+## rise.
 func _on_lvv_inspector_visit_due(brewery: Brewery) -> void:
 	if not _paused and _try_spawn_walk_in(LVV_INSPECTOR):
 		brewery.lvv_inspector_visited = true
@@ -150,8 +149,7 @@ func _on_bad_review_spread() -> void:
 		walk_in_timer.start(walk_in_timer.time_left + WordOfMouthRules.BAD_REVIEW_DELAY_SECONDS)
 
 
-## Everyone in the cellar goes into the save, frozen mid-visit; group members go in with
-## their group.
+## Everyone in the cellar goes into the save; group members with their group.
 func _record_cellar_customers(brewery: Brewery) -> void:
 	brewery.cellar_customers.clear()
 	for node: Node in get_children():
@@ -166,8 +164,8 @@ func _record_cellar_customers(brewery: Brewery) -> void:
 	brewery.group_visit_time_left = -1.0 if group_event_timer.is_stopped() else group_event_timer.time_left
 
 
-## After a load, puts the saved customers and crowds back and lets each carry on its
-## visit. A solo customer already walking out holds no counter spot.
+## After a load, puts the saved customers and crowds back to carry on. A solo customer
+## already leaving holds no counter spot.
 func _resume_cellar_customers() -> void:
 	var brewery: Brewery = BrewEngine.current_brewery
 	if brewery == null:
@@ -295,8 +293,7 @@ func _perk_multiplier(stat: StringName) -> float:
 	return 1.0 if brewery == null else brewery.stats.multiplier(stat)
 
 
-## The current run's beer styles, for customers that roll a random preference.
-## Empty when no run is active, which makes reroll_preference() a no-op.
+## The run's styles, for customers who roll a random preference; empty with no run.
 func _active_styles() -> Array[BeerStyle]:
 	var brewery: Brewery = BrewEngine.current_brewery
 	if brewery == null:
@@ -304,8 +301,7 @@ func _active_styles() -> Array[BeerStyle]:
 	return brewery.resolver.active_styles
 
 
-## During a day event, leans toward that event's featured group visit at its own
-## chance.
+## During a day event, leans toward its featured group visit at its own chance.
 func _pick_group_event() -> GroupVisitEventData:
 	var day_event: DayEventData = DayEventManager.get_active_event()
 	if day_event != null and day_event.featured_group_event != null and randf() < day_event.featured_group_event_chance:

@@ -17,25 +17,23 @@ const NOT_TO_TASTE: float = -1.0
 ## A connoisseur buys a beer below min_quality anyway and grumbles about it (see
 ## SaleEvaluation.BELOW_BAR_REPUTATION); everyone else refuses it.
 @export var buys_below_bar: bool = false
-## Tip generosity only: every customer pays the same fixed price for a style.
-## See quality_tip_sensitivity.
+## Tip generosity only: every customer pays a style's fixed price.
 @export var budget_multiplier: float = 1.0
 @export var primary_style: BeerStyle.Style = BeerStyle.Style.BULKKILAGER
 @export var secondary_style: BeerStyle.Style = BeerStyle.Style.KOTIKALJA
-## Further styles liked as much as secondary_style. Unlike accepted_styles, every other
-## style stays on the menu (the metalheads also like Baltic Porter).
+## Liked as much as secondary_style. Unlike accepted_styles, other styles stay on the menu
+## (the metalheads also like Baltic Porter).
 @export var also_likes: Array[BeerStyle.Style] = []
 
-## Taste tiers: a non-empty favourite_rules replaces the style fields above. A batch
-## matching a favourite rule is the favourite, a second rule the second choice and a last
-## resort rule sells with dialogue_wrong_style; anything else is refused. primary_style
-## and secondary_style stay as hints for the bots and the walk-in after a brew.
+## Taste tiers: a non-empty favourite_rules replaces the style fields above: favourite,
+## second choice, last resort (sold with dialogue_wrong_style), else refused. The style
+## fields stay as hints for the bots and the walk-in after a brew.
 @export_group("Maku")
 @export var favourite_rules: Array[TasteRule] = []
 @export var second_rules: Array[TasteRule] = []
 @export var last_resort_rules: Array[TasteRule] = []
-## Each visit one style of favourite_rules becomes primary_style (see roll_favourite()):
-## only that style is the favourite, the rest of the tier counts as the second choice.
+## Each visit one style of favourite_rules becomes the favourite (roll_favourite()); the
+## rest of the tier counts as the second choice.
 @export var rolls_favourite: bool = false
 
 @export_group("Ulkoasu")
@@ -52,8 +50,7 @@ const NOT_TO_TASTE: float = -1.0
 @export_group("Movement Physics")
 @export var stair_step_duration: float = 0.3
 @export var floor_walk_speed: float = 120.0
-## False for customers who stow the beer inside themselves (Lähettirobotti):
-## the counter glass just vanishes when they leave.
+## False for customers who stow the beer inside themselves (Lähettirobotti).
 @export var carries_glass_out: bool = true
 
 @export_group("Äänet")
@@ -70,35 +67,30 @@ const NOT_TO_TASTE: float = -1.0
 @export_multiline var dialogue_fallback: String = "No, tämäkin käy paremman puutteessa."
 @export_multiline var dialogue_wrong_style: String = "Ei tää sitäkään ollu, mut menköön..."
 @export_multiline var dialogue_reject: String = "Mitä helvettiä sä mulle myyt? Pitää tunkkis."
-## Shown when this customer leaves without buying: nothing in stock, or nothing that
-## clears a strict requirement.
+## Said leaving without buying: nothing in stock, or nothing clears a strict requirement.
 @export_multiline var dialogue_no_match: String = "Ei täällä ollu mitään minulle. Ehkä ensi kerralla."
-## Said at the counter before the sale, naming the batch this customer will pick (%s is
-## the style name).
+## Said before the sale, naming the batch picked (%s is the style name).
 @export_multiline var dialogue_preview_format: String = "Tuo %s kiinnostaisi..."
 ## Said at the counter before the sale when nothing suits this customer.
 @export_multiline var dialogue_nothing_available: String = "Eipä taida olla mitään sopivaa..."
 
-## A hard gate, not a preference. A batch outside a set bound is invisible to this
-## customer however good it is, see BatchChoice.find_best_batch().
+## Hard gates, not preferences: a batch outside them is invisible to this customer.
 @export_group("Tiukat vaatimukset")
 ## -1 = no limit. E.g. 5.0 rejects anything under 5% ABV (see Barbaari).
 @export var min_required_abv: float = -1.0
 ## -1 = no limit. E.g. 0.5 accepts only alcohol-free beer (see Zgen).
 @export var max_required_abv: float = -1.0
-## -1 = no limit. Rejects styles with a fixed price above this (see Opiskelija, a broke
-## student who leaves if everything in stock is over budget).
+## -1 = no limit. Hides styles priced above this (Opiskelija, a broke student).
 @export var max_required_price: float = -1.0
-## Empty = no limit. Otherwise only these styles are visible to this customer (see the
-## German tourists, who take any lager). Broader than requires_preference_match.
+## Empty = no limit. Otherwise only these styles are visible (the German tourists take any
+## lager). Broader than requires_preference_match.
 @export var accepted_styles: Array[BeerStyle.Style] = []
 
 @export_group("Tippaus")
-## Chance of a tip before quality and taste, like a crit chance. Generous spenders
-## (Mafioso) start higher, see SaleEvaluation.tip_chance().
+## Chance of a tip before quality and taste, like a crit chance (SaleEvaluation.tip_chance()).
 @export var tip_base_chance: float = SaleEvaluation.DEFAULT_TIP_BASE_CHANCE
-## Tip per quality point above min_quality, scaled by budget_multiplier. Zero or below
-## means this customer never tips (see Opiskelija).
+## Tip per quality point above min_quality, scaled by budget_multiplier; 0 or below never
+## tips (Opiskelija).
 @export var quality_tip_sensitivity: float = 0.3
 
 @export_group("Reputation Changes")
@@ -106,8 +98,7 @@ const NOT_TO_TASTE: float = -1.0
 @export var rep_primary_style: int = 5
 @export var rep_secondary_style: int = 0
 @export var rep_wrong_style: int = -1
-## Reputation per quality point above min_quality, and a penalty per point below it.
-## A connoisseur can be given a higher value.
+## Reputation per quality point above min_quality, and a penalty per point below.
 @export var quality_reputation_sensitivity: float = 4.0
 
 @export_group("Risk Changes")
@@ -115,18 +106,15 @@ const NOT_TO_TASTE: float = -1.0
 @export var risk_primary_style: int = 3
 @export var risk_secondary_style: int = 1
 @export var risk_wrong_style: int = 2
-## Risk reduction per quality point above min_quality, and extra risk below it. Scaled
-## separately from reputation.
+## Risk cut per quality point above min_quality, and extra risk below.
 @export var quality_risk_sensitivity: float = 2.0
 
 @export_group("Saatavuus")
 @export var min_reputation_to_appear: int = 0
-## -1 = no limit. Requires having brewed this style in ANY past run (see
-## MetaProgressManager.has_style()), on top of min_reputation_to_appear. Gives a style with
-## no other pull a reason to be brewed once.
+## -1 = no limit. Needs this style brewed in any past run, on top of
+## min_reputation_to_appear, so a style with no other pull gets brewed once.
 @export var required_discovered_style: int = -1
-## Empty = no limit. Requires AchievementManager.is_unlocked() for this id, permanent
-## across runs like required_discovered_style (see Lähettirobotti).
+## Empty = no limit. Needs this achievement, permanent like required_discovered_style.
 @export var required_achievement_id: String = ""
 
 @export_group("Erikoiskäytös")
@@ -134,26 +122,24 @@ const NOT_TO_TASTE: float = -1.0
 ## No taste of their own: picks random batches that clear min_quality, and every style
 ## counts as the favourite (see Perusasiakas). See BatchChoice.pick_batches().
 @export var picks_at_random: bool = false
-## Only with picks_at_random: buys from 1 to this many different styles in one visit,
-## min/max_bottles_per_visit from each.
+## With picks_at_random: buys 1 to this many styles a visit, min/max_bottles_per_visit of
+## each.
 @export var max_styles_per_visit: int = 1
 @export var primary_match_risk_multiplier: float = 1.0
-## Like the strict ABV gate, but preference-based: a batch matching neither the primary
-## nor the secondary style is invisible to this customer (see Agentti, an undercover
-## inspector who only wants today's cover-story styles).
+## A batch matching neither primary nor secondary style is invisible (Agentti only wants
+## today's cover-story styles).
 @export var requires_preference_match: bool = false
-## Per-customer override of CustomerManager.NO_MATCH_* for leaving via
-## dialogue_no_match. Agentti zeroes them, since nothing was ever offered to him.
+## Overrides CustomerManager.NO_MATCH_* for leaving with dialogue_no_match. Agentti zeroes
+## them: nothing was offered to him.
 @export var no_match_reputation_penalty: int = CustomerManager.NO_MATCH_REPUTATION_PENALTY
 @export var no_match_risk_penalty: int = CustomerManager.NO_MATCH_RISK_PENALTY
-## Only looks around: says dialogue_intro, then dialogue_nothing_available instead of a
-## preview, and leaves with dialogue_no_match. No sale, penalty or unhappy customer
-## (the LVV inspector's warning visit, see Brewery.LVV_INSPECTOR_VISIT_RISK).
+## Only looks around and leaves: no sale, penalty or unhappy customer (the LVV inspector's
+## warning visit).
 @export var browses_only: bool = false
 @export var min_bottles_per_visit: int = 1
 @export var max_bottles_per_visit: int = 1
-## What can start this customer's bar fight (see BarFightRules): any sale, not getting
-## all the beer they came for, or buying at least bar_fight_min_bottles_bought.
+## What can start this customer's bar fight (BarFightRules): any sale, not getting all the
+## beer wanted, or buying at least bar_fight_min_bottles_bought.
 @export var bar_fight_trigger: BarFightTrigger = BarFightTrigger.RANDOM
 ## For RANDOM, the chance per sale; otherwise the chance once the trigger is met.
 @export var bar_fight_chance: float = 0.0
@@ -161,12 +147,10 @@ const NOT_TO_TASTE: float = -1.0
 @export var bar_fight_reputation_penalty: int = 0
 @export var bar_fight_risk_penalty: int = 0
 @export var bar_fight_max_bottles_broken: int = 0
-## Incident narration, not something the customer says: shown as its own toast via
-## BrewerySignals.bar_fight_triggered. Must contain one %d for the broken-bottle count.
+## Narration shown as a toast, not a spoken line. One %d for the broken bottles.
 @export_multiline var dialogue_bar_fight: String = ""
-## A customer with this line minds the Reinheitsgebot: a batch whose spices broke it
-## (BrewBatch.spice_bonus < 0) gets this line, rep_purity_law_broken and no tip,
-## whatever its style or quality. Empty means the customer does not care.
+## Set for a customer who minds the Reinheitsgebot: a batch whose spices broke it gets this
+## line, rep_purity_law_broken and no tip. Empty = does not care.
 @export_multiline var dialogue_purity_law_broken: String = ""
 @export var rep_purity_law_broken: int = -3
 
@@ -177,8 +161,8 @@ func generate_display_name() -> String:
 	return tr(title) + " " + first_names.pick_random()
 
 
-## An accepted style that is not a favourite scores like the secondary one: a customer
-## who only ever buys from accepted_styles should not call any of them the wrong style.
+## An accepted style that is not a favourite counts as second choice, so an accepted_styles
+## customer never calls one the wrong style.
 func get_preference_score(style: BeerStyle.Style) -> float:
 	if picks_at_random or style == primary_style:
 		return 1.0
@@ -191,8 +175,8 @@ func uses_taste_tiers() -> bool:
 	return not favourite_rules.is_empty()
 
 
-## Like get_preference_score() but for one batch, so taste tiers can look at its
-## spices, hops and strength. NOT_TO_TASTE when no tier takes it.
+## Like get_preference_score() for one batch, so taste tiers can look at its spices, hops
+## and strength. NOT_TO_TASTE when no tier takes it.
 func get_batch_preference(batch : BrewBatch) -> float:
 	if not uses_taste_tiers():
 		return get_preference_score(batch.beer_style.style)
@@ -210,8 +194,8 @@ func accepts_batch(batch : BrewBatch) -> bool:
 	return meets_strict_requirements(batch.beer_style, batch.get_abv()) and get_batch_preference(batch) > NOT_TO_TASTE
 
 
-## Picks this visit's favourite from the styles of favourite_rules the player has found
-## (`discovered`, any season), or from all of them before any is found.
+## Rolls this visit's favourite from favourite_rules' discovered styles (`discovered`, any
+## season), or from all of them before any is found.
 func roll_favourite(discovered : Array) -> void:
 	if not rolls_favourite:
 		return
@@ -228,8 +212,8 @@ func roll_favourite(discovered : Array) -> void:
 		primary_style = pool.pick_random()
 
 
-## False when the batch fails a hard gate; such a batch is never considered, whatever
-## its quality. `abv` is the batch's own (BrewBatch.get_abv()); negative uses the style's.
+## False when the batch fails a hard gate. `abv` is the batch's own; negative uses the
+## style's.
 func meets_strict_requirements(beer_style: BeerStyle, abv: float = -1.0) -> bool:
 	if abv < 0.0:
 		abv = beer_style.abv
@@ -246,8 +230,7 @@ func meets_strict_requirements(beer_style: BeerStyle, abv: float = -1.0) -> bool
 	return true
 
 
-## `styles` is the pool to draw from (the current run's active styles), passed
-## in so this stays pure and unit-testable without any autoload.
+## `styles` is the pool to draw from (the run's styles), passed in for tests.
 func reroll_preference(styles : Array[BeerStyle]) -> void:
 	if not randomizes_preference:
 		return
@@ -266,7 +249,7 @@ func minds_purity_law(batch: BrewBatch) -> bool:
 	return not dialogue_purity_law_broken.is_empty() and batch.spice_bonus < 0.0
 
 
-## See SaleEvaluation. The caller passes `style_base_price`, so no autoload is needed.
+## See SaleEvaluation; `style_base_price` is passed in, so no autoload is needed.
 ## `tip_chance_bonus` is the perks' PerkStats.TIP_CHANCE.
 func evaluate_brew_batch(batch: BrewBatch, style_base_price: float = 3.0, tip_roll: float = randf(), tip_chance_bonus: float = 0.0) -> Dictionary:
 	return SaleEvaluation.evaluate(self, batch, style_base_price, tip_roll, tip_chance_bonus)

@@ -1,10 +1,9 @@
 class_name GroupVisitDirector
 extends RefCounted
 
-## Runs crowd visits for CustomerSpawner: members walk in and chant, place one shared
-## order, get served and leave together. The stages (GroupVisit.Stage) run in sequence:
-## two pushes to one dialogue slot would race each other's hide timers. A saved visit
-## resumes at its stage, see resume().
+## Runs crowd visits: members walk in and chant, place one shared order, get served and
+## leave together. Stages run in sequence, since two pushes to one bubble race each other's
+## hide timers. A saved visit resumes at its stage.
 
 const CUSTOMER_SCENE : PackedScene = preload("res://src/scenes/customer.tscn")
 
@@ -52,8 +51,8 @@ static func formation_offset(index : int, group_size : int, spacing : float) -> 
 	return Vector2(centered_index * spacing, row * spacing * 0.7)
 
 
-## The crowd's order: a copy (the shared resource stays untouched) scaled by crowd size.
-## `discovered` is the styles found in any season, for a favourite rolled from a group.
+## The crowd's order: a copy scaled by crowd size. `discovered` is the styles found in any
+## season, for a rolled favourite.
 static func build_order_data(options : Array[CustomerData], member_count : int, styles : Array[BeerStyle], discovered : Array = []) -> CustomerData:
 	var order_data : CustomerData = options.pick_random().duplicate()
 	if order_data.randomizes_preference:
@@ -71,8 +70,8 @@ func run(event_data : GroupVisitEventData, slot : int, counter_position : Vector
 	await _play(visit, -1.0)
 
 
-## Carries on a saved visit at `slot`: members walk or stand where they were and the
-## stage picks up with the wait it had left. The sale is never made twice.
+## Carries on a saved visit at `slot`, the stage picking up with the wait it had left. The
+## sale is never made twice.
 func resume(snap : GroupVisitSnapshot, slot : int, counter_position : Vector2) -> void:
 	var visit := GroupVisit.new(snap.event_data, slot, _next_dialogue_slot(), counter_position)
 	visit.restore(snap)
@@ -93,8 +92,8 @@ func snapshots() -> Array[GroupVisitSnapshot]:
 	return snaps
 
 
-## Runs the stages from the visit's own on. `resume_seconds` is what was left of the
-## first stage's wait when saved, or negative for a fresh start.
+## Runs the stages from the visit's own on; `resume_seconds` is the first wait's rest
+## (negative for a fresh start).
 func _play(visit : GroupVisit, resume_seconds : float) -> void:
 	_visits.append(visit)
 	while visit.stage != GroupVisit.Stage.DONE:
@@ -163,8 +162,8 @@ func _spawn_member(visit : GroupVisit, index : int) -> Customer:
 	return member
 
 
-## One already walking out without a pickup holds no counter spot. `shift` moves the
-## counter end of a route when the visit resumes at another spot.
+## A member already leaving without a pickup holds no spot. `shift` moves the route's
+## counter end when the visit resumes elsewhere.
 func _resume_member(visit : GroupVisit, snap : CustomerSnapshot, shift : Vector2) -> Customer:
 	var member : Customer = CUSTOMER_SCENE.instantiate()
 	_host.add_child(member)
@@ -208,8 +207,8 @@ func _chant_until_arrival(visit : GroupVisit, resume_seconds : float) -> bool:
 	return true
 
 
-## Evicting the group does not stop the visit: it bails out here if every member is gone.
-## The sale ends the stage in the same frame, so a save never lands between the two.
+## Bails out if eviction left nobody. The sale ends the stage in the same frame, so a save
+## never lands between the two.
 func _order(visit : GroupVisit, resume_seconds : float) -> bool:
 	if resume_seconds < 0.0:
 		if not visit.has_anyone_here():
@@ -255,8 +254,7 @@ func _mark_members_served(visit : GroupVisit, order_title : String) -> void:
 			BrewerySignals.customer_served.emit(member.customer_data)
 
 
-## The whole group rampages, but the broken glasses are shared out, not multiplied:
-## the sale already charged the fight once.
+## The whole group rampages, sharing out the broken glasses: the sale charged once.
 func _start_group_rampage(visit : GroupVisit, broken_bottles : int) -> void:
 	for i : int in visit.size():
 		var member : Variant = visit.members[i]
@@ -298,7 +296,6 @@ func _talk(visit : GroupVisit, resume_seconds : float) -> bool:
 
 
 ## The representative leaves in place; the rest collect their round first, staggered.
-## Members already on their way (a resumed visit) are skipped.
 func _dismiss(visit : GroupVisit, resume_seconds : float) -> bool:
 	if resume_seconds >= 0.0 and not await _wait(visit, resume_seconds):
 		return false

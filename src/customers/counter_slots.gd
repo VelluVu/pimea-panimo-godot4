@@ -1,8 +1,7 @@
 class_name CounterSlots
 extends RefCounted
 
-## Which counter positions are taken, and by whom. A group visit registers every
-## member against one shared slot, so a slot counts its occupants and is only
+## Which counter positions are taken. A group registers every member on one shared slot,
 ## freed when the last one leaves.
 
 var _occupied : Array[bool] = []

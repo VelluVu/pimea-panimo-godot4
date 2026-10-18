@@ -1,10 +1,8 @@
 class_name CustomerSnapshot
 extends Resource
 
-## One customer frozen mid-visit for the save (Brewery.cellar_customers, or a member in
-## a GroupVisitSnapshot), so a loaded run carries on exactly where it was: the same spot,
-## the same line, the same time left. Customer.snapshot() fills it and Customer.resume()
-## plays it back.
+## One customer frozen mid-visit for the save, so a loaded run carries on at the same spot,
+## line and time left. Customer.snapshot() fills it, Customer.resume() plays it.
 
 ## WAITING is a group member standing at the counter; its group does the talking.
 enum Phase { WALKING_IN, GREETING, PREVIEWING, SERVED, LEAVING, WAITING }
@@ -16,8 +14,8 @@ enum Phase { WALKING_IN, GREETING, PREVIEWING, SERVED, LEAVING, WAITING }
 @export var group_member : bool = false
 @export var position : Vector2 = Vector2.ZERO
 
-## Walking in: the waypoints (spawn, stairs bottom, room centre, counter spot), the leg
-## under way (Customer.Leg) and, for the pause in the centre, its seconds left.
+## Walking in: the waypoints, the leg under way (Customer.Leg) and the centre pause's
+## seconds left.
 @export var route : Array[Vector2] = []
 @export var leg : int = 0
 @export var pause_left : float = 0.0

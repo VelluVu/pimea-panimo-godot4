@@ -1,25 +1,21 @@
 class_name BarContact
 extends Resource
 
-## A bar the player can ship a finished batch to from the warehouse (BatchDistributor).
-## Pays less than a counter sale, with no reputation, XP or tip, and every shipment adds
-## LVV risk. Loaded from res://src/resources/bars/ by CustomerRegistry.
+## A bar a finished batch can be shipped to (BatchDistributor): pays less than the
+## counter, with no reputation, XP or tip, and each shipment adds LVV risk.
 
 @export var bar_name : String = ""
 @export_multiline var description : String = ""
 
-## Multiplies a batch's raw_cost_per_bottle (BrewResolver.get_price_breakdown)
-## for this bar's payout — see Brewery.ship_batch_to_bar() for the full
-## formula. Should normally sit below the ~1.5x a real retail sale nets.
+## Multiplies the wholesale price (StylePricing.wholesale_price_per_bottle()) for this
+## bar's payout.
 @export var price_multiplier : float = 0.8
 
-## Added to Brewery.risk (via Brewery.add_risk()) once per shipment,
-## regardless of how many bottles the batch holds.
+## Added to the LVV risk once per shipment, however full the keg.
 @export var risk_per_shipment : int = 5
 
-## Gates this contact out of BarContactOptionButton until the player's
-## reputation clears it, mirroring IngredientData.min_reputation's
-## locked-item treatment in IngredientOptionButton.
+## Reputation the bar needs before it takes kegs; locked bars show disabled, like locked
+## ingredients.
 @export var required_reputation : int = 0
 
 

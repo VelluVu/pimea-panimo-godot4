@@ -1,10 +1,9 @@
 class_name CustomerHandOffsets
 extends RefCounted
 
-## Per-frame hand position for the held glass during ANIM_WALK_TOWARDS, in Customer-local
-## space. That walk plays flipped, so the steady right hand ends up screen-left; the
-## defaults are its mirrored texture position (screen_x = 64 - 4*tx) nudged 9 px inward.
-## Archetypes whose walk has no steady hand get their own table below.
+## Per-frame hand position for the held glass on ANIM_WALK_TOWARDS, Customer-local. The walk
+## plays flipped, so the defaults mirror the steady right hand (screen_x = 64 - 4*tx) nudged
+## 9 px in. Archetypes without a steady hand get their own table.
 
 const DEFAULT_OFFSETS : Array[Vector2] = [
 	Vector2(-23, -46),
@@ -13,8 +12,7 @@ const DEFAULT_OFFSETS : Array[Vector2] = [
 	Vector2(-25, -50),
 ]
 
-## Zgen keeps both arms crossed at the chest the whole cycle (no swinging hand
-## to track), so this is a small hand-authored sway around chest height.
+## Zgen's arms stay crossed, so a small hand-authored sway at chest height.
 const ZGEN_TITLE : String = "Gen Z"
 const ZGEN_OFFSETS : Array[Vector2] = [
 	Vector2(-4, -68),
@@ -23,9 +21,8 @@ const ZGEN_OFFSETS : Array[Vector2] = [
 	Vector2(0, -66),
 ]
 
-## Raksamies (and raksamies_naaras, same title) swing BOTH arms. Tracked from
-## the customer's own left hand: hip height on frames 0/2, tucked near the
-## belt on frame 1 while the other arm swings out, swinging out on frame 3.
+## Raksamies swings both arms: tracked from their left hand, hip height on frames 0/2, by
+## the belt on 1, swinging out on 3.
 const RAKSAMIES_TITLE : String = "Raksamies"
 const RAKSAMIES_OFFSETS : Array[Vector2] = [
 	Vector2(-30, -46),
@@ -34,9 +31,8 @@ const RAKSAMIES_OFFSETS : Array[Vector2] = [
 	Vector2(-28, -58),
 ]
 
-## Leijonafani (and leijonafani_naaras, same title) throws one arm into a
-## raised fist-pump: hip height on frames 0/2, all the way up on frame 1,
-## partway back down on frame 3, so the held glass punches the air with him.
+## Leijonafani fist-pumps: hip height on frames 0/2, up on 1, partway down on 3, so the
+## glass punches the air.
 const LEIJONAFANI_TITLE : String = "Leijonafani"
 const LEIJONAFANI_OFFSETS : Array[Vector2] = [
 	Vector2(-30, -50),
@@ -45,8 +41,8 @@ const LEIJONAFANI_OFFSETS : Array[Vector2] = [
 	Vector2(-22, -58),
 ]
 
-## Kriitikko carries his notebook in the hand the default table tracks, so the glass
-## goes in the other one, steady at the hip (one pixel higher on frames 1 and 3).
+## Kriitikko's notebook is in the tracked hand, so the glass rides steady at the other hip
+## (a pixel higher on frames 1 and 3).
 const KRIITIKKO_TITLE : String = "Kriitikko"
 const KRIITIKKO_OFFSETS : Array[Vector2] = [
 	Vector2(35, -44),
@@ -56,8 +52,7 @@ const KRIITIKKO_OFFSETS : Array[Vector2] = [
 ]
 
 
-## Tarkastusdrooni flies off with the glass hanging just under its belly. The
-## body bobs a pixel per frame (bottom rows 17, 16, 18), and the glass follows.
+## The drone flies off with the glass under its belly, bobbing a pixel per frame.
 const DRONE_TITLE : String = "Tarkastusdrooni"
 const DRONE_OFFSETS : Array[Vector2] = [
 	Vector2(3, -45),
