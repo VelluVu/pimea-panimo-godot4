@@ -1,9 +1,8 @@
 class_name OnlineScorePanel
 extends VBoxContainer
 
-## The end screen's form that sends the run to the demo's shared leaderboard
-## (OnlineLeaderboardWiring). Nothing is sent unless the player presses send; the name
-## is remembered for the next run. Hidden in builds without the shared list.
+## The end screen's form for the demo's shared leaderboard. Nothing is sent unless the
+## player presses send; the name is remembered.
 
 const CAPTION_TEXT : String = "Maailmanlaajuinen tulostaulukko"
 const NAME_PLACEHOLDER : String = "Nimesi"

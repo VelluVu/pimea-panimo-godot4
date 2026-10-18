@@ -1,8 +1,7 @@
 class_name OptionsWindow
 extends Panel
 
-## Sound, display, input and credits tabs. Pauses the SceneTree while open, so the
-## instance needs process_mode = PROCESS_MODE_ALWAYS to keep its own controls working.
+## Sound, display, input and credits tabs. Pauses the tree, so PROCESS_MODE_ALWAYS.
 
 const WINDOW_TITLE : String = "Asetukset"
 const CLOSE_BUTTON_TEXT : String = "Sulje"
@@ -50,9 +49,8 @@ func _ready() -> void:
 	hide()
 
 
-## Esc is handled here, not in gui.gd's global handler: this node is PROCESS_MODE_ALWAYS
-## and keeps receiving input while the paused tree stops delivering it to gui.gd. The
-## visible guard lets Esc fall through to gui.gd (which opens this window) otherwise.
+## Esc is handled here: the paused tree stops delivering it to gui.gd. Only while visible,
+## so otherwise it falls through to gui.gd, which opens this window.
 func _input(event : InputEvent) -> void:
 	if not visible:
 		return

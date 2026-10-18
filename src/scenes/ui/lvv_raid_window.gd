@@ -12,9 +12,7 @@ func _ready() -> void:
 	close_button.text = StringContainer.LVV_RAID_CLOSE_TEXT
 
 	close_button.pressed.connect(_on_close_button_pressed)
-	# Delayed until LvvRaidSpawner's walk-in/seize/walk-out sequence finishes
-	# (see lvv_raid_recap_ready's docstring) — not the raw lvv_raid_triggered,
-	# which fires the instant the raid actually happens in Brewery.
+	# The recap waits for the raid squad to leave, not the raid itself.
 	BrewerySignals.lvv_raid_recap_ready.connect(_on_lvv_raid_recap_ready)
 
 

@@ -1,16 +1,13 @@
 class_name IngredientTypeSelector
 extends VBoxContainer
 
-## Consolidates the malt/hop/yeast dropdowns into one shared OptionButton,
-## switched by a TabBar above it — replaces three permanently-stacked
-## selector rows with one, per the minimalism pass on BrewingView/ShopView.
+## One shared ingredient dropdown, switched by a TabBar of ingredient types.
 
 const MALT_TAB_TEXT : String = "Mallas"
 const HOP_TAB_TEXT : String = "Humala"
 const YEAST_TAB_TEXT : String = "Hiiva"
 const SPICE_TAB_TEXT : String = "Mauste"
-## The icons' own size, so the pixels stay square; the tab sides are trimmed to
-## TAB_SIDE_MARGIN so all four still fit the ~190 px panel without scroll arrows.
+## The icons' own size, so the pixels stay square; trimmed tab sides fit all four.
 const TAB_ICON_WIDTH : int = 32
 const TAB_SIDE_MARGIN : int = 6
 const TAB_STYLES : Array[StringName] = [&"tab_selected", &"tab_unselected", &"tab_hovered", &"tab_disabled", &"tab_focus"]
@@ -37,10 +34,8 @@ func _ready() -> void:
 	tab_bar.clear_tabs()
 	tab_bar.add_theme_constant_override(&"icon_max_width", TAB_ICON_WIDTH)
 	_trim_tab_sides()
-	# Icon-only tabs, name as tooltip: the panel is only ~140px wide, too
-	# narrow for three text+icon tabs to fit without scrolling — and a wide
-	# tab row here collides with the corner BackButton shared by this view
-	# and ShopView. Left-aligned icon tabs stay clear of that corner.
+	# Icon-only tabs, name as tooltip: text tabs would not fit the narrow panel and would
+	# collide with the corner BackButton.
 	_add_icon_tab(MALT_TAB_TEXT, IngredientData.IngredientType.MALT)
 	_add_icon_tab(HOP_TAB_TEXT, IngredientData.IngredientType.HOP)
 	_add_icon_tab(YEAST_TAB_TEXT, IngredientData.IngredientType.YEAST)
@@ -72,9 +67,8 @@ func _on_tab_changed(tab_index : int) -> void:
 	option_button.populate_ingredient_option_menu()
 
 
-## Called when BrewingView or ShopView opens, so each starts on the first tab instead of
-## whatever the other view last selected. Calls _on_tab_changed(0) directly because
-## TabBar emits nothing when the tab is already 0.
+## Each view opens on the first tab. Calls _on_tab_changed(0) itself, since TabBar emits
+## nothing when the tab is already 0.
 func reset_to_first_tab() -> void:
 	tab_bar.current_tab = 0
 	_on_tab_changed(0)
@@ -89,8 +83,7 @@ func step_type(direction : int) -> void:
 	tab_bar.current_tab = posmod(tab_bar.current_tab + direction, tab_bar.tab_count)
 
 
-## Puts < and > beside the dropdown and moves `amount_label` (the shop's or brew view's
-## amount text) to its own line below, so the arrows leave the names room.
+## Puts < and > beside the dropdown and moves `amount_label` to its own line below.
 func add_step_buttons(amount_label : Label) -> void:
 	OptionStepper.wrap(option_button)
 	amount_label.reparent(self)

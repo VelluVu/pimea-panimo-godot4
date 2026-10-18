@@ -1,9 +1,8 @@
 class_name LvvAgent
 extends Node2D
 
-## One LVV raider (LvvRaidSpawner): walks down the stairs and the spawner's waypoints to
-## the warehouse, seizes a keg and walks back. Each leg's animation comes from its
-## direction (_tween_leg()), so the markers move freely in the editor.
+## One LVV raider: walks the spawner's waypoints to the warehouse, seizes a keg and walks
+## back. Each leg's animation follows its direction, so markers move freely.
 
 signal raid_sequence_finished
 
@@ -39,9 +38,8 @@ func _play_animation(anim_name : StringName, flip_horizontally : bool = false) -
 	_update_carried_keg_z_index(anim_name)
 
 
-## The keg is in front of the agent when they face the camera or are side-on, and behind
-## them when turned away (climbing back up the stairs). z_index beats y-sort here, see
-## _show_carried_keg().
+## The keg is in front of the agent unless they face away (climbing back up); z_index beats
+## y-sort here.
 func _update_carried_keg_z_index(anim_name : StringName) -> void:
 	if not is_instance_valid(_carried_keg) or not _carried_keg.visible:
 		return
@@ -51,10 +49,8 @@ func _update_carried_keg_z_index(anim_name : StringName) -> void:
 		_carried_keg.z_index = 1
 
 
-## `waypoints` are global positions walked in order after the stairs descent (waypoints[0]
-## is where the stairs bottom out). Seizes a keg at the last one, then walks every leg back
-## in reverse and climbs out, showing the keg as the return trip starts. A loaded raid
-## skips the first `elapsed_seconds` of it.
+## Walks `waypoints` (global, [0] is the stairs bottom), seizes a keg at the last and walks
+## back out with it. A loaded raid skips `elapsed_seconds`.
 func walk_in_and_seize(waypoints : Array[Vector2], elapsed_seconds : float = 0.0) -> void:
 	var tween := create_tween()
 	_route_tween = tween
@@ -88,10 +84,8 @@ func elapsed_seconds() -> float:
 	return _route_tween.get_total_elapsed_time() if _route_tween != null else 0.0
 
 
-## walk_towards or walk_away for a mostly vertical leg (towards the camera on increasing Y,
-## as in Customer's stairs), walk_right for a mostly horizontal one, flipped to the direction
-## walked. It depends only on the two positions, so any waypoint change works, including the
-## reverse trip.
+## walk_towards or walk_away for a mostly vertical leg, walk_right (flipped) for a
+## horizontal one; from the two positions only, so any waypoint works both ways.
 func _tween_leg(tween : Tween, from_pos : Vector2, to_pos : Vector2) -> void:
 	var delta := to_pos - from_pos
 	var anim_name : StringName
@@ -119,8 +113,7 @@ func _tween_stairs(tween : Tween, from_pos : Vector2, to_pos : Vector2) -> void:
 		tween.tween_interval(0.05)
 
 
-## The keg is parented under carry_marker now but stays hidden until the agent turns
-## around to walk it out.
+## Parented under carry_marker but hidden until the agent turns to walk it out.
 func _seize_keg() -> void:
 	_play_animation(ANIM_IDLE_UP)
 	_carried_keg = KEG_SCENE.instantiate()
@@ -133,7 +126,5 @@ func _seize_keg() -> void:
 func _show_carried_keg() -> void:
 	if is_instance_valid(_carried_keg):
 		_carried_keg.visible = true
-		# y_sort_enabled sorts CarryMarker (chest height) behind the sprite, hiding the keg even when
-		# visible. z_index beats y-sort, so _update_carried_keg_z_index() puts it in front, or behind
-		# while facing away. Still idle_up from _seize_keg() here, which gives the right starting side.
+		# y-sort puts CarryMarker behind the sprite, so z_index sets the keg's side instead.
 		_update_carried_keg_z_index(animated_sprite.animation)

@@ -1,8 +1,7 @@
 class_name DirtyKegPileLabel
 extends Label
 
-## Hover label for DirtyKegPile, same self-contained pattern as WarehouseLabel: listens
-## to its own world-hover signal and shows or hides itself.
+## Hover label for DirtyKegPile; shows and hides itself on its area's signal.
 
 const LABEL_FORMAT : String = "Likaiset tynnyrit (%d)"
 

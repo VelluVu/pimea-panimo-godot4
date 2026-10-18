@@ -1,17 +1,15 @@
 class_name DailyGoalsPanel
 extends VBoxContainer
 
-## Always-visible, background-free goal list, top-right under the resources bar.
-## A pure display: picking, progress and resolution live in DailyGoalManager, and
-## the status rules in GoalStatus. The daily label slots are index-aligned with
-## DailyGoalManager.active_goals.
+## The always-visible goal list under the resources bar. Display only: the goals live in
+## DailyGoalManager, the status rules in GoalStatus; slots index-align with its goals.
 
 const ATTENTION_PULSE_SECONDS : float = 0.5
 const ATTENTION_PULSE_COUNT : int = 3
 const ATTENTION_PULSE_SCALE : Vector2 = Vector2(1.12, 1.12)
 
 const DAILY_GOAL_LINE_FORMAT : String = "%s: %s"
-## Shown from day one, regardless of tutorial state, so the win condition is visible early.
+## Shown from day one, so the season's length is visible early.
 const DAY_GOAL_FORMAT : String = "Päivät: %d/%d"
 const REPUTATION_GOAL_FORMAT : String = "Maine: %d/%d"
 
@@ -44,8 +42,7 @@ const GOAL_WARNING_COLOR : Color = Color(0.96862745, 0.4627451, 0.13333334, 1) #
 @onready var tutorial_yeast_label : Label = $GoalsVBox/TutorialYeastLabel
 @onready var tutorial_brew_label : Label = $GoalsVBox/TutorialBrewLabel
 
-## Per-section toggles, separate from the panel-wide one, so a player can hide the
-## main goal lines and keep only the daily goals (or the other way round).
+## Per-section toggles, so a player can hide the main goals and keep the daily ones.
 var _main_goal_section : CollapsibleSection
 var _daily_goals_section : CollapsibleSection
 var _near_miss_pulses : Array[LabelPulse] = []
@@ -74,15 +71,14 @@ func _ready() -> void:
 	_refresh()
 
 
-## Called from GuiAnnouncer when the first-brew hint banner ends: expands the panel
-## if needed and pulses it, so a new player notices their tutorial checklist.
+## When the first-brew hint ends: expands and pulses the panel so a new player sees it.
 func draw_attention() -> void:
 	if _is_collapsed:
 		_on_toggle_pressed()
 
 	await get_tree().process_frame
-	# Pivot on the right edge: the panel is anchored flush to the window's right side,
-	# so a centered pivot would push its right half off-screen on every pulse.
+	# Pivot on the right edge: the panel is flush right, so a centred pivot pushes it off
+	# screen.
 	pivot_offset = Vector2(size.x, size.y / 2.0)
 
 	var attention_tween := create_tween().set_loops(ATTENTION_PULSE_COUNT)

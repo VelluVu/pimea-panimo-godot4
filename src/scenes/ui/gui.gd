@@ -53,8 +53,8 @@ func _ready() -> void:
 		TouchHints.make_button(options_button).pressed.connect(func() -> void:
 			if not _views.is_away_from_bar():
 				touch_hints.toggle())
-	# Slot the goals panel and the passive banners below the first panel (the warehouse)
-	# so open panels and windows cover them instead of colliding with their text.
+	# The goals panel and the passive banners go below the first panel, so open panels cover
+	# them instead of colliding.
 	for passive : Control in [daily_goals_panel, group_visit_banner, first_brew_hint_banner, day_event_banner]:
 		move_child(passive, warehouse_view.get_index())
 	await get_tree().process_frame
@@ -68,8 +68,7 @@ func _ready() -> void:
 	InputManager.cancel_pressed.connect(_on_cancel_pressed)
 
 
-## The Scene dock's eye toggle is saved into the .tscn, so never trust the saved
-## visibility of anything that should always start on: assert it here.
+## The editor's eye toggle is saved into the .tscn, so always-on nodes are forced on here.
 func _assert_default_visibility() -> void:
 	dialog_view.show()
 	top_panel_background.show()
@@ -84,8 +83,7 @@ func _assert_default_visibility() -> void:
 	daily_goals_panel.show()
 
 
-## Shortcut and Esc presses arrive as InputManager signals. While Options or
-## the game menu is open the tree is paused and this is never called.
+## Shortcuts and Esc arrive as InputManager signals; never while a pausing window is open.
 func _on_shortcut_pressed(action: StringName) -> void:
 	if dev_console.is_console_active():
 		return

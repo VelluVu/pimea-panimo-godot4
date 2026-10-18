@@ -1,9 +1,8 @@
 class_name SpecialEventWindow
 extends Panel
 
-## One special request. "Joo" settles a payment at once; a request for goods stays open
-## for its delivery_seconds, shows what is still missing and completes by itself as
-## soon as the stock is there, with the reward flying out of the window.
+## One special request. "Joo" settles a payment at once; goods are waited for
+## delivery_seconds, and the reward flies out of the window once they are there.
 
 enum State { ASKING, DELIVERING, ANSWERED }
 
@@ -97,10 +96,8 @@ func snapshot() -> SpecialEventSnapshot:
 	return snap
 
 
-## Panel doesn't extend Container, so it never relays its children's
-## computed minimum size to the VBoxContainer that positions it — without
-## this, the window's on-screen size ignores how tall the wrapped dialogue
-## actually is. Setting custom_minimum_size is what the parent respects.
+## A Panel does not pass its children's minimum size to its VBoxContainer, so the window
+## would ignore how tall the wrapped dialogue is.
 func _resize_to_fit_content() -> void:
 	await get_tree().process_frame
 	custom_minimum_size = margin_container.get_combined_minimum_size()
@@ -146,9 +143,7 @@ func _complete() -> void:
 	_pop_rewards(before, _resources_of(brewery), brewery)
 
 
-## Only reached by inaction (the player let the timer run out without
-## pressing "Joo") — there's no decline button anymore, since the brewery
-## never turns down business on purpose; see process_reject's docstring.
+## Only reached by letting the timer run out: there is no decline button.
 func _timeout_event() -> void:
 	_answer(SpecialEventManager.process_reject(event_data))
 

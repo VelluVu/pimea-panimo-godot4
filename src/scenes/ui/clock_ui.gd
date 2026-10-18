@@ -1,8 +1,7 @@
 class_name ClockUI
 extends TextureRect
 
-## The day's clock face. Its tooltip, like the day label's, keeps updating while open
-## (see tooltip_source), so it always shows the current time.
+## The day's clock face; its tooltip keeps updating while open.
 
 @onready var clock_hand : Control = $ClockHandTextureRect
 

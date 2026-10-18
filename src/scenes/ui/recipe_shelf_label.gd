@@ -1,10 +1,7 @@
 class_name RecipeShelfLabel
 extends Label
 
-## Hover label for RecipeShelfHoverArea, matching BreweryEntrancePanel /
-## ShopEntrancePanel's exact pattern: a self-contained component that
-## listens to its own world-hover-area signal and shows/hides itself,
-## rather than being driven by GUI.gd.
+## Hover label for RecipeShelfHoverArea; shows and hides itself on its area's signal.
 
 const LABEL_TEXT : String = "Reseptit"
 

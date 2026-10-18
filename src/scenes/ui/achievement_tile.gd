@@ -1,9 +1,7 @@
 class_name AchievementTile
 extends PanelContainer
 
-## One cell of the achievements grid: a placeholder icon as header and the
-## title below it. The description and progress live in the tooltip. Built in
-## code by AchievementsWindow. Locked achievements are dimmed.
+## One achievements grid cell: icon and title, details in the tooltip; dimmed if locked.
 
 const TILE_SIZE: Vector2 = Vector2(100, 68)
 const ICON_SIZE: Vector2 = Vector2(28, 28)

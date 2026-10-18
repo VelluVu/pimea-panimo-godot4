@@ -1,9 +1,8 @@
 class_name CloseDayConfirmWindow
 extends Panel
 
-## Guards against silently losing an in-progress sale: closing the day while
-## a customer is still walking in or at the counter used to advance the day
-## immediately with no warning, cutting off a sale that hadn't resolved yet.
+## Asks before closing the day while a customer is walking in or at the counter, whose sale
+## would be cut off.
 
 const TITLE_TEXT : String = "Asiakas on vielä baarissa"
 const MESSAGE_TEXT : String = "Jos suljet nyt, asiakkaan kesken jäänyt kauppa peruuntuu."

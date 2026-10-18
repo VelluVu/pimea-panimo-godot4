@@ -1,9 +1,7 @@
 class_name CellarUpgradesWindow
 extends Panel
 
-## The cellar upgrades, each bought one level at a time with money. Opened from the
-## shop (GUISignals.cellar_upgrades_requested); buying goes through
-## GUISignals.cellar_upgrade_requested to CellarUpgradeShop.
+## The cellar upgrades, bought one level at a time (CellarUpgradeShop).
 
 const TITLE_TEXT : String = "Kellarin parannukset"
 const CLOSE_TEXT : String = "Sulje"

@@ -1,9 +1,8 @@
 class_name GameMenuWindow
 extends Panel
 
-## The pause menu: resume, settings, achievements, leaderboard, new run and main menu
-## (the last two confirmed). The only way out of a run. Pauses the tree, so process_mode
-## is ALWAYS; it hides while a window it opened is up and returns when that closes.
+## The pause menu, the only way out of a run (new run and main menu ask first). Pauses the
+## tree; hides while a window it opened is up.
 
 const MAIN_MENU_SCENE_PATH: String = "res://src/scenes/ui/main_menu.tscn"
 const GAME_SCENE_PATH: String = "res://src/scenes/main.tscn"
@@ -31,8 +30,7 @@ const CONFIRM_NO_TEXT: String = "Ei"
 @onready var yes_button: Button = %YesButton
 @onready var no_button: Button = %NoButton
 
-## True from opening until resuming or leaving, including while a sub-window
-## (settings, achievements, leaderboard) has this menu hidden.
+## True from opening until resuming or leaving, also while a sub-window hides the menu.
 var _is_open: bool = false
 ## What the confirmation's yes button does.
 var _confirmed_action: Callable
@@ -93,8 +91,8 @@ func _is_run_over() -> bool:
 	return brewery != null and brewery.game_has_ended
 
 
-## Esc resumes, or backs out of the confirmation first. Only while visible, so
-## an open sub-window (which hides this menu) gets its own Esc.
+## Esc resumes, or backs out of the confirmation; only while visible, so a sub-window gets
+## its own Esc.
 func _input(event: InputEvent) -> void:
 	if not visible:
 		return

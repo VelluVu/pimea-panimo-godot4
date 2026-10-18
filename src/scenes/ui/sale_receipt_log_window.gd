@@ -1,8 +1,7 @@
 class_name SaleReceiptLogWindow
 extends Panel
 
-## The receipt log: today's sales, reviewable at leisure and cleared at day change
-## (GUISignals.receipt_log_requested). Each row toggles its breakdown on click.
+## Today's sales, cleared at day change; each row toggles its breakdown on click.
 
 const TITLE_TEXT : String = "Päivän kuitit"
 const CLOSE_BUTTON_TEXT : String = "Sulje"
@@ -15,9 +14,7 @@ const EXPANDED_ICON : String = "▼"
 @onready var close_button : Button = %CloseButton
 @onready var rows_vbox : VBoxContainer = %RowsVBox
 
-## Entry -> true for every receipt currently toggled open. Keyed by the
-## SaleReceiptEntry Resource itself (reference identity), reset on day
-## change alongside the receipts it points to.
+## Receipts toggled open, keyed by the entry itself, reset with the day.
 var _expanded_entries : Dictionary = {}
 
 

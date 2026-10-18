@@ -1,10 +1,7 @@
 class_name ReceiptMachineLabel
 extends Label
 
-## Hover label for ReceiptMachineHoverArea — see RecipeShelfLabel's
-## docstring for the pattern this mirrors (same as BreweryEntrancePanel /
-## ShopEntrancePanel): self-contained, listens to its own world-hover-area
-## signal, shows/hides itself.
+## Hover label for ReceiptMachineHoverArea; shows and hides itself on its area's signal.
 
 const LABEL_TEXT : String = "Kuitit"
 

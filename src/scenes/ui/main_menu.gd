@@ -68,10 +68,8 @@ func _ready() -> void:
 
 	continue_button.visible = SaveManager.has_save()
 
-	# Nothing should simulate (least of all autosave-on-day-change) while
-	# the player is just sitting at the menu — otherwise a stray day
-	# rollover here would silently overwrite a real save with whatever
-	# fresh/idle Brewery happens to be current at that moment.
+	# Nothing may simulate at the menu: a day rollover here would autosave an idle Brewery over
+	# the real save.
 	TimeManager.pause_time()
 
 	_show_root_menu_view()

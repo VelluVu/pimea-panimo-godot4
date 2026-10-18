@@ -1,9 +1,8 @@
 class_name RunEffectsWindow
 extends Panel
 
-## The run's stat sheet (GUISignals.run_effects_requested): the real LVV raid threshold,
-## every active perk and their combined totals, since stacked perks matter more than any
-## one card. Always reflects live state.
+## The run's stat sheet: the real raid threshold, every active perk and their combined
+## totals, since stacked perks matter more than any one card.
 
 const HEADER_FONT_SIZE : int = 15
 const SECTION_SPACING : float = 10.0
