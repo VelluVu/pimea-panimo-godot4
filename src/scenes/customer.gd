@@ -15,10 +15,6 @@ const PREVIEW_DELAY_SECONDS : float = 2.0
 ## Joins the style names when a customer previews more than one batch.
 const PREVIEW_STYLE_JOINER : String = " ja "
 
-## Seconds between footsteps while a walk animation plays.
-const FOOTSTEP_INTERVAL_SECONDS : float = 0.32
-const AMBIENT_LOOP_VOLUME_DB : float = -12.0
-
 ## The legs of the walk in, in order (see walk_complex_route()).
 enum Leg { STAIRS, TO_CENTER, CENTER_PAUSE, TO_COUNTER }
 
@@ -27,12 +23,6 @@ const ANIM_IDLE_UP : StringName = &"idle_up"
 const ANIM_WALK_TOWARDS : StringName = &"walk_towards"
 const ANIM_WALK_RIGHT : StringName = &"walk_right"
 const WALK_ANIMATIONS : Array[StringName] = [ANIM_WALK_TOWARDS, ANIM_WALK_RIGHT]
-
-## How long a just-served glass sits on the counter before pickup; matches Bartender's
-## serve_beer animation (2.0s) so the glass appears once the pour has finished.
-const SERVE_BEER_WAIT_SECONDS : float = 2.0
-## Duration of the counter-glass slide, which starts after SERVE_BEER_WAIT_SECONDS.
-const GLASS_SLIDE_DURATION_SECONDS : float = 0.6
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var bottle_hand_marker: Marker2D = $BottleHandMarker
@@ -65,9 +55,7 @@ var _leg: int = Leg.STAIRS
 var _pause_seconds: float = CENTER_PAUSE_SECONDS
 var _pause_started_msec: int = 0
 var _phase_timer: SceneTreeTimer
-var _glass_timer: SceneTreeTimer
 var _bubble_text: String = ""
-var _beer_ebc: int = -1
 ## The batches named in the preview, so the sale buys the same ones.
 var _picked_batches: Array[BrewBatch] = []
 var _exit_position: Vector2
@@ -80,27 +68,17 @@ var _rampage_glasses: int = -1
 var _rampage_stomp: int = 0
 var _rampage_home: Vector2
 
-## The glass as drawn, before fill_glasses() colours its beer.
-var _glass_texture: Texture2D
-var _footstep_clock: float = 0.0
-var _ambient_player: AudioStreamPlayer2D
+var _glasses: CustomerGlasses
+var _sounds := CustomerSounds.new()
 
 
 func _ready() -> void:
 	animated_sprite.frame_changed.connect(_on_animated_sprite_frame_changed)
-	_glass_texture = beer_glass_sprite.texture
+	_glasses = CustomerGlasses.new(self, beer_glass_sprite, counter_glass_sprite)
 
 
 func _process(delta: float) -> void:
-	if customer_data == null or not customer_data.makes_footsteps:
-		return
-	if not (animated_sprite.is_playing() and MirroredAnimation.base_name(animated_sprite.animation) in WALK_ANIMATIONS):
-		_footstep_clock = 0.0
-		return
-	_footstep_clock += delta
-	if _footstep_clock >= FOOTSTEP_INTERVAL_SECONDS:
-		_footstep_clock -= FOOTSTEP_INTERVAL_SECONDS
-		BrewerySignals.customer_stepped.emit(global_position)
+	_sounds.tick(delta, self, animated_sprite, customer_data, WALK_ANIMATIONS)
 
 
 func _on_animated_sprite_frame_changed() -> void:
@@ -112,21 +90,7 @@ func _apply_visuals() -> void:
 	animated_sprite.sprite_frames = customer_data.sprite_frames
 	animated_sprite.material = CustomerRecolor.build_material(customer_data)
 	_play_animation(ANIM_IDLE)
-	_start_ambient_loop()
-
-
-## The loop follows the customer, so it is a child player rather than AudioManager's.
-## Restarted on finish: the WAV files are not imported as loops.
-func _start_ambient_loop() -> void:
-	if customer_data.ambient_loop == null or _ambient_player != null:
-		return
-	_ambient_player = AudioStreamPlayer2D.new()
-	_ambient_player.stream = customer_data.ambient_loop
-	_ambient_player.bus = &"SFX"
-	_ambient_player.volume_db = AMBIENT_LOOP_VOLUME_DB
-	_ambient_player.finished.connect(_ambient_player.play)
-	add_child(_ambient_player)
-	_ambient_player.play()
+	_sounds.start_ambient_loop(self, customer_data)
 
 
 func _play_animation(anim_name: StringName, flip_horizontally: bool = false) -> void:
@@ -237,10 +201,10 @@ func snapshot() -> CustomerSnapshot:
 	snap.bubble_text = _bubble_text
 	snap.time_left = _phase_timer.time_left if _phase_timer != null else 0.0
 	snap.made_purchase = made_purchase
-	snap.beer_ebc = _beer_ebc
-	snap.glass_time_left = _glass_timer.time_left if _glass_timer != null and _glass_timer.time_left > 0.0 else -1.0
-	snap.glass_shown = counter_glass_sprite.visible
-	snap.glass_position = counter_glass_sprite.position
+	snap.beer_ebc = _glasses.beer_ebc
+	snap.glass_time_left = _glasses.serve_time_left()
+	snap.glass_shown = _glasses.is_on_counter()
+	snap.glass_position = _glasses.counter_position()
 	snap.exit_position = _exit_position
 	snap.rampage_glasses = _rampage_glasses
 	snap.rampage_stomp = _rampage_stomp
@@ -289,8 +253,7 @@ func _resume_served(snap: CustomerSnapshot) -> void:
 	_phase = CustomerSnapshot.Phase.SERVED
 	_play_animation(ANIM_IDLE_UP)
 	if made_purchase and snap.glass_time_left >= 0.0:
-		_glass_timer = get_tree().create_timer(snap.glass_time_left)
-		_glass_timer.timeout.connect(show_counter_glass)
+		_glasses.serve_after(snap.glass_time_left)
 	_bubble_text = snap.bubble_text
 	if snap.time_left > FADE_TIME_SECONDS:
 		_say(snap.bubble_text, false, snap.time_left - FADE_TIME_SECONDS)
@@ -355,15 +318,14 @@ func play_rampage(glass_count: int, first_stomp: int = 0) -> void:
 	_rampage_glasses = glass_count
 	_rampage_stomp = first_stomp
 	_rampage_home = global_position
-	await BarFightRampage.play(self, animated_sprite, beer_glass_sprite.texture, glass_count, first_stomp, func(next_stomp: int) -> void: _rampage_stomp = next_stomp)
+	await BarFightRampage.play(self, animated_sprite, _glasses.hand_texture(), glass_count, first_stomp, func(next_stomp: int) -> void: _rampage_stomp = next_stomp)
 	_rampage_glasses = -1
 
 
 func _show_sale_popups(outcome: SaleOutcomeCapture) -> void:
 	if outcome.xp > 0:
 		made_purchase = true
-		_glass_timer = get_tree().create_timer(SERVE_BEER_WAIT_SECONDS)
-		_glass_timer.timeout.connect(show_counter_glass)
+		_glasses.serve_after()
 		outcome.emit_xp_popup(global_position)
 	outcome.emit_reputation_and_money_popups(global_position)
 
@@ -384,43 +346,21 @@ func _say(text: String, skippable: bool = false, seconds: float = -1.0) -> float
 ## Colours the beer in this customer's glasses to match what they bought. A negative
 ## `ebc` (nothing sold) leaves the glass as drawn.
 func fill_glasses(ebc: int) -> void:
-	_beer_ebc = ebc
-	if ebc < 0 or _glass_texture == null:
-		return
-	var filled: Texture2D = BeerColor.glass_texture(_glass_texture, ebc)
-	beer_glass_sprite.texture = filled
-	counter_glass_sprite.texture = filled
+	_glasses.fill(ebc)
 
 
 func show_beer_glass() -> void:
 	_on_animated_sprite_frame_changed()
-	beer_glass_sprite.show()
+	_glasses.show_in_hand()
 
 
-## Slides the glass from the bartender to its spot on the counter (or pops it in with no
-## Bartender). top_level keeps it put if the customer walks. A rest_position_override
-## (global, Vector2.INF for none) puts it in the bartender's stack for group orders.
-func show_counter_glass(slide_duration_seconds: float = GLASS_SLIDE_DURATION_SECONDS, rest_position_override: Vector2 = Vector2.INF) -> void:
-	var rest_position : Vector2 = rest_position_override if rest_position_override != Vector2.INF else to_global(counter_glass_sprite.position)
-	var bartender := get_tree().get_first_node_in_group(Bartender.BARTENDER_GROUP) as Bartender
-
-	counter_glass_sprite.top_level = true
-
-	if bartender == null:
-		counter_glass_sprite.position = rest_position
-		counter_glass_sprite.show()
-		return
-
-	counter_glass_sprite.position = bartender.serve_marker.global_position
-	counter_glass_sprite.show()
-
-	var tween := create_tween()
-	tween.tween_property(counter_glass_sprite, "position", rest_position, slide_duration_seconds).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+## See CustomerGlasses.slide_to_counter(); a group order passes its stack spot.
+func show_counter_glass(slide_duration_seconds: float = CustomerGlasses.SLIDE_DURATION_SECONDS, rest_position_override: Vector2 = Vector2.INF) -> void:
+	_glasses.slide_to_counter(slide_duration_seconds, rest_position_override)
 
 
 func hide_counter_glass() -> void:
-	counter_glass_sprite.hide()
-	counter_glass_sprite.top_level = false
+	_glasses.hide_counter()
 
 
 ## pickup_position_override (global) makes a group's standby member walk to the
