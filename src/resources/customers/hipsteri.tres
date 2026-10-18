@@ -12,6 +12,7 @@ customer_name = "Hugo"
 title = "Hipsteri"
 first_names = Array[String](["Hilkka", "Heka", "Hugo", "Saga", "Milo", "Luna", "Felix", "Alva", "Eno", "Noa"])
 min_quality = 1.0
+buys_below_bar = true
 budget_multiplier = 1.5
 primary_style = 5
 secondary_style = 3

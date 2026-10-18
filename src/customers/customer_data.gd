@@ -14,6 +14,9 @@ const NOT_TO_TASTE: float = -1.0
 @export var title: String = ""
 @export var first_names: Array[String] = []
 @export var min_quality: float = 0.5
+## A connoisseur buys a beer below min_quality anyway and grumbles about it (see
+## SaleEvaluation.BELOW_BAR_REPUTATION); everyone else refuses it.
+@export var buys_below_bar: bool = false
 ## Tip generosity only: every customer pays the same fixed price for a style.
 ## See quality_tip_sensitivity.
 @export var budget_multiplier: float = 1.0
