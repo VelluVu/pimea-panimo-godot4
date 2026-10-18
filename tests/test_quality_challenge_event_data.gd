@@ -41,3 +41,16 @@ func test_held_batch_is_not_on_offer() -> void:
 	var inventory := Inventory.new()
 	inventory.brew_batches.append(held)
 	assert_eq(event.delivery_progress(inventory), Vector2i(0, 3))
+
+
+func test_intro_quotes_the_quality_bar_and_the_failure_penalty() -> void:
+	var event := QualityChallengeEventData.new()
+	event.required_min_quality = 1.2
+	event.fail_reputation_penalty = 15
+	event.intro_dialogue = "{quality} % / -{fail_reputation}"
+	assert_eq(event.intro_values()["quality"], 120)
+	assert_eq(event.intro_dialogue.format(event.intro_values()), "120 % / -15")
+
+
+func test_most_requests_cost_nothing_when_they_fail() -> void:
+	assert_eq(SpecialEventData.new().fail_reputation_penalty, 0)

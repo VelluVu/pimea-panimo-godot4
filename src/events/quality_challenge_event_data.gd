@@ -18,6 +18,12 @@ const REQUIREMENT_FORMAT: String = "olutta, laatu vähintään %d %%"
 const DELIVERY_FORMAT: String = "Toimita koko erä (vähintään %d annosta), laatu vähintään %d %%.\nVarastossa: %d / %d"
 
 
+func intro_values() -> Dictionary:
+	var values: Dictionary = super()
+	values["quality"] = roundi(required_min_quality * 100.0)
+	return values
+
+
 ## The most servings any one batch on offer has: the delivery comes from one batch.
 func delivery_progress(inventory: Inventory) -> Vector2i:
 	var most: int = 0

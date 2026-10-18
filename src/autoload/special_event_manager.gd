@@ -61,6 +61,8 @@ func process_accept(event_data: SpecialEventData) -> String:
 		BrewerySignals.brewery_state_changed.emit(brewery)
 		return event_data.success_text()
 	else:
+		event_data.on_failed(brewery)
+		BrewerySignals.brewery_state_changed.emit(brewery)
 		return event_data.fail_dialogue
 
 
@@ -74,8 +76,13 @@ func process_reject(event_data: SpecialEventData) -> String:
 	return event_data.reject_text()
 
 
-## An accepted request whose goods never came in time: it failed, at no further cost.
+## An accepted request whose goods never came in time: it failed, costing only what the
+## event says (SpecialEventData.fail_reputation_penalty).
 func process_expired(event_data: SpecialEventData) -> String:
+	var brewery: Brewery = BrewEngine.current_brewery
+	if brewery != null:
+		event_data.on_failed(brewery)
+		BrewerySignals.brewery_state_changed.emit(brewery)
 	BrewerySignals.special_event_resolved.emit(false, event_data)
 	return event_data.fail_dialogue
 
