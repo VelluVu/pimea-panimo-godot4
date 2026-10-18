@@ -1,10 +1,8 @@
 class_name GameEndWindow
 extends Panel
 
-## Modal end screen for every ending (BrewerySignals.game_ended). Pauses the tree since
-## the run is over, so its root needs PROCESS_MODE_ALWAYS. Informative only: leaving the
-## run goes through GameMenuWindow. The season endings can continue for reduced renown;
-## busted and bankrupt open the game menu instead.
+## The end screen for every ending; pauses the tree (PROCESS_MODE_ALWAYS). Season endings
+## can continue for reduced renown; busted and bankrupt open the game menu.
 
 const TITLE_BUSTED : String = "JÄIT KIINNI!"
 const TITLE_BANKRUPT : String = "KONKURSSI!"
@@ -79,8 +77,7 @@ func _on_game_ended(ending_type : String) -> void:
 	show()
 
 
-## Off the record after continuing: LeaderboardManager and MetaProgressManager skip
-## those endings too, so no score, rank or renown is shown for them.
+## Endings after continuing are off the record, so no score, rank or renown shows.
 func _show_score(brewery : Brewery, ending_type : String) -> void:
 	var on_record : bool = not brewery.has_continued_past_survival
 	breakdown_label.visible = on_record
@@ -108,9 +105,8 @@ func _on_close_button_pressed() -> void:
 		GUISignals.game_menu_requested.emit()
 
 
-## Resumes the run, already scored, for reduced nightly renown. Clears game_has_ended so
-## busted or bankrupt can still end it, and latches has_continued_past_survival so the
-## survived ending never fires again (DayRules.season_ending()).
+## Resumes the scored run for reduced nightly renown. Clears game_has_ended so a bust can
+## still end it; has_continued_past_survival stops the season ending firing again.
 func _continue_run() -> void:
 	var brewery := BrewEngine.current_brewery
 	if brewery == null:

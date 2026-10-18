@@ -1,39 +1,32 @@
 class_name Bartender
 extends Node2D
 
-## Stands behind the bar playing idle and serve animations on command; it never walks.
-## It is also where the player listens from: world sounds pan and fade by their distance
-## to it.
+## Stands behind the bar playing idle and serve animations; never walks. World sounds pan
+## and fade by their distance to him.
 
 const ANIM_IDLE : StringName = &"idle"
 const ANIM_IDLE_SHOULDERS : StringName = &"idle_shoulders"
 const ANIM_IDLE_WIPE : StringName = &"idle_wipe"
 const ANIM_SERVE_BEER : StringName = &"serve_beer"
-## Every idle is a one-shot; when one ends the next is picked by weight,
-## so standing still stays the common case.
+## Each idle is a one-shot; the next is picked by weight, so standing still stays common.
 const IDLE_ANIMS : Array[StringName] = [ANIM_IDLE, ANIM_IDLE_SHOULDERS, ANIM_IDLE_WIPE]
 const IDLE_WEIGHTS : Array[float] = [3.0, 2.0, 1.0]
 
-## Only one Bartender ever exists, so a group is a simpler way for Customer
-## to find "where the bartender is" (for the counter-glass slide-in) than
-## threading a direct reference through main.gd/CustomerManager — nothing
-## upstream of Bartender needs to know Customer looks it up this way.
+## There is only one Bartender, so Customer finds him by group instead of a reference
+## threaded through main.gd.
 const BARTENDER_GROUP : StringName = &"bartender"
 
 @onready var animated_sprite : AnimatedSprite2D = $AnimatedSprite2D
-## Where the counter glass starts its slide: his hands, not his origin. A marker so it
-## can be moved without touching the sprite's transform.
+## Where the counter glass starts its slide: his hands. A marker, movable on its own.
 @onready var serve_marker : Marker2D = $ServeMarker
 
-## A group's round piles up on the counter left of serve_marker, wrapping every
-## STACK_ROW_SIZE glasses, so a big crowd's round stays compact and off his sprite.
+## A group's round piles up left of serve_marker, wrapping every STACK_ROW_SIZE glasses.
 const STACK_ROW_SIZE : int = 4
 const STACK_BASE_OFFSET_PX : Vector2 = Vector2(-20, 5)
 const STACK_COLUMN_OFFSET_PX : Vector2 = Vector2(-7, 0)
 const STACK_ROW_OFFSET_PX : Vector2 = Vector2(0, -6)
 
-## How long the slide to a tap and back takes. Short, so the pour keeps its timing with
-## the customer's glass (CustomerGlasses.slide_to_counter()).
+## Short, so the pour keeps its timing with the customer's glass.
 const TAP_SLIDE_SECONDS : float = 0.25
 ## Where the hand that pulls the tap is in the serve_beer frames (x in the 48 px frame);
 ## this point goes to the spout. Tuned by eye in the game.
@@ -67,9 +60,8 @@ func offset_to_pour_at(global_x : float) -> float:
 	return global_x - (get_parent().to_global(Vector2(_home_x, 0.0)).x + stream_from_origin * global_scale.x)
 
 
-## Plays the serve animation, then idles. speed_scale speeds up a group's pours and resets
-## on idle. A negative `ebc` pours the beer as drawn; `tap_offset` slides him that far
-## from home to the tap he pours from.
+## Plays the serve animation, then idles. speed_scale speeds up a group's pours; a negative
+## `ebc` pours as drawn; `tap_offset` slides him to the tap.
 func play_serve_beer(speed_scale: float = 1.0, ebc: int = -1, tap_offset: float = 0.0) -> void:
 	_slide_to(_home_x + tap_offset)
 	animated_sprite.sprite_frames = _drawn_frames if ebc < 0 else BeerColor.pour_sprite_frames(_drawn_frames, ebc)
@@ -94,8 +86,7 @@ func _slide_to(x : float) -> void:
 	_slide.tween_property(self, "position:x", x, TAP_SLIDE_SECONDS).set_trans(Tween.TRANS_SINE)
 
 
-## Global position for the Nth glass in a group order's on-counter stack —
-## see GroupVisitDirector._run_shared_group_order()'s serving burst.
+## Global position of the Nth glass in a group order's counter stack.
 func get_stack_position(index: int) -> Vector2:
 	var column := index % STACK_ROW_SIZE
 	@warning_ignore("integer_division")

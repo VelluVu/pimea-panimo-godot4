@@ -1,9 +1,8 @@
 class_name TreeConnectorLayer
 extends Control
 
-## Draws a line from each node to each of its prerequisites, behind the buttons in
-## TreeArea's space (mouse_filter IGNORE in the scene). OlutoppiWindow computes the
-## endpoints once and resends the unlocked flags on every refresh.
+## Lines from each node to its prerequisites, behind the buttons. OlutoppiWindow computes the
+## endpoints once and resends the unlocked flags on refresh.
 
 const LINE_COLOR_LOCKED : Color = Color(0.55, 0.47, 0.38, 0.8)
 const LINE_COLOR_UNLOCKED : Color = Color(0.949, 0.788, 0.42, 1.0)

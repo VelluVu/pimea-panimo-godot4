@@ -1,9 +1,8 @@
 class_name LevelUpWindow
 extends Panel
 
-## The "pick a perk" popup on level-up (Brewery.add_xp()), three cards per offer. Pauses
-## the tree while open, so the instance needs PROCESS_MODE_ALWAYS, and z_index 100 to
-## cover every window. Applies the perk to the brewery itself: nothing else reacts to it.
+## The "pick a perk" popup on level-up, three cards per offer. Pauses the tree
+## (PROCESS_MODE_ALWAYS, z_index 100) and applies the perk itself.
 
 const CARD_COUNT : int = 3
 const TITLE_FORMAT : String = "Taso %d!"
@@ -12,19 +11,16 @@ const LEGEND_COLOR : Color = Color(0.75, 0.73, 0.67, 1)
 @onready var title_label : Label = %TitleLabel
 @onready var cards_hbox : HBoxContainer = %CardsHBox
 
-## Queued level-ups that arrived while a choice was already on screen —
-## add_xp()'s while-loop can in principle fire level_up_reached more than
-## once in a single frame (a huge XP grant crossing two thresholds), and
-## the player should still get to pick for each one, not just the last.
+## Level-ups that came while a choice was open (one grant can cross two levels), so each
+## still gets its pick.
 var _pending_levels : Array[int] = []
 var _offered_perks : Array[RunPerk] = []
 var _card_buttons : Array[Button] = []
 var _card_icon_labels : Array[Label] = []
 var _card_header_labels : Array[Label] = []
 var _card_description_labels : Array[Label] = []
-## Windows open over the game (the game menu, the brew day, the keg wash): an offer waits
-## hidden until all of them have closed, so the cards never cover one. Kept as a set, since
-## the game menu can open over the brew day.
+## Windows over the game (game menu, brew day, keg wash): an offer waits hidden until all
+## have closed. A set, since the menu can open over the brew day.
 var _blockers : Dictionary = {} # StringName -> true
 
 
@@ -57,9 +53,8 @@ func _ready() -> void:
 	hide()
 
 
-## The end screen always wins over a level-up in the same tick: game_has_ended stops it
-## here, and _on_game_ended() hides one already shown. The level stays in _pending_levels
-## for the next level-up if the player continues.
+## The end screen wins over a level-up in the same tick; the level stays pending for a
+## continued run.
 func _on_level_up_reached(new_level : int) -> void:
 	_pending_levels.append(new_level)
 	var brewery := BrewEngine.current_brewery
@@ -121,8 +116,8 @@ func _show_next_pending_level() -> void:
 	_show_over_popups()
 
 
-## An open dropdown list is its own window, drawn over any z_index, and the click
-## that closed it also went through to the card under it. Close it first.
+## An open dropdown is its own window over any z_index, and its closing click reached the
+## card under it, so close it first.
 func _show_over_popups() -> void:
 	for window : Window in get_viewport().get_embedded_subwindows():
 		if window is Popup:

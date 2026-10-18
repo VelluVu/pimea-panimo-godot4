@@ -3,9 +3,7 @@ extends VBoxContainer
 
 
 @onready var beer_batch_list_vbox : VBoxContainer = $BeerBatchScrollContainer/BeerBatchListVBox
-## Name and stock sit on separate lines: on one clipped line the long style
-## names pushed the bottle count past the ellipsis. The count never clips;
-## the quality label next to it gives way instead.
+## Name and stock on separate lines, so a long style name never hides the count.
 const NAME_LABEL_STRING : String = "🍺 %s (%.1f%%)"
 ## A batch soured by a dirty keg, by how badly, see BrewBatch.get_sour_level().
 const LIGHT_SOUR_LABEL_FORMAT : String = "Vähän hapan %s"
@@ -20,8 +18,7 @@ const AMOUNT_LABEL_STRING : String = "%d annosta"
 ## A full keg waiting for a free tap, see Inventory.batches_on_serve().
 const SPARE_AMOUNT_FORMAT : String = "%d annosta, varalla"
 const QUALITY_LABEL_STRING : String = "%s %s"
-## Shown when nothing is left to sell: customers still come and get turned away, costing
-## reputation, so this is the player's only warning.
+## Nothing to sell: customers still come and get turned away, so this is the warning.
 const EMPTY_INVENTORY_TEXT : String = "Ei olutta myytävänä. Keitä lisää!"
 const EMPTY_INVENTORY_COLOR : Color = Color(0.9490196, 0.7882353, 0.41960785, 1) # matches DailyGoalsPanel.GOAL_PENDING_COLOR
 
@@ -40,14 +37,10 @@ const SHIP_BUTTON_TOOLTIP : String = "Vie koko erä yllä valittuun baariin. Nos
 ## the row up to hundreds of pixels. The full stats stay in the tooltip.
 const ROW_LABEL_MIN_WIDTH : float = 50.0
 
-## Built once in _ready() rather than in the scene — RightWarehouseView's
-## tabbed layout is already assembled almost entirely by script (see this
-## panel's own row-building below), and a single shared picker above the
-## batch list is simpler than giving every row its own BarContact dropdown.
+## One shared bar picker above the batch list, built in code like the rows.
 var _bar_contact_option_button : BarContactOptionButton = null
 var _keg_count_label : TooltipLabel = null
-## Fermenting batch -> its row label; updated every fermentation tick without a rebuild,
-## so a hovered tooltip stays put.
+## Fermenting batch -> its row label, updated each tick without a rebuild so a tooltip stays.
 var _fermenting_labels : Dictionary = {}
 
 
@@ -209,8 +202,8 @@ func _make_batch_label(batch: BrewBatch) -> TooltipLabel:
 	return label
 
 
-## Customers who can walk in now and would consider this batch's style at all, so the
-## quality hint never names someone who would not buy it anyway (Zgen and a lager).
+## Customers who can walk in now and would buy this style at all, so the quality hint never
+## names someone who would not buy it anyway.
 func _possible_buyers(batch : BrewBatch) -> Array[CustomerData]:
 	var buyers : Array[CustomerData] = []
 	for customer : CustomerData in CustomerRegistry.get_eligible_customers():

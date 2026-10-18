@@ -4,7 +4,7 @@ extends VBoxContainer
 const AMOUNT_FORMAT : String = "%s: %s %s"
 
 @onready var ingredient_list_vbox: VBoxContainer = $IngredientInventoryScrollContainer/IngredientListVBox
-var storage_labels: Dictionary = {} # Avain: int (ID) -> Arvo: Label
+var storage_labels: Dictionary = {} # ingredient id -> Label
 
 
 func _ready() -> void:

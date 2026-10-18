@@ -3,9 +3,7 @@ extends VBoxContainer
 
 const AMOUNT_PRICE_FORMAT : String = "%s %s - %.2f €"
 
-## Same "float off the right edge of the button" treatment
-## BrewPreparationPanel uses for its "+X XP" popup at "Pane", applied here
-## to a "-X €" popup at "Osta" (buy) — see BrewerySignals.ingredient_purchased.
+## The "-X €" popup at "Osta", like the brew button's XP popup.
 const MONEY_POPUP_COLOR : Color = Color.RED
 const MONEY_POPUP_FORMAT : String = "-%.1f €"
 const MONEY_POPUP_DURATION_SECONDS : float = 1.8
@@ -49,8 +47,7 @@ func _ready() -> void:
 		_float_popup(tr(LOCKED_POPUP_FORMAT) % required_reputation))
 	BrewerySignals.ingredient_purchase_underfunded.connect(func(_name: String, price: float, _money: float) -> void:
 		_float_popup(tr(UNDERFUNDED_POPUP_FORMAT) % price))
-	# BrewingView's selector fires the same global signal, so reset to malt each time this
-	# view opens.
+	# BrewingView's selector fires the same signal, so reset to malt on each open.
 	visibility_changed.connect(_on_visibility_changed)
 	_update_label()
 
@@ -107,8 +104,8 @@ func _update_quick_row() -> void:
 		_quick_row.add_child(button)
 
 
-## Shows what the loaded recipe still lacks and its price; off when nothing is missing.
-## A locked or unaffordable buy stays pressable, so the tap can say why it failed.
+## What the loaded recipe still lacks, with its price. A locked or unaffordable buy stays
+## pressable, so the tap can say why.
 func _update_buy_missing_button() -> void:
 	var brewery : Brewery = BrewEngine.current_brewery
 	var to_buy : Dictionary = {}
@@ -170,9 +167,7 @@ func _update_label() -> void:
 	current_item_label.text = AMOUNT_PRICE_FORMAT % [ingredient.amount_text(int(main_slider.value)), ingredient.get_unit_string(), total_price]
 
 
-## Floats a "-X €" popup off the right edge of the "Osta" button — see
-## BrewerySignals.ingredient_purchased and BrewPreparationPanel's
-## equivalent "+X XP" popup at "Pane".
+## Floats a "-X €" popup off the "Osta" button.
 func _on_ingredient_purchased(cost : float) -> void:
 	_float_popup(MONEY_POPUP_FORMAT % cost)
 

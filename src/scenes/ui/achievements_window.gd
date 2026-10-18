@@ -1,9 +1,8 @@
 class_name AchievementsWindow
 extends Panel
 
-## Every achievement as a tile grid, unlocked first, details in the tooltips; rebuilt on
-## open. Opened from both menus (GUISignals.achievements_requested); process_mode is
-## ALWAYS so it works while the game menu pauses the tree.
+## Every achievement as a tile grid, unlocked first; rebuilt on open. process_mode ALWAYS,
+## so it works under the paused game menu.
 
 const TITLE_FORMAT: String = "Saavutukset (%d/%d)"
 const CLOSE_BUTTON_TEXT: String = "Sulje"
@@ -31,8 +30,7 @@ func _on_close_button_pressed() -> void:
 	hide()
 
 
-## Closes on Esc before the game menu (also ALWAYS) sees it, so Esc peels off
-## one layer at a time.
+## Closes on Esc before the game menu sees it, so Esc peels one layer at a time.
 func _input(event: InputEvent) -> void:
 	if not visible:
 		return

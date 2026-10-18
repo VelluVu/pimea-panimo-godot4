@@ -1,9 +1,8 @@
 class_name BarContactOptionButton
 extends OptionButton
 
-## One shared "ship to which bar" picker above the batch rows; every row's ship button
-## uses its selection, as there is no room for a picker per row. Bars the reputation
-## hasn't unlocked show disabled, previewing what's coming.
+## One shared "ship to which bar" picker for every row, as there is no room for one per row.
+## Locked bars show disabled, previewing what is coming.
 
 const TOOLTIP_FORMAT : String = "%s\nMaksukerroin: x%.2f raaka-aineiden hinnasta\nLVV-riski per toimitus: +%d (alkoholittomat %+d)"
 
@@ -18,10 +17,8 @@ func _ready() -> void:
 	_rebuild_items()
 
 
-## Same "only rebuild on an actual reputation change, keep the player's
-## current pick" reasoning as IngredientOptionButton._on_brewery_state_
-## changed() — a ship/sale fires brewery_state_changed far too
-## often to reset the selection on every one.
+## Rebuilds only on a reputation change, keeping the pick: brewery_state_changed fires too
+## often to reset it every time.
 var _last_reputation_seen : int = -1
 
 func _on_brewery_state_changed(brewery : Brewery) -> void:
@@ -73,10 +70,7 @@ func _on_item_selected(_index: int) -> void:
 	_sync_own_tooltip()
 
 
-## Mirrors IngredientOptionButton._sync_own_tooltip() — puts the popup
-## item's tooltip on the closed button too, so hovering the collapsed
-## picker (not just an open popup item) already shows the selected bar's
-## payout/risk.
+## The closed button shows the selected bar's tooltip too.
 func _sync_own_tooltip() -> void:
 	var bar : BarContact = get_selected_bar()
 	if bar != null:
@@ -87,8 +81,7 @@ func _build_tooltip(bar : BarContact) -> String:
 	return tr(TOOLTIP_FORMAT) % [tr(bar.description), bar.price_multiplier, bar.risk_per_shipment, BarContact.ALCOHOL_FREE_SHIPMENT_RISK]
 
 
-## A bar's description can run long enough to overflow Godot's default
-## (non-wrapping) tooltip — see TooltipFactory.
+## Long bar descriptions would overflow Godot's default tooltip.
 func _make_custom_tooltip(for_text: String) -> Object:
 	return TooltipFactory.make_wrapped_tooltip(for_text)
 

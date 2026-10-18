@@ -32,7 +32,7 @@ const REPUTATION_POPUP_STEP : Vector2 = Vector2(0, 20)
 @onready var erase_button : Button = %EraseButton
 @onready var start_brew_button : Button = %StartBrewButton
 
-var table_labels: Dictionary = {} # Key: int (ID) -> Value: Label
+var table_labels: Dictionary = {} # ingredient id -> Label
 var _toast : BannerPresenter
 
 

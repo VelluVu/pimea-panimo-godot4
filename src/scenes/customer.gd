@@ -38,15 +38,13 @@ var assigned_slot: int = -1
 ## Set when a sale went through. Gates the counter glass and the walk-away beer glass.
 var made_purchase: bool = false
 
-## Speech-bubble identity for DialogView, separate from assigned_slot: group members
-## share one assigned_slot but need distinct bubbles, or their hide timers race.
-## CustomerSpawner sets it (solo customers get the same value as assigned_slot).
+## Speech-bubble identity, apart from assigned_slot: group members share a slot but need
+## their own bubbles, or their hide timers race.
 var dialogue_slot: int = -1
 
 var generated_name: String = "Asiakas"
 
-## Where the visit is, kept so snapshot() can freeze it for a save and resume() can
-## carry on from exactly there.
+## Where the visit is, so snapshot() can freeze it and resume() carry on.
 var _phase: CustomerSnapshot.Phase = CustomerSnapshot.Phase.WALKING_IN
 ## Group members are driven by GroupVisitDirector, which saves them with their group.
 var _skip_interaction: bool = false
@@ -62,8 +60,8 @@ var _exit_position: Vector2
 ## Where a group member walks for their glass before leaving; INF when not.
 var _pickup_target: Vector2 = Vector2.INF
 
-## A bar fight under way: the glasses it throws (-1 when none), the next stomp and the
-## spot it stomps around, so a save can play the rest of it.
+## A bar fight under way: glasses left (-1 when none), the next stomp and its spot, for the
+## save.
 var _rampage_glasses: int = -1
 var _rampage_stomp: int = 0
 var _rampage_home: Vector2
@@ -109,16 +107,16 @@ func get_customer_name() -> String:
 	return generated_name
 
 
-## skip_interaction is true for group members: the group's controller drives their
-## dialogue, order and departure instead (see CustomerSpawner).
+## skip_interaction is true for group members, whose group drives their dialogue, order and
+## departure.
 func walk_complex_route(stairs_pos: Vector2, center_pos: Vector2, target_pos: Vector2, skip_interaction: bool = false) -> void:
 	_skip_interaction = skip_interaction
 	_route = [global_position, stairs_pos, center_pos, target_pos]
 	_walk_route_from(Leg.STAIRS, CENTER_PAUSE_SECONDS)
 
 
-## Queues the walk in from `first_leg` on, starting where the customer stands now: a
-## fresh visit starts at the top, a loaded one mid-way (resume()).
+## Queues the walk from `first_leg` on, from where the customer stands: a fresh visit at the
+## top, a loaded one mid-way.
 func _walk_route_from(first_leg: int, pause_seconds: float) -> void:
 	_phase = CustomerSnapshot.Phase.WALKING_IN
 	var tween := create_tween()
@@ -213,8 +211,8 @@ func snapshot() -> CustomerSnapshot:
 	return snap
 
 
-## Carries on a visit from a save exactly where snapshot() left it. Call after the
-## customer is in the tree with its data, name and slots set.
+## Carries on a saved visit where snapshot() left it. Call once in the tree with data, name
+## and slots set.
 func resume(snap: CustomerSnapshot) -> void:
 	global_position = snap.position
 	made_purchase = snap.made_purchase
@@ -247,8 +245,8 @@ func resume(snap: CustomerSnapshot) -> void:
 		play_rampage(snap.rampage_glasses, snap.rampage_stomp)
 
 
-## The sale is already in the saved money and stock: only the glass, the reply and
-## the wait before leaving carry on.
+## The sale is already in the saved money and stock; only the glass, the reply and the wait
+## carry on.
 func _resume_served(snap: CustomerSnapshot) -> void:
 	_phase = CustomerSnapshot.Phase.SERVED
 	_play_animation(ANIM_IDLE_UP)
@@ -266,8 +264,7 @@ func _on_reached_counter() -> void:
 	_enter_counter_phase(CustomerSnapshot.Phase.GREETING, generated_name + ": " + tr(customer_data.dialogue_intro), _on_preview_timeout)
 
 
-## Says `text` and moves on to `next` once it has been up long enough; `seconds` (when
-## resuming) is what was left of it.
+## Says `text`, then moves on to `next`; `seconds` (resuming) is what was left.
 func _enter_counter_phase(phase: CustomerSnapshot.Phase, text: String, next: Callable, seconds: float = -1.0) -> void:
 	_phase = phase
 	_bubble_text = text
@@ -330,10 +327,9 @@ func _show_sale_popups(outcome: SaleOutcomeCapture) -> void:
 	outcome.emit_reputation_and_money_popups(global_position)
 
 
-## Pushes a speech bubble for this customer and returns how long it stays up. A
-## `skippable` line (greeting, order) stays silent at a crowded counter, leaving only the
-## reaction, but still takes its time, so a crowd is served at the same pace.
-## `seconds` overrides the time (a resumed line keeps what it had left).
+## Pushes a speech bubble and returns how long it stays. A `skippable` line stays silent at
+## a crowded counter but takes its time, so a crowd is served at the same pace. `seconds`
+## overrides the time.
 func _say(text: String, skippable: bool = false, seconds: float = -1.0) -> float:
 	var display_time := seconds if seconds >= 0.0 else get_display_time_for_text(text)
 	if skippable and CustomerManager.is_counter_crowded():
@@ -343,8 +339,7 @@ func _say(text: String, skippable: bool = false, seconds: float = -1.0) -> float
 	return display_time
 
 
-## Colours the beer in this customer's glasses to match what they bought. A negative
-## `ebc` (nothing sold) leaves the glass as drawn.
+## Colours the glasses' beer; a negative `ebc` leaves them as drawn.
 func fill_glasses(ebc: int) -> void:
 	_glasses.fill(ebc)
 
@@ -363,8 +358,8 @@ func hide_counter_glass() -> void:
 	_glasses.hide_counter()
 
 
-## pickup_position_override (global) makes a group's standby member walk to the
-## bar stack and grab their round first. Vector2.INF means no pickup walk.
+## A pickup_position_override (global) sends a group member to the bar stack for their round
+## first.
 func leave_counter(pickup_position_override: Vector2 = Vector2.INF) -> void:
 	_phase = CustomerSnapshot.Phase.LEAVING
 	if pickup_position_override != Vector2.INF:

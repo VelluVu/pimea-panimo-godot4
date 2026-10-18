@@ -1,9 +1,8 @@
 class_name ShopEntrancePanel
 extends Panel
 
-## The shop's door in the cellar. Newly unlocked ingredients float up from it as a short
-## line (ToastText.ingredients_unlocked) instead of a toast, so the news points at where
-## they can be bought.
+## The shop's door in the cellar. New ingredients float up from it as a short line, so the
+## news points at where they are bought.
 
 const UNLOCK_POPUP_COLOR : Color = Color(0.55, 1.0, 0.55, 1)
 
@@ -40,8 +39,7 @@ func _set_warehouse_open(is_open : bool) -> void:
 		activate_shop_panel()
 
 
-## A new or loaded run starts from its own reputation, so nothing it already had is
-## announced as new.
+## A new or loaded run starts from its own reputation, so nothing it had is announced.
 func _reset_unlock_tracker(brewery : Brewery) -> void:
 	_unlock_tracker = ReputationUnlockTracker.new(brewery.reputation if brewery != null else 0)
 

@@ -1,9 +1,7 @@
 class_name DayRecapWindow
 extends Panel
 
-## Self-contained end-of-day summary modal, matching the LvvRaidWindow
-## pattern: listens to the global signal bus directly and shows/hides
-## itself, rather than being driven by gui.gd.
+## The end-of-day summary; shows and hides itself on the signal bus.
 
 const RECAP_TITLE: String = "Päivän yhteenveto"
 const CLOSE_BUTTON_TEXT: String = "Jatka"
@@ -58,8 +56,7 @@ func _on_style_discovered(style: int) -> void:
 	_styles_discovered_today.append(BeerStyle.get_style_string_from_style(style))
 
 
-## Counts only successes. Goals resolve all day as well as at day end, so the count can
-## pass ACTIVE_GOAL_COUNT; there is no cap.
+## Counts successes only; goals resolve all day, so the count can pass the slot count.
 func _on_daily_goal_resolved(_goal_name : String, succeeded : bool, _money : int, _reputation : int, _xp : int, _risk : int) -> void:
 	if succeeded:
 		_goals_rewarded_today += 1

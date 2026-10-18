@@ -1,20 +1,14 @@
 class_name SaleFlashToast
 extends Panel
 
-## A brief, non-interactive "a sale happened" notice — no click, no
-## breakdown, just enough to notice. The full breakdown always lands in
-## Brewery.today_sale_receipts for the player to check later in
-## SaleReceiptLogWindow, on their own time.
+## A brief, non-interactive sale notice; the breakdown is in the receipt log.
 
 const HOLD_SECONDS : float = 1.5
 const FADE_OUT_SECONDS : float = 1.0
 
 const LABEL_FORMAT : String = "Myyty: %s  +%.1f €"
 
-## Same clamp idea as SpeechBubble's own MIN/MAX_WIDTH (see speech_bubble.gd)
-## — SaleFlashStack's toast column only has ~13px of margin to the actual
-## right screen edge, so an uncapped long string (a long style/bar name)
-## would grow past it instead of wrapping onto another line.
+## The toast column has little margin to the screen edge, so long text wraps at this.
 const MAX_WIDTH : float = 180.0
 
 @onready var label : Label = $MarginContainer/Label
@@ -32,8 +26,7 @@ func initialize(entry : SaleReceiptEntry) -> void:
 	initialize_text(tr(LABEL_FORMAT) % [entry.get_summary_text(), entry.net_income])
 
 
-## A flash without a SaleReceiptEntry (shipping, bar fights). Pass a warmer text_color
-## for bad news so it doesn't read as a payout.
+## A flash without a receipt (shipping, bar fights); a warmer colour for bad news.
 func initialize_text(text : String, text_color : Color = Color.WHITE) -> void:
 	label.text = text
 	label.modulate = text_color
@@ -43,8 +36,7 @@ func initialize_text(text : String, text_color : Color = Color.WHITE) -> void:
 	timer.timeout.connect(_start_fade_out)
 
 
-## Panel doesn't extend Container, so it never relays its child's computed
-## minimum size to the VBoxContainer that stacks these toasts.
+## A Panel does not pass its child's minimum size to the stacking VBoxContainer.
 func _resize_to_fit_content() -> void:
 	await get_tree().process_frame
 	if not is_instance_valid(self):
@@ -55,10 +47,8 @@ func _resize_to_fit_content() -> void:
 		custom_minimum_size = natural_size
 		return
 
-	# Wider than the column allows — fix the width at MAX_WIDTH so the
-	# Label's existing autowrap (WORD_SMART, see sale_flash_toast.tscn)
-	# actually has a rect to wrap against, then re-measure height once
-	# that width has taken effect for a frame.
+	# Too wide: fix the width so the label's autowrap has a rect, then measure the height a
+	# frame later.
 	custom_minimum_size = Vector2(MAX_WIDTH, natural_size.y)
 	await get_tree().process_frame
 	if is_instance_valid(self):

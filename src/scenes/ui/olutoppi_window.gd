@@ -1,10 +1,8 @@
 class_name OlutoppiWindow
 extends Panel
 
-## Main-menu talent tree for MetaProgressManager's renown currency. Every Button child of
-## a TreeArea is a node square named after its MetaUnlockData.unlock_id, and the connector
-## lines come from each node's prerequisite_ids, so the scene needs no id or edge list.
-## Self-subscribes to GUISignals.olutoppi_requested, like LeaderboardWindow.
+## The main-menu talent tree. Each TreeArea Button is a node named after its unlock_id, and
+## lines come from prerequisite_ids, so the scene needs no id or edge list.
 
 const TITLE_TEXT : String = "Olutoppi"
 const CLOSE_BUTTON_TEXT : String = "Sulje"
@@ -59,8 +57,7 @@ func _on_node_pressed(unlock_id : String) -> void:
 	_refresh()
 
 
-## Two passes: every node center is known before edges are built, so a prerequisite
-## declared later in the scene tree still resolves.
+## Two passes, so a prerequisite declared later in the tree still resolves.
 func _setup_tree_area(tree_area : Control) -> void:
 	var buttons : Array[Button] = []
 	for child : Node in tree_area.get_children():

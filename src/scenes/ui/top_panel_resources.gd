@@ -9,8 +9,7 @@ const POPUP_EFFECT_DURATION_SECONDS : float = 1.8
 const POPUP_OFFSET : Vector2 = Vector2(80, 0)
 const POPUP_FLOAT_DISTANCE : float = 35.0
 
-## Near the raid threshold (RiskText.is_warning) the risk label turns red and pulses
-## once on entry, on top of the audio tension drone.
+## Near the raid threshold the risk label turns red and pulses once on entry.
 const RISK_WARNING_COLOR : Color = Color(0.75686276, 0.3137255, 0.22745098, 1) # matches DailyGoalsPanel.GOAL_FAILING_COLOR
 const RISK_WARNING_PULSE_SECONDS : float = 0.3
 
@@ -28,16 +27,15 @@ const LEVEL_TOOLTIP_FORMAT : String = "Taso %d\n%d/%d XP\n%d XP seuraavaan tasoo
 var last_money: float = -1.0
 var last_reputation : int = -1
 var last_risk: int = -1
-## Level only goes up and LevelUpWindow is its moment, so no popup: tracked only to
-## skip rewriting the label.
+## Level only rises and LevelUpWindow is its moment, so no popup; tracked to skip rewriting
+## the label.
 var _last_level : int = -1
 ## The warning pulse fires only when risk crosses into the zone, not while it stays there.
 var _risk_warning_active: bool = false
 
 
 func _ready() -> void:
-	# Scene-defined nodes get their tooltip script at runtime, so long tooltips wrap
-	# via TooltipFactory instead of overflowing.
+	# Long tooltips wrap via TooltipFactory.
 	level_progress_bar.set_script(TooltipProgressBar)
 	level_label.set_script(TooltipLabel)
 	level_label.mouse_filter = Control.MOUSE_FILTER_PASS
@@ -63,8 +61,7 @@ func _ready() -> void:
 		_update_day_display(BrewEngine.current_brewery.current_day)
 
 
-## The day and the level are only set on change, so a language
-## switch resets them; the rest follows from brewery_state_changed.
+## The day and level are set only on change, so a language switch resets them.
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_TRANSLATION_CHANGED and is_node_ready() and BrewEngine.current_brewery != null:
 		_last_level = -1
@@ -128,8 +125,7 @@ func _update_reputation(reputation : int) -> void:
 	reputation_label.tooltip_text = ReputationTierText.tooltip(reputation, tier, ReputationTiers.next_tier(reputation, tiers))
 
 
-## The bar updates on every change: XP ticks up on each sale and brew, and the point
-## is the constant "almost there" read between level-ups.
+## Updates on every change: the XP bar is the constant "almost there" read.
 func _update_level(level : int, xp : int) -> void:
 	if level != _last_level:
 		_last_level = level

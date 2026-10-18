@@ -1,10 +1,8 @@
 class_name LeaderboardWindow
 extends Panel
 
-## The leaderboard table, rebuilt on open: podium colours, endings in colour, the score
-## breakdown in tooltips and a tag on this session's run. With the shared list
-## (OnlineLeaderboardWiring), tabs switch between own and everyone's runs. process_mode
-## is ALWAYS so it works under the paused game menu.
+## The leaderboard, rebuilt on open: podium colours, score breakdown tooltips and a tag on
+## this session's run; tabs for own and everyone's runs. Works under the paused game menu.
 
 const TITLE_TEXT : String = "Ennätykset"
 const CLOSE_BUTTON_TEXT : String = "Sulje"

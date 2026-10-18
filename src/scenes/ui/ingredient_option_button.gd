@@ -12,9 +12,8 @@ const OWNED_LOCKED_TOOLTIP_FORMAT : String = "Lisää voi ostaa vasta %d maineel
 
 @export var target_type : IngredientData.IngredientType = IngredientData.IngredientType.MALT
 
-## Which items are locked changes with reputation and with running out of an owned
-## ingredient past its bar. brewery_state_changed fires on every buy and sale, and a
-## rebuild resets the selection, so rebuild only when the locked set changed.
+## Rebuilds only when the locked set changed: brewery_state_changed fires on every buy and
+## sale, and a rebuild resets the selection.
 var _last_locked_ids : Array[int] = []
 
 
@@ -73,16 +72,14 @@ func _on_menu_opened() -> void:
 		GUISignals.active_ingredient_changed.emit(first_id)
 
 
-## Rebuilds and selects the first unlocked item: on _ready() and when the tab selector
-## switches target_type.
+## Rebuilds and selects the first unlocked item, on _ready() and on a tab switch.
 func populate_ingredient_option_menu() -> void:
 	_rebuild_items()
 
 	var first_index := _first_enabled_index()
 	if first_index != -1:
 		select(first_index)
-		# Deferred: during _ready() the parent views have not connected
-		# active_ingredient_changed yet, and their slider would stay uninitialised.
+		# Deferred: in _ready() the views have not connected active_ingredient_changed yet.
 		_on_item_selected.call_deferred(first_index)
 
 
@@ -172,6 +169,6 @@ func _sync_own_tooltip(ingredient_id : int) -> void:
 		tooltip_text = ingredient.get_tooltip_text()
 
 
-## Some descriptions are wider than the 640 px viewport with Godot's default tooltip.
+## Some descriptions are wider than the viewport with Godot's default tooltip.
 func _make_custom_tooltip(for_text: String) -> Object:
 	return TooltipFactory.make_wrapped_tooltip(for_text)

@@ -24,11 +24,10 @@ func _ready() -> void:
 	ingredient_type_selector.add_step_buttons(current_item_label)
 	main_slider.value_changed.connect(_on_slider_changed)
 	GUISignals.active_ingredient_changed.connect(_set_active_ingredient)
-	# Buying, selling or moving to the table changes what is available; without this the
-	# slider kept its old max, stuck at 0 if nothing was owned when picked.
+	# Buying, selling or moving to the table changes what is available, so the slider's max
+	# follows.
 	BrewerySignals.brewery_state_changed.connect(_on_brewery_state_changed)
-	# ShopView's selector fires the same global signal, so reset to malt each time this
-	# view opens.
+	# ShopView's selector fires the same signal, so reset to malt on each open.
 	visibility_changed.connect(_on_visibility_changed)
 
 	_fill_from_inventory_button = TooltipButton.new()
@@ -52,8 +51,8 @@ func _on_fill_from_inventory_button_pressed() -> void:
 	GUISignals.fill_recipe_from_inventory_requested.emit()
 
 
-## Mirrors Brewery._on_fill_recipe_from_inventory_requested()'s all-or-nothing check:
-## a recipe loaded, something missing, and the inventory covering every missing piece.
+## Like RecipeBook's all-or-nothing fill: a recipe loaded, something missing, and the
+## inventory covering it all.
 func _update_fill_from_inventory_button() -> void:
 	var brewery := BrewEngine.current_brewery
 	if brewery == null:
@@ -111,13 +110,12 @@ func _update_slider() -> void:
 	if current_id == -1:
 		return
 
-	# An ingredient never bought has no item yet; that is 0 available, so the slider
-	# still has to zero.
+	# An ingredient never bought has no item: 0 available.
 	var item: InventoryItem = BrewEngine.current_brewery.inventory.get_item_by_id(current_id)
 	var inventory_amount : int = item.amount if item != null else 0
 
-	# One slider drives Add (bounded by inventory) and Remove (bounded by the table), so
-	# take the larger, or a fully moved ingredient could never come back off.
+	# One slider drives Add (bounded by inventory) and Remove (by the table), so take the
+	# larger, or a fully moved ingredient could never come back.
 	var prep_amount : int = BrewEngine.current_brewery.brew_preparation.selected_contents.get(current_id, 0)
 	var max_available : int = max(inventory_amount, prep_amount)
 
