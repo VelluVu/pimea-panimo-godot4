@@ -68,6 +68,28 @@ func get_aged_price_multiplier() -> float:
 	return aged_price_multiplier(beer_style.aged_price_bonus, age_in_days, get_effective_peak_days(), beer_style.shelf_life_days)
 
 
+## A fresh batch of what the brew resolved to: its style, colour, strength and the quality
+## breakdown its tooltip shows. `quality` is the final one, after perks and the brew day.
+static func from_result(result : BrewResult, bottles : int, quality : float) -> BrewBatch:
+	var batch := BrewBatch.new()
+	batch.beer_style = result.beer_style
+	batch.amount_bottles = bottles
+	batch.original_quality = quality
+	batch.current_quality = quality
+	batch.final_ebc = result.final_ebc
+	batch.final_ibu = result.final_ibu
+	batch.abv = result.abv
+	batch.precision_score = result.precision_score
+	batch.hop_diversity_count = result.hop_diversity_count
+	batch.hop_layers = result.hop_layers
+	batch.hop_layer_slots = result.hop_layer_slots
+	batch.flavor_matched = result.flavor_matched
+	batch.spice_bonus = result.spice_bonus
+	batch.unsuited_spice_penalty = result.unsuited_spice_penalty
+	batch.malt_bonus = result.malt_bonus
+	return batch
+
+
 ## Grows linearly to 1 + bonus at the peak, holds through the shelf life and fades
 ## over AGED_BONUS_FADE_TICKS once the batch starts to spoil.
 static func aged_price_multiplier(bonus : float, age : int, peak : int, shelf_life : int) -> float:
