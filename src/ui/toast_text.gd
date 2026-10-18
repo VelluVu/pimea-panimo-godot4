@@ -6,8 +6,7 @@ extends RefCounted
 
 const GOAL_REWARD_FORMAT : String = "%s saavutettu: +%d € / +%d maine / +%d XP!"
 const GOAL_FAILED_FORMAT : String = "%s epäonnistui: %d maine / +%d LVV-riski"
-## A special-event goal that triggered but couldn't be filled fails penalty-free, so it
-## gets its own toast instead of a confusing "0 maine / +0 LVV-riski".
+## A special-event goal that could not be filled fails without penalty, so its own toast.
 const GOAL_FAILED_NO_PENALTY_FORMAT : String = "%s epäonnistui: ei seurauksia"
 const EARLY_CLOSE_FORMAT : String = "Ovet suljettu aikaisin: -%.1f €, mainetta -%d, LVV-riski -%d"
 const INGREDIENT_UNLOCKED_FORMAT : String = "Uusi raaka-aine: %s"

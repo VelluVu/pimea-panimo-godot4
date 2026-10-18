@@ -1,8 +1,7 @@
 class_name ReceiptMachineHoverArea
 extends Area2D
 
-## Hover-and-glow trigger for the receipt log ("Kuitit"), a small receipt machine; same
-## pattern as RecipeShelfHoverArea.
+## Hover-and-glow trigger for the receipt log ("Kuitit"), a receipt machine.
 
 const HOVER_GLOW_COLOR : Color = Color(1.3, 1.15, 0.8, 1.0)
 const HIDDEN_COLOR : Color = Color(1.0, 1.0, 1.0, 1.0)

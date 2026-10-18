@@ -1,10 +1,8 @@
 class_name KegWashView
 extends Control
 
-## The keg wash table: the opened keg, the dirt in it and the three tools in their places.
-## Press a tool and hold: it follows the pointer and works over the keg (the brush scrubs,
-## the hose rinses, the bottle sprays); let go and it goes back to its place. The same with
-## a finger on a touch screen. The work goes to `session`.
+## The keg wash table: the opened keg, its dirt and three tools. Press a tool and hold: it
+## follows the pointer and works over the keg; let go and it goes back.
 
 signal tool_changed(tool : Tool)
 
@@ -16,9 +14,8 @@ const SPOT_FRAME : int = 14
 const LOOSE_FRAME : int = 7
 
 const HOOK_POSITION : Vector2 = Vector2(44, 92)
-## The brush is held by its shaft: BRUSH_REST and `_brush` are that grip, and the bristle
-## head hangs below it, leaning as the brush moves. It hangs from the hook by the hole at
-## its top.
+## The brush is held by its shaft (BRUSH_REST and `_brush` are the grip); the head hangs
+## below, leaning as it moves.
 const BRUSH_REST : Vector2 = Vector2(52, 120)
 ## On the sprite, in its own pixels: where the hand holds the shaft and where the head is.
 const BRUSH_GRIP_Y : float = 10.0
@@ -34,8 +31,7 @@ const TAP_SPOUT : Vector2 = TAP_POSITION + Vector2(14, 22)
 ## The nozzle hangs by the tap; the hose joins the bottom of its grip.
 const HOSE_REST : Vector2 = Vector2(604, 186)
 const NOZZLE_GRIP : Vector2 = Vector2(0, 30)
-## The hose shoots a jet this long out of the nozzle, up and a little toward the middle
-## of the keg; it cleans where it lands.
+## The jet's length out of the nozzle, up and a little toward the keg's middle.
 const JET_LENGTH : float = 60.0
 const JET_LEAN : float = 0.35
 const JET_WIDTH : float = 5.0
@@ -339,8 +335,8 @@ func _draw_sprite(texture : Texture2D, at : Vector2, scale_by : float, tint : Co
 	draw_texture_rect(texture, Rect2(at.round(), Vector2(texture.get_size()) * scale_by), false, tint)
 
 
-## A tool waiting in its place glows faintly when nothing is in hand, so the player
-## sees what to pick up.
+## A tool in its place glows faintly when nothing is in hand, so the player sees what to
+## pick up.
 func _draw_tool_sprite(texture : Texture2D, at : Vector2, carried : bool) -> void:
 	var tint : Color = READY_GLOW if _tool == Tool.NONE and not carried else Color.WHITE
 	_draw_sprite(texture, at, KegWashArt.PROP_SCALE, tint)

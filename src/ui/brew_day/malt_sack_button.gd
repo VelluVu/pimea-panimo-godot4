@@ -1,9 +1,8 @@
 class_name MaltSackButton
 extends HopSackButton
 
-## The mash's malt sack: carried and poured into the kettle like a hop sack, under an
-## id no ingredient has. It blinks while the water is at the malt marker; the malts
-## count as added once it is empty.
+## The mash's malt sack, carried and poured like a hop sack under an id no ingredient has.
+## Blinks at the malt marker; the malts count as added once it is empty.
 
 signal emptied()
 

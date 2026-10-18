@@ -25,8 +25,8 @@ const BOIL_MURK : float = 0.6
 const POUR_CLOUD : float = 0.3
 ## The heater button is cold this many degrees under the target and fully warm at it.
 const WARM_SPAN : float = 15.0
-## Steam: a faint haze over a hot mash, wisps as the wort nears the boil, thick
-## steam at a rolling boil and thicker as the foam rises.
+## Steam: a haze over a hot mash, wisps near the boil, thick at a rolling boil and with the
+## foam.
 const MASH_STEAM : float = 0.12
 const MASH_STEAM_FROM : float = 50.0
 const MASH_STEAM_SPAN : float = 20.0
@@ -58,8 +58,8 @@ static func boil_color(ebc : int) -> Color:
 	return BeerColor.from_ebc(ebc).lerp(GRAIN_COLOR, BOIL_CLOUD)
 
 
-## How far the water has turned into mash: the pour clouds it to POUR_CLOUD
-## (`poured` 0..1), then the blend (MashSession.blend) takes it the rest of the way.
+## How far the water has turned to mash: the pour clouds it to POUR_CLOUD, the blend does
+## the rest.
 static func mash_cloud(poured : float, blend : float, malts_added : bool) -> float:
 	return lerpf(POUR_CLOUD, 1.0, blend) if malts_added else POUR_CLOUD * poured
 

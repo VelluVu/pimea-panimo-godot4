@@ -1,10 +1,8 @@
 class_name HoseRope
 extends RefCounted
 
-## The keg wash hose as a sagging rope: a chain of points held at a fixed spacing,
-## pulled down by gravity and resting on the floor. points[0] is fixed at the tap; the
-## last point is the nozzle, pinned wherever the hand (or the hook) holds it. A nozzle
-## pulled further than the hose reaches stops at its full length.
+## The keg wash hose as a sagging rope of points: fixed at the tap, the nozzle pinned where
+## the hand or hook holds it, never pulled past its length.
 
 ## Long enough to reach the far side of the keg from the tap, with some slack.
 const POINTS : int = 38

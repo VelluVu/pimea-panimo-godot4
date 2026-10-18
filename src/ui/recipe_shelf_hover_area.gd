@@ -1,8 +1,7 @@
 class_name RecipeShelfHoverArea
 extends Area2D
 
-## Hover-and-glow trigger for the recipe library: a wall shelf of beer bottles, part of
-## the room instead of a screen-edge button. Same pattern as BreweryHoverArea.
+## Hover-and-glow trigger for the recipe library, a wall shelf of bottles.
 
 const HOVER_GLOW_COLOR : Color = Color(1.3, 1.15, 0.8, 1.0)
 const HIDDEN_COLOR : Color = Color(1.0, 1.0, 1.0, 1.0)

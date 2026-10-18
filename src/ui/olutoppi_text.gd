@@ -14,8 +14,7 @@ const TOOLTIP_PREREQ_ALL_SEPARATOR : String = ", "
 const TOOLTIP_PREREQ_OR_TEXT : String = "tai"
 
 
-## The first non-neutral stat of the scaled perk, as a short number for the square. A
-## node that sets several stats shows only the first; the tooltip has every line.
+## The scaled perk's first non-neutral stat, short, for the square; the tooltip has all.
 static func short_bonus(unlock : MetaUnlockData, level : int) -> String:
 	if level <= 0:
 		return BONUS_NEUTRAL_TEXT
@@ -34,16 +33,14 @@ static func short_bonus(unlock : MetaUnlockData, level : int) -> String:
 ## A locked node only says what it needs. `unmet_prerequisite_names` lists the
 ## prerequisites not yet invested in.
 static func locked_tooltip(unlock : MetaUnlockData, unmet_prerequisite_names : PackedStringArray) -> String:
-	# An any-mode capstone only shows locked while none of its branches are met, so the
-	# list is every branch: "tai" reads as any one of them, "," would read as all.
+	# An any-mode capstone lists every branch with "tai"; "," would read as all of them.
 	var separator : String = " %s " % UiText.of(TOOLTIP_PREREQ_OR_TEXT) if unlock.requires_any_prerequisite else TOOLTIP_PREREQ_ALL_SEPARATOR
 	var lines : PackedStringArray = _header_lines(unlock)
 	lines.append(UiText.of(TOOLTIP_LOCKED_FORMAT) % separator.join(unmet_prerequisite_names))
 	return "\n".join(lines)
 
 
-## The current effect, then a preview of the next purchase (also at level 0, where it is
-## the only hint of what a first purchase does).
+## The current effect, then a preview of the next level (the only hint at level 0).
 static func tooltip(unlock : MetaUnlockData, level : int, maxed : bool) -> String:
 	var lines : PackedStringArray = _header_lines(unlock)
 

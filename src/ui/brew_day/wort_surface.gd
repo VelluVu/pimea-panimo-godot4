@@ -1,10 +1,8 @@
 class_name WortSurface
 extends RefCounted
 
-## What happens on the liquid's surface: the swirl the paddle stirs up, the coloured
-## blooms of landed hops and the stripes they leave as the swirl carries them, the
-## splash rings and the sparkles of a perfect addition. Places are in the mouth's unit
-## space (KettleShapes), so the swirl just turns them.
+## The liquid's surface: the paddle's swirl, hop blooms and the stripes they leave, splash
+## rings and perfect-addition sparkles, in the mouth's unit space (KettleShapes).
 
 const RING_SECONDS : float = 0.45
 const RING_SIZE : Vector2 = Vector2(18, 8)

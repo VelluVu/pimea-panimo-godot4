@@ -1,10 +1,8 @@
 class_name SackPours
 extends RefCounted
 
-## The sacks lifted over the kettle and the pellets they pour. A sack following the
-## pointer lags behind it, so it feels a little heavy; moving it fast shakes it, which
-## pours faster and throws the pellets along its motion. Each pellet falls to the wort
-## and reports where it landed.
+## The sacks over the kettle and their pellets. A carried sack lags the pointer; shaking it
+## pours faster and throws pellets along its motion.
 
 signal landed(at : Vector2, color : Color, blooms : bool)
 
@@ -12,8 +10,8 @@ signal landed(at : Vector2, color : Color, blooms : bool)
 const POUR_SPOTS : Array[Vector2] = [Vector2(78, 4), Vector2(170, 4), Vector2(124, -4)]
 ## A carried sack follows the pointer this fast.
 const CARRY_FOLLOW : float = 16.0
-## A sack moving faster than this (pixels a second) is shaking; at SHAKE_FROM plus
-## SHAKE_RANGE it shakes fully: pellets pour twice as fast and fly off with its motion.
+## Faster than this (pixels a second) a sack shakes; fully at SHAKE_FROM + SHAKE_RANGE,
+## pouring twice as fast.
 const SHAKE_FROM : float = 220.0
 const SHAKE_RANGE : float = 400.0
 const SHAKE_THROW : float = 0.55
@@ -46,8 +44,8 @@ static func shake(velocity : Vector2) -> float:
 	return clampf((velocity.length() - SHAKE_FROM) / SHAKE_RANGE, 0.0, 1.0)
 
 
-## Lifts a sack: one following the pointer starts under it, one lifted by its key
-## hangs at its own spot over the mouth. Without blooms its pellets only splash.
+## Lifts a sack: following the pointer, or hung at its own spot when lifted by key.
+## Without blooms its pellets only splash.
 func carry(id : int, color : Color, follow : bool, blooms : bool, pointer : Vector2) -> void:
 	if _carried.has(id):
 		return
@@ -142,8 +140,8 @@ func draw(canvas : CanvasItem, clock : float) -> void:
 		canvas.draw_rect(Rect2((pellet[0] as Vector2).round(), PELLET_SIZE), pellet[3])
 
 
-## A pellet falls from the sack's mouth into the wort below it; a shaken sack throws
-## it off along its own motion, scattered, so it may land anywhere or miss.
+## A pellet falls from the sack's mouth into the wort; a shaken sack throws it along its
+## motion, so it may miss.
 func _spawn_pellet(sack : Dictionary) -> void:
 	var start : Vector2 = sack.at + LIFTED_SACK_MOUTH * BrewDayArt.PROP_SCALE + Vector2(randf_range(-3, 3), 0)
 	var landing : float = KettleView.LIQUID_RECT.position.y + randf_range(LANDING_DEPTH.x, LANDING_DEPTH.y)

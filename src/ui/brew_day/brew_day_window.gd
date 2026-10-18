@@ -1,15 +1,13 @@
 class_name BrewDayWindow
 extends Control
 
-## The brew day minigame. The Brew button opens it for the table's brew: mash, then
-## boil, then the quality multiplier it earned goes to the Brewer, which brews the table.
-## The game is paused meanwhile. Peru (or Esc) asks first and leaves the table as it
-## was; Pikakeitto brews at once for a fixed, lower quality.
+## The brew day minigame: mash, then boil, then the earned quality multiplier goes to the
+## Brewer. The game pauses meanwhile. Peru (or Esc) asks first and keeps the table;
+## Pikakeitto brews at once at a lower quality.
 
 const MASH_HEADER_TEXT : String = "MÄSKÄYS · %s"
 const BOIL_HEADER_TEXT : String = "KEITTO · %s"
-## A style not yet discovered keeps its name hidden until the brew reveals it, like
-## the brewing preview does.
+## An undiscovered style's name stays hidden until the brew reveals it.
 const UNKNOWN_STYLE_TEXT : String = "Tuntematon tyyli"
 const HEAT_BUTTON_TEXT : String = "LÄMMITÄ"
 const TO_BOIL_BUTTON_TEXT : String = "KEITTOON"

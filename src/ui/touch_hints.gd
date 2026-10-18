@@ -1,9 +1,8 @@
 class_name TouchHints
 extends Node
 
-## Touch screens have no hover, so the cellar's spot names show for a moment at run start
-## and each day start (after the recap), and on the ? button. Names only: a glow would
-## read as the finger touching something.
+## No hover on touch screens, so the spot names show briefly at run and day start and on
+## the ? button. Names only: a glow would read as a touch.
 
 const SHOW_SECONDS : float = 2.5
 ## Lets a view switch or a closing window settle first.
@@ -43,8 +42,7 @@ func toggle() -> void:
 		_flash(0.0)
 
 
-## A ? button the size of `beside`, placed just right of it with the same anchors.
-## Added as its sibling so the windows above it still cover it.
+## A ? button the size of `beside`, just right of it, as a sibling so windows cover it.
 static func make_button(beside : Control) -> Button:
 	var button := Button.new()
 	button.tooltip_text = BUTTON_TOOLTIP

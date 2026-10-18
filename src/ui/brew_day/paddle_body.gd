@@ -1,9 +1,8 @@
 class_name PaddleBody
 extends RefCounted
 
-## The paddle as a springy chain of points pulled back toward straight. points[0], the
-## blade, follows the pointer on a loose spring; the handle leans out over the far rim
-## and chases it with a lag, so sweeping the blade across swings the shaft over the top.
+## The paddle as a springy chain of points. The blade follows the pointer on a loose spring;
+## the handle leans over the far rim and lags, so a sweep swings the shaft.
 
 ## The blade tip hit the kettle wall; speed in pixels a second.
 signal knocked(speed : float)
@@ -12,11 +11,11 @@ const POINTS : int = 19
 const SEGMENT : float = 12.0
 ## The first segments from the tip are the blade; the rest is the shaft.
 const BLADE_SEGMENTS : int = 2
-## The hand holds the shaft this many segments up from the tip: far enough that the blade
-## trails the hand a little, near enough that it still goes where the hand points.
+## The hand holds the shaft this many segments up: the blade trails a little but goes where
+## the hand points.
 const GRIP_SEGMENTS : int = 4
-## How quickly the hand-to-blade direction follows the shaft, per second. Smoothed, so the
-## blade never jumps when the handle swings over to the other rim.
+## How fast the hand-to-blade direction follows the shaft, smoothed so the blade never
+## jumps when the handle swings over.
 const GRIP_TURN : float = 6.0
 const TIP_SPRING : float = 320.0
 const TIP_DAMPING : float = 15.0
@@ -25,8 +24,8 @@ const REST_SPRING : float = 40.0
 ## The handle follows its spot behind the blade loosely, so the shaft swings.
 const HANDLE_SPRING : float = 90.0
 const HANDLE_DAMPING : float = 11.0
-## The shaft's lean: steep with the blade in the middle, nearly flat over the far rim
-## with the blade at a wall (x is sideways, y upward, before normalizing).
+## The shaft's lean: steep with the blade in the middle, nearly flat at a wall (x sideways,
+## y up).
 const LEAN_MIDDLE : Vector2 = Vector2(0.6, 0.75)
 const LEAN_WALL : Vector2 = Vector2(1.0, 0.3)
 ## Toward the back of the mouth the shaft leans lower, keeping the handle on screen.

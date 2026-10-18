@@ -1,9 +1,8 @@
 class_name HopSackButton
 extends Button
 
-## A sack beside the kettle: its sprite emptying in three steps, its pellet colour, key,
-## name and amount left. Holding it pours; lifted, only its shadow stays. A sack whose
-## mark is coming wobbles with a yellow frame; while the mark is open it blinks green.
+## A sack beside the kettle: sprite emptying in three steps, pellet colour, key, name and
+## amount. A coming mark wobbles it with a yellow frame; an open one blinks green.
 
 const ART : BrewDayArt = preload("res://src/resources/brew_day/brew_day_art.tres")
 const SIZE : Vector2 = Vector2(124, 40)

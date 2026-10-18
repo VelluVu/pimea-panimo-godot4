@@ -1,9 +1,8 @@
 class_name BrewDayCommentary
 extends RefCounted
 
-## Decides which brew day popup line to say, and when: the mash and boil sessions report
-## what happened, this picks the line (BrewDayLines) and keeps the one-off ones from
-## repeating. BrewDayWindow shows what it emits.
+## Picks the brew day's popup lines (BrewDayLines) from what the sessions report, and keeps
+## one-off lines from repeating.
 
 signal line_said(text : String, color : Color)
 ## A mark's big opening call, shown larger than a line.

@@ -1,9 +1,7 @@
 class_name ReputationUnlockTracker
 extends RefCounted
 
-## Finds ingredients that a reputation increase just unlocked. Only a genuine
-## increase counts: an LVV raid's reputation penalty must never announce a
-## "newly unlocked" ingredient that was already available before the drop.
+## Ingredients a reputation rise just unlocked; a raid's drop never announces old ones.
 
 var _last_reputation: int
 

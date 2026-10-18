@@ -1,18 +1,15 @@
 class_name TapLayout
 extends RefCounted
 
-## Where the tap tower's parts go for a number of taps (TapTower draws them): a
-## crossbar that grows by one handle pitch per tap, centred on the tower's origin. Past
-## the counter's room the pitch tightens instead, so twelve taps still fit. Pixel sizes
-## are the tap art's, see assets/textures/tap/.
+## Where the tap tower's parts go: a crossbar growing a handle pitch per tap, centred. Past
+## the counter's room the pitch tightens, so twelve taps fit.
 
 ## One tap per keg the brewery owns but the spares, see KegRules.tap_count().
 const MAX_TAPS : int = 12
 const CAP_WIDTH : int = 5
 const HANDLE_WIDTH : int = 5
 const HANDLE_PITCH : int = 12
-## The widest crossbar the counter has room for before the PC beside it: six taps at
-## the full pitch, twelve 8 px apart.
+## The widest crossbar before the PC: six taps at full pitch, twelve 8 px apart.
 const MAX_BAR_WIDTH : int = 103
 ## The drip tray reaches at least this far past the crossbar on each side.
 const TRAY_OVERHANG : int = 2

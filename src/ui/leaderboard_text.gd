@@ -1,8 +1,7 @@
 class_name LeaderboardText
 extends RefCounted
 
-## Player-facing text for leaderboard entries (RunScore.entry_for()):
-## the ending's name and the score broken into its parts.
+## Leaderboard entry text: the ending's name and the score's parts.
 
 const ENDING_SURVIVED : String = "Legenda"
 const ENDING_SEASON_OVER : String = "Selvisi"

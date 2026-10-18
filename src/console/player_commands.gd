@@ -1,9 +1,8 @@
 class_name PlayerCommands
 extends ConsoleCommandSet
 
-## Player-tier console commands: text shortcuts for actions the UI already
-## allows (shop, brewing table, recipes). They wrap the exact GUISignals a
-## button click fires, so no economy or unlock rule is bypassed.
+## Player console commands: shortcuts that emit the same GUISignals a button does, so no
+## rule is bypassed.
 
 const TRADE_FAILED_MESSAGE: String = "[color=orange]%s epäonnistui: %s[/color]"
 
@@ -38,9 +37,8 @@ const POYTAAN_USAGE_TEXT: String = "pöytään <raaka-aine> <määrä>"
 const POISTA_USAGE_TEXT: String = "poista <raaka-aine> <määrä>"
 const KEITA_USAGE_TEXT: String = "keitä <resepti>"
 
-## Set by the BrewerySignals failure handlers below while an osta/myy command
-## is in flight; the command clears it before emitting and reads it after,
-## since GUISignals.buy_ingredient/sell_ingredient are fire-and-forget.
+## A buy or sell failure reason set by the BrewerySignals handlers below, since the trade
+## signals are fire-and-forget.
 var _trade_failure_reason : String = ""
 
 
@@ -171,10 +169,8 @@ func _saved_recipe_names(brewery : Brewery) -> String:
 	return ", ".join(names) if not names.is_empty() else tr(NO_SAVED_RECIPES_TEXT)
 
 
-## Takes the trailing token as the amount and everything before it (joined)
-## as an ingredient name search — matched by prefix first, then substring,
-## against IngredientDatabase, so "osta pilsner 5" or "osta citra humala 20"
-## both work without needing the ingredient's exact full name.
+## The last token is the amount, the rest an ingredient name matched by prefix, then
+## substring ("osta citra humala 20").
 func _parse_ingredient_amount(args: PackedStringArray) -> Dictionary:
 	if args.size() < 2 or not args[args.size() - 1].is_valid_int():
 		_log(tr(AMOUNT_USAGE_MESSAGE))

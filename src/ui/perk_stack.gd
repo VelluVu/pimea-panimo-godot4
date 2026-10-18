@@ -1,9 +1,8 @@
 class_name PerkStack
 extends RefCounted
 
-## Groups perks for RunEffectsWindow: one row per perk (name and effect) with how many
-## times it was taken, in first-taken order, keeping Olutoppi perks and level-up picks
-## apart. Copies of one perk at different strengths (the critic's) get their own rows.
+## Perk rows for RunEffectsWindow: name, effect and times taken, in first-taken order,
+## Olutoppi and level-up perks apart. Different strengths of one perk get own rows.
 
 const KEY_PERK : StringName = &"perk"
 const KEY_COUNT : StringName = &"count"

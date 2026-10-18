@@ -1,10 +1,8 @@
 class_name HopSackColumn
 extends VBoxContainer
 
-## The boil's hop and spice sacks in a column beside the kettle, one per mark (the boil's
-## sack keys). A sack lifts with the pointer or its number key and pours while carried
-## over the kettle mouth; it cues its mark (wobbling as it comes, blinking while open).
-## The window drives it each frame.
+## The boil's sacks in a column, one per mark. A sack lifts with the pointer or its number
+## key and pours while over the kettle mouth. The window drives it each frame.
 
 ## A mark opened: its kind ("AROMI") and the sack's name, for the window's big call.
 signal mark_opened(mark : BoilMark, kind_label : String, sack_name : String)
@@ -113,8 +111,8 @@ func refresh() -> void:
 			button.disabled = left <= 0.0 and not _boil.is_pouring(sack)
 
 
-## Lifts a sack off its place: with the pointer it follows it, with its key it hangs
-## at its own spot over the mouth. It only pours while over the mouth.
+## With the pointer the sack follows it; with its key it hangs at its own spot over the
+## mouth. It pours only while over the mouth.
 func _pick_up(sack : int, follow : bool) -> void:
 	if _active and float(_boil.sacks.get(sack, 0.0)) > 0.0:
 		kettle.carry(sack, BrewDayLook.pellet_color(_boil.marks[sack]), follow)
@@ -131,9 +129,8 @@ func _is_pieces(sack : int) -> bool:
 	return _plan.piece_ids.has(_boil.marks[sack].ingredient_id)
 
 
-## A carried sack pours while its mouth is over the kettle mouth: a pour starts as it
-## comes over (that is when its timing counts) and ends as it leaves. A spice sack
-## tips its handful in once.
+## A carried sack pours while over the mouth: the pour starts as it comes over (timing
+## counts then) and ends as it leaves. A spice sack tips its handful once.
 func _pour_from_carried(sack : int, left : float) -> bool:
 	if not kettle.is_carrying(sack):
 		return false

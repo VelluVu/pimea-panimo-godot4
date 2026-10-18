@@ -1,10 +1,8 @@
 class_name IngredientMenuOrder
 extends RefCounted
 
-## The order of an ingredient dropdown: unlocked items first, in the given order,
-## then locked ones nearest to unlocking, so the usable part of a long list is on top.
-## `owned` (id -> amount, storage plus brewing table) keeps an ingredient usable after
-## reputation drops below its bar: only buying more needs the reputation.
+## An ingredient dropdown's order: unlocked first as given, then locked ones nearest to
+## unlocking. `owned` keeps an ingredient usable after reputation drops.
 
 
 static func order(ingredients : Array[IngredientData], reputation : int, owned : Dictionary = {}) -> Array[IngredientData]:

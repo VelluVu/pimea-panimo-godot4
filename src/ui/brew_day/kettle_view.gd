@@ -1,10 +1,8 @@
 class_name KettleView
 extends Control
 
-## The kettle seen from the front and a little above, its mouth full of liquid, clumps,
-## foam and the springy paddle (PaddleBody): the blade breaks clumps, the shaft only
-## pushes them. Carried sacks drop pellets or grains with splash rings (and hop blooms);
-## stirring swirls the blooms into stripes. Steam (a shader child) follows `steam`.
+## The kettle from the front and a little above: liquid, clumps, foam and the springy paddle
+## (the blade breaks clumps, the shaft pushes them), pellets from carried sacks, and steam.
 
 ## The stick moved this frame, in liquid pixels (see MashSession.paddle_moved).
 signal paddle_moved(before : PackedVector2Array, after : PackedVector2Array, blade_from : int, delta : float)
@@ -12,8 +10,8 @@ signal paddle_moved(before : PackedVector2Array, after : PackedVector2Array, bla
 signal paddle_knocked(speed : float)
 
 const ART : BrewDayArt = preload("res://src/resources/brew_day/brew_day_art.tres")
-## The bounding box of the oval mouth, the transparent hole in the kettle sprite; the
-## liquid is the ellipse inside it.
+## The mouth's bounding box, the transparent hole in the sprite; the liquid is the ellipse
+## inside it.
 const LIQUID_RECT : Rect2 = Rect2(Vector2(24, 44), MashSession.LIQUID_SIZE)
 ## The liquid reaches this far under the kettle's rim, so no gap shows at its edge.
 const LIQUID_UNDER_RIM : float = 4.0
@@ -35,8 +33,8 @@ const FLASH_MODULATE : Color = Color(1.8, 1.8, 1.6)
 const FOAM_COLOR : Color = Color(0.93, 0.89, 0.78)
 const PADDLE_COLOR : Color = Color(0.6, 0.42, 0.22)
 const PADDLE_SHADE : Color = Color(0.42, 0.28, 0.14)
-## The blade and the first stretch of shaft are under the wort: drawn under the clumps and
-## foam, tinted by the liquid, and shifted a little, as a stick looks bent in water.
+## The blade and lowest shaft are under the wort: drawn under the clumps and foam, tinted
+## and shifted like a stick in water.
 const SUBMERGED_SEGMENTS : int = PaddleBody.BLADE_SEGMENTS + 1
 const REFRACTION : Vector2 = Vector2(0, 2)
 ## The liquid shows through the submerged part this much at full murk.
@@ -161,8 +159,8 @@ func burst_clump(clump : MashClump) -> void:
 	_bursts.append([clump.position, BURST_SECONDS])
 
 
-## Lifts a sack: one following the pointer starts under it, one lifted by its key
-## hangs at its own spot over the mouth. Without blooms its pellets only splash.
+## Lifts a sack: following the pointer, or hung at its own spot when lifted by key.
+## Without blooms its pellets only splash.
 func carry(id : int, color : Color, follow : bool, blooms : bool = true) -> void:
 	_pours.carry(id, color, follow, blooms, get_local_mouse_position())
 
@@ -204,8 +202,7 @@ func clear_pours() -> void:
 	_surface.clear()
 
 
-## Pellets landing outside the mouth hit the rim and vanish; the rest splash, and hops
-## tint the whole wort a little toward their colour.
+## Pellets outside the mouth vanish on the rim; the rest splash, and hops tint the wort.
 func _on_pellet_landed(at : Vector2, color : Color, blooms : bool) -> void:
 	if KettleShapes.in_ellipse(PADDLE_MOUTH, at) and _surface.land(at, color, blooms):
 		liquid_color = liquid_color.lerp(color, WORT_TINT_PER_PELLET)
@@ -308,8 +305,7 @@ func _draw_paddle_under() -> void:
 	_draw_turned(ART.paddle_blade, (tip + blade_end) / 2.0, (tip - blade_end).angle(), tint)
 
 
-## Rings spread from where the shaft meets the liquid, in solid steps like the blooms, and
-## a moving shaft trails a V-shaped wake.
+## Rings spread from where the shaft meets the liquid; a moving shaft trails a wake.
 func _draw_entry_ripples() -> void:
 	var entry : Vector2 = _paddle.points[SUBMERGED_SEGMENTS]
 	if not _paddle.inside_mouth(entry).is_equal_approx(entry):

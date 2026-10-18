@@ -1,8 +1,7 @@
 class_name CustomerBookHoverArea
 extends Area2D
 
-## In-world trigger for the Asiakaskirja: a small notebook lying on the counter.
-## Same glow and click pattern as ReceiptMachineHoverArea.
+## Hover-and-glow trigger for the Asiakaskirja, a notebook on the counter.
 
 const HOVER_GLOW_COLOR : Color = Color(1.3, 1.15, 0.8, 1.0)
 const HIDDEN_COLOR : Color = Color(1.0, 1.0, 1.0, 1.0)

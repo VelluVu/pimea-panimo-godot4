@@ -1,9 +1,8 @@
 class_name IngredientViewKeys
 extends RefCounted
 
-## Keyboard control for the shop and brewery views: step the ingredient, the amount and
-## the ingredient type, and confirm. The views call handle() from _input(), before the
-## GUI, so arrows, Tab and Enter never move focus or press a focused button.
+## Keyboard control for the shop and brewery views. Called from their _input() before the
+## GUI, so arrows, Tab and Enter never move focus.
 
 const SHIFT_AMOUNT_STEP : float = 10.0
 

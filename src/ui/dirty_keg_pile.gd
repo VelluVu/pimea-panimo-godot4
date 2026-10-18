@@ -1,10 +1,8 @@
 class_name DirtyKegPile
 extends Area2D
 
-## The unwashed empty kegs in the cellar corner by the brewery door. Shows one keg sprite
-## per dirty keg up to MAX_SHOWN_KEGS, the season's starting kegs (the label tells the full
-## count), lights up on hover like the other cellar props and opens the keg wash on click.
-## Hidden while every keg is clean.
+## The unwashed empty kegs by the brewery door: a sprite per dirty keg up to
+## MAX_SHOWN_KEGS, glow on hover, keg wash on click; hidden while all are clean.
 
 const HOVER_GLOW_COLOR : Color = Color(1.3, 1.15, 0.8, 1.0)
 const HIDDEN_COLOR : Color = Color(1.0, 1.0, 1.0, 1.0)
