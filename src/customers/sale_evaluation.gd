@@ -16,7 +16,7 @@ const SECOND_CHOICE_TIP_CHANCE : float = 0.05
 const TIP_CHANCE_MAX : float = 0.9
 ## Quality above the bar counts up to this much, for the chance and the size alike, so a
 ## customer with a very low bar cannot turn any decent beer into a huge tip.
-const TIP_MARGIN_MAX : float = 0.5
+const TIP_MARGIN_MAX : float = 1.0
 ## A tip is this share of the price plus the quality margin, times the customer's
 ## sensitivity and budget: an expensive, well-made beer earns the biggest tips.
 const TIP_BASE_SHARE : float = 0.5
