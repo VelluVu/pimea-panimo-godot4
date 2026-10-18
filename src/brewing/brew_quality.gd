@@ -31,6 +31,9 @@ const UNSUITED_SPICE_PENALTY : float = 0.05
 ## on top of hitting the colour and strength.
 const MALT_MATCH_STEP : float = 0.03
 const MALT_MATCH_MAX : float = 0.06
+## A recipe that fits the style but hits nothing of it well. A by-the-book recipe lands
+## near 1.0, so quality well above that needs perks, Olutoppi talents or upgrades.
+const BASE_MULTIPLIER : float = 0.6
 const MIN_MULTIPLIER : float = 0.5
 const MAX_MULTIPLIER : float = 1.5
 
@@ -129,7 +132,7 @@ static func malt_bonus(mixture : BrewMixture, beer_style : BeerStyle) -> float:
 
 
 static func multiplier(beer_style : BeerStyle, precision : float, layer_bonus : float, flavor_match : bool, spice_match_bonus : float = 0.0, malt_match_bonus : float = 0.0) -> float:
-	var value : float = 1.0 + (precision - NEUTRAL_PRECISION) * precision_weight(beer_style)
+	var value : float = BASE_MULTIPLIER + (precision - NEUTRAL_PRECISION) * precision_weight(beer_style)
 	value += layer_bonus + spice_match_bonus + malt_match_bonus
 	if flavor_match:
 		value += FLAVOR_MATCH_BONUS
