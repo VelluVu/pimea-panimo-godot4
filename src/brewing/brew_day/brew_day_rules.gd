@@ -4,10 +4,10 @@ extends RefCounted
 ## Turns the brew day's 0..1 score into the batch's quality multiplier.
 
 const FAILED_MULTIPLIER : float = 0.8
-const NORMAL_MULTIPLIER : float = 1.0
-const PERFECT_MULTIPLIER : float = 1.1
+const NORMAL_MULTIPLIER : float = 0.9
+const PERFECT_MULTIPLIER : float = 1.0
 ## Pikakeitto: skipping the minigame before the automatic kettle is bought.
-const SKIP_MULTIPLIER : float = 0.9
+const SKIP_MULTIPLIER : float = 0.85
 const AUTO_KETTLE_MULTIPLIER : float = PERFECT_MULTIPLIER
 const NORMAL_FROM : float = 0.5
 const PERFECT_FROM : float = 0.8

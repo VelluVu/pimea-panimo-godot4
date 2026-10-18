@@ -13,7 +13,7 @@ func test_a_failed_day_gives_the_floor() -> void:
 
 
 func test_a_low_score_slides_up_to_normal() -> void:
-	assert_true(is_equal_approx(BrewDayRulesScript.multiplier(0.25), 0.9))
+	assert_true(is_equal_approx(BrewDayRulesScript.multiplier(0.25), 0.85))
 	assert_eq(BrewDayRulesScript.multiplier(0.5), BrewDayRulesScript.NORMAL_MULTIPLIER)
 
 
