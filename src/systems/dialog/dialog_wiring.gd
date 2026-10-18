@@ -1,12 +1,11 @@
 class_name DialogWiring
 extends Node
 
-## THE FILE TO EDIT WHEN THIS SYSTEM MOVES TO ANOTHER PROJECT: the only one here that
-## knows the project. It connects the project's signals to DialogView and holds the popup
-## wording. DialogView adds it as a child, so the connections go with it.
+## The file to edit when this system moves: the only one here that knows the project. It
+## connects its signals to DialogView and holds the popup wording.
 
-## Popups come out of the customer's shoulders, measured on Opiskelija from its feet:
-## XP and reputation grow out of the left shoulder, the money out of the right one.
+## Popups come out of the shoulders (measured on Opiskelija): XP and reputation left, money
+## right.
 const LEFT_SHOULDER : Vector2 = Vector2(-32.0, -68.0)
 const RIGHT_SHOULDER : Vector2 = Vector2(32.0, -68.0)
 
@@ -28,8 +27,7 @@ const TIP_POPUP_OFFSET : Vector2 = Vector2(0.0, 12.0)
 const MONEY_POPUP_COLOR : Color = Color(1.0, 0.84, 0.0, 1)
 const MONEY_POPUP_FORMAT : String = "+%.1f €"
 
-## Word of mouth and regular status pop centred on the customer, below the shoulder
-## numbers and clear of the speech bubble, after them.
+## Word of mouth and regular status pop centred on the customer, below the numbers.
 const NOTE_POPUP_OFFSET : Vector2 = Vector2(0.0, -30.0)
 const NOTE_POPUP_DELAY_SECONDS : float = 0.8
 const FRIEND_RECOMMENDED_TEXT : String = "Suosittelee kaverille!"

@@ -1,9 +1,8 @@
 class_name BubbleEntry
 extends RefCounted
 
-## One speaker's live speech bubble. Anything that can run after the bubble was freed
-## (an eviction, a display timer that expires) asks the entry, never the bubble: passing
-## a freed Object into a typed parameter is a hard runtime error.
+## One speaker's live bubble. Late callers (an eviction, an expired timer) ask the entry,
+## never the bubble: a freed Object in a typed parameter is a runtime error.
 
 var bubble : SpeechBubble
 var x : float = 0.0

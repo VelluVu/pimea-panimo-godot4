@@ -11,9 +11,8 @@ extends Resource
 @export var progress_format : String = "%d/%d"
 
 @export_group("Päiväskaalaus")
-## Grows target_amount per day after day 1, so a quantity goal stays meaningful
-## late in a run. Leave it off for one-shot goals and avoid goals, where a
-## rising target would make the goal easier, not harder.
+## Grows target_amount per day after day 1. Off for one-shot and avoid goals, where a
+## rising target makes it easier.
 @export var scales_with_day : bool = false
 @export var target_scale_per_day : float = 0.08
 

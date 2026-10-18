@@ -1,9 +1,8 @@
 class_name InputBindings
 extends Node
 
-## Rebindable keyboard shortcuts. Registers the actions in InputMap at runtime (the
-## project settings stay untouched), applies saved rebindings and turns unhandled
-## presses into signals. The project fills in the action table in its wiring subclass.
+## Rebindable shortcuts: registers the actions in InputMap at runtime, applies saved rebinds
+## and turns unhandled presses into signals. The wiring fills in the actions.
 
 ## The fixed cancel key was pressed. It is never rebindable, so nobody gets locked out.
 signal cancel_pressed

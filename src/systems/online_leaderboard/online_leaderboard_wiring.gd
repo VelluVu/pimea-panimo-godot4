@@ -1,9 +1,8 @@
 class_name OnlineLeaderboardWiring
 extends OnlineLeaderboard
 
-## This game's shared leaderboards: the Supabase project, this build's board, RunScore
-## entries to and from the server columns, and the wording. The demo and the full game
-## have their own tables (dev/tools/leaderboard/*.sql). A window showing the list adds one.
+## This game's shared leaderboards: the project, this build's board and the entry columns.
+## Demo and full game have their own tables (dev/tools/leaderboard/*.sql).
 
 ## The online parts stay hidden while either is empty.
 const PROJECT_URL: String = "https://dagwyjxvspehgoailvju.supabase.co"

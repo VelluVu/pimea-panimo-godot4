@@ -1,10 +1,8 @@
 class_name OnlineLeaderboard
 extends Node
 
-## A shared leaderboard on a Supabase (PostgREST) backend: sends a score through a
-## server function, which checks it, and reads the top of the table. The key is the
-## project's public one: the server allows only that function and reading, so it is
-## safe to ship. Works while the tree is paused when this node's process_mode allows it.
+## A shared leaderboard on Supabase (PostgREST): submits through a checking server function
+## and reads the top. The publishable key allows only that, so it is safe to ship.
 
 signal submitted(result: Dictionary)
 signal top_received(rows: Array)
@@ -53,9 +51,8 @@ func _send(action: StringName, url: String, method: HTTPClient.Method, body: Str
 		return
 	var http := HTTPRequest.new()
 	http.timeout = timeout_seconds
-	# In a browser the fetch API has already unpacked a gzipped reply, and Godot's own
-	# unpacking then fails (RESULT_BODY_DECOMPRESS_FAILED) as soon as the reply is big
-	# enough for the server to compress.
+	# In a browser the fetch API already unpacked a gzipped reply, and Godot's unpacking then
+	# fails once replies are big enough to compress.
 	http.accept_gzip = not OS.has_feature("web")
 	add_child(http)
 	http.request_completed.connect(func(result: int, code: int, _headers: PackedStringArray, data: PackedByteArray) -> void:

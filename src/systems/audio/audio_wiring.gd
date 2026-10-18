@@ -1,9 +1,8 @@
 class_name AudioWiring
 extends AudioPlayback
 
-## This project's sounds: the one file to edit after copying the audio system. It picks
-## the music per scene, maps the game's signals to sounds from its AudioBank and runs
-## the LVV risk drone. The game's AudioManager autoload extends this.
+## This project's sounds: the file to edit after copying the audio system. Picks the music
+## per scene, maps signals to AudioBank sounds and runs the LVV risk drone.
 
 const TENSION_DRONE_MAX_VOLUME_DB: float = -6.0
 const TENSION_DRONE_MIN_VOLUME_DB: float = -80.0
@@ -65,8 +64,8 @@ func _ready() -> void:
 		AudioServer.set_bus_mute.call_deferred(AudioServer.get_bus_index(MASTER_BUS), true)
 
 
-## The main menu always loops its own track. Entering a run switches to the shuffled
-## playlist, which keeps going across a restart from the game end window.
+## The menu loops its own track; a run shuffles the playlist, which keeps going across a
+## restart.
 func _on_scene_changed() -> void:
 	if get_tree().current_scene is MainMenu:
 		play_music_loop(bank.menu_music)

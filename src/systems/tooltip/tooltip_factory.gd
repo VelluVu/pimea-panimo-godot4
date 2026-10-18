@@ -1,10 +1,8 @@
 class_name TooltipFactory
 extends RefCounted
 
-## Godot's default tooltip never wraps, so a long line can render wider than the viewport
-## and clip off-screen. This builds a custom tooltip that wraps at MAX_WIDTH, styled by the
-## theme type variations TooltipPanel and TooltipLabel if the project defines them.
-## Any Control with a tooltip_text opts in with:
+## Godot's default tooltip never wraps; this one wraps at MAX_WIDTH, styled by the theme
+## types TooltipPanel and TooltipLabel. A Control opts in with:
 ##   func _make_custom_tooltip(for_text: String) -> Object:
 ##       return TooltipFactory.make_wrapped_tooltip(for_text)
 const MAX_WIDTH: float = 260.0
@@ -25,9 +23,8 @@ static func make_wrapped_tooltip(text: String) -> Control:
 	return panel
 
 
-## A wrapped tooltip that re-reads `source` (a Callable returning the text) while it is
-## open, for values that change every second. The control showing it must report a fixed
-## tooltip text: Godot closes and reopens a tooltip whose text changes, which flashes.
+## A wrapped tooltip re-reading `source` while open. The control must report a fixed tooltip
+## text, or Godot reopens it on every change.
 static func make_live_tooltip(source: Callable) -> Control:
 	var panel: Control = make_wrapped_tooltip(source.call())
 	var label: Label = panel.get_child(0)

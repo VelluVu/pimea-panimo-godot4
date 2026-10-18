@@ -1,9 +1,8 @@
 class_name SettingsStore
 extends Node
 
-## Persisted player preferences: a volume and mute per audio bus, fullscreen, the
-## language and small named options. Applies them straight to AudioServer, DisplayServer and TranslationServer.
-## The project lists its buses, languages and defaults in its wiring subclass.
+## Saved player preferences: per-bus volume and mute, fullscreen, language and small named
+## options, applied straight to the servers. The wiring lists buses, languages and defaults.
 
 ## The language changed; text built in code may need rebuilding.
 signal language_changed(locale: String)
@@ -20,8 +19,7 @@ const SECTION_OPTIONS: String = "options"
 ## Buses that exist in the project's bus layout; a missing bus is skipped.
 var audio_buses: Array[StringName] = [&"Master"]
 var default_volume: float = 0.8
-## Buses that start muted on a fresh install. Volume is kept separately, so unmuting
-## later restores the last level instead of snapping to full.
+## Buses muted on a fresh install; volume is kept apart, so unmuting restores the level.
 var default_muted_buses: Array[StringName] = []
 var fullscreen: bool = false
 ## Locales the player can pick, the first being the one the texts are written in.
@@ -37,9 +35,8 @@ var language: String = ""
 var save_path: String = "user://settings.cfg"
 
 var _volumes: Dictionary = {}  # bus -> linear 0..1
-## Loaded from translation_paths. Only the active language's are registered: Godot falls
-## back to the project's fallback locale for a language with no translation of its own,
-## so a registered English file would show through in Finnish.
+## Only the active language's translation is registered: Godot falls back to the project's
+## fallback locale, so a registered English file would show through in Finnish.
 var _translations: Array[Translation] = []
 var _muted: Dictionary = {}    # bus -> bool
 ## Small choices other systems keep across sessions (get_option/set_option), key -> value.

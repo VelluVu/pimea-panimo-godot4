@@ -1,20 +1,16 @@
 class_name SaveWiring
 extends SaveSlot
 
-## This game's run save, the file to edit after copying the system. Saves
-## BrewEngine.current_brewery, which serializes as is; autoloads keeping run state
-## elsewhere (TimeManager's countdown) write it onto the Brewery on
-## BrewEngine.brewery_about_to_save. SaveManager extends this.
+## This game's run save: the file to edit after copying the system. Saves
+## BrewEngine.current_brewery; autoloads with other run state write it onto the Brewery on
+## brewery_about_to_save.
 
-## Version 0 -> 1 needed no migration step. 1 -> 2 dropped the run modifier, which is
-## stripped from the file text before loading (LegacySaveText). 2 -> 3 adds the spare kegs.
-## 3 -> 4 counts four specialty malts in 100 g packs, 4 -> 5 wheat, Münchenin, Vienna
-## and rye in 500 g packs, 5 -> 6 Münchenin in 100 g packs (MaltPackMigration).
+## 1 -> 2 dropped the run modifier (LegacySaveText), 2 -> 3 added spare kegs, 3 -> 6 moved
+## malts to smaller packs (MaltPackMigration).
 const SAVE_VERSION: int = 6
 
-## Endings that finish the run for good. The season endings ("survived",
-## "season_over") are left out on purpose: the player can keep playing.
-## The browser demo's end ("demo_over", DemoRules) is final too.
+## Endings that finish the run for good; the season endings are left out, since play can go
+## on.
 const RUN_ENDING_TYPES: PackedStringArray = ["busted", "bankrupt", "demo_over"]
 
 

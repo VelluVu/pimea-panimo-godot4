@@ -1,10 +1,9 @@
 class_name AchievementWiring
 extends AchievementTracker
 
-## This game's stats and the BrewerySignals that feed them: the one file to edit
-## after copying the achievements system. The game's AchievementManager autoload
-## extends this. CustomerRegistry gates customers on is_unlocked() (the robot
-## needs STAT_BAR_SHIPMENTS 3, the drone STAT_LVV_BRIBES_SUCCEEDED 3).
+## This game's stats and the BrewerySignals that feed them: the file to edit after copying
+## the system. AchievementManager extends it; CustomerRegistry gates customers on
+## is_unlocked().
 
 ## Once per shipment, whatever its bottle count.
 const STAT_BAR_SHIPMENTS : StringName = &"bar_shipments"
@@ -12,8 +11,8 @@ const STAT_BAR_SHIPMENTS : StringName = &"bar_shipments"
 ## A succeeded RiskBribeEventData, the only LVV special event so far.
 const STAT_LVV_BRIBES_SUCCEEDED : StringName = &"lvv_bribes_succeeded"
 
-## Ratchet: hops whose min_reputation is within the current reputation. Only
-## hops use min_reputation, and a raid's reputation drop never takes it back.
+## Ratchet: hops the reputation unlocks (only hops use min_reputation); a raid's drop never
+## takes it back.
 const STAT_HOPS_UNLOCKED : StringName = &"hops_unlocked"
 
 ## Reported by CustomerRegistry, which owns the customer eligibility rules.
@@ -41,8 +40,8 @@ const STAT_REGULARS_GAINED : StringName = &"regulars_gained"
 const STAT_AGED_SALES : StringName = &"aged_sales"
 ## Ratchet: customer types met, the customer book's list (kept across seasons).
 const STAT_CUSTOMERS_MET : StringName = &"customers_met"
-## Batches by what went into them, for the customers they unlock (Barbaari,
-## Mustanmetallinmies, Leipuri). The limits match those customers' TasteRule .tres files.
+## Batches by what went in, for the customers they unlock (Barbaari, Mustanmetallinmies,
+## Leipuri); limits match their TasteRule files.
 const STAT_STRONG_BATCHES : StringName = &"strong_batches"
 const STAT_DARK_BATCHES : StringName = &"dark_batches"
 const STAT_SPICED_BATCHES : StringName = &"spiced_batches"
@@ -141,8 +140,7 @@ func stats_for(batch : BrewBatch) -> Array[StringName]:
 	return keys
 
 
-## Split out of _on_brewery_state_changed() so it can be tested with
-## hand-built IngredientData, without the IngredientDatabase autoload.
+## Static for tests with hand-built IngredientData.
 static func count_unlocked_hops(ingredients : Array, reputation : int) -> int:
 	var unlocked_hop_count : int = 0
 	for ingredient : IngredientData in ingredients:

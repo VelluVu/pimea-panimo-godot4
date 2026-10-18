@@ -1,9 +1,8 @@
 class_name ConsoleCommandRegistry
 extends RefCounted
 
-## Dispatch table for DevConsole: registers commands, parses a typed line and runs the
-## matching handler. Registering everything through register() keeps dispatch and the help
-## text in sync.
+## DevConsole's dispatch table: registers commands, parses a typed line and runs the
+## handler, keeping dispatch and help text in sync.
 
 ## Decides whether dev-only commands may run. The project sets it (ConsoleWiring).
 var developer_mode_check: Callable = func() -> bool: return true

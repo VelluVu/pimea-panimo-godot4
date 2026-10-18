@@ -1,13 +1,11 @@
 class_name ConsoleWiring
 extends Node
 
-## THE FILE TO EDIT WHEN THIS SYSTEM MOVES TO ANOTHER PROJECT. It is the only place in
-## this folder that knows the project: the command sets, the developer-mode check, the
-## input actions, the signals that feed the log, and all the wording. DevConsole adds this as
-## a child, so the connections go away with it.
+## The file to edit when this system moves: the only one here that knows the project
+## (command sets, developer mode, input actions, log signals, wording). DevConsole adds it
+## as a child, so its connections go with it.
 
-## Cheat sets are gitignored and absent from public clones, so they load by path if present.
-## Only these work without a run, so the main menu's console gets just them.
+## Gitignored cheat sets, loaded by path if present; only these work at the main menu.
 const MENU_CHEAT_SET_PATHS: Array[String] = [
 	"res://src/console/dev_mode_commands.gd",
 ]
@@ -63,8 +61,7 @@ const BAR_FIGHT_FORMAT: String = "[color=orange]Baaritappelu! %d annosta rikki.[
 
 var _console: DevConsole
 var _unlock_tracker: ReputationUnlockTracker
-## One sale's numbers, gathered from the signals SaleProcessor sends during it and
-## written as one line when the customer is served.
+## One sale's numbers from SaleProcessor's signals, written as one line when served.
 var _sale_xp: int = 0
 var _sale_tip: float = 0.0
 var _sale_tip_tier: PopupTierRules.Tier = PopupTierRules.Tier.NORMAL
@@ -180,8 +177,7 @@ func _cmd_loki(args: PackedStringArray) -> void:
 	_console.log_line(tr(EVENTS_HIDDEN_MESSAGE if hide_events else EVENTS_SHOWN_MESSAGE))
 
 
-## A sale ends with customer_served, so this only writes a line for a customer who left
-## without buying anything.
+## A sale ends with customer_served, so this writes only for a customer who bought nothing.
 func _on_sale_reputation_gained(amount: int) -> void:
 	_sale_reputation = amount
 	if _sale_entry == null and amount != 0:

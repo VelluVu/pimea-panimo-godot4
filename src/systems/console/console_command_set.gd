@@ -1,9 +1,8 @@
 class_name ConsoleCommandSet
 extends RefCounted
 
-## Base for a group of DevConsole commands. A set registers its commands into
-## the console's dispatch table and reports back through log_line, so the
-## console owns only the UI and dispatch while each set owns one domain.
+## Base for a group of console commands: registers them and logs through log_line, so the
+## console owns only the UI and dispatch.
 
 ## Writes one BBCode line to the console log.
 var log_line : Callable
