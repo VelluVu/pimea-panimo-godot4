@@ -3,7 +3,8 @@ extends Resource
 
 
 const FAILED_BREW_REPUTATION_CHANGE : int = -1
-const FAILED_BREW_QUALITY : float = 1.0
+## No better than the plainest recipe that does fit a style.
+const FAILED_BREW_QUALITY : float = BrewQuality.BASE_MULTIPLIER
 const QUALITY_PRECISION : float = 0.01
 
 const LOG_LOADED_STYLES : String = "Ladattu yhteensä %s oluttyyliä datasta:"

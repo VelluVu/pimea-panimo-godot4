@@ -119,8 +119,8 @@ func test_more_than_three_hop_varieties_fit_no_style() -> void:
 	assert_false(mixture.fits(style))
 
 
-func test_multiplier_is_neutral_at_neutral_precision_without_bonuses() -> void:
-	assert_true(is_equal_approx(BrewQualityScript.multiplier(BeerStyle.new(), BrewQualityScript.NEUTRAL_PRECISION, 0.0, false), 1.0))
+func test_multiplier_is_the_base_at_neutral_precision_without_bonuses() -> void:
+	assert_true(is_equal_approx(BrewQualityScript.multiplier(BeerStyle.new(), BrewQualityScript.NEUTRAL_PRECISION, 0.0, false), BrewQualityScript.BASE_MULTIPLIER))
 
 
 func test_multiplier_is_clamped_and_rewards_flavor_match() -> void:
