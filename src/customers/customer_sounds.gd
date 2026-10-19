@@ -4,7 +4,7 @@ extends RefCounted
 ## A customer's own sounds: footsteps while a walk animation plays, and the ambient loop
 ## some customers carry with them (a drone's hum).
 
-## Seconds between footsteps while a walk animation plays.
+## Seconds between footsteps while a walk animation plays at the sheet's own pace.
 const FOOTSTEP_INTERVAL_SECONDS : float = 0.32
 const AMBIENT_LOOP_VOLUME_DB : float = -12.0
 
@@ -19,7 +19,8 @@ func tick(delta : float, owner : Node2D, sprite : AnimatedSprite2D, data : Custo
 	if not (sprite.is_playing() and MirroredAnimation.base_name(sprite.animation) in walk_animations):
 		_footstep_clock = 0.0
 		return
-	_footstep_clock += delta
+	# The steps follow the legs, which WalkCadence speeds up with the walk.
+	_footstep_clock += delta * sprite.speed_scale
 	if _footstep_clock >= FOOTSTEP_INTERVAL_SECONDS:
 		_footstep_clock -= FOOTSTEP_INTERVAL_SECONDS
 		BrewerySignals.customer_stepped.emit(owner.global_position)

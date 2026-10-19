@@ -93,6 +93,7 @@ func _apply_visuals() -> void:
 
 func _play_animation(anim_name: StringName, flip_horizontally: bool = false) -> void:
 	MirroredAnimation.play(animated_sprite, anim_name, flip_horizontally)
+	animated_sprite.speed_scale = WalkCadence.for_sprite(animated_sprite, customer_data.floor_walk_speed, WALK_ANIMATIONS)
 
 
 static func get_display_time_for_text(text: String) -> float:
