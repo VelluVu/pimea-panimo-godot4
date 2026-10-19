@@ -103,14 +103,16 @@ func _tween_leg(tween : Tween, from_pos : Vector2, to_pos : Vector2) -> void:
 		flip_h = delta.x < 0.0
 
 	tween.tween_callback(_play_animation.bind(anim_name, flip_h))
-	tween.tween_property(self, "global_position", to_pos, from_pos.distance_to(to_pos) / FLOOR_WALK_SPEED).set_trans(Tween.TRANS_LINEAR)
+	PixelStepTween.move(tween, self, from_pos, to_pos, from_pos.distance_to(to_pos) / FLOOR_WALK_SPEED, animated_sprite.scale.x)
 
 
 func _tween_stairs(tween : Tween, from_pos : Vector2, to_pos : Vector2) -> void:
+	var step_from := from_pos
 	for i in range(1, STAIR_STEPS + 1):
 		var step_pos := from_pos.lerp(to_pos, float(i) / STAIR_STEPS)
-		tween.tween_property(self, "global_position", step_pos, STAIR_STEP_DURATION).set_trans(Tween.TRANS_LINEAR)
+		PixelStepTween.move(tween, self, step_from, step_pos, STAIR_STEP_DURATION, animated_sprite.scale.x)
 		tween.tween_interval(0.05)
+		step_from = step_pos
 
 
 ## Parented under carry_marker but hidden until the agent turns to walk it out.
