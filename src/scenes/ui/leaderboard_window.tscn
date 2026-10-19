@@ -38,7 +38,7 @@ mouse_filter = 2
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 32
 
 [node name="CloseButton" type="Button" parent="MarginContainer/MainVBox/HeaderHBox"]
 unique_name_in_owner = true
@@ -72,7 +72,6 @@ theme_override_constants/separation = 2
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.96862745, 0.4627451, 0.13333334, 1)
-theme_override_font_sizes/font_size = 12
 
 [node name="CurrentRunHolder" type="VBoxContainer" parent="MarginContainer/MainVBox/CurrentRunVBox"]
 unique_name_in_owner = true

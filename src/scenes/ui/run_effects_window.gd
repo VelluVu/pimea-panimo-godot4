@@ -4,7 +4,7 @@ extends Panel
 ## The run's stat sheet: the real raid threshold, every active perk and their combined
 ## totals, since stacked perks matter more than any one card.
 
-const HEADER_FONT_SIZE : int = 15
+const HEADER_FONT_SIZE : int = 16
 const SECTION_SPACING : float = 10.0
 const PERMANENT_PERKS_HEADER : String = "Olutopin pysyvät bonukset (%d):"
 

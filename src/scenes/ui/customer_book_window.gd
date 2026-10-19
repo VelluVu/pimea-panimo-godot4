@@ -16,7 +16,7 @@ const GUIDE_INDEX_COLUMNS : int = 2
 const NO_GUIDE_PAGE : int = -1
 const REGULAR_TAG : String = "(kanta-asiakas)"
 const NAME_FONT_SIZE : int = 16
-const DETAIL_FONT_SIZE : int = 14
+const DETAIL_FONT_SIZE : int = 16
 const TAB_HEIGHT : float = 26.0
 const HEADER_COLOR : Color = Color(0.949, 0.788, 0.42, 1)
 

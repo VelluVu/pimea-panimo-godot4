@@ -5,8 +5,8 @@ extends Panel
 
 const TITLE_TEXT : String = "Kellarin parannukset"
 const CLOSE_TEXT : String = "Sulje"
-const NAME_FONT_SIZE : int = 15
-const DETAIL_FONT_SIZE : int = 12
+const NAME_FONT_SIZE : int = 16
+const DETAIL_FONT_SIZE : int = 16
 const BUY_BUTTON_WIDTH : float = 78.0
 const MUTED_COLOR : Color = Color(0.75, 0.73, 0.67, 1)
 
