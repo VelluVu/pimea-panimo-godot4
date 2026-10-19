@@ -14,6 +14,7 @@ const ACTION_TOGGLE_RECEIPT_LOG: StringName = &"toggle_receipt_log"
 const ACTION_TOGGLE_RECIPE_LIBRARY: StringName = &"toggle_recipe_library"
 const ACTION_TOGGLE_BREWERY_BOOK: StringName = &"toggle_brewery_book"
 const ACTION_TOGGLE_UPGRADES: StringName = &"toggle_upgrades"
+const ACTION_GAME_SPEED: StringName = &"game_speed"
 const ACTION_INGREDIENT_PREVIOUS: StringName = &"ingredient_previous"
 const ACTION_INGREDIENT_NEXT: StringName = &"ingredient_next"
 const ACTION_AMOUNT_UP: StringName = &"amount_up"
@@ -44,6 +45,7 @@ func _init() -> void:
 		ACTION_TOGGLE_RECIPE_LIBRARY,
 		ACTION_TOGGLE_BREWERY_BOOK,
 		ACTION_TOGGLE_UPGRADES,
+		ACTION_GAME_SPEED,
 	]
 	rebindable_actions.append_array(INGREDIENT_VIEW_ACTIONS)
 	direct_actions = [ACTION_OPEN_CONSOLE]
@@ -58,6 +60,7 @@ func _init() -> void:
 		ACTION_TOGGLE_RECIPE_LIBRARY: KEY_R,
 		ACTION_TOGGLE_BREWERY_BOOK: KEY_B,
 		ACTION_TOGGLE_UPGRADES: KEY_L,
+		ACTION_GAME_SPEED: KEY_MINUS,
 		ACTION_INGREDIENT_PREVIOUS: KEY_LEFT,
 		ACTION_INGREDIENT_NEXT: KEY_RIGHT,
 		ACTION_AMOUNT_UP: KEY_UP,
@@ -75,6 +78,7 @@ func _init() -> void:
 		ACTION_TOGGLE_RECIPE_LIBRARY: "Reseptikirja",
 		ACTION_TOGGLE_BREWERY_BOOK: "Panimokirja",
 		ACTION_TOGGLE_UPGRADES: "Kellarin parannukset",
+		ACTION_GAME_SPEED: "Pelin nopeus",
 		ACTION_INGREDIENT_PREVIOUS: "Edellinen raaka-aine",
 		ACTION_INGREDIENT_NEXT: "Seuraava raaka-aine",
 		ACTION_AMOUNT_UP: "Määrä ylös (Shift: 10)",
