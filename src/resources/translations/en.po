@@ -5744,6 +5744,10 @@ msgstr "New season"
 msgid "Valikko"
 msgstr "Menu"
 
+#: src/scenes/ui/game_speed_button.gd
+msgid "Pelin nopeus. Puhekuplat pysyvät yhtä kauan luettavina."
+msgstr "Game speed. Speech bubbles stay up just as long to read."
+
 #: src/scenes/ui/ingredient_option_button.gd
 msgid "%s (maine %d)"
 msgstr "%s (reputation %d)"

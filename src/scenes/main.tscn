@@ -21,6 +21,7 @@
 [ext_resource type="Texture2D" uid="uid://ckr0tjvh7srsj" path="res://assets/textures/clock_bg.png" id="10_jscy8"]
 [ext_resource type="Texture2D" uid="uid://cotf62fq6mk8q" path="res://assets/textures/clockhand_32.png" id="12_pm3ni"]
 [ext_resource type="Script" uid="uid://clwrlsny0wt3b" path="res://src/systems/dialog/dialog_view.gd" id="13_jkv2x"]
+[ext_resource type="Script" uid="uid://bamjijnw7ylcq" path="res://src/scenes/ui/game_speed_button.gd" id="17_05g3k"]
 [ext_resource type="Script" uid="uid://ctvoku3p23yqg" path="res://src/ui/warehouse_hover_area.gd" id="17_dp3eg"]
 [ext_resource type="Script" uid="uid://cabnw1tbiyona" path="res://src/customers/customer_spawner.gd" id="17_muem4"]
 [ext_resource type="Texture2D" uid="uid://cixeymlhgqlb8" path="res://assets/textures/PC_32.png" id="18_0ld40"]
@@ -360,6 +361,13 @@ pivot_offset = Vector2(16, 16)
 offset_transform_enabled = true
 mouse_filter = 2
 texture = ExtResource("12_pm3ni")
+
+[node name="GameSpeedButton" type="Button" parent="GUI_CanvasLayer/GUI/TopPanel_Resources" unique_id=1433339387]
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+text = "1x"
+script = ExtResource("17_05g3k")
 
 [node name="CloseDayButton" type="Button" parent="GUI_CanvasLayer/GUI/TopPanel_Resources" unique_id=1208766186]
 layout_mode = 2
