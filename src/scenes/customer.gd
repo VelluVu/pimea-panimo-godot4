@@ -170,16 +170,23 @@ func _queue_stair_descent(tween: Tween, from_pos: Vector2, stairs_pos: Vector2, 
 	if steps <= 0:
 		return
 	tween.tween_callback(_play_animation.bind(ANIM_WALK_TOWARDS, true))
+	var step_from := from_pos
 	for i in range(1, steps + 1):
 		var step_pos := from_pos.lerp(stairs_pos, float(i) / steps)
-		tween.tween_property(self, "global_position", step_pos, customer_data.stair_step_duration).set_trans(Tween.TRANS_LINEAR)
+		PixelStepTween.move(tween, self, step_from, step_pos, customer_data.stair_step_duration, _art_pixel())
 		tween.tween_interval(STAIR_STEP_PAUSE_SECONDS)
+		step_from = step_pos
 
 
 func _queue_floor_walk(tween: Tween, from_pos: Vector2, to_pos: Vector2) -> void:
 	tween.tween_callback(_play_animation.bind(ANIM_WALK_RIGHT, to_pos.x < from_pos.x))
 	var duration := from_pos.distance_to(to_pos) / customer_data.floor_walk_speed
-	tween.tween_property(self, "global_position", to_pos, duration).set_trans(Tween.TRANS_LINEAR)
+	PixelStepTween.move(tween, self, from_pos, to_pos, duration, _art_pixel())
+
+
+## One pixel of the scaled-up art: walks step by it, see PixelStepTween.
+func _art_pixel() -> float:
+	return animated_sprite.scale.x
 
 
 ## The visit frozen for a save. A group member's goes into its group's snapshot.
@@ -382,7 +389,7 @@ func _walk_out(exit_position: Vector2) -> void:
 		if customer_data.carries_glass_out:
 			show_beer_glass()
 	var tween := create_tween()
-	tween.tween_property(self, "global_position", exit_position, duration).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	PixelStepTween.move(tween, self, global_position, exit_position, duration, _art_pixel()).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 	tween.tween_callback(queue_free)
 
 
@@ -397,7 +404,7 @@ func _walk_to_pickup_spot(target: Vector2) -> void:
 	var duration := distance / customer_data.floor_walk_speed
 
 	var tween := create_tween()
-	tween.tween_property(self, "global_position", target, duration).set_trans(Tween.TRANS_LINEAR)
+	PixelStepTween.move(tween, self, global_position, target, duration, _art_pixel())
 	await tween.finished
 
 	_play_animation(ANIM_IDLE_UP)

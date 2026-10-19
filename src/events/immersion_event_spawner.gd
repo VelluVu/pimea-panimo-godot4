@@ -168,7 +168,7 @@ func _cross(actor : ImmersionActorData, points : PackedVector2Array) -> void:
 		if not is_zero_approx(dx):
 			var facing_right : bool = dx > 0.0
 			tween.tween_callback(func() -> void: sprite.flip_h = facing_right)
-		tween.tween_property(sprite, "global_position", points[i], durations[i - 1])
+		PixelStepTween.move(tween, sprite, points[i - 1], points[i], durations[i - 1])
 	tween.tween_callback(_finish_actor.bind(sprite))
 	_fade_in_and_out(sprite, actor.start_delay_seconds, actor.crossing_seconds)
 	_maybe_make_sound(actor, sprite)

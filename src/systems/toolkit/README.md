@@ -10,5 +10,6 @@ Small independent helpers that need nothing else.
 | `CollapsibleSection.new(container, header_label)` | An arrow button beside a header; `collapsed` and a `toggled` signal |
 | `SliderStepper.wrap(slider)` | Big - and + buttons around a slider (hold to repeat) and a larger knob, for touch |
 | `OptionStepper.wrap(option_button)` | < and > buttons around an OptionButton; skips disabled items, wraps around |
+| `PixelStepTween.move(tween, node, from, to, seconds, step)` | Tweens a Node2D's global position in whole steps (one pixel of scaled-up art) instead of gliding through fractions |
 
 Copy the folder to your project (keep the `.uid` files, so scene references still resolve). No wiring file is needed.
