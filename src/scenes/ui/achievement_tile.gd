@@ -6,7 +6,7 @@ extends PanelContainer
 const TILE_SIZE: Vector2 = Vector2(100, 68)
 const ICON_SIZE: Vector2 = Vector2(28, 28)
 const ICON_CORNER_RADIUS: int = 6
-const TITLE_FONT_SIZE: int = 11
+const TITLE_FONT_SIZE: int = 16
 const UNLOCKED_ICON_GLYPH: String = "!"
 const LOCKED_ICON_GLYPH: String = "?"
 const UNLOCKED_COLOR: Color = Color(0.95, 0.79, 0.42)

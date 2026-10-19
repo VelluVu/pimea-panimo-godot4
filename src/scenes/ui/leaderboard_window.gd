@@ -18,10 +18,10 @@ const GLOBAL_EMPTY_TEXT : String = "Ei vielä tuloksia. Ole ensimmäinen!"
 const GLOBAL_TOP_COUNT : int = 50
 ## Minimum widths of the columns above; the last one takes the rest.
 const COLUMN_WIDTHS : Array[int] = [30, 74, 62, 28, 46, 66, 0]
-const ROW_FONT_SIZE : int = 14
+const ROW_FONT_SIZE : int = 16
 const COLUMN_SEPARATION : int = 10
 const SCORE_FONT_SIZE : int = 16
-const HEADER_FONT_SIZE : int = 12
+const HEADER_FONT_SIZE : int = 16
 const STRIPE_COLOR : Color = Color(1, 1, 1, 0.05)
 const HIGHLIGHT_COLOR : Color = Color(0.97, 0.46, 0.13, 0.18)
 const MUTED_COLOR : Color = Color(0.75, 0.73, 0.67, 1)

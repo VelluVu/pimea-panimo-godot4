@@ -37,7 +37,7 @@ mouse_filter = 2
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.8784314, 0.3529412, 0.23529412, 1)
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 32
 text = "LVV-TARKASTUS!"
 horizontal_alignment = 1
 

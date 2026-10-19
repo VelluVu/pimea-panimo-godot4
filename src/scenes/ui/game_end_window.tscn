@@ -36,14 +36,13 @@ alignment = 1
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.8784314, 0.3529412, 0.23529412, 1)
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 32
 text = " "
 horizontal_alignment = 1
 
 [node name="MessageLabel" type="Label" parent="MarginContainer/MainVBox" unique_id=2000688165]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 14
 text = " "
 horizontal_alignment = 1
 autowrap_mode = 3
@@ -58,7 +57,6 @@ alignment = 1
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
-theme_override_font_sizes/font_size = 14
 text = " "
 
 [node name="ResultLabel" type="Label" parent="MarginContainer/MainVBox/ScoreHBox"]
@@ -66,7 +64,6 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_colors/font_color = Color(0.95686275, 0.7058824, 0.105882354, 1)
-theme_override_font_sizes/font_size = 14
 text = " "
 
 [node name="OnlineScorePanel" parent="MarginContainer/MainVBox" instance=ExtResource("2_osp")]
@@ -77,7 +74,6 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.7529412, 0.7254902, 0.6666667, 1)
-theme_override_font_sizes/font_size = 12
 text = " "
 horizontal_alignment = 1
 autowrap_mode = 3

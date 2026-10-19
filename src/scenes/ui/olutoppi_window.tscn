@@ -40,7 +40,7 @@ theme_override_constants/separation = 10
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 32
 
 [node name="RenownLabel" type="Label" parent="MarginContainer/MainVBox/HeaderHBox" unique_id=1264584885]
 unique_name_in_owner = true
@@ -67,7 +67,6 @@ theme_override_constants/separation = 4
 
 [node name="PathTitleLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/BarWorkColumn" unique_id=1932244896]
 layout_mode = 2
-theme_override_font_sizes/font_size = 14
 text = "Baarityöskentely"
 horizontal_alignment = 1
 
@@ -113,7 +112,6 @@ horizontal_alignment = 1
 [node name="LevelBonusLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/BarWorkColumn/BarWorkTreeArea/tip_vieraanvarainen_perinne/VBox" unique_id=322330312]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.949, 0.788, 0.42, 1)
-theme_override_font_sizes/font_size = 11
 horizontal_alignment = 1
 
 [node name="reputation_tunnettu_nimi" type="Button" parent="MarginContainer/MainVBox/PathsHBox/BarWorkColumn/BarWorkTreeArea" unique_id=884178320]
@@ -142,7 +140,6 @@ horizontal_alignment = 1
 [node name="LevelBonusLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/BarWorkColumn/BarWorkTreeArea/reputation_tunnettu_nimi/VBox" unique_id=1723271798]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.949, 0.788, 0.42, 1)
-theme_override_font_sizes/font_size = 11
 horizontal_alignment = 1
 
 [node name="raid_rauhallinen_kellari" type="Button" parent="MarginContainer/MainVBox/PathsHBox/BarWorkColumn/BarWorkTreeArea" unique_id=1311293945]
@@ -171,7 +168,6 @@ horizontal_alignment = 1
 [node name="LevelBonusLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/BarWorkColumn/BarWorkTreeArea/raid_rauhallinen_kellari/VBox" unique_id=342464444]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.949, 0.788, 0.42, 1)
-theme_override_font_sizes/font_size = 11
 horizontal_alignment = 1
 
 [node name="reputation_kanta_asiakkaat" type="Button" parent="MarginContainer/MainVBox/PathsHBox/BarWorkColumn/BarWorkTreeArea" unique_id=1199553508]
@@ -200,7 +196,6 @@ horizontal_alignment = 1
 [node name="LevelBonusLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/BarWorkColumn/BarWorkTreeArea/reputation_kanta_asiakkaat/VBox" unique_id=411936401]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.949, 0.788, 0.42, 1)
-theme_override_font_sizes/font_size = 11
 horizontal_alignment = 1
 
 [node name="raid_terava_silmae" type="Button" parent="MarginContainer/MainVBox/PathsHBox/BarWorkColumn/BarWorkTreeArea" unique_id=1458536638]
@@ -229,7 +224,6 @@ horizontal_alignment = 1
 [node name="LevelBonusLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/BarWorkColumn/BarWorkTreeArea/raid_terava_silmae/VBox" unique_id=35714949]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.949, 0.788, 0.42, 1)
-theme_override_font_sizes/font_size = 11
 horizontal_alignment = 1
 
 [node name="bar_capstone_baarimestari" type="Button" parent="MarginContainer/MainVBox/PathsHBox/BarWorkColumn/BarWorkTreeArea" unique_id=279654870]
@@ -258,7 +252,6 @@ horizontal_alignment = 1
 [node name="LevelBonusLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/BarWorkColumn/BarWorkTreeArea/bar_capstone_baarimestari/VBox" unique_id=2097707576]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.949, 0.788, 0.42, 1)
-theme_override_font_sizes/font_size = 11
 horizontal_alignment = 1
 
 [node name="BrewingColumn" type="VBoxContainer" parent="MarginContainer/MainVBox/PathsHBox" unique_id=60076309]
@@ -269,7 +262,6 @@ theme_override_constants/separation = 4
 
 [node name="PathTitleLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/BrewingColumn" unique_id=1904988027]
 layout_mode = 2
-theme_override_font_sizes/font_size = 14
 text = "Oluenpanotaito"
 horizontal_alignment = 1
 
@@ -315,7 +307,6 @@ horizontal_alignment = 1
 [node name="LevelBonusLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/BrewingColumn/BrewingTreeArea/quality_perinnetaito/VBox" unique_id=2090980394]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.949, 0.788, 0.42, 1)
-theme_override_font_sizes/font_size = 11
 horizontal_alignment = 1
 
 [node name="quality_tarkka_pilkonta" type="Button" parent="MarginContainer/MainVBox/PathsHBox/BrewingColumn/BrewingTreeArea" unique_id=524792980]
@@ -344,7 +335,6 @@ horizontal_alignment = 1
 [node name="LevelBonusLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/BrewingColumn/BrewingTreeArea/quality_tarkka_pilkonta/VBox" unique_id=1459588127]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.949, 0.788, 0.42, 1)
-theme_override_font_sizes/font_size = 11
 horizontal_alignment = 1
 
 [node name="quality_kaymisen_hallinta" type="Button" parent="MarginContainer/MainVBox/PathsHBox/BrewingColumn/BrewingTreeArea" unique_id=225711000]
@@ -373,7 +363,6 @@ horizontal_alignment = 1
 [node name="LevelBonusLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/BrewingColumn/BrewingTreeArea/quality_kaymisen_hallinta/VBox" unique_id=826354990]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.949, 0.788, 0.42, 1)
-theme_override_font_sizes/font_size = 11
 horizontal_alignment = 1
 
 [node name="quality_mallastuksen_mestari" type="Button" parent="MarginContainer/MainVBox/PathsHBox/BrewingColumn/BrewingTreeArea" unique_id=1225773235]
@@ -402,7 +391,6 @@ horizontal_alignment = 1
 [node name="LevelBonusLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/BrewingColumn/BrewingTreeArea/quality_mallastuksen_mestari/VBox" unique_id=1561163342]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.949, 0.788, 0.42, 1)
-theme_override_font_sizes/font_size = 11
 horizontal_alignment = 1
 
 [node name="quality_hygieniamestari" type="Button" parent="MarginContainer/MainVBox/PathsHBox/BrewingColumn/BrewingTreeArea" unique_id=350305910]
@@ -431,7 +419,6 @@ horizontal_alignment = 1
 [node name="LevelBonusLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/BrewingColumn/BrewingTreeArea/quality_hygieniamestari/VBox" unique_id=1945496179]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.949, 0.788, 0.42, 1)
-theme_override_font_sizes/font_size = 11
 horizontal_alignment = 1
 
 [node name="brewing_capstone_panimomestari" type="Button" parent="MarginContainer/MainVBox/PathsHBox/BrewingColumn/BrewingTreeArea" unique_id=1153609884]
@@ -460,7 +447,6 @@ horizontal_alignment = 1
 [node name="LevelBonusLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/BrewingColumn/BrewingTreeArea/brewing_capstone_panimomestari/VBox" unique_id=929365162]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.949, 0.788, 0.42, 1)
-theme_override_font_sizes/font_size = 11
 horizontal_alignment = 1
 
 [node name="MarketingColumn" type="VBoxContainer" parent="MarginContainer/MainVBox/PathsHBox" unique_id=518902692]
@@ -471,7 +457,6 @@ theme_override_constants/separation = 4
 
 [node name="PathTitleLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/MarketingColumn" unique_id=320318112]
 layout_mode = 2
-theme_override_font_sizes/font_size = 14
 text = "Markkinointi"
 horizontal_alignment = 1
 
@@ -517,7 +502,6 @@ horizontal_alignment = 1
 [node name="LevelBonusLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/MarketingColumn/MarketingTreeArea/marketing_tukkukauppias/VBox" unique_id=1034830470]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.949, 0.788, 0.42, 1)
-theme_override_font_sizes/font_size = 11
 horizontal_alignment = 1
 
 [node name="ingredient_price_neuvottelutaito" type="Button" parent="MarginContainer/MainVBox/PathsHBox/MarketingColumn/MarketingTreeArea" unique_id=282942229]
@@ -546,7 +530,6 @@ horizontal_alignment = 1
 [node name="LevelBonusLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/MarketingColumn/MarketingTreeArea/ingredient_price_neuvottelutaito/VBox" unique_id=1979032202]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.949, 0.788, 0.42, 1)
-theme_override_font_sizes/font_size = 11
 horizontal_alignment = 1
 
 [node name="marketing_mainoskampanja" type="Button" parent="MarginContainer/MainVBox/PathsHBox/MarketingColumn/MarketingTreeArea" unique_id=1931442891]
@@ -575,7 +558,6 @@ horizontal_alignment = 1
 [node name="LevelBonusLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/MarketingColumn/MarketingTreeArea/marketing_mainoskampanja/VBox" unique_id=2060682959]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.949, 0.788, 0.42, 1)
-theme_override_font_sizes/font_size = 11
 horizontal_alignment = 1
 
 [node name="distribution_income_tukkuhinnat" type="Button" parent="MarginContainer/MainVBox/PathsHBox/MarketingColumn/MarketingTreeArea" unique_id=1465620318]
@@ -604,7 +586,6 @@ horizontal_alignment = 1
 [node name="LevelBonusLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/MarketingColumn/MarketingTreeArea/distribution_income_tukkuhinnat/VBox" unique_id=1068691086]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.949, 0.788, 0.42, 1)
-theme_override_font_sizes/font_size = 11
 horizontal_alignment = 1
 
 [node name="marketing_vahva_brandi" type="Button" parent="MarginContainer/MainVBox/PathsHBox/MarketingColumn/MarketingTreeArea" unique_id=1363251003]
@@ -633,7 +614,6 @@ horizontal_alignment = 1
 [node name="LevelBonusLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/MarketingColumn/MarketingTreeArea/marketing_vahva_brandi/VBox" unique_id=625014951]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.949, 0.788, 0.42, 1)
-theme_override_font_sizes/font_size = 11
 horizontal_alignment = 1
 
 [node name="raid_piilokatko" type="Button" parent="MarginContainer/MainVBox/PathsHBox/MarketingColumn/MarketingTreeArea" unique_id=839202782]
@@ -662,5 +642,4 @@ horizontal_alignment = 1
 [node name="LevelBonusLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/MarketingColumn/MarketingTreeArea/raid_piilokatko/VBox" unique_id=1305929436]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.949, 0.788, 0.42, 1)
-theme_override_font_sizes/font_size = 11
 horizontal_alignment = 1

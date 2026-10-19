@@ -17,8 +17,8 @@ const POPUP_FLOAT_DISTANCE : float = 35.0
 const POPUP_DURATION_SECONDS : float = 1.8
 ## Loud popups stay a little longer so they can be read after the bounce.
 const LOUD_POPUP_DURATION_SECONDS : float = 2.4
-## Font size multiplier per Emphasis.
-const POPUP_FONT_SCALES : Array[float] = [1.0, 1.4, 1.9]
+## Font size multiplier per Emphasis. Whole numbers only: the pixel font blurs between them.
+const POPUP_FONT_SCALES : Array[float] = [1.0, 2.0, 2.0]
 const POPUP_OUTLINE_SIZE : int = 4
 const POPUP_OUTLINE_COLOR : Color = Color(0.12, 0.06, 0.0, 1.0)
 const POPUP_START_SCALE : float = 0.4
