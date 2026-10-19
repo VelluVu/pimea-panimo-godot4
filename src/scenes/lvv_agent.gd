@@ -10,6 +10,7 @@ const ANIM_IDLE_UP : StringName = &"idle_up"
 const ANIM_WALK_TOWARDS : StringName = &"walk_towards"
 const ANIM_WALK_RIGHT : StringName = &"walk_right"
 const ANIM_WALK_AWAY : StringName = &"walk_away"
+const WALK_ANIMATIONS : Array[StringName] = [ANIM_WALK_TOWARDS, ANIM_WALK_RIGHT, ANIM_WALK_AWAY]
 
 ## Same pace as CustomerData's defaults, so the squad matches ordinary foot traffic.
 const STAIR_STEP_DURATION : float = 0.3
@@ -35,6 +36,7 @@ func _play_animation(anim_name : StringName, flip_horizontally : bool = false) -
 		return
 	animated_sprite.flip_h = flip_horizontally
 	animated_sprite.play(anim_name)
+	animated_sprite.speed_scale = WalkCadence.for_sprite(animated_sprite, FLOOR_WALK_SPEED, WALK_ANIMATIONS)
 	_update_carried_keg_z_index(anim_name)
 
 
