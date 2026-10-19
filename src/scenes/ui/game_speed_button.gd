@@ -18,19 +18,24 @@ func _ready() -> void:
 
 func _process(_delta : float) -> void:
 	if _index != 0:
-		Engine.time_scale = GameSpeed.time_scale(_index, get_tree().paused)
+		_apply(GameSpeed.time_scale(_index, get_tree().paused))
 
 
 func _exit_tree() -> void:
 	if _index != 0:
-		Engine.time_scale = 1.0
+		_apply(1.0)
 
 
 func _on_pressed() -> void:
 	_index = GameSpeed.next_index(_index)
 	if _index == 0:
-		Engine.time_scale = 1.0
+		_apply(1.0)
 	_refresh()
+
+
+func _apply(speed : float) -> void:
+	Engine.time_scale = speed
+	GameSpeed.player_speed = speed
 
 
 func _refresh() -> void:

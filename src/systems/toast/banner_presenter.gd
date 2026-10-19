@@ -65,7 +65,8 @@ func present(text : String, flash_color : Color = FLASH_COLOR) -> void:
 	var flash_opaque : Color = Color(flash_color, 1.0)
 	_label.modulate = Color(flash_color, 0.0) if _bright_flash else TRANSPARENT_COLOR
 
-	_tween = _label.create_tween()
+	# Real seconds, so a sped-up game does not cut the reading time.
+	_tween = _label.create_tween().set_ignore_time_scale()
 	if _bright_flash:
 		_tween.tween_property(_label, "modulate", flash_opaque, _flash_seconds)
 		_tween.tween_property(_label, "modulate", SETTLED_COLOR, _flash_seconds)
@@ -80,7 +81,7 @@ func dismiss_early() -> void:
 	if _tween == null or not _tween.is_running():
 		return
 	_kill_tween()
-	_tween = _label.create_tween()
+	_tween = _label.create_tween().set_ignore_time_scale()
 	_append_fade_out(_tween)
 
 

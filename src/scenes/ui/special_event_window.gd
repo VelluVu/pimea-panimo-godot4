@@ -43,14 +43,16 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
+	# The player reads and answers in real seconds, whatever the game speed.
+	var real_delta : float = GameSpeed.real_delta(delta)
 	match _state:
 		State.ASKING:
-			time_left -= delta
+			time_left -= real_delta
 			_show_time(time_left)
 			if time_left <= 0.0:
 				_timeout_event()
 		State.DELIVERING:
-			_delivery_left -= delta
+			_delivery_left -= real_delta
 			_show_time(_delivery_left)
 			_check_clock += delta
 			if _check_clock >= DELIVERY_CHECK_SECONDS:
@@ -178,7 +180,7 @@ func _hide_button() -> void:
 
 
 func _start_fade_out(seconds: float = DISPLAY_TIME_SECONDS) -> void:
-	_fade_timer = get_tree().create_timer(seconds)
+	_fade_timer = GameSpeed.reading_timer(get_tree(), seconds)
 	await _fade_timer.timeout
 	queue_free()
 
