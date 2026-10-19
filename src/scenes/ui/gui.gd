@@ -7,6 +7,7 @@ extends Control
 @onready var first_brew_hint_banner : Label = $FirstBrewHintBanner
 @onready var day_event_banner : Label = $DayEventBanner
 @onready var close_day_button : Button = $TopPanel_Resources/CloseDayButton
+@onready var game_speed_button : GameSpeedButton = $TopPanel_Resources/GameSpeedButton
 @onready var close_day_confirm_window : CloseDayConfirmWindow = $CloseDayConfirmWindow
 @onready var dialog_view : Control = $DialogView
 @onready var special_events_container : VBoxContainer = $DialogView/SpecialEventsContainer
@@ -106,6 +107,10 @@ func _on_shortcut_pressed(action: StringName) -> void:
 			GUISignals.customer_book_requested.emit()
 		InputManager.ACTION_TOGGLE_UPGRADES:
 			_toggle_cellar_upgrades_window()
+		# Not while the top bar is hidden, so the speed never changes unseen.
+		InputManager.ACTION_GAME_SPEED:
+			if game_speed_button.is_visible_in_tree():
+				game_speed_button.cycle()
 
 
 ## Closes every open view and popup in one press; if none was open, opens the game menu.

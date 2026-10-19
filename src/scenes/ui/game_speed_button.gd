@@ -1,3 +1,4 @@
+class_name GameSpeedButton
 extends Button
 
 ## Cycles the game speed (see GameSpeed). Processes while paused to drop back to 1x under a
@@ -12,7 +13,7 @@ var _index : int = 0
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	tooltip_text = SPEED_TOOLTIP
-	pressed.connect(_on_pressed)
+	pressed.connect(cycle)
 	_refresh()
 
 
@@ -26,7 +27,8 @@ func _exit_tree() -> void:
 		_apply(1.0)
 
 
-func _on_pressed() -> void:
+## The next speed; the button and its shortcut both land here.
+func cycle() -> void:
 	_index = GameSpeed.next_index(_index)
 	if _index == 0:
 		_apply(1.0)

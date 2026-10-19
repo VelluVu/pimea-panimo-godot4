@@ -6305,6 +6305,10 @@ msgid "Panimo"
 msgstr "Brewery"
 
 #: src/systems/input/input_wiring.gd
+msgid "Pelin nopeus"
+msgstr "Game speed"
+
+#: src/systems/input/input_wiring.gd
 msgid "Seuraava raaka-aine"
 msgstr "Next ingredient"
 
