@@ -226,7 +226,8 @@ func _collapse(entry : BubbleEntry) -> void:
 
 
 func _hide_after_delay(entry : BubbleEntry, slot : int, token : int, display_time : float, fade_time : float) -> void:
-	await get_tree().create_timer(display_time).timeout
+	# Real seconds (ignore_time_scale): a sped-up game must not cut the reading time.
+	await get_tree().create_timer(display_time, true, false, true).timeout
 	if not entry.is_current(token):
 		return
 
