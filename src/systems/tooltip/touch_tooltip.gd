@@ -45,7 +45,8 @@ func _input(event: InputEvent) -> void:
 
 
 func _process(delta: float) -> void:
-	if _hold.tick(delta):
+	# A hold is timed in real seconds, also when the game runs faster.
+	if _hold.tick(delta / Engine.time_scale):
 		_open_at(get_viewport().get_mouse_position())
 
 

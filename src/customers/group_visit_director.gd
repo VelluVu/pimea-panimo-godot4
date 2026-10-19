@@ -123,10 +123,11 @@ func _run_stage(visit : GroupVisit, resume_seconds : float) -> bool:
 
 
 ## False when the host was freed meanwhile (scene change): the visit must stop.
-func _wait(visit : GroupVisit, seconds : float) -> bool:
+## A `reading` wait holds a line up and runs in real seconds at any game speed.
+func _wait(visit : GroupVisit, seconds : float, reading : bool = false) -> bool:
 	if not is_instance_valid(_host):
 		return false
-	visit.timer = _host.get_tree().create_timer(seconds)
+	visit.timer = GameSpeed.reading_timer(_host.get_tree(), seconds) if reading else _host.get_tree().create_timer(seconds)
 	await visit.timer.timeout
 	return is_instance_valid(_host)
 
@@ -216,7 +217,7 @@ func _order(visit : GroupVisit, resume_seconds : float) -> bool:
 		visit.order_data = build_order_data(visit.event_data.customer_data_options, visit.size(), _active_styles.call(), MetaProgressManager.get_discovered_styles())
 		_say(visit, SPEECH_FORMAT % [_group_label(visit), tr(visit.order_data.dialogue_intro)])
 		resume_seconds = Customer.PREVIEW_DELAY_SECONDS
-	if not await _wait(visit, resume_seconds):
+	if not await _wait(visit, resume_seconds, true):
 		return false
 	_sell(visit)
 	return true
@@ -292,7 +293,7 @@ func _talk(visit : GroupVisit, resume_seconds : float) -> bool:
 		if visit.bar_fight_bottles >= 0:
 			_start_group_rampage(visit, visit.bar_fight_bottles)
 			resume_seconds = maxf(resume_seconds, BarFightRampage.DURATION_SECONDS)
-	return await _wait(visit, resume_seconds)
+	return await _wait(visit, resume_seconds, true)
 
 
 ## The representative leaves in place; the rest collect their round first, staggered.

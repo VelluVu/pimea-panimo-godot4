@@ -32,7 +32,7 @@ func initialize_text(text : String, text_color : Color = Color.WHITE) -> void:
 	label.modulate = text_color
 	_resize_to_fit_content()
 
-	var timer := get_tree().create_timer(HOLD_SECONDS)
+	var timer := GameSpeed.reading_timer(get_tree(), HOLD_SECONDS)
 	timer.timeout.connect(_start_fade_out)
 
 

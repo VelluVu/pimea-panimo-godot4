@@ -73,11 +73,11 @@ func _flash(delay : float) -> void:
 	_run_id += 1
 	var my_run : int = _run_id
 	if delay > 0.0:
-		await get_tree().create_timer(delay).timeout
+		await GameSpeed.reading_timer(get_tree(), delay).timeout
 		if my_run != _run_id:
 			return
 	_set_shown(true)
-	await get_tree().create_timer(SHOW_SECONDS).timeout
+	await GameSpeed.reading_timer(get_tree(), SHOW_SECONDS).timeout
 	if my_run == _run_id:
 		_set_shown(false)
 

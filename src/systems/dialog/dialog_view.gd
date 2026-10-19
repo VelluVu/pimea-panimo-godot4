@@ -98,7 +98,8 @@ func show_popup(text : String, color : Color, anchor_pos : Vector2, emphasis : E
 	var global_pos : Vector2 = anchor_pos - popup.pivot_offset
 	popup.global_position = global_pos
 
-	var tween := create_tween()
+	# Real seconds, like the bubbles: the numbers stay readable at any game speed.
+	var tween := create_tween().set_ignore_time_scale()
 	if delay_seconds > 0.0:
 		tween.tween_interval(delay_seconds)
 	tween.tween_callback(_reveal.bind(popup, emphasis, anchor_pos))
