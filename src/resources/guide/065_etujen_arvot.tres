@@ -6,4 +6,4 @@
 script = ExtResource("1_guide")
 order = 70
 title = "Etujen arvot"
-lines = Array[String](["Etujen arvot näkyvät prosentteina: +15 % kasvattaa, -15 % pienentää.", "Raaka-aineiden hinnat: -10 % tarkoittaa 10 % halvempia raaka-aineita.", "Useimmat samaan asiaan vaikuttavat edut kertautuvat keskenään: kaksi +15 %:n etua tipeille antaa yhteensä vähän yli +30 %.", "Kauden tilastot -ikkunassa näet kaikki etusi ja niiden yhteisvaikutuksen."])
+lines = Array[String](["Etujen arvot näkyvät kahdella tavalla: +15 % tai ×+15 %. Plus kasvattaa, miinus pienentää.", "+15 %: lasketaan yhteen muiden samanlaisten etujen kanssa. Kaksi +15 %:n etua tipeille antaa yhteensä +30 %.", "×+15 %: kertautuu muiden kanssa. Kaksi ×+15 %:n etua tipeille antaa yhteensä +32 %.", "Raaka-aineiden hinnat ×-10 % tarkoittaa 10 % halvempia raaka-aineita.", "Kauden tilastot -ikkunassa näet kaikki etusi ja niiden yhteisvaikutuksen."])

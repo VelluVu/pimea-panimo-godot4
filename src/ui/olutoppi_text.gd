@@ -26,7 +26,7 @@ static func short_bonus(unlock : MetaUnlockData, level : int) -> String:
 		if value == PerkStats.neutral_value(kind):
 			continue
 		# The square is small: "+15%" without the space.
-		return PerkStats.value_text(kind, value).replace(" ", "")
+		return PerkStats.value_text(kind, value, scaled.stacks_additively).replace(" ", "")
 	return BONUS_NEUTRAL_TEXT
 
 
