@@ -265,7 +265,7 @@ func _resume_served(snap: CustomerSnapshot) -> void:
 	_bubble_text = snap.bubble_text
 	if snap.time_left > FADE_TIME_SECONDS:
 		_say(snap.bubble_text, false, snap.time_left - FADE_TIME_SECONDS)
-	_phase_timer = get_tree().create_timer(maxf(snap.time_left, 0.01))
+	_phase_timer = get_tree().create_timer(maxf(snap.time_left, 0.01), false)
 	_phase_timer.timeout.connect(leave_counter)
 
 
@@ -279,7 +279,7 @@ func _enter_counter_phase(phase: CustomerSnapshot.Phase, text: String, next: Cal
 	_phase = phase
 	_bubble_text = text
 	var display_time := _say(text, true, seconds)
-	_phase_timer = get_tree().create_timer(display_time)
+	_phase_timer = get_tree().create_timer(display_time, false)
 	_phase_timer.timeout.connect(next)
 
 
@@ -316,7 +316,7 @@ func _on_sale_timeout() -> void:
 	if outcome.bar_fight_bottles >= 0:
 		play_rampage(outcome.bar_fight_bottles)
 		leave_after = maxf(leave_after, BarFightRampage.DURATION_SECONDS)
-	_phase_timer = get_tree().create_timer(leave_after)
+	_phase_timer = get_tree().create_timer(leave_after, false)
 	_phase_timer.timeout.connect(leave_counter)
 
 

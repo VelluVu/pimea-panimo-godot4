@@ -36,7 +36,8 @@ const DRIFTING_NOTE_OUTLINE_COLOR : Color = Color(0.05, 0.05, 0.05, 1)
 const BUBBLE_Z_BASE : int = -1000
 const STACKED_Z_OFFSET : int = 100
 
-## False keeps bubbles up for real seconds at any Engine.time_scale.
+## True: bubbles keep game time (Engine.time_scale, and they wait out a pause); false: real
+## seconds at any speed, paused or not.
 var bubbles_follow_time_scale : bool = false
 
 ## Dialogue slot (int) -> BubbleEntry.
@@ -230,7 +231,7 @@ func _collapse(entry : BubbleEntry) -> void:
 
 
 func _hide_after_delay(entry : BubbleEntry, slot : int, token : int, display_time : float, fade_time : float) -> void:
-	await get_tree().create_timer(display_time, true, false, not bubbles_follow_time_scale).timeout
+	await get_tree().create_timer(display_time, not bubbles_follow_time_scale, false, not bubbles_follow_time_scale).timeout
 	if not entry.is_current(token):
 		return
 

@@ -60,7 +60,7 @@ func _run_raid(raid : LvvRaidSnapshot) -> void:
 	var wait : float = raid.next_agent_in
 	while _agents.size() < raid.agent_count:
 		if wait > 0.0:
-			_stagger_timer = get_tree().create_timer(wait)
+			_stagger_timer = get_tree().create_timer(wait, false)
 			await _stagger_timer.timeout
 		_send_agent(0.0)
 		wait = AGENT_SPAWN_STAGGER_SECONDS
