@@ -5,15 +5,15 @@ signal day_changed(new_day : int)
 ## A sale still under way when the day runs out: recheck after this long.
 const DAY_END_CUSTOMER_RETRY_SECONDS : float = 5.0
 
-## Aging ticks in real time, so beer ages at the same pace whatever the day length or an
-## early close.
-const AGING_TICK_SECONDS : float = 30.0
+## Aging ticks on its own timer, so an early close does not skip it; DayPace keeps the
+## ticks per day the same.
+const AGING_TICK_SECONDS : float = 30.0 * DayPace.SCALE
 ## Fermentation counts down in steps this long, see Fermenter.
 const FERMENT_TICK_SECONDS : float = 1.0
 
 const LOG_DAY_CHANGED : String = "--- DAY CHANGED: Day %s starts ---"
 
-@export var day_duration_seconds : float = 300
+@export var day_duration_seconds : float = DayPace.DAY_SECONDS
 var day_timer: Timer
 var aging_timer: Timer
 var ferment_timer: Timer

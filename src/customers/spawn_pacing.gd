@@ -4,9 +4,9 @@ extends RefCounted
 ## How long the cellar waits for the next walk-in or group. Reputation and perks shorten
 ## both, never below each floor; more styles on tap shorten the walk-in wait a little.
 
-const WALK_IN_INTERVAL_MIN_SECONDS: float = 30.0
-const WALK_IN_INTERVAL_MAX_SECONDS: float = 90.0
-const WALK_IN_INTERVAL_FLOOR_SECONDS: float = 10.0
+const WALK_IN_INTERVAL_MIN_SECONDS: float = 30.0 * DayPace.SCALE
+const WALK_IN_INTERVAL_MAX_SECONDS: float = 90.0 * DayPace.SCALE
+const WALK_IN_INTERVAL_FLOOR_SECONDS: float = 10.0 * DayPace.SCALE
 ## Reputation at which waits are halved; they keep shrinking past it, ever slower.
 const REPUTATION_SPAWN_SOFT_CAP: float = 100.0
 ## Each style on tap beyond the first draws this much more walk-in flow, up to
@@ -15,9 +15,9 @@ const TAP_FLOW_PER_STYLE: float = 0.05
 const TAP_FLOW_MAX_EXTRA_STYLES: int = 5
 
 ## Group visits are rarer than walk-ins and have a higher floor.
-const GROUP_EVENT_INTERVAL_MIN_SECONDS: float = 150.0
-const GROUP_EVENT_INTERVAL_MAX_SECONDS: float = 300.0
-const GROUP_EVENT_FLOOR_SECONDS: float = 120.0
+const GROUP_EVENT_INTERVAL_MIN_SECONDS: float = 150.0 * DayPace.SCALE
+const GROUP_EVENT_INTERVAL_MAX_SECONDS: float = 300.0 * DayPace.SCALE
+const GROUP_EVENT_FLOOR_SECONDS: float = 120.0 * DayPace.SCALE
 
 
 ## The (min, max) wait: the base range scaled by `factor`, never below `floor_seconds`.

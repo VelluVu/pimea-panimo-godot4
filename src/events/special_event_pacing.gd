@@ -4,7 +4,7 @@ extends RefCounted
 ## How long until the next special event. MAX_RISK_SPEEDUP is 0: with it, risk-lowering
 ## events crowded out the rest (bot playtests, 2026-10-09); the risk weighting is enough.
 
-const BASE_INTERVAL_SECONDS: float = 300.0
+const BASE_INTERVAL_SECONDS: float = 300.0 * DayPace.SCALE
 ## At the raid threshold the wait is this much shorter.
 const MAX_RISK_SPEEDUP: float = 0.0
 

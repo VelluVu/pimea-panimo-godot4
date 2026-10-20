@@ -54,4 +54,5 @@ static func day_progress(is_running : bool, wait_time : float, time_left : float
 
 ## How long the clock runs after (re)starting: the saved time left, or a full day for -1.
 static func clock_start_seconds(saved_remaining : float, day_duration : float) -> float:
-	return saved_remaining if saved_remaining >= 0.0 else day_duration
+	# A save from when days were longer must not leave more than a day on the clock.
+	return minf(saved_remaining, day_duration) if saved_remaining >= 0.0 else day_duration

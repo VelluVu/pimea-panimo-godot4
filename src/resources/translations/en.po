@@ -3286,10 +3286,10 @@ msgstr ""
 
 #: src/resources/guide/01_kausi.tres
 msgid ""
-"Päivä kestää viisi minuuttia. Joka yö ensimmäistä lukuun ottamatta maksat "
+"Päivä kestää kolme minuuttia. Joka yö ensimmäistä lukuun ottamatta maksat "
 "sähköstä ja vedestä 8 €."
 msgstr ""
-"A day lasts five minutes. Every night except the first you pay 8 € for "
+"A day lasts three minutes. Every night except the first you pay 8 € for "
 "electricity and water."
 
 #: src/resources/guide/01_kausi.tres
