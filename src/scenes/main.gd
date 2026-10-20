@@ -30,4 +30,4 @@ func _on_brewery_state_changed(brewery: Brewery) -> void:
 func _on_beer_sale_breakdown(entry: SaleReceiptEntry) -> void:
 	var tap: int = _tap_batches.find(entry.batch)
 	var offset: float = 0.0 if tap < 0 else bartender.offset_to_pour_at(tap_tower.spout_global_x(tap))
-	bartender.play_serve_beer(1.0, entry.beer_ebc, offset)
+	bartender.play_serve_beer(Bartender.SOLO_POUR_SPEED_SCALE, entry.beer_ebc, offset)

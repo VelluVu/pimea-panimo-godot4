@@ -4,10 +4,7 @@ extends RefCounted
 ## A customer's two glasses: the one the bartender slides along the counter and the one
 ## carried out in hand, both filled with the colour of the beer bought.
 
-## How long a just-served glass waits before it appears; matches Bartender's serve_beer
-## animation (2.0s) so the glass comes once the pour has finished.
-const SERVE_WAIT_SECONDS : float = 2.0
-const SLIDE_DURATION_SECONDS : float = 0.6
+const SLIDE_DURATION_SECONDS : float = 0.4
 
 ## The EBC of the beer bought; -1 while nothing was.
 var beer_ebc : int = -1
@@ -45,8 +42,12 @@ func show_in_hand() -> void:
 	_hand.show()
 
 
-## The counter glass comes after `seconds`, once the bartender has poured.
-func serve_after(seconds : float = SERVE_WAIT_SECONDS) -> void:
+## The counter glass comes after `seconds`; by default once the bartender's pours end,
+## the one for this sale being the last asked for.
+func serve_after(seconds : float = -1.0) -> void:
+	if seconds < 0.0:
+		var bartender := _owner.get_tree().get_first_node_in_group(Bartender.BARTENDER_GROUP) as Bartender
+		seconds = bartender.pours_left_seconds() if bartender != null else 0.0
 	_serve_timer = _owner.get_tree().create_timer(seconds)
 	_serve_timer.timeout.connect(slide_to_counter)
 

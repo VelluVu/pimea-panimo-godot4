@@ -11,6 +11,7 @@ folders needed.
 | `show_bubble(text, slot, speaker_pos, display_time, fade_time)` | Shows or replaces the bubble of `slot` above `speaker_pos` (global) |
 | `close_bubble(slot)` | Closes that bubble at once, even mid-fade |
 | `show_popup(text, color, global_pos)` | A short floating text |
+| `bubbles_follow_time_scale` | True: bubbles keep pace with `Engine.time_scale`; false (default): real seconds |
 
 ## Use it in a new project
 

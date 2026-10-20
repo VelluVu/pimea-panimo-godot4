@@ -5,7 +5,7 @@ extends Button
 ## pause. At 1x it leaves Engine.time_scale alone, so the playtest bots keep their own.
 
 const SPEED_FORMAT : String = "%dx"
-const SPEED_TOOLTIP : String = "Pelin nopeus. Puhekuplat pysyvät yhtä kauan luettavina."
+const SPEED_TOOLTIP : String = "Pelin nopeus."
 
 var _index : int = 0
 

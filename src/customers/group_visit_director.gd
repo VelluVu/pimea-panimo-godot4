@@ -16,8 +16,12 @@ const DIALOGUE_SLOT_RANGE : int = 90
 const CHANT_BUBBLE_EXTRA_SECONDS : float = 0.3
 const CHANT_BUBBLE_FADE_SECONDS : float = 0.3
 
+## Between glasses when there is no Bartender to pour them.
 const SERVE_INTERVAL_SECONDS : float = 0.3
+## A group's pours run at least this fast, and faster for a big group so the whole round
+## takes about SERVE_BURST_SECONDS.
 const SERVE_ANIMATION_SPEED_SCALE : float = 3.0
+const SERVE_BURST_SECONDS : float = 1.5
 const SERVE_GLASS_SLIDE_SECONDS : float = 0.25
 
 ## Everyone but the representative stands this far back, so the crowd hides no pouring.
@@ -123,11 +127,10 @@ func _run_stage(visit : GroupVisit, resume_seconds : float) -> bool:
 
 
 ## False when the host was freed meanwhile (scene change): the visit must stop.
-## A `reading` wait holds a line up and runs in real seconds at any game speed.
-func _wait(visit : GroupVisit, seconds : float, reading : bool = false) -> bool:
+func _wait(visit : GroupVisit, seconds : float) -> bool:
 	if not is_instance_valid(_host):
 		return false
-	visit.timer = GameSpeed.reading_timer(_host.get_tree(), seconds) if reading else _host.get_tree().create_timer(seconds)
+	visit.timer = _host.get_tree().create_timer(seconds)
 	await visit.timer.timeout
 	return is_instance_valid(_host)
 
@@ -217,7 +220,7 @@ func _order(visit : GroupVisit, resume_seconds : float) -> bool:
 		visit.order_data = build_order_data(visit.event_data.customer_data_options, visit.size(), _active_styles.call(), MetaProgressManager.get_discovered_styles())
 		_say(visit, SPEECH_FORMAT % [_group_label(visit), tr(visit.order_data.dialogue_intro)])
 		resume_seconds = Customer.PREVIEW_DELAY_SECONDS
-	if not await _wait(visit, resume_seconds, true):
+	if not await _wait(visit, resume_seconds):
 		return false
 	_sell(visit)
 	return true
@@ -263,17 +266,21 @@ func _start_group_rampage(visit : GroupVisit, broken_bottles : int) -> void:
 			member.play_rampage(BarFightRampage.share_of(i, broken_bottles, visit.size()))
 
 
-## One sale, many drinks: a sped-up pour per member, then the sale's popups.
+## One sale, many drinks: a sped-up pour per member, each glass out as its pour ends, then
+## the sale's popups.
 func _serve_burst(visit : GroupVisit, resume_seconds : float) -> bool:
 	if visit.purchased:
 		var bartender := _host.get_tree().get_first_node_in_group(Bartender.BARTENDER_GROUP) as Bartender
+		var pour_speed : float = SERVE_ANIMATION_SPEED_SCALE
+		if bartender != null:
+			pour_speed = maxf(pour_speed, bartender.serve_seconds(1.0) * visit.size() / SERVE_BURST_SECONDS)
 		while visit.served < visit.size():
-			var seconds : float = resume_seconds if resume_seconds >= 0.0 else SERVE_INTERVAL_SECONDS
+			var seconds : float = resume_seconds
 			resume_seconds = -1.0
+			if seconds < 0.0:
+				seconds = bartender.play_serve_beer(pour_speed, visit.beer_ebc) if bartender != null else SERVE_INTERVAL_SECONDS
 			if not await _wait(visit, seconds):
 				return false
-			if bartender != null:
-				bartender.play_serve_beer(SERVE_ANIMATION_SPEED_SCALE, visit.beer_ebc)
 			var member : Variant = visit.members[visit.served]
 			visit.served += 1
 			if is_instance_valid(member):
@@ -293,7 +300,7 @@ func _talk(visit : GroupVisit, resume_seconds : float) -> bool:
 		if visit.bar_fight_bottles >= 0:
 			_start_group_rampage(visit, visit.bar_fight_bottles)
 			resume_seconds = maxf(resume_seconds, BarFightRampage.DURATION_SECONDS)
-	return await _wait(visit, resume_seconds, true)
+	return await _wait(visit, resume_seconds)
 
 
 ## The representative leaves in place; the rest collect their round first, staggered.
@@ -326,7 +333,7 @@ func _show_bubble(visit : GroupVisit, text : String, position : Vector2, display
 	visit.bubble_text = text
 	visit.bubble_position = position
 	visit.bubble_fade = fade_seconds
-	visit.bubble_timer = GameSpeed.reading_timer(_host.get_tree(), display_time)
+	visit.bubble_timer = _host.get_tree().create_timer(display_time)
 	BrewerySignals.dialogue_pushed.emit(text, false, visit.dialogue_slot, position, display_time, fade_seconds)
 
 
