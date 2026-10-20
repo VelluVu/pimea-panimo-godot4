@@ -57,6 +57,8 @@ const LVV_HINT_TEXT: String = "LVV-riski nousee. Panimokirjan ohjeet kertovat, m
 var _toasts: ToastStack
 var _group_visit_banner: BannerPresenter
 var _day_event_banner: BannerPresenter
+## The group visit and day event banners share the bottom strip, so they take turns.
+var _bottom_banners: BannerQueue = BannerQueue.new()
 var _first_brew_hint: BannerPresenter
 var _unlock_cards: PopupCardStack
 var _day_recap_window: DayRecapWindow
@@ -179,7 +181,7 @@ func _on_reputation_tier_changed(tier: ReputationTier, rose: bool) -> void:
 
 
 func _on_group_visit_announced(banner_text: String) -> void:
-	_group_visit_banner.present(tr(banner_text))
+	_bottom_banners.show(_group_visit_banner, tr(banner_text))
 
 
 ## The day's forecast banner waits for the recap window, which reacts to the same
@@ -194,8 +196,7 @@ func _on_day_event_announced(event: DayEventData) -> void:
 	if serial != _day_event_announce_serial:
 		return
 
-	_day_event_banner.present(tr(event.announcement_text))
-	GUISignals.day_event_banner_shown.emit(event)
+	_bottom_banners.show(_day_event_banner, tr(event.announcement_text), GUISignals.day_event_banner_shown.emit.bind(event))
 
 
 ## Dismisses the hint once the clock starts, handing off to DailyGoalsPanel.
