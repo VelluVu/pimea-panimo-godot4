@@ -657,26 +657,6 @@ msgstr "It goes down, but I expected better."
 msgid "Taas täällä! %s"
 msgstr "Back again! %s"
 
-#: src/customers/sale_receipt_entry.gd
-msgid ""
-"Myynti: +%.1f €\n"
-"Tippi: +%.1f €\n"
-"TILILLE: +%.1f €"
-msgstr ""
-"Sale: +%.1f €\n"
-"Tip: +%.1f €\n"
-"TOTAL: +%.1f €"
-
-#: src/customers/sale_receipt_entry.gd
-msgid ""
-"Raaka-aineet: %.2f €\n"
-"Kate: %.2f €\n"
-"= Hinta/annos: %.2f €"
-msgstr ""
-"Ingredients: %.2f €\n"
-"Margin: %.2f €\n"
-"= Price/serving: %.2f €"
-
 #: src/events/bulk_order_event_data.gd
 msgid " tai "
 msgstr " or "
@@ -7033,6 +7013,94 @@ msgstr "Rotation locked? Tap the screen or allow screen rotation."
 #: src/ui/portrait_notice.gd
 msgid "Käännä puhelin vaakatasoon."
 msgstr "Turn your phone sideways."
+
+#: src/ui/receipt_text.gd
+msgid "%s, laatu %d %%"
+msgstr "%s, quality %d %%"
+
+#: src/ui/receipt_text.gd
+msgid "= Hinta/annos: %.2f €"
+msgstr "= Price/serving: %.2f €"
+
+#: src/ui/receipt_text.gd
+msgid "Asiakas: %s"
+msgstr "Customer: %s"
+
+#: src/ui/receipt_text.gd
+msgid "Edut"
+msgstr "Perks"
+
+#: src/ui/receipt_text.gd
+msgid "Hinta sisältää pimeyden. Valot maksetaan erikseen."
+msgstr "Price includes the darkness. Lights are extra."
+
+#: src/ui/receipt_text.gd
+msgid "Juo vastuullisesti. Tai ainakin hiljaa."
+msgstr "Drink responsibly. Or at least quietly."
+
+#: src/ui/receipt_text.gd
+msgid "KUITTI #%d"
+msgstr "RECEIPT #%d"
+
+#: src/ui/receipt_text.gd
+msgid "Kate: %.2f €"
+msgstr "Margin: %.2f €"
+
+#: src/ui/receipt_text.gd
+msgid "Kiitos käynnistä. Unohda tämä osoite."
+msgstr "Thanks for coming. Forget this address."
+
+#: src/ui/receipt_text.gd
+msgid "Kuitti ei kelpaa verottajalle. Eikä sitä ole olemassa."
+msgstr "Not valid for the taxman. It does not exist either."
+
+#: src/ui/receipt_text.gd
+msgid "Kypsytetty"
+msgstr "Aged"
+
+#: src/ui/receipt_text.gd
+msgid "LVV, jos luet tätä: kyseessä on mehua."
+msgstr "LVV, if you are reading this: it is juice."
+
+#: src/ui/receipt_text.gd
+msgid "Listahinta: %.2f €"
+msgstr "List price: %.2f €"
+
+#: src/ui/receipt_text.gd
+msgid "Palautusoikeus: ei ole."
+msgstr "Returns: none."
+
+#: src/ui/receipt_text.gd
+msgid "Raaka-aineet (arvio): %.2f €"
+msgstr "Ingredients (estimate): %.2f €"
+
+#: src/ui/receipt_text.gd
+msgid "Seuraava kierros on aina parempi."
+msgstr "The next round is always better."
+
+#: src/ui/receipt_text.gd
+msgid "Säilytä pimeässä. Kuten meidätkin."
+msgstr "Store in the dark. Like us."
+
+#: src/ui/receipt_text.gd
+msgid "TILILLE: +%.1f €"
+msgstr "TO ACCOUNT: +%.1f €"
+
+#: src/ui/receipt_text.gd
+msgid "Tippi: +%.1f €"
+msgstr "Tip: +%.1f €"
+
+#: src/ui/receipt_text.gd
+msgid "Tippi: +%.1f € (tuplana!)"
+msgstr "Tip: +%.1f € (doubled!)"
+
+#: src/ui/receipt_text.gd
+msgid "Tippi: ei tällä kertaa"
+msgstr "Tip: not this time"
+
+#: src/ui/receipt_text.gd
+msgid "Uutuus"
+msgstr "Novelty"
 
 #: src/ui/recipe_library_text.gd
 msgid "%s · reseptejä %d"

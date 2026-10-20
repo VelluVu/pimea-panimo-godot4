@@ -135,6 +135,16 @@ func _sell(data : CustomerData, batch : BrewBatch, wanted : int, is_regular : bo
 	receipt_entry.beer_ebc = batch.final_ebc
 	receipt_entry.batch = batch
 	receipt_entry.aged_price_multiplier = batch.get_aged_price_multiplier()
+	receipt_entry.charged_price = results[CustomerManager.KEY_INCOME]
+	var tier : ReputationTier = brewery.get_reputation_tier()
+	receipt_entry.reputation_bonus = tier.counter_price_bonus if tier != null else 0.0
+	receipt_entry.perk_multiplier = brewery.stats.multiplier(PerkStats.COUNTER_PRICE)
+	receipt_entry.novelty = batch.novelty
+	receipt_entry.tip_doubled = outcome.tip_doubled
+	receipt_entry.quality = batch.current_quality
+	receipt_entry.customer_title = data.title
+	receipt_entry.receipt_number = brewery.today_sale_receipts.size() + 1
+	receipt_entry.footer_index = randi() % ReceiptText.FOOTERS.size()
 	brewery.today_sale_receipts.append(receipt_entry)
 	BrewerySignals.beer_sale_breakdown.emit(receipt_entry)
 

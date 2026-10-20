@@ -9,6 +9,10 @@ const EMPTY_TEXT : String = "Ei myyntejä vielä tänään."
 const ROW_SUMMARY_FORMAT : String = "%s  %s  +%.1f €"
 const COLLAPSED_ICON : String = "▶"
 const EXPANDED_ICON : String = "▼"
+const PAPER_COLOR : Color = Color(0.91, 0.87, 0.77)
+const INK_COLOR : Color = Color(0.16, 0.13, 0.11)
+const PAPER_MARGIN : float = 6.0
+const RECEIPT_FONT_SIZE : int = 16
 
 @onready var title_label : Label = %TitleLabel
 @onready var close_button : Button = %CloseButton
@@ -87,13 +91,25 @@ func _build_row(entry : SaleReceiptEntry) -> Control:
 	row_vbox.add_child(summary_button)
 
 	if is_expanded:
-		var detail_label := Label.new()
-		detail_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		detail_label.add_theme_font_size_override("font_size", 16)
-		detail_label.text = entry.get_breakdown_text() + "\n" + entry.get_totals_text()
-		row_vbox.add_child(detail_label)
+		row_vbox.add_child(_make_paper(ReceiptText.text(entry)))
 
 	return row_vbox
+
+
+## The receipt printed on a strip of paper from the till.
+func _make_paper(text : String) -> Control:
+	var paper := PanelContainer.new()
+	var style := StyleBoxFlat.new()
+	style.bg_color = PAPER_COLOR
+	style.set_content_margin_all(PAPER_MARGIN)
+	paper.add_theme_stylebox_override("panel", style)
+	var label := Label.new()
+	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	label.add_theme_font_size_override("font_size", RECEIPT_FONT_SIZE)
+	label.add_theme_color_override("font_color", INK_COLOR)
+	label.text = text
+	paper.add_child(label)
+	return paper
 
 
 func _on_row_pressed(entry : SaleReceiptEntry) -> void:
