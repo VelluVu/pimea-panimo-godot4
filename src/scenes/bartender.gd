@@ -8,6 +8,8 @@ const ANIM_IDLE : StringName = &"idle"
 const ANIM_IDLE_SHOULDERS : StringName = &"idle_shoulders"
 const ANIM_IDLE_WIPE : StringName = &"idle_wipe"
 const ANIM_SERVE_BEER : StringName = &"serve_beer"
+## A single customer's pour, a little brisker than drawn.
+const SOLO_POUR_SPEED_SCALE : float = 1.4
 ## Each idle is a one-shot; the next is picked by weight, so standing still stays common.
 const IDLE_ANIMS : Array[StringName] = [ANIM_IDLE, ANIM_IDLE_SHOULDERS, ANIM_IDLE_WIPE]
 const IDLE_WEIGHTS : Array[float] = [3.0, 2.0, 1.0]
@@ -37,6 +39,8 @@ var _drawn_frames : SpriteFrames
 ## Where he stands when not pouring.
 var _home_x : float = 0.0
 var _slide : Tween
+## Pours asked for while one is running, played back to back: [speed_scale, ebc, tap_offset].
+var _pour_queue : Array[Array] = []
 
 
 func _ready() -> void:
@@ -60,18 +64,60 @@ func offset_to_pour_at(global_x : float) -> float:
 	return global_x - (get_parent().to_global(Vector2(_home_x, 0.0)).x + stream_from_origin * global_scale.x)
 
 
-## Plays the serve animation, then idles. speed_scale speeds up a group's pours; a negative
-## `ebc` pours as drawn; `tap_offset` slides him to the tap.
-func play_serve_beer(speed_scale: float = 1.0, ebc: int = -1, tap_offset: float = 0.0) -> void:
+## Plays the serve animation (after the pours already queued), then idles, and returns the
+## seconds until this pour ends. speed_scale speeds up a group's pours; a negative `ebc`
+## pours as drawn; `tap_offset` slides him to the tap.
+func play_serve_beer(speed_scale: float = 1.0, ebc: int = -1, tap_offset: float = 0.0) -> float:
+	if _is_pouring():
+		# A group's burst hurries the pour its own sale started, so its glasses keep pace.
+		animated_sprite.speed_scale = maxf(animated_sprite.speed_scale, speed_scale)
+		_pour_queue.append([speed_scale, ebc, tap_offset])
+	else:
+		_start_pour(speed_scale, ebc, tap_offset)
+	return pours_left_seconds()
+
+
+## Seconds until the running and queued pours are done; the last one asked for ends then.
+func pours_left_seconds() -> float:
+	if not _is_pouring():
+		return 0.0
+	var current : int = animated_sprite.frame
+	var frame_units : float = _drawn_frames.get_frame_duration(ANIM_SERVE_BEER, current) * (1.0 - animated_sprite.frame_progress)
+	for i : int in range(current + 1, _drawn_frames.get_frame_count(ANIM_SERVE_BEER)):
+		frame_units += _drawn_frames.get_frame_duration(ANIM_SERVE_BEER, i)
+	var left : float = frame_units / (_drawn_frames.get_animation_speed(ANIM_SERVE_BEER) * animated_sprite.speed_scale)
+	for pour : Array in _pour_queue:
+		left += serve_seconds(pour[0])
+	return left
+
+
+func _is_pouring() -> bool:
+	return animated_sprite.animation == ANIM_SERVE_BEER and animated_sprite.is_playing()
+
+
+func _start_pour(speed_scale: float, ebc: int, tap_offset: float) -> void:
 	_slide_to(_home_x + tap_offset)
 	animated_sprite.sprite_frames = _drawn_frames if ebc < 0 else BeerColor.pour_sprite_frames(_drawn_frames, ebc)
 	animated_sprite.speed_scale = speed_scale
+	animated_sprite.stop()
 	animated_sprite.play(ANIM_SERVE_BEER)
 	BrewerySignals.beer_poured.emit(serve_marker.global_position, speed_scale)
 
 
+## How long one serve animation runs at `speed_scale`, read from the frames.
+func serve_seconds(speed_scale : float) -> float:
+	var frame_units : float = 0.0
+	for i : int in _drawn_frames.get_frame_count(ANIM_SERVE_BEER):
+		frame_units += _drawn_frames.get_frame_duration(ANIM_SERVE_BEER, i)
+	return frame_units / (_drawn_frames.get_animation_speed(ANIM_SERVE_BEER) * speed_scale)
+
+
 func _on_animation_finished() -> void:
 	if animated_sprite.animation == ANIM_SERVE_BEER:
+		if not _pour_queue.is_empty():
+			var pour : Array = _pour_queue.pop_front()
+			_start_pour(pour[0], pour[1], pour[2])
+			return
 		animated_sprite.speed_scale = 1.0
 		_slide_to(_home_x)
 	_play_random_idle()

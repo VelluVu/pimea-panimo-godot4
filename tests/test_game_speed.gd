@@ -26,11 +26,11 @@ func test_paused_tree_runs_at_normal_speed() -> void:
 
 
 func test_reading_time_undoes_only_the_player_speed() -> void:
-	var tree : SceneTree = Engine.get_main_loop() as SceneTree
 	GameSpeedScript.player_speed = 1.0
-	assert_eq(GameSpeedScript.reading_timer(tree, 4.0).time_left, 4.0)
+	assert_eq(GameSpeedScript.reading_seconds(4.0, 1.0), 4.0)
+	assert_eq(GameSpeedScript.reading_seconds(4.0, 4.0), 1.0, "a bot's speed shortens it")
 	assert_eq(GameSpeedScript.real_delta(0.5), 0.5)
 	GameSpeedScript.player_speed = 3.0
-	assert_eq(GameSpeedScript.reading_timer(tree, 4.0).time_left, 12.0)
+	assert_eq(GameSpeedScript.reading_seconds(4.0, 3.0), 4.0, "the player's speed does not")
 	assert_eq(GameSpeedScript.real_delta(1.5), 0.5)
 	GameSpeedScript.player_speed = 1.0

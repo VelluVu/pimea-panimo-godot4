@@ -7,7 +7,9 @@ const CENTER_PAUSE_SECONDS : float = 0.8
 const EXIT_WALK_DISTANCE : float = 150.0
 const MIN_WALK_DISTANCE : float = 1.0
 const FADE_TIME_SECONDS : float = 1.0
-const BASE_DISPLAY_TIME_SECONDS : float = 4.0
+const BASE_DISPLAY_TIME_SECONDS : float = 3.0
+## The preview line only delays the sale, so it gets less time than the other lines.
+const PREVIEW_BASE_DISPLAY_TIME_SECONDS : float = 1.5
 const PER_CHARACTER_DISPLAY_TIME_SECONDS : float = 0.04
 const MAX_DISPLAY_TIME_SECONDS : float = 9.0
 
@@ -96,10 +98,10 @@ func _play_animation(anim_name: StringName, flip_horizontally: bool = false) -> 
 	animated_sprite.speed_scale = WalkCadence.for_sprite(animated_sprite, customer_data.floor_walk_speed, WALK_ANIMATIONS)
 
 
-static func get_display_time_for_text(text: String) -> float:
+static func get_display_time_for_text(text: String, base_seconds: float = BASE_DISPLAY_TIME_SECONDS) -> float:
 	return clampf(
-		BASE_DISPLAY_TIME_SECONDS + text.length() * PER_CHARACTER_DISPLAY_TIME_SECONDS,
-		BASE_DISPLAY_TIME_SECONDS,
+		base_seconds + text.length() * PER_CHARACTER_DISPLAY_TIME_SECONDS,
+		base_seconds,
 		MAX_DISPLAY_TIME_SECONDS
 	)
 
@@ -263,7 +265,7 @@ func _resume_served(snap: CustomerSnapshot) -> void:
 	_bubble_text = snap.bubble_text
 	if snap.time_left > FADE_TIME_SECONDS:
 		_say(snap.bubble_text, false, snap.time_left - FADE_TIME_SECONDS)
-	_phase_timer = GameSpeed.reading_timer(get_tree(), maxf(snap.time_left, 0.01))
+	_phase_timer = get_tree().create_timer(maxf(snap.time_left, 0.01))
 	_phase_timer.timeout.connect(leave_counter)
 
 
@@ -277,7 +279,7 @@ func _enter_counter_phase(phase: CustomerSnapshot.Phase, text: String, next: Cal
 	_phase = phase
 	_bubble_text = text
 	var display_time := _say(text, true, seconds)
-	_phase_timer = GameSpeed.reading_timer(get_tree(), display_time)
+	_phase_timer = get_tree().create_timer(display_time)
 	_phase_timer.timeout.connect(next)
 
 
@@ -293,7 +295,8 @@ func _on_preview_timeout() -> void:
 	else:
 		preview_text = tr(customer_data.dialogue_nothing_available)
 
-	_enter_counter_phase(CustomerSnapshot.Phase.PREVIEWING, generated_name + ": " + preview_text, _on_sale_timeout)
+	var line := generated_name + ": " + preview_text
+	_enter_counter_phase(CustomerSnapshot.Phase.PREVIEWING, line, _on_sale_timeout, get_display_time_for_text(line, PREVIEW_BASE_DISPLAY_TIME_SECONDS))
 
 
 func _on_sale_timeout() -> void:
@@ -313,7 +316,7 @@ func _on_sale_timeout() -> void:
 	if outcome.bar_fight_bottles >= 0:
 		play_rampage(outcome.bar_fight_bottles)
 		leave_after = maxf(leave_after, BarFightRampage.DURATION_SECONDS)
-	_phase_timer = GameSpeed.reading_timer(get_tree(), leave_after)
+	_phase_timer = get_tree().create_timer(leave_after)
 	_phase_timer.timeout.connect(leave_counter)
 
 

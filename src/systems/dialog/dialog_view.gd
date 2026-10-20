@@ -36,6 +36,10 @@ const DRIFTING_NOTE_OUTLINE_COLOR : Color = Color(0.05, 0.05, 0.05, 1)
 const BUBBLE_Z_BASE : int = -1000
 const STACKED_Z_OFFSET : int = 100
 
+## True: bubbles keep pace with Engine.time_scale (a sped-up game talks faster); false:
+## they stay up for real seconds.
+var bubbles_follow_time_scale : bool = false
+
 ## Dialogue slot (int) -> BubbleEntry.
 var _bubbles : Dictionary = {}
 var _spawn_point : Control
@@ -98,7 +102,7 @@ func show_popup(text : String, color : Color, anchor_pos : Vector2, emphasis : E
 	var global_pos : Vector2 = anchor_pos - popup.pivot_offset
 	popup.global_position = global_pos
 
-	# Real seconds, like the bubbles: the numbers stay readable at any game speed.
+	# Real seconds: the numbers stay readable at any game speed.
 	var tween := create_tween().set_ignore_time_scale()
 	if delay_seconds > 0.0:
 		tween.tween_interval(delay_seconds)
@@ -227,8 +231,7 @@ func _collapse(entry : BubbleEntry) -> void:
 
 
 func _hide_after_delay(entry : BubbleEntry, slot : int, token : int, display_time : float, fade_time : float) -> void:
-	# Real seconds (ignore_time_scale): a sped-up game must not cut the reading time.
-	await get_tree().create_timer(display_time, true, false, true).timeout
+	await get_tree().create_timer(display_time, true, false, not bubbles_follow_time_scale).timeout
 	if not entry.is_current(token):
 		return
 
