@@ -4,7 +4,8 @@ extends PanelContainer
 ## One achievements grid cell: icon and title, details in the tooltip; dimmed if locked.
 
 const TILE_SIZE: Vector2 = Vector2(100, 68)
-const ICON_SIZE: Vector2 = Vector2(28, 28)
+const ICON_SIZE: Vector2 = Vector2(32, 32)
+const LOCKED_SILHOUETTE_COLOR: Color = Color(0.0, 0.0, 0.0, 0.7)
 const ICON_CORNER_RADIUS: int = 6
 const TITLE_FONT_SIZE: int = 16
 const UNLOCKED_ICON_GLYPH: String = "!"
@@ -33,7 +34,7 @@ func setup(achievement: AchievementData, unlocked: bool, progress: int) -> void:
 	var icon_holder := CenterContainer.new()
 	icon_holder.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	column.add_child(icon_holder)
-	icon_holder.add_child(_build_icon(color, UNLOCKED_ICON_GLYPH if unlocked else LOCKED_ICON_GLYPH))
+	icon_holder.add_child(_build_icon(achievement, unlocked, color))
 
 	var title_label := Label.new()
 	title_label.text = tr(achievement.title)
@@ -49,8 +50,22 @@ func _make_custom_tooltip(for_text: String) -> Object:
 	return TooltipFactory.make_wrapped_tooltip(for_text)
 
 
-## Placeholder until real icons exist: a rounded square with a glyph.
-func _build_icon(color: Color, glyph: String) -> Control:
+## The achievement's icon, a dark silhouette while locked; the glyph box when it has none.
+func _build_icon(achievement: AchievementData, unlocked: bool, color: Color) -> Control:
+	if achievement.icon == null:
+		return _build_glyph_icon(color, UNLOCKED_ICON_GLYPH if unlocked else LOCKED_ICON_GLYPH)
+	var icon := TextureRect.new()
+	icon.custom_minimum_size = ICON_SIZE
+	icon.texture = achievement.icon
+	icon.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
+	icon.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	if not unlocked:
+		icon.self_modulate = LOCKED_SILHOUETTE_COLOR
+	return icon
+
+
+func _build_glyph_icon(color: Color, glyph: String) -> Control:
 	var icon := Panel.new()
 	icon.custom_minimum_size = ICON_SIZE
 	icon.mouse_filter = Control.MOUSE_FILTER_IGNORE

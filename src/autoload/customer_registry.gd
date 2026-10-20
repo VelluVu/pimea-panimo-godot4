@@ -136,6 +136,14 @@ func is_eligible(customer : CustomerData) -> bool:
 	return _unlocks.is_eligible(customer)
 
 
+## The customer with this title, or null.
+func get_customer(title : String) -> CustomerData:
+	for customer : CustomerData in customer_pool:
+		if customer.title == title:
+			return customer
+	return null
+
+
 ## Customer titles unlocked in any run, see CustomerUnlockTracker.
 func get_announced_titles() -> Array:
 	return _unlocks.get_announced_titles()

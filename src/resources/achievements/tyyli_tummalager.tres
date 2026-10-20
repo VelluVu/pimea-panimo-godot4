@@ -1,12 +1,14 @@
 [gd_resource type="Resource" script_class="AchievementData" format=3]
 
 [ext_resource type="Script" path="res://src/systems/achievements/achievement_data.gd" id="1_achievement"]
+[ext_resource type="Texture2D" path="res://assets/textures/achievement_icons/beer_mug.png" id="2_icon"]
 
 [resource]
 script = ExtResource("1_achievement")
 achievement_id = "tyyli_tummalager"
 title = "Tyyli löydetty: Tumma Lager"
 description = "Pane hyllyyn ensimmäinen erä tyyliä Tumma Lager."
+icon = ExtResource("2_icon")
 stat_key = &"style_discovered_2"
 target_value = 1
 metadata/_custom_type_script = "res://src/systems/achievements/achievement_data.gd"
