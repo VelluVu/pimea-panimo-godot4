@@ -42,8 +42,7 @@ func show_in_hand() -> void:
 	_hand.show()
 
 
-## The counter glass comes after `seconds`; by default once the bartender's pours end,
-## the one for this sale being the last asked for.
+## The counter glass comes after `seconds`, by default when the bartender's pours end.
 func serve_after(seconds : float = -1.0) -> void:
 	if seconds < 0.0:
 		var bartender := _owner.get_tree().get_first_node_in_group(Bartender.BARTENDER_GROUP) as Bartender

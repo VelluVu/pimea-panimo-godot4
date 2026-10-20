@@ -36,8 +36,7 @@ const DRIFTING_NOTE_OUTLINE_COLOR : Color = Color(0.05, 0.05, 0.05, 1)
 const BUBBLE_Z_BASE : int = -1000
 const STACKED_Z_OFFSET : int = 100
 
-## True: bubbles keep pace with Engine.time_scale (a sped-up game talks faster); false:
-## they stay up for real seconds.
+## False keeps bubbles up for real seconds at any Engine.time_scale.
 var bubbles_follow_time_scale : bool = false
 
 ## Dialogue slot (int) -> BubbleEntry.

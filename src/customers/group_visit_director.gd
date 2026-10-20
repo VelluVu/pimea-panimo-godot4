@@ -16,10 +16,9 @@ const DIALOGUE_SLOT_RANGE : int = 90
 const CHANT_BUBBLE_EXTRA_SECONDS : float = 0.3
 const CHANT_BUBBLE_FADE_SECONDS : float = 0.3
 
-## Between glasses when there is no Bartender to pour them.
+## Between glasses when no Bartender pours them.
 const SERVE_INTERVAL_SECONDS : float = 0.3
-## A group's pours run at least this fast, and faster for a big group so the whole round
-## takes about SERVE_BURST_SECONDS.
+## At least this fast; a big group faster, so a round takes about SERVE_BURST_SECONDS.
 const SERVE_ANIMATION_SPEED_SCALE : float = 3.0
 const SERVE_BURST_SECONDS : float = 1.5
 const SERVE_GLASS_SLIDE_SECONDS : float = 0.25
@@ -266,8 +265,7 @@ func _start_group_rampage(visit : GroupVisit, broken_bottles : int) -> void:
 			member.play_rampage(BarFightRampage.share_of(i, broken_bottles, visit.size()))
 
 
-## One sale, many drinks: a sped-up pour per member, each glass out as its pour ends, then
-## the sale's popups.
+## One sale, many drinks: a quick pour and glass per member, then the sale's popups.
 func _serve_burst(visit : GroupVisit, resume_seconds : float) -> bool:
 	if visit.purchased:
 		var bartender := _host.get_tree().get_first_node_in_group(Bartender.BARTENDER_GROUP) as Bartender

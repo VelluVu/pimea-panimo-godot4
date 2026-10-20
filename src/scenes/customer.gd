@@ -8,7 +8,7 @@ const EXIT_WALK_DISTANCE : float = 150.0
 const MIN_WALK_DISTANCE : float = 1.0
 const FADE_TIME_SECONDS : float = 1.0
 const BASE_DISPLAY_TIME_SECONDS : float = 3.0
-## The preview line only delays the sale, so it gets less time than the other lines.
+## Shorter: the preview line only delays the sale.
 const PREVIEW_BASE_DISPLAY_TIME_SECONDS : float = 1.5
 const PER_CHARACTER_DISPLAY_TIME_SECONDS : float = 0.04
 const MAX_DISPLAY_TIME_SECONDS : float = 9.0
