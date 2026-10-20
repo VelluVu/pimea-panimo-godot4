@@ -28,9 +28,8 @@ const PORTRAIT_ANIMATION : StringName = &"idle"
 const UNMET_PORTRAIT_COLOR : Color = Color(0.05, 0.05, 0.08, 0.85)
 const REGULAR_COLOR : Color = Color(0.949, 0.788, 0.42, 1)
 const MUTED_COLOR : Color = Color(0.75, 0.73, 0.67, 1)
-## Darker than every type colour (malts are wheat), so a locked malt stands apart too.
+## Darker than every type colour, wheat malts included.
 const LOCKED_INGREDIENT_COLOR : Color = Color(0.45, 0.43, 0.4, 1)
-## A button keeps its ingredient colour when hovered or focused.
 const INDEX_FONT_COLOR_STATES : Array[StringName] = [&"font_color", &"font_hover_color", &"font_focus_color", &"font_pressed_color", &"font_hover_pressed_color"]
 
 @onready var title_label : Label = %TitleLabel
@@ -40,10 +39,8 @@ const INDEX_FONT_COLOR_STATES : Array[StringName] = [&"font_color", &"font_hover
 
 var _tab_bar : TabBar
 var _guide_sections : Array[GuideSection] = []
-## The open page of the tab: an index into _guide_sections on Ohjeet, an ingredient id on
-## Raaka-aineet. NO_PAGE shows the tab's index.
+## A guide section index or an ingredient id; NO_PAGE shows the tab's index.
 var _page : int = NO_PAGE
-## Where the index was scrolled when a page opened, so the way back lands there.
 var _index_scroll : int = 0
 
 
@@ -110,7 +107,6 @@ func _refresh_rows() -> void:
 			_build_customer_rows()
 
 
-## A button per ingredient under its type's header, or one ingredient's page.
 func _build_ingredient_rows() -> void:
 	var brewery : Brewery = BrewEngine.current_brewery
 	var reputation : int = brewery.reputation if brewery != null else 0
@@ -134,7 +130,6 @@ func _build_ingredient_rows() -> void:
 			rows_vbox.add_child(_make_header(IngredientBookText.type_header(ingredient.type)))
 			grid = _make_index_grid(INGREDIENT_INDEX_COLUMNS)
 		var button : Button = _make_index_button(tr(ingredient.name), id)
-		# Locked ones stay listed, dimmed, so the player sees what is still to come.
 		var color : Color = ingredient.get_color() if ingredient.min_reputation <= reputation else LOCKED_INGREDIENT_COLOR
 		for state : StringName in INDEX_FONT_COLOR_STATES:
 			button.add_theme_color_override(state, color)
@@ -165,7 +160,7 @@ func _open_page(page : int) -> void:
 	GUISignals.tab_switched.emit()
 	_refresh_rows()
 	if page == NO_PAGE and not leaving_index:
-		# Back where the player left the list; the rows need a frame to lay out first.
+		# The rows need a frame to lay out before the scroll fits.
 		await get_tree().process_frame
 		scroll_container.scroll_vertical = _index_scroll
 
@@ -177,7 +172,6 @@ func _make_index_grid(columns : int) -> GridContainer:
 	return grid
 
 
-## Opens `page` of the current tab when pressed.
 func _make_index_button(text : String, page : int) -> Button:
 	var button := Button.new()
 	button.text = text

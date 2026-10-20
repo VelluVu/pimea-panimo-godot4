@@ -45,7 +45,7 @@ var _last_critical_frame : int = -1
 
 func _ready() -> void:
 	_dialog = get_parent() as DialogView
-	# Customers talk at the game's speed, so the timers that move them on stay in step.
+	# In step with the customers' own game-time timers.
 	_dialog.bubbles_follow_time_scale = true
 	BrewerySignals.dialogue_pushed.connect(_on_dialogue_pushed)
 	BrewerySignals.customer_evicted.connect(_dialog.close_bubble)
