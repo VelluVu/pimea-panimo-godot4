@@ -23,12 +23,11 @@ const DOUBLED_TIP_FORMAT : String = "Tippi: +%.1f € (tuplana!)"
 const NO_TIP : String = "Tippi: ei tällä kertaa"
 const TOTAL_FORMAT : String = "TILILLE: +%.1f €"
 const FOOTERS : Array[String] = [
-	"Kiitos käynnistä. Unohda tämä osoite.",
+	"Kiitos käynnistä! Tervetuloa uudelleen.",
 	"Palautusoikeus: ei ole.",
-	"Hinta sisältää pimeyden. Valot maksetaan erikseen.",
 	"Kuitti ei kelpaa verottajalle. Eikä sitä ole olemassa.",
 	"LVV, jos luet tätä: kyseessä on mehua.",
-	"Juo vastuullisesti. Tai ainakin hiljaa.",
+	"Juo vastuullisesti.",
 	"Seuraava kierros on aina parempi.",
 	"Säilytä pimeässä. Kuten meidätkin.",
 ]

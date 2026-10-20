@@ -7031,12 +7031,8 @@ msgid "Edut"
 msgstr "Perks"
 
 #: src/ui/receipt_text.gd
-msgid "Hinta sisältää pimeyden. Valot maksetaan erikseen."
-msgstr "Price includes the darkness. Lights are extra."
-
-#: src/ui/receipt_text.gd
-msgid "Juo vastuullisesti. Tai ainakin hiljaa."
-msgstr "Drink responsibly. Or at least quietly."
+msgid "Juo vastuullisesti."
+msgstr "Drink responsibly."
 
 #: src/ui/receipt_text.gd
 msgid "KUITTI #%d"
@@ -7047,8 +7043,8 @@ msgid "Kate: %.2f €"
 msgstr "Margin: %.2f €"
 
 #: src/ui/receipt_text.gd
-msgid "Kiitos käynnistä. Unohda tämä osoite."
-msgstr "Thanks for coming. Forget this address."
+msgid "Kiitos käynnistä! Tervetuloa uudelleen."
+msgstr "Thanks for coming! Welcome back anytime."
 
 #: src/ui/receipt_text.gd
 msgid "Kuitti ei kelpaa verottajalle. Eikä sitä ole olemassa."
