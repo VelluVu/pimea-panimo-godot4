@@ -40,7 +40,6 @@ const EXTRA_MASH_CAPACITY := &"extra_mash_capacity_kg"
 enum Kind { MULTIPLIER, PERCENT_ADD, COUNT }
 
 const ADDITIVE_PERCENT_FORMAT : String = "%+d %%"
-const MULTIPLICATIVE_FORMAT : String = "×%.2f"
 const COUNT_FORMAT : String = "%+d"
 
 
@@ -83,17 +82,12 @@ static func neutral_value(kind : Kind) -> float:
 	return 1.0 if kind == Kind.MULTIPLIER else 0.0
 
 
-## Diablo style: additive values as "+15 %", multiplicative ones as "x1.15".
-static func value_text(kind : Kind, value : float, additive : bool) -> String:
-	match kind:
-		Kind.MULTIPLIER:
-			if additive:
-				return ADDITIVE_PERCENT_FORMAT % display_number(kind, value)
-			return MULTIPLICATIVE_FORMAT % value
-		Kind.PERCENT_ADD:
-			return ADDITIVE_PERCENT_FORMAT % display_number(kind, value)
-		_:
-			return COUNT_FORMAT % display_number(kind, value)
+## Multipliers read as a percentage change ("+15 %", "-15 %") whether they stack by
+## adding or multiplying: on one card both mean the same, and "x0.85" read backwards.
+static func value_text(kind : Kind, value : float) -> String:
+	if kind == Kind.COUNT:
+		return COUNT_FORMAT % display_number(kind, value)
+	return ADDITIVE_PERCENT_FORMAT % display_number(kind, value)
 
 
 ## The whole number a stat line shows: the percentage change, the percentage or the count.
