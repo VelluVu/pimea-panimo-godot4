@@ -130,8 +130,6 @@ const PERK_TIP_DOUBLE_CHANCE_STAT_STRING : String = "Mahdollisuus tuplatippiin: 
 const PERK_TIP_CHANCE_STAT_STRING : String = "Tippimahdollisuus: %s"
 const PERK_INFECTION_REDUCTION_STAT_STRING : String = "Vähemmän hapantumista: %s"
 const PERK_BAR_FIGHT_CHANCE_STAT_STRING : String = "Tappelun todennäköisyys: %s"
-## Explains PerkStats.value_text() wherever perk values are listed.
-const PERK_VALUE_LEGEND : String = "+ % lasketaan yhteen, × kertoo kokonaisuuden."
 
 ## RunPerk.get_tier_label(), on LevelUpWindow's cards in the tier colour.
 const PERK_TIER_COMMON : String = "Tavallinen"

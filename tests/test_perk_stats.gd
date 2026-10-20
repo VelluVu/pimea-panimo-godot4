@@ -105,16 +105,15 @@ func test_display_number_per_kind() -> void:
 	assert_eq(PerkStatsScript.display_number(PerkStatsScript.Kind.COUNT, 2.0), 2)
 
 
-func test_value_text_shows_additive_and_multiplicative_apart() -> void:
-	assert_eq(PerkStatsScript.value_text(PerkStatsScript.Kind.MULTIPLIER, 1.15, true), "+15 %")
-	assert_eq(PerkStatsScript.value_text(PerkStatsScript.Kind.MULTIPLIER, 0.85, true), "-15 %")
-	assert_eq(PerkStatsScript.value_text(PerkStatsScript.Kind.MULTIPLIER, 1.15, false), "×1.15")
-	assert_eq(PerkStatsScript.value_text(PerkStatsScript.Kind.MULTIPLIER, 0.9, false), "×0.90")
+func test_value_text_shows_multipliers_as_percent_change() -> void:
+	assert_eq(PerkStatsScript.value_text(PerkStatsScript.Kind.MULTIPLIER, 1.15), "+15 %")
+	assert_eq(PerkStatsScript.value_text(PerkStatsScript.Kind.MULTIPLIER, 0.85), "-15 %")
+	assert_eq(PerkStatsScript.value_text(PerkStatsScript.Kind.MULTIPLIER, 0.9), "-10 %")
 
 
 func test_value_text_always_adds_chances_and_counts() -> void:
-	assert_eq(PerkStatsScript.value_text(PerkStatsScript.Kind.PERCENT_ADD, 0.24, false), "+24 %")
-	assert_eq(PerkStatsScript.value_text(PerkStatsScript.Kind.COUNT, 2.0, false), "+2")
+	assert_eq(PerkStatsScript.value_text(PerkStatsScript.Kind.PERCENT_ADD, 0.24), "+24 %")
+	assert_eq(PerkStatsScript.value_text(PerkStatsScript.Kind.COUNT, 2.0), "+2")
 
 
 func test_scale_per_level_per_kind() -> void:
