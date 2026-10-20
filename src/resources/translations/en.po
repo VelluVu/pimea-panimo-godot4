@@ -3553,26 +3553,34 @@ msgstr ""
 "beer and shipping alcohol-free kegs to bars: they lower the risk."
 
 #: src/resources/guide/065_etujen_arvot.tres
+msgid ""
+"+15 %: lasketaan yhteen muiden samanlaisten etujen kanssa. Kaksi +15 %:n "
+"etua tipeille antaa yhteensä +30 %."
+msgstr "+15 %: adds up with other perks of the same kind. Two +15 % tip perks give +30 % in total."
+
+#: src/resources/guide/065_etujen_arvot.tres
 msgid "Etujen arvot"
 msgstr "Perk values"
 
 #: src/resources/guide/065_etujen_arvot.tres
-msgid "Etujen arvot näkyvät prosentteina: +15 % kasvattaa, -15 % pienentää."
-msgstr "Perk values show as percentages: +15 % raises, -15 % lowers."
+msgid ""
+"Etujen arvot näkyvät kahdella tavalla: +15 % tai ×+15 %. Plus kasvattaa, "
+"miinus pienentää."
+msgstr "Perk values show in two ways: +15 % or ×+15 %. Plus raises, minus lowers."
 
 #: src/resources/guide/065_etujen_arvot.tres
 msgid "Kauden tilastot -ikkunassa näet kaikki etusi ja niiden yhteisvaikutuksen."
 msgstr "The Season stats window shows all your perks and their combined effect."
 
 #: src/resources/guide/065_etujen_arvot.tres
-msgid "Raaka-aineiden hinnat: -10 % tarkoittaa 10 % halvempia raaka-aineita."
-msgstr "Ingredient prices: -10 % means ingredients 10 % cheaper."
+msgid "Raaka-aineiden hinnat ×-10 % tarkoittaa 10 % halvempia raaka-aineita."
+msgstr "Ingredient prices ×-10 % means ingredients 10 % cheaper."
 
 #: src/resources/guide/065_etujen_arvot.tres
 msgid ""
-"Useimmat samaan asiaan vaikuttavat edut kertautuvat keskenään: kaksi +15 "
-"%:n etua tipeille antaa yhteensä vähän yli +30 %."
-msgstr "Most perks for the same thing multiply together: two +15 % tip perks give a little over +30 % in total."
+"×+15 %: kertautuu muiden kanssa. Kaksi ×+15 %:n etua tipeille antaa "
+"yhteensä +32 %."
+msgstr "×+15 %: multiplies with the others. Two ×+15 % tip perks give +32 % in total."
 
 #: src/resources/guide/06_tasot.tres
 msgid "Epäonnistunut tavoite maksaa vähän mainetta, paitsi ensimmäisenä päivänä."

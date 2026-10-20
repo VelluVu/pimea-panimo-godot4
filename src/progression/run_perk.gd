@@ -133,7 +133,7 @@ func get_stat_summary() -> String:
 		var kind : PerkStats.Kind = entry.kind
 		var value : float = get(entry.stat)
 		if value != PerkStats.neutral_value(kind):
-			lines.append(tr(entry.text) % PerkStats.value_text(kind, value))
+			lines.append(tr(entry.text) % PerkStats.value_text(kind, value, stacks_additively))
 
 	return "\n".join(lines)
 
