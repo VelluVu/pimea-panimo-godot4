@@ -26,6 +26,9 @@ var _night_risk_relief: int = 0
 func _ready() -> void:
 	title_label.text = RECAP_TITLE
 	close_button.text = CLOSE_BUTTON_TEXT
+	# The new day waits while it is read, so an event offered meanwhile cannot run out unseen.
+	process_mode = Node.PROCESS_MODE_ALWAYS
+	PauseLock.hold_while_visible(self)
 
 	if BrewEngine.current_brewery:
 		_day_start_money = BrewEngine.current_brewery.money
