@@ -107,6 +107,8 @@ func _make_paper(text : String) -> Control:
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	label.add_theme_font_size_override("font_size", RECEIPT_FONT_SIZE)
 	label.add_theme_color_override("font_color", INK_COLOR)
+	# The theme's dark label outline smears dark ink on light paper.
+	label.add_theme_constant_override("outline_size", 0)
 	label.text = text
 	paper.add_child(label)
 	return paper
