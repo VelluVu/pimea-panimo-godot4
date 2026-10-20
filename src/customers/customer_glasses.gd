@@ -47,7 +47,8 @@ func serve_after(seconds : float = -1.0) -> void:
 	if seconds < 0.0:
 		var bartender := _owner.get_tree().get_first_node_in_group(Bartender.BARTENDER_GROUP) as Bartender
 		seconds = bartender.pours_left_seconds() if bartender != null else 0.0
-	_serve_timer = _owner.get_tree().create_timer(seconds)
+	# Pauses with the bartender's pour.
+	_serve_timer = _owner.get_tree().create_timer(seconds, false)
 	_serve_timer.timeout.connect(slide_to_counter)
 
 

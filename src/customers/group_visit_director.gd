@@ -129,7 +129,7 @@ func _run_stage(visit : GroupVisit, resume_seconds : float) -> bool:
 func _wait(visit : GroupVisit, seconds : float) -> bool:
 	if not is_instance_valid(_host):
 		return false
-	visit.timer = _host.get_tree().create_timer(seconds)
+	visit.timer = _host.get_tree().create_timer(seconds, false)
 	await visit.timer.timeout
 	return is_instance_valid(_host)
 
@@ -331,7 +331,7 @@ func _show_bubble(visit : GroupVisit, text : String, position : Vector2, display
 	visit.bubble_text = text
 	visit.bubble_position = position
 	visit.bubble_fade = fade_seconds
-	visit.bubble_timer = _host.get_tree().create_timer(display_time)
+	visit.bubble_timer = _host.get_tree().create_timer(display_time, false)
 	BrewerySignals.dialogue_pushed.emit(text, false, visit.dialogue_slot, position, display_time, fade_seconds)
 
 
