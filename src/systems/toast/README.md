@@ -15,5 +15,6 @@ Passive text and cards that appear, hold and fade out, with no input and no game
 ## Use it in a new project
 
 Copy this folder to your project (keep the `.uid` files, so scene references still resolve) and construct the classes from your own UI code.
-The label passed in must already be in the scene tree, and anchored with top and bottom at
-0.5 if you use `fit_to_text`. No wiring file is needed: nothing here listens to any signal.
+The label passed in must already be in the scene tree. With `fit_to_text`, anchor its top and
+bottom at 0.5 (it grows both ways around the centre) or at 1 (it grows upward from its bottom
+edge). No wiring file is needed: nothing here listens to any signal.
