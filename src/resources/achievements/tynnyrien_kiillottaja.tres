@@ -1,12 +1,14 @@
 [gd_resource type="Resource" script_class="AchievementData" format=3]
 
 [ext_resource type="Script" path="res://src/systems/achievements/achievement_data.gd" id="1_achievement"]
+[ext_resource type="Texture2D" path="res://assets/textures/achievement_icons/wash.png" id="2_icon"]
 
 [resource]
 script = ExtResource("1_achievement")
 achievement_id = "tynnyrien_kiillottaja"
 title = "Tynnyrien kiillottaja"
 description = "Pese 25 tynnyriä omin käsin."
+icon = ExtResource("2_icon")
 stat_key = &"kegs_hand_washed"
 target_value = 25
 metadata/_custom_type_script = "res://src/systems/achievements/achievement_data.gd"

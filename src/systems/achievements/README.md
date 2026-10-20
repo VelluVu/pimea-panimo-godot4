@@ -9,7 +9,7 @@ Lifetime stat counters and the achievements that watch them. Progress lives in o
 |---|---|
 | `increment_stat(key, amount = 1)` | Counts up and saves |
 | `set_stat_if_higher(key, value)` | Ratchet: writes only a new high, for stats that can drop (money, reputation) |
-| `get_stat(key)`, `is_unlocked(id)`, `get_unlocked_ids()` | Reads |
+| `get_stat(key)`, `is_unlocked(id)`, `get_unlocked_ids()`, `get_achievement(id)` | Reads |
 | `reset_progress()` | Forgets every stat and unlock, in memory and on disk |
 | `achievement_unlocked(id, title)` | Signal, once per achievement |
 | `achievement_pool` | The `AchievementData` to check; fill it in the wiring |

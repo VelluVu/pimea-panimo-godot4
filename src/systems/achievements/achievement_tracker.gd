@@ -34,6 +34,14 @@ func is_unlocked(achievement_id : String) -> bool:
 	return get_unlocked_ids().has(achievement_id)
 
 
+## The pool's achievement with this id, or null.
+func get_achievement(achievement_id : String) -> AchievementData:
+	for achievement : AchievementData in achievement_pool:
+		if achievement.achievement_id == achievement_id:
+			return achievement
+	return null
+
+
 func increment_stat(stat_key : StringName, amount : int = 1) -> void:
 	var current : int = get_stat(stat_key) + amount
 	_config.set_value(SECTION_STATS, stat_key, current)

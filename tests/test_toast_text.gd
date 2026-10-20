@@ -51,18 +51,6 @@ func test_only_a_broken_purity_law_gets_a_toast() -> void:
 	assert_true(ToastTextScript.spiced_brew("Helles", -0.1).contains("Reinheitsgebot"))
 
 
-func test_one_unlock_uses_the_single_format() -> void:
-	assert_eq(ToastTextScript.unlocked("Uusi: %s!", "Uusia: %s!", ["Leipuri"] as Array[String]), "Uusi: Leipuri!")
-
-
-func test_several_unlocks_share_one_toast() -> void:
-	assert_eq(ToastTextScript.unlocked("Uusi: %s!", "Uusia: %s!", ["Leipuri", "Munkki"] as Array[String]), "Uusia: Leipuri, Munkki!")
-
-
-func test_no_unlocks_means_no_toast() -> void:
-	assert_eq(ToastTextScript.unlocked("Uusi: %s!", "Uusia: %s!", [] as Array[String]), "")
-
-
 func test_a_big_unlock_lists_two_names_and_counts_the_rest() -> void:
 	var unlocked : Array[IngredientData] = [_ingredient("Cascade-humala"), _ingredient("Citra-humala"), _ingredient("Kahvi"), _ingredient("Kaakaonibsit")]
 	assert_eq(ToastTextScript.ingredients_unlocked(unlocked), "Uusia raaka-aineita: Cascade, Citra +2")

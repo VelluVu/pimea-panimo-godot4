@@ -6765,6 +6765,14 @@ msgid "%s valmis tynnyriin"
 msgstr "%s is ready in a keg"
 
 #: src/ui/gui_announcer.gd
+msgid "+%d muuta asiakasta"
+msgstr "+%d more customers"
+
+#: src/ui/gui_announcer.gd
+msgid "+%d muuta saavutusta"
+msgstr "+%d more achievements"
+
+#: src/ui/gui_announcer.gd
 msgid "Enintään %d humalalajiketta samaan olueen."
 msgstr "At most %d hop varieties in one beer."
 
@@ -6791,20 +6799,16 @@ msgstr ""
 "peace."
 
 #: src/ui/gui_announcer.gd
-msgid "Saavutuksia avattu: %s!"
-msgstr "Achievements unlocked: %s!"
-
-#: src/ui/gui_announcer.gd
-msgid "Saavutus avattu: %s!"
-msgstr "Achievement unlocked: %s!"
+msgid "Saavutus avattu!"
+msgstr "Achievement unlocked!"
 
 #: src/ui/gui_announcer.gd
 msgid "Uusi %s-erä käymässä"
 msgstr "New %s batch fermenting"
 
 #: src/ui/gui_announcer.gd
-msgid "Uusi asiakas avattu: %s!"
-msgstr "New customer unlocked: %s!"
+msgid "Uusi asiakas!"
+msgstr "New customer!"
 
 #: src/ui/gui_announcer.gd
 msgid "Uusi likainen tynnyri pestäväksi"
@@ -6813,10 +6817,6 @@ msgstr "A new dirty keg to wash"
 #: src/ui/gui_announcer.gd
 msgid "Uusi oluttyyli löydetty: %s!"
 msgstr "New beer style discovered: %s!"
-
-#: src/ui/gui_announcer.gd
-msgid "Uusia asiakkaita avattu: %s!"
-msgstr "New customers unlocked: %s!"
 
 #: src/ui/gui_announcer.gd
 msgid "Uutuus: kauden ensimmäinen %s! Erä myy tiskillä +%d %% hintaan."

@@ -1,6 +1,8 @@
 class_name GUI
 extends Control
 
+## Gap between the options button and the unlock cards, and below the cards.
+const UNLOCK_CARDS_MARGIN: float = 4.0
 
 @onready var discovery_toast : Label = $DiscoveryToast
 @onready var group_visit_banner : Label = $GroupVisitBanner
@@ -40,7 +42,7 @@ var _special_events : SpecialEventPresenter
 func _ready() -> void:
 	_announcer = GuiAnnouncer.new()
 	add_child(_announcer)
-	_announcer.setup(discovery_toast, group_visit_banner, day_event_banner, first_brew_hint_banner, daily_goals_panel, day_recap_window)
+	_announcer.setup(discovery_toast, group_visit_banner, day_event_banner, first_brew_hint_banner, daily_goals_panel, day_recap_window, _make_unlock_cards())
 	_special_events = SpecialEventPresenter.new(special_events_container)
 	_views = GuiViewSwitcher.new(shop_view, brewery_view, brew_preparation_panel, shop_entrance_panel, brewery_entrance_panel)
 	_assert_default_visibility()
@@ -67,6 +69,21 @@ func _ready() -> void:
 	_announcer.start()
 	InputManager.shortcut_pressed.connect(_on_shortcut_pressed)
 	InputManager.cancel_pressed.connect(_on_cancel_pressed)
+
+
+## Cards rise from the bottom left, beside the options button. Above the open panels, so an
+## unlock while brewing still shows; below the console and the menus.
+func _make_unlock_cards() -> PopupCardStack:
+	var cards := PopupCardStack.new()
+	cards.name = "UnlockCards"
+	add_child(cards)
+	move_child(cards, dev_console.get_index())
+	cards.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
+	cards.offset_left = options_button.offset_right + UNLOCK_CARDS_MARGIN
+	cards.offset_right = cards.offset_left
+	cards.offset_top = -UNLOCK_CARDS_MARGIN
+	cards.offset_bottom = -UNLOCK_CARDS_MARGIN
+	return cards
 
 
 ## The editor's eye toggle is saved into the .tscn, so always-on nodes are forced on here.

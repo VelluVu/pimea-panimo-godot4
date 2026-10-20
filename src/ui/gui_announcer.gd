@@ -1,14 +1,21 @@
 class_name GuiAnnouncer
 extends Node
 
-## Turns game events into toasts (ToastStack) and flash/hold/fade banners (BannerPresenter).
+## Turns game events into toasts (ToastStack), flash/hold/fade banners (BannerPresenter) and
+## unlock cards (PopupCardStack).
 ## GUI owns the labels and calls start().
 
 const DISCOVERY_TOAST_FORMAT: String = "Uusi oluttyyli löydetty: %s!"
-const ACHIEVEMENT_UNLOCKED_TOAST_FORMAT: String = "Saavutus avattu: %s!"
-const ACHIEVEMENTS_UNLOCKED_TOAST_FORMAT: String = "Saavutuksia avattu: %s!"
-const CUSTOMER_UNLOCKED_TOAST_FORMAT: String = "Uusi asiakas avattu: %s!"
-const CUSTOMERS_UNLOCKED_TOAST_FORMAT: String = "Uusia asiakkaita avattu: %s!"
+const ACHIEVEMENT_CARD_HEADING: String = "Saavutus avattu!"
+const CUSTOMER_CARD_HEADING: String = "Uusi asiakas!"
+const MORE_ACHIEVEMENTS_FORMAT: String = "+%d muuta saavutusta"
+const MORE_CUSTOMERS_FORMAT: String = "+%d muuta asiakasta"
+## A burst past this many of one kind shows the first ones and a "+N muuta" card.
+const MAX_UNLOCK_CARDS_PER_KIND: int = 4
+const CUSTOMER_PORTRAIT_ANIMATION: StringName = &"idle"
+const FALLBACK_CUSTOMER_ICON: Texture2D = preload("res://assets/textures/achievement_icons/customer.png")
+const UNLOCK_CARD_WIDTH: float = 190.0
+const UNLOCK_CARD_FONT_SIZE: int = 14
 const REPUTATION_TIER_ROSE_TOAST_FORMAT: String = "Maineesi nousi: %s!"
 const REPUTATION_TIER_FELL_TOAST_FORMAT: String = "Maineesi laski: %s."
 const KEG_TO_WASH_TOAST_TEXT: String = "Uusi likainen tynnyri pestäväksi"
@@ -25,8 +32,7 @@ const DISCOVERY_TOAST_HOLD_SECONDS: float = 2.0
 const TOAST_HOLD_PER_CHARACTER_SECONDS: float = 0.05
 const TOAST_MIN_HOLD_SECONDS: float = 3.0
 const TOAST_MAX_HOLD_SECONDS: float = 7.0
-## A burst at once would otherwise stack down the screen; unlocks that land together
-## also share one toast (_flush_unlocks).
+## A burst at once would otherwise stack down the screen.
 const TOAST_MAX_VISIBLE: int = 2
 const DISCOVERY_TOAST_FADE_SECONDS: float = 0.6
 
@@ -52,19 +58,25 @@ var _toasts: ToastStack
 var _group_visit_banner: BannerPresenter
 var _day_event_banner: BannerPresenter
 var _first_brew_hint: BannerPresenter
+var _unlock_cards: PopupCardStack
 var _day_recap_window: DayRecapWindow
 
 ## Bumped per announcement, so a banner still waiting out the recap is dropped for a newer
 ## day's.
 var _day_event_announce_serial: int = 0
-## Unlocks that land in the same frame share one toast; flushed at the frame's end.
-var _pending_achievements: Array[String] = []
-var _pending_customers: Array[String] = []
+## Unlocks that land in the same frame, flushed as one burst at the frame's end. Each is
+## [icon, text].
+var _pending_achievements: Array[Array] = []
+var _pending_customers: Array[Array] = []
 
 
 ## Builds the presenters. `goals_panel` is pointed at when the first-brew hint ends.
-func setup(toast_label: Label, group_visit_label: Label, day_event_label: Label, first_brew_hint_label: Label, goals_panel: DailyGoalsPanel, day_recap_window: DayRecapWindow) -> void:
+func setup(toast_label: Label, group_visit_label: Label, day_event_label: Label, first_brew_hint_label: Label, goals_panel: DailyGoalsPanel, day_recap_window: DayRecapWindow, unlock_cards: PopupCardStack) -> void:
 	_day_recap_window = day_recap_window
+	_unlock_cards = unlock_cards
+	_unlock_cards.card_width = UNLOCK_CARD_WIDTH
+	_unlock_cards.heading_font_size = UNLOCK_CARD_FONT_SIZE
+	_unlock_cards.text_font_size = UNLOCK_CARD_FONT_SIZE
 	# A long toast (several unlocks at once) wraps instead of running off the screen.
 	toast_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_toasts = ToastStack.new(toast_label, DISCOVERY_TOAST_FLASH_SECONDS, DISCOVERY_TOAST_HOLD_SECONDS, DISCOVERY_TOAST_FADE_SECONDS)
@@ -117,23 +129,40 @@ func _on_style_discovered(style: int) -> void:
 	_show_toast(tr(DISCOVERY_TOAST_FORMAT) % BeerStyle.get_style_string_from_style(style))
 
 
-func _on_achievement_unlocked(_achievement_id: String, title: String) -> void:
-	if _pending_achievements.is_empty() and _pending_customers.is_empty():
-		_flush_unlocks.call_deferred()
-	_pending_achievements.append(title)
+func _on_achievement_unlocked(achievement_id: String, title: String) -> void:
+	var achievement: AchievementData = AchievementManager.get_achievement(achievement_id)
+	_queue_unlock(_pending_achievements, achievement.icon if achievement != null else null, title)
 
 
 func _on_customer_unlocked(title: String) -> void:
+	_queue_unlock(_pending_customers, _customer_portrait(CustomerRegistry.get_customer(title)), title)
+
+
+func _queue_unlock(pending: Array[Array], icon: Texture2D, title: String) -> void:
 	if _pending_achievements.is_empty() and _pending_customers.is_empty():
 		_flush_unlocks.call_deferred()
-	_pending_customers.append(title)
+	pending.append([icon, title])
+
+
+func _customer_portrait(customer: CustomerData) -> Texture2D:
+	if customer == null or customer.sprite_frames == null or not customer.sprite_frames.has_animation(CUSTOMER_PORTRAIT_ANIMATION):
+		return FALLBACK_CUSTOMER_ICON
+	return CharacterBust.of(customer.sprite_frames.get_frame_texture(CUSTOMER_PORTRAIT_ANIMATION, 0))
 
 
 func _flush_unlocks() -> void:
-	_show_toast(ToastText.unlocked(ACHIEVEMENT_UNLOCKED_TOAST_FORMAT, ACHIEVEMENTS_UNLOCKED_TOAST_FORMAT, _pending_achievements))
-	_show_toast(ToastText.unlocked(CUSTOMER_UNLOCKED_TOAST_FORMAT, CUSTOMERS_UNLOCKED_TOAST_FORMAT, _pending_customers))
+	_show_unlock_cards(_pending_achievements, ACHIEVEMENT_CARD_HEADING, MORE_ACHIEVEMENTS_FORMAT)
+	_show_unlock_cards(_pending_customers, CUSTOMER_CARD_HEADING, MORE_CUSTOMERS_FORMAT)
 	_pending_achievements.clear()
 	_pending_customers.clear()
+
+
+func _show_unlock_cards(unlocks: Array[Array], heading: String, more_format: String) -> void:
+	var shown: int = unlocks.size() if unlocks.size() <= MAX_UNLOCK_CARDS_PER_KIND else MAX_UNLOCK_CARDS_PER_KIND - 1
+	for index: int in shown:
+		_unlock_cards.show_card(unlocks[index][0], tr(heading), tr(unlocks[index][1]))
+	if shown < unlocks.size():
+		_unlock_cards.show_card(unlocks[shown][0], tr(heading), tr(more_format) % (unlocks.size() - shown))
 
 
 func _on_daily_goal_resolved(goal_name: String, succeeded: bool, money: int, reputation: int, xp: int, risk: int) -> void:

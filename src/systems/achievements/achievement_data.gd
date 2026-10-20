@@ -9,6 +9,8 @@ extends Resource
 
 @export var title : String = ""
 @export_multiline var description : String = ""
+## Shown on the unlock popup and in the achievements list; may be left empty.
+@export var icon : Texture2D = null
 
 ## The lifetime stat this achievement watches. The project's wiring decides
 ## which events feed which stat.
