@@ -4,6 +4,9 @@ extends RefCounted
 ## Flash, hold and fade for one passive Label (a banner, hint or toast), one presenter per
 ## banner. Purely visual. The label must be in the tree when present() is called.
 
+## After the fade-out, natural or early; not when a new present() cuts the old one off.
+signal finished
+
 const FLASH_COLOR : Color = Color(1.4, 1.4, 1.0, 1.0)
 const SETTLED_COLOR : Color = Color(1.0, 1.0, 1.0, 1.0)
 const TRANSPARENT_COLOR : Color = Color(1.0, 1.0, 1.0, 0.0)
@@ -95,6 +98,7 @@ func _append_fade_out(tween : Tween) -> void:
 		tween.tween_callback(_label.hide)
 	if _on_finished.is_valid():
 		tween.tween_callback(_on_finished)
+	tween.tween_callback(finished.emit)
 
 
 func _kill_tween() -> void:
