@@ -11,9 +11,10 @@ const INGREDIENTS_TAB_TEXT : String = "Raaka-aineet"
 const GUIDE_TAB_TEXT : String = "Ohjeet"
 const GUIDE_FOLDER_PATH : String = "res://src/resources/guide/"
 const GUIDE_INDEX_TITLE : String = "Aiheet"
-const GUIDE_BACK_TEXT : String = "< Takaisin"
+const BACK_TEXT : String = "< Takaisin"
 const GUIDE_INDEX_COLUMNS : int = 2
-const NO_GUIDE_PAGE : int = -1
+const INGREDIENT_INDEX_COLUMNS : int = 3
+const NO_PAGE : int = -1
 const REGULAR_TAG : String = "(kanta-asiakas)"
 const NAME_FONT_SIZE : int = 16
 const DETAIL_FONT_SIZE : int = 16
@@ -27,6 +28,10 @@ const PORTRAIT_ANIMATION : StringName = &"idle"
 const UNMET_PORTRAIT_COLOR : Color = Color(0.05, 0.05, 0.08, 0.85)
 const REGULAR_COLOR : Color = Color(0.949, 0.788, 0.42, 1)
 const MUTED_COLOR : Color = Color(0.75, 0.73, 0.67, 1)
+## Darker than every type colour (malts are wheat), so a locked malt stands apart too.
+const LOCKED_INGREDIENT_COLOR : Color = Color(0.45, 0.43, 0.4, 1)
+## A button keeps its ingredient colour when hovered or focused.
+const INDEX_FONT_COLOR_STATES : Array[StringName] = [&"font_color", &"font_hover_color", &"font_focus_color", &"font_pressed_color", &"font_hover_pressed_color"]
 
 @onready var title_label : Label = %TitleLabel
 @onready var close_button : Button = %CloseButton
@@ -35,8 +40,11 @@ const MUTED_COLOR : Color = Color(0.75, 0.73, 0.67, 1)
 
 var _tab_bar : TabBar
 var _guide_sections : Array[GuideSection] = []
-## Index into _guide_sections of the open Ohjeet page; NO_GUIDE_PAGE shows the contents.
-var _guide_page : int = NO_GUIDE_PAGE
+## The open page of the tab: an index into _guide_sections on Ohjeet, an ingredient id on
+## Raaka-aineet. NO_PAGE shows the tab's index.
+var _page : int = NO_PAGE
+## Where the index was scrolled when a page opened, so the way back lands there.
+var _index_scroll : int = 0
 
 
 func _ready() -> void:
@@ -59,14 +67,14 @@ func _ready() -> void:
 	main_vbox.move_child(_tab_bar, scroll_container.get_index())
 	_tab_bar.tab_changed.connect(func(_tab : int) -> void:
 		GUISignals.tab_switched.emit()
-		_guide_page = NO_GUIDE_PAGE
+		_page = NO_PAGE
 		_refresh_rows())
 
 
 ## The paused tree no longer reaches gui.gd's key handlers, so this closes itself.
 func _input(event : InputEvent) -> void:
-	if visible and event.is_action_pressed(InputManager.ACTION_CANCEL) and _guide_page != NO_GUIDE_PAGE:
-		_open_guide_page(NO_GUIDE_PAGE)
+	if visible and event.is_action_pressed(InputManager.ACTION_CANCEL) and _page != NO_PAGE:
+		_open_page(NO_PAGE)
 		get_viewport().set_input_as_handled()
 	elif visible and (event.is_action_pressed(InputManager.ACTION_CANCEL) or event.is_action_pressed(InputManager.ACTION_TOGGLE_BREWERY_BOOK)):
 		_on_close_button_pressed()
@@ -78,7 +86,7 @@ func _on_customer_book_requested() -> void:
 	if visible:
 		_on_close_button_pressed()
 		return
-	_guide_page = NO_GUIDE_PAGE
+	_page = NO_PAGE
 	_refresh_rows()
 	show()
 
@@ -102,55 +110,91 @@ func _refresh_rows() -> void:
 			_build_customer_rows()
 
 
+## A button per ingredient under its type's header, or one ingredient's page.
 func _build_ingredient_rows() -> void:
 	var brewery : Brewery = BrewEngine.current_brewery
 	var reputation : int = brewery.reputation if brewery != null else 0
-	var price_multiplier : float = brewery.stats.multiplier(PerkStats.INGREDIENT_PRICE) if brewery != null else 1.0
+	if _page != NO_PAGE:
+		var ingredient : IngredientData = IngredientDatabase.get_item_by_id(_page)
+		var price_multiplier : float = brewery.stats.multiplier(PerkStats.INGREDIENT_PRICE) if brewery != null else 1.0
+		rows_vbox.add_child(_make_back_button())
+		var name_label : Label = _make_label(tr(ingredient.name), NAME_FONT_SIZE)
+		name_label.add_theme_color_override("font_color", ingredient.get_color())
+		rows_vbox.add_child(name_label)
+		for line : String in IngredientBookText.lines(ingredient, ingredient.base_price * price_multiplier, reputation):
+			rows_vbox.add_child(_make_label(line, DETAIL_FONT_SIZE))
+		return
+
 	var last_type : int = -1
+	var grid : GridContainer
 	for id : int in IngredientDatabase.display_ids():
 		var ingredient : IngredientData = IngredientDatabase.get_item_by_id(id)
 		if ingredient.type != last_type:
 			last_type = ingredient.type
 			rows_vbox.add_child(_make_header(IngredientBookText.type_header(ingredient.type)))
-		var name_label : Label = _make_label(tr(ingredient.name), NAME_FONT_SIZE)
-		name_label.add_theme_color_override("font_color", ingredient.get_color())
-		rows_vbox.add_child(name_label)
-		var lines : PackedStringArray = IngredientBookText.lines(ingredient, ingredient.base_price * price_multiplier, reputation)
-		rows_vbox.add_child(_make_label("\n".join(lines), DETAIL_FONT_SIZE))
+			grid = _make_index_grid(INGREDIENT_INDEX_COLUMNS)
+		var button : Button = _make_index_button(tr(ingredient.name), id)
+		# Locked ones stay listed, dimmed, so the player sees what is still to come.
+		var color : Color = ingredient.get_color() if ingredient.min_reputation <= reputation else LOCKED_INGREDIENT_COLOR
+		for state : StringName in INDEX_FONT_COLOR_STATES:
+			button.add_theme_color_override(state, color)
+		grid.add_child(button)
 
 
 ## The contents, one button per topic like the recipe book's index, or one topic's page.
 func _build_guide_rows() -> void:
-	if _guide_page == NO_GUIDE_PAGE:
+	if _page == NO_PAGE:
 		rows_vbox.add_child(_make_header(tr(GUIDE_INDEX_TITLE)))
-		var grid := GridContainer.new()
-		grid.columns = GUIDE_INDEX_COLUMNS
+		var grid : GridContainer = _make_index_grid(GUIDE_INDEX_COLUMNS)
 		for i : int in _guide_sections.size():
-			var button := Button.new()
-			button.text = tr(_guide_sections[i].title)
-			button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-			button.size_flags_horizontal = SIZE_EXPAND_FILL
-			button.add_theme_font_size_override("font_size", NAME_FONT_SIZE)
-			button.pressed.connect(_open_guide_page.bind(i))
-			grid.add_child(button)
-		rows_vbox.add_child(grid)
+			grid.add_child(_make_index_button(tr(_guide_sections[i].title), i))
 		return
 
-	var section : GuideSection = _guide_sections[_guide_page]
-	var back := Button.new()
-	back.text = GUIDE_BACK_TEXT
-	back.size_flags_horizontal = SIZE_SHRINK_BEGIN
-	back.pressed.connect(_open_guide_page.bind(NO_GUIDE_PAGE))
-	rows_vbox.add_child(back)
+	var section : GuideSection = _guide_sections[_page]
+	rows_vbox.add_child(_make_back_button())
 	rows_vbox.add_child(_make_header(tr(section.title)))
 	for line : String in section.lines:
 		rows_vbox.add_child(_make_label(tr(line), DETAIL_FONT_SIZE))
 
 
-func _open_guide_page(page : int) -> void:
-	_guide_page = page
+func _open_page(page : int) -> void:
+	var leaving_index : bool = _page == NO_PAGE
+	if leaving_index:
+		_index_scroll = scroll_container.scroll_vertical
+	_page = page
 	GUISignals.tab_switched.emit()
 	_refresh_rows()
+	if page == NO_PAGE and not leaving_index:
+		# Back where the player left the list; the rows need a frame to lay out first.
+		await get_tree().process_frame
+		scroll_container.scroll_vertical = _index_scroll
+
+
+func _make_index_grid(columns : int) -> GridContainer:
+	var grid := GridContainer.new()
+	grid.columns = columns
+	rows_vbox.add_child(grid)
+	return grid
+
+
+## Opens `page` of the current tab when pressed.
+func _make_index_button(text : String, page : int) -> Button:
+	var button := Button.new()
+	button.text = text
+	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	button.size_flags_horizontal = SIZE_EXPAND_FILL
+	button.add_theme_font_size_override("font_size", NAME_FONT_SIZE)
+	button.pressed.connect(_open_page.bind(page))
+	return button
+
+
+func _make_back_button() -> Button:
+	var back := Button.new()
+	back.text = BACK_TEXT
+	back.size_flags_horizontal = SIZE_SHRINK_BEGIN
+	back.pressed.connect(_open_page.bind(NO_PAGE))
+	return back
 
 
 func _make_header(text : String) -> Label:
