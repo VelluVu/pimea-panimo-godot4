@@ -4,10 +4,10 @@ extends Node2D
 ## Decorative vignettes (a mouse chased by a cat) every few minutes, no gameplay. An
 ## adopted cellar cat walks on its own, more frequent timer so it is seen.
 
-const MIN_INTERVAL_SECONDS : float = 240.0
-const MAX_INTERVAL_SECONDS : float = 480.0
-const CAT_MIN_INTERVAL_SECONDS : float = 60.0
-const CAT_MAX_INTERVAL_SECONDS : float = 120.0
+const MIN_INTERVAL_SECONDS : float = 240.0 * DayPace.SCALE
+const MAX_INTERVAL_SECONDS : float = 480.0 * DayPace.SCALE
+const CAT_MIN_INTERVAL_SECONDS : float = 60.0 * DayPace.SCALE
+const CAT_MAX_INTERVAL_SECONDS : float = 120.0 * DayPace.SCALE
 
 const VIGNETTE_DIR : String = "res://src/resources/immersion_vignettes/"
 

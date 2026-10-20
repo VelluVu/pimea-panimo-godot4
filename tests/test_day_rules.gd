@@ -83,6 +83,10 @@ func test_the_clock_resumes_from_the_saved_time_left() -> void:
 	assert_eq(DayRulesScript.clock_start_seconds(120.0, 300.0), 120.0)
 
 
+func test_a_save_from_a_longer_day_resumes_at_most_a_full_day() -> void:
+	assert_eq(DayRulesScript.clock_start_seconds(250.0, 180.0), 180.0)
+
+
 func test_a_saved_zero_resumes_at_zero_not_a_full_day() -> void:
 	assert_eq(DayRulesScript.clock_start_seconds(0.0, 300.0), 0.0)
 

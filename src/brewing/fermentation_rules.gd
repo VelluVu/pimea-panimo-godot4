@@ -7,8 +7,8 @@ extends RefCounted
 
 enum SourLevel { NONE, LIGHT, CLEAR, STRONG }
 
-## About a minute at normal game speed (the timer follows Engine.time_scale).
-const SECONDS : float = 60.0
+## A fifth of a day at normal game speed (the timer follows Engine.time_scale).
+const SECONDS : float = 60.0 * DayPace.SCALE
 ## Chance of souring in a keg that was never washed (cleanliness 0).
 const MAX_INFECTION_CHANCE : float = 0.6
 ## Share of quality a never-washed keg can take at worst; the roll takes 30 to 100 % of it.
