@@ -103,10 +103,20 @@ func _kill_tween() -> void:
 		_tween = null
 
 
-## A Label never resizes its own rect, so wrapped text grows the offsets here.
+## A Label never resizes its own rect, so wrapped text grows the offsets here. Anchored at
+## the bottom (anchor_top = 1) it grows upward from offset_bottom, padded by its box;
+## otherwise it is a half-height around the centred anchor.
 func _fit_height() -> void:
 	var font : Font = _label.get_theme_font("font")
 	var font_size : int = _label.get_theme_font_size("font_size")
+	if _label.anchor_top >= 1.0:
+		var padding : Vector2 = _label.get_theme_stylebox(&"normal").get_minimum_size()
+		var text_height : float = font.get_multiline_string_size(
+			_label.text, HORIZONTAL_ALIGNMENT_CENTER, _label.size.x - padding.x, font_size
+		).y
+		_label.offset_top = _label.offset_bottom - text_height - padding.y
+		return
+
 	var wrapped_height : float = font.get_multiline_string_size(
 		_label.text, HORIZONTAL_ALIGNMENT_CENTER, _label.size.x, font_size
 	).y
