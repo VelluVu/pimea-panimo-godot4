@@ -5,6 +5,7 @@
 [resource]
 script = ExtResource("1_iph8p")
 attentuation_percent = 70
+family_name = "kotiolut"
 id = 300
 name = "Leivinhiiva"
 description = "Halvinta mahdollista hiivaa. Tästä ei tule kovin hyvää olutta."

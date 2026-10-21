@@ -3,6 +3,8 @@ extends IngredientData
 
 
 @export var attentuation_percent : int
+## The beer family this yeast makes ("lager", "ale"), shown on undiscovered styles.
+@export var family_name : String = ""
 
 
 func get_stat_string() -> String:
