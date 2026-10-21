@@ -34,3 +34,22 @@ func test_segment_durations_survive_a_zero_length_path() -> void:
 	var durations := VignettePath.segment_durations(points, 2.0)
 	assert_eq(durations.size(), 1)
 	assert_eq(durations[0], 0.0)
+
+
+func test_pixel_scale_is_whole_at_any_depth() -> void:
+	for y : float in [250.0, 290.0, 310.0, 330.0, 350.0, 370.0]:
+		var scale : float = VignettePath.pixel_scale(3.0, y)
+		assert_eq(scale, roundf(scale), str(y))
+
+
+func test_pixel_scale_keeps_the_base_on_the_reference_line() -> void:
+	assert_eq(VignettePath.pixel_scale(3.0, VignettePath.DEPTH_REFERENCE_Y), 3.0)
+
+
+func test_pixel_scale_steps_with_real_depth() -> void:
+	assert_eq(VignettePath.pixel_scale(3.0, 250.0), 2.0)
+	assert_eq(VignettePath.pixel_scale(3.0, 410.0), 4.0)
+
+
+func test_pixel_scale_never_drops_below_one() -> void:
+	assert_eq(VignettePath.pixel_scale(1.0, 0.0), 1.0)
