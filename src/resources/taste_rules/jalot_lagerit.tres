@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="TasteRule" format=3]
+[gd_resource type="Resource" script_class="TasteRule" format=3 uid="uid://c1irwyedctxg0"]
 
-[ext_resource type="Script" path="res://src/customers/taste_rule.gd" id="1_rule"]
+[ext_resource type="Script" uid="uid://dq66tbectyal5" path="res://src/customers/taste_rule.gd" id="1_rule"]
 
 [resource]
 script = ExtResource("1_rule")
