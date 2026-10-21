@@ -10,11 +10,6 @@ const ATTENTION_PULSE_COUNT : int = 3
 const ATTENTION_PULSE_COLOR : Color = Color(1.6, 1.6, 1.6)
 
 const DAILY_GOAL_LINE_FORMAT : String = "%s: %s"
-## Shown from day one, so the season's length is visible early.
-const DAY_GOAL_FORMAT : String = "Päivät: %d/%d"
-const REPUTATION_GOAL_FORMAT : String = "Maine: %d/%d"
-
-const MAIN_GOAL_HEADER_TEXT : String = "Päätavoite:"
 const DAILY_GOALS_HEADER_TEXT : String = "Päivätavoitteet:"
 const DAILY_GOALS_LEFT_HEADER_FORMAT : String = "Päivätavoitteet (+%d tänään):"
 const NO_GOALS_LEFT_TEXT : String = "Uusia tavoitteita huomenna."
@@ -30,9 +25,6 @@ const GOAL_WARNING_COLOR : Color = Color(0.96862745, 0.4627451, 0.13333334, 1) #
 
 @onready var toggle_button : Button = $HeaderHBox/ToggleButton
 @onready var goals_vbox : VBoxContainer = $GoalsVBox
-@onready var main_goal_header_label : Label = $GoalsVBox/MainGoalHeaderLabel
-@onready var day_goal_label : Label = $GoalsVBox/DayGoalLabel
-@onready var reputation_goal_label : Label = $GoalsVBox/ReputationGoalLabel
 @onready var daily_goals_header_label : Label = $GoalsVBox/DailyGoalsHeaderLabel
 @onready var daily_goal_labels : Array[Label] = [
 	$GoalsVBox/DailyGoalLabel0,
@@ -43,20 +35,15 @@ const GOAL_WARNING_COLOR : Color = Color(0.96862745, 0.4627451, 0.13333334, 1) #
 @onready var tutorial_yeast_label : Label = $GoalsVBox/TutorialYeastLabel
 @onready var tutorial_brew_label : Label = $GoalsVBox/TutorialBrewLabel
 
-## Per-section toggles, so a player can hide the main goals and keep the daily ones.
-var _main_goal_section : CollapsibleSection
 var _daily_goals_section : CollapsibleSection
 var _near_miss_pulses : Array[LabelPulse] = []
 var _is_collapsed : bool = true
 
 
 func _ready() -> void:
-	main_goal_header_label.text = MAIN_GOAL_HEADER_TEXT
 	daily_goals_header_label.text = DAILY_GOALS_HEADER_TEXT
 
-	_main_goal_section = CollapsibleSection.new(goals_vbox, main_goal_header_label)
 	_daily_goals_section = CollapsibleSection.new(goals_vbox, daily_goals_header_label)
-	_main_goal_section.toggled.connect(_on_section_toggled)
 	_daily_goals_section.toggled.connect(_on_section_toggled)
 	for label : Label in daily_goal_labels:
 		_near_miss_pulses.append(LabelPulse.new(label))
@@ -105,8 +92,6 @@ func _update_goals(brewery : Brewery) -> void:
 	var show_tutorial : bool = not brewery.tutorial_complete()
 	var daily_section_visible : bool = not _daily_goals_section.collapsed
 
-	_update_run_goal(brewery)
-
 	tutorial_malt_label.visible = show_tutorial and daily_section_visible
 	tutorial_yeast_label.visible = show_tutorial and daily_section_visible
 	tutorial_brew_label.visible = show_tutorial and daily_section_visible
@@ -117,18 +102,6 @@ func _update_goals(brewery : Brewery) -> void:
 		_update_tutorial_goals(brewery)
 	else:
 		_update_daily_goals()
-
-
-## The run's win condition (DemoRules.last_day(), Brewery.SURVIVAL_MIN_REPUTATION).
-func _update_run_goal(brewery : Brewery) -> void:
-	var money_in_danger : bool = brewery.money <= 0.0
-	var target_day : int = DemoRules.last_day()
-	var min_reputation : int = Brewery.SURVIVAL_MIN_REPUTATION
-
-	day_goal_label.visible = not _main_goal_section.collapsed
-	reputation_goal_label.visible = not _main_goal_section.collapsed
-	_set_line(day_goal_label, tr(DAY_GOAL_FORMAT) % [brewery.current_day, target_day], GoalStatus.run_day(brewery.current_day, target_day, money_in_danger))
-	_set_line(reputation_goal_label, tr(REPUTATION_GOAL_FORMAT) % [brewery.reputation, min_reputation], GoalStatus.run_reputation(brewery.reputation, min_reputation, money_in_danger))
 
 
 func _update_tutorial_goals(brewery : Brewery) -> void:
