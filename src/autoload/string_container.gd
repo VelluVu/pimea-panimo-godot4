@@ -148,6 +148,3 @@ const RUN_EFFECTS_NO_PERKS_STRING : String = "Ei vielä etuja. Nouse tasolle 2 s
 const RUN_EFFECTS_PERK_ROW_FORMAT : String = "%s %s%s"
 const RUN_EFFECTS_PERK_ROW_COUNT_SUFFIX : String = " ×%d"
 const RUN_EFFECTS_TOTALS_HEADER : String = "Yhteisvaikutus:"
-const RUN_EFFECTS_TOTALS_QUALITY : String = "Laatubonus jokaiseen erään: +%d %%"
-const RUN_EFFECTS_TOTALS_REPUTATION : String = "Maineen kertymä: +%d %%"
-const RUN_EFFECTS_TOTALS_TIP : String = "Tipit: +%d %%"
