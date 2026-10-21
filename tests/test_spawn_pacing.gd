@@ -66,3 +66,8 @@ func test_tap_flow_stops_growing_at_the_cap() -> void:
 func test_an_empty_or_single_tap_changes_nothing() -> void:
 	assert_eq(SpawnPacing.tap_factor(0), 1.0)
 	assert_eq(SpawnPacing.tap_factor(1), 1.0)
+
+
+func test_bounds_without_a_run_are_the_neutral_ones() -> void:
+	assert_eq(SpawnPacing.walk_in_bounds_for(null), SpawnPacing.walk_in_bounds(0.0, 1.0, 0))
+	assert_eq(SpawnPacing.group_bounds_for(null), SpawnPacing.group_bounds(0.0, 1.0, 1.0))

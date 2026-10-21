@@ -23,6 +23,8 @@ var _group_visit: GroupVisitDirector
 var _paused: bool = false
 ## Walk-ins already on their way: {"data": CustomerData or null, "timer": SceneTreeTimer}.
 var _scheduled: Array[Dictionary] = []
+## Puts the visitors above into the save and back.
+var _save: CellarCustomerSave
 
 
 func _ready() -> void:
@@ -30,11 +32,12 @@ func _ready() -> void:
 	group_event_timer = _make_timer(spawn_group_visit)
 	_setup_positions()
 	_group_visit = GroupVisitDirector.new(self, stairs_bottom_marker, room_center_marker, _active_styles)
+	_save = CellarCustomerSave.new(self, _group_visit, _scheduled, _free_slot, _schedule_walk_in)
 	CustomerManager.register_spawner(self)
 	BrewerySignals.friend_recommended.connect(_on_friend_recommended)
 	BrewerySignals.bad_review_spread.connect(_on_bad_review_spread)
 	BrewerySignals.lvv_inspector_visit_due.connect(_on_lvv_inspector_visit_due)
-	BrewEngine.brewery_about_to_save.connect(_record_cellar_customers)
+	BrewEngine.brewery_about_to_save.connect(_save.record)
 	_resume_cellar_customers.call_deferred()
 
 
@@ -83,6 +86,10 @@ func pause_spawning() -> void:
 func resume_spawning() -> void:
 	_paused = false
 	start_spawning()
+
+
+func is_paused() -> bool:
+	return _paused
 
 
 ## No stock check: the first-brew gate is in CustomerManager, and later an empty cellar
@@ -149,72 +156,11 @@ func _on_bad_review_spread() -> void:
 		walk_in_timer.start(walk_in_timer.time_left + WordOfMouthRules.BAD_REVIEW_DELAY_SECONDS)
 
 
-## Everyone in the cellar goes into the save; group members with their group.
-func _record_cellar_customers(brewery: Brewery) -> void:
-	brewery.cellar_customers.clear()
-	for node: Node in get_children():
-		var customer := node as Customer
-		if customer != null and not customer.is_queued_for_deletion() and not customer.is_group_member():
-			brewery.cellar_customers.append(customer.snapshot())
-	brewery.cellar_groups = _group_visit.snapshots()
-	brewery.scheduled_walk_ins.clear()
-	for entry: Dictionary in _scheduled:
-		brewery.scheduled_walk_ins.append({"data": entry.data, "seconds": entry.timer.time_left})
-	brewery.walk_in_time_left = -1.0 if walk_in_timer.is_stopped() else walk_in_timer.time_left
-	brewery.group_visit_time_left = -1.0 if group_event_timer.is_stopped() else group_event_timer.time_left
-
-
-## After a load, puts the saved customers and crowds back to carry on. A solo customer
-## already leaving holds no counter spot.
+## After a load, see CellarCustomerSave.resume().
 func _resume_cellar_customers() -> void:
 	var brewery: Brewery = BrewEngine.current_brewery
-	if brewery == null:
-		return
-	var taken: Dictionary = {}
-	for snap: CustomerSnapshot in brewery.cellar_customers:
-		var slot: int = -1
-		if snap.phase != CustomerSnapshot.Phase.LEAVING:
-			slot = _resume_slot(snap.slot, taken)
-			if slot == -1:
-				continue
-			if snap.route.size() == 4:
-				snap.route[3] = counter_positions[slot]
-		var customer: Customer = CUSTOMER_SCENE.instantiate()
-		add_child(customer)
-		customer.customer_data = snap.data
-		customer.generated_name = snap.generated_name
-		customer.assigned_slot = slot
-		customer.dialogue_slot = slot
-		if slot != -1:
-			CustomerManager.register_active_customer(slot, customer)
-		customer.resume(snap)
-	brewery.cellar_customers.clear()
-
-	for group_snap: GroupVisitSnapshot in brewery.cellar_groups:
-		var slot: int = _resume_slot(group_snap.slot, taken)
-		if slot != -1:
-			_group_visit.resume(group_snap, slot, counter_positions[slot])
-	brewery.cellar_groups.clear()
-
-	for entry: Dictionary in brewery.scheduled_walk_ins:
-		_schedule_walk_in(entry.get("data"), entry.get("seconds", 0.0))
-	brewery.scheduled_walk_ins.clear()
-	_resume_timer(walk_in_timer, brewery.walk_in_time_left)
-	_resume_timer(group_event_timer, brewery.group_visit_time_left)
-
-
-## A raid already under way (LvvRaidSpawner) keeps the timers stopped.
-func _resume_timer(timer: Timer, seconds_left: float) -> void:
-	if seconds_left > 0.0 and not _paused:
-		timer.start(seconds_left)
-
-
-## The saved counter slot if it is still there and free, else any free one (or -1).
-func _resume_slot(saved_slot: int, taken: Dictionary) -> int:
-	var slot: int = saved_slot if saved_slot >= 0 and saved_slot < counter_positions.size() and not taken.has(saved_slot) else _free_slot()
-	if slot != -1:
-		taken[slot] = true
-	return slot
+	if brewery != null:
+		_save.resume(brewery)
 
 
 ## Whether someone walked in.
@@ -264,33 +210,13 @@ func _free_slot() -> int:
 
 
 func _start_next_walk_in_timer() -> void:
-	var bounds := SpawnPacing.walk_in_bounds(_reputation(), _spawn_interval_multiplier(), _styles_on_tap())
+	var bounds := SpawnPacing.walk_in_bounds_for(BrewEngine.current_brewery)
 	walk_in_timer.start(randf_range(bounds.x, bounds.y))
 
 
 func _start_next_group_event_timer() -> void:
-	var bounds := SpawnPacing.group_bounds(_reputation(), _spawn_interval_multiplier(), _perk_multiplier(PerkStats.GROUP_EVENT_INTERVAL))
+	var bounds := SpawnPacing.group_bounds_for(BrewEngine.current_brewery)
 	group_event_timer.start(randf_range(bounds.x, bounds.y))
-
-
-func _styles_on_tap() -> int:
-	var brewery: Brewery = BrewEngine.current_brewery
-	return 0 if brewery == null else brewery.inventory.styles_on_tap()
-
-
-func _reputation() -> float:
-	var brewery: Brewery = BrewEngine.current_brewery
-	return 0.0 if brewery == null else float(brewery.reputation)
-
-
-func _spawn_interval_multiplier() -> float:
-	var brewery: Brewery = BrewEngine.current_brewery
-	return 1.0 if brewery == null else brewery.spawn_interval_multiplier()
-
-
-func _perk_multiplier(stat: StringName) -> float:
-	var brewery: Brewery = BrewEngine.current_brewery
-	return 1.0 if brewery == null else brewery.stats.multiplier(stat)
 
 
 ## The run's styles, for customers who roll a random preference; empty with no run.

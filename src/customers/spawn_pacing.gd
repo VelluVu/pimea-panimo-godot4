@@ -46,3 +46,17 @@ static func walk_in_bounds(reputation: float, spawn_multiplier: float, styles_on
 static func group_bounds(reputation: float, spawn_multiplier: float, group_multiplier: float) -> Vector2:
 	var factor := reputation_factor(reputation) * spawn_multiplier * group_multiplier
 	return interval_bounds(GROUP_EVENT_INTERVAL_MIN_SECONDS, GROUP_EVENT_INTERVAL_MAX_SECONDS, GROUP_EVENT_FLOOR_SECONDS, factor)
+
+
+## walk_in_bounds() for `brewery`'s reputation, perks and taps; neutral with no run.
+static func walk_in_bounds_for(brewery: Brewery) -> Vector2:
+	if brewery == null:
+		return walk_in_bounds(0.0, 1.0, 0)
+	return walk_in_bounds(float(brewery.reputation), brewery.spawn_interval_multiplier(), brewery.inventory.styles_on_tap())
+
+
+## group_bounds() for `brewery`'s reputation and perks; neutral with no run.
+static func group_bounds_for(brewery: Brewery) -> Vector2:
+	if brewery == null:
+		return group_bounds(0.0, 1.0, 1.0)
+	return group_bounds(float(brewery.reputation), brewery.spawn_interval_multiplier(), brewery.stats.multiplier(PerkStats.GROUP_EVENT_INTERVAL))
