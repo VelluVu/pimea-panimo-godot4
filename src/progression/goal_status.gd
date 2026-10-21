@@ -15,18 +15,6 @@ static func from_met(met : bool) -> State:
 	return State.MET if met else State.PENDING
 
 
-static func run_day(current_day : int, target_day : int, money_in_danger : bool) -> State:
-	if current_day >= target_day:
-		return State.MET
-	return State.FAILING if money_in_danger else State.PENDING
-
-
-static func run_reputation(reputation : int, min_reputation : int, money_in_danger : bool) -> State:
-	if money_in_danger:
-		return State.FAILING
-	return from_met(reputation >= min_reputation)
-
-
 ## Avoid goals read as a danger meter, achieve goals as progress.
 static func daily_goal(goal_type : DailyGoalData.GoalType, progress : int, target : int) -> State:
 	if goal_type == DailyGoalData.GoalType.UNHAPPY_CUSTOMERS_MAX:

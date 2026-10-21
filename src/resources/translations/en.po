@@ -5634,16 +5634,8 @@ msgid "Kotikalja: %d/1"
 msgstr "Homebrew: %d/1"
 
 #: src/scenes/ui/daily_goals_panel.gd
-msgid "Maine: %d/%d"
-msgstr "Reputation: %d/%d"
-
-#: src/scenes/ui/daily_goals_panel.gd
 msgid "Mallasta: %d/%d kg"
 msgstr "Malt: %d/%d kg"
-
-#: src/scenes/ui/daily_goals_panel.gd
-msgid "Päivät: %d/%d"
-msgstr "Days: %d/%d"
 
 #: src/scenes/ui/daily_goals_panel.gd
 msgid "Päivätavoitteet (+%d tänään):"
@@ -5652,10 +5644,6 @@ msgstr "Daily goals (+%d today):"
 #: src/scenes/ui/daily_goals_panel.gd
 msgid "Päivätavoitteet:"
 msgstr "Daily goals:"
-
-#: src/scenes/ui/daily_goals_panel.gd
-msgid "Päätavoite:"
-msgstr "Main goal:"
 
 #: src/scenes/ui/daily_goals_panel.gd
 msgid "Uusia tavoitteita huomenna."
