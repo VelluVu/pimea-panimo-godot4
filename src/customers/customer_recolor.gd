@@ -10,29 +10,32 @@ const CLOTHES_SATURATION_RANGE : Vector2 = Vector2(0.55, 0.9)
 const SHOES_SATURATION_RANGE : Vector2 = Vector2(0.4, 0.75)
 const SKIN_HUE_RANGE : Vector2 = Vector2(0.03, 0.09)
 const SKIN_SATURATION_RANGE : Vector2 = Vector2(0.35, 0.6)
-const SKIN_VALUE_RANGE : Vector2 = Vector2(0.6, 0.95)
 
 
 static func build_material(data: CustomerData) -> ShaderMaterial:
 	var recolor_material : ShaderMaterial = ShaderMaterial.new()
 	recolor_material.shader = SHADER
-	recolor_material.set_shader_parameter("skin_base_color", data.skin_base_color)
-	recolor_material.set_shader_parameter("hair_base_color", data.hair_base_color)
-	recolor_material.set_shader_parameter("clothes_base_color", data.clothes_base_color)
-	recolor_material.set_shader_parameter("shoes_base_color", data.shoes_base_color)
-	recolor_material.set_shader_parameter("skin_target_color", _random_skin_tone() if data.randomize_skin else data.skin_base_color)
-	recolor_material.set_shader_parameter("hair_target_color", _random_color_in_range(HAIR_SATURATION_RANGE, 0.9) if data.randomize_hair else data.hair_base_color)
-	recolor_material.set_shader_parameter("clothes_target_color", _random_color_in_range(CLOTHES_SATURATION_RANGE, 0.85) if data.randomize_clothes else data.clothes_base_color)
-	recolor_material.set_shader_parameter("shoes_target_color", _random_color_in_range(SHOES_SATURATION_RANGE, 0.6) if data.randomize_shoes else data.shoes_base_color)
+	_set_region(recolor_material, "skin", data.skin_base_color, data.randomize_skin, _random_skin_tone)
+	_set_region(recolor_material, "hair", data.hair_base_color, data.randomize_hair, _random_color.bind(HAIR_SATURATION_RANGE))
+	_set_region(recolor_material, "clothes", data.clothes_base_color, data.randomize_clothes, _random_color.bind(CLOTHES_SATURATION_RANGE))
+	_set_region(recolor_material, "shoes", data.shoes_base_color, data.randomize_shoes, _random_color.bind(SHOES_SATURATION_RANGE))
 	return recolor_material
 
 
-static func _random_color_in_range(saturation_range: Vector2, value: float) -> Color:
-	return Color.from_hsv(randf(), randf_range(saturation_range.x, saturation_range.y), value)
+## A region left as painted still gets its base colour: the shader uses it to claim
+## the region's pixels so a later, randomized region can't take them.
+static func _set_region(recolor_material: ShaderMaterial, region: String, base_color: Color, recolor: bool, pick_color: Callable) -> void:
+	recolor_material.set_shader_parameter(region + "_base_color", base_color)
+	recolor_material.set_shader_parameter(region + "_recolor", recolor)
+	recolor_material.set_shader_parameter(region + "_target_color", pick_color.call() if recolor else base_color)
+
+
+# The shader keeps each pixel's own value, so only hue and saturation are picked.
+static func _random_color(saturation_range: Vector2) -> Color:
+	return Color.from_hsv(randf(), randf_range(saturation_range.x, saturation_range.y), 1.0)
 
 
 static func _random_skin_tone() -> Color:
 	var hue : float = randf_range(SKIN_HUE_RANGE.x, SKIN_HUE_RANGE.y)
 	var saturation : float = randf_range(SKIN_SATURATION_RANGE.x, SKIN_SATURATION_RANGE.y)
-	var value : float = randf_range(SKIN_VALUE_RANGE.x, SKIN_VALUE_RANGE.y)
-	return Color.from_hsv(hue, saturation, value)
+	return Color.from_hsv(hue, saturation, 1.0)
