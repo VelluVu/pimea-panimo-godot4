@@ -1454,10 +1454,14 @@ position = Vector2(399, 282)
 position = Vector2(1, -31)
 texture = ExtResource("2_dp3eg")
 
-[node name="PC_Prop" type="Sprite2D" parent="WorldYSort/BarTable/BarTable_Sprite2D" unique_id=119017108]
+[node name="PC_Prop" type="CanvasGroup" parent="WorldYSort/BarTable/BarTable_Sprite2D" unique_id=989432195]
+material = ExtResource("69_72le4")
 position = Vector2(102, -29)
-texture = ExtResource("18_0ld40")
+fit_margin = 2.0
 script = ExtResource("7_og1vs")
+
+[node name="PCSprite" type="Sprite2D" parent="WorldYSort/BarTable/BarTable_Sprite2D/PC_Prop" unique_id=119017108]
+texture = ExtResource("18_0ld40")
 
 [node name="TapTower" type="Node2D" parent="WorldYSort/BarTable/BarTable_Sprite2D" unique_id=1639847367]
 position = Vector2(31, -37)
