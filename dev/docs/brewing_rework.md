@@ -103,7 +103,7 @@ Carafa and roasted barley, so a recipe can use a few percent of them.
 | Style | Yeast | Base | Required | EBC | IBU | ABV | Reference recipe → EBC, ABV |
 |---|---|---|---|---|---|---|---|
 | Kotikalja | baking | – | – | 0-8 | 0-10 | 2.0-4.5 | 3 Pilsner → 4.9, 3.1 %, no hops (IBU from 0: anything below the middle counts as perfect) |
-| Bulkkilager | lager | Pilsner 80 % | – | 3-7 | 8-20 | 4.0-5.5 | 4 Pilsner → 6.0, 4.7 % |
+| Bulkkilager | lager | Pilsner 95 % | – | 3-7 | 8-25 | 4.0-5.5 | 4 Pilsner → 6.0, 4.7 % |
 | Tumma Lager | lager | Münchenin 50 % | – | 30-56 | 9-35 | 3.5-5.5 | 4 Münchenin + 0.2 Carafa → 43, 4.7 % (a Munich Dunkel) |
 | Pale Ale | ale | Pale ale 75 % | aroma hop | 8-15 | 25-45 | 4.4-6.2 | 4 Pale ale + 0.3 Karamelli + 0.3 Münchenin, Magnum 20 g + Cascade 60 g → 13, 5.0 % (American or English hops both fit) |
 | Amber Ale | ale | Pale ale 60 % | – | 20-35 | 25-39 | 4.5-6.2 | 4 Pale ale + 0.8 Karamelli + 0.3 Keksi → 19, 5.5 % |
