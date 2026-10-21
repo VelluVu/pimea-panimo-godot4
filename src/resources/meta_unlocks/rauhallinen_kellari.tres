@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_unlock")
 perk_name = "Rauhallinen kellari"
-description = "Osaat pitää baaritiskin rauhallisena ja huomaamattomana. LVV-riskin sietokykysi on pysyvästi hieman parempi."
+description = "Osaat pitää baaritiskin rauhallisena ja huomaamattomana. LVV:n ratsiakynnys nousee {raid_threshold_multiplier} joka tasolla."
 icon_placeholder = "🕯️"
 raid_threshold_multiplier = 1.04
 stacks_additively = true

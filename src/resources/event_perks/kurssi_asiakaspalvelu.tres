@@ -6,5 +6,5 @@
 script = ExtResource("1_course")
 tip_chance = 0.05
 perk_name = "Asiakaspalvelukurssi"
-description = "Keke opetti hymyilemään oikeaan aikaan: tippiä tulee hieman useammin."
+description = "Keke opetti hymyilemään oikeaan aikaan: tippimahdollisuus kasvaa {tip_chance}."
 icon_placeholder = "🙂"

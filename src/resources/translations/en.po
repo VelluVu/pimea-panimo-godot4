@@ -1637,10 +1637,8 @@ msgstr ""
 #: src/resources/cellar_upgrades/10_aanieristys.tres
 msgid ""
 "Villaa seiniin ja tiivisteet oviin: kellarin kolina ei kanna naapuriin. "
-"Myynti herättää vähemmän huomiota."
-msgstr ""
-"Wool in the walls and seals on the doors: the cellar's racket no longer "
-"carries next door. Sales draw less attention."
+"Myynnin LVV-riski pienenee {sale_risk_multiplier} joka tasolla."
+msgstr "Wool in the walls and seals on the doors: the cellar's clatter doesn't carry next door. LVV risk from sales drops by {sale_risk_multiplier} per level."
 
 #: src/resources/cellar_upgrades/10_aanieristys.tres
 msgid "Äänieristys"
@@ -1660,11 +1658,10 @@ msgstr ""
 
 #: src/resources/cellar_upgrades/12_parempi_maskipata.tres
 msgid ""
-"Isompi pata vetää enemmän mallasta, joten samasta 20 litrasta tulee "
-"vahvempaa olutta. Avaa raskaimmat tyylit."
-msgstr ""
-"A bigger tun takes more malt, so the same 20 litres make a stronger beer. "
-"Opens the heaviest styles."
+"Isompi pata vetää {extra_mash_capacity_kg} kg enemmän mallasta joka "
+"tasolla, joten samasta 20 litrasta tulee vahvempaa olutta. Avaa raskaimmat "
+"tyylit."
+msgstr "A bigger tun takes {extra_mash_capacity_kg} kg more malt per level, so the same 20 litres make stronger beer. Opens the heaviest styles."
 
 #: src/resources/cellar_upgrades/12_parempi_maskipata.tres
 msgid "Parempi Mäskipata"
@@ -1695,8 +1692,10 @@ msgstr ""
 "Bought once, it stays in the cellar for every season to come."
 
 #: src/resources/cellar_upgrades/1_isompi_kaymisastia.tres
-msgid "Isompi astia, enemmän annoksia samasta erästä."
-msgstr "A bigger vessel, more servings from the same batch."
+msgid ""
+"Isompi astia: jokainen erä antaa {brew_yield_multiplier} enemmän annoksia "
+"joka tasolla."
+msgstr "A bigger vessel: every batch gives {brew_yield_multiplier} more servings per level."
 
 #: src/resources/cellar_upgrades/1_isompi_kaymisastia.tres
 msgid "Isompi käymisastia"
@@ -1707,8 +1706,10 @@ msgid "Kylmäkypsytysvarasto"
 msgstr "Cold Storage"
 
 #: src/resources/cellar_upgrades/2_kylmakypsytysvarasto.tres
-msgid "Kylmässä olut säilyy pidempään. Koskee uusia eriä."
-msgstr "Beer keeps longer in the cold. Applies to new batches."
+msgid ""
+"Kylmässä olut säilyy pidempään: uudet erät heikkenevät "
+"{decline_rate_multiplier} hitaammin joka tasolla."
+msgstr "Beer keeps longer in the cold: new batches decline {decline_rate_multiplier} slower per level."
 
 #: src/resources/cellar_upgrades/3_lisaa_tiskipaikkoja.tres
 msgid "Lisää tiskipaikkoja"
@@ -1716,19 +1717,20 @@ msgstr "More Counter Spots"
 
 #: src/resources/cellar_upgrades/3_lisaa_tiskipaikkoja.tres
 msgid ""
-"Tiskille mahtuu yksi asiakas lisää, ja täysi baari houkuttelee lisää väkeä. "
-"Väljyys vähenee, mutta kassa kilisee."
-msgstr ""
-"One more customer fits at the counter, and a full bar draws a bigger crowd. "
-"Less elbow room, but the till keeps ringing."
+"Tiskille mahtuu {extra_counter_slots} asiakas lisää joka tasolla, ja täysi "
+"baari houkuttelee väkeä: asiakkaiden saapumisväli lyhenee "
+"{spawn_interval_multiplier}. Väljyys vähenee, mutta kassa kilisee."
+msgstr "The counter fits {extra_counter_slots} more customer per level, and a full bar draws a crowd: time between customers shortens by {spawn_interval_multiplier}. Less elbow room, but the till rings."
 
 #: src/resources/cellar_upgrades/4_piilohylly.tres
 msgid "Piilohylly"
 msgstr "Hidden Shelf"
 
 #: src/resources/cellar_upgrades/4_piilohylly.tres
-msgid "Valeseinä kellarissa. Ratsiassa osa annoksista jää löytymättä."
-msgstr "A false wall in the cellar. In a raid, some of the servings go unfound."
+msgid ""
+"Valeseinä kellarissa. Ratsiassa {raid_saved_bottle_share} annoksista jää "
+"löytymättä joka tasolla."
+msgstr "A false wall in the cellar. In a raid, {raid_saved_bottle_share} of the servings stay hidden per level."
 
 #: src/resources/cellar_upgrades/5_puhdistusvalineet.tres
 msgid "Puhdistusvälineet"
@@ -1736,11 +1738,10 @@ msgstr "Cleaning Gear"
 
 #: src/resources/cellar_upgrades/5_puhdistusvalineet.tres
 msgid ""
-"Puhtaat astiat, puhtaampi maku. Koskee uusia eriä, ja likainen tynnyri "
-"happanee niissä harvemmin."
-msgstr ""
-"Clean gear, cleaner taste. Applies to new batches, and a dirty keg sours "
-"them less often."
+"Puhtaat astiat, puhtaampi maku. Joka tasolla uusien erien laatu paranee "
+"{quality_bonus} ja likaisen tynnyrin hapantuminen vähenee "
+"{infection_reduction}."
+msgstr "Clean gear, cleaner taste. Each level improves new batches' quality by {quality_bonus} and cuts souring in a dirty keg by {infection_reduction}."
 
 #: src/resources/cellar_upgrades/6_ilmoitustaulu.tres
 msgid "Ilmoitustaulu"
@@ -1749,24 +1750,25 @@ msgstr "Notice Board"
 #: src/resources/cellar_upgrades/6_ilmoitustaulu.tres
 msgid ""
 "Kellarin seinään naulattu taulu, johon kanta-asiakkaat ja naapurit jättävät "
-"toiveitaan. Joka päivä tarjolla on yksi päivätavoite enemmän."
-msgstr ""
-"A board nailed to the cellar wall where regulars and neighbours leave their "
-"wishes. One more daily goal on offer every day."
+"toiveitaan. Joka taso tuo {extra_daily_goal_rolls} päivätavoitteen lisää "
+"päivään."
+msgstr "A board nailed to the cellar wall where regulars and neighbours leave their wishes. Each level adds {extra_daily_goal_rolls} more daily goal per day."
 
 #: src/resources/cellar_upgrades/7_kunnon_lasit.tres
 msgid "Kunnon lasit"
 msgstr "Proper Glasses"
 
 #: src/resources/cellar_upgrades/7_kunnon_lasit.tres
-msgid "Oikeat tuopit muovimukien tilalle. Tiskillä olusta saa pyytää vähän enemmän."
-msgstr ""
-"Real pint glasses instead of plastic cups. You can charge a bit more at the "
-"counter."
+msgid ""
+"Oikeat tuopit muovimukien tilalle: tiskimyynnin hinnat nousevat "
+"{counter_price_multiplier} joka tasolla."
+msgstr "Real pint glasses instead of plastic cups: counter prices rise by {counter_price_multiplier} per level."
 
 #: src/resources/cellar_upgrades/8_tippipurkki.tres
-msgid "Purkki tiskin kulmalla. Tyytyväinen asiakas jättää vähän enemmän."
-msgstr "A jar on the corner of the counter. A happy customer leaves a little extra."
+msgid ""
+"Purkki tiskin kulmalla. Tyytyväiset asiakkaat jättävät "
+"{tip_income_multiplier} enemmän tippiä joka tasolla."
+msgstr "A jar on the corner of the counter. Happy customers leave {tip_income_multiplier} more in tips per level."
 
 #: src/resources/cellar_upgrades/8_tippipurkki.tres
 msgid "Tippipurkki"
@@ -1777,10 +1779,10 @@ msgid "Kuormapyörä"
 msgstr "Cargo Bike"
 
 #: src/resources/cellar_upgrades/9_kuormapyora.tres
-msgid "Viet tynnyrit baareihin itse. Baarivienneistä jää enemmän käteen."
-msgstr ""
-"You deliver the kegs to the bars yourself. Bar shipments leave more in your "
-"pocket."
+msgid ""
+"Viet tynnyrit baareihin itse: baarivientien tulot kasvavat "
+"{distribution_income_multiplier} joka tasolla."
+msgstr "You deliver the kegs to bars yourself: bar export income grows by {distribution_income_multiplier} per level."
 
 #: src/resources/customers/agentti.tres
 msgid ""
@@ -2874,15 +2876,16 @@ msgstr "Critic's Cellar Tips"
 
 #: src/resources/event_perks/arvostelijan_kellarivinkit.tres
 msgid ""
-"Olutarvostelija Matti jakoi kellarointivinkkinsä: oluet kypsyvät nopeammin "
-"ja pysyvät hyvinä pidempään. Mitä parempi erä, sitä paremmat vinkit."
-msgstr ""
-"Beer critic Matti shared his cellaring tips: beers peak sooner and stay "
-"good longer. The better the batch, the better the tips."
+"Olutarvostelija Matti jakoi kellarointivinkkinsä: kypsymisaika lyhenee "
+"{peak_speed_multiplier} ja oluet heikkenevät {decline_rate_multiplier} "
+"hitaammin. Mitä parempi erä, sitä paremmat vinkit."
+msgstr "Beer critic Matti shared his cellaring tips: aging time shortens by {peak_speed_multiplier} and beers decline {decline_rate_multiplier} slower. The better the batch, the better the tips."
 
 #: src/resources/event_perks/donin_suojelus.tres
-msgid "Donin miehet pitävät kellaria silmällä: agentteja käy hieman harvemmin."
-msgstr "The Don's men keep an eye on the cellar: agents drop by a little less often."
+msgid ""
+"Donin miehet pitävät kellaria silmällä: agentteja käy "
+"{agentti_appearance_multiplier} harvemmin."
+msgstr "The Don's men keep an eye on the cellar: agents visit {agentti_appearance_multiplier} less often."
 
 #: src/resources/event_perks/donin_suojelus.tres
 msgid "Donin suojelus"
@@ -2895,10 +2898,8 @@ msgstr "Wedding Planner's Word"
 #: src/resources/event_perks/haajarjestajan_suositus.tres
 msgid ""
 "Pekka kehuu panimoasi kaikille tutuilleen: baarivientien tulot kasvavat "
-"hieman."
-msgstr ""
-"Pekka praises your brewery to everyone he knows: bar shipments pay a little "
-"more."
+"{distribution_income_multiplier}."
+msgstr "Pekka praises your brewery to everyone he knows: bar export income grows by {distribution_income_multiplier}."
 
 #: src/resources/event_perks/jussin_tukkuhinnat.tres
 msgid "Jussin tukkuhinnat"
@@ -2907,32 +2908,34 @@ msgstr "Jussi's Wholesale Prices"
 #: src/resources/event_perks/jussin_tukkuhinnat.tres
 msgid ""
 "Naapuripanimon Jussi kertoi, mistä hän ostaa raaka-aineensa: kaupan hinnat "
-"ovat hieman halvempia."
-msgstr ""
-"Jussi from the brewery next door told you where he buys his ingredients: "
-"shop prices are a little lower."
+"halpenevat {ingredient_price_multiplier}."
+msgstr "Jussi from the brewery next door told you where he buys his ingredients: shop prices get {ingredient_price_multiplier} cheaper."
 
 #: src/resources/event_perks/kellarikissa.tres
 msgid "Kellarikissa"
 msgstr "Cellar Cat"
 
 #: src/resources/event_perks/kellarikissa.tres
-msgid "Kissa pitää tuholaiset loitolla: oluet pysyvät hyvinä hieman pidempään."
-msgstr "The cat keeps pests away: beers stay good a little longer."
+msgid ""
+"Kissa pitää tuholaiset loitolla: oluet heikkenevät "
+"{decline_rate_multiplier} hitaammin."
+msgstr "The cat keeps pests away: beers decline {decline_rate_multiplier} slower."
 
 #: src/resources/event_perks/kurssi_asiakaspalvelu.tres
 msgid "Asiakaspalvelukurssi"
 msgstr "Customer Service Course"
 
 #: src/resources/event_perks/kurssi_asiakaspalvelu.tres
-msgid "Keke opetti hymyilemään oikeaan aikaan: tippiä tulee hieman useammin."
-msgstr "Keke taught you to smile at the right moment: tips come a little more often."
+msgid ""
+"Keke opetti hymyilemään oikeaan aikaan: tippimahdollisuus kasvaa "
+"{tip_chance}."
+msgstr "Keke taught you to smile at the right moment: tip chance grows by {tip_chance}."
 
 #: src/resources/event_perks/kurssi_pikapalvelu.tres
-msgid "Keke opetti nopean palvelun salat: asiakkaita tulee hieman tiheämmin."
-msgstr ""
-"Keke taught you the secrets of fast service: customers come a little more "
-"often."
+msgid ""
+"Keke opetti nopean palvelun salat: asiakkaiden saapumisväli lyhenee "
+"{spawn_interval_multiplier}."
+msgstr "Keke taught you the secrets of fast service: time between customers shortens by {spawn_interval_multiplier}."
 
 #: src/resources/event_perks/kurssi_pikapalvelu.tres
 msgid "Pikapalvelukurssi"
@@ -2940,11 +2943,9 @@ msgstr "Fast Service Course"
 
 #: src/resources/event_perks/kurssi_tuplatipit.tres
 msgid ""
-"Keke opetti, miten asiakkaan saa tuntemaan itsensä tärkeäksi: tippi "
-"tuplaantuu hieman useammin."
-msgstr ""
-"Keke taught you how to make a customer feel important: tips double a little "
-"more often."
+"Keke opetti, miten asiakkaan saa tuntemaan itsensä tärkeäksi: tuplatipin "
+"mahdollisuus kasvaa {tip_double_chance}."
+msgstr "Keke taught you how to make a customer feel important: double tip chance grows by {tip_double_chance}."
 
 #: src/resources/event_perks/kurssi_tuplatipit.tres
 msgid "Tuplatippikurssi"
@@ -2955,22 +2956,26 @@ msgid "Uudet hyllyt"
 msgstr "New Shelves"
 
 #: src/resources/event_perks/remontti_hyllyt.tres
-msgid "Varastoon tuli kunnon hyllyt: oluet pysyvät hyvinä hieman pidempään."
-msgstr "Proper shelves in the storage: beers stay good a little longer."
+msgid ""
+"Varastoon tuli kunnon hyllyt: oluet heikkenevät {decline_rate_multiplier} "
+"hitaammin."
+msgstr "The storage got proper shelves: beers decline {decline_rate_multiplier} slower."
 
 #: src/resources/event_perks/remontti_keittio.tres
-msgid "Keittola on remontin jäljiltä siisti: raaka-aineita jää joskus käyttämättä."
-msgstr ""
-"The brewhouse is spotless after the renovation: some ingredients are "
-"sometimes left unused."
+msgid ""
+"Keittola on remontin jäljiltä siisti: raaka-ainepalautuksen mahdollisuus "
+"kasvaa {ingredient_refund_chance}."
+msgstr "The brewhouse is tidy after the renovation: ingredient refund chance grows by {ingredient_refund_chance}."
 
 #: src/resources/event_perks/remontti_keittio.tres
 msgid "Siisti keittola"
 msgstr "Tidy Brewhouse"
 
 #: src/resources/event_perks/remontti_lampo.tres
-msgid "Kellarin lämpö pysyy nyt tasaisena: oluet kypsyvät hieman nopeammin."
-msgstr "The cellar keeps an even temperature now: beers mature a little faster."
+msgid ""
+"Kellarin lämpö pysyy nyt tasaisena: kypsymisaika lyhenee "
+"{peak_speed_multiplier}."
+msgstr "The cellar temperature now stays even: aging time shortens by {peak_speed_multiplier}."
 
 #: src/resources/event_perks/remontti_lampo.tres
 msgid "Tasainen lämpö"
@@ -2978,9 +2983,9 @@ msgstr "Even Temperature"
 
 #: src/resources/event_perks/remontti_letkut.tres
 msgid ""
-"Remontissa vaihdettiin vuotavat letkut: samasta erästä tulee hieman enemmän "
-"annoksia."
-msgstr "The leaky hoses were replaced: a batch gives a few more servings."
+"Remontissa vaihdettiin vuotavat letkut: jokainen erä antaa "
+"{brew_yield_multiplier} enemmän annoksia."
+msgstr "The leaking hoses were replaced in the renovation: every batch gives {brew_yield_multiplier} more servings."
 
 #: src/resources/event_perks/remontti_letkut.tres
 msgid "Tiiviit letkut"
@@ -2988,11 +2993,9 @@ msgstr "Tight Hoses"
 
 #: src/resources/event_perks/remontti_salalokero.tres
 msgid ""
-"Hyllyn taakse ilmestyi salalokero. Köh. Ratsiassa osa annoksista jää "
-"löytymättä."
-msgstr ""
-"A secret compartment appeared behind the shelf. Ahem. In a raid, some "
-"servings stay hidden."
+"Hyllyn taakse ilmestyi salalokero. Köh. Ratsiassa {raid_saved_bottle_share} "
+"annoksista jää löytymättä."
+msgstr "A secret compartment appeared behind the shelf. Ahem. In a raid, {raid_saved_bottle_share} of the servings stay hidden."
 
 #: src/resources/event_perks/remontti_salalokero.tres
 msgid "Salalokero"
@@ -4116,12 +4119,10 @@ msgstr "Bar Master"
 #: src/resources/meta_unlocks/baarimestari.tres
 msgid ""
 "Baarimikkosi vuosien kokemus tiskin takana kiteytyy todelliseksi "
-"ammattitaidoksi. Jokaisella myynnillä on pysyvä mahdollisuus tuplatippiin, "
-"ja tiskillä syttyvät riidat ovat pysyvästi harvinaisempia."
-msgstr ""
-"Your bartender's years behind the counter crystallise into real skill. "
-"Every sale has a permanent chance of a double tip, and quarrels at the "
-"counter are permanently rarer."
+"ammattitaidoksi. Joka tasolla tuplatipin mahdollisuus kasvaa "
+"{tip_double_chance} ja tappelun todennäköisyys pienenee "
+"{bar_fight_chance_multiplier}."
+msgstr "Your bartender's years behind the counter turn into real skill. Each level raises double tip chance by {tip_double_chance} and lowers bar fight chance by {bar_fight_chance_multiplier}."
 
 #: src/resources/meta_unlocks/hygieniamestari.tres
 msgid "Tarkka silmämitta"
@@ -4129,12 +4130,10 @@ msgstr "A Good Eye"
 
 #: src/resources/meta_unlocks/hygieniamestari.tres
 msgid ""
-"Vuosien kokemus on hionut annostelusi lähes täydelliseksi. Jokaisella "
-"panolla on pysyvästi entistäkin parempi mahdollisuus saada raaka-aineita "
-"takaisin varastoon."
-msgstr ""
-"Years of practice have made your measuring almost perfect. Every brew has a "
-"permanently even better chance of returning ingredients to storage."
+"Vuosien kokemus on hionut annostelusi lähes täydelliseksi. "
+"Raaka-ainepalautuksen mahdollisuus kasvaa {ingredient_refund_chance} joka "
+"tasolla."
+msgstr "Years of experience have honed your measuring to near perfection. Ingredient refund chance grows by {ingredient_refund_chance} per level."
 
 #: src/resources/meta_unlocks/kanta_asiakkaat.tres
 msgid "Kanta-asiakkaat"
@@ -4142,11 +4141,10 @@ msgstr "Regulars"
 
 #: src/resources/meta_unlocks/kanta_asiakkaat.tres
 msgid ""
-"Tunnettu nimi tuo vakituisia kävijöitä yhä useammin. Uusia asiakkaita "
-"saapuu kellariin pysyvästi hieman tiheämmin, ja joskus kaverin kanssa."
-msgstr ""
-"A known name brings regular visitors more and more often. New customers "
-"permanently arrive a little more often, and sometimes with a friend."
+"Tunnettu nimi tuo vakituisia kävijöitä yhä useammin. Joka tasolla "
+"asiakkaiden saapumisväli lyhenee {spawn_interval_multiplier} ja "
+"mahdollisuus seuraan kasvaa {walk_in_company_chance}."
+msgstr "A known name brings regulars more and more often. Each level shortens the time between customers by {spawn_interval_multiplier} and raises the chance of company by {walk_in_company_chance}."
 
 #: src/resources/meta_unlocks/kaymisen_hallinta.tres
 msgid "Huolellinen käsityöläinen"
@@ -4154,11 +4152,9 @@ msgstr "Careful Craftsman"
 
 #: src/resources/meta_unlocks/kaymisen_hallinta.tres
 msgid ""
-"Osaat arvioida raaka-ainemäärät tarkasti. Jokaisella panolla on pysyvä "
-"mahdollisuus saada osa raaka-aineista takaisin varastoon."
-msgstr ""
-"You judge ingredient amounts precisely. Every brew has a permanent chance "
-"of returning some ingredients to storage."
+"Osaat arvioida raaka-ainemäärät tarkasti. Raaka-ainepalautuksen "
+"mahdollisuus kasvaa {ingredient_refund_chance} joka tasolla."
+msgstr "You judge ingredient amounts precisely. Ingredient refund chance grows by {ingredient_refund_chance} per level."
 
 #: src/resources/meta_unlocks/mainoskampanja.tres
 msgid "Mainoskampanja"
@@ -4166,19 +4162,15 @@ msgstr "Ad Campaign"
 
 #: src/resources/meta_unlocks/mainoskampanja.tres
 msgid ""
-"Mainostat panimoasi aktiivisesti ympäri kaupunkia. Ryhmäasiakkaita saapuu "
-"kellariisi pysyvästi tiheämmin."
-msgstr ""
-"You advertise your brewery all over town. Groups permanently visit your "
-"cellar more often."
+"Mainostat panimoasi aktiivisesti ympäri kaupunkia. Ryhmäasiakkaiden "
+"saapumisväli lyhenee {group_event_interval_multiplier} joka tasolla."
+msgstr "You advertise your brewery all over town. Time between group visits shortens by {group_event_interval_multiplier} per level."
 
 #: src/resources/meta_unlocks/mallastuksen_mestari.tres
 msgid ""
-"Hallitset mäskäyksen jo unissasi. Jokainen pano tuottaa pysyvästi "
-"merkittävästi enemmän annoksia."
-msgstr ""
-"You could mash in your sleep. Every brew permanently yields significantly "
-"more servings."
+"Hallitset mäskäyksen jo unissasi. Jokainen erä antaa "
+"{brew_yield_multiplier} enemmän annoksia joka tasolla."
+msgstr "You could mash in your sleep. Every batch gives {brew_yield_multiplier} more servings per level."
 
 #: src/resources/meta_unlocks/mallastuksen_mestari.tres
 msgid "Mäskäyksen mestari"
@@ -4190,11 +4182,9 @@ msgstr "Haggling"
 
 #: src/resources/meta_unlocks/neuvottelutaito.tres
 msgid ""
-"Osaat tinkiä raaka-aineiden hinnoista. Ostot ovat pysyvästi hieman "
-"halvempia."
-msgstr ""
-"You know how to haggle over ingredient prices. Purchases are permanently a "
-"little cheaper."
+"Osaat tinkiä raaka-aineiden hinnoista: ostot halpenevat "
+"{ingredient_price_multiplier} joka tasolla."
+msgstr "You know how to haggle over ingredient prices: purchases get {ingredient_price_multiplier} cheaper per level."
 
 #: src/resources/meta_unlocks/panimomestari.tres
 msgid "Panimomestari"
@@ -4203,20 +4193,15 @@ msgstr "Brewmaster"
 #: src/resources/meta_unlocks/panimomestari.tres
 msgid ""
 "Vuosikymmenten kokemus mäskäyksestä ja annostelusta kiteytyy todelliseksi "
-"mestaruudeksi. Jokainen erä kypsyy pysyvästi nopeammin huippuunsa, ja laatu "
-"heikkenee sen jälkeen pysyvästi hitaammin."
-msgstr ""
-"Decades of mashing and measuring turn into true mastery. Every batch "
-"permanently peaks faster, and its quality permanently declines more slowly "
-"after that."
+"mestaruudeksi. Joka tasolla kypsymisaika lyhenee {peak_speed_multiplier} ja "
+"oluet heikkenevät {decline_rate_multiplier} hitaammin."
+msgstr "Decades of mashing and measuring turn into true mastery. Each level shortens aging time by {peak_speed_multiplier} and makes beers decline {decline_rate_multiplier} slower."
 
 #: src/resources/meta_unlocks/perinnetaito.tres
 msgid ""
-"Aiempien panimoyritysten opit istuvat käsissä pysyvästi. Jokainen erä saa "
-"pienen laatuedun, joka periytyy jokaiseen tulevaan kauteen."
-msgstr ""
-"Lessons from earlier brewing attempts stay in your hands for good. Every "
-"batch gets a small quality edge that carries into every future season."
+"Aiempien panimoyritysten opit istuvat käsissä pysyvästi: jokaisen erän "
+"laatu paranee {quality_bonus} joka tasolla."
+msgstr "The lessons of earlier brewery attempts stay in your hands for good: every batch's quality improves by {quality_bonus} per level."
 
 #: src/resources/meta_unlocks/perinnetaito.tres
 msgid "Perinnetaito"
@@ -4225,12 +4210,9 @@ msgstr "Old Craft"
 #: src/resources/meta_unlocks/piilokatko.tres
 msgid ""
 "Olet oppinut piilottamaan osan varastosta ratsian varalta. LVV-ratsia "
-"jättää aina yhden satunnaisen erän löytämättä, ja panimosi kestää yhden "
-"ratsian enemmän ennen sulkemista."
-msgstr ""
-"You have learned to hide part of your storage in case of a raid. An LVV "
-"raid always misses one random batch, and your brewery survives one more "
-"raid before closing."
+"jättää aina {raid_hidden_batch_count} satunnaisen erän löytämättä, ja "
+"panimosi kestää {extra_raid_strikes} ratsian enemmän ennen sulkemista."
+msgstr "You have learned to hide part of the stock in case of a raid. An LVV raid always misses {raid_hidden_batch_count} random batch, and your brewery survives {extra_raid_strikes} more raid before closing."
 
 #: src/resources/meta_unlocks/piilokatko.tres
 msgid "Piilokätkö"
@@ -4238,11 +4220,9 @@ msgstr "Secret Stash"
 
 #: src/resources/meta_unlocks/rauhallinen_kellari.tres
 msgid ""
-"Osaat pitää baaritiskin rauhallisena ja huomaamattomana. LVV-riskin "
-"sietokykysi on pysyvästi hieman parempi."
-msgstr ""
-"You keep the bar calm and inconspicuous. Your LVV risk tolerance is "
-"permanently a little higher."
+"Osaat pitää baaritiskin rauhallisena ja huomaamattomana. LVV:n ratsiakynnys "
+"nousee {raid_threshold_multiplier} joka tasolla."
+msgstr "You keep the bar calm and unnoticed. The LVV raid threshold rises by {raid_threshold_multiplier} per level."
 
 #: src/resources/meta_unlocks/rauhallinen_kellari.tres
 msgid "Rauhallinen kellari"
@@ -4250,9 +4230,9 @@ msgstr "Quiet Cellar"
 
 #: src/resources/meta_unlocks/tarkka_pilkonta.tres
 msgid ""
-"Maltaat jauhautuvat tehokkaammin ja hukkaa syntyy vähemmän: erät ovat "
-"suurempia."
-msgstr "The malt mills more efficiently with less waste: batches are bigger."
+"Maltaat jauhautuvat tehokkaammin ja hukkaa syntyy vähemmän: jokainen erä "
+"antaa {brew_yield_multiplier} enemmän annoksia joka tasolla."
+msgstr "The malt mills more efficiently and less goes to waste: every batch gives {brew_yield_multiplier} more servings per level."
 
 #: src/resources/meta_unlocks/tarkka_pilkonta.tres
 msgid "Parempi mallasmylly"
@@ -4261,12 +4241,10 @@ msgstr "Better Malt Mill"
 #: src/resources/meta_unlocks/terava_silmae.tres
 msgid ""
 "Osaat tunnistaa epäilyttävät kasvot ovelta jo etukäteen ja karkottaa heidät "
-"hienovaraisesti. LVV:n agentteja näkyy pysyvästi harvemmin, ja alamaailman "
-"kontaktit löytävät tiensä kellariisi useammin."
-msgstr ""
-"You spot suspicious faces at the door in advance and send them away "
-"discreetly. LVV agents permanently show up less often, and underworld "
-"contacts find their way to your cellar more often."
+"hienovaraisesti. Joka tasolla LVV:n agentteja näkyy "
+"{agentti_appearance_multiplier} harvemmin, ja alamaailman kontakteja "
+"{mafioso_appearance_multiplier} useammin."
+msgstr "You spot suspicious faces at the door and send them away discreetly. Each level makes LVV agents show up {agentti_appearance_multiplier} less often, and underworld contacts {mafioso_appearance_multiplier} more often."
 
 #: src/resources/meta_unlocks/terava_silmae.tres
 msgid "Terävä silmä"
@@ -4274,9 +4252,9 @@ msgstr "Keen Eye"
 
 #: src/resources/meta_unlocks/tukkuhinnat.tres
 msgid ""
-"Neuvottelutaitosi ulottuu nyt myös myyntiin. Baarivientien tulot ovat "
-"pysyvästi paremmat."
-msgstr "Your bargaining reaches sales now too. Bar shipments permanently earn more."
+"Neuvottelutaitosi ulottuu nyt myös myyntiin: baarivientien tulot kasvavat "
+"{distribution_income_multiplier} joka tasolla."
+msgstr "Your haggling now reaches sales too: bar export income grows by {distribution_income_multiplier} per level."
 
 #: src/resources/meta_unlocks/tukkuhinnat.tres
 msgid "Tukkuhinnat"
@@ -4288,20 +4266,16 @@ msgstr "Wholesaler"
 
 #: src/resources/meta_unlocks/tukkukauppias.tres
 msgid ""
-"Tunnet sekä ostohinnat että hyvän myyntitavan perusteet. Ostot ovat "
-"pysyvästi hieman halvempia, ja tiskimyynnin hinnat hieman korkeampia."
-msgstr ""
-"You know both purchase prices and the basics of good salesmanship. "
-"Purchases are permanently a little cheaper, and counter prices a little "
-"higher."
+"Tunnet sekä ostohinnat että hyvän myyntitavan perusteet. Joka tasolla ostot "
+"halpenevat {ingredient_price_multiplier} ja tiskimyynnin hinnat nousevat "
+"{counter_price_multiplier}."
+msgstr "You know both buying prices and the basics of good selling. Each level makes purchases {ingredient_price_multiplier} cheaper and raises counter prices by {counter_price_multiplier}."
 
 #: src/resources/meta_unlocks/tunnettu_nimi.tres
 msgid ""
-"Panimosi maine on levinnyt entisiltä kausilta. Maineen kertymä on pysyvästi "
-"hieman parempi."
-msgstr ""
-"Your brewery's fame has spread from past seasons. Reputation gain is "
-"permanently a little better."
+"Panimosi maine on levinnyt entisiltä kausilta: maineen kertymä kasvaa "
+"{reputation_gain_multiplier} joka tasolla."
+msgstr "Your brewery's name has spread from earlier seasons: reputation gain grows by {reputation_gain_multiplier} per level."
 
 #: src/resources/meta_unlocks/tunnettu_nimi.tres
 msgid "Tunnettu nimi"
@@ -4310,10 +4284,8 @@ msgstr "Known Name"
 #: src/resources/meta_unlocks/vahva_brandi.tres
 msgid ""
 "Panimosi brändi tunnetaan jo laajalti, ja asiakkaat ovat valmiita maksamaan "
-"siitä. Tiskimyynnin hinnat ovat pysyvästi korkeampia."
-msgstr ""
-"Your brewery's brand is widely known, and customers are willing to pay for "
-"it. Counter prices are permanently higher."
+"siitä: tiskimyynnin hinnat nousevat {counter_price_multiplier} joka tasolla."
+msgstr "Your brewery's brand is widely known, and customers will pay for it: counter prices rise by {counter_price_multiplier} per level."
 
 #: src/resources/meta_unlocks/vahva_brandi.tres
 msgid "Vahva brändi"
@@ -4321,11 +4293,9 @@ msgstr "Strong Brand"
 
 #: src/resources/meta_unlocks/vieraanvarainen_perinne.tres
 msgid ""
-"Kellarilla on jo hyvä maine entisiltä kausilta. Asiakkaat tippaavat "
-"pysyvästi hieman anteliaammin."
-msgstr ""
-"The cellar already has a good name from earlier seasons. Customers "
-"permanently tip a little more generously."
+"Kellarilla on jo hyvä maine entisiltä kausilta: tipit kasvavat "
+"{tip_income_multiplier} joka tasolla."
+msgstr "The cellar already has a good name from earlier seasons: tips grow by {tip_income_multiplier} per level."
 
 #: src/resources/meta_unlocks/vieraanvarainen_perinne.tres
 msgid "Vieraanvarainen perinne"
@@ -4339,7 +4309,9 @@ msgstr "Discount Coupon"
 msgid ""
 "Kauppa antaa sinulle kanta-asiakasalennuksen: raaka-aineet halpenevat "
 "{ingredient_price_multiplier}."
-msgstr "The shop gives you a loyal customer discount: ingredients get {ingredient_price_multiplier} cheaper."
+msgstr ""
+"The shop gives you a loyal customer discount: ingredients get "
+"{ingredient_price_multiplier} cheaper."
 
 #: src/resources/perks/alueen_kuningas.tres
 msgid "Alueen kuningas"
@@ -4349,7 +4321,9 @@ msgstr "King of the District"
 msgid ""
 "Jokainen baari kaupungissa haluaa tuotteitasi. Baarivientien tulot kasvavat "
 "{distribution_income_multiplier}."
-msgstr "Every bar in town wants your products. Bar export income grows by {distribution_income_multiplier}."
+msgstr ""
+"Every bar in town wants your products. Bar export income grows by "
+"{distribution_income_multiplier}."
 
 #: src/resources/perks/anteliaat_asiakkaat.tres
 msgid "Anteliaat asiakkaat"
@@ -4359,14 +4333,18 @@ msgstr "Generous Customers"
 msgid ""
 "Sana kiirii hyvästä palvelusta: tyytyväiset asiakkaat jättävät "
 "{tip_income_multiplier} enemmän tippiä."
-msgstr "Word of good service spreads: happy customers leave {tip_income_multiplier} more in tips."
+msgstr ""
+"Word of good service spreads: happy customers leave {tip_income_multiplier} "
+"more in tips."
 
 #: src/resources/perks/baarimikon_charmi.tres
 msgid ""
 "Baarimikkosi oppii jutustelemaan asiakkaiden kanssa tiskin yli: "
 "tippimahdollisuus kasvaa {tip_chance} ja tuplatipin mahdollisuus "
 "{tip_double_chance}."
-msgstr "Your bartender learns to chat with customers over the counter: tip chance grows by {tip_chance} and double tip chance by {tip_double_chance}."
+msgstr ""
+"Your bartender learns to chat with customers over the counter: tip chance "
+"grows by {tip_chance} and double tip chance by {tip_double_chance}."
 
 #: src/resources/perks/baarimikon_charmi.tres
 msgid "Baarimikon charmi"
@@ -4380,13 +4358,17 @@ msgstr "Quiet Corner"
 msgid ""
 "Pidät matalaa profiilia, joten LVV:n ratsiakynnys nousee "
 "{raid_threshold_multiplier}."
-msgstr "You keep a low profile, so the LVV raid threshold rises by {raid_threshold_multiplier}."
+msgstr ""
+"You keep a low profile, so the LVV raid threshold rises by "
+"{raid_threshold_multiplier}."
 
 #: src/resources/perks/hyvat_suhteet.tres
 msgid ""
 "Baarien pitäjät tykästyivät olueesi. Baarivientien tulot kasvavat "
 "{distribution_income_multiplier}."
-msgstr "Bar owners took a liking to your beer. Bar export income grows by {distribution_income_multiplier}."
+msgstr ""
+"Bar owners took a liking to your beer. Bar export income grows by "
+"{distribution_income_multiplier}."
 
 #: src/resources/perks/hyvat_suhteet.tres
 msgid "Hyvät suhteet"
@@ -4400,7 +4382,9 @@ msgstr "Timeless Cellar"
 msgid ""
 "Kellarisi on kuin aikakapseli: kypsymisaika lyhenee {peak_speed_multiplier} "
 "ja oluet heikkenevät {decline_rate_multiplier} hitaammin."
-msgstr "Your cellar is like a time capsule: aging time shortens by {peak_speed_multiplier} and beers decline {decline_rate_multiplier} slower."
+msgstr ""
+"Your cellar is like a time capsule: aging time shortens by "
+"{peak_speed_multiplier} and beers decline {decline_rate_multiplier} slower."
 
 #: src/resources/perks/kanta_asiakaskerho.tres
 msgid "Kanta-asiakaskerho"
@@ -4410,13 +4394,17 @@ msgstr "Loyalty Club"
 msgid ""
 "Perustit uskollisille asiakkaille oman kerhon. Sana kiirii ja maine karttuu "
 "{reputation_gain_multiplier} nopeammin."
-msgstr "You started a club for your loyal customers. Word spreads and reputation grows {reputation_gain_multiplier} faster."
+msgstr ""
+"You started a club for your loyal customers. Word spreads and reputation "
+"grows {reputation_gain_multiplier} faster."
 
 #: src/resources/perks/kaveriporukka.tres
 msgid ""
 "Asiakkaat kertovat kellarista kavereilleen: mahdollisuus, että joku ottaa "
 "kaverin mukaan, kasvaa {walk_in_company_chance}."
-msgstr "Customers tell their friends about the cellar: the chance that someone brings a friend grows by {walk_in_company_chance}."
+msgstr ""
+"Customers tell their friends about the cellar: the chance that someone "
+"brings a friend grows by {walk_in_company_chance}."
 
 #: src/resources/perks/kaveriporukka.tres
 msgid "Kaveriporukka"
@@ -4430,13 +4418,17 @@ msgstr "Cellar Whisperer"
 msgid ""
 "Kuulet, milloin käyminen on juuri sopivassa vaiheessa: laatu paranee "
 "{quality_bonus}."
-msgstr "You can hear when the fermentation is just right: quality improves by {quality_bonus}."
+msgstr ""
+"You can hear when the fermentation is just right: quality improves by "
+"{quality_bonus}."
 
 #: src/resources/perks/kellarin_tunnelma.tres
 msgid ""
 "Hämärä valaistus ja hyvä musiikki: asiakkaat maksavat tiskillä "
 "{counter_price_multiplier} enemmän."
-msgstr "Dim lights and good music: customers pay {counter_price_multiplier} more at the counter."
+msgstr ""
+"Dim lights and good music: customers pay {counter_price_multiplier} more at "
+"the counter."
 
 #: src/resources/perks/kellarin_tunnelma.tres
 msgid "Kellarin tunnelma"
@@ -4446,7 +4438,9 @@ msgstr "Cellar Atmosphere"
 msgid ""
 "Asiakkaat tuovat seuraa {walk_in_company_chance} useammin, ja seurueessa on "
 "aina {walk_in_company_bonus} kaveri lisää."
-msgstr "Customers bring company {walk_in_company_chance} more often, and a company always has {walk_in_company_bonus} more friend along."
+msgstr ""
+"Customers bring company {walk_in_company_chance} more often, and a company "
+"always has {walk_in_company_bonus} more friend along."
 
 #: src/resources/perks/kolmen_kopla.tres
 msgid "Kolmen kopla"
@@ -4457,7 +4451,9 @@ msgid ""
 "Kellarista on tullut kulttipaikka: asiakkaat maksavat tiskillä "
 "{counter_price_multiplier} enemmän, ja tuplatipin mahdollisuus kasvaa "
 "{tip_double_chance}."
-msgstr "The cellar has become a cult spot: customers pay {counter_price_multiplier} more at the counter, and double tip chance grows by {tip_double_chance}."
+msgstr ""
+"The cellar has become a cult spot: customers pay {counter_price_multiplier} "
+"more at the counter, and double tip chance grows by {tip_double_chance}."
 
 #: src/resources/perks/kulttipaikka.tres
 msgid "Kulttipaikka"
@@ -4467,7 +4463,9 @@ msgstr "Cult Favourite"
 msgid ""
 "Kellarin lämpötila on juuri oikea: kypsymisaika lyhenee "
 "{peak_speed_multiplier}."
-msgstr "The cellar temperature is just right: aging time shortens by {peak_speed_multiplier}."
+msgstr ""
+"The cellar temperature is just right: aging time shortens by "
+"{peak_speed_multiplier}."
 
 #: src/resources/perks/kypsa_kellari.tres
 msgid "Kypsä kellari"
@@ -4481,7 +4479,9 @@ msgstr "Trusted Circle"
 msgid ""
 "Tunnet oikeat ihmiset korttelissa. LVV:n ratsiakynnys nousee "
 "{raid_threshold_multiplier}."
-msgstr "You know the right people in the block. The LVV raid threshold rises by {raid_threshold_multiplier}."
+msgstr ""
+"You know the right people in the block. The LVV raid threshold rises by "
+"{raid_threshold_multiplier}."
 
 #: src/resources/perks/monitaituri.tres
 msgid "Monitaituri"
@@ -4493,13 +4493,20 @@ msgid ""
 "{reputation_gain_multiplier}, tipit kasvavat {tip_income_multiplier}, "
 "jakelutulot {distribution_income_multiplier} ja ratsiakynnys nousee "
 "{raid_threshold_multiplier}."
-msgstr "You have learned a bit of everything: quality improves by {quality_bonus}, reputation gain grows by {reputation_gain_multiplier}, tips by {tip_income_multiplier}, distribution income by {distribution_income_multiplier} and the raid threshold rises by {raid_threshold_multiplier}."
+msgstr ""
+"You have learned a bit of everything: quality improves by {quality_bonus}, "
+"reputation gain grows by {reputation_gain_multiplier}, tips by "
+"{tip_income_multiplier}, distribution income by "
+"{distribution_income_multiplier} and the raid threshold rises by "
+"{raid_threshold_multiplier}."
 
 #: src/resources/perks/mummon_resepti.tres
 msgid ""
 "Löysit muistivihkosta vanhan niksin. Jokaisen erän laatu paranee "
 "{quality_bonus}."
-msgstr "You found an old trick in a notebook. Every batch's quality improves by {quality_bonus}."
+msgstr ""
+"You found an old trick in a notebook. Every batch's quality improves by "
+"{quality_bonus}."
 
 #: src/resources/perks/mummon_resepti.tres
 msgid "Mummon resepti"
@@ -4509,7 +4516,9 @@ msgstr "Granny's Recipe"
 msgid ""
 "Kukaan ei edes muista, että tämä kellari on olemassa, joten LVV:n "
 "ratsiakynnys nousee {raid_threshold_multiplier}."
-msgstr "Nobody even remembers this cellar exists, so the LVV raid threshold rises by {raid_threshold_multiplier}."
+msgstr ""
+"Nobody even remembers this cellar exists, so the LVV raid threshold rises "
+"by {raid_threshold_multiplier}."
 
 #: src/resources/perks/nakymaton_kellari.tres
 msgid "Näkymätön kellari"
@@ -4519,7 +4528,9 @@ msgstr "Invisible Cellar"
 msgid ""
 "Tarinat kellarin salaisesta panimosta leviävät baarien takahuoneissa, ja "
 "maine karttuu {reputation_gain_multiplier} nopeammin."
-msgstr "Stories of the cellar's secret brewery spread in the back rooms of bars, and reputation grows {reputation_gain_multiplier} faster."
+msgstr ""
+"Stories of the cellar's secret brewery spread in the back rooms of bars, "
+"and reputation grows {reputation_gain_multiplier} faster."
 
 #: src/resources/perks/oinen_legenda.tres
 msgid "Öinen legenda"
@@ -4533,13 +4544,17 @@ msgstr "Your Own Importer"
 msgid ""
 "Tuot raaka-aineet itse suoraan tuottajilta, joten ostot halpenevat "
 "{ingredient_price_multiplier}."
-msgstr "You import ingredients straight from the producers, so purchases get {ingredient_price_multiplier} cheaper."
+msgstr ""
+"You import ingredients straight from the producers, so purchases get "
+"{ingredient_price_multiplier} cheaper."
 
 #: src/resources/perks/pohjaton_pannu.tres
 msgid ""
 "Pannusta tuntuu riittävän loputtomiin: jokainen erä antaa "
 "{brew_yield_multiplier} enemmän annoksia."
-msgstr "The kettle seems bottomless: every batch gives {brew_yield_multiplier} more servings."
+msgstr ""
+"The kettle seems bottomless: every batch gives {brew_yield_multiplier} more "
+"servings."
 
 #: src/resources/perks/pohjaton_pannu.tres
 msgid "Pohjaton pannu"
@@ -4549,7 +4564,9 @@ msgstr "Bottomless Kettle"
 msgid ""
 "Kellarista on tullut illan kokoontumispaikka: mahdollisuus, että asiakas "
 "tuo seuraa, kasvaa {walk_in_company_chance}."
-msgstr "The cellar has become the evening's meeting place: the chance that a customer brings company grows by {walk_in_company_chance}."
+msgstr ""
+"The cellar has become the evening's meeting place: the chance that a "
+"customer brings company grows by {walk_in_company_chance}."
 
 #: src/resources/perks/porukalla_liikkeelle.tres
 msgid "Porukalla liikkeelle"
@@ -4559,7 +4576,9 @@ msgstr "Out with the Crew"
 msgid ""
 "Asiakkaat jättävät vaihtorahat tiskille: tipit kasvavat "
 "{tip_income_multiplier}."
-msgstr "Customers leave their change on the counter: tips grow by {tip_income_multiplier}."
+msgstr ""
+"Customers leave their change on the counter: tips grow by "
+"{tip_income_multiplier}."
 
 #: src/resources/perks/pyoristys_ylospain.tres
 msgid "Pyöristys ylöspäin"
@@ -4569,7 +4588,9 @@ msgstr "Round It Up"
 msgid ""
 "Lasket hävikin ja raaka-aineet tarkemmin, ja jokainen erä antaa "
 "{brew_yield_multiplier} enemmän annoksia."
-msgstr "You count waste and ingredients more carefully, and every batch gives {brew_yield_multiplier} more servings."
+msgstr ""
+"You count waste and ingredients more carefully, and every batch gives "
+"{brew_yield_multiplier} more servings."
 
 #: src/resources/perks/saastavainen_pullottaja.tres
 msgid "Säästäväinen panija"
@@ -4579,7 +4600,9 @@ msgstr "Thrifty Brewer"
 msgid ""
 "Kiiltävä tiski tekee vaikutuksen, ja asiakkaat maksavat tiskillä "
 "{counter_price_multiplier} enemmän."
-msgstr "A shiny counter impresses, and customers pay {counter_price_multiplier} more at the counter."
+msgstr ""
+"A shiny counter impresses, and customers pay {counter_price_multiplier} "
+"more at the counter."
 
 #: src/resources/perks/siisti_tiski.tres
 msgid "Siisti tiski"
@@ -4589,7 +4612,9 @@ msgstr "Tidy Counter"
 msgid ""
 "Puskaradio toimii: jokainen onnistunut myynti tuo "
 "{reputation_gain_multiplier} enemmän mainetta."
-msgstr "Word of mouth works: every successful sale brings {reputation_gain_multiplier} more reputation."
+msgstr ""
+"Word of mouth works: every successful sale brings "
+"{reputation_gain_multiplier} more reputation."
 
 #: src/resources/perks/suosittu_paikka.tres
 msgid "Suosittu paikka"
@@ -4603,7 +4628,9 @@ msgstr "Careful Hand"
 msgid ""
 "Vuosien harjoittelu näkyy oluessa. Jokaisen keitetyn erän laatu paranee "
 "{quality_bonus}."
-msgstr "Years of practice show in the beer. Every brewed batch's quality improves by {quality_bonus}."
+msgstr ""
+"Years of practice show in the beer. Every brewed batch's quality improves "
+"by {quality_bonus}."
 
 #: src/resources/perks/tasainen_tienesti.tres
 msgid "Paremmat tipit, vakaa tulonlähde: tipit kasvavat {tip_income_multiplier}."
@@ -4617,7 +4644,9 @@ msgstr "Steady Earnings"
 msgid ""
 "Opit olemaan varovaisempi. LVV:n ratsiakynnys nousee "
 "{raid_threshold_multiplier}."
-msgstr "You learn to be more careful. The LVV raid threshold rises by {raid_threshold_multiplier}."
+msgstr ""
+"You learn to be more careful. The LVV raid threshold rises by "
+"{raid_threshold_multiplier}."
 
 #: src/resources/perks/tasainen_varovaisuus.tres
 msgid "Tasainen varovaisuus"
@@ -4627,7 +4656,9 @@ msgstr "Steady Caution"
 msgid ""
 "Tunnet keittimesi paremmin, ja jokaisesta erästä riittää "
 "{brew_yield_multiplier} enemmän annoksia."
-msgstr "You know your kettle better, and every batch gives {brew_yield_multiplier} more servings."
+msgstr ""
+"You know your kettle better, and every batch gives {brew_yield_multiplier} "
+"more servings."
 
 #: src/resources/perks/tiivis_pullotus.tres
 msgid "Tuttu keitin"
@@ -4641,13 +4672,17 @@ msgstr "Wholesaler's Friend"
 msgid ""
 "Tunnet tukkumyyjän, ja hän alentaa raaka-aineiden hintoja sinua varten "
 "{ingredient_price_multiplier}."
-msgstr "You know the wholesaler, and he lowers ingredient prices for you by {ingredient_price_multiplier}."
+msgstr ""
+"You know the wholesaler, and he lowers ingredient prices for you by "
+"{ingredient_price_multiplier}."
 
 #: src/resources/perks/tunnettu_toimittaja.tres
 msgid ""
 "Maineesi oluen toimittajana kiirii baarista toiseen: baarivientien tulot "
 "kasvavat {distribution_income_multiplier}."
-msgstr "Your name as a beer supplier spreads from bar to bar: bar export income grows by {distribution_income_multiplier}."
+msgstr ""
+"Your name as a beer supplier spreads from bar to bar: bar export income "
+"grows by {distribution_income_multiplier}."
 
 #: src/resources/perks/tunnettu_toimittaja.tres
 msgid "Tunnettu toimittaja"
@@ -4658,7 +4693,10 @@ msgid ""
 "Maineesi kasvaa tasaisesti päivästä toiseen: maine karttuu "
 "{reputation_gain_multiplier} nopeammin. Ei räjähdysmäisesti, mutta se ei "
 "myöskään koskaan hiivu."
-msgstr "Your reputation grows steadily day by day: reputation grows {reputation_gain_multiplier} faster. Not explosively, but it never fades either."
+msgstr ""
+"Your reputation grows steadily day by day: reputation grows "
+"{reputation_gain_multiplier} faster. Not explosively, but it never fades "
+"either."
 
 #: src/resources/perks/vakaa_maine.tres
 msgid "Vakaa maine"
@@ -4668,7 +4706,9 @@ msgstr "Steady Reputation"
 msgid ""
 "Toimituskohteesi vakiintuvat: baarivientien tulot kasvavat "
 "{distribution_income_multiplier}."
-msgstr "Your delivery spots settle in: bar export income grows by {distribution_income_multiplier}."
+msgstr ""
+"Your delivery spots settle in: bar export income grows by "
+"{distribution_income_multiplier}."
 
 #: src/resources/perks/vakiintunut_reitti.tres
 msgid "Vakiintunut reitti"
@@ -4678,7 +4718,9 @@ msgstr "Established Route"
 msgid ""
 "Löysit kellarista viileän nurkan: oluet heikkenevät "
 "{decline_rate_multiplier} hitaammin."
-msgstr "You found a cool corner in the cellar: beers decline {decline_rate_multiplier} slower."
+msgstr ""
+"You found a cool corner in the cellar: beers decline "
+"{decline_rate_multiplier} slower."
 
 #: src/resources/perks/viilea_nurkka.tres
 msgid "Viileä nurkka"

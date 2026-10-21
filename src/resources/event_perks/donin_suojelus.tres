@@ -5,6 +5,6 @@
 [resource]
 script = ExtResource("1_don")
 perk_name = "Donin suojelus"
-description = "Donin miehet pitävät kellaria silmällä: agentteja käy hieman harvemmin."
+description = "Donin miehet pitävät kellaria silmällä: agentteja käy {agentti_appearance_multiplier} harvemmin."
 icon_placeholder = "🎩"
 agentti_appearance_multiplier = 0.8

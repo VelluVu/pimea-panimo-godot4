@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_unlock")
 perk_name = "Mainoskampanja"
-description = "Mainostat panimoasi aktiivisesti ympäri kaupunkia. Ryhmäasiakkaita saapuu kellariisi pysyvästi tiheämmin."
+description = "Mainostat panimoasi aktiivisesti ympäri kaupunkia. Ryhmäasiakkaiden saapumisväli lyhenee {group_event_interval_multiplier} joka tasolla."
 icon_placeholder = "📣"
 group_event_interval_multiplier = 0.92
 stacks_additively = true

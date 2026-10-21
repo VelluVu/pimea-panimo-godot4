@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_unlock")
 perk_name = "Piilokätkö"
-description = "Olet oppinut piilottamaan osan varastosta ratsian varalta. LVV-ratsia jättää aina yhden satunnaisen erän löytämättä, ja panimosi kestää yhden ratsian enemmän ennen sulkemista."
+description = "Olet oppinut piilottamaan osan varastosta ratsian varalta. LVV-ratsia jättää aina {raid_hidden_batch_count} satunnaisen erän löytämättä, ja panimosi kestää {extra_raid_strikes} ratsian enemmän ennen sulkemista."
 icon_placeholder = "🕳️"
 extra_raid_strikes = 1
 raid_hidden_batch_count = 1

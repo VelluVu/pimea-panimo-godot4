@@ -10,6 +10,6 @@ max_level = 3
 base_cost = 60
 cost_growth = 2.0
 perk_name = "Ilmoitustaulu"
-description = "Kellarin seinään naulattu taulu, johon kanta-asiakkaat ja naapurit jättävät toiveitaan. Joka päivä tarjolla on yksi päivätavoite enemmän."
+description = "Kellarin seinään naulattu taulu, johon kanta-asiakkaat ja naapurit jättävät toiveitaan. Joka taso tuo {extra_daily_goal_rolls} päivätavoitteen lisää päivään."
 icon_placeholder = "📌"
 extra_daily_goal_rolls = 1

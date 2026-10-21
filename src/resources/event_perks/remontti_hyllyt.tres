@@ -5,6 +5,6 @@
 [resource]
 script = ExtResource("1_reno")
 perk_name = "Uudet hyllyt"
-description = "Varastoon tuli kunnon hyllyt: oluet pysyvät hyvinä hieman pidempään."
+description = "Varastoon tuli kunnon hyllyt: oluet heikkenevät {decline_rate_multiplier} hitaammin."
 icon_placeholder = "🗄️"
 decline_rate_multiplier = 0.93

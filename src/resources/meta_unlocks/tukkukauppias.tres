@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_unlock")
 perk_name = "Tukkukauppias"
-description = "Tunnet sekä ostohinnat että hyvän myyntitavan perusteet. Ostot ovat pysyvästi hieman halvempia, ja tiskimyynnin hinnat hieman korkeampia."
+description = "Tunnet sekä ostohinnat että hyvän myyntitavan perusteet. Joka tasolla ostot halpenevat {ingredient_price_multiplier} ja tiskimyynnin hinnat nousevat {counter_price_multiplier}."
 icon_placeholder = "📦"
 ingredient_price_multiplier = 0.99
 counter_price_multiplier = 1.01

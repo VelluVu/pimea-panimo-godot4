@@ -5,6 +5,6 @@
 [resource]
 script = ExtResource("1_reno")
 perk_name = "Tiiviit letkut"
-description = "Remontissa vaihdettiin vuotavat letkut: samasta erästä tulee hieman enemmän annoksia."
+description = "Remontissa vaihdettiin vuotavat letkut: jokainen erä antaa {brew_yield_multiplier} enemmän annoksia."
 icon_placeholder = "🔧"
 brew_yield_multiplier = 1.04

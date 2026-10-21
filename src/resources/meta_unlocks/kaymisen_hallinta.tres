@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_unlock")
 perk_name = "Huolellinen käsityöläinen"
-description = "Osaat arvioida raaka-ainemäärät tarkasti. Jokaisella panolla on pysyvä mahdollisuus saada osa raaka-aineista takaisin varastoon."
+description = "Osaat arvioida raaka-ainemäärät tarkasti. Raaka-ainepalautuksen mahdollisuus kasvaa {ingredient_refund_chance} joka tasolla."
 icon_placeholder = "♻️"
 ingredient_refund_chance = 0.08
 stacks_additively = true

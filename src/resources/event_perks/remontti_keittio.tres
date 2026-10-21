@@ -5,6 +5,6 @@
 [resource]
 script = ExtResource("1_reno")
 perk_name = "Siisti keittola"
-description = "Keittola on remontin jäljiltä siisti: raaka-aineita jää joskus käyttämättä."
+description = "Keittola on remontin jäljiltä siisti: raaka-ainepalautuksen mahdollisuus kasvaa {ingredient_refund_chance}."
 icon_placeholder = "🧽"
 ingredient_refund_chance = 0.03

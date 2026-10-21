@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_unlock")
 perk_name = "Parempi mallasmylly"
-description = "Maltaat jauhautuvat tehokkaammin ja hukkaa syntyy vähemmän: erät ovat suurempia."
+description = "Maltaat jauhautuvat tehokkaammin ja hukkaa syntyy vähemmän: jokainen erä antaa {brew_yield_multiplier} enemmän annoksia joka tasolla."
 icon_placeholder = "🌾"
 brew_yield_multiplier = 1.03
 stacks_additively = true

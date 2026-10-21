@@ -5,6 +5,6 @@
 [resource]
 script = ExtResource("1_course")
 perk_name = "Tuplatippikurssi"
-description = "Keke opetti, miten asiakkaan saa tuntemaan itsensä tärkeäksi: tippi tuplaantuu hieman useammin."
+description = "Keke opetti, miten asiakkaan saa tuntemaan itsensä tärkeäksi: tuplatipin mahdollisuus kasvaa {tip_double_chance}."
 icon_placeholder = "💰"
 tip_double_chance = 0.03
