@@ -93,12 +93,8 @@ size = Vector2(43, 209)
 offsets = PackedFloat32Array(0, 0.25, 0.75, 1)
 colors = PackedColorArray(2.2, 2.05, 1.7, 0, 2.2, 2.05, 1.7, 0.6, 2.2, 2.05, 1.7, 0.6, 2.2, 2.05, 1.7, 0)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_v621m"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dy065"]
 shader = ExtResource("11_nfawm")
-shader_parameter/vignette_strength = 0.22
-shader_parameter/grain_strength = 0.025
-shader_parameter/grain_fps = 8.0
-shader_parameter/dither_levels = 3.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_nfawm"]
 shader = ExtResource("11_3cmot")
@@ -302,7 +298,7 @@ color = Color(0.4, 0.38, 0.45, 1)
 [node name="ScreenEffectsLayer" type="CanvasLayer" parent="." unique_id=207106200]
 
 [node name="CellarAmbience" type="ColorRect" parent="ScreenEffectsLayer" unique_id=1337135789]
-material = SubResource("ShaderMaterial_v621m")
+material = SubResource("ShaderMaterial_dy065")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
