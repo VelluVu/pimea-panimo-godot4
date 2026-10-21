@@ -3,36 +3,42 @@ the size it is drawn at (its old texture_scale and node scale), then its alpha s
 dithered per world pixel (pixel_dither.py). The PointLight2Ds then use scale 1 and
 texture_scale 1, so one texel is one game pixel. Colours inside the texture are kept.
 
-    python dev/tools/lights/pixelate_lights.py
+    python dev/tools/lights/pixelate_lights.py [name.png ...]
 """
 
 import os
+import sys
 
 from PIL import Image
 
-from pixel_dither import stepped
+from pixel_dither import LEVELS, stepped
 
 TEXTURES = os.path.join(os.path.dirname(__file__), "..", "..", "..", "assets", "textures")
 
-# name -> (source texture, drawn size, light's global position). Global, because the
-# Lights node in main.tscn sits at (0, -1) and the dither follows world pixels.
+# name -> (source texture, drawn size, light's global position, falloff levels). Global,
+# because the Lights node in main.tscn sits at (0, -1) and the dither follows world pixels.
+# The bar cone falls on the bartender's and customers' faces, where 7 levels showed the
+# dither as a grid of dark crosses; 64 steps are too fine to see.
 LIGHTS = {
-    "light_glow_stairs.png": ("light_glow_32.png", (340, 340), (27, 80)),
-    "light_glow_wall.png": ("light_glow_32.png", (114, 114), (305, 138)),
-    "light_glow_wall2.png": ("light_glow_32.png", (118, 118), (495, 133)),
-    "light_cone_bar.png": ("light_cone_64x120.png", (422, 564), (394, 340)),
+    "light_glow_stairs.png": ("light_glow_32.png", (340, 340), (27, 80), LEVELS),
+    "light_glow_wall.png": ("light_glow_32.png", (114, 114), (305, 138), LEVELS),
+    "light_glow_wall2.png": ("light_glow_32.png", (118, 118), (495, 133), LEVELS),
+    "light_cone_bar.png": ("light_cone_64x120.png", (422, 564), (394, 340), 64),
 }
 
 
 def main() -> None:
-    for name, (source, size, centre) in LIGHTS.items():
+    only = sys.argv[1:]
+    for name, (source, size, centre, levels) in LIGHTS.items():
+        if only and name not in only:
+            continue
         smooth = Image.open(os.path.join(TEXTURES, source)).convert("RGBA").resize(size, Image.BICUBIC)
         origin = (centre[0] - size[0] // 2, centre[1] - size[1] // 2)
         image = Image.new("RGBA", size)
         for y in range(size[1]):
             for x in range(size[0]):
                 r, g, b, a = smooth.getpixel((x, y))
-                alpha = stepped(a / 255.0, origin[0] + x, origin[1] + y)
+                alpha = stepped(a / 255.0, origin[0] + x, origin[1] + y, levels)
                 image.putpixel((x, y), (r, g, b, round(alpha * 255)))
         out = os.path.normpath(os.path.join(TEXTURES, name))
         image.save(out)
