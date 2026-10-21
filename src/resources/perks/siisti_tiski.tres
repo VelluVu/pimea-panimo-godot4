@@ -5,6 +5,6 @@
 [resource]
 script = ExtResource("1_siisti_tiski")
 perk_name = "Siisti tiski"
-description = "Kiiltävä tiski tekee vaikutuksen, ja asiakkaat maksavat hieman enemmän."
+description = "Kiiltävä tiski tekee vaikutuksen, ja asiakkaat maksavat tiskillä {counter_price_multiplier} enemmän."
 icon_placeholder = "🧽"
 counter_price_multiplier = 1.04

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_saastavainen_pullottaja")
 perk_name = "Säästäväinen panija"
-description = "Lasket hävikin ja raaka-aineet tarkemmin, ja tuotantomäärät kasvavat selvästi."
+description = "Lasket hävikin ja raaka-aineet tarkemmin, ja jokainen erä antaa {brew_yield_multiplier} enemmän annoksia."
 icon_placeholder = "🧮"
 tier = 1
 brew_yield_multiplier = 1.08

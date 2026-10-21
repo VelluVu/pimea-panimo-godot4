@@ -5,6 +5,7 @@ extends Resource
 ## stat defaults to neutral, so any number combine (PerkStats lists them).
 
 @export var perk_name: String = ""
+## May name a stat as {field}, e.g. {tip_income_multiplier}; get_description() fills in its value.
 @export var description: String = ""
 
 ## Placeholder until real art exists.
@@ -125,7 +126,18 @@ func _copy_with(stat_value : Callable) -> RunPerk:
 	return copy
 
 
-## One short line per non-neutral stat, shown next to the perk's flavour text.
+## The description with each {stat} replaced by the value text, so the card's numbers come
+## from the stats themselves.
+func get_description() -> String:
+	var text : String = tr(description)
+	for entry : Dictionary in PerkStats.definitions():
+		var token : String = "{%s}" % entry.stat
+		if text.contains(token):
+			text = text.replace(token, PerkStats.value_text(entry.kind, get(entry.stat), stacks_additively))
+	return text
+
+
+## One short line per non-neutral stat, for lists that show no description.
 func get_stat_summary() -> String:
 	var lines : PackedStringArray = []
 

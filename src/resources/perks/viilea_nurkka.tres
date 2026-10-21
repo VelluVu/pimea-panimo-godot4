@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_viilea_nurkka")
 perk_name = "Viileä nurkka"
-description = "Löysit kellarista viileän nurkan. Oluet säilyvät hyvinä selvästi pidempään."
+description = "Löysit kellarista viileän nurkan: oluet heikkenevät {decline_rate_multiplier} hitaammin."
 icon_placeholder = "❄️"
 tier = 1
 decline_rate_multiplier = 0.85

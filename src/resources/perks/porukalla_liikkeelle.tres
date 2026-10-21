@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_perk")
 perk_name = "Porukalla liikkeelle"
-description = "Kellarista on tullut illan kokoontumispaikka: asiakkaat saapuvat yhä useammin seurassa."
+description = "Kellarista on tullut illan kokoontumispaikka: mahdollisuus, että asiakas tuo seuraa, kasvaa {walk_in_company_chance}."
 icon_placeholder = "🍻"
 tier = 1
 walk_in_company_chance = 0.08

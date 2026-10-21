@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_kellarin_tunnelma")
 perk_name = "Kellarin tunnelma"
-description = "Hämärä valaistus ja hyvä musiikki: asiakkaat maksavat tiskillä selvästi enemmän."
+description = "Hämärä valaistus ja hyvä musiikki: asiakkaat maksavat tiskillä {counter_price_multiplier} enemmän."
 icon_placeholder = "🎶"
 tier = 1
 counter_price_multiplier = 1.08
