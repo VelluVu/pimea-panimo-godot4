@@ -11,25 +11,27 @@ import sys
 
 from PIL import Image
 
-from pixel_dither import LEVELS, stepped
+from pixel_dither import stepped
 
 TEXTURES = os.path.join(os.path.dirname(__file__), "..", "..", "..", "assets", "textures")
 
-# name -> (source texture, drawn size, light's global position, falloff levels). Global,
-# because the Lights node in main.tscn sits at (0, -1) and the dither follows world pixels.
-# The bar cone falls on the bartender's and customers' faces, where 7 levels showed the
-# dither as a grid of dark crosses; 64 steps are too fine to see.
+# These lights fall on the bartender and passing customers, where pixel_dither's 7 levels
+# showed the dither as a grid of dark crosses on skin; 64 steps are too fine to see.
+FALLOFF_LEVELS = 64
+
+# name -> (source texture, drawn size, light's global position). Global, because the
+# Lights node in main.tscn sits at (0, -1) and the dither follows world pixels.
 LIGHTS = {
-    "light_glow_stairs.png": ("light_glow_32.png", (340, 340), (27, 80), LEVELS),
-    "light_glow_wall.png": ("light_glow_32.png", (114, 114), (305, 138), LEVELS),
-    "light_glow_wall2.png": ("light_glow_32.png", (118, 118), (495, 133), LEVELS),
-    "light_cone_bar.png": ("light_cone_64x120.png", (422, 564), (394, 340), 64),
+    "light_glow_stairs.png": ("light_glow_32.png", (340, 340), (27, 80)),
+    "light_glow_wall.png": ("light_glow_32.png", (114, 114), (305, 138)),
+    "light_glow_wall2.png": ("light_glow_32.png", (118, 118), (495, 133)),
+    "light_cone_bar.png": ("light_cone_64x120.png", (422, 564), (394, 340)),
 }
 
 
 def main() -> None:
     only = sys.argv[1:]
-    for name, (source, size, centre, levels) in LIGHTS.items():
+    for name, (source, size, centre) in LIGHTS.items():
         if only and name not in only:
             continue
         smooth = Image.open(os.path.join(TEXTURES, source)).convert("RGBA").resize(size, Image.BICUBIC)
@@ -38,7 +40,7 @@ def main() -> None:
         for y in range(size[1]):
             for x in range(size[0]):
                 r, g, b, a = smooth.getpixel((x, y))
-                alpha = stepped(a / 255.0, origin[0] + x, origin[1] + y, levels)
+                alpha = stepped(a / 255.0, origin[0] + x, origin[1] + y, FALLOFF_LEVELS)
                 image.putpixel((x, y), (r, g, b, round(alpha * 255)))
         out = os.path.normpath(os.path.join(TEXTURES, name))
         image.save(out)
