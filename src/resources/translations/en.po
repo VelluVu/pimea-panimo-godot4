@@ -4326,7 +4326,7 @@ msgstr ""
 "{agentti_appearance_multiplier} less often."
 
 #: src/resources/meta_unlocks/terava_silmae.tres
-msgid "Pimeä Kortteli"
+msgid "Pimeä kortteli"
 msgstr "Dark Block"
 
 #: src/resources/meta_unlocks/tukkuhinnat.tres
