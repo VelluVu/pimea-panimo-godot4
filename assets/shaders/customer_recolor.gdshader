@@ -7,6 +7,8 @@ shader_type canvas_item;
 // for that region; *_target_color is set per customer instance for variety.
 // A region with *_recolor off still claims its pixels, so they never fall
 // through to a later region, but keeps them exactly as painted.
+// Shoes share brown hues with hair, so they only match in the feet rows at the
+// bottom of each frame and are checked before hair.
 
 group_uniforms skin;
 uniform vec4 skin_base_color : source_color = vec4(0.918, 0.831, 0.667, 1.0);
@@ -31,6 +33,10 @@ uniform vec4 shoes_target_color : source_color = vec4(0.451, 0.243, 0.224, 1.0);
 group_uniforms match_tuning;
 uniform float hue_tolerance : hint_range(0.0, 0.5) = 0.05;
 uniform float saturation_tolerance : hint_range(0.0, 1.0) = 0.35;
+
+group_uniforms frame;
+uniform float frame_height = 32.0;
+uniform float feet_rows = 7.0;
 
 varying vec3 skin_base_hsv;
 varying vec3 skin_target_hsv;
@@ -86,11 +92,16 @@ void fragment() {
 	vec3 result = tex_color.rgb;
 	// Claimed pixels are skipped by later regions, so the original HSV serves them all.
 	vec3 pixel_hsv = rgb2hsv(tex_color.rgb);
+	float frame_row = mod(floor(UV.y / TEXTURE_PIXEL_SIZE.y), frame_height);
+	float outside_feet = 1.0 - step(frame_height - feet_rows, frame_row);
 	float consumed = 0.0;
 	result = apply_region_recolor(result, pixel_hsv, skin_base_hsv, skin_target_hsv, skin_recolor, hue_tolerance, saturation_tolerance, consumed);
+	// Pre-claiming everything above the feet keeps shoes out of there; the claim is then lifted.
+	float shoes_consumed = max(consumed, outside_feet);
+	result = apply_region_recolor(result, pixel_hsv, shoes_base_hsv, shoes_target_hsv, shoes_recolor, hue_tolerance, saturation_tolerance, shoes_consumed);
+	consumed = max(consumed, shoes_consumed * (1.0 - outside_feet));
 	result = apply_region_recolor(result, pixel_hsv, hair_base_hsv, hair_target_hsv, hair_recolor, hue_tolerance, saturation_tolerance, consumed);
 	result = apply_region_recolor(result, pixel_hsv, clothes_base_hsv, clothes_target_hsv, clothes_recolor, hue_tolerance, saturation_tolerance, consumed);
-	result = apply_region_recolor(result, pixel_hsv, shoes_base_hsv, shoes_target_hsv, shoes_recolor, hue_tolerance, saturation_tolerance, consumed);
 	// Times the incoming COLOR, which carries modulate (fades, the bar fight flash).
 	COLOR = vec4(result, tex_color.a) * COLOR;
 }
