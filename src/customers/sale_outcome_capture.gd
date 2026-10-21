@@ -19,6 +19,9 @@ var beer_quality: float = -1.0
 var bar_fight_bottles: int = -1
 ## EBC of the beer sold, or -1 when nothing was sold.
 var beer_ebc: int = -1
+## Servings sold and the strongest ABV among them, for TipsyRules.
+var servings: int = 0
+var strongest_abv: float = 0.0
 var notes: Array[Note] = []
 
 
@@ -80,6 +83,9 @@ func _on_bar_fight(broken_bottles: int) -> void:
 func _on_sale_breakdown(entry: SaleReceiptEntry) -> void:
 	beer_ebc = entry.beer_ebc
 	income += entry.gross_income
+	servings += entry.bottles_sold
+	if entry.batch != null:
+		strongest_abv = maxf(strongest_abv, entry.batch.get_abv())
 
 
 func _on_friend_recommended(_data: CustomerData) -> void:
