@@ -55,6 +55,8 @@ func _ready() -> void:
 	BrewerySignals.customer_note_popup_requested.connect(_on_customer_note_popup_requested)
 	GUISignals.world_popup_requested.connect(_dialog.show_drifting_note)
 	_dialog.popup_shown.connect(_on_popup_shown)
+	_dialog.shake_popups = SettingsManager.get_option(SettingsManager.OPTION_SCREEN_SHAKE)
+	SettingsManager.option_changed.connect(_on_option_changed)
 
 
 ## Special lines are shown elsewhere (the special event window), not as a bubble.
@@ -98,6 +100,11 @@ func _on_customer_note_popup_requested(note : SaleOutcomeCapture.Note, character
 			text = LOST_REGULAR_TEXT
 			color = FADED_NOTE_COLOR
 	_dialog.show_popup(tr(text), color, character_pos + NOTE_POPUP_OFFSET, DialogView.Emphasis.NORMAL, NOTE_POPUP_DELAY_SECONDS, HORIZONTAL_ALIGNMENT_CENTER)
+
+
+func _on_option_changed(key : String, value : Variant) -> void:
+	if key == SettingsManager.OPTION_SCREEN_SHAKE:
+		_dialog.shake_popups = value
 
 
 ## The crit chime plays when a critical popup actually appears, once for popups that

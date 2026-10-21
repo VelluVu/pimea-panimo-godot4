@@ -50,6 +50,7 @@ func _ready() -> void:
 	add_child(PortraitNotice.new())
 	add_child(BrewDayWindow.new())
 	add_child(KegWashWindow.new())
+	add_child(FocusPause.new())
 	var touch_hints := TouchHints.new()
 	add_child(touch_hints)
 	if DisplayServer.is_touchscreen_available():

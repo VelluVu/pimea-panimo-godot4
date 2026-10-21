@@ -56,12 +56,14 @@ func play_sfx(stream: AudioStream, volume_db: float = 0.0, pitch_scale: float = 
 
 
 ## One-shot sound at a place in the world, panned and faded by its distance to the listener.
-func play_sfx_at(stream: AudioStream, world_position: Vector2, volume_db: float = 0.0, pitch_scale: float = 1.0) -> void:
+## An empty `bus` plays on the effects bus.
+func play_sfx_at(stream: AudioStream, world_position: Vector2, volume_db: float = 0.0, pitch_scale: float = 1.0, bus: StringName = &"") -> void:
 	if stream == null:
 		return
 	var player := _world_pool[_next_world_player_index]
 	_next_world_player_index = (_next_world_player_index + 1) % _world_pool.size()
 	player.global_position = world_position
+	player.bus = bus if bus != &"" else sfx_bus
 	player.stream = stream
 	player.volume_db = volume_db
 	player.pitch_scale = pitch_scale

@@ -19,6 +19,8 @@ func _ready() -> void:
 
 
 func _add_trauma(amount : float) -> void:
+	if not SettingsManager.get_option(SettingsManager.OPTION_SCREEN_SHAKE):
+		return
 	_trauma = ShakeRules.added(_trauma, amount)
 	set_process(true)
 

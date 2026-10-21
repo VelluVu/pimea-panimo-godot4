@@ -39,6 +39,8 @@ const STACKED_Z_OFFSET : int = 100
 ## True: bubbles keep game time (Engine.time_scale, and they wait out a pause); false: real
 ## seconds at any speed, paused or not.
 var bubbles_follow_time_scale : bool = false
+## False keeps critical popups still, for players who turn shaking off.
+var shake_popups : bool = true
 
 ## Dialogue slot (int) -> BubbleEntry.
 var _bubbles : Dictionary = {}
@@ -108,7 +110,7 @@ func show_popup(text : String, color : Color, anchor_pos : Vector2, emphasis : E
 		tween.tween_interval(delay_seconds)
 	tween.tween_callback(_reveal.bind(popup, emphasis, anchor_pos))
 	_hop_in(tween, popup, global_pos, LOUD_POPUP_HOP_PIXELS if emphasis != Emphasis.NORMAL else POPUP_HOP_PIXELS)
-	if emphasis == Emphasis.CRITICAL:
+	if emphasis == Emphasis.CRITICAL and shake_popups:
 		_shake(tween, popup, global_pos)
 
 	var faded : Color = color

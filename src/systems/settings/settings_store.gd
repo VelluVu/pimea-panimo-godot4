@@ -1,17 +1,20 @@
 class_name SettingsStore
 extends Node
 
-## Saved player preferences: per-bus volume and mute, fullscreen, language and small named
-## options, applied straight to the servers. The wiring lists buses, languages and defaults.
+## Saved player preferences: per-bus volume and mute, fullscreen, pixel-perfect scaling,
+## language and small named options, applied straight to the servers. The wiring lists buses, languages and defaults.
 
 ## The language changed; text built in code may need rebuilding.
 signal language_changed(locale: String)
+## A named option was set; listeners that cache an option refresh from this.
+signal option_changed(key: String, value: Variant)
 
 const SECTION_AUDIO: String = "audio"
 const SECTION_GENERAL: String = "general"
 const KEY_LANGUAGE: String = "language"
 const SECTION_VIDEO: String = "video"
 const KEY_FULLSCREEN: String = "fullscreen"
+const KEY_PIXEL_PERFECT: String = "pixel_perfect"
 const VOLUME_SUFFIX: String = "_volume"
 const MUTED_SUFFIX: String = "_muted"
 const SECTION_OPTIONS: String = "options"
@@ -22,6 +25,8 @@ var default_volume: float = 0.8
 ## Buses muted on a fresh install; volume is kept apart, so unmuting restores the level.
 var default_muted_buses: Array[StringName] = []
 var fullscreen: bool = false
+## Scales the window's content in whole steps only, with black bars around the rest.
+var pixel_perfect: bool = false
 ## Locales the player can pick, the first being the one the texts are written in.
 var supported_locales: Array[String] = ["en"]
 ## Used when nothing is saved and the system language is not followed or not supported.
@@ -33,6 +38,8 @@ var translation_paths: Array[String] = []
 ## The saved choice; empty follows the system language.
 var language: String = ""
 var save_path: String = "user://settings.cfg"
+## Option values before the player changes them, key -> value; read by get_option().
+var option_defaults: Dictionary = {}
 
 var _volumes: Dictionary = {}  # bus -> linear 0..1
 ## Only the active language's translation is registered: Godot falls back to the project's
@@ -91,18 +98,28 @@ static func pick_locale(saved: String, system_language: String, supported: Array
 	return fallback
 
 
-func get_option(key: String, default_value: Variant) -> Variant:
-	return _options.get(key, default_value)
+## Without `default_value`, an unsaved option falls back to `option_defaults`.
+func get_option(key: String, default_value: Variant = null) -> Variant:
+	if _options.has(key):
+		return _options[key]
+	return default_value if default_value != null else option_defaults.get(key)
 
 
 func set_option(key: String, value: Variant) -> void:
 	_options[key] = value
 	save_settings()
+	option_changed.emit(key, value)
 
 
 func set_fullscreen(value: bool) -> void:
 	fullscreen = value
 	_apply_fullscreen()
+	save_settings()
+
+
+func set_pixel_perfect(value: bool) -> void:
+	pixel_perfect = value
+	_apply_pixel_perfect()
 	save_settings()
 
 
@@ -114,6 +131,7 @@ func load_settings() -> void:
 		_volumes[bus] = config.get_value(SECTION_AUDIO, key + VOLUME_SUFFIX, default_volume) if loaded else default_volume
 		_muted[bus] = config.get_value(SECTION_AUDIO, key + MUTED_SUFFIX, default_muted_buses.has(bus)) if loaded else default_muted_buses.has(bus)
 	fullscreen = config.get_value(SECTION_VIDEO, KEY_FULLSCREEN, false) if loaded else false
+	pixel_perfect = config.get_value(SECTION_VIDEO, KEY_PIXEL_PERFECT, false) if loaded else false
 	language = config.get_value(SECTION_GENERAL, KEY_LANGUAGE, "") if loaded else ""
 	_options.clear()
 	if loaded and config.has_section(SECTION_OPTIONS):
@@ -128,6 +146,7 @@ func save_settings() -> void:
 		config.set_value(SECTION_AUDIO, key + VOLUME_SUFFIX, get_volume(bus))
 		config.set_value(SECTION_AUDIO, key + MUTED_SUFFIX, is_muted(bus))
 	config.set_value(SECTION_VIDEO, KEY_FULLSCREEN, fullscreen)
+	config.set_value(SECTION_VIDEO, KEY_PIXEL_PERFECT, pixel_perfect)
 	config.set_value(SECTION_GENERAL, KEY_LANGUAGE, language)
 	for key: String in _options:
 		config.set_value(SECTION_OPTIONS, key, _options[key])
@@ -138,6 +157,7 @@ func apply_all() -> void:
 	for bus: StringName in audio_buses:
 		_apply_bus(bus)
 	_apply_fullscreen()
+	_apply_pixel_perfect()
 	_apply_language()
 
 
@@ -154,6 +174,14 @@ func _apply_bus(bus: StringName) -> void:
 func _apply_fullscreen() -> void:
 	var mode := DisplayServer.WINDOW_MODE_FULLSCREEN if fullscreen else DisplayServer.WINDOW_MODE_WINDOWED
 	DisplayServer.window_set_mode(mode)
+
+
+## The stretch mode itself (viewport, canvas items) stays as the project sets it.
+func _apply_pixel_perfect() -> void:
+	if not is_inside_tree():
+		return
+	var stretch := Window.CONTENT_SCALE_STRETCH_INTEGER if pixel_perfect else Window.CONTENT_SCALE_STRETCH_FRACTIONAL
+	get_tree().root.content_scale_stretch = stretch
 
 
 func _apply_language() -> void:

@@ -1,7 +1,8 @@
 class_name OptionsWindow
 extends Panel
 
-## Sound, display, input and credits tabs. Pauses the tree, so PROCESS_MODE_ALWAYS.
+## Sound, display, input and credits tabs; rows the scene lacks are built here. Pauses the
+## tree, so PROCESS_MODE_ALWAYS.
 
 const WINDOW_TITLE : String = "Asetukset"
 const CLOSE_BUTTON_TEXT : String = "Sulje"
@@ -13,6 +14,16 @@ const INPUT_TAB_INDEX : int = 2
 const LANGUAGE_LABEL_TEXT : String = "Kieli"
 ## Each language in its own name, so a player can find theirs whatever is showing.
 const LANGUAGE_NAMES : Dictionary = {"fi": "Suomi", "en": "English"}
+const VOICES_LABEL_TEXT : String = "Puheäänet"
+const MUTE_CHECK_TEXT : String = "Pois"
+const PIXEL_PERFECT_LABEL_TEXT : String = "Terävät pikselit"
+const PIXEL_PERFECT_TOOLTIP : String = "Kuva suurenee vain kokonaisin askelin, joten pikselit pysyvät tasakokoisina. Reunoille voi jäädä mustat palkit."
+const SCREEN_SHAKE_LABEL_TEXT : String = "Ruudun tärinä"
+const SCREEN_SHAKE_TOOLTIP : String = "Tappelut ja särkyvät lasit tärisyttävät ruutua."
+const FOCUS_PAUSE_LABEL_TEXT : String = "Tauko taustalla"
+const FOCUS_PAUSE_TOOLTIP : String = "Peli pysähtyy, kun siirryt toiseen ikkunaan tai välilehteen."
+## Matches the label width of the rows built in the scene.
+const ROW_LABEL_WIDTH : float = 120.0
 
 ## False on the instance inside the main menu itself: there is nothing to return to.
 @export var show_main_menu_button : bool = true
@@ -29,9 +40,15 @@ const LANGUAGE_NAMES : Dictionary = {"fi": "Suomi", "en": "English"}
 @onready var sfx_mute_check : CheckButton = %SfxMuteCheck
 @onready var fullscreen_check : CheckButton = %FullscreenCheck
 @onready var display_tab : VBoxContainer = %DisplayTab
+@onready var sound_tab : VBoxContainer = $MarginContainer/MainVBox/TabContainer/SoundTab
 
 var _key_bindings : KeyBindingsTab
 var _language_option : OptionButton
+var _voices_slider : HSlider
+var _voices_mute_check : CheckButton
+var _pixel_perfect_check : CheckButton
+var _screen_shake_check : CheckButton
+var _focus_pause_check : CheckButton
 
 
 func _ready() -> void:
@@ -40,6 +57,8 @@ func _ready() -> void:
 	main_menu_button.text = MAIN_MENU_BUTTON_TEXT
 	main_menu_button.visible = show_main_menu_button
 	_build_input_tab()
+	_build_voices_row()
+	_build_display_rows()
 	_build_language_row()
 	for i : int in TAB_TITLES.size():
 		tab_container.set_tab_title(i, TAB_TITLES[i])
@@ -69,6 +88,41 @@ func _build_input_tab() -> void:
 	tab_container.move_child(_key_bindings, INPUT_TAB_INDEX)
 
 
+func _build_voices_row() -> void:
+	_voices_slider = HSlider.new()
+	_voices_slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_voices_slider.max_value = 1.0
+	_voices_slider.step = 0.05
+	_voices_mute_check = CheckButton.new()
+	_voices_mute_check.text = MUTE_CHECK_TEXT
+	_add_row(sound_tab, VOICES_LABEL_TEXT, "", [_voices_slider, _voices_mute_check])
+
+
+func _build_display_rows() -> void:
+	_pixel_perfect_check = CheckButton.new()
+	_add_row(display_tab, PIXEL_PERFECT_LABEL_TEXT, PIXEL_PERFECT_TOOLTIP, [_pixel_perfect_check])
+	_screen_shake_check = CheckButton.new()
+	_add_row(display_tab, SCREEN_SHAKE_LABEL_TEXT, SCREEN_SHAKE_TOOLTIP, [_screen_shake_check])
+	_focus_pause_check = CheckButton.new()
+	_add_row(display_tab, FOCUS_PAUSE_LABEL_TEXT, FOCUS_PAUSE_TOOLTIP, [_focus_pause_check])
+
+
+## A row like the scene's own: a fixed-width label, then the controls.
+func _add_row(tab : Control, label_text : String, tooltip : String, controls : Array[Control]) -> void:
+	var row := HBoxContainer.new()
+	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var label := Label.new()
+	label.text = label_text
+	label.custom_minimum_size = Vector2(ROW_LABEL_WIDTH, 0.0)
+	label.tooltip_text = tooltip
+	label.mouse_filter = Control.MOUSE_FILTER_PASS if tooltip != "" else Control.MOUSE_FILTER_IGNORE
+	row.add_child(label)
+	for control : Control in controls:
+		control.tooltip_text = tooltip
+		row.add_child(control)
+	tab.add_child(row)
+
+
 func _build_language_row() -> void:
 	var row := HBoxContainer.new()
 	var label := Label.new()
@@ -90,11 +144,16 @@ func _connect_signals() -> void:
 	master_slider.value_changed.connect(func(value : float) -> void: SettingsManager.set_volume(SettingsManager.BUS_MASTER, value))
 	music_slider.value_changed.connect(func(value : float) -> void: SettingsManager.set_volume(SettingsManager.BUS_MUSIC, value))
 	sfx_slider.value_changed.connect(func(value : float) -> void: SettingsManager.set_volume(SettingsManager.BUS_SFX, value))
-	for slider : HSlider in [master_slider, music_slider, sfx_slider]:
+	_voices_slider.value_changed.connect(func(value : float) -> void: SettingsManager.set_volume(SettingsManager.BUS_VOICES, value))
+	for slider : HSlider in [master_slider, music_slider, sfx_slider, _voices_slider]:
 		slider.drag_ended.connect(_on_slider_drag_ended)
 	music_mute_check.toggled.connect(func(muted : bool) -> void: SettingsManager.set_muted(SettingsManager.BUS_MUSIC, muted))
 	sfx_mute_check.toggled.connect(func(muted : bool) -> void: SettingsManager.set_muted(SettingsManager.BUS_SFX, muted))
+	_voices_mute_check.toggled.connect(func(muted : bool) -> void: SettingsManager.set_muted(SettingsManager.BUS_VOICES, muted))
 	fullscreen_check.toggled.connect(SettingsManager.set_fullscreen)
+	_pixel_perfect_check.toggled.connect(SettingsManager.set_pixel_perfect)
+	_screen_shake_check.toggled.connect(func(on : bool) -> void: SettingsManager.set_option(SettingsManager.OPTION_SCREEN_SHAKE, on))
+	_focus_pause_check.toggled.connect(func(on : bool) -> void: SettingsManager.set_option(SettingsManager.OPTION_PAUSE_ON_FOCUS_LOSS, on))
 	_language_option.item_selected.connect(func(index : int) -> void: SettingsManager.set_language(SettingsManager.supported_locales[index]))
 	GUISignals.options_requested.connect(_on_options_requested)
 	tab_container.tab_changed.connect(GUISignals.tab_switched.emit.unbind(1))
@@ -106,7 +165,12 @@ func _load_current_values() -> void:
 	sfx_slider.value = SettingsManager.get_volume(SettingsManager.BUS_SFX)
 	music_mute_check.button_pressed = SettingsManager.is_muted(SettingsManager.BUS_MUSIC)
 	sfx_mute_check.button_pressed = SettingsManager.is_muted(SettingsManager.BUS_SFX)
+	_voices_slider.value = SettingsManager.get_volume(SettingsManager.BUS_VOICES)
+	_voices_mute_check.button_pressed = SettingsManager.is_muted(SettingsManager.BUS_VOICES)
 	fullscreen_check.button_pressed = SettingsManager.fullscreen
+	_pixel_perfect_check.button_pressed = SettingsManager.pixel_perfect
+	_screen_shake_check.button_pressed = SettingsManager.get_option(SettingsManager.OPTION_SCREEN_SHAKE)
+	_focus_pause_check.button_pressed = SettingsManager.get_option(SettingsManager.OPTION_PAUSE_ON_FOCUS_LOSS)
 	_language_option.select(SettingsManager.supported_locales.find(SettingsManager.get_language()))
 
 

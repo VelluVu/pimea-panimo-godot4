@@ -9,6 +9,7 @@ const TENSION_DRONE_MIN_VOLUME_DB: float = -80.0
 ## Automated test runs create this (gitignored) file to play silently. Players never have it.
 const TEST_MUTE_FLAG_PATH: String = "res://dev/mute_audio.flag"
 const MASTER_BUS: StringName = &"Master"
+const VOICE_BUS: StringName = &"Voices"
 
 ## Varied pitch so several glasses breaking in a row don't sound identical.
 const SHATTER_PITCH_RANGE: Vector2 = Vector2(0.6, 0.85)
@@ -217,7 +218,7 @@ func _on_customer_spoke(at: Vector2, voice_pitch: float) -> void:
 	if bank.sfx_babbles.is_empty():
 		return
 	var pitch: float = voice_pitch * randf_range(1.0 - BABBLE_PITCH_JITTER, 1.0 + BABBLE_PITCH_JITTER)
-	play_sfx_at(bank.sfx_babbles.pick_random(), at, BABBLE_VOLUME_DB, pitch)
+	play_sfx_at(bank.sfx_babbles.pick_random(), at, BABBLE_VOLUME_DB, pitch, VOICE_BUS)
 
 
 func _on_toast_shown() -> void:
