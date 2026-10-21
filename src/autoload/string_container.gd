@@ -103,7 +103,7 @@ const LVV_RAID_TITLE : String = "LVV-TARKASTUS!"
 const LVV_RAID_MESSAGE : String = "Alkoholitarkastajat ryntäsivät kellariin ja takavarikoivat %s annosta valmista olutta! Lisäksi he kirjoittivat sakon (%.1f €), ja maineesi laski %s pistettä."
 const LVV_RAID_CLOSE_TEXT : String = "Selvä..."
 
-## RunPerk.get_stat_summary() lines; only non-neutral fields show, so they are positive.
+## RunPerk.get_stat_summary() lines: the verb says the direction (PerkStats "increases"), the value is unsigned.
 const PERK_QUALITY_STAT_STRING : String = "Laatu paranee %s"
 const PERK_REPUTATION_STAT_STRING : String = "Maineen kertymä kasvaa %s"
 const PERK_TIP_STAT_STRING : String = "Tipit kasvavat %s"
@@ -136,7 +136,7 @@ const PERK_TIER_COMMON : String = "Tavallinen"
 const PERK_TIER_RARE : String = "Harvinainen"
 const PERK_TIER_LEGENDARY : String = "Legendaarinen"
 
-## RunPerk.get_stat_summary() lines, signed (%+d) since a perk can push either way.
+## More RunPerk.get_stat_summary() lines, same rule as above.
 const PERK_RAID_THRESHOLD_STAT_STRING : String = "Ratsiakynnys nousee %s"
 const PERK_INGREDIENT_PRICE_STAT_STRING : String = "Raaka-aineiden hinnat vähenevät %s"
 
