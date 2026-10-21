@@ -34,7 +34,7 @@ func test_short_bonus_shows_a_multiplicative_node_as_times() -> void:
 	var unlock := _make_unlock()
 	unlock.quality_bonus = 0.0
 	unlock.tip_income_multiplier = 1.05
-	assert_eq(OlutoppiTextScript.short_bonus(unlock, 2), "×+10%")
+	assert_eq(OlutoppiTextScript.short_bonus(unlock, 2), "×10%")
 
 
 func test_short_bonus_is_neutral_when_the_perk_sets_no_stat() -> void:

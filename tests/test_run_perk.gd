@@ -18,31 +18,31 @@ func test_stat_summary_is_empty_for_a_fully_neutral_perk() -> void:
 func test_stat_summary_only_lists_non_neutral_fields() -> void:
 	var perk := RunPerk.new()
 	perk.quality_bonus = 0.15
-	assert_eq(perk.get_stat_summary(), StringContainer.PERK_QUALITY_STAT_STRING % "+15 %")
+	assert_eq(perk.get_stat_summary(), StringContainer.PERK_QUALITY_STAT_STRING % "15 %")
 
 
 func test_stat_summary_shows_multiplicative_multipliers_as_times() -> void:
 	var perk := RunPerk.new()
 	perk.reputation_gain_multiplier = 1.3
 	perk.tip_income_multiplier = 1.2
-	var expected := StringContainer.PERK_REPUTATION_STAT_STRING % "×+30 %" + "
-" + StringContainer.PERK_TIP_STAT_STRING % "×+20 %"
+	var expected := StringContainer.PERK_REPUTATION_STAT_STRING % "×30 %" + "
+" + StringContainer.PERK_TIP_STAT_STRING % "×20 %"
 	assert_eq(perk.get_stat_summary(), expected)
 
 
-func test_stat_summary_shows_a_reduction_below_one() -> void:
+func test_stat_summary_shows_a_reduction_unsigned() -> void:
 	var perk := RunPerk.new()
 	perk.ingredient_price_multiplier = 0.9
-	assert_eq(perk.get_stat_summary(), StringContainer.PERK_INGREDIENT_PRICE_STAT_STRING % "×-10 %")
+	assert_eq(perk.get_stat_summary(), StringContainer.PERK_INGREDIENT_PRICE_STAT_STRING % "×10 %")
 
 
-func test_stat_summary_shows_additive_multipliers_as_plus_percent() -> void:
+func test_stat_summary_shows_additive_multipliers_as_plain_percent() -> void:
 	var perk := RunPerk.new()
 	perk.tip_income_multiplier = 1.2
 	perk.spawn_interval_multiplier = 0.85
 	perk.stacks_additively = true
-	var expected := StringContainer.PERK_TIP_STAT_STRING % "+20 %" + "
-" + StringContainer.PERK_SPAWN_INTERVAL_STAT_STRING % "-15 %"
+	var expected := StringContainer.PERK_TIP_STAT_STRING % "20 %" + "
+" + StringContainer.PERK_SPAWN_INTERVAL_STAT_STRING % "15 %"
 	assert_eq(perk.get_stat_summary(), expected)
 
 
@@ -51,9 +51,9 @@ func test_stat_summary_shows_chances_and_counts_as_added() -> void:
 	perk.ingredient_refund_chance = 0.24
 	perk.extra_raid_strikes = 1
 	perk.raid_hidden_batch_count = 2
-	var expected := StringContainer.PERK_REFUND_CHANCE_STAT_STRING % "+24 %" + "
-" 		+ StringContainer.PERK_EXTRA_RAID_STRIKES_STAT_STRING % "+1" + "
-" 		+ StringContainer.PERK_RAID_HIDDEN_BATCH_STAT_STRING % "+2"
+	var expected := StringContainer.PERK_REFUND_CHANCE_STAT_STRING % "24 %" + "
+" 		+ StringContainer.PERK_EXTRA_RAID_STRIKES_STAT_STRING % "1" + "
+" 		+ StringContainer.PERK_RAID_HIDDEN_BATCH_STAT_STRING % "2"
 	assert_eq(perk.get_stat_summary(), expected)
 
 

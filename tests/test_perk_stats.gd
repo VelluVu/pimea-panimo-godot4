@@ -8,6 +8,9 @@ extends McpTestSuite
 const PerkStatsScript := preload("res://src/progression/perk_stats.gd")
 
 
+const PERK_FOLDERS : Array[String] = ["res://src/resources/perks/", "res://src/resources/event_perks/", "res://src/resources/cellar_upgrades/", "res://src/resources/meta_unlocks/"]
+
+
 func suite_name() -> String:
 	return "perk_stats"
 
@@ -106,15 +109,32 @@ func test_display_number_per_kind() -> void:
 
 
 func test_value_text_marks_multiplicative_changes_with_times() -> void:
-	assert_eq(PerkStatsScript.value_text(PerkStatsScript.Kind.MULTIPLIER, 1.15, true), "+15 %")
-	assert_eq(PerkStatsScript.value_text(PerkStatsScript.Kind.MULTIPLIER, 0.85, true), "-15 %")
-	assert_eq(PerkStatsScript.value_text(PerkStatsScript.Kind.MULTIPLIER, 1.15, false), "×+15 %")
-	assert_eq(PerkStatsScript.value_text(PerkStatsScript.Kind.MULTIPLIER, 0.9, false), "×-10 %")
+	assert_eq(PerkStatsScript.value_text(PerkStatsScript.Kind.MULTIPLIER, 1.15, true), "15 %")
+	assert_eq(PerkStatsScript.value_text(PerkStatsScript.Kind.MULTIPLIER, 1.15, false), "×15 %")
 
 
-func test_value_text_always_adds_chances_and_counts() -> void:
-	assert_eq(PerkStatsScript.value_text(PerkStatsScript.Kind.PERCENT_ADD, 0.24, false), "+24 %")
-	assert_eq(PerkStatsScript.value_text(PerkStatsScript.Kind.COUNT, 2.0, false), "+2")
+func test_value_text_is_unsigned_since_the_line_says_the_direction() -> void:
+	assert_eq(PerkStatsScript.value_text(PerkStatsScript.Kind.MULTIPLIER, 0.85, true), "15 %")
+	assert_eq(PerkStatsScript.value_text(PerkStatsScript.Kind.MULTIPLIER, 0.9, false), "×10 %")
+	assert_eq(PerkStatsScript.value_text(PerkStatsScript.Kind.PERCENT_ADD, 0.24, false), "24 %")
+	assert_eq(PerkStatsScript.value_text(PerkStatsScript.Kind.COUNT, 2.0, false), "2")
+
+
+## Values show unsigned, so a perk pushing a stat against its line's verb would lie.
+func test_every_perk_moves_its_stats_the_way_the_line_says() -> void:
+	for folder : String in PERK_FOLDERS:
+		for file : String in DirAccess.get_files_at(folder):
+			if not file.ends_with(".tres"):
+				continue
+			var resource : Resource = load(folder + file)
+			for entry : Dictionary in PerkStatsScript.definitions():
+				var value : Variant = resource.get(entry.stat)
+				if value == null:
+					continue
+				var change : float = float(value) - PerkStatsScript.neutral_value(entry.kind)
+				if is_zero_approx(change):
+					continue
+				assert_eq(change > 0.0, entry.increases, "%s%s: %s" % [folder, file, entry.stat])
 
 
 func test_scale_per_level_per_kind() -> void:
