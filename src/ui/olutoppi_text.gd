@@ -1,10 +1,9 @@
 class_name OlutoppiText
 extends RefCounted
 
-## The words on an Olutoppi node: the short bonus shown on its square and its tooltip.
+## The words in an Olutoppi node's tooltip; the square itself only shows the level.
 ## Pure formatting over a MetaUnlockData; the window supplies the purchase state.
 
-const BONUS_NEUTRAL_TEXT : String = "-"
 const TOOLTIP_CURRENT_FORMAT : String = "Nyt:\n%s"
 const TOOLTIP_NEXT_LEVEL_EFFECT_FORMAT : String = "Tason %d jälkeen:\n%s"
 const TOOLTIP_NEXT_LEVEL_FORMAT : String = "Seuraava taso: %d mainetta"
@@ -12,22 +11,6 @@ const TOOLTIP_MAXED_TEXT : String = "Taso enimmillään"
 const TOOLTIP_LOCKED_FORMAT : String = "Vaatii ensin: %s"
 const TOOLTIP_PREREQ_ALL_SEPARATOR : String = ", "
 const TOOLTIP_PREREQ_OR_TEXT : String = "tai"
-
-
-## The scaled perk's first non-neutral stat, short, for the square; the tooltip has all.
-static func short_bonus(unlock : MetaUnlockData, level : int) -> String:
-	if level <= 0:
-		return BONUS_NEUTRAL_TEXT
-
-	var scaled : RunPerk = unlock.get_scaled_perk(level)
-	for entry : Dictionary in PerkStats.definitions():
-		var kind : PerkStats.Kind = entry.kind
-		var value : float = scaled.get(entry.stat)
-		if value == PerkStats.neutral_value(kind):
-			continue
-		# The square is small: "+15%" without the space.
-		return PerkStats.value_text(kind, value, scaled.stacks_additively).replace(" ", "")
-	return BONUS_NEUTRAL_TEXT
 
 
 ## A locked node only says what it needs. `unmet_prerequisite_names` lists the

@@ -1,7 +1,7 @@
 @tool
 extends McpTestSuite
 
-## Unit tests for OlutoppiText: the square's short bonus and the tooltips.
+## Unit tests for OlutoppiText: the node tooltips.
 
 const OlutoppiTextScript := preload("res://src/ui/olutoppi_text.gd")
 
@@ -18,29 +18,6 @@ func _make_unlock() -> MetaUnlockData:
 	unlock.renown_cost_per_level = 25
 	unlock.quality_bonus = 0.05 # per level
 	return unlock
-
-
-func test_short_bonus_is_neutral_at_level_zero() -> void:
-	assert_eq(OlutoppiTextScript.short_bonus(_make_unlock(), 0), OlutoppiTextScript.BONUS_NEUTRAL_TEXT)
-
-
-func test_short_bonus_shows_the_first_non_neutral_stat() -> void:
-	var text : String = OlutoppiTextScript.short_bonus(_make_unlock(), 2)
-	assert_ne(text, OlutoppiTextScript.BONUS_NEUTRAL_TEXT)
-	assert_true(text.ends_with("%"), "a percent stat reads as a percentage")
-
-
-func test_short_bonus_shows_a_multiplicative_node_as_times() -> void:
-	var unlock := _make_unlock()
-	unlock.quality_bonus = 0.0
-	unlock.tip_income_multiplier = 1.05
-	assert_eq(OlutoppiTextScript.short_bonus(unlock, 2), "×10%")
-
-
-func test_short_bonus_is_neutral_when_the_perk_sets_no_stat() -> void:
-	var unlock := _make_unlock()
-	unlock.quality_bonus = 0.0
-	assert_eq(OlutoppiTextScript.short_bonus(unlock, 2), OlutoppiTextScript.BONUS_NEUTRAL_TEXT)
 
 
 func test_locked_tooltip_lists_every_prerequisite_for_an_all_mode_node() -> void:
