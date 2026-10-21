@@ -71,19 +71,39 @@ var _rampage_home: Vector2
 var _glasses: CustomerGlasses
 var _sounds := CustomerSounds.new()
 
+## A strong or big round sways them on the way out, see TipsyRules.
+var _sway_steps: int = 0
+var _sway_seconds: float = 0.0
+var _sway_x: float = 0.0
+var _sprite_home_x: float = 0.0
+
 
 func _ready() -> void:
 	animated_sprite.frame_changed.connect(_on_animated_sprite_frame_changed)
 	_glasses = CustomerGlasses.new(self, beer_glass_sprite, counter_glass_sprite)
+	_sprite_home_x = animated_sprite.position.x
 
 
 func _process(delta: float) -> void:
 	_sounds.tick(delta, self, animated_sprite, customer_data, WALK_ANIMATIONS)
+	if _phase == CustomerSnapshot.Phase.LEAVING and _sway_steps > 0:
+		_sway(delta)
+
+
+## Body and hand step sideways together, a whole art pixel at a time.
+func _sway(delta: float) -> void:
+	_sway_seconds += delta
+	var x : float = TipsyRules.sway_offset(_sway_seconds, _sway_steps) * _art_pixel()
+	if is_equal_approx(x, _sway_x):
+		return
+	_sway_x = x
+	animated_sprite.position.x = _sprite_home_x + x
+	_on_animated_sprite_frame_changed()
 
 
 func _on_animated_sprite_frame_changed() -> void:
 	var title : String = customer_data.title if customer_data != null else ""
-	bottle_hand_marker.position = CustomerHandOffsets.position_for(title, animated_sprite.frame)
+	bottle_hand_marker.position = CustomerHandOffsets.position_for(title, animated_sprite.frame) + Vector2(_sway_x, 0.0)
 
 
 func _apply_visuals() -> void:
@@ -309,6 +329,7 @@ func _on_sale_timeout() -> void:
 
 	fill_glasses(outcome.beer_ebc)
 	_show_sale_popups(outcome)
+	_sway_steps = TipsyRules.sway_steps(outcome.servings, outcome.strongest_abv)
 
 	_bubble_text = generated_name + ": " + response_text
 	var display_time := _say(_bubble_text)
