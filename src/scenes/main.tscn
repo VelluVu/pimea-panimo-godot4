@@ -63,6 +63,7 @@
 [ext_resource type="Script" uid="uid://d1q0qg8qgxtey" path="res://src/ui/dirty_keg_pile.gd" id="67_68ujc"]
 [ext_resource type="Script" uid="uid://divk0hld1wq12" path="res://src/scenes/keg_row.gd" id="68_05g3k"]
 [ext_resource type="Texture2D" uid="uid://bpsny2rj4ahl3" path="res://assets/textures/keg_wash/dirty_keg.png" id="68_abmkx"]
+[ext_resource type="Material" path="res://assets/shaders/hover_outline_material.tres" id="69_72le4"]
 [ext_resource type="Texture2D" uid="uid://b12vj0rmwdl8y" path="res://assets/textures/light_glow_32.png" id="70_lightglow"]
 [ext_resource type="Texture2D" uid="uid://dcrobw17uonit" path="res://assets/textures/pendant_lamp_24.png" id="71_pendantlamp"]
 [ext_resource type="Texture2D" uid="uid://b3yifds2n8sqd" path="res://assets/textures/light_cone_64x120.png" id="72_lightcone"]
@@ -1326,40 +1327,44 @@ y_sort_enabled = true
 position = Vector2(462, 148)
 script = ExtResource("45_txyw0")
 
-[node name="ShelfPlank" type="Polygon2D" parent="WorldYSort/RecipeShelfHoverArea" unique_id=1577786727]
-color = Color(0.29, 0.185, 0.094, 1)
-polygon = PackedVector2Array(-38, -4, 50, -4, 50, 4, -38, 4)
-
-[node name="Bottle1" type="Sprite2D" parent="WorldYSort/RecipeShelfHoverArea" unique_id=636098985]
-position = Vector2(-28, -16)
-scale = Vector2(3, 3)
-texture = ExtResource("46_vc5cj")
-
-[node name="Bottle2" type="Sprite2D" parent="WorldYSort/RecipeShelfHoverArea" unique_id=1934625695]
-position = Vector2(-9, -16)
-scale = Vector2(3, 3)
-texture = ExtResource("46_vc5cj")
-
-[node name="Bottle3" type="Sprite2D" parent="WorldYSort/RecipeShelfHoverArea" unique_id=1543532177]
-position = Vector2(10, -16)
-scale = Vector2(3, 3)
-texture = ExtResource("46_vc5cj")
-
-[node name="Bottle4" type="Sprite2D" parent="WorldYSort/RecipeShelfHoverArea" unique_id=1972066686]
-position = Vector2(29, -16)
-scale = Vector2(3, 3)
-texture = ExtResource("46_vc5cj")
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WorldYSort/RecipeShelfHoverArea" unique_id=1974005850]
 position = Vector2(6, -10)
 shape = SubResource("RectangleShape2D_txyw0")
 
-[node name="Book1" type="Polygon2D" parent="WorldYSort/RecipeShelfHoverArea" unique_id=43582109]
+[node name="OutlineGroup" type="CanvasGroup" parent="WorldYSort/RecipeShelfHoverArea" unique_id=1508119780]
+material = ExtResource("69_72le4")
+fit_margin = 2.0
+
+[node name="ShelfPlank" type="Polygon2D" parent="WorldYSort/RecipeShelfHoverArea/OutlineGroup" unique_id=1577786727]
+color = Color(0.29, 0.185, 0.094, 1)
+polygon = PackedVector2Array(-38, -4, 50, -4, 50, 4, -38, 4)
+
+[node name="Bottle1" type="Sprite2D" parent="WorldYSort/RecipeShelfHoverArea/OutlineGroup" unique_id=636098985]
+position = Vector2(-28, -16)
+scale = Vector2(3, 3)
+texture = ExtResource("46_vc5cj")
+
+[node name="Bottle2" type="Sprite2D" parent="WorldYSort/RecipeShelfHoverArea/OutlineGroup" unique_id=1934625695]
+position = Vector2(-9, -16)
+scale = Vector2(3, 3)
+texture = ExtResource("46_vc5cj")
+
+[node name="Bottle3" type="Sprite2D" parent="WorldYSort/RecipeShelfHoverArea/OutlineGroup" unique_id=1543532177]
+position = Vector2(10, -16)
+scale = Vector2(3, 3)
+texture = ExtResource("46_vc5cj")
+
+[node name="Bottle4" type="Sprite2D" parent="WorldYSort/RecipeShelfHoverArea/OutlineGroup" unique_id=1972066686]
+position = Vector2(29, -16)
+scale = Vector2(3, 3)
+texture = ExtResource("46_vc5cj")
+
+[node name="Book1" type="Polygon2D" parent="WorldYSort/RecipeShelfHoverArea/OutlineGroup" unique_id=43582109]
 position = Vector2(44, -7)
 color = Color(0.42, 0.11, 0.09, 1)
 polygon = PackedVector2Array(-13, -3, 13, -3, 13, 3, -13, 3)
 
-[node name="Book2" type="Polygon2D" parent="WorldYSort/RecipeShelfHoverArea" unique_id=1057484171]
+[node name="Book2" type="Polygon2D" parent="WorldYSort/RecipeShelfHoverArea/OutlineGroup" unique_id=1057484171]
 position = Vector2(45, -12)
 rotation = -0.1
 color = Color(0.13, 0.28, 0.16, 1)
@@ -1415,43 +1420,51 @@ script = ExtResource("59_abmkx")
 position = Vector2(-96, -23)
 script = ExtResource("49_j2jfr")
 
-[node name="MachineBody" type="Polygon2D" parent="WorldYSort/BarTable/BarTable_Sprite2D/ReceiptMachineHoverArea" unique_id=102274119]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldYSort/BarTable/BarTable_Sprite2D/ReceiptMachineHoverArea" unique_id=1999034065]
+position = Vector2(0, -7)
+shape = SubResource("RectangleShape2D_bjg73")
+
+[node name="OutlineGroup" type="CanvasGroup" parent="WorldYSort/BarTable/BarTable_Sprite2D/ReceiptMachineHoverArea" unique_id=1108497471]
+material = ExtResource("69_72le4")
+fit_margin = 2.0
+
+[node name="MachineBody" type="Polygon2D" parent="WorldYSort/BarTable/BarTable_Sprite2D/ReceiptMachineHoverArea/OutlineGroup" unique_id=102274119]
 color = Color(0.07, 0.07, 0.08, 1)
 polygon = PackedVector2Array(-7, -6, 7, -6, 7, 6, -7, 6)
 
-[node name="ReceiptStrip" type="Polygon2D" parent="WorldYSort/BarTable/BarTable_Sprite2D/ReceiptMachineHoverArea" unique_id=592415226]
+[node name="ReceiptStrip" type="Polygon2D" parent="WorldYSort/BarTable/BarTable_Sprite2D/ReceiptMachineHoverArea/OutlineGroup" unique_id=592415226]
 position = Vector2(0, -13)
 color = Color(0.92, 0.9, 0.82, 1)
 polygon = PackedVector2Array(-4, -7, 4, -7, 4, 4, 2, 7, 0, 4, -2, 7, -4, 4)
 
-[node name="MachineButton" type="Polygon2D" parent="WorldYSort/BarTable/BarTable_Sprite2D/ReceiptMachineHoverArea" unique_id=1293168157]
+[node name="MachineButton" type="Polygon2D" parent="WorldYSort/BarTable/BarTable_Sprite2D/ReceiptMachineHoverArea/OutlineGroup" unique_id=1293168157]
 position = Vector2(3, -2)
 color = Color(0.75, 0.2, 0.15, 1)
 polygon = PackedVector2Array(-1.5, -1, 1.5, -1, 1.5, 1, -1.5, 1)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldYSort/BarTable/BarTable_Sprite2D/ReceiptMachineHoverArea" unique_id=1999034065]
-position = Vector2(0, -7)
-shape = SubResource("RectangleShape2D_bjg73")
 
 [node name="CustomerBookHoverArea" type="Area2D" parent="WorldYSort/BarTable/BarTable_Sprite2D" unique_id=221676537]
 position = Vector2(-68, -21)
 script = ExtResource("61_fluu8")
 
-[node name="Pages" type="Polygon2D" parent="WorldYSort/BarTable/BarTable_Sprite2D/CustomerBookHoverArea" unique_id=1665226341]
-color = Color(0.9098039, 0.8627451, 0.7529412, 1)
-polygon = PackedVector2Array(-9, -3, 9, -3, 9, 2, -9, 2)
-
-[node name="Cover" type="Polygon2D" parent="WorldYSort/BarTable/BarTable_Sprite2D/CustomerBookHoverArea" unique_id=1203407717]
-color = Color(0.4509804, 0.24313726, 0.22352941, 1)
-polygon = PackedVector2Array(-10, -6, 10, -6, 10, -2, -10, -2)
-
-[node name="Ribbon" type="Polygon2D" parent="WorldYSort/BarTable/BarTable_Sprite2D/CustomerBookHoverArea" unique_id=1131389917]
-color = Color(0.89411765, 0.23137255, 0.26666668, 1)
-polygon = PackedVector2Array(4, -2, 6, -2, 6, 5, 5, 4, 4, 5)
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WorldYSort/BarTable/BarTable_Sprite2D/CustomerBookHoverArea" unique_id=605101201]
 position = Vector2(0, -2)
 shape = SubResource("RectangleShape2D_68ujc")
+
+[node name="OutlineGroup" type="CanvasGroup" parent="WorldYSort/BarTable/BarTable_Sprite2D/CustomerBookHoverArea" unique_id=1145671822]
+material = ExtResource("69_72le4")
+fit_margin = 2.0
+
+[node name="Pages" type="Polygon2D" parent="WorldYSort/BarTable/BarTable_Sprite2D/CustomerBookHoverArea/OutlineGroup" unique_id=1665226341]
+color = Color(0.9098039, 0.8627451, 0.7529412, 1)
+polygon = PackedVector2Array(-9, -3, 9, -3, 9, 2, -9, 2)
+
+[node name="Cover" type="Polygon2D" parent="WorldYSort/BarTable/BarTable_Sprite2D/CustomerBookHoverArea/OutlineGroup" unique_id=1203407717]
+color = Color(0.4509804, 0.24313726, 0.22352941, 1)
+polygon = PackedVector2Array(-10, -6, 10, -6, 10, -2, -10, -2)
+
+[node name="Ribbon" type="Polygon2D" parent="WorldYSort/BarTable/BarTable_Sprite2D/CustomerBookHoverArea/OutlineGroup" unique_id=1131389917]
+color = Color(0.89411765, 0.23137255, 0.26666668, 1)
+polygon = PackedVector2Array(4, -2, 6, -2, 6, 5, 5, 4, 4, 5)
 
 [node name="Bartender" parent="WorldYSort" unique_id=1865937119 instance=ExtResource("43_chjal")]
 position = Vector2(399, 167)
@@ -1460,31 +1473,35 @@ position = Vector2(399, 167)
 position = Vector2(306, 139)
 script = ExtResource("51_bu4jf")
 
-[node name="BoardFrame" type="Polygon2D" parent="WorldYSort/ChalkboardHoverArea" unique_id=1310630279]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldYSort/ChalkboardHoverArea" unique_id=1239359706]
+shape = SubResource("RectangleShape2D_o7ddy")
+
+[node name="OutlineGroup" type="CanvasGroup" parent="WorldYSort/ChalkboardHoverArea" unique_id=497345249]
+material = ExtResource("69_72le4")
+fit_margin = 2.0
+
+[node name="BoardFrame" type="Polygon2D" parent="WorldYSort/ChalkboardHoverArea/OutlineGroup" unique_id=1310630279]
 color = Color(0.35, 0.22, 0.13, 1)
 polygon = PackedVector2Array(-20, -14, 20, -14, 20, 14, -20, 14)
 
-[node name="BoardSurface" type="Polygon2D" parent="WorldYSort/ChalkboardHoverArea" unique_id=1613701525]
+[node name="BoardSurface" type="Polygon2D" parent="WorldYSort/ChalkboardHoverArea/OutlineGroup" unique_id=1613701525]
 color = Color(0.08, 0.16, 0.11, 1)
 polygon = PackedVector2Array(-17, -11, 17, -11, 17, 11, -17, 11)
 
-[node name="ChalkLine1" type="Polygon2D" parent="WorldYSort/ChalkboardHoverArea" unique_id=1614701542]
+[node name="ChalkLine1" type="Polygon2D" parent="WorldYSort/ChalkboardHoverArea/OutlineGroup" unique_id=1614701542]
 position = Vector2(-2, -6)
 color = Color(0.92, 0.92, 0.88, 0.9)
 polygon = PackedVector2Array(-10, -1, 10, -1, 10, 1, -10, 1)
 
-[node name="ChalkLine2" type="Polygon2D" parent="WorldYSort/ChalkboardHoverArea" unique_id=1390976140]
+[node name="ChalkLine2" type="Polygon2D" parent="WorldYSort/ChalkboardHoverArea/OutlineGroup" unique_id=1390976140]
 position = Vector2(-4, 0)
 color = Color(0.92, 0.92, 0.88, 0.9)
 polygon = PackedVector2Array(-8, -1, 8, -1, 8, 1, -8, 1)
 
-[node name="ChalkLine3" type="Polygon2D" parent="WorldYSort/ChalkboardHoverArea" unique_id=614603749]
+[node name="ChalkLine3" type="Polygon2D" parent="WorldYSort/ChalkboardHoverArea/OutlineGroup" unique_id=614603749]
 position = Vector2(-7, 6)
 color = Color(0.92, 0.92, 0.88, 0.9)
 polygon = PackedVector2Array(-6, -1, 6, -1, 6, 1, -6, 1)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldYSort/ChalkboardHoverArea" unique_id=1239359706]
-shape = SubResource("RectangleShape2D_o7ddy")
 
 [node name="LvvRaidSpawner" type="Node2D" parent="WorldYSort" unique_id=411121702]
 y_sort_enabled = true
@@ -1577,7 +1594,11 @@ script = ExtResource("67_68ujc")
 position = Vector2(-6, -47)
 shape = SubResource("RectangleShape2D_fluu8")
 
-[node name="DirtyKeg2" type="Sprite2D" parent="WorldYSort/DirtyKegPile" unique_id=1625886467]
+[node name="OutlineGroup" type="CanvasGroup" parent="WorldYSort/DirtyKegPile" unique_id=797057235]
+material = ExtResource("69_72le4")
+fit_margin = 2.0
+
+[node name="DirtyKeg2" type="Sprite2D" parent="WorldYSort/DirtyKegPile/OutlineGroup" unique_id=1625886467]
 unique_name_in_owner = true
 texture_filter = 1
 position = Vector2(-22, 2)
@@ -1586,7 +1607,7 @@ texture = ExtResource("68_abmkx")
 centered = false
 offset = Vector2(-16, -32)
 
-[node name="DirtyKeg1" type="Sprite2D" parent="WorldYSort/DirtyKegPile" unique_id=777553892]
+[node name="DirtyKeg1" type="Sprite2D" parent="WorldYSort/DirtyKegPile/OutlineGroup" unique_id=777553892]
 unique_name_in_owner = true
 texture_filter = 1
 position = Vector2(0, 8)
@@ -1595,7 +1616,7 @@ texture = ExtResource("68_abmkx")
 centered = false
 offset = Vector2(-16, -32)
 
-[node name="DirtyKeg3" type="Sprite2D" parent="WorldYSort/DirtyKegPile" unique_id=1445407608]
+[node name="DirtyKeg3" type="Sprite2D" parent="WorldYSort/DirtyKegPile/OutlineGroup" unique_id=1445407608]
 unique_name_in_owner = true
 texture_filter = 1
 position = Vector2(-11, -52)
@@ -1604,7 +1625,7 @@ texture = ExtResource("68_abmkx")
 centered = false
 offset = Vector2(-16, -32)
 
-[node name="DirtyKeg4" type="Sprite2D" parent="WorldYSort/DirtyKegPile" unique_id=492943428]
+[node name="DirtyKeg4" type="Sprite2D" parent="WorldYSort/DirtyKegPile/OutlineGroup" unique_id=492943428]
 unique_name_in_owner = true
 texture_filter = 1
 position = Vector2(-18, -4)
