@@ -6,7 +6,8 @@ extends VBoxContainer
 
 const ATTENTION_PULSE_SECONDS : float = 0.5
 const ATTENTION_PULSE_COUNT : int = 3
-const ATTENTION_PULSE_SCALE : Vector2 = Vector2(1.12, 1.12)
+## Brightness, not scale: the pixel font blurs off whole sizes.
+const ATTENTION_PULSE_COLOR : Color = Color(1.6, 1.6, 1.6)
 
 const DAILY_GOAL_LINE_FORMAT : String = "%s: %s"
 ## Shown from day one, so the season's length is visible early.
@@ -58,7 +59,7 @@ func _ready() -> void:
 	_main_goal_section.toggled.connect(_on_section_toggled)
 	_daily_goals_section.toggled.connect(_on_section_toggled)
 	for label : Label in daily_goal_labels:
-		_near_miss_pulses.append(LabelPulse.new(label, LabelPulse.PIVOT_RIGHT))
+		_near_miss_pulses.append(LabelPulse.new(label))
 
 	toggle_button.pressed.connect(_on_toggle_pressed)
 	BrewerySignals.brewery_state_changed.connect(_update_goals)
@@ -76,14 +77,9 @@ func draw_attention() -> void:
 	if _is_collapsed:
 		_on_toggle_pressed()
 
-	await get_tree().process_frame
-	# Pivot on the right edge: the panel is flush right, so a centred pivot pushes it off
-	# screen.
-	pivot_offset = Vector2(size.x, size.y / 2.0)
-
 	var attention_tween := create_tween().set_loops(ATTENTION_PULSE_COUNT)
-	attention_tween.tween_property(self, "scale", ATTENTION_PULSE_SCALE, ATTENTION_PULSE_SECONDS).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-	attention_tween.tween_property(self, "scale", Vector2.ONE, ATTENTION_PULSE_SECONDS).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	attention_tween.tween_property(self, "modulate", ATTENTION_PULSE_COLOR, ATTENTION_PULSE_SECONDS).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	attention_tween.tween_property(self, "modulate", Color.WHITE, ATTENTION_PULSE_SECONDS).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 
 
 func _on_toggle_pressed() -> void:

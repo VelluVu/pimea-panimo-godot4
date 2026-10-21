@@ -21,10 +21,10 @@ const LOUD_POPUP_DURATION_SECONDS : float = 2.4
 const POPUP_FONT_SCALES : Array[float] = [1.0, 2.0, 2.0]
 const POPUP_OUTLINE_SIZE : int = 4
 const POPUP_OUTLINE_COLOR : Color = Color(0.12, 0.06, 0.0, 1.0)
-const POPUP_START_SCALE : float = 0.4
-## Every popup pops out a little; loud ones overshoot further.
-const POPUP_BOUNCE_SCALE : float = 1.15
-const LOUD_POPUP_BOUNCE_SCALE : float = 1.3
+## Every popup hops up a few whole pixels and settles; loud ones hop higher. A hop, not a
+## scale bounce: the pixel font blurs off whole sizes.
+const POPUP_HOP_PIXELS : float = 3.0
+const LOUD_POPUP_HOP_PIXELS : float = 6.0
 const POPUP_BOUNCE_SECONDS : float = 0.16
 const POPUP_SHAKE_PIXELS : float = 3.0
 const POPUP_SHAKE_STEPS : int = 6
@@ -97,9 +97,9 @@ func show_popup(text : String, color : Color, anchor_pos : Vector2, emphasis : E
 	if emphasis != Emphasis.NORMAL:
 		_enlarge(popup, POPUP_FONT_SCALES[emphasis])
 	popup.reset_size()
-	# The bounce grows out of the anchored edge.
-	popup.pivot_offset = Vector2(_edge_x(popup.size.x, anchor_edge), popup.size.y / 2.0)
-	var global_pos : Vector2 = anchor_pos - popup.pivot_offset
+	# Placed by its anchored edge, vertically centred on the anchor.
+	var anchor_offset := Vector2(_edge_x(popup.size.x, anchor_edge), popup.size.y / 2.0)
+	var global_pos : Vector2 = (anchor_pos - anchor_offset).round()
 	popup.global_position = global_pos
 
 	# Real seconds: the numbers stay readable at any game speed.
@@ -107,7 +107,7 @@ func show_popup(text : String, color : Color, anchor_pos : Vector2, emphasis : E
 	if delay_seconds > 0.0:
 		tween.tween_interval(delay_seconds)
 	tween.tween_callback(_reveal.bind(popup, emphasis, anchor_pos))
-	_bounce_in(tween, popup, LOUD_POPUP_BOUNCE_SCALE if emphasis != Emphasis.NORMAL else POPUP_BOUNCE_SCALE)
+	_hop_in(tween, popup, global_pos, LOUD_POPUP_HOP_PIXELS if emphasis != Emphasis.NORMAL else POPUP_HOP_PIXELS)
 	if emphasis == Emphasis.CRITICAL:
 		_shake(tween, popup, global_pos)
 
@@ -165,15 +165,19 @@ func _enlarge(popup : Label, font_scale : float) -> void:
 	popup.add_theme_color_override(&"font_outline_color", POPUP_OUTLINE_COLOR)
 
 
-func _bounce_in(tween : Tween, popup : Label, bounce_scale : float) -> void:
-	popup.scale = Vector2.ONE * POPUP_START_SCALE
-	tween.tween_property(popup, "scale", Vector2.ONE * bounce_scale, POPUP_BOUNCE_SECONDS).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-	tween.tween_property(popup, "scale", Vector2.ONE, POPUP_BOUNCE_SECONDS)
+## Rises from below its spot past it and settles, on whole pixels all the way.
+func _hop_in(tween : Tween, popup : Label, global_pos : Vector2, hop : float) -> void:
+	var place := func(at : Vector2) -> void: popup.global_position = at.round()
+	var below : Vector2 = global_pos + Vector2(0.0, hop)
+	var above : Vector2 = global_pos - Vector2(0.0, hop * 0.5)
+	popup.global_position = below
+	tween.tween_method(place, below, above, POPUP_BOUNCE_SECONDS).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.tween_method(place, above, global_pos, POPUP_BOUNCE_SECONDS)
 
 
 func _shake(tween : Tween, popup : Label, global_pos : Vector2) -> void:
 	for step : int in POPUP_SHAKE_STEPS:
-		var jolt := Vector2(randf_range(-1.0, 1.0), randf_range(-1.0, 1.0)) * POPUP_SHAKE_PIXELS
+		var jolt := (Vector2(randf_range(-1.0, 1.0), randf_range(-1.0, 1.0)) * POPUP_SHAKE_PIXELS).round()
 		tween.tween_property(popup, "global_position", global_pos + jolt, POPUP_SHAKE_STEP_SECONDS)
 	tween.tween_property(popup, "global_position", global_pos, POPUP_SHAKE_STEP_SECONDS)
 

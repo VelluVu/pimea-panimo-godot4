@@ -1,9 +1,9 @@
 class_name OlutoppiNodeView
 extends RefCounted
 
-## One Olutoppi node's labels and hover look: a buyable node grows and brightens.
+## One Olutoppi node's labels and hover look: a buyable node brightens. It does not grow:
+## the pixel font blurs off whole sizes.
 
-const HOVER_SCALE : Vector2 = Vector2(1.08, 1.08)
 ## Above 1.0 so the labels brighten too; warm to match the gold level text.
 const HOVER_TINT : Color = Color(1.3, 1.22, 1.05)
 const HOVER_TWEEN_SECONDS : float = 0.08
@@ -40,9 +40,7 @@ func _set_hovered(hovered : bool) -> void:
 	if hovered == _hovered:
 		return
 	_hovered = hovered
-	button.pivot_offset = button.size * 0.5
 	if _tween != null:
 		_tween.kill()
-	_tween = button.create_tween().set_parallel().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	_tween.tween_property(button, "scale", HOVER_SCALE if hovered else Vector2.ONE, HOVER_TWEEN_SECONDS)
+	_tween = button.create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	_tween.tween_property(button, "modulate", HOVER_TINT if hovered else Color.WHITE, HOVER_TWEEN_SECONDS)

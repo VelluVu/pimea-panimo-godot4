@@ -24,7 +24,6 @@
 [ext_resource type="Script" uid="uid://c715twjayrw15" path="res://src/scenes/day_lights.gd" id="11_dy065"]
 [ext_resource type="Shader" uid="uid://b6xodd1u2dfbh" path="res://assets/shaders/cellar_ambience.gdshader" id="11_nfawm"]
 [ext_resource type="Script" uid="uid://d0aqoy7a7wao2" path="res://src/scenes/lvv_pressure_overlay.gd" id="12_72le4"]
-[ext_resource type="Texture2D" uid="uid://cotf62fq6mk8q" path="res://assets/textures/clockhand_32.png" id="12_pm3ni"]
 [ext_resource type="Script" uid="uid://clwrlsny0wt3b" path="res://src/systems/dialog/dialog_view.gd" id="13_jkv2x"]
 [ext_resource type="Script" uid="uid://bamjijnw7ylcq" path="res://src/scenes/ui/game_speed_button.gd" id="17_05g3k"]
 [ext_resource type="Script" uid="uid://ctvoku3p23yqg" path="res://src/ui/warehouse_hover_area.gd" id="17_dp3eg"]
@@ -32,6 +31,7 @@
 [ext_resource type="Texture2D" uid="uid://cixeymlhgqlb8" path="res://assets/textures/PC_32.png" id="18_0ld40"]
 [ext_resource type="Script" uid="uid://dudbw5vh3wgaw" path="res://src/scenes/ui/shop_entrance_panel.gd" id="18_gqmmt"]
 [ext_resource type="Script" uid="uid://cmgecu0vu375p" path="res://src/scenes/ui/ingredient_type_selector.gd" id="20_5q0nq"]
+[ext_resource type="Script" uid="uid://rokdwuwn58hx" path="res://src/ui/pixel_clock_hand.gd" id="21_dy065"]
 [ext_resource type="Texture2D" uid="uid://jrgb4nvjfajq" path="res://src/resources/ui_icons/malt_tab_icon.tres" id="21_j8jky"]
 [ext_resource type="Texture2D" uid="uid://c0lcte85g2qnn" path="res://src/resources/ui_icons/hop_tab_icon.tres" id="22_kmb1v"]
 [ext_resource type="Script" uid="uid://l45qnjtgdirk" path="res://src/scenes/ui/brewery_entrance_panel.gd" id="22_pm3ni"]
@@ -435,14 +435,12 @@ texture = ExtResource("10_jscy8")
 stretch_mode = 2
 script = ExtResource("5_trceg")
 
-[node name="ClockHandTextureRect" type="TextureRect" parent="GUI_CanvasLayer/GUI/TopPanel_Resources/ClockUITextureRect" unique_id=787688972]
-layout_mode = 1
+[node name="ClockHand" type="Control" parent="GUI_CanvasLayer/GUI/TopPanel_Resources/ClockUITextureRect" unique_id=83555803]
+anchors_preset = 0
 offset_right = 32.0
 offset_bottom = 32.0
-pivot_offset = Vector2(16, 16)
-offset_transform_enabled = true
 mouse_filter = 2
-texture = ExtResource("12_pm3ni")
+script = ExtResource("21_dy065")
 
 [node name="GameSpeedButton" type="Button" parent="GUI_CanvasLayer/GUI/TopPanel_Resources" unique_id=1433339387]
 custom_minimum_size = Vector2(24, 0)
