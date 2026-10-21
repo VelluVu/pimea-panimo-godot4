@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_unlock")
-perk_name = "Pimeä Kortteli"
+perk_name = "Pimeä kortteli"
 description = "Alamaailman väki liikkuu lähistöllä {mafioso_appearance_multiplier} enemmän, ja LVV-agentit uskaltautuvat vierailemaan {agentti_appearance_multiplier} harvemmin."
 icon_placeholder = "👁️"
 agentti_appearance_multiplier = 0.9
