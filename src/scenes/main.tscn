@@ -39,6 +39,7 @@
 [ext_resource type="Texture2D" uid="uid://cixeymlhgqlb8" path="res://assets/textures/PC_32.png" id="18_0ld40"]
 [ext_resource type="Script" uid="uid://dudbw5vh3wgaw" path="res://src/scenes/ui/shop_entrance_panel.gd" id="18_gqmmt"]
 [ext_resource type="Texture2D" uid="uid://cxq0vt8ch7gjh" path="res://assets/textures/light_brewery_spill.png" id="18_y168j"]
+[ext_resource type="Script" uid="uid://e40ukqo404lq" path="res://src/scenes/warehouse_lamp_boost.gd" id="19_nylc4"]
 [ext_resource type="Script" uid="uid://cmgecu0vu375p" path="res://src/scenes/ui/ingredient_type_selector.gd" id="20_5q0nq"]
 [ext_resource type="Script" uid="uid://rokdwuwn58hx" path="res://src/ui/pixel_clock_hand.gd" id="21_dy065"]
 [ext_resource type="Texture2D" uid="uid://jrgb4nvjfajq" path="res://src/resources/ui_icons/malt_tab_icon.tres" id="21_j8jky"]
@@ -308,6 +309,10 @@ energy = 0.7
 texture = ExtResource("18_y168j")
 script = ExtResource("8_5c2vg")
 flicker_amount = 0.02
+
+[node name="WarehouseLampBoost" type="Node" parent="Lights" unique_id=282365649]
+script = ExtResource("19_nylc4")
+lamp_path = NodePath("../Light_WarehouseDoor")
 
 [node name="WorldDarkness" type="CanvasModulate" parent="." unique_id=88800007]
 color = Color(0.4, 0.38, 0.45, 1)
