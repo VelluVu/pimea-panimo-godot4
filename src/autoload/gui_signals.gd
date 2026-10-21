@@ -56,6 +56,10 @@ signal world_popup_requested(text: String, color: Color, world_position: Vector2
 @warning_ignore("unused_signal")
 signal brewery_view_requested()
 
+## The brewery view opened and closed (GuiViewSwitcher), e.g. for its tube light.
+@warning_ignore("unused_signal")
+signal brewery_view_opened()
+
 @warning_ignore("unused_signal")
 signal brewery_view_closed()
 

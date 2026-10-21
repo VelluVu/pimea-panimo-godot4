@@ -2,7 +2,8 @@ class_name GuiViewSwitcher
 extends RefCounted
 
 ## Switches between the bar, shop and brewery views, showing each view's panels and
-## announcing bar_view_entered/exited so hover areas can gate input.
+## announcing bar_view_entered/exited so hover areas can gate input, and
+## brewery_view_opened/closed.
 
 var _shop_view: ShopView
 var _brewery_view: BrewingView
@@ -26,7 +27,7 @@ func is_away_from_bar() -> bool:
 
 func show_bar() -> void:
 	_shop_view.hide()
-	_brewery_view.hide()
+	_hide_brewery()
 	_brew_preparation_panel.hide()
 	_shop_entrance_panel.activate_shop_panel()
 	_brewery_entrance_panel.show()
@@ -35,7 +36,7 @@ func show_bar() -> void:
 
 ## The shop's spot stays active beside the open shop, so a second tap closes it.
 func show_shop() -> void:
-	_brewery_view.hide()
+	_hide_brewery()
 	_brew_preparation_panel.hide()
 	_shop_entrance_panel.activate_shop_panel()
 	_brewery_entrance_panel.hide()
@@ -52,6 +53,7 @@ func show_brewery() -> void:
 	_brewery_view.show()
 	_brew_preparation_panel.show()
 	GUISignals.bar_view_exited.emit()
+	GUISignals.brewery_view_opened.emit()
 
 
 func toggle_brewery() -> void:
@@ -66,3 +68,9 @@ func toggle_shop() -> void:
 		show_bar()
 	else:
 		show_shop()
+
+
+func _hide_brewery() -> void:
+	if _brewery_view.visible:
+		_brewery_view.hide()
+		GUISignals.brewery_view_closed.emit()
