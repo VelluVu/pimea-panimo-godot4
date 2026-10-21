@@ -31,6 +31,7 @@
 [ext_resource type="Texture2D" uid="uid://cs0bawhjfoxec" path="res://assets/textures/light_tube.png" id="12_8wwmi"]
 [ext_resource type="Script" uid="uid://d0aqoy7a7wao2" path="res://src/scenes/lvv_pressure_overlay.gd" id="12_72le4"]
 [ext_resource type="Script" uid="uid://clwrlsny0wt3b" path="res://src/systems/dialog/dialog_view.gd" id="13_jkv2x"]
+[ext_resource type="Texture2D" uid="uid://4pfgd0nl3mmy" path="res://assets/textures/pendant_lamp_48.png" id="13_nylc4"]
 [ext_resource type="Texture2D" uid="uid://dpgbi8udycdtl" path="res://assets/textures/light_cone_bar.png" id="14_ipwpp"]
 [ext_resource type="Script" uid="uid://b4yu2tl6wgqhr" path="res://src/scenes/brewery_lamp_switch.gd" id="14_txyr0"]
 [ext_resource type="Script" uid="uid://bamjijnw7ylcq" path="res://src/scenes/ui/game_speed_button.gd" id="17_05g3k"]
@@ -76,7 +77,6 @@
 [ext_resource type="Script" uid="uid://divk0hld1wq12" path="res://src/scenes/keg_row.gd" id="68_05g3k"]
 [ext_resource type="Texture2D" uid="uid://bpsny2rj4ahl3" path="res://assets/textures/keg_wash/dirty_keg.png" id="68_abmkx"]
 [ext_resource type="Material" path="res://assets/shaders/hover_outline_material.tres" id="69_72le4"]
-[ext_resource type="Texture2D" uid="uid://dcrobw17uonit" path="res://assets/textures/pendant_lamp_24.png" id="71_pendantlamp"]
 [ext_resource type="Script" uid="uid://dlpfwusea8uno" path="res://src/scenes/screen_shake.gd" id="78_8knqq"]
 [ext_resource type="PackedScene" path="res://src/scenes/ui/achievements_window.tscn" id="99_ach"]
 [ext_resource type="PackedScene" path="res://src/scenes/ui/game_menu_window.tscn" id="99_gamemenu"]
@@ -269,7 +269,7 @@ dip_depth = 0.6
 
 [node name="PendantLamp" type="Sprite2D" parent="Lights" unique_id=88800008]
 position = Vector2(397, 59)
-texture = ExtResource("71_pendantlamp")
+texture = ExtResource("13_nylc4")
 
 [node name="Light_BarCone" type="PointLight2D" parent="Lights/PendantLamp" unique_id=88800005]
 position = Vector2(-3, 282)
