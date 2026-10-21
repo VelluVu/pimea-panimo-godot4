@@ -5,6 +5,7 @@
 [resource]
 script = ExtResource("1_kk726")
 attentuation_percent = 75
+family_name = "ale"
 id = 302
 name = "Alehiiva"
 description = "Pintahiiva, joka tuottaa aromikkaan oluen."

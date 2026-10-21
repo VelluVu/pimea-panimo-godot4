@@ -109,31 +109,36 @@ func _refresh() -> void:
 		_build_index(brewery)
 
 
-## Known styles first by name, then the locked ones from mild to strong.
+## Known styles first by name, then the locked ones easiest first (mild to strong within
+## the same effort).
 func _build_index(brewery : Brewery) -> void:
-	var known : Array[BeerStyle] = []
-	var locked : Array[BeerStyle] = []
+	var known : Array[RecipeBookEntry] = []
+	var locked : Array[RecipeBookEntry] = []
 	for beer_style : BeerStyle in brewery.resolver.active_styles:
-		if brewery.is_style_known(beer_style.style):
-			known.append(beer_style)
+		var entry : RecipeBookEntry = _entry(brewery, beer_style)
+		if entry.known:
+			known.append(entry)
 		else:
-			locked.append(beer_style)
-	known.sort_custom(func(a : BeerStyle, b : BeerStyle) -> bool: return UiText.of(a.style_name) < UiText.of(b.style_name))
-	locked.sort_custom(func(a : BeerStyle, b : BeerStyle) -> bool: return a.abv < b.abv)
+			locked.append(entry)
+	known.sort_custom(func(a : RecipeBookEntry, b : RecipeBookEntry) -> bool: return UiText.of(a.beer_style.style_name) < UiText.of(b.beer_style.style_name))
+	locked.sort_custom(func(a : RecipeBookEntry, b : RecipeBookEntry) -> bool:
+		if a.effort_score != b.effort_score:
+			return a.effort_score < b.effort_score
+		return a.beer_style.abv < b.beer_style.abv)
 
 	rows_vbox.add_child(_section_label(RecipeLibraryText.known_section_title(known.size(), known.size() + locked.size())))
-	rows_vbox.add_child(_index_grid(brewery, known))
+	rows_vbox.add_child(_index_grid(known))
 	if locked.is_empty():
 		return
 	rows_vbox.add_child(_section_label(RecipeLibraryText.locked_section_title(locked.size())))
-	rows_vbox.add_child(_index_grid(brewery, locked))
+	rows_vbox.add_child(_index_grid(locked))
 
 
-func _index_grid(brewery : Brewery, styles : Array[BeerStyle]) -> GridContainer:
+func _index_grid(entries : Array[RecipeBookEntry]) -> GridContainer:
 	var grid := GridContainer.new()
 	grid.columns = INDEX_COLUMNS
-	for beer_style : BeerStyle in styles:
-		var entry : RecipeBookEntry = _entry(brewery, beer_style)
+	for entry : RecipeBookEntry in entries:
+		var beer_style : BeerStyle = entry.beer_style
 		var button := Button.new()
 		button.text = RecipeLibraryText.index_label(entry)
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
@@ -210,7 +215,10 @@ func _entry(brewery : Brewery, beer_style : BeerStyle) -> RecipeBookEntry:
 	entry.saved_recipe_count = brewery.saved_recipes.filter(func(recipe : BrewRecipe) -> bool: return recipe.beer_style == beer_style.style).size()
 	entry.needs_mash_upgrade = not MashTun.holds(brewery.resolver.reference_malt_weight(beer_style), brewery.mash_capacity_kg())
 	if not entry.known:
-		entry.needs_malt_blend = beer_style.required_malt_id == BrewMixture.NO_REQUIRED_MALT and brewery.resolver.style_needs_malt_blend(beer_style)
+		var yeast : YeastData = IngredientDatabase.get_item_by_id(beer_style.required_yeast_id) as YeastData
+		entry.family_name = yeast.family_name if yeast != null else ""
+		entry.effort_score = StyleEffort.score(beer_style, brewery.resolver.ingredient_table(), entry.needs_mash_upgrade)
+		entry.needs_malt_blend =beer_style.required_malt_id == BrewMixture.NO_REQUIRED_MALT and brewery.resolver.style_needs_malt_blend(beer_style)
 		entry.attracts_new_customer = not MetaProgressManager.has_style(beer_style.style) and CustomerRegistry.is_style_customer_gate(beer_style.style)
 		entry.hinted = brewery.hinted_styles.has(beer_style.style)
 	return entry

@@ -5,6 +5,7 @@
 [resource]
 script = ExtResource("1_mwjvj")
 attentuation_percent = 80
+family_name = "lager"
 id = 301
 name = "Lagerhiiva"
 description = "Pohjahiiva, joka tuottaa puhtaan, raikkaan oluen."

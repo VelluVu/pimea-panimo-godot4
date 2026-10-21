@@ -17,5 +17,9 @@ var saved_recipe_count : int = 0
 var needs_mash_upgrade : bool = false
 ## Locked styles only.
 var needs_malt_blend : bool = false
+## The yeast's beer family ("lager"), shown in place of the name.
+var family_name : String = ""
+## StyleEffort.score(), for the order of the locked styles.
+var effort_score : int = 0
 var attracts_new_customer : bool = false
 var hinted : bool = false

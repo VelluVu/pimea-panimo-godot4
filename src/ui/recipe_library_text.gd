@@ -6,8 +6,9 @@ extends RefCounted
 
 const INDEX_KNOWN_FORMAT : String = "%s\n%.1f %%"
 const INDEX_RECIPES_FORMAT : String = "%s · reseptejä %d"
-const INDEX_LOCKED_FORMAT : String = "???\n%.1f %%"
+const INDEX_LOCKED_FORMAT : String = "%s\n%.1f %% · %s"
 const LOCKED_TITLE : String = "???"
+const LOCKED_FAMILY_TITLE_FORMAT : String = "??? %s"
 const KNOWN_HEADER_FORMAT : String = "Löydetyt tyylit (%d/%d)"
 const LOCKED_HEADER_FORMAT : String = "Löytämättömät tyylit (%d)"
 const SAVED_RECIPES_HEADER : String = "Tallennetut reseptit"
@@ -35,6 +36,11 @@ const LOCKED_STRENGTH_FORMAT : String = "Vahvuus: noin %.1f %% ABV"
 const COLOR_HINT_FORMAT : String = "Väri: %s"
 const BITTERNESS_HINT_FORMAT : String = "Katkeruus: %s"
 const MALT_BLEND_HINT : String = "Vaatii mallasseoksen"
+const BASE_MALT_HINT_FORMAT : String = "Pohjamallas: %s"
+const EFFORT_FORMAT : String = "Vaativuus: %s"
+const EFFORT_EASY_TEXT : String = "helppo"
+const EFFORT_MEDIUM_TEXT : String = "keskitaso"
+const EFFORT_HARD_TEXT : String = "vaativa"
 const NEW_CUSTOMER_HINT : String = "Houkuttelee uuden asiakkaan"
 const MASTER_HINT_FORMAT : String = "Aatun vinkki: EBC %s, IBU %s"
 
@@ -56,10 +62,11 @@ static func locked_section_title(locked_count : int) -> String:
 	return UiText.of(LOCKED_HEADER_FORMAT) % locked_count
 
 
-## The index button: name and strength, and how many recipes are saved.
+## The index button: name and strength, and how many recipes are saved. A locked style
+## shows its beer family and effort instead of the name.
 static func index_label(entry : RecipeBookEntry) -> String:
 	if not entry.known:
-		return UiText.of(INDEX_LOCKED_FORMAT) % entry.beer_style.abv
+		return INDEX_LOCKED_FORMAT % [page_title(entry), entry.beer_style.abv, UiText.of(effort_name(StyleEffort.tier(entry.effort_score)))]
 	var text : String = UiText.of(INDEX_KNOWN_FORMAT) % [UiText.of(entry.beer_style.style_name), entry.beer_style.abv]
 	if entry.saved_recipe_count > 0:
 		text = UiText.of(INDEX_RECIPES_FORMAT) % [text, entry.saved_recipe_count]
@@ -67,7 +74,18 @@ static func index_label(entry : RecipeBookEntry) -> String:
 
 
 static func page_title(entry : RecipeBookEntry) -> String:
-	return UiText.of(entry.beer_style.style_name) if entry.known else UiText.of(LOCKED_TITLE)
+	if entry.known:
+		return UiText.of(entry.beer_style.style_name)
+	if entry.family_name.is_empty():
+		return UiText.of(LOCKED_TITLE)
+	return UiText.of(LOCKED_FAMILY_TITLE_FORMAT) % UiText.of(entry.family_name)
+
+
+static func effort_name(tier : StyleEffort.Tier) -> String:
+	match tier:
+		StyleEffort.Tier.MEDIUM: return EFFORT_MEDIUM_TEXT
+		StyleEffort.Tier.HARD: return EFFORT_HARD_TEXT
+	return EFFORT_EASY_TEXT
 
 
 ## A known style's page, one fact per line.
@@ -105,11 +123,14 @@ static func locked_lines(entry : RecipeBookEntry) -> PackedStringArray:
 	if not style.locked_hint.is_empty():
 		lines.append(UiText.of(style.locked_hint))
 	lines.append_array([
+		UiText.of(EFFORT_FORMAT) % UiText.of(effort_name(StyleEffort.tier(entry.effort_score))),
 		UiText.of(LOCKED_STRENGTH_FORMAT) % style.abv,
 		UiText.of(COLOR_HINT_FORMAT) % UiText.of(BeerStyle.get_color_hint(style.min_ebc, style.max_ebc)),
 		UiText.of(BITTERNESS_HINT_FORMAT) % UiText.of(BeerStyle.get_bitterness_hint(style.min_ibu, style.max_ibu)),
 		UiText.of(YEAST_FORMAT) % entry.yeast_name,
 	])
+	if not entry.base_malt_names.is_empty():
+		lines.append(UiText.of(BASE_MALT_HINT_FORMAT) % BASE_MALT_SEPARATOR.join(entry.base_malt_names))
 	_append_requirements(lines, entry)
 	if style.required_malt_id == BrewMixture.NO_REQUIRED_MALT and entry.needs_malt_blend:
 		lines.append(UiText.of(MALT_BLEND_HINT))

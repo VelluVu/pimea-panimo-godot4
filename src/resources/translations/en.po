@@ -7251,6 +7251,10 @@ msgid "Mäskäys: %s"
 msgstr "Mash: %s"
 
 #: src/ui/recipe_library_text.gd
+msgid "Pohjamallas: %s"
+msgstr "Base malt: %s"
+
+#: src/ui/recipe_library_text.gd
 msgid "Pohjamallas: %s, vähintään %d %% maltaista"
 msgstr "Base malt: %s, at least %d %% of the malt"
 
@@ -7295,6 +7299,10 @@ msgid "Vaatii: %s"
 msgstr "Needs: %s"
 
 #: src/ui/recipe_library_text.gd
+msgid "Vaativuus: %s"
+msgstr "Effort: %s"
+
+#: src/ui/recipe_library_text.gd
 msgid "Vahvuus: %s %% ABV"
 msgstr "Strength: %s %% ABV"
 
@@ -7315,8 +7323,16 @@ msgid "aromi"
 msgstr "aroma"
 
 #: src/ui/recipe_library_text.gd
+msgid "helppo"
+msgstr "easy"
+
+#: src/ui/recipe_library_text.gd
 msgid "katkero"
 msgstr "bittering"
+
+#: src/ui/recipe_library_text.gd
+msgid "keskitaso"
+msgstr "medium"
 
 #: src/ui/recipe_library_text.gd
 msgid "kuivahumala"
@@ -7325,6 +7341,10 @@ msgstr "dry hop"
 #: src/ui/recipe_library_text.gd
 msgid "maku"
 msgstr "flavour"
+
+#: src/ui/recipe_library_text.gd
+msgid "vaativa"
+msgstr "demanding"
 
 #: src/ui/recipe_name_text.gd
 msgid "%s (perusresepti)"

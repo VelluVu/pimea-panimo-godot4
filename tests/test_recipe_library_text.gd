@@ -47,8 +47,32 @@ func test_a_known_index_button_shows_name_strength_and_recipes() -> void:
 
 
 func test_a_locked_index_button_hides_the_name() -> void:
-	assert_eq(RecipeLibraryTextScript.index_label(_entry(false)), "???\n4.5 %")
+	assert_eq(RecipeLibraryTextScript.index_label(_entry(false)), "???\n4.5 % · helppo")
 	assert_eq(RecipeLibraryTextScript.page_title(_entry(false)), "???")
+
+
+func test_a_locked_style_shows_its_family_and_effort() -> void:
+	var entry := _entry(false)
+	entry.family_name = "lager"
+	entry.effort_score = StyleEffort.HARD_FROM
+	assert_eq(RecipeLibraryTextScript.index_label(entry), "??? lager\n4.5 % · vaativa")
+	assert_eq(RecipeLibraryTextScript.page_title(entry), "??? lager")
+	assert_contains(_page(entry), "Vaativuus: vaativa")
+
+
+func test_effort_names_follow_the_tier() -> void:
+	assert_eq(RecipeLibraryTextScript.effort_name(StyleEffort.Tier.EASY), "helppo")
+	assert_eq(RecipeLibraryTextScript.effort_name(StyleEffort.Tier.MEDIUM), "keskitaso")
+	assert_eq(RecipeLibraryTextScript.effort_name(StyleEffort.Tier.HARD), "vaativa")
+
+
+func test_a_locked_page_names_the_base_malt_but_not_its_share() -> void:
+	var entry := _entry(false)
+	entry.beer_style.min_base_share = 0.8
+	entry.base_malt_names = ["Pilsner-mallas"]
+	var text : String = _page(entry)
+	assert_contains(text, "Pohjamallas: Pilsner-mallas")
+	assert_false(text.contains("80 %"), "the exact share stays hidden")
 
 
 func test_a_known_page_shows_the_exact_recipe() -> void:
