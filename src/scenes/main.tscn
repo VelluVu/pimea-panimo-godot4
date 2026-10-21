@@ -14,26 +14,31 @@
 [ext_resource type="Script" uid="uid://dbsgu6mke0d4q" path="res://src/scenes/ui/left_shop_view.gd" id="5_tbgi4"]
 [ext_resource type="Script" uid="uid://bh2cqv03r8t8o" path="res://src/scenes/ui/ingredient_option_button.gd" id="5_tipki"]
 [ext_resource type="Script" uid="uid://cx0sfer400res" path="res://src/scenes/ui/clock_ui.gd" id="5_trceg"]
+[ext_resource type="Texture2D" uid="uid://bqgg0ud803dad" path="res://assets/textures/light_glow_stairs.png" id="7_4xk6q"]
 [ext_resource type="Script" uid="uid://hp2u8nuqjsu6" path="res://src/ui/pc_prop.gd" id="7_og1vs"]
 [ext_resource type="Script" uid="uid://be6oyi80fbyom" path="res://src/scenes/ui/brew_preparation_panel.gd" id="7_tipki"]
 [ext_resource type="Theme" uid="uid://dkmfe4a5nvvcd" path="res://src/resources/themes/main_theme.tres" id="7_y6deb"]
 [ext_resource type="Script" uid="uid://dw337ricts1ki" path="res://src/scenes/light_flicker.gd" id="8_5c2vg"]
 [ext_resource type="Script" uid="uid://4stpknptq7nv" path="res://src/scenes/ui/right_warehouse_view.gd" id="9_muem4"]
+[ext_resource type="Texture2D" uid="uid://cr5stxers6yiw" path="res://assets/textures/light_glow_wall.png" id="9_nylc4"]
 [ext_resource type="Texture2D" uid="uid://dl4jgj4bfi8dq" path="res://assets/textures/light_warehouse_door.png" id="9_txyr0"]
-[ext_resource type="Texture2D" uid="uid://b4wcrlrmproap" path="res://assets/textures/light_tube_80.png" id="9_u1dwr"]
 [ext_resource type="Texture2D" uid="uid://ckr0tjvh7srsj" path="res://assets/textures/clock_bg.png" id="10_jscy8"]
+[ext_resource type="Texture2D" uid="uid://c3a6q0frv1fj5" path="res://assets/textures/light_glow_wall2.png" id="10_r6rvd"]
 [ext_resource type="Shader" uid="uid://d2tc6dd0fey8k" path="res://assets/shaders/lvv_pressure.gdshader" id="11_3cmot"]
 [ext_resource type="Script" uid="uid://cucpiy30iolba" path="res://src/scenes/cone_dust.gd" id="11_8knqq"]
 [ext_resource type="Script" uid="uid://c715twjayrw15" path="res://src/scenes/day_lights.gd" id="11_dy065"]
 [ext_resource type="Shader" uid="uid://b6xodd1u2dfbh" path="res://assets/shaders/cellar_ambience.gdshader" id="11_nfawm"]
+[ext_resource type="Texture2D" uid="uid://cs0bawhjfoxec" path="res://assets/textures/light_tube.png" id="12_8wwmi"]
 [ext_resource type="Script" uid="uid://d0aqoy7a7wao2" path="res://src/scenes/lvv_pressure_overlay.gd" id="12_72le4"]
 [ext_resource type="Script" uid="uid://clwrlsny0wt3b" path="res://src/systems/dialog/dialog_view.gd" id="13_jkv2x"]
+[ext_resource type="Texture2D" uid="uid://dpgbi8udycdtl" path="res://assets/textures/light_cone_bar.png" id="14_ipwpp"]
 [ext_resource type="Script" uid="uid://b4yu2tl6wgqhr" path="res://src/scenes/brewery_lamp_switch.gd" id="14_txyr0"]
 [ext_resource type="Script" uid="uid://bamjijnw7ylcq" path="res://src/scenes/ui/game_speed_button.gd" id="17_05g3k"]
 [ext_resource type="Script" uid="uid://ctvoku3p23yqg" path="res://src/ui/warehouse_hover_area.gd" id="17_dp3eg"]
 [ext_resource type="Script" uid="uid://cabnw1tbiyona" path="res://src/customers/customer_spawner.gd" id="17_muem4"]
 [ext_resource type="Texture2D" uid="uid://cixeymlhgqlb8" path="res://assets/textures/PC_32.png" id="18_0ld40"]
 [ext_resource type="Script" uid="uid://dudbw5vh3wgaw" path="res://src/scenes/ui/shop_entrance_panel.gd" id="18_gqmmt"]
+[ext_resource type="Texture2D" uid="uid://cxq0vt8ch7gjh" path="res://assets/textures/light_brewery_spill.png" id="18_y168j"]
 [ext_resource type="Script" uid="uid://cmgecu0vu375p" path="res://src/scenes/ui/ingredient_type_selector.gd" id="20_5q0nq"]
 [ext_resource type="Script" uid="uid://rokdwuwn58hx" path="res://src/ui/pixel_clock_hand.gd" id="21_dy065"]
 [ext_resource type="Texture2D" uid="uid://jrgb4nvjfajq" path="res://src/resources/ui_icons/malt_tab_icon.tres" id="21_j8jky"]
@@ -70,9 +75,7 @@
 [ext_resource type="Script" uid="uid://divk0hld1wq12" path="res://src/scenes/keg_row.gd" id="68_05g3k"]
 [ext_resource type="Texture2D" uid="uid://bpsny2rj4ahl3" path="res://assets/textures/keg_wash/dirty_keg.png" id="68_abmkx"]
 [ext_resource type="Material" path="res://assets/shaders/hover_outline_material.tres" id="69_72le4"]
-[ext_resource type="Texture2D" uid="uid://b12vj0rmwdl8y" path="res://assets/textures/light_glow_32.png" id="70_lightglow"]
 [ext_resource type="Texture2D" uid="uid://dcrobw17uonit" path="res://assets/textures/pendant_lamp_24.png" id="71_pendantlamp"]
-[ext_resource type="Texture2D" uid="uid://b3yifds2n8sqd" path="res://assets/textures/light_cone_64x120.png" id="72_lightcone"]
 [ext_resource type="Script" uid="uid://dlpfwusea8uno" path="res://src/scenes/screen_shake.gd" id="78_8knqq"]
 [ext_resource type="PackedScene" path="res://src/scenes/ui/achievements_window.tscn" id="99_ach"]
 [ext_resource type="PackedScene" path="res://src/scenes/ui/game_menu_window.tscn" id="99_gamemenu"]
@@ -226,16 +229,14 @@ position = Vector2(0, -1)
 position = Vector2(27, 81)
 color = Color(1, 0.85, 0.6, 1)
 energy = 1.4
-texture = ExtResource("70_lightglow")
-texture_scale = 10.6
+texture = ExtResource("7_4xk6q")
 script = ExtResource("8_5c2vg")
 flicker_amount = 0.0
 
 [node name="Light_Wall" type="PointLight2D" parent="Lights" unique_id=445615547]
 position = Vector2(305, 139)
 color = Color(1, 0.85, 0.6, 1)
-texture = ExtResource("70_lightglow")
-texture_scale = 3.58
+texture = ExtResource("9_nylc4")
 script = ExtResource("8_5c2vg")
 flicker_amount = 0.1
 
@@ -243,16 +244,14 @@ flicker_amount = 0.1
 position = Vector2(495, 134)
 color = Color(1, 0.85, 0.6, 1)
 energy = 1.4
-texture = ExtResource("70_lightglow")
-texture_scale = 3.7
+texture = ExtResource("10_r6rvd")
 script = ExtResource("8_5c2vg")
 flicker_amount = 0.1
 
 [node name="Light_WarehouseDoor" type="PointLight2D" parent="Lights" unique_id=88800004]
-position = Vector2(570, 225)
+position = Vector2(570, 226)
 color = Color(1, 0.82, 0.55, 1)
 texture = ExtResource("9_txyr0")
-texture_scale = 2.0
 script = ExtResource("8_5c2vg")
 flicker_amount = 0.04
 
@@ -261,8 +260,7 @@ position = Vector2(191, 172)
 color = Color(0.86, 0.97, 1, 1)
 energy = 0.9
 range_item_cull_mask = 2
-texture = ExtResource("9_u1dwr")
-texture_scale = 2.0
+texture = ExtResource("12_8wwmi")
 script = ExtResource("8_5c2vg")
 flicker_amount = 0.02
 dip_chance_per_second = 0.02
@@ -274,11 +272,9 @@ texture = ExtResource("71_pendantlamp")
 
 [node name="Light_BarCone" type="PointLight2D" parent="Lights/PendantLamp" unique_id=88800005]
 position = Vector2(-3, 282)
-scale = Vector2(1.4, 1)
 color = Color(1, 0.95, 0.85, 1)
 energy = 1.2
-texture = ExtResource("72_lightcone")
-texture_scale = 4.7
+texture = ExtResource("14_ipwpp")
 script = ExtResource("8_5c2vg")
 dip_chance_per_second = 0.03
 
@@ -303,7 +299,15 @@ darkness_path = NodePath("../../WorldDarkness")
 
 [node name="BreweryLampSwitch" type="Node" parent="Lights" unique_id=394363562]
 script = ExtResource("14_txyr0")
-lamp_path = NodePath("../Light_BreweryTube")
+lamp_paths = Array[NodePath]([NodePath("../Light_BreweryTube"), NodePath("../Light_BrewerySpill")])
+
+[node name="Light_BrewerySpill" type="PointLight2D" parent="Lights" unique_id=1516785732]
+position = Vector2(190, 266)
+color = Color(0.86, 0.97, 1, 1)
+energy = 0.7
+texture = ExtResource("18_y168j")
+script = ExtResource("8_5c2vg")
+flicker_amount = 0.02
 
 [node name="WorldDarkness" type="CanvasModulate" parent="." unique_id=88800007]
 color = Color(0.4, 0.38, 0.45, 1)
