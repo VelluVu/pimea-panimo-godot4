@@ -8,6 +8,7 @@ var _holding : bool = false
 
 
 func _ready() -> void:
+	name = "FocusPause"
 	process_mode = Node.PROCESS_MODE_ALWAYS
 
 
