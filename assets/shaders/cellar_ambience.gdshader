@@ -6,7 +6,9 @@ shader_type canvas_item;
 
 uniform sampler2D screen_texture : hint_screen_texture, filter_nearest;
 uniform float vignette_strength : hint_range(0.0, 1.0) = 0.22;
-uniform float grain_strength : hint_range(0.0, 0.2) = 0.025;
+uniform float grain_strength : hint_range(0.0, 0.2) = 0.015;
+// Share of the grain left on black; full grain only on lit pixels, so dark walls stay calm.
+uniform float grain_in_dark : hint_range(0.0, 1.0) = 0.3;
 uniform float grain_fps : hint_range(1.0, 30.0) = 8.0;
 uniform float dither_levels : hint_range(1.0, 16.0, 1.0) = 3.0;
 
@@ -29,6 +31,7 @@ void fragment() {
 	vec2 pixel = floor(FRAGCOORD.xy);
 	vec2 centered = (SCREEN_UV - 0.5) * vec2(SCREEN_PIXEL_SIZE.y / SCREEN_PIXEL_SIZE.x, 1.0);
 	float vignette = dithered(smoothstep(0.45, 1.05, length(centered)), pixel) * vignette_strength;
-	float grain = (hash(pixel + floor(TIME * grain_fps) * 17.0) - 0.5) * grain_strength;
+	float luma = dot(scene, vec3(0.299, 0.587, 0.114));
+	float grain = (hash(pixel + floor(TIME * grain_fps) * 17.0) - 0.5) * grain_strength * mix(grain_in_dark, 1.0, luma);
 	COLOR = vec4(scene * (1.0 - vignette) + grain, 1.0);
 }
