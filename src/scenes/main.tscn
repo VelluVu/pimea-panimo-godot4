@@ -21,6 +21,7 @@
 [ext_resource type="Script" uid="uid://4stpknptq7nv" path="res://src/scenes/ui/right_warehouse_view.gd" id="9_muem4"]
 [ext_resource type="Texture2D" uid="uid://ckr0tjvh7srsj" path="res://assets/textures/clock_bg.png" id="10_jscy8"]
 [ext_resource type="Shader" uid="uid://d2tc6dd0fey8k" path="res://assets/shaders/lvv_pressure.gdshader" id="11_3cmot"]
+[ext_resource type="Script" uid="uid://cucpiy30iolba" path="res://src/scenes/cone_dust.gd" id="11_8knqq"]
 [ext_resource type="Script" uid="uid://c715twjayrw15" path="res://src/scenes/day_lights.gd" id="11_dy065"]
 [ext_resource type="Shader" uid="uid://b6xodd1u2dfbh" path="res://assets/shaders/cellar_ambience.gdshader" id="11_nfawm"]
 [ext_resource type="Script" uid="uid://d0aqoy7a7wao2" path="res://src/scenes/lvv_pressure_overlay.gd" id="12_72le4"]
@@ -95,6 +96,10 @@ colors = PackedColorArray(2.2, 2.05, 1.7, 0, 2.2, 2.05, 1.7, 0.6, 2.2, 2.05, 1.7
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dy065"]
 shader = ExtResource("11_nfawm")
+shader_parameter/vignette_strength = 0.22
+shader_parameter/grain_strength = 0.015
+shader_parameter/grain_fps = 8.0
+shader_parameter/dither_levels = 3.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_nfawm"]
 shader = ExtResource("11_3cmot")
@@ -284,9 +289,11 @@ emission_shape = 3
 emission_rect_extents = Vector2(85, 75)
 spread = 180.0
 gravity = Vector2(0, 1.2)
-initial_velocity_min = 1.0
-initial_velocity_max = 3.5
+initial_velocity_min = 0.5
+initial_velocity_max = 2.0
 color_ramp = SubResource("Gradient_5c2vg")
+script = ExtResource("11_8knqq")
+bottom_half_width = 100.0
 
 [node name="DayLights" type="Node" parent="Lights" unique_id=1168033937]
 script = ExtResource("11_dy065")
