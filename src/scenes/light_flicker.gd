@@ -9,6 +9,9 @@ extends PointLight2D
 @export_range(0.0, 1.0) var dip_chance_per_second: float = 0.0
 @export_range(0.0, 1.0) var dip_depth: float = 0.45
 
+## 0 switches the lamp off, see DayLights.
+var dimmer: float = 1.0
+
 var _base_energy: float
 var _noise: FastNoiseLite = FastNoiseLite.new()
 var _time: float = 0.0
@@ -16,6 +19,8 @@ var _dip: float = 1.0
 
 
 func _ready() -> void:
+	# Pausing windows (level-up) open over the cellar; its lamps keep living and switching.
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	_base_energy = energy
 	_noise.seed = randi()
 	_noise.frequency = 1.0
@@ -26,7 +31,7 @@ func _process(delta: float) -> void:
 	_time += delta * flicker_speed
 	if randf() < dip_chance_per_second * delta:
 		_dip_once()
-	energy = _base_energy * _dip * (1.0 + _noise.get_noise_1d(_time) * flicker_amount)
+	energy = _base_energy * dimmer * _dip * (1.0 + _noise.get_noise_1d(_time) * flicker_amount)
 
 
 func _dip_once() -> void:
