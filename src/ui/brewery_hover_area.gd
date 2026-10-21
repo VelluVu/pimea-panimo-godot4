@@ -3,6 +3,9 @@ extends Area2D
 
 
 @onready var overlay_glow_sprite: Sprite2D = $Sprite2D
+## The doorway's bottom-left corner, cut out of the main shape for the dirty keg pile;
+## the brewery takes it back while the pile is empty, so the corner is never dead.
+@onready var pile_corner_shape: CollisionPolygon2D = $PileCornerShape
 
 const HOVER_GLOW_COLOR = Color(1.3, 1.15, 0.8, 1.0)
 const HIDDEN_COLOR = Color(1.0, 1.0, 1.0, 1.0)
@@ -17,9 +20,15 @@ func _ready() -> void:
 	input_event.connect(_on_input_event)
 	GUISignals.bar_view_exited.connect(_on_bar_view_exited)
 	GUISignals.bar_view_entered.connect(_on_bar_view_entered)
+	BrewerySignals.brewery_state_changed.connect(_on_brewery_state_changed)
 
 	if overlay_glow_sprite:
 		overlay_glow_sprite.self_modulate = HIDDEN_COLOR
+
+
+func _on_brewery_state_changed(brewery: Brewery) -> void:
+	# Deferred: shapes may not change during a physics query.
+	pile_corner_shape.set_deferred("disabled", brewery.inventory.dirty_keg_count() > 0)
 
 
 func _on_bar_view_exited() -> void:

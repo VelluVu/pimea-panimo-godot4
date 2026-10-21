@@ -196,6 +196,9 @@ texture = ExtResource("3_yc10j")
 [node name="FermentingTankEffect" type="Node2D" parent="BreweryHoverArea/Sprite2D" unique_id=1045410215]
 script = ExtResource("5_abmkx")
 
+[node name="PileCornerShape" type="CollisionPolygon2D" parent="BreweryHoverArea" unique_id=2127650673]
+polygon = PackedVector2Array(-63, -16, -3, -16, -3, 73, -63, 73)
+
 [node name="WarehouseHoverArea" type="Area2D" parent="." unique_id=1295271677]
 position = Vector2(590, 210)
 script = ExtResource("17_dp3eg")
