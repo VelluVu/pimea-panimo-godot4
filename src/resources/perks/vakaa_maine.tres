@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_vakaa")
 perk_name = "Vakaa maine"
-description = "Maineesi kasvaa tasaisesti päivästä toiseen: maine karttuu {reputation_gain_multiplier} nopeammin. Ei räjähdysmäisesti, mutta se ei myöskään koskaan hiivu."
+description = "Maineesi kasvaa tasaisesti päivästä toiseen: maine karttuu {reputation_gain_multiplier} nopeammin. Ei räjähdysmäisesti, mutta varmasti."
 icon_placeholder = "🏅"
 tier = 1
 reputation_gain_multiplier = 1.15
