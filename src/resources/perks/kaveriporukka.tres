@@ -5,6 +5,6 @@
 [resource]
 script = ExtResource("1_perk")
 perk_name = "Kaveriporukka"
-description = "Asiakkaat kertovat kellarista kavereilleen: mahdollisuus, että joku ottaa kaverin mukaan, kasvaa {walk_in_company_chance}."
+description = "Vakiasiakkaat eivät enää jaksa juoda yksin: mahdollisuus, että asiakas tuo kaverin mukaan, kasvaa {walk_in_company_chance}."
 icon_placeholder = "👫"
 walk_in_company_chance = 0.04
