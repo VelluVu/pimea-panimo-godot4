@@ -57,7 +57,7 @@ func _load_vignettes() -> void:
 
 
 func _apply_depth_scale(sprite : AnimatedSprite2D, base_scale : Vector2) -> void:
-	sprite.scale = base_scale * VignettePath.depth_scale_factor(sprite.global_position.y)
+	sprite.scale = Vector2.ONE * VignettePath.pixel_scale(base_scale.x, sprite.global_position.y)
 
 
 ## The console's "cat" and "vignette": plays `vignette` (random when null) and re-rolls

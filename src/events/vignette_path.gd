@@ -18,6 +18,12 @@ static func depth_scale_factor(y: float) -> float:
 	return clampf(1.0 + steps * DEPTH_SCALE_PER_STEP, DEPTH_SCALE_MIN_FACTOR, DEPTH_SCALE_MAX_FACTOR)
 
 
+## `base_scale` at depth `y`, rounded to a whole scale: a fractional one draws some art
+## pixels a screen pixel wider than others.
+static func pixel_scale(base_scale: float, y: float) -> float:
+	return maxf(1.0, roundf(base_scale * depth_scale_factor(y)))
+
+
 ## Leg durations by length, so speed is constant and a chaser's gap steady.
 static func segment_durations(points: PackedVector2Array, total_seconds: float) -> PackedFloat32Array:
 	var lengths := PackedFloat32Array()
