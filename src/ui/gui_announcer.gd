@@ -149,7 +149,7 @@ func _queue_unlock(pending: Array[Array], icon: Texture2D, title: String) -> voi
 func _customer_portrait(customer: CustomerData) -> Texture2D:
 	if customer == null or customer.sprite_frames == null or not customer.sprite_frames.has_animation(CUSTOMER_PORTRAIT_ANIMATION):
 		return FALLBACK_CUSTOMER_ICON
-	return CharacterBust.of(customer.sprite_frames.get_frame_texture(CUSTOMER_PORTRAIT_ANIMATION, 0))
+	return CharacterBust.of(CustomerRecolor.portrait(customer, CUSTOMER_PORTRAIT_ANIMATION))
 
 
 func _flush_unlocks() -> void:

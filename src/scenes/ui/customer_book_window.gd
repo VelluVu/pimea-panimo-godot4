@@ -246,8 +246,7 @@ func _make_portrait(customer : CustomerData, met : bool) -> TextureRect:
 	portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	portrait.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	if customer.sprite_frames != null and customer.sprite_frames.has_animation(PORTRAIT_ANIMATION):
-		portrait.texture = customer.sprite_frames.get_frame_texture(PORTRAIT_ANIMATION, 0)
+	portrait.texture = CustomerRecolor.portrait(customer, PORTRAIT_ANIMATION)
 	if not met:
 		portrait.modulate = UNMET_PORTRAIT_COLOR
 	return portrait
