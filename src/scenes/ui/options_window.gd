@@ -24,6 +24,9 @@ const FOCUS_PAUSE_LABEL_TEXT : String = "Tauko taustalla"
 const FOCUS_PAUSE_TOOLTIP : String = "Peli pysähtyy, kun siirryt toiseen ikkunaan tai välilehteen."
 ## Matches the label width of the rows built in the scene.
 const ROW_LABEL_WIDTH : float = 120.0
+## Every settings row is as tall as the tallest control (the language dropdown), so rows
+## with and without a toggle sit evenly apart.
+const ROW_HEIGHT : float = 18.0
 
 ## False on the instance inside the main menu itself: there is nothing to return to.
 @export var show_main_menu_button : bool = true
@@ -60,6 +63,7 @@ func _ready() -> void:
 	_build_voices_row()
 	_build_display_rows()
 	_build_language_row()
+	_even_out_rows()
 	for i : int in TAB_TITLES.size():
 		tab_container.set_tab_title(i, TAB_TITLES[i])
 
@@ -121,6 +125,13 @@ func _add_row(tab : Control, label_text : String, tooltip : String, controls : A
 		control.tooltip_text = tooltip
 		row.add_child(control)
 	tab.add_child(row)
+
+
+func _even_out_rows() -> void:
+	for tab : Control in [sound_tab, display_tab]:
+		for row : Node in tab.get_children():
+			if row is HBoxContainer:
+				(row as HBoxContainer).custom_minimum_size.y = ROW_HEIGHT
 
 
 func _build_language_row() -> void:

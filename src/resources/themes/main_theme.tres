@@ -12,6 +12,10 @@
 [ext_resource type="Texture2D" uid="uid://c61jpe6s5sini" path="res://assets/textures/ui/slider_fill.png" id="ui_slider_fill"]
 [ext_resource type="Texture2D" uid="uid://do7i8r0dgf1bd" path="res://assets/textures/ui/slider_fill_hover.png" id="ui_slider_fill_hover"]
 [ext_resource type="Texture2D" uid="uid://c6py3m2df4jmj" path="res://assets/textures/ui/slider_track.png" id="ui_slider_track"]
+[ext_resource type="Texture2D" uid="uid://dcggq4h2mlfvi" path="res://assets/textures/ui/toggle_on.png" id="ui_toggle_on"]
+[ext_resource type="Texture2D" uid="uid://c2oppb0jbql5n" path="res://assets/textures/ui/toggle_off.png" id="ui_toggle_off"]
+[ext_resource type="Texture2D" uid="uid://dp8c0frx0dhax" path="res://assets/textures/ui/slider_grabber.png" id="ui_slider_grabber"]
+[ext_resource type="Texture2D" uid="uid://dfoilmveesevy" path="res://assets/textures/ui/slider_grabber_hover.png" id="ui_slider_grabber_hover"]
 
 [sub_resource type="StyleBoxTexture" id="btn_disabled"]
 content_margin_left = 4.0
@@ -92,6 +96,35 @@ texture_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxTexture" id="slider_track"]
 texture = ExtResource("ui_slider_track")
+texture_margin_left = 2.0
+texture_margin_top = 2.0
+texture_margin_right = 2.0
+texture_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxEmpty" id="check_flat"]
+
+[sub_resource type="StyleBoxTexture" id="scroll_track"]
+content_margin_left = 1.0
+content_margin_right = 1.0
+texture = ExtResource("ui_slider_track")
+texture_margin_left = 2.0
+texture_margin_top = 2.0
+texture_margin_right = 2.0
+texture_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxTexture" id="scroll_grabber"]
+content_margin_left = 1.0
+content_margin_right = 1.0
+texture = ExtResource("ui_slider_fill")
+texture_margin_left = 2.0
+texture_margin_top = 2.0
+texture_margin_right = 2.0
+texture_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxTexture" id="scroll_grabber_hover"]
+content_margin_left = 1.0
+content_margin_right = 1.0
+texture = ExtResource("ui_slider_fill_hover")
 texture_margin_left = 2.0
 texture_margin_top = 2.0
 texture_margin_right = 2.0
@@ -209,6 +242,18 @@ Button/styles/hover = SubResource("btn_hover")
 Button/styles/hover_pressed = SubResource("StyleBoxTexture_w30kt")
 Button/styles/normal = SubResource("btn_normal")
 Button/styles/pressed = SubResource("btn_pressed")
+CheckButton/icons/checked = ExtResource("ui_toggle_on")
+CheckButton/icons/checked_disabled = ExtResource("ui_toggle_on")
+CheckButton/icons/unchecked = ExtResource("ui_toggle_off")
+CheckButton/icons/unchecked_disabled = ExtResource("ui_toggle_off")
+CheckButton/styles/disabled = SubResource("check_flat")
+CheckButton/styles/hover = SubResource("check_flat")
+CheckButton/styles/hover_pressed = SubResource("check_flat")
+CheckButton/styles/normal = SubResource("check_flat")
+CheckButton/styles/pressed = SubResource("check_flat")
+HSlider/icons/grabber = ExtResource("ui_slider_grabber")
+HSlider/icons/grabber_disabled = ExtResource("ui_slider_grabber")
+HSlider/icons/grabber_highlight = ExtResource("ui_slider_grabber_hover")
 HSlider/styles/grabber_area = SubResource("slider_fill")
 HSlider/styles/grabber_area_highlight = SubResource("slider_fill_hover")
 HSlider/styles/slider = SubResource("slider_track")
@@ -254,3 +299,8 @@ TabContainer/styles/panel = SubResource("StyleBoxTexture_4fdfv")
 TabContainer/styles/tab_hovered = SubResource("StyleBoxTexture_rjiow")
 TabContainer/styles/tab_selected = SubResource("StyleBoxTexture_evdgs")
 TabContainer/styles/tab_unselected = SubResource("StyleBoxTexture_hrld3")
+VScrollBar/styles/grabber = SubResource("scroll_grabber")
+VScrollBar/styles/grabber_highlight = SubResource("scroll_grabber_hover")
+VScrollBar/styles/grabber_pressed = SubResource("scroll_grabber_hover")
+VScrollBar/styles/scroll = SubResource("scroll_track")
+VScrollBar/styles/scroll_focus = SubResource("scroll_track")
