@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_unlock")
 perk_name = "Vahva brändi"
-description = "Panimosi brändi tunnetaan jo laajalti, ja asiakkaat ovat valmiita maksamaan siitä. Tiskimyynnin hinnat ovat pysyvästi korkeampia."
+description = "Panimosi brändi tunnetaan jo laajalti, ja asiakkaat ovat valmiita maksamaan siitä: tiskimyynnin hinnat nousevat {counter_price_multiplier} joka tasolla."
 icon_placeholder = "🏆"
 counter_price_multiplier = 1.025
 stacks_additively = true

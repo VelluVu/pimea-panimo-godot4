@@ -5,6 +5,6 @@
 [resource]
 script = ExtResource("1_tukku")
 perk_name = "Jussin tukkuhinnat"
-description = "Naapuripanimon Jussi kertoi, mistä hän ostaa raaka-aineensa: kaupan hinnat ovat hieman halvempia."
+description = "Naapuripanimon Jussi kertoi, mistä hän ostaa raaka-aineensa: kaupan hinnat halpenevat {ingredient_price_multiplier}."
 icon_placeholder = "🌾"
 ingredient_price_multiplier = 0.97

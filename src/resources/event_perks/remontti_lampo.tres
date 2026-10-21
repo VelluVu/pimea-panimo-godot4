@@ -5,6 +5,6 @@
 [resource]
 script = ExtResource("1_reno")
 perk_name = "Tasainen lämpö"
-description = "Kellarin lämpö pysyy nyt tasaisena: oluet kypsyvät hieman nopeammin."
+description = "Kellarin lämpö pysyy nyt tasaisena: kypsymisaika lyhenee {peak_speed_multiplier}."
 icon_placeholder = "🌡️"
 peak_speed_multiplier = 0.95

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_unlock")
 perk_name = "Perinnetaito"
-description = "Aiempien panimoyritysten opit istuvat käsissä pysyvästi. Jokainen erä saa pienen laatuedun, joka periytyy jokaiseen tulevaan kauteen."
+description = "Aiempien panimoyritysten opit istuvat käsissä pysyvästi: jokaisen erän laatu paranee {quality_bonus} joka tasolla."
 icon_placeholder = "📖"
 quality_bonus = 0.01
 stacks_additively = true

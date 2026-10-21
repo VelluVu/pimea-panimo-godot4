@@ -5,7 +5,8 @@ extends Resource
 ## stat defaults to neutral, so any number combine (PerkStats lists them).
 
 @export var perk_name: String = ""
-## May name a stat as {field}, e.g. {tip_income_multiplier}; get_description() fills in its value.
+## May name a stat as {field}, e.g. {tip_income_multiplier}; get_description() fills in its value
+## (per level for MetaUnlockData and CellarUpgradeData, whose fields are per level).
 @export var description: String = ""
 
 ## Placeholder until real art exists.

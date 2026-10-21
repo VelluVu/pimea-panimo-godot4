@@ -5,6 +5,6 @@
 [resource]
 script = ExtResource("1_reno")
 perk_name = "Salalokero"
-description = "Hyllyn taakse ilmestyi salalokero. Köh. Ratsiassa osa annoksista jää löytymättä."
+description = "Hyllyn taakse ilmestyi salalokero. Köh. Ratsiassa {raid_saved_bottle_share} annoksista jää löytymättä."
 icon_placeholder = "🚪"
 raid_saved_bottle_share = 0.05

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_unlock")
 perk_name = "Kanta-asiakkaat"
-description = "Tunnettu nimi tuo vakituisia kävijöitä yhä useammin. Uusia asiakkaita saapuu kellariin pysyvästi hieman tiheämmin, ja joskus kaverin kanssa."
+description = "Tunnettu nimi tuo vakituisia kävijöitä yhä useammin. Joka tasolla asiakkaiden saapumisväli lyhenee {spawn_interval_multiplier} ja mahdollisuus seuraan kasvaa {walk_in_company_chance}."
 icon_placeholder = "👥"
 spawn_interval_multiplier = 0.95
 walk_in_company_chance = 0.01

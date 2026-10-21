@@ -151,14 +151,14 @@ func test_description_fills_in_the_stat_values() -> void:
 	assert_eq(perk.get_description(), "Hinnat halpenevat ×10 %, laatu paranee 6 %.")
 
 
-## The card shows only the description, so it must name every stat the perk changes.
-func test_every_level_up_perk_names_exactly_its_stats_in_the_description() -> void:
-	const FOLDER : String = "res://src/resources/perks/"
-	for file : String in DirAccess.get_files_at(FOLDER):
-		if not file.ends_with(".tres"):
-			continue
-		var perk : RunPerk = load(FOLDER + file)
-		for entry : Dictionary in PerkStats.definitions():
-			var changed : bool = perk.get(entry.stat) != PerkStats.neutral_value(entry.kind)
-			assert_eq(perk.description.contains("{%s}" % entry.stat), changed, "%s: %s" % [file, entry.stat])
-		assert_false(perk.get_description().contains("{"), file + " has an unknown {stat}")
+## The numbers live in the descriptions, so each must name every stat its perk changes.
+func test_every_perk_names_exactly_its_stats_in_the_description() -> void:
+	for folder : String in ["res://src/resources/perks/", "res://src/resources/event_perks/", "res://src/resources/meta_unlocks/", "res://src/resources/cellar_upgrades/"]:
+		for file : String in DirAccess.get_files_at(folder):
+			if not file.ends_with(".tres"):
+				continue
+			var perk : RunPerk = load(folder + file)
+			for entry : Dictionary in PerkStats.definitions():
+				var changed : bool = perk.get(entry.stat) != PerkStats.neutral_value(entry.kind)
+				assert_eq(perk.description.contains("{%s}" % entry.stat), changed, "%s%s: %s" % [folder, file, entry.stat])
+			assert_false(perk.get_description().contains("{"), folder + file + " has an unknown {stat}")

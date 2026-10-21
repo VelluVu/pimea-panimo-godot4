@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_vinkit")
 perk_name = "Arvostelijan kellarivinkit"
-description = "Olutarvostelija Matti jakoi kellarointivinkkinsä: oluet kypsyvät nopeammin ja pysyvät hyvinä pidempään. Mitä parempi erä, sitä paremmat vinkit."
+description = "Olutarvostelija Matti jakoi kellarointivinkkinsä: kypsymisaika lyhenee {peak_speed_multiplier} ja oluet heikkenevät {decline_rate_multiplier} hitaammin. Mitä parempi erä, sitä paremmat vinkit."
 icon_placeholder = "🍷"
 tier = 1
 peak_speed_multiplier = 0.88

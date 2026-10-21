@@ -5,6 +5,6 @@
 [resource]
 script = ExtResource("1_course")
 perk_name = "Pikapalvelukurssi"
-description = "Keke opetti nopean palvelun salat: asiakkaita tulee hieman tiheämmin."
+description = "Keke opetti nopean palvelun salat: asiakkaiden saapumisväli lyhenee {spawn_interval_multiplier}."
 icon_placeholder = "⏱️"
 spawn_interval_multiplier = 0.95
