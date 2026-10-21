@@ -62,6 +62,11 @@ unique_name_in_owner = true
 layout_mode = 2
 toggle_mode = true
 
+[node name="ColumnsHolder" type="VBoxContainer" parent="MarginContainer/MainVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+
 [node name="CurrentRunVBox" type="VBoxContainer" parent="MarginContainer/MainVBox"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -74,11 +79,6 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.96862745, 0.4627451, 0.13333334, 1)
 
 [node name="CurrentRunHolder" type="VBoxContainer" parent="MarginContainer/MainVBox/CurrentRunVBox"]
-unique_name_in_owner = true
-layout_mode = 2
-mouse_filter = 2
-
-[node name="ColumnsHolder" type="VBoxContainer" parent="MarginContainer/MainVBox"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2

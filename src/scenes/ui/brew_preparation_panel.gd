@@ -12,7 +12,7 @@ const REJECT_TOAST_FLASH_COLOR : Color = Color(1.4, 0.6, 0.6, 1.0)
 const SAVE_TOAST_FLASH_SECONDS : float = 0.15
 const SAVE_TOAST_HOLD_SECONDS : float = 1.2
 const SAVE_TOAST_FADE_SECONDS : float = 0.4
-const NO_ACTIVE_RECIPE_TEXT : String = "resepti:"
+const NO_ACTIVE_RECIPE_TEXT : String = "Uusi resepti"
 const NO_FREE_KEG_TEXT : String = "Kaikissa tynnyreissä on olutta. Myy tai vie erä baariin, niin tynnyri vapautuu."
 
 ## Light blue on both XP popups (here and DialogWiring), apart from the gold money.

@@ -5570,8 +5570,8 @@ msgid "Tuntematon oluttyyli. Keitä se ensin selvittääksesi reseptin!"
 msgstr "Unknown beer style. Brew it first to work out the recipe!"
 
 #: src/scenes/ui/brew_preparation_panel.gd
-msgid "resepti:"
-msgstr "recipe:"
+msgid "Uusi resepti"
+msgstr "New recipe"
 
 #: src/scenes/ui/cellar_upgrades_window.gd
 msgid "Kellarin parannukset"
