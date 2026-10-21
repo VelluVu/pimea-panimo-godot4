@@ -23,6 +23,9 @@ func _ready() -> void:
 
 	confirm_button.pressed.connect(_on_confirm_button_pressed)
 	cancel_button.pressed.connect(_on_cancel_button_pressed)
+	# The day runs on behind this window. If it ends on its own, a question left open
+	# would close the next day the moment it starts.
+	TimeManager.day_changed.connect(hide.unbind(1))
 
 
 func _on_confirm_button_pressed() -> void:

@@ -6,7 +6,9 @@ const DAY_STRING : String = "Päivä: %s"
 
 ## Long enough to read a "+X €" popup before it fades.
 const POPUP_EFFECT_DURATION_SECONDS : float = 1.8
-const POPUP_OFFSET : Vector2 = Vector2(80, 0)
+## Gap after the label's text: a fixed offset put the popup inside long labels
+## ("Kellarin salaisuus") and against the next one after short ones.
+const POPUP_GAP : float = 4.0
 const POPUP_FLOAT_DISTANCE : float = 35.0
 
 ## Near the raid threshold the risk label turns red and pulses once on entry.
@@ -185,7 +187,7 @@ func _create_popup_effect(target_label: Label, amount: float, suffix: String, is
 	popup.modulate = Color.GREEN if good else Color.RED
 
 	target_label.add_child(popup)
-	popup.position = POPUP_OFFSET
+	popup.position = Vector2(target_label.size.x + POPUP_GAP, 0.0)
 
 	var tween := create_tween().set_parallel(true)
 	var target_color := popup.modulate
