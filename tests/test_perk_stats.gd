@@ -142,3 +142,19 @@ func test_scale_per_level_per_kind() -> void:
 	assert_true(is_equal_approx(PerkStatsScript.scale_per_level(PerkStatsScript.Kind.PERCENT_ADD, 0.02, 2), 0.04))
 	assert_eq(PerkStatsScript.scale_per_level(PerkStatsScript.Kind.COUNT, 1.0, 3), 3)
 
+
+
+func test_total_lines_show_the_combined_change_as_plain_percent() -> void:
+	var tips := RunPerk.new()
+	tips.tip_income_multiplier = 1.15
+	var prices := RunPerk.new()
+	prices.ingredient_price_multiplier = 0.9
+	var lines : PackedStringArray = _stats([tips, tips, prices]).total_lines()
+	assert_eq(lines, PackedStringArray([
+		StringContainer.PERK_TIP_STAT_STRING % "32 %",
+		StringContainer.PERK_INGREDIENT_PRICE_STAT_STRING % "10 %",
+	]))
+
+
+func test_total_lines_are_empty_without_perks() -> void:
+	assert_true(_stats([]).total_lines().is_empty())

@@ -145,6 +145,18 @@ func chance(stat : StringName) -> float:
 	return clampf(total(stat), 0.0, 1.0)
 
 
+## One line per stat the perks change, with the combined change: "Tipit kasvavat 32 %".
+## Plain percent, since the total is the final change, however the perks stack.
+func total_lines() -> PackedStringArray:
+	var lines := PackedStringArray()
+	for entry : Dictionary in definitions():
+		var kind : Kind = entry.kind
+		var value : float = multiplier(entry.stat) if kind == Kind.MULTIPLIER else total(entry.stat)
+		if display_number(kind, value) != 0:
+			lines.append(tr(entry.text) % value_text(kind, value, true))
+	return lines
+
+
 ## Base threshold scaled by the perks' raid_threshold_multiplier.
 func raid_threshold(base_threshold : int) -> int:
 	return roundi(base_threshold * multiplier(RAID_THRESHOLD))

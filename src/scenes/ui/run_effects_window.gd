@@ -75,18 +75,8 @@ func _add_perks_section(brewery : Brewery) -> void:
 		return
 	_add_spacer()
 	rows_vbox.add_child(_make_header(StringContainer.RUN_EFFECTS_TOTALS_HEADER))
-
-	var quality_bonus := brewery.stats.total(PerkStats.QUALITY_BONUS)
-	if quality_bonus != 0.0:
-		rows_vbox.add_child(_make_label(tr(StringContainer.RUN_EFFECTS_TOTALS_QUALITY) % roundi(quality_bonus * 100)))
-
-	var reputation_multiplier := brewery.stats.multiplier(PerkStats.REPUTATION_GAIN)
-	if reputation_multiplier != 1.0:
-		rows_vbox.add_child(_make_label(tr(StringContainer.RUN_EFFECTS_TOTALS_REPUTATION) % roundi((reputation_multiplier - 1.0) * 100)))
-
-	var tip_multiplier := brewery.stats.multiplier(PerkStats.TIP_INCOME)
-	if tip_multiplier != 1.0:
-		rows_vbox.add_child(_make_label(tr(StringContainer.RUN_EFFECTS_TOTALS_TIP) % roundi((tip_multiplier - 1.0) * 100)))
+	for line : String in brewery.stats.total_lines():
+		rows_vbox.add_child(_make_label(line))
 
 
 func _add_perk_rows(perk_rows : Array[Dictionary]) -> void:

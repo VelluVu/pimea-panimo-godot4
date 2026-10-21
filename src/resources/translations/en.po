@@ -176,10 +176,6 @@ msgid "Laatu paranee %s"
 msgstr "Quality improves by %s"
 
 #: src/autoload/string_container.gd
-msgid "Laatubonus jokaiseen erään: +%d %%"
-msgstr "Quality bonus on every batch: +%d %%"
-
-#: src/autoload/string_container.gd
 msgid "Legendaarinen"
 msgstr "Legendary"
 
@@ -206,10 +202,6 @@ msgstr "Double tip chance grows by %s"
 #: src/autoload/string_container.gd
 msgid "Maineen kertymä kasvaa %s"
 msgstr "Reputation gain grows by %s"
-
-#: src/autoload/string_container.gd
-msgid "Maineen kertymä: +%d %%"
-msgstr "Reputation gain: +%d %%"
 
 #: src/autoload/string_container.gd
 msgid "Maitostout"
@@ -348,10 +340,6 @@ msgstr "Common"
 #: src/autoload/string_container.gd
 msgid "Tipit kasvavat %s"
 msgstr "Tips grow by %s"
-
-#: src/autoload/string_container.gd
-msgid "Tipit: +%d %%"
-msgstr "Tips: +%d %%"
 
 #: src/autoload/string_container.gd
 msgid "Tippimahdollisuus kasvaa %s"
