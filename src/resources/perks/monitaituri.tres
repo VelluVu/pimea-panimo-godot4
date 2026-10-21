@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_monitaituri")
 perk_name = "Monitaituri"
-description = "Olet oppinut vähän kaikesta, joten jokainen osa-alue paranee hieman. Ei yksittäistä supervoimaa, mutta tasainen parannus joka suuntaan."
+description = "Olet oppinut vähän kaikesta: laatu paranee {quality_bonus}, maine karttuu {reputation_gain_multiplier}, tipit kasvavat {tip_income_multiplier}, jakelutulot {distribution_income_multiplier} ja ratsiakynnys nousee {raid_threshold_multiplier}."
 icon_placeholder = "🌟"
 tier = 2
 quality_bonus = 0.04

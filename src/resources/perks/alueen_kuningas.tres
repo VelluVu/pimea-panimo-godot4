@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_alueen")
 perk_name = "Alueen kuningas"
-description = "Jokainen baari kaupungissa haluaa tuotteitasi. Baarivientien tulot ovat merkittävästi paremmat."
+description = "Jokainen baari kaupungissa haluaa tuotteitasi. Baarivientien tulot kasvavat {distribution_income_multiplier}."
 icon_placeholder = "👑"
 tier = 2
 distribution_income_multiplier = 1.28

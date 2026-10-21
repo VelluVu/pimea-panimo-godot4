@@ -141,3 +141,24 @@ func test_strength_copy_moves_stats_part_way_from_neutral() -> void:
 	assert_eq(half.extra_counter_slots, 1, "counts round down")
 	assert_eq(half.perk_name, "Vinkit")
 	assert_true(is_equal_approx(perk.peak_speed_multiplier, 0.8), "the template is untouched")
+
+
+func test_description_fills_in_the_stat_values() -> void:
+	var perk := RunPerk.new()
+	perk.description = "Hinnat halpenevat {ingredient_price_multiplier}, laatu paranee {quality_bonus}."
+	perk.ingredient_price_multiplier = 0.9
+	perk.quality_bonus = 0.06
+	assert_eq(perk.get_description(), "Hinnat halpenevat ×10 %, laatu paranee 6 %.")
+
+
+## The card shows only the description, so it must name every stat the perk changes.
+func test_every_level_up_perk_names_exactly_its_stats_in_the_description() -> void:
+	const FOLDER : String = "res://src/resources/perks/"
+	for file : String in DirAccess.get_files_at(FOLDER):
+		if not file.ends_with(".tres"):
+			continue
+		var perk : RunPerk = load(FOLDER + file)
+		for entry : Dictionary in PerkStats.definitions():
+			var changed : bool = perk.get(entry.stat) != PerkStats.neutral_value(entry.kind)
+			assert_eq(perk.description.contains("{%s}" % entry.stat), changed, "%s: %s" % [file, entry.stat])
+		assert_false(perk.get_description().contains("{"), file + " has an unknown {stat}")

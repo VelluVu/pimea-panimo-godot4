@@ -5,6 +5,6 @@
 [resource]
 script = ExtResource("1_kypsa_kellari")
 perk_name = "Kypsä kellari"
-description = "Kellarin lämpötila on juuri oikea: oluet kypsyvät hieman nopeammin."
+description = "Kellarin lämpötila on juuri oikea: kypsymisaika lyhenee {peak_speed_multiplier}."
 icon_placeholder = "⏳"
 peak_speed_multiplier = 0.9

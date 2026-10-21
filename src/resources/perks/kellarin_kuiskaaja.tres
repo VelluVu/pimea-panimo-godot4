@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_kellarin")
 perk_name = "Kellarin kuiskaaja"
-description = "Kuulet, milloin käyminen on juuri sopivassa vaiheessa: laatu paranee huomattavasti."
+description = "Kuulet, milloin käyminen on juuri sopivassa vaiheessa: laatu paranee {quality_bonus}."
 icon_placeholder = "🕯️"
 tier = 2
 quality_bonus = 0.25

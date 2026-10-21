@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_perk")
 perk_name = "Kolmen kopla"
-description = "Kun asiakas tuo seuraa, mukana on aina vielä yksi kaveri lisää."
+description = "Asiakkaat tuovat seuraa {walk_in_company_chance} useammin, ja seurueessa on aina {walk_in_company_bonus} kaveri lisää."
 icon_placeholder = "🎳"
 tier = 2
 walk_in_company_chance = 0.04

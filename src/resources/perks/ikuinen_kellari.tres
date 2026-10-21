@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_ikuinen_kellari")
 perk_name = "Ikuinen kellari"
-description = "Kellarisi on kuin aikakapseli: oluet kypsyvät nopeasti eivätkä juuri vanhene."
+description = "Kellarisi on kuin aikakapseli: kypsymisaika lyhenee {peak_speed_multiplier} ja oluet heikkenevät {decline_rate_multiplier} hitaammin."
 icon_placeholder = "🏺"
 tier = 2
 peak_speed_multiplier = 0.8

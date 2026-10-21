@@ -5,6 +5,6 @@
 [resource]
 script = ExtResource("1_tiivis_pullotus")
 perk_name = "Tuttu keitin"
-description = "Tunnet keittimesi paremmin, ja jokaisesta erästä riittää hieman enemmän annoksia."
+description = "Tunnet keittimesi paremmin, ja jokaisesta erästä riittää {brew_yield_multiplier} enemmän annoksia."
 icon_placeholder = "🔧"
 brew_yield_multiplier = 1.04
