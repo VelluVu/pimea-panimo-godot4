@@ -24,6 +24,8 @@ const THROW_DEPTH_SCATTER: Vector2 = Vector2(5.0, 40.0)
 const THROW_ARC_HEIGHT: float = 28.0
 const THROW_SECONDS: float = 0.75
 const THROW_SPIN: float = TAU * 2.0
+## The spin turns in quarter steps: any other angle bends the glass's pixels.
+const SPIN_STEP: float = TAU / 4.0
 const GLASS_SCALE: Vector2 = Vector2(3.0, 3.0)
 ## Above the y-sorted world: a glass in the air sorts by its height and would slip
 ## behind the counter.
@@ -92,8 +94,8 @@ static func _throw_glass(actor: Node2D, texture: Texture2D, direction: float) ->
 	actor.get_parent().add_child(glass)
 
 	var flight := glass.create_tween().set_parallel()
-	flight.tween_method(func(t: float) -> void: glass.position = arc_point(from, to, THROW_ARC_HEIGHT, t), 0.0, 1.0, THROW_SECONDS)
-	flight.tween_property(glass, "rotation", THROW_SPIN * direction, THROW_SECONDS)
+	flight.tween_method(func(t: float) -> void: glass.position = arc_point(from, to, THROW_ARC_HEIGHT, t).round(), 0.0, 1.0, THROW_SECONDS)
+	flight.tween_method(func(angle: float) -> void: glass.rotation = snappedf(angle, SPIN_STEP), 0.0, THROW_SPIN * direction, THROW_SECONDS)
 	flight.chain().tween_callback(_shatter.bind(glass))
 
 

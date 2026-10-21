@@ -12,6 +12,8 @@ const POPUP_FLOAT_DISTANCE : float = 35.0
 ## Near the raid threshold the risk label turns red and pulses once on entry.
 const RISK_WARNING_COLOR : Color = Color(0.75686276, 0.3137255, 0.22745098, 1) # matches DailyGoalsPanel.GOAL_FAILING_COLOR
 const RISK_WARNING_PULSE_SECONDS : float = 0.3
+## Brightness, not scale: the pixel font blurs off whole sizes.
+const RISK_WARNING_FLASH_COLOR : Color = Color(1.8, 1.8, 1.8)
 
 
 const LEVEL_FORMAT : String = "Taso: %d"
@@ -168,10 +170,9 @@ func _risk_tooltip(brewery : Brewery, threshold : int) -> String:
 
 ## One-shot, unlike DailyGoalsPanel's looping near-miss pulse: it marks the crossing.
 func _pulse_risk_warning() -> void:
-	risk_label.pivot_offset = risk_label.size / 2.0
 	var tween := create_tween()
-	tween.tween_property(risk_label, "scale", Vector2(1.3, 1.3), RISK_WARNING_PULSE_SECONDS).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-	tween.tween_property(risk_label, "scale", Vector2.ONE, RISK_WARNING_PULSE_SECONDS).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	tween.tween_property(risk_label, "modulate", RISK_WARNING_FLASH_COLOR, RISK_WARNING_PULSE_SECONDS).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	tween.tween_property(risk_label, "modulate", Color.WHITE, RISK_WARNING_PULSE_SECONDS).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 
 
 ## `decimals` is 0 for reputation and risk, 1 for money (tracked to one decimal).

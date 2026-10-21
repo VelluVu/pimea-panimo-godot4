@@ -3,7 +3,7 @@ extends TextureRect
 
 ## The day's clock face; its tooltip keeps updating while open.
 
-@onready var clock_hand : Control = $ClockHandTextureRect
+@onready var clock_hand : PixelClockHand = $ClockHand
 
 var tooltip_source : Callable
 
@@ -18,9 +18,5 @@ func _make_custom_tooltip(_for_text : String) -> Object:
 
 
 func _process(_delta: float) -> void:
-	if clock_hand == null:
-		return
-		
-	var progress: float = TimeManager.get_day_progress()
-	
-	clock_hand.rotation = progress * 2.0 * PI
+	if clock_hand != null:
+		clock_hand.set_progress(TimeManager.get_day_progress())
