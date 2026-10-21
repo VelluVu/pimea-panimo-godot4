@@ -8,8 +8,9 @@ extends RefCounted
 const HAIR_SATURATION_RANGE : Vector2 = Vector2(0.55, 0.9)
 const CLOTHES_SATURATION_RANGE : Vector2 = Vector2(0.55, 0.9)
 const SHOES_SATURATION_RANGE : Vector2 = Vector2(0.4, 0.75)
-const SKIN_HUE_RANGE : Vector2 = Vector2(0.03, 0.09)
-const SKIN_SATURATION_RANGE : Vector2 = Vector2(0.35, 0.6)
+## The recolour keeps the painted brightness, so saturation above ~0.45 turns light skin orange.
+const SKIN_HUE_RANGE : Vector2 = Vector2(0.055, 0.085)
+const SKIN_SATURATION_RANGE : Vector2 = Vector2(0.2, 0.42)
 const HUE_TOLERANCE : float = 0.05
 const SATURATION_TOLERANCE : float = 0.35
 const FRAME_HEIGHT : int = 32
