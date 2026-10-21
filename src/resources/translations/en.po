@@ -6025,6 +6025,14 @@ msgid "Kieli"
 msgstr "Language"
 
 #: src/scenes/ui/options_window.gd
+msgid ""
+"Kuva suurenee vain kokonaisin askelin, joten pikselit pysyvät "
+"tasakokoisina. Reunoille voi jäädä mustat palkit."
+msgstr ""
+"The picture scales only in whole steps, so every pixel stays the same size. "
+"Black bars may show at the edges."
+
+#: src/scenes/ui/options_window.gd
 msgid "Näyttö"
 msgstr "Display"
 
@@ -6033,8 +6041,36 @@ msgid "Ohjaus"
 msgstr "Controls"
 
 #: src/scenes/ui/options_window.gd
+msgid "Peli pysähtyy, kun siirryt toiseen ikkunaan tai välilehteen."
+msgstr "The game pauses when you switch to another window or tab."
+
+#: src/scenes/ui/options_window.gd
+msgid "Pois"
+msgstr "Off"
+
+#: src/scenes/ui/options_window.gd
+msgid "Puheäänet"
+msgstr "Voices"
+
+#: src/scenes/ui/options_window.gd
+msgid "Ruudun tärinä"
+msgstr "Screen shake"
+
+#: src/scenes/ui/options_window.gd
 msgid "Suomi"
 msgstr "Suomi"
+
+#: src/scenes/ui/options_window.gd
+msgid "Tappelut ja särkyvät lasit tärisyttävät ruutua."
+msgstr "Bar fights and breaking glasses shake the screen."
+
+#: src/scenes/ui/options_window.gd
+msgid "Tauko taustalla"
+msgstr "Pause in background"
+
+#: src/scenes/ui/options_window.gd
+msgid "Terävät pikselit"
+msgstr "Sharp pixels"
 
 #: src/scenes/ui/options_window.gd
 msgid "Tietoja"
@@ -6691,10 +6727,6 @@ msgstr "You own the machine; it stays for every season."
 #: src/ui/cellar_upgrade_text.gd
 msgid "Osta %d €"
 msgstr "Buy %d €"
-
-#: src/ui/cellar_upgrade_text.gd
-msgid "Pois"
-msgstr "Off"
 
 #: src/ui/cellar_upgrade_text.gd
 msgid "Päällä"

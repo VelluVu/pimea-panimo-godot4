@@ -92,3 +92,36 @@ func test_language_survives_a_save_and_load() -> void:
 	reloaded.load_settings()
 	assert_eq(reloaded.language, "en")
 	_cleanup()
+
+
+## Set directly: set_pixel_perfect() would change the editor window's own stretch.
+func test_pixel_perfect_survives_a_save_and_load() -> void:
+	var store := _make_store()
+	store.pixel_perfect = true
+	store.save_settings()
+
+	var reloaded := _make_store()
+	reloaded.load_settings()
+	assert_true(reloaded.pixel_perfect)
+	_cleanup()
+
+
+func test_option_falls_back_to_its_default_until_set() -> void:
+	_cleanup()
+	var store := _make_store()
+	store.option_defaults = {"shake": true}
+	store.load_settings()
+	assert_true(store.get_option("shake"))
+	assert_eq(store.get_option("shake", false), false, "an explicit default wins over option_defaults")
+	store.set_option("shake", false)
+	assert_false(store.get_option("shake"))
+	_cleanup()
+
+
+func test_set_option_announces_the_change() -> void:
+	var store := _make_store()
+	var seen: Array = []
+	store.option_changed.connect(func(key: String, value: Variant) -> void: seen.append([key, value]))
+	store.set_option("shake", false)
+	assert_eq(seen, [["shake", false]])
+	_cleanup()
