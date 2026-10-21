@@ -10,9 +10,14 @@ signal paddle_moved(before : PackedVector2Array, after : PackedVector2Array, bla
 signal paddle_knocked(speed : float)
 
 const ART : BrewDayArt = preload("res://src/resources/brew_day/brew_day_art.tres")
-## The mouth's bounding box, the transparent hole in the sprite; the liquid is the ellipse
-## inside it.
-const LIQUID_RECT : Rect2 = Rect2(Vector2(24, 44), MashSession.LIQUID_SIZE)
+## How far the wort sits below the rim: two art pixels, so a strip of the inner wall shows
+## at the back of the mouth and the front of the liquid hides under the front rim.
+const LIQUID_DROP : float = 2.0 * BrewDayArt.KETTLE_SCALE
+## The liquid's ellipse: the mouth's bounding box (the transparent hole in the sprite at
+## (24, 44)) moved down by LIQUID_DROP.
+const LIQUID_RECT : Rect2 = Rect2(Vector2(24, 44 + LIQUID_DROP), MashSession.LIQUID_SIZE)
+## The darkest metal of the kettle sprite, for the inner wall above the wort.
+const INNER_WALL_COLOR : Color = Color("#4c4f57")
 ## The liquid reaches this far under the kettle's rim, so no gap shows at its edge.
 const LIQUID_UNDER_RIM : float = 4.0
 ## The blade keeps a little inside the mouth.
@@ -85,12 +90,20 @@ var _flashes : Dictionary = {}
 var _bursts : Array = []
 var _pours : SackPours = SackPours.new()
 var _surface : WortSurface = WortSurface.new(PADDLE_REST)
+## The mouth's art pixels from the kettle sprite (KettleMouth): the rim's inner edge, lit
+## by the glow, and the inner wall showing above the wort.
+var _rim_cells : Array[Vector2i] = []
+var _wall_cells : Array[Vector2i] = []
 var _last_entry : Vector2 = PADDLE_REST
 var _entry_velocity : Vector2 = Vector2.ZERO
 
 
 func _ready() -> void:
 	custom_minimum_size = ART.kettle.get_size() * BrewDayArt.KETTLE_SCALE
+	var art : Image = ART.kettle.get_image()
+	var hole : Array[Vector2i] = KettleMouth.hole_cells(art)
+	_rim_cells = KettleMouth.rim_cells(art, hole)
+	_wall_cells = KettleMouth.wall_cells(hole, Rect2(LIQUID_RECT.position / BrewDayArt.KETTLE_SCALE, LIQUID_RECT.size / BrewDayArt.KETTLE_SCALE))
 	size = custom_minimum_size
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	_paddle.knocked.connect(paddle_knocked.emit)
@@ -245,9 +258,10 @@ func _draw() -> void:
 		var foam_size : Vector2 = (LIQUID_RECT.size * clampf(foam, 0.0, 1.0)).round()
 		KettleShapes.fill_ellipse(self, Rect2(LIQUID_RECT.get_center() - foam_size / 2.0, foam_size), FOAM_COLOR)
 	_surface.draw_rings(self)
+	_draw_art_cells(_wall_cells, INNER_WALL_COLOR)
 	draw_texture_rect(ART.kettle, Rect2(Vector2.ZERO, custom_minimum_size), false)
 	if glow_color.a > 0.0:
-		KettleShapes.outline_ellipse(self, LIQUID_RECT.grow(4), glow_color, 2.0)
+		_draw_art_cells(_rim_cells, glow_color)
 	_draw_paddle()
 	_pours.draw(self, _clock)
 	_surface.draw_sparkles(self)
@@ -337,3 +351,10 @@ func _draw_bubbles() -> void:
 		rng.seed = hash(Vector2i(i, floori(frame / 3.0)))
 		var at : Vector2 = Vector2.from_angle(rng.randf() * TAU) * sqrt(rng.randf()) * 0.9
 		draw_rect(Rect2((LIQUID_RECT.get_center() + at * LIQUID_RECT.size / 2.0).round(), Vector2(2, 2)), BUBBLE_COLOR)
+
+
+## Whole art pixels of the 4x kettle, so they step like its art.
+func _draw_art_cells(cells : Array[Vector2i], color : Color) -> void:
+	var size := Vector2.ONE * BrewDayArt.KETTLE_SCALE
+	for cell : Vector2i in cells:
+		draw_rect(Rect2(Vector2(cell) * BrewDayArt.KETTLE_SCALE, size), color)
