@@ -5,21 +5,27 @@ shader_type canvas_item;
 // hue/saturation while keeping the pixel's own value (so painted shading/highlights
 // are preserved). *_base_color must match the actual color painted in the sprite
 // for that region; *_target_color is set per customer instance for variety.
+// A region with *_recolor off still claims its pixels, so they never fall
+// through to a later region, but keeps them exactly as painted.
 
 group_uniforms skin;
 uniform vec4 skin_base_color : source_color = vec4(0.918, 0.831, 0.667, 1.0);
+uniform bool skin_recolor = true;
 uniform vec4 skin_target_color : source_color = vec4(0.918, 0.831, 0.667, 1.0);
 
 group_uniforms hair;
 uniform vec4 hair_base_color : source_color = vec4(0.722, 0.435, 0.314, 1.0);
+uniform bool hair_recolor = true;
 uniform vec4 hair_target_color : source_color = vec4(0.722, 0.435, 0.314, 1.0);
 
 group_uniforms clothes;
 uniform vec4 clothes_base_color : source_color = vec4(0.0, 0.6, 0.859, 1.0);
+uniform bool clothes_recolor = true;
 uniform vec4 clothes_target_color : source_color = vec4(0.0, 0.6, 0.859, 1.0);
 
 group_uniforms shoes;
 uniform vec4 shoes_base_color : source_color = vec4(0.451, 0.243, 0.224, 1.0);
+uniform bool shoes_recolor = true;
 uniform vec4 shoes_target_color : source_color = vec4(0.451, 0.243, 0.224, 1.0);
 
 group_uniforms match_tuning;
@@ -55,14 +61,13 @@ float hue_distance(float a, float b) {
 	return min(d, 1.0 - d);
 }
 
-vec3 apply_region_recolor(vec3 color, vec3 base_hsv, vec3 target_hsv, float hue_tol, float sat_tol, inout float consumed_mask) {
-	vec3 pixel_hsv = rgb2hsv(color);
+vec3 apply_region_recolor(vec3 color, vec3 pixel_hsv, vec3 base_hsv, vec3 target_hsv, bool recolor, float hue_tol, float sat_tol, inout float consumed_mask) {
 	float hd = hue_distance(pixel_hsv.x, base_hsv.x);
 	float sd = abs(pixel_hsv.y - base_hsv.y);
 	float matched = (1.0 - step(hue_tol, hd)) * (1.0 - step(sat_tol, sd)) * (1.0 - consumed_mask);
 	vec3 recolored = hsv2rgb(vec3(target_hsv.x, target_hsv.y, pixel_hsv.z));
 	consumed_mask = max(consumed_mask, matched);
-	return mix(color, recolored, matched);
+	return mix(color, recolored, matched * float(recolor));
 }
 
 void vertex() {
@@ -79,11 +84,13 @@ void vertex() {
 void fragment() {
 	vec4 tex_color = texture(TEXTURE, UV);
 	vec3 result = tex_color.rgb;
+	// Claimed pixels are skipped by later regions, so the original HSV serves them all.
+	vec3 pixel_hsv = rgb2hsv(tex_color.rgb);
 	float consumed = 0.0;
-	result = apply_region_recolor(result, skin_base_hsv, skin_target_hsv, hue_tolerance, saturation_tolerance, consumed);
-	result = apply_region_recolor(result, hair_base_hsv, hair_target_hsv, hue_tolerance, saturation_tolerance, consumed);
-	result = apply_region_recolor(result, clothes_base_hsv, clothes_target_hsv, hue_tolerance, saturation_tolerance, consumed);
-	result = apply_region_recolor(result, shoes_base_hsv, shoes_target_hsv, hue_tolerance, saturation_tolerance, consumed);
+	result = apply_region_recolor(result, pixel_hsv, skin_base_hsv, skin_target_hsv, skin_recolor, hue_tolerance, saturation_tolerance, consumed);
+	result = apply_region_recolor(result, pixel_hsv, hair_base_hsv, hair_target_hsv, hair_recolor, hue_tolerance, saturation_tolerance, consumed);
+	result = apply_region_recolor(result, pixel_hsv, clothes_base_hsv, clothes_target_hsv, clothes_recolor, hue_tolerance, saturation_tolerance, consumed);
+	result = apply_region_recolor(result, pixel_hsv, shoes_base_hsv, shoes_target_hsv, shoes_recolor, hue_tolerance, saturation_tolerance, consumed);
 	// Times the incoming COLOR, which carries modulate (fades, the bar fight flash).
 	COLOR = vec4(result, tex_color.a) * COLOR;
 }
