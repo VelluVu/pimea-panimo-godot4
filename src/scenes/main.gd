@@ -23,7 +23,7 @@ func _on_brewery_state_changed(brewery: Brewery) -> void:
 	for batch: BrewBatch in _tap_batches:
 		colors.append(BeerColor.from_ebc(batch.final_ebc))
 	tap_tower.set_taps(brewery.inventory.total_kegs(), colors)
-	keg_row.show_kegs(_tap_batches.size())
+	keg_row.show_kegs(_tap_batches)
 
 
 ## The bartender pours under the sold batch's tap; an unknown batch pours where he stands.
