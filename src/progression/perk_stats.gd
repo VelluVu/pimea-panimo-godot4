@@ -39,43 +39,44 @@ const EXTRA_MASH_CAPACITY := &"extra_mash_capacity_kg"
 ## COUNT a whole number.
 enum Kind { MULTIPLIER, PERCENT_ADD, COUNT }
 
-const ADDITIVE_PERCENT_FORMAT : String = "%+d %%"
-const MULTIPLICATIVE_PERCENT_FORMAT : String = "×%+d %%"
-const COUNT_FORMAT : String = "%+d"
+const ADDITIVE_PERCENT_FORMAT : String = "%d %%"
+const MULTIPLICATIVE_PERCENT_FORMAT : String = "×%d %%"
+const COUNT_FORMAT : String = "%d"
 
 
 ## Every stat in display order with its Finnish line; with the RunPerk field, the only place
-## a new stat is registered.
+## a new stat is registered. Values show unsigned, so the line says the direction and
+## "increases" records it (test_perk_stats checks every perk resource against it).
 static func definitions() -> Array[Dictionary]:
 	return [
-		{"stat": QUALITY_BONUS, "kind": Kind.PERCENT_ADD, "text": StringContainer.PERK_QUALITY_STAT_STRING},
-		{"stat": REPUTATION_GAIN, "kind": Kind.MULTIPLIER, "text": StringContainer.PERK_REPUTATION_STAT_STRING},
-		{"stat": TIP_INCOME, "kind": Kind.MULTIPLIER, "text": StringContainer.PERK_TIP_STAT_STRING},
-		{"stat": RAID_THRESHOLD, "kind": Kind.MULTIPLIER, "text": StringContainer.PERK_RAID_THRESHOLD_STAT_STRING},
-		{"stat": DISTRIBUTION_INCOME, "kind": Kind.MULTIPLIER, "text": StringContainer.PERK_DISTRIBUTION_STAT_STRING},
-		{"stat": INGREDIENT_PRICE, "kind": Kind.MULTIPLIER, "text": StringContainer.PERK_INGREDIENT_PRICE_STAT_STRING},
-		{"stat": BREW_YIELD, "kind": Kind.MULTIPLIER, "text": StringContainer.PERK_YIELD_STAT_STRING},
-		{"stat": INGREDIENT_REFUND_CHANCE, "kind": Kind.PERCENT_ADD, "text": StringContainer.PERK_REFUND_CHANCE_STAT_STRING},
-		{"stat": PEAK_SPEED, "kind": Kind.MULTIPLIER, "text": StringContainer.PERK_PEAK_SPEED_STAT_STRING},
-		{"stat": DECLINE_RATE, "kind": Kind.MULTIPLIER, "text": StringContainer.PERK_DECLINE_RATE_STAT_STRING},
-		{"stat": SPAWN_INTERVAL, "kind": Kind.MULTIPLIER, "text": StringContainer.PERK_SPAWN_INTERVAL_STAT_STRING},
-		{"stat": WALK_IN_COMPANY_CHANCE, "kind": Kind.PERCENT_ADD, "text": StringContainer.PERK_WALK_IN_COMPANY_CHANCE_STAT_STRING},
-		{"stat": WALK_IN_COMPANY_BONUS, "kind": Kind.COUNT, "text": StringContainer.PERK_WALK_IN_COMPANY_BONUS_STAT_STRING},
-		{"stat": AGENTTI_APPEARANCE, "kind": Kind.MULTIPLIER, "text": StringContainer.PERK_AGENTTI_APPEARANCE_STAT_STRING},
-		{"stat": MAFIOSO_APPEARANCE, "kind": Kind.MULTIPLIER, "text": StringContainer.PERK_MAFIOSO_APPEARANCE_STAT_STRING},
-		{"stat": TIP_CHANCE, "kind": Kind.PERCENT_ADD, "text": StringContainer.PERK_TIP_CHANCE_STAT_STRING},
-		{"stat": INFECTION_REDUCTION, "kind": Kind.PERCENT_ADD, "text": StringContainer.PERK_INFECTION_REDUCTION_STAT_STRING},
-		{"stat": TIP_DOUBLE_CHANCE, "kind": Kind.PERCENT_ADD, "text": StringContainer.PERK_TIP_DOUBLE_CHANCE_STAT_STRING},
-		{"stat": BAR_FIGHT_CHANCE, "kind": Kind.MULTIPLIER, "text": StringContainer.PERK_BAR_FIGHT_CHANCE_STAT_STRING},
-		{"stat": COUNTER_PRICE, "kind": Kind.MULTIPLIER, "text": StringContainer.PERK_COUNTER_PRICE_STAT_STRING},
-		{"stat": SALE_RISK, "kind": Kind.MULTIPLIER, "text": StringContainer.PERK_SALE_RISK_STAT_STRING},
-		{"stat": GROUP_EVENT_INTERVAL, "kind": Kind.MULTIPLIER, "text": StringContainer.PERK_GROUP_EVENT_INTERVAL_STAT_STRING},
-		{"stat": EXTRA_RAID_STRIKES, "kind": Kind.COUNT, "text": StringContainer.PERK_EXTRA_RAID_STRIKES_STAT_STRING},
-		{"stat": RAID_HIDDEN_BATCHES, "kind": Kind.COUNT, "text": StringContainer.PERK_RAID_HIDDEN_BATCH_STAT_STRING},
-		{"stat": RAID_SAVED_BOTTLE_SHARE, "kind": Kind.PERCENT_ADD, "text": StringContainer.PERK_RAID_SAVED_BOTTLE_SHARE_STAT_STRING},
-		{"stat": EXTRA_COUNTER_SLOTS, "kind": Kind.COUNT, "text": StringContainer.PERK_EXTRA_COUNTER_SLOTS_STAT_STRING},
-		{"stat": EXTRA_DAILY_GOAL_ROLLS, "kind": Kind.COUNT, "text": StringContainer.PERK_EXTRA_DAILY_GOAL_ROLLS_STAT_STRING},
-		{"stat": EXTRA_MASH_CAPACITY, "kind": Kind.COUNT, "text": StringContainer.PERK_EXTRA_MASH_CAPACITY_STAT_STRING},
+		{"stat": QUALITY_BONUS, "kind": Kind.PERCENT_ADD, "increases": true, "text": StringContainer.PERK_QUALITY_STAT_STRING},
+		{"stat": REPUTATION_GAIN, "kind": Kind.MULTIPLIER, "increases": true, "text": StringContainer.PERK_REPUTATION_STAT_STRING},
+		{"stat": TIP_INCOME, "kind": Kind.MULTIPLIER, "increases": true, "text": StringContainer.PERK_TIP_STAT_STRING},
+		{"stat": RAID_THRESHOLD, "kind": Kind.MULTIPLIER, "increases": true, "text": StringContainer.PERK_RAID_THRESHOLD_STAT_STRING},
+		{"stat": DISTRIBUTION_INCOME, "kind": Kind.MULTIPLIER, "increases": true, "text": StringContainer.PERK_DISTRIBUTION_STAT_STRING},
+		{"stat": INGREDIENT_PRICE, "kind": Kind.MULTIPLIER, "increases": false, "text": StringContainer.PERK_INGREDIENT_PRICE_STAT_STRING},
+		{"stat": BREW_YIELD, "kind": Kind.MULTIPLIER, "increases": true, "text": StringContainer.PERK_YIELD_STAT_STRING},
+		{"stat": INGREDIENT_REFUND_CHANCE, "kind": Kind.PERCENT_ADD, "increases": true, "text": StringContainer.PERK_REFUND_CHANCE_STAT_STRING},
+		{"stat": PEAK_SPEED, "kind": Kind.MULTIPLIER, "increases": false, "text": StringContainer.PERK_PEAK_SPEED_STAT_STRING},
+		{"stat": DECLINE_RATE, "kind": Kind.MULTIPLIER, "increases": false, "text": StringContainer.PERK_DECLINE_RATE_STAT_STRING},
+		{"stat": SPAWN_INTERVAL, "kind": Kind.MULTIPLIER, "increases": false, "text": StringContainer.PERK_SPAWN_INTERVAL_STAT_STRING},
+		{"stat": WALK_IN_COMPANY_CHANCE, "kind": Kind.PERCENT_ADD, "increases": true, "text": StringContainer.PERK_WALK_IN_COMPANY_CHANCE_STAT_STRING},
+		{"stat": WALK_IN_COMPANY_BONUS, "kind": Kind.COUNT, "increases": true, "text": StringContainer.PERK_WALK_IN_COMPANY_BONUS_STAT_STRING},
+		{"stat": AGENTTI_APPEARANCE, "kind": Kind.MULTIPLIER, "increases": false, "text": StringContainer.PERK_AGENTTI_APPEARANCE_STAT_STRING},
+		{"stat": MAFIOSO_APPEARANCE, "kind": Kind.MULTIPLIER, "increases": true, "text": StringContainer.PERK_MAFIOSO_APPEARANCE_STAT_STRING},
+		{"stat": TIP_CHANCE, "kind": Kind.PERCENT_ADD, "increases": true, "text": StringContainer.PERK_TIP_CHANCE_STAT_STRING},
+		{"stat": INFECTION_REDUCTION, "kind": Kind.PERCENT_ADD, "increases": true, "text": StringContainer.PERK_INFECTION_REDUCTION_STAT_STRING},
+		{"stat": TIP_DOUBLE_CHANCE, "kind": Kind.PERCENT_ADD, "increases": true, "text": StringContainer.PERK_TIP_DOUBLE_CHANCE_STAT_STRING},
+		{"stat": BAR_FIGHT_CHANCE, "kind": Kind.MULTIPLIER, "increases": false, "text": StringContainer.PERK_BAR_FIGHT_CHANCE_STAT_STRING},
+		{"stat": COUNTER_PRICE, "kind": Kind.MULTIPLIER, "increases": true, "text": StringContainer.PERK_COUNTER_PRICE_STAT_STRING},
+		{"stat": SALE_RISK, "kind": Kind.MULTIPLIER, "increases": false, "text": StringContainer.PERK_SALE_RISK_STAT_STRING},
+		{"stat": GROUP_EVENT_INTERVAL, "kind": Kind.MULTIPLIER, "increases": false, "text": StringContainer.PERK_GROUP_EVENT_INTERVAL_STAT_STRING},
+		{"stat": EXTRA_RAID_STRIKES, "kind": Kind.COUNT, "increases": true, "text": StringContainer.PERK_EXTRA_RAID_STRIKES_STAT_STRING},
+		{"stat": RAID_HIDDEN_BATCHES, "kind": Kind.COUNT, "increases": true, "text": StringContainer.PERK_RAID_HIDDEN_BATCH_STAT_STRING},
+		{"stat": RAID_SAVED_BOTTLE_SHARE, "kind": Kind.PERCENT_ADD, "increases": true, "text": StringContainer.PERK_RAID_SAVED_BOTTLE_SHARE_STAT_STRING},
+		{"stat": EXTRA_COUNTER_SLOTS, "kind": Kind.COUNT, "increases": true, "text": StringContainer.PERK_EXTRA_COUNTER_SLOTS_STAT_STRING},
+		{"stat": EXTRA_DAILY_GOAL_ROLLS, "kind": Kind.COUNT, "increases": true, "text": StringContainer.PERK_EXTRA_DAILY_GOAL_ROLLS_STAT_STRING},
+		{"stat": EXTRA_MASH_CAPACITY, "kind": Kind.COUNT, "increases": true, "text": StringContainer.PERK_EXTRA_MASH_CAPACITY_STAT_STRING},
 	]
 
 
@@ -83,17 +84,17 @@ static func neutral_value(kind : Kind) -> float:
 	return 1.0 if kind == Kind.MULTIPLIER else 0.0
 
 
-## Every value reads as a change: additive "+15 %", multiplicative "×+15 %". A signed
-## percent, since "x0.85" read backwards and an unsigned "×15 %" like a fifteenth.
+## The size of the change, unsigned since the stat line says the direction: additive
+## "15 %", multiplicative "×15 %".
 static func value_text(kind : Kind, value : float, additive : bool) -> String:
 	match kind:
 		Kind.MULTIPLIER:
 			var format : String = ADDITIVE_PERCENT_FORMAT if additive else MULTIPLICATIVE_PERCENT_FORMAT
-			return format % display_number(kind, value)
+			return format % absi(display_number(kind, value))
 		Kind.PERCENT_ADD:
-			return ADDITIVE_PERCENT_FORMAT % display_number(kind, value)
+			return ADDITIVE_PERCENT_FORMAT % absi(display_number(kind, value))
 		_:
-			return COUNT_FORMAT % display_number(kind, value)
+			return COUNT_FORMAT % absi(display_number(kind, value))
 
 
 ## The whole number a stat line shows: the percentage change, the percentage or the count.
