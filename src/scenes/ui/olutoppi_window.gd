@@ -9,7 +9,7 @@ const CLOSE_BUTTON_TEXT : String = "Sulje"
 const RENOWN_FORMAT : String = "Maine: %d"
 ## The browser demo shows the tree but sells nothing from it (DemoRules).
 const DEMO_RENOWN_FORMAT : String = "Maine: %d. Kykyjä voi ostaa koko pelissä."
-const LEVEL_BONUS_FORMAT : String = "%d/%d %s"
+const LEVEL_FORMAT : String = "%d/%d"
 const LOCKED_ICON : String = "🔒"
 
 @onready var title_label : Label = %TitleLabel
@@ -118,7 +118,7 @@ func _refresh_node(id : String, renown : int) -> void:
 	var locked : bool = not MetaProgressManager.meets_prerequisites(id) and level <= 0
 
 	view.icon_label.text = LOCKED_ICON if locked else unlock.icon_placeholder
-	view.level_bonus_label.text = "" if locked else LEVEL_BONUS_FORMAT % [level, unlock.max_level, OlutoppiText.short_bonus(unlock, level)]
+	view.level_bonus_label.text = "" if locked else LEVEL_FORMAT % [level, unlock.max_level]
 	view.button.disabled = locked or maxed or renown < unlock.renown_cost_per_level
 	view.refresh_availability()
 	view.button.tooltip_text = OlutoppiText.locked_tooltip(unlock, _unmet_prerequisite_names(unlock)) if locked else OlutoppiText.tooltip(unlock, level, maxed)

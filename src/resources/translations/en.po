@@ -3556,7 +3556,9 @@ msgstr ""
 msgid ""
 "15 %: lasketaan yhteen muiden samanlaisten etujen kanssa. Kaksi 15 %:n etua "
 "tipeille kasvattaa niitä yhteensä 30 %."
-msgstr "15 %: adds up with other perks of the same kind. Two 15 % tip perks raise tips by 30 % in total."
+msgstr ""
+"15 %: adds up with other perks of the same kind. Two 15 % tip perks raise "
+"tips by 30 % in total."
 
 #: src/resources/guide/065_etujen_arvot.tres
 msgid "Etujen arvot"
@@ -3566,7 +3568,9 @@ msgstr "Perk values"
 msgid ""
 "Etujen arvot näkyvät kahdella tavalla: 15 % tai ×15 %. Teksti kertoo, "
 "kasvattaako vai pienentääkö etu arvoa."
-msgstr "Perk values show in two ways: 15 % or ×15 %. The text tells whether the perk raises or lowers the value."
+msgstr ""
+"Perk values show in two ways: 15 % or ×15 %. The text tells whether the "
+"perk raises or lowers the value."
 
 #: src/resources/guide/065_etujen_arvot.tres
 msgid "Kauden tilastot -ikkunassa näet kaikki etusi ja niiden yhteisvaikutuksen."
@@ -3576,7 +3580,9 @@ msgstr "The Season stats window shows all your perks and their combined effect."
 msgid ""
 "×15 %: kertautuu muiden kanssa. Kaksi ×15 %:n etua tipeille kasvattaa niitä "
 "yhteensä 32 %."
-msgstr "×15 %: multiplies with the others. Two ×15 % tip perks raise tips by 32 % in total."
+msgstr ""
+"×15 %: multiplies with the others. Two ×15 % tip perks raise tips by 32 % "
+"in total."
 
 #: src/resources/guide/06_tasot.tres
 msgid "Epäonnistunut tavoite maksaa vähän mainetta, paitsi ensimmäisenä päivänä."
