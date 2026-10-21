@@ -2,11 +2,13 @@ class_name SliderStepper
 extends RefCounted
 
 ## Puts big - and + buttons around a slider and gives it a larger knob, so an exact amount
-## is easy to pick with a finger. Holding a button keeps stepping.
+## is easy to pick with a finger. Holding a button keeps stepping. The knob is the theme's
+## own, scaled up in whole steps so its pixels stay square.
 ##   SliderStepper.wrap(my_slider)
 
 const BUTTON_SIZE: Vector2 = Vector2(26, 26)
 const SLIDER_HEIGHT: float = 26.0
+## The knob is scaled until it is at least this tall.
 const GRABBER_SIZE: int = 18
 ## Pause before a held button starts repeating, then the time between steps.
 const REPEAT_DELAY_SECONDS: float = 0.4
@@ -16,7 +18,7 @@ const PLUS_TEXT: String = "+"
 
 
 ## Moves `slider` into a new row [-] slider [+] at the slider's place and returns the row.
-static func wrap(slider: Range, grabber_fill: Color = Color(0.93, 0.86, 0.72), grabber_outline: Color = Color(0.08, 0.05, 0.03)) -> HBoxContainer:
+static func wrap(slider: Range) -> HBoxContainer:
 	var row := HBoxContainer.new()
 	row.size_flags_horizontal = slider.size_flags_horizontal
 	var parent: Node = slider.get_parent()
@@ -32,9 +34,9 @@ static func wrap(slider: Range, grabber_fill: Color = Color(0.93, 0.86, 0.72), g
 	slider.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	slider.custom_minimum_size.y = SLIDER_HEIGHT
 
-	var grabber := make_grabber(GRABBER_SIZE, grabber_fill, grabber_outline)
-	slider.add_theme_icon_override(&"grabber", grabber)
-	slider.add_theme_icon_override(&"grabber_highlight", grabber)
+	for icon: StringName in [&"grabber", &"grabber_highlight"]:
+		var texture: Texture2D = slider.get_theme_icon(icon)
+		slider.add_theme_icon_override(icon, scaled(texture, grabber_scale(texture.get_height(), GRABBER_SIZE)))
 	return row
 
 
@@ -43,18 +45,17 @@ static func stepped(value: float, direction: float, step: float, min_value: floa
 	return clampf(value + direction * maxf(step, 1.0), min_value, max_value)
 
 
-## A round pixel knob: `fill` inside a one-pixel `outline`.
-static func make_grabber(size: int, fill: Color, outline: Color) -> ImageTexture:
-	var image := Image.create(size, size, false, Image.FORMAT_RGBA8)
-	var center := Vector2(size - 1, size - 1) / 2.0
-	var radius: float = size / 2.0
-	for y: int in size:
-		for x: int in size:
-			var distance: float = Vector2(x, y).distance_to(center)
-			if distance <= radius - 1.5:
-				image.set_pixel(x, y, fill)
-			elif distance <= radius - 0.5:
-				image.set_pixel(x, y, outline)
+## The smallest whole factor that makes a knob `height` pixels tall reach `min_height`.
+static func grabber_scale(height: int, min_height: int) -> int:
+	return maxi(1, ceili(float(min_height) / float(maxi(height, 1))))
+
+
+## `texture` enlarged `factor` times with nearest-neighbour sampling.
+static func scaled(texture: Texture2D, factor: int) -> Texture2D:
+	if factor <= 1:
+		return texture
+	var image: Image = texture.get_image()
+	image.resize(image.get_width() * factor, image.get_height() * factor, Image.INTERPOLATE_NEAREST)
 	return ImageTexture.create_from_image(image)
 
 
