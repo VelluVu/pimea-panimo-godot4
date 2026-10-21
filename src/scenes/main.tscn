@@ -20,6 +20,8 @@
 [ext_resource type="Script" uid="uid://dw337ricts1ki" path="res://src/scenes/light_flicker.gd" id="8_5c2vg"]
 [ext_resource type="Script" uid="uid://4stpknptq7nv" path="res://src/scenes/ui/right_warehouse_view.gd" id="9_muem4"]
 [ext_resource type="Texture2D" uid="uid://ckr0tjvh7srsj" path="res://assets/textures/clock_bg.png" id="10_jscy8"]
+[ext_resource type="Shader" uid="uid://d2tc6dd0fey8k" path="res://assets/shaders/lvv_pressure.gdshader" id="11_3cmot"]
+[ext_resource type="Script" uid="uid://d0aqoy7a7wao2" path="res://src/scenes/lvv_pressure_overlay.gd" id="12_72le4"]
 [ext_resource type="Texture2D" uid="uid://cotf62fq6mk8q" path="res://assets/textures/clockhand_32.png" id="12_pm3ni"]
 [ext_resource type="Script" uid="uid://clwrlsny0wt3b" path="res://src/systems/dialog/dialog_view.gd" id="13_jkv2x"]
 [ext_resource type="Script" uid="uid://bamjijnw7ylcq" path="res://src/scenes/ui/game_speed_button.gd" id="17_05g3k"]
@@ -86,6 +88,19 @@ size = Vector2(43, 209)
 [sub_resource type="Gradient" id="Gradient_5c2vg"]
 offsets = PackedFloat32Array(0, 0.25, 0.75, 1)
 colors = PackedColorArray(2.2, 2.05, 1.7, 0, 2.2, 2.05, 1.7, 0.6, 2.2, 2.05, 1.7, 0.6, 2.2, 2.05, 1.7, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nfawm"]
+shader = ExtResource("11_3cmot")
+shader_parameter/cold_tint_color = Color(0.45, 0.55, 0.85, 1)
+shader_parameter/siren_red_color = Color(1, 0.12, 0.08, 1)
+shader_parameter/siren_blue_color = Color(0.12, 0.3, 1, 1)
+shader_parameter/pressure = 0.0
+shader_parameter/siren = 0.0
+shader_parameter/max_darkening = 0.45
+shader_parameter/max_desaturation = 0.6
+shader_parameter/siren_strength = 0.35
+shader_parameter/pulse_speed = 2.2
+shader_parameter/siren_speed = 1.6
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bu4jf"]
 bg_color = Color(0.32, 0.24, 0.16, 1)
@@ -261,6 +276,16 @@ color_ramp = SubResource("Gradient_5c2vg")
 
 [node name="WorldDarkness" type="CanvasModulate" parent="." unique_id=88800007]
 color = Color(0.4, 0.38, 0.45, 1)
+
+[node name="LvvPressureLayer" type="CanvasLayer" parent="." unique_id=207106200]
+
+[node name="LvvPressureOverlay" type="ColorRect" parent="LvvPressureLayer" unique_id=260235918]
+material = SubResource("ShaderMaterial_nfawm")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource("12_72le4")
 
 [node name="GUI_CanvasLayer" type="CanvasLayer" parent="." unique_id=1651647138]
 
