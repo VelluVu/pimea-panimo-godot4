@@ -8,9 +8,8 @@ enum Tier { NORMAL, BIG, CRITICAL }
 
 const BIG_TIP_SHARE : float = 0.5
 const CRITICAL_TIP_SHARE : float = 1.0
-## Same bars as BrewBatch's "Erinomainen" and "Mestarillinen" quality tiers.
-const BIG_QUALITY : float = 1.1
-const CRITICAL_QUALITY : float = 1.3
+const BIG_QUALITY : float = QualityTier.EXCELLENT_FROM
+const CRITICAL_QUALITY : float = QualityTier.MASTERFUL_FROM
 
 
 ## A doubled tip is always critical: the perk roll is the crit.

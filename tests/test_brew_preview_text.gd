@@ -48,3 +48,22 @@ func test_known_style_shows_name_quality_and_spices() -> void:
 	var text : String = BrewPreviewTextScript.text(false, result, true)
 	assert_true(text.contains("Witbier") and text.contains("laatu 120%"))
 	assert_true(text.contains("Mausteet: +10 %"))
+
+
+func test_known_style_shows_the_grade_of_a_normal_brew() -> void:
+	var result := _result(true)
+	result.original_quality = 1.0
+	assert_true(BrewPreviewTextScript.text(false, result, true).contains("Normaali keitto: Hyvä"))
+	result.original_quality = 0.99
+	assert_true(BrewPreviewTextScript.text(false, result, true).contains("Normaali keitto: Tyydyttävä"))
+
+
+func test_the_auto_kettle_and_perks_raise_the_grade() -> void:
+	var result := _result(true)
+	result.original_quality = 1.0
+	assert_true(BrewPreviewTextScript.text(false, result, true, true).contains("Automaattikattila: Hyvä"))
+	assert_true(BrewPreviewTextScript.text(false, result, true, true, 0.1).contains("Automaattikattila: Erinomainen"))
+
+
+func test_unknown_style_shows_no_grade() -> void:
+	assert_false(BrewPreviewTextScript.text(false, _result(true), false).contains("Normaali keitto"))

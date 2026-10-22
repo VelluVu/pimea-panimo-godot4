@@ -96,10 +96,6 @@ msgid "Ennätykset"
 msgstr "Records"
 
 #: src/autoload/string_container.gd
-msgid "Erinomainen"
-msgstr "Excellent"
-
-#: src/autoload/string_container.gd
 msgid "Hapantuminen vähenee %s"
 msgstr "Souring drops by %s"
 
@@ -116,16 +112,8 @@ msgid "Heikkeneminen hidastuu %s"
 msgstr "Decline slows by %s"
 
 #: src/autoload/string_container.gd
-msgid "Heikko"
-msgstr "Poor"
-
-#: src/autoload/string_container.gd
 msgid "Helles"
 msgstr "Helles"
-
-#: src/autoload/string_container.gd
-msgid "Hyvä"
-msgstr "Good"
 
 #: src/autoload/string_container.gd
 msgid "IPA"
@@ -206,10 +194,6 @@ msgstr "Reputation gain grows by %s"
 #: src/autoload/string_container.gd
 msgid "Maitostout"
 msgstr "Milk Stout"
-
-#: src/autoload/string_container.gd
-msgid "Mestarillinen"
-msgstr "Masterful"
 
 #: src/autoload/string_container.gd
 msgid "Myynnin LVV-riski pienenee %s"
@@ -362,10 +346,6 @@ msgid "Tuntematon"
 msgstr "Unknown"
 
 #: src/autoload/string_container.gd
-msgid "Tyydyttävä"
-msgstr "Fair"
-
-#: src/autoload/string_container.gd
 msgid "Tämän kauden edut (%d):"
 msgstr "This season's perks (%d):"
 
@@ -444,6 +424,26 @@ msgstr "Use: %s / Flavour: %s"
 #: src/brewing/hop_data.gd
 msgid "katkero ja aromi"
 msgstr "bittering and aroma"
+
+#: src/brewing/quality_tier.gd
+msgid "Erinomainen"
+msgstr "Excellent"
+
+#: src/brewing/quality_tier.gd
+msgid "Heikko"
+msgstr "Poor"
+
+#: src/brewing/quality_tier.gd
+msgid "Hyvä"
+msgstr "Good"
+
+#: src/brewing/quality_tier.gd
+msgid "Mestarillinen"
+msgstr "Masterful"
+
+#: src/brewing/quality_tier.gd
+msgid "Tyydyttävä"
+msgstr "Fair"
 
 #: src/console/player_commands.gd
 msgid "%s maksaa %.2f €, rahaa %.2f €"
@@ -6701,12 +6701,20 @@ msgid "Arvio: tuntematon tyyli täsmää! (EBC %d, IBU %d, %.1f %% ABV)"
 msgstr "Estimate: an unknown style matches! (EBC %d, IBU %d, %.1f %% ABV)"
 
 #: src/ui/brew_preview_text.gd
+msgid "Automaattikattila: %s"
+msgstr "Automatic kettle: %s"
+
+#: src/ui/brew_preview_text.gd
 msgid "Ei täsmää vielä mihinkään tyyliin. (EBC %d, IBU %d, %.1f %% ABV)"
 msgstr "Doesn't match any style yet. (EBC %d, IBU %d, %.1f %% ABV)"
 
 #: src/ui/brew_preview_text.gd
 msgid "Lisää raaka-aineita nähdäksesi arvion."
 msgstr "Add ingredients to see an estimate."
+
+#: src/ui/brew_preview_text.gd
+msgid "Normaali keitto: %s"
+msgstr "Normal brew: %s"
 
 #: src/ui/brew_preview_text.gd
 msgid "Tarvitset ainakin 3 kg mallasta ja hiivan."

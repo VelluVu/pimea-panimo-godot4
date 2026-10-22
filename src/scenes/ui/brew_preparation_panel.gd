@@ -153,7 +153,7 @@ func _update_table_list_ui() -> void:
 func _update_preview(brewery : Brewery, prep_contents : Dictionary) -> void:
 	var preview : BrewResult = null if prep_contents.is_empty() else brewery.resolver.resolve_brew_style(prep_contents)
 	var style_known : bool = preview != null and preview.is_matched and brewery.is_style_known(preview.beer_style.style)
-	preview_label.text = BrewPreviewText.text(prep_contents.is_empty(), preview, style_known)
+	preview_label.text = BrewPreviewText.text(prep_contents.is_empty(), preview, style_known, brewery.machine_active(CellarMachines.AUTO_KETTLE), brewery.stats.total(PerkStats.QUALITY_BONUS))
 	# Nothing would come out yet; the preview says what is missing.
 	start_brew_button.disabled = preview == null
 	# Every batch needs a keg of its own.
