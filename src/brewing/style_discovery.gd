@@ -54,19 +54,26 @@ func ensure_default_recipe(beer_style : BeerStyle, emit_state_changed : bool = t
 		if existing.beer_style == beer_style.style and existing.is_default:
 			return existing
 
-	var ingredients : Dictionary = brewery.resolver.compute_minimum_ingredients(beer_style)
-	if ingredients.is_empty():
+	var recipe : BrewRecipe = make_default_recipe(beer_style)
+	if recipe == null:
 		return null
-
-	var recipe := BrewRecipe.new()
-	recipe.beer_style = beer_style.style
-	recipe.ingredient_amounts = ingredients
-	recipe.recipe_name = RecipeNameText.default_name(beer_style.style_name)
-	recipe.is_default = true
 
 	brewery.saved_recipes.append(recipe)
 	if emit_state_changed:
 		BrewerySignals.brewery_state_changed.emit(brewery)
 	BrewerySignals.recipe_saved.emit(RecipeNameText.display(recipe))
 
+	return recipe
+
+
+## The style's default recipe without saving it; null if its reference recipe is missing.
+func make_default_recipe(beer_style : BeerStyle) -> BrewRecipe:
+	var ingredients : Dictionary = brewery.resolver.compute_minimum_ingredients(beer_style)
+	if ingredients.is_empty():
+		return null
+	var recipe := BrewRecipe.new()
+	recipe.beer_style = beer_style.style
+	recipe.ingredient_amounts = ingredients
+	recipe.recipe_name = RecipeNameText.default_name(beer_style.style_name)
+	recipe.is_default = true
 	return recipe

@@ -170,6 +170,11 @@ func _build_saved_recipes(brewery : Brewery, beer_style : BeerStyle) -> void:
 	for recipe : BrewRecipe in brewery.saved_recipes:
 		if recipe.beer_style == beer_style.style:
 			recipes.append(recipe)
+	# Developer mode knows every style without discovering it, so no default was saved.
+	if not recipes.any(func(recipe : BrewRecipe) -> bool: return recipe.is_default):
+		var unsaved_default : BrewRecipe = StyleDiscovery.new(brewery).make_default_recipe(beer_style)
+		if unsaved_default != null:
+			recipes.push_front(unsaved_default)
 	if recipes.is_empty():
 		rows_vbox.add_child(_text_label(RecipeLibraryText.NO_SAVED_RECIPES, LOCKED_COLOR))
 		return
