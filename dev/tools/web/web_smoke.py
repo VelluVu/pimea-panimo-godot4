@@ -265,7 +265,8 @@ def main():
 	if not args.url and not os.path.isfile(os.path.join(BUILD_DIR, "index.html")):
 		sys.exit("No build/web/index.html: export the Web Demo preset first.")
 	os.makedirs(args.out, exist_ok=True)
-	profile = os.path.join(args.out, "profile") if args.keep_profile else tempfile.mkdtemp(prefix="web_smoke_")
+	# Normalised once: the cleanup below finds this run's Chrome by this exact string.
+	profile = os.path.abspath(os.path.join(args.out, "profile") if args.keep_profile else tempfile.mkdtemp(prefix="web_smoke_"))
 
 	server = None if args.url else serve(BUILD_DIR)
 	url = args.url or f"http://127.0.0.1:{SERVE_PORT}/index.html"
@@ -298,7 +299,7 @@ def main():
 			subprocess.run(["taskkill", "/PID", str(chrome.pid), "/T", "/F"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 			subprocess.run(["powershell", "-NoProfile", "-Command",
 				"Get-CimInstance Win32_Process -Filter \"Name = 'chrome.exe'\" | Where-Object { $_.CommandLine.Contains('"
-				+ os.path.abspath(profile).replace("'", "''") + "') } | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }"],
+				+ profile.replace("'", "''") + "') } | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }"],
 				stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 		else:
 			chrome.terminate()
