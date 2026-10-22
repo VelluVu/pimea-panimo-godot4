@@ -37,6 +37,7 @@ func _ready() -> void:
 	_fill_from_inventory_button.custom_minimum_size.y = FILL_BUTTON_HEIGHT
 	_fill_from_inventory_button.pressed.connect(_on_fill_from_inventory_button_pressed)
 	main_vbox.add_child(_fill_from_inventory_button)
+	main_vbox.add_child(BuyMissingButton.new(FILL_BUTTON_HEIGHT))
 
 	_update_label()
 	_update_fill_from_inventory_button()

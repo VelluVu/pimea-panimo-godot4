@@ -3004,15 +3004,15 @@ msgstr ""
 
 #: src/resources/event_perks/remontti_keittio.tres
 msgid ""
-"Keittola on remontin jäljiltä siisti: raaka-ainepalautuksen mahdollisuus "
+"Panimo on remontin jäljiltä siisti: raaka-ainepalautuksen mahdollisuus "
 "kasvaa {ingredient_refund_chance}."
 msgstr ""
-"The brewhouse is tidy after the renovation: ingredient refund chance grows "
+"The brewery is tidy after the renovation: ingredient refund chance grows "
 "by {ingredient_refund_chance}."
 
 #: src/resources/event_perks/remontti_keittio.tres
-msgid "Siisti keittola"
-msgstr "Tidy Brewhouse"
+msgid "Siisti panimo"
+msgstr "Tidy Brewery"
 
 #: src/resources/event_perks/remontti_lampo.tres
 msgid ""
@@ -3421,10 +3421,10 @@ msgstr ""
 
 #: src/resources/guide/02_keittaminen.tres
 msgid ""
-"Avaa keittola, lisää raaka-aineet pöydälle ja paina Pane. Erä käy hetken ja "
+"Avaa panimo, lisää raaka-aineet pöydälle ja paina Pane. Erä käy hetken ja "
 "menee sitten tynnyriin varastoon."
 msgstr ""
-"Open the brewhouse, put the ingredients on the table and press Pane. The "
+"Open the brewery, put the ingredients on the table and press Pane. The "
 "batch ferments for a while and then goes into a keg in the warehouse."
 
 #: src/resources/guide/02_keittaminen.tres
@@ -5346,10 +5346,6 @@ msgid "Häädä asiakkaat ja aloita uusi päivä"
 msgstr "Send the customers home and start a new day"
 
 #: src/scenes/main.tscn
-msgid "Keittola"
-msgstr "Brewhouse"
-
-#: src/scenes/main.tscn
 msgid "LVV Riski: 0%"
 msgstr "LVV Risk: 0%"
 
@@ -5895,22 +5891,6 @@ msgstr "Fill recipe"
 #: src/scenes/ui/left_shop_view.gd
 msgid "Ei varaa: %.2f €"
 msgstr "Can't afford: %.2f €"
-
-#: src/scenes/ui/left_shop_view.gd
-msgid "Osta puuttuvat"
-msgstr "Buy missing"
-
-#: src/scenes/ui/left_shop_view.gd
-msgid "Osta puuttuvat: %.2f €"
-msgstr "Buy missing: %.2f €"
-
-#: src/scenes/ui/left_shop_view.gd
-msgid ""
-"Ostaa kerralla kaiken, mitä ladattu resepti vielä tarvitsee pöydän ja "
-"varaston lisäksi."
-msgstr ""
-"Buys everything the loaded recipe still needs beyond the table and the "
-"storage, in one go."
 
 #: src/scenes/ui/left_shop_view.gd
 msgid "Vaatii %d mainetta"
@@ -6719,6 +6699,22 @@ msgstr "You need at least 3 kg of malt and a yeast."
 #: src/ui/brew_preview_text.gd
 msgid "Tyylin maltaat: +%d %%"
 msgstr "Style malts: +%d %%"
+
+#: src/ui/buy_missing_button.gd
+msgid "Osta puuttuvat"
+msgstr "Buy missing"
+
+#: src/ui/buy_missing_button.gd
+msgid "Osta puuttuvat: %.2f €"
+msgstr "Buy missing: %.2f €"
+
+#: src/ui/buy_missing_button.gd
+msgid ""
+"Ostaa kerralla kaiken, mitä ladattu resepti vielä tarvitsee pöydän ja "
+"varaston lisäksi."
+msgstr ""
+"Buys everything the loaded recipe still needs beyond the table and the "
+"storage, in one go."
 
 #: src/ui/cellar_upgrade_text.gd
 msgid "Ei vielä omistuksessa."
