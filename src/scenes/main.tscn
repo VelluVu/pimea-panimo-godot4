@@ -1395,9 +1395,8 @@ polygon = PackedVector2Array(-13, -3, 13, -3, 13, 3, -13, 3)
 
 [node name="Book2" type="Polygon2D" parent="WorldYSort/RecipeShelfHoverArea/OutlineGroup" unique_id=1057484171]
 position = Vector2(45, -12)
-rotation = -0.1
 color = Color(0.13, 0.28, 0.16, 1)
-polygon = PackedVector2Array(-11, -2.5, 11, -2.5, 11, 2.5, -11, 2.5)
+polygon = PackedVector2Array(-11, -3, 11, -3, 11, 2, -11, 2)
 
 [node name="CustomerSpawner" type="Node2D" parent="WorldYSort" unique_id=82506958]
 z_index = 1
@@ -1473,7 +1472,7 @@ polygon = PackedVector2Array(-4, -7, 4, -7, 4, 4, 2, 7, 0, 4, -2, 7, -4, 4)
 [node name="MachineButton" type="Polygon2D" parent="WorldYSort/BarTable/BarTable_Sprite2D/ReceiptMachineHoverArea/OutlineGroup" unique_id=1293168157]
 position = Vector2(3, -2)
 color = Color(0.75, 0.2, 0.15, 1)
-polygon = PackedVector2Array(-1.5, -1, 1.5, -1, 1.5, 1, -1.5, 1)
+polygon = PackedVector2Array(-1, -1, 2, -1, 2, 1, -1, 1)
 
 [node name="CustomerBookHoverArea" type="Area2D" parent="WorldYSort/BarTable/BarTable_Sprite2D" unique_id=221676537]
 position = Vector2(-68, -21)

@@ -121,7 +121,8 @@ func _slide_to(x : float) -> void:
 	if _slide != null:
 		_slide.kill()
 	_slide = create_tween()
-	_slide.tween_property(self, "position:x", x, TAP_SLIDE_SECONDS).set_trans(Tween.TRANS_SINE)
+	var target : Vector2 = get_parent().to_global(Vector2(x, position.y))
+	PixelStepTween.move(_slide, self, global_position, target, TAP_SLIDE_SECONDS, animated_sprite.scale.x).set_trans(Tween.TRANS_SINE)
 
 
 ## Global position of the Nth glass in a group order's counter stack.
