@@ -14,8 +14,8 @@ msgid "Mafioso"
 msgstr "Mafioso"
 
 #: src/autoload/string_container.gd
-msgid "??? – vaatii mainetta: %d"
-msgstr "??? – needs reputation: %d"
+msgid "??? - vaatii mainetta: %d"
+msgstr "??? - needs reputation: %d"
 
 #: src/autoload/string_container.gd
 msgid "Agenttien esiintyvyys vähenee %s"
@@ -4914,10 +4914,10 @@ msgstr "A win! The judges were sold. The prize is yours."
 #: src/resources/special_events/brand_deal.tres
 msgid ""
 "Haluamme kasvosi energiajuomamainokseen! Maksamme {money} €, mutta maineesi "
-"kärsii (−{reputation} mainetta)."
+"kärsii (-{reputation} mainetta)."
 msgstr ""
 "We want your face in an energy drink ad! We pay {money} €, but your "
-"reputation suffers (−{reputation} reputation)."
+"reputation suffers (-{reputation} reputation)."
 
 #: src/resources/special_events/brand_deal.tres
 msgid "Kukaan ei vielä tunnista sinua. Ehkä myöhemmin."
@@ -5164,11 +5164,11 @@ msgstr "Nothing special here. Try again when you have something really good."
 msgid ""
 "Kuulin, että täällä keitetään jotain erikoista. Näytä minulle parhaasi, "
 "vähintään {quality} % laatua! Ostan koko erän ja maksan hyvin. Mutta jos "
-"lupaat etkä tuo, kirjoitan siitä (−{fail_reputation} mainetta)."
+"lupaat etkä tuo, kirjoitan siitä (-{fail_reputation} mainetta)."
 msgstr ""
 "I heard something special is brewed here. Show me your best, at least "
 "{quality} % quality! I'll buy the whole batch and pay well. But if you "
-"promise and don't deliver, I'll write about it (−{fail_reputation} "
+"promise and don't deliver, I'll write about it (-{fail_reputation} "
 "reputation)."
 
 #: src/resources/special_events/quality_critic.tres
