@@ -6,16 +6,6 @@ const STAIR_STEP_PAUSE_SECONDS : float = 0.05
 const CENTER_PAUSE_SECONDS : float = 0.8
 const EXIT_WALK_DISTANCE : float = 150.0
 const MIN_WALK_DISTANCE : float = 1.0
-const FADE_TIME_SECONDS : float = 1.0
-const BASE_DISPLAY_TIME_SECONDS : float = 3.0
-## Shorter: the preview line only delays the sale.
-const PREVIEW_BASE_DISPLAY_TIME_SECONDS : float = 1.5
-const PER_CHARACTER_DISPLAY_TIME_SECONDS : float = 0.04
-const MAX_DISPLAY_TIME_SECONDS : float = 9.0
-
-const PREVIEW_DELAY_SECONDS : float = 2.0
-## Joins the style names when a customer previews more than one batch.
-const PREVIEW_STYLE_JOINER : String = " ja "
 
 ## The legs of the walk in, in order (see walk_complex_route()).
 enum Leg { STAIRS, TO_CENTER, CENTER_PAUSE, TO_COUNTER }
@@ -116,14 +106,6 @@ func _apply_visuals() -> void:
 func _play_animation(anim_name: StringName, flip_horizontally: bool = false) -> void:
 	MirroredAnimation.play(animated_sprite, anim_name, flip_horizontally)
 	animated_sprite.speed_scale = WalkCadence.for_sprite(animated_sprite, customer_data.floor_walk_speed, WALK_ANIMATIONS)
-
-
-static func get_display_time_for_text(text: String, base_seconds: float = BASE_DISPLAY_TIME_SECONDS) -> float:
-	return clampf(
-		base_seconds + text.length() * PER_CHARACTER_DISPLAY_TIME_SECONDS,
-		base_seconds,
-		MAX_DISPLAY_TIME_SECONDS
-	)
 
 
 func get_customer_name() -> String:
@@ -283,8 +265,8 @@ func _resume_served(snap: CustomerSnapshot) -> void:
 	if made_purchase and snap.glass_time_left >= 0.0:
 		_glasses.serve_after(snap.glass_time_left)
 	_bubble_text = snap.bubble_text
-	if snap.time_left > FADE_TIME_SECONDS:
-		_say(snap.bubble_text, false, snap.time_left - FADE_TIME_SECONDS)
+	if snap.time_left > SpeechTiming.FADE_SECONDS:
+		_say(snap.bubble_text, false, snap.time_left - SpeechTiming.FADE_SECONDS)
 	_phase_timer = get_tree().create_timer(maxf(snap.time_left, 0.01), false)
 	_phase_timer.timeout.connect(leave_counter)
 
@@ -306,17 +288,11 @@ func _enter_counter_phase(phase: CustomerSnapshot.Phase, text: String, next: Cal
 ## Shows the batch the customer will pick before the sale resolves.
 func _on_preview_timeout() -> void:
 	_picked_batches = CustomerManager.pick_batches_for(customer_data)
-	var preview_text : String
-	if not _picked_batches.is_empty() and not customer_data.browses_only:
-		var style_names : PackedStringArray = []
-		for batch : BrewBatch in _picked_batches:
-			style_names.append(batch.get_style_name())
-		preview_text = tr(customer_data.dialogue_preview_format) % tr(PREVIEW_STYLE_JOINER).join(style_names)
-	else:
-		preview_text = tr(customer_data.dialogue_nothing_available)
-
-	var line := generated_name + ": " + preview_text
-	_enter_counter_phase(CustomerSnapshot.Phase.PREVIEWING, line, _on_sale_timeout, get_display_time_for_text(line, PREVIEW_BASE_DISPLAY_TIME_SECONDS))
+	var style_names : PackedStringArray = []
+	for batch : BrewBatch in _picked_batches:
+		style_names.append(batch.get_style_name())
+	var line := generated_name + ": " + CustomerPreviewText.line(customer_data, style_names)
+	_enter_counter_phase(CustomerSnapshot.Phase.PREVIEWING, line, _on_sale_timeout, SpeechTiming.seconds_for(line, SpeechTiming.PREVIEW_BASE_SECONDS))
 
 
 func _on_sale_timeout() -> void:
@@ -333,7 +309,7 @@ func _on_sale_timeout() -> void:
 
 	_bubble_text = generated_name + ": " + response_text
 	var display_time := _say(_bubble_text)
-	var leave_after: float = display_time + FADE_TIME_SECONDS
+	var leave_after: float = display_time + SpeechTiming.FADE_SECONDS
 	if outcome.bar_fight_bottles >= 0:
 		play_rampage(outcome.bar_fight_bottles)
 		leave_after = maxf(leave_after, BarFightRampage.DURATION_SECONDS)
@@ -363,10 +339,10 @@ func _show_sale_popups(outcome: SaleOutcomeCapture) -> void:
 ## a crowded counter but takes its time, so a crowd is served at the same pace. `seconds`
 ## overrides the time.
 func _say(text: String, skippable: bool = false, seconds: float = -1.0) -> float:
-	var display_time := seconds if seconds >= 0.0 else get_display_time_for_text(text)
+	var display_time := seconds if seconds >= 0.0 else SpeechTiming.seconds_for(text)
 	if skippable and CustomerManager.is_counter_crowded():
 		return display_time
-	BrewerySignals.dialogue_pushed.emit(text, false, dialogue_slot, global_position, display_time, FADE_TIME_SECONDS)
+	BrewerySignals.dialogue_pushed.emit(text, false, dialogue_slot, global_position, display_time, SpeechTiming.FADE_SECONDS)
 	BrewerySignals.customer_spoke.emit(global_position, customer_data.voice_pitch)
 	return display_time
 

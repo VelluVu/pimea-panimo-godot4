@@ -15,6 +15,8 @@ const DIALOGUE_SLOT_RANGE : int = 90
 
 const CHANT_BUBBLE_EXTRA_SECONDS : float = 0.3
 const CHANT_BUBBLE_FADE_SECONDS : float = 0.3
+## From the group's order line to the sale.
+const ORDER_DELAY_SECONDS : float = 2.0
 
 ## Between glasses when no Bartender pours them.
 const SERVE_INTERVAL_SECONDS : float = 0.3
@@ -218,7 +220,7 @@ func _order(visit : GroupVisit, resume_seconds : float) -> bool:
 			return false
 		visit.order_data = build_order_data(visit.event_data.customer_data_options, visit.size(), _active_styles.call(), MetaProgressManager.get_discovered_styles())
 		_say(visit, SPEECH_FORMAT % [_group_label(visit), tr(visit.order_data.dialogue_intro)])
-		resume_seconds = Customer.PREVIEW_DELAY_SECONDS
+		resume_seconds = ORDER_DELAY_SECONDS
 	if not await _wait(visit, resume_seconds):
 		return false
 	_sell(visit)
@@ -294,7 +296,7 @@ func _serve_burst(visit : GroupVisit, resume_seconds : float) -> bool:
 func _talk(visit : GroupVisit, resume_seconds : float) -> bool:
 	if resume_seconds < 0.0:
 		var display_time : float = _say(visit, SPEECH_FORMAT % [_group_label(visit), visit.response_text])
-		resume_seconds = display_time + Customer.FADE_TIME_SECONDS
+		resume_seconds = display_time + SpeechTiming.FADE_SECONDS
 		if visit.bar_fight_bottles >= 0:
 			_start_group_rampage(visit, visit.bar_fight_bottles)
 			resume_seconds = maxf(resume_seconds, BarFightRampage.DURATION_SECONDS)
@@ -320,8 +322,8 @@ func _dismiss(visit : GroupVisit, resume_seconds : float) -> bool:
 
 ## Returns how long the line stays up in the shared bubble.
 func _say(visit : GroupVisit, text : String) -> float:
-	var display_time : float = Customer.get_display_time_for_text(text)
-	_show_bubble(visit, text, visit.counter_position, display_time, Customer.FADE_TIME_SECONDS)
+	var display_time : float = SpeechTiming.seconds_for(text)
+	_show_bubble(visit, text, visit.counter_position, display_time, SpeechTiming.FADE_SECONDS)
 	BrewerySignals.customer_spoke.emit(visit.counter_position, _voice_pitch_of(visit))
 	return display_time
 

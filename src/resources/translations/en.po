@@ -5341,10 +5341,6 @@ msgstr "Evening. Just a routine visit. It smells awfully malty in here..."
 msgid "LVV-tarkastaja"
 msgstr "LVV inspector"
 
-#: src/scenes/customer.gd
-msgid " ja "
-msgstr " and "
-
 #: src/scenes/main.tscn
 msgid "Häädä asiakkaat ja aloita uusi päivä"
 msgstr "Send the customers home and start a new day"
@@ -6843,6 +6839,10 @@ msgstr "At least %.1f %% alcohol"
 #: src/ui/customer_book_text.gd
 msgid "muut samasta joukosta"
 msgstr "the rest of the same group"
+
+#: src/ui/customer_preview_text.gd
+msgid " ja "
+msgstr " and "
 
 #: src/ui/day_clock_text.gd
 msgid "Kello %s, valot sammuvat klo %s"
