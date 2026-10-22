@@ -11,11 +11,14 @@ const NO_MATCH_FORMAT : String = "Ei täsmää vielä mihinkään tyyliin. (EBC 
 const UNKNOWN_MATCH_FORMAT : String = "Arvio: tuntematon tyyli täsmää! (EBC %d, IBU %d, %.1f %% ABV)"
 const MALT_FORMAT : String = "Tyylin maltaat: +%d %%"
 const KNOWN_MATCH_FORMAT : String = "Arvio: %s, EBC %d, IBU %d, %.1f %% ABV, laatu %d%%"
+## The grade after the brew day, since the quality percentage alone does not say it.
+const NORMAL_DAY_FORMAT : String = "Normaali keitto: %s"
+const AUTO_KETTLE_FORMAT : String = "Automaattikattila: %s"
 
 
 ## `preview` is null when the table is not brewable yet; `style_known` only matters
-## for a matched preview.
-static func text(table_empty : bool, preview : BrewResult, style_known : bool) -> String:
+## for a matched preview. `quality_bonus` is the perks' flat bonus, as Brewer adds it.
+static func text(table_empty : bool, preview : BrewResult, style_known : bool, auto_kettle : bool = false, quality_bonus : float = 0.0) -> String:
 	if table_empty:
 		return UiText.of(EMPTY_TEXT)
 	if preview == null:
@@ -25,8 +28,15 @@ static func text(table_empty : bool, preview : BrewResult, style_known : bool) -
 	if not style_known:
 		return UiText.of(UNKNOWN_MATCH_FORMAT) % [preview.final_ebc, preview.final_ibu, preview.abv]
 	return UiText.of(KNOWN_MATCH_FORMAT) % [UiText.of(preview.beer_style.style_name), preview.final_ebc, preview.final_ibu, preview.abv, roundi(preview.original_quality * 100)] \
+			+ _grade_line(preview.original_quality + quality_bonus, auto_kettle) \
 			+ SpicePreviewText.line(preview.spice_bonus, preview.unsuited_spice_penalty) + _malt_line(preview.malt_bonus) \
 			+ BrewAimText.lines(preview)
+
+
+static func _grade_line(quality : float, auto_kettle : bool) -> String:
+	var multiplier : float = BrewDayRules.AUTO_KETTLE_MULTIPLIER if auto_kettle else BrewDayRules.NORMAL_MULTIPLIER
+	var brewed : float = snappedf(quality * multiplier, BrewResolver.QUALITY_PRECISION)
+	return "\n" + UiText.of(AUTO_KETTLE_FORMAT if auto_kettle else NORMAL_DAY_FORMAT) % QualityTier.label(brewed)
 
 
 static func _malt_line(malt_bonus : float) -> String:

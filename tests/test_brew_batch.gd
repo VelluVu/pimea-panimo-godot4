@@ -135,15 +135,15 @@ func test_decline_rate_multiplier_slows_post_shelf_life_quality_loss() -> void:
 func test_quality_tier_boundaries() -> void:
 	var batch := _make_batch(0, 100, 0.0)
 	batch.current_quality = 0.69
-	assert_eq(batch.get_quality_tier_string(), StringContainer.QUALITY_TIER_POOR)
+	assert_eq(batch.get_quality_tier_string(), QualityTier.POOR_TEXT)
 	batch.current_quality = 0.7
-	assert_eq(batch.get_quality_tier_string(), StringContainer.QUALITY_TIER_MEDIOCRE)
+	assert_eq(batch.get_quality_tier_string(), QualityTier.MEDIOCRE_TEXT)
 	batch.current_quality = 0.9
-	assert_eq(batch.get_quality_tier_string(), StringContainer.QUALITY_TIER_GOOD)
+	assert_eq(batch.get_quality_tier_string(), QualityTier.GOOD_TEXT)
 	batch.current_quality = 1.1
-	assert_eq(batch.get_quality_tier_string(), StringContainer.QUALITY_TIER_EXCELLENT)
+	assert_eq(batch.get_quality_tier_string(), QualityTier.EXCELLENT_TEXT)
 	batch.current_quality = 1.3
-	assert_eq(batch.get_quality_tier_string(), StringContainer.QUALITY_TIER_MASTERFUL)
+	assert_eq(batch.get_quality_tier_string(), QualityTier.MASTERFUL_TEXT)
 
 
 func test_aged_price_grows_to_the_peak_and_ends_when_spoiling() -> void:

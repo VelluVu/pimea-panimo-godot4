@@ -162,16 +162,7 @@ func get_aging_trend_label() -> String:
 
 
 func get_quality_tier_string() -> String:
-	if current_quality < 0.7:
-		return tr(StringContainer.QUALITY_TIER_POOR)
-	elif current_quality < 0.9:
-		return tr(StringContainer.QUALITY_TIER_MEDIOCRE)
-	elif current_quality < 1.1:
-		return tr(StringContainer.QUALITY_TIER_GOOD)
-	elif current_quality < 1.3:
-		return tr(StringContainer.QUALITY_TIER_EXCELLENT)
-	else:
-		return tr(StringContainer.QUALITY_TIER_MASTERFUL)
+	return QualityTier.label(current_quality)
 
 
 func get_quality_breakdown_tooltip() -> String:

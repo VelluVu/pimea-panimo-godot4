@@ -70,11 +70,6 @@ const HOP_FLAVOR_PINE : String = "Mäntyinen"
 const HOP_FLAVOR_NOBLE : String = "Jalo"
 const HOP_FLAVOR_EARTHY : String = "Maanläheinen"
 
-const QUALITY_TIER_POOR : String = "Heikko"
-const QUALITY_TIER_MEDIOCRE : String = "Tyydyttävä"
-const QUALITY_TIER_GOOD : String = "Hyvä"
-const QUALITY_TIER_EXCELLENT : String = "Erinomainen"
-const QUALITY_TIER_MASTERFUL : String = "Mestarillinen"
 
 const BREW_QUALITY_BREAKDOWN_TOOLTIP : String = "Osumatarkkuus: %s%%\nHumalakerrokset: %s/%s\nMakuosuma: %s\nMaustebonus: %s%%\nTyylin maltaat: +%s%%"
 const YES_STRING : String = "Kyllä"
