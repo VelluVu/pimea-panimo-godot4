@@ -73,7 +73,7 @@ func _float_popup(text : String, color : Color, offset : Vector2) -> void:
 	var target_color := popup.modulate
 	target_color.a = 0.0
 
-	tween.tween_property(popup, "position", target_pos, XP_POPUP_DURATION_SECONDS)
+	PixelStepTween.move_property(tween, popup, &"position", popup.position, target_pos, XP_POPUP_DURATION_SECONDS)
 	tween.tween_property(popup, "modulate", target_color, XP_POPUP_DURATION_SECONDS)
 
 	tween.chain().tween_callback(popup.queue_free)

@@ -82,7 +82,7 @@ func slide_to_counter(slide_duration_seconds : float = SLIDE_DURATION_SECONDS, r
 	_counter.show()
 
 	var tween := _owner.create_tween()
-	tween.tween_property(_counter, "position", rest_position, slide_duration_seconds).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	PixelStepTween.move_property(tween, _counter, &"position", _counter.position, rest_position, slide_duration_seconds, _counter.scale.x).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 
 
 func hide_counter() -> void:

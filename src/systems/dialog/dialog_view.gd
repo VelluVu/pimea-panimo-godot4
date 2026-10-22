@@ -116,7 +116,7 @@ func show_popup(text : String, color : Color, anchor_pos : Vector2, emphasis : E
 	var faded : Color = color
 	faded.a = 0.0
 	var duration : float = popup_duration(emphasis)
-	tween.tween_property(popup, "global_position", global_pos + Vector2(0.0, -POPUP_FLOAT_DISTANCE), duration)
+	tween.tween_method(_place_popup.bind(popup), global_pos, global_pos + Vector2(0.0, -POPUP_FLOAT_DISTANCE), duration)
 	tween.parallel().tween_property(popup, "modulate", faded, duration)
 	tween.tween_callback(popup.queue_free)
 
@@ -141,12 +141,13 @@ func show_drifting_note(text : String, color : Color, anchor_pos : Vector2) -> v
 	note.add_theme_color_override(&"font_outline_color", DRIFTING_NOTE_OUTLINE_COLOR)
 	_spawn_point.add_child(note)
 	note.reset_size()
-	note.global_position = anchor_pos - Vector2(note.size.x / 2.0, note.size.y)
+	note.global_position = (anchor_pos - Vector2(note.size.x / 2.0, note.size.y)).round()
 
 	var faded : Color = color
 	faded.a = 0.0
 	var tween := create_tween().set_parallel(true)
-	tween.tween_property(note, "global_position:y", note.global_position.y - DRIFTING_NOTE_RISE, DRIFTING_NOTE_SECONDS)
+	var note_from : Vector2 = note.global_position
+	tween.tween_method(_place_popup.bind(note), note_from, note_from - Vector2(0.0, DRIFTING_NOTE_RISE), DRIFTING_NOTE_SECONDS)
 	tween.tween_property(note, "modulate", faded, DRIFTING_NOTE_SECONDS * 0.4).set_delay(DRIFTING_NOTE_SECONDS * 0.6)
 	tween.chain().tween_callback(note.queue_free)
 
@@ -169,7 +170,7 @@ func _enlarge(popup : Label, font_scale : float) -> void:
 
 ## Rises from below its spot past it and settles, on whole pixels all the way.
 func _hop_in(tween : Tween, popup : Label, global_pos : Vector2, hop : float) -> void:
-	var place := func(at : Vector2) -> void: popup.global_position = at.round()
+	var place := _place_popup.bind(popup)
 	var below : Vector2 = global_pos + Vector2(0.0, hop)
 	var above : Vector2 = global_pos - Vector2(0.0, hop * 0.5)
 	popup.global_position = below
@@ -178,10 +179,17 @@ func _hop_in(tween : Tween, popup : Label, global_pos : Vector2, hop : float) ->
 
 
 func _shake(tween : Tween, popup : Label, global_pos : Vector2) -> void:
+	var from : Vector2 = global_pos
 	for step : int in POPUP_SHAKE_STEPS:
 		var jolt := (Vector2(randf_range(-1.0, 1.0), randf_range(-1.0, 1.0)) * POPUP_SHAKE_PIXELS).round()
-		tween.tween_property(popup, "global_position", global_pos + jolt, POPUP_SHAKE_STEP_SECONDS)
-	tween.tween_property(popup, "global_position", global_pos, POPUP_SHAKE_STEP_SECONDS)
+		tween.tween_method(_place_popup.bind(popup), from, global_pos + jolt, POPUP_SHAKE_STEP_SECONDS)
+		from = global_pos + jolt
+	tween.tween_method(_place_popup.bind(popup), from, global_pos, POPUP_SHAKE_STEP_SECONDS)
+
+
+## Tween target for popups: on whole pixels, so pixel text never sits between them.
+func _place_popup(at : Vector2, popup : Control) -> void:
+	popup.global_position = at.round()
 
 
 ## The newest line always shows in full; a bubble it still overlaps after stacking

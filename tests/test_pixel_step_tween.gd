@@ -38,3 +38,15 @@ func test_tween_moves_the_node_on_the_grid() -> void:
 	tween.custom_step(1.0)
 	assert_eq(node.position, Vector2(10, 0))
 	node.free()
+
+
+func test_a_property_moves_on_whole_pixels() -> void:
+	var label := Label.new()
+	var tween : Tween = (Engine.get_main_loop() as SceneTree).create_tween()
+	PixelStepTweenScript.move_property(tween, label, &"position", Vector2(0, 0), Vector2(0, -7), 1.0)
+	tween.pause()
+	tween.custom_step(0.6)
+	assert_eq(label.position, Vector2(0, -4))
+	tween.custom_step(1.0)
+	assert_eq(label.position, Vector2(0, -7))
+	label.free()

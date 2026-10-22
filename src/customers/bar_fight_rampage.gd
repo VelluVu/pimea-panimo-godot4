@@ -54,14 +54,16 @@ static func play(actor: Node2D, sprite: AnimatedSprite2D, glass_texture: Texture
 		var direction: float = 1.0 if i % 2 == 0 else -1.0
 		MirroredAnimation.play(sprite, Customer.ANIM_WALK_RIGHT, direction < 0.0)
 		var stomp := actor.create_tween()
-		stomp.tween_property(actor, "position", home + Vector2(STOMP_DISTANCE * direction, -STOMP_HOP), STOMP_SECONDS * 0.5)
-		stomp.tween_property(actor, "position", home + Vector2(STOMP_DISTANCE * direction, 0.0), STOMP_SECONDS * 0.5)
+		var lifted : Vector2 = home + Vector2(STOMP_DISTANCE * direction, -STOMP_HOP)
+		var landed : Vector2 = home + Vector2(STOMP_DISTANCE * direction, 0.0)
+		PixelStepTween.move_property(stomp, actor, &"position", actor.position, lifted, STOMP_SECONDS * 0.5, sprite.scale.x)
+		PixelStepTween.move_property(stomp, actor, &"position", lifted, landed, STOMP_SECONDS * 0.5, sprite.scale.x)
 		for throw in share_of(i, glass_count, STOMPS):
 			_throw_glass(actor, glass_texture, direction)
 		await stomp.finished
 
 	var settle := actor.create_tween()
-	settle.tween_property(actor, "position", home, RETURN_SECONDS)
+	PixelStepTween.move_property(settle, actor, &"position", actor.position, home, RETURN_SECONDS, sprite.scale.x)
 	await settle.finished
 	sprite.modulate = Color.WHITE
 	sprite.flip_h = false
@@ -115,6 +117,6 @@ static func _shatter(glass: Sprite2D) -> void:
 		# Angles between PI and TAU point upward, so shards burst up off the floor.
 		var target: Vector2 = at + Vector2.from_angle(randf_range(PI, TAU)) * randf_range(SHARD_SPREAD * 0.5, SHARD_SPREAD)
 		var burst := shard.create_tween().set_parallel()
-		burst.tween_property(shard, "position", target, SHARD_SECONDS).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		PixelStepTween.move_property(burst, shard, &"position", at, target, SHARD_SECONDS).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 		burst.tween_property(shard, "modulate:a", 0.0, SHARD_SECONDS)
 		burst.chain().tween_callback(shard.queue_free)

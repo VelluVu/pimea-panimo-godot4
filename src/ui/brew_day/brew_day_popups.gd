@@ -79,5 +79,5 @@ func _spawn(text : String, color : Color, call : bool) -> void:
 	end.x += shift
 	label.position = start.round()
 	var tween : Tween = label.create_tween()
-	tween.tween_property(label, "position", end.round(), CALL_SECONDS if call else SECONDS)
+	PixelStepTween.move_property(tween, label, &"position", start.round(), end.round(), CALL_SECONDS if call else SECONDS)
 	tween.tween_callback(label.queue_free)
