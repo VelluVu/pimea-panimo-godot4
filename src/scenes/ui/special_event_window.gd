@@ -227,6 +227,6 @@ func _pop_reward(text: String, color: Color, row: int) -> void:
 	var tween := label.create_tween()
 	tween.tween_interval(row * REWARD_STAGGER_SECONDS)
 	tween.tween_property(label, "modulate:a", 1.0, 0.1)
-	tween.parallel().tween_property(label, "global_position", start + REWARD_DRIFT, REWARD_RISE_SECONDS).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	PixelStepTween.move_property(tween.parallel(), label, &"global_position", start, start + REWARD_DRIFT, REWARD_RISE_SECONDS).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	tween.parallel().tween_property(label, "modulate:a", 0.0, REWARD_RISE_SECONDS * 0.4).set_delay(REWARD_RISE_SECONDS * 0.6)
 	tween.tween_callback(label.queue_free)

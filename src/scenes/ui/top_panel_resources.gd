@@ -192,6 +192,6 @@ func _create_popup_effect(target_label: Label, amount: float, suffix: String, is
 	var tween := create_tween().set_parallel(true)
 	var target_color := popup.modulate
 	target_color.a = 0.0
-	tween.tween_property(popup, "position", popup.position + Vector2(0, -POPUP_FLOAT_DISTANCE), POPUP_EFFECT_DURATION_SECONDS)
+	PixelStepTween.move_property(tween, popup, &"position", popup.position, popup.position + Vector2(0, -POPUP_FLOAT_DISTANCE), POPUP_EFFECT_DURATION_SECONDS)
 	tween.tween_property(popup, "modulate", target_color, POPUP_EFFECT_DURATION_SECONDS)
 	tween.chain().tween_callback(popup.queue_free)

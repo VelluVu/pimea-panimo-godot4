@@ -13,6 +13,12 @@ static func move(tween : Tween, node : Node2D, from : Vector2, to : Vector2, sec
 	return tween.tween_method(set_position, from, to, seconds)
 
 
+## move() for any Vector2 property, such as a Control's `position` or a local position.
+static func move_property(tween : Tween, object : Object, property : StringName, from : Vector2, to : Vector2, seconds : float, step : float = 1.0) -> MethodTweener:
+	var set_value := func(at : Vector2) -> void: object.set(property, snapped_on_path(from, to, at, step))
+	return tween.tween_method(set_value, from, to, seconds)
+
+
 ## `at` on the grid of `step` that starts from `from`, rounded to whole pixels; the end
 ## lands on `to` itself.
 static func snapped_on_path(from : Vector2, to : Vector2, at : Vector2, step : float) -> Vector2:

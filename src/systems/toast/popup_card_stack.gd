@@ -169,15 +169,15 @@ func _restack() -> void:
 			holder.position.y = target_y
 		else:
 			holder.create_tween().set_ignore_time_scale().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT) \
-				.tween_property(holder, "position:y", target_y, PUSH_SECONDS)
+				.tween_method(_place_y.bind(holder), holder.position.y, target_y, PUSH_SECONDS)
 
 
 func _animate_in(holder : Control, card : PanelContainer) -> void:
 	card.position.y = RISE_DISTANCE
 	var tween : Tween = card.create_tween().set_ignore_time_scale()
-	tween.tween_property(card, "position:y", 0.0, rise_seconds).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.tween_method(_place_y.bind(card), RISE_DISTANCE, 0.0, rise_seconds).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	tween.parallel().tween_property(card, "modulate:a", 1.0, rise_seconds)
-	tween.tween_property(card, "position:y", -DRIFT_DISTANCE, hold_seconds + fade_seconds)
+	tween.tween_method(_place_y.bind(card), 0.0, -DRIFT_DISTANCE, hold_seconds + fade_seconds)
 	tween.parallel().tween_property(card, "modulate:a", 0.0, fade_seconds).set_delay(hold_seconds)
 	tween.tween_callback(_remove.bind(holder))
 	holder.set_meta(&"tween", tween)
@@ -196,3 +196,8 @@ func _dismiss(holder : Control) -> void:
 func _remove(holder : Control) -> void:
 	_holders.erase(holder)
 	holder.queue_free()
+
+
+## Tween target for cards: on whole pixels, so their pixel text never sits between them.
+func _place_y(y : float, control : Control) -> void:
+	control.position.y = roundf(y)
