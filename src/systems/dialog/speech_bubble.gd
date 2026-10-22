@@ -14,7 +14,7 @@ const BUBBLE_COLOR : Color = Color(0.97, 0.94, 0.85)
 const BORDER_COLOR : Color = Color(0.2, 0.13, 0.08)
 const TEXT_COLOR : Color = Color(0.14, 0.09, 0.05)
 ## What a collapsed bubble shows; the full line stays in its tooltip.
-const COLLAPSED_TEXT : String = "…"
+const COLLAPSED_TEXT : String = "..."
 
 @onready var label : Label = $Label
 
@@ -49,7 +49,7 @@ func set_text(text : String) -> void:
 	queue_redraw()
 
 
-## Shrinks to a small "…" badge; pointing at it (or holding a finger) shows the line.
+## Shrinks to a small "..." badge; pointing at it (or holding a finger) shows the line.
 func collapse() -> void:
 	if collapsed:
 		return
