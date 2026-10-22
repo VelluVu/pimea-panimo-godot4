@@ -106,7 +106,7 @@ theme_override_constants/separation = 1
 
 [node name="IconLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/BarWorkColumn/BarWorkTreeArea/tip_vieraanvarainen_perinne/VBox" unique_id=1353040641]
 layout_mode = 2
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 32
 horizontal_alignment = 1
 
 [node name="LevelBonusLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/BarWorkColumn/BarWorkTreeArea/tip_vieraanvarainen_perinne/VBox" unique_id=322330312]
@@ -134,7 +134,7 @@ theme_override_constants/separation = 1
 
 [node name="IconLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/BarWorkColumn/BarWorkTreeArea/reputation_tunnettu_nimi/VBox" unique_id=1068894784]
 layout_mode = 2
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 32
 horizontal_alignment = 1
 
 [node name="LevelBonusLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/BarWorkColumn/BarWorkTreeArea/reputation_tunnettu_nimi/VBox" unique_id=1723271798]
@@ -162,7 +162,7 @@ theme_override_constants/separation = 1
 
 [node name="IconLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/BarWorkColumn/BarWorkTreeArea/raid_rauhallinen_kellari/VBox" unique_id=258780966]
 layout_mode = 2
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 32
 horizontal_alignment = 1
 
 [node name="LevelBonusLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/BarWorkColumn/BarWorkTreeArea/raid_rauhallinen_kellari/VBox" unique_id=342464444]
@@ -190,7 +190,7 @@ theme_override_constants/separation = 1
 
 [node name="IconLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/BarWorkColumn/BarWorkTreeArea/reputation_kanta_asiakkaat/VBox" unique_id=154431819]
 layout_mode = 2
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 32
 horizontal_alignment = 1
 
 [node name="LevelBonusLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/BarWorkColumn/BarWorkTreeArea/reputation_kanta_asiakkaat/VBox" unique_id=411936401]
@@ -218,7 +218,7 @@ theme_override_constants/separation = 1
 
 [node name="IconLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/BarWorkColumn/BarWorkTreeArea/raid_terava_silmae/VBox" unique_id=432284117]
 layout_mode = 2
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 32
 horizontal_alignment = 1
 
 [node name="LevelBonusLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/BarWorkColumn/BarWorkTreeArea/raid_terava_silmae/VBox" unique_id=35714949]
@@ -246,7 +246,7 @@ theme_override_constants/separation = 1
 
 [node name="IconLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/BarWorkColumn/BarWorkTreeArea/bar_capstone_baarimestari/VBox" unique_id=2010035482]
 layout_mode = 2
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 32
 horizontal_alignment = 1
 
 [node name="LevelBonusLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/BarWorkColumn/BarWorkTreeArea/bar_capstone_baarimestari/VBox" unique_id=2097707576]
@@ -301,7 +301,7 @@ theme_override_constants/separation = 1
 
 [node name="IconLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/BrewingColumn/BrewingTreeArea/quality_perinnetaito/VBox" unique_id=174703625]
 layout_mode = 2
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 32
 horizontal_alignment = 1
 
 [node name="LevelBonusLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/BrewingColumn/BrewingTreeArea/quality_perinnetaito/VBox" unique_id=2090980394]
@@ -329,7 +329,7 @@ theme_override_constants/separation = 1
 
 [node name="IconLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/BrewingColumn/BrewingTreeArea/quality_tarkka_pilkonta/VBox" unique_id=554389849]
 layout_mode = 2
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 32
 horizontal_alignment = 1
 
 [node name="LevelBonusLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/BrewingColumn/BrewingTreeArea/quality_tarkka_pilkonta/VBox" unique_id=1459588127]
@@ -357,7 +357,7 @@ theme_override_constants/separation = 1
 
 [node name="IconLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/BrewingColumn/BrewingTreeArea/quality_kaymisen_hallinta/VBox" unique_id=869253322]
 layout_mode = 2
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 32
 horizontal_alignment = 1
 
 [node name="LevelBonusLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/BrewingColumn/BrewingTreeArea/quality_kaymisen_hallinta/VBox" unique_id=826354990]
@@ -385,7 +385,7 @@ theme_override_constants/separation = 1
 
 [node name="IconLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/BrewingColumn/BrewingTreeArea/quality_mallastuksen_mestari/VBox" unique_id=576167798]
 layout_mode = 2
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 32
 horizontal_alignment = 1
 
 [node name="LevelBonusLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/BrewingColumn/BrewingTreeArea/quality_mallastuksen_mestari/VBox" unique_id=1561163342]
@@ -413,7 +413,7 @@ theme_override_constants/separation = 1
 
 [node name="IconLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/BrewingColumn/BrewingTreeArea/quality_hygieniamestari/VBox" unique_id=2103867049]
 layout_mode = 2
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 32
 horizontal_alignment = 1
 
 [node name="LevelBonusLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/BrewingColumn/BrewingTreeArea/quality_hygieniamestari/VBox" unique_id=1945496179]
@@ -441,7 +441,7 @@ theme_override_constants/separation = 1
 
 [node name="IconLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/BrewingColumn/BrewingTreeArea/brewing_capstone_panimomestari/VBox" unique_id=1734497935]
 layout_mode = 2
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 32
 horizontal_alignment = 1
 
 [node name="LevelBonusLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/BrewingColumn/BrewingTreeArea/brewing_capstone_panimomestari/VBox" unique_id=929365162]
@@ -496,7 +496,7 @@ theme_override_constants/separation = 1
 
 [node name="IconLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/MarketingColumn/MarketingTreeArea/marketing_tukkukauppias/VBox" unique_id=266184149]
 layout_mode = 2
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 32
 horizontal_alignment = 1
 
 [node name="LevelBonusLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/MarketingColumn/MarketingTreeArea/marketing_tukkukauppias/VBox" unique_id=1034830470]
@@ -524,7 +524,7 @@ theme_override_constants/separation = 1
 
 [node name="IconLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/MarketingColumn/MarketingTreeArea/ingredient_price_neuvottelutaito/VBox" unique_id=1743599883]
 layout_mode = 2
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 32
 horizontal_alignment = 1
 
 [node name="LevelBonusLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/MarketingColumn/MarketingTreeArea/ingredient_price_neuvottelutaito/VBox" unique_id=1979032202]
@@ -552,7 +552,7 @@ theme_override_constants/separation = 1
 
 [node name="IconLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/MarketingColumn/MarketingTreeArea/marketing_mainoskampanja/VBox" unique_id=1920192239]
 layout_mode = 2
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 32
 horizontal_alignment = 1
 
 [node name="LevelBonusLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/MarketingColumn/MarketingTreeArea/marketing_mainoskampanja/VBox" unique_id=2060682959]
@@ -580,7 +580,7 @@ theme_override_constants/separation = 1
 
 [node name="IconLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/MarketingColumn/MarketingTreeArea/distribution_income_tukkuhinnat/VBox" unique_id=891193208]
 layout_mode = 2
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 32
 horizontal_alignment = 1
 
 [node name="LevelBonusLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/MarketingColumn/MarketingTreeArea/distribution_income_tukkuhinnat/VBox" unique_id=1068691086]
@@ -608,7 +608,7 @@ theme_override_constants/separation = 1
 
 [node name="IconLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/MarketingColumn/MarketingTreeArea/marketing_vahva_brandi/VBox" unique_id=1600190278]
 layout_mode = 2
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 32
 horizontal_alignment = 1
 
 [node name="LevelBonusLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/MarketingColumn/MarketingTreeArea/marketing_vahva_brandi/VBox" unique_id=625014951]
@@ -636,7 +636,7 @@ theme_override_constants/separation = 1
 
 [node name="IconLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/MarketingColumn/MarketingTreeArea/raid_piilokatko/VBox" unique_id=1240638454]
 layout_mode = 2
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 32
 horizontal_alignment = 1
 
 [node name="LevelBonusLabel" type="Label" parent="MarginContainer/MainVBox/PathsHBox/MarketingColumn/MarketingTreeArea/raid_piilokatko/VBox" unique_id=1305929436]

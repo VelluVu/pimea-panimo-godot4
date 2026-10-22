@@ -3,6 +3,7 @@
 [ext_resource type="FontFile" uid="uid://xfbjk7l1sd3n" path="res://assets/fonts/m5x7.ttf" id="1_qtffb"]
 [ext_resource type="FontFile" uid="uid://b51b16b2hykao" path="res://assets/fonts/twemoji/Twemoji.Mozilla.ttf" id="2_twemoji"]
 [ext_resource type="FontFile" uid="uid://dq8nfjdqbqec5" path="res://assets/fonts/noto_sans_symbols2/NotoSansSymbols2-Regular.ttf" id="3_symbols"]
+[ext_resource type="FontFile" uid="uid://cyjj8jvj27a41" path="res://assets/fonts/pimea_icons/pimea_icons.ttf" id="4_icons"]
 [ext_resource type="Texture2D" uid="uid://c0oqendgsu212" path="res://assets/textures/ui/button_disabled.png" id="ui_button_disabled"]
 [ext_resource type="Texture2D" uid="uid://s2ox5yvkyanu" path="res://assets/textures/ui/button_focus.png" id="ui_button_focus"]
 [ext_resource type="Texture2D" uid="uid://blty1aqnd7gv" path="res://assets/textures/ui/button_hover.png" id="ui_button_hover"]
@@ -227,7 +228,7 @@ texture_margin_right = 4.0
 texture_margin_bottom = 4.0
 
 [sub_resource type="FontVariation" id="FontVariation_main"]
-fallbacks = Array[Font]([ExtResource("3_symbols"), ExtResource("2_twemoji")])
+fallbacks = Array[Font]([ExtResource("4_icons"), ExtResource("3_symbols"), ExtResource("2_twemoji")])
 base_font = ExtResource("1_qtffb")
 
 [resource]
