@@ -47,7 +47,7 @@ text = "Console"
 unique_name_in_owner = true
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
-theme_override_font_sizes/font_size = 10
+theme_override_font_sizes/font_size = 16
 text = "▼"
 
 [node name="BodyVBox" type="VBoxContainer" parent="MarginContainer/MainVBox"]
