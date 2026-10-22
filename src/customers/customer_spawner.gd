@@ -230,6 +230,6 @@ func _active_styles() -> Array[BeerStyle]:
 ## During a day event, leans toward its featured group visit at its own chance.
 func _pick_group_event() -> GroupVisitEventData:
 	var day_event: DayEventData = DayEventManager.get_active_event()
-	if day_event != null and day_event.featured_group_event != null and randf() < day_event.featured_group_event_chance:
+	if day_event != null and day_event.featured_group_event != null and CustomerRegistry.is_group_eligible(day_event.featured_group_event) and randf() < day_event.featured_group_event_chance:
 		return day_event.featured_group_event
 	return CustomerRegistry.get_random_group_event()
