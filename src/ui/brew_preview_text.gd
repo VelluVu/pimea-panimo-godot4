@@ -25,7 +25,8 @@ static func text(table_empty : bool, preview : BrewResult, style_known : bool) -
 	if not style_known:
 		return UiText.of(UNKNOWN_MATCH_FORMAT) % [preview.final_ebc, preview.final_ibu, preview.abv]
 	return UiText.of(KNOWN_MATCH_FORMAT) % [UiText.of(preview.beer_style.style_name), preview.final_ebc, preview.final_ibu, preview.abv, roundi(preview.original_quality * 100)] \
-			+ SpicePreviewText.line(preview.spice_bonus, preview.unsuited_spice_penalty) + _malt_line(preview.malt_bonus)
+			+ SpicePreviewText.line(preview.spice_bonus, preview.unsuited_spice_penalty) + _malt_line(preview.malt_bonus) \
+			+ BrewAimText.lines(preview)
 
 
 static func _malt_line(malt_bonus : float) -> String:
