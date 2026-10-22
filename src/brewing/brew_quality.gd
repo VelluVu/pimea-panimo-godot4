@@ -94,7 +94,11 @@ static func precision_score(mixture : BrewMixture, beer_style : BeerStyle) -> fl
 	return (ebc_precision + ibu_score + abv_precision) / 3.0
 
 
+## A style with no hop or spice of its own (Kotikalja) has nothing to miss, or it could
+## never be good.
 static func flavor_matched(mixture : BrewMixture, beer_style : BeerStyle) -> bool:
+	if beer_style.preferred_hop_profiles.is_empty() and beer_style.required_spice_ids.is_empty():
+		return true
 	if beer_style.required_spice_ids.any(func(id : int) -> bool: return mixture.spice_ids.has(id)):
 		return true
 	return mixture.hop_profiles.keys().any(beer_style.has_preferred_hop_profile)

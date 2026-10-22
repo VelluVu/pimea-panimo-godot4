@@ -26,7 +26,7 @@ static func lines(preview : BrewResult) -> String:
 	var result : String = ""
 	if not parts.is_empty():
 		result += "\n" + UiText.of(AIM_FORMAT) % ", ".join(parts)
-	if not preview.flavor_matched and _has_flavor(beer_style):
+	if not preview.flavor_matched:
 		result += "\n" + UiText.of(NO_FLAVOR_FORMAT) % roundi(BrewQuality.FLAVOR_MATCH_BONUS * 100.0)
 	return result
 
@@ -34,7 +34,3 @@ static func lines(preview : BrewResult) -> String:
 static func _centre(min_v : float, max_v : float) -> float:
 	return (min_v + max_v) / 2.0
 
-
-## Styles with neither a preferred hop nor a required spice can never match a flavour.
-static func _has_flavor(beer_style : BeerStyle) -> bool:
-	return not beer_style.preferred_hop_profiles.is_empty() or not beer_style.required_spice_ids.is_empty()

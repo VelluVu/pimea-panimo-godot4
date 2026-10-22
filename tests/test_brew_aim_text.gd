@@ -48,8 +48,3 @@ func test_every_far_value_is_listed() -> void:
 func test_a_missing_style_flavour_is_named() -> void:
 	assert_true(BrewAimTextScript.lines(_preview(6, 18, 4.7, false)).contains("puuttuu: -10 %"))
 
-
-func test_a_style_without_a_flavour_never_asks_for_one() -> void:
-	var preview : BrewResult = _preview(6, 18, 4.7, false)
-	preview.beer_style.preferred_hop_profiles.clear()
-	assert_eq(BrewAimTextScript.lines(preview), "")

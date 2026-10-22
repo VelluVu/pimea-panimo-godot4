@@ -138,6 +138,13 @@ func test_required_spice_on_the_table_counts_as_flavor_match() -> void:
 	assert_true(BrewQualityScript.flavor_matched(mixture, beer_style))
 
 
+func test_a_style_with_no_flavor_of_its_own_always_matches() -> void:
+	assert_true(BrewQualityScript.flavor_matched(_make_mixture(0.0, 0.0, 0), BeerStyle.new()))
+	var hopped := BeerStyle.new()
+	hopped.preferred_hop_profiles.assign([HopData.FlavorProfile.NOBLE])
+	assert_false(BrewQualityScript.flavor_matched(_make_mixture(0.0, 0.0, 0), hopped))
+
+
 func test_spice_bonus_counts_preferred_spices_and_caps() -> void:
 	var beer_style := BeerStyle.new()
 	beer_style.preferred_spice_ids = [401, 402, 403]
