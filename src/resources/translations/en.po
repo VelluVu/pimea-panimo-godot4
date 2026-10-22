@@ -6428,6 +6428,26 @@ msgstr "The server is busy. Try again in a moment."
 msgid "Palvelin ei hyväksynyt tulosta."
 msgstr "The server did not accept the score."
 
+#: src/ui/brew_aim_text.gd
+msgid "%.1f %% ABV"
+msgstr "%.1f %% ABV"
+
+#: src/ui/brew_aim_text.gd
+msgid "EBC %d"
+msgstr "EBC %d"
+
+#: src/ui/brew_aim_text.gd
+msgid "IBU %d"
+msgstr "IBU %d"
+
+#: src/ui/brew_aim_text.gd
+msgid "Tyylin humala tai mauste puuttuu: -%d %%"
+msgstr "Missing the style's hop or spice: -%d %%"
+
+#: src/ui/brew_aim_text.gd
+msgid "Tyylin keskikohta: %s"
+msgstr "Style's centre: %s"
+
 #: src/ui/brew_day/brew_day_lines.gd
 msgid "%s ei ole aromihumala."
 msgstr "%s is not an aroma hop."
