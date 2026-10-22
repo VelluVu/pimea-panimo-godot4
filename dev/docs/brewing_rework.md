@@ -132,6 +132,13 @@ Carafa and roasted barley, so a recipe can use a few percent of them.
 | **Roggenbier** (new) | ale | Ruis 50 % | Ruis | 18-40 | 10-20 | 4.2-6.0 | 2.5 Ruis + 1 Münchenin + 0.5 Pilsner + 0.3 Karamelli + 0.1 Suklaa (copper-brown, as real ones) |
 | **Irish Dry Stout** (new) | ale | Pale ale 60 % | Paahdettu ohra | 50-100 | 25-45 | 3.8-5.0 | 4 Pale ale + 0.5 ohra → 75.9, 4.8 % |
 
+Since 2026-10-22 every reference recipe (the default recipe a player is given) scores at
+least 1.02, so it is "Hyvä" on a normal brew day (0.9). A player's own first try may well
+be weaker; the brew preview then names the style centre to aim for. Recipes were tuned
+where possible, otherwise the window was centred on the recipe. Some windows and recipes
+in this table are older than that: the `.tres` files are the truth. A style with no hop
+or spice of its own (Kotikalja) always counts as flavour matched.
+
 Favourite hops (book info; profiles count for the flavour bonus):
 
 | Style | Bittering | Aroma / flavour profiles |

@@ -8,6 +8,7 @@ const BrewResolverScript := preload("res://src/brewing/brew_resolver.gd")
 const STYLES_PATH : String = "res://src/resources/beer_styles/"
 const INGREDIENT_FOLDERS : Array[String] = ["malts/", "hops/", "yeasts/", "spices/"]
 const INGREDIENTS_PATH : String = "res://src/resources/ingredients/"
+const GOOD_QUALITY : float = 0.9
 
 
 func suite_name() -> String:
@@ -65,6 +66,15 @@ func test_every_style_value_has_its_data_file() -> void:
 func test_the_typical_abv_is_inside_the_range() -> void:
 	for beer_style : BeerStyle in _resolver().active_styles:
 		assert_true(beer_style.abv >= beer_style.min_abv and beer_style.abv <= beer_style.max_abv, beer_style.style_name)
+
+
+## The default recipe is the game showing how it is done, so it must come out "Hyvä"
+## (BrewBatch's 0.9) on a normal brew day.
+func test_every_reference_recipe_is_good_on_a_normal_brew_day() -> void:
+	var resolver := _resolver()
+	for beer_style : BeerStyle in resolver.active_styles:
+		var result : BrewResult = resolver.resolve_brew_style(beer_style.reference_recipe.duplicate())
+		assert_true(result.original_quality * BrewDayRules.NORMAL_MULTIPLIER >= GOOD_QUALITY, "%s: %.2f" % [beer_style.style_name, result.original_quality])
 
 
 func test_a_fully_upgraded_mash_tun_holds_every_reference_recipe() -> void:
