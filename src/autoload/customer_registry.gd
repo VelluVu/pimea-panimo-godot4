@@ -125,10 +125,14 @@ func get_random_special_event(brewery: Brewery) -> SpecialEventData:
 	return WeightedPicker.pick(special_events_pool, weights) as SpecialEventData
 
 
+## A group comes only once each of its members could walk in alone; null if none can yet.
 func get_random_group_event() -> GroupVisitEventData:
-	if group_events_pool.is_empty():
+	var eligible_events : Array[GroupVisitEventData] = []
+	eligible_events.assign(group_events_pool.filter(func(event_data : GroupVisitEventData) -> bool:
+		return event_data.customer_data_options.all(is_eligible)))
+	if eligible_events.is_empty():
 		return null
-	return group_events_pool.pick_random()
+	return eligible_events.pick_random()
 
 
 ## See CustomerUnlockTracker.is_eligible().
