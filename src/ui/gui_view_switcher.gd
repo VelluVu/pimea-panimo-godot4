@@ -10,6 +10,8 @@ var _brewery_view: BrewingView
 var _brew_preparation_panel: BrewPreparationPanel
 var _shop_entrance_panel: ShopEntrancePanel
 var _brewery_entrance_panel: Control
+## The shop was opened from the brewery, so closing it goes back there instead of the bar.
+var _shop_returns_to_brewery: bool = false
 
 
 func _init(shop_view: ShopView, brewery_view: BrewingView, brew_preparation_panel: BrewPreparationPanel, shop_entrance_panel: ShopEntrancePanel, brewery_entrance_panel: Control) -> void:
@@ -26,6 +28,7 @@ func is_away_from_bar() -> bool:
 
 
 func show_bar() -> void:
+	_shop_returns_to_brewery = false
 	_shop_view.hide()
 	_hide_brewery()
 	_brew_preparation_panel.hide()
@@ -34,10 +37,12 @@ func show_bar() -> void:
 	GUISignals.bar_view_entered.emit()
 
 
-## The shop's spot stays active beside the open shop, so a second tap closes it.
+## The shop's spot stays active beside the open shop, so a second tap closes it. The recipe
+## stays open too, so the player sees what they are buying for.
 func show_shop() -> void:
+	_shop_returns_to_brewery = _brewery_view.visible
 	_hide_brewery()
-	_brew_preparation_panel.hide()
+	_brew_preparation_panel.show()
 	_shop_entrance_panel.activate_shop_panel()
 	_brewery_entrance_panel.hide()
 	_shop_view.show()
@@ -47,6 +52,7 @@ func show_shop() -> void:
 ## The shop entrance stays active, so the brewery can click straight to the shop. Not the
 ## other way round, so a mid-shopping misclick never swaps views.
 func show_brewery() -> void:
+	_shop_returns_to_brewery = false
 	_shop_view.hide()
 	_shop_entrance_panel.activate_shop_panel()
 	_brewery_entrance_panel.hide()
@@ -65,9 +71,17 @@ func toggle_brewery() -> void:
 
 func toggle_shop() -> void:
 	if _shop_view.visible:
-		show_bar()
+		close_shop()
 	else:
 		show_shop()
+
+
+## Buying for a recipe is a trip from the brewery, so the shop hands the player back there.
+func close_shop() -> void:
+	if _shop_returns_to_brewery:
+		show_brewery()
+	else:
+		show_bar()
 
 
 func _hide_brewery() -> void:

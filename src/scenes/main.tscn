@@ -592,7 +592,7 @@ custom_minimum_size = Vector2(140, 0)
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 0.3125
-anchor_bottom = 0.76
+anchor_bottom = 0.925
 grow_vertical = 2
 metadata/_edit_use_anchors_ = true
 
@@ -614,6 +614,12 @@ unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 4
+
+[node name="HeaderLabel" type="Label" parent="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer" unique_id=1135095180]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9490196, 0.7882353, 0.41960785, 1)
+text = "Panimo"
+horizontal_alignment = 1
 
 [node name="MaltAndHopVBoxContainer" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer" unique_id=125395658]
 layout_mode = 2
@@ -838,7 +844,7 @@ layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.1
 anchor_right = 0.3125
-anchor_bottom = 0.76
+anchor_bottom = 0.8317
 offset_bottom = 3.0
 size_flags_horizontal = 3
 mouse_filter = 2
@@ -871,6 +877,12 @@ theme_override_constants/margin_bottom = 4
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 4
+
+[node name="HeaderLabel" type="Label" parent="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer/IngredientSelectionElementList" unique_id=1347142259]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9490196, 0.7882353, 0.41960785, 1)
+text = "Kauppa"
+horizontal_alignment = 1
 
 [node name="ShopTypeSelector" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/Left_ShopView/Panel/MarginContainer/IngredientSelectionElementList" unique_id=1354188737]
 unique_name_in_owner = true
@@ -1012,7 +1024,7 @@ anchor_right = 1.0
 offset_bottom = 23.0
 grow_horizontal = 2
 theme_override_colors/font_color = Color(0.9490196, 0.7882353, 0.41960785, 1)
-text = "Keittola"
+text = "Panimo"
 horizontal_alignment = 1
 
 [node name="LvvRaidWindow" parent="GUI_CanvasLayer/GUI" unique_id=1450580871 instance=ExtResource("x_lvvraidwindow")]

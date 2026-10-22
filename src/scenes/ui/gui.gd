@@ -199,7 +199,10 @@ func _on_shop_button_pressed() -> void:
 
 
 func _on_back_button_pressed() -> void:
-	_views.show_bar()
+	if shop_view.visible:
+		_views.close_shop()
+	else:
+		_views.show_bar()
 
 
 func _on_brewery_button_pressed() -> void:
