@@ -104,18 +104,16 @@ func _on_brewery_state_changed(brewery : Brewery) -> void:
 
 
 func _update_money(money : float) -> void:
-	if last_money != -1.0:
-		# Snapped so float noise from repeated += and -= never shows as "+0.0 €".
-		var change := snappedf(money - last_money, 0.1)
-		if change != 0.0:
-			_create_popup_effect(money_label, change, " €", false, 1)
+	# Snapped so float noise from repeated += and -= never shows as "+0.0 €".
+	var change : float = snappedf(money - last_money, 0.1) if last_money != -1.0 else 0.0
 	money_label.text = "%.1f €" % money
 	last_money = money
+	if change != 0.0:
+		_create_popup_effect(money_label, change, " €", false, 1)
 
 
 func _update_reputation(reputation : int) -> void:
-	if last_reputation != -1 and reputation != last_reputation:
-		_create_popup_effect(reputation_label, reputation - last_reputation, "", false)
+	var change : int = reputation - last_reputation if last_reputation != -1 else 0
 	last_reputation = reputation
 
 	# The bar shows the tier name; the exact value and the tier's details are in the tooltip.
@@ -124,9 +122,11 @@ func _update_reputation(reputation : int) -> void:
 	if tier == null:
 		reputation_label.text = tr(ReputationTierText.VALUE_FORMAT) % reputation
 		reputation_label.tooltip_text = ""
-		return
-	reputation_label.text = tr(tier.tier_name)
-	reputation_label.tooltip_text = ReputationTierText.tooltip(reputation, tier, ReputationTiers.next_tier(reputation, tiers))
+	else:
+		reputation_label.text = tr(tier.tier_name)
+		reputation_label.tooltip_text = ReputationTierText.tooltip(reputation, tier, ReputationTiers.next_tier(reputation, tiers))
+	if change != 0:
+		_create_popup_effect(reputation_label, change, "", false)
 
 
 ## Updates on every change: the XP bar is the constant "almost there" read.
@@ -144,11 +144,12 @@ func _update_level(level : int, xp : int) -> void:
 func _update_risk(brewery : Brewery) -> void:
 	var risk : int = brewery.risk
 	var threshold : int = brewery.get_effective_raid_threshold()
-	if last_risk != -1 and risk != last_risk:
-		_create_popup_effect(risk_label, risk - last_risk, "", true)
+	var change : int = risk - last_risk if last_risk != -1 else 0
 	risk_label.text = RiskText.label(risk, threshold)
 	risk_label.tooltip_text = _risk_tooltip(brewery, threshold)
 	last_risk = risk
+	if change != 0:
+		_create_popup_effect(risk_label, change, "", true)
 
 	if RiskText.is_warning(risk, threshold):
 		risk_label.add_theme_color_override("font_color", RISK_WARNING_COLOR)
@@ -187,7 +188,8 @@ func _create_popup_effect(target_label: Label, amount: float, suffix: String, is
 	popup.modulate = Color.GREEN if good else Color.RED
 
 	target_label.add_child(popup)
-	popup.position = Vector2(target_label.size.x + POPUP_GAP, 0.0)
+	# The minimum size measures the new text now; size lags until the next layout pass.
+	popup.position = Vector2(target_label.get_minimum_size().x + POPUP_GAP, 0.0)
 
 	var tween := create_tween().set_parallel(true)
 	var target_color := popup.modulate

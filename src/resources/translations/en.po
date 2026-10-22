@@ -3007,8 +3007,8 @@ msgid ""
 "Panimo on remontin jäljiltä siisti: raaka-ainepalautuksen mahdollisuus "
 "kasvaa {ingredient_refund_chance}."
 msgstr ""
-"The brewery is tidy after the renovation: ingredient refund chance grows "
-"by {ingredient_refund_chance}."
+"The brewery is tidy after the renovation: ingredient refund chance grows by "
+"{ingredient_refund_chance}."
 
 #: src/resources/event_perks/remontti_keittio.tres
 msgid "Siisti panimo"
@@ -7377,6 +7377,30 @@ msgstr "%s (basic recipe)"
 #: src/ui/reputation_breakdown_text.gd
 msgid "aikainen sulkeminen"
 msgstr "early closing"
+
+#: src/ui/reputation_breakdown_text.gd
+msgid "asiakkaat"
+msgstr "customers"
+
+#: src/ui/reputation_breakdown_text.gd
+msgid "hiipuminen"
+msgstr "fading"
+
+#: src/ui/reputation_breakdown_text.gd
+msgid "muut"
+msgstr "other"
+
+#: src/ui/reputation_breakdown_text.gd
+msgid "panimo"
+msgstr "brewing"
+
+#: src/ui/reputation_breakdown_text.gd
+msgid "tapahtumat"
+msgstr "events"
+
+#: src/ui/reputation_breakdown_text.gd
+msgid "tavoitteet"
+msgstr "goals"
 
 #: src/ui/reputation_tier_text.gd
 msgid "Asiakkaita tulee %d %% tiheämmin"
