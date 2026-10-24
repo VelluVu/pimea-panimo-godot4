@@ -1,0 +1,29 @@
+# Reads the demo leaderboard every three days so the free Supabase project is never
+# paused for inactivity (it pauses after 7 days without requests).
+# Runs on its own; also from the Actions tab > Keep Supabase awake > Run workflow.
+# GitHub turns scheduled workflows off after 60 days without commits in a public repo
+# and emails a warning first: then re-enable it from the Actions tab.
+name: Keep Supabase awake
+
+on:
+  schedule:
+    - cron: "17 6 */3 * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  # The same public values as src/systems/online_leaderboard/online_leaderboard_wiring.gd.
+  PROJECT_URL: "https://dagwyjxvspehgoailvju.supabase.co"
+  PUBLISHABLE_KEY: "sb_publishable_wS34tYQE-8pI74DiX6dvlQ_AqfUh2YI"
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Read one leaderboard row
+        run: |
+          curl -sS --fail --retry 3 --retry-delay 30 \
+            -H "apikey: $PUBLISHABLE_KEY" \
+            "$PROJECT_URL/rest/v1/demo_scores?select=id&limit=1"
