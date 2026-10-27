@@ -3,7 +3,6 @@ extends RefCounted
 
 ## The brewing maths for one 20 L keg: colour by the Morey formula, gravity from the
 ## grist and ABV from the yeast's attenuation, so real recipes land on real numbers.
-## See dev/docs/brewing_rework.md.
 
 const BATCH_LITRES : float = 20.0
 ## Share of a malt's extract the mash gets out; sugar dissolves completely.

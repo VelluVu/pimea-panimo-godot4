@@ -115,7 +115,7 @@ Requires **Godot 4.7** (GL Compatibility renderer).
 godot --headless --path . --export-release "Web Demo" build/web/index.html
 ```
 
-The **Web Demo** preset sets the `demo` feature tag, which ends the season when day 5 begins (`DemoRules`). GitHub Pages is published by the *Web demo* workflow (Actions tab → Run workflow); for itch.io, zip the contents of `build/web/` and upload it as an HTML game. See [dev/docs/browser_demo_plan.md](dev/docs/browser_demo_plan.md).
+The **Web Demo** preset sets the `demo` feature tag, which ends the season when day 5 begins (`DemoRules`). GitHub Pages is published by the *Web demo* workflow (Actions tab → Run workflow); for itch.io, zip the contents of `build/web/` and upload it as an HTML game.
 
 ---
 

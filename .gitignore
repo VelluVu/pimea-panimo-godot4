@@ -27,6 +27,14 @@ dev/tools/playtest/runs/
 dev/music/*.wav
 __pycache__/
 
-# Web export output (see dev/docs/browser_demo_plan.md)
+# Web export output
 build/
 dev/tools/web/out/
+
+# Plans, design docs and Claude's project instructions stay private: they are tracked in the
+# private plans repo (git plans ..., see .git-plans), never in this public one
+CLAUDE.md
+.claude/
+.claudesignore
+dev/docs/*.md
+.git-plans/

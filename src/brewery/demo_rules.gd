@@ -1,7 +1,7 @@
 class_name DemoRules
 extends RefCounted
 
-## The browser demo (feature tag "demo", see dev/docs/browser_demo_plan.md): a shorter
+## The browser demo (feature tag "demo"): a shorter
 ## season, a "full game coming" ending, and Olutoppi talents shown but not for sale.
 
 const DEMO_FEATURE : String = "demo"
