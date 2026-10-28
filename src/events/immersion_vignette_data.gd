@@ -10,6 +10,15 @@ extends Resource
 @export var actors : Array[ImmersionActorData] = []
 ## Relative chance among all vignettes when the spawner picks one.
 @export var weight : float = 1.0
+## The weight in the Halloween season (HalloweenRules); negative = weight all year.
+@export var halloween_weight : float = -1.0
 ## The adopted cellar cat's walk: never in the random pick, played on its own timer
 ## once Brewery.cellar_cat_adopted (ImmersionEventSpawner).
 @export var needs_cellar_cat : bool = false
+
+
+func pick_weight(is_halloween : bool) -> float:
+	if needs_cellar_cat:
+		return 0.0
+	var chosen : float = halloween_weight if is_halloween and halloween_weight >= 0.0 else weight
+	return maxf(chosen, 0.0)

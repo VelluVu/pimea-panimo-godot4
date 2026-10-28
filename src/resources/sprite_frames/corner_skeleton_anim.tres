@@ -1,0 +1,64 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/textures/corner_skeleton.png" id="1_sheet"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0"]
+atlas = ExtResource("1_sheet")
+region = Rect2(0, 0, 24, 22)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1"]
+atlas = ExtResource("1_sheet")
+region = Rect2(24, 0, 24, 22)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2"]
+atlas = ExtResource("1_sheet")
+region = Rect2(48, 0, 24, 22)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3"]
+atlas = ExtResource("1_sheet")
+region = Rect2(72, 0, 24, 22)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4"]
+atlas = ExtResource("1_sheet")
+region = Rect2(96, 0, 24, 22)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 4,
+"texture": SubResource("AtlasTexture_0")
+}, {
+"duration": 6,
+"texture": SubResource("AtlasTexture_1")
+}, {
+"duration": 8,
+"texture": SubResource("AtlasTexture_2")
+}, {
+"duration": 4,
+"texture": SubResource("AtlasTexture_3")
+}, {
+"duration": 1.5,
+"texture": SubResource("AtlasTexture_4")
+}, {
+"duration": 1.5,
+"texture": SubResource("AtlasTexture_3")
+}, {
+"duration": 1.5,
+"texture": SubResource("AtlasTexture_4")
+}, {
+"duration": 4,
+"texture": SubResource("AtlasTexture_3")
+}, {
+"duration": 3,
+"texture": SubResource("AtlasTexture_2")
+}, {
+"duration": 3,
+"texture": SubResource("AtlasTexture_1")
+}, {
+"duration": 3,
+"texture": SubResource("AtlasTexture_0")
+}],
+"loop": false,
+"name": &"peek",
+"speed": 10.0
+}]

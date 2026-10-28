@@ -11,6 +11,8 @@ const STUTTER_SECONDS : float = 0.07
 ## The lamps come back by themselves if no window closes, so the cellar never stays dark.
 const MAX_NIGHT_SECONDS : float = 10.0
 const NIGHT_DARKNESS : Color = Color(0.16, 0.15, 0.2)
+## The day's darkness in the Halloween season: a touch more purple, so the pumpkins glow.
+const HALLOWEEN_DARKNESS : Color = Color(0.4, 0.33, 0.5)
 
 @export_node_path("CanvasModulate") var darkness_path : NodePath
 
@@ -26,6 +28,8 @@ func _ready() -> void:
 	# The recap may pause the tree; the lamps must still switch.
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	darkness = get_node(darkness_path) as CanvasModulate
+	if HalloweenRules.is_season(Time.get_date_dict_from_system()):
+		darkness.color = HALLOWEEN_DARKNESS
 	_day_darkness = darkness.color
 	for node : Node in get_parent().find_children("*", "PointLight2D"):
 		if node is LightFlicker:

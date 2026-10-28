@@ -11,3 +11,4 @@ vignette_name = "Lepakot"
 path_node_name = &"BatPathMarkers"
 actors = Array[ExtResource("2_actor_script")]([ExtResource("3_first"), ExtResource("4_second")])
 weight = 0.7
+halloween_weight = 4.0

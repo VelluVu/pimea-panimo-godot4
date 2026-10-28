@@ -10,3 +10,4 @@ vignette_name = "Hämähäkki"
 path_node_name = &"CockroachPathMarkers"
 actors = Array[ExtResource("2_actor_script")]([ExtResource("3_actor")])
 weight = 0.8
+halloween_weight = 2.0

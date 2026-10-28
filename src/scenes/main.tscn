@@ -78,6 +78,16 @@
 [ext_resource type="Texture2D" uid="uid://bpsny2rj4ahl3" path="res://assets/textures/keg_wash/dirty_keg.png" id="68_abmkx"]
 [ext_resource type="Material" path="res://assets/shaders/hover_outline_material.tres" id="69_72le4"]
 [ext_resource type="Script" uid="uid://dlpfwusea8uno" path="res://src/scenes/screen_shake.gd" id="78_8knqq"]
+[ext_resource type="Script" uid="uid://cg4k8g85v3bhu" path="res://src/scenes/halloween_decor.gd" id="87_ipwpp"]
+[ext_resource type="Texture2D" uid="uid://cu4ivrqepkta7" path="res://assets/textures/pumpkin_32.png" id="88_y168j"]
+[ext_resource type="Texture2D" uid="uid://mkmion8t3onp" path="res://assets/textures/pumpkin_16.png" id="89_6vtdq"]
+[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/barrel_skeleton_anim.tres" id="90_6vtdq"]
+[ext_resource type="Script" uid="uid://bofufrj2f4c5h" path="res://src/scenes/peeking_skeleton.gd" id="91_uvf16"]
+[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/corner_skeleton_anim.tres" id="92_1uuce"]
+[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/tank_skeleton_anim.tres" id="93_g70wa"]
+[ext_resource type="Script" uid="uid://dx0ajhg2dtpmk" path="res://src/scenes/storm.gd" id="94_13y22"]
+[ext_resource type="AudioStream" uid="uid://dsmlot765osne" path="res://assets/audio/sfx/synth/thunder_near.wav" id="95_lbclt"]
+[ext_resource type="AudioStream" uid="uid://j07iyy0lsdgp" path="res://assets/audio/sfx/synth/thunder_far.wav" id="96_5ay3c"]
 [ext_resource type="PackedScene" path="res://src/scenes/ui/achievements_window.tscn" id="99_ach"]
 [ext_resource type="PackedScene" path="res://src/scenes/ui/game_menu_window.tscn" id="99_gamemenu"]
 [ext_resource type="PackedScene" path="res://src/scenes/ui/leaderboard_window.tscn" id="99_leaderboard"]
@@ -1707,6 +1717,112 @@ uv = PackedVector2Array(563.68976, 177.44363, 565.8308, 116.48197, 609.8308, 96.
 
 [node name="ScreenShake" type="Node" parent="." unique_id=2097433215]
 script = ExtResource("78_8knqq")
+
+[node name="HalloweenDecor" type="Node2D" parent="." unique_id=1677587631]
+script = ExtResource("87_ipwpp")
+
+[node name="PumpkinStairs" type="Sprite2D" parent="HalloweenDecor" unique_id=1454258641]
+position = Vector2(125, 290)
+texture = ExtResource("88_y168j")
+
+[node name="GlowStairs" type="PointLight2D" parent="HalloweenDecor/PumpkinStairs" unique_id=298845968]
+color = Color(1, 0.5411765, 0.16470589, 1)
+energy = 1.2
+texture = ExtResource("9_nylc4")
+texture_scale = 0.7
+script = ExtResource("8_5c2vg")
+flicker_amount = 0.3
+flicker_speed = 5.0
+dip_chance_per_second = 0.05
+
+[node name="PumpkinDoor" type="Sprite2D" parent="HalloweenDecor" unique_id=1765319124]
+position = Vector2(545, 292)
+texture = ExtResource("88_y168j")
+
+[node name="GlowDoor" type="PointLight2D" parent="HalloweenDecor/PumpkinDoor" unique_id=2127749963]
+color = Color(1, 0.5411765, 0.16470589, 1)
+energy = 1.2
+texture = ExtResource("9_nylc4")
+texture_scale = 0.7
+script = ExtResource("8_5c2vg")
+flicker_amount = 0.3
+flicker_speed = 4.3
+dip_chance_per_second = 0.05
+
+[node name="PumpkinCounter" type="Sprite2D" parent="HalloweenDecor" unique_id=33659483]
+position = Vector2(358, 227)
+texture = ExtResource("89_6vtdq")
+
+[node name="GlowCounter" type="PointLight2D" parent="HalloweenDecor/PumpkinCounter" unique_id=671439722]
+color = Color(1, 0.5411765, 0.16470589, 1)
+energy = 0.9
+texture = ExtResource("9_nylc4")
+texture_scale = 0.4
+script = ExtResource("8_5c2vg")
+flicker_amount = 0.3
+flicker_speed = 5.7
+dip_chance_per_second = 0.05
+
+[node name="BarrelSkeleton" type="AnimatedSprite2D" parent="HalloweenDecor" unique_id=1904502683]
+texture_filter = 1
+position = Vector2(71, 244)
+sprite_frames = ExtResource("90_6vtdq")
+animation = &"peek"
+centered = false
+script = ExtResource("91_uvf16")
+
+[node name="EyeGlow" type="PointLight2D" parent="HalloweenDecor/BarrelSkeleton" unique_id=464212695]
+position = Vector2(20, 18)
+color = Color(1, 0.6901961, 0.4, 1)
+energy = 1.3
+texture = ExtResource("9_nylc4")
+texture_scale = 0.35
+
+[node name="CornerSkeleton" type="AnimatedSprite2D" parent="HalloweenDecor" unique_id=717337853]
+texture_filter = 1
+position = Vector2(590, 262)
+sprite_frames = ExtResource("92_1uuce")
+animation = &"peek"
+centered = false
+script = ExtResource("91_uvf16")
+min_interval_seconds = 30.0
+max_interval_seconds = 60.0
+
+[node name="EyeGlow" type="PointLight2D" parent="HalloweenDecor/CornerSkeleton" unique_id=1595111513]
+position = Vector2(12, 14)
+color = Color(1, 0.6901961, 0.4, 1)
+energy = 1.3
+texture = ExtResource("9_nylc4")
+texture_scale = 0.35
+
+[node name="TankSkeleton" type="AnimatedSprite2D" parent="HalloweenDecor" unique_id=454365422]
+texture_filter = 1
+position = Vector2(200, 156)
+sprite_frames = ExtResource("93_g70wa")
+animation = &"peek"
+centered = false
+script = ExtResource("91_uvf16")
+min_interval_seconds = 30.0
+max_interval_seconds = 60.0
+
+[node name="EyeGlow" type="PointLight2D" parent="HalloweenDecor/TankSkeleton" unique_id=597112557]
+position = Vector2(7, 6)
+color = Color(1, 0.6901961, 0.4, 1)
+energy = 0.9
+texture = ExtResource("9_nylc4")
+texture_scale = 0.2
+
+[node name="Storm" type="Node2D" parent="HalloweenDecor" unique_id=2078277473]
+script = ExtResource("94_13y22")
+door_lamp_path = NodePath("../../Lights/Light_MainDoor")
+near_thunder = ExtResource("95_lbclt")
+far_thunder = ExtResource("96_5ay3c")
+
+[node name="Flash" type="PointLight2D" parent="HalloweenDecor/Storm" unique_id=1269555137]
+position = Vector2(27, 80)
+color = Color(0.7529412, 0.84705883, 1, 1)
+energy = 0.0
+texture = ExtResource("7_4xk6q")
 
 [connection signal="pressed" from="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/IngredientSelectionPanel/AddRemoveLastModifiedButtonPanel/HBoxContainer/AddButton" to="GUI_CanvasLayer/GUI/Left_BrewingView" method="_on_add_button_pressed"]
 [connection signal="pressed" from="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/IngredientSelectionPanel/AddRemoveLastModifiedButtonPanel/HBoxContainer/RemoveButton" to="GUI_CanvasLayer/GUI/Left_BrewingView" method="_on_remove_button_pressed"]

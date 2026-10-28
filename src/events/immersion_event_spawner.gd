@@ -123,9 +123,10 @@ func _run_vignette(vignette : ImmersionVignetteData) -> void:
 ## Null when nothing is loaded.
 func _pick_vignette() -> ImmersionVignetteData:
 	var weights : Array[float] = []
+	var is_halloween : bool = HalloweenRules.is_season(Time.get_date_dict_from_system())
 	# The cellar cat walks on its own timer (_on_cat_timer_timeout).
 	for vignette : ImmersionVignetteData in vignettes:
-		weights.append(0.0 if vignette.needs_cellar_cat else maxf(vignette.weight, 0.0))
+		weights.append(vignette.pick_weight(is_halloween))
 	return WeightedPicker.pick(vignettes, weights) as ImmersionVignetteData
 
 

@@ -541,7 +541,30 @@ def soured():
     return wah, 0.4
 
 
+def _rolling(seconds, step=0.22, low=0.35):
+    """A slow, uneven swell for a rumble: random levels every `step` s, smoothly joined."""
+    points = rng.uniform(low, 1.0, int(seconds / step) + 2)
+    return np.interp(_t(seconds), np.arange(len(points)) * step, points)
+
+
+def thunder_near():
+    """A storm right outside the door: a sharp crack, then a long grainy roll."""
+    crack = highpass(noise(0.14, hold=1), 1500) * perc(0.14, 22)
+    seconds = 2.8
+    rumble = lowpass(noise(seconds, hold=22), 240) * _rolling(seconds) * env(seconds, 0.04, 1.4)
+    return crush(mix(crack * 0.7, at(0.05, rumble * 2.2)), 32), 0.75
+
+
+def thunder_far():
+    """Thunder further off: no crack, a lower and softer roll that swells in."""
+    seconds = 3.2
+    rumble = lowpass(noise(seconds, hold=36), 150) * _rolling(seconds, 0.3, 0.25) * env(seconds, 0.35, 1.6)
+    return crush(rumble, 32), 0.55
+
+
 RECIPES = {
+    "thunder_near": thunder_near,
+    "thunder_far": thunder_far,
     "keg_scrub": keg_scrub,
     "keg_splash": keg_splash,
     "keg_skitter": keg_skitter,
