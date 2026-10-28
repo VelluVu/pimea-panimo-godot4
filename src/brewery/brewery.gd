@@ -147,6 +147,10 @@ func _init() -> void:
 	if kotikalja_recipe != null:
 		brew_preparation.active_recipe_target = kotikalja_recipe.ingredient_amounts.duplicate()
 		brew_preparation.active_recipe_style_name = BeerStyle.get_style_string_from_style(kotikalja_recipe.beer_style)
+	for beer_style : BeerStyle in resolver.active_styles:
+		if beer_style.known_from_start:
+			discovered_styles[beer_style.style] = true
+			discovery.ensure_default_recipe(beer_style, false)
 
 	discovery.seed_from_meta()
 	_seed_meta_perks()

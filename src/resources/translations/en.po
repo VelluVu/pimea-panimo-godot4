@@ -144,6 +144,10 @@ msgid "Kotikalja"
 msgstr "Homebrew"
 
 #: src/autoload/string_container.gd
+msgid "Kurpitsaolut"
+msgstr "Pumpkin Ale"
+
+#: src/autoload/string_container.gd
 msgid "Kyllä"
 msgstr "Yes"
 
@@ -714,8 +718,8 @@ msgid "Koko kylä tuttu"
 msgstr "Know the Whole Town"
 
 #: src/resources/achievements/asiakaskirja_kaikki.tres
-msgid "Tapaa kaikki 23 asiakastyyppiä."
-msgstr "Meet all 23 customer types."
+msgid "Tapaa kaikki 24 asiakastyyppiä."
+msgstr "Meet all 24 customer types."
 
 #: src/resources/achievements/bulkkia_5.tres
 msgid "Kansan kalja"
@@ -1462,6 +1466,22 @@ msgstr ""
 "Made to grandma's recipe: yeast, malty wort, and patience. Mild and sweet, "
 "nothing special."
 
+#: src/resources/beer_styles/kurpitsaolut.tres
+msgid ""
+"Amerikkalainen syysolut, jonka mäskiin heitetään paahdettua kurpitsaa. "
+"Meripihkainen, maltainen ja mieto, kuin kurpitsapiirakka lasissa."
+msgstr ""
+"An American autumn ale with roasted pumpkin thrown into the mash. Amber, "
+"malty and mild, like pumpkin pie in a glass."
+
+#: src/resources/beer_styles/kurpitsaolut.tres
+msgid ""
+"Meripihkainen syysolut, jonka erikoisaines kasvaa pellolla ja päätyy "
+"lyhdyksi ovelle."
+msgstr ""
+"An amber autumn ale whose special ingredient grows in a field and ends up "
+"as a lantern by the door."
+
 #: src/resources/beer_styles/maitostout.tres
 msgid "Pehmeä ja makea musta olut, jonka makeus tulee maidosta."
 msgstr "A soft, sweet black beer whose sweetness comes from milk."
@@ -2025,6 +2045,46 @@ msgid "Tuoteluokka ei vastaa auditoinnin kohdetta, mutta arvo kirjataan silti."
 msgstr ""
 "Product category does not match the audit target, but the value is logged "
 "anyway."
+
+#: src/resources/customers/halloweeni_vieras.tres
+msgid "Ei kurpitsaa, mutta kyllä tämäkin pään täyttää."
+msgstr "No pumpkin, but this will fill the head too."
+
+#: src/resources/customers/halloweeni_vieras.tres
+msgid "Ei mitään minulle. Kierrän seuraavan kellarin."
+msgstr "Nothing for me. I'll haunt the next cellar."
+
+#: src/resources/customers/halloweeni_vieras.tres
+msgid "Hmm, ei ihan syksyn makuinen, mutta menköön."
+msgstr "Hmm, doesn't quite taste of autumn, but fine."
+
+#: src/resources/customers/halloweeni_vieras.tres
+msgid "Hyllyt ovat tyhjät kuin minun pääni..."
+msgstr "The shelves are as empty as my head..."
+
+#: src/resources/customers/halloweeni_vieras.tres
+msgid ""
+"Karmivaa iltaa! Onko kellarissa jotain kurpitsaista? Pää on vähän ontto "
+"ilman."
+msgstr ""
+"Spooky evening! Got anything pumpkiny down here? My head feels a bit hollow "
+"without it."
+
+#: src/resources/customers/halloweeni_vieras.tres
+msgid "Kurpitsapää"
+msgstr "Pumpkin Head"
+
+#: src/resources/customers/halloweeni_vieras.tres
+msgid "Tämä maistuu mädältä kurpitsalta, eikä hyvällä tavalla."
+msgstr "This tastes like a rotten pumpkin, and not in a good way."
+
+#: src/resources/customers/halloweeni_vieras.tres
+msgid "Täydellistä! Tuntuu kuin kynttilä syttyisi päässä."
+msgstr "Perfect! Feels like a candle lighting up in my head."
+
+#: src/resources/customers/halloweeni_vieras.tres
+msgid "Uuh, %s! Tuo voisi sopia ontoon päähän..."
+msgstr "Ooh, %s! That could fit a hollow head..."
 
 #: src/resources/customers/hipsteri.tres
 msgid "Hipsteri"
@@ -4110,6 +4170,18 @@ msgstr "Dried bitter orange peel. An old friend of Witbier and Saison."
 #: src/resources/ingredients/spices/orange_peel.tres
 msgid "Pomeranssinkuori"
 msgstr "Bitter Orange Peel"
+
+#: src/resources/ingredients/spices/pumpkin.tres
+msgid "Kurpitsa"
+msgstr "Pumpkin"
+
+#: src/resources/ingredients/spices/pumpkin.tres
+msgid ""
+"Paahdettua kurpitsaa kellarin nurkasta. Kurpitsaolut ei synny ilman sitä, "
+"ja se tuoksuu syksyltä ja vähän kummitukselta."
+msgstr ""
+"Roasted pumpkin from the corner of the cellar. No Pumpkin Ale without it, "
+"and it smells of autumn and a little of ghosts."
 
 #: src/resources/ingredients/spices/rye_bread.tres
 msgid ""

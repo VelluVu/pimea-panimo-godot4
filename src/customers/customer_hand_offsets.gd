@@ -52,6 +52,23 @@ const KRIITIKKO_OFFSETS : Array[Vector2] = [
 ]
 
 
+## Munkki walks with hands pressed together in prayer, so the glass sits between them,
+## a texel higher on the frames where the hands rise.
+const MUNKKI_TITLE : String = "Munkki"
+const MUNKKI_OFFSETS : Array[Vector2] = [
+	Vector2(0, -66),
+	Vector2(0, -70),
+	Vector2(0, -66),
+	Vector2(0, -70),
+]
+
+## Kurpitsapää's praying hands stay put while the pumpkin bobs.
+const KURPITSAPAA_TITLE : String = "Kurpitsapää"
+const KURPITSAPAA_OFFSETS : Array[Vector2] = [
+	Vector2(0, -66),
+]
+
+
 ## The drone flies off with the glass under its belly, bobbing a pixel per frame.
 const DRONE_TITLE : String = "Tarkastusdrooni"
 const DRONE_OFFSETS : Array[Vector2] = [
@@ -75,4 +92,8 @@ static func position_for(title: String, frame: int) -> Vector2:
 			offsets = DRONE_OFFSETS
 		KRIITIKKO_TITLE:
 			offsets = KRIITIKKO_OFFSETS
+		MUNKKI_TITLE:
+			offsets = MUNKKI_OFFSETS
+		KURPITSAPAA_TITLE:
+			offsets = KURPITSAPAA_OFFSETS
 	return offsets[frame % offsets.size()]

@@ -32,6 +32,7 @@ enum Style {
 	IRISH_DRY_STOUT,
 	PILSNER,
 	CZECH_PILSNER,
+	KURPITSAOLUT,
 }
 
 @export var style_name: String = "Uusi oluttyyli"
@@ -40,6 +41,9 @@ enum Style {
 @export_multiline var description: String = ""
 ## What the recipe book says of the style before it is discovered, without its name.
 @export_multiline var locked_hint: String = ""
+## Known in every new run with its default recipe in the book, like Kotikalja, so a
+## seasonal style can be loaded without brewing it first.
+@export var known_from_start: bool = false
 
 @export_group("Vaatimukset")
 @export var required_yeast_id: int = 301 # 301 = lager, 302 = ale
@@ -193,4 +197,5 @@ static func get_style_string_from_style(new_style : BeerStyle.Style) -> String:
 		Style.IRISH_DRY_STOUT: return UiText.of(StringContainer.IRISH_DRY_STOUT)
 		Style.PILSNER: return UiText.of(StringContainer.PILSNER)
 		Style.CZECH_PILSNER: return UiText.of(StringContainer.CZECH_PILSNER)
+		Style.KURPITSAOLUT: return UiText.of(StringContainer.KURPITSAOLUT)
 		_: return UiText.of(StringContainer.TUNTEMATON)

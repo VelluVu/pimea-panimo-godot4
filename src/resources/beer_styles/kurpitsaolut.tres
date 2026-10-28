@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="BeerStyle" format=3]
+
+[ext_resource type="Script" uid="uid://qpqfdi1wacne" path="res://src/brewing/beer_style.gd" id="1_kurpitsaolut"]
+
+[resource]
+script = ExtResource("1_kurpitsaolut")
+style_name = "Kurpitsaolut"
+description = "Amerikkalainen syysolut, jonka mäskiin heitetään paahdettua kurpitsaa. Meripihkainen, maltainen ja mieto, kuin kurpitsapiirakka lasissa."
+locked_hint = "Meripihkainen syysolut, jonka erikoisaines kasvaa pellolla ja päätyy lyhdyksi ovelle."
+known_from_start = true
+style = 29
+profit_margin_multiplier = 1.2
+fixed_price_per_bottle = 3.8
+reputation_change = 4
+shelf_life_days = 20
+aging_factor = 0.02
+mash_steps = Array[int]([67])
+mash_band = 3.0
+hop_additions = Array[int]([0])
+required_yeast_id = 302
+required_spice_ids = Array[int]([409])
+preferred_malt_ids = Array[int]([104, 102])
+preferred_hop_profiles = Array[int]([5])
+abv = 5.4
+min_abv = 4.0
+max_abv = 7.0
+min_ebc = 10
+max_ebc = 26
+min_ibu = 5
+max_ibu = 25
+reference_recipe = Dictionary[int, int]({101: 3, 102: 6, 104: 15, 207: 30, 302: 1, 409: 2})
+metadata/_custom_type_script = "uid://qpqfdi1wacne"

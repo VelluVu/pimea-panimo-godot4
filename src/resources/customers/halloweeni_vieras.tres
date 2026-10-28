@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="CustomerData" format=3]
+
+[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_vieras"]
+[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/halloweeni_vieras_anim.tres" id="2_sprite"]
+
+[resource]
+script = ExtResource("1_vieras")
+customer_name = "Jaska"
+title = "Kurpitsapää"
+first_names = Array[String](["Jaska", "Lyhty-Lasse", "Kurre", "Kummitus-Kalle", "Pekka", "Ilmari"])
+min_quality = 0.3
+budget_multiplier = 1.2
+primary_style = 29
+secondary_style = 4
+also_likes = Array[int]([20, 9])
+sprite_frames = ExtResource("2_sprite")
+randomize_skin = false
+randomize_hair = false
+randomize_clothes = false
+randomize_shoes = false
+voice_pitch = 0.8
+dialogue_intro = "Karmivaa iltaa! Onko kellarissa jotain kurpitsaista? Pää on vähän ontto ilman."
+dialogue_success = "Täydellistä! Tuntuu kuin kynttilä syttyisi päässä."
+dialogue_fallback = "Ei kurpitsaa, mutta kyllä tämäkin pään täyttää."
+dialogue_wrong_style = "Hmm, ei ihan syksyn makuinen, mutta menköön."
+dialogue_reject = "Tämä maistuu mädältä kurpitsalta, eikä hyvällä tavalla."
+dialogue_no_match = "Ei mitään minulle. Kierrän seuraavan kellarin."
+dialogue_preview_format = "Uuh, %s! Tuo voisi sopia ontoon päähän..."
+dialogue_nothing_available = "Hyllyt ovat tyhjät kuin minun pääni..."
+tip_base_chance = 0.2
+quality_tip_sensitivity = 0.5
+rep_primary_style = 5
+rep_secondary_style = 1
+quality_reputation_sensitivity = 2.0
+metadata/_custom_type_script = "uid://b2vqc8lkfjwic"
