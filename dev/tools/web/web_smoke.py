@@ -309,6 +309,10 @@ def main():
 			tools.call("Emulation.setDeviceMetricsOverride", PORTRAIT if args.portrait else PHONE)
 			tools.call("Emulation.setTouchEmulationEnabled", {"enabled": True, "maxTouchPoints": 5})
 			tools.call("Emulation.setUserAgentOverride", {"userAgent": PHONE_USER_AGENT, "platform": "Android"})
+		else:
+			# The window's frame takes part of --window-size, which left a 1264x625 page and a
+			# blurry non-integer scale; pinned, the game is exactly 2x.
+			tools.call("Emulation.setDeviceMetricsOverride", {"width": WINDOW[0], "height": WINDOW[1], "deviceScaleFactor": 1, "mobile": False})
 		if args.init_script:
 			with open(args.init_script, encoding="utf-8") as f:
 				tools.call("Page.addScriptToEvaluateOnNewDocument", {"source": f.read()})
