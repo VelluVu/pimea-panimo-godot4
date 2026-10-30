@@ -47,11 +47,12 @@ static func print_results(results: Dictionary) -> void:
 			print("  SKIP [%s] %s — %s" % [entry.get("suite", "?"), entry.get("test", "?"), entry.get("message", "")])
 
 
-static func run_and_print() -> void:
+static func run_and_print(suite_filter: String = "", test_filter: String = "") -> Dictionary:
 	var suites := discover_suites()
 	if suites.is_empty():
 		print("[tests] No test_*.gd suites found in res://tests")
-		return
+		return {}
 	var runner := McpTestRunner.new()
-	var results: Dictionary = runner.run_suites(suites, "", "", {}, true)
+	var results: Dictionary = runner.run_suites(suites, suite_filter, test_filter, {}, true)
 	print_results(results)
+	return results
