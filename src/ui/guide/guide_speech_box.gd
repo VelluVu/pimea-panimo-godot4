@@ -11,6 +11,8 @@ signal line_typed
 
 const NAME_TEXT : String = "Vanha mestari Aatu"
 const SKIP_BUTTON_TEXT : String = "Ohita opas"
+## Skipping turns the tutorial off for good, so the button says where it comes back.
+const SKIP_TOOLTIP : String = "Opas pois päältä. Takaisin: Asetukset, Näyttö, Ohita opastus."
 const NEXT_BUTTON_TEXT : String = "Jatka"
 const PORTRAIT : Texture2D = preload("res://assets/textures/characters/vanha_mestari_portrait_48.png")
 const PORTRAIT_SIZE : Vector2 = Vector2(48, 48)
@@ -68,6 +70,7 @@ func _ready() -> void:
 	_next = _make_button(NEXT_BUTTON_TEXT, next_pressed)
 	_next.hide()
 	_skip = _make_button(SKIP_BUTTON_TEXT, skipped)
+	_skip.tooltip_text = SKIP_TOOLTIP
 	resized.connect(_layout)
 	_layout()
 	set_process(false)

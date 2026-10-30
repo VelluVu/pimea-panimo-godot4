@@ -126,14 +126,13 @@ func _on_line_typed() -> void:
 		_on_speech_next()
 
 
-## "Ohita opas" ends only the part Aatu is in.
+## "Ohita opas" turns the whole tutorial off, as "Ohita opastus" in Asetukset does, where it
+## can be turned back on. The box goes first, or the setting's change would have Aatu say
+## his "already told you" line to a player who just asked him to stop.
 func _on_speech_skipped() -> void:
-	var brewery : Brewery = BrewEngine.current_brewery
-	if _talk >= 0:
-		_talk = -1
-		GuideParts.finish(GuideParts.Part.TALK, brewery)
-	else:
-		GuideParts.finish(GuideParts.Part.CELLAR, brewery)
+	_talk = -1
+	_speech.hide()
+	GuideParts.set_skipped(true)
 	_queue_refresh()
 
 
@@ -195,8 +194,11 @@ func _show(step : NextStepRules.Step) -> void:
 		_pointer.point_at(null, NextStepPointer.Style.FRAME)
 	elif _talk >= 0:
 		_point_at_talk(_talk)
-	else:
+	# The pointer belongs to Aatu's route: once "Ohita opas" ends it, nothing points.
+	elif GuideParts.is_on(GuideParts.Part.CELLAR, BrewEngine.current_brewery):
 		_point_at_step(step)
+	else:
+		_point_at_step(NextStepRules.Step.NONE)
 
 
 func _show_speech(step : NextStepRules.Step) -> void:

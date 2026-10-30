@@ -7269,6 +7269,10 @@ msgid "Ohita opas"
 msgstr "Skip guide"
 
 #: src/ui/guide/guide_speech_box.gd
+msgid "Opas pois päältä. Takaisin: Asetukset, Näyttö, Ohita opastus."
+msgstr "Turns the guide off. Back on: Settings, Display, Skip tutorial."
+
+#: src/ui/guide/guide_speech_box.gd
 msgid "Vanha mestari Aatu"
 msgstr "Old master Aatu"
 

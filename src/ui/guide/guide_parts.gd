@@ -2,8 +2,8 @@ class_name GuideParts
 extends RefCounted
 
 ## Which parts of Aatu's tutorial are still to come in this run. Every new game has the
-## whole tutorial unless "Ohita opastus" is set in Asetukset; "Ohita opas" ends only the part
-## at hand, and the run's save remembers it (Brewery.guide_parts_done).
+## whole tutorial unless "Ohita opastus" is set in Asetukset; Aatu's own "Ohita opas" sets it
+## too. A part seen through is remembered in the run's save (Brewery.guide_parts_done).
 
 enum Part { CELLAR, BREW_DAY, TALK }
 

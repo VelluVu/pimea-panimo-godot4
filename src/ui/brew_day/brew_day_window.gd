@@ -255,9 +255,10 @@ func _guide_step() -> BrewDayGuideRules.Step:
 			return BrewDayGuideRules.mash_step(BrewDayGuideRules.Phase.RESULT, true, true, false, false)
 
 
-## Skipping keeps the brew going without the guide, and ends it for this run.
+## Skipping keeps the brew going without the guide and turns the whole tutorial off, as
+## "Ohita opas" in the cellar does.
 func _on_guide_skipped() -> void:
-	GuideParts.finish(GuideParts.Part.BREW_DAY, _brewery)
+	GuideParts.set_skipped(true)
 	_guide.end()
 
 
