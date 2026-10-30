@@ -37,6 +37,7 @@ var _special_events : SpecialEventPresenter
 var _brew_day_window : BrewDayWindow = BrewDayWindow.new()
 ## Built in code; Aatu's talk points at it.
 var upgrades_button : TooltipButton
+var _unlock_cards : PopupCardStack
 
 @onready var shop_view : ShopView = $Left_ShopView
 @onready var brewery_view : BrewingView = $Left_BrewingView
@@ -166,6 +167,9 @@ func _add_next_step_guide() -> void:
 	speech.name = "GuideSpeechBox"
 	add_child(speech)
 	move_child(speech, pointer.get_index())
+	# Hidden until the guide's first line, so that showing it lifts the cards.
+	speech.hide()
+	speech.visibility_changed.connect(_lift_unlock_cards.bind(speech))
 	var guide := NextStepGuide.new()
 	var places : Dictionary = {brewery = brewery_entrance_panel, shop = shop_entrance_panel, recipe_shelf = recipe_shelf_label, brewery_book = $CustomerBookLabel, warehouse = $WarehouseLabel, upgrades = upgrades_button}
 	guide.setup(pointer, speech, daily_goals_panel, places, recipe_library_window, brewery_view, shop_view, brew_preparation_panel)
@@ -200,7 +204,18 @@ func _make_unlock_cards() -> PopupCardStack:
 	cards.offset_right = cards.offset_left
 	cards.offset_top = -UNLOCK_CARDS_MARGIN
 	cards.offset_bottom = -UNLOCK_CARDS_MARGIN
+	_unlock_cards = cards
 	return cards
+
+
+## Aatu's box sits in the cards' corner, and the first brew's achievement arrives just as he
+## starts talking: while he speaks, the cards rise from above his box.
+func _lift_unlock_cards(speech : GuideSpeechBox) -> void:
+	var bottom : float = -UNLOCK_CARDS_MARGIN
+	if speech.visible:
+		bottom = speech.position.y - size.y - UNLOCK_CARDS_MARGIN
+	_unlock_cards.offset_top = bottom
+	_unlock_cards.offset_bottom = bottom
 
 
 ## The editor's eye toggle is saved into the .tscn, so always-on nodes are forced on here.
