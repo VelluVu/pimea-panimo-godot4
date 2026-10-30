@@ -90,7 +90,8 @@ static func _remember(node : Control) -> void:
 
 
 static func _update_top() -> void:
-	_open = _open.filter(func(window : Control) -> bool: return is_instance_valid(window) and window.is_visible_in_tree())
+	# Untyped: a freed window must not reach a typed parameter.
+	_open = _open.filter(func(window : Variant) -> bool: return is_instance_valid(window) and (window as Control).is_visible_in_tree())
 	var top : Control = _open.back() if not _open.is_empty() else null
 	if top == _top_window:
 		return
@@ -127,12 +128,19 @@ static func _give_back_focus(window : Control) -> void:
 	var focused : Control = window.get_viewport().gui_get_focus_owner()
 	if focused != null and window.is_ancestor_of(focused):
 		return
-	# get_meta() with a null default still errors on a missing key.
-	var last : Control = window.get_meta(LAST_FOCUS_META) if window.has_meta(LAST_FOCUS_META) else null
-	if is_instance_valid(last) and last.is_visible_in_tree() and window.is_ancestor_of(last):
+	var last : Control = _last_focus(window)
+	if last != null and last.is_visible_in_tree() and window.is_ancestor_of(last):
 		last.grab_focus(true)
 	else:
 		focus_now(window)
+
+
+## The remembered control, or null once it is freed: windows rebuild their rows and pages,
+## and a freed object assigned to a typed variable is an error, so it is checked untyped.
+static func _last_focus(window : Control) -> Control:
+	# get_meta() with a null default still errors on a missing key.
+	var last : Variant = window.get_meta(LAST_FOCUS_META) if window.has_meta(LAST_FOCUS_META) else null
+	return last as Control if is_instance_valid(last) else null
 
 
 ## Depth first in tree order, which is reading order for the containers windows use.

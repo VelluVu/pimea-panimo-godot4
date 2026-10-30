@@ -22,6 +22,7 @@ var top_window : Callable
 
 var _idle_seconds : float = 0.0
 ## The focus last seen inside the top window, to notice when its control disappears.
+var _tracking : bool = false
 var _last_focused : Control
 var _last_window : Control
 var _last_shown : bool = false
@@ -81,19 +82,20 @@ func _process(delta : float) -> void:
 func _keep_focus_in_window(focused : Control) -> void:
 	var window : Control = top_window.call() if top_window.is_valid() else null
 	if focused != null:
-		var inside : bool = window != null and window.is_ancestor_of(focused)
-		_last_focused = focused if inside else null
-		_last_window = window if inside else null
+		_tracking = window != null and window.is_ancestor_of(focused)
+		_last_focused = focused if _tracking else null
+		_last_window = window if _tracking else null
 		_last_shown = focused.has_focus(true)
 		return
-	if _last_focused == null:
+	# A flag, not a null check: a freed control also compares equal to null.
+	if not _tracking:
 		return
 	var lost : bool = not is_instance_valid(_last_focused) or not _last_focused.is_visible_in_tree()
 	var same_window : bool = window != null and window == _last_window and window.is_visible_in_tree()
 	if lost and same_window:
 		FirstFocus.focus_now(window, not _last_shown)
 	if lost or not same_window:
-		_last_focused = null
+		_tracking = false
 
 
 func _place_frame(focused : Control) -> void:
