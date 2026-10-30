@@ -627,6 +627,9 @@ func _tune_for_quality(b: Brewery, style: BeerStyle.Style, start: Dictionary) ->
 				var amount: int = combo.get(id, 0) + delta
 				if amount < 0:
 					continue
+				# The table refuses a hop variety past the limit, so never try one.
+				if delta > 0 and BrewMixture.would_exceed_hop_varieties(id, best, IngredientDatabase.database):
+					continue
 				if amount == 0:
 					combo.erase(id)
 				else:
@@ -933,13 +936,13 @@ func _missing_cost(b: Brewery, r: BrewRecipe) -> float:
 	return _missing_cost_of(b, r.ingredient_amounts)
 
 
+## What the shop charges for what the shelf lacks, by the shop's own rule.
 func _missing_cost_of(b: Brewery, ingredients: Dictionary) -> float:
-	var cost: float = 0.0
+	var shelf: Dictionary = {}
 	for id: int in ingredients:
-		var missing: int = maxi(0, ingredients[id] - _owned(b, id))
-		cost += IngredientDatabase.get_item_by_id(id).base_price * missing
-	# Perks' price changes are folded into this stat, as the trader charges it.
-	return snappedf(cost * b.stats.multiplier(PerkStats.INGREDIENT_PRICE), 0.01)
+		shelf[id] = _owned(b, id)
+	var to_buy: Dictionary = RecipeShopping.missing(ingredients, shelf)
+	return RecipeShopping.cost(to_buy, IngredientDatabase.database, b.stats.multiplier(PerkStats.INGREDIENT_PRICE))
 
 
 func _owned(b: Brewery, id: int) -> int:

@@ -101,8 +101,9 @@ func _ready() -> void:
 
 
 ## The panels get the run's brewery from here instead of reading BrewEngine themselves.
+## The top bar goes last: it broadcasts the brewery's starting values, which the others
+## should hear already bound.
 func _bind_brewery(brewery : Brewery) -> void:
-	top_panel_resources.bind_brewery(brewery)
 	shop_view.bind_brewery(brewery)
 	brewery_view.bind_brewery(brewery)
 	brew_preparation_panel.bind_brewery(brewery)
@@ -114,6 +115,7 @@ func _bind_brewery(brewery : Brewery) -> void:
 	customer_book_window.bind_brewery(brewery)
 	recipe_library_window.bind_brewery(brewery)
 	_brew_day_window.bind_brewery(brewery)
+	top_panel_resources.bind_brewery(brewery)
 
 
 ## The cellar upgrades sat in a corner of the shop where few found them; the top bar is
