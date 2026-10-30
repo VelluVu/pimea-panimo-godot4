@@ -27,6 +27,7 @@ var current_id : int = -1
 ## Built at runtime below MaltAndHopVBoxContainer, where this view has room for it.
 var fill_from_inventory_button : Button = null
 var buy_missing_button : BuyMissingButton = null
+var _brewery : Brewery = null
 
 
 func _ready() -> void:
@@ -56,7 +57,6 @@ func _ready() -> void:
 	main_vbox.add_child(buy_missing_button)
 
 	_update_label()
-	_update_fill_from_inventory_button()
 
 
 ## Pick the amount, read it, then act: the slider row first, the amount line under it, the
@@ -82,13 +82,12 @@ func _on_fill_from_inventory_button_pressed() -> void:
 ## Like RecipeBook's all-or-nothing fill: a recipe loaded, something missing, and the
 ## inventory covering it all.
 func _update_fill_from_inventory_button() -> void:
-	var brewery := BrewEngine.current_brewery
-	if brewery == null:
+	if _brewery == null:
 		fill_from_inventory_button.disabled = true
 		return
 
-	var recipe_target : Dictionary = brewery.brew_preparation.active_recipe_target
-	var prep_contents : Dictionary = brewery.brew_preparation.selected_contents
+	var recipe_target : Dictionary = _brewery.brew_preparation.active_recipe_target
+	var prep_contents : Dictionary = _brewery.brew_preparation.selected_contents
 
 	var has_shortfall : bool = false
 	var can_fill_recipe : bool = not recipe_target.is_empty()
@@ -100,12 +99,18 @@ func _update_fill_from_inventory_button() -> void:
 			continue
 
 		has_shortfall = true
-		var item : InventoryItem = brewery.inventory.get_item_by_id(ingredient_id)
+		var item : InventoryItem = _brewery.inventory.get_item_by_id(ingredient_id)
 		var available : int = item.amount if item else 0
 		if available < required - on_table:
 			can_fill_recipe = false
 
 	fill_from_inventory_button.disabled = not (can_fill_recipe and has_shortfall)
+
+
+## GUI calls this on every new run or loaded save.
+func bind_brewery(brewery : Brewery) -> void:
+	_brewery = brewery
+	_on_brewery_state_changed(brewery)
 
 
 ## Opens on the first ingredient the recipe still needs on the table.
@@ -115,7 +120,7 @@ func _on_visibility_changed() -> void:
 
 
 func _first_needed_id() -> int:
-	var preparation : BrewPreparation = BrewEngine.current_brewery.brew_preparation
+	var preparation : BrewPreparation = _brewery.brew_preparation
 	for ingredient_id : int in preparation.active_recipe_target:
 		if preparation.active_recipe_target[ingredient_id] > preparation.selected_contents.get(ingredient_id, 0):
 			return ingredient_id
@@ -135,20 +140,20 @@ func _suggest_amount() -> void:
 	var ingredient : IngredientData = IngredientDatabase.get_item_by_id(current_id)
 	if ingredient == null:
 		return
-	var preparation : BrewPreparation = BrewEngine.current_brewery.brew_preparation
+	var preparation : BrewPreparation = _brewery.brew_preparation
 	main_slider.value = SuggestedAmount.for_table(preparation.active_recipe_target.get(current_id, 0), _on_table(), _in_stock(), ingredient.amount_step())
 
 
 func _in_stock() -> int:
-	var item : InventoryItem = BrewEngine.current_brewery.inventory.get_item_by_id(current_id)
+	var item : InventoryItem = _brewery.inventory.get_item_by_id(current_id)
 	return item.amount if item != null else 0
 
 
 func _on_table() -> int:
-	return BrewEngine.current_brewery.brew_preparation.selected_contents.get(current_id, 0)
+	return _brewery.brew_preparation.selected_contents.get(current_id, 0)
 
 
-func _on_brewery_state_changed(_brewery : Brewery) -> void:
+func _on_brewery_state_changed(_changed : Brewery) -> void:
 	_update_slider()
 	# Bought from here with "Osta puuttuvat": the new stock fills the empty slider.
 	if current_id != -1 and is_zero_approx(main_slider.value):
@@ -212,7 +217,7 @@ func _on_add_button_pressed() -> void:
 ## Once the selected ingredient is on the table in full, the recipe's next one comes up,
 ## so a loaded recipe goes on the table with Lisää alone.
 func _advance_to_next_needed() -> void:
-	var preparation : BrewPreparation = BrewEngine.current_brewery.brew_preparation
+	var preparation : BrewPreparation = _brewery.brew_preparation
 	if preparation.active_recipe_target.get(current_id, 0) > _on_table():
 		return
 	var next_id : int = _first_needed_id()

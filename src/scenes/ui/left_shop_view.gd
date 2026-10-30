@@ -33,6 +33,7 @@ var _quick_row : HBoxContainer
 var buy_missing_button : BuyMissingButton
 ## How many units the money buys right now; 0 makes "Osta" say why.
 var _max_affordable : int = 0
+var _brewery : Brewery = null
 
 
 func _ready() -> void:
@@ -58,6 +59,12 @@ func _ready() -> void:
 	_update_label()
 
 
+## GUI calls this on every new run or loaded save.
+func bind_brewery(brewery : Brewery) -> void:
+	_brewery = brewery
+	_on_brewery_state_changed(brewery)
+
+
 func _input(event : InputEvent) -> void:
 	if IngredientViewKeys.handle(event, self, ingredient_type_selector, main_slider, _on_buy_button_pressed):
 		get_viewport().set_input_as_handled()
@@ -76,16 +83,15 @@ func _on_ingredient_selected_globally(id: int) -> void:
 
 
 func _missing_for_recipe() -> Dictionary:
-	var brewery : Brewery = BrewEngine.current_brewery
-	return RecipeShopping.missing(brewery.brew_preparation.active_recipe_target, brewery.owned_ingredient_amounts())
+	return RecipeShopping.missing(_brewery.brew_preparation.active_recipe_target, _brewery.owned_ingredient_amounts())
 
 
 func _in_stock() -> int:
-	var item : InventoryItem = BrewEngine.current_brewery.inventory.get_item_by_id(current_id)
+	var item : InventoryItem = _brewery.inventory.get_item_by_id(current_id)
 	return item.amount if item != null else 0
 
 
-func _on_brewery_state_changed(_brewery : Brewery) -> void:
+func _on_brewery_state_changed(_changed : Brewery) -> void:
 	_update_slider()
 	_update_label()
 
@@ -147,8 +153,8 @@ func _update_slider() -> void:
 		return
 	
 	main_slider.step = ingredient.amount_step()
-	var player_money : float = BrewEngine.current_brewery.money
-	var effective_price : float = ingredient.base_price * BrewEngine.current_brewery.stats.multiplier(PerkStats.INGREDIENT_PRICE)
+	var player_money : float = _brewery.money
+	var effective_price : float = ingredient.base_price * _brewery.stats.multiplier(PerkStats.INGREDIENT_PRICE)
 
 	var max_affordable : int = 0
 	if effective_price > 0:
@@ -178,7 +184,7 @@ func _update_label() -> void:
 
 
 func _unit_price(ingredient : IngredientData) -> float:
-	return ingredient.base_price * BrewEngine.current_brewery.stats.multiplier(PerkStats.INGREDIENT_PRICE)
+	return ingredient.base_price * _brewery.stats.multiplier(PerkStats.INGREDIENT_PRICE)
 
 
 ## Floats a "-X €" popup off the "Osta" button.

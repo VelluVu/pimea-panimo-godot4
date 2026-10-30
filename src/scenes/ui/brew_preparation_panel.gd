@@ -30,6 +30,7 @@ const START_BREW_TOOLTIP : String = "Pane pöydän raaka-aineista olut tynnyriin
 var table_labels: Dictionary = {} # ingredient id -> Label
 var close_button : Button
 var _toast : BannerPresenter
+var _brewery : Brewery = null
 
 
 func _ready() -> void:
@@ -47,6 +48,11 @@ func _ready() -> void:
 	# both halves' titles instead of hanging off the frame's corner above them.
 	close_button = WindowCloseButton.create(close_requested.emit, PanelHeader.HEIGHT)
 	header_row.add_child(close_button)
+
+
+## GUI calls this on every new run or loaded save.
+func bind_brewery(brewery : Brewery) -> void:
+	_brewery = brewery
 	_update_table_list_ui()
 
 
@@ -84,7 +90,7 @@ func _initialize_table_nodes() -> void:
 		table_labels[id] = new_label
 
 
-func _on_brewery_state_changed(_brewery : Brewery) -> void:
+func _on_brewery_state_changed(_changed : Brewery) -> void:
 	_update_table_list_ui()
 
 
@@ -93,17 +99,17 @@ func _on_save_recipe_button_pressed() -> void:
 
 
 func _update_table_list_ui() -> void:
-	if BrewEngine.current_brewery == null:
+	if _brewery == null:
 		return
 
-	var active_recipe_style_name : String = BrewEngine.current_brewery.brew_preparation.active_recipe_style_name
+	var active_recipe_style_name : String = _brewery.brew_preparation.active_recipe_style_name
 	current_recipe_label.text = active_recipe_style_name if not active_recipe_style_name.is_empty() else NO_ACTIVE_RECIPE_TEXT
 	current_recipe_label.tooltip_text = current_recipe_label.text
 
-	var prep_contents : Dictionary = BrewEngine.current_brewery.brew_preparation.selected_contents
-	var recipe_target : Dictionary = BrewEngine.current_brewery.brew_preparation.active_recipe_target
+	var prep_contents : Dictionary = _brewery.brew_preparation.selected_contents
+	var recipe_target : Dictionary = _brewery.brew_preparation.active_recipe_target
 
-	_update_preview(BrewEngine.current_brewery, prep_contents)
+	_update_preview(_brewery, prep_contents)
 
 	for id in IngredientDatabase.display_ids():
 

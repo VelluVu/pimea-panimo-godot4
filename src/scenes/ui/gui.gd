@@ -21,7 +21,7 @@ const HINT_ANCHORS_BESIDE_VIEWS: Vector3 = Vector3(0.6, 0.98, 0.62)
 @onready var dialog_view : Control = $DialogView
 @onready var special_events_container : VBoxContainer = $DialogView/SpecialEventsContainer
 @onready var top_panel_background : Panel = $TopPanelBackground
-@onready var top_panel_resources : Control = $TopPanel_Resources
+@onready var top_panel_resources : TopPanelResources = $TopPanel_Resources
 @onready var options_button : Button = $OptionsButton
 @onready var dev_console : DevConsole = $DevConsole
 @onready var options_window : OptionsWindow = $OptionsWindow
@@ -51,6 +51,9 @@ var upgrades_button : TooltipButton
 
 
 func _ready() -> void:
+	# First, before any view opens and reads it.
+	_bind_brewery(BrewEngine.current_brewery)
+	BrewEngine.brewery_changed.connect(_bind_brewery)
 	_announcer = GuiAnnouncer.new()
 	add_child(_announcer)
 	_announcer.setup(discovery_toast, group_visit_banner, day_event_banner, first_brew_hint_banner, daily_goals_panel, day_recap_window, _make_unlock_cards())
@@ -93,6 +96,14 @@ func _ready() -> void:
 	_announcer.start()
 	InputManager.shortcut_pressed.connect(_on_shortcut_pressed)
 	InputManager.cancel_pressed.connect(_on_cancel_pressed)
+
+
+## The panels get the run's brewery from here instead of reading BrewEngine themselves.
+func _bind_brewery(brewery : Brewery) -> void:
+	top_panel_resources.bind_brewery(brewery)
+	shop_view.bind_brewery(brewery)
+	brewery_view.bind_brewery(brewery)
+	brew_preparation_panel.bind_brewery(brewery)
 
 
 ## The cellar upgrades sat in a corner of the shop where few found them; the top bar is

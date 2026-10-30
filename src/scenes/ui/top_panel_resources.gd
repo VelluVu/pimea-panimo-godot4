@@ -41,6 +41,7 @@ var last_risk: int = -1
 var _last_level : int = -1
 ## The warning pulse fires only when risk crosses into the zone, not while it stays there.
 var _risk_warning_active: bool = false
+var _brewery : Brewery = null
 
 
 func _ready() -> void:
@@ -66,17 +67,20 @@ func _ready() -> void:
 	BrewerySignals.brew_xp_gained.connect(func(amount : int) -> void: _float_popup(level_label, tr(XP_POPUP_FORMAT) % amount, XP_POPUP_COLOR))
 	TimeManager.day_changed.connect(_on_day_changed)
 
-	if BrewEngine.current_brewery != null:
-		BrewEngine.current_brewery.emit_initial_values()
-		_update_day_display(BrewEngine.current_brewery.current_day)
+
+## GUI calls this on every new run or loaded save.
+func bind_brewery(brewery : Brewery) -> void:
+	_brewery = brewery
+	_brewery.emit_initial_values()
+	_update_day_display(_brewery.current_day)
 
 
 ## The day and level are set only on change, so a language switch resets them.
 func _notification(what: int) -> void:
-	if what == NOTIFICATION_TRANSLATION_CHANGED and is_node_ready() and BrewEngine.current_brewery != null:
+	if what == NOTIFICATION_TRANSLATION_CHANGED and is_node_ready() and _brewery != null:
 		_last_level = -1
-		_update_day_display(BrewEngine.current_brewery.current_day)
-		_on_brewery_state_changed(BrewEngine.current_brewery)
+		_update_day_display(_brewery.current_day)
+		_on_brewery_state_changed(_brewery)
 
 
 func _on_day_changed(new_day: int) -> void:
@@ -84,17 +88,15 @@ func _on_day_changed(new_day: int) -> void:
 
 
 func _money_tooltip() -> String:
-	var brewery : Brewery = BrewEngine.current_brewery
-	if brewery == null:
+	if _brewery == null:
 		return ""
-	return MoneyText.tooltip(brewery.money, brewery.money_today, brewery.money_recent_days)
+	return MoneyText.tooltip(_brewery.money, _brewery.money_today, _brewery.money_recent_days)
 
 
 func _day_clock_tooltip() -> String:
-	var brewery : Brewery = BrewEngine.current_brewery
-	if brewery == null:
+	if _brewery == null:
 		return ""
-	return DayClockText.tooltip(brewery.current_day, DemoRules.last_day(), TimeManager.get_day_progress(), TimeManager.get_seconds_left(), TimeManager.day_duration_seconds)
+	return DayClockText.tooltip(_brewery.current_day, DemoRules.last_day(), TimeManager.get_day_progress(), TimeManager.get_seconds_left(), TimeManager.day_duration_seconds)
 
 
 func _update_day_display(day_num: int) -> void:
