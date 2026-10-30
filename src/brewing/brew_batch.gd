@@ -179,7 +179,7 @@ func get_quality_breakdown_tooltip() -> String:
 
 
 const AGED_PRICE_FORMAT : String = "Kypsytyslisä hintaan: +%d %% (enintään +%d %%)"
-const FULL_INFO_TOOLTIP_HEADER_FORMAT : String = "Laatu: %s%% (%s %s, %s)\nEBC: %s | IBU: %s | ABV: %.1f%%"
+const FULL_INFO_TOOLTIP_HEADER_FORMAT : String = "Laatu: %s%% (%s %s, %s)\nEBC: %s | IBU: %s | ABV: %s%%"
 
 ## The header stats and the quality breakdown in one tooltip, so the row stays one line.
 func get_full_info_tooltip() -> String:
@@ -190,7 +190,7 @@ func get_full_info_tooltip() -> String:
 		get_aging_trend_label(),
 		final_ebc,
 		final_ibu,
-		get_abv()
+		NumberText.decimal(get_abv(), 1)
 	] + "\n" + get_quality_breakdown_tooltip() + _aged_price_line()
 
 

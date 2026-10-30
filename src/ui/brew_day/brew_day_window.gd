@@ -3,7 +3,8 @@ extends Control
 
 ## The brew day minigame: mash, then boil, then the earned quality multiplier goes to the
 ## Brewer. The game pauses meanwhile. Peru (or Esc) asks first and keeps the table;
-## Pikakeitto brews at once at a lower quality.
+## Pikakeitto brews at once at a lower quality. On a guided brew day (GuideParts, on for
+## the first one) Aatu says what to do next and the pointer marks where.
 
 const MASH_HEADER_TEXT : String = "MÄSKÄYS · %s"
 const BOIL_HEADER_TEXT : String = "KEITTO · %s"
@@ -14,11 +15,11 @@ const TO_BOIL_BUTTON_TEXT : String = "KEITTOON"
 const FINISH_BUTTON_TEXT : String = "VALMIS"
 const CANCEL_BUTTON_TEXT : String = "Peru"
 const QUICK_BUTTON_TEXT : String = "Pikakeitto"
-const QUICK_TOOLTIP_TEXT : String = "Keitä heti ilman keittopäivää. Laatu ×%.2f."
+const QUICK_TOOLTIP_TEXT : String = "Keitä heti ilman keittopäivää. Laatu ×%s."
 const CONFIRM_CANCEL_TEXT : String = "Perutaanko keittopäivä? Raaka-aineet jäävät pöydälle."
 const CONFIRM_YES_TEXT : String = "Peru keitto"
 const CONFIRM_NO_TEXT : String = "Jatka"
-const RESULT_TEXT : String = "Laatu ×%.2f"
+const RESULT_TEXT : String = "Laatu ×%s"
 const MASH_HINT_TEXT : String = "Pidä kattilan lämmitinnappia pohjassa, kunnes vesi on oikeassa lämmössä."
 const PADDLE_HINT_TEXT : String = "Vedä melaa paakkujen läpi, niin ne hajoavat."
 const BOIL_HINT_TEXT : String = "Pidä kattilan lämmitinnappia pohjassa, kunnes vierre on oikeassa lämmössä."
@@ -34,6 +35,8 @@ const RESULT_LABEL_Y : float = 96.0
 const GLOW_ALPHA : float = 0.7
 ## The popups start inside the liquid and stay left of the column.
 const POPUP_ORIGIN_DROP : float = 34.0
+## The old master's speech box, under the kettle and left of the next button.
+const GUIDE_RECT : Rect2 = Rect2(8, 290, 504, 62)
 ## Heating key; the sacks use the number keys.
 const HEAT_KEY : Key = KEY_SPACE
 
@@ -48,6 +51,7 @@ var _button_heat : bool = false
 var _key_heat : bool = false
 var _malts_added : bool = false
 var _commentary : BrewDayCommentary = BrewDayCommentary.new()
+var _guided : bool = false
 
 var _header : Label
 var _hint : Label
@@ -62,6 +66,8 @@ var _quick_button : Button
 var _result_label : Label
 var _popups : BrewDayPopups
 var _confirm : Panel
+var _guide : GuideSpeechBox
+var _pointer : NextStepPointer
 
 
 func _ready() -> void:
@@ -93,6 +99,7 @@ func open() -> void:
 		_plan.style_name = StringContainer.TUNTEMATON
 	elif not brewery.is_style_known(report.beer_style.style):
 		_plan.style_name = UNKNOWN_STYLE_TEXT
+	_guided = GuideParts.is_on(GuideParts.Part.BREW_DAY, brewery)
 	_start_mash()
 	show()
 	move_to_front()
@@ -105,6 +112,7 @@ func _close() -> void:
 	_kettle.clear_pours()
 	_popups.clear()
 	_confirm.hide()
+	_end_guide()
 	hide()
 	PauseLock.release(self)
 	GUISignals.brew_day_closed.emit()
@@ -129,7 +137,8 @@ func _start_mash() -> void:
 	_mash.mash_completed.connect(_on_mash_completed)
 	_header.text = tr(MASH_HEADER_TEXT) % tr(_plan.style_name)
 	_hint.text = MASH_HINT_TEXT
-	_hint.show()
+	_hint.visible = not _guided
+	_guide.visible = _guided
 	_thermo.mash = _mash
 	_thermo.boil = null
 	_kettle.clumps = _mash.clumps
@@ -162,7 +171,7 @@ func _start_boil() -> void:
 	_boil.hop_stand_started.connect(func() -> void: _heat_button.disabled = true)
 	_header.text = tr(BOIL_HEADER_TEXT) % tr(_plan.style_name)
 	_hint.text = BOIL_HINT_TEXT
-	_hint.show()
+	_hint.visible = not _guided
 	_thermo.mash = null
 	_thermo.boil = _boil
 	_thermo.piece_ids = _plan.piece_ids
@@ -178,7 +187,7 @@ func _show_result() -> void:
 	_stage = Stage.RESULT
 	_set_heating_inputs(false, false)
 	_multiplier = BrewDayRules.multiplier(BrewDayRules.final_score(_mash.score(), _boil.score()))
-	_result_label.text = tr(RESULT_TEXT) % _multiplier
+	_result_label.text = tr(RESULT_TEXT) % NumberText.decimal(_multiplier, 2)
 	_result_label.show()
 	_commentary.result(_multiplier)
 	var good : bool = _multiplier >= BrewDayRules.NORMAL_MULTIPLIER
@@ -189,6 +198,9 @@ func _show_result() -> void:
 	_quick_button.hide()
 	_next_button.text = FINISH_BUTTON_TEXT
 	_next_button.show()
+	# Seen through once; Asetukset can bring the guide back.
+	if _guided:
+		GuideParts.finish(GuideParts.Part.BREW_DAY, BrewEngine.current_brewery)
 
 
 func _process(delta : float) -> void:
@@ -196,6 +208,8 @@ func _process(delta : float) -> void:
 		return
 	if _confirm.visible:
 		GUISignals.brew_day_loops.emit(0.0, 0.0, false)
+		if _guided:
+			_pointer.point_at(null, NextStepPointer.Style.FRAME)
 		return
 	var heating : bool = _button_heat or _key_heat
 	if _stage == Stage.MASH or _stage == Stage.MASH_DONE:
@@ -222,7 +236,56 @@ func _process(delta : float) -> void:
 	_heat_button.warmth = BrewDayLook.warmth(_heat().temperature, BoilSession.BOIL_MIN if _boil != null else _mash.target())
 	_heat_button.held = _key_heat and _stage != Stage.RESULT
 	_sacks.refresh()
+	_update_guide()
 	_emit_loops()
+
+
+func _update_guide() -> void:
+	if not _guided:
+		return
+	var step : BrewDayGuideRules.Step = _guide_step()
+	_guide.say(BrewDayGuideText.of(step))
+	match step:
+		BrewDayGuideRules.Step.HEAT_WATER, BrewDayGuideRules.Step.HEAT_BOIL:
+			_pointer.point_at(_heat_button, NextStepPointer.Style.FRAME)
+		BrewDayGuideRules.Step.POUR_MALTS:
+			_pointer.point_at(_malt_sack, NextStepPointer.Style.FRAME)
+		BrewDayGuideRules.Step.BREAK_CLUMPS:
+			_pointer.point_at(_kettle, NextStepPointer.Style.FRAME, 0.0, KettleView.LIQUID_RECT)
+		BrewDayGuideRules.Step.COOL_WATER, BrewDayGuideRules.Step.HOLD_MASH, BrewDayGuideRules.Step.KEEP_BOILING, BrewDayGuideRules.Step.WATCH_FOAM:
+			_pointer.point_at(_thermo, NextStepPointer.Style.FRAME, 0.0, ThermoColumn.BAR_RECT)
+		BrewDayGuideRules.Step.ADD_HOPS:
+			_pointer.point_at(_sacks.cued_sack(), NextStepPointer.Style.FRAME)
+		BrewDayGuideRules.Step.TO_BOIL, BrewDayGuideRules.Step.FINISH:
+			_pointer.point_at(_next_button, NextStepPointer.Style.FRAME)
+		_:
+			_pointer.point_at(null, NextStepPointer.Style.FRAME)
+
+
+func _guide_step() -> BrewDayGuideRules.Step:
+	match _stage:
+		Stage.MASH:
+			var too_hot : bool = _mash.heat.temperature > _mash.target() + _mash.band
+			return BrewDayGuideRules.mash_step(BrewDayGuideRules.Phase.MASH, _malts_added, _mash.is_in_band(), too_hot, _mash.clumps_left() > 0)
+		Stage.MASH_DONE:
+			return BrewDayGuideRules.mash_step(BrewDayGuideRules.Phase.MASH_DONE, true, true, false, false)
+		Stage.BOIL:
+			var foaming : bool = _boil.heat.temperature > BoilSession.FOAM_FROM
+			return BrewDayGuideRules.boil_step(_boil.is_boiling(), foaming, _sacks.cued_sack() != null)
+		_:
+			return BrewDayGuideRules.mash_step(BrewDayGuideRules.Phase.RESULT, true, true, false, false)
+
+
+## Skipping keeps the brew going without the guide, and ends it for this run.
+func _on_guide_skipped() -> void:
+	GuideParts.finish(GuideParts.Part.BREW_DAY, BrewEngine.current_brewery)
+	_end_guide()
+
+
+func _end_guide() -> void:
+	_guided = false
+	_guide.hide()
+	_pointer.point_at(null, NextStepPointer.Style.FRAME)
 
 
 ## The kettle's heat: the mash's until the boil starts.
@@ -275,7 +338,7 @@ func _on_malts_emptied() -> void:
 	_malts_added = true
 	_mash.add_malts()
 	_hint.text = PADDLE_HINT_TEXT
-	_hint.show()
+	_hint.visible = not _guided
 	_commentary.malts_added()
 
 
@@ -383,7 +446,7 @@ func _build() -> void:
 	top_row.add_child(_cancel_button)
 	_quick_button = Button.new()
 	_quick_button.text = QUICK_BUTTON_TEXT
-	_quick_button.tooltip_text = tr(QUICK_TOOLTIP_TEXT) % BrewDayRules.SKIP_MULTIPLIER
+	_quick_button.tooltip_text = tr(QUICK_TOOLTIP_TEXT) % NumberText.decimal(BrewDayRules.SKIP_MULTIPLIER, 2)
 	_quick_button.focus_mode = Control.FOCUS_NONE
 	_quick_button.pressed.connect(_on_quick_pressed)
 	top_row.add_child(_quick_button)
@@ -410,7 +473,17 @@ func _build() -> void:
 	_commentary.call_said.connect(_popups.show_call)
 	_sacks.mark_opened.connect(_commentary.mark_opened)
 
+	_guide = GuideSpeechBox.new()
+	_guide.position = GUIDE_RECT.position
+	_guide.size = GUIDE_RECT.size
+	_guide.skipped.connect(_on_guide_skipped)
+	add_child(_guide)
+	_guide.hide()
+
 	_build_confirm()
+	# Last, so its frames draw over everything, the confirmation too (hidden meanwhile).
+	_pointer = NextStepPointer.new()
+	add_child(_pointer)
 
 
 func _build_confirm() -> void:

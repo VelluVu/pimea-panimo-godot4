@@ -2,9 +2,13 @@ class_name IngredientInventoryPanel
 extends VBoxContainer
 
 const AMOUNT_FORMAT : String = "%s: %s %s"
+## An empty list said nothing, like a broken window; the keg tab already says why.
+const EMPTY_TEXT : String = "Varasto on tyhjä. Raaka-aineet ostetaan kaupasta."
+const EMPTY_TEXT_COLOR : Color = Color(0.9490196, 0.7882353, 0.41960785, 1) # matches BeerBatchPanel.EMPTY_INVENTORY_COLOR
 
 @onready var ingredient_list_vbox: VBoxContainer = $IngredientInventoryScrollContainer/IngredientListVBox
 var storage_labels: Dictionary = {} # ingredient id -> Label
+var _empty_label : Label
 
 
 func _ready() -> void:
@@ -14,6 +18,11 @@ func _ready() -> void:
 
 
 func _initialize_storage_nodes() -> void:
+	_empty_label = Label.new()
+	_empty_label.text = EMPTY_TEXT
+	_empty_label.modulate = EMPTY_TEXT_COLOR
+	_empty_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	ingredient_list_vbox.add_child(_empty_label)
 	for id in IngredientDatabase.display_ids():
 		var ingredient: IngredientData = IngredientDatabase.database[id]
 		
@@ -37,6 +46,7 @@ func _update_ingredient_list() -> void:
 		return
 	
 	var inventory : Inventory = BrewEngine.current_brewery.inventory
+	var any_shown : bool = false
 
 	for id in IngredientDatabase.display_ids():
 		var ingredient : IngredientData = IngredientDatabase.database[id]
@@ -52,5 +62,7 @@ func _update_ingredient_list() -> void:
 			label.text = AMOUNT_FORMAT % [tr(ingredient.name), ingredient.amount_text(current_amount), ingredient.get_unit_string()]
 			label.tooltip_text = ingredient.get_tooltip_text()
 			label.visible = true
+			any_shown = true
 		else:
 			label.visible = false
+	_empty_label.visible = not any_shown

@@ -6,11 +6,13 @@ extends RefCounted
 
 const EMPTY_TEXT : String = "Lisää raaka-aineita nähdäksesi arvion."
 const NOT_ENOUGH_TEXT : String = "Tarvitset ainakin 3 kg mallasta ja hiivan."
-const NO_MATCH_FORMAT : String = "Ei täsmää vielä mihinkään tyyliin. (EBC %d, IBU %d, %.1f %% ABV)"
+const NO_MATCH_FORMAT : String = "Ei täsmää vielä mihinkään tyyliin. (EBC %d, IBU %d, %s %% ABV)"
 ## An undiscovered style keeps its name: the name is the reward for brewing it once.
-const UNKNOWN_MATCH_FORMAT : String = "Arvio: tuntematon tyyli täsmää! (EBC %d, IBU %d, %.1f %% ABV)"
+const UNKNOWN_MATCH_FORMAT : String = "Arvio: tuntematon tyyli täsmää! (EBC %d, IBU %d, %s %% ABV)"
 const MALT_FORMAT : String = "Tyylin maltaat: +%d %%"
-const KNOWN_MATCH_FORMAT : String = "Arvio: %s, EBC %d, IBU %d, %.1f %% ABV, laatu %d%%"
+## In plain words; the colour and bitterness numbers are in the line's tooltip (details()).
+const KNOWN_MATCH_FORMAT : String = "Arvio: %s, laatu %d%%, %s %% alkoholia"
+const DETAILS_FORMAT : String = "Väri %d EBC, katkeruus %d IBU, alkoholia %s %%"
 ## The grade after the brew day, since the quality percentage alone does not say it.
 const NORMAL_DAY_FORMAT : String = "Normaali keitto: %s"
 const AUTO_KETTLE_FORMAT : String = "Automaattikattila: %s"
@@ -24,13 +26,20 @@ static func text(table_empty : bool, preview : BrewResult, style_known : bool, a
 	if preview == null:
 		return UiText.of(NOT_ENOUGH_TEXT)
 	if not preview.is_matched:
-		return UiText.of(NO_MATCH_FORMAT) % [preview.final_ebc, preview.final_ibu, preview.abv]
+		return UiText.of(NO_MATCH_FORMAT) % [preview.final_ebc, preview.final_ibu, NumberText.decimal(preview.abv, 1)]
 	if not style_known:
-		return UiText.of(UNKNOWN_MATCH_FORMAT) % [preview.final_ebc, preview.final_ibu, preview.abv]
-	return UiText.of(KNOWN_MATCH_FORMAT) % [UiText.of(preview.beer_style.style_name), preview.final_ebc, preview.final_ibu, preview.abv, roundi(preview.original_quality * 100)] \
+		return UiText.of(UNKNOWN_MATCH_FORMAT) % [preview.final_ebc, preview.final_ibu, NumberText.decimal(preview.abv, 1)]
+	return UiText.of(KNOWN_MATCH_FORMAT) % [UiText.of(preview.beer_style.style_name), roundi(preview.original_quality * 100), NumberText.decimal(preview.abv, 1)] \
 			+ _grade_line(preview.original_quality + quality_bonus, auto_kettle) \
 			+ SpicePreviewText.line(preview.spice_bonus, preview.unsuited_spice_penalty) + _malt_line(preview.malt_bonus) \
 			+ BrewAimText.lines(preview)
+
+
+## The beer's numbers for the preview's tooltip; empty while nothing is brewable.
+static func details(preview : BrewResult) -> String:
+	if preview == null:
+		return ""
+	return UiText.of(DETAILS_FORMAT) % [preview.final_ebc, preview.final_ibu, NumberText.decimal(preview.abv, 1)]
 
 
 static func _grade_line(quality : float, auto_kettle : bool) -> String:

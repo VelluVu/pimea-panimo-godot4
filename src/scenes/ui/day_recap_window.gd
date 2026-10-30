@@ -5,7 +5,7 @@ extends Panel
 
 const RECAP_TITLE: String = "Päivän yhteenveto"
 const CLOSE_BUTTON_TEXT: String = "Jatka"
-const RECAP_MESSAGE_FORMAT: String = "Päivä %d alkoi.\n\nRahaa: %+.1f €\nMainetta: %+d%s\nLVV-riski nyt: %d%s\nAnnoksia myyty: %d\nUusia oluttyylejä: %s\nPäivätavoitteita saavutettu: %d"
+const RECAP_MESSAGE_FORMAT: String = "Päivä %d alkoi.\n\nRahaa: %s\nMainetta: %+d%s\nLVV-riski nyt: %d%s\nAnnoksia myyty: %d\nUusia oluttyylejä: %s\nPäivätavoitteita saavutettu: %d"
 const NO_NEW_STYLES_TEXT: String = "ei uusia"
 const NIGHT_RISK_RELIEF_FORMAT: String = "(yöllä -%d)"
 
@@ -35,6 +35,7 @@ func _ready() -> void:
 		_day_start_reputation = BrewEngine.current_brewery.reputation
 
 	close_button.pressed.connect(_on_close_button_pressed)
+	WindowCloseButton.attach(self, _on_close_button_pressed)
 	TimeManager.day_changed.connect(_on_day_changed)
 	BrewerySignals.bottles_sold.connect(_on_bottles_sold)
 	BrewerySignals.style_discovered.connect(_on_style_discovered)
@@ -70,12 +71,12 @@ func _on_day_changed(new_day: int) -> void:
 	if brewery == null:
 		return
 
-	var money_delta := snappedf(brewery.money - _day_start_money, 0.1)
+	var money_delta := snappedf(brewery.money - _day_start_money, 0.01)
 	var reputation_delta := brewery.reputation - _day_start_reputation
 	var risk_relief_text := " " + tr(NIGHT_RISK_RELIEF_FORMAT) % _night_risk_relief if _night_risk_relief > 0 else ""
 	var discovered_text := ", ".join(_styles_discovered_today) if not _styles_discovered_today.is_empty() else tr(NO_NEW_STYLES_TEXT)
 
-	message_label.text = tr(RECAP_MESSAGE_FORMAT) % [new_day, money_delta, reputation_delta, ReputationBreakdownText.format(_reputation_by_source), brewery.risk, risk_relief_text, _bottles_sold_today, discovered_text, _goals_rewarded_today]
+	message_label.text = tr(RECAP_MESSAGE_FORMAT) % [new_day, NumberText.signed_money(money_delta), reputation_delta, ReputationBreakdownText.format(_reputation_by_source), brewery.risk, risk_relief_text, _bottles_sold_today, discovered_text, _goals_rewarded_today]
 	show()
 
 	_day_start_money = brewery.money
@@ -90,3 +91,10 @@ func _on_day_changed(new_day: int) -> void:
 func _on_close_button_pressed() -> void:
 	GUISignals.window_closed.emit()
 	hide()
+
+
+## Esc does what the X does, and is used up here so the game menu does not open over it.
+func _input(event : InputEvent) -> void:
+	if visible and event.is_action_pressed(InputManager.ACTION_CANCEL):
+		_on_close_button_pressed()
+		get_viewport().set_input_as_handled()

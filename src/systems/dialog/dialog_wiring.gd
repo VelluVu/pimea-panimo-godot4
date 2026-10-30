@@ -15,7 +15,7 @@ const FOLLOW_UP_POPUP_DELAY_SECONDS : float = 0.4
 
 ## XP sits just above the shoulder and reputation just below it.
 const XP_POPUP_OFFSET : Vector2 = Vector2(0.0, -8.0)
-const XP_POPUP_COLOR : Color = Color(0.4, 0.75, 1.0, 1) # same blue as BrewPreparationPanel
+const XP_POPUP_COLOR : Color = Color(0.4, 0.75, 1.0, 1) # same blue as the brew XP popup in TopPanelResources
 const XP_POPUP_FORMAT : String = "+%d XP"
 
 const REPUTATION_POPUP_OFFSET : Vector2 = Vector2(0.0, 8.0)
@@ -25,7 +25,7 @@ const REPUTATION_POPUP_FORMAT : String = "%+d"
 const TIP_POPUP_OFFSET : Vector2 = Vector2(0.0, 12.0)
 ## Money is gold, so it never reads as the green reputation popup.
 const MONEY_POPUP_COLOR : Color = Color(1.0, 0.84, 0.0, 1)
-const MONEY_POPUP_FORMAT : String = "+%.1f €"
+const MONEY_POPUP_FORMAT : String = "%s"
 
 ## Word of mouth and regular status pop centred on the customer, below the numbers.
 const NOTE_POPUP_OFFSET : Vector2 = Vector2(0.0, -30.0)
@@ -60,9 +60,9 @@ func _ready() -> void:
 
 
 ## Special lines are shown elsewhere (the special event window), not as a bubble.
-func _on_dialogue_pushed(text : String, is_special : bool, slot : int, speaker_pos : Vector2, display_time : float, fade_time : float) -> void:
+func _on_dialogue_pushed(text : String, is_special : bool, slot : int, speaker_pos : Vector2, display_time : float, fade_time : float, typed : bool) -> void:
 	if not is_special:
-		_dialog.show_bubble(text, slot, speaker_pos, display_time, fade_time)
+		_dialog.show_bubble(text, slot, speaker_pos, display_time, fade_time, typed)
 
 
 func _on_xp_popup_requested(amount : int, character_pos : Vector2, tier : PopupTierRules.Tier) -> void:
@@ -78,12 +78,12 @@ func _on_reputation_popup_requested(amount : int, character_pos : Vector2, tier 
 func _on_money_popup_requested(income : float, tip : float, character_pos : Vector2, tip_tier : PopupTierRules.Tier) -> void:
 	var tip_delay : float = 0.0
 	if income > 0.0:
-		_dialog.show_popup(tr(MONEY_POPUP_FORMAT) % income, MONEY_POPUP_COLOR, character_pos + RIGHT_SHOULDER)
+		_dialog.show_popup(tr(MONEY_POPUP_FORMAT) % NumberText.signed_money(income), MONEY_POPUP_COLOR, character_pos + RIGHT_SHOULDER)
 		tip_delay = FOLLOW_UP_POPUP_DELAY_SECONDS
 	if tip <= 0.0:
 		return
 	var emphasis : DialogView.Emphasis = _emphasis(tip_tier)
-	_dialog.show_popup(tr(MONEY_POPUP_FORMAT) % tip, MONEY_POPUP_COLOR, character_pos + RIGHT_SHOULDER + _scaled(TIP_POPUP_OFFSET, emphasis), emphasis, tip_delay)
+	_dialog.show_popup(tr(MONEY_POPUP_FORMAT) % NumberText.signed_money(tip), MONEY_POPUP_COLOR, character_pos + RIGHT_SHOULDER + _scaled(TIP_POPUP_OFFSET, emphasis), emphasis, tip_delay)
 
 
 func _on_customer_note_popup_requested(note : SaleOutcomeCapture.Note, character_pos : Vector2) -> void:

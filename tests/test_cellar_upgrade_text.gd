@@ -37,3 +37,9 @@ func test_effect_lines_show_now_and_next() -> void:
 	assert_contains(lines, TextScript.NONE_TEXT)
 	assert_contains(lines, "6 %")
 	assert_false(TextScript.effect_lines(_upgrade(), 5).contains("Seuraava"), "no next line when maxed")
+
+
+func test_buy_tooltip_says_why_the_button_is_grey() -> void:
+	assert_eq(TextScript.buy_tooltip(_upgrade(), 0, 40.0), "", "affordable: no reason")
+	assert_contains(TextScript.buy_tooltip(_upgrade(), 0, 12.5), "27")
+	assert_eq(TextScript.buy_tooltip(_upgrade(), 5, 1000.0), TextScript.MAXED_TOOLTIP)

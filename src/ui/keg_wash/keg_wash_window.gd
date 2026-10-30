@@ -9,6 +9,7 @@ const HINT_TEXT : String = "Paina työkalua ja pidä pohjassa: hankaa harjalla, 
 const CLEANLINESS_TEXT : String = "Puhtaus %d %%"
 const FINISH_BUTTON_TEXT : String = "VALMIS"
 const STOP_BUTTON_TEXT : String = "Lopeta pesu"
+const FINISH_LOCKED_TOOLTIP : String = "Pese tynnyriä ensin vähän."
 
 const BACKDROP_COLOR : Color = Color(0.03, 0.02, 0.04, 0.97)
 const FINISH_BUTTON_RECT : Rect2 = Rect2(520, 318, 108, 28)
@@ -114,6 +115,7 @@ func _process(delta : float) -> void:
 		var cleanliness : float = _session.cleanliness()
 		_cleanliness_label.text = tr(CLEANLINESS_TEXT) % roundi(cleanliness * 100.0)
 		_finish_button.disabled = _session.is_completed or cleanliness < MIN_FINISH_CLEANLINESS
+		_finish_button.tooltip_text = FINISH_LOCKED_TOOLTIP if cleanliness < MIN_FINISH_CLEANLINESS else ""
 	if _next_keg_wait >= 0.0:
 		_next_keg_wait -= delta
 		if _next_keg_wait < 0.0:

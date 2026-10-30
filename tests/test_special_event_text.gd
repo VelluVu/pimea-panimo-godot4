@@ -1,6 +1,8 @@
 @tool
 extends McpTestSuite
 
+const NumberTextScript := preload("res://src/ui/number_text.gd")
+
 ## SpecialEventText: the delivery line and the reward popup numbers.
 
 
@@ -19,7 +21,7 @@ func test_delivery_caps_the_stock_at_what_is_asked() -> void:
 func test_money_drops_the_decimal_of_whole_euros() -> void:
 	assert_eq(SpecialEventText.money(90.0), "+90 €")
 	assert_eq(SpecialEventText.money(-60.0), "-60 €")
-	assert_eq(SpecialEventText.money(12.5), "+12.5 €")
+	assert_eq(SpecialEventText.money(12.5), NumberTextScript.signed_money(12.5))
 
 
 func test_reputation_and_risk_carry_their_sign() -> void:

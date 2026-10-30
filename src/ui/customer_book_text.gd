@@ -15,9 +15,9 @@ const SAME_GROUP_TEXT : String = "muut samasta joukosta"
 const LAST_RESORT_FORMAT : String = "Hätävaralla: %s"
 const NOTHING_ELSE_TEXT : String = "Muuta ei juo."
 const QUALITY_FORMAT : String = "Laatutoive: vähintään %d %%"
-const MIN_ABV_FORMAT : String = "Vähintään %.1f %% alkoholia"
-const MAX_ABV_FORMAT : String = "Enintään %.1f %% alkoholia"
-const MAX_PRICE_FORMAT : String = "Enintään %.2f € annokselta"
+const MIN_ABV_FORMAT : String = "Vähintään %s %% alkoholia"
+const MAX_ABV_FORMAT : String = "Enintään %s %% alkoholia"
+const MAX_PRICE_FORMAT : String = "Enintään %s annokselta"
 const LOWERS_RISK_TEXT : String = "Suosikki laskee LVV-riskiä"
 const LOCKED_FORMAT : String = "%d asiakastyyppiä vielä tuntematta."
 const LIST_SEPARATOR : String = ", "
@@ -50,11 +50,11 @@ static func lines(data : CustomerData, met : bool, style_names : Dictionary) -> 
 
 	result.append(UiText.of(QUALITY_FORMAT) % roundi(data.min_quality * 100.0))
 	if data.min_required_abv >= 0.0:
-		result.append(UiText.of(MIN_ABV_FORMAT) % data.min_required_abv)
+		result.append(UiText.of(MIN_ABV_FORMAT) % NumberText.decimal(data.min_required_abv, 1))
 	if data.max_required_abv >= 0.0:
-		result.append(UiText.of(MAX_ABV_FORMAT) % data.max_required_abv)
+		result.append(UiText.of(MAX_ABV_FORMAT) % NumberText.decimal(data.max_required_abv, 1))
 	if data.max_required_price >= 0.0:
-		result.append(UiText.of(MAX_PRICE_FORMAT) % data.max_required_price)
+		result.append(UiText.of(MAX_PRICE_FORMAT) % NumberText.money(data.max_required_price))
 	# The only sales that pay off risk; without this line players never learn it.
 	if data.risk_primary_style < 0 and not data.randomizes_preference and not data.picks_at_random:
 		result.append(UiText.of(LOWERS_RISK_TEXT))

@@ -4,9 +4,9 @@ extends RefCounted
 ## The recipe book's text. A known style shows its whole recipe; a locked one gives hints
 ## instead of the exact ranges.
 
-const INDEX_KNOWN_FORMAT : String = "%s\n%.1f %%"
+const INDEX_KNOWN_FORMAT : String = "%s\n%s %%"
 const INDEX_RECIPES_FORMAT : String = "%s · reseptejä %d"
-const INDEX_LOCKED_FORMAT : String = "%s\n%.1f %% · %s"
+const INDEX_LOCKED_FORMAT : String = "%s\n%s %% · %s"
 const LOCKED_TITLE : String = "???"
 const LOCKED_FAMILY_TITLE_FORMAT : String = "??? %s"
 const KNOWN_HEADER_FORMAT : String = "Löydetyt tyylit (%d/%d)"
@@ -32,7 +32,7 @@ const HOPPING_FORMAT : String = "Humalointi: %s"
 ## The reference recipe needs more malt than the mash tun holds, see MashTun.
 const MASH_UPGRADE_HINT : String = "Vaatii mäskipadan päivityksen"
 
-const LOCKED_STRENGTH_FORMAT : String = "Vahvuus: noin %.1f %% ABV"
+const LOCKED_STRENGTH_FORMAT : String = "Vahvuus: noin %s %% ABV"
 const COLOR_HINT_FORMAT : String = "Väri: %s"
 const BITTERNESS_HINT_FORMAT : String = "Katkeruus: %s"
 const MALT_BLEND_HINT : String = "Vaatii mallasseoksen"
@@ -66,8 +66,8 @@ static func locked_section_title(locked_count : int) -> String:
 ## shows its beer family and effort instead of the name.
 static func index_label(entry : RecipeBookEntry) -> String:
 	if not entry.known:
-		return INDEX_LOCKED_FORMAT % [page_title(entry), entry.beer_style.abv, UiText.of(effort_name(StyleEffort.tier(entry.effort_score)))]
-	var text : String = UiText.of(INDEX_KNOWN_FORMAT) % [UiText.of(entry.beer_style.style_name), entry.beer_style.abv]
+		return INDEX_LOCKED_FORMAT % [page_title(entry), NumberText.decimal(entry.beer_style.abv, 1), UiText.of(effort_name(StyleEffort.tier(entry.effort_score)))]
+	var text : String = UiText.of(INDEX_KNOWN_FORMAT) % [UiText.of(entry.beer_style.style_name), NumberText.decimal(entry.beer_style.abv, 1)]
 	if entry.saved_recipe_count > 0:
 		text = UiText.of(INDEX_RECIPES_FORMAT) % [text, entry.saved_recipe_count]
 	return text
@@ -124,7 +124,7 @@ static func locked_lines(entry : RecipeBookEntry) -> PackedStringArray:
 		lines.append(UiText.of(style.locked_hint))
 	lines.append_array([
 		UiText.of(EFFORT_FORMAT) % UiText.of(effort_name(StyleEffort.tier(entry.effort_score))),
-		UiText.of(LOCKED_STRENGTH_FORMAT) % style.abv,
+		UiText.of(LOCKED_STRENGTH_FORMAT) % NumberText.decimal(style.abv, 1),
 		UiText.of(COLOR_HINT_FORMAT) % UiText.of(BeerStyle.get_color_hint(style.min_ebc, style.max_ebc)),
 		UiText.of(BITTERNESS_HINT_FORMAT) % UiText.of(BeerStyle.get_bitterness_hint(style.min_ibu, style.max_ibu)),
 		UiText.of(YEAST_FORMAT) % entry.yeast_name,
@@ -152,7 +152,7 @@ static func value_range(min_value : int, max_value : int) -> String:
 
 
 static func abv_range(min_abv : float, max_abv : float) -> String:
-	return "%.1f-%.1f" % [min_abv, max_abv]
+	return "%s-%s" % [NumberText.decimal(min_abv, 1), NumberText.decimal(max_abv, 1)]
 
 
 static func mash_steps(steps : Array[int]) -> String:

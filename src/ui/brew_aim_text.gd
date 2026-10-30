@@ -8,7 +8,7 @@ extends RefCounted
 const AIM_FORMAT : String = "Tyylin keskikohta: %s"
 const EBC_FORMAT : String = "EBC %d"
 const IBU_FORMAT : String = "IBU %d"
-const ABV_FORMAT : String = "%.1f %% ABV"
+const ABV_FORMAT : String = "%s %% ABV"
 const NO_FLAVOR_FORMAT : String = "Tyylin humala tai mauste puuttuu: -%d %%"
 ## Below this precision a value is worth moving; the reference recipes sit above it.
 const AIM_BELOW : float = 0.8
@@ -22,7 +22,7 @@ static func lines(preview : BrewResult) -> String:
 	if BrewQuality.ibu_precision(preview.final_ibu, beer_style.min_ibu, beer_style.max_ibu) < AIM_BELOW:
 		parts.append(UiText.of(IBU_FORMAT) % roundi(_centre(beer_style.min_ibu, beer_style.max_ibu)))
 	if BrewQuality.range_precision(preview.abv, beer_style.min_abv, beer_style.max_abv) < AIM_BELOW:
-		parts.append(UiText.of(ABV_FORMAT) % _centre(beer_style.min_abv, beer_style.max_abv))
+		parts.append(UiText.of(ABV_FORMAT) % NumberText.decimal(_centre(beer_style.min_abv, beer_style.max_abv), 1))
 	var result : String = ""
 	if not parts.is_empty():
 		result += "\n" + UiText.of(AIM_FORMAT) % ", ".join(parts)

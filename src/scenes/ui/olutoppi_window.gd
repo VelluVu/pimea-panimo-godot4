@@ -5,7 +5,6 @@ extends Panel
 ## lines come from prerequisite_ids, so the scene needs no id or edge list.
 
 const TITLE_TEXT : String = "Olutoppi"
-const CLOSE_BUTTON_TEXT : String = "Sulje"
 const RENOWN_FORMAT : String = "Maine: %d"
 ## The browser demo shows the tree but sells nothing from it (DemoRules).
 const DEMO_RENOWN_FORMAT : String = "Maine: %d. Kykyjä voi ostaa koko pelissä."
@@ -14,7 +13,6 @@ const LOCKED_ICON : String = "🔒"
 
 @onready var title_label : Label = %TitleLabel
 @onready var renown_label : Label = %RenownLabel
-@onready var close_button : Button = %CloseButton
 @onready var tree_areas : Array[Control] = [
 	%BarWorkTreeArea,
 	%BrewingTreeArea,
@@ -27,11 +25,11 @@ var _connector_edges : Dictionary = {} # TreeConnectorLayer -> Array[OlutoppiEdg
 
 func _ready() -> void:
 	title_label.text = TITLE_TEXT
-	close_button.text = CLOSE_BUTTON_TEXT
 	for tree_area : Control in tree_areas:
 		_setup_tree_area(tree_area)
 
-	close_button.pressed.connect(_on_close_button_pressed)
+	# The renown counter sits at the header's right end, under the X without a gap.
+	WindowCloseButton.attach(self, _on_close_button_pressed, $MarginContainer/MainVBox/HeaderHBox)
 	GUISignals.olutoppi_requested.connect(_on_olutoppi_requested)
 	MetaProgressManager.renown_changed.connect(_on_renown_changed)
 	hide()
@@ -121,7 +119,7 @@ func _refresh_node(id : String, renown : int) -> void:
 	view.level_bonus_label.text = "" if locked else LEVEL_FORMAT % [level, unlock.max_level]
 	view.button.disabled = locked or maxed or renown < unlock.renown_cost_per_level
 	view.refresh_availability()
-	view.button.tooltip_text = OlutoppiText.locked_tooltip(unlock, _unmet_prerequisite_names(unlock)) if locked else OlutoppiText.tooltip(unlock, level, maxed)
+	view.button.tooltip_text = OlutoppiText.locked_tooltip(unlock, _unmet_prerequisite_names(unlock)) if locked else OlutoppiText.tooltip(unlock, level, maxed, renown)
 
 
 func _unmet_prerequisite_names(unlock : MetaUnlockData) -> PackedStringArray:
@@ -131,3 +129,10 @@ func _unmet_prerequisite_names(unlock : MetaUnlockData) -> PackedStringArray:
 		if prerequisite != null and MetaProgressManager.get_node_level(prerequisite_id) <= 0:
 			names.append(tr(prerequisite.perk_name))
 	return names
+
+
+## Esc does what the X does, and is used up here so the game menu does not open over it.
+func _input(event : InputEvent) -> void:
+	if visible and event.is_action_pressed(InputManager.ACTION_CANCEL):
+		_on_close_button_pressed()
+		get_viewport().set_input_as_handled()

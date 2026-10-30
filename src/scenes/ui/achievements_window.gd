@@ -5,16 +5,13 @@ extends Panel
 ## so it works under the paused game menu.
 
 const TITLE_FORMAT: String = "Saavutukset (%d/%d)"
-const CLOSE_BUTTON_TEXT: String = "Sulje"
 
 @onready var title_label: Label = %TitleLabel
-@onready var close_button: Button = %CloseButton
 @onready var tiles_grid: GridContainer = %TilesGrid
 
 
 func _ready() -> void:
-	close_button.text = CLOSE_BUTTON_TEXT
-	close_button.pressed.connect(_on_close_button_pressed)
+	WindowCloseButton.attach(self, _on_close_button_pressed)
 	GUISignals.achievements_requested.connect(_on_achievements_requested)
 	hide()
 

@@ -4,7 +4,7 @@ extends OptionButton
 ## One shared "ship to which bar" picker for every row, as there is no room for one per row.
 ## Locked bars show disabled, previewing what is coming.
 
-const TOOLTIP_FORMAT : String = "%s\nMaksukerroin: x%.2f raaka-aineiden hinnasta\nLVV-riski per toimitus: +%d (alkoholittomat %+d)"
+const TOOLTIP_FORMAT : String = "%s\nMaksukerroin: x%s raaka-aineiden hinnasta\nLVV-riski per toimitus: +%d (alkoholittomat %+d)"
 
 
 func _ready() -> void:
@@ -78,7 +78,7 @@ func _sync_own_tooltip() -> void:
 
 
 func _build_tooltip(bar : BarContact) -> String:
-	return tr(TOOLTIP_FORMAT) % [tr(bar.description), bar.price_multiplier, bar.risk_per_shipment, BarContact.ALCOHOL_FREE_SHIPMENT_RISK]
+	return tr(TOOLTIP_FORMAT) % [tr(bar.description), NumberText.decimal(bar.price_multiplier, 2), bar.risk_per_shipment, BarContact.ALCOHOL_FREE_SHIPMENT_RISK]
 
 
 ## Long bar descriptions would overflow Godot's default tooltip.

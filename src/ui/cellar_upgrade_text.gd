@@ -14,6 +14,9 @@ const MACHINE_ON_TEXT : String = "Päällä"
 const MACHINE_OFF_TEXT : String = "Pois"
 const MACHINE_OWNED_TEXT : String = "Omistat koneen, se pysyy kaikilla kausilla."
 const MACHINE_NOT_OWNED_TEXT : String = "Ei vielä omistuksessa."
+## A grey buy button says why on hover and on touch.
+const SHORT_OF_MONEY_FORMAT : String = "Rahaa puuttuu %s."
+const MAXED_TOOLTIP : String = "Parannus on jo täydellä tasolla."
 const MACHINE_SWITCH_TOOLTIP : String = "Kytke kone päälle tai pois. Valinta muistetaan myös seuraavilla kausilla."
 
 
@@ -33,6 +36,16 @@ static func button_text(upgrade : CellarUpgradeData, level : int) -> String:
 	if CellarUpgradeRules.is_maxed(level, upgrade.max_level):
 		return UiText.of(MAXED_TEXT)
 	return UiText.of(BUY_FORMAT) % upgrade.cost_for_next_level(level)
+
+
+## Why the buy button is grey; empty when it can be bought.
+static func buy_tooltip(upgrade : CellarUpgradeData, level : int, money : float) -> String:
+	if CellarUpgradeRules.is_maxed(level, upgrade.max_level):
+		return UiText.of(MAXED_TOOLTIP)
+	var cost : int = upgrade.cost_for_next_level(level)
+	if money < cost:
+		return UiText.of(SHORT_OF_MONEY_FORMAT) % NumberText.money(cost - money)
+	return ""
 
 
 ## The effect at the current level and, unless maxed, at the next one.

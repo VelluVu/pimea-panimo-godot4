@@ -3,6 +3,13 @@ extends Control
 
 ## Gap between the options button and the unlock cards, and below the cards.
 const UNLOCK_CARDS_MARGIN: float = 4.0
+const UPGRADES_BUTTON_TEXT: String = "🔧"
+const UPGRADES_TOOLTIP_FORMAT: String = "Kellarin parannukset (%s)"
+const UPGRADES_ICON_FONT_SIZE: int = 32
+## The first-brew hint's left anchor, right anchor and vertical centre: over the bar, or
+## beside the open brewery or shop window (which ends at 0.57) and below the goals list.
+const HINT_ANCHORS_AT_BAR: Vector3 = Vector3(0.1, 0.9, 0.5)
+const HINT_ANCHORS_BESIDE_VIEWS: Vector3 = Vector3(0.6, 0.98, 0.62)
 
 @onready var discovery_toast : Label = $DiscoveryToast
 @onready var group_visit_banner : Label = $GroupVisitBanner
@@ -26,14 +33,18 @@ const UNLOCK_CARDS_MARGIN: float = 4.0
 var _views : GuiViewSwitcher
 var _announcer : GuiAnnouncer
 var _special_events : SpecialEventPresenter
+## Built in code; Aatu's talk points at it.
+var upgrades_button : TooltipButton
 
 @onready var shop_view : ShopView = $Left_ShopView
 @onready var brewery_view : BrewingView = $Left_BrewingView
 @onready var brew_preparation_panel : BrewPreparationPanel = $BrewPreparationPanel
+@onready var joined_window_frame : Panel = $JoinedWindowFrame
 @onready var warehouse_view : RightWarehouseView = $Right_WarehouseView
-@onready var brewery_entrance_panel : Control = $BreweryEntrancePanel
+@onready var brewery_entrance_panel : BreweryEntrancePanel = $BreweryEntrancePanel
 @onready var shop_entrance_panel : ShopEntrancePanel = $ShopEntrancePanel
-@onready var recipe_library_window : Control = $RecipeLibraryWindow
+@onready var recipe_library_window : RecipeLibraryWindow = $RecipeLibraryWindow
+@onready var recipe_shelf_label : Label = $RecipeShelfLabel
 @onready var lvv_raid_window : Control = $LvvRaidWindow
 @onready var daily_goals_panel : DailyGoalsPanel = $DailyGoalsPanel
 @onready var day_recap_window : DayRecapWindow = $DayRecapWindow
@@ -46,6 +57,15 @@ func _ready() -> void:
 	_special_events = SpecialEventPresenter.new(special_events_container)
 	_views = GuiViewSwitcher.new(shop_view, brewery_view, brew_preparation_panel, shop_entrance_panel, brewery_entrance_panel)
 	_assert_default_visibility()
+	brew_preparation_panel.close_requested.connect(_on_back_button_pressed)
+	# One frame around the brewery or shop and the recipe panel, so they read as one window.
+	brew_preparation_panel.visibility_changed.connect(func() -> void: joined_window_frame.visible = brew_preparation_panel.visible)
+	# The first-brew hint steps aside while a view is open, instead of hiding behind it.
+	GUISignals.bar_view_exited.connect(_place_hint.bind(HINT_ANCHORS_BESIDE_VIEWS))
+	GUISignals.bar_view_entered.connect(_place_hint.bind(HINT_ANCHORS_AT_BAR))
+	_add_upgrades_button()
+	_add_next_step_guide()
+	_add_shortcut_hints()
 	add_child(TouchTooltip.new())
 	add_child(PortraitNotice.new())
 	add_child(BrewDayWindow.new())
@@ -64,12 +84,85 @@ func _ready() -> void:
 	await get_tree().process_frame
 	_views.show_bar()
 	GUISignals.brewery_view_requested.connect(_on_brewery_button_pressed)
+	# A finished brew is the brewery's job done, so the player lands back at the bar to sell
+	# it. Only on finishing: a cancelled brew day leaves the table and the view as they were.
+	GUISignals.brew_day_finished.connect(_views.show_bar.unbind(1))
 	lvv_raid_window.hide()
 	recipe_library_window.hide()
 	close_day_button.pressed.connect(_on_close_day_button_pressed)
 	_announcer.start()
 	InputManager.shortcut_pressed.connect(_on_shortcut_pressed)
 	InputManager.cancel_pressed.connect(_on_cancel_pressed)
+
+
+## The cellar upgrades sat in a corner of the shop where few found them; the top bar is
+## always in sight.
+func _add_upgrades_button() -> void:
+	upgrades_button = TooltipButton.new()
+	upgrades_button.text = UPGRADES_BUTTON_TEXT
+	upgrades_button.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
+	# At the default 16 the 9 px wrench read as a stray line; icons scale in steps of 16.
+	upgrades_button.add_theme_font_size_override(&"font_size", UPGRADES_ICON_FONT_SIZE)
+	upgrades_button.tooltip_text = tr(UPGRADES_TOOLTIP_FORMAT) % InputManager.get_binding_text(InputManager.ACTION_TOGGLE_UPGRADES)
+	upgrades_button.focus_mode = Control.FOCUS_NONE
+	var side : float = game_speed_button.get_combined_minimum_size().y
+	upgrades_button.custom_minimum_size = Vector2(side, side)
+	upgrades_button.pressed.connect(_toggle_cellar_upgrades_window)
+	top_panel_resources.add_child(upgrades_button)
+	top_panel_resources.move_child(upgrades_button, game_speed_button.get_index())
+
+
+## Each cellar spot's hover label names its key, so the shortcuts are learned by pointing.
+func _add_shortcut_hints() -> void:
+	var labels : Dictionary = {
+		InputManager.ACTION_TOGGLE_BREWERY: brewery_entrance_panel.brewery_label,
+		InputManager.ACTION_TOGGLE_SHOP: shop_entrance_panel.shop_label,
+		InputManager.ACTION_TOGGLE_WAREHOUSE: $WarehouseLabel,
+		InputManager.ACTION_TOGGLE_RECIPE_LIBRARY: recipe_shelf_label,
+		InputManager.ACTION_TOGGLE_BREWERY_BOOK: $CustomerBookLabel,
+		InputManager.ACTION_TOGGLE_RECEIPT_LOG: $ReceiptMachineLabel,
+		InputManager.ACTION_TOGGLE_RUN_EFFECTS: $ChalkboardLabel,
+	}
+	for action : StringName in labels:
+		ShortcutHint.attach(labels[action], action)
+
+
+## The pointer sits at least above the bar's views, so windows opened over them cover it;
+## Aatu's speech box sits just under the pointer, so its frames draw over him.
+func _add_next_step_guide() -> void:
+	var views : Array[Control] = [shop_view, brewery_view, brew_preparation_panel, brewery_entrance_panel]
+	var top_view : Control = views[0]
+	for view : Control in views:
+		if view.get_index() > top_view.get_index():
+			top_view = view
+	var pointer := NextStepPointer.new(top_view)
+	pointer.name = "NextStepPointer"
+	add_child(pointer)
+	move_child(pointer, top_view.get_index() + 1)
+	var speech := GuideSpeechBox.new()
+	speech.name = "GuideSpeechBox"
+	add_child(speech)
+	move_child(speech, pointer.get_index())
+	var guide := NextStepGuide.new()
+	var places : Dictionary = {brewery = brewery_entrance_panel, shop = shop_entrance_panel, recipe_shelf = recipe_shelf_label, brewery_book = $CustomerBookLabel, warehouse = $WarehouseLabel, upgrades = upgrades_button}
+	guide.setup(pointer, speech, daily_goals_panel, places, recipe_library_window, brewery_view, shop_view, brew_preparation_panel)
+	add_child(guide)
+
+
+## `anchors` is the hint's left anchor, right anchor and vertical centre. It wraps, since
+## the space beside the views is half the bar's.
+func _place_hint(anchors : Vector3) -> void:
+	first_brew_hint_banner.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	# The scene's 540 px maximum set the wrap width too, so the text ran past the
+	# narrow space; the anchors alone keep it in place.
+	first_brew_hint_banner.custom_maximum_size = Vector2(-1, -1)
+	first_brew_hint_banner.anchor_left = anchors.x
+	first_brew_hint_banner.anchor_right = anchors.y
+	first_brew_hint_banner.anchor_top = anchors.z
+	first_brew_hint_banner.anchor_bottom = anchors.z
+	# Growth from the wider unwrapped text stays in the offsets otherwise.
+	first_brew_hint_banner.offset_left = 0.0
+	first_brew_hint_banner.offset_right = 0.0
 
 
 ## Cards rise from the bottom left, beside the options button. Above the open panels, so an

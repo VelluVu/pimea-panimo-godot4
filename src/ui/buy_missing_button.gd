@@ -5,7 +5,7 @@ extends TooltipButton
 ## brewery, so a recipe can be bought for without walking between them.
 
 const BUY_MISSING_TEXT : String = "Osta puuttuvat"
-const BUY_MISSING_PRICE_FORMAT : String = "Osta puuttuvat: %.2f €"
+const BUY_MISSING_PRICE_FORMAT : String = "Osta puuttuvat: %s"
 const BUY_MISSING_TOOLTIP : String = "Ostaa kerralla kaiken, mitä ladattu resepti vielä tarvitsee pöydän ja varaston lisäksi."
 
 
@@ -36,4 +36,4 @@ func _update() -> void:
 		text = BUY_MISSING_TEXT
 		return
 	var price : float = RecipeShopping.cost(to_buy, brewery.resolver.ingredient_table(), brewery.stats.multiplier(PerkStats.INGREDIENT_PRICE))
-	text = tr(BUY_MISSING_PRICE_FORMAT) % price
+	text = tr(BUY_MISSING_PRICE_FORMAT) % NumberText.money(price)

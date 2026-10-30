@@ -47,7 +47,6 @@ const YEAST_STAT_STRING : String = "Käymisaste: %s%%"
 const INGREDIENT_LABEL_WITH_STAT_STRING : String = "%s: %s %s (%s)"
 
 const RECIPE_LIBRARY_TITLE : String = "Reseptikirja"
-const RECIPE_LIBRARY_CLOSE_TEXT : String = "Sulje"
 
 const COLOR_HINT_PALE : String = "vaalea"
 const COLOR_HINT_GOLDEN : String = "kultainen"
@@ -96,7 +95,7 @@ const FOLDER_SCAN_MESSAGE : String = "[IngredientDatabase] Start recursive folde
 const FOLDER_SCAN_COMPLETE_MESSAGE : String = "[IngredientDatabase] Database fully sorted! Total registered items: "
 
 const LVV_RAID_TITLE : String = "LVV-TARKASTUS!"
-const LVV_RAID_MESSAGE : String = "Alkoholitarkastajat ryntäsivät kellariin ja takavarikoivat %s annosta valmista olutta! Lisäksi he kirjoittivat sakon (%.1f €), ja maineesi laski %s pistettä."
+const LVV_RAID_MESSAGE : String = "Alkoholitarkastajat ryntäsivät kellariin ja takavarikoivat %s annosta valmista olutta! Lisäksi he kirjoittivat sakon (%s), ja maineesi laski %s pistettä."
 const LVV_RAID_CLOSE_TEXT : String = "Selvä..."
 
 ## RunPerk.get_stat_summary() lines: the verb says the direction (PerkStats "increases"), the value is unsigned.
@@ -137,7 +136,6 @@ const PERK_RAID_THRESHOLD_STAT_STRING : String = "Ratsiakynnys nousee %s"
 const PERK_INGREDIENT_PRICE_STAT_STRING : String = "Raaka-aineiden hinnat vähenevät %s"
 
 const RUN_EFFECTS_TITLE : String = "Kauden tilastot"
-const RUN_EFFECTS_CLOSE_TEXT : String = "Sulje"
 const RUN_EFFECTS_RAID_THRESHOLD_STRING : String = "Ratsiakynnys tällä kaudella: %d riskiä"
 const RUN_EFFECTS_PERKS_HEADER : String = "Tämän kauden edut (%d):"
 const RUN_EFFECTS_NO_PERKS_STRING : String = "Ei vielä etuja. Nouse tasolle 2 saadaksesi ensimmäisen."

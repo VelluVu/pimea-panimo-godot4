@@ -13,7 +13,8 @@ const ROW_X : float = 32.0
 const ROW_HEIGHT : float = 16.0
 const BAR_COLOR : Color = Color(0.12, 0.1, 0.11)
 const BAND_COLOR : Color = Color(0.3, 0.75, 0.35, 0.45)
-const FOAM_ZONE_COLOR : Color = Color(0.9, 0.5, 0.2, 0.35)
+## Strong enough to read as orange on the dark bar: the guide names it.
+const FOAM_ZONE_COLOR : Color = Color(0.95, 0.5, 0.15, 0.8)
 const GREEN : Color = Color(0.45, 0.9, 0.45)
 const YELLOW : Color = Color(0.95, 0.8, 0.3)
 const RED : Color = Color(0.95, 0.35, 0.3)
@@ -26,7 +27,7 @@ const ACCURACY_TEXT : String = "Lämpötilassa %d %%"
 const CLUMPS_TEXT : String = "Paakkuja: %d"
 const MALT_MARKER_TEXT : String = "Mallas %d°"
 const STEP_TEXT : String = "%d° · %d s"
-const TIMER_TEXT : String = "%.1f s"
+const TIMER_TEXT : String = "%s s"
 const FOAM_TEXT : String = "Vaahto %d %%"
 const BITTERING_TEXT : String = "KATKERO"
 const FLAVOR_TEXT : String = "MAKU"
@@ -96,7 +97,7 @@ func _draw_mash() -> void:
 		rows += 1
 	if mash.phase == MashSession.Phase.HOLD:
 		var left : float = maxf(0.0, mash.step_seconds[mash.step_index] - mash.step_elapsed)
-		_row(rows + 1, tr(TIMER_TEXT) % left, TEXT_COLOR)
+		_row(rows + 1, tr(TIMER_TEXT) % NumberText.decimal(left, 1), TEXT_COLOR)
 	_needle(MASH_RANGE, mash.heat.temperature)
 	_flame(mash.heat.power)
 
@@ -112,7 +113,7 @@ func _draw_boil() -> void:
 	if boil.phase == BoilSession.Phase.HOP_STAND:
 		left = maxf(0.0, BoilSchedule.end_time() - boil.counted)
 		timer_color = FLAME_COLOR
-	_row(0, tr(TIMER_TEXT) % left, timer_color)
+	_row(0, tr(TIMER_TEXT) % NumberText.decimal(left, 1), timer_color)
 	for i : int in boil.marks.size():
 		var mark : BoilMark = boil.marks[i]
 		var unit : String = StringContainer.KPL if piece_ids.has(mark.ingredient_id) else StringContainer.G

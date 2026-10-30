@@ -5,7 +5,6 @@ extends Panel
 ## tree, so PROCESS_MODE_ALWAYS.
 
 const WINDOW_TITLE : String = "Asetukset"
-const CLOSE_BUTTON_TEXT : String = "Sulje"
 const MAIN_MENU_BUTTON_TEXT : String = "Päävalikkoon"
 const MAIN_MENU_SCENE_PATH : String = "res://src/scenes/ui/main_menu.tscn"
 
@@ -22,17 +21,24 @@ const SCREEN_SHAKE_LABEL_TEXT : String = "Ruudun tärinä"
 const SCREEN_SHAKE_TOOLTIP : String = "Tappelut ja särkyvät lasit tärisyttävät ruutua."
 const FOCUS_PAUSE_LABEL_TEXT : String = "Tauko taustalla"
 const FOCUS_PAUSE_TOOLTIP : String = "Peli pysähtyy, kun siirryt toiseen ikkunaan tai välilehteen."
+const SKIP_TUTORIAL_LABEL_TEXT : String = "Ohita opastus"
+const SKIP_TUTORIAL_TOOLTIP : String = "Vanha mestari Aatu ei opasta uuden pelin ensimmäistä päivää eikä keittopäivää."
 ## Matches the label width of the rows built in the scene.
 const ROW_LABEL_WIDTH : float = 120.0
 ## Every settings row is as tall as the tallest control (the language dropdown), so rows
 ## with and without a toggle sit evenly apart.
 const ROW_HEIGHT : float = 18.0
+## Volume sliders run in whole percents, so players can tune them exactly; the store
+## keeps 0 to 1.
+const VOLUME_SLIDER_MAX : float = 100.0
+## Fits "100" and leaves a gap before the mute toggle, so "50" and "Pois" do not read
+## as one phrase. Left-aligned, next to its slider.
+const VOLUME_VALUE_WIDTH : float = 28.0
 
 ## False on the instance inside the main menu itself: there is nothing to return to.
 @export var show_main_menu_button : bool = true
 
 @onready var title_label : Label = %TitleLabel
-@onready var close_button : Button = %CloseButton
 @onready var main_menu_button : Button = %MainMenuButton
 @onready var tab_container : TabContainer = %TabContainer
 
@@ -51,16 +57,17 @@ var _voices_slider : HSlider
 var _voices_mute_check : CheckButton
 var _pixel_perfect_check : CheckButton
 var _screen_shake_check : CheckButton
+var _skip_tutorial_check : CheckButton
 var _focus_pause_check : CheckButton
 
 
 func _ready() -> void:
 	title_label.text = WINDOW_TITLE
-	close_button.text = CLOSE_BUTTON_TEXT
 	main_menu_button.text = MAIN_MENU_BUTTON_TEXT
 	main_menu_button.visible = show_main_menu_button
 	_build_input_tab()
 	_build_voices_row()
+	_add_volume_value_labels()
 	_build_display_rows()
 	_build_language_row()
 	_even_out_rows()
@@ -95,11 +102,32 @@ func _build_input_tab() -> void:
 func _build_voices_row() -> void:
 	_voices_slider = HSlider.new()
 	_voices_slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_voices_slider.max_value = 1.0
-	_voices_slider.step = 0.05
+	_voices_slider.max_value = VOLUME_SLIDER_MAX
+	_voices_slider.step = 1.0
 	_voices_mute_check = CheckButton.new()
 	_voices_mute_check.text = MUTE_CHECK_TEXT
 	_add_row(sound_tab, VOICES_LABEL_TEXT, "", [_voices_slider, _voices_mute_check])
+
+
+func _volume_sliders() -> Dictionary:
+	return {
+		SettingsManager.BUS_MASTER: master_slider,
+		SettingsManager.BUS_MUSIC: music_slider,
+		SettingsManager.BUS_SFX: sfx_slider,
+		SettingsManager.BUS_VOICES: _voices_slider,
+	}
+
+
+## The exact value right of each slider.
+func _add_volume_value_labels() -> void:
+	for slider : HSlider in _volume_sliders().values():
+		var label := Label.new()
+		label.custom_minimum_size.x = VOLUME_VALUE_WIDTH
+		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+		label.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
+		label.text = str(int(slider.value))
+		slider.add_sibling(label)
+		slider.value_changed.connect(func(value : float) -> void: label.text = str(int(value)))
 
 
 func _build_display_rows() -> void:
@@ -109,6 +137,8 @@ func _build_display_rows() -> void:
 	_add_row(display_tab, SCREEN_SHAKE_LABEL_TEXT, SCREEN_SHAKE_TOOLTIP, [_screen_shake_check])
 	_focus_pause_check = CheckButton.new()
 	_add_row(display_tab, FOCUS_PAUSE_LABEL_TEXT, FOCUS_PAUSE_TOOLTIP, [_focus_pause_check])
+	_skip_tutorial_check = CheckButton.new()
+	_add_row(display_tab, SKIP_TUTORIAL_LABEL_TEXT, SKIP_TUTORIAL_TOOLTIP, [_skip_tutorial_check])
 
 
 ## A row like the scene's own: a fixed-width label, then the controls.
@@ -150,13 +180,13 @@ func _build_language_row() -> void:
 
 
 func _connect_signals() -> void:
-	close_button.pressed.connect(_on_close_button_pressed)
+	# The main menu button sits at the header's right end, under the X without a gap.
+	WindowCloseButton.attach(self, _on_close_button_pressed, $MarginContainer/MainVBox/HeaderHBox)
 	main_menu_button.pressed.connect(_on_main_menu_button_pressed)
-	master_slider.value_changed.connect(func(value : float) -> void: SettingsManager.set_volume(SettingsManager.BUS_MASTER, value))
-	music_slider.value_changed.connect(func(value : float) -> void: SettingsManager.set_volume(SettingsManager.BUS_MUSIC, value))
-	sfx_slider.value_changed.connect(func(value : float) -> void: SettingsManager.set_volume(SettingsManager.BUS_SFX, value))
-	_voices_slider.value_changed.connect(func(value : float) -> void: SettingsManager.set_volume(SettingsManager.BUS_VOICES, value))
-	for slider : HSlider in [master_slider, music_slider, sfx_slider, _voices_slider]:
+	var sliders : Dictionary = _volume_sliders()
+	for bus : StringName in sliders:
+		var slider : HSlider = sliders[bus]
+		slider.value_changed.connect(func(value : float) -> void: SettingsManager.set_volume(bus, value / VOLUME_SLIDER_MAX))
 		slider.drag_ended.connect(_on_slider_drag_ended)
 	music_mute_check.toggled.connect(func(muted : bool) -> void: SettingsManager.set_muted(SettingsManager.BUS_MUSIC, muted))
 	sfx_mute_check.toggled.connect(func(muted : bool) -> void: SettingsManager.set_muted(SettingsManager.BUS_SFX, muted))
@@ -165,23 +195,24 @@ func _connect_signals() -> void:
 	_pixel_perfect_check.toggled.connect(SettingsManager.set_pixel_perfect)
 	_screen_shake_check.toggled.connect(func(on : bool) -> void: SettingsManager.set_option(SettingsManager.OPTION_SCREEN_SHAKE, on))
 	_focus_pause_check.toggled.connect(func(on : bool) -> void: SettingsManager.set_option(SettingsManager.OPTION_PAUSE_ON_FOCUS_LOSS, on))
+	_skip_tutorial_check.toggled.connect(GuideParts.set_skipped)
 	_language_option.item_selected.connect(func(index : int) -> void: SettingsManager.set_language(SettingsManager.supported_locales[index]))
 	GUISignals.options_requested.connect(_on_options_requested)
 	tab_container.tab_changed.connect(GUISignals.tab_switched.emit.unbind(1))
 
 
 func _load_current_values() -> void:
-	master_slider.value = SettingsManager.get_volume(SettingsManager.BUS_MASTER)
-	music_slider.value = SettingsManager.get_volume(SettingsManager.BUS_MUSIC)
-	sfx_slider.value = SettingsManager.get_volume(SettingsManager.BUS_SFX)
+	var sliders : Dictionary = _volume_sliders()
+	for bus : StringName in sliders:
+		(sliders[bus] as HSlider).value = roundf(SettingsManager.get_volume(bus) * VOLUME_SLIDER_MAX)
 	music_mute_check.button_pressed = SettingsManager.is_muted(SettingsManager.BUS_MUSIC)
 	sfx_mute_check.button_pressed = SettingsManager.is_muted(SettingsManager.BUS_SFX)
-	_voices_slider.value = SettingsManager.get_volume(SettingsManager.BUS_VOICES)
 	_voices_mute_check.button_pressed = SettingsManager.is_muted(SettingsManager.BUS_VOICES)
 	fullscreen_check.button_pressed = SettingsManager.fullscreen
 	_pixel_perfect_check.button_pressed = SettingsManager.pixel_perfect
 	_screen_shake_check.button_pressed = SettingsManager.get_option(SettingsManager.OPTION_SCREEN_SHAKE)
 	_focus_pause_check.button_pressed = SettingsManager.get_option(SettingsManager.OPTION_PAUSE_ON_FOCUS_LOSS)
+	_skip_tutorial_check.set_pressed_no_signal(GuideParts.is_skipped())
 	_language_option.select(SettingsManager.supported_locales.find(SettingsManager.get_language()))
 
 
@@ -195,7 +226,9 @@ func _on_options_requested() -> void:
 	show()
 
 
+## Saves too: arrow keys and the mouse wheel move a slider without a drag end.
 func _on_close_button_pressed() -> void:
+	SettingsManager.save_settings()
 	GUISignals.options_closed.emit()
 	PauseLock.release(self)
 	hide()

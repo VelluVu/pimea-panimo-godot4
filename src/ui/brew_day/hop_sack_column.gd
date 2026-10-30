@@ -87,6 +87,17 @@ func is_pouring() -> bool:
 	return _boil != null and _boil.sacks.keys().any(func(sack : int) -> bool: return _boil.is_pouring(sack))
 
 
+## The sack whose mark is open, else the one about to open; null when none is cued.
+func cued_sack() -> HopSackButton:
+	var soon : HopSackButton = null
+	for button : HopSackButton in _buttons:
+		if button.cue == HopSackButton.Cue.NOW:
+			return button
+		if button.cue == HopSackButton.Cue.SOON and soon == null:
+			soon = button
+	return soon
+
+
 ## The ingredient's name as its sacks show it.
 func sack_name(ingredient_id : int) -> String:
 	return BrewDayLook.sack_name(String(_plan.names.get(ingredient_id, "")))

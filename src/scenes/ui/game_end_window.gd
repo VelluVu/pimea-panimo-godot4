@@ -38,6 +38,7 @@ var _is_season_end : bool = false
 
 func _ready() -> void:
 	close_button.pressed.connect(_on_close_button_pressed)
+	FirstFocus.attach(self)
 	BrewerySignals.game_ended.connect(_on_game_ended)
 	hide()
 

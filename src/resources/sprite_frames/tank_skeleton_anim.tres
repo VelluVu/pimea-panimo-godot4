@@ -1,6 +1,6 @@
-[gd_resource type="SpriteFrames" format=3]
+[gd_resource type="SpriteFrames" format=3 uid="uid://8r4rhqmc7ikr"]
 
-[ext_resource type="Texture2D" path="res://assets/textures/tank_skeleton.png" id="1_sheet"]
+[ext_resource type="Texture2D" uid="uid://cdmhln0otw47r" path="res://assets/textures/tank_skeleton.png" id="1_sheet"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0"]
 atlas = ExtResource("1_sheet")
@@ -17,28 +17,28 @@ region = Rect2(28, 0, 14, 12)
 [resource]
 animations = [{
 "frames": [{
-"duration": 5,
+"duration": 5.0,
 "texture": SubResource("AtlasTexture_0")
 }, {
-"duration": 6,
+"duration": 6.0,
 "texture": SubResource("AtlasTexture_1")
 }, {
-"duration": 10,
+"duration": 10.0,
 "texture": SubResource("AtlasTexture_2")
 }, {
-"duration": 4,
+"duration": 4.0,
 "texture": SubResource("AtlasTexture_1")
 }, {
-"duration": 6,
+"duration": 6.0,
 "texture": SubResource("AtlasTexture_2")
 }, {
-"duration": 4,
+"duration": 4.0,
 "texture": SubResource("AtlasTexture_1")
 }, {
-"duration": 4,
+"duration": 4.0,
 "texture": SubResource("AtlasTexture_0")
 }],
-"loop": false,
+"loop": 0,
 "name": &"peek",
 "speed": 10.0
 }]

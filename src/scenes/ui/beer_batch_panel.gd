@@ -4,7 +4,7 @@ extends VBoxContainer
 
 @onready var beer_batch_list_vbox : VBoxContainer = $BeerBatchScrollContainer/BeerBatchListVBox
 ## Name and stock on separate lines, so a long style name never hides the count.
-const NAME_LABEL_STRING : String = "🍺 %s (%.1f%%)"
+const NAME_LABEL_STRING : String = "🍺 %s (%s%%)"
 ## A batch soured by a dirty keg, by how badly, see BrewBatch.get_sour_level().
 const LIGHT_SOUR_LABEL_FORMAT : String = "Vähän hapan %s"
 const SOUR_LABEL_FORMAT : String = "Hapan %s"
@@ -115,7 +115,7 @@ func _update_beer_batches_ui() -> void:
 			any_bottles_left = true
 
 			var name_label := _make_batch_label(batch)
-			name_label.text = NAME_LABEL_STRING % [batch.get_style_name(), batch.get_abv()]
+			name_label.text = NAME_LABEL_STRING % [batch.get_style_name(), NumberText.decimal(batch.get_abv(), 1)]
 			match batch.get_sour_level():
 				FermentationRules.SourLevel.LIGHT:
 					name_label.text = tr(LIGHT_SOUR_LABEL_FORMAT) % name_label.text

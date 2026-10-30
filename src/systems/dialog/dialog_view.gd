@@ -32,6 +32,8 @@ const POPUP_SHAKE_STEP_SECONDS : float = 0.035
 const DRIFTING_NOTE_RISE : float = 45.0
 const DRIFTING_NOTE_SECONDS : float = 3.5
 const DRIFTING_NOTE_OUTLINE_COLOR : Color = Color(0.05, 0.05, 0.05, 1)
+## A note anchored near a side (the warehouse door) is pushed in, not cut off.
+const DRIFTING_NOTE_EDGE_MARGIN : float = 4.0
 ## Bubbles stack by slot but stay below z 0, so every panel and window covers them.
 const BUBBLE_Z_BASE : int = -1000
 const STACKED_Z_OFFSET : int = 100
@@ -60,8 +62,9 @@ func _ready() -> void:
 
 
 ## Shows `text` in `slot`'s bubble above `speaker_pos` (global); again on the same slot
-## replaces it. A negative slot is ignored.
-func show_bubble(text : String, slot : int, speaker_pos : Vector2, display_time : float, fade_time : float) -> void:
+## replaces it. A negative slot is ignored. `type_out` writes the line out first, and the
+## display time starts once it is written; a restored bubble passes false.
+func show_bubble(text : String, slot : int, speaker_pos : Vector2, display_time : float, fade_time : float, type_out : bool = true) -> void:
 	if slot < 0:
 		return
 
@@ -71,12 +74,14 @@ func show_bubble(text : String, slot : int, speaker_pos : Vector2, display_time 
 		entry.bubble.modulate.a = 1.0
 	else:
 		entry = BubbleEntry.new(SPEECH_BUBBLE_SCENE.instantiate() as SpeechBubble)
+		entry.bubble.follow_time_scale = bubbles_follow_time_scale
 		_spawn_point.add_child(entry.bubble)
 		_bubbles[slot] = entry
 
-	entry.bubble.set_text(text)
+	entry.bubble.set_text(text, type_out)
 	_place(entry, slot, speaker_pos)
-	_hide_after_delay(entry, slot, entry.next_token(), display_time, fade_time)
+	var typing : float = SpeechBubble.typing_seconds(text) if type_out else 0.0
+	_hide_after_delay(entry, slot, entry.next_token(), display_time + typing, fade_time)
 
 
 ## Closes the bubble of `slot` at once instead of letting it finish its fade.
@@ -141,7 +146,10 @@ func show_drifting_note(text : String, color : Color, anchor_pos : Vector2) -> v
 	note.add_theme_color_override(&"font_outline_color", DRIFTING_NOTE_OUTLINE_COLOR)
 	_spawn_point.add_child(note)
 	note.reset_size()
-	note.global_position = (anchor_pos - Vector2(note.size.x / 2.0, note.size.y)).round()
+	var top_left : Vector2 = anchor_pos - Vector2(note.size.x / 2.0, note.size.y)
+	var max_x : float = get_viewport_rect().size.x - note.size.x - DRIFTING_NOTE_EDGE_MARGIN
+	top_left.x = clampf(top_left.x, DRIFTING_NOTE_EDGE_MARGIN, maxf(DRIFTING_NOTE_EDGE_MARGIN, max_x))
+	note.global_position = top_left.round()
 
 	var faded : Color = color
 	faded.a = 0.0

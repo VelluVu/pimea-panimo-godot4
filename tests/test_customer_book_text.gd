@@ -4,6 +4,7 @@ extends McpTestSuite
 ## Unit tests for CustomerBookText: what the Asiakaskirja says about a customer.
 
 const TextScript := preload("res://src/ui/customer_book_text.gd")
+const NumberTextScript := preload("res://src/ui/number_text.gd")
 
 const NAMES : Dictionary = {
 	BeerStyle.Style.KOTIKALJA: "Kotikalja",
@@ -49,8 +50,8 @@ func test_strict_limits_are_listed() -> void:
 	data.accepted_styles = [BeerStyle.Style.HELLES]
 	var lines : PackedStringArray = TextScript.lines(data, true, NAMES)
 	assert_true(lines.has("Juo vain: Helles"))
-	assert_true(lines.has("Vähintään 5.0 % alkoholia"))
-	assert_true(lines.has("Enintään 2.50 € annokselta"))
+	assert_true(lines.has("Vähintään %s %% alkoholia" % NumberTextScript.decimal(5.0, 1)))
+	assert_true(lines.has("Enintään %s annokselta" % NumberTextScript.money(2.5)))
 
 
 func test_one_entry_per_title() -> void:

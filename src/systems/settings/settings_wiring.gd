@@ -12,6 +12,8 @@ const BUS_VOICES: StringName = &"Voices"
 const OPTION_SCREEN_SHAKE: String = "screen_shake"
 ## Alt-tab or another browser tab would otherwise let customers walk out unserved.
 const OPTION_PAUSE_ON_FOCUS_LOSS: String = "pause_on_focus_loss"
+## No Vanha mestari Aatu tutorial in new games (GuideParts); each run keeps its own progress.
+const OPTION_SKIP_TUTORIAL: String = "skip_tutorial"
 
 
 func _init() -> void:
@@ -19,6 +21,7 @@ func _init() -> void:
 	option_defaults = {
 		OPTION_SCREEN_SHAKE: true,
 		OPTION_PAUSE_ON_FOCUS_LOSS: true,
+		OPTION_SKIP_TUTORIAL: false,
 	}
 	default_volume = 0.8
 	save_path = "user://settings.cfg"

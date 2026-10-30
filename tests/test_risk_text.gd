@@ -2,6 +2,7 @@
 extends McpTestSuite
 
 const RiskTextScript := preload("res://src/ui/risk_text.gd")
+const NumberTextScript := preload("res://src/ui/number_text.gd")
 
 
 func suite_name() -> String:
@@ -25,7 +26,7 @@ func test_the_tooltip_explains_a_moved_threshold() -> void:
 	assert_contains(text, "43 riskiä ennen ratsiaa")
 	assert_contains(text, "Peruskynnys 100, edut +20, maine -15")
 	assert_contains(text, "Ratsiat: 1/3")
-	assert_contains(text, "sakko 60.0 €, mainetta -24")
+	assert_contains(text, "sakko %s, mainetta -24" % NumberTextScript.money(60.0))
 
 
 func test_an_untouched_threshold_skips_the_breakdown() -> void:

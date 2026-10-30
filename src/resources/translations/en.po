@@ -28,12 +28,12 @@ msgstr "Alpha acids: %s%% / Beta acids: %s%%"
 #: src/autoload/string_container.gd
 msgid ""
 "Alkoholitarkastajat ryntäsivät kellariin ja takavarikoivat %s annosta "
-"valmista olutta! Lisäksi he kirjoittivat sakon (%.1f €), ja maineesi laski "
-"%s pistettä."
+"valmista olutta! Lisäksi he kirjoittivat sakon (%s), ja maineesi laski %s "
+"pistettä."
 msgstr ""
 "Alcohol inspectors stormed the cellar and confiscated %s servings of "
-"finished beer! They also issued a fine (%.1f €), and your reputation "
-"dropped by %s points."
+"finished beer! They also issued a fine (%s), and your reputation dropped by "
+"%s points."
 
 #: src/autoload/string_container.gd
 msgid "Alkoholiton IPA"
@@ -314,10 +314,6 @@ msgid "Sitruksinen"
 msgstr "Citrusy"
 
 #: src/autoload/string_container.gd
-msgid "Sulje"
-msgstr "Close"
-
-#: src/autoload/string_container.gd
 msgid "Tappelun todennäköisyys pienenee %s"
 msgstr "Bar fight chance drops by %s"
 
@@ -388,10 +384,10 @@ msgstr "Aging price bonus: +%d %% (up to +%d %%)"
 #: src/brewing/brew_batch.gd
 msgid ""
 "Laatu: %s%% (%s %s, %s)\n"
-"EBC: %s | IBU: %s | ABV: %.1f%%"
+"EBC: %s | IBU: %s | ABV: %s%%"
 msgstr ""
 "Quality: %s%% (%s %s, %s)\n"
-"EBC: %s | IBU: %s | ABV: %.1f%%"
+"EBC: %s | IBU: %s | ABV: %s%%"
 
 #: src/brewing/brew_batch.gd
 msgid "heikkenee"
@@ -618,8 +614,16 @@ msgid "Kriitikko"
 msgstr "Critic"
 
 #: src/customers/customer_hand_offsets.gd
+msgid "Kurpitsapää"
+msgstr "Pumpkin Head"
+
+#: src/customers/customer_hand_offsets.gd
 msgid "Leijonafani"
 msgstr "Lions Fan"
+
+#: src/customers/customer_hand_offsets.gd
+msgid "Munkki"
+msgstr "Monk"
 
 #: src/customers/customer_hand_offsets.gd
 msgid "Raksamies"
@@ -2071,10 +2075,6 @@ msgstr ""
 "without it."
 
 #: src/resources/customers/halloweeni_vieras.tres
-msgid "Kurpitsapää"
-msgstr "Pumpkin Head"
-
-#: src/resources/customers/halloweeni_vieras.tres
 msgid "Tämä maistuu mädältä kurpitsalta, eikä hyvällä tavalla."
 msgstr "This tastes like a rotten pumpkin, and not in a good way."
 
@@ -2455,10 +2455,6 @@ msgstr ""
 #: src/resources/customers/munkki.tres
 msgid "Kelvollista käsityötä, vaikka luostarin sielu jäi vielä puuttumaan."
 msgstr "Decent craftsmanship, though the soul of the monastery is still missing."
-
-#: src/resources/customers/munkki.tres
-msgid "Munkki"
-msgstr "Monk"
 
 #: src/resources/customers/munkki.tres
 msgid ""
@@ -3506,6 +3502,14 @@ msgstr ""
 
 #: src/resources/guide/02_keittaminen.tres
 msgid ""
+"Kun resepti on ladattu, Osta puuttuvat ostaa kerralla kaiken, mitä siitä "
+"puuttuu, ja Täytä resepti nostaa raaka-aineet varastosta pöydälle."
+msgstr ""
+"With a recipe loaded, Buy missing buys everything it still lacks in one go, "
+"and Fill recipe moves the ingredients from storage onto the table."
+
+#: src/resources/guide/02_keittaminen.tres
+msgid ""
 "Laatu nousee, kun osut tyylin EBC- ja IBU-rajojen keskelle ja käytät "
 "tyylille sopivia humalia ja mausteita."
 msgstr ""
@@ -3697,16 +3701,28 @@ msgstr ""
 "three perks for the rest of the season."
 
 #: src/resources/guide/06_tasot.tres
+msgid ""
+"Otsikon alle ilmestyy Seuraavaksi-rivi, kun peli tietää, mitä kannattaa "
+"tehdä: ensimmäisenä päivänä se neuvoo ensimmäisen oluen panemisessa, "
+"myöhemmin se muistuttaa, kun hanat ovat tyhjät."
+msgstr ""
+"A Next line appears under the heading when the game knows what to do: on "
+"the first day it guides you through your first brew, later it reminds you "
+"when the taps run dry."
+
+#: src/resources/guide/06_tasot.tres
 msgid "Tasot ja tavoitteet"
 msgstr "Levels and goals"
 
 #: src/resources/guide/06_tasot.tres
 msgid ""
-"Tavoitteet-paneeli oikealla näyttää päivän tavoitteet. Suoritetut "
-"tavoitteet antavat palkintoja."
+"Tavoitteet-paneeli oikealla näyttää päivän tavoitteet. Otsikon luku kertoo, "
+"montako uutta tavoitetta tänään vielä tulee, ja suoritetut tavoitteet "
+"antavat palkintoja."
 msgstr ""
-"The Goals panel on the right shows the day's goals. Completed goals give "
-"rewards."
+"The Goals panel on the right shows the day's goals. The number in its "
+"heading tells how many new goals are still to come today, and completed "
+"goals give rewards."
 
 #: src/resources/guide/06_tasot.tres
 msgid ""
@@ -3725,12 +3741,22 @@ msgid "Sillä ostetaan päävalikon Olutopista pysyviä etuja tuleville kausille
 msgstr "Spend it in Brewlore in the main menu on lasting perks for future seasons."
 
 #: src/resources/guide/08_ohjaus.tres
+msgid ""
+"Ensimmäisenä päivänä kultainen nuoli ja kehys näyttävät, mihin painaa "
+"seuraavaksi."
+msgstr "On the first day a golden arrow and frame show where to click next."
+
+#: src/resources/guide/08_ohjaus.tres
 msgid "Esc sulkee avoimet ikkunat tai avaa valikon."
 msgstr "Esc closes open windows or opens the menu."
 
 #: src/resources/guide/08_ohjaus.tres
-msgid "Hiirellä lisätiedot näkyvät, kun osoitin on kohteen päällä."
-msgstr "With a mouse, more information shows when the pointer rests on something."
+msgid ""
+"Hiirellä lisätiedot näkyvät, kun osoitin on kohteen päällä. Harmaan napin "
+"lisätiedot kertovat, miksi se ei vielä toimi."
+msgstr ""
+"With a mouse, details show when the pointer is over something. A grey "
+"button's details tell why it does not work yet."
 
 #: src/resources/guide/08_ohjaus.tres
 msgid "Kosketusnäytöllä ?-nappi vasemmassa alakulmassa näyttää paikkojen nimet."
@@ -5222,10 +5248,6 @@ msgstr ""
 "Bring me %d kilos of %s and {cost} €, and I'll tell you an old brewmaster's "
 "secret."
 
-#: src/resources/special_events/old_master.tres
-msgid "Vanha mestari Aatu"
-msgstr "Old master Aatu"
-
 #: src/resources/special_events/quality_critic.tres
 msgid ""
 "Ei tässä ole mitään erikoista. Yritä uudestaan, kun on jotain oikeasti "
@@ -5442,10 +5464,6 @@ msgid "Pane"
 msgstr "Brew"
 
 #: src/scenes/main.tscn
-msgid "Parannukset"
-msgstr "Upgrades"
-
-#: src/scenes/main.tscn
 msgid "Pelivalikko"
 msgstr "Game menu"
 
@@ -5472,10 +5490,6 @@ msgstr "Save recipe"
 #: src/scenes/main.tscn
 msgid "Taso: 1"
 msgstr "Level: 1"
-
-#: src/scenes/main.tscn
-msgid "Tavoitteet"
-msgstr "Goals"
 
 #: src/scenes/main.tscn
 msgid "Tyhjennä valmistelu"
@@ -5516,11 +5530,11 @@ msgstr "Achievements (%d/%d)"
 #: src/scenes/ui/bar_contact_option_button.gd
 msgid ""
 "%s\n"
-"Maksukerroin: x%.2f raaka-aineiden hinnasta\n"
+"Maksukerroin: x%s raaka-aineiden hinnasta\n"
 "LVV-riski per toimitus: +%d (alkoholittomat %+d)"
 msgstr ""
 "%s\n"
-"Pay rate: x%.2f of the ingredient cost\n"
+"Pay rate: x%s of the ingredient cost\n"
 "LVV risk per shipment: +%d (alcohol-free %+d)"
 
 #: src/scenes/ui/beer_batch_element.tscn
@@ -5598,14 +5612,6 @@ msgid "⏳ %s käymässä, %d s"
 msgstr "⏳ %s fermenting, %d s"
 
 #: src/scenes/ui/brew_preparation_panel.gd
-msgid "%+d mainetta"
-msgstr "%+d reputation"
-
-#: src/scenes/ui/brew_preparation_panel.gd
-msgid "+%d XP"
-msgstr "+%d XP"
-
-#: src/scenes/ui/brew_preparation_panel.gd
 msgid ""
 "Kaikissa tynnyreissä on olutta. Myy tai vie erä baariin, niin tynnyri "
 "vapautuu."
@@ -5616,6 +5622,10 @@ msgid ""
 "Mäskipataan mahtuu enintään %d kg mallasta. Isompi pata löytyy "
 "parannuksista."
 msgstr "The mash tun holds at most %d kg of malt. A bigger one is in the upgrades."
+
+#: src/scenes/ui/brew_preparation_panel.gd
+msgid "Pane pöydän raaka-aineista olut tynnyriin"
+msgstr "Brew a keg from the ingredients on the table"
 
 #: src/scenes/ui/brew_preparation_panel.gd
 msgid "Raaka-aineet eivät sovi mihinkään oluttyyliin."
@@ -5702,12 +5712,12 @@ msgid "Mallasta: %d/%d kg"
 msgstr "Malt: %d/%d kg"
 
 #: src/scenes/ui/daily_goals_panel.gd
-msgid "Päivätavoitteet (+%d tänään):"
-msgstr "Daily goals (+%d today):"
+msgid "Tavoitteet"
+msgstr "Goals"
 
 #: src/scenes/ui/daily_goals_panel.gd
-msgid "Päivätavoitteet:"
-msgstr "Daily goals:"
+msgid "Tavoitteet (+%d tänään)"
+msgstr "Goals (+%d today)"
 
 #: src/scenes/ui/daily_goals_panel.gd
 msgid "Uusia tavoitteita huomenna."
@@ -5725,7 +5735,7 @@ msgstr "Continue"
 msgid ""
 "Päivä %d alkoi.\n"
 "\n"
-"Rahaa: %+.1f €\n"
+"Rahaa: %s\n"
 "Mainetta: %+d%s\n"
 "LVV-riski nyt: %d%s\n"
 "Annoksia myyty: %d\n"
@@ -5734,7 +5744,7 @@ msgid ""
 msgstr ""
 "Day %d began.\n"
 "\n"
-"Money: %+.1f €\n"
+"Money: %s\n"
 "Reputation: %+d%s\n"
 "LVV risk now: %d%s\n"
 "Servings sold: %d\n"
@@ -5865,8 +5875,16 @@ msgid "Valikko"
 msgstr "Menu"
 
 #: src/scenes/ui/game_speed_button.gd
-msgid "Pelin nopeus."
-msgstr "Game speed."
+msgid "Pelin nopeus (%s)"
+msgstr "Game speed (%s)"
+
+#: src/scenes/ui/gui.gd
+msgid "Kellarin parannukset (%s)"
+msgstr "Cellar upgrades (%s)"
+
+#: src/scenes/ui/ingredient_inventory_panel.gd
+msgid "Varasto on tyhjä. Raaka-aineet ostetaan kaupasta."
+msgstr "The storeroom is empty. Ingredients are bought in the shop."
 
 #: src/scenes/ui/ingredient_option_button.gd
 msgid "%s (maine %d)"
@@ -5879,6 +5897,10 @@ msgstr "You can buy more only at %d reputation. What you own can still be used."
 #: src/scenes/ui/ingredient_option_button.gd
 msgid "Vaatii mainetta: %d"
 msgstr "Needs reputation: %d"
+
+#: src/scenes/ui/ingredient_type_selector.gd
+msgid "Edellinen raaka-aine (%s)"
+msgstr "Previous ingredient (%s)"
 
 #: src/scenes/ui/ingredient_type_selector.gd
 msgid "Hiiva"
@@ -5895,6 +5917,10 @@ msgstr "Malt"
 #: src/scenes/ui/ingredient_type_selector.gd
 msgid "Mauste"
 msgstr "Spice"
+
+#: src/scenes/ui/ingredient_type_selector.gd
+msgid "Seuraava raaka-aine (%s)"
+msgstr "Next ingredient (%s)"
 
 #: src/scenes/ui/leaderboard_window.gd
 msgid "Annokset"
@@ -5949,6 +5975,30 @@ msgid "UUSI!"
 msgstr "NEW!"
 
 #: src/scenes/ui/left_brewing_view.gd
+msgid "%s %s (varastossa %s %s)"
+msgstr "%s %s (in stock %s %s)"
+
+#: src/scenes/ui/left_brewing_view.gd
+msgid "Ei pöydällä"
+msgstr "Not on the table"
+
+#: src/scenes/ui/left_brewing_view.gd
+msgid "Ei varastossa"
+msgstr "Not in stock"
+
+#: src/scenes/ui/left_brewing_view.gd
+msgid "Lisää valittu määrä pöydälle (%s)"
+msgstr "Add the chosen amount to the table (%s)"
+
+#: src/scenes/ui/left_brewing_view.gd
+msgid "Määrä (%s / %s)"
+msgstr "Amount (%s / %s)"
+
+#: src/scenes/ui/left_brewing_view.gd
+msgid "Palauta valittu määrä pöydältä varastoon"
+msgstr "Return the chosen amount from the table to stock"
+
+#: src/scenes/ui/left_brewing_view.gd
 msgid ""
 "Täytä puuttuvat raaka-aineet pöydälle varastosta ladatun reseptin mukaan. "
 "Pois käytöstä, jos varastossa ei ole tarpeeksi jotain raaka-ainetta."
@@ -5960,9 +6010,25 @@ msgstr ""
 msgid "Täytä resepti"
 msgstr "Fill recipe"
 
+#: src/scenes/ui/left_brewing_view.gd
+msgid "Valitse määrä"
+msgstr "Choose an amount"
+
 #: src/scenes/ui/left_shop_view.gd
-msgid "Ei varaa: %.2f €"
-msgstr "Can't afford: %.2f €"
+msgid "%s / %s, varastossa %s %s"
+msgstr "%s / %s, in stock %s %s"
+
+#: src/scenes/ui/left_shop_view.gd
+msgid "Ei varaa: %s"
+msgstr "Can't afford: %s"
+
+#: src/scenes/ui/left_shop_view.gd
+msgid "Myy valittu määrä varastosta takaisin kauppaan"
+msgstr "Sell the chosen amount from stock back to the shop"
+
+#: src/scenes/ui/left_shop_view.gd
+msgid "Osta valittu määrä (%s)"
+msgstr "Buy the chosen amount (%s)"
 
 #: src/scenes/ui/left_shop_view.gd
 msgid "Vaatii %d mainetta"
@@ -6033,6 +6099,10 @@ msgid "Oluenpanotaito"
 msgstr "Brewing skill"
 
 #: src/scenes/ui/online_score_panel.gd
+msgid "Kirjoita ensin nimimerkki."
+msgstr "Type a nickname first."
+
+#: src/scenes/ui/online_score_panel.gd
 msgid "Lähetetään..."
 msgstr "Sending..."
 
@@ -6073,6 +6143,10 @@ msgid "Näyttö"
 msgstr "Display"
 
 #: src/scenes/ui/options_window.gd
+msgid "Ohita opastus"
+msgstr "Skip tutorial"
+
+#: src/scenes/ui/options_window.gd
 msgid "Ohjaus"
 msgstr "Controls"
 
@@ -6111,6 +6185,12 @@ msgstr "Sharp pixels"
 #: src/scenes/ui/options_window.gd
 msgid "Tietoja"
 msgstr "About"
+
+#: src/scenes/ui/options_window.gd
+msgid ""
+"Vanha mestari Aatu ei opasta uuden pelin ensimmäistä päivää eikä "
+"keittopäivää."
+msgstr "Old master Aatu won't guide you through a new game's first day or brew day."
 
 #: src/scenes/ui/options_window.gd
 msgid "Ääni"
@@ -6185,12 +6265,12 @@ msgid "Osa raaka-aineista säästyi panon yhteydessä!"
 msgstr "Some ingredients were saved during brewing!"
 
 #: src/scenes/ui/sale_flash_stack.gd
-msgid "Vienti (%s): %s x%d  +%.1f € (LVV-riski %+d)"
-msgstr "Shipment (%s): %s x%d  +%.1f € (LVV risk %+d)"
+msgid "Vienti (%s): %s x%d  %s (LVV-riski %+d)"
+msgstr "Shipment (%s): %s x%d  %s (LVV risk %+d)"
 
 #: src/scenes/ui/sale_flash_toast.gd
-msgid "Myyty: %s  +%.1f €"
-msgstr "Sold: %s  +%.1f €"
+msgid "Myyty: %s  %s"
+msgstr "Sold: %s  %s"
 
 #: src/scenes/ui/sale_receipt_log_window.gd
 msgid "Ei myyntejä vielä tänään."
@@ -6203,6 +6283,10 @@ msgstr "Today's receipts"
 #: src/scenes/ui/special_event_window.tscn
 msgid "Joo"
 msgstr "Sure"
+
+#: src/scenes/ui/top_panel_resources.gd
+msgid "+%d XP"
+msgstr "+%d XP"
 
 #: src/scenes/ui/top_panel_resources.gd
 msgid "Päivä: %s"
@@ -6477,8 +6561,8 @@ msgid "Palvelin ei hyväksynyt tulosta."
 msgstr "The server did not accept the score."
 
 #: src/ui/brew_aim_text.gd
-msgid "%.1f %% ABV"
-msgstr "%.1f %% ABV"
+msgid "%s %% ABV"
+msgstr "%s %% ABV"
 
 #: src/ui/brew_aim_text.gd
 msgid "EBC %d"
@@ -6495,6 +6579,70 @@ msgstr "Missing the style's hop or spice: -%d %%"
 #: src/ui/brew_aim_text.gd
 msgid "Tyylin keskikohta: %s"
 msgstr "Style's centre: %s"
+
+#: src/ui/brew_day/brew_day_guide_text.gd
+msgid ""
+"Ensin vesi lämpimäksi. Pidä LÄMMITÄ pohjassa (tai välilyönti), kunnes "
+"ollaan sopivassa lämmössä."
+msgstr ""
+"First, warm the water. Hold HEAT down (or Space) until it's at the right "
+"temperature."
+
+#: src/ui/brew_day/brew_day_guide_text.gd
+msgid "Heiluva säkki on vuorossa. Vedä se kattilan suulle tai paina sen numeroa."
+msgstr ""
+"The wobbling sack is next. Drag it to the kettle's mouth or press its "
+"number."
+
+#: src/ui/brew_day/brew_day_guide_text.gd
+msgid ""
+"Kun maltaat on lisätty, paakut täytyy rikkoa melalla, niin niistä saadaan "
+"kaikki sokerit irti."
+msgstr ""
+"Once the malts are in, break the clumps with the paddle, so we get all the "
+"sugars out of them."
+
+#: src/ui/brew_day/brew_day_guide_text.gd
+msgid "Liian kuumaa! Päästä irti, niin vesi jäähtyy takaisin vihreälle."
+msgstr "Too hot! Let go, and the water cools back into the green."
+
+#: src/ui/brew_day/brew_day_guide_text.gd
+msgid "Mäskäys on valmis. Paina KEITTOON."
+msgstr "The mash is done. Press TO THE BOIL."
+
+#: src/ui/brew_day/brew_day_guide_text.gd
+msgid "Nyt keitetään. Pidä LÄMMITÄ pohjassa, kunnes vierre kiehuu."
+msgstr "Now we boil. Hold HEAT down until the wort boils."
+
+#: src/ui/brew_day/brew_day_guide_text.gd
+msgid "Pidä lämpö tasaisena. Jos se nousee yli, päästä irti."
+msgstr "Keep the heat steady. If it climbs too high, let go."
+
+#: src/ui/brew_day/brew_day_guide_text.gd
+msgid ""
+"Pidä vierre kiehumassa, mutta älä päästä neulaa oranssille. Siellä vaahto "
+"nousee tai kattila kiehuu yli."
+msgstr ""
+"Keep the wort boiling, but don't let the needle into the orange. That's "
+"where the foam rises or the kettle boils over."
+
+#: src/ui/brew_day/brew_day_guide_text.gd
+msgid "Siinä se. Laatu näkyy ylhäällä. Paina VALMIS, niin olut pääsee käymään."
+msgstr ""
+"There it is. The quality shows above. Press DONE, and the beer can start "
+"fermenting."
+
+#: src/ui/brew_day/brew_day_guide_text.gd
+msgid ""
+"Säkissä lukee NYT: vedä maltaat kattilan suulle ja pidä siinä, kunnes säkki "
+"on tyhjä."
+msgstr ""
+"The sack says NOW: drag the malts to the kettle's mouth and hold them there "
+"until the sack is empty."
+
+#: src/ui/brew_day/brew_day_guide_text.gd
+msgid "Vaahto nousee! Päästä irti, ennen kuin kattila kiehuu yli."
+msgstr "The foam is rising! Let go before the kettle boils over."
 
 #: src/ui/brew_day/brew_day_lines.gd
 msgid "%s ei ole aromihumala."
@@ -6649,12 +6797,12 @@ msgid "KEITTOON"
 msgstr "TO THE BOIL"
 
 #: src/ui/brew_day/brew_day_window.gd
-msgid "Keitä heti ilman keittopäivää. Laatu ×%.2f."
-msgstr "Brew right away without the brew day. Quality ×%.2f."
+msgid "Keitä heti ilman keittopäivää. Laatu ×%s."
+msgstr "Brew right away without the brew day. Quality ×%s."
 
 #: src/ui/brew_day/brew_day_window.gd
-msgid "Laatu ×%.2f"
-msgstr "Quality ×%.2f"
+msgid "Laatu ×%s"
+msgstr "Quality ×%s"
 
 #: src/ui/brew_day/brew_day_window.gd
 msgid "LÄMMITÄ"
@@ -6741,20 +6889,20 @@ msgid "Vaahto %d %%"
 msgstr "Foam %d %%"
 
 #: src/ui/brew_preview_text.gd
-msgid "Arvio: %s, EBC %d, IBU %d, %.1f %% ABV, laatu %d%%"
-msgstr "Estimate: %s, EBC %d, IBU %d, %.1f %% ABV, quality %d%%"
+msgid "Arvio: %s, laatu %d%%, %s %% alkoholia"
+msgstr "Estimate: %s, quality %d%%, %s %% alcohol"
 
 #: src/ui/brew_preview_text.gd
-msgid "Arvio: tuntematon tyyli täsmää! (EBC %d, IBU %d, %.1f %% ABV)"
-msgstr "Estimate: an unknown style matches! (EBC %d, IBU %d, %.1f %% ABV)"
+msgid "Arvio: tuntematon tyyli täsmää! (EBC %d, IBU %d, %s %% ABV)"
+msgstr "Estimate: an unknown style matches! (EBC %d, IBU %d, %s %% ABV)"
 
 #: src/ui/brew_preview_text.gd
 msgid "Automaattikattila: %s"
 msgstr "Automatic kettle: %s"
 
 #: src/ui/brew_preview_text.gd
-msgid "Ei täsmää vielä mihinkään tyyliin. (EBC %d, IBU %d, %.1f %% ABV)"
-msgstr "Doesn't match any style yet. (EBC %d, IBU %d, %.1f %% ABV)"
+msgid "Ei täsmää vielä mihinkään tyyliin. (EBC %d, IBU %d, %s %% ABV)"
+msgstr "Doesn't match any style yet. (EBC %d, IBU %d, %s %% ABV)"
 
 #: src/ui/brew_preview_text.gd
 msgid "Lisää raaka-aineita nähdäksesi arvion."
@@ -6772,13 +6920,17 @@ msgstr "You need at least 3 kg of malt and a yeast."
 msgid "Tyylin maltaat: +%d %%"
 msgstr "Style malts: +%d %%"
 
+#: src/ui/brew_preview_text.gd
+msgid "Väri %d EBC, katkeruus %d IBU, alkoholia %s %%"
+msgstr "Colour %d EBC, bitterness %d IBU, alcohol %s %%"
+
 #: src/ui/buy_missing_button.gd
 msgid "Osta puuttuvat"
 msgstr "Buy missing"
 
 #: src/ui/buy_missing_button.gd
-msgid "Osta puuttuvat: %.2f €"
-msgstr "Buy missing: %.2f €"
+msgid "Osta puuttuvat: %s"
+msgstr "Buy missing: %s"
 
 #: src/ui/buy_missing_button.gd
 msgid ""
@@ -6809,8 +6961,16 @@ msgid "Osta %d €"
 msgstr "Buy %d €"
 
 #: src/ui/cellar_upgrade_text.gd
+msgid "Parannus on jo täydellä tasolla."
+msgstr "This upgrade is already at its top level."
+
+#: src/ui/cellar_upgrade_text.gd
 msgid "Päällä"
 msgstr "On"
+
+#: src/ui/cellar_upgrade_text.gd
+msgid "Rahaa puuttuu %s."
+msgstr "You are %s short."
 
 #: src/ui/cellar_upgrade_text.gd
 msgid "Seuraava taso: %s"
@@ -6857,12 +7017,12 @@ msgid "Ei vielä tavattu. Palvele kerran, niin opit hänen makunsa."
 msgstr "Not met yet. Serve them once to learn their taste."
 
 #: src/ui/customer_book_text.gd
-msgid "Enintään %.1f %% alkoholia"
-msgstr "At most %.1f %% alcohol"
+msgid "Enintään %s %% alkoholia"
+msgstr "At most %s %% alcohol"
 
 #: src/ui/customer_book_text.gd
-msgid "Enintään %.2f € annokselta"
-msgstr "At most %.2f € per serving"
+msgid "Enintään %s annokselta"
+msgstr "At most %s per serving"
 
 #: src/ui/customer_book_text.gd
 msgid "Hätävaralla: %s"
@@ -6901,8 +7061,8 @@ msgid "Suosikki: vaihtelee joka käynnillä"
 msgstr "Favourite: changes every visit"
 
 #: src/ui/customer_book_text.gd
-msgid "Vähintään %.1f %% alkoholia"
-msgstr "At least %.1f %% alcohol"
+msgid "Vähintään %s %% alkoholia"
+msgstr "At least %s %% alcohol"
 
 #: src/ui/customer_book_text.gd
 msgid "muut samasta joukosta"
@@ -7006,6 +7166,120 @@ msgstr "New beer style discovered: %s!"
 msgid "Uutuus: kauden ensimmäinen %s! Erä myy tiskillä +%d %% hintaan."
 msgstr "New this season: the first %s! The batch sells at +%d %% at the counter."
 
+#: src/ui/guide/cellar_guide_text.gd
+msgid ""
+"Hyvin meni. Oikealla ylhäällä ovat päivän tavoitteet. Täytä ne, niin saat "
+"rahaa, mainetta ja kokemusta."
+msgstr ""
+"Well done. The day's goals are up on the right. Meet them for money, "
+"reputation and experience."
+
+#: src/ui/guide/cellar_guide_text.gd
+msgid "Jaaha, olenkin jo neuvonut aiemmin. Muisti alkaa jo pätkiä."
+msgstr "Oh, I've already taught you this before. My memory's starting to go."
+
+#: src/ui/guide/cellar_guide_text.gd
+msgid ""
+"Jaahas, meinaat alkaa pyörittämään pimeää panimoa? Minä olen Aatu, ja "
+"neuvon hieman alkuun. Avaa reseptikirja, niin nähdään, mitä tiedät."
+msgstr ""
+"Well now, so you mean to start running a hidden brewery? I'm Aatu, and I'll "
+"help you get started. Open the recipe book and let's see what you know."
+
+#: src/ui/guide/cellar_guide_text.gd
+msgid "Kaikki on pöydällä. Paina Pane, niin päästään keittämään."
+msgstr "Everything's on the table. Press Brew and we'll get cooking."
+
+#: src/ui/guide/cellar_guide_text.gd
+msgid ""
+"Kirjassa on tyylejä, joita et vielä osaa. Vihjeet kertovat, mitä ne "
+"kaipaavat. Kokeile, niin uusi resepti kirjautuu kirjaan."
+msgstr ""
+"The book has styles you don't know yet. The hints tell what they need. "
+"Experiment, and a new recipe gets written into the book."
+
+#: src/ui/guide/cellar_guide_text.gd
+msgid "Kotikaljallahan kaikki aloittelee. Avaapa se resepti."
+msgstr "Everyone starts with kotikalja. Go on, open that recipe."
+
+#: src/ui/guide/cellar_guide_text.gd
+msgid ""
+"Kun rahaa kertyy, katso jakoavaimen takaa kellarin parannukset. Hyvä "
+"kellari tekee hyvää kaljaa."
+msgstr ""
+"Once the money piles up, look behind the wrench for cellar upgrades. A good "
+"cellar makes good beer."
+
+#: src/ui/guide/cellar_guide_text.gd
+msgid "Maltaat ja hiiva ostetaan kaupasta. Kauppa on tiskin oikeassa päässä."
+msgstr ""
+"Malts and yeast come from the shop. The shop is at the right end of the "
+"counter."
+
+#: src/ui/guide/cellar_guide_text.gd
+msgid ""
+"Minä painun nurkkaani. Tulen joskus käymään, jos kaipaat salaisuuksia. Ne "
+"eivät ole ilmaisia."
+msgstr ""
+"I'll be off to my corner. I'll drop by sometimes, in case you want secrets. "
+"They aren't free."
+
+#: src/ui/guide/cellar_guide_text.gd
+msgid ""
+"Nyt on tavarat. Voit tarkistaa ostamasi raaka-aineet varasto näkymästä. "
+"Sitten sulje kauppa ja mennään panimoon."
+msgstr ""
+"Now we have the goods. You can check what you bought in the warehouse view. "
+"Then close the shop and let's go to the brewery."
+
+#: src/ui/guide/cellar_guide_text.gd
+msgid "Panimo on vasemmalla holvin takana. Siellä tapahtuu taika."
+msgstr "The brewery is through the arch on the left. That's where the magic happens."
+
+#: src/ui/guide/cellar_guide_text.gd
+msgid ""
+"Tiskillä on Panimokirja. Sen Ohjeet-sivuilta voit lukea kaiken, mitä tänään "
+"opit, ja vähän enemmänkin."
+msgstr ""
+"The Brewery book is on the counter. Its Guide pages hold everything you "
+"learned today, and a bit more."
+
+#: src/ui/guide/cellar_guide_text.gd
+msgid ""
+"Täältä näkee vähän, mitä halutaan. Resepti voidaan laittaa kohteeksi "
+"lataamalla se reseptinäkymään, niin ei tarvitse arpoa raaka-aineiden kanssa."
+msgstr ""
+"This shows roughly what's wanted. Load the recipe into the recipe view to "
+"make it your target, so you don't have to guess with the ingredients."
+
+#: src/ui/guide/cellar_guide_text.gd
+msgid ""
+"Valitsemalla osta puuttuvat ostaa kaikki tarvittavat valittuun reseptiin "
+"minkä jo tiedät. Yksitellen voit ostaa valitsemalla raaka-aine määrä ja "
+"osta-napilla."
+msgstr ""
+"Buy missing buys everything the chosen recipe needs, for a recipe you "
+"already know. To buy one at a time, choose an ingredient and an amount and "
+"press Buy."
+
+#: src/ui/guide/cellar_guide_text.gd
+msgid ""
+"Valitsemalla täytä resepti nostaa kaiken reseptiin vaaditut raaka-aineet "
+"pöydälle kerralla. Jos haluat kokeilla löytää uusia oluttyylejä täytyy "
+"kokeilla valitsemalla raaka-aine, määrä ja lisää."
+msgstr ""
+"Fill recipe puts all the ingredients the recipe needs on the table at once. "
+"To find new beer styles, you have to experiment: choose an ingredient and "
+"an amount and press Add."
+
+#: src/ui/guide/guide_speech_box.gd
+msgid "Ohita opas"
+msgstr "Skip guide"
+
+#: src/ui/guide/guide_speech_box.gd
+msgid "Vanha mestari Aatu"
+msgstr "Old master Aatu"
+
 #: src/ui/ingredient_book_text.gd
 msgid "Avautuu maineella %d"
 msgstr "Unlocks at reputation %d"
@@ -7015,8 +7289,8 @@ msgid "Hiivat"
 msgstr "Yeasts"
 
 #: src/ui/ingredient_book_text.gd
-msgid "Hinta: %.2f € / %s"
-msgstr "Price: %.2f € / %s"
+msgid "Hinta: %s / %s"
+msgstr "Price: %s / %s"
 
 #: src/ui/ingredient_book_text.gd
 msgid "Humalat"
@@ -7091,6 +7365,10 @@ msgstr ""
 "finish with the spray."
 
 #: src/ui/keg_wash/keg_wash_window.gd
+msgid "Pese tynnyriä ensin vähän."
+msgstr "Wash the keg a little first."
+
+#: src/ui/keg_wash/keg_wash_window.gd
 msgid "Puhtaus %d %%"
 msgstr "Clean %d %%"
 
@@ -7155,20 +7433,20 @@ msgid "Tyylit %d × %d"
 msgstr "Styles %d × %d"
 
 #: src/ui/money_text.gd
-msgid "Eilen %+.1f €"
-msgstr "Yesterday %+.1f €"
+msgid "Eilen %s"
+msgstr "Yesterday %s"
 
 #: src/ui/money_text.gd
 msgid "LVV"
 msgstr "LVV"
 
 #: src/ui/money_text.gd
-msgid "Rahaa %.1f €"
-msgstr "Money %.1f €"
+msgid "Rahaa %s"
+msgstr "Money %s"
 
 #: src/ui/money_text.gd
-msgid "Tänään %+.1f €"
-msgstr "Today %+.1f €"
+msgid "Tänään %s"
+msgstr "Today %s"
 
 #: src/ui/money_text.gd
 msgid "Viime päivät: %s"
@@ -7177,6 +7455,54 @@ msgstr "Last days: %s"
 #: src/ui/money_text.gd
 msgid "viennit baareihin"
 msgstr "bar shipments"
+
+#: src/ui/next_step_text.gd
+msgid "Hanat ovat tyhjät. Pane uusi olut panimossa."
+msgstr "The taps are dry. Brew a new beer in the brewery."
+
+#: src/ui/next_step_text.gd
+msgid "Olut käy. Pane sillä välin seuraava erä."
+msgstr "The beer is fermenting. Brew the next batch meanwhile."
+
+#: src/ui/next_step_text.gd
+msgid "Seuraavaksi: avaa kauppa tiskin oikeasta päästä."
+msgstr "Next: open the shop at the right end of the counter."
+
+#: src/ui/next_step_text.gd
+msgid "Seuraavaksi: avaa panimo vasemmalta holvista."
+msgstr "Next: open the brewery through the arch on the left."
+
+#: src/ui/next_step_text.gd
+msgid "Seuraavaksi: avaa reseptikirja hyllyltä."
+msgstr "Next: open the recipe book on the shelf."
+
+#: src/ui/next_step_text.gd
+msgid "Seuraavaksi: katso Kotikaljan resepti."
+msgstr "Next: look up the Kotikalja recipe."
+
+#: src/ui/next_step_text.gd
+msgid "Seuraavaksi: lataa resepti tai sulje kirja."
+msgstr "Next: load the recipe or close the book."
+
+#: src/ui/next_step_text.gd
+msgid "Seuraavaksi: osta reseptin raaka-aineet."
+msgstr "Next: buy the recipe's ingredients."
+
+#: src/ui/next_step_text.gd
+msgid "Seuraavaksi: pane olut."
+msgstr "Next: brew the beer."
+
+#: src/ui/next_step_text.gd
+msgid "Seuraavaksi: sulje kauppa ja avaa panimo."
+msgstr "Next: close the shop and open the brewery."
+
+#: src/ui/next_step_text.gd
+msgid "Seuraavaksi: täytä resepti tai lisää raaka-aineet pöydälle."
+msgstr "Next: fill the recipe or add the ingredients to the table."
+
+#: src/ui/olutoppi_text.gd
+msgid "Mainetta puuttuu %d."
+msgstr "%d renown short."
 
 #: src/ui/olutoppi_text.gd
 msgid ""
@@ -7223,8 +7549,8 @@ msgid "%s, laatu %d %%"
 msgstr "%s, quality %d %%"
 
 #: src/ui/receipt_text.gd
-msgid "= Hinta/annos: %.2f €"
-msgstr "= Price/serving: %.2f €"
+msgid "= Hinta/annos: %s"
+msgstr "= Price/serving: %s"
 
 #: src/ui/receipt_text.gd
 msgid "Asiakas: %s"
@@ -7243,8 +7569,8 @@ msgid "KUITTI #%d"
 msgstr "RECEIPT #%d"
 
 #: src/ui/receipt_text.gd
-msgid "Kate: %.2f €"
-msgstr "Margin: %.2f €"
+msgid "Kate: %s"
+msgstr "Margin: %s"
 
 #: src/ui/receipt_text.gd
 msgid "Kiitos käynnistä! Tervetuloa uudelleen."
@@ -7263,16 +7589,16 @@ msgid "LVV, jos luet tätä: kyseessä on mehua."
 msgstr "LVV, if you are reading this: it is juice."
 
 #: src/ui/receipt_text.gd
-msgid "Listahinta: %.2f €"
-msgstr "List price: %.2f €"
+msgid "Listahinta: %s"
+msgstr "List price: %s"
 
 #: src/ui/receipt_text.gd
 msgid "Palautusoikeus: ei ole."
 msgstr "Returns: none."
 
 #: src/ui/receipt_text.gd
-msgid "Raaka-aineet (arvio): %.2f €"
-msgstr "Ingredients (estimate): %.2f €"
+msgid "Raaka-aineet (arvio): %s"
+msgstr "Ingredients (estimate): %s"
 
 #: src/ui/receipt_text.gd
 msgid "Seuraava kierros on aina parempi."
@@ -7283,16 +7609,16 @@ msgid "Säilytä pimeässä. Kuten meidätkin."
 msgstr "Store in the dark. Like us."
 
 #: src/ui/receipt_text.gd
-msgid "TILILLE: +%.1f €"
-msgstr "TO ACCOUNT: +%.1f €"
+msgid "TILILLE: %s"
+msgstr "TO ACCOUNT: %s"
 
 #: src/ui/receipt_text.gd
-msgid "Tippi: +%.1f €"
-msgstr "Tip: +%.1f €"
+msgid "Tippi: %s"
+msgstr "Tip: %s"
 
 #: src/ui/receipt_text.gd
-msgid "Tippi: +%.1f € (tuplana!)"
-msgstr "Tip: +%.1f € (doubled!)"
+msgid "Tippi: %s (tuplana!)"
+msgstr "Tip: %s (doubled!)"
 
 #: src/ui/receipt_text.gd
 msgid "Tippi: ei tällä kertaa"
@@ -7403,8 +7729,8 @@ msgid "Vahvuus: %s %% ABV"
 msgstr "Strength: %s %% ABV"
 
 #: src/ui/recipe_library_text.gd
-msgid "Vahvuus: noin %.1f %% ABV"
-msgstr "Strength: about %.1f %% ABV"
+msgid "Vahvuus: noin %s %% ABV"
+msgstr "Strength: about %s %% ABV"
 
 #: src/ui/recipe_library_text.gd
 msgid "Väri: %s"
@@ -7527,8 +7853,8 @@ msgid "Seuraava ratsia lopettaa kauden!"
 msgstr "The next raid ends the season!"
 
 #: src/ui/risk_text.gd
-msgid "Seuraava ratsia: sakko %.1f €, mainetta -%d ja oluet takavarikoidaan"
-msgstr "Next raid: %.1f € fine, -%d reputation and the beer is confiscated"
+msgid "Seuraava ratsia: sakko %s, mainetta -%d ja oluet takavarikoidaan"
+msgstr "Next raid: %s fine, -%d reputation and the beer is confiscated"
 
 #: src/ui/risk_text.gd
 msgid "edut %+d"
@@ -7541,6 +7867,10 @@ msgstr "fame -%d"
 #: src/ui/special_event_text.gd
 msgid "%+d LVV-riskiä"
 msgstr "%+d LVV risk"
+
+#: src/ui/special_event_text.gd
+msgid "%+d mainetta"
+msgstr "%+d reputation"
 
 #: src/ui/special_event_text.gd
 msgid ""
@@ -7575,8 +7905,8 @@ msgid "%s saavutettu: +%d € / +%d maine / +%d XP!"
 msgstr "%s done: +%d € / +%d reputation / +%d XP!"
 
 #: src/ui/toast_text.gd
-msgid "Ovet suljettu aikaisin: -%.1f €, mainetta -%d, LVV-riski -%d"
-msgstr "Closed early: -%.1f €, reputation -%d, LVV risk -%d"
+msgid "Ovet suljettu aikaisin: %s, mainetta -%d, LVV-riski -%d"
+msgstr "Closed early: %s, reputation -%d, LVV risk -%d"
 
 #: src/ui/toast_text.gd
 msgid ""
@@ -7601,3 +7931,7 @@ msgstr "Show the names of places"
 #: src/ui/warehouse_hover_area.gd
 msgid "%s: +%d annosta"
 msgstr "%s: +%d servings"
+
+#: src/ui/window_close_button.gd
+msgid "Sulje (%s)"
+msgstr "Close (%s)"

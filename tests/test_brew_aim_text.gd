@@ -4,6 +4,7 @@ extends McpTestSuite
 ## Unit tests for BrewAimText: the preview's hint towards the style's centre.
 
 const BrewAimTextScript := preload("res://src/ui/brew_aim_text.gd")
+const NumberTextScript := preload("res://src/ui/number_text.gd")
 
 
 func suite_name() -> String:
@@ -42,7 +43,7 @@ func test_only_the_values_far_from_the_centre_are_named() -> void:
 
 func test_every_far_value_is_listed() -> void:
 	var text : String = BrewAimTextScript.lines(_preview(8, 25, 5.5))
-	assert_true(text.contains("EBC 6, IBU 18, 4.7 % ABV"))
+	assert_true(text.contains("EBC 6, IBU 18, %s %% ABV" % NumberTextScript.decimal(4.7, 1)))
 
 
 func test_a_missing_style_flavour_is_named() -> void:

@@ -32,6 +32,8 @@ func _ready() -> void:
 		_card_description_labels.append(card.get_node("CardVBox/DescriptionLabel"))
 		card.pressed.connect(_on_card_pressed.bind(i))
 
+	# No X: a perk must be picked, so the keyboard lands on the first card.
+	FirstFocus.attach(self)
 	BrewerySignals.level_up_reached.connect(_on_level_up_reached)
 	BrewerySignals.game_ended.connect(_on_game_ended)
 	GUISignals.game_menu_requested.connect(_block.bind(&"menu"))

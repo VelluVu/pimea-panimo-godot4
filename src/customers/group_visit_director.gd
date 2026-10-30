@@ -84,7 +84,7 @@ func resume(snap : GroupVisitSnapshot, slot : int, counter_position : Vector2) -
 	for member_snap : CustomerSnapshot in snap.members:
 		visit.members.append(_resume_member(visit, member_snap, shift) if member_snap != null else null)
 	if snap.bubble_time_left > 0.0:
-		_show_bubble(visit, snap.bubble_text, snap.bubble_position + shift, snap.bubble_time_left, snap.bubble_fade)
+		_show_bubble(visit, snap.bubble_text, snap.bubble_position + shift, snap.bubble_time_left, snap.bubble_fade, false)
 	await _play(visit, snap.time_left)
 
 
@@ -329,12 +329,13 @@ func _say(visit : GroupVisit, text : String) -> float:
 
 
 ## Kept on the visit so a save can put the line back up for the time it had left.
-func _show_bubble(visit : GroupVisit, text : String, position : Vector2, display_time : float, fade_seconds : float) -> void:
+## `typed` false shows a restored line whole.
+func _show_bubble(visit : GroupVisit, text : String, position : Vector2, display_time : float, fade_seconds : float, typed : bool = true) -> void:
 	visit.bubble_text = text
 	visit.bubble_position = position
 	visit.bubble_fade = fade_seconds
 	visit.bubble_timer = _host.get_tree().create_timer(display_time, false)
-	BrewerySignals.dialogue_pushed.emit(text, false, visit.dialogue_slot, position, display_time, fade_seconds)
+	BrewerySignals.dialogue_pushed.emit(text, false, visit.dialogue_slot, position, display_time, fade_seconds, typed)
 
 
 ## The first member still here speaks for the group.

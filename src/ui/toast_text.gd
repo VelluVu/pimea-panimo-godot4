@@ -8,7 +8,7 @@ const GOAL_REWARD_FORMAT : String = "%s saavutettu: +%d € / +%d maine / +%d XP
 const GOAL_FAILED_FORMAT : String = "%s epäonnistui: %d maine / +%d LVV-riski"
 ## A special-event goal that could not be filled fails without penalty, so its own toast.
 const GOAL_FAILED_NO_PENALTY_FORMAT : String = "%s epäonnistui: ei seurauksia"
-const EARLY_CLOSE_FORMAT : String = "Ovet suljettu aikaisin: -%.1f €, mainetta -%d, LVV-riski -%d"
+const EARLY_CLOSE_FORMAT : String = "Ovet suljettu aikaisin: %s, mainetta -%d, LVV-riski -%d"
 const INGREDIENT_UNLOCKED_FORMAT : String = "Uusi raaka-aine: %s"
 const INGREDIENTS_UNLOCKED_FORMAT : String = "Uusia raaka-aineita: %s"
 ## The shop popup stays small: a few names, then how many more.
@@ -32,7 +32,7 @@ static func goal_resolved(goal_name : String, succeeded : bool, money : int, rep
 static func early_close(money_cost : float, reputation_cost : int, risk_relief : int) -> String:
 	if money_cost <= 0.0 and reputation_cost <= 0 and risk_relief <= 0:
 		return ""
-	return UiText.of(EARLY_CLOSE_FORMAT) % [money_cost, reputation_cost, risk_relief]
+	return UiText.of(EARLY_CLOSE_FORMAT) % [NumberText.signed_money(-money_cost), reputation_cost, risk_relief]
 
 
 ## One short line per reputation jump for the shop entrance's popup, however many

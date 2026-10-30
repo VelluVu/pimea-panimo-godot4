@@ -8,7 +8,7 @@ const MALT_HEADER : String = "Maltaat"
 const HOP_HEADER : String = "Humalat"
 const YEAST_HEADER : String = "Hiivat"
 const SPICE_HEADER : String = "Mausteet"
-const PRICE_FORMAT : String = "Hinta: %.2f € / %s"
+const PRICE_FORMAT : String = "Hinta: %s / %s"
 const LOCKED_FORMAT : String = "Avautuu maineella %d"
 
 
@@ -25,7 +25,7 @@ static func type_header(type : IngredientData.IngredientType) -> String:
 
 ## `price` is per unit after perks; `reputation` is the run's current reputation.
 static func lines(ingredient : IngredientData, price : float, reputation : int) -> PackedStringArray:
-	var result : PackedStringArray = [UiText.of(PRICE_FORMAT) % [price, ingredient.get_pack_string()]]
+	var result : PackedStringArray = [UiText.of(PRICE_FORMAT) % [NumberText.money(price), ingredient.get_pack_string()]]
 	if ingredient.min_reputation > reputation:
 		result.append(UiText.of(LOCKED_FORMAT) % ingredient.min_reputation)
 	if not ingredient.description.is_empty():

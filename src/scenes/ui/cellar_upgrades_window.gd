@@ -4,21 +4,21 @@ extends Panel
 ## The cellar upgrades, bought one level at a time (CellarUpgradeShop).
 
 const TITLE_TEXT : String = "Kellarin parannukset"
-const CLOSE_TEXT : String = "Sulje"
 const NAME_FONT_SIZE : int = 16
 const DETAIL_FONT_SIZE : int = 16
 const BUY_BUTTON_WIDTH : float = 78.0
+## The theme's buttons are tall beside the small row texts; this trims each edge.
+const BUTTON_TRIM : float = 1.0
+const BUTTON_STYLES : Array[StringName] = [&"normal", &"hover", &"pressed", &"hover_pressed", &"disabled", &"focus"]
 const MUTED_COLOR : Color = Color(0.75, 0.73, 0.67, 1)
 
 @onready var title_label : Label = %TitleLabel
-@onready var close_button : Button = %CloseButton
 @onready var rows_vbox : VBoxContainer = %RowsVBox
 
 
 func _ready() -> void:
 	title_label.text = TITLE_TEXT
-	close_button.text = CLOSE_TEXT
-	close_button.pressed.connect(_on_close_button_pressed)
+	WindowCloseButton.attach(self, _on_close_button_pressed)
 	GUISignals.cellar_upgrades_requested.connect(_on_cellar_upgrades_requested)
 	BrewerySignals.brewery_state_changed.connect(_on_brewery_state_changed)
 
@@ -76,17 +76,29 @@ func _build_row(upgrade : CellarUpgradeData, brewery : Brewery) -> Control:
 		switch.text = CellarUpgradeText.machine_button_text(switch.button_pressed)
 		switch.tooltip_text = CellarUpgradeText.MACHINE_SWITCH_TOOLTIP
 		switch.pressed.connect(func() -> void: GUISignals.machine_switch_requested.emit(upgrade.upgrade_id))
+		switch.ready.connect(_trim_button.bind(switch))
 		row.add_child(switch)
 		return row
 
-	var buy_button := Button.new()
+	var buy_button := TooltipButton.new()
 	buy_button.custom_minimum_size = Vector2(BUY_BUTTON_WIDTH, 0)
 	buy_button.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	buy_button.text = CellarUpgradeText.button_text(upgrade, level)
 	buy_button.disabled = not CellarUpgradeRules.can_buy(level, upgrade.max_level, upgrade.cost_for_next_level(level), brewery.money)
+	buy_button.tooltip_text = CellarUpgradeText.buy_tooltip(upgrade, level, brewery.money)
 	buy_button.pressed.connect(func() -> void: GUISignals.cellar_upgrade_requested.emit(upgrade.upgrade_id))
+	buy_button.ready.connect(_trim_button.bind(buy_button))
 	row.add_child(buy_button)
 	return row
+
+
+## Runs once the button is in the tree, where it can read the theme's styles.
+func _trim_button(button : Button) -> void:
+	for style_name : StringName in BUTTON_STYLES:
+		var style : StyleBox = button.get_theme_stylebox(style_name).duplicate()
+		style.content_margin_top = maxf(0.0, style.content_margin_top - BUTTON_TRIM)
+		style.content_margin_bottom = maxf(0.0, style.content_margin_bottom - BUTTON_TRIM)
+		button.add_theme_stylebox_override(style_name, style)
 
 
 func _make_label(text : String, font_size : int) -> Label:

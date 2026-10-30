@@ -23,6 +23,9 @@ func _ready() -> void:
 
 	confirm_button.pressed.connect(_on_confirm_button_pressed)
 	cancel_button.pressed.connect(_on_cancel_button_pressed)
+	WindowCloseButton.attach(self, _on_cancel_button_pressed)
+	# Enter right after opening keeps the doors open; closing them costs money.
+	FirstFocus.prefer(cancel_button)
 	# The day runs on behind this window. If it ends on its own, a question left open
 	# would close the next day the moment it starts.
 	TimeManager.day_changed.connect(hide.unbind(1))
@@ -36,3 +39,10 @@ func _on_confirm_button_pressed() -> void:
 func _on_cancel_button_pressed() -> void:
 	GUISignals.window_closed.emit()
 	hide()
+
+
+## Esc does what the X does, and is used up here so the game menu does not open over it.
+func _input(event : InputEvent) -> void:
+	if visible and event.is_action_pressed(InputManager.ACTION_CANCEL):
+		_on_cancel_button_pressed()
+		get_viewport().set_input_as_handled()

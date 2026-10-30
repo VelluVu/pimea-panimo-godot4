@@ -51,3 +51,9 @@ func test_closing_voids_a_pending_hide_for_that_bubble() -> void:
 	view.close_bubble(0)
 
 	assert_false(entry.is_current(token), "the in-flight hide must bail out after closing")
+
+
+func test_a_typed_line_takes_its_length_at_the_typing_speed() -> void:
+	var text : String = "x".repeat(40)
+	assert_true(is_equal_approx(SpeechBubble.typing_seconds(text), 40.0 / SpeechBubble.TYPE_CHARACTERS_PER_SECOND))
+	assert_eq(SpeechBubble.typing_seconds(""), 0.0)

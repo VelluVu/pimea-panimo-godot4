@@ -8,20 +8,20 @@ const NUMBER_FORMAT : String = "KUITTI #%d"
 const STYLE_QUALITY_FORMAT : String = "%s, laatu %d %%"
 const CUSTOMER_FORMAT : String = "Asiakas: %s"
 const SEPARATOR : String = "- - - - - - - - - -"
-const COST_FORMAT : String = "Raaka-aineet (arvio): %.2f €"
-const PROFIT_FORMAT : String = "Kate: %.2f €"
-const LIST_PRICE_FORMAT : String = "Listahinta: %.2f €"
+const COST_FORMAT : String = "Raaka-aineet (arvio): %s"
+const PROFIT_FORMAT : String = "Kate: %s"
+const LIST_PRICE_FORMAT : String = "Listahinta: %s"
 const BONUS_FORMAT : String = "%s: %+d %%"
 const REPUTATION_BONUS : String = "Maine"
 const PERK_BONUS : String = "Edut"
 const AGED_BONUS : String = "Kypsytetty"
 const NOVELTY_BONUS : String = "Uutuus"
-const PRICE_FORMAT : String = "= Hinta/annos: %.2f €"
-const SALE_FORMAT : String = "%d × %.2f € = %.1f €"
-const TIP_FORMAT : String = "Tippi: +%.1f €"
-const DOUBLED_TIP_FORMAT : String = "Tippi: +%.1f € (tuplana!)"
+const PRICE_FORMAT : String = "= Hinta/annos: %s"
+const SALE_FORMAT : String = "%d × %s = %s"
+const TIP_FORMAT : String = "Tippi: %s"
+const DOUBLED_TIP_FORMAT : String = "Tippi: %s (tuplana!)"
 const NO_TIP : String = "Tippi: ei tällä kertaa"
-const TOTAL_FORMAT : String = "TILILLE: +%.1f €"
+const TOTAL_FORMAT : String = "TILILLE: %s"
 const FOOTERS : Array[String] = [
 	"Kiitos käynnistä! Tervetuloa uudelleen.",
 	"Palautusoikeus: ei ole.",
@@ -42,15 +42,15 @@ static func text(entry : SaleReceiptEntry) -> String:
 	if not entry.customer_title.is_empty():
 		lines.append(UiText.of(CUSTOMER_FORMAT) % UiText.of(entry.customer_title))
 	lines.append(SEPARATOR)
-	lines.append(UiText.of(COST_FORMAT) % entry.breakdown.raw_cost_per_bottle)
-	lines.append(UiText.of(PROFIT_FORMAT) % (price_per_serving(entry) - entry.breakdown.raw_cost_per_bottle))
-	lines.append(UiText.of(LIST_PRICE_FORMAT) % entry.breakdown.price_per_bottle)
+	lines.append(UiText.of(COST_FORMAT) % NumberText.money(entry.breakdown.raw_cost_per_bottle))
+	lines.append(UiText.of(PROFIT_FORMAT) % NumberText.money(price_per_serving(entry) - entry.breakdown.raw_cost_per_bottle))
+	lines.append(UiText.of(LIST_PRICE_FORMAT) % NumberText.money(entry.breakdown.price_per_bottle))
 	lines.append_array(bonus_lines(entry))
-	lines.append(UiText.of(PRICE_FORMAT) % price_per_serving(entry))
+	lines.append(UiText.of(PRICE_FORMAT) % NumberText.money(price_per_serving(entry)))
 	lines.append(SEPARATOR)
-	lines.append(UiText.of(SALE_FORMAT) % [entry.bottles_sold, price_per_serving(entry), entry.gross_income])
+	lines.append(UiText.of(SALE_FORMAT) % [entry.bottles_sold, NumberText.money(price_per_serving(entry)), NumberText.money(entry.gross_income)])
 	lines.append(tip_line(entry))
-	lines.append(UiText.of(TOTAL_FORMAT) % entry.net_income)
+	lines.append(UiText.of(TOTAL_FORMAT) % NumberText.signed_money(entry.net_income))
 	var footer : String = footer_for(entry.footer_index)
 	if not footer.is_empty():
 		lines.append(SEPARATOR)
@@ -82,7 +82,7 @@ static func bonus_lines(entry : SaleReceiptEntry) -> PackedStringArray:
 static func tip_line(entry : SaleReceiptEntry) -> String:
 	if entry.tip_income <= 0.0:
 		return UiText.of(NO_TIP)
-	return UiText.of(DOUBLED_TIP_FORMAT if entry.tip_doubled else TIP_FORMAT) % entry.tip_income
+	return UiText.of(DOUBLED_TIP_FORMAT if entry.tip_doubled else TIP_FORMAT) % NumberText.signed_money(entry.tip_income)
 
 
 ## A negative index (older receipts) has no footer.

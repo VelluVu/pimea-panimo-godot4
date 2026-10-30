@@ -3,7 +3,8 @@ extends Node
 @warning_ignore("unused_signal")
 signal brewery_state_changed(brewery: Brewery)
 @warning_ignore("unused_signal")
-signal dialogue_pushed(text: String, is_special: bool, slot_index: int, character_global_pos: Vector2, display_time: float, fade_time: float)
+## `typed`: the bubble writes the line out; false for a bubble restored from a save.
+signal dialogue_pushed(text: String, is_special: bool, slot_index: int, character_global_pos: Vector2, display_time: float, fade_time: float, typed: bool)
 @warning_ignore("unused_signal")
 signal style_discovered(style: int)
 @warning_ignore("unused_signal")

@@ -4,9 +4,9 @@ extends Panel
 ## Today's sales, cleared at day change; each row toggles its breakdown on click.
 
 const TITLE_TEXT : String = "Päivän kuitit"
-const CLOSE_BUTTON_TEXT : String = "Sulje"
 const EMPTY_TEXT : String = "Ei myyntejä vielä tänään."
-const ROW_SUMMARY_FORMAT : String = "%s  %s  +%.1f €"
+const EMPTY_TEXT_COLOR : Color = Color(0.9490196, 0.7882353, 0.41960785, 1) # matches BeerBatchPanel.EMPTY_INVENTORY_COLOR
+const ROW_SUMMARY_FORMAT : String = "%s  %s  %s"
 const COLLAPSED_ICON : String = "▶"
 const EXPANDED_ICON : String = "▼"
 const PAPER_COLOR : Color = Color(0.91, 0.87, 0.77)
@@ -15,7 +15,6 @@ const PAPER_MARGIN : float = 6.0
 const RECEIPT_FONT_SIZE : int = 16
 
 @onready var title_label : Label = %TitleLabel
-@onready var close_button : Button = %CloseButton
 @onready var rows_vbox : VBoxContainer = %RowsVBox
 
 ## Receipts toggled open, keyed by the entry itself, reset with the day.
@@ -24,8 +23,7 @@ var _expanded_entries : Dictionary = {}
 
 func _ready() -> void:
 	title_label.text = TITLE_TEXT
-	close_button.text = CLOSE_BUTTON_TEXT
-	close_button.pressed.connect(_on_close_button_pressed)
+	WindowCloseButton.attach(self, _on_close_button_pressed)
 
 	GUISignals.receipt_log_requested.connect(_on_receipt_log_requested)
 	BrewerySignals.beer_sale_breakdown.connect(_on_beer_sale_breakdown)
@@ -69,7 +67,8 @@ func _refresh_rows() -> void:
 	if receipts.is_empty():
 		var empty_label := Label.new()
 		empty_label.text = EMPTY_TEXT
-		empty_label.modulate = Color.DIM_GRAY
+		# The empty-list gold the warehouse uses: dim grey on the brown panel was hard to read.
+		empty_label.modulate = EMPTY_TEXT_COLOR
 		rows_vbox.add_child(empty_label)
 		return
 
@@ -86,7 +85,7 @@ func _build_row(entry : SaleReceiptEntry) -> Control:
 
 	var summary_button := Button.new()
 	summary_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	summary_button.text = ROW_SUMMARY_FORMAT % [icon, entry.get_summary_text(), entry.net_income]
+	summary_button.text = ROW_SUMMARY_FORMAT % [icon, entry.get_summary_text(), NumberText.signed_money(entry.net_income)]
 	summary_button.pressed.connect(_on_row_pressed.bind(entry))
 	row_vbox.add_child(summary_button)
 

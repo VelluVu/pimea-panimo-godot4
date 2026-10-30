@@ -167,6 +167,7 @@ func _connect_signals() -> void:
 	# Not placed in the world: like the popup it belongs to, it should be heard at once.
 	BrewerySignals.critical_gain_shown.connect(play_sfx.bind(bank.sfx_critical_gain).unbind(1))
 	GUISignals.brew_day_sound.connect(_on_brew_day_sound)
+	GUISignals.guide_spoke.connect(_on_guide_spoke)
 	GUISignals.keg_wash_sound.connect(_on_brew_day_sound)
 	GUISignals.brew_day_loops.connect(_on_brew_day_loops)
 	GUISignals.brew_day_closed.connect(_on_brew_day_loops.bind(0.0, 0.0, false))
@@ -219,6 +220,15 @@ func _on_customer_spoke(at: Vector2, voice_pitch: float) -> void:
 		return
 	var pitch: float = voice_pitch * randf_range(1.0 - BABBLE_PITCH_JITTER, 1.0 + BABBLE_PITCH_JITTER)
 	play_sfx_at(bank.sfx_babbles.pick_random(), at, BABBLE_VOLUME_DB, pitch, VOICE_BUS)
+
+
+## Not placed in the world: Aatu also talks while the brew day or the recipe book has
+## paused it, and the world players pause with it.
+func _on_guide_spoke(voice_pitch: float) -> void:
+	if bank.sfx_babbles.is_empty():
+		return
+	var pitch: float = voice_pitch * randf_range(1.0 - BABBLE_PITCH_JITTER, 1.0 + BABBLE_PITCH_JITTER)
+	play_sfx(bank.sfx_babbles.pick_random(), BABBLE_VOLUME_DB, pitch, VOICE_BUS)
 
 
 func _on_toast_shown() -> void:

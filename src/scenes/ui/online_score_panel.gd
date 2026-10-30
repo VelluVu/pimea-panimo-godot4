@@ -8,6 +8,7 @@ const CAPTION_TEXT : String = "Maailmanlaajuinen tulostaulukko"
 const NAME_PLACEHOLDER : String = "Nimesi"
 const SEND_BUTTON_TEXT : String = "Lähetä tulos"
 const SENDING_TEXT : String = "Lähetetään..."
+const NO_NAME_TOOLTIP : String = "Kirjoita ensin nimimerkki."
 const RANK_FORMAT : String = "Sijoitus kaikista pelaajista: #%d / %d"
 
 @onready var caption_label : Label = %CaptionLabel
@@ -49,7 +50,10 @@ func show_for(entry : Dictionary, on_record : bool) -> void:
 
 
 func _update_send_button() -> void:
-	send_button.disabled = _sending_or_sent or not NicknameRules.is_valid(name_edit.text)
+	var has_name : bool = NicknameRules.is_valid(name_edit.text)
+	send_button.disabled = _sending_or_sent or not has_name
+	# The grey button says why; once sent, the status line does.
+	send_button.tooltip_text = "" if has_name or _sending_or_sent else NO_NAME_TOOLTIP
 
 
 func _on_send_pressed() -> void:

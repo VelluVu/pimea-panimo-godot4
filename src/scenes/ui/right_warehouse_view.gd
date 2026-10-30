@@ -7,6 +7,7 @@ extends VBoxContainer
 const STORAGE_TAB_TEXT : String = "Varasto"
 const BOTTLES_TAB_TEXT : String = "Tynnyrit"
 
+@onready var panel : Panel = $Panel
 @onready var tab_row : HBoxContainer = %TabRow
 @onready var ingredient_inventory_panel : Control = %IngredientInventoryPanel
 @onready var beer_batch_panel : Control = %BeerBatchPanel
@@ -20,11 +21,19 @@ func _ready() -> void:
 		var tab := Button.new()
 		tab.text = text
 		tab.toggle_mode = true
+		# The theme's pressed text is a darker gold, which made the open tab look the dimmest.
+		tab.theme_type_variation = &"TabToggle"
 		tab.button_group = group
 		tab.focus_mode = Control.FOCUS_NONE
 		tab.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		tab.pressed.connect(_on_tab_changed.bind(tab_row.get_child_count()))
 		tab_row.add_child(tab)
+	var close_button : WindowCloseButton = WindowCloseButton.attach(panel, hide_warehouse_view)
+	# Keeps the tabs clear of the X in the panel's corner.
+	var close_button_gap := Control.new()
+	close_button_gap.custom_minimum_size.x = close_button.custom_minimum_size.x
+	close_button_gap.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	tab_row.add_child(close_button_gap)
 	(tab_row.get_child(0) as Button).button_pressed = true
 	_on_tab_changed(0)
 

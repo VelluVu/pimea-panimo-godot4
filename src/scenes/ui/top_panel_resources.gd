@@ -18,6 +18,11 @@ const RISK_WARNING_PULSE_SECONDS : float = 0.3
 const RISK_WARNING_FLASH_COLOR : Color = Color(1.8, 1.8, 1.8)
 
 
+## A brew's XP floats off the level, where the bar fills; the brew view has closed by
+## then. Light blue like the sale XP popup in DialogWiring.
+const XP_POPUP_FORMAT : String = "+%d XP"
+const XP_POPUP_COLOR : Color = Color(0.4, 0.75, 1.0, 1)
+
 const LEVEL_FORMAT : String = "Taso: %d"
 const LEVEL_TOOLTIP_FORMAT : String = "Taso %d\n%d/%d XP\n%d XP seuraavaan tasoon"
 
@@ -58,6 +63,7 @@ func _ready() -> void:
 	clock_ui.mouse_filter = Control.MOUSE_FILTER_PASS
 
 	BrewerySignals.brewery_state_changed.connect(_on_brewery_state_changed)
+	BrewerySignals.brew_xp_gained.connect(func(amount : int) -> void: _float_popup(level_label, tr(XP_POPUP_FORMAT) % amount, XP_POPUP_COLOR))
 	TimeManager.day_changed.connect(_on_day_changed)
 
 	if BrewEngine.current_brewery != null:
@@ -104,12 +110,12 @@ func _on_brewery_state_changed(brewery : Brewery) -> void:
 
 
 func _update_money(money : float) -> void:
-	# Snapped so float noise from repeated += and -= never shows as "+0.0 €".
-	var change : float = snappedf(money - last_money, 0.1) if last_money != -1.0 else 0.0
-	money_label.text = "%.1f €" % money
+	# Snapped so float noise from repeated += and -= never shows as "+0,00 €".
+	var change : float = snappedf(money - last_money, 0.01) if last_money != -1.0 else 0.0
+	money_label.text = NumberText.money(money)
 	last_money = money
 	if change != 0.0:
-		_create_popup_effect(money_label, change, " €", false, 1)
+		_create_popup_effect(money_label, change, " €", false, 2)
 
 
 func _update_reputation(reputation : int) -> void:
@@ -180,13 +186,16 @@ func _pulse_risk_warning() -> void:
 
 ## `decimals` is 0 for reputation and risk, 1 for money (tracked to one decimal).
 func _create_popup_effect(target_label: Label, amount: float, suffix: String, is_risk: bool, decimals: int = 0) -> void:
-	var popup := Label.new()
-	var magnitude_text : String = ("%.1f" % absf(amount)) if decimals > 0 else str(roundi(absf(amount)))
+	var magnitude_text : String = NumberText.decimal(absf(amount), decimals) if decimals > 0 else str(roundi(absf(amount)))
 	# Rising risk is bad news, rising money and reputation good news.
 	var good : bool = (amount > 0) != is_risk
-	popup.text = ("+" if amount > 0 else "-") + magnitude_text + suffix
-	popup.modulate = Color.GREEN if good else Color.RED
+	_float_popup(target_label, ("+" if amount > 0 else "-") + magnitude_text + suffix, Color.GREEN if good else Color.RED)
 
+
+func _float_popup(target_label : Label, text : String, color : Color) -> void:
+	var popup := Label.new()
+	popup.text = text
+	popup.modulate = color
 	target_label.add_child(popup)
 	# The minimum size measures the new text now; size lags until the next layout pass.
 	popup.position = Vector2(target_label.get_minimum_size().x + POPUP_GAP, 0.0)
@@ -194,6 +203,7 @@ func _create_popup_effect(target_label: Label, amount: float, suffix: String, is
 	var tween := create_tween().set_parallel(true)
 	var target_color := popup.modulate
 	target_color.a = 0.0
-	PixelStepTween.move_property(tween, popup, &"position", popup.position, popup.position + Vector2(0, -POPUP_FLOAT_DISTANCE), POPUP_EFFECT_DURATION_SECONDS)
+	# Downward: the bar sits at the top edge, so a rising popup left the screen.
+	PixelStepTween.move_property(tween, popup, &"position", popup.position, popup.position + Vector2(0, POPUP_FLOAT_DISTANCE), POPUP_EFFECT_DURATION_SECONDS)
 	tween.tween_property(popup, "modulate", target_color, POPUP_EFFECT_DURATION_SECONDS)
 	tween.chain().tween_callback(popup.queue_free)

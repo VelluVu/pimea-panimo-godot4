@@ -6,7 +6,7 @@ extends VBoxContainer
 
 const SALE_FLASH_TOAST_SCENE : PackedScene = preload("res://src/scenes/ui/sale_flash_toast.tscn")
 
-const SHIP_FLASH_FORMAT : String = "Vienti (%s): %s x%d  +%.1f € (LVV-riski %+d)"
+const SHIP_FLASH_FORMAT : String = "Vienti (%s): %s x%d  %s (LVV-riski %+d)"
 
 ## Bad news in red-orange, so a bar fight never looks like a payout.
 const BAR_FIGHT_FLASH_COLOR : Color = Color(1.0, 0.55, 0.4)
@@ -34,7 +34,7 @@ func _on_beer_sale_breakdown(entry : SaleReceiptEntry) -> void:
 func _on_keg_shipped_to_bar(style_name : String, bar_name : String, bottles : int, payout : float, risk_added : int) -> void:
 	var toast : SaleFlashToast = SALE_FLASH_TOAST_SCENE.instantiate()
 	add_child(toast)
-	toast.initialize_text(tr(SHIP_FLASH_FORMAT) % [tr(bar_name), tr(style_name), bottles, payout, risk_added])
+	toast.initialize_text(tr(SHIP_FLASH_FORMAT) % [tr(bar_name), tr(style_name), bottles, NumberText.signed_money(payout), risk_added])
 
 
 func _on_bar_fight_triggered(message : String) -> void:

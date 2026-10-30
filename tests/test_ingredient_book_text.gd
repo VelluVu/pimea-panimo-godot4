@@ -5,6 +5,7 @@ extends McpTestSuite
 
 const IngredientBookTextScript := preload("res://src/ui/ingredient_book_text.gd")
 const IngredientDataScript := preload("res://src/brewing/ingredient_data.gd")
+const NumberTextScript := preload("res://src/ui/number_text.gd")
 
 
 func suite_name() -> String:
@@ -22,7 +23,7 @@ func _make_malt(min_reputation : int = 0) -> IngredientData:
 
 func test_price_line_comes_first_with_the_unit() -> void:
 	var lines : PackedStringArray = IngredientBookTextScript.lines(_make_malt(), 1.5, 0)
-	assert_eq(lines[0], "Hinta: 1.50 € / kg")
+	assert_eq(lines[0], "Hinta: %s / kg" % NumberTextScript.money(1.5))
 
 
 func test_unlock_line_only_while_reputation_is_short() -> void:

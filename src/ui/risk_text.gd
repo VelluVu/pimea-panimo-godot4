@@ -14,7 +14,7 @@ const THRESHOLD_PERKS_FORMAT : String = "edut %+d"
 const THRESHOLD_FAME_FORMAT : String = "maine -%d"
 const DECAY_FORMAT : String = "Laskee %d joka yö"
 const RAIDS_FORMAT : String = "Ratsiat: %d/%d, viimeinen lopettaa kauden"
-const NEXT_RAID_FORMAT : String = "Seuraava ratsia: sakko %.1f €, mainetta -%d ja oluet takavarikoidaan"
+const NEXT_RAID_FORMAT : String = "Seuraava ratsia: sakko %s, mainetta -%d ja oluet takavarikoidaan"
 const LAST_RAID_TEXT : String = "Seuraava ratsia lopettaa kauden!"
 
 
@@ -46,5 +46,5 @@ static func tooltip(risk : int, threshold : int, base : int, perk_change : int, 
 	if raid_count + 1 >= raid_limit:
 		lines.append(UiText.of(LAST_RAID_TEXT))
 	else:
-		lines.append(UiText.of(NEXT_RAID_FORMAT) % [next_fine, next_reputation_penalty])
+		lines.append(UiText.of(NEXT_RAID_FORMAT) % [NumberText.money(next_fine), next_reputation_penalty])
 	return "\n".join(lines)

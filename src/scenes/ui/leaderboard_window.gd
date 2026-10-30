@@ -5,7 +5,6 @@ extends Panel
 ## this session's run; tabs for own and everyone's runs. Works under the paused game menu.
 
 const TITLE_TEXT : String = "Ennätykset"
-const CLOSE_BUTTON_TEXT : String = "Sulje"
 const EMPTY_TEXT : String = "Ei vielä ennätyksiä. Pelaa ensimmäinen kausi!"
 const CURRENT_RUN_FORMAT : String = "Tämä kausi nyt: sijoittuisi #%d"
 const NEW_TAG : String = "UUSI!"
@@ -33,7 +32,6 @@ const MUTED_COLOR : Color = Color(0.75, 0.73, 0.67, 1)
 @onready var tabs_hbox : HBoxContainer = %TabsHBox
 @onready var local_tab_button : Button = %LocalTabButton
 @onready var global_tab_button : Button = %GlobalTabButton
-@onready var close_button : Button = %CloseButton
 @onready var current_run_vbox : VBoxContainer = %CurrentRunVBox
 @onready var current_run_caption : Label = %CurrentRunCaption
 @onready var current_run_holder : VBoxContainer = %CurrentRunHolder
@@ -46,8 +44,7 @@ var _global_tab : bool = false
 
 func _ready() -> void:
 	title_label.text = TITLE_TEXT
-	close_button.text = CLOSE_BUTTON_TEXT
-	close_button.pressed.connect(_on_close_button_pressed)
+	WindowCloseButton.attach(self, _on_close_button_pressed)
 	GUISignals.leaderboard_requested.connect(_on_leaderboard_requested)
 	_online = OnlineLeaderboardWiring.new()
 	add_child(_online)

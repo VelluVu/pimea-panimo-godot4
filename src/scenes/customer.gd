@@ -266,7 +266,7 @@ func _resume_served(snap: CustomerSnapshot) -> void:
 		_glasses.serve_after(snap.glass_time_left)
 	_bubble_text = snap.bubble_text
 	if snap.time_left > SpeechTiming.FADE_SECONDS:
-		_say(snap.bubble_text, false, snap.time_left - SpeechTiming.FADE_SECONDS)
+		_say(snap.bubble_text, false, snap.time_left - SpeechTiming.FADE_SECONDS, false)
 	_phase_timer = get_tree().create_timer(maxf(snap.time_left, 0.01), false)
 	_phase_timer.timeout.connect(leave_counter)
 
@@ -337,12 +337,12 @@ func _show_sale_popups(outcome: SaleOutcomeCapture) -> void:
 
 ## Pushes a speech bubble and returns how long it stays. A `skippable` line stays silent at
 ## a crowded counter but takes its time, so a crowd is served at the same pace. `seconds`
-## overrides the time.
-func _say(text: String, skippable: bool = false, seconds: float = -1.0) -> float:
+## overrides the time. `typed` false shows a restored line whole.
+func _say(text: String, skippable: bool = false, seconds: float = -1.0, typed: bool = true) -> float:
 	var display_time := seconds if seconds >= 0.0 else SpeechTiming.seconds_for(text)
 	if skippable and CustomerManager.is_counter_crowded():
 		return display_time
-	BrewerySignals.dialogue_pushed.emit(text, false, dialogue_slot, global_position, display_time, SpeechTiming.FADE_SECONDS)
+	BrewerySignals.dialogue_pushed.emit(text, false, dialogue_slot, global_position, display_time, SpeechTiming.FADE_SECONDS, typed)
 	BrewerySignals.customer_spoke.emit(global_position, customer_data.voice_pitch)
 	return display_time
 

@@ -50,3 +50,9 @@ func test_tooltip_when_maxed_says_so_and_offers_no_next_level() -> void:
 	var text : String = OlutoppiTextScript.tooltip(_make_unlock(), 3, true)
 	assert_true(text.contains(OlutoppiTextScript.TOOLTIP_MAXED_TEXT))
 	assert_false(text.contains("Seuraava taso"))
+
+
+func test_tooltip_says_how_much_renown_is_missing() -> void:
+	assert_true(OlutoppiTextScript.tooltip(_make_unlock(), 0, false, 10).contains(OlutoppiTextScript.TOOLTIP_RENOWN_SHORT_FORMAT % 15))
+	assert_false(OlutoppiTextScript.tooltip(_make_unlock(), 0, false, 25).contains("puuttuu"), "affordable: nothing missing")
+	assert_false(OlutoppiTextScript.tooltip(_make_unlock(), 0, false).contains("puuttuu"), "no renown given: no line")

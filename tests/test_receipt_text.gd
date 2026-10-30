@@ -4,6 +4,7 @@ extends McpTestSuite
 ## ReceiptText: the receipt adds up from the list price to what went on the account.
 
 const ReceiptTextScript := preload("res://src/ui/receipt_text.gd")
+const NumberTextScript := preload("res://src/ui/number_text.gd")
 
 
 func suite_name() -> String:
@@ -38,15 +39,15 @@ func test_the_receipt_reads_from_list_price_to_the_account() -> void:
 		"Kotikalja, laatu 92 %",
 		"Asiakas: Raksamies",
 		ReceiptTextScript.SEPARATOR,
-		"Raaka-aineet (arvio): 0.36 €",
-		"Kate: 0.94 €",
-		"Listahinta: 1.00 €",
+		"Raaka-aineet (arvio): " + NumberTextScript.money(0.36),
+		"Kate: " + NumberTextScript.money(0.94),
+		"Listahinta: " + NumberTextScript.money(1.0),
 		"Uutuus: +25 %",
-		"= Hinta/annos: 1.30 €",
+		"= Hinta/annos: " + NumberTextScript.money(1.3),
 		ReceiptTextScript.SEPARATOR,
-		"3 × 1.30 € = 3.9 €",
-		"Tippi: +1.5 €",
-		"TILILLE: +5.4 €",
+		"3 × %s = %s" % [NumberTextScript.money(1.3), NumberTextScript.money(3.9)],
+		"Tippi: " + NumberTextScript.signed_money(1.5),
+		"TILILLE: " + NumberTextScript.signed_money(5.4),
 		ReceiptTextScript.SEPARATOR,
 		ReceiptTextScript.FOOTERS[1],
 	])
@@ -69,9 +70,9 @@ func test_no_bonus_no_bonus_lines() -> void:
 
 func test_the_tip_line_tells_a_doubled_tip_and_no_tip() -> void:
 	var entry := _make_entry()
-	assert_eq(ReceiptTextScript.tip_line(entry), "Tippi: +1.5 €")
+	assert_eq(ReceiptTextScript.tip_line(entry), "Tippi: " + NumberTextScript.signed_money(1.5))
 	entry.tip_doubled = true
-	assert_eq(ReceiptTextScript.tip_line(entry), "Tippi: +1.5 € (tuplana!)")
+	assert_eq(ReceiptTextScript.tip_line(entry), "Tippi: %s (tuplana!)" % NumberTextScript.signed_money(1.5))
 	entry.tip_income = 0.0
 	assert_eq(ReceiptTextScript.tip_line(entry), "Tippi: ei tällä kertaa")
 
@@ -86,6 +87,6 @@ func test_an_old_receipt_falls_back_to_the_list_price() -> void:
 	assert_eq(ReceiptTextScript.price_per_serving(entry), 1.0)
 	var text : String = ReceiptTextScript.text(entry)
 	assert_true(text.begins_with("Kotikalja\n"))
-	assert_true(text.contains("2 × 1.00 € = 2.0 €"))
+	assert_true(text.contains("2 × %s = %s" % [NumberTextScript.money(1.0), NumberTextScript.money(2.0)]))
 	assert_false(text.contains("KUITTI"))
 	assert_eq(ReceiptTextScript.footer_for(-1), "")

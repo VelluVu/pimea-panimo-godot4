@@ -112,7 +112,7 @@ func _connect_log_sources() -> void:
 	BrewerySignals.early_day_close_applied.connect(_on_early_day_close_applied)
 	SpecialEventManager.special_event_triggered.connect(_on_special_event_triggered)
 	TimeManager.day_changed.connect(_on_day_changed)
-	BrewerySignals.dialogue_pushed.connect(func(text: String, _special: bool, _slot: int, _pos: Vector2, _time: float, _fade: float) -> void:
+	BrewerySignals.dialogue_pushed.connect(func(text: String, _special: bool, _slot: int, _pos: Vector2, _time: float, _fade: float, _typed: bool) -> void:
 		_console.log_line(text, DIALOGUE_CATEGORY))
 
 	BrewerySignals.sale_xp_gained.connect(func(amount: int) -> void: _sale_xp = amount)

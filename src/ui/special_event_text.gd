@@ -6,7 +6,6 @@ extends RefCounted
 
 const DELIVERY_FORMAT : String = "Toimita %d × %s.\nVarastossa: %d / %d"
 const MONEY_FORMAT : String = "%+d €"
-const MONEY_DECIMAL_FORMAT : String = "%+.1f €"
 const REPUTATION_FORMAT : String = "%+d mainetta"
 const RISK_FORMAT : String = "%+d LVV-riskiä"
 const SECONDS_FORMAT : String = "%d s"
@@ -25,7 +24,7 @@ static func delivery(requirement : String, have : int, need : int) -> String:
 static func money(amount : float) -> String:
 	if is_equal_approx(amount, roundf(amount)):
 		return UiText.of(MONEY_FORMAT) % roundi(amount)
-	return UiText.of(MONEY_DECIMAL_FORMAT) % amount
+	return NumberText.signed_money(amount)
 
 
 static func reputation(amount : int) -> String:

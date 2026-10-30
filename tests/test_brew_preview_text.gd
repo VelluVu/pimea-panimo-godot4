@@ -4,6 +4,7 @@ extends McpTestSuite
 ## Unit tests for BrewPreviewText: the brewing table's live preview line.
 
 const BrewPreviewTextScript := preload("res://src/ui/brew_preview_text.gd")
+const NumberTextScript := preload("res://src/ui/number_text.gd")
 
 
 func suite_name() -> String:
@@ -33,7 +34,7 @@ func test_unbrewable_table_names_the_minimum() -> void:
 
 func test_no_match_shows_the_numbers() -> void:
 	var text : String = BrewPreviewTextScript.text(false, _result(false), false)
-	assert_true(text.contains("Ei täsmää") and text.contains("EBC 12") and text.contains("IBU 15") and text.contains("4.6 % ABV"))
+	assert_true(text.contains("Ei täsmää") and text.contains("EBC 12") and text.contains("IBU 15") and text.contains("%s %% ABV" % NumberTextScript.decimal(4.6, 1)))
 
 
 func test_unknown_style_keeps_its_name_secret() -> void:
@@ -48,6 +49,16 @@ func test_known_style_shows_name_quality_and_spices() -> void:
 	var text : String = BrewPreviewTextScript.text(false, result, true)
 	assert_true(text.contains("Witbier") and text.contains("laatu 120%"))
 	assert_true(text.contains("Mausteet: +10 %"))
+
+
+func test_known_style_speaks_plainly_and_keeps_the_numbers_for_the_tooltip() -> void:
+	# The first line only: a low quality adds aim lines that do name EBC and IBU.
+	var first_line : String = BrewPreviewTextScript.text(false, _result(true), true).get_slice("\n", 0)
+	assert_true(first_line.contains("alkoholia"))
+	assert_false(first_line.contains("EBC") or first_line.contains("IBU"))
+	var details : String = BrewPreviewTextScript.details(_result(true))
+	assert_true(details.contains("Väri 12 EBC") and details.contains("katkeruus 15 IBU"))
+	assert_eq(BrewPreviewTextScript.details(null), "")
 
 
 func test_known_style_shows_the_grade_of_a_normal_brew() -> void:

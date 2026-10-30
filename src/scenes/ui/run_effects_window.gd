@@ -9,14 +9,12 @@ const SECTION_SPACING : float = 10.0
 const PERMANENT_PERKS_HEADER : String = "Olutopin pysyvät bonukset (%d):"
 
 @onready var title_label : Label = %TitleLabel
-@onready var close_button : Button = %CloseButton
 @onready var rows_vbox : VBoxContainer = %RowsVBox
 
 
 func _ready() -> void:
 	title_label.text = StringContainer.RUN_EFFECTS_TITLE
-	close_button.text = StringContainer.RUN_EFFECTS_CLOSE_TEXT
-	close_button.pressed.connect(_on_close_button_pressed)
+	WindowCloseButton.attach(self, _on_close_button_pressed)
 
 	GUISignals.run_effects_requested.connect(_on_run_effects_requested)
 	BrewerySignals.brewery_state_changed.connect(_on_brewery_state_changed)

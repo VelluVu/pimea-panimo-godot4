@@ -5,7 +5,6 @@ extends Panel
 ## Ohjeet guide. Touch screens without tooltips need it most.
 
 const TITLE_TEXT : String = "Panimokirja"
-const CLOSE_TEXT : String = "Sulje"
 const CUSTOMERS_TAB_TEXT : String = "Asiakkaat"
 const INGREDIENTS_TAB_TEXT : String = "Raaka-aineet"
 const GUIDE_TAB_TEXT : String = "Ohjeet"
@@ -33,7 +32,6 @@ const LOCKED_INGREDIENT_COLOR : Color = Color(0.45, 0.43, 0.4, 1)
 const INDEX_FONT_COLOR_STATES : Array[StringName] = [&"font_color", &"font_hover_color", &"font_focus_color", &"font_pressed_color", &"font_hover_pressed_color"]
 
 @onready var title_label : Label = %TitleLabel
-@onready var close_button : Button = %CloseButton
 @onready var rows_vbox : VBoxContainer = %RowsVBox
 @onready var scroll_container : ScrollContainer = $MarginContainer/MainVBox/ScrollContainer
 
@@ -46,8 +44,7 @@ var _index_scroll : int = 0
 
 func _ready() -> void:
 	title_label.text = TITLE_TEXT
-	close_button.text = CLOSE_TEXT
-	close_button.pressed.connect(_on_close_button_pressed)
+	WindowCloseButton.attach(self, _on_close_button_pressed)
 	GUISignals.customer_book_requested.connect(_on_customer_book_requested)
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	PauseLock.hold_while_visible(self)

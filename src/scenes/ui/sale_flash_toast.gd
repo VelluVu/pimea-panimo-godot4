@@ -6,7 +6,7 @@ extends Panel
 const HOLD_SECONDS : float = 1.5
 const FADE_OUT_SECONDS : float = 1.0
 
-const LABEL_FORMAT : String = "Myyty: %s  +%.1f €"
+const LABEL_FORMAT : String = "Myyty: %s  %s"
 
 ## The toast column has little margin to the screen edge, so long text wraps at this.
 const MAX_WIDTH : float = 180.0
@@ -23,7 +23,7 @@ func _ready() -> void:
 
 
 func initialize(entry : SaleReceiptEntry) -> void:
-	initialize_text(tr(LABEL_FORMAT) % [entry.get_summary_text(), entry.net_income])
+	initialize_text(tr(LABEL_FORMAT) % [entry.get_summary_text(), NumberText.signed_money(entry.net_income)])
 
 
 ## A flash without a receipt (shipping, bar fights); a warmer colour for bad news.

@@ -37,6 +37,9 @@ signal brew_day_finished(quality_multiplier : float)
 signal brew_day_opened()
 @warning_ignore("unused_signal")
 signal brew_day_closed()
+## Vanha mestari Aatu says a bit of his line; repeats while the line types.
+@warning_ignore("unused_signal")
+signal guide_spoke(voice_pitch : float)
 ## A one-shot brew day sound, named by a BrewDaySound constant.
 @warning_ignore("unused_signal")
 signal brew_day_sound(sound : StringName)

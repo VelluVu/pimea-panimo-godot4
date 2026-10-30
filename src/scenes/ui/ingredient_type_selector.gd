@@ -7,6 +7,10 @@ const MALT_TAB_TEXT : String = "Mallas"
 const HOP_TAB_TEXT : String = "Humala"
 const YEAST_TAB_TEXT : String = "Hiiva"
 const SPICE_TAB_TEXT : String = "Mauste"
+## Shortcuts in the tooltips, so keyboard players find them without the options window.
+const TAB_TOOLTIP_FORMAT : String = "%s (%s)"
+const PREVIOUS_TOOLTIP_FORMAT : String = "Edellinen raaka-aine (%s)"
+const NEXT_TOOLTIP_FORMAT : String = "Seuraava raaka-aine (%s)"
 ## The icons' own size, so the pixels stay square; trimmed tab sides fit all four.
 const TAB_ICON_WIDTH : int = 32
 const TAB_SIDE_MARGIN : int = 6
@@ -34,8 +38,7 @@ func _ready() -> void:
 	tab_bar.clear_tabs()
 	tab_bar.add_theme_constant_override(&"icon_max_width", TAB_ICON_WIDTH)
 	_trim_tab_sides()
-	# Icon-only tabs, name as tooltip: text tabs would not fit the narrow panel and would
-	# collide with the corner BackButton.
+	# Icon-only tabs, name as tooltip: text tabs would not fit the narrow panel.
 	_add_icon_tab(MALT_TAB_TEXT, IngredientData.IngredientType.MALT)
 	_add_icon_tab(HOP_TAB_TEXT, IngredientData.IngredientType.HOP)
 	_add_icon_tab(YEAST_TAB_TEXT, IngredientData.IngredientType.YEAST)
@@ -48,7 +51,7 @@ func _ready() -> void:
 
 func _add_icon_tab(tab_name : String, ingredient_type : IngredientData.IngredientType) -> void:
 	tab_bar.add_tab("", TAB_ICONS[ingredient_type])
-	tab_bar.set_tab_tooltip(tab_bar.tab_count - 1, tab_name)
+	tab_bar.set_tab_tooltip(tab_bar.tab_count - 1, TAB_TOOLTIP_FORMAT % [tr(tab_name), InputManager.get_binding_text(InputManager.ACTION_INGREDIENT_TYPE)])
 
 
 func _trim_tab_sides() -> void:
@@ -83,8 +86,25 @@ func step_type(direction : int) -> void:
 	tab_bar.current_tab = posmod(tab_bar.current_tab + direction, tab_bar.tab_count)
 
 
-## Puts < and > beside the dropdown and moves `amount_label` to its own line below.
-func add_step_buttons(amount_label : Label) -> void:
-	OptionStepper.wrap(option_button)
-	amount_label.reparent(self)
-	move_child(amount_label, ingredient_row.get_index() + 1)
+## Opens the tab of `ingredient_id` and selects it; -1 opens the first tab.
+func select_ingredient(ingredient_id : int) -> void:
+	var ingredient : IngredientData = IngredientDatabase.get_item_by_id(ingredient_id) if ingredient_id != -1 else null
+	if ingredient == null:
+		reset_to_first_tab()
+		return
+	var tab : int = TYPES_BY_TAB.find(ingredient.type)
+	tab_bar.set_block_signals(true)
+	tab_bar.current_tab = tab
+	tab_bar.set_block_signals(false)
+	_on_tab_changed(tab)
+	# After the repopulation's own deferred pick of the first item, so this one wins.
+	GUISignals.active_ingredient_changed.emit.call_deferred(ingredient_id)
+
+
+## Puts < and > beside the dropdown, with the arrow keys in their tooltips.
+func add_step_buttons() -> void:
+	var row : HBoxContainer = OptionStepper.wrap(option_button)
+	var first : Control = row.get_child(0)
+	var last : Control = row.get_child(row.get_child_count() - 1)
+	first.tooltip_text = tr(PREVIOUS_TOOLTIP_FORMAT) % InputManager.get_binding_text(InputManager.ACTION_INGREDIENT_PREVIOUS)
+	last.tooltip_text = tr(NEXT_TOOLTIP_FORMAT) % InputManager.get_binding_text(InputManager.ACTION_INGREDIENT_NEXT)

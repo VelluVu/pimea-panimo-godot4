@@ -50,9 +50,10 @@ func _ready() -> void:
 
 
 ## One-shot sound. A click requested in the same frame gives way to it.
-func play_sfx(stream: AudioStream, volume_db: float = 0.0, pitch_scale: float = 1.0) -> void:
+## An empty `bus` plays on the effects bus.
+func play_sfx(stream: AudioStream, volume_db: float = 0.0, pitch_scale: float = 1.0, bus: StringName = &"") -> void:
 	_specific_sfx_frame = Engine.get_process_frames()
-	_play_stream(stream, volume_db, pitch_scale)
+	_play_stream(stream, volume_db, pitch_scale, bus)
 
 
 ## One-shot sound at a place in the world, panned and faded by its distance to the listener.
@@ -118,11 +119,12 @@ func _add_world_player() -> AudioStreamPlayer2D:
 	return player
 
 
-func _play_stream(stream: AudioStream, volume_db: float = 0.0, pitch_scale: float = 1.0) -> void:
+func _play_stream(stream: AudioStream, volume_db: float = 0.0, pitch_scale: float = 1.0, bus: StringName = &"") -> void:
 	if stream == null:
 		return
 	var player := _sfx_pool[_next_sfx_player_index]
 	_next_sfx_player_index = (_next_sfx_player_index + 1) % _sfx_pool.size()
+	player.bus = bus if bus != &"" else sfx_bus
 	player.stream = stream
 	player.volume_db = volume_db
 	player.pitch_scale = pitch_scale

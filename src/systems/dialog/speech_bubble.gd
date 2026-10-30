@@ -15,6 +15,8 @@ const BORDER_COLOR : Color = Color(0.2, 0.13, 0.08)
 const TEXT_COLOR : Color = Color(0.14, 0.09, 0.05)
 ## What a collapsed bubble shows; the full line stays in its tooltip.
 const COLLAPSED_TEXT : String = "..."
+## A typed line is written out this fast: an order is read in about a second.
+const TYPE_CHARACTERS_PER_SECOND : float = 80.0
 
 @onready var label : Label = $Label
 
@@ -22,9 +24,17 @@ var bubble_style := StyleBoxFlat.new()
 ## The whole line, kept while the bubble is collapsed into a badge.
 var full_text : String = ""
 var collapsed : bool = false
+## True: typing keeps game time and waits out a pause; false: real seconds. Set before
+## the bubble enters the tree.
+var follow_time_scale : bool = false
+## Characters typed so far, while a line types out.
+var _typed : float = 0.0
 
 
 func _ready() -> void:
+	if not follow_time_scale:
+		process_mode = Node.PROCESS_MODE_ALWAYS
+	set_process(false)
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	label.add_theme_color_override("font_color", TEXT_COLOR)
@@ -39,14 +49,34 @@ func _ready() -> void:
 	bubble_style.shadow_size = 4
 
 
-func set_text(text : String) -> void:
+## `type_out` writes the line out letter by letter; the bubble has its full size at once,
+## so it never pushes its neighbours while typing.
+func set_text(text : String, type_out : bool = false) -> void:
 	full_text = text
 	collapsed = false
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	tooltip_text = ""
 	label.text = text
 	_resize_to_fit(text)
+	_typed = 0.0
+	label.visible_characters = 0 if type_out else -1
+	set_process(type_out)
 	queue_redraw()
+
+
+## How long `text` takes to type out.
+static func typing_seconds(text : String) -> float:
+	return text.length() / TYPE_CHARACTERS_PER_SECOND
+
+
+func _process(delta : float) -> void:
+	var seconds : float = delta if follow_time_scale else delta / maxf(Engine.time_scale, 0.01)
+	_typed += seconds * TYPE_CHARACTERS_PER_SECOND
+	if _typed >= label.get_total_character_count():
+		label.visible_characters = -1
+		set_process(false)
+	else:
+		label.visible_characters = int(_typed)
 
 
 ## Shrinks to a small "..." badge; pointing at it (or holding a finger) shows the line.
@@ -54,6 +84,8 @@ func collapse() -> void:
 	if collapsed:
 		return
 	collapsed = true
+	set_process(false)
+	label.visible_characters = -1
 	label.text = COLLAPSED_TEXT
 	_resize_to_fit(COLLAPSED_TEXT)
 	tooltip_text = full_text

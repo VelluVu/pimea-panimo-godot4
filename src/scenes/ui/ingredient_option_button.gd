@@ -11,6 +11,9 @@ const LOCKED_TOOLTIP_FORMAT : String = "Vaatii mainetta: %d"
 const OWNED_LOCKED_TOOLTIP_FORMAT : String = "Lisää voi ostaa vasta %d maineella. Omistamasi määrän voi käyttää."
 
 @export var target_type : IngredientData.IngredientType = IngredientData.IngredientType.MALT
+## In the shop an ingredient in stock already covers the recipe; the brewery needs it on
+## the table. Decides which items get the "needed" mark.
+var stock_covers_recipe : bool = false
 
 ## Rebuilds only when the locked set changed: brewery_state_changed fires on every buy and
 ## sale, and a rebuild resets the selection.
@@ -36,6 +39,7 @@ func _ready() -> void:
 
 ## Rebuilds on a reputation change but keeps the player's selection if it is still usable.
 func _on_brewery_state_changed(_brewery : Brewery) -> void:
+	refresh_item_texts()
 	var locked_ids : Array[int] = _locked_ids()
 	if locked_ids == _last_locked_ids:
 		return
@@ -89,6 +93,27 @@ func _rebuild_items() -> void:
 	var owned : Dictionary = _owned()
 	for ingredient : IngredientData in IngredientMenuOrder.order(_of_type(), reputation, owned):
 		_add_ingredient_item(ingredient, IngredientMenuOrder.is_locked(ingredient, reputation, owned), IngredientMenuOrder.is_buy_locked(ingredient, reputation))
+	refresh_item_texts()
+
+
+## Stock and the "needed" mark change on every buy and table move, without a rebuild
+## (a rebuild would reset the selection). Locked items keep their reputation text.
+func refresh_item_texts() -> void:
+	var brewery := BrewEngine.current_brewery
+	if brewery == null:
+		return
+	var owned : Dictionary = brewery.owned_ingredient_amounts()
+	var target : Dictionary = brewery.brew_preparation.active_recipe_target
+	var table : Dictionary = brewery.brew_preparation.selected_contents
+	for i : int in item_count:
+		var ingredient : IngredientData = IngredientDatabase.get_item_by_id(get_item_id(i))
+		if ingredient == null or is_item_disabled(i):
+			continue
+		var item : InventoryItem = brewery.inventory.get_item_by_id(ingredient.id)
+		var in_stock : int = item.amount if item != null else 0
+		var stock_text : String = "%s %s" % [ingredient.amount_text(in_stock), ingredient.get_unit_string()] if in_stock > 0 else ""
+		var covered : int = owned.get(ingredient.id, 0) if stock_covers_recipe else table.get(ingredient.id, 0)
+		set_item_text(i, IngredientMenuText.item(tr(ingredient.name), stock_text, target.get(ingredient.id, 0) > covered))
 
 
 func _add_ingredient_item(ingredient : IngredientData, is_locked : bool, is_buy_locked : bool) -> void:

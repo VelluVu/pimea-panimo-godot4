@@ -32,6 +32,7 @@ const CONFIRM_NO_TEXT: String = "Ei"
 
 ## True from opening until resuming or leaving, also while a sub-window hides the menu.
 var _is_open: bool = false
+var _close_button: WindowCloseButton
 ## What the confirmation's yes button does.
 var _confirmed_action: Callable
 
@@ -55,6 +56,7 @@ func _ready() -> void:
 	main_menu_button.pressed.connect(_confirm.bind(CONFIRM_MAIN_MENU_TEXT, _go_to_main_menu))
 	yes_button.pressed.connect(func() -> void: _confirmed_action.call())
 	no_button.pressed.connect(_show_confirm.bind(false))
+	_close_button = WindowCloseButton.attach(self, _back_out)
 
 	GUISignals.game_menu_requested.connect(_open)
 	GUISignals.options_closed.connect(_on_sub_window_closed)
@@ -73,6 +75,7 @@ func _open() -> void:
 	move_to_front()
 	# After a bust or bankruptcy there is nothing to resume: only a new run or the main menu.
 	resume_button.visible = not _is_run_over()
+	_close_button.visible = resume_button.visible
 	_show_confirm(false)
 	show()
 
@@ -97,11 +100,16 @@ func _input(event: InputEvent) -> void:
 	if not visible:
 		return
 	if event.is_action_pressed(InputManager.ACTION_CANCEL):
-		if confirm_vbox.visible:
-			_show_confirm(false)
-		else:
-			_close()
+		_back_out()
 		get_viewport().set_input_as_handled()
+
+
+## Esc and the corner X: leave the confirmation first, then the menu.
+func _back_out() -> void:
+	if confirm_vbox.visible:
+		_show_confirm(false)
+	else:
+		_close()
 
 
 func _open_sub_window(request: Signal) -> void:

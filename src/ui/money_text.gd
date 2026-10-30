@@ -4,11 +4,11 @@ extends RefCounted
 ## The top bar's money tooltip: the money, today's net with its income and its costs per
 ## MoneyLedger.Source, yesterday's net and the last days' trend.
 
-const VALUE_FORMAT : String = "Rahaa %.1f €"
-const TODAY_FORMAT : String = "Tänään %+.1f €"
-const YESTERDAY_FORMAT : String = "Eilen %+.1f €"
+const VALUE_FORMAT : String = "Rahaa %s"
+const TODAY_FORMAT : String = "Tänään %s"
+const YESTERDAY_FORMAT : String = "Eilen %s"
 const RECENT_DAYS_FORMAT : String = "Viime päivät: %s"
-const PART_FORMAT : String = "%s %+.1f €"
+const PART_FORMAT : String = "%s %s"
 const LINE_INDENT : String = "  "
 
 const SALES_NAME : String = "myynti"
@@ -26,7 +26,7 @@ const OTHER_NAME : String = "muut"
 
 ## `today` is MoneyLedger.Source -> float, `recent_days` the closed days, oldest first.
 static func tooltip(money : float, today : Dictionary, recent_days : Array[float]) -> String:
-	var lines : PackedStringArray = [UiText.of(VALUE_FORMAT) % money, UiText.of(TODAY_FORMAT) % MoneyLedger.net(today)]
+	var lines : PackedStringArray = [UiText.of(VALUE_FORMAT) % NumberText.money(money), UiText.of(TODAY_FORMAT) % NumberText.signed_money(MoneyLedger.net(today))]
 	var income : PackedStringArray = _parts(today, true)
 	if not income.is_empty():
 		lines.append(LINE_INDENT + ", ".join(income))
@@ -34,7 +34,7 @@ static func tooltip(money : float, today : Dictionary, recent_days : Array[float
 	if not costs.is_empty():
 		lines.append(LINE_INDENT + ", ".join(costs))
 	if not recent_days.is_empty():
-		lines.append(UiText.of(YESTERDAY_FORMAT) % recent_days[-1])
+		lines.append(UiText.of(YESTERDAY_FORMAT) % NumberText.signed_money(recent_days[-1]))
 	if recent_days.size() > 1:
 		var days : PackedStringArray = []
 		for amount : float in recent_days:
@@ -76,5 +76,5 @@ static func _parts(today : Dictionary, gains : bool) -> PackedStringArray:
 		var amount : float = today.get(source, 0.0)
 		if is_zero_approx(amount) or (amount > 0.0) != gains:
 			continue
-		parts.append(PART_FORMAT % [source_name(source), amount])
+		parts.append(PART_FORMAT % [source_name(source), NumberText.signed_money(amount)])
 	return parts

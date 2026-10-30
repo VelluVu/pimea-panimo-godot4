@@ -12,11 +12,11 @@
 [ext_resource type="Texture2D" uid="uid://c1oyyse4gy0ti" path="res://assets/textures/ui/panel.png" id="ui_panel"]
 [ext_resource type="Texture2D" uid="uid://c61jpe6s5sini" path="res://assets/textures/ui/slider_fill.png" id="ui_slider_fill"]
 [ext_resource type="Texture2D" uid="uid://do7i8r0dgf1bd" path="res://assets/textures/ui/slider_fill_hover.png" id="ui_slider_fill_hover"]
-[ext_resource type="Texture2D" uid="uid://c6py3m2df4jmj" path="res://assets/textures/ui/slider_track.png" id="ui_slider_track"]
-[ext_resource type="Texture2D" uid="uid://dcggq4h2mlfvi" path="res://assets/textures/ui/toggle_on.png" id="ui_toggle_on"]
-[ext_resource type="Texture2D" uid="uid://c2oppb0jbql5n" path="res://assets/textures/ui/toggle_off.png" id="ui_toggle_off"]
 [ext_resource type="Texture2D" uid="uid://dp8c0frx0dhax" path="res://assets/textures/ui/slider_grabber.png" id="ui_slider_grabber"]
 [ext_resource type="Texture2D" uid="uid://dfoilmveesevy" path="res://assets/textures/ui/slider_grabber_hover.png" id="ui_slider_grabber_hover"]
+[ext_resource type="Texture2D" uid="uid://c6py3m2df4jmj" path="res://assets/textures/ui/slider_track.png" id="ui_slider_track"]
+[ext_resource type="Texture2D" uid="uid://c2oppb0jbql5n" path="res://assets/textures/ui/toggle_off.png" id="ui_toggle_off"]
+[ext_resource type="Texture2D" uid="uid://dcggq4h2mlfvi" path="res://assets/textures/ui/toggle_on.png" id="ui_toggle_on"]
 
 [sub_resource type="StyleBoxTexture" id="btn_disabled"]
 content_margin_left = 4.0
@@ -81,6 +81,8 @@ texture_margin_top = 4.0
 texture_margin_right = 4.0
 texture_margin_bottom = 4.0
 
+[sub_resource type="StyleBoxEmpty" id="check_flat"]
+
 [sub_resource type="StyleBoxTexture" id="slider_fill"]
 texture = ExtResource("ui_slider_fill")
 texture_margin_left = 2.0
@@ -97,35 +99,6 @@ texture_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxTexture" id="slider_track"]
 texture = ExtResource("ui_slider_track")
-texture_margin_left = 2.0
-texture_margin_top = 2.0
-texture_margin_right = 2.0
-texture_margin_bottom = 2.0
-
-[sub_resource type="StyleBoxEmpty" id="check_flat"]
-
-[sub_resource type="StyleBoxTexture" id="scroll_track"]
-content_margin_left = 1.0
-content_margin_right = 1.0
-texture = ExtResource("ui_slider_track")
-texture_margin_left = 2.0
-texture_margin_top = 2.0
-texture_margin_right = 2.0
-texture_margin_bottom = 2.0
-
-[sub_resource type="StyleBoxTexture" id="scroll_grabber"]
-content_margin_left = 1.0
-content_margin_right = 1.0
-texture = ExtResource("ui_slider_fill")
-texture_margin_left = 2.0
-texture_margin_top = 2.0
-texture_margin_right = 2.0
-texture_margin_bottom = 2.0
-
-[sub_resource type="StyleBoxTexture" id="scroll_grabber_hover"]
-content_margin_left = 1.0
-content_margin_right = 1.0
-texture = ExtResource("ui_slider_fill_hover")
 texture_margin_left = 2.0
 texture_margin_top = 2.0
 texture_margin_right = 2.0
@@ -166,6 +139,17 @@ texture_margin_left = 4.0
 texture_margin_top = 4.0
 texture_margin_right = 5.0
 texture_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxEmpty" id="seamless_panel"]
+
+[sub_resource type="StyleBoxFlat" id="seamless_divider"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+draw_center = false
+border_width_left = 1
+border_color = Color(0.050980393, 0.03137255, 0.019607844, 1)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kduym"]
 texture = ExtResource("ui_button_disabled")
@@ -227,6 +211,33 @@ texture_margin_top = 4.0
 texture_margin_right = 4.0
 texture_margin_bottom = 4.0
 
+[sub_resource type="StyleBoxTexture" id="scroll_grabber"]
+content_margin_left = 1.0
+content_margin_right = 1.0
+texture = ExtResource("ui_slider_fill")
+texture_margin_left = 2.0
+texture_margin_top = 2.0
+texture_margin_right = 2.0
+texture_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxTexture" id="scroll_grabber_hover"]
+content_margin_left = 1.0
+content_margin_right = 1.0
+texture = ExtResource("ui_slider_fill_hover")
+texture_margin_left = 2.0
+texture_margin_top = 2.0
+texture_margin_right = 2.0
+texture_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxTexture" id="scroll_track"]
+content_margin_left = 1.0
+content_margin_right = 1.0
+texture = ExtResource("ui_slider_track")
+texture_margin_left = 2.0
+texture_margin_top = 2.0
+texture_margin_right = 2.0
+texture_margin_bottom = 2.0
+
 [sub_resource type="FontVariation" id="FontVariation_main"]
 fallbacks = Array[Font]([ExtResource("4_icons"), ExtResource("3_symbols"), ExtResource("2_twemoji")])
 base_font = ExtResource("1_qtffb")
@@ -285,6 +296,14 @@ PopupMenu/colors/font_outline_color = Color(0.08235294, 0.05490196, 0.03137255, 
 PopupMenu/constants/outline_size = 1
 PopupMenu/styles/hover = SubResource("StyleBoxTexture_xkb5p")
 PopupMenu/styles/panel = SubResource("StyleBoxTexture_ykn37")
+PrimaryButton/base_type = &"Button"
+PrimaryButton/colors/font_color = Color(0.9490196, 0.7882353, 0.41960785, 1)
+PrimaryButton/colors/font_focus_color = Color(0.9490196, 0.7882353, 0.41960785, 1)
+PrimaryButton/colors/font_hover_color = Color(1, 0.92156863, 0.64705884, 1)
+SeamlessPanel/base_type = &"Panel"
+SeamlessPanel/styles/panel = SubResource("seamless_panel")
+SeamlessPanelContainer/base_type = &"PanelContainer"
+SeamlessPanelContainer/styles/panel = SubResource("seamless_divider")
 TabBar/colors/font_disabled_color = Color(0.5411765, 0.47843137, 0.36862746, 1)
 TabBar/colors/font_hovered_color = Color(0.9490196, 0.7882353, 0.41960785, 1)
 TabBar/colors/font_outline_color = Color(0.08235294, 0.05490196, 0.03137255, 1)
@@ -304,6 +323,9 @@ TabContainer/styles/panel = SubResource("StyleBoxTexture_4fdfv")
 TabContainer/styles/tab_hovered = SubResource("StyleBoxTexture_rjiow")
 TabContainer/styles/tab_selected = SubResource("StyleBoxTexture_evdgs")
 TabContainer/styles/tab_unselected = SubResource("StyleBoxTexture_hrld3")
+TabToggle/base_type = &"Button"
+TabToggle/colors/font_hover_pressed_color = Color(1, 0.92156863, 0.64705884, 1)
+TabToggle/colors/font_pressed_color = Color(0.9490196, 0.7882353, 0.41960785, 1)
 VScrollBar/styles/grabber = SubResource("scroll_grabber")
 VScrollBar/styles/grabber_highlight = SubResource("scroll_grabber_hover")
 VScrollBar/styles/grabber_pressed = SubResource("scroll_grabber_hover")

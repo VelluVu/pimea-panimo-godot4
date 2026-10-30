@@ -4,6 +4,9 @@ extends Panel
 ## The recipe book: an index of every style (locked ones "???") and a page per style.
 ## Pauses the game and handles its own Esc.
 
+## The index or a style's page was built; NextStepGuide follows it on day one.
+signal page_changed(style : int)
+
 const BACK_BUTTON_TEXT : String = "< Takaisin"
 const LOAD_BUTTON_TEXT : String = "Lataa resepti"
 const MISSING_INGREDIENTS_FORMAT : String = "%s (raaka-aineita puuttuu)"
@@ -18,7 +21,6 @@ const INDEX_COLUMNS : int = 2
 const SWATCH_SIZE : int = 8
 
 @onready var title_label : Label = %TitleLabel
-@onready var close_button : Button = %CloseButton
 @onready var back_button : Button = %BackButton
 @onready var load_button : Button = %LoadButton
 @onready var bottom_bar : HBoxContainer = %BottomHBox
@@ -26,16 +28,17 @@ const SWATCH_SIZE : int = 8
 
 var selected_style : int = NO_STYLE_SELECTED
 var _selected_recipe : BrewRecipe = null
+## The index's buttons by BeerStyle.Style, rebuilt with it.
+var _index_buttons : Dictionary = {}
 ## Swatch textures by colour, so reopening the book reuses them.
 static var _swatches : Dictionary = {}
 
 
 func _ready() -> void:
-	close_button.text = StringContainer.RECIPE_LIBRARY_CLOSE_TEXT
 	back_button.text = BACK_BUTTON_TEXT
 	load_button.text = LOAD_BUTTON_TEXT
 
-	close_button.pressed.connect(_on_close_button_pressed)
+	WindowCloseButton.attach(self, _on_close_button_pressed)
 	back_button.pressed.connect(_select_style.bind(NO_STYLE_SELECTED))
 	load_button.pressed.connect(_on_load_button_pressed)
 	GUISignals.recipe_library_requested.connect(_on_recipe_library_requested)
@@ -73,10 +76,17 @@ func _on_state_changed(_ignored : Variant = null) -> void:
 		_refresh()
 
 
+## The index button of `style`, or null while a page is open.
+func index_button(style : int) -> Button:
+	var button : Button = _index_buttons.get(style)
+	return button if is_instance_valid(button) else null
+
+
 func _select_style(style : int) -> void:
 	selected_style = style
 	_selected_recipe = null
 	_refresh()
+	page_changed.emit(style)
 
 
 func _on_close_button_pressed() -> void:
@@ -95,6 +105,7 @@ func _on_load_button_pressed() -> void:
 func _refresh() -> void:
 	for child : Node in rows_vbox.get_children():
 		child.queue_free()
+	_index_buttons.clear()
 
 	var brewery : Brewery = BrewEngine.current_brewery
 	if brewery == null:
@@ -149,6 +160,7 @@ func _index_grid(entries : Array[RecipeBookEntry]) -> GridContainer:
 			button.add_theme_color_override("font_color", LOCKED_COLOR)
 		button.pressed.connect(_select_style.bind(beer_style.style))
 		grid.add_child(button)
+		_index_buttons[beer_style.style] = button
 	return grid
 
 

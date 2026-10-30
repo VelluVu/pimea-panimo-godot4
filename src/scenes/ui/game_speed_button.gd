@@ -5,14 +5,14 @@ extends Button
 ## pause. At 1x it leaves Engine.time_scale alone, so the playtest bots keep their own.
 
 const SPEED_FORMAT : String = "%dx"
-const SPEED_TOOLTIP : String = "Pelin nopeus."
+const SPEED_TOOLTIP_FORMAT : String = "Pelin nopeus (%s)"
 
 var _index : int = 0
 
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
-	tooltip_text = SPEED_TOOLTIP
+	tooltip_text = tr(SPEED_TOOLTIP_FORMAT) % InputManager.get_binding_text(InputManager.ACTION_GAME_SPEED)
 	pressed.connect(cycle)
 	_refresh()
 

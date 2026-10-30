@@ -23,7 +23,7 @@ func kg(amount : int) -> float:
 func amount_text(amount : int) -> String:
 	if pack_grams == 1000:
 		return str(amount)
-	return "%.1f" % kg(amount)
+	return NumberText.decimal(kg(amount), 1)
 
 
 func get_pack_string() -> String:

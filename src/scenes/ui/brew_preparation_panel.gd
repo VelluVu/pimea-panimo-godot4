@@ -1,6 +1,9 @@
 class_name BrewPreparationPanel
 extends PanelContainer
 
+## The X of the brewery or shop window this panel completes; it sits on the right edge.
+signal close_requested
+
 
 const INGREDIENT_LABEL_WITH_TARGET_STRING : String = "%s: %s/%s %s"
 const MASH_TUN_FULL_FORMAT : String = "Mäskipataan mahtuu enintään %d kg mallasta. Isompi pata löytyy parannuksista."
@@ -14,25 +17,18 @@ const SAVE_TOAST_HOLD_SECONDS : float = 1.2
 const SAVE_TOAST_FADE_SECONDS : float = 0.4
 const NO_ACTIVE_RECIPE_TEXT : String = "Uusi resepti"
 const NO_FREE_KEG_TEXT : String = "Kaikissa tynnyreissä on olutta. Myy tai vie erä baariin, niin tynnyri vapautuu."
-
-## Light blue on both XP popups (here and DialogWiring), apart from the gold money.
-const XP_POPUP_COLOR : Color = Color(0.4, 0.75, 1.0, 1)
-const XP_POPUP_FORMAT : String = "+%d XP"
-const XP_POPUP_DURATION_SECONDS : float = 1.8
-const XP_POPUP_OFFSET : Vector2 = Vector2(6, 0)
-const XP_POPUP_FLOAT_DISTANCE : float = 35.0
-const REPUTATION_POPUP_FORMAT : String = "%+d mainetta"
-## Below the XP popup, so the two do not overlap.
-const REPUTATION_POPUP_STEP : Vector2 = Vector2(0, 20)
+const START_BREW_TOOLTIP : String = "Pane pöydän raaka-aineista olut tynnyriin"
 
 @onready var table_list_vbox : VBoxContainer = %IngredientListVBox
 @onready var preview_label : Label = $VBoxContainer/PreviewLabel
 @onready var save_recipe_toast : Label = %SaveRecipeToast
 @onready var current_recipe_label : Label = %CurrentRecipeLabel
+@onready var header_row : HBoxContainer = $VBoxContainer/HeaderRow
 @onready var erase_button : Button = %EraseButton
 @onready var start_brew_button : Button = %StartBrewButton
 
 var table_labels: Dictionary = {} # ingredient id -> Label
+var close_button : Button
 var _toast : BannerPresenter
 
 
@@ -40,43 +36,18 @@ func _ready() -> void:
 	_toast = BannerPresenter.new(save_recipe_toast, SAVE_TOAST_FLASH_SECONDS, SAVE_TOAST_HOLD_SECONDS, SAVE_TOAST_FADE_SECONDS, true, false)
 	# A scene-defined plain Label: the script swap makes its tooltip wrap.
 	current_recipe_label.set_script(TooltipLabel)
+	# Hovering the preview shows the beer's numbers (colour, bitterness, alcohol).
+	preview_label.mouse_filter = Control.MOUSE_FILTER_PASS
 	_initialize_table_nodes()
 	BrewerySignals.brewery_state_changed.connect(_on_brewery_state_changed)
 	BrewerySignals.recipe_saved.connect(_on_recipe_saved)
 	BrewerySignals.recipe_save_rejected.connect(_on_recipe_save_rejected)
-	BrewerySignals.brew_xp_gained.connect(_on_brew_xp_gained)
-	BrewerySignals.brew_reputation_gained.connect(_on_brew_reputation_gained)
 	erase_button.pressed.connect(_on_erase_button_pressed)
+	# At the end of the header row and as tall as the header bars, so it lines up with
+	# both halves' titles instead of hanging off the frame's corner above them.
+	close_button = WindowCloseButton.create(close_requested.emit, PanelHeader.HEIGHT)
+	header_row.add_child(close_button)
 	_update_table_list_ui()
-
-
-## Floats off the "Pane" button; a sale's XP popup appears on the customer instead.
-func _on_brew_xp_gained(amount : int) -> void:
-	_float_popup(tr(XP_POPUP_FORMAT) % amount, XP_POPUP_COLOR, XP_POPUP_OFFSET)
-
-
-func _on_brew_reputation_gained(amount : int) -> void:
-	var color : Color = Color.GREEN if amount > 0 else Color.RED
-	_float_popup(tr(REPUTATION_POPUP_FORMAT) % amount, color, XP_POPUP_OFFSET + REPUTATION_POPUP_STEP)
-
-
-func _float_popup(text : String, color : Color, offset : Vector2) -> void:
-	var popup := Label.new()
-	popup.text = text
-	popup.modulate = color
-
-	start_brew_button.add_child(popup)
-	popup.position = Vector2(start_brew_button.size.x, 0) + offset
-
-	var tween := create_tween().set_parallel(true)
-	var target_pos := popup.position + Vector2(0, -XP_POPUP_FLOAT_DISTANCE)
-	var target_color := popup.modulate
-	target_color.a = 0.0
-
-	PixelStepTween.move_property(tween, popup, &"position", popup.position, target_pos, XP_POPUP_DURATION_SECONDS)
-	tween.tween_property(popup, "modulate", target_color, XP_POPUP_DURATION_SECONDS)
-
-	tween.chain().tween_callback(popup.queue_free)
 
 
 func _on_erase_button_pressed() -> void:
@@ -154,6 +125,7 @@ func _update_preview(brewery : Brewery, prep_contents : Dictionary) -> void:
 	var preview : BrewResult = null if prep_contents.is_empty() else brewery.resolver.resolve_brew_style(prep_contents)
 	var style_known : bool = preview != null and preview.is_matched and brewery.is_style_known(preview.beer_style.style)
 	preview_label.text = BrewPreviewText.text(prep_contents.is_empty(), preview, style_known, brewery.machine_active(CellarMachines.AUTO_KETTLE), brewery.stats.total(PerkStats.QUALITY_BONUS))
+	preview_label.tooltip_text = BrewPreviewText.details(preview)
 	# Nothing would come out yet; the preview says what is missing.
 	start_brew_button.disabled = preview == null
 	# Every batch needs a keg of its own.
@@ -163,3 +135,5 @@ func _update_preview(brewery : Brewery, prep_contents : Dictionary) -> void:
 	elif preview != null and not MashTun.holds(preview.malt_weight, brewery.mash_capacity_kg()):
 		preview_label.text = tr(MASH_TUN_FULL_FORMAT) % roundi(brewery.mash_capacity_kg())
 		start_brew_button.disabled = true
+	# A disabled "Pane" says why, the same words as the preview.
+	start_brew_button.tooltip_text = preview_label.text if start_brew_button.disabled else START_BREW_TOOLTIP

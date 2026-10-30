@@ -72,7 +72,10 @@ func _ready() -> void:
 	# the real save.
 	TimeManager.pause_time()
 
+	FirstFocus.attach(root_menu_view)
+	FirstFocus.attach(start_game_view)
 	_show_root_menu_view()
+	FirstFocus.focus_now.call_deferred(root_menu_view)
 
 
 func _show_root_menu_view() -> void:

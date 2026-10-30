@@ -4,6 +4,7 @@ extends McpTestSuite
 ## Unit tests for RecipeLibraryText: the recipe book's index buttons and style pages.
 
 const RecipeLibraryTextScript := preload("res://src/ui/recipe_library_text.gd")
+const NumberTextScript := preload("res://src/ui/number_text.gd")
 
 
 func suite_name() -> String:
@@ -41,13 +42,13 @@ func _page(entry : RecipeBookEntry) -> String:
 
 func test_a_known_index_button_shows_name_strength_and_recipes() -> void:
 	var entry := _entry()
-	assert_eq(RecipeLibraryTextScript.index_label(entry), "Testiolut\n4.5 %")
+	assert_eq(RecipeLibraryTextScript.index_label(entry), "Testiolut\n%s %%" % NumberTextScript.decimal(4.5, 1))
 	entry.saved_recipe_count = 2
-	assert_eq(RecipeLibraryTextScript.index_label(entry), "Testiolut\n4.5 % · reseptejä 2")
+	assert_eq(RecipeLibraryTextScript.index_label(entry), "Testiolut\n%s %% · reseptejä 2" % NumberTextScript.decimal(4.5, 1))
 
 
 func test_a_locked_index_button_hides_the_name() -> void:
-	assert_eq(RecipeLibraryTextScript.index_label(_entry(false)), "???\n4.5 % · helppo")
+	assert_eq(RecipeLibraryTextScript.index_label(_entry(false)), "???\n%s %% · helppo" % NumberTextScript.decimal(4.5, 1))
 	assert_eq(RecipeLibraryTextScript.page_title(_entry(false)), "???")
 
 
@@ -55,7 +56,7 @@ func test_a_locked_style_shows_its_family_and_effort() -> void:
 	var entry := _entry(false)
 	entry.family_name = "lager"
 	entry.effort_score = StyleEffort.HARD_FROM
-	assert_eq(RecipeLibraryTextScript.index_label(entry), "??? lager\n4.5 % · vaativa")
+	assert_eq(RecipeLibraryTextScript.index_label(entry), "??? lager\n%s %% · vaativa" % NumberTextScript.decimal(4.5, 1))
 	assert_eq(RecipeLibraryTextScript.page_title(entry), "??? lager")
 	assert_contains(_page(entry), "Vaativuus: vaativa")
 
@@ -77,7 +78,7 @@ func test_a_locked_page_names_the_base_malt_but_not_its_share() -> void:
 
 func test_a_known_page_shows_the_exact_recipe() -> void:
 	var text : String = _page(_entry())
-	assert_contains(text, "Vahvuus: 4.0-5.5 % ABV")
+	assert_contains(text, "Vahvuus: %s-%s %% ABV" % [NumberTextScript.decimal(4.0, 1), NumberTextScript.decimal(5.5, 1)])
 	assert_contains(text, "Väri: EBC 11-14")
 	assert_contains(text, "Katkeruus: IBU 14-20")
 	assert_contains(text, "Hiiva: Lagerhiiva")
@@ -124,7 +125,7 @@ func test_a_description_leads_the_page_when_written() -> void:
 
 func test_a_locked_page_withholds_the_exact_ranges() -> void:
 	var text : String = _page(_entry(false))
-	assert_contains(text, "Vahvuus: noin 4.5 % ABV")
+	assert_contains(text, "Vahvuus: noin %s %% ABV" % NumberTextScript.decimal(4.5, 1))
 	assert_contains(text, "Väri: %s" % BeerStyle.get_color_hint(11, 14))
 	assert_false(text.contains("EBC"), "the exact EBC range stays hidden")
 	assert_false(text.contains("14-20"), "the exact IBU range stays hidden")
