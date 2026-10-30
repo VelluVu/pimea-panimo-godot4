@@ -32,7 +32,7 @@ func _ready() -> void:
 
 
 func cancel_capture() -> void:
-	_capturing_action = &""
+	_end_capture()
 	_refresh_buttons()
 
 
@@ -85,17 +85,26 @@ func _refresh_buttons() -> void:
 		key_button.text = _bindings.ui_text["press_key"] if action == _capturing_action else _bindings.get_binding_text(action)
 
 
+## The button lets go of the keyboard focus while it waits, so no focus handling takes the
+## key meant for the binding (an arrow, Enter); it gets the focus back afterwards.
 func _on_binding_pressed(action : StringName) -> void:
 	_capturing_action = action
 	_status_label.text = ""
+	(_binding_buttons[action] as Button).release_focus()
 	_refresh_buttons()
+
+
+func _end_capture() -> void:
+	if _capturing_action != &"" and _binding_buttons.has(_capturing_action):
+		(_binding_buttons[_capturing_action] as Button).grab_focus(true)
+	_capturing_action = &""
 
 
 ## Esc cancels; any other key is offered to the bindings, which refuse keys already
 ## bound to another action.
 func _finish_capture(keycode : Key) -> void:
 	var action : StringName = _capturing_action
-	_capturing_action = &""
+	_end_capture()
 	_status_label.text = ""
 	if keycode != KEY_ESCAPE:
 		var conflict : StringName = _bindings.rebind(action, keycode)
@@ -105,6 +114,6 @@ func _finish_capture(keycode : Key) -> void:
 
 
 func _on_reset_pressed() -> void:
-	_capturing_action = &""
+	_end_capture()
 	_status_label.text = ""
 	_bindings.reset_to_defaults()
