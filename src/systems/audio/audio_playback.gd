@@ -17,6 +17,8 @@ var world_panning_strength: float = 0.6
 var click_stream: AudioStream
 ## Every button that enters the tree plays the click when pressed, so none is left silent.
 var click_all_buttons: bool = true
+## A loop whose level falls under this stops instead of playing inaudibly.
+var loop_min_level: float = 0.02
 
 var _sfx_pool: Array[AudioStreamPlayer] = []
 var _next_sfx_player_index: int = 0
@@ -31,6 +33,8 @@ var _looping: bool = false
 var _click_pending: bool = false
 ## The frame a sound other than the click last played, so the click can give way to it.
 var _specific_sfx_frame: int = -1
+## ready_to_play() keys -> when they last passed, in msec.
+var _last_played_msec: Dictionary = {}
 
 
 func _ready() -> void:
@@ -69,6 +73,35 @@ func play_sfx_at(stream: AudioStream, world_position: Vector2, volume_db: float 
 	player.volume_db = volume_db
 	player.pitch_scale = pitch_scale
 	player.play()
+
+
+## True, and remembered, when `key` has not passed for `min_gap_msec`: a sound asked for
+## every frame (footsteps, a wild swing's knocks) then plays at a steady pace.
+func ready_to_play(key: StringName, min_gap_msec: int) -> bool:
+	var now: int = Time.get_ticks_msec()
+	if now - int(_last_played_msec.get(key, -min_gap_msec)) < min_gap_msec:
+		return false
+	_last_played_msec[key] = now
+	return true
+
+
+## A looping sound driven by set_loop_level(), silent until then.
+func add_loop(stream: AudioStream) -> AudioStreamPlayer:
+	var player := _add_player(sfx_bus)
+	player.stream = stream
+	player.finished.connect(player.play)
+	return player
+
+
+## `level` 0 to 1 scales the loop's `volume_db`; under loop_min_level it stops.
+func set_loop_level(player: AudioStreamPlayer, level: float, volume_db: float) -> void:
+	if level < loop_min_level:
+		if player.playing:
+			player.stop()
+		return
+	player.volume_db = volume_db + linear_to_db(clampf(level, 0.0, 1.0))
+	if not player.playing:
+		player.play()
 
 
 ## Deferred to the end of the frame: one press can ask twice (the button and the signal

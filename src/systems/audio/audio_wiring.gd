@@ -23,8 +23,7 @@ const POUR_VOLUME_DB: float = -3.0
 ## A group's serving burst runs the pour at 3x; full pitch would sound like a chipmunk.
 const POUR_MAX_PITCH: float = 1.4
 const TOAST_VOLUME_DB: float = -6.0
-## The brew day's loops fade with their level; silent under this.
-const BREW_LOOP_MIN_LEVEL: float = 0.02
+const FOOTSTEP_KEY: StringName = &"footstep"
 const BREW_LOOP_VOLUME_DB: float = -4.0
 const HOP_POUR_VOLUME_DB: float = -8.0
 ## Wall knocks and clump bounces can come every frame of a wild swing.
@@ -35,7 +34,6 @@ var bank: AudioBank = preload("res://src/resources/audio/audio_bank.tres")
 var _tension_player: AudioStreamPlayer
 var _last_money: float = -1.0
 var _last_risk: int = -1
-var _last_footstep_msec: int = -FOOTSTEP_MIN_GAP_MSEC
 ## Several toasts in one frame (a burst of unlocks) blip once.
 var _last_toast_frame: int = -1
 var _burner_player: AudioStreamPlayer
@@ -43,7 +41,6 @@ var _boil_player: AudioStreamPlayer
 var _hop_pour_player: AudioStreamPlayer
 ## BrewDaySound constants -> [stream, volume_db].
 var _brew_sounds: Dictionary = {}
-var _last_brew_sound_msec: Dictionary = {}
 
 
 func _init() -> void:
@@ -83,9 +80,9 @@ func _setup_tension_player() -> void:
 
 
 func _setup_brew_day_sounds() -> void:
-	_burner_player = _add_loop_player(bank.sfx_brew_burner_loop)
-	_boil_player = _add_loop_player(bank.sfx_brew_boil_loop)
-	_hop_pour_player = _add_loop_player(bank.sfx_brew_hop_pour_loop)
+	_burner_player = add_loop(bank.sfx_brew_burner_loop)
+	_boil_player = add_loop(bank.sfx_brew_boil_loop)
+	_hop_pour_player = add_loop(bank.sfx_brew_hop_pour_loop)
 	_brew_sounds = {
 		BrewDaySound.MALTS: [bank.sfx_brew_malt_pour, 0.0],
 		BrewDaySound.PLOP: [bank.sfx_brew_plop, -2.0],
@@ -108,42 +105,17 @@ func _setup_brew_day_sounds() -> void:
 	}
 
 
-## A looping sound that keeps playing while the brew day pauses the tree.
-func _add_loop_player(stream: AudioStream) -> AudioStreamPlayer:
-	var player := AudioStreamPlayer.new()
-	player.bus = sfx_bus
-	player.stream = stream
-	player.process_mode = Node.PROCESS_MODE_ALWAYS
-	player.finished.connect(player.play)
-	add_child(player)
-	return player
-
-
 func _on_brew_day_sound(sound: StringName) -> void:
-	if not _brew_sounds.has(sound):
+	if not _brew_sounds.has(sound) or not ready_to_play(sound, BREW_SOUND_MIN_GAP_MSEC):
 		return
-	var now: int = Time.get_ticks_msec()
-	if now - int(_last_brew_sound_msec.get(sound, -BREW_SOUND_MIN_GAP_MSEC)) < BREW_SOUND_MIN_GAP_MSEC:
-		return
-	_last_brew_sound_msec[sound] = now
 	var entry: Array = _brew_sounds[sound]
 	play_sfx(entry[0], entry[1])
 
 
 func _on_brew_day_loops(burner: float, boil: float, pouring: bool) -> void:
-	_set_loop(_burner_player, burner, BREW_LOOP_VOLUME_DB)
-	_set_loop(_boil_player, boil, BREW_LOOP_VOLUME_DB)
-	_set_loop(_hop_pour_player, 1.0 if pouring else 0.0, HOP_POUR_VOLUME_DB)
-
-
-func _set_loop(player: AudioStreamPlayer, level: float, volume_db: float) -> void:
-	if level < BREW_LOOP_MIN_LEVEL:
-		if player.playing:
-			player.stop()
-		return
-	player.volume_db = volume_db + linear_to_db(clampf(level, 0.0, 1.0))
-	if not player.playing:
-		player.play()
+	set_loop_level(_burner_player, burner, BREW_LOOP_VOLUME_DB)
+	set_loop_level(_boil_player, boil, BREW_LOOP_VOLUME_DB)
+	set_loop_level(_hop_pour_player, 1.0 if pouring else 0.0, HOP_POUR_VOLUME_DB)
 
 
 func _connect_signals() -> void:
@@ -208,10 +180,8 @@ func _connect_signals() -> void:
 
 
 func _on_customer_stepped(at: Vector2) -> void:
-	var now: int = Time.get_ticks_msec()
-	if now - _last_footstep_msec < FOOTSTEP_MIN_GAP_MSEC:
+	if not ready_to_play(FOOTSTEP_KEY, FOOTSTEP_MIN_GAP_MSEC):
 		return
-	_last_footstep_msec = now
 	play_sfx_at(bank.sfx_footstep, at, FOOTSTEP_VOLUME_DB, randf_range(FOOTSTEP_PITCH_RANGE.x, FOOTSTEP_PITCH_RANGE.y))
 
 
@@ -246,20 +216,17 @@ func _on_brewery_state_changed(brewery: Brewery) -> void:
 	if _last_money != -1 and brewery.money > _last_money:
 		play_sfx(bank.sfx_coin_success)
 	_last_money = brewery.money
-	_update_tension(brewery.risk)
+	_update_tension(brewery)
 
 
 ## The drone fades in with the LVV risk, reaching full volume at the raid threshold.
-func _update_tension(risk: int) -> void:
+func _update_tension(brewery: Brewery) -> void:
+	var risk: int = brewery.risk
 	if risk == _last_risk:
 		return
 	_last_risk = risk
 
-	var raid_threshold: int = Brewery.LVV_RAID_THRESHOLD
-	var brewery := BrewEngine.current_brewery
-	if brewery != null:
-		raid_threshold = brewery.get_effective_raid_threshold()
-	var ratio := clampf(float(risk) / float(raid_threshold), 0.0, 1.0)
+	var ratio := clampf(float(risk) / float(brewery.get_effective_raid_threshold()), 0.0, 1.0)
 	_tension_player.volume_db = lerpf(TENSION_DRONE_MIN_VOLUME_DB, TENSION_DRONE_MAX_VOLUME_DB, ratio)
 
 	if ratio > 0.0 and not _tension_player.playing:

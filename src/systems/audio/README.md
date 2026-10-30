@@ -15,8 +15,11 @@ enters the tree clicks when pressed, so a new button can never be left silent.
 | `play_music_loop(stream)` | Loops one track; keeps going if it already is the loop |
 | `play_playlist(tracks)` | Shuffled playlist, repeating |
 | `is_playlist_playing()` | For deciding whether to start the playlist again |
+| `ready_to_play(key, min_gap_msec)` | True (and remembered) when `key` has not passed for that long; put it in front of a sound asked for every frame |
+| `add_loop(stream)` | A looping player, silent until `set_loop_level()` |
+| `set_loop_level(player, level, volume_db)` | Level 0 to 1 scales the loop's volume; under `loop_min_level` it stops |
 
-Settings: `sfx_bus`, `music_bus`, `sfx_pool_size`, `click_stream`, `click_all_buttons`, and for
+Settings: `sfx_bus`, `music_bus`, `sfx_pool_size`, `click_stream`, `click_all_buttons`, `loop_min_level`, and for
 world sounds `world_pool_size`, `world_max_distance`, `world_attenuation`, `world_panning_strength`.
 
 ## Use it in a new project
