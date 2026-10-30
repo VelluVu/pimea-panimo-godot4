@@ -7173,10 +7173,12 @@ msgstr "Oh, I've already taught you this before. My memory's starting to go."
 #: src/ui/guide/cellar_guide_text.gd
 msgid ""
 "Jaahas, meinaat alkaa pyörittämään pimeää panimoa? Minä olen Aatu, ja "
-"neuvon hieman alkuun. Avaa reseptikirja, niin nähdään, mitä tiedät."
+"neuvon hieman alkuun. Ovet pysyvät kiinni, kunnes ensimmäinen olut on "
+"pantu. Avaa reseptikirja, niin nähdään, mitä tiedät."
 msgstr ""
 "Well now, so you mean to start running a hidden brewery? I'm Aatu, and I'll "
-"help you get started. Open the recipe book and let's see what you know."
+"help you get started. The doors stay shut until the first beer is brewing. "
+"Open the recipe book and let's see what you know."
 
 #: src/ui/guide/cellar_guide_text.gd
 msgid "Kaikki on pöydällä. Paina Pane, niin päästään keittämään."

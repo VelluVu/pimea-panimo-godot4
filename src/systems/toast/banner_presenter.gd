@@ -80,11 +80,14 @@ func present(text : String, flash_color : Color = FLASH_COLOR) -> void:
 
 
 ## Cuts the hold short and fades out now. No-op if nothing is showing.
-func dismiss_early() -> void:
+## `even_when_paused` fades it out behind a menu that pauses the game too.
+func dismiss_early(even_when_paused : bool = false) -> void:
 	if _tween == null or not _tween.is_running():
 		return
 	_kill_tween()
 	_tween = _label.create_tween().set_ignore_time_scale()
+	if even_when_paused:
+		_tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
 	_append_fade_out(_tween)
 
 

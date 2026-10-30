@@ -114,8 +114,11 @@ func start() -> void:
 	BrewerySignals.batch_fermented.connect(_on_batch_fermented)
 
 	# Shown while the clock is stopped, so the missing customers do not read as a bug.
-	if TimeManager.day_timer.is_stopped():
+	# Aatu tells it himself when he guides the first brew.
+	if TimeManager.day_timer.is_stopped() and not GuideParts.is_on(GuideParts.Part.CELLAR, BrewEngine.current_brewery):
 		BrewerySignals.brewery_state_changed.connect(_on_first_brew_hint_state_changed)
+		# Turned on in Asetukset, the tutorial takes over the moment Aatu starts talking.
+		GUISignals.guide_spoke.connect(_on_guide_spoke_over_hint)
 		_first_brew_hint.present(FIRST_BREW_HINT_TEXT)
 
 
@@ -203,9 +206,20 @@ func _on_day_event_announced(event: DayEventData) -> void:
 func _on_first_brew_hint_state_changed(_brewery: Brewery) -> void:
 	if TimeManager.day_timer.is_stopped():
 		return
+	_end_first_brew_hint()
 
-	BrewerySignals.brewery_state_changed.disconnect(_on_first_brew_hint_state_changed)
-	_first_brew_hint.dismiss_early()
+
+func _on_guide_spoke_over_hint(_voice_pitch: float) -> void:
+	_end_first_brew_hint()
+
+
+func _end_first_brew_hint() -> void:
+	if BrewerySignals.brewery_state_changed.is_connected(_on_first_brew_hint_state_changed):
+		BrewerySignals.brewery_state_changed.disconnect(_on_first_brew_hint_state_changed)
+	if GUISignals.guide_spoke.is_connected(_on_guide_spoke_over_hint):
+		GUISignals.guide_spoke.disconnect(_on_guide_spoke_over_hint)
+	# Aatu is switched on in Asetukset, with the game paused behind it.
+	_first_brew_hint.dismiss_early(true)
 
 
 func _on_kegs_emptied(_count: int) -> void:

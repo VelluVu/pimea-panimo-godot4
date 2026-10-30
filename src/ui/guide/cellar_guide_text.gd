@@ -7,7 +7,7 @@ extends RefCounted
 
 enum Talk { GOALS, RECIPES, UPGRADES, BREWERY_BOOK, GOODBYE }
 
-const OPEN_RECIPES_TEXT : String = "Jaahas, meinaat alkaa pyörittämään pimeää panimoa? Minä olen Aatu, ja neuvon hieman alkuun. Avaa reseptikirja, niin nähdään, mitä tiedät."
+const OPEN_RECIPES_TEXT : String = "Jaahas, meinaat alkaa pyörittämään pimeää panimoa? Minä olen Aatu, ja neuvon hieman alkuun. Ovet pysyvät kiinni, kunnes ensimmäinen olut on pantu. Avaa reseptikirja, niin nähdään, mitä tiedät."
 const PICK_RECIPE_TEXT : String = "Kotikaljallahan kaikki aloittelee. Avaapa se resepti."
 const LOAD_RECIPE_TEXT : String = "Täältä näkee vähän, mitä halutaan. Resepti voidaan laittaa kohteeksi lataamalla se reseptinäkymään, niin ei tarvitse arpoa raaka-aineiden kanssa."
 const GO_TO_SHOP_TEXT : String = "Maltaat ja hiiva ostetaan kaupasta. Kauppa on tiskin oikeassa päässä."
