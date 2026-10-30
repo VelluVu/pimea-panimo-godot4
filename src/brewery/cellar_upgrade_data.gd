@@ -17,6 +17,8 @@ extends RunPerk
 ## A machine is bought once and owned in every later season, with an on/off switch;
 ## see CellarMachines.
 @export var is_machine : bool = false
+## A machine's effect in a few words for the upgrades window; machines have no stats to list.
+@export var machine_effect : String = ""
 
 
 ## Price of the level after `level`, see CellarUpgradeRules.

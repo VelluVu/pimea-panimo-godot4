@@ -6941,16 +6941,8 @@ msgstr ""
 "storage, in one go."
 
 #: src/ui/cellar_upgrade_text.gd
-msgid "Ei vielä omistuksessa."
-msgstr "Not owned yet."
-
-#: src/ui/cellar_upgrade_text.gd
 msgid "Kytke kone päälle tai pois. Valinta muistetaan myös seuraavilla kausilla."
 msgstr "Switch the machine on or off. The choice is kept for later seasons too."
-
-#: src/ui/cellar_upgrade_text.gd
-msgid "Nyt: %s"
-msgstr "Now: %s"
 
 #: src/ui/cellar_upgrade_text.gd
 msgid "Omistat koneen, se pysyy kaikilla kausilla."
@@ -6959,6 +6951,10 @@ msgstr "You own the machine; it stays for every season."
 #: src/ui/cellar_upgrade_text.gd
 msgid "Osta %d €"
 msgstr "Buy %d €"
+
+#: src/ui/cellar_upgrade_text.gd
+msgid "Ostetaan kerran, jää kellariin kaikille kausille."
+msgstr "Bought once, stays in the cellar for every season."
 
 #: src/ui/cellar_upgrade_text.gd
 msgid "Parannus on jo täydellä tasolla."
@@ -6973,16 +6969,12 @@ msgid "Rahaa puuttuu %s."
 msgstr "You are %s short."
 
 #: src/ui/cellar_upgrade_text.gd
-msgid "Seuraava taso: %s"
-msgstr "Next level: %s"
+msgid "Tynnyreitä ja hanoja lisää: %s"
+msgstr "More kegs and taps: %s"
 
 #: src/ui/cellar_upgrade_text.gd
 msgid "Täysi"
 msgstr "Maxed"
-
-#: src/ui/cellar_upgrade_text.gd
-msgid "ei vielä"
-msgstr "not yet"
 
 #: src/ui/console_event_text.gd
 msgid "%s lähti tyhjin käsin, mainetta %+d"

@@ -23,8 +23,10 @@ func _upgrade() -> CellarUpgradeData:
 	return upgrade
 
 
-func test_title_shows_the_level() -> void:
-	assert_eq(TextScript.title_line(_upgrade(), 2), "Isompi käymisastia  2/5")
+func test_pips_fill_the_owned_levels() -> void:
+	assert_eq(TextScript.level_pips(2, 5), "■■□□□")
+	assert_eq(TextScript.level_pips(0, 3), "□□□")
+	assert_eq(TextScript.level_pips(5, 5), "■■■■■")
 
 
 func test_button_shows_the_next_price_until_maxed() -> void:
@@ -32,14 +34,34 @@ func test_button_shows_the_next_price_until_maxed() -> void:
 	assert_eq(TextScript.button_text(_upgrade(), 5), TextScript.MAXED_TEXT)
 
 
-func test_effect_lines_show_now_and_next() -> void:
-	var lines : String = TextScript.effect_lines(_upgrade(), 0)
-	assert_contains(lines, TextScript.NONE_TEXT)
-	assert_contains(lines, "6 %")
-	assert_false(TextScript.effect_lines(_upgrade(), 5).contains("Seuraava"), "no next line when maxed")
+func test_effect_change_shows_now_and_next() -> void:
+	assert_eq(TextScript.effect_change(_upgrade(), 0), "Annossaanto kasvaa 0 % → 6 %")
+	assert_eq(TextScript.effect_change(_upgrade(), 2), "Annossaanto kasvaa 12 % → 18 %")
+
+
+func test_a_maxed_effect_shows_only_the_current_value() -> void:
+	assert_eq(TextScript.effect_change(_upgrade(), 5), "Annossaanto kasvaa 30 %")
 
 
 func test_buy_tooltip_says_why_the_button_is_grey() -> void:
 	assert_eq(TextScript.buy_tooltip(_upgrade(), 0, 40.0), "", "affordable: no reason")
 	assert_contains(TextScript.buy_tooltip(_upgrade(), 0, 12.5), "27")
 	assert_eq(TextScript.buy_tooltip(_upgrade(), 5, 1000.0), TextScript.MAXED_TOOLTIP)
+
+
+func test_kegs_get_their_own_line() -> void:
+	var upgrade : CellarUpgradeData = UpgradeScript.new()
+	upgrade.max_level = 8
+	upgrade.kegs_per_level = 1
+	assert_eq(TextScript.effect_change(upgrade, 2), "Tynnyreitä ja hanoja lisää: 2 → 3")
+	assert_eq(TextScript.effect_change(upgrade, 8), "Tynnyreitä ja hanoja lisää: 8")
+
+
+func test_a_machine_says_what_it_does_and_that_it_stays() -> void:
+	var machine : CellarUpgradeData = UpgradeScript.new()
+	machine.is_machine = true
+	machine.machine_effect = "Pesee tyhjät tynnyrit itse."
+	assert_eq(TextScript.machine_lines(machine, false), "Pesee tyhjät tynnyrit itse.
+" + TextScript.MACHINE_BUY_ONCE_TEXT)
+	assert_eq(TextScript.machine_lines(machine, true), "Pesee tyhjät tynnyrit itse.
+" + TextScript.MACHINE_OWNED_TEXT)

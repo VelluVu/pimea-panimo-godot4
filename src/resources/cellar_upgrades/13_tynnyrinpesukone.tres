@@ -9,6 +9,7 @@ sort_order = 13
 max_level = 1
 base_cost = 400
 is_machine = true
+machine_effect = "Pesee tyhjät tynnyrit itse."
 perk_name = "Tynnyrinpesukone"
 description = "Pesee jokaisen tyhjentyneen tynnyrin puhtaaksi itsestään. Ostetaan kerran ja jää kellariin kaikille tuleville kausille."
 icon_placeholder = "🫧"

@@ -9,6 +9,7 @@ sort_order = 14
 max_level = 1
 base_cost = 400
 is_machine = true
+machine_effect = "Hoitaa keittopäivän itse, aina täydellisesti."
 perk_name = "Automaattikattila"
 description = "Mäskää ja keittää itse, aina täydellisesti. Keittopäivää ei tarvitse pelata. Ostetaan kerran ja jää kellariin kaikille tuleville kausille."
 icon_placeholder = "⚙️"
