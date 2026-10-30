@@ -255,13 +255,6 @@ func _guide_step() -> BrewDayGuideRules.Step:
 			return BrewDayGuideRules.mash_step(BrewDayGuideRules.Phase.RESULT, true, true, false, false)
 
 
-## Skipping keeps the brew going without the guide and turns the whole tutorial off, as
-## "Ohita opas" in the cellar does.
-func _on_guide_skipped() -> void:
-	GuideParts.set_skipped(true)
-	_guide.end()
-
-
 ## The kettle's heat: the mash's until the boil starts.
 func _heat() -> KettleHeat:
 	return _boil.heat if _boil != null else _mash.heat
@@ -450,7 +443,6 @@ func _build() -> void:
 	var guide_box := GuideSpeechBox.new()
 	guide_box.position = GUIDE_RECT.position
 	guide_box.size = GUIDE_RECT.size
-	guide_box.skipped.connect(_on_guide_skipped)
 	add_child(guide_box)
 	guide_box.hide()
 

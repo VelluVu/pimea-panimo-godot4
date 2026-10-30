@@ -2,17 +2,14 @@ class_name GuideSpeechBox
 extends Panel
 
 ## Vanha mestari Aatu's speech box: his portrait, the line typed out while his mouth
-## moves, and the buttons. Lays itself out from its size: wide puts the buttons at the
-## right, narrow (the strip beside the recipe book) stacks everything.
+## moves, and Jatka. Lays itself out from its size: wide puts the button at the right,
+## narrow (the strip beside the recipe book) stacks everything. There is no skip button:
+## the tutorial is turned off in Asetukset ("Ohita opastus").
 
-signal skipped
 signal next_pressed
 signal line_typed
 
 const NAME_TEXT : String = "Vanha mestari Aatu"
-const SKIP_BUTTON_TEXT : String = "Ohita opas"
-## Skipping turns the tutorial off for good, so the button says where it comes back.
-const SKIP_TOOLTIP : String = "Opas pois päältä. Takaisin: Asetukset, Näyttö, Ohita opastus."
 const NEXT_BUTTON_TEXT : String = "Jatka"
 const PORTRAIT : Texture2D = preload("res://assets/textures/characters/vanha_mestari_portrait_48.png")
 const PORTRAIT_SIZE : Vector2 = Vector2(48, 48)
@@ -38,7 +35,6 @@ var _portrait : TextureRect
 var _name : Label
 var _line : Label
 var _next : Button
-var _skip : Button
 var _typed : float = 0.0
 var _mouth_time : float = 0.0
 var _babble_time : float = 0.0
@@ -69,18 +65,15 @@ func _ready() -> void:
 
 	_next = _make_button(NEXT_BUTTON_TEXT, next_pressed)
 	_next.hide()
-	_skip = _make_button(SKIP_BUTTON_TEXT, skipped)
-	_skip.tooltip_text = SKIP_TOOLTIP
 	resized.connect(_layout)
 	_layout()
 	set_process(false)
 
 
 ## A new line starts typing from the beginning; the same line again changes nothing.
-## `can_continue` shows Jatka; `can_skip` false hides Ohita opas.
-func say(text : String, can_continue : bool = false, can_skip : bool = true) -> void:
+## `can_continue` shows Jatka.
+func say(text : String, can_continue : bool = false) -> void:
 	_next.visible = can_continue
-	_skip.visible = can_skip
 	_layout()
 	if text == _line.text:
 		return
@@ -122,10 +115,9 @@ func _layout() -> void:
 	if _line == null:
 		return
 	var buttons : Array[Button] = []
-	for button : Button in [_next, _skip]:
-		if button.visible:
-			buttons.append(button)
-	var button_height : float = _skip.get_combined_minimum_size().y
+	if _next.visible:
+		buttons.append(_next)
+	var button_height : float = _next.get_combined_minimum_size().y
 	var stack_height : float = buttons.size() * button_height + maxf(0.0, buttons.size() - 1) * GAP
 	if size.x < NARROW_WIDTH:
 		_portrait.position = Vector2(((size.x - PORTRAIT_SIZE.x) / 2.0), PADDING).round()
@@ -148,8 +140,9 @@ func _layout() -> void:
 		return
 	_portrait.position = Vector2(PADDING, ((size.y - PORTRAIT_SIZE.y) / 2.0)).round()
 	var text_x : float = PADDING + PORTRAIT_SIZE.x + GAP * 2.0
-	# The text ends before the buttons at the right edge.
-	var text_width : float = size.x - text_x - BUTTON_WIDTH - PADDING - GAP * 2.0
+	# The text ends before Jatka at the right edge, and runs to the edge without it.
+	var button_room : float = BUTTON_WIDTH + GAP * 2.0 if not buttons.is_empty() else GAP
+	var text_width : float = size.x - text_x - button_room - PADDING
 	_name.clip_text = true
 	_name.autowrap_mode = TextServer.AUTOWRAP_OFF
 	_name.position = Vector2(text_x, PADDING - 3.0)

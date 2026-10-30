@@ -77,7 +77,6 @@ func _ready() -> void:
 	_recipe_library.visibility_changed.connect(_queue_refresh)
 	_recipe_library.page_changed.connect(_on_library_page_changed)
 	_speech.next_pressed.connect(_on_speech_next)
-	_speech.skipped.connect(_on_speech_skipped)
 	_speech.line_typed.connect(_on_line_typed)
 	_speech.hide()
 	_queue_refresh()
@@ -124,16 +123,6 @@ func _on_line_typed() -> void:
 	await get_tree().create_timer(TALK_CONTINUE_SECONDS, true).timeout
 	if _talk == line and not _brew_day_open:
 		_on_speech_next()
-
-
-## "Ohita opas" turns the whole tutorial off, as "Ohita opastus" in Asetukset does, where it
-## can be turned back on. The box goes first, or the setting's change would have Aatu say
-## his "already told you" line to a player who just asked him to stop.
-func _on_speech_skipped() -> void:
-	_talk = -1
-	_speech.hide()
-	GuideParts.set_skipped(true)
-	_queue_refresh()
 
 
 func _on_option_changed(key : String, value : Variant) -> void:
@@ -194,7 +183,7 @@ func _show(step : NextStepRules.Step) -> void:
 		_pointer.point_at(null, NextStepPointer.Style.FRAME)
 	elif _talk >= 0:
 		_point_at_talk(_talk)
-	# The pointer belongs to Aatu's route: once "Ohita opas" ends it, nothing points.
+	# The pointer belongs to Aatu's route: with "Ohita opastus" on, nothing points.
 	elif GuideParts.is_on(GuideParts.Part.CELLAR, BrewEngine.current_brewery):
 		_point_at_step(step)
 	else:
@@ -219,7 +208,7 @@ func _show_speech(step : NextStepRules.Step) -> void:
 		return
 	_speech.position = SPEECH_RECT.position
 	_speech.size = SPEECH_RECT.size
-	_speech.say(line, _forgetful or _talk >= 0, not _forgetful)
+	_speech.say(line, _forgetful or _talk >= 0)
 	_speech.show()
 
 
