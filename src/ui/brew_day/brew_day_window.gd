@@ -16,9 +16,6 @@ const FINISH_BUTTON_TEXT : String = "VALMIS"
 const CANCEL_BUTTON_TEXT : String = "Peru"
 const QUICK_BUTTON_TEXT : String = "Pikakeitto"
 const QUICK_TOOLTIP_TEXT : String = "Keitä heti ilman keittopäivää. Laatu ×%s."
-const CONFIRM_CANCEL_TEXT : String = "Perutaanko keittopäivä? Raaka-aineet jäävät pöydälle."
-const CONFIRM_YES_TEXT : String = "Peru keitto"
-const CONFIRM_NO_TEXT : String = "Jatka"
 const RESULT_TEXT : String = "Laatu ×%s"
 const MASH_HINT_TEXT : String = "Pidä kattilan lämmitinnappia pohjassa, kunnes vesi on oikeassa lämmössä."
 const PADDLE_HINT_TEXT : String = "Vedä melaa paakkujen läpi, niin ne hajoavat."
@@ -51,7 +48,7 @@ var _button_heat : bool = false
 var _key_heat : bool = false
 var _malts_added : bool = false
 var _commentary : BrewDayCommentary = BrewDayCommentary.new()
-var _guided : bool = false
+var _brewery : Brewery = null
 
 var _header : Label
 var _hint : Label
@@ -65,9 +62,8 @@ var _cancel_button : Button
 var _quick_button : Button
 var _result_label : Label
 var _popups : BrewDayPopups
-var _confirm : Panel
-var _guide : GuideSpeechBox
-var _pointer : NextStepPointer
+var _confirm : BrewDayConfirm
+var _guide : BrewDayGuide
 
 
 func _ready() -> void:
@@ -79,9 +75,14 @@ func _ready() -> void:
 	GUISignals.brew_day_requested.connect(open)
 
 
+## GUI calls this on every new run or loaded save.
+func bind_brewery(brewery : Brewery) -> void:
+	_brewery = brewery
+
+
 ## Opens the brew day for what is on the brewing table; does nothing when it cannot brew.
 func open() -> void:
-	var brewery : Brewery = BrewEngine.current_brewery
+	var brewery : Brewery = _brewery
 	if brewery == null or brewery.brew_preparation.selected_contents.is_empty():
 		return
 	var contents : Dictionary = brewery.brew_preparation.selected_contents
@@ -99,7 +100,7 @@ func open() -> void:
 		_plan.style_name = StringContainer.TUNTEMATON
 	elif not brewery.is_style_known(report.beer_style.style):
 		_plan.style_name = UNKNOWN_STYLE_TEXT
-	_guided = GuideParts.is_on(GuideParts.Part.BREW_DAY, brewery)
+	_guide.begin(GuideParts.is_on(GuideParts.Part.BREW_DAY, brewery))
 	_start_mash()
 	show()
 	move_to_front()
@@ -112,7 +113,7 @@ func _close() -> void:
 	_kettle.clear_pours()
 	_popups.clear()
 	_confirm.hide()
-	_end_guide()
+	_guide.end()
 	hide()
 	PauseLock.release(self)
 	GUISignals.brew_day_closed.emit()
@@ -137,8 +138,7 @@ func _start_mash() -> void:
 	_mash.mash_completed.connect(_on_mash_completed)
 	_header.text = tr(MASH_HEADER_TEXT) % tr(_plan.style_name)
 	_hint.text = MASH_HINT_TEXT
-	_hint.visible = not _guided
-	_guide.visible = _guided
+	_hint.visible = not _guide.is_on()
 	_thermo.mash = _mash
 	_thermo.boil = null
 	_kettle.clumps = _mash.clumps
@@ -171,7 +171,7 @@ func _start_boil() -> void:
 	_boil.hop_stand_started.connect(func() -> void: _heat_button.disabled = true)
 	_header.text = tr(BOIL_HEADER_TEXT) % tr(_plan.style_name)
 	_hint.text = BOIL_HINT_TEXT
-	_hint.visible = not _guided
+	_hint.visible = not _guide.is_on()
 	_thermo.mash = null
 	_thermo.boil = _boil
 	_thermo.piece_ids = _plan.piece_ids
@@ -199,8 +199,8 @@ func _show_result() -> void:
 	_next_button.text = FINISH_BUTTON_TEXT
 	_next_button.show()
 	# Seen through once; Asetukset can bring the guide back.
-	if _guided:
-		GuideParts.finish(GuideParts.Part.BREW_DAY, BrewEngine.current_brewery)
+	if _guide.is_on():
+		GuideParts.finish(GuideParts.Part.BREW_DAY, _brewery)
 
 
 func _process(delta : float) -> void:
@@ -208,8 +208,8 @@ func _process(delta : float) -> void:
 		return
 	if _confirm.visible:
 		GUISignals.brew_day_loops.emit(0.0, 0.0, false)
-		if _guided:
-			_pointer.point_at(null, NextStepPointer.Style.FRAME)
+		if _guide.is_on():
+			_guide.clear_pointer()
 		return
 	var heating : bool = _button_heat or _key_heat
 	if _stage == Stage.MASH or _stage == Stage.MASH_DONE:
@@ -236,30 +236,9 @@ func _process(delta : float) -> void:
 	_heat_button.warmth = BrewDayLook.warmth(_heat().temperature, BoilSession.BOIL_MIN if _boil != null else _mash.target())
 	_heat_button.held = _key_heat and _stage != Stage.RESULT
 	_sacks.refresh()
-	_update_guide()
+	if _guide.is_on():
+		_guide.show_step(_guide_step())
 	_emit_loops()
-
-
-func _update_guide() -> void:
-	if not _guided:
-		return
-	var step : BrewDayGuideRules.Step = _guide_step()
-	_guide.say(BrewDayGuideText.of(step))
-	match step:
-		BrewDayGuideRules.Step.HEAT_WATER, BrewDayGuideRules.Step.HEAT_BOIL:
-			_pointer.point_at(_heat_button, NextStepPointer.Style.FRAME)
-		BrewDayGuideRules.Step.POUR_MALTS:
-			_pointer.point_at(_malt_sack, NextStepPointer.Style.FRAME)
-		BrewDayGuideRules.Step.BREAK_CLUMPS:
-			_pointer.point_at(_kettle, NextStepPointer.Style.FRAME, 0.0, KettleView.LIQUID_RECT)
-		BrewDayGuideRules.Step.COOL_WATER, BrewDayGuideRules.Step.HOLD_MASH, BrewDayGuideRules.Step.KEEP_BOILING, BrewDayGuideRules.Step.WATCH_FOAM:
-			_pointer.point_at(_thermo, NextStepPointer.Style.FRAME, 0.0, ThermoColumn.BAR_RECT)
-		BrewDayGuideRules.Step.ADD_HOPS:
-			_pointer.point_at(_sacks.cued_sack(), NextStepPointer.Style.FRAME)
-		BrewDayGuideRules.Step.TO_BOIL, BrewDayGuideRules.Step.FINISH:
-			_pointer.point_at(_next_button, NextStepPointer.Style.FRAME)
-		_:
-			_pointer.point_at(null, NextStepPointer.Style.FRAME)
 
 
 func _guide_step() -> BrewDayGuideRules.Step:
@@ -278,14 +257,8 @@ func _guide_step() -> BrewDayGuideRules.Step:
 
 ## Skipping keeps the brew going without the guide, and ends it for this run.
 func _on_guide_skipped() -> void:
-	GuideParts.finish(GuideParts.Part.BREW_DAY, BrewEngine.current_brewery)
-	_end_guide()
-
-
-func _end_guide() -> void:
-	_guided = false
-	_guide.hide()
-	_pointer.point_at(null, NextStepPointer.Style.FRAME)
+	GuideParts.finish(GuideParts.Part.BREW_DAY, _brewery)
+	_guide.end()
 
 
 ## The kettle's heat: the mash's until the boil starts.
@@ -338,7 +311,7 @@ func _on_malts_emptied() -> void:
 	_malts_added = true
 	_mash.add_malts()
 	_hint.text = PADDLE_HINT_TEXT
-	_hint.visible = not _guided
+	_hint.visible = not _guide.is_on()
 	_commentary.malts_added()
 
 
@@ -473,46 +446,22 @@ func _build() -> void:
 	_commentary.call_said.connect(_popups.show_call)
 	_sacks.mark_opened.connect(_commentary.mark_opened)
 
-	_guide = GuideSpeechBox.new()
-	_guide.position = GUIDE_RECT.position
-	_guide.size = GUIDE_RECT.size
-	_guide.skipped.connect(_on_guide_skipped)
-	add_child(_guide)
-	_guide.hide()
+	var guide_box := GuideSpeechBox.new()
+	guide_box.position = GUIDE_RECT.position
+	guide_box.size = GUIDE_RECT.size
+	guide_box.skipped.connect(_on_guide_skipped)
+	add_child(guide_box)
+	guide_box.hide()
 
-	_build_confirm()
-	# Last, so its frames draw over everything, the confirmation too (hidden meanwhile).
-	_pointer = NextStepPointer.new()
-	add_child(_pointer)
-
-
-func _build_confirm() -> void:
-	_confirm = Panel.new()
-	_confirm.size = Vector2(320, 88)
-	_confirm.position = ((Vector2(640, 360) - _confirm.size) / 2.0).round()
+	_confirm = BrewDayConfirm.new()
+	_confirm.cancel_confirmed.connect(_close)
+	_confirm.resume_requested.connect(_toggle_confirm)
 	add_child(_confirm)
-	var box := VBoxContainer.new()
-	box.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT, Control.PRESET_MODE_MINSIZE, 8)
-	_confirm.add_child(box)
-	var label := Label.new()
-	label.text = CONFIRM_CANCEL_TEXT
-	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	box.add_child(label)
-	var row := HBoxContainer.new()
-	row.alignment = BoxContainer.ALIGNMENT_CENTER
-	box.add_child(row)
-	var yes := Button.new()
-	yes.text = CONFIRM_YES_TEXT
-	yes.pressed.connect(func() -> void:
-		GUISignals.menu_button_pressed.emit()
-		_close())
-	row.add_child(yes)
-	var no := Button.new()
-	no.text = CONFIRM_NO_TEXT
-	no.pressed.connect(_toggle_confirm)
-	row.add_child(no)
-	_confirm.hide()
+	# Last, so its frames draw over everything, the confirmation too (hidden meanwhile).
+	var pointer := NextStepPointer.new()
+	add_child(pointer)
+	_guide = BrewDayGuide.new(guide_box, pointer)
+	_guide.set_targets(_heat_button, _malt_sack, _kettle, _thermo, _sacks, _next_button)
 
 
 func _make_label(y : float) -> Label:

@@ -6580,6 +6580,14 @@ msgstr "Missing the style's hop or spice: -%d %%"
 msgid "Tyylin keskikohta: %s"
 msgstr "Style's centre: %s"
 
+#: src/ui/brew_day/brew_day_confirm.gd
+msgid "Peru keitto"
+msgstr "Cancel the brew"
+
+#: src/ui/brew_day/brew_day_confirm.gd
+msgid "Perutaanko keittopäivä? Raaka-aineet jäävät pöydälle."
+msgstr "Cancel the brew day? The ingredients stay on the table."
+
 #: src/ui/brew_day/brew_day_guide_text.gd
 msgid ""
 "Ensin vesi lämpimäksi. Pidä LÄMMITÄ pohjassa (tai välilyönti), kunnes "
@@ -6815,14 +6823,6 @@ msgstr "MASH · %s"
 #: src/ui/brew_day/brew_day_window.gd
 msgid "Peru"
 msgstr "Cancel"
-
-#: src/ui/brew_day/brew_day_window.gd
-msgid "Peru keitto"
-msgstr "Cancel the brew"
-
-#: src/ui/brew_day/brew_day_window.gd
-msgid "Perutaanko keittopäivä? Raaka-aineet jäävät pöydälle."
-msgstr "Cancel the brew day? The ingredients stay on the table."
 
 #: src/ui/brew_day/brew_day_window.gd
 msgid "Pidä kattilan lämmitinnappia pohjassa, kunnes vesi on oikeassa lämmössä."
