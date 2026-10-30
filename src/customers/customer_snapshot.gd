@@ -14,7 +14,7 @@ enum Phase { WALKING_IN, GREETING, PREVIEWING, SERVED, LEAVING, WAITING }
 @export var group_member : bool = false
 @export var position : Vector2 = Vector2.ZERO
 
-## Walking in: the waypoints, the leg under way (Customer.Leg) and the centre pause's
+## Walking in: the waypoints, the leg under way (CustomerWalker.Leg) and the centre pause's
 ## seconds left.
 @export var route : Array[Vector2] = []
 @export var leg : int = 0

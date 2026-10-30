@@ -1,14 +1,7 @@
 class_name Customer
 extends Node2D
 
-const STAIR_STEPS : int = 15
-const STAIR_STEP_PAUSE_SECONDS : float = 0.05
-const CENTER_PAUSE_SECONDS : float = 0.8
 const EXIT_WALK_DISTANCE : float = 150.0
-const MIN_WALK_DISTANCE : float = 1.0
-
-## The legs of the walk in, in order (see walk_complex_route()).
-enum Leg { STAIRS, TO_CENTER, CENTER_PAUSE, TO_COUNTER }
 
 const ANIM_IDLE : StringName = &"idle"
 const ANIM_IDLE_UP : StringName = &"idle_up"
@@ -24,6 +17,7 @@ const WALK_ANIMATIONS : Array[StringName] = [ANIM_WALK_TOWARDS, ANIM_WALK_RIGHT]
 var customer_data: CustomerData:
 	set(value):
 		customer_data = value
+		_walker.data = value
 		_apply_visuals()
 var assigned_slot: int = -1
 
@@ -40,10 +34,6 @@ var generated_name: String = "Asiakas"
 var _phase: CustomerSnapshot.Phase = CustomerSnapshot.Phase.WALKING_IN
 ## Group members are driven by GroupVisitDirector, which saves them with their group.
 var _skip_interaction: bool = false
-var _route: Array[Vector2] = []  # spawn, stairs bottom, room centre, counter spot
-var _leg: int = Leg.STAIRS
-var _pause_seconds: float = CENTER_PAUSE_SECONDS
-var _pause_started_msec: int = 0
 var _phase_timer: SceneTreeTimer
 var _bubble_text: String = ""
 ## The batches named in the preview, so the sale buys the same ones.
@@ -60,40 +50,28 @@ var _rampage_home: Vector2
 
 var _glasses: CustomerGlasses
 var _sounds := CustomerSounds.new()
-
-## A strong or big round sways them on the way out, see TipsyRules.
-var _sway_steps: int = 0
-var _sway_seconds: float = 0.0
-var _sway_x: float = 0.0
+var _walker: CustomerWalker
+var _sway: CustomerSway = CustomerSway.new()
 var _sprite_home_x: float = 0.0
 
 
 func _ready() -> void:
 	animated_sprite.frame_changed.connect(_on_animated_sprite_frame_changed)
 	_glasses = CustomerGlasses.new(self, beer_glass_sprite, counter_glass_sprite)
+	_walker = CustomerWalker.new(self, animated_sprite, _play_animation)
 	_sprite_home_x = animated_sprite.position.x
 
 
 func _process(delta: float) -> void:
 	_sounds.tick(delta, self, animated_sprite, customer_data, WALK_ANIMATIONS)
-	if _phase == CustomerSnapshot.Phase.LEAVING and _sway_steps > 0:
-		_sway(delta)
-
-
-## Body and hand step sideways together, a whole art pixel at a time.
-func _sway(delta: float) -> void:
-	_sway_seconds += delta
-	var x : float = TipsyRules.sway_offset(_sway_seconds, _sway_steps) * _art_pixel()
-	if is_equal_approx(x, _sway_x):
-		return
-	_sway_x = x
-	animated_sprite.position.x = _sprite_home_x + x
-	_on_animated_sprite_frame_changed()
+	if _phase == CustomerSnapshot.Phase.LEAVING and _sway.tick(delta, _walker.art_pixel()):
+		animated_sprite.position.x = _sprite_home_x + _sway.x
+		_on_animated_sprite_frame_changed()
 
 
 func _on_animated_sprite_frame_changed() -> void:
 	var title : String = customer_data.title if customer_data != null else ""
-	bottle_hand_marker.position = CustomerHandOffsets.position_for(title, animated_sprite.frame) + Vector2(_sway_x, 0.0)
+	bottle_hand_marker.position = CustomerHandOffsets.position_for(title, animated_sprite.frame) + Vector2(_sway.x, 0.0)
 
 
 func _apply_visuals() -> void:
@@ -116,36 +94,16 @@ func get_customer_name() -> String:
 ## departure.
 func walk_complex_route(stairs_pos: Vector2, center_pos: Vector2, target_pos: Vector2, skip_interaction: bool = false) -> void:
 	_skip_interaction = skip_interaction
-	_route = [global_position, stairs_pos, center_pos, target_pos]
-	_walk_route_from(Leg.STAIRS, CENTER_PAUSE_SECONDS)
-
-
-## Queues the walk from `first_leg` on, from where the customer stands: a fresh visit at the
-## top, a loaded one mid-way.
-func _walk_route_from(first_leg: int, pause_seconds: float) -> void:
 	_phase = CustomerSnapshot.Phase.WALKING_IN
-	var tween := create_tween()
-	var from := global_position
-	if first_leg <= Leg.STAIRS:
-		tween.tween_callback(_set_leg.bind(Leg.STAIRS))
-		_queue_stair_descent(tween, from, _route[1], CustomerRoute.stair_steps_left(_route[0], _route[1], from, STAIR_STEPS))
-		from = _route[1]
-	if first_leg <= Leg.TO_CENTER:
-		tween.tween_callback(_set_leg.bind(Leg.TO_CENTER))
-		_queue_floor_walk(tween, from, _route[2])
-		from = _route[2]
-	if first_leg <= Leg.CENTER_PAUSE:
-		_pause_seconds = pause_seconds
-		tween.tween_callback(_set_leg.bind(Leg.CENTER_PAUSE))
-		tween.tween_callback(_play_animation.bind(ANIM_IDLE, false))
-		tween.tween_interval(pause_seconds)
-	tween.tween_callback(_set_leg.bind(Leg.TO_COUNTER))
-	_queue_floor_walk(tween, from, _route[3])
+	_end_walk_in(_walker.start(stairs_pos, center_pos, target_pos))
 
+
+## At the counter a group member waits for its group; anyone else greets.
+func _end_walk_in(walk_in: Tween) -> void:
 	if _skip_interaction:
-		tween.tween_callback(_wait_with_group)
+		walk_in.tween_callback(_wait_with_group)
 	else:
-		tween.tween_callback(_on_reached_counter)
+		walk_in.tween_callback(_on_reached_counter)
 
 
 func _wait_with_group() -> void:
@@ -165,35 +123,6 @@ func is_leaving() -> bool:
 	return _phase == CustomerSnapshot.Phase.LEAVING
 
 
-func _set_leg(leg: int) -> void:
-	_leg = leg
-	if leg == Leg.CENTER_PAUSE:
-		_pause_started_msec = Time.get_ticks_msec()
-
-
-func _queue_stair_descent(tween: Tween, from_pos: Vector2, stairs_pos: Vector2, steps: int) -> void:
-	if steps <= 0:
-		return
-	tween.tween_callback(_play_animation.bind(ANIM_WALK_TOWARDS, true))
-	var step_from := from_pos
-	for i in range(1, steps + 1):
-		var step_pos := from_pos.lerp(stairs_pos, float(i) / steps)
-		PixelStepTween.move(tween, self, step_from, step_pos, customer_data.stair_step_duration, _art_pixel())
-		tween.tween_interval(STAIR_STEP_PAUSE_SECONDS)
-		step_from = step_pos
-
-
-func _queue_floor_walk(tween: Tween, from_pos: Vector2, to_pos: Vector2) -> void:
-	tween.tween_callback(_play_animation.bind(ANIM_WALK_RIGHT, to_pos.x < from_pos.x))
-	var duration := from_pos.distance_to(to_pos) / customer_data.floor_walk_speed
-	PixelStepTween.move(tween, self, from_pos, to_pos, duration, _art_pixel())
-
-
-## One pixel of the scaled-up art: walks step by it, see PixelStepTween.
-func _art_pixel() -> float:
-	return animated_sprite.scale.x
-
-
 ## The visit frozen for a save. A group member's goes into its group's snapshot.
 func snapshot() -> CustomerSnapshot:
 	var snap := CustomerSnapshot.new()
@@ -203,11 +132,9 @@ func snapshot() -> CustomerSnapshot:
 	snap.phase = _phase
 	snap.group_member = _skip_interaction
 	snap.position = global_position if _rampage_glasses < 0 else _rampage_home
-	snap.route = _route.duplicate()
-	snap.leg = _leg
-	snap.pause_left = _pause_seconds
-	if _leg == Leg.CENTER_PAUSE:
-		snap.pause_left = maxf(0.0, _pause_seconds - (Time.get_ticks_msec() - _pause_started_msec) / 1000.0)
+	snap.route = _walker.route.duplicate()
+	snap.leg = _walker.leg
+	snap.pause_left = _walker.pause_left()
 	snap.bubble_text = _bubble_text
 	snap.time_left = _phase_timer.time_left if _phase_timer != null else 0.0
 	snap.made_purchase = made_purchase
@@ -235,8 +162,9 @@ func resume(snap: CustomerSnapshot) -> void:
 		show_counter_glass(0.0, snap.glass_position)
 	match snap.phase:
 		CustomerSnapshot.Phase.WALKING_IN:
-			_route = snap.route.duplicate()
-			_walk_route_from(snap.leg, snap.pause_left)
+			_phase = CustomerSnapshot.Phase.WALKING_IN
+			_walker.route = snap.route.duplicate()
+			_end_walk_in(_walker.walk_route_from(snap.leg, snap.pause_left))
 		CustomerSnapshot.Phase.GREETING:
 			_play_animation(ANIM_IDLE_UP)
 			_enter_counter_phase(CustomerSnapshot.Phase.GREETING, snap.bubble_text, _on_preview_timeout, snap.time_left)
@@ -305,7 +233,7 @@ func _on_sale_timeout() -> void:
 
 	fill_glasses(outcome.beer_ebc)
 	_show_sale_popups(outcome)
-	_sway_steps = TipsyRules.sway_steps(outcome.servings, outcome.strongest_abv)
+	_sway.steps = TipsyRules.sway_steps(outcome.servings, outcome.strongest_abv)
 
 	_bubble_text = generated_name + ": " + response_text
 	var display_time := _say(_bubble_text)
@@ -372,7 +300,8 @@ func leave_counter(pickup_position_override: Vector2 = Vector2.INF) -> void:
 	_phase = CustomerSnapshot.Phase.LEAVING
 	if pickup_position_override != Vector2.INF:
 		_pickup_target = pickup_position_override
-		await _walk_to_pickup_spot(pickup_position_override)
+		await _walker.walk_to(pickup_position_override)
+		_play_animation(ANIM_IDLE_UP)
 		_pickup_target = Vector2.INF
 
 	_walk_out(global_position + Vector2(0.0, EXIT_WALK_DISTANCE))
@@ -382,30 +311,9 @@ func leave_counter(pickup_position_override: Vector2 = Vector2.INF) -> void:
 ## Walks from here to `exit_position` and is gone; resume() calls it mid-way.
 func _walk_out(exit_position: Vector2) -> void:
 	_exit_position = exit_position
-	var duration := CustomerRoute.seconds_left(global_position, exit_position, customer_data.floor_walk_speed)
-
-	_play_animation(ANIM_WALK_TOWARDS, true)
+	var walk: Tween = _walker.walk_out(exit_position)
 	if made_purchase:
 		hide_counter_glass()
 		if customer_data.carries_glass_out:
 			show_beer_glass()
-	var tween := create_tween()
-	PixelStepTween.move(tween, self, global_position, exit_position, duration, _art_pixel()).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
-	tween.tween_callback(queue_free)
-
-
-## Short lateral walk to the counter, like walk_complex_route()'s last leg.
-func _walk_to_pickup_spot(target: Vector2) -> void:
-	var distance := global_position.distance_to(target)
-	if distance < MIN_WALK_DISTANCE:
-		return
-
-	var walking_left := target.x < global_position.x
-	_play_animation(ANIM_WALK_RIGHT, walking_left)
-	var duration := distance / customer_data.floor_walk_speed
-
-	var tween := create_tween()
-	PixelStepTween.move(tween, self, global_position, target, duration, _art_pixel())
-	await tween.finished
-
-	_play_animation(ANIM_IDLE_UP)
+	walk.tween_callback(queue_free)
