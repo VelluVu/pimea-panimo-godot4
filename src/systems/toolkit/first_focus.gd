@@ -2,8 +2,9 @@ class_name FirstFocus
 extends RefCounted
 
 ## Gives a window's first usable button the keyboard focus each time it opens, so Enter,
-## Space and the arrow keys work at once. The theme draws the focus frame; a mouse click
-## does not, so only keyboard players see it move.
+## Space and the arrow keys work at once. The focus starts hidden: a mouse player would
+## see a button highlighted that they never chose. The theme's frame appears with the
+## first keyboard move.
 ##   FirstFocus.attach(self)
 ## A button marked with prefer() wins over the first one, e.g. the safe answer of a
 ## confirmation.
@@ -33,7 +34,7 @@ static func focus_now(window : Control) -> void:
 	if target == null:
 		target = _find(window, false)
 	if target != null:
-		target.grab_focus()
+		target.grab_focus(true)
 
 
 ## Depth first in tree order, which is reading order for the containers windows use.
