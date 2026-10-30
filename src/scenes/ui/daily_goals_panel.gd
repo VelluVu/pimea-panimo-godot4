@@ -45,6 +45,7 @@ const NEXT_STEP_WIDTH : float = 160.0
 var _near_miss_pulses : Array[LabelPulse] = []
 var _is_collapsed : bool = true
 var _next_step_label : Label
+var _brewery : Brewery = null
 
 
 func _ready() -> void:
@@ -60,6 +61,11 @@ func _ready() -> void:
 	# Starts collapsed: the screen is already dense, this is opt-in glance info.
 	goals_vbox.visible = false
 	toggle_button.text = CollapsibleSection.icon_for(_is_collapsed)
+
+
+## GUI calls this on every new run or loaded save.
+func bind_brewery(brewery : Brewery) -> void:
+	_brewery = brewery
 	_refresh()
 
 
@@ -108,8 +114,8 @@ func _on_day_changed(_new_day : int) -> void:
 
 
 func _refresh() -> void:
-	if BrewEngine.current_brewery != null:
-		_update_goals(BrewEngine.current_brewery)
+	if _brewery != null:
+		_update_goals(_brewery)
 
 
 func _update_goals(brewery : Brewery) -> void:

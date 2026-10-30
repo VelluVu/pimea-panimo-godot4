@@ -19,6 +19,7 @@ const RECEIPT_FONT_SIZE : int = 16
 
 ## Receipts toggled open, keyed by the entry itself, reset with the day.
 var _expanded_entries : Dictionary = {}
+var _brewery : Brewery = null
 
 
 func _ready() -> void:
@@ -28,6 +29,11 @@ func _ready() -> void:
 	GUISignals.receipt_log_requested.connect(_on_receipt_log_requested)
 	BrewerySignals.beer_sale_breakdown.connect(_on_beer_sale_breakdown)
 	TimeManager.day_changed.connect(_on_day_changed)
+
+
+## GUI calls this on every new run or loaded save.
+func bind_brewery(brewery : Brewery) -> void:
+	_brewery = brewery
 
 
 func _on_receipt_log_requested() -> void:
@@ -59,10 +65,10 @@ func _refresh_rows() -> void:
 	for child in rows_vbox.get_children():
 		child.queue_free()
 
-	if BrewEngine.current_brewery == null:
+	if _brewery == null:
 		return
 
-	var receipts : Array[SaleReceiptEntry] = BrewEngine.current_brewery.today_sale_receipts
+	var receipts : Array[SaleReceiptEntry] = _brewery.today_sale_receipts
 
 	if receipts.is_empty():
 		var empty_label := Label.new()

@@ -21,6 +21,7 @@ var _styles_discovered_today: Array[String] = []
 ## ReputationRules.Source -> today's summed change, for the breakdown suffix.
 var _reputation_by_source: Dictionary = {}
 var _night_risk_relief: int = 0
+var _brewery : Brewery = null
 
 
 func _ready() -> void:
@@ -30,10 +31,6 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	PauseLock.hold_while_visible(self)
 
-	if BrewEngine.current_brewery:
-		_day_start_money = BrewEngine.current_brewery.money
-		_day_start_reputation = BrewEngine.current_brewery.reputation
-
 	close_button.pressed.connect(_on_close_button_pressed)
 	WindowCloseButton.attach(self, _on_close_button_pressed)
 	TimeManager.day_changed.connect(_on_day_changed)
@@ -42,6 +39,13 @@ func _ready() -> void:
 	DailyGoalManager.daily_goal_resolved.connect(_on_daily_goal_resolved)
 	BrewerySignals.reputation_changed.connect(_on_reputation_changed)
 	BrewerySignals.risk_decayed.connect(_on_risk_decayed)
+
+
+## GUI calls this on every new run or loaded save.
+func bind_brewery(brewery : Brewery) -> void:
+	_brewery = brewery
+	_day_start_money = brewery.money
+	_day_start_reputation = brewery.reputation
 
 
 func _on_bottles_sold(amount: int) -> void:
@@ -67,7 +71,7 @@ func _on_daily_goal_resolved(_goal_name : String, succeeded : bool, _money : int
 
 
 func _on_day_changed(new_day: int) -> void:
-	var brewery := BrewEngine.current_brewery
+	var brewery := _brewery
 	if brewery == null:
 		return
 

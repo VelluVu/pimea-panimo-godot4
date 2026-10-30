@@ -32,6 +32,7 @@ var _selected_recipe : BrewRecipe = null
 var _index_buttons : Dictionary = {}
 ## Swatch textures by colour, so reopening the book reuses them.
 static var _swatches : Dictionary = {}
+var _brewery : Brewery = null
 
 
 func _ready() -> void:
@@ -46,6 +47,11 @@ func _ready() -> void:
 	BrewerySignals.style_discovered.connect(_on_state_changed)
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	PauseLock.hold_while_visible(self)
+
+
+## GUI calls this on every new run or loaded save.
+func bind_brewery(brewery : Brewery) -> void:
+	_brewery = brewery
 
 
 ## The paused tree no longer reaches gui.gd's key handlers, so this closes itself.
@@ -107,7 +113,7 @@ func _refresh() -> void:
 		child.queue_free()
 	_index_buttons.clear()
 
-	var brewery : Brewery = BrewEngine.current_brewery
+	var brewery : Brewery = _brewery
 	if brewery == null:
 		return
 

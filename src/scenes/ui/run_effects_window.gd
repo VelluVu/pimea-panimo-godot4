@@ -10,6 +10,7 @@ const PERMANENT_PERKS_HEADER : String = "Olutopin pysyvät bonukset (%d):"
 
 @onready var title_label : Label = %TitleLabel
 @onready var rows_vbox : VBoxContainer = %RowsVBox
+var _brewery : Brewery = null
 
 
 func _ready() -> void:
@@ -18,6 +19,11 @@ func _ready() -> void:
 
 	GUISignals.run_effects_requested.connect(_on_run_effects_requested)
 	BrewerySignals.brewery_state_changed.connect(_on_brewery_state_changed)
+
+
+## GUI calls this on every new run or loaded save.
+func bind_brewery(brewery : Brewery) -> void:
+	_brewery = brewery
 
 
 func _on_run_effects_requested() -> void:
@@ -34,7 +40,7 @@ func _on_close_button_pressed() -> void:
 	hide()
 
 
-func _on_brewery_state_changed(_brewery : Brewery) -> void:
+func _on_brewery_state_changed(_changed : Brewery) -> void:
 	if visible:
 		_refresh_rows()
 
@@ -43,7 +49,7 @@ func _refresh_rows() -> void:
 	for child in rows_vbox.get_children():
 		child.queue_free()
 
-	var brewery := BrewEngine.current_brewery
+	var brewery := _brewery
 	if brewery == null:
 		return
 

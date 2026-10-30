@@ -104,6 +104,13 @@ func _bind_brewery(brewery : Brewery) -> void:
 	shop_view.bind_brewery(brewery)
 	brewery_view.bind_brewery(brewery)
 	brew_preparation_panel.bind_brewery(brewery)
+	day_recap_window.bind_brewery(brewery)
+	daily_goals_panel.bind_brewery(brewery)
+	run_effects_window.bind_brewery(brewery)
+	cellar_upgrades_window.bind_brewery(brewery)
+	sale_receipt_log_window.bind_brewery(brewery)
+	customer_book_window.bind_brewery(brewery)
+	recipe_library_window.bind_brewery(brewery)
 
 
 ## The cellar upgrades sat in a corner of the shop where few found them; the top bar is

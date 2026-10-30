@@ -40,6 +40,7 @@ var _guide_sections : Array[GuideSection] = []
 ## A guide section index or an ingredient id; NO_PAGE shows the tab's index.
 var _page : int = NO_PAGE
 var _index_scroll : int = 0
+var _brewery : Brewery = null
 
 
 func _ready() -> void:
@@ -63,6 +64,11 @@ func _ready() -> void:
 		GUISignals.tab_switched.emit()
 		_page = NO_PAGE
 		_refresh_rows())
+
+
+## GUI calls this on every new run or loaded save.
+func bind_brewery(brewery : Brewery) -> void:
+	_brewery = brewery
 
 
 ## The paused tree no longer reaches gui.gd's key handlers, so this closes itself.
@@ -105,7 +111,7 @@ func _refresh_rows() -> void:
 
 
 func _build_ingredient_rows() -> void:
-	var brewery : Brewery = BrewEngine.current_brewery
+	var brewery : Brewery = _brewery
 	var reputation : int = brewery.reputation if brewery != null else 0
 	if _page != NO_PAGE:
 		var ingredient : IngredientData = IngredientDatabase.get_item_by_id(_page)
@@ -250,13 +256,13 @@ func _make_portrait(customer : CustomerData, met : bool) -> TextureRect:
 
 
 func _is_regular(customer : CustomerData) -> bool:
-	var brewery : Brewery = BrewEngine.current_brewery
+	var brewery : Brewery = _brewery
 	return brewery != null and RegularRules.is_regular(brewery.customer_standing.get(customer.title, 0))
 
 
 func _style_names() -> Dictionary:
 	var names : Dictionary = {}
-	var brewery : Brewery = BrewEngine.current_brewery
+	var brewery : Brewery = _brewery
 	if brewery == null:
 		return names
 	for beer_style : BeerStyle in brewery.resolver.active_styles:
