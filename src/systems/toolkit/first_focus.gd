@@ -48,7 +48,7 @@ static func prefer(button : Control) -> void:
 ## Deferred by attach(), so controls the window builds as it opens are there. Leaves a focus
 ## already inside the window alone, and drops one left behind it when the window has
 ## nothing to focus, so Enter cannot press a hidden button.
-static func focus_now(window : Control) -> void:
+static func focus_now(window : Control, hidden : bool = true) -> void:
 	if not is_instance_valid(window) or not window.is_visible_in_tree():
 		return
 	_follow_focus(window)
@@ -59,7 +59,7 @@ static func focus_now(window : Control) -> void:
 	if target == null:
 		target = _find(window, false)
 	if target != null:
-		target.grab_focus(true)
+		target.grab_focus(hidden)
 	elif focused != null:
 		focused.release_focus()
 

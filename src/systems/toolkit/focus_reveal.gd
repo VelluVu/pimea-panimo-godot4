@@ -21,6 +21,10 @@ const SCROLL_STEP : int = 32
 var top_window : Callable
 
 var _idle_seconds : float = 0.0
+## The focus last seen inside the top window, to notice when its control disappears.
+var _last_focused : Control
+var _last_window : Control
+var _last_shown : bool = false
 var _frame : Control
 var _frame_style : StyleBox
 
@@ -61,11 +65,35 @@ func _input(event : InputEvent) -> void:
 
 func _process(delta : float) -> void:
 	var focused : Control = get_viewport().gui_get_focus_owner()
+	_keep_focus_in_window(focused)
+	focused = get_viewport().gui_get_focus_owner()
 	if focused != null and focused.has_focus(true):
 		_idle_seconds += delta
 		if _idle_seconds >= HIDE_AFTER_SECONDS:
 			focused.grab_focus(true)
 	_place_frame(focused)
+
+
+## A window that swaps its content in place (a confirmation replacing the menu buttons)
+## hides the focused button, and Godot drops the focus. The window's preferred or first
+## control takes it, shown if it was. A control that lets go on purpose but stays in
+## sight, such as a key binding waiting for its key, is left alone.
+func _keep_focus_in_window(focused : Control) -> void:
+	var window : Control = top_window.call() if top_window.is_valid() else null
+	if focused != null:
+		var inside : bool = window != null and window.is_ancestor_of(focused)
+		_last_focused = focused if inside else null
+		_last_window = window if inside else null
+		_last_shown = focused.has_focus(true)
+		return
+	if _last_focused == null:
+		return
+	var lost : bool = not is_instance_valid(_last_focused) or not _last_focused.is_visible_in_tree()
+	var same_window : bool = window != null and window == _last_window and window.is_visible_in_tree()
+	if lost and same_window:
+		FirstFocus.focus_now(window, not _last_shown)
+	if lost or not same_window:
+		_last_focused = null
 
 
 func _place_frame(focused : Control) -> void:

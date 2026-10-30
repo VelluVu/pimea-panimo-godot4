@@ -35,6 +35,8 @@ var _is_open: bool = false
 var _close_button: WindowCloseButton
 ## What the confirmation's yes button does.
 var _confirmed_action: Callable
+## The button that asked, which gets the focus back when the answer is no.
+var _confirm_origin: Button
 
 
 func _ready() -> void:
@@ -52,10 +54,12 @@ func _ready() -> void:
 	options_button.pressed.connect(_open_sub_window.bind(GUISignals.options_requested))
 	achievements_button.pressed.connect(_open_sub_window.bind(GUISignals.achievements_requested))
 	leaderboard_button.pressed.connect(_open_sub_window.bind(GUISignals.leaderboard_requested))
-	new_run_button.pressed.connect(_confirm.bind(CONFIRM_NEW_RUN_TEXT, _start_new_run))
-	main_menu_button.pressed.connect(_confirm.bind(CONFIRM_MAIN_MENU_TEXT, _go_to_main_menu))
+	new_run_button.pressed.connect(_confirm.bind(CONFIRM_NEW_RUN_TEXT, _start_new_run, new_run_button))
+	main_menu_button.pressed.connect(_confirm.bind(CONFIRM_MAIN_MENU_TEXT, _go_to_main_menu, main_menu_button))
 	yes_button.pressed.connect(func() -> void: _confirmed_action.call())
 	no_button.pressed.connect(_show_confirm.bind(false))
+	# The confirmation opens on the safe answer.
+	FirstFocus.prefer(no_button)
 	_close_button = WindowCloseButton.attach(self, _back_out)
 
 	GUISignals.game_menu_requested.connect(_open)
@@ -123,18 +127,24 @@ func _on_sub_window_closed() -> void:
 
 
 ## A run that is already over has nothing to lose, so it skips the question.
-func _confirm(text: String, action: Callable) -> void:
+func _confirm(text: String, action: Callable, origin: Button) -> void:
 	if _is_run_over():
 		action.call()
 		return
 	_confirmed_action = action
+	_confirm_origin = origin
 	confirm_label.text = text
 	_show_confirm(true)
 
 
 func _show_confirm(confirming: bool) -> void:
+	var leaving: bool = confirm_vbox.visible and not confirming
+	var focused: Control = get_viewport().gui_get_focus_owner()
+	var shown: bool = focused != null and focused.has_focus(true)
 	confirm_vbox.visible = confirming
 	buttons_vbox.visible = not confirming
+	if leaving and visible and _confirm_origin != null:
+		_confirm_origin.grab_focus(not shown)
 
 
 func _start_new_run() -> void:
