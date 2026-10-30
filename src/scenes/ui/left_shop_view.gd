@@ -154,7 +154,7 @@ func _update_slider() -> void:
 	
 	main_slider.step = ingredient.amount_step()
 	var player_money : float = _brewery.money
-	var effective_price : float = ingredient.base_price * _brewery.stats.multiplier(PerkStats.INGREDIENT_PRICE)
+	var effective_price : float = _unit_price(ingredient)
 
 	var max_affordable : int = 0
 	if effective_price > 0:
@@ -184,7 +184,7 @@ func _update_label() -> void:
 
 
 func _unit_price(ingredient : IngredientData) -> float:
-	return ingredient.base_price * _brewery.stats.multiplier(PerkStats.INGREDIENT_PRICE)
+	return IngredientPrice.unit(ingredient, _brewery.stats.multiplier(PerkStats.INGREDIENT_PRICE))
 
 
 ## Floats a "-X €" popup off the "Osta" button.

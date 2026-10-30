@@ -4,8 +4,6 @@ extends RefCounted
 ## Buying and selling raw ingredients, plus the tutorial purchase tracking.
 
 const LOG_SOLD : String = "Sold %s amount of stuff, and you get %s€ back"
-## Selling back never returns the full buy price.
-const SELL_BACK_RATE : float = 0.75
 
 var brewery : Brewery
 
@@ -36,7 +34,7 @@ func _on_buy_ingredient(ingredient_id : int, amount : int) -> void:
 		BrewerySignals.ingredient_purchase_locked.emit(ingredient.name, ingredient.min_reputation)
 		return
 
-	var buy_price : float = snappedf(ingredient.base_price * amount * brewery.stats.multiplier(PerkStats.INGREDIENT_PRICE), 0.01)
+	var buy_price : float = IngredientPrice.buy(ingredient, amount, brewery.stats.multiplier(PerkStats.INGREDIENT_PRICE))
 
 	if brewery.money < buy_price:
 		print(StringContainer.RESOURCE_ERROR % [brewery.money, buy_price, StringContainer.MONEY_STRING])
@@ -99,7 +97,7 @@ func _on_sell_ingredient(ingredient_id : int, amount : int) -> void:
 		BrewerySignals.ingredient_sale_failed.emit(ingredient.name, amount, held.amount if held != null else 0)
 		return
 		
-	var sell_price : float = snappedf(final_amount * ingredient.base_price * brewery.stats.multiplier(PerkStats.INGREDIENT_PRICE) * SELL_BACK_RATE, 0.01)
+	var sell_price : float = IngredientPrice.sell(ingredient, final_amount, brewery.stats.multiplier(PerkStats.INGREDIENT_PRICE))
 	brewery.change_money(sell_price, MoneyLedger.Source.INGREDIENTS)
 	print(LOG_SOLD % [final_amount, sell_price])
 	BrewerySignals.brewery_state_changed.emit(brewery)

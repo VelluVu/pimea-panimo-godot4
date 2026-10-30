@@ -120,7 +120,7 @@ func _build_ingredient_rows() -> void:
 		var name_label : Label = _make_label(tr(ingredient.name), NAME_FONT_SIZE)
 		name_label.add_theme_color_override("font_color", ingredient.get_color())
 		rows_vbox.add_child(name_label)
-		for line : String in IngredientBookText.lines(ingredient, ingredient.base_price * price_multiplier, reputation):
+		for line : String in IngredientBookText.lines(ingredient, IngredientPrice.unit(ingredient, price_multiplier), reputation):
 			rows_vbox.add_child(_make_label(line, DETAIL_FONT_SIZE))
 		return
 

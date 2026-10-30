@@ -95,25 +95,8 @@ func _on_load_recipe_requested(recipe : BrewRecipe) -> void:
 ## Tops the table up to the active recipe, all or nothing: if any ingredient is
 ## short nothing is withdrawn. The UI disables its button in that case too.
 func _on_fill_recipe_from_inventory_requested() -> void:
-	var recipe_target : Dictionary = brewery.brew_preparation.active_recipe_target
-	if recipe_target.is_empty():
-		return
-
-	var missing_amounts : Dictionary = {}
-	for ingredient_id : int in recipe_target:
-		var required : int = recipe_target[ingredient_id]
-		var on_table : int = brewery.brew_preparation.selected_contents.get(ingredient_id, 0)
-		var missing : int = required - on_table
-		if missing <= 0:
-			continue
-
-		var item : InventoryItem = brewery.inventory.get_item_by_id(ingredient_id)
-		var available : int = item.amount if item else 0
-		if available < missing:
-			return
-
-		missing_amounts[ingredient_id] = missing
-
+	var preparation : BrewPreparation = brewery.brew_preparation
+	var missing_amounts : Dictionary = RecipeFill.from_stock(preparation.active_recipe_target, preparation.selected_contents, brewery.owned_ingredient_amounts())
 	if missing_amounts.is_empty():
 		return
 
@@ -125,7 +108,7 @@ func _on_fill_recipe_from_inventory_requested() -> void:
 
 
 func _on_add_ingredient_to_brew_preparation(ingredient_id : int, amount : int) -> void:
-	if _would_exceed_hop_varieties(ingredient_id):
+	if BrewMixture.would_exceed_hop_varieties(ingredient_id, brewery.brew_preparation.selected_contents, brewery.resolver.ingredient_table()):
 		BrewerySignals.hop_variety_limit_reached.emit(BrewMixture.MAX_HOP_VARIETIES)
 		return
 	var final_amount : int =  brewery.inventory.withdraw_item_by_id(ingredient_id, amount)
@@ -135,16 +118,6 @@ func _on_add_ingredient_to_brew_preparation(ingredient_id : int, amount : int) -
 	
 	brewery.brew_preparation.add_to_table(ingredient_id, final_amount)
 	BrewerySignals.brewery_state_changed.emit(brewery)
-
-
-## A new hop variety when the table already holds the most a beer can take.
-func _would_exceed_hop_varieties(ingredient_id : int) -> bool:
-	var table : Dictionary = brewery.resolver.ingredient_table()
-	var contents : Dictionary = brewery.brew_preparation.selected_contents
-	if not table.get(ingredient_id) is HopData or contents.has(ingredient_id):
-		return false
-	var hops : int = contents.keys().filter(func(id : int) -> bool: return table.get(id) is HopData).size()
-	return hops >= BrewMixture.MAX_HOP_VARIETIES
 
 
 func _on_remove_ingredient_from_brew_preparation(ingredient_id : int, amount : int) -> void:

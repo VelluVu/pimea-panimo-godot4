@@ -49,6 +49,15 @@ static func from_contents(contents : Dictionary, ingredients : Dictionary) -> Br
 	return mixture
 
 
+## Whether adding `id` would put one hop variety too many on the table; more of a hop
+## already there is fine. Maps as in from_contents().
+static func would_exceed_hop_varieties(id : int, contents : Dictionary, ingredients : Dictionary) -> bool:
+	if not ingredients.get(id) is HopData or contents.has(id):
+		return false
+	var hops : int = contents.keys().filter(func(other : int) -> bool: return ingredients.get(other) is HopData).size()
+	return hops >= MAX_HOP_VARIETIES
+
+
 func is_brewable() -> bool:
 	return malt_weight >= MIN_MALT_WEIGHT and yeast_id != NO_YEAST
 

@@ -307,10 +307,9 @@ func check_bankruptcy() -> void:
 	var sell_prices : Dictionary = {}
 	for id : int in IngredientDatabase.database:
 		var ingredient : IngredientData = IngredientDatabase.database[id]
-		var price : float = ingredient.base_price * price_multiplier
-		sell_prices[id] = price * IngredientTrader.SELL_BACK_RATE
+		sell_prices[id] = IngredientPrice.unit_sell(ingredient, price_multiplier)
 		if reputation >= ingredient.min_reputation:
-			buy_prices[id] = price
+			buy_prices[id] = IngredientPrice.unit(ingredient, price_multiplier)
 
 	if BankruptcyRules.is_bankrupt(money, 0, owned_ingredient_amounts(), recipes, buy_prices, sell_prices):
 		trigger_ending("bankrupt")

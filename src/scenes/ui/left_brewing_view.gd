@@ -79,32 +79,14 @@ func _on_fill_from_inventory_button_pressed() -> void:
 	GUISignals.fill_recipe_from_inventory_requested.emit()
 
 
-## Like RecipeBook's all-or-nothing fill: a recipe loaded, something missing, and the
-## inventory covering it all.
+## Enabled exactly when RecipeBook's fill would move something, see RecipeFill.
 func _update_fill_from_inventory_button() -> void:
 	if _brewery == null:
 		fill_from_inventory_button.disabled = true
 		return
 
-	var recipe_target : Dictionary = _brewery.brew_preparation.active_recipe_target
-	var prep_contents : Dictionary = _brewery.brew_preparation.selected_contents
-
-	var has_shortfall : bool = false
-	var can_fill_recipe : bool = not recipe_target.is_empty()
-
-	for ingredient_id : int in recipe_target:
-		var required : int = recipe_target[ingredient_id]
-		var on_table : int = prep_contents.get(ingredient_id, 0)
-		if on_table >= required:
-			continue
-
-		has_shortfall = true
-		var item : InventoryItem = _brewery.inventory.get_item_by_id(ingredient_id)
-		var available : int = item.amount if item else 0
-		if available < required - on_table:
-			can_fill_recipe = false
-
-	fill_from_inventory_button.disabled = not (can_fill_recipe and has_shortfall)
+	var preparation : BrewPreparation = _brewery.brew_preparation
+	fill_from_inventory_button.disabled = RecipeFill.from_stock(preparation.active_recipe_target, preparation.selected_contents, _brewery.owned_ingredient_amounts()).is_empty()
 
 
 ## GUI calls this on every new run or loaded save.

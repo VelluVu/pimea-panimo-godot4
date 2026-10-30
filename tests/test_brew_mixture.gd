@@ -192,3 +192,34 @@ func test_base_share_is_the_part_of_the_malt_weight() -> void:
 	assert_true(mixture.fits(style))
 	style.min_base_share = 0.8
 	assert_false(mixture.fits(style), "too little of the base malt")
+
+
+func _hop_table(count : int) -> Dictionary:
+	var table : Dictionary = {MALT_ID: MaltData.new()}
+	for i : int in count:
+		table[HOP_ID + i] = HopData.new()
+	return table
+
+
+func test_a_new_hop_past_the_limit_is_refused() -> void:
+	var table := _hop_table(BrewMixtureScript.MAX_HOP_VARIETIES + 1)
+	var contents : Dictionary = {MALT_ID: 3}
+	for i : int in BrewMixtureScript.MAX_HOP_VARIETIES:
+		contents[HOP_ID + i] = 10
+	assert_true(BrewMixtureScript.would_exceed_hop_varieties(HOP_ID + BrewMixtureScript.MAX_HOP_VARIETIES, contents, table))
+
+
+func test_more_of_a_hop_already_there_is_fine() -> void:
+	var table := _hop_table(BrewMixtureScript.MAX_HOP_VARIETIES)
+	var contents : Dictionary = {}
+	for i : int in BrewMixtureScript.MAX_HOP_VARIETIES:
+		contents[HOP_ID + i] = 10
+	assert_false(BrewMixtureScript.would_exceed_hop_varieties(HOP_ID, contents, table))
+
+
+func test_malt_never_counts_against_the_hop_limit() -> void:
+	var table := _hop_table(BrewMixtureScript.MAX_HOP_VARIETIES)
+	var contents : Dictionary = {}
+	for i : int in BrewMixtureScript.MAX_HOP_VARIETIES:
+		contents[HOP_ID + i] = 10
+	assert_false(BrewMixtureScript.would_exceed_hop_varieties(MALT_ID, contents, table))
