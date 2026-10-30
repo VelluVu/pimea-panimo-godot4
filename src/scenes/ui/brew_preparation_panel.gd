@@ -50,6 +50,11 @@ func _ready() -> void:
 	_update_table_list_ui()
 
 
+## Beside the shop the recipe is only a shopping list; brewing happens in the brewery.
+func set_brewing_shown(shown : bool) -> void:
+	start_brew_button.visible = shown
+
+
 func _on_erase_button_pressed() -> void:
 	GUISignals.clear_brew_preparation_requested.emit()
 

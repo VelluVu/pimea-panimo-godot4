@@ -42,6 +42,7 @@ func show_bar() -> void:
 func show_shop() -> void:
 	_shop_returns_to_brewery = _brewery_view.visible
 	_hide_brewery()
+	_brew_preparation_panel.set_brewing_shown(false)
 	_brew_preparation_panel.show()
 	_shop_entrance_panel.activate_shop_panel()
 	_brewery_entrance_panel.hide()
@@ -57,6 +58,7 @@ func show_brewery() -> void:
 	_shop_entrance_panel.activate_shop_panel()
 	_brewery_entrance_panel.hide()
 	_brewery_view.show()
+	_brew_preparation_panel.set_brewing_shown(true)
 	_brew_preparation_panel.show()
 	GUISignals.bar_view_exited.emit()
 	GUISignals.brewery_view_opened.emit()
