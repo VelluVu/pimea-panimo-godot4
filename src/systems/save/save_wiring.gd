@@ -31,6 +31,10 @@ func save_game() -> bool:
 	# would resume a dead run with its ended flag lost.
 	if brewery == null or brewery.game_has_ended:
 		return false
+	# On the menu the brewery is BrewEngine's empty boot one (or a run already saved on the
+	# way out), so closing the window there must not write it over the saved run.
+	if get_tree().current_scene is MainMenu:
+		return false
 
 	BrewEngine.brewery_about_to_save.emit(brewery)
 	return write(brewery)
