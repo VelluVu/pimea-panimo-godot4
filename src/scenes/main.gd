@@ -4,12 +4,15 @@ extends Node
 @onready var bartender: Bartender = $WorldYSort/Bartender
 @onready var tap_tower: TapTower = $WorldYSort/BarTable/BarTable_Sprite2D/TapTower
 @onready var keg_row: KegRow = $WorldYSort/KegRow
+@onready var customer_spawner: CustomerSpawner = $WorldYSort/CustomerSpawner
 
 ## The batches on the taps, left to right, as last drawn.
 var _tap_batches: Array[BrewBatch] = []
 
 
 func _ready() -> void:
+	customer_spawner.bind_brewery(BrewEngine.current_brewery)
+	BrewEngine.brewery_changed.connect(customer_spawner.bind_brewery)
 	BrewerySignals.beer_sale_breakdown.connect(_on_beer_sale_breakdown)
 	BrewerySignals.brewery_state_changed.connect(_on_brewery_state_changed)
 	if BrewEngine.current_brewery != null:

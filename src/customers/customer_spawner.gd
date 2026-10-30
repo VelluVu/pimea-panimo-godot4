@@ -25,6 +25,8 @@ var _paused: bool = false
 var _scheduled: Array[Dictionary] = []
 ## Puts the visitors above into the save and back.
 var _save: CellarCustomerSave
+## Set by Main; null outside a run.
+var _brewery: Brewery = null
 
 
 func _ready() -> void:
@@ -39,6 +41,10 @@ func _ready() -> void:
 	BrewerySignals.lvv_inspector_visit_due.connect(_on_lvv_inspector_visit_due)
 	BrewEngine.brewery_about_to_save.connect(_save.record)
 	_resume_cellar_customers.call_deferred()
+
+
+func bind_brewery(brewery: Brewery) -> void:
+	_brewery = brewery
 
 
 func _make_timer(on_timeout: Callable) -> Timer:
@@ -107,11 +113,10 @@ func spawn_walk_in(forced_data: CustomerData = null) -> void:
 ## Now and then a walk-in brings company (WalkInRules), each a random customer with its own
 ## counter spot.
 func _spawn_company() -> void:
-	var brewery: Brewery = BrewEngine.current_brewery
-	if brewery == null:
+	if _brewery == null:
 		return
-	var chance: float = WalkInRules.company_chance(brewery.stats.chance(PerkStats.WALK_IN_COMPANY_CHANCE))
-	var count: int = WalkInRules.customer_count(randf(), chance, int(brewery.stats.total(PerkStats.WALK_IN_COMPANY_BONUS)))
+	var chance: float = WalkInRules.company_chance(_brewery.stats.chance(PerkStats.WALK_IN_COMPANY_CHANCE))
+	var count: int = WalkInRules.customer_count(randf(), chance, int(_brewery.stats.total(PerkStats.WALK_IN_COMPANY_BONUS)))
 	var delay: float = 0.0
 	for i: int in count - 1:
 		delay += randf_range(WalkInRules.COMPANY_GAP_SECONDS.x, WalkInRules.COMPANY_GAP_SECONDS.y)
@@ -121,12 +126,12 @@ func _spawn_company() -> void:
 ## Sends a walk-in (`data`, or a random one when null) in after `seconds`. The timer
 ## pauses with the tree, so no one walks in behind a level-up window; a raid cancels it.
 func _schedule_walk_in(data: CustomerData, seconds: float) -> void:
-	var brewery: Brewery = BrewEngine.current_brewery
+	var brewery: Brewery = _brewery
 	var entry: Dictionary = {"data": data, "timer": get_tree().create_timer(seconds, false)}
 	_scheduled.append(entry)
 	await entry.timer.timeout
 	_scheduled.erase(entry)
-	if not _paused and BrewEngine.current_brewery == brewery:
+	if not _paused and _brewery == brewery:
 		_try_spawn_walk_in(data)
 
 
@@ -158,9 +163,8 @@ func _on_bad_review_spread() -> void:
 
 ## After a load, see CellarCustomerSave.resume().
 func _resume_cellar_customers() -> void:
-	var brewery: Brewery = BrewEngine.current_brewery
-	if brewery != null:
-		_save.resume(brewery)
+	if _brewery != null:
+		_save.resume(_brewery)
 
 
 ## Whether someone walked in.
@@ -203,28 +207,27 @@ func _try_spawn_group_visit(forced_event_data: GroupVisitEventData) -> void:
 
 ## A free counter slot that has a spot, or -1 (also when no run is active).
 func _free_slot() -> int:
-	if BrewEngine.current_brewery == null or counter_positions.is_empty():
+	if _brewery == null or counter_positions.is_empty():
 		return -1
 	var free_slot: int = CustomerManager.get_free_slot_index()
 	return free_slot if free_slot < counter_positions.size() else -1
 
 
 func _start_next_walk_in_timer() -> void:
-	var bounds := SpawnPacing.walk_in_bounds_for(BrewEngine.current_brewery)
+	var bounds := SpawnPacing.walk_in_bounds_for(_brewery)
 	walk_in_timer.start(randf_range(bounds.x, bounds.y))
 
 
 func _start_next_group_event_timer() -> void:
-	var bounds := SpawnPacing.group_bounds_for(BrewEngine.current_brewery)
+	var bounds := SpawnPacing.group_bounds_for(_brewery)
 	group_event_timer.start(randf_range(bounds.x, bounds.y))
 
 
 ## The run's styles, for customers who roll a random preference; empty with no run.
 func _active_styles() -> Array[BeerStyle]:
-	var brewery: Brewery = BrewEngine.current_brewery
-	if brewery == null:
+	if _brewery == null:
 		return []
-	return brewery.resolver.active_styles
+	return _brewery.resolver.active_styles
 
 
 ## During a day event, leans toward its featured group visit at its own chance.
