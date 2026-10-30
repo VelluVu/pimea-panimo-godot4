@@ -14,6 +14,8 @@ input and an Android user agent; the game then fills the height (scale 412/360) 
 
 Steps run after the first wait, separated by ';':
     click X Y      left click at page pixels (the page is 1280x720, the game 640x360 x2)
+    press X Y SECS the left mouse button held down for SECS seconds
+    drag X1 Y1 X2 Y2 [SECS]   press at the first point, move to the second, hold SECS, release
     tap X Y        a finger tap at page pixels (with --phone)
     hold X Y SECS  a finger pressed down for SECS seconds (with --phone)
     key NAME       press and release a key (Escape, Enter, Space, a letter, F1...)
@@ -202,9 +204,25 @@ def screenshot(tools, out_dir, name):
 	print("screenshot", path)
 
 
-def click(tools, x, y):
-	for kind in ("mousePressed", "mouseReleased"):
-		tools.call("Input.dispatchMouseEvent", {"type": kind, "x": x, "y": y, "button": "left", "clickCount": 1})
+def click(tools, x, y, hold_seconds=0.0):
+	tools.call("Input.dispatchMouseEvent", {"type": "mousePressed", "x": x, "y": y, "button": "left", "clickCount": 1})
+	if hold_seconds > 0.0:
+		tools.pump(hold_seconds)
+	tools.call("Input.dispatchMouseEvent", {"type": "mouseReleased", "x": x, "y": y, "button": "left", "clickCount": 1})
+
+
+# Moved in small steps, so the game sees the motion between press and release.
+def drag(tools, x1, y1, x2, y2, hold_seconds=0.0, steps=12):
+	tools.call("Input.dispatchMouseEvent", {"type": "mouseMoved", "x": x1, "y": y1})
+	tools.call("Input.dispatchMouseEvent", {"type": "mousePressed", "x": x1, "y": y1, "button": "left", "clickCount": 1})
+	for i in range(1, steps + 1):
+		x = x1 + (x2 - x1) * i / steps
+		y = y1 + (y2 - y1) * i / steps
+		tools.call("Input.dispatchMouseEvent", {"type": "mouseMoved", "x": x, "y": y, "button": "left", "buttons": 1})
+		tools.pump(0.03)
+	if hold_seconds > 0.0:
+		tools.pump(hold_seconds)
+	tools.call("Input.dispatchMouseEvent", {"type": "mouseReleased", "x": x2, "y": y2, "button": "left", "clickCount": 1})
 
 
 def touch(tools, x, y, hold_seconds=0.05):
@@ -225,6 +243,12 @@ def run_steps(tools, steps, out_dir):
 		verb, *args = step.split()
 		if verb == "click":
 			click(tools, float(args[0]), float(args[1]))
+			tools.pump(0.3)
+		elif verb == "press":
+			click(tools, float(args[0]), float(args[1]), float(args[2]))
+			tools.pump(0.3)
+		elif verb == "drag":
+			drag(tools, *(float(a) for a in args[:5]))
 			tools.pump(0.3)
 		elif verb == "tap":
 			touch(tools, float(args[0]), float(args[1]))
