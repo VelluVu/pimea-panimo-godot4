@@ -51,6 +51,7 @@ static func prefer(button : Control) -> void:
 static func focus_now(window : Control) -> void:
 	if not is_instance_valid(window) or not window.is_visible_in_tree():
 		return
+	_follow_focus(window)
 	var focused : Control = window.get_viewport().gui_get_focus_owner()
 	if focused != null and window.is_ancestor_of(focused):
 		return
@@ -61,6 +62,15 @@ static func focus_now(window : Control) -> void:
 		target.grab_focus(true)
 	elif focused != null:
 		focused.release_focus()
+
+
+## A scroll list scrolls to the focused row; without it the arrow keys stop at the last
+## row in sight and jump to the button under the list.
+static func _follow_focus(node : Node) -> void:
+	for child : Node in node.get_children():
+		if child is ScrollContainer:
+			(child as ScrollContainer).follow_focus = true
+		_follow_focus(child)
 
 
 static func _watch(viewport : Viewport) -> void:

@@ -14,6 +14,8 @@ const FRAME_STYLE : StringName = &"focus"
 const FRAME_STYLE_TYPE : StringName = &"Button"
 const FRAME_GROW : float = 3.0
 const FRAME_LAYER : int = 100
+## Pixels a key press scrolls a list that has nothing to focus; held keys repeat.
+const SCROLL_STEP : int = 32
 
 ## Asked for the window that holds the keyboard; outside it the game's own keys rule.
 var top_window : Callable
@@ -45,7 +47,10 @@ func _input(event : InputEvent) -> void:
 		return
 	_idle_seconds = 0.0
 	var focused : Control = get_viewport().gui_get_focus_owner()
-	if focused == null or focused.has_focus(true) or not _in_top_window(focused):
+	if focused == null or not _in_top_window(focused):
+		_scroll_unfocusable(event)
+		return
+	if focused.has_focus(true):
 		return
 	for action : StringName in NAVIGATION_ACTIONS:
 		if event.is_action_pressed(action, true):
@@ -76,6 +81,37 @@ func _place_frame(focused : Control) -> void:
 		_frame.position = rect.position
 		_frame.size = rect.size
 		_frame.queue_redraw()
+
+
+## A window with nothing to focus, such as a list of achievements, still scrolls with the
+## up and down keys.
+func _scroll_unfocusable(event : InputEvent) -> void:
+	var window : Control = top_window.call() if top_window.is_valid() else null
+	if window == null:
+		return
+	var direction : int = 0
+	if event.is_action_pressed(&"ui_down", true):
+		direction = 1
+	elif event.is_action_pressed(&"ui_up", true):
+		direction = -1
+	if direction == 0:
+		return
+	var scroll : ScrollContainer = _scroll_list(window)
+	if scroll != null:
+		scroll.scroll_vertical += direction * SCROLL_STEP
+		get_viewport().set_input_as_handled()
+
+
+## The first scroll list in the window that has more than fits.
+func _scroll_list(node : Node) -> ScrollContainer:
+	for child : Node in node.get_children():
+		var scroll : ScrollContainer = child as ScrollContainer
+		if scroll != null and scroll.is_visible_in_tree() and scroll.get_v_scroll_bar().max_value > scroll.size.y:
+			return scroll
+		var found : ScrollContainer = _scroll_list(child)
+		if found != null:
+			return found
+	return null
 
 
 func _in_top_window(control : Control) -> bool:
