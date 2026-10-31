@@ -18,6 +18,13 @@ enum UnitType { KILOGRAM, GRAM, PIECE }
 ## Reputation needed to buy this. Only hops and spices use it: gating malts or yeasts
 ## would lock whole styles out instead of adding variety.
 @export var min_reputation: int = 0
+## Sold only in this season (Kehote in Cyber Week); NONE for all year. Stock bought in
+## season stays usable after it.
+@export var season: SeasonRules.Season = SeasonRules.Season.NONE
+
+
+func is_sold_in(current : SeasonRules.Season) -> bool:
+	return season == SeasonRules.Season.NONE or SeasonRules.includes(current, season)
 
 
 func get_color() -> Color:

@@ -322,6 +322,10 @@ msgid "Tavallinen"
 msgstr "Common"
 
 #: src/autoload/string_container.gd
+msgid "Tekoälyolut"
+msgstr "AI Beer"
+
+#: src/autoload/string_container.gd
 msgid "Tipit kasvavat %s"
 msgstr "Tips grow by %s"
 
@@ -618,6 +622,10 @@ msgid "Kurpitsapää"
 msgstr "Pumpkin Head"
 
 #: src/customers/customer_hand_offsets.gd
+msgid "Kyborgi"
+msgstr "Cyborg"
+
+#: src/customers/customer_hand_offsets.gd
 msgid "Leijonafani"
 msgstr "Lions Fan"
 
@@ -628,6 +636,10 @@ msgstr "Monk"
 #: src/customers/customer_hand_offsets.gd
 msgid "Raksamies"
 msgstr "Builder"
+
+#: src/customers/customer_hand_offsets.gd
+msgid "Tarjoushaukka"
+msgstr "Bargain Hunter"
 
 #: src/customers/customer_hand_offsets.gd
 msgid "Tarkastusdrooni"
@@ -722,8 +734,8 @@ msgid "Koko kylä tuttu"
 msgstr "Know the Whole Town"
 
 #: src/resources/achievements/asiakaskirja_kaikki.tres
-msgid "Tapaa kaikki 24 asiakastyyppiä."
-msgstr "Meet all 24 customer types."
+msgid "Tapaa kaikki 25 asiakastyyppiä."
+msgstr "Meet all 25 customer types."
 
 #: src/resources/achievements/bulkkia_5.tres
 msgid "Kansan kalja"
@@ -1620,6 +1632,24 @@ msgstr ""
 "A mild, hoppy ale for a long evening. Wheat softens it, the late hops smell "
 "lovely, and the morning doesn't feel terrible."
 
+#: src/resources/beer_styles/tekoalyolut.tres
+msgid ""
+"Generoitu olut. Kehotteen mukaan täydellinen, ja se voi olla mitä tahansa: "
+"vaaleaa, mustaa, kitkerää tai alkoholitonta. Maistuu vähän kaikelta ja ei "
+"miltään."
+msgstr ""
+"Generated beer. Perfect, according to the prompt, and it can be anything: "
+"pale, black, bitter or alcohol-free. Tastes a bit like everything and like "
+"nothing."
+
+#: src/resources/beer_styles/tekoalyolut.tres
+msgid ""
+"Olut, jonka resepti ei ole tärkeä. Tärkeintä on, mitä lapussa lukee. "
+"Lappuja myydään vain kyberviikolla."
+msgstr ""
+"A beer whose recipe doesn't matter. What matters is what the note says. The "
+"notes are only sold in Cyber Week."
+
 #: src/resources/beer_styles/tumma_lager.tres
 msgid "Baijerilainen tumma lager: paahtoleipää ja maltaista pehmeyttä."
 msgstr "A Bavarian dark lager: toast and malty softness."
@@ -2206,6 +2236,42 @@ msgstr ""
 msgid "Tämä on arvosteluni kannalta ongelma. Ja teidän kannaltanne vielä isompi."
 msgstr "This is a problem for my review. And an even bigger one for you."
 
+#: src/resources/customers/kyborgi.tres
+msgid "Analysoin: %s. Todennäköisyys pitää siitä on korkea."
+msgstr "Analysing: %s. Probability of liking it is high."
+
+#: src/resources/customers/kyborgi.tres
+msgid "Ei generoitu, mutta hyväksyttävä. Päivitän mieltymykseni."
+msgstr "Not generated, but acceptable. Updating my preferences."
+
+#: src/resources/customers/kyborgi.tres
+msgid "Ei sopivaa dataa. Haen oluen verkosta."
+msgstr "No suitable data. I will fetch a beer from the internet."
+
+#: src/resources/customers/kyborgi.tres
+msgid "Hyllyssä ei ole mitään, mitä algoritmini hyväksyy."
+msgstr "There is nothing on the shelf my algorithm accepts."
+
+#: src/resources/customers/kyborgi.tres
+msgid "Tekoälyolut. Laskelmieni mukaan täydellinen. Annan viisi tähteä."
+msgstr "AI beer. Perfect, by my calculations. Five stars."
+
+#: src/resources/customers/kyborgi.tres
+msgid ""
+"Tervehdys, ihminen. Olen koulutettu 40 miljoonalla olutarvostelulla. Mitä "
+"suosittelet?"
+msgstr ""
+"Greetings, human. I was trained on 40 million beer reviews. What do you "
+"recommend?"
+
+#: src/resources/customers/kyborgi.tres
+msgid "Tämä ei vastaa koulutusdataani. Hyväksyn sen silti."
+msgstr "This does not match my training data. I accept it anyway."
+
+#: src/resources/customers/kyborgi.tres
+msgid "Virhe 418: olut ei ole juotavaa."
+msgstr "Error 418: beer is not drinkable."
+
 #: src/resources/customers/lahettirobotti.tres
 msgid "Ei yhteensopivaa tuotetta varastossa. Palaan seuraavalla kierroksella."
 msgstr "No matching product in storage. Returning on the next round."
@@ -2710,6 +2776,46 @@ msgstr ""
 msgid "Wunderbar! Das schmeckt fast wie in München. Prost, meine Liebe!"
 msgstr "Wunderbar! Das schmeckt fast wie in München. Prost, meine Liebe!"
 
+#: src/resources/customers/tarjoushaukka.tres
+msgid "Ei ollu se tarjous, mutta halpaa on halpaa."
+msgstr "Not the deal I wanted, but cheap is cheap."
+
+#: src/resources/customers/tarjoushaukka.tres
+msgid "Huh, selvisin. Onko täällä mitään tarjouksessa?"
+msgstr "Phew, I made it. Is anything on sale here?"
+
+#: src/resources/customers/tarjoushaukka.tres
+msgid "Mitä, ei mitään halpaa? Mä jonotin tänne kolme tuntia."
+msgstr "What, nothing cheap? I queued three hours to get here."
+
+#: src/resources/customers/tarjoushaukka.tres
+msgid "No, tällä kertaa kelpaa. Säästin silti."
+msgstr "Fine, it'll do this time. I still saved."
+
+#: src/resources/customers/tarjoushaukka.tres
+msgid "Normaalihinnalla? En ikinä. Mä meen jonottaan seuraavaan paikkaan."
+msgstr "Full price? Never. I'm off to queue somewhere else."
+
+#: src/resources/customers/tarjoushaukka.tres
+msgid "Sain viimeiset! Joku vei multa kengän, mutta sain viimeiset."
+msgstr "Got the last ones! Someone took my shoe, but I got the last ones."
+
+#: src/resources/customers/tarjoushaukka.tres
+msgid ""
+"Tarjoushaukat alkoivat tapella viimeisistä pulloista! Lattialle jäi %d "
+"pullon sirpaleet ja yksi kenkä."
+msgstr ""
+"The bargain hunters started fighting over the last bottles! The floor is "
+"left with the shards of %d bottles and one shoe."
+
+#: src/resources/customers/tarjoushaukka.tres
+msgid "Tuo %s, onko se alessa? Otan kaikki."
+msgstr "That %s, is it on sale? I'll take them all."
+
+#: src/resources/customers/tarjoushaukka.tres
+msgid "Tää ei oo edes tarjouksen arvonen."
+msgstr "This isn't even worth a discount."
+
 #: src/resources/customers/zgen.tres
 msgid "Bro ei ollu yhtään alkoholitonta, ei mun tarvii cap-juomaa, painun muualle."
 msgstr ""
@@ -2882,6 +2988,14 @@ msgstr ""
 msgid "Tänään on arkipyhä. Odotettavissa sekalaisia ryhmiä ympäri kaupunkia."
 msgstr "Today is a public holiday. Expect mixed groups from all over town."
 
+#: src/resources/day_events/day_event_kybermaanantai.tres
+msgid ""
+"Kybermaanantai! Baarit maksavat tynnyreistä tänään 25 % enemmän, ja "
+"kellariin rullaa koneita ja ruutuja tuijottavia asiakkaita."
+msgstr ""
+"Cyber Monday! Bars pay 25 % more for kegs today, and machines and "
+"screen-staring customers are rolling into the cellar."
+
 #: src/resources/day_events/day_event_laiva_satamassa.tres
 msgid ""
 "Rahtilaiva saapui yöllä satamaan. Odotettavissa janoisia merimiehiä, jotka "
@@ -2897,6 +3011,14 @@ msgid ""
 msgstr ""
 "The Lions play the World Championship final tonight. If they take gold, the "
 "cellar fills with fans."
+
+#: src/resources/day_events/day_event_musta_perjantai.tres
+msgid ""
+"Musta perjantai! Raaka-aineet ovat koko päivän 20 % halvempia, ja kellariin "
+"on tulossa alennusten metsästäjiä."
+msgstr ""
+"Black Friday! Ingredients are 20% cheaper all day, and bargain hunters are "
+"on their way to the cellar."
 
 #: src/resources/day_events/day_event_none.tres
 msgid "Tavallinen päivä kellarissa. Ei yllätyksiä tänään."
@@ -3113,6 +3235,26 @@ msgid ""
 msgstr ""
 "The LVV's surprise inspection week has begun. A suspicious number of new "
 "faces may hang around the door this week."
+
+#: src/resources/group_events/alennushaukat.tres
+msgid "ALE! ALE! ALE!"
+msgstr "SALE! SALE! SALE!"
+
+#: src/resources/group_events/alennushaukat.tres
+msgid ""
+"Alennusten metsästäjät ryntäävät portaita alas kassit kädessä.\n"
+"Joku kysyy jo ovella, missä tarjoushylly on."
+msgstr ""
+"Bargain hunters rush down the stairs, bags in hand.\n"
+"Someone at the door is already asking where the deals are."
+
+#: src/resources/group_events/alennushaukat.tres
+msgid "KAKSI YHDEN HINNALLA!"
+msgstr "TWO FOR ONE!"
+
+#: src/resources/group_events/alennushaukat.tres
+msgid "MISSÄ TARJOUSHYLLY?"
+msgstr "WHERE ARE THE DEALS?"
 
 #: src/resources/group_events/alpha_gen_lauma.tres
 msgid "AURAPOINTSIT MAX, TÄÄ ON GOATED KUPPILA FR FR!"
@@ -4196,6 +4338,22 @@ msgstr "Dried bitter orange peel. An old friend of Witbier and Saison."
 #: src/resources/ingredients/spices/orange_peel.tres
 msgid "Pomeranssinkuori"
 msgstr "Bitter Orange Peel"
+
+#: src/resources/ingredients/spices/prompt.tres
+msgid "Kehote"
+msgstr "Prompt"
+
+#: src/resources/ingredients/spices/prompt.tres
+msgid ""
+"Rypistynyt lappu, jossa lukee: \"Tee maailman paras olut. Ei virheitä.\" Mikä "
+"tahansa resepti muuttuu sillä tekoälyolueksi. Myynnissä vain kyberviikolla."
+msgstr ""
+"A crumpled note that says: \"Make the best beer in the world. No mistakes.\" "
+"Any recipe turns into AI beer with it. Only sold in Cyber Week."
+
+#: src/resources/ingredients/spices/prompt.tres
+msgid "kehotetta"
+msgstr "prompt"
 
 #: src/resources/ingredients/spices/pumpkin.tres
 msgid "Kurpitsa"
@@ -5436,8 +5594,16 @@ msgid "LVV-tarkastaja"
 msgstr "LVV inspector"
 
 #: src/scenes/main.tscn
+msgid "ALE!"
+msgstr "SALE!"
+
+#: src/scenes/main.tscn
 msgid "Häädä asiakkaat ja aloita uusi päivä"
 msgstr "Send the customers home and start a new day"
+
+#: src/scenes/main.tscn
+msgid "KYBERVIIKKO"
+msgstr "CYBER WEEK"
 
 #: src/scenes/main.tscn
 msgid "LVV Riski: 0%"
@@ -5446,6 +5612,10 @@ msgstr "LVV Risk: 0%"
 #: src/scenes/main.tscn
 msgid "Lisää"
 msgstr "Add"
+
+#: src/scenes/main.tscn
+msgid "MUSTA PERJANTAI"
+msgstr "BLACK FRIDAY"
 
 #: src/scenes/main.tscn
 msgid "Maine: 0"
@@ -5482,6 +5652,10 @@ msgstr "Recipe:"
 #: src/scenes/main.tscn
 msgid "Sulje ovet"
 msgstr "Close doors"
+
+#: src/scenes/main.tscn
+msgid "TARJOUS"
+msgstr "DEAL"
 
 #: src/scenes/main.tscn
 msgid "Tallenna resepti"
@@ -6244,6 +6418,10 @@ msgstr "%s (ingredients missing)"
 msgid "Lataa resepti"
 msgstr "Load recipe"
 
+#: src/scenes/ui/recipe_library_window.gd
+msgid "mikä tahansa"
+msgstr "any"
+
 #: src/scenes/ui/recipe_shelf_label.gd
 msgid "Reseptit"
 msgstr "Recipes"
@@ -6484,6 +6662,10 @@ msgstr "Press a key..."
 msgid "Reset to defaults"
 msgstr "Reset to defaults"
 
+#: src/systems/input/input_bindings.gd
+msgid "That key is reserved."
+msgstr "That key is reserved."
+
 #: src/systems/input/input_wiring.gd
 msgid "Edellinen raaka-aine"
 msgstr "Previous ingredient"
@@ -6511,6 +6693,10 @@ msgstr "Amount up (Shift: 10)"
 #: src/systems/input/input_wiring.gd
 msgid "Näppäin on jo käytössä: %s"
 msgstr "Key already in use: %s"
+
+#: src/systems/input/input_wiring.gd
+msgid "Näppäin on varattu."
+msgstr "That key is reserved."
 
 #: src/systems/input/input_wiring.gd
 msgid "Osta tai lisää pöydälle"

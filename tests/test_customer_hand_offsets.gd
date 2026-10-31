@@ -34,6 +34,21 @@ func test_praying_titles_match_their_resources() -> void:
 	assert_eq((load("res://src/resources/customers/halloweeni_vieras.tres") as CustomerData).title, HandOffsetsScript.KURPITSAPAA_TITLE)
 
 
+func test_tarjoushaukka_titles_match_their_resources() -> void:
+	for file : String in ["tarjoushaukka.tres", "tarjoushaukka_naaras.tres"]:
+		assert_eq((load("res://src/resources/customers/" + file) as CustomerData).title, HandOffsetsScript.TARJOUSHAUKKA_TITLE)
+
+
+func test_kyborgi_title_matches_its_resource() -> void:
+	assert_eq((load("res://src/resources/customers/kyborgi.tres") as CustomerData).title, HandOffsetsScript.KYBORGI_TITLE)
+
+
+func test_only_tarjoushaukka_bags_the_glass() -> void:
+	assert_eq(HandOffsetsScript.glass_region_for(HandOffsetsScript.TARJOUSHAUKKA_TITLE), HandOffsetsScript.BAGGED_GLASS_REGION)
+	assert_false(HandOffsetsScript.glass_region_for(HandOffsetsScript.ZGEN_TITLE).has_area())
+	assert_false(HandOffsetsScript.glass_region_for("").has_area())
+
+
 func test_praying_customers_hold_the_glass_at_the_middle() -> void:
 	for frame : int in 4:
 		assert_eq(HandOffsetsScript.position_for(HandOffsetsScript.MUNKKI_TITLE, frame).x, 0.0)

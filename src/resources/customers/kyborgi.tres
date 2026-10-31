@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="CustomerData" format=3]
+
+[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_data"]
+[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/kyborgi_anim.tres" id="2_sprite"]
+
+[resource]
+script = ExtResource("1_data")
+customer_name = "Väinö 2.0"
+title = "Kyborgi"
+first_names = Array[String](["Väinö 2.0", "Aino.exe", "Kalevi-AI", "Yksikkö 7", "Pilvi-01", "Nova-3"])
+min_quality = 0.4
+budget_multiplier = 1.5
+primary_style = 30
+secondary_style = 21
+also_likes = Array[int]([20])
+sprite_frames = ExtResource("2_sprite")
+randomize_skin = false
+randomize_hair = false
+randomize_clothes = false
+randomize_shoes = false
+voice_pitch = 0.7
+dialogue_intro = "Tervehdys, ihminen. Olen koulutettu 40 miljoonalla olutarvostelulla. Mitä suosittelet?"
+dialogue_success = "Tekoälyolut. Laskelmieni mukaan täydellinen. Annan viisi tähteä."
+dialogue_fallback = "Ei generoitu, mutta hyväksyttävä. Päivitän mieltymykseni."
+dialogue_wrong_style = "Tämä ei vastaa koulutusdataani. Hyväksyn sen silti."
+dialogue_reject = "Virhe 418: olut ei ole juotavaa."
+dialogue_no_match = "Ei sopivaa dataa. Haen oluen verkosta."
+dialogue_preview_format = "Analysoin: %s. Todennäköisyys pitää siitä on korkea."
+dialogue_nothing_available = "Hyllyssä ei ole mitään, mitä algoritmini hyväksyy."
+tip_base_chance = 0.3
+appearance_weight = 0.0
+busy_season = 3
+busy_season_weight = 3.0
+min_bottles_per_visit = 1
+max_bottles_per_visit = 3
+metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

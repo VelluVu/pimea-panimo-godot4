@@ -129,11 +129,14 @@ func _add_ingredient_item(ingredient : IngredientData, is_locked : bool, is_buy_
 	get_popup().set_item_tooltip(new_item_index, tooltip)
 
 
+## A seasonal ingredient out of its season is left out, unless some is still owned.
 func _of_type() -> Array[IngredientData]:
 	var of_type : Array[IngredientData] = []
+	var season : SeasonRules.Season = SeasonRules.now()
+	var owned : Dictionary = _owned()
 	for id in IngredientDatabase.sorted_ids:
 		var ingredient: IngredientData = IngredientDatabase.database[id]
-		if ingredient.type == target_type:
+		if ingredient.type == target_type and (ingredient.is_sold_in(season) or owned.get(id, 0) > 0):
 			of_type.append(ingredient)
 	return of_type
 

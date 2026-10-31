@@ -114,7 +114,7 @@ func _load_all_beer_styles() -> void:
 ## order within a group is kept.
 func prioritize_styles() -> void:
 	var ordered : Array[BeerStyle] = []
-	for priority : int in 3:
+	for priority : int in range(BeerStyle.ANY_RECIPE_PRIORITY, BeerStyle.LAST_PRIORITY + 1):
 		ordered.append_array(active_styles.filter(func(beer_style : BeerStyle) -> bool: return beer_style.match_priority() == priority))
 	active_styles = ordered
 

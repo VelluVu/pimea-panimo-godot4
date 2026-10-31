@@ -74,19 +74,20 @@ func keeps_group_away(event_data : GroupVisitEventData) -> bool:
 	return event_data.customer_data_options.any(func(customer : CustomerData) -> bool: return _kept_away(customer, brewery))
 
 
-## Weighted by the agentti/mafioso appearance perks; everyone else weighs 1.0.
+## Weighted by each customer's season weight and the agentti/mafioso appearance perks.
 func _pick_weighted_customer(customers : Array[CustomerData]) -> CustomerData:
 	var brewery : Brewery = BrewEngine.current_brewery
 	if brewery == null:
 		return customers.pick_random()
 
+	var season : SeasonRules.Season = SeasonRules.now()
 	var weights : Array[float] = []
 	for customer : CustomerData in customers:
-		var weight : float = 1.0
+		var weight : float = customer.get_appearance_weight(season)
 		if customer.title == TITLE_AGENTTI:
-			weight = brewery.stats.multiplier(PerkStats.AGENTTI_APPEARANCE)
+			weight *= brewery.stats.multiplier(PerkStats.AGENTTI_APPEARANCE)
 		elif customer.title == TITLE_MAFIOSO:
-			weight = brewery.stats.multiplier(PerkStats.MAFIOSO_APPEARANCE)
+			weight *= brewery.stats.multiplier(PerkStats.MAFIOSO_APPEARANCE)
 			if brewery.current_day < brewery.mafioso_cut_until_day:
 				weight *= brewery.mafioso_cut_multiplier
 		weights.append(weight)

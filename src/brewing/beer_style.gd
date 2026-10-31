@@ -1,6 +1,11 @@
 class_name BeerStyle
 extends Resource
 
+const ANY_YEAST : int = -1
+## match_priority() runs from ANY_RECIPE_PRIORITY (checked first) to LAST_PRIORITY.
+const ANY_RECIPE_PRIORITY : int = -1
+const LAST_PRIORITY : int = 2
+
 
 enum Style {
 	KOTIKALJA,
@@ -33,6 +38,7 @@ enum Style {
 	PILSNER,
 	CZECH_PILSNER,
 	KURPITSAOLUT,
+	TEKOALYOLUT,
 }
 
 @export var style_name: String = "Uusi oluttyyli"
@@ -44,8 +50,11 @@ enum Style {
 ## Known in every new run with its default recipe in the book, like Kotikalja, so a
 ## seasonal style can be loaded without brewing it first.
 @export var known_from_start: bool = false
+## Known in a new run started in this season (Tekoälyolut in Cyber Week); NONE for never.
+@export var known_in_season: SeasonRules.Season = SeasonRules.Season.NONE
 
 @export_group("Vaatimukset")
+## ANY_YEAST lets every yeast brew the style (Tekoälyolut takes any recipe).
 @export var required_yeast_id: int = 301 # 301 = lager, 302 = ale
 @export var min_malt_weight: int = 3
 ## -1 = any malt. Set where one malt defines the style (wheat in Hefeweizen and Witbier).
@@ -95,10 +104,14 @@ func is_alcohol_free() -> bool:
 
 ## Checked in this order: styles defined by a required ingredient first, then those
 ## defined by their base malts, then the rest, so the most specific style wins.
+## Lower is checked first. A style any yeast can brew (Tekoälyolut) goes before all, or a
+## style with its own required ingredient would take the brews meant for it.
 func match_priority() -> int:
+	if required_yeast_id == ANY_YEAST:
+		return ANY_RECIPE_PRIORITY
 	if required_malt_id != BrewMixture.NO_REQUIRED_MALT or not required_spice_ids.is_empty() or not only_hop_ids.is_empty():
 		return 0
-	return 1 if not base_malt_ids.is_empty() else 2
+	return 1 if not base_malt_ids.is_empty() else LAST_PRIORITY
 
 
 func has_preferred_hop_profile(profile : HopData.FlavorProfile) -> bool:
@@ -117,6 +130,11 @@ func has_preferred_hop_profile(profile : HopData.FlavorProfile) -> bool:
 @export_group("IBU (Katkeruus) Rajat")
 @export var min_ibu: int = 0
 @export var max_ibu: int = 999
+
+@export_group("Laatu")
+## 0 to 1 stands in for the colour, bitterness and strength precision, so a style with
+## near-open windows (Tekoälyolut) is no worse at the edges; negative scores them as usual.
+@export_range(-1.0, 1.0, 0.05) var fixed_precision: float = -1.0
 
 @export_group("Palkkiot & Riskit")
 @export var original_quality: float = 1.0
@@ -198,4 +216,5 @@ static func get_style_string_from_style(new_style : BeerStyle.Style) -> String:
 		Style.PILSNER: return UiText.of(StringContainer.PILSNER)
 		Style.CZECH_PILSNER: return UiText.of(StringContainer.CZECH_PILSNER)
 		Style.KURPITSAOLUT: return UiText.of(StringContainer.KURPITSAOLUT)
+		Style.TEKOALYOLUT: return UiText.of(StringContainer.TEKOALYOLUT)
 		_: return UiText.of(StringContainer.TUNTEMATON)

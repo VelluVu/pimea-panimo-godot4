@@ -9,6 +9,7 @@ const STYLES_PATH : String = "res://src/resources/beer_styles/"
 const INGREDIENT_FOLDERS : Array[String] = ["malts/", "hops/", "yeasts/", "spices/"]
 const INGREDIENTS_PATH : String = "res://src/resources/ingredients/"
 const GOOD_QUALITY : float = 0.9
+const PROMPT_ID : int = 410
 
 
 func suite_name() -> String:
@@ -92,3 +93,24 @@ func test_the_basic_mash_tun_holds_most_styles() -> void:
 		if MashTun.holds(resolver.reference_malt_weight(beer_style), MashTun.BASE_CAPACITY_KG):
 			fitting += 1
 	assert_eq(resolver.active_styles.size() - fitting, 7, "the upgrade gates only the 7 strongest styles")
+
+
+## A Kehote makes any recipe Tekoälyolut, whatever its yeast, colour or strength.
+func test_a_prompt_turns_every_reference_recipe_into_ai_beer() -> void:
+	var resolver := _resolver()
+	for beer_style : BeerStyle in resolver.active_styles:
+		var recipe : Dictionary = beer_style.reference_recipe.duplicate()
+		recipe[PROMPT_ID] = 1
+		var result : BrewResult = resolver.resolve_brew_style(recipe)
+		var got : String = result.beer_style.style_name if result != null and result.is_matched else "nothing"
+		assert_eq(got, StringContainer.TEKOALYOLUT, "%s with a prompt brews %s" % [beer_style.style_name, got])
+
+
+func test_ai_beer_is_sold_and_known_only_in_cyber_week() -> void:
+	var prompt : IngredientData = _ingredients()[PROMPT_ID]
+	assert_true(prompt.is_sold_in(SeasonRules.Season.CYBER_WEEK))
+	assert_false(prompt.is_sold_in(SeasonRules.Season.BLACK_MONTH))
+	assert_false(prompt.is_sold_in(SeasonRules.Season.NONE))
+	var ai_beer : BeerStyle = _resolver().get_beer_style(BeerStyle.Style.TEKOALYOLUT)
+	assert_eq(ai_beer.known_in_season, SeasonRules.Season.CYBER_WEEK)
+	assert_false(ai_beer.known_from_start)

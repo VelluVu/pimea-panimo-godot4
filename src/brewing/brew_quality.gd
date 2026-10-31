@@ -88,6 +88,8 @@ static func precision_weight(beer_style : BeerStyle) -> float:
 
 
 static func precision_score(mixture : BrewMixture, beer_style : BeerStyle) -> float:
+	if beer_style.fixed_precision >= 0.0:
+		return beer_style.fixed_precision
 	var ebc_precision : float = range_precision(mixture.final_ebc, beer_style.min_ebc, beer_style.max_ebc)
 	var ibu_score : float = ibu_precision(mixture.ibu_for(beer_style), beer_style.min_ibu, beer_style.max_ibu)
 	var abv_precision : float = range_precision(mixture.abv, beer_style.min_abv, beer_style.max_abv)

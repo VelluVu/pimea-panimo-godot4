@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="DayEventData" format=3]
+
+[ext_resource type="Script" uid="uid://dhlswvb7h0ba8" path="res://src/events/day_event_data.gd" id="1_event"]
+[ext_resource type="Script" uid="uid://dewmdbm4a0vst" path="res://src/progression/run_perk.gd" id="2_perk"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/day_coins.wav" id="snd_day_coins"]
+
+[sub_resource type="Resource" id="RunPerk_kyber"]
+script = ExtResource("2_perk")
+perk_name = "Kybermaanantai"
+description = "Kaikki ostavat verkosta: baarit maksavat tynnyreistä tavallista enemmän."
+icon_placeholder = "🏷"
+distribution_income_multiplier = 1.25
+
+[resource]
+script = ExtResource("1_event")
+event_name = "Kybermaanantai"
+announcement_text = "Kybermaanantai! Baarit maksavat tynnyreistä tänään 25 % enemmän, ja kellariin rullaa koneita ja ruutuja tuijottavia asiakkaita."
+announcement_sound = ExtResource("snd_day_coins")
+weight = 4.0
+season = 3
+day_perk = SubResource("RunPerk_kyber")
+featured_customer_titles = Array[String](["Kyborgi", "Lähettirobotti", "Tarkastusdrooni", "Gen Z"])

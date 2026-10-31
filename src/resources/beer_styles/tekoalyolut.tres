@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="BeerStyle" format=3]
+
+[ext_resource type="Script" uid="uid://qpqfdi1wacne" path="res://src/brewing/beer_style.gd" id="1_tekoalyolut"]
+
+[resource]
+script = ExtResource("1_tekoalyolut")
+style_name = "Tekoälyolut"
+description = "Generoitu olut. Kehotteen mukaan täydellinen, ja se voi olla mitä tahansa: vaaleaa, mustaa, kitkerää tai alkoholitonta. Maistuu vähän kaikelta ja ei miltään."
+locked_hint = "Olut, jonka resepti ei ole tärkeä. Tärkeintä on, mitä lapussa lukee. Lappuja myydään vain kyberviikolla."
+known_in_season = 3
+style = 30
+fixed_price_per_bottle = 3.0
+reputation_change = 3
+shelf_life_days = 14
+fixed_precision = 1.0
+mash_steps = Array[int]([66])
+mash_band = 3.0
+hop_additions = Array[int]([0])
+required_yeast_id = -1
+required_spice_ids = Array[int]([410])
+abv = 5.0
+min_abv = 0.0
+max_abv = 14.0
+min_ebc = 0
+max_ebc = 400
+min_ibu = 0
+max_ibu = 150
+reference_recipe = Dictionary[int, int]({100: 4, 200: 20, 301: 1, 410: 1})
+metadata/_custom_type_script = "uid://qpqfdi1wacne"

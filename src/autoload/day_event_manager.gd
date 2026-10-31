@@ -55,6 +55,7 @@ func _clear_event() -> void:
 func _on_day_changed(_new_day : int) -> void:
 	_clear_event()
 	_active_event = _pick_weighted_event()
+	_set_day_perk(_active_event.day_perk if _active_event != null else null)
 	if _active_event == null:
 		return
 
@@ -81,6 +82,12 @@ func _on_window_end() -> void:
 	_window_active = false
 
 
+func _set_day_perk(perk : RunPerk) -> void:
+	var brewery : Brewery = BrewEngine.current_brewery
+	if brewery != null:
+		brewery.set_day_perk(perk)
+
+
 ## The one-off stock hit; silent when nothing was lost.
 func _apply_direct_effect(event : DayEventData) -> void:
 	var brewery : Brewery = BrewEngine.current_brewery
@@ -94,14 +101,15 @@ func _apply_direct_effect(event : DayEventData) -> void:
 
 
 ## day_event_none.tres weighs most, so most days are plain. An event whose customers are
-## all locked never comes.
+## all locked never comes, nor one out of its season.
 func _pick_weighted_event() -> DayEventData:
+	var season : SeasonRules.Season = SeasonRules.now()
 	var available_titles : Array = []
 	for customer : CustomerData in CustomerRegistry.get_eligible_customers():
 		available_titles.append(customer.title)
 	var weights : Array[float] = []
 	for event : DayEventData in day_event_pool:
-		weights.append(event.weight if event.has_audience(available_titles) else 0.0)
+		weights.append(event.weight if event.has_audience(available_titles) and event.can_come_in(season) else 0.0)
 	return WeightedPicker.pick(day_event_pool, weights) as DayEventData
 
 

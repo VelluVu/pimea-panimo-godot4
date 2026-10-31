@@ -24,7 +24,8 @@ func _init(save_path: String = DEFAULT_SAVE_PATH) -> void:
 
 
 ## True once every appearance gate passes: reputation (per run), style discovery and
-## achievement (permanent). The one answer to "can this customer appear".
+## achievement (permanent), and the season (CustomerData.comes_in()). The one answer to
+## "can this customer appear".
 func is_eligible(customer: CustomerData) -> bool:
 	var current_reputation: int = 0
 	if BrewEngine.current_brewery != null:
@@ -32,7 +33,7 @@ func is_eligible(customer: CustomerData) -> bool:
 
 	return current_reputation >= customer.min_reputation_to_appear \
 		and _meets_style_discovery_requirement(customer) \
-		and _meets_achievement_requirement(customer)
+		and _meets_achievement_requirement(customer) 		and customer.comes_in(SeasonRules.now())
 
 
 ## Announces every eligible title not announced yet; gendered variants share a title.

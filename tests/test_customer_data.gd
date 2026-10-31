@@ -445,3 +445,30 @@ func test_shipped_tier_customers_load_their_rules() -> void:
 			assert_true(rule != null and not rule.label.is_empty(), "%s has a broken taste rule" % file)
 		if data.rolls_favourite:
 			assert_false(data.favourite_rules.is_empty(), "%s rolls a favourite from no rules" % file)
+
+
+func test_appearance_weight_rises_only_in_busy_season() -> void:
+	var customer := CustomerData.new()
+	customer.appearance_weight = 0.5
+	customer.busy_season = SeasonRules.Season.BLACK_MONTH
+	customer.busy_season_weight = 3.0
+	assert_eq(customer.get_appearance_weight(SeasonRules.Season.NONE), 0.5)
+	assert_eq(customer.get_appearance_weight(SeasonRules.Season.HALLOWEEN), 0.5)
+	assert_eq(customer.get_appearance_weight(SeasonRules.Season.BLACK_MONTH), 3.0)
+	assert_eq(customer.get_appearance_weight(SeasonRules.Season.CYBER_WEEK), 3.0)
+
+
+func test_appearance_weight_defaults_to_one() -> void:
+	assert_eq(CustomerData.new().get_appearance_weight(SeasonRules.Season.BLACK_MONTH), 1.0)
+
+
+## Kyborgi: never out of season, so it is not announced or walked in then either.
+func test_a_season_only_customer_comes_only_in_its_season() -> void:
+	var customer := CustomerData.new()
+	customer.appearance_weight = 0.0
+	customer.busy_season = SeasonRules.Season.CYBER_WEEK
+	customer.busy_season_weight = 3.0
+	assert_false(customer.comes_in(SeasonRules.Season.NONE))
+	assert_false(customer.comes_in(SeasonRules.Season.BLACK_MONTH))
+	assert_true(customer.comes_in(SeasonRules.Season.CYBER_WEEK))
+	assert_true(CustomerData.new().comes_in(SeasonRules.Season.HALLOWEEN))

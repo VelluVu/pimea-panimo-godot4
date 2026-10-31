@@ -202,3 +202,13 @@ func test_a_german_style_pays_only_the_purity_law() -> void:
 	mixture.spice_ids[406] = true
 	assert_eq(BrewQualityScript.unsuited_spice_penalty(mixture, beer_style), 0.0)
 	assert_eq(BrewQualityScript.spice_bonus(mixture, beer_style), -BrewQualityScript.PURITY_LAW_PENALTY)
+
+
+func test_a_fixed_precision_ignores_the_windows() -> void:
+	var style : BeerStyle = _style([HopAddition.Kind.BITTERING], [])
+	style.min_ebc = 0
+	style.max_ebc = 400
+	style.fixed_precision = 1.0
+	assert_eq(BrewQualityScript.precision_score(_hop_mixture({200: 20}), style), 1.0)
+	style.fixed_precision = -1.0
+	assert_true(BrewQualityScript.precision_score(_hop_mixture({200: 20}), style) < 1.0, "an unfixed style scores its windows")

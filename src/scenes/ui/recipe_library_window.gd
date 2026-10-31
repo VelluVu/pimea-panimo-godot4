@@ -12,6 +12,7 @@ const LOAD_BUTTON_TEXT : String = "Lataa resepti"
 const MISSING_INGREDIENTS_FORMAT : String = "%s (raaka-aineita puuttuu)"
 
 const NO_STYLE_SELECTED : int = -1
+const ANY_YEAST_TEXT : String = "mikä tahansa"
 ## m5x7 is pixel-crisp only at multiples of 16; any other size smears on a phone.
 const TEXT_FONT_SIZE : int = 16
 const SECTION_COLOR : Color = Color(0.949, 0.788, 0.42)
@@ -224,7 +225,7 @@ func _entry(brewery : Brewery, beer_style : BeerStyle) -> RecipeBookEntry:
 	var entry := RecipeBookEntry.new()
 	entry.beer_style = beer_style
 	entry.known = brewery.is_style_known(beer_style.style)
-	entry.yeast_name = _ingredient_name(beer_style.required_yeast_id)
+	entry.yeast_name = tr(ANY_YEAST_TEXT) if beer_style.required_yeast_id == BeerStyle.ANY_YEAST else _ingredient_name(beer_style.required_yeast_id)
 	for id : int in beer_style.base_malt_ids:
 		entry.base_malt_names.append(_ingredient_name(id))
 	if beer_style.required_malt_id != BrewMixture.NO_REQUIRED_MALT:

@@ -119,6 +119,10 @@ var resolver : BrewResolver = null
 ## The tier last toasted (ReputationTiers.announced_tier()); runtime only.
 var _announced_tier : ReputationTier = null
 
+## The day event's perk (DayEventData.day_perk), for today only; runtime only, so a load
+## drops it along with the event itself.
+var day_perk : RunPerk = null
+
 ## Today's sales for the receipt log window; cleared each day, not saved.
 var today_sale_receipts : Array[SaleReceiptEntry] = []
 
@@ -128,6 +132,8 @@ var stats : PerkStats:
 	get:
 		var perks : Array[RunPerk] = active_perks.duplicate()
 		perks.append_array(CellarUpgrades.perks_for(cellar_upgrade_levels, CellarUpgrades.all()))
+		if day_perk != null:
+			perks.append(day_perk)
 		return PerkStats.new(perks)
 
 ## The services that hold the Brewery's behaviour, each with its own GUISignals handlers.
@@ -150,7 +156,7 @@ func _init() -> void:
 		brew_preparation.active_recipe_target = kotikalja_recipe.ingredient_amounts.duplicate()
 		brew_preparation.active_recipe_style_name = BeerStyle.get_style_string_from_style(kotikalja_recipe.beer_style)
 	for beer_style : BeerStyle in resolver.active_styles:
-		if beer_style.known_from_start:
+		if beer_style.known_from_start or (beer_style.known_in_season != SeasonRules.Season.NONE and SeasonRules.includes(SeasonRules.now(), beer_style.known_in_season)):
 			discovered_styles[beer_style.style] = true
 			discovery.ensure_default_recipe(beer_style, false)
 
@@ -268,6 +274,15 @@ func apply_perk(perk : RunPerk) -> void:
 	BrewerySignals.brewery_state_changed.emit(self)
 
 
+## Null ends it. Called on every day change, see DayEventManager.
+func set_day_perk(perk : RunPerk) -> void:
+	if perk == day_perk:
+		return
+	day_perk = perk
+	resolver.ingredient_price_multiplier = stats.multiplier(PerkStats.INGREDIENT_PRICE)
+	BrewerySignals.brewery_state_changed.emit(self)
+
+
 ## Kilograms of malt one brew can hold, see MashTun.
 func mash_capacity_kg() -> float:
 	return MashTun.capacity_kg(int(stats.total(PerkStats.EXTRA_MASH_CAPACITY)))
@@ -308,7 +323,7 @@ func check_bankruptcy() -> void:
 	for id : int in IngredientDatabase.database:
 		var ingredient : IngredientData = IngredientDatabase.database[id]
 		sell_prices[id] = IngredientPrice.unit_sell(ingredient, price_multiplier)
-		if reputation >= ingredient.min_reputation:
+		if reputation >= ingredient.min_reputation and ingredient.is_sold_in(SeasonRules.now()):
 			buy_prices[id] = IngredientPrice.unit(ingredient, price_multiplier)
 
 	if BankruptcyRules.is_bankrupt(money, 0, owned_ingredient_amounts(), recipes, buy_prices, sell_prices):

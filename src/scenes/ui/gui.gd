@@ -226,7 +226,9 @@ func _assert_default_visibility() -> void:
 	shop_entrance_panel.show()
 	options_button.show()
 	# Typing commands needs a keyboard, and the button takes a corner of a small screen.
-	dev_console.visible = not DisplayServer.is_touchscreen_available()
+	# The console shows itself once its key is pressed (DevConsole.hidden_until_opened).
+	if DisplayServer.is_touchscreen_available():
+		dev_console.hide()
 	group_visit_banner.show()
 	first_brew_hint_banner.show()
 	day_event_banner.show()

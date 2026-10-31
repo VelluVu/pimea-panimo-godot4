@@ -4,7 +4,7 @@ extends Node2D
 ## A Halloween storm outside the top of the stairs: the door's daylight turns to cold
 ## moonlight, and now and then lightning flashes through the door and thunder follows,
 ## at once when it is near, after a pause when it is far. Checks the season itself,
-## since HalloweenDecor only hides its children and a hidden node still plays sounds.
+## since its SeasonDecor only hides its children and a hidden node still plays sounds.
 
 const NIGHT_COLOR : Color = Color(0.55, 0.62, 0.9)
 ## Dims the door lamp to moonlight through LightFlicker.boost.
@@ -38,7 +38,7 @@ var _flash_tween : Tween
 
 func _ready() -> void:
 	flash.energy = 0.0
-	if not HalloweenRules.is_season(Time.get_date_dict_from_system()):
+	if SeasonRules.now() != SeasonRules.Season.HALLOWEEN:
 		return
 	var door_lamp := get_node(door_lamp_path) as LightFlicker
 	door_lamp.color = NIGHT_COLOR

@@ -15,6 +15,8 @@ extends Resource
 @export_group("Painotus")
 ## Relative odds against every other day event.
 @export var weight : float = 1.0
+## The only season the event can come in, by the player's clock; NONE for all year.
+@export var season : SeasonRules.Season = SeasonRules.Season.NONE
 
 @export_group("Kohdistus")
 ## The group visit favoured while the window is open; null for "nothing special".
@@ -65,6 +67,14 @@ func has_audience(available_titles : Array) -> bool:
 	if featured_customer_titles.is_empty():
 		return true
 	return featured_customer_titles.any(func(title : String) -> bool: return available_titles.has(title))
+
+
+## Holds for the event's whole day, not just the bias window (Brewery.set_day_perk).
+@export var day_perk : RunPerk = null
+
+
+func can_come_in(current : SeasonRules.Season) -> bool:
+	return season == SeasonRules.Season.NONE or SeasonRules.includes(current, season)
 
 
 func get_effect_amount() -> int:

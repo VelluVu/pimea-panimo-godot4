@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="IngredientData" format=3]
+
+[ext_resource type="Script" uid="uid://dniwiyu5ynp71" path="res://src/brewing/ingredient_data.gd" id="1_prompt"]
+
+[resource]
+script = ExtResource("1_prompt")
+id = 410
+name = "Kehote"
+name_partitive = "kehotetta"
+description = "Rypistynyt lappu, jossa lukee: \"Tee maailman paras olut. Ei virheitä.\" Mikä tahansa resepti muuttuu sillä tekoälyolueksi. Myynnissä vain kyberviikolla."
+base_price = 2.0
+unit = 2
+type = 3
+season = 3
+metadata/_custom_type_script = "uid://dniwiyu5ynp71"

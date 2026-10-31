@@ -200,11 +200,14 @@ func test_customers_met_never_counts_down() -> void:
 	assert_eq(manager.get_stat(AchievementManagerScript.STAT_CUSTOMERS_MET), 5)
 
 
-## "Meet every customer type" names its count, so a new customer type must update it.
+## "Meet every customer type" names its count, so a new customer type must update it. A
+## customer who comes only in its season (Kyborgi) is left out, so the achievement never
+## waits for a date.
 func test_meet_everyone_target_matches_the_shipped_customer_types() -> void:
 	var titles : Dictionary = {}
 	for customer : CustomerData in ResourceFolder.load_all("res://src/resources/customers/", CustomerData):
-		titles[customer.title] = true
+		if customer.appearance_weight > 0.0:
+			titles[customer.title] = true
 	var achievement : AchievementData = load("res://src/resources/achievements/asiakaskirja_kaikki.tres")
 	assert_eq(achievement.target_value, titles.size())
 	assert_true(achievement.description.contains(str(titles.size())), "description should name the count")

@@ -18,6 +18,8 @@ const STARTER_OFF_SECONDS : float = 0.08
 var dimmer: float = 1.0
 ## Above 1 brightens the lamp, e.g. while its doorway is hovered (WarehouseLampBoost).
 var boost: float = 1.0
+## A season's slow glow, e.g. the neon pulse of Cyber Week (DayLights, NeonPulse).
+var pulse: float = 1.0
 
 var _base_energy: float
 var _noise: FastNoiseLite = FastNoiseLite.new()
@@ -42,7 +44,7 @@ func _process(delta: float) -> void:
 	_time += delta * flicker_speed
 	if randf() < dip_chance_per_second * delta:
 		_dip_once()
-	energy = _base_energy * dimmer * boost * _switch_level * _dip * (1.0 + _noise.get_noise_1d(_time) * flicker_amount)
+	energy = _base_energy * dimmer * boost * pulse * _switch_level * _dip * (1.0 + _noise.get_noise_1d(_time) * flicker_amount)
 
 
 ## Off at once; on with `starter` blinks first, like a fluorescent tube's starter.

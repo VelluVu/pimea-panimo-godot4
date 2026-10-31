@@ -3,7 +3,7 @@ extends AnimatedSprite2D
 
 ## A skeleton that now and then peeks out of its hiding place (the barrel, a wall corner,
 ## behind a tank), looks around and hides again. The frames are cut to the spot by
-## dev/tools/sprites/make_barrel_skeleton.py. Lives under HalloweenDecor, so it is only up
+## dev/tools/sprites/make_barrel_skeleton.py. Lives under HalloweenDecor (a SeasonDecor), so it is only up
 ## in the season.
 
 const ANIM_PEEK : StringName = &"peek"

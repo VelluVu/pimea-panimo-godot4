@@ -111,3 +111,26 @@ func test_an_event_needs_one_of_its_customers() -> void:
 	event.featured_customer_titles = ["Papparainen", "Mummeli"]
 	assert_false(event.has_audience(["Raksamies"]))
 	assert_true(event.has_audience(["Raksamies", "Mummeli"]))
+
+
+func test_an_all_year_event_comes_in_every_season() -> void:
+	var event := DayEventData.new()
+	assert_true(event.can_come_in(SeasonRules.Season.NONE))
+	assert_true(event.can_come_in(SeasonRules.Season.BLACK_MONTH))
+
+
+func test_a_seasonal_event_comes_only_in_its_season() -> void:
+	var event := DayEventData.new()
+	event.season = SeasonRules.Season.BLACK_MONTH
+	assert_true(event.can_come_in(SeasonRules.Season.BLACK_MONTH))
+	assert_true(event.can_come_in(SeasonRules.Season.CYBER_WEEK))
+	assert_false(event.can_come_in(SeasonRules.Season.NONE))
+	assert_false(event.can_come_in(SeasonRules.Season.HALLOWEEN))
+
+
+## Bought at the sale price and sold back the next day must not pay.
+func test_black_friday_sale_leaves_no_resale_profit() -> void:
+	var event := load("res://src/resources/day_events/day_event_musta_perjantai.tres") as DayEventData
+	assert_eq(event.season, SeasonRules.Season.BLACK_MONTH)
+	assert_true(event.day_perk != null)
+	assert_true(event.day_perk.ingredient_price_multiplier >= IngredientPrice.SELL_BACK_RATE)

@@ -4,6 +4,8 @@ extends RefCounted
 ## Buying and selling raw ingredients, plus the tutorial purchase tracking.
 
 const LOG_SOLD : String = "Sold %s amount of stuff, and you get %s€ back"
+## The shop never lists it out of season; a console or bot buy can still ask.
+const OUT_OF_SEASON_WARNING : String = "IngredientTrader: %s is not sold in this season"
 
 var brewery : Brewery
 
@@ -27,6 +29,10 @@ func disconnect_signals() -> void:
 func _on_buy_ingredient(ingredient_id : int, amount : int) -> void:
 	var ingredient: IngredientData = IngredientDatabase.get_item_by_id(ingredient_id)
 	if ingredient == null:
+		return
+
+	if not ingredient.is_sold_in(SeasonRules.now()):
+		push_warning(OUT_OF_SEASON_WARNING % ingredient.name)
 		return
 
 	if brewery.reputation < ingredient.min_reputation:
@@ -53,6 +59,12 @@ func _on_buy_ingredient(ingredient_id : int, amount : int) -> void:
 ## too little money buys none of it, and says why like a single purchase does.
 func _on_buy_missing_for_recipe_requested() -> void:
 	var to_buy : Dictionary = RecipeShopping.missing(brewery.brew_preparation.active_recipe_target, brewery.owned_ingredient_amounts())
+	# Out of season a seasonal ingredient is not for sale; the rest of the recipe still is.
+	var season : SeasonRules.Season = SeasonRules.now()
+	for id : int in to_buy.keys():
+		var ingredient : IngredientData = brewery.resolver.ingredient_table().get(id)
+		if ingredient != null and not ingredient.is_sold_in(season):
+			to_buy.erase(id)
 	if to_buy.is_empty():
 		return
 	var table : Dictionary = brewery.resolver.ingredient_table()

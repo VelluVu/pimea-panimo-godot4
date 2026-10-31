@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="DayEventData" format=3 uid="uid://fc1tfq71ypgk"]
+
+[ext_resource type="Script" uid="uid://dhlswvb7h0ba8" path="res://src/events/day_event_data.gd" id="1_event"]
+[ext_resource type="Script" uid="uid://dewmdbm4a0vst" path="res://src/progression/run_perk.gd" id="2_perk"]
+[ext_resource type="Resource" uid="uid://bmvm7nqigc4bf" path="res://src/resources/group_events/alennushaukat.tres" id="3_group"]
+[ext_resource type="AudioStream" uid="uid://y0k5kixto400" path="res://assets/audio/sfx/synth/day_coins.wav" id="snd_day_coins"]
+
+[sub_resource type="Resource" id="RunPerk_ale"]
+script = ExtResource("2_perk")
+perk_name = "Musta perjantai"
+description = "Tukku myy kaiken alennuksella ja asiakkaita tulee ovista ja ikkunoista."
+icon_placeholder = "🏷"
+ingredient_price_multiplier = 0.8
+spawn_interval_multiplier = 0.75
+
+[resource]
+script = ExtResource("1_event")
+event_name = "Musta perjantai"
+announcement_text = "Musta perjantai! Raaka-aineet ovat koko päivän 20 % halvempia, ja kellariin on tulossa alennusten metsästäjiä."
+announcement_sound = ExtResource("snd_day_coins")
+weight = 4.0
+season = 2
+featured_group_event = ExtResource("3_group")
+featured_customer_titles = Array[String](["Tarjoushaukka", "Perusasiakas", "Opiskelija"])
+day_perk = SubResource("RunPerk_ale")

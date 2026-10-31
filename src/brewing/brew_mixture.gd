@@ -65,7 +65,7 @@ func is_brewable() -> bool:
 func fits(beer_style : BeerStyle) -> bool:
 	if hop_ids.size() > MAX_HOP_VARIETIES:
 		return false
-	if yeast_id != beer_style.required_yeast_id:
+	if beer_style.required_yeast_id != BeerStyle.ANY_YEAST and yeast_id != beer_style.required_yeast_id:
 		return false
 	if beer_style.required_malt_id != NO_REQUIRED_MALT and not malt_ids.has(beer_style.required_malt_id):
 		return false

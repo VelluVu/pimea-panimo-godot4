@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CellarUpgradeData" format=3]
+[gd_resource type="Resource" script_class="CellarUpgradeData" format=3 uid="uid://ci3hb88b2i56d"]
 
 [ext_resource type="Script" uid="uid://vrs3bafxturw" path="res://src/brewery/cellar_upgrade_data.gd" id="1_upgrade"]
 

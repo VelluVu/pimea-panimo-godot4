@@ -77,6 +77,9 @@ func _on_animated_sprite_frame_changed() -> void:
 func _apply_visuals() -> void:
 	animated_sprite.sprite_frames = customer_data.sprite_frames
 	animated_sprite.material = CustomerRecolor.build_material(customer_data)
+	var glass_region : Rect2 = CustomerHandOffsets.glass_region_for(customer_data.title)
+	beer_glass_sprite.region_enabled = glass_region.has_area()
+	beer_glass_sprite.region_rect = glass_region
 	_play_animation(ANIM_IDLE)
 	_sounds.start_ambient_loop(self, customer_data)
 

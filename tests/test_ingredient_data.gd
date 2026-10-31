@@ -83,3 +83,11 @@ func test_other_ingredients_keep_their_stat_line_short() -> void:
 	var malt := MaltData.new()
 	malt.ebc = 3
 	assert_eq(malt.get_short_stat_string(), malt.get_stat_string())
+
+
+func test_a_seasonal_ingredient_is_sold_only_in_its_season() -> void:
+	var prompt := IngredientData.new()
+	prompt.season = SeasonRules.Season.CYBER_WEEK
+	assert_true(prompt.is_sold_in(SeasonRules.Season.CYBER_WEEK))
+	assert_false(prompt.is_sold_in(SeasonRules.Season.BLACK_MONTH))
+	assert_true(IngredientData.new().is_sold_in(SeasonRules.Season.HALLOWEEN), "an all-year ingredient is always sold")

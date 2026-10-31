@@ -116,6 +116,12 @@ const NOT_TO_TASTE: float = -1.0
 @export var required_discovered_style: int = -1
 ## Empty = no limit. Needs this achievement, permanent like required_discovered_style.
 @export var required_achievement_id: String = ""
+## Odds against the other customers, 1.0 for the usual; 0 keeps them away. In busy_season
+## busy_season_weight replaces it: Tarjoushaukka comes all year and more in Black Month,
+## Kyborgi only in Cyber Week.
+@export var appearance_weight: float = 1.0
+@export var busy_season: SeasonRules.Season = SeasonRules.Season.NONE
+@export var busy_season_weight: float = 1.0
 
 @export_group("Erikoiskäytös")
 @export var randomizes_preference: bool = false
@@ -169,6 +175,17 @@ func get_preference_score(style: BeerStyle.Style) -> float:
 	elif style == secondary_style or also_likes.has(style) or accepted_styles.has(style):
 		return 0.5
 	return 0.0
+
+
+func get_appearance_weight(season : SeasonRules.Season) -> float:
+	if busy_season != SeasonRules.Season.NONE and SeasonRules.includes(season, busy_season):
+		return busy_season_weight
+	return appearance_weight
+
+
+## False for a seasonal customer out of season: never picked, announced or walked in.
+func comes_in(season : SeasonRules.Season) -> bool:
+	return get_appearance_weight(season) > 0.0
 
 
 func uses_taste_tiers() -> bool:

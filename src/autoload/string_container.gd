@@ -34,6 +34,7 @@ const IRISH_DRY_STOUT : String = "Irish Dry Stout"
 const PILSNER : String = "Pilsner"
 const CZECH_PILSNER : String = "Tšekkiläinen pilsner"
 const KURPITSAOLUT : String = "Kurpitsaolut"
+const TEKOALYOLUT : String = "Tekoälyolut"
 
 const KG : String = "kg"
 const G : String = "g"

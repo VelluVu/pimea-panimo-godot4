@@ -78,6 +78,28 @@ const DRONE_OFFSETS : Array[Vector2] = [
 ]
 
 
+## Tarjoushaukka stuffs the glass into a shopping bag with the rest of the loot: only its
+## top rows show, the cut edge in the bag's opening (one texel higher on frame 3, where
+## the bag rises with the step).
+const TARJOUSHAUKKA_TITLE : String = "Tarjoushaukka"
+const TARJOUSHAUKKA_OFFSETS : Array[Vector2] = [
+	Vector2(-28, -46),
+	Vector2(-28, -46),
+	Vector2(-28, -46),
+	Vector2(-28, -50),
+]
+const BAGGED_GLASS_REGION : Rect2 = Rect2(0, 0, 8, 5)
+
+## Kyborgi's hand rises with its hum on frame 1, and swings out and up on frame 3.
+const KYBORGI_TITLE : String = "Kyborgi"
+const KYBORGI_OFFSETS : Array[Vector2] = [
+	Vector2(-28, -46),
+	Vector2(-28, -50),
+	Vector2(-28, -46),
+	Vector2(-32, -54),
+]
+
+
 ## Hand position for one walk_towards frame of the archetype with this title.
 static func position_for(title: String, frame: int) -> Vector2:
 	var offsets : Array[Vector2] = DEFAULT_OFFSETS
@@ -96,4 +118,13 @@ static func position_for(title: String, frame: int) -> Vector2:
 			offsets = MUNKKI_OFFSETS
 		KURPITSAPAA_TITLE:
 			offsets = KURPITSAPAA_OFFSETS
+		TARJOUSHAUKKA_TITLE:
+			offsets = TARJOUSHAUKKA_OFFSETS
+		KYBORGI_TITLE:
+			offsets = KYBORGI_OFFSETS
 	return offsets[frame % offsets.size()]
+
+
+## The part of the held glass that shows, in glass texels; an empty Rect2 shows all of it.
+static func glass_region_for(title: String) -> Rect2:
+	return BAGGED_GLASS_REGION if title == TARJOUSHAUKKA_TITLE else Rect2()
