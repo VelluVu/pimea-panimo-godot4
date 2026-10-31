@@ -69,6 +69,16 @@ func evict_active_customers() -> void:
 	_apply_counter_size()
 
 
+## Persuasiakas fired: every solo customer but `source` runs, walking in or at the counter,
+## and no one new comes in for a while.
+func scatter_counter(source: Node2D) -> void:
+	if active_spawner != null:
+		active_spawner.hold_arrivals(CustomerSpawner.QUIET_AFTER_OUTBURST_SECONDS)
+	for customer : Node2D in slots.customers():
+		if customer != source and customer is Customer and is_instance_valid(customer):
+			(customer as Customer).flee()
+
+
 func get_free_slot_index() -> int:
 	return slots.first_free()
 

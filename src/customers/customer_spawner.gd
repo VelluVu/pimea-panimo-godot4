@@ -7,6 +7,8 @@ extends Node2D
 const CUSTOMER_SCENE: PackedScene = preload("res://src/scenes/customer.tscn")
 ## Sent in once a season when LVV risk reaches Brewery.LVV_INSPECTOR_VISIT_RISK.
 const LVV_INSPECTOR: CustomerData = preload("res://src/resources/visitors/lvv_inspector.tres")
+## After a shot in the cellar (Persuasiakas) nobody walks in for a while.
+const QUIET_AFTER_OUTBURST_SECONDS: float = 10.0
 
 @onready var counter_positions_parent: Node2D = $CounterPositionsParent
 @onready var stairs_bottom_marker: Marker2D = $StairsBottomMarker
@@ -21,6 +23,9 @@ var _group_visit: GroupVisitDirector
 ## Set during a raid. Brewery state changes call start_spawning() all the time, so the
 ## timers alone cannot hold a pause.
 var _paused: bool = false
+## Until this (Time.get_ticks_msec()) nobody walks in, see hold_arrivals(). Apart from
+## _paused, so a raid's resume_spawning() cannot cut it short.
+var _quiet_until_msec: int = 0
 ## Walk-ins already on their way: {"data": CustomerData or null, "timer": SceneTreeTimer}.
 var _scheduled: Array[Dictionary] = []
 ## Puts the visitors above into the save and back.
@@ -98,6 +103,15 @@ func is_paused() -> bool:
 	return _paused
 
 
+## No one walks in, alone or as a group, for `seconds`; the timers run on and spawn after.
+func hold_arrivals(seconds: float) -> void:
+	_quiet_until_msec = Time.get_ticks_msec() + int(seconds * 1000.0)
+
+
+func _is_quiet() -> bool:
+	return Time.get_ticks_msec() < _quiet_until_msec
+
+
 ## No stock check: the first-brew gate is in CustomerManager, and later an empty cellar
 ## turns customers away, costing reputation and risk.
 func spawn_walk_in(forced_data: CustomerData = null) -> void:
@@ -169,6 +183,8 @@ func _resume_cellar_customers() -> void:
 
 ## Whether someone walked in.
 func _try_spawn_walk_in(forced_data: CustomerData) -> bool:
+	if _is_quiet():
+		return false
 	var free_slot: int = _free_slot()
 	if free_slot == -1:
 		return false
@@ -193,6 +209,8 @@ func _try_spawn_walk_in(forced_data: CustomerData) -> bool:
 
 
 func _try_spawn_group_visit(forced_event_data: GroupVisitEventData) -> void:
+	if _is_quiet():
+		return
 	var free_slot: int = _free_slot()
 	if free_slot == -1:
 		return

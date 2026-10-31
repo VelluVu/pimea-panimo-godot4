@@ -173,6 +173,13 @@ signal bar_fight_triggered(message: String)
 ## Next to bar_fight_triggered, so the customer throws one glass per broken bottle.
 @warning_ignore("unused_signal")
 signal bar_fight_started(broken_bottles: int)
+## A customer's outburst (Persuasiakas fired at the ceiling) scattered the counter, for the
+## shake; `message` is CustomerData.dialogue_outburst, shown as a toast.
+@warning_ignore("unused_signal")
+signal customer_outburst(message: String)
+## A customer's own narration after a sale (Presidentti's visit), shown as a toast.
+@warning_ignore("unused_signal")
+signal customer_sale_narrated(message: String)
 ## A glass thrown in a bar fight hit the floor, for the shatter sound.
 @warning_ignore("unused_signal")
 signal glass_shattered()

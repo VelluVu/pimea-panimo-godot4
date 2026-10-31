@@ -1,0 +1,45 @@
+[gd_resource type="Resource" script_class="CustomerData" format=3]
+
+[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_data"]
+[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/snobi_anim.tres" id="2_sprite"]
+[ext_resource type="Script" uid="uid://dq66tbectyal5" path="res://src/customers/taste_rule.gd" id="taste_script"]
+[ext_resource type="Resource" path="res://src/resources/taste_rules/arvostetut.tres" id="taste_arvostetut"]
+[ext_resource type="Resource" path="res://src/resources/taste_rules/laatuoluet.tres" id="taste_laatu"]
+
+[resource]
+script = ExtResource("1_data")
+customer_name = "Fredrik"
+title = "Snobi"
+first_names = Array[String](["Fredrik", "Carl-Gustaf", "Henrik", "Wilhelm", "Casimir", "Ludvig"])
+min_quality = 1.0
+budget_multiplier = 2.2
+primary_style = 10
+secondary_style = 24
+favourite_rules = Array[ExtResource("taste_script")]([ExtResource("taste_arvostetut")])
+second_rules = Array[ExtResource("taste_script")]([ExtResource("taste_laatu")])
+rolls_favourite = true
+sprite_frames = ExtResource("2_sprite")
+randomize_skin = false
+randomize_hair = false
+randomize_clothes = false
+randomize_shoes = false
+voice_pitch = 0.85
+dialogue_intro = "Hyvää iltaa. Toivottavasti tässä kellarissa on jotain kypsytettyä, eikä vain tätä... arkista."
+dialogue_success = "Kas. Tämä on lähes sivistynyttä. Pidä vaihtorahat, hyvä mies."
+dialogue_fallback = "Ei se mitä toivoin, mutta kelvatkoon. Kartanossa olisi ollut parempaa."
+dialogue_wrong_style = "Tämä ei ole sitä, mitä tilasin. Juon sen, mutta en nauti."
+dialogue_reject = "Tämä on talonpoikien juomaa. Vie pois."
+dialogue_no_match = "Ei mitään säädyllistä. Palaan, kun valikoima on kypsynyt."
+dialogue_preview_format = "%s. Kuinka kauan sitä on kypsytetty? Hinnalla ei ole väliä."
+dialogue_nothing_available = "Pelkkää bulkkia. Monokkelini huurtui pettymyksestä."
+tip_base_chance = 0.3
+quality_tip_sensitivity = 1.0
+rep_bad_quality = -6
+rep_primary_style = 6
+rep_secondary_style = 2
+rep_wrong_style = -2
+quality_reputation_sensitivity = 6.0
+risk_primary_style = 1
+min_reputation_to_appear = 60
+required_discovered_style = 10
+metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

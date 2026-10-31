@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="TasteRule" format=3]
+
+[ext_resource type="Script" path="res://src/customers/taste_rule.gd" id="1_rule"]
+
+[resource]
+script = ExtResource("1_rule")
+label = "Roggenbier"
+styles = Array[int]([25])
+metadata/_custom_type_script = "res://src/customers/taste_rule.gd"

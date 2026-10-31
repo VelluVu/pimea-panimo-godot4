@@ -27,7 +27,8 @@ PALETTE = {
     "1": hex_color("124e89"), "4": hex_color("ead4aa"), "2": hex_color("63c74d"), "3": hex_color("ffffff"),
 }
 
-# The glasses: big, a pixel past the face on each side. A black frame, one bar over both
+# Eleven rows, a long face: a high forehead and a nose row between the glasses and the
+# smile. The glasses: big, a pixel past the face on each side. A black frame, one bar over both
 # eyes joined to a frame each side of them, with white either side of the pupil showing
 # through, so they read as clear lenses and not as sunglasses. The two front teeth hang from the
 # middle of the smile.
@@ -35,9 +36,11 @@ HEAD_FRONT = [
     "......AAAaaaaa......",
     ".....AAAaaaaaaa.....",
     ".....Aasssssssa.....",
+    ".....ssssssssst.....",
     "....ggggggggggg.....",
     "....gwewgggwewgt....",
     "....tsssstssssst....",
+    ".....ssssttsssst....",
     ".....skwwwwwwkt.....",
     "......sskwwkst......",
     ".......ssssst.......",
@@ -47,9 +50,11 @@ HEAD_BACK = [
     ".....AAAaaaaaaa.....",
     ".....AAaaaaaaaa.....",
     ".....Aaaaaaaaaa.....",
+    ".....Aaaaaaaaaa.....",
     ".....gaaaaaaaag.....",
     "....tsaaaaaaaast....",
     ".....ssaaaaaatt.....",
+    ".....sssssssstt.....",
     "......ssssssst......",
     ".......sssssst......",
 ]

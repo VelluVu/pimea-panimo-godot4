@@ -1,0 +1,39 @@
+[gd_resource type="Resource" script_class="CustomerData" format=3]
+
+[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_data"]
+[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/persuasiakas_anim.tres" id="2_sprite"]
+[ext_resource type="Script" uid="uid://dq66tbectyal5" path="res://src/customers/taste_rule.gd" id="taste_script"]
+[ext_resource type="Resource" path="res://src/resources/taste_rules/halvat.tres" id="taste_halvat"]
+
+[resource]
+script = ExtResource("1_data")
+customer_name = "Pena"
+title = "Persuasiakas"
+first_names = Array[String](["Pena", "Rane", "Jarmo", "Kari", "Arto", "Raimo"])
+min_quality = 0.2
+budget_multiplier = 0.7
+primary_style = 1
+secondary_style = 0
+favourite_rules = Array[ExtResource("taste_script")]([ExtResource("taste_halvat")])
+rolls_favourite = true
+sprite_frames = ExtResource("2_sprite")
+randomize_skin = false
+randomize_hair = false
+randomize_clothes = false
+randomize_shoes = false
+voice_pitch = 0.8
+dialogue_intro = "No niin. Onko täällä ihan suomalaista kaljaa vai pitääkö taas jonkun vihervassarin smoothieta juoda?"
+dialogue_success = "Hyvää ja halpaa. Toisin kuin tää hallitus... ainiin, se on meidän."
+dialogue_fallback = "Kelpaa. Ei ainakaan oo verorahoilla tehty."
+dialogue_wrong_style = "Mikä tää on? Joku monikulttuurinen kokeilu? Juon silti, kun maksoin."
+dialogue_reject = "*PAM!* Ilmaan ammuttu, sananvapautta! Tää kalja on yhtä laimeeta kuin vihervassarin selkäranka!"
+dialogue_no_match = "*PAM!* Ei halpaa kaljaa? Kaikki rahat menee ihan muualle kuin meille tavallisille!"
+dialogue_preview_format = "%s. Kuulostaa rehelliseltä työmiehen juomalta."
+dialogue_nothing_available = "Pelkkiä hipsterilitkuja. Leikataan!"
+tip_base_chance = 0.0
+quality_tip_sensitivity = 0.0
+rep_primary_style = 3
+required_achievement_id = "kolme_lvv_lahjusta"
+outburst_animation = &"shoot"
+dialogue_outburst = "Laukaus kellarissa! Asiakkaat pakenivat portaita ylös."
+metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

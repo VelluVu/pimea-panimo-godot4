@@ -9,6 +9,8 @@ const STAIR_STEPS : int = 15
 const STAIR_STEP_PAUSE_SECONDS : float = 0.05
 const CENTER_PAUSE_SECONDS : float = 0.8
 const MIN_WALK_DISTANCE : float = 1.0
+## route's index of the room centre, where the walk in pauses.
+const ROOM_CENTRE_LEG : int = 2
 
 ## The legs of the walk in, in order (see start()).
 enum Leg { STAIRS, TO_CENTER, CENTER_PAUSE, TO_COUNTER }

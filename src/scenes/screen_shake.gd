@@ -6,6 +6,7 @@ extends Node
 
 const FIGHT_TRAUMA : float = 0.6
 const GLASS_TRAUMA : float = 0.35
+const SHOT_TRAUMA : float = 0.5
 
 var _trauma : float = 0.0
 
@@ -14,6 +15,7 @@ func _ready() -> void:
 	# A level-up pauses the tree mid-shake; the world must still settle back.
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	BrewerySignals.bar_fight_started.connect(_add_trauma.bind(FIGHT_TRAUMA).unbind(1))
+	BrewerySignals.customer_outburst.connect(_add_trauma.bind(SHOT_TRAUMA).unbind(1))
 	BrewerySignals.glass_shattered.connect(_add_trauma.bind(GLASS_TRAUMA))
 	set_process(false)
 

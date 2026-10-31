@@ -44,6 +44,10 @@ msgid "Alkoholiton Lager"
 msgstr "Non-alcoholic Lager"
 
 #: src/autoload/string_container.gd
+msgid "Alkoholiton lakkaseltzeri"
+msgstr "Alcohol-free cloudberry seltzer"
+
+#: src/autoload/string_container.gd
 msgid "Amber Ale"
 msgstr "Amber Ale"
 
@@ -734,8 +738,8 @@ msgid "Koko kylä tuttu"
 msgstr "Know the Whole Town"
 
 #: src/resources/achievements/asiakaskirja_kaikki.tres
-msgid "Tapaa kaikki 24 asiakastyyppiä."
-msgstr "Meet all 24 customer types."
+msgid "Tapaa kaikki 28 asiakastyyppiä."
+msgstr "Meet all 28 customer types."
 
 #: src/resources/achievements/bulkkia_5.tres
 msgid "Kansan kalja"
@@ -1309,6 +1313,24 @@ msgid ""
 msgstr ""
 "A pale lager whose special yeast leaves out the alcohol. Served after the "
 "sauna to those who still have to drive home."
+
+#: src/resources/beer_styles/alkoholiton_lakkaseltzeri.tres
+msgid ""
+"Kirkas ja kupliva juoma ilman maltaita ja humalaa. Maku tulee pohjoisen "
+"soilta, alkoholia ei ole."
+msgstr ""
+"A clear, fizzy drink with no malt and no hops. The flavour comes from the "
+"northern bogs, and there is no alcohol."
+
+#: src/resources/beer_styles/alkoholiton_lakkaseltzeri.tres
+msgid ""
+"Kirkasta ja kuplivaa, sokerisiirapista ja alkoholittomasta hiivasta, ilman "
+"maltaita ja humalaa. Maku tulee lakasta. Juoma, josta kukaan ei voi syyttää "
+"ketään."
+msgstr ""
+"Clear and fizzy, made from sugar syrup and alcohol-free yeast, with no malt "
+"and no hops. The flavour comes from cloudberries. A drink nobody can blame "
+"anyone for."
 
 #: src/resources/beer_styles/amber_ale.tres
 msgid "Meripihkan värinen ale, jossa karamelli ja humala ovat tasapainossa."
@@ -1989,6 +2011,42 @@ msgstr ""
 #: src/resources/customers/alpha_gen_naaras.tres
 msgid "Ohmygod, toi %s näyttää lowkey goated, otan sen fr fr."
 msgstr "Ohmygod, that %s looks lowkey goated, I'll take it fr fr."
+
+#: src/resources/customers/amparihamstraaja.tres
+msgid "%s? Mahtuuko sitä ämpäriin? Otan koko ämpärillisen."
+msgstr "%s? Does it fit in a bucket? I'll take a whole bucketful."
+
+#: src/resources/customers/amparihamstraaja.tres
+msgid "Ei mitään ämpäriin? Mä jonotin tänne ämpärin takia!"
+msgstr "Nothing for the bucket? I queued here for the bucket!"
+
+#: src/resources/customers/amparihamstraaja.tres
+msgid "Ei ollut ruista, mutta ämpäri täyttyy tälläkin."
+msgstr "No rye, but this fills a bucket too."
+
+#: src/resources/customers/amparihamstraaja.tres
+msgid "Mikä tää on? Ihan sama, ämpäriin vaan."
+msgstr "What's this? Whatever, in the bucket it goes."
+
+#: src/resources/customers/amparihamstraaja.tres
+msgid "Mmf! Jonotin ovella koko yön. Täällä jaetaan ämpäreitä, eikö?"
+msgstr "Mmf! I queued at the door all night. They're giving out buckets here, right?"
+
+#: src/resources/customers/amparihamstraaja.tres
+msgid "Tyhjä ämpäri. Ensi kerralla jonotan aikaisemmin."
+msgstr "An empty bucket. Next time I'll queue earlier."
+
+#: src/resources/customers/amparihamstraaja.tres
+msgid "Tällä ei ämpäriä täytetä. Kaada se pois."
+msgstr "This won't fill a bucket. Pour it away."
+
+#: src/resources/customers/amparihamstraaja.tres
+msgid "Ämpäri täynnä! Poskiin ei enää mahtunut, joten loput kannan."
+msgstr "Bucket full! My cheeks couldn't take any more, so I'll carry the rest."
+
+#: src/resources/customers/amparihamstraaja.tres
+msgid "Ämpärihamstraaja"
+msgstr "Bucket Hoarder"
 
 #: src/resources/customers/barbaari.tres
 msgid "ANNA TÄNNE VAHVINTA MITÄ ON!"
@@ -2686,6 +2744,108 @@ msgstr "Well, blast it all, wasn't there any proper beer here..."
 msgid "Papparainen"
 msgstr "Grandpa"
 
+#: src/resources/customers/persuasiakas.tres
+msgid "%s. Kuulostaa rehelliseltä työmiehen juomalta."
+msgstr "%s. Sounds like an honest working man's drink."
+
+#: src/resources/customers/persuasiakas.tres
+msgid ""
+"*PAM!* Ei halpaa kaljaa? Kaikki rahat menee ihan muualle kuin meille "
+"tavallisille!"
+msgstr ""
+"*BANG!* No cheap beer? All the money goes everywhere but to us ordinary "
+"folk!"
+
+#: src/resources/customers/persuasiakas.tres
+msgid ""
+"*PAM!* Ilmaan ammuttu, sananvapautta! Tää kalja on yhtä laimeeta kuin "
+"vihervassarin selkäranka!"
+msgstr ""
+"*BANG!* Fired into the air, that's free speech! This beer is as weak as a "
+"green leftie's backbone!"
+
+#: src/resources/customers/persuasiakas.tres
+msgid "Hyvää ja halpaa. Toisin kuin tää hallitus... ainiin, se on meidän."
+msgstr "Good and cheap. Unlike this government... oh right, it's ours."
+
+#: src/resources/customers/persuasiakas.tres
+msgid "Kelpaa. Ei ainakaan oo verorahoilla tehty."
+msgstr "It'll do. At least it wasn't made with taxpayers' money."
+
+#: src/resources/customers/persuasiakas.tres
+msgid "Laukaus kellarissa! Asiakkaat pakenivat portaita ylös."
+msgstr "A shot in the cellar! The customers fled up the stairs."
+
+#: src/resources/customers/persuasiakas.tres
+msgid "Mikä tää on? Joku monikulttuurinen kokeilu? Juon silti, kun maksoin."
+msgstr ""
+"What's this? Some multicultural experiment? I'll drink it anyway, I paid "
+"for it."
+
+#: src/resources/customers/persuasiakas.tres
+msgid ""
+"No niin. Onko täällä ihan suomalaista kaljaa vai pitääkö taas jonkun "
+"vihervassarin smoothieta juoda?"
+msgstr ""
+"Right then. Is there proper Finnish beer here, or do I have to drink some "
+"green leftie's smoothie again?"
+
+#: src/resources/customers/persuasiakas.tres
+msgid "Pelkkiä hipsterilitkuja. Leikataan!"
+msgstr "Nothing but hipster swill. Cut it!"
+
+#: src/resources/customers/persuasiakas.tres
+msgid "Persuasiakas"
+msgstr "Populist"
+
+#: src/resources/customers/presidentti.tres
+msgid "%s? Alkoholiton? Erinomaista, iltapäivällä on vielä uintiosuus."
+msgstr "%s? Alcohol-free? Excellent, I still have the swim this afternoon."
+
+#: src/resources/customers/presidentti.tres
+msgid "Ei aivan tilattu, mutta pysytään dialogissa."
+msgstr "Not quite what I ordered, but let's stay in dialogue."
+
+#: src/resources/customers/presidentti.tres
+msgid "Ei seltzeriä? Harmi. Juoksen seuraavaan kellariin. Onko sekin laillinen?"
+msgstr "No seltzer? Pity. I'll run to the next cellar. Is that one legal too?"
+
+#: src/resources/customers/presidentti.tres
+msgid "Hyvä on, tämä kelpaa. Kompromissi on diplomatian ydin."
+msgstr "Very well, this will do. Compromise is the heart of diplomacy."
+
+#: src/resources/customers/presidentti.tres
+msgid "Hyvää päivää! Juoksin tänne Kultarannasta. Onko tämä laillista?"
+msgstr "Good day! I ran here from Kultaranta. Is this legal?"
+
+#: src/resources/customers/presidentti.tres
+msgid "Kaikessa on alkoholia. Onko tämä laillista?"
+msgstr "Everything has alcohol in it. Is this legal?"
+
+#: src/resources/customers/presidentti.tres
+msgid ""
+"Loistavaa! Lakkaa ja kuplia, juuri sitä suomalaista osaamista. Annan tästä "
+"hymyn."
+msgstr ""
+"Splendid! Cloudberries and bubbles, Finnish know-how at its finest. That "
+"earns a smile."
+
+#: src/resources/customers/presidentti.tres
+msgid "Presidentti"
+msgstr "President"
+
+#: src/resources/customers/presidentti.tres
+msgid "Presidentti kävi kellarissa. Kaikki on varmasti laillista."
+msgstr "The President visited the cellar. Everything must be legal."
+
+#: src/resources/customers/presidentti.tres
+msgid ""
+"Tässä on promilleja! Minulla on vielä pyöräilyosuus ja huomenna "
+"valtiovierailu."
+msgstr ""
+"This has alcohol in it! I still have the cycling leg, and a state visit "
+"tomorrow."
+
 #: src/resources/customers/raksamies.tres
 msgid ""
 "Ei täällä ollu mitään aikuisille. Työpäivän jälkeen tarviin kyllä kunnon "
@@ -2775,6 +2935,46 @@ msgstr ""
 #: src/resources/customers/saksalainen_turisti_naaras.tres
 msgid "Wunderbar! Das schmeckt fast wie in München. Prost, meine Liebe!"
 msgstr "Wunderbar! Das schmeckt fast wie in München. Prost, meine Liebe!"
+
+#: src/resources/customers/snobi.tres
+msgid "%s. Kuinka kauan sitä on kypsytetty? Hinnalla ei ole väliä."
+msgstr "%s. How long has it been aged? Price is no object."
+
+#: src/resources/customers/snobi.tres
+msgid "Ei mitään säädyllistä. Palaan, kun valikoima on kypsynyt."
+msgstr "Nothing respectable. I shall return when the selection has matured."
+
+#: src/resources/customers/snobi.tres
+msgid "Ei se mitä toivoin, mutta kelvatkoon. Kartanossa olisi ollut parempaa."
+msgstr "Not what I hoped for, but it will do. The manor would have had better."
+
+#: src/resources/customers/snobi.tres
+msgid ""
+"Hyvää iltaa. Toivottavasti tässä kellarissa on jotain kypsytettyä, eikä "
+"vain tätä... arkista."
+msgstr ""
+"Good evening. I do hope this cellar has something aged, and not just "
+"this... everyday stuff."
+
+#: src/resources/customers/snobi.tres
+msgid "Kas. Tämä on lähes sivistynyttä. Pidä vaihtorahat, hyvä mies."
+msgstr "Well. This is almost civilised. Keep the change, my good man."
+
+#: src/resources/customers/snobi.tres
+msgid "Pelkkää bulkkia. Monokkelini huurtui pettymyksestä."
+msgstr "Nothing but bulk. My monocle fogged up with disappointment."
+
+#: src/resources/customers/snobi.tres
+msgid "Snobi"
+msgstr "Snob"
+
+#: src/resources/customers/snobi.tres
+msgid "Tämä ei ole sitä, mitä tilasin. Juon sen, mutta en nauti."
+msgstr "This is not what I ordered. I shall drink it, but I shall not enjoy it."
+
+#: src/resources/customers/snobi.tres
+msgid "Tämä on talonpoikien juomaa. Vie pois."
+msgstr "This is a drink for peasants. Take it away."
 
 #: src/resources/customers/tarjoushaukka.tres
 msgid "Ei ollu se tarjous, mutta halpaa on halpaa."
@@ -4212,6 +4412,22 @@ msgstr "Smoked Malt"
 msgid "savumallasta"
 msgstr "smoked malt"
 
+#: src/resources/ingredients/malts/sugar_syrup.tres
+msgid ""
+"Kirkasta sokerisiirappia ilman väriä ja makua. Seltzerin pohja: käy "
+"kokonaan, eikä jätä jälkeensä mitään, mistä voisi syyttää."
+msgstr ""
+"Clear sugar syrup with no colour and no taste. The base of a seltzer: it "
+"ferments completely and leaves nothing behind anyone could be blamed for."
+
+#: src/resources/ingredients/malts/sugar_syrup.tres
+msgid "Sokerisiirappi"
+msgstr "Sugar syrup"
+
+#: src/resources/ingredients/malts/sugar_syrup.tres
+msgid "sokerisiirappia"
+msgstr "sugar syrup"
+
 #: src/resources/ingredients/malts/vienna_malt.tres
 msgid ""
 "Kevyesti paahdettu pohjamallas, joka antaa kullanruskean värin ja leipäisen "
@@ -4264,6 +4480,23 @@ msgstr ""
 #: src/resources/ingredients/spices/candi_sugar.tres
 msgid "Kandisokeri"
 msgstr "Candi Sugar"
+
+#: src/resources/ingredients/spices/cloudberry.tres
+msgid "Lakka"
+msgstr "Cloudberry"
+
+#: src/resources/ingredients/spices/cloudberry.tres
+msgid ""
+"Pohjoisen soiden kultaa, poimittu hyttysten keskeltä. Lakkaseltzeri ei "
+"synny ilman sitä, ja hinta kertoo, ettei se kasva kellarissa."
+msgstr ""
+"The gold of the northern bogs, picked among the mosquitoes. Cloudberry "
+"seltzer is not made without it, and the price tells you it does not grow in "
+"a cellar."
+
+#: src/resources/ingredients/spices/cloudberry.tres
+msgid "lakkaa"
+msgstr "cloudberries"
 
 #: src/resources/ingredients/spices/coconut_flakes.tres
 msgid "Kookoshiutaleet"

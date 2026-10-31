@@ -5,13 +5,18 @@ round ears poking out under its rim. Cheeks stuffed full and buck teeth below. T
 buckets make the silhouette: a trapezoid on top, a bigger one under it. Blue is the
 fur's opposite, so the body bucket never reads as a shirt.
 
+He leaves with a third, red bucket full of bottles in hand (CustomerData.hand_item), drawn
+here too as assets/textures/bucket_of_bottles.png at the sprite's own pixel size.
+
     python dev/tools/sprites/make_amparihamstraaja.py [--preview out.png]
 """
 
 import argparse
 from pathlib import Path
 
-from customer_sheet import Look, draw_sheet, hex_color, save
+from PIL import Image
+
+from customer_sheet import ROOT, Look, draw_sheet, hex_color, paint, save
 
 PALETTE = {
     "F": hex_color("d77643"),  # fur
@@ -93,11 +98,39 @@ def look() -> Look:
     )
 
 
+# The bucket he carries out: the handle up to his paw, three bottle necks with their caps
+# over the lit rim, the body narrowing to the bottom. Red, apart from the two he wears.
+BUCKET_OF_BOTTLES = [
+    ".kkkkkk.",
+    "k.y.y.yk",
+    "k.B.G.Bk",
+    "XqqqqqqX",
+    "XXXXXXXx",
+    ".XXXXXx.",
+    ".xxxxxx.",
+]
+BUCKET_PALETTE = {
+    "k": hex_color("181425"),  # handle
+    "y": hex_color("feae34"),  # bottle caps
+    "B": hex_color("733e39"), "G": hex_color("3e8948"),  # brown and green bottles
+    "q": hex_color("f6757a"), "X": hex_color("e43b44"), "x": hex_color("a22633"),  # bucket
+}
+BUCKET_PATH = ROOT / "assets/textures/bucket_of_bottles.png"
+
+
+def draw_bucket() -> Image.Image:
+    image = Image.new("RGBA", (len(BUCKET_OF_BOTTLES[0]), len(BUCKET_OF_BOTTLES)), (0, 0, 0, 0))
+    paint(image, BUCKET_PALETTE, BUCKET_OF_BOTTLES, 0, 0)
+    return image
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--preview", type=Path, help="also write a 4x preview here")
     args = parser.parse_args()
     save({"amparihamstraaja_32": draw_sheet(look())}, args.preview)
+    draw_bucket().save(BUCKET_PATH)
+    print(f"wrote {BUCKET_PATH.relative_to(ROOT)}")
 
 
 if __name__ == "__main__":

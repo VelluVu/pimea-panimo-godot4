@@ -2,6 +2,8 @@ class_name Customer
 extends Node2D
 
 const EXIT_WALK_DISTANCE : float = 150.0
+## Where an outburst happens when the walk's route is gone (a resumed visit).
+const OUTBURST_STEP_OUT : Vector2 = Vector2(0.0, 60.0)
 
 const ANIM_IDLE : StringName = &"idle"
 const ANIM_IDLE_UP : StringName = &"idle_up"
@@ -35,6 +37,8 @@ var _phase: CustomerSnapshot.Phase = CustomerSnapshot.Phase.WALKING_IN
 ## Group members are driven by GroupVisitDirector, which saves them with their group.
 var _skip_interaction: bool = false
 var _phase_timer: SceneTreeTimer
+## The walk down to the counter, so flee() can stop it halfway.
+var _walk_in: Tween
 var _bubble_text: String = ""
 ## The batches named in the preview, so the sale buys the same ones.
 var _picked_batches: Array[BrewBatch] = []
@@ -80,6 +84,8 @@ func _apply_visuals() -> void:
 	var glass_region : Rect2 = CustomerHandOffsets.glass_region_for(customer_data.title)
 	beer_glass_sprite.region_enabled = glass_region.has_area()
 	beer_glass_sprite.region_rect = glass_region
+	if customer_data.hand_item != null:
+		_glasses.carry_instead(customer_data.hand_item, animated_sprite.scale)
 	_play_animation(ANIM_IDLE)
 	_sounds.start_ambient_loop(self, customer_data)
 
@@ -103,6 +109,7 @@ func walk_complex_route(stairs_pos: Vector2, center_pos: Vector2, target_pos: Ve
 
 ## At the counter a group member waits for its group; anyone else greets.
 func _end_walk_in(walk_in: Tween) -> void:
+	_walk_in = walk_in
 	if _skip_interaction:
 		walk_in.tween_callback(_wait_with_group)
 	else:
@@ -244,8 +251,60 @@ func _on_sale_timeout() -> void:
 	if outcome.bar_fight_bottles >= 0:
 		play_rampage(outcome.bar_fight_bottles)
 		leave_after = maxf(leave_after, BarFightRampage.DURATION_SECONDS)
+	if outcome.servings > 0 and not customer_data.dialogue_sale_toast.is_empty():
+		BrewerySignals.customer_sale_narrated.emit(tr(customer_data.dialogue_sale_toast))
+	if outcome.servings == 0 and customer_data.outburst_animation != &"":
+		var spot : Vector2 = _outburst_spot()
+		leave_after = maxf(leave_after, _seconds_to(spot) + _animation_seconds(customer_data.outburst_animation))
+		_burst_out(spot)
 	_phase_timer = get_tree().create_timer(leave_after, false)
 	_phase_timer.timeout.connect(leave_counter)
+
+
+## Left with nothing: walks out to `spot` where the whole cellar sees, and plays the
+## outburst. On its next frame (the shot) the toast and shake come and every other solo
+## customer runs (CustomerManager.scatter_counter()).
+func _burst_out(spot: Vector2) -> void:
+	await _walker.walk_to(spot)
+	animated_sprite.flip_h = false
+	animated_sprite.play(customer_data.outburst_animation)
+	await animated_sprite.frame_changed
+	BrewerySignals.customer_outburst.emit(tr(customer_data.dialogue_outburst))
+	CustomerManager.scatter_counter(self)
+
+
+## The middle of the cellar, where customers pause on the way in; a resumed visit without
+## its route steps out from the counter instead.
+func _outburst_spot() -> Vector2:
+	if _walker.route.size() > CustomerWalker.ROOM_CENTRE_LEG:
+		return _walker.route[CustomerWalker.ROOM_CENTRE_LEG]
+	return global_position + OUTBURST_STEP_OUT
+
+
+func _seconds_to(spot: Vector2) -> float:
+	return global_position.distance_to(spot) / customer_data.floor_walk_speed
+
+
+func _animation_seconds(anim_name: StringName) -> float:
+	var frames : SpriteFrames = animated_sprite.sprite_frames
+	var total : float = 0.0
+	for i : int in frames.get_frame_count(anim_name):
+		total += frames.get_frame_duration(anim_name, i)
+	return total / frames.get_animation_speed(anim_name)
+
+
+## Drops whatever it was doing and runs out with nothing bought. A group member stays: its
+## visit is run by GroupVisitDirector.
+func flee() -> void:
+	if _skip_interaction or _phase == CustomerSnapshot.Phase.LEAVING:
+		return
+	if _walk_in != null and _walk_in.is_valid():
+		_walk_in.kill()
+	if _phase_timer != null:
+		for connection : Dictionary in _phase_timer.timeout.get_connections():
+			_phase_timer.timeout.disconnect(connection.callable)
+	BrewerySignals.customer_evicted.emit(dialogue_slot)
+	leave_counter()
 
 
 ## Stomps around in place throwing `glass_count` glasses, see BarFightRampage; a loaded

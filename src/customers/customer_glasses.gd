@@ -15,6 +15,8 @@ var _counter : Sprite2D
 ## The glass as drawn, before fill() colours its beer.
 var _empty_texture : Texture2D
 var _serve_timer : SceneTreeTimer
+## True once carry_instead() put the customer's own item in hand: fill() leaves it as drawn.
+var _carries_item : bool = false
 
 
 func _init(owner : Node2D, hand : Sprite2D, counter : Sprite2D) -> void:
@@ -30,8 +32,17 @@ func fill(ebc : int) -> void:
 	if ebc < 0 or _empty_texture == null:
 		return
 	var filled : Texture2D = BeerColor.glass_texture(_empty_texture, ebc)
-	_hand.texture = filled
+	if not _carries_item:
+		_hand.texture = filled
 	_counter.texture = filled
+
+
+## Carries `item` out instead of the glass (a bucket of bottles), at `pixel_scale` so its
+## pixels match the customer's sprite.
+func carry_instead(item : Texture2D, pixel_scale : Vector2) -> void:
+	_carries_item = true
+	_hand.texture = item
+	_hand.scale = pixel_scale
 
 
 func hand_texture() -> Texture2D:

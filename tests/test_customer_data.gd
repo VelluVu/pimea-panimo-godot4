@@ -487,3 +487,12 @@ func test_a_met_season_customer_returns_rarely_after_its_season() -> void:
 	assert_eq(customer.get_appearance_weight(SeasonRules.Season.BLACK_MONTH, true), 3.0)
 	assert_false(customer.comes_in(SeasonRules.Season.HALLOWEEN))
 	assert_true(customer.comes_in(SeasonRules.Season.HALLOWEEN, true))
+
+
+## customer.gd plays outburst_animation by name, so the customer's sheet must have it.
+func test_an_outburst_animation_is_in_the_customers_sprite_frames() -> void:
+	for customer : CustomerData in ResourceFolder.load_all("res://src/resources/customers/", CustomerData):
+		if customer.outburst_animation == &"":
+			continue
+		assert_true(customer.sprite_frames.has_animation(customer.outburst_animation), "%s has no %s animation" % [customer.title, customer.outburst_animation])
+		assert_false(customer.sprite_frames.get_animation_loop(customer.outburst_animation), "%s's outburst must play once" % customer.title)

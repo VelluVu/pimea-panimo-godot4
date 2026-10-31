@@ -1,0 +1,45 @@
+[gd_resource type="Resource" script_class="CustomerData" format=3]
+
+[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_data"]
+[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/presidentti_anim.tres" id="2_sprite"]
+[ext_resource type="Script" uid="uid://dq66tbectyal5" path="res://src/customers/taste_rule.gd" id="taste_script"]
+[ext_resource type="Resource" path="res://src/resources/taste_rules/lakkaseltzeri.tres" id="taste_seltzeri"]
+[ext_resource type="Resource" path="res://src/resources/taste_rules/alkoholittomat.tres" id="taste_alkoholittomat"]
+
+[resource]
+script = ExtResource("1_data")
+customer_name = "Urho"
+title = "Presidentti"
+first_names = Array[String](["Urho", "Juho", "Kaarlo", "Pehr", "Lauri", "Risto"])
+min_quality = 1.0
+budget_multiplier = 2.5
+primary_style = 31
+secondary_style = 21
+favourite_rules = Array[ExtResource("taste_script")]([ExtResource("taste_seltzeri")])
+second_rules = Array[ExtResource("taste_script")]([ExtResource("taste_alkoholittomat")])
+sprite_frames = ExtResource("2_sprite")
+randomize_skin = false
+randomize_hair = false
+randomize_clothes = false
+randomize_shoes = false
+voice_pitch = 1.05
+dialogue_intro = "Hyvää päivää! Juoksin tänne Kultarannasta. Onko tämä laillista?"
+dialogue_success = "Loistavaa! Lakkaa ja kuplia, juuri sitä suomalaista osaamista. Annan tästä hymyn."
+dialogue_fallback = "Hyvä on, tämä kelpaa. Kompromissi on diplomatian ydin."
+dialogue_wrong_style = "Ei aivan tilattu, mutta pysytään dialogissa."
+dialogue_reject = "Tässä on promilleja! Minulla on vielä pyöräilyosuus ja huomenna valtiovierailu."
+dialogue_no_match = "Ei seltzeriä? Harmi. Juoksen seuraavaan kellariin. Onko sekin laillinen?"
+dialogue_preview_format = "%s? Alkoholiton? Erinomaista, iltapäivällä on vielä uintiosuus."
+dialogue_nothing_available = "Kaikessa on alkoholia. Onko tämä laillista?"
+max_required_abv = 0.5
+tip_base_chance = 0.4
+quality_tip_sensitivity = 1.0
+rep_primary_style = 8
+rep_secondary_style = 3
+risk_primary_style = -5
+risk_secondary_style = -3
+risk_wrong_style = -1
+min_reputation_to_appear = 160
+required_discovered_style = 31
+dialogue_sale_toast = "Presidentti kävi kellarissa. Kaikki on varmasti laillista."
+metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

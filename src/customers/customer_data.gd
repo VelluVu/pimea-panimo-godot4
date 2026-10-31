@@ -52,6 +52,9 @@ const NOT_TO_TASTE: float = -1.0
 @export var floor_walk_speed: float = 120.0
 ## False for customers who stow the beer inside themselves (Lähettirobotti).
 @export var carries_glass_out: bool = true
+## Carried out instead of the beer glass, as drawn and at the sprite's own pixel scale
+## (Ämpärihamstraaja's bucket of bottles). Null = the glass.
+@export var hand_item: Texture2D = null
 
 @export_group("Äänet")
 ## Pitch of the babble when this customer speaks: under 1 is deeper, over 1 higher.
@@ -161,6 +164,13 @@ const NOT_TO_TASTE: float = -1.0
 ## line, rep_purity_law_broken and no tip. Empty = does not care.
 @export_multiline var dialogue_purity_law_broken: String = ""
 @export var rep_purity_law_broken: int = -3
+## Played when this customer leaves with nothing, refused or unsuited (Persuasiakas fires
+## at the ceiling): every other solo customer flees and dialogue_outburst shows as a toast.
+@export var outburst_animation: StringName = &""
+@export_multiline var dialogue_outburst: String = ""
+## Narration shown as a good-news toast after a sale to this customer (Presidentti's visit,
+## whose negative risk values lower the LVV risk). Empty = none.
+@export_multiline var dialogue_sale_toast: String = ""
 
 
 func generate_display_name() -> String:
