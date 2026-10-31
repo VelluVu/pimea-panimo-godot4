@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="BeerStyle" format=3]
+
+[ext_resource type="Script" uid="uid://qpqfdi1wacne" path="res://src/brewing/beer_style.gd" id="1_seltzeri"]
+
+[resource]
+script = ExtResource("1_seltzeri")
+style_name = "Alkoholiton lakkaseltzeri"
+description = "Kirkasta ja kuplivaa, sokerisiirapista ja alkoholittomasta hiivasta, ilman maltaita ja humalaa. Maku tulee lakasta. Juoma, josta kukaan ei voi syyttää ketään."
+locked_hint = "Kirkas ja kupliva juoma ilman maltaita ja humalaa. Maku tulee pohjoisen soilta, alkoholia ei ole."
+style = 31
+fixed_price_per_bottle = 3.2
+reputation_change = 2
+shelf_life_days = 20
+aging_factor = -0.05
+mash_steps = Array[int]([70])
+mash_band = 4.0
+hop_additions = Array[int]([])
+required_yeast_id = 303
+required_spice_ids = Array[int]([411])
+base_malt_ids = Array[int]([115])
+min_base_share = 0.9
+abv = 0.5
+min_abv = 0.3
+max_abv = 0.7
+min_ebc = 0
+max_ebc = 4
+min_ibu = 0
+max_ibu = 3
+reference_recipe = Dictionary[int, int]({115: 3, 303: 1, 411: 2})
+metadata/_custom_type_script = "uid://qpqfdi1wacne"

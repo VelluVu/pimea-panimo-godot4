@@ -10,6 +10,7 @@ const INGREDIENT_FOLDERS : Array[String] = ["malts/", "hops/", "yeasts/", "spice
 const INGREDIENTS_PATH : String = "res://src/resources/ingredients/"
 const GOOD_QUALITY : float = 0.9
 const PROMPT_ID : int = 410
+const CLOUDBERRY_ID : int = 411
 
 
 func suite_name() -> String:
@@ -114,3 +115,16 @@ func test_ai_beer_is_sold_and_known_only_in_cyber_week() -> void:
 	var ai_beer : BeerStyle = _resolver().get_beer_style(BeerStyle.Style.TEKOALYOLUT)
 	assert_eq(ai_beer.known_in_season, SeasonRules.Season.CYBER_WEEK)
 	assert_false(ai_beer.known_from_start)
+
+
+## Presidentti drinks only alcohol-free, so the seltzer's own recipe must stay under the
+## line, and sugar syrup without cloudberry must not pass as the seltzer.
+func test_the_seltzer_recipe_is_alcohol_free_and_needs_cloudberry() -> void:
+	var resolver := _resolver()
+	var seltzer : BeerStyle = resolver.get_beer_style(BeerStyle.Style.LAKKASELTZERI)
+	var result : BrewResult = resolver.resolve_brew_style(seltzer.reference_recipe.duplicate())
+	assert_true(result.abv <= BeerStyle.ALCOHOL_FREE_MAX_ABV, "the seltzer brews at %.1f %%" % result.abv)
+	var without_cloudberry : Dictionary = seltzer.reference_recipe.duplicate()
+	without_cloudberry.erase(CLOUDBERRY_ID)
+	var plain : BrewResult = resolver.resolve_brew_style(without_cloudberry)
+	assert_false(plain != null and plain.is_matched and plain.beer_style == seltzer, "no cloudberry, no seltzer")

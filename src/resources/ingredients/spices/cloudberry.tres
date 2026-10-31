@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="IngredientData" format=3]
+
+[ext_resource type="Script" uid="uid://dniwiyu5ynp71" path="res://src/brewing/ingredient_data.gd" id="1_cloudberry"]
+
+[resource]
+script = ExtResource("1_cloudberry")
+id = 411
+name = "Lakka"
+name_partitive = "lakkaa"
+description = "Pohjoisen soiden kultaa, poimittu hyttysten keskeltä. Lakkaseltzeri ei synny ilman sitä, ja hinta kertoo, ettei se kasva kellarissa."
+base_price = 3
+unit = 2
+type = 3
+min_reputation = 20
+metadata/_custom_type_script = "uid://dniwiyu5ynp71"
