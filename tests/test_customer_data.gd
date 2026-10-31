@@ -472,3 +472,18 @@ func test_a_season_only_customer_comes_only_in_its_season() -> void:
 	assert_false(customer.comes_in(SeasonRules.Season.BLACK_MONTH))
 	assert_true(customer.comes_in(SeasonRules.Season.CYBER_WEEK))
 	assert_true(CustomerData.new().comes_in(SeasonRules.Season.HALLOWEEN))
+
+
+## Met in their season once, they drop by rarely all year in later runs.
+func test_a_met_season_customer_returns_rarely_after_its_season() -> void:
+	var customer := CustomerData.new()
+	customer.appearance_weight = 0.0
+	customer.busy_season = SeasonRules.Season.BLACK_MONTH
+	customer.busy_season_weight = 3.0
+	customer.after_season_weight = 0.2
+	assert_eq(customer.get_appearance_weight(SeasonRules.Season.NONE, false), 0.0)
+	assert_eq(customer.get_appearance_weight(SeasonRules.Season.NONE, true), 0.2)
+	assert_eq(customer.get_appearance_weight(SeasonRules.Season.HALLOWEEN, true), 0.2)
+	assert_eq(customer.get_appearance_weight(SeasonRules.Season.BLACK_MONTH, true), 3.0)
+	assert_false(customer.comes_in(SeasonRules.Season.HALLOWEEN))
+	assert_true(customer.comes_in(SeasonRules.Season.HALLOWEEN, true))

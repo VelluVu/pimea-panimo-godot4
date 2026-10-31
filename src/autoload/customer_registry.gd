@@ -83,7 +83,7 @@ func _pick_weighted_customer(customers : Array[CustomerData]) -> CustomerData:
 	var season : SeasonRules.Season = SeasonRules.now()
 	var weights : Array[float] = []
 	for customer : CustomerData in customers:
-		var weight : float = customer.get_appearance_weight(season)
+		var weight : float = customer.get_appearance_weight(season, _unlocks.is_met(customer.title))
 		if customer.title == TITLE_AGENTTI:
 			weight *= brewery.stats.multiplier(PerkStats.AGENTTI_APPEARANCE)
 		elif customer.title == TITLE_MAFIOSO:
@@ -126,9 +126,12 @@ func get_random_special_event(brewery: Brewery) -> SpecialEventData:
 	return WeightedPicker.pick(special_events_pool, weights) as SpecialEventData
 
 
-## A group comes only once each of its members could walk in alone.
+## A group comes only once each of its members could walk in alone, and a seasonal member
+## only in their season: a whole crowd of them out of season would not be a rare visit.
 func is_group_eligible(event_data : GroupVisitEventData) -> bool:
-	return event_data.customer_data_options.all(is_eligible)
+	var season : SeasonRules.Season = SeasonRules.now()
+	return event_data.customer_data_options.all(func(customer : CustomerData) -> bool:
+		return is_eligible(customer) and customer.comes_in(season))
 
 
 ## Null while no group is eligible yet.

@@ -33,7 +33,8 @@ func is_eligible(customer: CustomerData) -> bool:
 
 	return current_reputation >= customer.min_reputation_to_appear \
 		and _meets_style_discovery_requirement(customer) \
-		and _meets_achievement_requirement(customer) 		and customer.comes_in(SeasonRules.now())
+		and _meets_achievement_requirement(customer) \
+		and customer.comes_in(SeasonRules.now(), is_met(customer.title))
 
 
 ## Announces every eligible title not announced yet; gendered variants share a title.
@@ -67,6 +68,10 @@ func mark_met(title: String) -> void:
 
 func get_met_titles() -> Array:
 	return _config.get_value(SECTION, KEY_MET_TITLES, [])
+
+
+func is_met(title: String) -> bool:
+	return get_met_titles().has(title)
 
 
 ## Forgets every announcement and met customer, in memory and on disk.

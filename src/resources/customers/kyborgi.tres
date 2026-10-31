@@ -31,6 +31,7 @@ tip_base_chance = 0.3
 appearance_weight = 0.0
 busy_season = 3
 busy_season_weight = 3.0
+after_season_weight = 0.2
 min_bottles_per_visit = 1
 max_bottles_per_visit = 3
 metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

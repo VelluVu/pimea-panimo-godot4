@@ -117,11 +117,13 @@ const NOT_TO_TASTE: float = -1.0
 ## Empty = no limit. Needs this achievement, permanent like required_discovered_style.
 @export var required_achievement_id: String = ""
 ## Odds against the other customers, 1.0 for the usual; 0 keeps them away. In busy_season
-## busy_season_weight replaces it: Tarjoushaukka comes all year and more in Black Month,
-## Kyborgi only in Cyber Week.
+## busy_season_weight replaces it: Tarjoushaukka comes only from Black Month on, Kyborgi
+## only from Cyber Week on.
 @export var appearance_weight: float = 1.0
 @export var busy_season: SeasonRules.Season = SeasonRules.Season.NONE
 @export var busy_season_weight: float = 1.0
+## Out of busy_season once the title was met in any run: a rare return visit. 0 = none.
+@export var after_season_weight: float = 0.0
 
 @export_group("Erikoiskäytös")
 @export var randomizes_preference: bool = false
@@ -177,15 +179,19 @@ func get_preference_score(style: BeerStyle.Style) -> float:
 	return 0.0
 
 
-func get_appearance_weight(season : SeasonRules.Season) -> float:
+## `is_met`: the title was served in any run (CustomerUnlockTracker.get_met_titles()).
+func get_appearance_weight(season : SeasonRules.Season, is_met : bool = false) -> float:
 	if busy_season != SeasonRules.Season.NONE and SeasonRules.includes(season, busy_season):
 		return busy_season_weight
+	if is_met and after_season_weight > 0.0:
+		return after_season_weight
 	return appearance_weight
 
 
-## False for a seasonal customer out of season: never picked, announced or walked in.
-func comes_in(season : SeasonRules.Season) -> bool:
-	return get_appearance_weight(season) > 0.0
+## False for a seasonal customer out of season (and not met yet): never picked, announced
+## or walked in.
+func comes_in(season : SeasonRules.Season, is_met : bool = false) -> bool:
+	return get_appearance_weight(season, is_met) > 0.0
 
 
 func uses_taste_tiers() -> bool:

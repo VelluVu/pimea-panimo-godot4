@@ -734,8 +734,8 @@ msgid "Koko kylä tuttu"
 msgstr "Know the Whole Town"
 
 #: src/resources/achievements/asiakaskirja_kaikki.tres
-msgid "Tapaa kaikki 25 asiakastyyppiä."
-msgstr "Meet all 25 customer types."
+msgid "Tapaa kaikki 24 asiakastyyppiä."
+msgstr "Meet all 24 customer types."
 
 #: src/resources/achievements/bulkkia_5.tres
 msgid "Kansan kalja"
