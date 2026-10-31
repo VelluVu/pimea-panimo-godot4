@@ -50,6 +50,8 @@ func _init() -> void:
 	rebindable_actions.append_array(INGREDIENT_VIEW_ACTIONS)
 	direct_actions = [ACTION_OPEN_CONSOLE]
 	direct_actions.append_array(INGREDIENT_VIEW_ACTIONS)
+	# Players never see the console offered; it shows once its key is pressed.
+	hidden_actions = [ACTION_OPEN_CONSOLE]
 	default_keys = {
 		ACTION_OPEN_CONSOLE: KEY_C,
 		ACTION_TOGGLE_BREWERY: KEY_P,
@@ -90,6 +92,7 @@ func _init() -> void:
 		"hint": "Valitse toiminto ja paina uutta näppäintä. Esc peruu.",
 		"press_key": "Paina näppäintä...",
 		"key_in_use": "Näppäin on jo käytössä: %s",
+		"key_reserved": "Näppäin on varattu.",
 		"reset": "Palauta oletukset",
 	}
 	save_path = "user://input_bindings.cfg"

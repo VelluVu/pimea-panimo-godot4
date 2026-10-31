@@ -77,6 +77,7 @@ func _ready() -> void:
 	_console.input_line_edit.placeholder_text = PLACEHOLDER_TEXT
 	_console.open_action = InputManager.ACTION_OPEN_CONSOLE
 	_console.cancel_action = InputManager.ACTION_CANCEL
+	_console.hidden_until_opened = true
 
 	var registry: ConsoleCommandRegistry = _console.registry
 	registry.developer_mode_check = BrewEngine.is_developer_mode

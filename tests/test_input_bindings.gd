@@ -83,3 +83,18 @@ func test_default_keys_are_unique() -> void:
 		var keycode: Key = manager.default_keys[action]
 		assert_false(seen.has(keycode), "%s shares its default key" % action)
 		seen[keycode] = true
+
+
+func test_the_console_key_is_bound_but_not_listed() -> void:
+	var manager := _make_manager()
+	assert_eq(manager.get_keycode(InputWiring.ACTION_OPEN_CONSOLE), KEY_C)
+	assert_false(manager.get_listed_actions().has(InputWiring.ACTION_OPEN_CONSOLE))
+	assert_true(manager.get_listed_actions().has(InputWiring.ACTION_TOGGLE_SHOP))
+	assert_eq(manager.get_listed_actions().size(), manager.rebindable_actions.size() - manager.hidden_actions.size())
+
+
+func test_a_hidden_action_still_reserves_its_key() -> void:
+	var manager := _make_manager()
+	assert_eq(manager.rebind(InputWiring.ACTION_TOGGLE_SHOP, KEY_C), InputWiring.ACTION_OPEN_CONSOLE)
+	assert_eq(manager.get_keycode(InputWiring.ACTION_TOGGLE_SHOP), KEY_K)
+	_cleanup()

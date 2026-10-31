@@ -29,6 +29,10 @@ var registry: ConsoleCommandRegistry
 ## InputMap actions: one opens and focuses the console, the other closes it. Empty = unused.
 var open_action: StringName = &""
 var cancel_action: StringName = &""
+## Set by the wiring: the console stays out of sight until open_action is first pressed,
+## then shows in every scene for the rest of the session.
+var hidden_until_opened: bool = false
+static var _opened_this_session: bool = false
 
 var _is_collapsed: bool = true
 var _expanded_size: Vector2
@@ -67,13 +71,17 @@ func _ready() -> void:
 
 	_apply_focus_style(false)
 	_apply_collapsed_state()
+	if hidden_until_opened and not _opened_this_session:
+		hide()
 
 
 ## _input(), not _unhandled_input(): it re-reads focus on every key. The open key opens or
 ## focuses, or types while the field has focus; cancel closes it first.
 func _input(event: InputEvent) -> void:
 	if open_action != &"" and event.is_action_pressed(open_action):
-		if input_line_edit.has_focus():
+		# Its key is a letter: typing it in any text field (a name entry) must not open it.
+		var focused: Control = get_viewport().gui_get_focus_owner()
+		if focused is LineEdit or focused is TextEdit:
 			return
 		_open_and_focus_input()
 		get_viewport().set_input_as_handled()
@@ -180,8 +188,12 @@ func _redraw_log() -> void:
 
 
 func _open_and_focus_input() -> void:
+	_opened_this_session = true
+	show()
 	if _is_collapsed:
 		_on_toggle_pressed()
+	# A host may switch focus off beside its open window (a main menu); the key overrides it.
+	focus_behavior_recursive = Control.FOCUS_BEHAVIOR_INHERITED
 	input_line_edit.grab_focus()
 
 

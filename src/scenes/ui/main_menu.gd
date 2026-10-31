@@ -59,7 +59,9 @@ func _ready() -> void:
 	add_child(PortraitNotice.new())
 	_add_language_switch()
 	# Typing commands needs a keyboard, and the button takes a corner of a small screen.
-	$DevConsole.visible = not DisplayServer.is_touchscreen_available()
+	# The console shows itself once its key is pressed (DevConsole.hidden_until_opened).
+	if DisplayServer.is_touchscreen_available():
+		$DevConsole.hide()
 	if DisplayServer.is_touchscreen_available():
 		_enlarge_buttons_for_touch()
 	new_game_button.pressed.connect(_on_new_game_button_pressed)

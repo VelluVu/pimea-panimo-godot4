@@ -63,7 +63,7 @@ func _add_binding_rows() -> void:
 	rows.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.add_child(rows)
 
-	for action : StringName in _bindings.rebindable_actions:
+	for action : StringName in _bindings.get_listed_actions():
 		var row := HBoxContainer.new()
 		rows.add_child(row)
 
@@ -108,7 +108,9 @@ func _finish_capture(keycode : Key) -> void:
 	_status_label.text = ""
 	if keycode != KEY_ESCAPE:
 		var conflict : StringName = _bindings.rebind(action, keycode)
-		if conflict != &"":
+		if _bindings.hidden_actions.has(conflict):
+			_status_label.text = tr(_bindings.ui_text["key_reserved"])
+		elif conflict != &"":
 			_status_label.text = tr(_bindings.ui_text["key_in_use"]) % tr(_bindings.get_action_label(conflict))
 	_refresh_buttons()
 

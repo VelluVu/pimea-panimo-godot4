@@ -18,6 +18,9 @@ var cancel_action: StringName = &"menu_cancel"
 var rebindable_actions: Array[StringName] = []
 ## Actions whose listener reads them in its own _input(), so no shortcut_pressed.
 var direct_actions: Array[StringName] = []
+## Bound and reserved like the rest, but KeyBindingsTab does not list them or name them
+## when their key is taken (a developer console the players need not know about).
+var hidden_actions: Array[StringName] = []
 var default_keys: Dictionary = {}   # action -> Key
 var action_labels: Dictionary = {}  # action -> player-facing name
 ## Wording for KeyBindingsTab: "hint", "press_key", "key_in_use" (with %s), "reset".
@@ -25,6 +28,7 @@ var ui_text: Dictionary = {
 	"hint": "Pick an action and press a new key. Esc cancels.",
 	"press_key": "Press a key...",
 	"key_in_use": "Key already in use: %s",
+	"key_reserved": "That key is reserved.",
 	"reset": "Reset to defaults",
 }
 ## Its own file: a settings store that rewrites its file from memory would drop this section.
@@ -50,6 +54,15 @@ func _unhandled_input(event: InputEvent) -> void:
 			shortcut_pressed.emit(action)
 			get_viewport().set_input_as_handled()
 			return
+
+
+## The rebindable actions KeyBindingsTab shows, in order.
+func get_listed_actions() -> Array[StringName]:
+	var listed: Array[StringName] = []
+	for action: StringName in rebindable_actions:
+		if not hidden_actions.has(action):
+			listed.append(action)
+	return listed
 
 
 func get_action_label(action: StringName) -> String:
