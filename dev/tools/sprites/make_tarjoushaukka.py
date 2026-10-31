@@ -43,7 +43,9 @@ BASE_PALETTE = {
     "P": _hex("f6757a"),  # pink bag
     "p": _hex("b55088"),  # pink bag shade
     "n": _hex("262b44"),  # trousers
+    "N": _hex("181425"),  # trousers, the far leg walking right
     "B": _hex("733e39"),  # boots, his hair
+    "b": _hex("3e2731"),  # boots, the far leg walking right
     "X": _hex("a22633"),  # blood
     "v": _hex("68386c"),  # bruise
 }
@@ -178,23 +180,44 @@ LEGS = {
         "......BBB...........",
         "......kkk...........",
     ],
-    # Walking right: legs apart, the boots point right.
-    "stride": [
+    # Walking right, a four-frame cycle: a reach with the near leg forward, a pass where the
+    # near leg takes the weight and the far one swings by it, a reach with the far leg
+    # forward, and a pass the other way round. The far leg is darker (N, b), so the legs
+    # read apart; the boots point right.
+    "stride_near": [
         "......nnnnnnnn......",
-        ".....nnnn..nnnn.....",
-        "....nnnn....nnnn....",
-        "....nnn......nnn....",
-        "...BBBB......BBBB...",
-        "...BBBB......BBBBB..",
+        ".....NNNN..nnnn.....",
+        "....NNNN....nnnn....",
+        "....NNN......nnn....",
+        "...bbbb......BBBB...",
+        "...bbbb......BBBBB..",
         "...kkkk......kkkkk..",
     ],
-    "pass": [
+    "pass_near": [
         "......nnnnnnnn......",
+        ".......nnnNNNN......",
+        ".......nnnNNNNN.....",
+        ".......nnn.bbbb.....",
+        ".......BBB.kkkk.....",
+        ".......BBBB.........",
+        ".......kkkk.........",
+    ],
+    "stride_far": [
         "......nnnnnnnn......",
-        ".......nnnnnn.......",
-        ".......nnnBBB.......",
-        ".......BBBBBBB......",
-        ".......BBBkkkk......",
+        ".....nnnn..NNNN.....",
+        "....nnnn....NNNN....",
+        "....nnn......NNN....",
+        "...BBBB......bbbb...",
+        "...BBBB......bbbbb..",
+        "...kkkk......kkkkk..",
+    ],
+    "pass_far": [
+        "......nnnnnnnn......",
+        ".......NNNnnnn......",
+        ".......NNNnnnnn.....",
+        ".......NNN.BBBB.....",
+        ".......bbb.kkkk.....",
+        ".......bbbb.........",
         ".......kkkk.........",
     ],
 }
@@ -301,10 +324,10 @@ def draw(look: str) -> Image.Image:
                hands=hands, bags=bags, drops=_falling_drop(column, bags))
     # walk_right: the bags swing left, behind the step, on the stride frames.
     right = [
-        ("stride", 0, ((2, 16), (16, 16)), ((0, 17), (14, 17))),
-        ("pass", -1, HANDS_REST, BAGS_REST),
-        ("stride", 0, ((2, 16), (16, 16)), ((0, 17), (14, 17))),
-        ("pass", -1, HANDS_REST, BAGS_REST),
+        ("stride_near", 0, ((2, 16), (16, 16)), ((0, 17), (14, 17))),
+        ("pass_near", -1, HANDS_REST, BAGS_REST),
+        ("stride_far", 0, ((2, 16), (16, 16)), ((0, 17), (14, 17))),
+        ("pass_far", -1, HANDS_REST, BAGS_REST),
     ]
     for column, (legs, bob, hands, bags) in enumerate(right):
         _frame(sheet, palette, column, 3, back=False, female=female, bob=bob, legs=legs,

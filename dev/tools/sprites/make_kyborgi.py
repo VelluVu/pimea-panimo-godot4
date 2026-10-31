@@ -129,24 +129,45 @@ LEGS = {
         "......ddd...........",
         "......kkk...........",
     ],
-    # Walking right: legs apart, the feet point right.
-    "stride": [
+    # Walking right, a four-frame cycle: a reach with the near leg forward, a pass where the
+    # near leg takes the weight and the far one swings by it, a reach with the far leg
+    # forward, and a pass the other way round. The far leg is a shade down the ramp
+    # (shell g and d, joints k), so the legs read apart.
+    "stride_near": [
         "......SSSggggg......",
-        ".....SSSg..Sggg.....",
-        "....ddd......ddd....",
-        "....SSg......Sgg....",
-        "...SSSg......SSgg...",
-        "...dddd......ddddd..",
+        ".....gggd..Sggg.....",
+        "....kkk......ddd....",
+        "....ggd......Sgg....",
+        "...gggd......SSgg...",
+        "...kkkk......ddddd..",
         "...kkkk......kkkkk..",
     ],
-    "pass": [
+    "pass_near": [
         "......SSSggggg......",
+        ".......SSggggd......",
+        ".......dddkkkkk.....",
+        ".......SSg.gggd.....",
+        ".......SSg.kkkk.....",
+        ".......dddd.........",
+        ".......kkkk.........",
+    ],
+    "stride_far": [
         "......SSSggggg......",
-        ".......dddddd.......",
-        ".......SSSggg.......",
-        ".......SSSSggg......",
-        ".......dddddddd.....",
-        ".......kkkkkkk......",
+        ".....SSSg..gddd.....",
+        "....ddd......kkk....",
+        "....SSg......gdd....",
+        "...SSSg......ggdd...",
+        "...dddd......kkkkk..",
+        "...kkkk......kkkkk..",
+    ],
+    "pass_far": [
+        "......SSSggggg......",
+        ".......ggdSSSg......",
+        ".......kkkddddd.....",
+        ".......ggd.SSSg.....",
+        ".......ggd.kkkk.....",
+        ".......kkkk.........",
+        ".......kkkk.........",
     ],
 }
 
@@ -215,10 +236,10 @@ def draw() -> Image.Image:
     for column, (legs, bob, hands) in enumerate(towards):
         _frame(sheet, column, 2, back=False, bob=bob, legs=legs, hands=hands)
     right = [
-        ("stride", 0, HANDS_REST),
-        ("pass", -1, HANDS_REST),
-        ("stride", 0, HANDS_REST),
-        ("pass", -1, HANDS_REST),
+        ("stride_near", 0, HANDS_REST),
+        ("pass_near", -1, HANDS_REST),
+        ("stride_far", 0, HANDS_REST),
+        ("pass_far", -1, HANDS_REST),
     ]
     for column, (legs, bob, hands) in enumerate(right):
         _frame(sheet, column, 3, back=False, bob=bob, legs=legs, hands=hands)
