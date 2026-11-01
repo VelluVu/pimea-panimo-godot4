@@ -143,6 +143,8 @@ func _connect_signals() -> void:
 	GUISignals.keg_wash_sound.connect(_on_brew_day_sound)
 	GUISignals.brew_day_loops.connect(_on_brew_day_loops)
 	GUISignals.brew_day_closed.connect(_on_brew_day_loops.bind(0.0, 0.0, false))
+	# Not placed in the world: the whole cellar hears the shot, like the shake it comes with.
+	BrewerySignals.customer_outburst.connect(play_sfx.bind(bank.sfx_gunshot).unbind(1))
 	BrewerySignals.glass_shattered.connect(func() -> void: play_sfx(bank.sfx_glass_shatter, 0.0, randf_range(SHATTER_PITCH_RANGE.x, SHATTER_PITCH_RANGE.y)))
 
 	# Buttons click on their own; these also cover keyboard shortcuts that open things.

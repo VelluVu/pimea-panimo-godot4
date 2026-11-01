@@ -562,7 +562,23 @@ def thunder_far():
     return crush(rumble, 32), 0.55
 
 
+def gunshot():
+    """A pistol fired in the cellar: a hard crack and boom, stone-wall echoes, a casing tink."""
+    crack = highpass(noise(0.06), 1200) * perc(0.06, 60)
+    boom = mix(lowpass(noise(0.35, hold=6), 900) * perc(0.35, 14),
+               triangle(sweep(160, 45, 0.3, 0.5), 0.3) * perc(0.3, 12) * 0.9)
+    shot = mix(crack, boom)
+    echoes = mix(at(0.11, lowpass(shot, 1800) * 0.35), at(0.24, lowpass(shot, 1000) * 0.15))
+    tail = lowpass(noise(0.9, hold=4), 600) * env(0.9, 0.02, 0.8) * 0.12
+
+    def tink(level):
+        return mix(triangle(3100, 0.08), triangle(4650, 0.08) * 0.5) * perc(0.08, 45) * level
+    casing = mix(at(0.55, tink(0.22)), at(0.68, tink(0.12)), at(0.76, tink(0.06)))
+    return crush(mix(shot, echoes, at(0.05, tail), casing), 48), 0.8
+
+
 RECIPES = {
+    "gunshot": gunshot,
     "thunder_near": thunder_near,
     "thunder_far": thunder_far,
     "keg_scrub": keg_scrub,

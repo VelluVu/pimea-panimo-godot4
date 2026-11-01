@@ -80,3 +80,5 @@ extends Resource
 @export_group("Bar Fights")
 ## A glass thrown in a bar fight hits the floor (played at a lowered, varied pitch).
 @export var sfx_glass_shatter: AudioStream
+## A customer's outburst: Persuasiakas firing into the air.
+@export var sfx_gunshot: AudioStream

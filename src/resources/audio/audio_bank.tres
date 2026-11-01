@@ -45,6 +45,7 @@
 [ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/keg_shine.wav" id="kw_keg_shine"]
 [ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/ferment_bubble.wav" id="kw_ferment_bubble"]
 [ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/soured.wav" id="kw_soured"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/gunshot.wav" id="snd_gunshot"]
 [resource]
 script = ExtResource("1_bank")
 menu_music = ExtResource("2_music1")
@@ -65,6 +66,7 @@ sfx_risk_tension_drone = ExtResource("11_drone")
 sfx_style_discovered = ExtResource("12_discovered")
 sfx_talent_purchased = ExtResource("15_talent")
 sfx_glass_shatter = ExtResource("14_clink")
+sfx_gunshot = ExtResource("snd_gunshot")
 sfx_brew_burner_loop = ExtResource("bd_burner_loop")
 sfx_brew_boil_loop = ExtResource("bd_boil_loop")
 sfx_brew_malt_pour = ExtResource("bd_malt_pour")
