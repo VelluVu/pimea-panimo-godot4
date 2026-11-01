@@ -1,7 +1,8 @@
-[gd_resource type="Resource" script_class="CustomerData" format=3]
+[gd_resource type="Resource" script_class="CustomerData" format=3 uid="uid://di5umnb0wwgqt"]
 
 [ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_data"]
-[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/tarjoushaukka_naaras_anim.tres" id="2_sprite"]
+[ext_resource type="Script" uid="uid://dq66tbectyal5" path="res://src/customers/taste_rule.gd" id="1_e104y"]
+[ext_resource type="SpriteFrames" uid="uid://cydbiuq81gjxe" path="res://src/resources/sprite_frames/tarjoushaukka_naaras_anim.tres" id="2_sprite"]
 
 [resource]
 script = ExtResource("1_data")
@@ -9,8 +10,6 @@ customer_name = "Tiina"
 title = "Tarjoushaukka"
 first_names = Array[String](["Tiina", "Sari", "Mervi", "Jaana", "Hanna", "Riikka"])
 min_quality = 0.1
-primary_style = 1
-secondary_style = 0
 also_likes = Array[int]([2])
 sprite_frames = ExtResource("2_sprite")
 randomize_skin = false

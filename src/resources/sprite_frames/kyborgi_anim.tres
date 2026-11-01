@@ -1,4 +1,4 @@
-[gd_resource type="SpriteFrames" format=3]
+[gd_resource type="SpriteFrames" format=3 uid="uid://c8bq2dsx4tieh"]
 
 [ext_resource type="Texture2D" uid="uid://dodaayugkux63" path="res://assets/textures/characters/kyborgi_32.png" id="1_kyborgi"]
 
