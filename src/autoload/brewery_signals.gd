@@ -177,6 +177,9 @@ signal bar_fight_started(broken_bottles: int)
 ## shake; `message` is CustomerData.dialogue_outburst, shown as a toast.
 @warning_ignore("unused_signal")
 signal customer_outburst(message: String)
+## A walk-in found every counter spot taken: the cellar has a queue (unlocks Ämpärihamstraaja).
+@warning_ignore("unused_signal")
+signal counter_queue_formed()
 ## A customer's own narration after a sale (Presidentti's visit), shown as a toast.
 @warning_ignore("unused_signal")
 signal customer_sale_narrated(message: String)

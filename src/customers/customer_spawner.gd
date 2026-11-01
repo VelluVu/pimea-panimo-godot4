@@ -187,6 +187,8 @@ func _try_spawn_walk_in(forced_data: CustomerData) -> bool:
 		return false
 	var free_slot: int = _free_slot()
 	if free_slot == -1:
+		if _brewery != null:
+			BrewerySignals.counter_queue_formed.emit()
 		return false
 	var data: CustomerData = forced_data if forced_data != null else CustomerManager.get_random_customer_data()
 	if data == null:

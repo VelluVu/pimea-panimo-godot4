@@ -12,6 +12,8 @@ const SECTION: String = "customer_unlocks"
 const KEY_ANNOUNCED_TITLES: String = "announced_titles"
 ## Titles served at least once in any run: the Asiakaskirja shows their tastes.
 const KEY_MET_TITLES: String = "met_titles"
+## A walk-in once found the counter full, in any run (CustomerData.requires_queue).
+const KEY_QUEUE_SEEN: String = "queue_seen"
 
 var _config: ConfigFile = ConfigFile.new()
 var _save_path: String
@@ -23,9 +25,9 @@ func _init(save_path: String = DEFAULT_SAVE_PATH) -> void:
 	_config.load(_save_path) # a missing file just leaves the config empty
 
 
-## True once every appearance gate passes: reputation (per run), style discovery and
-## achievement (permanent), and the season (CustomerData.comes_in()). The one answer to
-## "can this customer appear".
+## True once every appearance gate passes: reputation (per run), style discovery,
+## achievement and a seen queue (permanent), and the season (CustomerData.comes_in()). The
+## one answer to "can this customer appear".
 func is_eligible(customer: CustomerData) -> bool:
 	var current_reputation: int = 0
 	if BrewEngine.current_brewery != null:
@@ -34,6 +36,7 @@ func is_eligible(customer: CustomerData) -> bool:
 	return current_reputation >= customer.min_reputation_to_appear \
 		and _meets_style_discovery_requirement(customer) \
 		and _meets_achievement_requirement(customer) \
+		and (not customer.requires_queue or has_seen_queue()) \
 		and customer.comes_in(SeasonRules.now(), is_met(customer.title))
 
 
@@ -74,7 +77,19 @@ func is_met(title: String) -> bool:
 	return get_met_titles().has(title)
 
 
-## Forgets every announcement and met customer, in memory and on disk.
+## Saves that a queue formed; written only the first time.
+func mark_queue_seen() -> void:
+	if has_seen_queue():
+		return
+	_config.set_value(SECTION, KEY_QUEUE_SEEN, true)
+	_config.save(_save_path)
+
+
+func has_seen_queue() -> bool:
+	return _config.get_value(SECTION, KEY_QUEUE_SEEN, false)
+
+
+## Forgets every announcement, met customer and seen queue, in memory and on disk.
 func reset() -> void:
 	_config.clear()
 	_config.save(_save_path)

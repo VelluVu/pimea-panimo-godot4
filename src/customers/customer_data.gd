@@ -117,6 +117,9 @@ const NOT_TO_TASTE: float = -1.0
 ## -1 = no limit. Needs this style brewed in any past run, on top of
 ## min_reputation_to_appear, so a style with no other pull gets brewed once.
 @export var required_discovered_style: int = -1
+## Needs a queue seen in any run: a walk-in that found every counter spot taken
+## (Ämpärihamstraaja comes where there is a rush). Permanent like required_discovered_style.
+@export var requires_queue: bool = false
 ## Empty = no limit. Needs this achievement, permanent like required_discovered_style.
 @export var required_achievement_id: String = ""
 ## Odds against the other customers, 1.0 for the usual; 0 keeps them away. In busy_season

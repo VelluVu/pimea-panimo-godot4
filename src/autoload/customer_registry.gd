@@ -33,6 +33,7 @@ func _ready() -> void:
 	BrewerySignals.style_discovered.connect(_rescan_unlocks.unbind(1))
 	AchievementManager.achievement_unlocked.connect(_rescan_unlocks.unbind(2))
 	BrewerySignals.customer_served.connect(func(data : CustomerData) -> void: _unlocks.mark_met(data.title))
+	BrewerySignals.counter_queue_formed.connect(mark_queue_seen)
 	_rescan_unlocks()
 
 
@@ -164,6 +165,12 @@ func get_announced_titles() -> Array:
 ## Customer titles served in any run, see CustomerUnlockTracker.
 func get_met_titles() -> Array:
 	return _unlocks.get_met_titles()
+
+
+## A queue formed at the counter: meets CustomerData.requires_queue for good.
+func mark_queue_seen() -> void:
+	_unlocks.mark_queue_seen()
+	_rescan_unlocks()
 
 
 ## True when some customer only appears once `style` has been discovered.
