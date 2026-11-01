@@ -61,6 +61,7 @@ func _ready() -> void:
 	BrewerySignals.batch_brewed.connect(_count_batch_traits)
 	BrewerySignals.bottles_sold.connect(func(n: int) -> void: _inc("bottles", n))
 	BrewerySignals.bar_fight_triggered.connect(func(_m: String) -> void: _inc("bar_fights"))
+	BrewerySignals.customer_outburst.connect(func(_m: String) -> void: _inc("outbursts"))
 	BrewerySignals.game_ended.connect(func(t: String) -> void: ending = t)
 	CustomerRegistry.customer_unlocked.connect(func(t: String) -> void: _note("unlocked %s" % t))
 	TimeManager.day_changed.connect(_on_day_changed)
