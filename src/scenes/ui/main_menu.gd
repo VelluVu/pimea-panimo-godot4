@@ -106,7 +106,7 @@ func _on_new_game_button_pressed() -> void:
 	GUISignals.menu_button_pressed.emit()
 	BrewEngine.start_new_game()
 	TimeManager.resume_time()
-	BackgroundSceneLoad.change_to(get_tree(), GAME_SCENE_PATH)
+	SceneFade.change_to(get_tree(), GAME_SCENE_PATH)
 
 
 func _on_continue_button_pressed() -> void:
@@ -117,7 +117,7 @@ func _on_continue_button_pressed() -> void:
 		continue_button.visible = false
 		return
 	TimeManager.resume_time()
-	BackgroundSceneLoad.change_to(get_tree(), GAME_SCENE_PATH)
+	SceneFade.change_to(get_tree(), GAME_SCENE_PATH)
 
 
 func _on_leaderboard_button_pressed() -> void:
