@@ -11,8 +11,6 @@ const CENTER_PAUSE_SECONDS : float = 0.8
 const MIN_WALK_DISTANCE : float = 1.0
 ## route's index of the room centre, where the walk in pauses.
 const ROOM_CENTRE_LEG : int = 2
-## One stair is one step: contact to contact.
-const FRAMES_PER_STAIR : int = 2
 
 ## The legs of the walk in, in order (see start()).
 enum Leg { STAIRS, TO_CENTER, CENTER_PAUSE, TO_COUNTER }
@@ -103,28 +101,21 @@ func art_pixel() -> float:
 
 ## Screen pixels walked per walk frame on the floor.
 func floor_stride() -> float:
-	return WalkCadence.STRIDE_ART_PIXELS * art_pixel()
+	return WalkStepper.floor_stride(art_pixel())
 
 
 ## Call every frame: steps the walk frames by the distance moved since the last call.
 func tick() -> void:
-	var frames : int = _stepper.advance(_owner.global_position)
-	if frames > 0:
-		_sprite.frame = WalkStepper.next_frame(_sprite.frame, frames, _sprite.sprite_frames.get_frame_count(_sprite.animation))
+	_stepper.tick(_sprite, _owner.global_position)
 
 
-## The legs follow the distance walked instead of the clock, from a random frame so a group
-## setting off together does not march in step.
 func _begin_steps(anim_name : StringName, flip_horizontally : bool, stride : float) -> void:
 	_play.call(anim_name, flip_horizontally)
-	_sprite.speed_scale = 0.0
-	_sprite.frame = randi() % maxi(1, _sprite.sprite_frames.get_frame_count(_sprite.animation))
-	_stepper.start(_owner.global_position, stride)
+	_stepper.begin(_sprite, _owner.global_position, stride)
 
 
 func _end_steps() -> void:
-	_stepper.stop()
-	_sprite.speed_scale = 1.0
+	_stepper.end(_sprite)
 
 
 func _set_leg(new_leg : int) -> void:
@@ -136,8 +127,7 @@ func _set_leg(new_leg : int) -> void:
 func _queue_stair_descent(tween : Tween, from_pos : Vector2, stairs_pos : Vector2, steps : int) -> void:
 	if steps <= 0:
 		return
-	var stair_stride : float = from_pos.distance_to(stairs_pos) / steps / FRAMES_PER_STAIR
-	tween.tween_callback(_begin_steps.bind(Customer.ANIM_WALK_TOWARDS, true, stair_stride))
+	tween.tween_callback(_begin_steps.bind(Customer.ANIM_WALK_TOWARDS, true, WalkStepper.stair_stride(from_pos, stairs_pos, steps)))
 	var step_from := from_pos
 	for i in range(1, steps + 1):
 		var step_pos := from_pos.lerp(stairs_pos, float(i) / steps)

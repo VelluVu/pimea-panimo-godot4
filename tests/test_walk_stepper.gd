@@ -52,3 +52,33 @@ func test_footsteps_land_on_contact_frames() -> void:
 	assert_false(CustomerSoundsScript.is_contact_frame(1))
 	assert_true(CustomerSoundsScript.is_contact_frame(2))
 	assert_false(CustomerSoundsScript.is_contact_frame(3))
+
+
+func test_floor_stride_is_half_the_foot_gap_in_screen_pixels() -> void:
+	assert_eq(WalkStepperScript.floor_stride(4.0), WalkStepperScript.STRIDE_ART_PIXELS * 4.0)
+
+
+func test_each_stair_takes_one_step_of_two_frames() -> void:
+	var stride : float = WalkStepperScript.stair_stride(Vector2.ZERO, Vector2(0.0, 150.0), 15)
+	assert_true(is_equal_approx(stride * WalkStepperScript.FRAMES_PER_STAIR * 15.0, 150.0), str(stride))
+	assert_true(WalkStepperScript.stair_stride(Vector2.ZERO, Vector2(0.0, 150.0), 0) > 0.0)
+
+
+func test_begin_and_end_hand_the_sprite_between_distance_and_clock() -> void:
+	var sprite := AnimatedSprite2D.new()
+	sprite.sprite_frames = SpriteFrames.new()
+	sprite.sprite_frames.add_animation(&"walk_right")
+	for i : int in 4:
+		sprite.sprite_frames.add_frame(&"walk_right", PlaceholderTexture2D.new())
+	sprite.animation = &"walk_right"
+	var stepper : WalkStepper = WalkStepperScript.new()
+	stepper.begin(sprite, Vector2.ZERO, 20.0)
+	assert_eq(sprite.speed_scale, 0.0)
+	var first : int = sprite.frame
+	stepper.tick(sprite, Vector2(40.0, 0.0))
+	assert_eq(sprite.frame, (first + 2) % 4)
+	stepper.end(sprite)
+	assert_eq(sprite.speed_scale, 1.0)
+	stepper.tick(sprite, Vector2(400.0, 0.0))
+	assert_eq(sprite.frame, (first + 2) % 4)
+	sprite.free()

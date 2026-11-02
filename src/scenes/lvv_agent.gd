@@ -10,7 +10,6 @@ const ANIM_IDLE_UP : StringName = &"idle_up"
 const ANIM_WALK_TOWARDS : StringName = &"walk_towards"
 const ANIM_WALK_RIGHT : StringName = &"walk_right"
 const ANIM_WALK_AWAY : StringName = &"walk_away"
-const WALK_ANIMATIONS : Array[StringName] = [ANIM_WALK_TOWARDS, ANIM_WALK_RIGHT, ANIM_WALK_AWAY]
 
 ## Same pace as CustomerData's defaults, so the squad matches ordinary foot traffic.
 const STAIR_STEP_DURATION : float = 0.3
@@ -29,14 +28,24 @@ const CARRIED_KEG_SCALE : float = 1.0
 
 var _carried_keg : Node2D = null
 var _route_tween : Tween
+var _stepper : WalkStepper = WalkStepper.new()
 
 
-func _play_animation(anim_name : StringName, flip_horizontally : bool = false) -> void:
+func _process(_delta : float) -> void:
+	_stepper.tick(animated_sprite, global_position)
+
+
+## A walk passes its `stride` (pixels per frame, see WalkStepper); anything else plays on
+## the sheet's own clock.
+func _play_animation(anim_name : StringName, flip_horizontally : bool = false, stride : float = 0.0) -> void:
 	if animated_sprite.sprite_frames == null or not animated_sprite.sprite_frames.has_animation(anim_name):
 		return
 	animated_sprite.flip_h = flip_horizontally
 	animated_sprite.play(anim_name)
-	animated_sprite.speed_scale = WalkCadence.for_sprite(animated_sprite, FLOOR_WALK_SPEED, WALK_ANIMATIONS)
+	if stride > 0.0:
+		_stepper.begin(animated_sprite, global_position, stride)
+	else:
+		_stepper.end(animated_sprite)
 	_update_carried_keg_z_index(anim_name)
 
 
@@ -58,7 +67,8 @@ func walk_in_and_seize(waypoints : Array[Vector2], elapsed_seconds : float = 0.0
 	_route_tween = tween
 	var spawn_pos := global_position
 
-	tween.tween_callback(_play_animation.bind(ANIM_WALK_TOWARDS, true))
+	var stair_stride : float = WalkStepper.stair_stride(spawn_pos, waypoints[0], STAIR_STEPS)
+	tween.tween_callback(_play_animation.bind(ANIM_WALK_TOWARDS, true, stair_stride))
 	_tween_stairs(tween, spawn_pos, waypoints[0])
 
 	for i in range(1, waypoints.size()):
@@ -72,7 +82,7 @@ func walk_in_and_seize(waypoints : Array[Vector2], elapsed_seconds : float = 0.0
 		_tween_leg(tween, waypoints[i], waypoints[i - 1])
 
 	# The return climb uses walk_away, which has no Customer equivalent.
-	tween.tween_callback(_play_animation.bind(ANIM_WALK_AWAY, false))
+	tween.tween_callback(_play_animation.bind(ANIM_WALK_AWAY, false, stair_stride))
 	_tween_stairs(tween, waypoints[0], spawn_pos)
 
 	tween.tween_callback(raid_sequence_finished.emit)
@@ -104,7 +114,7 @@ func _tween_leg(tween : Tween, from_pos : Vector2, to_pos : Vector2) -> void:
 		anim_name = ANIM_WALK_RIGHT
 		flip_h = delta.x < 0.0
 
-	tween.tween_callback(_play_animation.bind(anim_name, flip_h))
+	tween.tween_callback(_play_animation.bind(anim_name, flip_h, WalkStepper.floor_stride(animated_sprite.scale.x)))
 	PixelStepTween.move(tween, self, from_pos, to_pos, from_pos.distance_to(to_pos) / FLOOR_WALK_SPEED, animated_sprite.scale.x)
 
 
