@@ -15,7 +15,9 @@ const SETTLE_MAX_FRAMES : int = 15
 
 
 ## Switches `tree` to `path` behind the fade, using BackgroundSceneLoad's read when started.
-static func change_to(tree : SceneTree, path : String) -> void:
+## `at_black` runs once the screen is black, just before the switch: unpausing there keeps
+## the old scene still while it fades, and a reset there is never seen on the old screen.
+static func change_to(tree : SceneTree, path : String, at_black : Callable = Callable()) -> void:
 	var layer := CanvasLayer.new()
 	layer.layer = LAYER
 	layer.process_mode = Node.PROCESS_MODE_ALWAYS
@@ -27,6 +29,8 @@ static func change_to(tree : SceneTree, path : String) -> void:
 	tree.root.add_child(layer)
 
 	await _fade(layer, curtain, 0.0, 1.0).finished
+	if at_black.is_valid():
+		at_black.call()
 	BackgroundSceneLoad.change_to(tree, path)
 	# The new scene's _ready() and first draws are slow; stay black until frames are quick
 	# again, or that hitch eats the fade in.

@@ -237,8 +237,8 @@ func _on_close_button_pressed() -> void:
 func _on_main_menu_button_pressed() -> void:
 	GUISignals.menu_button_pressed.emit()
 	SaveManager.save_game()
-	PauseLock.release_all(get_tree())
-	get_tree().change_scene_to_file(MAIN_MENU_SCENE_PATH)
+	var tree : SceneTree = get_tree()
+	SceneFade.change_to(tree, MAIN_MENU_SCENE_PATH, PauseLock.release_all.bind(tree))
 
 
 func _on_slider_drag_ended(_value_changed : bool) -> void:

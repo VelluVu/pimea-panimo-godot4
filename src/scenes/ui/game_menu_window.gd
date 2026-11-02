@@ -150,15 +150,16 @@ func _show_confirm(confirming: bool) -> void:
 func _start_new_run() -> void:
 	hide()
 	_is_open = false
-	PauseLock.release_all(get_tree())
-	BrewEngine.start_new_game()
-	TimeManager.resume_time()
-	get_tree().change_scene_to_file(GAME_SCENE_PATH)
+	var tree : SceneTree = get_tree()
+	SceneFade.change_to(tree, GAME_SCENE_PATH, func() -> void:
+		PauseLock.release_all(tree)
+		BrewEngine.start_new_game()
+		TimeManager.resume_time())
 
 
 func _go_to_main_menu() -> void:
 	GUISignals.menu_button_pressed.emit()
 	SaveManager.save_game()
 	_is_open = false
-	PauseLock.release_all(get_tree())
-	get_tree().change_scene_to_file(MAIN_MENU_SCENE_PATH)
+	var tree : SceneTree = get_tree()
+	SceneFade.change_to(tree, MAIN_MENU_SCENE_PATH, PauseLock.release_all.bind(tree))
