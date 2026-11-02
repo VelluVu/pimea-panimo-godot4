@@ -86,3 +86,35 @@ func test_saturation_stays_in_range() -> void:
 	assert_true(PaletteScript.recolored(vivid, base, Color.from_hsv(0.1, 0.9, 1.0)).s <= 1.0)
 	var pale := Color.from_hsv(0.6, 0.05, 0.8)
 	assert_true(PaletteScript.recolored(pale, base, Color.from_hsv(0.1, 0.1, 1.0)).s >= 0.0)
+
+
+func test_random_parts_keep_their_hues_apart() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 7
+	for i : int in 200:
+		var palette : Dictionary = PaletteScript.regions(CustomerData.new(), rng)
+		var hair : Color = palette["hair"]["target"]
+		var clothes : Color = palette["clothes"]["target"]
+		var skin : Color = palette["skin"]["target"]
+		var others : Array[Color] = [hair, skin]
+		assert_true(PaletteScript.is_hue_separated(clothes, others), "%f vs %f / %f" % [clothes.h, hair.h, skin.h])
+
+
+func test_random_parts_keep_clear_of_a_fixed_part() -> void:
+	var data := CustomerData.new()
+	data.randomize_hair = false
+	data.hair_base_color = Color.from_hsv(0.33, 0.8, 0.6)
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 11
+	for i : int in 200:
+		var clothes : Color = PaletteScript.regions(data, rng)["clothes"]["target"]
+		var hair : Array[Color] = [data.hair_base_color]
+		assert_true(PaletteScript.is_hue_separated(clothes, hair), str(clothes.h))
+
+
+func test_greys_clash_with_no_hue() -> void:
+	var black_suit : Array[Color] = [Color(0.086, 0.086, 0.11)]
+	assert_true(PaletteScript.is_hue_separated(Color.from_hsv(0.66, 0.8, 1.0), black_suit))
+	var red : Array[Color] = [Color.from_hsv(0.0, 0.8, 1.0)]
+	assert_false(PaletteScript.is_hue_separated(Color.from_hsv(0.03, 0.8, 1.0), red))
+	assert_true(PaletteScript.is_hue_separated(Color.from_hsv(0.5, 0.8, 1.0), red))
