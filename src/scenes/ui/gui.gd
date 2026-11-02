@@ -173,6 +173,7 @@ func _add_next_step_guide() -> void:
 	var guide := NextStepGuide.new()
 	var places : Dictionary = {brewery = brewery_entrance_panel, shop = shop_entrance_panel, recipe_shelf = recipe_shelf_label, brewery_book = $CustomerBookLabel, warehouse = $WarehouseLabel, upgrades = upgrades_button}
 	guide.setup(pointer, speech, daily_goals_panel, places, recipe_library_window, brewery_view, shop_view, brew_preparation_panel)
+	guide.keep_clear_of_speech(cellar_upgrades_window)
 	add_child(guide)
 
 

@@ -7890,6 +7890,10 @@ msgid "Seuraavaksi: katso Kotikaljan resepti."
 msgstr "Next: look up the Kotikalja recipe."
 
 #: src/ui/next_step_text.gd
+msgid "Seuraavaksi: katso ostokset varastosta ja sulje kauppa."
+msgstr "Next: check your goods in the warehouse and close the shop."
+
+#: src/ui/next_step_text.gd
 msgid "Seuraavaksi: lataa resepti tai sulje kirja."
 msgstr "Next: load the recipe or close the book."
 
@@ -7900,10 +7904,6 @@ msgstr "Next: buy the recipe's ingredients."
 #: src/ui/next_step_text.gd
 msgid "Seuraavaksi: pane olut."
 msgstr "Next: brew the beer."
-
-#: src/ui/next_step_text.gd
-msgid "Seuraavaksi: sulje kauppa ja avaa panimo."
-msgstr "Next: close the shop and open the brewery."
 
 #: src/ui/next_step_text.gd
 msgid "Seuraavaksi: täytä resepti tai lisää raaka-aineet pöydälle."

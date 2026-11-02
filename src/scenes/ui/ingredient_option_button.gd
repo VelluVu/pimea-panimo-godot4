@@ -50,13 +50,13 @@ func _on_brewery_state_changed(_brewery : Brewery) -> void:
 
 	for i in range(item_count):
 		if get_item_id(i) == previously_selected_id and not is_item_disabled(i):
-			select(i)
+			_select(i)
 			_sync_own_tooltip(previously_selected_id)
 			return
 
 	var first_index := _first_enabled_index()
 	if first_index != -1:
-		select(first_index)
+		_select(first_index)
 		_on_item_selected(first_index)
 
 
@@ -70,7 +70,7 @@ func _on_menu_opened() -> void:
 		return
 
 	get_popup().set_focused_item(first_index)
-	select(first_index)
+	_select(first_index)
 	var first_id: int = get_item_id(first_index)
 	if first_id != -1:
 		GUISignals.active_ingredient_changed.emit(first_id)
@@ -82,7 +82,7 @@ func populate_ingredient_option_menu() -> void:
 
 	var first_index := _first_enabled_index()
 	if first_index != -1:
-		select(first_index)
+		_select(first_index)
 		# Deferred: in _ready() the views have not connected active_ingredient_changed yet.
 		_on_item_selected.call_deferred(first_index)
 
@@ -112,8 +112,32 @@ func refresh_item_texts() -> void:
 		var item : InventoryItem = brewery.inventory.get_item_by_id(ingredient.id)
 		var in_stock : int = item.amount if item != null else 0
 		var stock_text : String = "%s %s" % [ingredient.amount_text(in_stock), ingredient.get_unit_string()] if in_stock > 0 else ""
-		var covered : int = owned.get(ingredient.id, 0) if stock_covers_recipe else table.get(ingredient.id, 0)
-		set_item_text(i, IngredientMenuText.item(tr(ingredient.name), stock_text, target.get(ingredient.id, 0) > covered))
+		set_item_text(i, IngredientMenuText.item(tr(ingredient.name), stock_text, _is_needed(ingredient, owned, target, table)))
+	_show_closed_text()
+
+
+## The closed button has room for the name only: the stock is in the open list and under
+## the slider, and "Pilsner-mallas (3 kg)" was cut off mid-number.
+func _show_closed_text() -> void:
+	if selected == -1 or is_item_disabled(selected) or BrewEngine.current_brewery == null:
+		return
+	var ingredient : IngredientData = IngredientDatabase.get_item_by_id(get_item_id(selected))
+	if ingredient == null:
+		return
+	var brewery := BrewEngine.current_brewery
+	var needed : bool = _is_needed(ingredient, brewery.owned_ingredient_amounts(), brewery.brew_preparation.active_recipe_target, brewery.brew_preparation.selected_contents)
+	text = IngredientMenuText.item(tr(ingredient.name), "", needed)
+
+
+func _is_needed(ingredient : IngredientData, owned : Dictionary, target : Dictionary, table : Dictionary) -> bool:
+	var covered : int = owned.get(ingredient.id, 0) if stock_covers_recipe else table.get(ingredient.id, 0)
+	return target.get(ingredient.id, 0) > covered
+
+
+## select() writes the item's full text on the button; this puts the short one back.
+func _select(index : int) -> void:
+	select(index)
+	_show_closed_text()
 
 
 func _add_ingredient_item(ingredient : IngredientData, is_locked : bool, is_buy_locked : bool) -> void:
@@ -169,6 +193,7 @@ func _first_enabled_index() -> int:
 
 
 func _on_item_selected(index: int) -> void:
+	_show_closed_text()
 	var selected_id: int = get_item_id(index)
 	if selected_id != -1:
 		_sync_own_tooltip(selected_id)
@@ -181,13 +206,13 @@ func _on_global_ingredient_changed(ingredient_id: int) -> void:
 	if ingredient and ingredient.type == target_type:
 		for i in range(item_count):
 			if get_item_id(i) == ingredient_id:
-				select(i)
+				_select(i)
 				_sync_own_tooltip(ingredient_id)
 				return
 	else:
 		var first_index := _first_enabled_index()
 		if first_index != -1:
-			select(first_index)
+			_select(first_index)
 
 
 ## The closed button shows the same info as the popup item, without a click.

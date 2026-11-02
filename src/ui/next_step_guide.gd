@@ -20,7 +20,8 @@ const WAREHOUSE_DOOR_AREA : Rect2 = Rect2(87, -42, 43, 194)
 const TALK_CONTINUE_SECONDS : float = 4.0
 ## Under the bar's views, between the options button and the console.
 const SPEECH_RECT : Rect2 = Rect2(36, 302, 524, 54)
-## While Aatu talks, the open recipe book ends this far above him; its rows scroll.
+## While Aatu talks, the recipe book and the other tall windows end this far above him;
+## their rows scroll.
 const BOOK_GAP : float = 4.0
 
 var _pointer : NextStepPointer
@@ -36,6 +37,8 @@ var _recipe_library : RecipeLibraryWindow
 var _brewing_view : BrewingView
 var _shop_view : ShopView
 var _preparation_panel : BrewPreparationPanel
+## Windows that reach down to Aatu's box and end above it while he speaks.
+var _clear_of_speech : Array[Control] = []
 var _brew_day_open : bool = false
 var _refresh_queued : bool = false
 ## Runtime only: after a reload a player who already bought skips the book anyway.
@@ -62,6 +65,13 @@ func setup(pointer : NextStepPointer, speech : GuideSpeechBox, goals_panel : Dai
 	_brewing_view = brewing_view
 	_shop_view = shop_view
 	_preparation_panel = preparation_panel
+	_clear_of_speech.append(recipe_library)
+
+
+## `window` (anchored, no bottom offset of its own) ends above Aatu's box while he speaks,
+## as the recipe book does.
+func keep_clear_of_speech(window : Control) -> void:
+	_clear_of_speech.append(window)
 
 
 func _ready() -> void:
@@ -201,7 +211,7 @@ func _show_speech(step : NextStepRules.Step) -> void:
 	elif _talk >= 0:
 		line = CellarGuideText.talk(_talk as CellarGuideText.Talk)
 	var speaking : bool = not _brew_day_open and not line.is_empty()
-	_make_room_in_book(speaking)
+	_make_room_for_speech(speaking)
 	if not speaking:
 		_speech.hide()
 		_speech.forget_line()
@@ -212,9 +222,10 @@ func _show_speech(step : NextStepRules.Step) -> void:
 	_speech.show()
 
 
-func _make_room_in_book(speaking : bool) -> void:
-	var book_bottom : float = _recipe_library.get_parent_area_size().y * _recipe_library.anchor_bottom
-	_recipe_library.offset_bottom = minf(0.0, SPEECH_RECT.position.y - BOOK_GAP - book_bottom) if speaking else 0.0
+func _make_room_for_speech(speaking : bool) -> void:
+	for window : Control in _clear_of_speech:
+		var window_bottom : float = window.get_parent_area_size().y * window.anchor_bottom
+		window.offset_bottom = minf(0.0, SPEECH_RECT.position.y - BOOK_GAP - window_bottom) if speaking else 0.0
 
 
 func _point_at_talk(line : int) -> void:
