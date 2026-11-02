@@ -1,9 +1,10 @@
 shader_type canvas_item;
 
 // Palette-swap recolor for pixel-art customer sprites. For each region, pixels
-// whose hue/saturation are close to *_base_color get remapped to *_target_color's
-// hue/saturation while keeping the pixel's own value (so painted shading/highlights
-// are preserved). *_base_color must match the actual color painted in the sprite
+// whose hue/saturation are close to *_base_color get moved to *_target_color's
+// hue/saturation, keeping the pixel's own value and its hue and saturation offsets
+// from the base (so painted shading, hue-shifted shadows and blushes are preserved;
+// CustomerPalette.recolored() is the same maths). *_base_color must match the actual color painted in the sprite
 // for that region; *_target_color is set per customer instance for variety.
 // A region with *_recolor off still claims its pixels, so they never fall
 // through to a later region, but keeps them exactly as painted.
@@ -46,6 +47,9 @@ varying vec3 clothes_base_hsv;
 varying vec3 clothes_target_hsv;
 varying vec3 shoes_base_hsv;
 varying vec3 shoes_target_hsv;
+// The modulate alone (fades, the bar fight flash): fragment()'s COLOR already holds the
+// texture, so multiplying by it squared every colour and crushed the dark shades.
+varying vec4 modulate;
 
 vec3 rgb2hsv(vec3 c) {
 	vec4 k = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
@@ -71,12 +75,16 @@ vec3 apply_region_recolor(vec3 color, vec3 pixel_hsv, vec3 base_hsv, vec3 target
 	float hd = hue_distance(pixel_hsv.x, base_hsv.x);
 	float sd = abs(pixel_hsv.y - base_hsv.y);
 	float matched = (1.0 - step(hue_tol, hd)) * (1.0 - step(sat_tol, sd)) * (1.0 - consumed_mask);
-	vec3 recolored = hsv2rgb(vec3(target_hsv.x, target_hsv.y, pixel_hsv.z));
+	float hue_offset = pixel_hsv.x - base_hsv.x;
+	hue_offset -= round(hue_offset);
+	float saturation = clamp(target_hsv.y + pixel_hsv.y - base_hsv.y, 0.0, 1.0);
+	vec3 recolored = hsv2rgb(vec3(fract(target_hsv.x + hue_offset), saturation, pixel_hsv.z));
 	consumed_mask = max(consumed_mask, matched);
 	return mix(color, recolored, matched * float(recolor));
 }
 
 void vertex() {
+	modulate = COLOR;
 	skin_base_hsv = rgb2hsv(skin_base_color.rgb);
 	skin_target_hsv = rgb2hsv(skin_target_color.rgb);
 	hair_base_hsv = rgb2hsv(hair_base_color.rgb);
@@ -102,6 +110,5 @@ void fragment() {
 	consumed = max(consumed, shoes_consumed * (1.0 - outside_feet));
 	result = apply_region_recolor(result, pixel_hsv, hair_base_hsv, hair_target_hsv, hair_recolor, hue_tolerance, saturation_tolerance, consumed);
 	result = apply_region_recolor(result, pixel_hsv, clothes_base_hsv, clothes_target_hsv, clothes_recolor, hue_tolerance, saturation_tolerance, consumed);
-	// Times the incoming COLOR, which carries modulate (fades, the bar fight flash).
-	COLOR = vec4(result, tex_color.a) * COLOR;
+	COLOR = vec4(result, tex_color.a) * modulate;
 }

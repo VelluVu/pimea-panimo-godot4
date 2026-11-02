@@ -28,5 +28,4 @@ static func recolor_image(image: Image, palette: Dictionary) -> void:
 				continue
 			var region : String = CustomerPalette.claiming_region(pixel, palette, in_feet)
 			if region != "" and palette[region]["recolor"]:
-				var target : Color = palette[region]["target"]
-				image.set_pixel(x, y, Color.from_hsv(target.h, target.s, pixel.v, pixel.a))
+				image.set_pixel(x, y, CustomerPalette.recolored(pixel, palette[region]["base"], palette[region]["target"]))

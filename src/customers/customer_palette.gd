@@ -58,6 +58,16 @@ static func claiming_region(pixel: Color, palette: Dictionary, in_feet: bool) ->
 	return ""
 
 
+## `pixel` of a region painted around `base`, moved to `target`. The pixel keeps its own
+## brightness and its hue and saturation offsets from the base: a shade that differs from
+## the base only in hue or saturation (a warm skin shadow, a blush) would vanish otherwise.
+static func recolored(pixel: Color, base: Color, target: Color) -> Color:
+	var hue_offset : float = pixel.h - base.h
+	hue_offset -= roundf(hue_offset)
+	var saturation : float = clampf(target.s + pixel.s - base.s, 0.0, 1.0)
+	return Color.from_hsv(fposmod(target.h + hue_offset, 1.0), saturation, pixel.v, pixel.a)
+
+
 static func _region(base_color: Color, recolor: bool, random_color: Color) -> Dictionary:
 	return {"base": base_color, "recolor": recolor, "target": random_color if recolor else base_color}
 
