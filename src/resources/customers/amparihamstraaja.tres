@@ -1,8 +1,9 @@
-[gd_resource type="Resource" script_class="CustomerData" format=3]
+[gd_resource type="Resource" script_class="CustomerData" format=3 uid="uid://di4v8eamrautc"]
 
 [ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_data"]
-[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/amparihamstraaja_anim.tres" id="2_sprite"]
-[ext_resource type="Texture2D" path="res://assets/textures/bucket_of_bottles.png" id="3_bucket"]
+[ext_resource type="SpriteFrames" uid="uid://4ne7koggpfkg" path="res://src/resources/sprite_frames/amparihamstraaja_anim.tres" id="2_sprite"]
+[ext_resource type="Texture2D" uid="uid://7g8mnig8cr8n" path="res://assets/textures/bucket_of_bottles.png" id="3_bucket"]
+[ext_resource type="Script" uid="uid://dq66tbectyal5" path="res://src/customers/taste_rule.gd" id="taste_script"]
 
 [resource]
 script = ExtResource("1_data")
@@ -18,6 +19,7 @@ randomize_skin = false
 randomize_hair = false
 randomize_clothes = false
 randomize_shoes = false
+hand_item = ExtResource("3_bucket")
 voice_pitch = 1.35
 dialogue_intro = "Mmf! Jonotin ovella koko yön. Täällä jaetaan ämpäreitä, eikö?"
 dialogue_success = "Ämpäri täynnä! Poskiin ei enää mahtunut, joten loput kannan."
@@ -40,5 +42,4 @@ picks_at_random = true
 max_styles_per_visit = 2
 min_bottles_per_visit = 3
 max_bottles_per_visit = 5
-hand_item = ExtResource("3_bucket")
 metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

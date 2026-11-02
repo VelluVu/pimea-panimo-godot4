@@ -127,6 +127,10 @@ text = "Takaisin"
 [node name="OptionsWindow" parent="." unique_id=646598751 instance=ExtResource("4_btxxm")]
 process_mode = 3
 layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 448.0
+offset_bottom = 288.0
 show_main_menu_button = false
 
 [node name="LeaderboardWindow" parent="." unique_id=123817196 instance=ExtResource("5_x2yvf")]
