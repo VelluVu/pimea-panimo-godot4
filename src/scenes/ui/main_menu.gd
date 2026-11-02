@@ -73,6 +73,8 @@ func _ready() -> void:
 	# Nothing may simulate at the menu: a day rollover here would autosave an idle Brewery over
 	# the real save.
 	TimeManager.pause_time()
+	# The cellar reads while the player is still in the menu, so Start does not stutter.
+	BackgroundSceneLoad.start(GAME_SCENE_PATH)
 
 	FirstFocus.attach(root_menu_view)
 	FirstFocus.attach(start_game_view)
@@ -104,7 +106,7 @@ func _on_new_game_button_pressed() -> void:
 	GUISignals.menu_button_pressed.emit()
 	BrewEngine.start_new_game()
 	TimeManager.resume_time()
-	get_tree().change_scene_to_file(GAME_SCENE_PATH)
+	BackgroundSceneLoad.change_to(get_tree(), GAME_SCENE_PATH)
 
 
 func _on_continue_button_pressed() -> void:
@@ -115,7 +117,7 @@ func _on_continue_button_pressed() -> void:
 		continue_button.visible = false
 		return
 	TimeManager.resume_time()
-	get_tree().change_scene_to_file(GAME_SCENE_PATH)
+	BackgroundSceneLoad.change_to(get_tree(), GAME_SCENE_PATH)
 
 
 func _on_leaderboard_button_pressed() -> void:
