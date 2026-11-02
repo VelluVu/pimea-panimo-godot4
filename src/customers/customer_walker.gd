@@ -11,6 +11,8 @@ const CENTER_PAUSE_SECONDS : float = 0.8
 const MIN_WALK_DISTANCE : float = 1.0
 ## route's index of the room centre, where the walk in pauses.
 const ROOM_CENTRE_LEG : int = 2
+## One stair is one step: contact to contact.
+const FRAMES_PER_STAIR : int = 2
 
 ## The legs of the walk in, in order (see start()).
 enum Leg { STAIRS, TO_CENTER, CENTER_PAUSE, TO_COUNTER }
@@ -26,6 +28,7 @@ var _sprite : AnimatedSprite2D
 var _play : Callable
 var _pause_seconds : float = CENTER_PAUSE_SECONDS
 var _pause_started_msec : int = 0
+var _stepper : WalkStepper = WalkStepper.new()
 
 
 func _init(owner : Node2D, sprite : AnimatedSprite2D, play : Callable) -> void:
@@ -56,10 +59,12 @@ func walk_route_from(first_leg : int, pause_seconds : float) -> Tween:
 	if first_leg <= Leg.CENTER_PAUSE:
 		_pause_seconds = pause_seconds
 		tween.tween_callback(_set_leg.bind(Leg.CENTER_PAUSE))
+		tween.tween_callback(_end_steps)
 		tween.tween_callback(_play.bind(Customer.ANIM_IDLE, false))
 		tween.tween_interval(pause_seconds)
 	tween.tween_callback(_set_leg.bind(Leg.TO_COUNTER))
 	_queue_floor_walk(tween, from, route[3])
+	tween.tween_callback(_end_steps)
 	return tween
 
 
@@ -75,16 +80,17 @@ func walk_to(target : Vector2) -> void:
 	var distance := _owner.global_position.distance_to(target)
 	if distance < MIN_WALK_DISTANCE:
 		return
-	_play.call(Customer.ANIM_WALK_RIGHT, target.x < _owner.global_position.x)
+	_begin_steps(Customer.ANIM_WALK_RIGHT, target.x < _owner.global_position.x, floor_stride())
 	var tween := _owner.create_tween()
 	PixelStepTween.move(tween, _owner, _owner.global_position, target, distance / data.floor_walk_speed, art_pixel())
 	await tween.finished
+	_end_steps()
 
 
 ## Walks towards the camera to `exit_position`, speeding up. Add the exit to the returned tween.
 func walk_out(exit_position : Vector2) -> Tween:
 	var duration := CustomerRoute.seconds_left(_owner.global_position, exit_position, data.floor_walk_speed)
-	_play.call(Customer.ANIM_WALK_TOWARDS, true)
+	_begin_steps(Customer.ANIM_WALK_TOWARDS, true, floor_stride())
 	var tween := _owner.create_tween()
 	PixelStepTween.move(tween, _owner, _owner.global_position, exit_position, duration, art_pixel()).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 	return tween
@@ -93,6 +99,32 @@ func walk_out(exit_position : Vector2) -> Tween:
 ## One pixel of the scaled-up art: walks step by it, see PixelStepTween.
 func art_pixel() -> float:
 	return _sprite.scale.x
+
+
+## Screen pixels walked per walk frame on the floor.
+func floor_stride() -> float:
+	return WalkCadence.STRIDE_ART_PIXELS * art_pixel()
+
+
+## Call every frame: steps the walk frames by the distance moved since the last call.
+func tick() -> void:
+	var frames : int = _stepper.advance(_owner.global_position)
+	if frames > 0:
+		_sprite.frame = WalkStepper.next_frame(_sprite.frame, frames, _sprite.sprite_frames.get_frame_count(_sprite.animation))
+
+
+## The legs follow the distance walked instead of the clock, from a random frame so a group
+## setting off together does not march in step.
+func _begin_steps(anim_name : StringName, flip_horizontally : bool, stride : float) -> void:
+	_play.call(anim_name, flip_horizontally)
+	_sprite.speed_scale = 0.0
+	_sprite.frame = randi() % maxi(1, _sprite.sprite_frames.get_frame_count(_sprite.animation))
+	_stepper.start(_owner.global_position, stride)
+
+
+func _end_steps() -> void:
+	_stepper.stop()
+	_sprite.speed_scale = 1.0
 
 
 func _set_leg(new_leg : int) -> void:
@@ -104,7 +136,8 @@ func _set_leg(new_leg : int) -> void:
 func _queue_stair_descent(tween : Tween, from_pos : Vector2, stairs_pos : Vector2, steps : int) -> void:
 	if steps <= 0:
 		return
-	tween.tween_callback(_play.bind(Customer.ANIM_WALK_TOWARDS, true))
+	var stair_stride : float = from_pos.distance_to(stairs_pos) / steps / FRAMES_PER_STAIR
+	tween.tween_callback(_begin_steps.bind(Customer.ANIM_WALK_TOWARDS, true, stair_stride))
 	var step_from := from_pos
 	for i in range(1, steps + 1):
 		var step_pos := from_pos.lerp(stairs_pos, float(i) / steps)
@@ -114,5 +147,5 @@ func _queue_stair_descent(tween : Tween, from_pos : Vector2, stairs_pos : Vector
 
 
 func _queue_floor_walk(tween : Tween, from_pos : Vector2, to_pos : Vector2) -> void:
-	tween.tween_callback(_play.bind(Customer.ANIM_WALK_RIGHT, to_pos.x < from_pos.x))
+	tween.tween_callback(_begin_steps.bind(Customer.ANIM_WALK_RIGHT, to_pos.x < from_pos.x, floor_stride()))
 	PixelStepTween.move(tween, _owner, from_pos, to_pos, from_pos.distance_to(to_pos) / data.floor_walk_speed, art_pixel())

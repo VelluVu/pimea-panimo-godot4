@@ -4,26 +4,22 @@ extends RefCounted
 ## A customer's own sounds: footsteps while a walk animation plays, and the ambient loop
 ## some customers carry with them (a drone's hum).
 
-## Seconds between footsteps while a walk animation plays at the sheet's own pace.
-const FOOTSTEP_INTERVAL_SECONDS : float = 0.32
 const AMBIENT_LOOP_VOLUME_DB : float = -12.0
 
-var _footstep_clock : float = 0.0
 var _ambient_player : AudioStreamPlayer2D
 
 
-## Call every frame; steps only while one of `walk_animations` plays.
-func tick(delta : float, owner : Node2D, sprite : AnimatedSprite2D, data : CustomerData, walk_animations : Array[StringName]) -> void:
+## Call on every frame change; a step lands on each contact frame of `walk_animations`.
+func on_frame(owner : Node2D, sprite : AnimatedSprite2D, data : CustomerData, walk_animations : Array[StringName]) -> void:
 	if data == null or not data.makes_footsteps:
 		return
-	if not (sprite.is_playing() and MirroredAnimation.base_name(sprite.animation) in walk_animations):
-		_footstep_clock = 0.0
-		return
-	# The steps follow the legs, which WalkCadence speeds up with the walk.
-	_footstep_clock += delta * sprite.speed_scale
-	if _footstep_clock >= FOOTSTEP_INTERVAL_SECONDS:
-		_footstep_clock -= FOOTSTEP_INTERVAL_SECONDS
+	if MirroredAnimation.base_name(sprite.animation) in walk_animations and is_contact_frame(sprite.frame):
 		BrewerySignals.customer_stepped.emit(owner.global_position)
+
+
+## Frames 1 and 3 of the 4-frame walks (0 and 2 counted from zero) put a foot down.
+static func is_contact_frame(frame : int) -> bool:
+	return frame % 2 == 0
 
 
 ## The loop follows the customer, so it is a child player rather than AudioManager's.

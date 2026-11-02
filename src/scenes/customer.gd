@@ -61,13 +61,14 @@ var _sprite_home_x: float = 0.0
 
 func _ready() -> void:
 	animated_sprite.frame_changed.connect(_on_animated_sprite_frame_changed)
+	animated_sprite.frame_changed.connect(func() -> void: _sounds.on_frame(self, animated_sprite, customer_data, WALK_ANIMATIONS))
 	_glasses = CustomerGlasses.new(self, beer_glass_sprite, counter_glass_sprite)
 	_walker = CustomerWalker.new(self, animated_sprite, _play_animation)
 	_sprite_home_x = animated_sprite.position.x
 
 
 func _process(delta: float) -> void:
-	_sounds.tick(delta, self, animated_sprite, customer_data, WALK_ANIMATIONS)
+	_walker.tick()
 	if _phase == CustomerSnapshot.Phase.LEAVING and _sway.tick(delta, _walker.art_pixel()):
 		animated_sprite.position.x = _sprite_home_x + _sway.x
 		_on_animated_sprite_frame_changed()
@@ -92,7 +93,8 @@ func _apply_visuals() -> void:
 
 func _play_animation(anim_name: StringName, flip_horizontally: bool = false) -> void:
 	MirroredAnimation.play(animated_sprite, anim_name, flip_horizontally)
-	animated_sprite.speed_scale = WalkCadence.for_sprite(animated_sprite, customer_data.floor_walk_speed, WALK_ANIMATIONS)
+	# The walker steps walk frames by distance itself, see WalkStepper.
+	animated_sprite.speed_scale = 1.0
 
 
 func get_customer_name() -> String:

@@ -5,7 +5,9 @@ extends RefCounted
 ## the walker STRIDE_ART_PIXELS of its own art. On the sheets' fixed 6 fps a 120 px/s walk
 ## slid 5 art pixels a frame and the feet skated.
 
-const STRIDE_ART_PIXELS : float = 3.0
+## Half the gap between the feet in the contact frames (about 10 art pixels on the sheets):
+## a planted foot sweeps the gap back in two frames. At 3 the feet slid back every step.
+const STRIDE_ART_PIXELS : float = 5.0
 
 
 ## AnimatedSprite2D.speed_scale for walking `walk_speed` px/s on an animation of `fps`,

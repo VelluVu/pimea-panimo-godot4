@@ -34,5 +34,5 @@ func test_non_walk_animations_keep_the_sheet_pace() -> void:
 	var walks : Array[StringName] = [&"walk_right"]
 	assert_eq(WalkCadenceScript.for_sprite(sprite, 120.0, walks), 1.0)
 	sprite.animation = &"walk_right"
-	assert_true(is_equal_approx(WalkCadenceScript.for_sprite(sprite, 120.0, walks), 120.0 / 72.0))
+	assert_true(is_equal_approx(WalkCadenceScript.for_sprite(sprite, 120.0, walks), 120.0 / (6.0 * WalkCadenceScript.STRIDE_ART_PIXELS * 4.0)))
 	sprite.free()
