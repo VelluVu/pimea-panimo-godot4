@@ -5847,10 +5847,6 @@ msgid "Lisää"
 msgstr "Add"
 
 #: src/scenes/main.tscn
-msgid "MUSTA PERJANTAI"
-msgstr "BLACK FRIDAY"
-
-#: src/scenes/main.tscn
 msgid "Maine: 0"
 msgstr "Reputation: 0"
 

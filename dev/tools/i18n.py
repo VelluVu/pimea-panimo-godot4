@@ -78,6 +78,9 @@ QUOTED = re.compile(r'"((?:[^"\\]|\\.)*)"')
 # A dictionary entry on its own line, like `ACTION_SHOP: "Kauppa",` or `"hint": "...",`.
 DICT_ENTRY = re.compile(r'^\s*(?:[A-Z][A-Z0-9_]*|"\w+")\s*:\s*"((?:[^"\\]|\\.)*)",?\s*$', re.M)
 SCENE_TEXT = re.compile(r'^(text|tooltip_text|placeholder_text) = "((?:[^"\\]|\\.)*)"', re.M)
+# A scene node with translation switched off (AUTO_TRANSLATE_MODE_DISABLED) shows its text as is.
+UNTRANSLATED_NODE = re.compile(r'^auto_translate_mode = 2$', re.M)
+SCENE_NODE_START = re.compile(r'^(?=\[)', re.M)
 TEXT_NAME = re.compile(r'(_LABEL|_TEXT|_STRING|_HINT|^KPL)$')
 PLACEHOLDER = re.compile(r'%[-+0-9.]*[dsf%]')
 # Constant names that hold paths, keys or log text rather than player-facing words.
@@ -139,8 +142,11 @@ def find_texts():
         for path in sorted((ROOT / base).rglob("*.tscn")):
             if _skipped(path):
                 continue
-            for _prop, value in SCENE_TEXT.findall(path.read_text(encoding="utf-8")):
-                add(value, _rel(path))
+            for node in SCENE_NODE_START.split(path.read_text(encoding="utf-8")):
+                if UNTRANSLATED_NODE.search(node):
+                    continue
+                for _prop, value in SCENE_TEXT.findall(node):
+                    add(value, _rel(path))
     for folder, fields in CONTENT_FIELDS.items():
         field_re = re.compile(r'^(?:' + "|".join(fields) + r') = "((?:[^"\\]|\\.)*)"', re.M)
         for path in sorted((ROOT / folder).rglob("*.tres")):

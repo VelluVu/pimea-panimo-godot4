@@ -1858,6 +1858,7 @@ script = ExtResource("87_ipwpp")
 season = 2
 
 [node name="NeonSign" type="Label" parent="BlackWeekDecor" unique_id=1950120432]
+auto_translate_mode = 2
 offset_left = 150.0
 offset_top = 70.0
 offset_right = 270.0
@@ -1866,7 +1867,7 @@ theme = ExtResource("7_y6deb")
 theme_override_colors/font_color = Color(2.6, 0.8, 2, 1)
 theme_override_colors/font_outline_color = Color(0.7, 0.15, 0.55, 1)
 theme_override_constants/outline_size = 2
-text = "MUSTA PERJANTAI"
+text = "BLACK MONTH"
 horizontal_alignment = 1
 vertical_alignment = 1
 
