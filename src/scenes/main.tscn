@@ -1442,6 +1442,7 @@ position = Vector2(291, 238)
 position = Vector2(399, 282)
 
 [node name="BarTable_Sprite2D" type="Sprite2D" parent="WorldYSort/BarTable" unique_id=834465169]
+light_mask = 3
 position = Vector2(1, -31)
 texture = ExtResource("2_dp3eg")
 
@@ -1751,10 +1752,12 @@ script = ExtResource("78_8knqq")
 script = ExtResource("87_ipwpp")
 
 [node name="PumpkinStairs" type="Sprite2D" parent="HalloweenDecor" unique_id=1454258641]
+light_mask = 3
 position = Vector2(125, 290)
 texture = ExtResource("88_y168j")
 
 [node name="GlowStairs" type="PointLight2D" parent="HalloweenDecor/PumpkinStairs" unique_id=298845968]
+range_item_cull_mask = 2
 color = Color(1, 0.5411765, 0.16470589, 1)
 energy = 1.2
 texture = ExtResource("9_nylc4")
@@ -1765,10 +1768,12 @@ flicker_speed = 5.0
 dip_chance_per_second = 0.05
 
 [node name="PumpkinDoor" type="Sprite2D" parent="HalloweenDecor" unique_id=1765319124]
+light_mask = 3
 position = Vector2(545, 292)
 texture = ExtResource("88_y168j")
 
 [node name="GlowDoor" type="PointLight2D" parent="HalloweenDecor/PumpkinDoor" unique_id=2127749963]
+range_item_cull_mask = 2
 color = Color(1, 0.5411765, 0.16470589, 1)
 energy = 1.2
 texture = ExtResource("9_nylc4")
@@ -1779,10 +1784,12 @@ flicker_speed = 4.3
 dip_chance_per_second = 0.05
 
 [node name="PumpkinCounter" type="Sprite2D" parent="HalloweenDecor" unique_id=33659483]
+light_mask = 3
 position = Vector2(358, 227)
 texture = ExtResource("89_6vtdq")
 
 [node name="GlowCounter" type="PointLight2D" parent="HalloweenDecor/PumpkinCounter" unique_id=671439722]
+range_item_cull_mask = 2
 color = Color(1, 0.5411765, 0.16470589, 1)
 energy = 0.9
 texture = ExtResource("9_nylc4")
@@ -1793,6 +1800,7 @@ flicker_speed = 5.7
 dip_chance_per_second = 0.05
 
 [node name="BarrelSkeleton" type="AnimatedSprite2D" parent="HalloweenDecor" unique_id=1904502683]
+light_mask = 3
 texture_filter = 1
 position = Vector2(71, 244)
 sprite_frames = ExtResource("90_6vtdq")
@@ -1801,6 +1809,7 @@ centered = false
 script = ExtResource("91_uvf16")
 
 [node name="EyeGlow" type="PointLight2D" parent="HalloweenDecor/BarrelSkeleton" unique_id=464212695]
+range_item_cull_mask = 2
 position = Vector2(20, 18)
 color = Color(1, 0.6901961, 0.4, 1)
 energy = 1.3
@@ -1808,6 +1817,7 @@ texture = ExtResource("9_nylc4")
 texture_scale = 0.35
 
 [node name="CornerSkeleton" type="AnimatedSprite2D" parent="HalloweenDecor" unique_id=717337853]
+light_mask = 3
 texture_filter = 1
 position = Vector2(590, 262)
 sprite_frames = ExtResource("92_1uuce")
@@ -1818,6 +1828,7 @@ min_interval_seconds = 30.0
 max_interval_seconds = 60.0
 
 [node name="EyeGlow" type="PointLight2D" parent="HalloweenDecor/CornerSkeleton" unique_id=1595111513]
+range_item_cull_mask = 2
 position = Vector2(12, 14)
 color = Color(1, 0.6901961, 0.4, 1)
 energy = 1.3
@@ -1825,6 +1836,7 @@ texture = ExtResource("9_nylc4")
 texture_scale = 0.35
 
 [node name="TankSkeleton" type="AnimatedSprite2D" parent="HalloweenDecor" unique_id=454365422]
+light_mask = 3
 texture_filter = 1
 position = Vector2(200, 156)
 sprite_frames = ExtResource("93_g70wa")
@@ -1835,6 +1847,7 @@ min_interval_seconds = 30.0
 max_interval_seconds = 60.0
 
 [node name="EyeGlow" type="PointLight2D" parent="HalloweenDecor/TankSkeleton" unique_id=597112557]
+range_item_cull_mask = 2
 position = Vector2(7, 6)
 color = Color(1, 0.6901961, 0.4, 1)
 energy = 0.9
@@ -1858,6 +1871,7 @@ script = ExtResource("87_ipwpp")
 season = 2
 
 [node name="NeonSign" type="Label" parent="BlackWeekDecor" unique_id=1950120432]
+light_mask = 3
 auto_translate_mode = 2
 offset_left = 150.0
 offset_top = 70.0
@@ -1872,6 +1886,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="NeonGlow" type="PointLight2D" parent="BlackWeekDecor/NeonSign" unique_id=2043512233]
+range_item_cull_mask = 2
 position = Vector2(60, 7)
 color = Color(1, 0.35, 0.75, 1)
 texture = ExtResource("9_nylc4")
@@ -1883,6 +1898,7 @@ script = ExtResource("87_ipwpp")
 season = 3
 
 [node name="CyberNeonSign" type="Label" parent="CyberWeekDecor" unique_id=1106318851]
+light_mask = 3
 offset_left = 328.0
 offset_top = 100.0
 offset_right = 424.0
@@ -1896,6 +1912,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="NeonGlow" type="PointLight2D" parent="CyberWeekDecor/CyberNeonSign" unique_id=605459832]
+range_item_cull_mask = 2
 position = Vector2(48, 7)
 color = Color(0.3, 0.9, 1, 1)
 texture = ExtResource("9_nylc4")
