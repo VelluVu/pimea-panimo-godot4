@@ -183,3 +183,15 @@ func test_group_visit_snapshot_has_no_popups_once_shown() -> void:
 	var loaded := GroupVisit.new(null, 0, 11, Vector2.ZERO)
 	loaded.restore(visit.snapshot())
 	assert_true(loaded.outcome == null, "nothing left to show")
+
+
+## A crowd sent running by an outburst must not come back to finish its visit after a load.
+func test_a_scattered_visit_is_not_saved() -> void:
+	var director := GroupVisitDirector.new(null, null, null, Callable())
+	var visit := GroupVisit.new(GroupVisitEventData.new(), 0, 10, Vector2.ZERO)
+	var member := Node2D.new()
+	visit.members.append(member)
+	visit.scattered = true
+	director._visits.append(visit)
+	assert_eq(director.snapshots().size(), 0)
+	member.free()

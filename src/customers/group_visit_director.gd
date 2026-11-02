@@ -92,9 +92,19 @@ func resume(snap : GroupVisitSnapshot, slot : int, counter_position : Vector2) -
 func snapshots() -> Array[GroupVisitSnapshot]:
 	var snaps : Array[GroupVisitSnapshot] = []
 	for visit : GroupVisit in _visits:
-		if visit.has_anyone_here():
+		if visit.has_anyone_here() and not visit.scattered:
 			snaps.append(visit.snapshot())
 	return snaps
+
+
+## An outburst: every crowd drops its visit where it is and runs out. Nothing more is sold,
+## and a member who already left keeps going.
+func scatter() -> void:
+	for visit : GroupVisit in _visits:
+		visit.scattered = true
+		for member : Variant in visit.members:
+			if is_instance_valid(member):
+				member.run_off()
 
 
 ## Runs the stages from the visit's own on; `resume_seconds` is the first wait's rest
@@ -127,13 +137,14 @@ func _run_stage(visit : GroupVisit, resume_seconds : float) -> bool:
 	return false
 
 
-## False when the host was freed meanwhile (scene change): the visit must stop.
+## False when the host was freed meanwhile (scene change) or the crowd scattered: the visit
+## must stop.
 func _wait(visit : GroupVisit, seconds : float) -> bool:
-	if not is_instance_valid(_host):
+	if not is_instance_valid(_host) or visit.scattered:
 		return false
 	visit.timer = _host.get_tree().create_timer(seconds, false)
 	await visit.timer.timeout
-	return is_instance_valid(_host)
+	return is_instance_valid(_host) and not visit.scattered
 
 
 func _next_dialogue_slot() -> int:

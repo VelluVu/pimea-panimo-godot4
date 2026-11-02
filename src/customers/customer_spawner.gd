@@ -108,6 +108,11 @@ func hold_arrivals(seconds: float) -> void:
 	_quiet_until_msec = Time.get_ticks_msec() + int(seconds * 1000.0)
 
 
+## Every crowd in the cellar runs out, see GroupVisitDirector.scatter().
+func scatter_groups() -> void:
+	_group_visit.scatter()
+
+
 func _is_quiet() -> bool:
 	return Time.get_ticks_msec() < _quiet_until_msec
 

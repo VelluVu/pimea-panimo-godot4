@@ -17,6 +17,8 @@ var counter_position : Vector2
 var members : Array = []
 
 var stage : Stage = Stage.SPAWNING
+## Set when an outburst sent the crowd running: no stage runs on and no save keeps it.
+var scattered : bool = false
 var group_size : int = 0
 var chant_index : int = 0
 var order_data : CustomerData

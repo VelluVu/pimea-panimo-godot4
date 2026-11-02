@@ -296,9 +296,15 @@ func _animation_seconds(anim_name: StringName) -> float:
 
 
 ## Drops whatever it was doing and runs out with nothing bought. A group member stays: its
-## visit is run by GroupVisitDirector.
+## visit is run by GroupVisitDirector, which calls run_off() on its members itself.
 func flee() -> void:
-	if _skip_interaction or _phase == CustomerSnapshot.Phase.LEAVING:
+	if not _skip_interaction:
+		run_off()
+
+
+## flee() for anyone, group members included.
+func run_off() -> void:
+	if _phase == CustomerSnapshot.Phase.LEAVING:
 		return
 	if _walk_in != null and _walk_in.is_valid():
 		_walk_in.kill()
