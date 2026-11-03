@@ -3,9 +3,8 @@ extends Control
 
 ## Gap between the options button and the unlock cards, and below the cards.
 const UNLOCK_CARDS_MARGIN: float = 4.0
-const UPGRADES_BUTTON_TEXT: String = "🔧"
+const UPGRADES_ICON: Texture2D = preload("res://assets/textures/ui/icon_wrench.png")
 const UPGRADES_TOOLTIP_FORMAT: String = "Kellarin parannukset (%s)"
-const UPGRADES_ICON_FONT_SIZE: int = 32
 ## The first-brew hint's left anchor, right anchor and vertical centre: over the bar, or
 ## beside the open brewery or shop window (which ends at 0.57) and below the goals list.
 const HINT_ANCHORS_AT_BAR: Vector3 = Vector3(0.1, 0.9, 0.5)
@@ -123,14 +122,15 @@ func _bind_brewery(brewery : Brewery) -> void:
 ## always in sight.
 func _add_upgrades_button() -> void:
 	upgrades_button = TooltipButton.new()
-	upgrades_button.text = UPGRADES_BUTTON_TEXT
-	upgrades_button.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
-	# At the default 16 the 9 px wrench read as a stray line; icons scale in steps of 16.
-	upgrades_button.add_theme_font_size_override(&"font_size", UPGRADES_ICON_FONT_SIZE)
+	# A drawn icon, not the font's wrench: at 32 px its line height made the bar's buttons
+	# taller than the bar.
+	upgrades_button.icon = UPGRADES_ICON
+	upgrades_button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	upgrades_button.tooltip_text = tr(UPGRADES_TOOLTIP_FORMAT) % InputManager.get_binding_text(InputManager.ACTION_TOGGLE_UPGRADES)
 	upgrades_button.focus_mode = Control.FOCUS_NONE
 	var side : float = game_speed_button.get_combined_minimum_size().y
 	upgrades_button.custom_minimum_size = Vector2(side, side)
+	upgrades_button.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	upgrades_button.pressed.connect(_toggle_cellar_upgrades_window)
 	top_panel_resources.add_child(upgrades_button)
 	top_panel_resources.move_child(upgrades_button, game_speed_button.get_index())

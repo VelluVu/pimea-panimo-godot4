@@ -4,17 +4,26 @@
 [ext_resource type="FontFile" uid="uid://b51b16b2hykao" path="res://assets/fonts/twemoji/Twemoji.Mozilla.ttf" id="2_twemoji"]
 [ext_resource type="FontFile" uid="uid://dq8nfjdqbqec5" path="res://assets/fonts/noto_sans_symbols2/NotoSansSymbols2-Regular.ttf" id="3_symbols"]
 [ext_resource type="FontFile" uid="uid://cyjj8jvj27a41" path="res://assets/fonts/pimea_icons/pimea_icons.ttf" id="4_icons"]
+[ext_resource type="Texture2D" uid="uid://7v3pxfn0irk7" path="res://assets/textures/ui/button_danger_hover.png" id="ui_button_danger_hover"]
+[ext_resource type="Texture2D" uid="uid://ohw47oppg053" path="res://assets/textures/ui/button_danger_normal.png" id="ui_button_danger_normal"]
+[ext_resource type="Texture2D" uid="uid://cqrudl21q1qw8" path="res://assets/textures/ui/button_danger_pressed.png" id="ui_button_danger_pressed"]
 [ext_resource type="Texture2D" uid="uid://c0oqendgsu212" path="res://assets/textures/ui/button_disabled.png" id="ui_button_disabled"]
 [ext_resource type="Texture2D" uid="uid://s2ox5yvkyanu" path="res://assets/textures/ui/button_focus.png" id="ui_button_focus"]
 [ext_resource type="Texture2D" uid="uid://blty1aqnd7gv" path="res://assets/textures/ui/button_hover.png" id="ui_button_hover"]
 [ext_resource type="Texture2D" uid="uid://du31g2l2yuwb3" path="res://assets/textures/ui/button_normal.png" id="ui_button_normal"]
 [ext_resource type="Texture2D" uid="uid://8gtjj80nbtp" path="res://assets/textures/ui/button_pressed.png" id="ui_button_pressed"]
+[ext_resource type="Texture2D" uid="uid://cn6h3pb4ge18e" path="res://assets/textures/ui/header.png" id="ui_header"]
 [ext_resource type="Texture2D" uid="uid://c1oyyse4gy0ti" path="res://assets/textures/ui/panel.png" id="ui_panel"]
+[ext_resource type="Texture2D" uid="uid://spwod0uervin" path="res://assets/textures/ui/slider_beer.png" id="ui_slider_beer"]
+[ext_resource type="Texture2D" uid="uid://dxxlc3ktj7rlc" path="res://assets/textures/ui/slider_beer_hover.png" id="ui_slider_beer_hover"]
 [ext_resource type="Texture2D" uid="uid://c61jpe6s5sini" path="res://assets/textures/ui/slider_fill.png" id="ui_slider_fill"]
 [ext_resource type="Texture2D" uid="uid://do7i8r0dgf1bd" path="res://assets/textures/ui/slider_fill_hover.png" id="ui_slider_fill_hover"]
-[ext_resource type="Texture2D" uid="uid://dp8c0frx0dhax" path="res://assets/textures/ui/slider_grabber.png" id="ui_slider_grabber"]
-[ext_resource type="Texture2D" uid="uid://dfoilmveesevy" path="res://assets/textures/ui/slider_grabber_hover.png" id="ui_slider_grabber_hover"]
+[ext_resource type="Texture2D" uid="uid://rbkbtoljtp2f" path="res://assets/textures/ui/slider_tap.png" id="ui_slider_tap"]
+[ext_resource type="Texture2D" uid="uid://dewoqgghcsv6x" path="res://assets/textures/ui/slider_tap_disabled.png" id="ui_slider_tap_disabled"]
+[ext_resource type="Texture2D" uid="uid://byk427ola604u" path="res://assets/textures/ui/slider_tap_hover.png" id="ui_slider_tap_hover"]
 [ext_resource type="Texture2D" uid="uid://c6py3m2df4jmj" path="res://assets/textures/ui/slider_track.png" id="ui_slider_track"]
+[ext_resource type="Texture2D" uid="uid://cpennliyn5ifs" path="res://assets/textures/ui/slider_tube.png" id="ui_slider_tube"]
+[ext_resource type="Texture2D" uid="uid://c3xo47wqwvs35" path="res://assets/textures/ui/tab_selected.png" id="ui_tab_selected"]
 [ext_resource type="Texture2D" uid="uid://c2oppb0jbql5n" path="res://assets/textures/ui/toggle_off.png" id="ui_toggle_off"]
 [ext_resource type="Texture2D" uid="uid://dcggq4h2mlfvi" path="res://assets/textures/ui/toggle_on.png" id="ui_toggle_on"]
 
@@ -83,40 +92,82 @@ texture_margin_bottom = 4.0
 
 [sub_resource type="StyleBoxEmpty" id="check_flat"]
 
+[sub_resource type="StyleBoxTexture" id="danger_hover"]
+content_margin_left = 4.0
+content_margin_top = 3.0
+content_margin_right = 4.0
+content_margin_bottom = 5.0
+texture = ExtResource("ui_button_danger_hover")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxTexture" id="danger_pressed"]
+content_margin_left = 4.0
+content_margin_top = 5.0
+content_margin_right = 4.0
+content_margin_bottom = 3.0
+texture = ExtResource("ui_button_danger_pressed")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxTexture" id="danger_normal"]
+content_margin_left = 4.0
+content_margin_top = 3.0
+content_margin_right = 4.0
+content_margin_bottom = 5.0
+texture = ExtResource("ui_button_danger_normal")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+
 [sub_resource type="StyleBoxLine" id="row_divider"]
 color = Color(0.050980393, 0.03137255, 0.019607844, 1)
 grow_begin = 0.0
 grow_end = 0.0
 
-[sub_resource type="StyleBoxTexture" id="slider_fill"]
-texture = ExtResource("ui_slider_fill")
+[sub_resource type="StyleBoxTexture" id="slider_beer"]
+texture = ExtResource("ui_slider_beer")
 texture_margin_left = 2.0
-texture_margin_top = 2.0
-texture_margin_right = 2.0
-texture_margin_bottom = 2.0
+texture_margin_top = 4.0
+texture_margin_right = 3.0
+texture_margin_bottom = 4.0
+axis_stretch_horizontal = 1
 
-[sub_resource type="StyleBoxTexture" id="slider_fill_hover"]
-texture = ExtResource("ui_slider_fill_hover")
+[sub_resource type="StyleBoxTexture" id="slider_beer_hover"]
+texture = ExtResource("ui_slider_beer_hover")
 texture_margin_left = 2.0
-texture_margin_top = 2.0
-texture_margin_right = 2.0
-texture_margin_bottom = 2.0
+texture_margin_top = 4.0
+texture_margin_right = 3.0
+texture_margin_bottom = 4.0
+axis_stretch_horizontal = 1
 
-[sub_resource type="StyleBoxTexture" id="slider_track"]
-texture = ExtResource("ui_slider_track")
-texture_margin_left = 2.0
-texture_margin_top = 2.0
-texture_margin_right = 2.0
-texture_margin_bottom = 2.0
+[sub_resource type="StyleBoxTexture" id="slider_tube"]
+texture = ExtResource("ui_slider_tube")
+texture_margin_left = 3.0
+texture_margin_top = 4.0
+texture_margin_right = 3.0
+texture_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxTexture" id="header_plaque"]
+texture = ExtResource("ui_header")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
 
 [sub_resource type="StyleBoxTexture" id="panel_plain"]
 texture = ExtResource("ui_panel")
 texture_margin_left = 4.0
 texture_margin_top = 4.0
-texture_margin_right = 5.0
-texture_margin_bottom = 5.0
-expand_margin_right = 1.0
-expand_margin_bottom = 1.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxTexture" id="panel_content"]
 content_margin_left = 4.0
@@ -126,10 +177,10 @@ content_margin_bottom = 4.0
 texture = ExtResource("ui_panel")
 texture_margin_left = 4.0
 texture_margin_top = 4.0
-texture_margin_right = 5.0
-texture_margin_bottom = 5.0
-expand_margin_right = 1.0
-expand_margin_bottom = 1.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xkb5p"]
 texture = ExtResource("ui_button_hover")
@@ -142,8 +193,41 @@ texture_margin_bottom = 4.0
 texture = ExtResource("ui_panel")
 texture_margin_left = 4.0
 texture_margin_top = 4.0
-texture_margin_right = 5.0
-texture_margin_bottom = 5.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="primary_hover"]
+content_margin_left = 4.0
+content_margin_top = 3.0
+content_margin_right = 4.0
+content_margin_bottom = 5.0
+texture = ExtResource("ui_button_hover")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxTexture" id="primary_pressed"]
+content_margin_left = 4.0
+content_margin_top = 5.0
+content_margin_right = 4.0
+content_margin_bottom = 3.0
+texture = ExtResource("ui_button_pressed")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxTexture" id="primary_normal"]
+content_margin_left = 4.0
+content_margin_top = 3.0
+content_margin_right = 4.0
+content_margin_bottom = 5.0
+texture = ExtResource("ui_button_normal")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
 
 [sub_resource type="StyleBoxEmpty" id="seamless_panel"]
 
@@ -170,8 +254,8 @@ texture_margin_top = 4.0
 texture_margin_right = 4.0
 texture_margin_bottom = 4.0
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_v8yh7"]
-texture = ExtResource("ui_button_pressed")
+[sub_resource type="StyleBoxTexture" id="tab_bar_selected"]
+texture = ExtResource("ui_tab_selected")
 texture_margin_left = 4.0
 texture_margin_top = 4.0
 texture_margin_right = 4.0
@@ -192,8 +276,8 @@ content_margin_bottom = 10.0
 texture = ExtResource("ui_panel")
 texture_margin_left = 4.0
 texture_margin_top = 4.0
-texture_margin_right = 5.0
-texture_margin_bottom = 5.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rjiow"]
 texture = ExtResource("ui_button_hover")
@@ -202,15 +286,19 @@ texture_margin_top = 4.0
 texture_margin_right = 4.0
 texture_margin_bottom = 4.0
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_evdgs"]
-texture = ExtResource("ui_button_pressed")
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hrld3"]
+texture = ExtResource("ui_button_normal")
 texture_margin_left = 4.0
 texture_margin_top = 4.0
 texture_margin_right = 4.0
 texture_margin_bottom = 4.0
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hrld3"]
-texture = ExtResource("ui_button_normal")
+[sub_resource type="StyleBoxTexture" id="tab_selected"]
+content_margin_left = 4.0
+content_margin_top = 5.0
+content_margin_right = 4.0
+content_margin_bottom = 3.0
+texture = ExtResource("ui_tab_selected")
 texture_margin_left = 4.0
 texture_margin_top = 4.0
 texture_margin_right = 4.0
@@ -273,14 +361,33 @@ CheckButton/styles/hover = SubResource("check_flat")
 CheckButton/styles/hover_pressed = SubResource("check_flat")
 CheckButton/styles/normal = SubResource("check_flat")
 CheckButton/styles/pressed = SubResource("check_flat")
+CloseButton/base_type = &"Button"
+CloseButton/colors/font_hover_color = Color(1, 1, 1, 1)
+CloseButton/colors/font_pressed_color = Color(1, 0.8784314, 0.8156863, 1)
+CloseButton/styles/hover = SubResource("danger_hover")
+CloseButton/styles/hover_pressed = SubResource("danger_pressed")
+CloseButton/styles/pressed = SubResource("danger_pressed")
+DangerButton/base_type = &"Button"
+DangerButton/colors/font_color = Color(1, 0.8784314, 0.8156863, 1)
+DangerButton/colors/font_focus_color = Color(1, 0.8784314, 0.8156863, 1)
+DangerButton/colors/font_hover_color = Color(1, 1, 1, 1)
+DangerButton/colors/font_pressed_color = Color(1, 0.8784314, 0.8156863, 1)
+DangerButton/styles/hover = SubResource("danger_hover")
+DangerButton/styles/hover_pressed = SubResource("danger_pressed")
+DangerButton/styles/normal = SubResource("danger_normal")
+DangerButton/styles/pressed = SubResource("danger_pressed")
 HSeparator/constants/separation = 1
 HSeparator/styles/separator = SubResource("row_divider")
-HSlider/icons/grabber = ExtResource("ui_slider_grabber")
-HSlider/icons/grabber_disabled = ExtResource("ui_slider_grabber")
-HSlider/icons/grabber_highlight = ExtResource("ui_slider_grabber_hover")
-HSlider/styles/grabber_area = SubResource("slider_fill")
-HSlider/styles/grabber_area_highlight = SubResource("slider_fill_hover")
-HSlider/styles/slider = SubResource("slider_track")
+HSlider/icons/grabber = ExtResource("ui_slider_tap")
+HSlider/icons/grabber_disabled = ExtResource("ui_slider_tap_disabled")
+HSlider/icons/grabber_highlight = ExtResource("ui_slider_tap_hover")
+HSlider/styles/grabber_area = SubResource("slider_beer")
+HSlider/styles/grabber_area_highlight = SubResource("slider_beer_hover")
+HSlider/styles/slider = SubResource("slider_tube")
+HeaderLabel/base_type = &"Label"
+HeaderLabel/colors/font_color = Color(0.9490196, 0.7882353, 0.41960785, 1)
+HeaderPanel/base_type = &"Panel"
+HeaderPanel/styles/panel = SubResource("header_plaque")
 Label/colors/font_color = Color(0.9254902, 0.8627451, 0.72156864, 1)
 Label/colors/font_outline_color = Color(0.08235294, 0.05490196, 0.03137255, 1)
 Label/constants/outline_size = 2
@@ -305,9 +412,14 @@ PopupMenu/constants/outline_size = 1
 PopupMenu/styles/hover = SubResource("StyleBoxTexture_xkb5p")
 PopupMenu/styles/panel = SubResource("StyleBoxTexture_ykn37")
 PrimaryButton/base_type = &"Button"
-PrimaryButton/colors/font_color = Color(0.9490196, 0.7882353, 0.41960785, 1)
-PrimaryButton/colors/font_focus_color = Color(0.9490196, 0.7882353, 0.41960785, 1)
-PrimaryButton/colors/font_hover_color = Color(1, 0.92156863, 0.64705884, 1)
+PrimaryButton/colors/font_color = Color(1, 0.9490196, 0.78431374, 1)
+PrimaryButton/colors/font_focus_color = Color(1, 0.9490196, 0.78431374, 1)
+PrimaryButton/colors/font_hover_color = Color(1, 1, 1, 1)
+PrimaryButton/colors/font_pressed_color = Color(1, 0.9490196, 0.78431374, 1)
+PrimaryButton/styles/hover = SubResource("primary_hover")
+PrimaryButton/styles/hover_pressed = SubResource("primary_pressed")
+PrimaryButton/styles/normal = SubResource("primary_normal")
+PrimaryButton/styles/pressed = SubResource("primary_pressed")
 SeamlessPanel/base_type = &"Panel"
 SeamlessPanel/styles/panel = SubResource("seamless_panel")
 SeamlessPanelContainer/base_type = &"PanelContainer"
@@ -321,7 +433,7 @@ TabBar/constants/outline_size = 1
 TabBar/styles/tab_disabled = SubResource("StyleBoxTexture_kduym")
 TabBar/styles/tab_focus = SubResource("btn_focus")
 TabBar/styles/tab_hovered = SubResource("StyleBoxTexture_t3kpi")
-TabBar/styles/tab_selected = SubResource("StyleBoxTexture_v8yh7")
+TabBar/styles/tab_selected = SubResource("tab_bar_selected")
 TabBar/styles/tab_unselected = SubResource("StyleBoxTexture_keqvf")
 TabContainer/colors/font_hovered_color = Color(0.9490196, 0.7882353, 0.41960785, 1)
 TabContainer/colors/font_outline_color = Color(0.08235294, 0.05490196, 0.03137255, 1)
@@ -331,11 +443,13 @@ TabContainer/constants/outline_size = 1
 TabContainer/styles/panel = SubResource("StyleBoxTexture_4fdfv")
 TabContainer/styles/tab_focus = SubResource("btn_focus")
 TabContainer/styles/tab_hovered = SubResource("StyleBoxTexture_rjiow")
-TabContainer/styles/tab_selected = SubResource("StyleBoxTexture_evdgs")
+TabContainer/styles/tab_selected = SubResource("tab_bar_selected")
 TabContainer/styles/tab_unselected = SubResource("StyleBoxTexture_hrld3")
 TabToggle/base_type = &"Button"
 TabToggle/colors/font_hover_pressed_color = Color(1, 0.92156863, 0.64705884, 1)
 TabToggle/colors/font_pressed_color = Color(0.9490196, 0.7882353, 0.41960785, 1)
+TabToggle/styles/hover_pressed = SubResource("tab_selected")
+TabToggle/styles/pressed = SubResource("tab_selected")
 VScrollBar/styles/grabber = SubResource("scroll_grabber")
 VScrollBar/styles/grabber_highlight = SubResource("scroll_grabber_hover")
 VScrollBar/styles/grabber_pressed = SubResource("scroll_grabber_hover")

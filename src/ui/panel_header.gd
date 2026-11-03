@@ -11,6 +11,8 @@ const HEIGHT : float = 28.0
 ## Moves `label` into a new bar at its place and returns the bar.
 static func wrap(label : Label) -> Panel:
 	var bar := Panel.new()
+	bar.theme_type_variation = &"HeaderPanel"
+	label.theme_type_variation = &"HeaderLabel"
 	bar.custom_minimum_size.y = HEIGHT
 	bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	label.add_sibling(bar)

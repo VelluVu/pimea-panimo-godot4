@@ -26,13 +26,15 @@ const XP_POPUP_COLOR : Color = Color(0.4, 0.75, 1.0, 1)
 const LEVEL_FORMAT : String = "Taso: %d"
 const LEVEL_TOOLTIP_FORMAT : String = "Taso %d\n%d/%d XP\n%d XP seuraavaan tasoon"
 
+## The clock on the cellar wall; its tooltip shows the time.
+@export var clock_ui : ClockUI
+
 @onready var money_label : Label = $MoneyLabel
 @onready var reputation_label : Label = $ReputationLabel
 @onready var level_label : Label = $LevelBox/LevelLabel
 @onready var level_progress_bar : ProgressBar = $LevelBox/LevelProgressBar
 @onready var risk_label : Label = $RiskLabel
 @onready var day_label : Label = $DayLabel
-@onready var clock_ui : ClockUI = $ClockUITextureRect
 var last_money: float = -1.0
 var last_reputation : int = -1
 var last_risk: int = -1
@@ -56,11 +58,11 @@ func _ready() -> void:
 	money_label.set_script(LiveTooltipLabel)
 	money_label.set(&"tooltip_source", _money_tooltip)
 	money_label.mouse_filter = Control.MOUSE_FILTER_PASS
-	# The day and the clock share one tooltip, built on hover so the time is current.
+	# Built on hover, so the time is current.
 	day_label.set_script(LiveTooltipLabel)
 	day_label.set(&"tooltip_source", _day_clock_tooltip)
 	day_label.mouse_filter = Control.MOUSE_FILTER_PASS
-	clock_ui.tooltip_source = _day_clock_tooltip
+	clock_ui.tooltip_source = _clock_tooltip
 	clock_ui.mouse_filter = Control.MOUSE_FILTER_PASS
 
 	BrewerySignals.brewery_state_changed.connect(_on_brewery_state_changed)
@@ -91,6 +93,13 @@ func _money_tooltip() -> String:
 	if _brewery == null:
 		return ""
 	return MoneyText.tooltip(_brewery.money, _brewery.money_today, _brewery.money_recent_days)
+
+
+## Only the time: the wall clock is read at a glance, the day label has the rest.
+func _clock_tooltip() -> String:
+	if _brewery == null:
+		return ""
+	return DayClockText.clock_time(TimeManager.get_day_progress())
 
 
 func _day_clock_tooltip() -> String:

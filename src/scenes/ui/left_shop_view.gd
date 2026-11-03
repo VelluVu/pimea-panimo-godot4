@@ -103,6 +103,8 @@ func _build_rows_under(slider_row : HBoxContainer) -> void:
 	var buttons_row : Node = buy_button.get_parent()
 	_quick_row = HBoxContainer.new()
 	buy_missing_button = BuyMissingButton.new(ROW_BUTTON_HEIGHT)
+	# The shop's main action; in the brewery "Pane" is.
+	buy_missing_button.theme_type_variation = &"PrimaryButton"
 	box.add_child(_quick_row)
 	current_item_label.reparent(box)
 	current_item_label.size_flags_horizontal = Control.SIZE_FILL

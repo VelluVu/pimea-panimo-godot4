@@ -29,6 +29,8 @@ func _ready() -> void:
 ## In a row of framed header bars, pass the bars' height as `side` so it lines up with them.
 static func create(on_pressed : Callable, side : float = MIN_SIDE) -> WindowCloseButton:
 	var button := WindowCloseButton.new()
+	# Turns red under the mouse, like the other buttons that end something.
+	button.theme_type_variation = &"CloseButton"
 	button._side = side
 	button.text = CLOSE_TEXT
 	button.tooltip_text = UiText.of(CLOSE_TOOLTIP_FORMAT) % InputManager.get_binding_text(InputManager.ACTION_CANCEL)
