@@ -7,11 +7,17 @@ Colours come from the same palette as the pumpkins (Endesga 32). Lit from above 
 like the cellar lamp: the lit side keeps no outline, the shaded side and the bottom get a
 dark one. The string lights are a sheet of three frames, so the bulbs twinkle in turn.
 
-    python dev/tools/sprites/make_christmas_decor.py [--preview out.png]
+Each PNG also gets an editable .aseprite source next to it (through Aseprite's CLI and
+aseprite_source.lua), with the art's colours as its palette and the lights' frames tagged.
+An existing source is kept, as it may hold hand edits: after editing one, export the PNG
+from Aseprite instead of rerunning this, or pass --force-aseprite to redo the sources.
+
+    python dev/tools/sprites/make_christmas_decor.py [--preview out.png] [--force-aseprite]
 """
 
 import argparse
 import math
+import subprocess
 from pathlib import Path
 
 from PIL import Image
@@ -22,6 +28,8 @@ TEXTURE_DIR = ROOT / "assets/textures/christmas"
 ## more pixels for their details than the customers' 4.
 SCALE = 2
 SCALED = ("christmas_tree", "christmas_candlestick", "tonttu_felt_tall", "tonttu_felt_sitting", "tonttu_felt_small")
+ASEPRITE = Path("C:/Program Files (x86)/Steam/steamapps/common/Aseprite/Aseprite.exe")
+ASEPRITE_SCRIPT = Path(__file__).resolve().parent / "aseprite_source.lua"
 FRAMES_DIR = ROOT / "src/resources/sprite_frames"
 
 COLORS = {
@@ -226,6 +234,7 @@ BULB_GAP = 9
 # Dim and lit key of each bulb colour, in the order they hang.
 BULBS = [("e", "E"), ("a", "A"), ("g", "G"), ("b", "c")]
 LIGHTS_FRAMES = 3
+LIGHTS_FPS = 1.5
 
 
 def _wire_y(x: int) -> int:
@@ -411,13 +420,35 @@ def write_lights_frames() -> None:
 				  f"region = Rect2(0, {i * LIGHTS_HEIGHT}, {LIGHTS_WIDTH}, {LIGHTS_HEIGHT})", ""]
 	frames = ", ".join('{\n"duration": 1.0,\n"texture": SubResource("AtlasTexture_%d")\n}' % i for i in range(LIGHTS_FRAMES))
 	lines += ["[resource]", "animations = [{", f'"frames": [{frames}],', '"loop": true,', '"name": &"twinkle",',
-			  '"speed": 1.5', "}]", ""]
+			  f'"speed": {LIGHTS_FPS}', "}]", ""]
 	(FRAMES_DIR / "christmas_lights_anim.tres").write_text("\n".join(lines), encoding="utf-8")
+
+
+def write_aseprite_sources(names: list[str], force: bool) -> list[str]:
+	"""Returns the names whose source was written; the rest were kept or Aseprite is missing."""
+	if not ASEPRITE.exists():
+		print("Aseprite not found, no .aseprite sources written:", ASEPRITE)
+		return []
+	written = []
+	for name in names:
+		source = TEXTURE_DIR / f"{name}.aseprite"
+		if source.exists() and not force:
+			continue
+		command = [str(ASEPRITE), "-b", "--script-param", f"png={TEXTURE_DIR / name}.png",
+				   "--script-param", f"out={source}"]
+		if name == "christmas_lights":
+			ms = round(1000 / LIGHTS_FPS)
+			command += ["--script-param", f"frames={LIGHTS_FRAMES}", "--script-param", "tag=twinkle",
+						"--script-param", f"ms={ms}"]
+		subprocess.run(command + ["--script", str(ASEPRITE_SCRIPT)], check=True)
+		written.append(name)
+	return written
 
 
 def main() -> None:
 	parser = argparse.ArgumentParser()
 	parser.add_argument("--preview")
+	parser.add_argument("--force-aseprite", action="store_true")
 	args = parser.parse_args()
 	TEXTURE_DIR.mkdir(parents=True, exist_ok=True)
 	images = {"christmas_tree": draw_tree(), "christmas_candlestick": draw_candlestick()}
@@ -430,6 +461,9 @@ def main() -> None:
 	for name, image in images.items():
 		image.save(TEXTURE_DIR / f"{name}.png")
 	write_lights_frames()
+	sources = write_aseprite_sources(list(images), args.force_aseprite)
+	if sources:
+		print("aseprite sources:", ", ".join(sources))
 	if args.preview:
 		small = [img.resize((img.width * SCALE, img.height * SCALE), Image.NEAREST) if name in SCALED else img
 				 for name, img in images.items() if name != "christmas_lights"]
