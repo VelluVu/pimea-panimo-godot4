@@ -113,6 +113,8 @@ var game_has_ended : bool = false
 ## One-way latches for the LVV warnings, see LVV_HINT_RISK.
 @export var lvv_hint_shown : bool = false
 @export var lvv_inspector_visited : bool = false
+## The SeasonData.id() last announced in this run, so a calendar season gets its toast once.
+@export var announced_season_id : String = ""
 
 ## Runtime only, not saved.
 var resolver : BrewResolver = null

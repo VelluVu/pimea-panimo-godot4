@@ -112,6 +112,11 @@ func start() -> void:
 	BrewerySignals.hop_variety_limit_reached.connect(func(limit: int) -> void: _show_toast(tr(HOP_VARIETY_LIMIT_TOAST_FORMAT) % limit))
 	BrewerySignals.fermentation_started.connect(_on_fermentation_started)
 	BrewerySignals.batch_fermented.connect(_on_batch_fermented)
+	# The calendar can turn while a run is open, and the console forces seasons to test.
+	TimeManager.day_changed.connect(_announce_new_season.unbind(1))
+	BrewerySignals.season_forced.connect(_announce_new_season.unbind(1))
+	BrewerySignals.winter_forced.connect(_announce_new_season.unbind(1))
+	_announce_new_season()
 
 	# Shown while the clock is stopped, so the missing customers do not read as a bug.
 	# Aatu tells it himself when he guides the first brew.
@@ -120,6 +125,17 @@ func start() -> void:
 		# Turned on in Asetukset, the tutorial takes over the moment Aatu starts talking.
 		GUISignals.guide_spoke.connect(_on_guide_spoke_over_hint)
 		_first_brew_hint.present(FIRST_BREW_HINT_TEXT)
+
+
+## Once per season and run: a run started in Halloween and still open in Black Month
+## hears of both.
+func _announce_new_season() -> void:
+	var brewery: Brewery = BrewEngine.current_brewery
+	var season: SeasonData = SeasonCatalog.current()
+	if brewery == null or season == null or brewery.announced_season_id == season.id():
+		return
+	brewery.announced_season_id = season.id()
+	_show_toast(SeasonText.started(season))
 
 
 func _on_season_first_brew(_style: int, style_name: String) -> void:

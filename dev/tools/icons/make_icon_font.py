@@ -743,6 +743,17 @@ ICONS = {
 		"n.......n",
 		"nnnnnnnnn",
 	],
+	0x1F916: [  # 🤖 robot
+		"....r....",
+		"....S....",
+		".sssssss.",
+		"SscssscsS",
+		"SscssscsS",
+		"SsssssssS",
+		"SssSSSssS",
+		".sssssss.",
+		".........",
+	],
 	0x1F5FA: [  # 🗺 map
 		"lllllllll",
 		"llgglllbb",

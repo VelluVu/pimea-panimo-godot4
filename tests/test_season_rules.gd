@@ -101,3 +101,28 @@ func test_winter_ends_with_march() -> void:
 	assert_false(_winter(4, 1))
 	assert_false(_winter(7, 1))
 	assert_false(_winter(10, 31))
+
+
+func _days_left(year : int, month : int, day : int) -> int:
+	return SeasonRulesScript.days_left({"year": year, "month": month, "day": day})
+
+
+func test_halloween_counts_down_to_its_last_day() -> void:
+	assert_eq(_days_left(2026, 11, 3), 6)
+	assert_eq(_days_left(2026, 11, 8), 1)
+
+
+func test_no_countdown_between_seasons() -> void:
+	assert_eq(_days_left(2026, 6, 1), 0)
+
+
+func test_black_month_counts_down_to_cyber_week() -> void:
+	# Black Friday 2026 is 27 November, so Cyber Week starts on Monday the 23rd.
+	assert_eq(_days_left(2026, 11, 22), 1)
+	assert_eq(_days_left(2026, 11, 23), 8)
+
+
+func test_winter_counts_down_over_new_year_to_march() -> void:
+	assert_eq(SeasonRulesScript.winter_days_left({"year": 2026, "month": 3, "day": 31}), 1)
+	assert_eq(SeasonRulesScript.winter_days_left({"year": 2026, "month": 12, "day": 31}), 91)
+	assert_eq(SeasonRulesScript.winter_days_left({"year": 2026, "month": 4, "day": 1}), 0)

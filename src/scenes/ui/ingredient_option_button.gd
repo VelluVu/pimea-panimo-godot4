@@ -112,7 +112,7 @@ func refresh_item_texts() -> void:
 		var item : InventoryItem = brewery.inventory.get_item_by_id(ingredient.id)
 		var in_stock : int = item.amount if item != null else 0
 		var stock_text : String = "%s %s" % [ingredient.amount_text(in_stock), ingredient.get_unit_string()] if in_stock > 0 else ""
-		set_item_text(i, IngredientMenuText.item(tr(ingredient.name), stock_text, _is_needed(ingredient, owned, target, table)))
+		set_item_text(i, IngredientMenuText.item(_display_name(ingredient), stock_text, _is_needed(ingredient, owned, target, table)))
 	_show_closed_text()
 
 
@@ -126,7 +126,7 @@ func _show_closed_text() -> void:
 		return
 	var brewery := BrewEngine.current_brewery
 	var needed : bool = _is_needed(ingredient, brewery.owned_ingredient_amounts(), brewery.brew_preparation.active_recipe_target, brewery.brew_preparation.selected_contents)
-	text = IngredientMenuText.item(tr(ingredient.name), "", needed)
+	text = IngredientMenuText.item(_display_name(ingredient), "", needed)
 
 
 func _is_needed(ingredient : IngredientData, owned : Dictionary, target : Dictionary, table : Dictionary) -> bool:
@@ -141,7 +141,7 @@ func _select(index : int) -> void:
 
 
 func _add_ingredient_item(ingredient : IngredientData, is_locked : bool, is_buy_locked : bool) -> void:
-	add_item(tr(LOCKED_ITEM_FORMAT) % [tr(ingredient.name), ingredient.min_reputation] if is_locked else tr(ingredient.name))
+	add_item(tr(LOCKED_ITEM_FORMAT) % [_display_name(ingredient), ingredient.min_reputation] if is_locked else _display_name(ingredient))
 	var new_item_index: int = get_item_count() - 1
 	set_item_id(new_item_index, ingredient.id)
 	set_item_disabled(new_item_index, is_locked)
@@ -151,6 +151,14 @@ func _add_ingredient_item(ingredient : IngredientData, is_locked : bool, is_buy_
 	elif is_buy_locked:
 		tooltip += "\n" + tr(OWNED_LOCKED_TOOLTIP_FORMAT) % ingredient.min_reputation
 	get_popup().set_item_tooltip(new_item_index, tooltip)
+
+
+## A seasonal ingredient carries its season's mark, so the player sees it is only for now.
+func _display_name(ingredient : IngredientData) -> String:
+	var season : SeasonData = null
+	if ingredient.season != SeasonRules.Season.NONE:
+		season = SeasonCatalog.of(ingredient.season, SeasonCatalog.all())
+	return SeasonText.seasonal_name(tr(ingredient.name), season)
 
 
 ## A seasonal ingredient out of its season is left out, unless some is still owned.

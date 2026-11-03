@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="SeasonData" format=3]
+
+[ext_resource type="Script" path="res://src/events/season_data.gd" id="1_season"]
+
+[resource]
+script = ExtResource("1_season")
+season = 2
+title = "Musta kuukausi"
+icon = "🏷"
+description = "Alekyltit ovat seinillä ja tarjoushaukat liikkeellä. Mustana perjantaina tukku myy kaiken halvemmalla."

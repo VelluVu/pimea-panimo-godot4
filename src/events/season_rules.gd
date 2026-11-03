@@ -20,6 +20,9 @@ const CYBER_WEEK_DAYS_AFTER : int = 3
 const NOVEMBER_DAYS : int = 30
 const OUTSIDE_NOVEMBER : int = -100
 const WINTER_LAST_MONTH : int = Time.MONTH_MARCH
+const SECONDS_PER_DAY : int = 86400
+## Longer than any season: winter is the longest, about five months.
+const MAX_COUNTDOWN_DAYS : int = 200
 
 ## Set by the developer console to try a season out of its dates; cleared by clear_forced().
 static var _forced : Season = Season.NONE
@@ -89,6 +92,39 @@ static func season_of(date : Dictionary) -> Season:
 	if november_day >= friday - CYBER_WEEK_DAYS_BEFORE:
 		return Season.CYBER_WEEK
 	return Season.BLACK_MONTH
+
+
+## Days the season of `date` lasts, today counted: 1 on its last day, 0 out of season.
+static func days_left(date : Dictionary) -> int:
+	var season : Season = season_of(date)
+	if season == Season.NONE:
+		return 0
+	return _days_while(date, func(day : Dictionary) -> bool: return season_of(day) == season)
+
+
+## Like days_left(), for winter.
+static func winter_days_left(date : Dictionary) -> int:
+	if not is_winter(date):
+		return 0
+	return _days_while(date, is_winter)
+
+
+## The countdown for the season on the player's clock; 0 while the console forces one, as
+## the dates then say nothing about it.
+static func days_left_now(for_winter : bool) -> int:
+	var today : Dictionary = Time.get_date_dict_from_system()
+	if for_winter:
+		return 0 if _is_winter_forced else winter_days_left(today)
+	return 0 if _is_forced else days_left(today)
+
+
+static func _days_while(date : Dictionary, holds : Callable) -> int:
+	# Noon, so a leap second or a time zone shift never skips or repeats a day.
+	var start : int = Time.get_unix_time_from_datetime_dict({"year": date.get("year", 0), "month": date.get("month", 0), "day": date.get("day", 0), "hour": 12})
+	var days : int = 1
+	while days < MAX_COUNTDOWN_DAYS and holds.call(Time.get_date_dict_from_unix_time(start + days * SECONDS_PER_DAY)):
+		days += 1
+	return days
 
 
 ## The November day of Black Friday in `year`.
