@@ -204,6 +204,16 @@ signal customer_served(data: CustomerData)
 ## Someone came in through the main door at the top of the stairs, for the winter door.
 @warning_ignore("unused_signal")
 signal customer_entered(position: Vector2)
+## In winter a customer stamped the snow off their boots at `position` (their feet).
+@warning_ignore("unused_signal")
+signal snow_stamped_off(position: Vector2)
+## In winter a customer blew out a puff of cold breath at `position` (their mouth).
+@warning_ignore("unused_signal")
+signal breath_puffed(position: Vector2)
+## A stomp knocked snow off a customer's head and shoulders: global spots it falls from, to
+## the floor row `floor_y`.
+@warning_ignore("unused_signal")
+signal snow_shaken_off(positions: PackedVector2Array, floor_y: float)
 ## A walking customer put a foot down, for the footstep sound.
 @warning_ignore("unused_signal")
 signal customer_stepped(position: Vector2)

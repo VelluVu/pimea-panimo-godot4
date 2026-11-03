@@ -27,6 +27,9 @@ var _play : Callable
 var _pause_seconds : float = CENTER_PAUSE_SECONDS
 var _pause_started_msec : int = 0
 var _stepper : WalkStepper = WalkStepper.new()
+## Set for a fresh walk in during winter; a visit loaded mid-way has already stamped.
+var _stamps_snow : bool = false
+var _snow_cover : SnowCover = null
 
 
 func _init(owner : Node2D, sprite : AnimatedSprite2D, play : Callable) -> void:
@@ -38,6 +41,9 @@ func _init(owner : Node2D, sprite : AnimatedSprite2D, play : Callable) -> void:
 ## A fresh walk in from where the customer stands. Add the arrival to the returned tween.
 func start(stairs_pos : Vector2, center_pos : Vector2, target_pos : Vector2) -> Tween:
 	route = [_owner.global_position, stairs_pos, center_pos, target_pos]
+	_stamps_snow = SeasonRules.is_winter_now()
+	if _stamps_snow:
+		_snow_cover = WinterArrival.cover(_sprite)
 	return walk_route_from(Leg.STAIRS, CENTER_PAUSE_SECONDS)
 
 
@@ -59,7 +65,11 @@ func walk_route_from(first_leg : int, pause_seconds : float) -> Tween:
 		tween.tween_callback(_set_leg.bind(Leg.CENTER_PAUSE))
 		tween.tween_callback(_end_steps)
 		tween.tween_callback(_play.bind(Customer.ANIM_IDLE, false))
-		tween.tween_interval(pause_seconds)
+		if _stamps_snow and pause_seconds >= WinterArrival.seconds():
+			WinterArrival.queue(tween, _owner, _sprite, _snow_cover, data)
+			tween.tween_interval(pause_seconds - WinterArrival.seconds())
+		else:
+			tween.tween_interval(pause_seconds)
 	tween.tween_callback(_set_leg.bind(Leg.TO_COUNTER))
 	_queue_floor_walk(tween, from, route[3])
 	tween.tween_callback(_end_steps)

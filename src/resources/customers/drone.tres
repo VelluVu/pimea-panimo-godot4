@@ -38,5 +38,6 @@ min_bottles_per_visit = 2
 max_bottles_per_visit = 4
 voice_pitch = 1.8
 makes_footsteps = false
+breathes = false
 ambient_loop = ExtResource("snd_drone_hover_loop")
 metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

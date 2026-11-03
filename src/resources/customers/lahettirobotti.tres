@@ -19,6 +19,7 @@ randomize_shoes = false
 carries_glass_out = false
 voice_pitch = 0.6
 makes_footsteps = false
+breathes = false
 ambient_loop = ExtResource("snd_robot_whir_loop")
 dialogue_intro = "SKANNAUS KÄYNNISSÄ. Toimitustehtävä vaatii useita annoksia tämän päivän tilauskoodin mukaan."
 dialogue_success = "TEHTÄVÄ SUORITETTU. Kiitos, biologinen yhteistyökumppani."

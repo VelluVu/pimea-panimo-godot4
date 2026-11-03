@@ -61,6 +61,8 @@ const NOT_TO_TASTE: float = -1.0
 @export var voice_pitch: float = 1.0
 ## False for customers who roll or fly instead of walking.
 @export var makes_footsteps: bool = true
+## False for machines: in winter they come in without a puff of cold breath.
+@export var breathes: bool = true
 ## Loops quietly wherever the customer goes (the drone's rotors), or null for none.
 @export var ambient_loop: AudioStream = null
 
