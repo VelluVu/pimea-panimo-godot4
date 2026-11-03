@@ -296,7 +296,7 @@ func _draw_coverage() -> void:
 
 
 func _draw_spots() -> void:
-	var size : Vector2 = Vector2(SPOT_FRAME, SPOT_FRAME) * KegWashArt.PROP_SCALE
+	var spot_size : Vector2 = Vector2(SPOT_FRAME, SPOT_FRAME) * KegWashArt.PROP_SCALE
 	for spot : KegWashSpot in session.spots:
 		if spot.is_gone():
 			continue
@@ -310,7 +310,7 @@ func _draw_spots() -> void:
 		var tint : Color = Color.WHITE.darkened(KegTunnel.depth(spot.position) * 0.35)
 		if _flashes.has(spot):
 			tint = Color(1.6, 1.6, 1.6)
-		draw_texture_rect_region(ART.spots, Rect2((at - size / 2.0).round(), size), Rect2(frame * SPOT_FRAME, 0, SPOT_FRAME, SPOT_FRAME), tint)
+		draw_texture_rect_region(ART.spots, Rect2((at - spot_size / 2.0).round(), spot_size), Rect2(frame * SPOT_FRAME, 0, SPOT_FRAME, SPOT_FRAME), tint)
 
 
 ## A dense stream with a bright core, wobbling a little.

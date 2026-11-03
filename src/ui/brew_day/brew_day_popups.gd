@@ -59,17 +59,17 @@ func _process(delta : float) -> void:
 	_wait = MIN_GAP
 
 
-func _spawn(text : String, color : Color, call : bool) -> void:
+func _spawn(text : String, color : Color, is_call : bool) -> void:
 	var label := Label.new()
 	label.text = tr(text)
-	if call:
+	if is_call:
 		label.add_theme_font_size_override("font_size", CALL_FONT_SIZE)
 	label.add_theme_color_override("font_color", color)
 	label.add_theme_color_override("font_outline_color", Color.BLACK)
-	label.add_theme_constant_override("outline_size", 6 if call else 4)
+	label.add_theme_constant_override("outline_size", 6 if is_call else 4)
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(label)
-	var direction : Vector2 = Vector2.UP if call else DIRECTIONS[randi() % DIRECTIONS.size()]
+	var direction : Vector2 = Vector2.UP if is_call else DIRECTIONS[randi() % DIRECTIONS.size()]
 	var width : float = label.get_minimum_size().x
 	var row : int = (get_child_count() - 1) % ROWS
 	var start : Vector2 = origin - Vector2(width * (0.5 - direction.x * 0.5), -row * ROW_STEP)
@@ -79,5 +79,5 @@ func _spawn(text : String, color : Color, call : bool) -> void:
 	end.x += shift
 	label.position = start.round()
 	var tween : Tween = label.create_tween()
-	PixelStepTween.move_property(tween, label, &"position", start.round(), end.round(), CALL_SECONDS if call else SECONDS)
+	PixelStepTween.move_property(tween, label, &"position", start.round(), end.round(), CALL_SECONDS if is_call else SECONDS)
 	tween.tween_callback(label.queue_free)

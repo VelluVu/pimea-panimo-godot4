@@ -33,9 +33,9 @@ var _area : Rect2 = Rect2()
 var _floor : Control = null
 
 
-## `floor` is a sibling of the pointer; see _floor.
-func _init(floor : Control = null) -> void:
-	_floor = floor
+## `floor_control` is a sibling of the pointer; see _floor.
+func _init(floor_control : Control = null) -> void:
+	_floor = floor_control
 
 
 func _ready() -> void:

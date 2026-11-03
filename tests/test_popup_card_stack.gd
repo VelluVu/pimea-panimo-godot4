@@ -21,3 +21,9 @@ func test_read_card_frees_its_slot_at_once() -> void:
 
 func test_no_cards_no_slots() -> void:
 	assert_true(PopupCardStack.stacked_bottoms([] as Array[float], 4.0).is_empty())
+
+
+func test_a_stack_out_of_the_tree_drops_its_cards() -> void:
+	var stack : PopupCardStack = track(PopupCardStack.new())
+	stack.show_card(null, "Uusi asiakas!", "Opiskelija")
+	assert_eq(stack.queued_count(), 0)

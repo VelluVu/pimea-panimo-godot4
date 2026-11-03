@@ -24,6 +24,6 @@ static func of(texture : Texture2D, size : int = DEFAULT_SIZE) -> Texture2D:
 static func bust_region(used : Rect2i, image_size : Vector2i, size : int) -> Rect2i:
 	if not used.has_area():
 		return Rect2i()
-	var center_x : int = used.position.x + used.size.x / 2
-	var region := Rect2i(center_x - size / 2, used.position.y - 1, size, size)
+	var center_x : int = used.position.x + floori(used.size.x / 2.0)
+	var region := Rect2i(center_x - floori(size / 2.0), used.position.y - 1, size, size)
 	return region.intersection(Rect2i(Vector2i.ZERO, image_size))

@@ -63,7 +63,10 @@ static func stacked_bottoms(heights : Array[float], separation : float) -> Array
 
 
 func _spawn_next() -> void:
-	if _queue.is_empty():
+	# A scene reload can leave cards queued for a stack already out of the tree, with no
+	# tree to wait on: they are dropped with it.
+	if _queue.is_empty() or not is_inside_tree():
+		_queue.clear()
 		_spawning = false
 		return
 	_spawning = true
@@ -84,7 +87,7 @@ func _spawn_next() -> void:
 
 	# The wrapped label reports its height only after a layout pass.
 	await get_tree().process_frame
-	if not is_instance_valid(holder):
+	if not is_instance_valid(holder) or not is_inside_tree():
 		_spawn_next()
 		return
 	card.size = card.get_combined_minimum_size()

@@ -53,18 +53,18 @@ func _draw() -> void:
 	var frame : int = 0 if fill > FULL_FROM else (1 if fill > HALF_FROM else 2)
 	var frame_size := Vector2(ART.sack.get_width() / float(FRAMES), ART.sack.get_height())
 	var region := Rect2(Vector2(frame * frame_size.x, 0), frame_size)
-	var scale : float = BrewDayArt.PROP_SCALE
+	var art_scale : float = BrewDayArt.PROP_SCALE
 	var blink : bool = int(Time.get_ticks_msec() / 1000.0 * CUE_BLINK_FPS) % 2 == 0
 	var wobble := Vector2.ZERO
 	if cue != Cue.NONE and not lifted:
 		wobble.x = 1.0 if blink else -1.0
-	draw_texture_rect_region(ART.sack, Rect2(wobble, frame_size * scale), region, SHADOW_MODULATE if lifted else Color.WHITE)
+	draw_texture_rect_region(ART.sack, Rect2(wobble, frame_size * art_scale), region, SHADOW_MODULATE if lifted else Color.WHITE)
 	if not lifted and fill > 0.0:
-		var neck := Rect2((NECK_PELLETS.position + Vector2(0, NECK_TOPS[frame])) * scale + wobble, NECK_PELLETS.size * scale)
+		var neck := Rect2((NECK_PELLETS.position + Vector2(0, NECK_TOPS[frame])) * art_scale + wobble, NECK_PELLETS.size * art_scale)
 		draw_rect(neck, pellet_color)
 	var cue_color : Color = SOON_COLOR if cue == Cue.SOON else NOW_COLOR
 	if cue != Cue.NONE and not lifted and (cue == Cue.SOON or blink):
-		draw_rect(Rect2(Vector2.ZERO, frame_size * scale).grow(-1), cue_color, false, 2.0)
+		draw_rect(Rect2(Vector2.ZERO, frame_size * art_scale).grow(-1), cue_color, false, 2.0)
 	var color : Color = DIM_COLOR if disabled else (HOVER_COLOR if is_hovered() else TEXT_COLOR)
 	var font : Font = get_theme_font(&"font", &"Label")
 	var width : float = SIZE.x - TEXT_X

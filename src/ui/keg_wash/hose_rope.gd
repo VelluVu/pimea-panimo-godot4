@@ -20,11 +20,11 @@ var anchor : Vector2
 var _previous : PackedVector2Array = PackedVector2Array()
 
 
-func _init(tap : Vector2, nozzle : Vector2) -> void:
+func _init(tap : Vector2, nozzle_at : Vector2) -> void:
 	anchor = tap
 	points.resize(POINTS)
 	for i : int in POINTS:
-		points[i] = tap.lerp(nozzle, float(i) / (POINTS - 1))
+		points[i] = tap.lerp(nozzle_at, float(i) / (POINTS - 1))
 	_previous = points.duplicate()
 
 

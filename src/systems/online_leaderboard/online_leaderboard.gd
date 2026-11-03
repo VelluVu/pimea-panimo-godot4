@@ -55,7 +55,7 @@ func _send(action: StringName, url: String, method: HTTPClient.Method, body: Str
 	# fails once replies are big enough to compress.
 	http.accept_gzip = not OS.has_feature("web")
 	add_child(http)
-	http.request_completed.connect(func(result: int, code: int, _headers: PackedStringArray, data: PackedByteArray) -> void:
+	http.request_completed.connect(func(result: int, code: int, _response_headers: PackedStringArray, data: PackedByteArray) -> void:
 		http.queue_free()
 		_on_completed(action, result, code, data.get_string_from_utf8()))
 	var error: Error = http.request(url, _headers(), method, body)

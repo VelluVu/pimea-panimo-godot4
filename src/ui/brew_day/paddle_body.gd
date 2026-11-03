@@ -107,10 +107,10 @@ func handle_goal(tip : Vector2) -> Vector2:
 	return tip + Vector2(side * lean.x, -lean.y).normalized() * stick_length()
 
 
-## Where the blade tip goes for the hand to hold the shaft at `grip`: back down the
+## Where the blade tip goes for the hand to hold the shaft at `grip_at`: back down the
 ## shaft's lean by the grip's distance from the tip.
-func tip_for_grip(grip : Vector2) -> Vector2:
-	return grip - _grip_direction * SEGMENT * GRIP_SEGMENTS
+func tip_for_grip(grip_at : Vector2) -> Vector2:
+	return grip_at - _grip_direction * SEGMENT * GRIP_SEGMENTS
 
 
 func grip() -> Vector2:

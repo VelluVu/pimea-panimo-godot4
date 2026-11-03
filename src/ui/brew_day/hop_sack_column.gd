@@ -168,10 +168,10 @@ func _cue(button : HopSackButton, mark : BoilMark) -> void:
 	button.cue = HopSackButton.Cue.NONE
 	if not _active or not mark.is_open():
 		return
-	var start : float = BoilSchedule.window_start(mark.kind, _boil.window_widen)
+	var opens_at : float = BoilSchedule.window_start(mark.kind, _boil.window_widen)
 	var open : bool = _boil.is_pouring_time() and BoilSchedule.in_window(mark.kind, _boil.counted, _boil.window_widen)
 	# The bittering hops are coming as the wort nears the boil.
-	var coming : bool = _boil.counted >= start - CUE_LEAD if _boil.is_pouring_time() \
+	var coming : bool = _boil.counted >= opens_at - CUE_LEAD if _boil.is_pouring_time() \
 		else mark.kind == HopAddition.Kind.BITTERING and _boil.heat.temperature >= BoilSession.BOIL_MIN - BITTERING_CUE_DEGREES
 	if not open and not coming:
 		return

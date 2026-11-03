@@ -61,8 +61,8 @@ func _update_carried_keg_z_index(anim_name : StringName) -> void:
 
 
 ## Walks `waypoints` (global, [0] is the stairs bottom), seizes a keg at the last and walks
-## back out with it. A loaded raid skips `elapsed_seconds`.
-func walk_in_and_seize(waypoints : Array[Vector2], elapsed_seconds : float = 0.0) -> void:
+## back out with it. A loaded raid skips `skip_seconds`.
+func walk_in_and_seize(waypoints : Array[Vector2], skip_seconds : float = 0.0) -> void:
 	var tween := create_tween()
 	_route_tween = tween
 	var spawn_pos := global_position
@@ -87,8 +87,8 @@ func walk_in_and_seize(waypoints : Array[Vector2], elapsed_seconds : float = 0.0
 
 	tween.tween_callback(raid_sequence_finished.emit)
 	tween.tween_callback(queue_free)
-	if elapsed_seconds > 0.0:
-		tween.custom_step(elapsed_seconds)
+	if skip_seconds > 0.0:
+		tween.custom_step(skip_seconds)
 
 
 ## Seconds walked of the route so far, for the save.

@@ -355,6 +355,6 @@ func _draw_bubbles() -> void:
 
 ## Whole art pixels of the 4x kettle, so they step like its art.
 func _draw_art_cells(cells : Array[Vector2i], color : Color) -> void:
-	var size := Vector2.ONE * BrewDayArt.KETTLE_SCALE
+	var cell_size := Vector2.ONE * BrewDayArt.KETTLE_SCALE
 	for cell : Vector2i in cells:
-		draw_rect(Rect2(Vector2(cell) * BrewDayArt.KETTLE_SCALE, size), color)
+		draw_rect(Rect2(Vector2(cell) * BrewDayArt.KETTLE_SCALE, cell_size), color)

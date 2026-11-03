@@ -42,9 +42,8 @@ static func reputation_points(reputation : int, ending_type : String) -> int:
 	return maxi(0, reputation) * REPUTATION_POINTS if counts_reputation(ending_type) else 0
 
 
-@warning_ignore("integer_division")
 static func bottle_points(bottles : int) -> int:
-	return maxi(0, bottles) / SERVINGS_PER_POINT
+	return floori(maxi(0, bottles) / float(SERVINGS_PER_POINT))
 
 
 static func worth_points(worth : float, ending_type : String) -> int:
