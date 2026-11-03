@@ -16,6 +16,9 @@ const FAILED_ENDINGS : PackedStringArray = ["busted", "bankrupt"]
 ## Points per euro of worth (money and cellar upgrades), so buying one never lowers the score.
 const WORTH_POINTS_PER_EURO : float = 0.5
 const MONEY_WORTH_SHARE : float = 0.5
+## Upgrades count above cash but under their price, so a last-day buy that can no longer
+## help the run only gains a little: build the cellar for the run, not for the score.
+const UPGRADE_WORTH_SHARE : float = 0.75
 ## Per style brewed this season, so the range pays, not one safe style.
 const STYLE_POINTS : int = 100
 
@@ -98,7 +101,7 @@ static func brewery_worth(brewery : Brewery) -> float:
 	return worth_of(brewery.money, CellarUpgrades.invested_value(brewery.cellar_upgrade_levels, CellarUpgrades.all()))
 
 
-## Upgrades count at what they cost, money left over at MONEY_WORTH_SHARE, so building
-## the cellar out scores better than sitting on cash.
+## Upgrades count at UPGRADE_WORTH_SHARE of their cost, money left over at
+## MONEY_WORTH_SHARE, so building the cellar out still scores better than sitting on cash.
 static func worth_of(money : float, invested : float) -> float:
-	return money * MONEY_WORTH_SHARE + invested
+	return money * MONEY_WORTH_SHARE + invested * UPGRADE_WORTH_SHARE
