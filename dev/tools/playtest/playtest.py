@@ -172,7 +172,7 @@ def main() -> None:
     p_run.add_argument("--strategies", default=",".join(STRATEGIES), help="comma-separated, from: " + ", ".join(ALL_STRATEGIES))
     p_run.add_argument("--no-goals", action="store_true", help="bots ignore daily goals")
     p_run.add_argument("--timeout", type=float, default=30, help="minutes before still-running runs are killed as hung")
-    p_run.add_argument("--season", default="auto", choices=["auto", "none", "halloween", "black_month", "cyber_week", "winter"],
+    p_run.add_argument("--season", default="auto", choices=["auto", "none", "halloween", "black_month", "cyber_week", "christmas", "winter"],
                        help="play this season whatever the date (auto: the calendar's)")
     p_run.set_defaults(func=run)
     p_summary = sub.add_parser("summary")

@@ -116,6 +116,17 @@ ICONS = {
 		".yy...yy.",
 		".y.....y.",
 	],
+	0x1F384: [  # 🎄 christmas tree
+		"....y....",
+		"....g....",
+		"...ggg...",
+		"..gGrGg..",
+		"...ggg...",
+		"..gyggG..",
+		".gGgggrg.",
+		"gggGyGggg",
+		"...nNn...",
+	],
 	0x1F31F: [  # 🌟 glowing star
 		"....w....",
 		"....y....",

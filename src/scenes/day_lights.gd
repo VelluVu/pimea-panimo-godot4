@@ -17,6 +17,8 @@ const HALLOWEEN_DARKNESS : Color = Color(0.4, 0.33, 0.5)
 const BLACK_MONTH_DARKNESS : Color = Color(0.33, 0.35, 0.48)
 ## In Cyber Week: a cyan screen glow on top of Black Month's cold.
 const CYBER_WEEK_DARKNESS : Color = Color(0.3, 0.4, 0.5)
+## At Christmas: warm candlelight red and gold.
+const CHRISTMAS_DARKNESS : Color = Color(0.5, 0.38, 0.32)
 ## In Cyber Week the lamps glow neon, cyan and magenta in turn, a little soft so the faces
 ## under them stay readable; NeonPulse makes them pulse and drift slowly.
 const CYBER_LAMP_COLORS : Array[Color] = [Color(0.45, 0.95, 1.0), Color(1.0, 0.45, 0.9)]
@@ -62,6 +64,8 @@ func _set_season(season : SeasonRules.Season) -> void:
 			_day_darkness = BLACK_MONTH_DARKNESS
 		SeasonRules.Season.CYBER_WEEK:
 			_day_darkness = CYBER_WEEK_DARKNESS
+		SeasonRules.Season.CHRISTMAS:
+			_day_darkness = CHRISTMAS_DARKNESS
 		_:
 			_day_darkness = _plain_darkness
 	if not _night:

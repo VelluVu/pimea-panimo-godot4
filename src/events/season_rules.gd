@@ -3,11 +3,12 @@ extends RefCounted
 
 ## Which season the player's own clock is in. Halloween runs from late October into early
 ## November; Black Month from the day after it through Cyber Monday, with Cyber Week (the
-## Monday before Black Friday through Cyber Monday) blended into its end. Christmas has no
-## season yet: when it gets one, add it here.
+## Monday before Black Friday through Cyber Monday) blended into its end. Christmas runs
+## from the day after Cyber Monday to Epiphany.
 
-## Cyber Week is part of Black Month: see includes().
-enum Season { NONE, HALLOWEEN, BLACK_MONTH, CYBER_WEEK }
+## Cyber Week is part of Black Month: see includes(). New values go at the end: saved
+## resources keep the numbers.
+enum Season { NONE, HALLOWEEN, BLACK_MONTH, CYBER_WEEK, CHRISTMAS }
 
 const HALLOWEEN_FIRST_DAY_OCTOBER : int = 20
 const HALLOWEEN_LAST_DAY_NOVEMBER : int = 8
@@ -18,6 +19,8 @@ const CYBER_WEEK_DAYS_BEFORE : int = 4
 const CYBER_WEEK_DAYS_AFTER : int = 3
 ## December days count on from November's in _november_day().
 const NOVEMBER_DAYS : int = 30
+## Christmas ends with Epiphany (loppiainen).
+const CHRISTMAS_LAST_DAY_JANUARY : int = 6
 const OUTSIDE_NOVEMBER : int = -100
 const WINTER_LAST_MONTH : int = Time.MONTH_MARCH
 const SECONDS_PER_DAY : int = 86400
@@ -83,12 +86,16 @@ static func season_of(date : Dictionary) -> Season:
 		return Season.HALLOWEEN
 	if month == Time.MONTH_NOVEMBER and day <= HALLOWEEN_LAST_DAY_NOVEMBER:
 		return Season.HALLOWEEN
+	if month == Time.MONTH_JANUARY and day >= 1 and day <= CHRISTMAS_LAST_DAY_JANUARY:
+		return Season.CHRISTMAS
 	if year <= 0:
 		return Season.NONE
 	var november_day : int = _november_day(month, day)
-	var friday : int = black_friday_day(year)
-	if november_day > friday + CYBER_WEEK_DAYS_AFTER or november_day == OUTSIDE_NOVEMBER:
+	if november_day == OUTSIDE_NOVEMBER:
 		return Season.NONE
+	var friday : int = black_friday_day(year)
+	if november_day > friday + CYBER_WEEK_DAYS_AFTER:
+		return Season.CHRISTMAS if month == Time.MONTH_DECEMBER else Season.NONE
 	if november_day >= friday - CYBER_WEEK_DAYS_BEFORE:
 		return Season.CYBER_WEEK
 	return Season.BLACK_MONTH

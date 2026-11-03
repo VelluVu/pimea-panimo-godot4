@@ -12,6 +12,7 @@ const SEASONS: Dictionary = {
 	"halloween": [SeasonRules.Season.HALLOWEEN, false],
 	"black_month": [SeasonRules.Season.BLACK_MONTH, true],
 	"cyber_week": [SeasonRules.Season.CYBER_WEEK, true],
+	"christmas": [SeasonRules.Season.CHRISTMAS, true],
 	"winter": [SeasonRules.Season.NONE, true],
 }
 

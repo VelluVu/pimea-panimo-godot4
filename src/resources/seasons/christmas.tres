@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="SeasonData" format=3]
+
+[ext_resource type="Script" path="res://src/events/season_data.gd" id="1_season"]
+
+[resource]
+script = ExtResource("1_season")
+season = 4
+title = "Joulu"
+icon = "🎄"
+description = "Kellarissa tuoksuu kuusi ja kynttilät palavat. Joulu jatkuu loppiaiseen asti."
