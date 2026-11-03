@@ -32,3 +32,20 @@ func test_reset_forgets_the_queue_and_met_titles() -> void:
 	tracker.reset()
 	assert_false(tracker.has_seen_queue())
 	assert_false(tracker.is_met("Snobi"))
+
+
+func test_pukki_waits_until_joulupukki_was_met() -> void:
+	var tracker := CustomerUnlockTracker.new(TEST_SAVE_PATH)
+	var pukki : CustomerData = load("res://src/resources/customers/pukki.tres")
+	assert_false(tracker.meets_met_title_requirement(pukki))
+	tracker.mark_met("Joulupukki")
+	assert_true(tracker.meets_met_title_requirement(pukki))
+
+
+func test_joulupukki_comes_only_at_christmas_and_pukki_never_then() -> void:
+	var joulupukki : CustomerData = load("res://src/resources/customers/joulupukki.tres")
+	var pukki : CustomerData = load("res://src/resources/customers/pukki.tres")
+	assert_true(joulupukki.comes_in(SeasonRules.Season.CHRISTMAS))
+	assert_false(joulupukki.comes_in(SeasonRules.Season.NONE, true), "no return visits out of season")
+	assert_false(pukki.comes_in(SeasonRules.Season.CHRISTMAS, true))
+	assert_true(pukki.comes_in(SeasonRules.Season.NONE, true))

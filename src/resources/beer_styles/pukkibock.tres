@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="BeerStyle" format=3]
+
+[ext_resource type="Script" uid="uid://qpqfdi1wacne" path="res://src/brewing/beer_style.gd" id="1_pukkibock"]
+
+[resource]
+script = ExtResource("1_pukkibock")
+style_name = "Pukkibock"
+description = "Joulupukin oma olut: tumma ja vahva bock, joka maustetaan piparkakulla. Mallasleipää, kanelia ja inkivääriä. Sillä jaksaa lentää yhden yön ympäri maailman."
+locked_hint = "Vahva ja tumma joululager, jonka mauste on tuttu joulupöydän keksipurkista. Maustetta myydään vain jouluna."
+known_in_season = 4
+style = 32
+profit_margin_multiplier = 1.4
+fixed_price_per_bottle = 4.4
+price_season = 4
+off_season_price_per_bottle = 3.4
+reputation_change = 5
+peak_days = 15
+shelf_life_days = 50
+aging_factor = 0.06
+aged_price_bonus = 0.5
+mash_steps = Array[int]([63, 72])
+mash_band = 2.0
+hop_additions = Array[int]([0, 1])
+required_yeast_id = 301
+required_spice_ids = Array[int]([412])
+preferred_hop_profiles = Array[int]([4])
+abv = 6.6
+min_abv = 5.6
+max_abv = 7.6
+min_ebc = 14
+max_ebc = 30
+min_ibu = 17
+max_ibu = 27
+preferred_malt_ids = Array[int]([104, 102])
+reference_recipe = Dictionary[int, int]({100: 1, 102: 3, 104: 45, 200: 10, 201: 20, 301: 1, 412: 1})
+metadata/_custom_type_script = "uid://qpqfdi1wacne"

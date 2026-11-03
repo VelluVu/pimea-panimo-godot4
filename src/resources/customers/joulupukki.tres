@@ -1,0 +1,37 @@
+[gd_resource type="Resource" script_class="CustomerData" format=3]
+
+[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_data"]
+[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/joulupukki_anim.tres" id="2_sprite"]
+
+[resource]
+script = ExtResource("1_data")
+customer_name = "Joulupukki"
+title = "Joulupukki"
+title_is_name = true
+min_quality = 0.5
+budget_multiplier = 2.0
+primary_style = 32
+secondary_style = 10
+also_likes = Array[int]([9])
+sprite_frames = ExtResource("2_sprite")
+randomize_skin = false
+randomize_hair = false
+randomize_clothes = false
+randomize_shoes = false
+voice_pitch = 0.6
+dialogue_intro = "Hohoo! Onko täällä kilttejä panimomestareita? Tulin Korvatunturilta asti, porot jäivät parkkiin."
+dialogue_success = "Pukkibockia! Juuri tätä pukki tarvitsee pitkälle lentoyölle. Merkitsen sinut kilttien listaan."
+dialogue_fallback = "Ei ihan Pukkibockia, mutta kelpaa. Tontut eivät kuule, jos en kerro."
+dialogue_wrong_style = "Tätä en toivonut. Kirjoitin toivelistaan Pukkibockin isoilla kirjaimilla."
+dialogue_reject = "Höh. Tällaista ei kehtaa antaa edes poroille."
+dialogue_no_match = "Ei Pukkibockia? Hohhoijaa. Tontut näkevät kaiken, muista se."
+dialogue_preview_format = "%s? Hohoo, tuo kuulostaa paketin arvoiselta."
+dialogue_nothing_available = "Hylly on tyhjä kuin säkkini tapaninpäivänä."
+tip_base_chance = 0.6
+appearance_weight = 0.0
+busy_season = 4
+busy_season_weight = 1.5
+min_bottles_per_visit = 2
+max_bottles_per_visit = 4
+dialogue_sale_toast = "Joulupukki kävi kellarissa. Säkissä kilisevät nyt pullot."
+metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

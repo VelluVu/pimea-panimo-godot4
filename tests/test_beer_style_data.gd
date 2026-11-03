@@ -11,6 +11,7 @@ const INGREDIENTS_PATH : String = "res://src/resources/ingredients/"
 const GOOD_QUALITY : float = 0.9
 const PROMPT_ID : int = 410
 const CLOUDBERRY_ID : int = 411
+const GINGERBREAD_SPICE_ID : int = 412
 
 
 func suite_name() -> String:
@@ -128,3 +129,23 @@ func test_the_seltzer_recipe_is_alcohol_free_and_needs_cloudberry() -> void:
 	without_cloudberry.erase(CLOUDBERRY_ID)
 	var plain : BrewResult = resolver.resolve_brew_style(without_cloudberry)
 	assert_false(plain != null and plain.is_matched and plain.beer_style == seltzer, "no cloudberry, no seltzer")
+
+
+## Pukkibock needs its gingerbread spice: its own recipe brews it, the same one without the
+## spice does not.
+func test_pukkibock_needs_gingerbread_spice() -> void:
+	var resolver := _resolver()
+	var pukkibock : BeerStyle = resolver.get_beer_style(BeerStyle.Style.PUKKIBOCK)
+	var result : BrewResult = resolver.resolve_brew_style(pukkibock.reference_recipe.duplicate())
+	assert_true(result != null and result.is_matched and result.beer_style == pukkibock, "the reference recipe brews Pukkibock")
+	var unspiced : Dictionary = pukkibock.reference_recipe.duplicate()
+	unspiced.erase(GINGERBREAD_SPICE_ID)
+	var plain : BrewResult = resolver.resolve_brew_style(unspiced)
+	assert_false(plain != null and plain.is_matched and plain.beer_style == pukkibock, "no spice, no Pukkibock")
+
+
+func test_pukkibock_is_learned_and_priced_for_christmas() -> void:
+	var pukkibock : BeerStyle = _resolver().get_beer_style(BeerStyle.Style.PUKKIBOCK)
+	assert_eq(pukkibock.known_in_season, SeasonRules.Season.CHRISTMAS)
+	assert_eq(pukkibock.price_season, SeasonRules.Season.CHRISTMAS)
+	assert_true(pukkibock.off_season_price_per_bottle < pukkibock.fixed_price_per_bottle)

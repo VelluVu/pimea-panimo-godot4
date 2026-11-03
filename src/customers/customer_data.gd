@@ -13,6 +13,8 @@ const NOT_TO_TASTE: float = -1.0
 @export var customer_name: String = "Anonyymi"
 @export var title: String = ""
 @export var first_names: Array[String] = []
+## Goes by the title alone, with no first name (there is only one Joulupukki).
+@export var title_is_name: bool = false
 @export var min_quality: float = 0.5
 ## A connoisseur buys a beer below min_quality anyway and grumbles about it (see
 ## SaleEvaluation.BELOW_BAR_REPUTATION); everyone else refuses it.
@@ -124,6 +126,8 @@ const NOT_TO_TASTE: float = -1.0
 @export var requires_queue: bool = false
 ## Empty = no limit. Needs this achievement, permanent like required_discovered_style.
 @export var required_achievement_id: String = ""
+## Empty = no limit. Needs this title met in any run (Pukki comes after Joulupukki was met).
+@export var required_met_title: String = ""
 ## Odds against the other customers, 1.0 for the usual; 0 keeps them away. In busy_season
 ## busy_season_weight replaces it: Tarjoushaukka comes only from Black Month on, Kyborgi
 ## only from Cyber Week on.
@@ -179,6 +183,8 @@ const NOT_TO_TASTE: float = -1.0
 
 
 func generate_display_name() -> String:
+	if title_is_name and title != "":
+		return tr(title)
 	if title == "" or first_names.is_empty():
 		return tr(DEFAULT_TITLE) + " " + DEFAULT_NAMES.pick_random()
 	return tr(title) + " " + first_names.pick_random()

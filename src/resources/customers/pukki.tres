@@ -1,0 +1,37 @@
+[gd_resource type="Resource" script_class="CustomerData" format=3]
+
+[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_data"]
+[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/pukki_anim.tres" id="2_sprite"]
+
+[resource]
+script = ExtResource("1_data")
+customer_name = "Pukki"
+title = "Pukki"
+title_is_name = true
+min_quality = 0.6
+budget_multiplier = 1.5
+primary_style = 32
+secondary_style = 10
+also_likes = Array[int]([9, 19])
+sprite_frames = ExtResource("2_sprite")
+randomize_skin = false
+randomize_hair = false
+randomize_clothes = false
+randomize_shoes = false
+voice_pitch = 0.55
+dialogue_intro = "Olen boss Pukki, en mikään Joulupukki. Kaada jotain maltaista."
+dialogue_success = "Hyvää. Ei sanaakaan tästä tontuille."
+dialogue_fallback = "Kelpaa. Älä odota kiitosta."
+dialogue_wrong_style = "En tilannut tätä. Juon sen silti."
+dialogue_reject = "Tällä ei pysy edes poro jaloillaan."
+dialogue_no_match = "Ei mitään? Muistan tämän ensi jouluna."
+dialogue_preview_format = "%s. Katsotaan."
+dialogue_nothing_available = "Tyhjä hylly. Tuttua tammikuulta."
+tip_base_chance = 0.2
+required_met_title = "Joulupukki"
+appearance_weight = 0.6
+busy_season = 4
+busy_season_weight = 0.0
+min_bottles_per_visit = 1
+max_bottles_per_visit = 2
+metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

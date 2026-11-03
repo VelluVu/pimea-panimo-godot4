@@ -246,6 +246,10 @@ msgid "Pilsner"
 msgstr "Pilsner"
 
 #: src/autoload/string_container.gd
+msgid "Pukkibock"
+msgstr "Pukkibock"
+
+#: src/autoload/string_container.gd
 msgid "Päivätavoitteita päivässä: %s lisää"
 msgstr "Daily goals per day: %s more"
 
@@ -618,6 +622,10 @@ msgid "Gen Z"
 msgstr "Gen Z"
 
 #: src/customers/customer_hand_offsets.gd
+msgid "Joulupukki"
+msgstr "Santa"
+
+#: src/customers/customer_hand_offsets.gd
 msgid "Kriitikko"
 msgstr "Critic"
 
@@ -636,6 +644,10 @@ msgstr "Lions Fan"
 #: src/customers/customer_hand_offsets.gd
 msgid "Munkki"
 msgstr "Monk"
+
+#: src/customers/customer_hand_offsets.gd
+msgid "Pukki"
+msgstr "Off-duty Santa"
 
 #: src/customers/customer_hand_offsets.gd
 msgid "Raksamies"
@@ -1574,6 +1586,23 @@ msgstr ""
 "A German pils: a clear, dry and crisply bitter pale lager with the floral "
 "scent of noble hops."
 
+#: src/resources/beer_styles/pukkibock.tres
+msgid ""
+"Joulupukin oma olut: tumma ja vahva bock, joka maustetaan piparkakulla. "
+"Mallasleipää, kanelia ja inkivääriä. Sillä jaksaa lentää yhden yön ympäri "
+"maailman."
+msgstr ""
+"Santa's own beer: a dark, strong bock spiced with gingerbread. Malt bread, "
+"cinnamon and ginger. Enough to fly around the world in one night."
+
+#: src/resources/beer_styles/pukkibock.tres
+msgid ""
+"Vahva ja tumma joululager, jonka mauste on tuttu joulupöydän keksipurkista. "
+"Maustetta myydään vain jouluna."
+msgstr ""
+"A strong, dark Christmas lager whose spice you know from the cookie jar on "
+"the Christmas table. The spice is sold only at Christmas."
+
 #: src/resources/beer_styles/rauchbier.tres
 msgid "Bambergin perinneolut, jonka mallas on kuivattu savussa."
 msgstr "A traditional Bamberg beer whose malt is dried in smoke."
@@ -2205,6 +2234,50 @@ msgstr "This is industrial waste. I won't touch it."
 #: src/resources/customers/hipsteri.tres
 msgid "Vihdoinkin joku, joka ymmärtää humalaprofiileja."
 msgstr "Finally someone who understands hop profiles."
+
+#: src/resources/customers/joulupukki.tres
+msgid "%s? Hohoo, tuo kuulostaa paketin arvoiselta."
+msgstr "%s? Ho ho, that sounds worth a present."
+
+#: src/resources/customers/joulupukki.tres
+msgid "Ei Pukkibockia? Hohhoijaa. Tontut näkevät kaiken, muista se."
+msgstr "No Pukkibock? Oh dear. The elves see everything, remember that."
+
+#: src/resources/customers/joulupukki.tres
+msgid "Ei ihan Pukkibockia, mutta kelpaa. Tontut eivät kuule, jos en kerro."
+msgstr "Not quite Pukkibock, but it'll do. The elves won't hear unless I tell them."
+
+#: src/resources/customers/joulupukki.tres
+msgid ""
+"Hohoo! Onko täällä kilttejä panimomestareita? Tulin Korvatunturilta asti, "
+"porot jäivät parkkiin."
+msgstr ""
+"Ho ho! Any good brewers down here? I came all the way from Korvatunturi, "
+"the reindeer are parked outside."
+
+#: src/resources/customers/joulupukki.tres
+msgid "Hylly on tyhjä kuin säkkini tapaninpäivänä."
+msgstr "The shelf is as empty as my sack on Boxing Day."
+
+#: src/resources/customers/joulupukki.tres
+msgid "Höh. Tällaista ei kehtaa antaa edes poroille."
+msgstr "Hmph. I wouldn't even give this to the reindeer."
+
+#: src/resources/customers/joulupukki.tres
+msgid "Joulupukki kävi kellarissa. Säkissä kilisevät nyt pullot."
+msgstr "Santa visited the cellar. Now his sack clinks with bottles."
+
+#: src/resources/customers/joulupukki.tres
+msgid ""
+"Pukkibockia! Juuri tätä pukki tarvitsee pitkälle lentoyölle. Merkitsen "
+"sinut kilttien listaan."
+msgstr ""
+"Pukkibock! Just what Santa needs for a long night of flying. I'm putting "
+"you on the nice list."
+
+#: src/resources/customers/joulupukki.tres
+msgid "Tätä en toivonut. Kirjoitin toivelistaan Pukkibockin isoilla kirjaimilla."
+msgstr "Not what I wished for. I wrote Pukkibock on my wish list in capital letters."
 
 #: src/resources/customers/kesamies.tres
 msgid "Ei ehkä ihan feed-materiaalia, mutta kyllä tän juo."
@@ -2845,6 +2918,38 @@ msgid ""
 msgstr ""
 "This has alcohol in it! I still have the cycling leg, and a state visit "
 "tomorrow."
+
+#: src/resources/customers/pukki.tres
+msgid "%s. Katsotaan."
+msgstr "%s. We'll see."
+
+#: src/resources/customers/pukki.tres
+msgid "Ei mitään? Muistan tämän ensi jouluna."
+msgstr "Nothing? I'll remember this next Christmas."
+
+#: src/resources/customers/pukki.tres
+msgid "En tilannut tätä. Juon sen silti."
+msgstr "I didn't order this. I'll drink it anyway."
+
+#: src/resources/customers/pukki.tres
+msgid "Hyvää. Ei sanaakaan tästä tontuille."
+msgstr "Good. Not a word of this to the elves."
+
+#: src/resources/customers/pukki.tres
+msgid "Kelpaa. Älä odota kiitosta."
+msgstr "It'll do. Don't expect a thank you."
+
+#: src/resources/customers/pukki.tres
+msgid "Olen boss Pukki, en mikään Joulupukki. Kaada jotain maltaista."
+msgstr "I'm boss Pukki, not some Santa. Pour me something malty."
+
+#: src/resources/customers/pukki.tres
+msgid "Tyhjä hylly. Tuttua tammikuulta."
+msgstr "Empty shelf. Feels like January."
+
+#: src/resources/customers/pukki.tres
+msgid "Tällä ei pysy edes poro jaloillaan."
+msgstr "Not even a reindeer would stay on its feet with this."
 
 #: src/resources/customers/raksamies.tres
 msgid ""
@@ -4529,6 +4634,24 @@ msgid ""
 "Murskattuja korianterinsiemeniä. Witbier ja Saison saavat niistä raikkaan, "
 "mausteisen tuoksun."
 msgstr "Crushed coriander seeds. They give Witbier and Saison a fresh, spicy aroma."
+
+#: src/resources/ingredients/spices/gingerbread_spice.tres
+msgid ""
+"Kanelia, inkivääriä, neilikkaa ja pomeranssinkuorta. Tummasta bockista "
+"tulee sillä Pukkibockia. Myynnissä vain jouluna, ja kellari tuoksuu siltä "
+"vielä tammikuussa."
+msgstr ""
+"Cinnamon, ginger, clove and bitter orange peel. It turns a dark bock into "
+"Pukkibock. Sold only at Christmas, and the cellar still smells of it in "
+"January."
+
+#: src/resources/ingredients/spices/gingerbread_spice.tres
+msgid "Piparkakkumauste"
+msgstr "Gingerbread spice"
+
+#: src/resources/ingredients/spices/gingerbread_spice.tres
+msgid "piparkakkumaustetta"
+msgstr "gingerbread spice"
 
 #: src/resources/ingredients/spices/juniper.tres
 msgid "Katajanoksat"

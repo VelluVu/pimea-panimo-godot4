@@ -496,3 +496,11 @@ func test_an_outburst_animation_is_in_the_customers_sprite_frames() -> void:
 			continue
 		assert_true(customer.sprite_frames.has_animation(customer.outburst_animation), "%s has no %s animation" % [customer.title, customer.outburst_animation])
 		assert_false(customer.sprite_frames.get_animation_loop(customer.outburst_animation), "%s's outburst must play once" % customer.title)
+
+
+func test_a_title_that_is_the_name_gets_no_first_name() -> void:
+	var customer := CustomerData.new()
+	customer.title = "Joulupukki"
+	customer.first_names = ["Ada"]
+	customer.title_is_name = true
+	assert_eq(customer.generate_display_name(), "Joulupukki")

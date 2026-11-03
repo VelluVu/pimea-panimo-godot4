@@ -36,6 +36,7 @@ const CZECH_PILSNER : String = "Tšekkiläinen pilsner"
 const KURPITSAOLUT : String = "Kurpitsaolut"
 const TEKOALYOLUT : String = "Tekoälyolut"
 const LAKKASELTZERI : String = "Alkoholiton lakkaseltzeri"
+const PUKKIBOCK : String = "Pukkibock"
 
 const KG : String = "kg"
 const G : String = "g"

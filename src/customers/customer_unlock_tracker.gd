@@ -26,7 +26,7 @@ func _init(save_path: String = DEFAULT_SAVE_PATH) -> void:
 
 
 ## True once every appearance gate passes: reputation (per run), style discovery,
-## achievement and a seen queue (permanent), and the season (CustomerData.comes_in()). The
+## achievement, a seen queue and a met title (permanent), and the season (CustomerData.comes_in()). The
 ## one answer to "can this customer appear".
 func is_eligible(customer: CustomerData) -> bool:
 	var current_reputation: int = 0
@@ -37,6 +37,7 @@ func is_eligible(customer: CustomerData) -> bool:
 		and _meets_style_discovery_requirement(customer) \
 		and _meets_achievement_requirement(customer) \
 		and (not customer.requires_queue or has_seen_queue()) \
+		and (customer.required_met_title.is_empty() or is_met(customer.required_met_title)) \
 		and customer.comes_in(SeasonRules.now(), is_met(customer.title))
 
 
@@ -75,6 +76,11 @@ func get_met_titles() -> Array:
 
 func is_met(title: String) -> bool:
 	return get_met_titles().has(title)
+
+
+## Empty required_met_title means no requirement; met titles are permanent progress.
+func meets_met_title_requirement(customer: CustomerData) -> bool:
+	return customer.required_met_title.is_empty() or is_met(customer.required_met_title)
 
 
 ## Saves that a queue formed; written only the first time.

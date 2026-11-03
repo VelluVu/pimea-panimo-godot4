@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="IngredientData" format=3]
+
+[ext_resource type="Script" uid="uid://dniwiyu5ynp71" path="res://src/brewing/ingredient_data.gd" id="1_gingerbread"]
+
+[resource]
+script = ExtResource("1_gingerbread")
+id = 412
+name = "Piparkakkumauste"
+name_partitive = "piparkakkumaustetta"
+description = "Kanelia, inkivääriä, neilikkaa ja pomeranssinkuorta. Tummasta bockista tulee sillä Pukkibockia. Myynnissä vain jouluna, ja kellari tuoksuu siltä vielä tammikuussa."
+base_price = 2
+unit = 2
+type = 3
+season = 4
+metadata/_custom_type_script = "uid://dniwiyu5ynp71"
