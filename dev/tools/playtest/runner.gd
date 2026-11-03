@@ -45,8 +45,7 @@ func _start() -> void:
 	for i: int in 5:
 		await process_frame
 	_press("Aloita uusi peli")
-	# The cellar loads on a thread behind the fade; a bot added before it is in place loads
-	# game scripts on the main thread at the same time, and a clashing load broke the GUI.
+	# Wait until the cellar is in place behind the fade before adding the bot.
 	for i: int in GAME_SCENE_WAIT_FRAMES:
 		await process_frame
 		if current_scene != null and current_scene.scene_file_path == GAME_SCENE:

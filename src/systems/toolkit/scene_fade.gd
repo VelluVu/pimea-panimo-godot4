@@ -14,7 +14,9 @@ const SETTLED_FRAME_SECONDS : float = 0.05
 const SETTLE_MAX_FRAMES : int = 15
 
 
-## Switches `tree` to `path` behind the fade, using BackgroundSceneLoad's read when started.
+## Switches `tree` to `path` behind the fade. The scene loads on the main thread while the
+## screen is black: a threaded read raced the running scene for shared files, and froze or
+## broke the load about once in fifty starts.
 ## `at_black` runs once the screen is black, just before the switch: unpausing there keeps
 ## the old scene still while it fades, and a reset there is never seen on the old screen.
 static func change_to(tree : SceneTree, path : String, at_black : Callable = Callable()) -> void:
@@ -31,7 +33,7 @@ static func change_to(tree : SceneTree, path : String, at_black : Callable = Cal
 	await _fade(layer, curtain, 0.0, 1.0).finished
 	if at_black.is_valid():
 		at_black.call()
-	BackgroundSceneLoad.change_to(tree, path)
+	tree.change_scene_to_file(path)
 	# The new scene's _ready() and first draws are slow; stay black until frames are quick
 	# again, or that hitch eats the fade in.
 	for frame : int in SETTLE_MAX_FRAMES:
