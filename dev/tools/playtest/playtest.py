@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Headless bot playtests: many short runs in parallel, then a summary.
 
-  python dev/tools/playtest/playtest.py run [--runs 6] [--days 20] [--out DIR] [--meta FILE] [--strategies a,b] [--no-goals]
+  python dev/tools/playtest/playtest.py run [--runs 6] [--days 20] [--out DIR] [--meta FILE] [--strategies a,b] [--no-goals] [--season NAME]
       Starts runs_per_strategy x each strategy (default: greedy, variety, careful, cheap) at
       once; "expert" knows every recipe, "gourmet" also tunes it for quality and
       "minmax" plays like gourmet aimed straight at the run score (it cashes out on the
@@ -31,6 +31,7 @@ import os
 import re
 import shutil
 import subprocess
+import time
 import sys
 from datetime import datetime
 from pathlib import Path
@@ -67,13 +68,23 @@ def run(args: argparse.Namespace) -> None:
                 f"--bot={HERE / 'bot.gd'}", f"--strategy={strategy}", f"--max_days={args.days}",
                 f"--speed={args.speed}", f"--out={out / f'{name}.json'}",
                 f"--profile={'veteran' if args.meta else 'new'}", f"--goals={0 if args.no_goals else 1}",
+                f"--season={args.season}",
             ]
             env = dict(os.environ, APPDATA=str(appdata))
             with open(out / f"{name}.out", "w") as stdout, open(out / f"{name}.err", "w") as stderr:
                 procs.append((name, subprocess.Popen(cmd, env=env, stdout=stdout, stderr=stderr)))
+    # Now and then a run deadlocks right after the new game starts and never exits; past the
+    # deadline it is killed and marked "hung", so one stuck run cannot hold the batch.
+    deadline = time.monotonic() + args.timeout * 60
     for name, p in procs:
         # Kept for runs that end without a report: a crash leaves a non-zero code.
-        (out / f"{name}.exit").write_text(str(p.wait()))
+        try:
+            code = str(p.wait(timeout=max(1.0, deadline - time.monotonic())))
+        except subprocess.TimeoutExpired:
+            p.kill()
+            p.wait()
+            code = "hung"
+        (out / f"{name}.exit").write_text(code)
     print(f"{len(procs)} runs in {out}")
     summary(argparse.Namespace(dir=str(out)))
 
@@ -160,6 +171,9 @@ def main() -> None:
     p_run.add_argument("--godot", default=os.environ.get("GODOT", DEFAULT_GODOT))
     p_run.add_argument("--strategies", default=",".join(STRATEGIES), help="comma-separated, from: " + ", ".join(ALL_STRATEGIES))
     p_run.add_argument("--no-goals", action="store_true", help="bots ignore daily goals")
+    p_run.add_argument("--timeout", type=float, default=30, help="minutes before still-running runs are killed as hung")
+    p_run.add_argument("--season", default="auto", choices=["auto", "none", "halloween", "black_month", "cyber_week", "winter"],
+                       help="play this season whatever the date (auto: the calendar's)")
     p_run.set_defaults(func=run)
     p_summary = sub.add_parser("summary")
     p_summary.add_argument("dir")

@@ -268,8 +268,9 @@ func _brew(b: Brewery) -> void:
 	var demand: Dictionary = {}
 	for c: CustomerData in CustomerRegistry.customer_pool:
 		if CustomerRegistry.is_eligible(c):
-			demand[c.primary_style] = demand.get(c.primary_style, 0) + 2
-			demand[c.secondary_style] = demand.get(c.secondary_style, 0) + 1
+			var visits: float = _visit_weight(c)
+			demand[c.primary_style] = demand.get(c.primary_style, 0) + 2 * visits
+			demand[c.secondary_style] = demand.get(c.secondary_style, 0) + visits
 	var in_stock: Dictionary = {}
 	for batch: BrewBatch in b.inventory.brew_batches + b.inventory.fermenting:
 		in_stock[batch.beer_style.style] = true
@@ -277,6 +278,8 @@ func _brew(b: Brewery) -> void:
 	var best: BrewRecipe = null
 	var best_score: float = -INF
 	for r: BrewRecipe in b.saved_recipes:
+		if not _all_unlocked(b, r.ingredient_amounts):
+			continue
 		var cost: float = _missing_cost(b, r)
 		if cost + _reserve(b) > b.money:
 			continue
@@ -303,6 +306,12 @@ func _brew_recipe(b: Brewery, recipe: BrewRecipe) -> void:
 		var missing: int = maxi(0, recipe.ingredient_amounts[id] - _owned(b, id))
 		if missing > 0:
 			GUISignals.buy_ingredient.emit(id, missing)
+	# A refused purchase (out of season, too little money) means no brew: count none.
+	for id: int in recipe.ingredient_amounts:
+		if _owned(b, id) < recipe.ingredient_amounts[id]:
+			_inc("brews_blocked")
+			_brew_cooldown = 5.0
+			return
 	var result: BrewResult = b.resolver.resolve_brew_style(recipe.ingredient_amounts)
 	if result != null:
 		counts["quality_sum"] = counts.get("quality_sum", 0.0) + result.original_quality
@@ -437,7 +446,7 @@ func _with_spices(b: Brewery, style: BeerStyle, ingredients: Dictionary) -> Dict
 		if added * BrewQuality.SPICE_MATCH_STEP >= BrewQuality.SPICE_MATCH_MAX:
 			break
 		var spice: IngredientData = IngredientDatabase.get_item_by_id(spice_id)
-		if spice != null and spice.min_reputation <= b.reputation:
+		if spice != null and spice.min_reputation <= b.reputation and (spice.is_sold_in(SeasonRules.now()) or _owned(b, spice_id) > 0):
 			# Keeps a required spice's amount from the reference recipe.
 			spiced[spice_id] = maxi(1, spiced.get(spice_id, 0))
 			added += 1
@@ -678,7 +687,7 @@ func _expert_demand(b: Brewery, style: BeerStyle.Style, in_stock: Dictionary, pr
 		var unlock_share: float = 0.0 if eligible else _unlock_share(b, c, style, probe)
 		if not eligible and unlock_share <= 0.0:
 			continue
-		var served: float = _served_share(b, c, in_stock)
+		var served: float = _served_share(b, c, in_stock) * _visit_weight(c)
 		var favourite_value: float = maxf(0.0, 2.0 + c.rep_primary_style - c.risk_primary_style * risk_weight)
 		var second_value: float = maxf(0.0, 1.0 + c.rep_secondary_style - c.risk_secondary_style * risk_weight) * 0.5
 		# Unlocking a customer is worth half their favourite's value, whatever they think
@@ -761,9 +770,19 @@ func _rolled_group_size(c: CustomerData) -> int:
 const RISK_POINT_WEIGHT: float = 2.0
 
 
+## How often `c` comes now, as the registry weighs its picks: a seasonal customer is three
+## times as common in its season and rare after it.
+func _visit_weight(c: CustomerData) -> float:
+	return c.get_appearance_weight(SeasonRules.now(), CustomerRegistry.get_met_titles().has(c.title))
+
+
+## Also false when the shelf lacks a seasonal ingredient the shop does not sell now.
 func _all_unlocked(b: Brewery, ingredients: Dictionary) -> bool:
 	for id: int in ingredients:
-		if IngredientDatabase.get_item_by_id(id).min_reputation > b.reputation:
+		var ingredient: IngredientData = IngredientDatabase.get_item_by_id(id)
+		if ingredient.min_reputation > b.reputation:
+			return false
+		if _owned(b, id) < ingredients[id] and not ingredient.is_sold_in(SeasonRules.now()):
 			return false
 	return true
 
