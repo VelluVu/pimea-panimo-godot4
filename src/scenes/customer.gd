@@ -81,6 +81,10 @@ func _on_animated_sprite_frame_changed() -> void:
 
 func _apply_visuals() -> void:
 	animated_sprite.sprite_frames = customer_data.sprite_frames
+	# Feet at the node, centred: Joulupukki's 40 px frames as well as the usual 32 px ones.
+	if customer_data.sprite_frames != null and customer_data.sprite_frames.has_animation(ANIM_IDLE):
+		var frame_size : Vector2 = customer_data.sprite_frames.get_frame_texture(ANIM_IDLE, 0).get_size()
+		animated_sprite.offset = Vector2(-frame_size.x / 2.0, -frame_size.y)
 	animated_sprite.material = CustomerRecolor.build_material(customer_data)
 	var glass_region : Rect2 = CustomerHandOffsets.glass_region_for(customer_data.title)
 	beer_glass_sprite.region_enabled = glass_region.has_area()

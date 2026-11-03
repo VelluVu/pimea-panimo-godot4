@@ -100,6 +100,17 @@ const KYBORGI_OFFSETS : Array[Vector2] = [
 ]
 
 
+## Joulupukki and Pukki share one big 40 px body: the mitten hangs further out and lower.
+const JOULUPUKKI_TITLE : String = "Joulupukki"
+const PUKKI_TITLE : String = "Pukki"
+const JOULUPUKKI_OFFSETS : Array[Vector2] = [
+	Vector2(-36, -42),
+	Vector2(-36, -46),
+	Vector2(-36, -42),
+	Vector2(-36, -46),
+]
+
+
 ## Hand position for one walk_towards frame of the archetype with this title.
 static func position_for(title: String, frame: int) -> Vector2:
 	var offsets : Array[Vector2] = DEFAULT_OFFSETS
@@ -122,6 +133,8 @@ static func position_for(title: String, frame: int) -> Vector2:
 			offsets = TARJOUSHAUKKA_OFFSETS
 		KYBORGI_TITLE:
 			offsets = KYBORGI_OFFSETS
+		JOULUPUKKI_TITLE, PUKKI_TITLE:
+			offsets = JOULUPUKKI_OFFSETS
 	return offsets[frame % offsets.size()]
 
 
