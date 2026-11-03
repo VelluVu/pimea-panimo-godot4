@@ -87,6 +87,9 @@ func _send_agent(elapsed_seconds : float) -> void:
 	agent.global_position = entry_marker.global_position
 	_agents.append(agent)
 	agent.walk_in_and_seize(waypoints, elapsed_seconds)
+	# A raid resumed from a save is already past the door.
+	if elapsed_seconds <= 0.0:
+		BrewerySignals.customer_entered.emit(entry_marker.global_position)
 
 
 func _record_raid(brewery : Brewery) -> void:

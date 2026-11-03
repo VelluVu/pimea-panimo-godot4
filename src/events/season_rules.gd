@@ -19,10 +19,14 @@ const CYBER_WEEK_DAYS_AFTER : int = 3
 ## December days count on from November's in _november_day().
 const NOVEMBER_DAYS : int = 30
 const OUTSIDE_NOVEMBER : int = -100
+const WINTER_LAST_MONTH : int = Time.MONTH_MARCH
 
 ## Set by the developer console to try a season out of its dates; cleared by clear_forced().
 static var _forced : Season = Season.NONE
 static var _is_forced : bool = false
+## Like _forced, for is_winter_now().
+static var _winter_forced : bool = false
+static var _is_winter_forced : bool = false
 
 
 static func now() -> Season:
@@ -36,6 +40,29 @@ static func force(season : Season) -> void:
 
 static func clear_forced() -> void:
 	_is_forced = false
+
+
+static func is_winter_now() -> bool:
+	return _winter_forced if _is_winter_forced else is_winter(Time.get_date_dict_from_system())
+
+
+static func force_winter(on : bool) -> void:
+	_winter_forced = on
+	_is_winter_forced = true
+
+
+static func clear_forced_winter() -> void:
+	_is_winter_forced = false
+
+
+## Winter is not a Season: it runs under Black Month and Christmas, from the day after
+## Halloween to the end of March. `date` as in season_of().
+static func is_winter(date : Dictionary) -> bool:
+	var month : int = date.get("month", 0)
+	var day : int = date.get("day", 0)
+	if month == Time.MONTH_NOVEMBER:
+		return day > HALLOWEEN_LAST_DAY_NOVEMBER
+	return month == Time.MONTH_DECEMBER or (month >= Time.MONTH_JANUARY and month <= WINTER_LAST_MONTH)
 
 
 ## True when something made for `wanted` belongs in `current`: its own season, and

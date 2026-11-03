@@ -15,10 +15,15 @@
 [ext_resource type="Script" uid="uid://bh2cqv03r8t8o" path="res://src/scenes/ui/ingredient_option_button.gd" id="5_tipki"]
 [ext_resource type="Script" uid="uid://cx0sfer400res" path="res://src/scenes/ui/clock_ui.gd" id="5_trceg"]
 [ext_resource type="Texture2D" uid="uid://bqgg0ud803dad" path="res://assets/textures/light_glow_stairs.png" id="7_4xk6q"]
+[ext_resource type="Script" uid="uid://b5qr5n6hg5dhl" path="res://src/scenes/winter_door.gd" id="7_gc238"]
 [ext_resource type="Script" uid="uid://hp2u8nuqjsu6" path="res://src/ui/pc_prop.gd" id="7_og1vs"]
 [ext_resource type="Script" uid="uid://be6oyi80fbyom" path="res://src/scenes/ui/brew_preparation_panel.gd" id="7_tipki"]
 [ext_resource type="Theme" uid="uid://dkmfe4a5nvvcd" path="res://src/resources/themes/main_theme.tres" id="7_y6deb"]
 [ext_resource type="Script" uid="uid://dw337ricts1ki" path="res://src/scenes/light_flicker.gd" id="8_5c2vg"]
+[ext_resource type="Texture2D" uid="uid://c4rvvo3qe13r4" path="res://assets/textures/winter_door.png" id="8_cb1eu"]
+[ext_resource type="AudioStream" uid="uid://cvu8g3oi0vb4x" path="res://assets/audio/sfx/synth/door_creak.wav" id="8_gwv7c"]
+[ext_resource type="AudioStream" uid="uid://wpevypvjdaqq" path="res://assets/audio/sfx/synth/winter_gust.wav" id="9_efres"]
+[ext_resource type="Material" path="res://assets/shaders/winter_snow_material.tres" id="9_gwv7c"]
 [ext_resource type="Script" uid="uid://4stpknptq7nv" path="res://src/scenes/ui/right_warehouse_view.gd" id="9_muem4"]
 [ext_resource type="Texture2D" uid="uid://cr5stxers6yiw" path="res://assets/textures/light_glow_wall.png" id="9_nylc4"]
 [ext_resource type="Texture2D" uid="uid://dl4jgj4bfi8dq" path="res://assets/textures/light_warehouse_door.png" id="9_txyr0"]
@@ -235,6 +240,33 @@ z_index = 2
 material = SubResource("CanvasItemMaterial_pm3ni")
 texture = ExtResource("2_85g3d")
 polygon = PackedVector2Array(91.00314, 177.12683, 121, 176, 121, 123, 155, 92, 158, 61, 158, 25, 0.1542387, 24.524673, 0.028835297, 43.784214, 80.578766, 44.011307, 90.77697, 54.397774)
+
+[node name="WinterDoor" type="Node2D" parent="." unique_id=710108710]
+script = ExtResource("7_gc238")
+creak = ExtResource("8_gwv7c")
+gust = ExtResource("9_efres")
+
+[node name="Door" type="Sprite2D" parent="WinterDoor" unique_id=2094672916]
+light_mask = 3
+position = Vector2(74, 44)
+texture = ExtResource("8_cb1eu")
+centered = false
+hframes = 4
+
+[node name="Snow" type="ColorRect" parent="WinterDoor" unique_id=835827121]
+visible = false
+material = ExtResource("9_gwv7c")
+offset_top = 40.0
+offset_right = 100.0
+offset_bottom = 240.0
+mouse_filter = 2
+
+[node name="ColdLight" type="PointLight2D" parent="WinterDoor" unique_id=852180918]
+position = Vector2(82, 80)
+color = Color(0.49803922, 0.65882355, 1, 1)
+energy = 0.0
+texture = ExtResource("7_4xk6q")
+texture_scale = 0.6
 
 [node name="Lights" type="Node2D" parent="." unique_id=88800001]
 position = Vector2(0, -1)
@@ -1757,9 +1789,9 @@ position = Vector2(125, 290)
 texture = ExtResource("88_y168j")
 
 [node name="GlowStairs" type="PointLight2D" parent="HalloweenDecor/PumpkinStairs" unique_id=298845968]
-range_item_cull_mask = 2
 color = Color(1, 0.5411765, 0.16470589, 1)
 energy = 1.2
+range_item_cull_mask = 2
 texture = ExtResource("9_nylc4")
 texture_scale = 0.7
 script = ExtResource("8_5c2vg")
@@ -1773,9 +1805,9 @@ position = Vector2(545, 292)
 texture = ExtResource("88_y168j")
 
 [node name="GlowDoor" type="PointLight2D" parent="HalloweenDecor/PumpkinDoor" unique_id=2127749963]
-range_item_cull_mask = 2
 color = Color(1, 0.5411765, 0.16470589, 1)
 energy = 1.2
+range_item_cull_mask = 2
 texture = ExtResource("9_nylc4")
 texture_scale = 0.7
 script = ExtResource("8_5c2vg")
@@ -1789,9 +1821,9 @@ position = Vector2(358, 227)
 texture = ExtResource("89_6vtdq")
 
 [node name="GlowCounter" type="PointLight2D" parent="HalloweenDecor/PumpkinCounter" unique_id=671439722]
-range_item_cull_mask = 2
 color = Color(1, 0.5411765, 0.16470589, 1)
 energy = 0.9
+range_item_cull_mask = 2
 texture = ExtResource("9_nylc4")
 texture_scale = 0.4
 script = ExtResource("8_5c2vg")
@@ -1809,10 +1841,10 @@ centered = false
 script = ExtResource("91_uvf16")
 
 [node name="EyeGlow" type="PointLight2D" parent="HalloweenDecor/BarrelSkeleton" unique_id=464212695]
-range_item_cull_mask = 2
 position = Vector2(20, 18)
 color = Color(1, 0.6901961, 0.4, 1)
 energy = 1.3
+range_item_cull_mask = 2
 texture = ExtResource("9_nylc4")
 texture_scale = 0.35
 
@@ -1828,10 +1860,10 @@ min_interval_seconds = 30.0
 max_interval_seconds = 60.0
 
 [node name="EyeGlow" type="PointLight2D" parent="HalloweenDecor/CornerSkeleton" unique_id=1595111513]
-range_item_cull_mask = 2
 position = Vector2(12, 14)
 color = Color(1, 0.6901961, 0.4, 1)
 energy = 1.3
+range_item_cull_mask = 2
 texture = ExtResource("9_nylc4")
 texture_scale = 0.35
 
@@ -1847,10 +1879,10 @@ min_interval_seconds = 30.0
 max_interval_seconds = 60.0
 
 [node name="EyeGlow" type="PointLight2D" parent="HalloweenDecor/TankSkeleton" unique_id=597112557]
-range_item_cull_mask = 2
 position = Vector2(7, 6)
 color = Color(1, 0.6901961, 0.4, 1)
 energy = 0.9
+range_item_cull_mask = 2
 texture = ExtResource("9_nylc4")
 texture_scale = 0.2
 
@@ -1871,8 +1903,8 @@ script = ExtResource("87_ipwpp")
 season = 2
 
 [node name="NeonSign" type="Label" parent="BlackWeekDecor" unique_id=1950120432]
-light_mask = 3
 auto_translate_mode = 2
+light_mask = 3
 offset_left = 150.0
 offset_top = 70.0
 offset_right = 270.0
@@ -1886,9 +1918,9 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="NeonGlow" type="PointLight2D" parent="BlackWeekDecor/NeonSign" unique_id=2043512233]
-range_item_cull_mask = 2
 position = Vector2(60, 7)
 color = Color(1, 0.35, 0.75, 1)
+range_item_cull_mask = 2
 texture = ExtResource("9_nylc4")
 texture_scale = 0.8
 script = ExtResource("8_5c2vg")
@@ -1912,9 +1944,9 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="NeonGlow" type="PointLight2D" parent="CyberWeekDecor/CyberNeonSign" unique_id=605459832]
-range_item_cull_mask = 2
 position = Vector2(48, 7)
 color = Color(0.3, 0.9, 1, 1)
+range_item_cull_mask = 2
 texture = ExtResource("9_nylc4")
 texture_scale = 0.8
 script = ExtResource("8_5c2vg")

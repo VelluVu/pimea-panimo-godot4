@@ -577,6 +577,23 @@ def gunshot():
     return crush(mix(shot, echoes, at(0.05, tail), casing), 48), 0.8
 
 
+def door_creak():
+    """The winter door's old hinge: stick-slip clicks that speed up and slow as it swings."""
+    seconds = 0.55
+    rate = sweep(70, 150, seconds, 0.7) * (1.0 + 0.12 * np.sin(2 * np.pi * 7 * _t(seconds)))
+    clicks = square(rate, seconds, duty=0.08)
+    body = highpass(lowpass(clicks, 2400), 350)
+    return crush(body * env(seconds, 0.04, 0.2), 48), 0.45
+
+
+def winter_gust():
+    """Cold wind blowing in through the open door: a low whoosh that swells and dies, with hiss."""
+    seconds = 1.5
+    whoosh = lowpass(noise(seconds, hold=3), 650) * _rolling(seconds, 0.25, 0.5)
+    hiss = highpass(noise(seconds), 2500) * 0.25
+    return crush(mix(whoosh, hiss) * env(seconds, 0.25, 0.9), 48), 0.5
+
+
 RECIPES = {
     "gunshot": gunshot,
     "thunder_near": thunder_near,
@@ -630,6 +647,8 @@ RECIPES = {
     "brew_step_done": brew_step_done,
     "brew_result_good": brew_result_good,
     "brew_result_low": brew_result_low,
+    "door_creak": door_creak,
+    "winter_gust": winter_gust,
 }
 
 

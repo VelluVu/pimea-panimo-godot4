@@ -79,3 +79,25 @@ func test_a_forced_season_wins_until_cleared() -> void:
 	assert_eq(SeasonRulesScript.now(), SeasonRulesScript.Season.NONE)
 	SeasonRulesScript.clear_forced()
 	assert_eq(SeasonRulesScript.now(), calendar)
+
+
+func _winter(month : int, day : int) -> bool:
+	return SeasonRulesScript.is_winter({"year": 2026, "month": month, "day": day})
+
+
+func test_winter_starts_the_day_after_halloween() -> void:
+	assert_false(_winter(11, 8))
+	assert_true(_winter(11, 9))
+
+
+func test_winter_runs_over_new_year() -> void:
+	assert_true(_winter(12, 24))
+	assert_true(_winter(1, 1))
+	assert_true(_winter(2, 15))
+
+
+func test_winter_ends_with_march() -> void:
+	assert_true(_winter(3, 31))
+	assert_false(_winter(4, 1))
+	assert_false(_winter(7, 1))
+	assert_false(_winter(10, 31))

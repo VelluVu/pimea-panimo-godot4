@@ -212,6 +212,7 @@ func _try_spawn_walk_in(forced_data: CustomerData) -> bool:
 	new_customer.dialogue_slot = free_slot
 	CustomerManager.register_active_customer(free_slot, new_customer)
 	new_customer.walk_complex_route(stairs_bottom_marker.global_position, room_center_marker.global_position, counter_positions[free_slot])
+	BrewerySignals.customer_entered.emit(global_position)
 	return true
 
 

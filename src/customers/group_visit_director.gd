@@ -175,6 +175,7 @@ func _spawn_member(visit : GroupVisit, index : int) -> Customer:
 	# Applied after the stairs, a shared bottleneck, so paths diverge only past them.
 	var offset : Vector2 = _formation_offset_for(index, visit.group_size, visit.event_data.formation_spacing_px)
 	member.walk_complex_route(_stairs_marker.global_position, _room_center_marker.global_position + offset, visit.counter_position + offset, true)
+	BrewerySignals.customer_entered.emit(_host.global_position)
 	return member
 
 

@@ -201,6 +201,9 @@ signal machine_switched(upgrade_id: String, enabled: bool)
 ## A customer type bought something, so the Asiakaskirja marks it as met.
 @warning_ignore("unused_signal")
 signal customer_served(data: CustomerData)
+## Someone came in through the main door at the top of the stairs, for the winter door.
+@warning_ignore("unused_signal")
+signal customer_entered(position: Vector2)
 ## A walking customer put a foot down, for the footstep sound.
 @warning_ignore("unused_signal")
 signal customer_stepped(position: Vector2)
@@ -213,3 +216,6 @@ signal beer_poured(position: Vector2, speed_scale: float)
 ## The console forced a season (SeasonRules.force()), so the decorations switch at once.
 @warning_ignore("unused_signal")
 signal season_forced(season: SeasonRules.Season)
+## The console forced winter on or off (SeasonRules.force_winter()).
+@warning_ignore("unused_signal")
+signal winter_forced(is_winter: bool)

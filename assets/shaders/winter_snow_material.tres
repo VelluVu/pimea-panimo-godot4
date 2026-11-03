@@ -1,0 +1,8 @@
+[gd_resource type="ShaderMaterial" format=3]
+
+[ext_resource type="Shader" uid="uid://jhbb0kake5g6" path="res://assets/shaders/winter_snow.gdshader" id="1_snow"]
+[ext_resource type="Texture2D" path="res://assets/textures/winter_stair_treads.png" id="2_treads"]
+
+[resource]
+shader = ExtResource("1_snow")
+shader_parameter/tread_map = ExtResource("2_treads")
