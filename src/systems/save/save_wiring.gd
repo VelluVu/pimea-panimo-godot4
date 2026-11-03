@@ -54,9 +54,13 @@ func load_game() -> bool:
 
 
 ## The saved run for the main menu to look at, without making it the current run; null
-## without a readable save.
+## without a readable save. Cleaned first like load_game(), or a legacy save it could still
+## load would hide "Jatka" and let a new run overwrite it unasked.
 func peek() -> Brewery:
-	return read() as Brewery if has_save() else null
+	if not has_save():
+		return null
+	_clean_legacy_saves()
+	return read() as Brewery
 
 
 func _migrate(resource: Resource, from_version: int) -> void:

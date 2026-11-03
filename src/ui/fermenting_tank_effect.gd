@@ -19,12 +19,18 @@ const GLASS_BUBBLE_COLOR : Color = Color("fee761")
 ## The tank sprite's light mask, so the room's lights brighten the bubbles too.
 const TANK_LIGHT_MASK : int = 3
 
+## Off in the main menu: there the saved run sets it (set_fermenting), not the current one.
+@export var follows_run : bool = true
+
 var _step : int = 0
 var _elapsed : float = 0.0
 
 
 func _ready() -> void:
 	light_mask = TANK_LIGHT_MASK
+	if not follows_run:
+		set_fermenting(false)
+		return
 	BrewerySignals.fermentation_started.connect(_on_fermentation_changed.unbind(1))
 	BrewerySignals.batch_fermented.connect(_on_fermentation_changed.unbind(1))
 	BrewerySignals.brewery_state_changed.connect(_on_fermentation_changed.unbind(1))

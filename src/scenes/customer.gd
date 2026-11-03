@@ -375,7 +375,9 @@ func leave_counter(pickup_position_override: Vector2 = Vector2.INF) -> void:
 		_pickup_target = Vector2.INF
 
 	_walk_out(global_position + Vector2(0.0, EXIT_WALK_DISTANCE))
-	CustomerManager.free_slot_index(assigned_slot)
+	# The main menu's visitor never had a slot, and the counter bookkeeping is the game's.
+	if assigned_slot >= 0:
+		CustomerManager.free_slot_index(assigned_slot)
 
 
 ## Walks from here to `exit_position` and is gone; resume() calls it mid-way.

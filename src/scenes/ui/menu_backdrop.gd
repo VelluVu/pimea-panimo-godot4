@@ -36,11 +36,14 @@ func _ready() -> void:
 		(light as Light2D).range_layer_min = layer
 		(light as Light2D).range_layer_max = layer
 	_close_for_the_night()
+	# DayLights sets the new season's lit tint; the room stays dark until lights_on().
+	BrewerySignals.season_forced.connect(_on_season_forced.unbind(1))
 
 
 ## `brewery` is the saved run (SaveManager.peek()); null leaves the cellar as drawn.
 func show_save(brewery : Brewery) -> void:
 	if brewery == null:
+		fermenting_effect.set_fermenting(false)
 		return
 	BarTaps.show(brewery, tap_tower, keg_row)
 	fermenting_effect.set_fermenting(not brewery.inventory.fermenting.is_empty())
@@ -78,6 +81,13 @@ func _close_for_the_night() -> void:
 		lamp.dimmer = 0.0
 		_night_lamps.append(lamp)
 	pendant_light.dimmer = PENDANT_NIGHT_DIMMER
+
+
+func _on_season_forced() -> void:
+	if _lit:
+		return
+	_lit_darkness = world_darkness.color
+	world_darkness.color = _lit_darkness.darkened(AFTER_HOURS_DARKEN)
 
 
 func _set_darkness(color : Color) -> void:
