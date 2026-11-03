@@ -85,3 +85,12 @@ func test_reset_frees_everything_and_resizes() -> void:
 	assert_eq(slots.size(), 4)
 	assert_eq(slots.first_free(), 0)
 	assert_false(slots.has_customers())
+
+
+func test_releasing_no_slot_leaves_the_last_one_taken() -> void:
+	var slots = CounterSlotsScript.new(2)
+	slots.register(1, _customer())
+	slots.release(-1)
+	assert_eq(slots.first_free(), 0)
+	slots.register(0, _customer())
+	assert_eq(slots.first_free(), -1)

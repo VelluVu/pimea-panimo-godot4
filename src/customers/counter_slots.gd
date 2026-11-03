@@ -42,7 +42,11 @@ func register(slot : int, customer : Node2D) -> void:
 	_customers[slot] = customer
 
 
+## A customer never given a slot (the main menu's visitor) holds -1: -1 would index the last
+## slot.
 func release(slot : int) -> void:
+	if slot < 0 or slot >= _occupant_counts.size():
+		return
 	_occupant_counts[slot] = maxi(0, _occupant_counts[slot] - 1)
 	if _occupant_counts[slot] > 0:
 		return

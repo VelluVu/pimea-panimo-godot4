@@ -1,0 +1,828 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" uid="uid://bdno8f5nt1xyh" path="res://src/ui/fermenting_tank_effect.gd" id="5_abmkx"]
+[ext_resource type="Script" path="res://src/customers/menu_visit_director.gd" id="menu_visits"]
+[ext_resource type="Script" path="res://src/scenes/ui/menu_backdrop.gd" id="menu_backdrop_script"]
+[ext_resource type="Texture2D" uid="uid://o6vh3frtnlhf" path="res://assets/textures/underground_brewery_fixed-0001.png" id="2_85g3d"]
+
+[ext_resource type="Texture2D" uid="uid://d0i6obt1bcke0" path="res://assets/textures/bar_table_wide.png" id="2_dp3eg"]
+
+[ext_resource type="Texture2D" uid="uid://dfmm71s24x2ju" path="res://assets/textures/brewery_view.png" id="3_yc10j"]
+
+[ext_resource type="Script" uid="uid://cx0sfer400res" path="res://src/scenes/ui/clock_ui.gd" id="5_trceg"]
+
+[ext_resource type="Texture2D" uid="uid://bqgg0ud803dad" path="res://assets/textures/light_glow_stairs.png" id="7_4xk6q"]
+
+[ext_resource type="Script" uid="uid://b5qr5n6hg5dhl" path="res://src/scenes/winter_door.gd" id="7_gc238"]
+
+[ext_resource type="Script" uid="uid://hp2u8nuqjsu6" path="res://src/ui/pc_prop.gd" id="7_og1vs"]
+
+[ext_resource type="Theme" uid="uid://dkmfe4a5nvvcd" path="res://src/resources/themes/main_theme.tres" id="7_y6deb"]
+
+[ext_resource type="Script" uid="uid://dw337ricts1ki" path="res://src/scenes/light_flicker.gd" id="8_5c2vg"]
+
+[ext_resource type="Texture2D" uid="uid://c4rvvo3qe13r4" path="res://assets/textures/winter_door.png" id="8_cb1eu"]
+
+[ext_resource type="AudioStream" uid="uid://cvu8g3oi0vb4x" path="res://assets/audio/sfx/synth/door_creak.wav" id="8_gwv7c"]
+
+[ext_resource type="AudioStream" uid="uid://wpevypvjdaqq" path="res://assets/audio/sfx/synth/winter_gust.wav" id="9_efres"]
+
+[ext_resource type="Material" path="res://assets/shaders/winter_snow_material.tres" id="9_gwv7c"]
+
+[ext_resource type="Texture2D" uid="uid://cr5stxers6yiw" path="res://assets/textures/light_glow_wall.png" id="9_nylc4"]
+
+[ext_resource type="Texture2D" uid="uid://dl4jgj4bfi8dq" path="res://assets/textures/light_warehouse_door.png" id="9_txyr0"]
+
+[ext_resource type="Texture2D" uid="uid://ckr0tjvh7srsj" path="res://assets/textures/clock_bg.png" id="10_jscy8"]
+
+[ext_resource type="Texture2D" uid="uid://c3a6q0frv1fj5" path="res://assets/textures/light_glow_wall2.png" id="10_r6rvd"]
+
+[ext_resource type="Script" uid="uid://cucpiy30iolba" path="res://src/scenes/cone_dust.gd" id="11_8knqq"]
+
+[ext_resource type="Script" uid="uid://c715twjayrw15" path="res://src/scenes/day_lights.gd" id="11_dy065"]
+
+[ext_resource type="Shader" uid="uid://b6xodd1u2dfbh" path="res://assets/shaders/cellar_ambience.gdshader" id="11_nfawm"]
+
+[ext_resource type="Texture2D" uid="uid://cs0bawhjfoxec" path="res://assets/textures/light_tube.png" id="12_8wwmi"]
+
+[ext_resource type="Script" uid="uid://7cglpq7cfhdd" path="res://src/scenes/winter_puffs.gd" id="13_efres"]
+
+[ext_resource type="Texture2D" uid="uid://4pfgd0nl3mmy" path="res://assets/textures/pendant_lamp_48.png" id="13_nylc4"]
+
+[ext_resource type="Texture2D" uid="uid://dpgbi8udycdtl" path="res://assets/textures/light_cone_bar.png" id="14_ipwpp"]
+
+[ext_resource type="Script" uid="uid://b4yu2tl6wgqhr" path="res://src/scenes/brewery_lamp_switch.gd" id="14_txyr0"]
+
+[ext_resource type="Texture2D" uid="uid://cixeymlhgqlb8" path="res://assets/textures/PC_32.png" id="18_0ld40"]
+
+[ext_resource type="Texture2D" uid="uid://cxq0vt8ch7gjh" path="res://assets/textures/light_brewery_spill.png" id="18_y168j"]
+
+[ext_resource type="Script" uid="uid://e40ukqo404lq" path="res://src/scenes/warehouse_lamp_boost.gd" id="19_nylc4"]
+
+[ext_resource type="Script" uid="uid://rokdwuwn58hx" path="res://src/ui/pixel_clock_hand.gd" id="21_dy065"]
+
+[ext_resource type="PackedScene" uid="uid://kttjbp45s274" path="res://src/scenes/bartender.tscn" id="43_chjal"]
+
+[ext_resource type="Texture2D" uid="uid://ui42kael5n56" path="res://assets/textures/beer_bottle_8x8.png" id="46_vc5cj"]
+
+[ext_resource type="PackedScene" uid="uid://c8a7pb7q0ho8t" path="res://src/scenes/keg.tscn" id="47_1v6qk"]
+
+[ext_resource type="Script" uid="uid://b174yxqoekl5i" path="res://src/scenes/tap_tower.gd" id="59_abmkx"]
+
+[ext_resource type="Script" uid="uid://divk0hld1wq12" path="res://src/scenes/keg_row.gd" id="68_05g3k"]
+
+[ext_resource type="Texture2D" uid="uid://bpsny2rj4ahl3" path="res://assets/textures/keg_wash/dirty_keg.png" id="68_abmkx"]
+
+[ext_resource type="Material" path="res://assets/shaders/hover_outline_material.tres" id="69_72le4"]
+
+[ext_resource type="Script" uid="uid://cg4k8g85v3bhu" path="res://src/scenes/season_decor.gd" id="87_ipwpp"]
+
+[ext_resource type="Texture2D" uid="uid://cu4ivrqepkta7" path="res://assets/textures/pumpkin_32.png" id="88_y168j"]
+
+[ext_resource type="Texture2D" uid="uid://mkmion8t3onp" path="res://assets/textures/pumpkin_16.png" id="89_6vtdq"]
+
+[ext_resource type="SpriteFrames" uid="uid://5pe1itpx7rct" path="res://src/resources/sprite_frames/barrel_skeleton_anim.tres" id="90_6vtdq"]
+
+[ext_resource type="Script" uid="uid://bofufrj2f4c5h" path="res://src/scenes/peeking_skeleton.gd" id="91_uvf16"]
+
+[ext_resource type="SpriteFrames" uid="uid://2uiheu15gw8s" path="res://src/resources/sprite_frames/corner_skeleton_anim.tres" id="92_1uuce"]
+
+[ext_resource type="SpriteFrames" uid="uid://8r4rhqmc7ikr" path="res://src/resources/sprite_frames/tank_skeleton_anim.tres" id="93_g70wa"]
+
+[ext_resource type="Script" uid="uid://dx0ajhg2dtpmk" path="res://src/scenes/storm.gd" id="94_13y22"]
+
+[ext_resource type="AudioStream" uid="uid://dsmlot765osne" path="res://assets/audio/sfx/synth/thunder_near.wav" id="95_lbclt"]
+
+[ext_resource type="AudioStream" uid="uid://j07iyy0lsdgp" path="res://assets/audio/sfx/synth/thunder_far.wav" id="96_5ay3c"]
+
+[ext_resource type="Texture2D" uid="uid://d1mhn8qkmfv7u" path="res://assets/textures/sale_sign_cardboard.png" id="97_lbclt"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_yf5fn"]
+blend_mode = 1
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_jscy8"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g4v7s"]
+size = Vector2(43, 209)
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_pm3ni"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_efres"]
+light_mode = 1
+
+[sub_resource type="Gradient" id="Gradient_5c2vg"]
+offsets = PackedFloat32Array(0, 0.25, 0.75, 1)
+colors = PackedColorArray(2.2, 2.05, 1.7, 0, 2.2, 2.05, 1.7, 0.6, 2.2, 2.05, 1.7, 0.6, 2.2, 2.05, 1.7, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dy065"]
+shader = ExtResource("11_nfawm")
+shader_parameter/vignette_strength = 0.22
+shader_parameter/grain_strength = 0.015
+shader_parameter/grain_in_dark = 0.3
+shader_parameter/grain_fps = 8.0
+shader_parameter/dither_levels = 3.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_txyw0"]
+size = Vector2(104, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bjg73"]
+size = Vector2(20, 30)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_68ujc"]
+size = Vector2(24, 14)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o7ddy"]
+size = Vector2(44, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fluu8"]
+size = Vector2(84, 124)
+
+[node name="MenuBackdrop" type="CanvasLayer"]
+layer = -1
+script = ExtResource("menu_backdrop_script")
+
+[node name="BG_Sprite2D" type="Sprite2D" parent="." unique_id=2145408726]
+light_mask = 3
+position = Vector2(320, 180)
+texture = ExtResource("2_85g3d")
+
+[node name="WarehouseGlow" type="Polygon2D" parent="." unique_id=1554619266]
+material = SubResource("CanvasItemMaterial_yf5fn")
+texture = ExtResource("2_85g3d")
+polygon = PackedVector2Array(564.8308, 179.48196, 565.8308, 116.48197, 609.8308, 96.481964, 609.8308, 322.482, 564.8308, 283.482)
+uv = PackedVector2Array(563.68976, 177.44363, 565.8308, 116.48197, 609.8308, 96.481964, 609.8308, 322.482, 509.8308, 336.482, 492.8308, 291.482, 564.8308, 283.482)
+
+[node name="BreweryHoverArea" type="Area2D" parent="." unique_id=257007580]
+position = Vector2(191, 169)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="BreweryHoverArea" unique_id=386244976]
+polygon = PackedVector2Array(-3, 73, -3, -16, -63, -16, -63, -43, -53, -58, -35, -70, -8, -76, 23, -76, 41, -68, 55, -58, 65, -42, 64, 72)
+
+[node name="Sprite2D" type="Sprite2D" parent="BreweryHoverArea" unique_id=82455851]
+light_mask = 3
+material = SubResource("CanvasItemMaterial_jscy8")
+position = Vector2(2, 4)
+texture = ExtResource("3_yc10j")
+
+[node name="FermentingTankEffect" type="Node2D" parent="BreweryHoverArea/Sprite2D" unique_id=1045410215]
+script = ExtResource("5_abmkx")
+
+[node name="PileCornerShape" type="CollisionPolygon2D" parent="BreweryHoverArea" unique_id=2127650673]
+polygon = PackedVector2Array(-63, -16, -3, -16, -3, 73, -63, 73)
+
+[node name="WarehouseHoverArea" type="Area2D" parent="." unique_id=1295271677]
+position = Vector2(590, 210)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WarehouseHoverArea" unique_id=1682411992]
+position = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_g4v7s")
+
+[node name="Sprite2D" type="Sprite2D" parent="WarehouseHoverArea" unique_id=1346041796]
+
+[node name="StairsWallOverlay" type="Polygon2D" parent="." unique_id=1855176902]
+z_index = 2
+material = SubResource("CanvasItemMaterial_pm3ni")
+texture = ExtResource("2_85g3d")
+polygon = PackedVector2Array(91.00314, 177.12683, 121, 176, 121, 123, 155, 92, 158, 61, 158, 0, 0, 0, 0.1542387, 24.524673, 0.028835297, 43.784214, 80.578766, 44.011307, 90.77697, 54.397774)
+
+[node name="WinterDoor" type="Node2D" parent="." unique_id=710108710]
+script = ExtResource("7_gc238")
+creak = ExtResource("8_gwv7c")
+gust = ExtResource("9_efres")
+
+[node name="Door" type="Sprite2D" parent="WinterDoor" unique_id=2094672916]
+light_mask = 3
+position = Vector2(74, 44)
+texture = ExtResource("8_cb1eu")
+centered = false
+hframes = 4
+
+[node name="Snow" type="ColorRect" parent="WinterDoor" unique_id=835827121]
+visible = false
+material = ExtResource("9_gwv7c")
+offset_top = 40.0
+offset_right = 100.0
+offset_bottom = 240.0
+mouse_filter = 2
+
+[node name="ColdLight" type="PointLight2D" parent="WinterDoor" unique_id=852180918]
+position = Vector2(82, 80)
+color = Color(0.49803922, 0.65882355, 1, 1)
+energy = 0.0
+texture = ExtResource("7_4xk6q")
+texture_scale = 0.6
+
+[node name="WinterPuffs" type="Node2D" parent="WinterDoor" unique_id=74899322]
+z_index = 2
+material = SubResource("CanvasItemMaterial_efres")
+script = ExtResource("13_efres")
+
+[node name="WallClock" type="TextureRect" parent="." unique_id=586740352]
+light_mask = 3
+offset_left = 334.0
+offset_top = 72.0
+offset_right = 366.0
+offset_bottom = 104.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+theme = ExtResource("7_y6deb")
+texture = ExtResource("10_jscy8")
+stretch_mode = 2
+script = ExtResource("5_trceg")
+
+[node name="ClockHand" type="Control" parent="WallClock" unique_id=83555803]
+light_mask = 3
+anchors_preset = 0
+offset_right = 32.0
+offset_bottom = 32.0
+mouse_filter = 2
+script = ExtResource("21_dy065")
+
+[node name="Lights" type="Node2D" parent="." unique_id=88800001]
+position = Vector2(0, -1)
+
+[node name="Light_MainDoor" type="PointLight2D" parent="Lights" unique_id=88800002]
+position = Vector2(27, 81)
+color = Color(1, 0.85, 0.6, 1)
+energy = 1.4
+texture = ExtResource("7_4xk6q")
+script = ExtResource("8_5c2vg")
+flicker_amount = 0.0
+
+[node name="Light_Wall" type="PointLight2D" parent="Lights" unique_id=445615547]
+position = Vector2(305, 139)
+color = Color(1, 0.85, 0.6, 1)
+texture = ExtResource("9_nylc4")
+script = ExtResource("8_5c2vg")
+flicker_amount = 0.1
+
+[node name="Light_Wall2" type="PointLight2D" parent="Lights" unique_id=486106189]
+position = Vector2(495, 134)
+color = Color(1, 0.85, 0.6, 1)
+energy = 1.4
+texture = ExtResource("10_r6rvd")
+script = ExtResource("8_5c2vg")
+flicker_amount = 0.1
+
+[node name="Light_WarehouseDoor" type="PointLight2D" parent="Lights" unique_id=88800004]
+position = Vector2(570, 226)
+color = Color(1, 0.82, 0.55, 1)
+texture = ExtResource("9_txyr0")
+script = ExtResource("8_5c2vg")
+flicker_amount = 0.04
+
+[node name="Light_BreweryTube" type="PointLight2D" parent="Lights" unique_id=1498362605]
+position = Vector2(191, 172)
+color = Color(0.86, 0.97, 1, 1)
+energy = 0.9
+range_item_cull_mask = 2
+texture = ExtResource("12_8wwmi")
+script = ExtResource("8_5c2vg")
+flicker_amount = 0.02
+dip_chance_per_second = 0.02
+dip_depth = 0.6
+
+[node name="PendantLamp" type="Sprite2D" parent="Lights" unique_id=88800008]
+position = Vector2(397, 59)
+texture = ExtResource("13_nylc4")
+
+[node name="Light_BarCone" type="PointLight2D" parent="Lights/PendantLamp" unique_id=88800005]
+position = Vector2(-3, 282)
+color = Color(1, 0.95, 0.85, 1)
+energy = 1.2
+texture = ExtResource("14_ipwpp")
+script = ExtResource("8_5c2vg")
+dip_chance_per_second = 0.03
+
+[node name="BarDust" type="CPUParticles2D" parent="Lights" unique_id=567624762]
+position = Vector2(397, 165)
+amount = 36
+lifetime = 9.0
+preprocess = 9.0
+emission_shape = 3
+emission_rect_extents = Vector2(85, 75)
+spread = 180.0
+gravity = Vector2(0, 1.2)
+initial_velocity_min = 0.5
+initial_velocity_max = 2.0
+color_ramp = SubResource("Gradient_5c2vg")
+script = ExtResource("11_8knqq")
+bottom_half_width = 100.0
+
+[node name="DayLights" type="Node" parent="Lights" unique_id=1168033937]
+script = ExtResource("11_dy065")
+darkness_path = NodePath("../../WorldDarkness")
+
+[node name="BreweryLampSwitch" type="Node" parent="Lights" unique_id=394363562]
+script = ExtResource("14_txyr0")
+lamp_paths = Array[NodePath]([NodePath("../Light_BreweryTube"), NodePath("../Light_BrewerySpill")])
+
+[node name="Light_BrewerySpill" type="PointLight2D" parent="Lights" unique_id=1516785732]
+position = Vector2(190, 266)
+color = Color(0.86, 0.97, 1, 1)
+energy = 0.7
+texture = ExtResource("18_y168j")
+script = ExtResource("8_5c2vg")
+flicker_amount = 0.02
+
+[node name="WarehouseLampBoost" type="Node" parent="Lights" unique_id=282365649]
+script = ExtResource("19_nylc4")
+lamp_path = NodePath("../Light_WarehouseDoor")
+
+[node name="WorldDarkness" type="CanvasModulate" parent="." unique_id=88800007]
+color = Color(0.4, 0.38, 0.45, 1)
+
+[node name="ScreenEffectsLayer" type="CanvasLayer" parent="." unique_id=207106200]
+
+[node name="CellarAmbience" type="ColorRect" parent="ScreenEffectsLayer" unique_id=1337135789]
+material = SubResource("ShaderMaterial_dy065")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="BackBufferCopy" type="BackBufferCopy" parent="ScreenEffectsLayer" unique_id=1768520408]
+copy_mode = 2
+
+[node name="WorldYSort" type="Node2D" parent="." unique_id=1587711243]
+y_sort_enabled = true
+
+[node name="RecipeShelfHoverArea" type="Area2D" parent="WorldYSort" unique_id=1747378298]
+position = Vector2(462, 148)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldYSort/RecipeShelfHoverArea" unique_id=1974005850]
+position = Vector2(6, -10)
+shape = SubResource("RectangleShape2D_txyw0")
+
+[node name="OutlineGroup" type="CanvasGroup" parent="WorldYSort/RecipeShelfHoverArea" unique_id=1508119780]
+material = ExtResource("69_72le4")
+fit_margin = 2.0
+
+[node name="ShelfPlank" type="Polygon2D" parent="WorldYSort/RecipeShelfHoverArea/OutlineGroup" unique_id=1577786727]
+color = Color(0.29, 0.185, 0.094, 1)
+polygon = PackedVector2Array(-38, -4, 50, -4, 50, 4, -38, 4)
+
+[node name="Bottle1" type="Sprite2D" parent="WorldYSort/RecipeShelfHoverArea/OutlineGroup" unique_id=636098985]
+position = Vector2(-28, -16)
+scale = Vector2(3, 3)
+texture = ExtResource("46_vc5cj")
+
+[node name="Bottle2" type="Sprite2D" parent="WorldYSort/RecipeShelfHoverArea/OutlineGroup" unique_id=1934625695]
+position = Vector2(-9, -16)
+scale = Vector2(3, 3)
+texture = ExtResource("46_vc5cj")
+
+[node name="Bottle3" type="Sprite2D" parent="WorldYSort/RecipeShelfHoverArea/OutlineGroup" unique_id=1543532177]
+position = Vector2(10, -16)
+scale = Vector2(3, 3)
+texture = ExtResource("46_vc5cj")
+
+[node name="Bottle4" type="Sprite2D" parent="WorldYSort/RecipeShelfHoverArea/OutlineGroup" unique_id=1972066686]
+position = Vector2(29, -16)
+scale = Vector2(3, 3)
+texture = ExtResource("46_vc5cj")
+
+[node name="Book1" type="Polygon2D" parent="WorldYSort/RecipeShelfHoverArea/OutlineGroup" unique_id=43582109]
+position = Vector2(44, -7)
+color = Color(0.42, 0.11, 0.09, 1)
+polygon = PackedVector2Array(-13, -3, 13, -3, 13, 3, -13, 3)
+
+[node name="Book2" type="Polygon2D" parent="WorldYSort/RecipeShelfHoverArea/OutlineGroup" unique_id=1057484171]
+position = Vector2(45, -12)
+color = Color(0.13, 0.28, 0.16, 1)
+polygon = PackedVector2Array(-11, -3, 11, -3, 11, 2, -11, 2)
+
+[node name="CustomerSpawner" type="Node2D" parent="WorldYSort" unique_id=82506958]
+z_index = 1
+y_sort_enabled = true
+position = Vector2(93, 98)
+
+[node name="CounterPositionsParent" type="Node2D" parent="WorldYSort/CustomerSpawner" unique_id=2107604814]
+position = Vector2(306, 159)
+
+[node name="CounterMarker1" type="Marker2D" parent="WorldYSort/CustomerSpawner/CounterPositionsParent" unique_id=1548923890]
+position = Vector2(-53, 35)
+
+[node name="CounterMarker2" type="Marker2D" parent="WorldYSort/CustomerSpawner/CounterPositionsParent" unique_id=1665718045]
+position = Vector2(-98, 35)
+
+[node name="CounterMarker3" type="Marker2D" parent="WorldYSort/CustomerSpawner/CounterPositionsParent" unique_id=922537437]
+position = Vector2(-5, 36)
+
+[node name="CounterMarker4" type="Marker2D" parent="WorldYSort/CustomerSpawner/CounterPositionsParent" unique_id=2025945167]
+position = Vector2(43, 35)
+
+[node name="CounterMarker5" type="Marker2D" parent="WorldYSort/CustomerSpawner/CounterPositionsParent" unique_id=498340080]
+position = Vector2(93, 36)
+
+[node name="StairsBottomMarker" type="Marker2D" parent="WorldYSort/CustomerSpawner" unique_id=1346504694]
+position = Vector2(-89, 235)
+
+[node name="RoomCenterMarker" type="Marker2D" parent="WorldYSort/CustomerSpawner" unique_id=683741727]
+position = Vector2(291, 238)
+
+[node name="BarTable" type="Node2D" parent="WorldYSort" unique_id=95310036]
+position = Vector2(399, 282)
+
+[node name="BarTable_Sprite2D" type="Sprite2D" parent="WorldYSort/BarTable" unique_id=834465169]
+light_mask = 3
+position = Vector2(1, -31)
+texture = ExtResource("2_dp3eg")
+
+[node name="PC_Prop" type="CanvasGroup" parent="WorldYSort/BarTable/BarTable_Sprite2D" unique_id=989432195]
+material = ExtResource("69_72le4")
+position = Vector2(102, -29)
+fit_margin = 2.0
+script = ExtResource("7_og1vs")
+
+[node name="PCSprite" type="Sprite2D" parent="WorldYSort/BarTable/BarTable_Sprite2D/PC_Prop" unique_id=119017108]
+texture = ExtResource("18_0ld40")
+
+[node name="TapTower" type="Node2D" parent="WorldYSort/BarTable/BarTable_Sprite2D" unique_id=1639847367]
+position = Vector2(31, -37)
+script = ExtResource("59_abmkx")
+
+[node name="ReceiptMachineHoverArea" type="Area2D" parent="WorldYSort/BarTable/BarTable_Sprite2D" unique_id=1649942093]
+position = Vector2(-96, -23)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldYSort/BarTable/BarTable_Sprite2D/ReceiptMachineHoverArea" unique_id=1999034065]
+position = Vector2(0, -7)
+shape = SubResource("RectangleShape2D_bjg73")
+
+[node name="OutlineGroup" type="CanvasGroup" parent="WorldYSort/BarTable/BarTable_Sprite2D/ReceiptMachineHoverArea" unique_id=1108497471]
+material = ExtResource("69_72le4")
+fit_margin = 2.0
+
+[node name="MachineBody" type="Polygon2D" parent="WorldYSort/BarTable/BarTable_Sprite2D/ReceiptMachineHoverArea/OutlineGroup" unique_id=102274119]
+color = Color(0.07, 0.07, 0.08, 1)
+polygon = PackedVector2Array(-7, -6, 7, -6, 7, 6, -7, 6)
+
+[node name="ReceiptStrip" type="Polygon2D" parent="WorldYSort/BarTable/BarTable_Sprite2D/ReceiptMachineHoverArea/OutlineGroup" unique_id=592415226]
+position = Vector2(0, -13)
+color = Color(0.92, 0.9, 0.82, 1)
+polygon = PackedVector2Array(-4, -7, 4, -7, 4, 4, 2, 7, 0, 4, -2, 7, -4, 4)
+
+[node name="MachineButton" type="Polygon2D" parent="WorldYSort/BarTable/BarTable_Sprite2D/ReceiptMachineHoverArea/OutlineGroup" unique_id=1293168157]
+position = Vector2(3, -2)
+color = Color(0.75, 0.2, 0.15, 1)
+polygon = PackedVector2Array(-1, -1, 2, -1, 2, 1, -1, 1)
+
+[node name="CustomerBookHoverArea" type="Area2D" parent="WorldYSort/BarTable/BarTable_Sprite2D" unique_id=221676537]
+position = Vector2(-68, -21)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldYSort/BarTable/BarTable_Sprite2D/CustomerBookHoverArea" unique_id=605101201]
+position = Vector2(0, -2)
+shape = SubResource("RectangleShape2D_68ujc")
+
+[node name="OutlineGroup" type="CanvasGroup" parent="WorldYSort/BarTable/BarTable_Sprite2D/CustomerBookHoverArea" unique_id=1145671822]
+material = ExtResource("69_72le4")
+fit_margin = 2.0
+
+[node name="Pages" type="Polygon2D" parent="WorldYSort/BarTable/BarTable_Sprite2D/CustomerBookHoverArea/OutlineGroup" unique_id=1665226341]
+color = Color(0.9098039, 0.8627451, 0.7529412, 1)
+polygon = PackedVector2Array(-9, -3, 9, -3, 9, 2, -9, 2)
+
+[node name="Cover" type="Polygon2D" parent="WorldYSort/BarTable/BarTable_Sprite2D/CustomerBookHoverArea/OutlineGroup" unique_id=1203407717]
+color = Color(0.4509804, 0.24313726, 0.22352941, 1)
+polygon = PackedVector2Array(-10, -6, 10, -6, 10, -2, -10, -2)
+
+[node name="Ribbon" type="Polygon2D" parent="WorldYSort/BarTable/BarTable_Sprite2D/CustomerBookHoverArea/OutlineGroup" unique_id=1131389917]
+color = Color(0.89411765, 0.23137255, 0.26666668, 1)
+polygon = PackedVector2Array(4, -2, 6, -2, 6, 5, 5, 4, 4, 5)
+
+[node name="BlackWeekSign" type="Node2D" parent="WorldYSort/BarTable" unique_id=703128944]
+script = ExtResource("87_ipwpp")
+season = 2
+
+[node name="SaleSignCounter" type="Sprite2D" parent="WorldYSort/BarTable/BlackWeekSign" unique_id=1000454857]
+position = Vector2(-81, -20)
+texture = ExtResource("97_lbclt")
+
+[node name="Text" type="Label" parent="WorldYSort/BarTable/BlackWeekSign/SaleSignCounter" unique_id=1049582473]
+offset_left = -23.0
+offset_top = -9.0
+offset_right = 23.0
+offset_bottom = 10.0
+theme = ExtResource("7_y6deb")
+theme_override_colors/font_color = Color(0.72, 0.08, 0.1, 1)
+theme_override_constants/outline_size = 0
+text = "ALE!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Bartender" parent="WorldYSort" unique_id=1865937119 instance=ExtResource("43_chjal")]
+position = Vector2(399, 167)
+rest_seconds_min = 5.0
+rest_seconds_max = 11.0
+
+[node name="ChalkboardHoverArea" type="Area2D" parent="WorldYSort" unique_id=1198858937]
+position = Vector2(306, 139)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldYSort/ChalkboardHoverArea" unique_id=1239359706]
+shape = SubResource("RectangleShape2D_o7ddy")
+
+[node name="OutlineGroup" type="CanvasGroup" parent="WorldYSort/ChalkboardHoverArea" unique_id=497345249]
+material = ExtResource("69_72le4")
+fit_margin = 2.0
+
+[node name="BoardFrame" type="Polygon2D" parent="WorldYSort/ChalkboardHoverArea/OutlineGroup" unique_id=1310630279]
+color = Color(0.35, 0.22, 0.13, 1)
+polygon = PackedVector2Array(-20, -14, 20, -14, 20, 14, -20, 14)
+
+[node name="BoardSurface" type="Polygon2D" parent="WorldYSort/ChalkboardHoverArea/OutlineGroup" unique_id=1613701525]
+color = Color(0.08, 0.16, 0.11, 1)
+polygon = PackedVector2Array(-17, -11, 17, -11, 17, 11, -17, 11)
+
+[node name="ChalkLine1" type="Polygon2D" parent="WorldYSort/ChalkboardHoverArea/OutlineGroup" unique_id=1614701542]
+position = Vector2(-2, -6)
+color = Color(0.92, 0.92, 0.88, 0.9)
+polygon = PackedVector2Array(-10, -1, 10, -1, 10, 1, -10, 1)
+
+[node name="ChalkLine2" type="Polygon2D" parent="WorldYSort/ChalkboardHoverArea/OutlineGroup" unique_id=1390976140]
+position = Vector2(-4, 0)
+color = Color(0.92, 0.92, 0.88, 0.9)
+polygon = PackedVector2Array(-8, -1, 8, -1, 8, 1, -8, 1)
+
+[node name="ChalkLine3" type="Polygon2D" parent="WorldYSort/ChalkboardHoverArea/OutlineGroup" unique_id=614603749]
+position = Vector2(-7, 6)
+color = Color(0.92, 0.92, 0.88, 0.9)
+polygon = PackedVector2Array(-6, -1, 6, -1, 6, 1, -6, 1)
+
+[node name="DirtyKegPile" type="Area2D" parent="WorldYSort" unique_id=2096720517]
+visible = false
+position = Vector2(152, 259)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldYSort/DirtyKegPile" unique_id=933718182]
+position = Vector2(-6, -47)
+shape = SubResource("RectangleShape2D_fluu8")
+
+[node name="OutlineGroup" type="CanvasGroup" parent="WorldYSort/DirtyKegPile" unique_id=797057235]
+material = ExtResource("69_72le4")
+fit_margin = 2.0
+
+[node name="DirtyKeg2" type="Sprite2D" parent="WorldYSort/DirtyKegPile/OutlineGroup" unique_id=1625886467]
+unique_name_in_owner = true
+texture_filter = 1
+position = Vector2(-22, 2)
+scale = Vector2(2, 2)
+texture = ExtResource("68_abmkx")
+centered = false
+offset = Vector2(-16, -32)
+
+[node name="DirtyKeg1" type="Sprite2D" parent="WorldYSort/DirtyKegPile/OutlineGroup" unique_id=777553892]
+unique_name_in_owner = true
+texture_filter = 1
+position = Vector2(0, 8)
+scale = Vector2(2, 2)
+texture = ExtResource("68_abmkx")
+centered = false
+offset = Vector2(-16, -32)
+
+[node name="DirtyKeg3" type="Sprite2D" parent="WorldYSort/DirtyKegPile/OutlineGroup" unique_id=1445407608]
+unique_name_in_owner = true
+texture_filter = 1
+position = Vector2(-11, -52)
+scale = Vector2(2, 2)
+texture = ExtResource("68_abmkx")
+centered = false
+offset = Vector2(-16, -32)
+
+[node name="DirtyKeg4" type="Sprite2D" parent="WorldYSort/DirtyKegPile/OutlineGroup" unique_id=492943428]
+unique_name_in_owner = true
+texture_filter = 1
+position = Vector2(-18, -4)
+rotation = 1.5707964
+scale = Vector2(2, 2)
+texture = ExtResource("68_abmkx")
+
+[node name="KegRow" type="Node2D" parent="WorldYSort" unique_id=2100241702]
+position = Vector2(-16, 7)
+script = ExtResource("68_05g3k")
+
+[node name="Keg4" parent="WorldYSort/KegRow" unique_id=79533705 instance=ExtResource("47_1v6qk")]
+visible = false
+position = Vector2(476, 238)
+
+[node name="Keg5" parent="WorldYSort/KegRow" unique_id=886183170 instance=ExtResource("47_1v6qk")]
+visible = false
+position = Vector2(507, 238)
+
+[node name="Keg6" parent="WorldYSort/KegRow" unique_id=730942802 instance=ExtResource("47_1v6qk")]
+visible = false
+position = Vector2(538, 238)
+
+[node name="Keg3" parent="WorldYSort/KegRow" unique_id=111073066 instance=ExtResource("47_1v6qk")]
+position = Vector2(461, 250)
+
+[node name="Keg2" parent="WorldYSort/KegRow" unique_id=414387128 instance=ExtResource("47_1v6qk")]
+position = Vector2(491, 250)
+
+[node name="Keg" parent="WorldYSort/KegRow" unique_id=1939711803 instance=ExtResource("47_1v6qk")]
+position = Vector2(523, 250)
+
+[node name="BlackWeekWallSign" type="Node2D" parent="WorldYSort" unique_id=695346382]
+position = Vector2(478, 182)
+script = ExtResource("87_ipwpp")
+season = 2
+
+[node name="SaleSignWall" type="Sprite2D" parent="WorldYSort/BlackWeekWallSign" unique_id=280009479]
+position = Vector2(0, -10)
+texture = ExtResource("97_lbclt")
+
+[node name="Text" type="Label" parent="WorldYSort/BlackWeekWallSign/SaleSignWall" unique_id=867545795]
+offset_left = -23.0
+offset_top = -9.0
+offset_right = 23.0
+offset_bottom = 10.0
+theme = ExtResource("7_y6deb")
+theme_override_colors/font_color = Color(0.72, 0.08, 0.1, 1)
+theme_override_constants/outline_size = 0
+text = "TARJOUS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="WarehouseWallOverlay" type="Polygon2D" parent="." unique_id=1022889779]
+z_index = 2
+texture = ExtResource("2_85g3d")
+polygon = PackedVector2Array(608.31616, 187.20113, 607.8554, 83.399124, 640.1552, 69.669464, 640.0942, 355.0114, 608.0938, 326.5385)
+uv = PackedVector2Array(563.68976, 177.44363, 565.8308, 116.48197, 609.8308, 96.481964, 609.8308, 322.482, 509.8308, 336.482, 492.8308, 291.482, 564.8308, 283.482)
+
+[node name="HalloweenDecor" type="Node2D" parent="." unique_id=1677587631]
+script = ExtResource("87_ipwpp")
+
+[node name="PumpkinStairs" type="Sprite2D" parent="HalloweenDecor" unique_id=1454258641]
+light_mask = 3
+position = Vector2(125, 290)
+texture = ExtResource("88_y168j")
+
+[node name="GlowStairs" type="PointLight2D" parent="HalloweenDecor/PumpkinStairs" unique_id=298845968]
+color = Color(1, 0.5411765, 0.16470589, 1)
+energy = 1.2
+range_item_cull_mask = 2
+texture = ExtResource("9_nylc4")
+texture_scale = 0.7
+script = ExtResource("8_5c2vg")
+flicker_amount = 0.3
+flicker_speed = 5.0
+dip_chance_per_second = 0.05
+
+[node name="PumpkinDoor" type="Sprite2D" parent="HalloweenDecor" unique_id=1765319124]
+light_mask = 3
+position = Vector2(545, 292)
+texture = ExtResource("88_y168j")
+
+[node name="GlowDoor" type="PointLight2D" parent="HalloweenDecor/PumpkinDoor" unique_id=2127749963]
+color = Color(1, 0.5411765, 0.16470589, 1)
+energy = 1.2
+range_item_cull_mask = 2
+texture = ExtResource("9_nylc4")
+texture_scale = 0.7
+script = ExtResource("8_5c2vg")
+flicker_amount = 0.3
+flicker_speed = 4.3
+dip_chance_per_second = 0.05
+
+[node name="PumpkinCounter" type="Sprite2D" parent="HalloweenDecor" unique_id=33659483]
+light_mask = 3
+position = Vector2(358, 227)
+texture = ExtResource("89_6vtdq")
+
+[node name="GlowCounter" type="PointLight2D" parent="HalloweenDecor/PumpkinCounter" unique_id=671439722]
+color = Color(1, 0.5411765, 0.16470589, 1)
+energy = 0.9
+range_item_cull_mask = 2
+texture = ExtResource("9_nylc4")
+texture_scale = 0.4
+script = ExtResource("8_5c2vg")
+flicker_amount = 0.3
+flicker_speed = 5.7
+dip_chance_per_second = 0.05
+
+[node name="BarrelSkeleton" type="AnimatedSprite2D" parent="HalloweenDecor" unique_id=1904502683]
+light_mask = 3
+texture_filter = 1
+position = Vector2(71, 244)
+sprite_frames = ExtResource("90_6vtdq")
+animation = &"peek"
+centered = false
+script = ExtResource("91_uvf16")
+
+[node name="EyeGlow" type="PointLight2D" parent="HalloweenDecor/BarrelSkeleton" unique_id=464212695]
+position = Vector2(20, 18)
+color = Color(1, 0.6901961, 0.4, 1)
+energy = 1.3
+range_item_cull_mask = 2
+texture = ExtResource("9_nylc4")
+texture_scale = 0.35
+
+[node name="CornerSkeleton" type="AnimatedSprite2D" parent="HalloweenDecor" unique_id=717337853]
+light_mask = 3
+texture_filter = 1
+position = Vector2(590, 262)
+sprite_frames = ExtResource("92_1uuce")
+animation = &"peek"
+centered = false
+script = ExtResource("91_uvf16")
+min_interval_seconds = 30.0
+max_interval_seconds = 60.0
+
+[node name="EyeGlow" type="PointLight2D" parent="HalloweenDecor/CornerSkeleton" unique_id=1595111513]
+position = Vector2(12, 14)
+color = Color(1, 0.6901961, 0.4, 1)
+energy = 1.3
+range_item_cull_mask = 2
+texture = ExtResource("9_nylc4")
+texture_scale = 0.35
+
+[node name="TankSkeleton" type="AnimatedSprite2D" parent="HalloweenDecor" unique_id=454365422]
+light_mask = 3
+texture_filter = 1
+position = Vector2(200, 156)
+sprite_frames = ExtResource("93_g70wa")
+animation = &"peek"
+centered = false
+script = ExtResource("91_uvf16")
+min_interval_seconds = 30.0
+max_interval_seconds = 60.0
+
+[node name="EyeGlow" type="PointLight2D" parent="HalloweenDecor/TankSkeleton" unique_id=597112557]
+position = Vector2(7, 6)
+color = Color(1, 0.6901961, 0.4, 1)
+energy = 0.9
+range_item_cull_mask = 2
+texture = ExtResource("9_nylc4")
+texture_scale = 0.2
+
+[node name="Storm" type="Node2D" parent="HalloweenDecor" unique_id=2078277473]
+script = ExtResource("94_13y22")
+door_lamp_path = NodePath("../../Lights/Light_MainDoor")
+near_thunder = ExtResource("95_lbclt")
+far_thunder = ExtResource("96_5ay3c")
+
+[node name="Flash" type="PointLight2D" parent="HalloweenDecor/Storm" unique_id=1269555137]
+position = Vector2(27, 80)
+color = Color(0.7529412, 0.84705883, 1, 1)
+energy = 0.0
+texture = ExtResource("7_4xk6q")
+
+[node name="BlackWeekDecor" type="Node2D" parent="." unique_id=902037227]
+script = ExtResource("87_ipwpp")
+season = 2
+
+[node name="NeonSign" type="Label" parent="BlackWeekDecor" unique_id=1950120432]
+auto_translate_mode = 2
+light_mask = 3
+offset_left = 150.0
+offset_top = 70.0
+offset_right = 270.0
+offset_bottom = 84.0
+theme = ExtResource("7_y6deb")
+theme_override_colors/font_color = Color(2.6, 0.8, 2, 1)
+theme_override_colors/font_outline_color = Color(0.7, 0.15, 0.55, 1)
+theme_override_constants/outline_size = 2
+text = "BLACK MONTH"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="NeonGlow" type="PointLight2D" parent="BlackWeekDecor/NeonSign" unique_id=2043512233]
+position = Vector2(60, 7)
+color = Color(1, 0.35, 0.75, 1)
+range_item_cull_mask = 2
+texture = ExtResource("9_nylc4")
+texture_scale = 0.8
+script = ExtResource("8_5c2vg")
+
+[node name="CyberWeekDecor" type="Node2D" parent="." unique_id=1481517306]
+script = ExtResource("87_ipwpp")
+season = 3
+
+[node name="CyberNeonSign" type="Label" parent="CyberWeekDecor" unique_id=1106318851]
+light_mask = 3
+offset_left = 328.0
+offset_top = 100.0
+offset_right = 424.0
+offset_bottom = 114.0
+theme = ExtResource("7_y6deb")
+theme_override_colors/font_color = Color(0.6, 2.4, 2.6, 1)
+theme_override_colors/font_outline_color = Color(0.1, 0.45, 0.6, 1)
+theme_override_constants/outline_size = 2
+text = "KYBERVIIKKO"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="NeonGlow" type="PointLight2D" parent="CyberWeekDecor/CyberNeonSign" unique_id=605459832]
+position = Vector2(48, 7)
+color = Color(0.3, 0.9, 1, 1)
+range_item_cull_mask = 2
+texture = ExtResource("9_nylc4")
+texture_scale = 0.8
+script = ExtResource("8_5c2vg")
+
+[node name="MenuVisitDirector" type="Node" parent="." node_paths=PackedStringArray("entrance", "stairs_bottom", "room_center", "counter_spot", "bartender")]
+script = ExtResource("menu_visits")
+entrance = NodePath("../WorldYSort/CustomerSpawner")
+stairs_bottom = NodePath("../WorldYSort/CustomerSpawner/StairsBottomMarker")
+room_center = NodePath("../WorldYSort/CustomerSpawner/RoomCenterMarker")
+counter_spot = NodePath("../WorldYSort/CustomerSpawner/CounterPositionsParent/CounterMarker1")
+bartender = NodePath("../WorldYSort/Bartender")

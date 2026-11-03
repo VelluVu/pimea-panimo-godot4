@@ -87,6 +87,7 @@ func _ready() -> void:
 	registry.dev_help_format = DEV_HELP_FORMAT
 	# Registration order is the order `help` lists commands in: player commands first.
 	var in_game: bool = not _console.owner is MainMenu
+	_console.hides_when_collapsed = not in_game
 	if in_game:
 		registry.add_command_set(PlayerCommands.new(_console.log_line))
 		registry.register("loki", _cmd_loki, LOKI_USAGE_TEXT)

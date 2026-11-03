@@ -33,6 +33,9 @@ var cancel_action: StringName = &""
 ## then shows in every scene for the rest of the session.
 var hidden_until_opened: bool = false
 static var _opened_this_session: bool = false
+## Set by the wiring: collapsed, the console hides instead of keeping its header in the
+## corner (a main menu, where the header covers the menu). Its key brings it back.
+var hides_when_collapsed: bool = false
 
 var _is_collapsed: bool = true
 var _expanded_size: Vector2
@@ -71,7 +74,7 @@ func _ready() -> void:
 
 	_apply_focus_style(false)
 	_apply_collapsed_state()
-	if hidden_until_opened and not _opened_this_session:
+	if (hidden_until_opened and not _opened_this_session) or hides_when_collapsed:
 		hide()
 
 
@@ -200,6 +203,8 @@ func _open_and_focus_input() -> void:
 func _on_toggle_pressed() -> void:
 	_is_collapsed = not _is_collapsed
 	_apply_collapsed_state()
+	if _is_collapsed and hides_when_collapsed:
+		hide()
 
 
 ## Collapsed it shrinks to just its header, so it covers as little of its corner as possible.

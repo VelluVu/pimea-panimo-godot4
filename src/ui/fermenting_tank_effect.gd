@@ -42,8 +42,13 @@ func _process(delta : float) -> void:
 
 func _on_fermentation_changed() -> void:
 	var brewery : Brewery = BrewEngine.current_brewery
-	visible = brewery != null and not brewery.inventory.fermenting.is_empty()
-	set_process(visible)
+	set_fermenting(brewery != null and not brewery.inventory.fermenting.is_empty())
+
+
+## The main menu shows its saved run's brew with this; the cellar follows its signals.
+func set_fermenting(on : bool) -> void:
+	visible = on
+	set_process(on)
 
 
 func _draw() -> void:

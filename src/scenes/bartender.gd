@@ -15,6 +15,11 @@ const IDLE_WEIGHTS : Array[float] = [3.0, 2.0, 1.0]
 ## Found by group: there is only one.
 const BARTENDER_GROUP : StringName = &"bartender"
 
+## A still pause between idles, picked in this range; 0 plays them back to back. The main
+## menu's closed cellar rests him, so he does not fidget behind the buttons.
+@export var rest_seconds_min : float = 0.0
+@export var rest_seconds_max : float = 0.0
+
 @onready var animated_sprite : AnimatedSprite2D = $AnimatedSprite2D
 ## His hands, where the counter glass starts its slide.
 @onready var serve_marker : Marker2D = $ServeMarker
@@ -36,6 +41,7 @@ var _home_x : float = 0.0
 var _slide : Tween
 ## Pours waiting for the running one, each [speed_scale, ebc, tap_offset].
 var _pour_queue : Array[Array] = []
+var _rest_timer : Timer
 
 
 func _ready() -> void:
@@ -48,6 +54,10 @@ func _ready() -> void:
 		_serve_durations.append(_drawn_frames.get_frame_duration(ANIM_SERVE_BEER, i))
 	_home_x = position.x
 	animated_sprite.animation_finished.connect(_on_animation_finished)
+	_rest_timer = Timer.new()
+	_rest_timer.one_shot = true
+	_rest_timer.timeout.connect(_on_rest_over)
+	add_child(_rest_timer)
 	animated_sprite.play(ANIM_IDLE)
 
 
@@ -112,7 +122,19 @@ func _on_animation_finished() -> void:
 			return
 		animated_sprite.speed_scale = 1.0
 		_slide_to(_home_x)
-	_play_random_idle()
+	if rest_seconds_max <= 0.0:
+		_play_random_idle()
+		return
+	# Holds the idle's first frame, his plain standing pose.
+	animated_sprite.play(ANIM_IDLE)
+	animated_sprite.stop()
+	_rest_timer.start(randf_range(rest_seconds_min, rest_seconds_max))
+
+
+## A pour that started during the rest keeps going.
+func _on_rest_over() -> void:
+	if not _is_pouring():
+		_play_random_idle()
 
 
 func _slide_to(x : float) -> void:

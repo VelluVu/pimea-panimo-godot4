@@ -53,6 +53,12 @@ func load_game() -> bool:
 	return true
 
 
+## The saved run for the main menu to look at, without making it the current run; null
+## without a readable save.
+func peek() -> Brewery:
+	return read() as Brewery if has_save() else null
+
+
 func _migrate(resource: Resource, from_version: int) -> void:
 	var brewery := resource as Brewery
 	if brewery == null:

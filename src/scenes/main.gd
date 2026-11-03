@@ -19,14 +19,8 @@ func _ready() -> void:
 		_on_brewery_state_changed(BrewEngine.current_brewery)
 
 
-## A tap per keg owned; a keg behind the counter and a coloured handle per batch on serve.
 func _on_brewery_state_changed(brewery: Brewery) -> void:
-	_tap_batches = brewery.inventory.batches_on_serve().slice(0, TapLayout.MAX_TAPS)
-	var colors: Array[Color] = []
-	for batch: BrewBatch in _tap_batches:
-		colors.append(BeerColor.from_ebc(batch.final_ebc))
-	tap_tower.set_taps(brewery.inventory.total_kegs(), colors)
-	keg_row.show_kegs(_tap_batches)
+	_tap_batches = BarTaps.show(brewery, tap_tower, keg_row)
 
 
 ## The bartender pours under the sold batch's tap; an unknown batch pours where he stands.

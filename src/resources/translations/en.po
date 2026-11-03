@@ -6481,6 +6481,18 @@ msgstr "Pimeä Panimo"
 msgid "Takaisin"
 msgstr "Back"
 
+#: src/scenes/ui/main_menu.gd
+msgid "Uusi peli"
+msgstr "New Game"
+
+#: src/scenes/ui/main_menu.gd
+msgid "Uusi peli korvaa tallennetun pelin."
+msgstr "A new game replaces your saved game."
+
+#: src/scenes/ui/olutoppi_window.gd
+msgid "Baarityöskentely"
+msgstr "Bar work"
+
 #: src/scenes/ui/olutoppi_window.gd
 msgid "Maine: %d"
 msgstr "Renown: %d"
@@ -6489,17 +6501,17 @@ msgstr "Renown: %d"
 msgid "Maine: %d. Kykyjä voi ostaa koko pelissä."
 msgstr "Renown: %d. Talents can be bought in the full game."
 
-#: src/scenes/ui/olutoppi_window.tscn
-msgid "Baarityöskentely"
-msgstr "Bar work"
-
-#: src/scenes/ui/olutoppi_window.tscn
+#: src/scenes/ui/olutoppi_window.gd
 msgid "Markkinointi"
 msgstr "Marketing"
 
-#: src/scenes/ui/olutoppi_window.tscn
+#: src/scenes/ui/olutoppi_window.gd
 msgid "Oluenpanotaito"
 msgstr "Brewing skill"
+
+#: src/scenes/ui/olutoppi_window.gd
+msgid "Valitse kyky, niin näet sen tiedot."
+msgstr "Pick a talent to see its details."
 
 #: src/scenes/ui/online_score_panel.gd
 msgid "Kirjoita ensin nimimerkki."
@@ -8268,6 +8280,22 @@ msgstr "perks %+d"
 #: src/ui/risk_text.gd
 msgid "maine -%d"
 msgstr "fame -%d"
+
+#: src/ui/save_summary_text.gd
+msgid "Päivä %d"
+msgstr "Day %d"
+
+#: src/ui/season_text.gd
+msgid "%s alkoi! Yläpalkin %s kertoo, mitä se tuo."
+msgstr "%s has begun! The %s in the top bar tells what it brings."
+
+#: src/ui/season_text.gd
+msgid "Vielä %d päivää."
+msgstr "%d days left."
+
+#: src/ui/season_text.gd
+msgid "Viimeinen päivä."
+msgstr "Last day."
 
 #: src/ui/special_event_text.gd
 msgid "%+d LVV-riskiä"

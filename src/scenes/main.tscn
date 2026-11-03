@@ -103,6 +103,7 @@
 [ext_resource type="PackedScene" path="res://src/scenes/ui/game_end_window.tscn" id="x_gameendwindow"]
 [ext_resource type="PackedScene" path="res://src/scenes/ui/lvv_raid_window.tscn" id="x_lvvraidwindow"]
 [ext_resource type="PackedScene" uid="uid://dfxsisxcex8tj" path="res://src/scenes/ui/recipe_library_window.tscn" id="x_recipelibrarywindow"]
+[ext_resource type="Script" uid="uid://dldflwygsvloj" path="res://src/ui/season_chip.gd" id="x_seasonchip"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_yf5fn"]
 blend_mode = 1
@@ -277,6 +278,28 @@ z_index = 2
 material = SubResource("CanvasItemMaterial_efres")
 script = ExtResource("13_efres")
 
+[node name="WallClock" type="TextureRect" parent="." unique_id=586740352]
+light_mask = 3
+offset_left = 334.0
+offset_top = 72.0
+offset_right = 366.0
+offset_bottom = 104.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+theme = ExtResource("7_y6deb")
+texture = ExtResource("10_jscy8")
+stretch_mode = 2
+script = ExtResource("5_trceg")
+
+[node name="ClockHand" type="Control" parent="WallClock" unique_id=83555803]
+light_mask = 3
+anchors_preset = 0
+offset_right = 32.0
+offset_bottom = 32.0
+mouse_filter = 2
+script = ExtResource("21_dy065")
+
 [node name="Lights" type="Node2D" parent="." unique_id=88800001]
 position = Vector2(0, -1)
 
@@ -440,7 +463,7 @@ anchor_bottom = 0.094444446
 grow_horizontal = 2
 mouse_filter = 2
 
-[node name="TopPanel_Resources" type="HBoxContainer" parent="GUI_CanvasLayer/GUI" unique_id=1849355740]
+[node name="TopPanel_Resources" type="HBoxContainer" parent="GUI_CanvasLayer/GUI" unique_id=1849355740 node_paths=PackedStringArray("clock_ui")]
 visible = false
 layout_mode = 1
 anchors_preset = -1
@@ -455,6 +478,7 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_constants/separation = 10
 script = ExtResource("2_tipki")
+clock_ui = NodePath("../../../WallClock")
 metadata/_edit_use_anchors_ = true
 
 [node name="MoneyLabel" type="Label" parent="GUI_CanvasLayer/GUI/TopPanel_Resources" unique_id=317223735]
@@ -501,33 +525,26 @@ layout_mode = 2
 size_flags_horizontal = 4
 text = "päivä: 1"
 
-[node name="ClockUITextureRect" type="TextureRect" parent="GUI_CanvasLayer/GUI/TopPanel_Resources" unique_id=586740352]
+[node name="SeasonChip" type="Label" parent="GUI_CanvasLayer/GUI/TopPanel_Resources" unique_id=1569289282]
 layout_mode = 2
 size_flags_horizontal = 4
-size_flags_vertical = 4
-mouse_filter = 2
-texture = ExtResource("10_jscy8")
-stretch_mode = 2
-script = ExtResource("5_trceg")
-
-[node name="ClockHand" type="Control" parent="GUI_CanvasLayer/GUI/TopPanel_Resources/ClockUITextureRect" unique_id=83555803]
-anchors_preset = 0
-offset_right = 32.0
-offset_bottom = 32.0
-mouse_filter = 2
-script = ExtResource("21_dy065")
+script = ExtResource("x_seasonchip")
 
 [node name="GameSpeedButton" type="Button" parent="GUI_CanvasLayer/GUI/TopPanel_Resources" unique_id=1433339387]
-custom_minimum_size = Vector2(24, 0)
+custom_minimum_size = Vector2(24, 22)
 layout_mode = 2
 size_flags_horizontal = 8
+size_flags_vertical = 4
 text = "1x"
 script = ExtResource("17_05g3k")
 
 [node name="CloseDayButton" type="Button" parent="GUI_CanvasLayer/GUI/TopPanel_Resources" unique_id=1208766186]
+custom_minimum_size = Vector2(0, 22)
 layout_mode = 2
 size_flags_horizontal = 8
+size_flags_vertical = 4
 tooltip_text = "Häädä asiakkaat ja aloita uusi päivä"
+theme_type_variation = &"DangerButton"
 text = "Sulje ovet"
 
 [node name="Right_WarehouseView" type="VBoxContainer" parent="GUI_CanvasLayer/GUI" unique_id=1128246563]
@@ -789,6 +806,7 @@ custom_maximum_size = Vector2(-1, 45)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
+theme_type_variation = &"HeaderPanel"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="GUI_CanvasLayer/GUI/BrewPreparationPanel/VBoxContainer/HeaderRow/CurrentRecipeBar" unique_id=50009364]
 layout_mode = 1
@@ -809,6 +827,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
 mouse_filter = 0
+theme_type_variation = &"HeaderLabel"
 theme_override_font_sizes/font_size = 16
 text = "Resepti:"
 horizontal_alignment = 1
