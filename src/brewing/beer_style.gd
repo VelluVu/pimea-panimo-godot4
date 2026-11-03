@@ -123,6 +123,10 @@ func has_preferred_hop_profile(profile : HopData.FlavorProfile) -> bool:
 @export var profit_margin_multiplier: float = 1.0
 ## Over 0, the hand-set list price instead of cost plus margin (StylePricing).
 @export var fixed_price_per_bottle: float = 0.0
+## A seasonal style stays brewable all year but sells best in its season: there it fetches
+## fixed_price_per_bottle, outside it this lower price (SeasonalPrice). 0 = no season price.
+@export var price_season: SeasonRules.Season = SeasonRules.Season.NONE
+@export var off_season_price_per_bottle: float = 0.0
 
 @export_group("EBC (Väri) Rajat")
 @export var min_ebc: int = 0

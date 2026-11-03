@@ -259,7 +259,7 @@ func meets_strict_requirements(beer_style: BeerStyle, abv: float = -1.0) -> bool
 		return false
 	if max_required_abv >= 0.0 and abv > max_required_abv:
 		return false
-	if max_required_price >= 0.0 and beer_style.fixed_price_per_bottle > max_required_price:
+	if max_required_price >= 0.0 and SeasonalPrice.list_price(beer_style, SeasonRules.now()) > max_required_price:
 		return false
 	if not accepted_styles.is_empty() and not accepted_styles.has(beer_style.style):
 		return false

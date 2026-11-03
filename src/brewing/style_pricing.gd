@@ -73,15 +73,19 @@ func _cost_at(beer_style : BeerStyle, price_multiplier : float) -> float:
 
 ## Cost plus margin, unless BeerStyle.fixed_price_per_bottle is set: then that price
 ## wins and the profit is whatever is left after cost.
+## A seasonal style's price follows the calendar (SeasonalPrice), so the cache is per season.
 func price_breakdown(beer_style : BeerStyle) -> SaleBreakdown:
-	if _breakdown_cache.has(beer_style.style):
-		return _breakdown_cache[beer_style.style]
+	var season : SeasonRules.Season = SeasonRules.now()
+	var key := Vector2i(beer_style.style, season)
+	if _breakdown_cache.has(key):
+		return _breakdown_cache[key]
 
 	var breakdown := calculate_price_breakdown(beer_style.style_name, beer_style.abv, cost_per_bottle(beer_style), beer_style.profit_margin_multiplier)
-	if beer_style.fixed_price_per_bottle > 0.0:
-		breakdown.price_per_bottle = beer_style.fixed_price_per_bottle
+	var list_price : float = SeasonalPrice.list_price(beer_style, season)
+	if list_price > 0.0:
+		breakdown.price_per_bottle = list_price
 		breakdown.profit_per_bottle = breakdown.price_per_bottle - breakdown.raw_cost_per_bottle
-	_breakdown_cache[beer_style.style] = breakdown
+	_breakdown_cache[key] = breakdown
 	return breakdown
 
 
