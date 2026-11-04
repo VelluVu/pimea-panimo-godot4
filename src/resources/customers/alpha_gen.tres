@@ -1,7 +1,8 @@
-[gd_resource type="Resource" script_class="CustomerData" format=3]
+[gd_resource type="Resource" script_class="CustomerData" format=3 uid="uid://c1ahdohx6uakg"]
 
 [ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_alpha_gen"]
-[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/alpha_gen_anim.tres" id="2_sprite"]
+[ext_resource type="Script" uid="uid://dq66tbectyal5" path="res://src/customers/taste_rule.gd" id="1_ieo58"]
+[ext_resource type="SpriteFrames" uid="uid://jmn6kju3suob" path="res://src/resources/sprite_frames/alpha_gen_anim.tres" id="2_sprite"]
 
 [resource]
 script = ExtResource("1_alpha_gen")
@@ -17,6 +18,8 @@ randomize_skin = false
 randomize_hair = false
 randomize_clothes = false
 randomize_shoes = false
+hand_offsets = Array[Vector2]([Vector2(-13, -31), Vector2(0, -31), Vector2(-13, -35), Vector2(-17, -38)])
+voice_pitch = 1.05
 dialogue_intro = "Yo, onks teil alkoholitonta lageria? En oo mikään NPC joka juo mitä sattuu, tarviin aurapointsit kasaan."
 dialogue_success = "Bro tää on ihan grimace shake -tasoista, aurapointsit nyt max, tää kuppila on goated fr fr."
 dialogue_fallback = "Ihan okei, ei nyt mitään 67-tasoa mut ei tää chopattukaan ollu."
@@ -32,5 +35,4 @@ rep_secondary_style = 1
 risk_primary_style = -2
 risk_secondary_style = -1
 required_discovered_style = 21
-voice_pitch = 1.05
 metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

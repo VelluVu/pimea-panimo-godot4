@@ -1,14 +1,14 @@
-[gd_resource type="Resource" script_class="CustomerData" format=3]
+[gd_resource type="Resource" script_class="CustomerData" format=3 uid="uid://cpv7lw6dubjua"]
 
 [ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_data"]
-[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/joulupukki_anim.tres" id="2_sprite"]
+[ext_resource type="Script" uid="uid://dq66tbectyal5" path="res://src/customers/taste_rule.gd" id="1_pk6bu"]
+[ext_resource type="SpriteFrames" uid="uid://c6mlau2fvhqml" path="res://src/resources/sprite_frames/joulupukki_anim.tres" id="2_sprite"]
 
 [resource]
 script = ExtResource("1_data")
 customer_name = "Joulupukki"
 title = "Joulupukki"
 title_is_name = true
-min_quality = 0.5
 budget_multiplier = 2.0
 primary_style = 32
 secondary_style = 34
@@ -18,6 +18,7 @@ randomize_skin = false
 randomize_hair = false
 randomize_clothes = false
 randomize_shoes = false
+hand_offsets = Array[Vector2]([Vector2(-28, -42), Vector2(-29, -46), Vector2(-29, -42), Vector2(-29, -46)])
 voice_pitch = 0.6
 dialogue_intro = "Hohoo! Tontut ovat kertoneet sinusta kaikenlaista. Ihan kaikenlaista."
 dialogue_success = "Pukkibockia! Merkitsen sinut kilttien listaan. Toistaiseksi."
@@ -31,9 +32,9 @@ tip_base_chance = 0.6
 appearance_weight = 0.0
 busy_season = 4
 busy_season_weight = 1.5
+takes_for_free = true
+korvatunturi_role = 2
 min_bottles_per_visit = 2
 max_bottles_per_visit = 4
 dialogue_sale_toast = "Joulupukki kävi kellarissa. Säkissä kilisevät nyt pullot, kassassa ei mikään."
-takes_for_free = true
-korvatunturi_role = 2
 metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

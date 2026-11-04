@@ -20,6 +20,7 @@ favourite_rules = Array[ExtResource("taste_script")]([ExtResource("taste_aromihu
 last_resort_rules = Array[ExtResource("taste_script")]([ExtResource("taste_laatuoluet")])
 sprite_frames = ExtResource("2_sprite")
 clothes_base_color = Color(0.117647, 0.415686, 0.235294, 1)
+hand_offsets = Array[Vector2]([Vector2(-13, -46), Vector2(-3, -48), Vector2(-14, -45), Vector2(-18, -53)])
 voice_pitch = 1.365
 dialogue_intro = "Onko teillä jotain käsityöläismäistä? Ei mitään massatuotantoa."
 dialogue_success = "Vihdoinkin joku, joka ymmärtää humalaprofiileja."

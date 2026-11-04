@@ -17,6 +17,7 @@ shoes_base_color = Color(0.039216, 0.039216, 0.047059, 1)
 randomize_hair = false
 randomize_clothes = false
 randomize_shoes = false
+hand_offsets = Array[Vector2]([Vector2(-17, -49), Vector2(-4, -49), Vector2(-17, -49), Vector2(-16, -59)])
 voice_pitch = 0.95
 dialogue_intro = "Iltaa. Kuulin, että täältä saa jotain laittomasti."
 dialogue_success = "Kiinnostavaa. Kirjoitan tämän ylös."

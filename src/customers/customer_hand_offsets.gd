@@ -141,6 +141,14 @@ static func position_for(title: String, frame: int, own_offsets: Array[Vector2] 
 	return offsets[frame % offsets.size()]
 
 
+## True when the glass is mirrored on this walk_towards frame; `flipped_frames` lists them
+## within the table, so the index wraps like position_for() with `table_size` frames.
+static func is_flipped(frame: int, flipped_frames: Array[int], table_size: int) -> bool:
+	if flipped_frames.is_empty() or table_size <= 0:
+		return false
+	return flipped_frames.has(frame % table_size)
+
+
 ## The part of the held glass that shows, in glass texels; an empty Rect2 shows all of it.
 static func glass_region_for(title: String) -> Rect2:
 	return BAGGED_GLASS_REGION if title == TARJOUSHAUKKA_TITLE else Rect2()

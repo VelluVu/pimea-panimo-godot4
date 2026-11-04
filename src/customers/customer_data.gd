@@ -62,6 +62,9 @@ enum KorvatunturiRole { NONE, TONTTU, JOULUPUKKI }
 ## The held glass per walk_towards frame, Customer-local; empty = CustomerHandOffsets' table
 ## for the title. For variants of one title drawn at different sizes (the tontut).
 @export var hand_offsets: Array[Vector2] = []
+## walk_towards frames whose held glass is mirrored, handle out, for a hand that swings
+## across the body (the agents' and Alfagen's last frame).
+@export var hand_flipped_frames: Array[int] = []
 ## Speech bubbles sit this much lower, for customers shorter than the usual body (the tontut).
 @export var speech_drop_px: float = 0.0
 

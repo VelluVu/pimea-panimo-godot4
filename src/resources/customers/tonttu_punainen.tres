@@ -1,7 +1,8 @@
-[gd_resource type="Resource" script_class="CustomerData" format=3]
+[gd_resource type="Resource" script_class="CustomerData" format=3 uid="uid://c4lxk6rjiqk5i"]
 
 [ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_data"]
-[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/tonttu_punainen_anim.tres" id="2_sprite"]
+[ext_resource type="Script" uid="uid://dq66tbectyal5" path="res://src/customers/taste_rule.gd" id="1_oiur8"]
+[ext_resource type="SpriteFrames" uid="uid://71qbhuanbi6k" path="res://src/resources/sprite_frames/tonttu_punainen_anim.tres" id="2_sprite"]
 
 [resource]
 script = ExtResource("1_data")
@@ -11,14 +12,13 @@ first_names = Array[String](["Tuikku", "Hipsu", "Nuutti", "Tiltu", "Vilttitossu"
 min_quality = 0.3
 budget_multiplier = 0.7
 primary_style = 33
-secondary_style = 0
 also_likes = Array[int]([23])
 sprite_frames = ExtResource("2_sprite")
 randomize_skin = false
 randomize_hair = false
 randomize_clothes = false
 randomize_shoes = false
-hand_offsets = Array[Vector2]([Vector2(22, -14), Vector2(22, -22), Vector2(22, -26), Vector2(22, -22)])
+hand_offsets = Array[Vector2]([Vector2(23, -20), Vector2(23, -25), Vector2(23, -29), Vector2(23, -25)])
 speech_drop_px = 32.0
 voice_pitch = 2.0
 dialogue_intro = "Psst. Tonttu tuli tarkastamaan. Onko puuroa, vai pitääkö tontun kirjoittaa?"
@@ -38,8 +38,8 @@ risk_wrong_style = 0
 appearance_weight = 0.0
 busy_season = 4
 busy_season_weight = 0.8
-no_match_risk_penalty = 0
-dialogue_sale_toast = "Tonttu otti pullon eikä maksanut. Kukaan ei uskaltanut sanoa mitään."
 takes_for_free = true
 korvatunturi_role = 1
+no_match_risk_penalty = 0
+dialogue_sale_toast = "Tonttu otti pullon eikä maksanut. Kukaan ei uskaltanut sanoa mitään."
 metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

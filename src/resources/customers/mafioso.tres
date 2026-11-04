@@ -19,6 +19,7 @@ randomize_skin = false
 randomize_hair = false
 randomize_clothes = false
 randomize_shoes = false
+hand_offsets = Array[Vector2]([Vector2(-18, -48), Vector2(-2, -53), Vector2(-17, -49), Vector2(-26, -59)])
 voice_pitch = 0.8
 dialogue_intro = "Don on kiinnostunut liiketoiminnastanne. Näytä, mitä teillä on."
 dialogue_success = "Don pitää tästä. Homma hoidossa, ei tarvii huolehtia tarkastajista hetkeen."

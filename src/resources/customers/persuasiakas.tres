@@ -1,9 +1,9 @@
-[gd_resource type="Resource" script_class="CustomerData" format=3]
+[gd_resource type="Resource" script_class="CustomerData" format=3 uid="uid://baw85rpdgl3wp"]
 
 [ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_data"]
-[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/persuasiakas_anim.tres" id="2_sprite"]
-[ext_resource type="Script" uid="uid://dq66tbectyal5" path="res://src/customers/taste_rule.gd" id="taste_script"]
+[ext_resource type="SpriteFrames" uid="uid://dgmxqxcpke3sf" path="res://src/resources/sprite_frames/persuasiakas_anim.tres" id="2_sprite"]
 [ext_resource type="Resource" path="res://src/resources/taste_rules/halvat.tres" id="taste_halvat"]
+[ext_resource type="Script" uid="uid://dq66tbectyal5" path="res://src/customers/taste_rule.gd" id="taste_script"]
 
 [resource]
 script = ExtResource("1_data")
@@ -12,8 +12,6 @@ title = "Persuasiakas"
 first_names = Array[String](["Pena", "Rane", "Jarmo", "Kari", "Arto", "Raimo"])
 min_quality = 0.2
 budget_multiplier = 0.7
-primary_style = 1
-secondary_style = 0
 favourite_rules = Array[ExtResource("taste_script")]([ExtResource("taste_halvat")])
 rolls_favourite = true
 sprite_frames = ExtResource("2_sprite")
@@ -21,6 +19,7 @@ randomize_skin = false
 randomize_hair = false
 randomize_clothes = false
 randomize_shoes = false
+hand_offsets = Array[Vector2]([Vector2(-17, -49), Vector2(-17, -49), Vector2(-17, -50), Vector2(-21, -58)])
 voice_pitch = 0.8
 dialogue_intro = "No niin. Onko täällä ihan suomalaista kaljaa vai pitääkö taas jonkun vihervassarin smoothieta juoda?"
 dialogue_success = "Hyvää ja halpaa. Toisin kuin tää hallitus... ainiin, se on meidän."

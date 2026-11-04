@@ -1,5 +1,6 @@
 [gd_resource type="Resource" script_class="CustomerData" format=3 uid="uid://8dqjijksve58"]
 
+[ext_resource type="Script" uid="uid://dq66tbectyal5" path="res://src/customers/taste_rule.gd" id="1_amvlj"]
 [ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_normaali_mies"]
 [ext_resource type="SpriteFrames" uid="uid://0ryxc2j2gaiy" path="res://src/resources/sprite_frames/normaali_mies_anim.tres" id="2_sprite"]
 
@@ -14,6 +15,7 @@ randomize_skin = false
 randomize_hair = false
 randomize_clothes = false
 randomize_shoes = false
+hand_offsets = Array[Vector2]([Vector2(-9, -45), Vector2(7, -49), Vector2(-9, -45), Vector2(-17, -53)])
 dialogue_intro = "Moi. Mitäs hyvää teillä tänään on?"
 dialogue_success = "Hyvää on. Kiitti!"
 dialogue_fallback = "Käy tää."

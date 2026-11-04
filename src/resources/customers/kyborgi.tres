@@ -1,7 +1,8 @@
-[gd_resource type="Resource" script_class="CustomerData" format=3]
+[gd_resource type="Resource" script_class="CustomerData" format=3 uid="uid://su05vi0ntnjp"]
 
 [ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_data"]
-[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/kyborgi_anim.tres" id="2_sprite"]
+[ext_resource type="Script" uid="uid://dq66tbectyal5" path="res://src/customers/taste_rule.gd" id="1_gkipw"]
+[ext_resource type="SpriteFrames" uid="uid://c8bq2dsx4tieh" path="res://src/resources/sprite_frames/kyborgi_anim.tres" id="2_sprite"]
 
 [resource]
 script = ExtResource("1_data")
@@ -18,6 +19,7 @@ randomize_skin = false
 randomize_hair = false
 randomize_clothes = false
 randomize_shoes = false
+hand_offsets = Array[Vector2]([Vector2(-17, -41), Vector2(-17, -45), Vector2(-18, -43), Vector2(-21, -50)])
 voice_pitch = 0.7
 dialogue_intro = "Tervehdys, ihminen. Olen koulutettu 40 miljoonalla olutarvostelulla. Mitä suosittelet?"
 dialogue_success = "Tekoälyolut. Laskelmieni mukaan täydellinen. Annan viisi tähteä."
@@ -32,6 +34,5 @@ appearance_weight = 0.0
 busy_season = 3
 busy_season_weight = 3.0
 after_season_weight = 0.2
-min_bottles_per_visit = 1
 max_bottles_per_visit = 3
 metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

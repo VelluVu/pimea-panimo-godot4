@@ -1,5 +1,6 @@
 [gd_resource type="Resource" script_class="CustomerData" format=3 uid="uid://bbaqaif3dmu0t"]
 
+[ext_resource type="Script" uid="uid://dq66tbectyal5" path="res://src/customers/taste_rule.gd" id="1_ack4w"]
 [ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_raksamies"]
 [ext_resource type="SpriteFrames" uid="uid://dhm0ksqvlxjtf" path="res://src/resources/sprite_frames/raksamies_anim.tres" id="2_sprite"]
 
@@ -17,6 +18,7 @@ hair_base_color = Color(0.921569, 0.784314, 0.156863, 1)
 clothes_base_color = Color(0.901961, 0.470588, 0.078431, 1)
 randomize_hair = false
 randomize_clothes = false
+hand_offsets = Array[Vector2]([Vector2(-17, -46), Vector2(-9, -50), Vector2(-17, -46), Vector2(-25, -58)])
 voice_pitch = 0.85
 dialogue_intro = "Terve! Työpäivä ohi, nyt kelpais kylmä kalja."
 dialogue_success = "Just tätä tarvittiin homman jälkeen!"

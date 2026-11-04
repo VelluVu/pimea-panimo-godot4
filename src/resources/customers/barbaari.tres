@@ -2,15 +2,12 @@
 
 [ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_barbaari"]
 [ext_resource type="SpriteFrames" uid="uid://qphgtgn1vs36" path="res://src/resources/sprite_frames/barbaari_anim.tres" id="2_sprite"]
-[ext_resource type="Script" path="res://src/customers/taste_rule.gd" id="taste_script"]
+[ext_resource type="Script" uid="uid://dq66tbectyal5" path="res://src/customers/taste_rule.gd" id="taste_script"]
 [ext_resource type="Resource" path="res://src/resources/taste_rules/vahvat.tres" id="taste_vahvat"]
 [ext_resource type="Resource" path="res://src/resources/taste_rules/yli_5.tres" id="taste_yli_5"]
 
 [resource]
 script = ExtResource("1_barbaari")
-favourite_rules = Array[ExtResource("taste_script")]([ExtResource("taste_vahvat")])
-last_resort_rules = Array[ExtResource("taste_script")]([ExtResource("taste_yli_5")])
-required_achievement_id = "vahva_era"
 customer_name = "Urho"
 title = "Barbaari"
 first_names = Array[String](["Urho", "Rolf", "Kustaa", "Turkka", "Valto", "Thor", "Birger"])
@@ -18,11 +15,14 @@ min_quality = 0.05
 budget_multiplier = 1.3
 primary_style = 18
 secondary_style = 9
+favourite_rules = Array[ExtResource("taste_script")]([ExtResource("taste_vahvat")])
+last_resort_rules = Array[ExtResource("taste_script")]([ExtResource("taste_yli_5")])
 sprite_frames = ExtResource("2_sprite")
 skin_base_color = Color(0.909804, 0.717647, 0.588235, 1)
 hair_base_color = Color(0.376471, 0.223529, 0.45098, 1)
 clothes_base_color = Color(0.45098, 0.243137, 0.223529, 1)
 shoes_base_color = Color(0.45098, 0.243137, 0.223529, 1)
+hand_offsets = Array[Vector2]([Vector2(-17, -53), Vector2(-25, -60), Vector2(-18, -52), Vector2(-5, -53)])
 voice_pitch = 0.7
 dialogue_intro = "ANNA TÄNNE VAHVINTA MITÄ ON!"
 dialogue_success = "TÄMÄ ON OLUTTA SOTURILLE!"
@@ -34,6 +34,7 @@ dialogue_preview_format = "TUO TUOLTA! %s! ANNA SE TÄNNE!"
 dialogue_nothing_available = "MITÄ?! EI MITÄÄN SOTURILLE KELPAAVAA?!"
 min_required_abv = 5.0
 min_reputation_to_appear = 30
+required_achievement_id = "vahva_era"
 max_bottles_per_visit = 3
 bar_fight_trigger = 1
 bar_fight_chance = 1.0

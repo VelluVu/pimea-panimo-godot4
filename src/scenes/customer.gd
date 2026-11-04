@@ -79,6 +79,8 @@ func _on_animated_sprite_frame_changed() -> void:
 	var title : String = customer_data.title if customer_data != null else ""
 	var own_offsets : Array[Vector2] = customer_data.hand_offsets if customer_data != null else NO_OFFSETS
 	bottle_hand_marker.position = CustomerHandOffsets.position_for(title, animated_sprite.frame, own_offsets) + Vector2(_sway.x, 0.0)
+	if customer_data != null:
+		beer_glass_sprite.flip_h = CustomerHandOffsets.is_flipped(animated_sprite.frame, customer_data.hand_flipped_frames, maxi(own_offsets.size(), 4))
 
 
 func _apply_visuals() -> void:

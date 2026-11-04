@@ -13,6 +13,7 @@ min_quality = 0.1
 primary_style = 0
 secondary_style = 13
 sprite_frames = ExtResource("2_sprite")
+hand_offsets = Array[Vector2]([Vector2(-13, -42), Vector2(-5, -45), Vector2(-13, -41), Vector2(-21, -49)])
 voice_pitch = 1.05
 dialogue_success = "Jes, kunnon oluet!"
 dialogue_fallback = "Noni."

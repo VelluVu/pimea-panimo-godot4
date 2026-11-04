@@ -23,6 +23,7 @@ randomize_skin = false
 randomize_hair = false
 randomize_clothes = false
 randomize_shoes = false
+hand_offsets = Array[Vector2]([Vector2(-5, -46), Vector2(10, -48), Vector2(-10, -46), Vector2(-13, -46)])
 dialogue_intro = "Moi! Onks teillä jotain kesäistä ja kuvan arvosta? Pitää saada hyvä otos tarinaan."
 dialogue_success = "Väri on ihan täydellinen, tää menee suoraan tarinaan!"
 dialogue_fallback = "Ei ehkä ihan feed-materiaalia, mutta kyllä tän juo."

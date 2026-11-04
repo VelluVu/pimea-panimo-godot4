@@ -66,6 +66,14 @@ func test_own_offsets_override_the_title_table() -> void:
 	assert_eq(HandOffsetsScript.position_for("", 2, own), Vector2(22, -14))
 
 
+func test_glass_flips_only_on_listed_frames() -> void:
+	var flipped : Array[int] = [3]
+	assert_true(HandOffsetsScript.is_flipped(3, flipped, 4))
+	assert_true(HandOffsetsScript.is_flipped(7, flipped, 4))
+	assert_false(HandOffsetsScript.is_flipped(1, flipped, 4))
+	assert_false(HandOffsetsScript.is_flipped(3, [] as Array[int], 4))
+
+
 func test_every_tonttu_has_its_own_hand_offsets() -> void:
 	for name : String in ["harmaa", "sydan", "punainen"]:
 		var tonttu : CustomerData = load("res://src/resources/customers/tonttu_%s.tres" % name)

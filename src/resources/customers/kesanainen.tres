@@ -23,6 +23,7 @@ randomize_skin = false
 randomize_hair = false
 randomize_clothes = false
 randomize_shoes = false
+hand_offsets = Array[Vector2]([Vector2(-6, -45), Vector2(3, -49), Vector2(-10, -49), Vector2(-13, -52)])
 voice_pitch = 1.3
 dialogue_intro = "Hei! Onks teillä jotain kesäistä ja Instan arvosta? Pitää saada hyvä otos tarinaan."
 dialogue_success = "Väri on ihan täydellinen, tää menee suoraan tarinaan!"

@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_turisti"]
 [ext_resource type="SpriteFrames" uid="uid://l4v572i18vcv" path="res://src/resources/sprite_frames/saksalainen_turisti_anim.tres" id="2_sprite"]
-[ext_resource type="Resource" path="res://src/resources/taste_rules/jalot_lagerit.tres" id="taste_jalot_lagerit"]
+[ext_resource type="Resource" uid="uid://c1irwyedctxg0" path="res://src/resources/taste_rules/jalot_lagerit.tres" id="taste_jalot_lagerit"]
 [ext_resource type="Resource" path="res://src/resources/taste_rules/saksalaiset.tres" id="taste_saksalaiset"]
 [ext_resource type="Script" uid="uid://dq66tbectyal5" path="res://src/customers/taste_rule.gd" id="taste_script"]
 
@@ -23,6 +23,7 @@ randomize_skin = false
 randomize_hair = false
 randomize_clothes = false
 randomize_shoes = false
+hand_offsets = Array[Vector2]([Vector2(-5, -46), Vector2(3, -50), Vector2(-9, -46), Vector2(-17, -53)])
 voice_pitch = 0.95
 dialogue_intro = "Guten Tag! Haben Sie ein richtiges deutsches Bier? Ein Märzen wäre wunderbar!"
 dialogue_success = "Wunderbar! Das schmeckt fast wie in München. Prost, mein Freund!"

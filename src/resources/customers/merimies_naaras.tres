@@ -24,6 +24,7 @@ sprite_frames = ExtResource("2_sprite")
 hair_base_color = Color(1, 0.909804, 0, 1)
 randomize_clothes = false
 randomize_shoes = false
+hand_offsets = Array[Vector2]([Vector2(-14, -42), Vector2(-6, -46), Vector2(-14, -41), Vector2(-22, -49)])
 voice_pitch = 1.105
 dialogue_intro = "Ahoi! Laiva lähtee aamulla. Onko porttia, oikeaa Itämeren mustaa?"
 dialogue_success = "Tällä kelpaa purjehtia! Kuin kotisatamaan olisi palannut."

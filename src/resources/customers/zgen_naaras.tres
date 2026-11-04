@@ -1,5 +1,6 @@
 [gd_resource type="Resource" script_class="CustomerData" format=3 uid="uid://cx6btyi8lqfsj"]
 
+[ext_resource type="Script" uid="uid://dq66tbectyal5" path="res://src/customers/taste_rule.gd" id="1_k5pvo"]
 [ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_zgen"]
 [ext_resource type="SpriteFrames" uid="uid://chogqphhvtj0w" path="res://src/resources/sprite_frames/zgen_naaras_anim.tres" id="2_sprite"]
 
@@ -17,6 +18,8 @@ randomize_skin = false
 randomize_hair = false
 randomize_clothes = false
 randomize_shoes = false
+hand_offsets = Array[Vector2]([Vector2(-9, -58), Vector2(-44, -73), Vector2(-9, -58), Vector2(43, -71)])
+hand_flipped_frames = Array[int]([1])
 voice_pitch = 1.495
 dialogue_intro = "Heyy, onks teil alkoholitonta IPA:a? No cap tarviin jotain sigma-juomaa, en jaksa cap-fiilistä."
 dialogue_success = "Ohmygod tää on ihan gyat-tasoista, respect, aito W tähän kuppilaan."
