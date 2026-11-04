@@ -1,5 +1,6 @@
-# Reads the demo leaderboard every three days so the free Supabase project is never
-# paused for inactivity (it pauses after 7 days without requests).
+# Writes a heartbeat row every day so the free Supabase project is never paused for
+# inactivity. Plain REST reads were not counted (paused 2026-11-04 despite them), so it
+# calls keepalive_ping() from dev/tools/leaderboard/keepalive.sql and reads one row too.
 # Runs on its own; also from the Actions tab > Keep Supabase awake > Run workflow.
 # GitHub turns scheduled workflows off after 60 days without commits in a public repo
 # and emails a warning first: then re-enable it from the Actions tab.
@@ -7,7 +8,7 @@ name: Keep Supabase awake
 
 on:
   schedule:
-    - cron: "17 6 */3 * *"
+    - cron: "17 6 * * *"
   workflow_dispatch:
 
 permissions:
@@ -22,6 +23,13 @@ jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
+      - name: Write the heartbeat
+        run: |
+          curl -sS --fail --retry 3 --retry-delay 30 -X POST \
+            -H "apikey: $PUBLISHABLE_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{}' \
+            "$PROJECT_URL/rest/v1/rpc/keepalive_ping"
       - name: Read one leaderboard row
         run: |
           curl -sS --fail --retry 3 --retry-delay 30 \
