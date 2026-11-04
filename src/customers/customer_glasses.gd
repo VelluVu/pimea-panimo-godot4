@@ -77,7 +77,8 @@ func counter_position() -> Vector2:
 
 
 ## Slides the glass from the bartender to the counter (or pops it in with no Bartender);
-## top_level keeps it put. A rest_position_override puts it in a group's stack.
+## top_level keeps it put. A rest_position_override puts it in a group's stack. top_level also
+## drops the customer's z_index, so the glass sets its own (customer.tscn) to stay above counter decor.
 func slide_to_counter(slide_duration_seconds : float = SLIDE_DURATION_SECONDS, rest_position_override : Vector2 = Vector2.INF) -> void:
 	var rest_position : Vector2 = rest_position_override if rest_position_override != Vector2.INF else _owner.to_global(_counter.position)
 	var bartender := _owner.get_tree().get_first_node_in_group(Bartender.BARTENDER_GROUP) as Bartender
