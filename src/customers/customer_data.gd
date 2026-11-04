@@ -67,6 +67,11 @@ enum KorvatunturiRole { NONE, TONTTU, JOULUPUKKI }
 @export var hand_flipped_frames: Array[int] = []
 ## Speech bubbles sit this much lower, for customers shorter than the usual body (the tontut).
 @export var speech_drop_px: float = 0.0
+## False for those who keep their own headgear on New Year's Eve (the tontut, Joulupukki).
+@export var wears_party_hat: bool = true
+## Added as a child for an effect of the customer's own (the Örveltäjä's roman candles); its
+## root may have attach(sprite: AnimatedSprite2D) to follow the art. Null = none.
+@export var effect_scene: PackedScene = null
 
 @export_group("Äänet")
 ## Pitch of the babble when this customer speaks: under 1 is deeper, over 1 higher.
@@ -193,6 +198,12 @@ enum KorvatunturiRole { NONE, TONTTU, JOULUPUKKI }
 ## at the ceiling): every other solo customer flees and dialogue_outburst shows as a toast.
 @export var outburst_animation: StringName = &""
 @export_multiline var dialogue_outburst: String = ""
+## Comes in drunk (Örveltäjä) and sways from the door. Selling him anything with alcohol is
+## against the law: each such batch adds this much LVV risk and gets dialogue_drunk_served,
+## and the sale narrates dialogue_drunk_sale_toast. 0 = sober.
+@export var drunk_service_risk: int = 0
+@export_multiline var dialogue_drunk_served: String = ""
+@export_multiline var dialogue_drunk_sale_toast: String = ""
 ## Narration shown as a good-news toast after a sale to this customer (Presidentti's visit,
 ## whose negative risk values lower the LVV risk). Empty = none.
 @export_multiline var dialogue_sale_toast: String = ""
@@ -234,6 +245,15 @@ func speech_anchor(feet : Vector2) -> Vector2:
 ## or walked in.
 func comes_in(season : SeasonRules.Season, is_met : bool = false) -> bool:
 	return get_appearance_weight(season, is_met) > 0.0
+
+
+func arrives_drunk() -> bool:
+	return drunk_service_risk > 0
+
+
+## True when selling him `abv` breaks the law on serving the drunk.
+func is_served_illegally(abv : float) -> bool:
+	return arrives_drunk() and abv > BeerStyle.ALCOHOL_FREE_MAX_ABV
 
 
 func uses_taste_tiers() -> bool:

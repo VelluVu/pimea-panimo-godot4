@@ -511,3 +511,30 @@ func test_a_short_customer_speaks_from_lower_down() -> void:
 	assert_eq(customer.speech_anchor(Vector2(100, 290)), Vector2(100, 290))
 	customer.speech_drop_px = 28.0
 	assert_eq(customer.speech_anchor(Vector2(100, 290)), Vector2(100, 318))
+
+
+func _reveller() -> CustomerData:
+	var customer := CustomerData.new()
+	customer.primary_style = BeerStyle.Style.KUOHURAKETTI
+	customer.drunk_service_risk = 8
+	customer.dialogue_drunk_served = "hups"
+	return customer
+
+
+## Serving the drunk is against the law: a strong Kuohuraketti still delights him, but the
+## LVV hears of it; the alcohol-free one is safe.
+func test_a_drunk_customer_served_alcohol_brings_risk() -> void:
+	var customer := _reveller()
+	var strong := customer.evaluate_brew_batch(_tier_batch(BeerStyle.Style.KUOHURAKETTI, 6.0), 3.0, 1.0)
+	var alcohol_free := customer.evaluate_brew_batch(_tier_batch(BeerStyle.Style.KUOHURAKETTI, 0.4), 3.0, 1.0)
+	assert_eq(strong[CustomerManager.KEY_RISK] - alcohol_free[CustomerManager.KEY_RISK], 8)
+	assert_eq(strong[CustomerManager.KEY_RESPONSE], "hups")
+	assert_eq(alcohol_free[CustomerManager.KEY_RESPONSE], customer.dialogue_success)
+	assert_true(alcohol_free[CustomerManager.KEY_DELIGHTED])
+
+
+func test_only_a_drunk_customer_is_served_illegally() -> void:
+	assert_true(_reveller().is_served_illegally(5.0))
+	assert_false(_reveller().is_served_illegally(BeerStyle.ALCOHOL_FREE_MAX_ABV))
+	assert_false(CustomerData.new().is_served_illegally(5.0))
+	assert_true(_reveller().arrives_drunk())

@@ -127,6 +127,18 @@ ICONS = {
 		"gggGyGggg",
 		"...nNn...",
 	],
+	0x1F386: [  # 🎆 fireworks: coloured spokes from a solid white heart (a gap round it
+		# filled with the text shadow and read as a dark blob)
+		"r...y...b",
+		".r..y..b.",
+		"..r.y.b..",
+		"...www...",
+		"ggwwwwwgg",
+		"...www...",
+		"..b.y.r..",
+		".b..y..r.",
+		"b...y...r",
+	],
 	0x1F31F: [  # 🌟 glowing star
 		"....w....",
 		"....y....",

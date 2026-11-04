@@ -133,11 +133,26 @@ func test_christmas_starts_the_day_after_cyber_monday() -> void:
 	assert_eq(_season(2026, 11, 30), SeasonRulesScript.Season.CYBER_WEEK)
 	assert_eq(_season(2026, 12, 1), SeasonRulesScript.Season.CHRISTMAS)
 	assert_eq(_season(2026, 12, 24), SeasonRulesScript.Season.CHRISTMAS)
-	assert_eq(_season(2026, 12, 31), SeasonRulesScript.Season.CHRISTMAS)
+	assert_eq(_season(2026, 12, 30), SeasonRulesScript.Season.CHRISTMAS)
+
+
+func test_new_year_is_eve_and_day() -> void:
+	assert_eq(_season(2026, 12, 31), SeasonRulesScript.Season.NEW_YEAR)
+	assert_eq(_season(2027, 1, 1), SeasonRulesScript.Season.NEW_YEAR)
+	assert_eq(_season(2027, 1, 2), SeasonRulesScript.Season.CHRISTMAS)
+
+
+func test_christmas_stays_up_at_new_year() -> void:
+	assert_true(SeasonRulesScript.includes(SeasonRulesScript.Season.NEW_YEAR, SeasonRulesScript.Season.CHRISTMAS))
+	assert_false(SeasonRulesScript.includes(SeasonRulesScript.Season.CHRISTMAS, SeasonRulesScript.Season.NEW_YEAR))
+
+
+func test_new_year_counts_down_its_two_days() -> void:
+	assert_eq(_days_left(2026, 12, 31), 2)
+	assert_eq(_days_left(2027, 1, 1), 1)
 
 
 func test_christmas_ends_with_epiphany() -> void:
-	assert_eq(_season(2027, 1, 1), SeasonRulesScript.Season.CHRISTMAS)
 	assert_eq(_season(2027, 1, 6), SeasonRulesScript.Season.CHRISTMAS)
 	assert_eq(_season(2027, 1, 7), SeasonRulesScript.Season.NONE)
 
@@ -145,3 +160,8 @@ func test_christmas_ends_with_epiphany() -> void:
 func test_christmas_counts_down_over_new_year() -> void:
 	assert_eq(_days_left(2026, 12, 1), 37)
 	assert_eq(_days_left(2027, 1, 6), 1)
+
+
+func test_new_year_greets_the_coming_year() -> void:
+	assert_eq(SeasonRulesScript.new_year_number({"year": 2026, "month": 12, "day": 31}), 2027)
+	assert_eq(SeasonRulesScript.new_year_number({"year": 2027, "month": 1, "day": 1}), 2027)

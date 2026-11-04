@@ -17,6 +17,7 @@ func _ready() -> void:
 	BrewerySignals.bar_fight_started.connect(_add_trauma.bind(FIGHT_TRAUMA).unbind(1))
 	BrewerySignals.customer_outburst.connect(_add_trauma.bind(SHOT_TRAUMA).unbind(1))
 	BrewerySignals.glass_shattered.connect(_add_trauma.bind(GLASS_TRAUMA))
+	BrewerySignals.cellar_shaken.connect(_add_trauma)
 	set_process(false)
 
 

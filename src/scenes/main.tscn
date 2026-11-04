@@ -111,6 +111,8 @@
 [ext_resource type="PackedScene" path="res://src/scenes/ui/lvv_raid_window.tscn" id="x_lvvraidwindow"]
 [ext_resource type="PackedScene" uid="uid://dfxsisxcex8tj" path="res://src/scenes/ui/recipe_library_window.tscn" id="x_recipelibrarywindow"]
 [ext_resource type="Script" uid="uid://dldflwygsvloj" path="res://src/ui/season_chip.gd" id="x_seasonchip"]
+[ext_resource type="PackedScene" path="res://src/scenes/new_year_fireworks.tscn" id="x_newyearfireworks"]
+[ext_resource type="PackedScene" path="res://src/scenes/new_year_decor.tscn" id="x_newyeardecor"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_yf5fn"]
 blend_mode = 1
@@ -2068,6 +2070,10 @@ range_item_cull_mask = 2
 texture = ExtResource("9_nylc4")
 texture_scale = 0.8
 script = ExtResource("8_5c2vg")
+
+[node name="NewYearFireworks" parent="." unique_id=1730245519 instance=ExtResource("x_newyearfireworks")]
+
+[node name="NewYearDecor" parent="." unique_id=1730245520 instance=ExtResource("x_newyeardecor")]
 
 [node name="ChristmasDecor" type="Node2D" parent="." unique_id=274404129]
 script = ExtResource("87_ipwpp")

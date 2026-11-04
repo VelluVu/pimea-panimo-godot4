@@ -19,6 +19,7 @@ mash_steps = Array[int]([66])
 mash_band = 3.0
 hop_additions = Array[int]([0])
 required_yeast_id = -1
+takes_any_recipe = true
 required_spice_ids = Array[int]([410])
 abv = 5.0
 min_abv = 0.0

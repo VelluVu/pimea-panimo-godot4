@@ -143,3 +143,29 @@ func test_the_christmas_days_stay_in_their_season() -> void:
 		assert_true(event.can_come_in(SeasonRules.Season.CHRISTMAS), file)
 		assert_false(event.can_come_in(SeasonRules.Season.NONE), file)
 		assert_true(event.day_perk != null, file)
+
+
+## The New Year days come only at New Year, and each brings its day perk.
+func test_the_new_year_days_stay_in_their_season() -> void:
+	for file : String in ["day_event_uudenvuodenaatto", "day_event_krapulapaiva"]:
+		var event : DayEventData = load("res://src/resources/day_events/%s.tres" % file)
+		assert_true(event.can_come_in(SeasonRules.Season.NEW_YEAR), file)
+		assert_false(event.can_come_in(SeasonRules.Season.CHRISTMAS), file)
+		assert_true(event.day_perk != null, file)
+
+
+## The hangover day comes only the morning after New Year's Eve.
+func test_the_hangover_day_follows_the_eve() -> void:
+	var eve : DayEventData = load("res://src/resources/day_events/day_event_uudenvuodenaatto.tres")
+	var hangover : DayEventData = load("res://src/resources/day_events/day_event_krapulapaiva.tres")
+	var titles : Array = ["Örveltäjä"]
+	assert_eq(hangover.weight_for(SeasonRules.Season.NEW_YEAR, titles, eve), hangover.weight)
+	assert_eq(hangover.weight_for(SeasonRules.Season.NEW_YEAR, titles, null), 0.0, "not on a new run's first roll")
+	assert_eq(hangover.weight_for(SeasonRules.Season.NEW_YEAR, titles, hangover), 0.0, "not two mornings after")
+	assert_eq(eve.weight_for(SeasonRules.Season.NEW_YEAR, titles, null), eve.weight)
+
+
+func test_an_event_without_a_follow_rule_comes_any_day() -> void:
+	var event := DayEventData.new()
+	assert_true(event.can_follow(null))
+	assert_true(event.can_follow(DayEventData.new()))

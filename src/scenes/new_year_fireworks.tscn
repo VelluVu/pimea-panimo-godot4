@@ -1,0 +1,18 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://src/scenes/new_year_fireworks.gd" id="1_fireworks"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/rocket_far.wav" id="2_far"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/rocket_near.wav" id="3_near"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/fireworks_door.wav" id="4_door"]
+[ext_resource type="Texture2D" uid="uid://bqgg0ud803dad" path="res://assets/textures/light_glow_stairs.png" id="5_glow"]
+
+[node name="NewYearFireworks" type="Node2D"]
+script = ExtResource("1_fireworks")
+far_rocket = ExtResource("2_far")
+near_rocket = ExtResource("3_near")
+door_fireworks = ExtResource("4_door")
+
+[node name="DoorFlash" type="PointLight2D" parent="."]
+position = Vector2(27, 80)
+energy = 0.0
+texture = ExtResource("5_glow")

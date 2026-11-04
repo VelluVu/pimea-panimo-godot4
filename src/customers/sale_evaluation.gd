@@ -80,6 +80,11 @@ static func evaluate(customer : CustomerData, batch : BrewBatch, style_base_pric
 		if sour_level != FermentationRules.SourLevel.LIGHT:
 			delighted = false
 
+	if customer.is_served_illegally(batch.get_abv()):
+		risk += customer.drunk_service_risk
+		if not customer.dialogue_drunk_served.is_empty():
+			response = customer.dialogue_drunk_served
+
 	if customer.minds_purity_law(batch):
 		reputation = customer.rep_purity_law_broken
 		tip = 0.0

@@ -43,6 +43,7 @@ enum Style {
 	PUKKIBOCK,
 	TONTTUPUURO,
 	JOULUOLUT,
+	KUOHURAKETTI,
 }
 
 @export var style_name: String = "Uusi oluttyyli"
@@ -58,8 +59,10 @@ enum Style {
 @export var known_in_season: SeasonRules.Season = SeasonRules.Season.NONE
 
 @export_group("Vaatimukset")
-## ANY_YEAST lets every yeast brew the style (Tekoälyolut takes any recipe).
+## ANY_YEAST lets every yeast brew the style (Kuohuraketti strong or alcohol-free).
 @export var required_yeast_id: int = 301 # 301 = lager, 302 = ale
+## Any recipe with the required spice is this style (Tekoälyolut), so it is checked first.
+@export var takes_any_recipe: bool = false
 @export var min_malt_weight: int = 3
 ## -1 = any malt. Set where one malt defines the style (wheat in Hefeweizen and Witbier).
 @export var required_malt_id: int = -1
@@ -108,10 +111,10 @@ func is_alcohol_free() -> bool:
 
 ## Checked in this order: styles defined by a required ingredient first, then those
 ## defined by their base malts, then the rest, so the most specific style wins.
-## Lower is checked first. A style any yeast can brew (Tekoälyolut) goes before all, or a
-## style with its own required ingredient would take the brews meant for it.
+## Lower is checked first. A style that takes any recipe (Tekoälyolut) goes before all, or
+## a style with its own required ingredient would take the brews meant for it.
 func match_priority() -> int:
-	if required_yeast_id == ANY_YEAST:
+	if takes_any_recipe:
 		return ANY_RECIPE_PRIORITY
 	if required_malt_id != BrewMixture.NO_REQUIRED_MALT or not required_spice_ids.is_empty() or not only_hop_ids.is_empty():
 		return 0
@@ -143,6 +146,9 @@ func has_preferred_hop_profile(profile : HopData.FlavorProfile) -> bool:
 ## 0 to 1 stands in for the colour, bitterness and strength precision, so a style with
 ## near-open windows (Tekoälyolut) is no worse at the edges; negative scores them as usual.
 @export_range(-1.0, 1.0, 0.05) var fixed_precision: float = -1.0
+## Off for a style brewed both strong and alcohol-free (Kuohuraketti): its ABV window is
+## wide on purpose, so the precision leaves strength out instead of rewarding the middle.
+@export var scores_strength: bool = true
 
 @export_group("Palkkiot & Riskit")
 @export var original_quality: float = 1.0
@@ -229,4 +235,5 @@ static func get_style_string_from_style(new_style : BeerStyle.Style) -> String:
 		Style.PUKKIBOCK: return UiText.of(StringContainer.PUKKIBOCK)
 		Style.TONTTUPUURO: return UiText.of(StringContainer.TONTTUPUURO)
 		Style.JOULUOLUT: return UiText.of(StringContainer.JOULUOLUT)
+		Style.KUOHURAKETTI: return UiText.of(StringContainer.KUOHURAKETTI)
 		_: return UiText.of(StringContainer.TUNTEMATON)

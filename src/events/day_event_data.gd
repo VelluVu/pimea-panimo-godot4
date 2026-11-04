@@ -17,6 +17,9 @@ extends Resource
 @export var weight : float = 1.0
 ## The only season the event can come in, by the player's clock; NONE for all year.
 @export var season : SeasonRules.Season = SeasonRules.Season.NONE
+## Set for a morning after: the event comes only the day after this one (Krapulapäivä
+## after Uudenvuodenaatto), and then at its weight. Null for any day.
+@export var only_after_event : DayEventData = null
 
 @export_group("Kohdistus")
 ## The group visit favoured while the window is open; null for "nothing special".
@@ -69,12 +72,31 @@ func has_audience(available_titles : Array) -> bool:
 	return featured_customer_titles.any(func(title : String) -> bool: return available_titles.has(title))
 
 
+## Every customer who walks in that day wears a party hat (PartyHat), unless their own
+## headgear stays on (CustomerData.wears_party_hat).
+@export var party_hats : bool = false
+
 ## Holds for the event's whole day, not just the bias window (Brewery.set_day_perk).
 @export var day_perk : RunPerk = null
 
 
 func can_come_in(current : SeasonRules.Season) -> bool:
 	return season == SeasonRules.Season.NONE or SeasonRules.includes(current, season)
+
+
+## True when yesterday's event (`previous`, null for a plain day or a new run) lets this
+## one come: always, unless it only follows another event.
+func can_follow(previous : DayEventData) -> bool:
+	if only_after_event == null:
+		return true
+	return previous != null and previous.resource_path == only_after_event.resource_path
+
+
+## The odds of rolling this event today; 0 when it cannot come.
+func weight_for(current : SeasonRules.Season, available_titles : Array, previous : DayEventData) -> float:
+	if not has_audience(available_titles) or not can_come_in(current) or not can_follow(previous):
+		return 0.0
+	return weight
 
 
 func get_effect_amount() -> int:

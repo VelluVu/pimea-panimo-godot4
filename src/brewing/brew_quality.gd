@@ -92,6 +92,8 @@ static func precision_score(mixture : BrewMixture, beer_style : BeerStyle) -> fl
 		return beer_style.fixed_precision
 	var ebc_precision : float = range_precision(mixture.final_ebc, beer_style.min_ebc, beer_style.max_ebc)
 	var ibu_score : float = ibu_precision(mixture.ibu_for(beer_style), beer_style.min_ibu, beer_style.max_ibu)
+	if not beer_style.scores_strength:
+		return (ebc_precision + ibu_score) / 2.0
 	var abv_precision : float = range_precision(mixture.abv, beer_style.min_abv, beer_style.max_abv)
 	return (ebc_precision + ibu_score + abv_precision) / 3.0
 

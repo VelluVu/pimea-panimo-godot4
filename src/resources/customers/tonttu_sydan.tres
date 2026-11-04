@@ -20,6 +20,7 @@ randomize_clothes = false
 randomize_shoes = false
 hand_offsets = Array[Vector2]([Vector2(27, -21), Vector2(27, -30), Vector2(27, -33), Vector2(27, -30)])
 speech_drop_px = 28.0
+wears_party_hat = false
 voice_pitch = 1.8
 dialogue_intro = "Psst. Tonttu tuli tarkastamaan. Onko puuroa, vai pitääkö tontun kirjoittaa?"
 dialogue_success = "Puuroa! Tonttu merkitsee sinut kiltiksi. Toistaiseksi."

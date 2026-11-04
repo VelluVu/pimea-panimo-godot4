@@ -4,11 +4,11 @@ extends RefCounted
 ## Which season the player's own clock is in. Halloween runs from late October into early
 ## November; Black Month from the day after it through Cyber Monday, with Cyber Week (the
 ## Monday before Black Friday through Cyber Monday) blended into its end. Christmas runs
-## from the day after Cyber Monday to Epiphany.
+## from the day after Cyber Monday to Epiphany, with New Year's Eve and Day blended in.
 
-## Cyber Week is part of Black Month: see includes(). New values go at the end: saved
-## resources keep the numbers.
-enum Season { NONE, HALLOWEEN, BLACK_MONTH, CYBER_WEEK, CHRISTMAS }
+## Cyber Week is part of Black Month and New Year part of Christmas: see includes(). New
+## values go at the end: saved resources keep the numbers.
+enum Season { NONE, HALLOWEEN, BLACK_MONTH, CYBER_WEEK, CHRISTMAS, NEW_YEAR }
 
 const HALLOWEEN_FIRST_DAY_OCTOBER : int = 20
 const HALLOWEEN_LAST_DAY_NOVEMBER : int = 8
@@ -21,6 +21,9 @@ const CYBER_WEEK_DAYS_AFTER : int = 3
 const NOVEMBER_DAYS : int = 30
 ## Christmas ends with Epiphany (loppiainen).
 const CHRISTMAS_LAST_DAY_JANUARY : int = 6
+## New Year's Eve and New Year's Day.
+const NEW_YEAR_EVE_DECEMBER : int = 31
+const NEW_YEAR_DAY_JANUARY : int = 1
 const OUTSIDE_NOVEMBER : int = -100
 const WINTER_LAST_MONTH : int = Time.MONTH_MARCH
 const SECONDS_PER_DAY : int = 86400
@@ -71,10 +74,11 @@ static func is_winter(date : Dictionary) -> bool:
 	return month == Time.MONTH_DECEMBER or (month >= Time.MONTH_JANUARY and month <= WINTER_LAST_MONTH)
 
 
-## True when something made for `wanted` belongs in `current`: its own season, and
-## everything of Black Month in Cyber Week too.
+## True when something made for `wanted` belongs in `current`: its own season, everything
+## of Black Month in Cyber Week too, and everything of Christmas at New Year.
 static func includes(current : Season, wanted : Season) -> bool:
-	return current == wanted or (wanted == Season.BLACK_MONTH and current == Season.CYBER_WEEK)
+	return current == wanted or (wanted == Season.BLACK_MONTH and current == Season.CYBER_WEEK) \
+		or (wanted == Season.CHRISTMAS and current == Season.NEW_YEAR)
 
 
 ## `date` as Time.get_date_dict_from_system() gives it.
@@ -86,6 +90,8 @@ static func season_of(date : Dictionary) -> Season:
 		return Season.HALLOWEEN
 	if month == Time.MONTH_NOVEMBER and day <= HALLOWEEN_LAST_DAY_NOVEMBER:
 		return Season.HALLOWEEN
+	if (month == Time.MONTH_DECEMBER and day == NEW_YEAR_EVE_DECEMBER) or (month == Time.MONTH_JANUARY and day == NEW_YEAR_DAY_JANUARY):
+		return Season.NEW_YEAR
 	if month == Time.MONTH_JANUARY and day >= 1 and day <= CHRISTMAS_LAST_DAY_JANUARY:
 		return Season.CHRISTMAS
 	if year <= 0:
@@ -101,12 +107,21 @@ static func season_of(date : Dictionary) -> Season:
 	return Season.BLACK_MONTH
 
 
+## The year New Year greets on `date`: on New Year's Eve the one about to begin.
+static func new_year_number(date : Dictionary) -> int:
+	var year : int = date.get("year", 0)
+	return year + 1 if date.get("month", 0) == Time.MONTH_DECEMBER else year
+
+
 ## Days the season of `date` lasts, today counted: 1 on its last day, 0 out of season.
+## Black Month counts down to Cyber Week, but Christmas runs on over New Year to Epiphany.
 static func days_left(date : Dictionary) -> int:
 	var season : Season = season_of(date)
 	if season == Season.NONE:
 		return 0
-	return _days_while(date, func(day : Dictionary) -> bool: return season_of(day) == season)
+	return _days_while(date, func(day : Dictionary) -> bool:
+		var day_season : Season = season_of(day)
+		return day_season == season or (season == Season.CHRISTMAS and day_season == Season.NEW_YEAR))
 
 
 ## Like days_left(), for winter.

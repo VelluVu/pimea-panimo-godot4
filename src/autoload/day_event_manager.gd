@@ -10,6 +10,8 @@ const WARNING_POOL_EMPTY : String = "DayEventManager: Day event pool is empty!"
 var day_event_pool : Array[DayEventData] = []
 
 var _active_event : DayEventData = null
+## Yesterday's roll, for an event that only follows another (DayEventData.only_after_event).
+var _previous_event : DayEventData = null
 var _window_active : bool = false
 var _start_delay_timer : Timer
 var _window_timer : Timer
@@ -41,11 +43,17 @@ func is_event_active() -> bool:
 	return _window_active and _active_event != null
 
 
+## Today's roll decides it for the whole day, not just the bias window.
+func party_hats_today() -> bool:
+	return _active_event != null and _active_event.party_hats
+
+
 func get_active_event() -> DayEventData:
 	return _active_event if _window_active else null
 
 
 func _clear_event() -> void:
+	_previous_event = null
 	_start_delay_timer.stop()
 	_window_timer.stop()
 	_window_active = false
@@ -53,7 +61,9 @@ func _clear_event() -> void:
 
 
 func _on_day_changed(_new_day : int) -> void:
+	var yesterday : DayEventData = _active_event
 	_clear_event()
+	_previous_event = yesterday
 	_active_event = _pick_weighted_event()
 	_set_day_perk(_active_event.day_perk if _active_event != null else null)
 	if _active_event == null:
@@ -101,7 +111,7 @@ func _apply_direct_effect(event : DayEventData) -> void:
 
 
 ## day_event_none.tres weighs most, so most days are plain. An event whose customers are
-## all locked never comes, nor one out of its season.
+## all locked never comes, nor one out of its season, nor a morning after on any other day.
 func _pick_weighted_event() -> DayEventData:
 	var season : SeasonRules.Season = SeasonRules.now()
 	var available_titles : Array = []
@@ -109,7 +119,7 @@ func _pick_weighted_event() -> DayEventData:
 		available_titles.append(customer.title)
 	var weights : Array[float] = []
 	for event : DayEventData in day_event_pool:
-		weights.append(event.weight if event.has_audience(available_titles) and event.can_come_in(season) else 0.0)
+		weights.append(event.weight_for(season, available_titles, _previous_event))
 	return WeightedPicker.pick(day_event_pool, weights) as DayEventData
 
 

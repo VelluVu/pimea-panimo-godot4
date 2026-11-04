@@ -41,6 +41,6 @@ func test_a_season_without_data_shows_nothing() -> void:
 
 func test_every_season_has_its_data() -> void:
 	var seasons : Array[SeasonData] = SeasonCatalogScript.all()
-	for season : int in [SeasonRulesScript.Season.HALLOWEEN, SeasonRulesScript.Season.BLACK_MONTH, SeasonRulesScript.Season.CYBER_WEEK, SeasonRulesScript.Season.CHRISTMAS]:
+	for season : int in [SeasonRulesScript.Season.HALLOWEEN, SeasonRulesScript.Season.BLACK_MONTH, SeasonRulesScript.Season.CYBER_WEEK, SeasonRulesScript.Season.CHRISTMAS, SeasonRulesScript.Season.NEW_YEAR]:
 		assert_true(SeasonCatalogScript.of(season, seasons) != null)
 	assert_true(SeasonCatalogScript.pick(SeasonRulesScript.Season.NONE, true, seasons) != null)

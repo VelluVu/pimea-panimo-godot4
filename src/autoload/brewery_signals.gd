@@ -233,6 +233,9 @@ signal beer_poured(position: Vector2, speed_scale: float)
 ## The console forced a season (SeasonRules.force()), so the decorations switch at once.
 @warning_ignore("unused_signal")
 signal season_forced(season: SeasonRules.Season)
+## Something outside shook the cellar (a New Year rocket); ScreenShake adds this trauma.
+@warning_ignore("unused_signal")
+signal cellar_shaken(trauma: float)
 ## The console forced winter on or off (SeasonRules.force_winter()).
 @warning_ignore("unused_signal")
 signal winter_forced(is_winter: bool)

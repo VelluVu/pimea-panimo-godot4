@@ -1,0 +1,53 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" uid="uid://cg4k8g85v3bhu" path="res://src/scenes/season_decor.gd" id="1_decor"]
+[ext_resource type="Script" path="res://src/scenes/new_year_banner.gd" id="2_banner"]
+[ext_resource type="Texture2D" path="res://assets/textures/new_year/streamers.png" id="3_streamers"]
+
+[node name="NewYearDecor" type="Node2D"]
+script = ExtResource("1_decor")
+season = 5
+
+[node name="Banner" type="Node2D" parent="."]
+light_mask = 3
+position = Vector2(380, 76)
+script = ExtResource("2_banner")
+
+[node name="YearBanner" type="Node2D" parent="."]
+light_mask = 3
+position = Vector2(404, 95)
+script = ExtResource("2_banner")
+shows_year = true
+first_colour = 2
+
+[node name="StreamerGold" type="Sprite2D" parent="."]
+light_mask = 3
+position = Vector2(150, 62)
+texture = ExtResource("3_streamers")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 4, 30)
+
+[node name="StreamerCyan" type="Sprite2D" parent="."]
+light_mask = 3
+position = Vector2(172, 62)
+texture = ExtResource("3_streamers")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 30, 4, 30)
+
+[node name="StreamerPink" type="Sprite2D" parent="."]
+light_mask = 3
+position = Vector2(300, 62)
+texture = ExtResource("3_streamers")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 60, 4, 30)
+
+[node name="StreamerGreen" type="Sprite2D" parent="."]
+light_mask = 3
+position = Vector2(527, 62)
+texture = ExtResource("3_streamers")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 90, 4, 30)

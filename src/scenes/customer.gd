@@ -58,6 +58,10 @@ var _sounds := CustomerSounds.new()
 var _walker: CustomerWalker
 var _sway: CustomerSway = CustomerSway.new()
 var _sprite_home_x: float = 0.0
+## CustomerData.effect_scene's instance, replaced when the data changes.
+var _effect: Node = null
+## Worn on a party-hat day (DayEventData.party_hats), under the sprite so it bobs with it.
+var _party_hat: Sprite2D = null
 
 
 func _ready() -> void:
@@ -70,7 +74,8 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	_walker.tick()
-	if _phase == CustomerSnapshot.Phase.LEAVING and _sway.tick(delta, _walker.art_pixel()):
+	var swaying : bool = _phase == CustomerSnapshot.Phase.LEAVING or (customer_data != null and customer_data.arrives_drunk())
+	if swaying and _sway.tick(delta, _walker.art_pixel()):
 		animated_sprite.position.x = _sprite_home_x + _sway.x
 		_on_animated_sprite_frame_changed()
 
@@ -83,6 +88,15 @@ func _on_animated_sprite_frame_changed() -> void:
 		bottle_hand_marker.position = CustomerHandOffsets.snap_to_art_grid(bottle_hand_marker.position, customer_data.hand_item.get_size(), animated_sprite.scale.x)
 	if customer_data != null:
 		beer_glass_sprite.flip_h = CustomerHandOffsets.is_flipped(animated_sprite.frame, customer_data.hand_flipped_frames, maxi(own_offsets.size(), 4))
+	_seat_party_hat()
+
+
+func _seat_party_hat() -> void:
+	if _party_hat == null or animated_sprite.sprite_frames == null:
+		return
+	var frame : Texture2D = animated_sprite.sprite_frames.get_frame_texture(animated_sprite.animation, animated_sprite.frame)
+	if frame != null:
+		_party_hat.position = PartyHat.position_for(frame, animated_sprite.offset, animated_sprite.flip_h)
 
 
 func _apply_visuals() -> void:
@@ -99,6 +113,23 @@ func _apply_visuals() -> void:
 		_glasses.carry_instead(customer_data.hand_item, animated_sprite.scale)
 	_play_animation(ANIM_IDLE)
 	_sounds.start_ambient_loop(self, customer_data)
+	if customer_data.arrives_drunk():
+		_sway.steps = TipsyRules.MAX_STEPS
+	if _party_hat != null:
+		_party_hat.queue_free()
+		_party_hat = null
+	if customer_data.wears_party_hat and DayEventManager.party_hats_today():
+		_party_hat = PartyHat.make_sprite()
+		animated_sprite.add_child(_party_hat)
+		_seat_party_hat()
+	if _effect != null:
+		_effect.queue_free()
+		_effect = null
+	if customer_data.effect_scene != null:
+		_effect = customer_data.effect_scene.instantiate()
+		add_child(_effect)
+		if _effect.has_method(&"attach"):
+			_effect.call(&"attach", animated_sprite)
 
 
 func _play_animation(anim_name: StringName, flip_horizontally: bool = false) -> void:
@@ -255,7 +286,7 @@ func _on_sale_timeout() -> void:
 
 	fill_glasses(outcome.beer_ebc)
 	_show_sale_popups(outcome)
-	_sway.steps = TipsyRules.sway_steps(outcome.servings, outcome.strongest_abv)
+	_sway.steps = maxi(_sway.steps, TipsyRules.sway_steps(outcome.servings, outcome.strongest_abv))
 
 	_bubble_text = generated_name + ": " + response_text
 	var display_time := _say(_bubble_text)
@@ -265,6 +296,8 @@ func _on_sale_timeout() -> void:
 		leave_after = maxf(leave_after, BarFightRampage.DURATION_SECONDS)
 	if outcome.servings > 0 and not customer_data.dialogue_sale_toast.is_empty():
 		BrewerySignals.customer_sale_narrated.emit(tr(customer_data.dialogue_sale_toast))
+	if outcome.servings > 0 and customer_data.is_served_illegally(outcome.strongest_abv) and not customer_data.dialogue_drunk_sale_toast.is_empty():
+		BrewerySignals.customer_sale_narrated.emit(tr(customer_data.dialogue_drunk_sale_toast))
 	if outcome.servings == 0 and customer_data.outburst_animation != &"":
 		var spot : Vector2 = _outburst_spot()
 		leave_after = maxf(leave_after, _seconds_to(spot) + _animation_seconds(customer_data.outburst_animation))

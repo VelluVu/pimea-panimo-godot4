@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="BeerStyle" format=3]
+
+[ext_resource type="Script" uid="uid://qpqfdi1wacne" path="res://src/brewing/beer_style.gd" id="1_kuohuraketti"]
+
+[resource]
+script = ExtResource("1_kuohuraketti")
+style_name = "Kuohuraketti"
+description = "Uudenvuoden kuohuva juhlaolut: vaalea, kuiva ja niin kuplainen, että korkki lähtee kuin raketti. Väkevänä se on illan malja. Alkoholittomalla hiivalla siitä tulee kuohuraketti sille, joka on jo saanut tarpeekseen."
+locked_hint = "Vaalea ja kuiva kuohuolut, jonka kuplat tulevat rätisevästä karkista. Karkkia myydään vain uutenavuotena."
+known_in_season = 5
+style = 35
+profit_margin_multiplier = 1.3
+fixed_price_per_bottle = 4.2
+price_season = 5
+off_season_price_per_bottle = 3.2
+reputation_change = 4
+peak_days = 0
+shelf_life_days = 20
+aging_factor = 0.1
+mash_steps = Array[int]([63])
+mash_band = 2.0
+hop_additions = Array[int]([0, 2])
+required_yeast_id = -1
+required_spice_ids = Array[int]([415])
+preferred_spice_ids = Array[int]([400])
+preferred_hop_profiles = Array[int]([1, 2])
+abv = 6.0
+min_abv = 0.0
+max_abv = 8.5
+min_ebc = 0
+max_ebc = 12
+min_ibu = 5
+max_ibu = 35
+scores_strength = false
+reference_recipe = Dictionary[int, int]({100: 5, 200: 10, 202: 20, 301: 1, 400: 1, 415: 1})
+metadata/_custom_type_script = "uid://qpqfdi1wacne"

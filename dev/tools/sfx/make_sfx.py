@@ -594,6 +594,57 @@ def winter_gust():
     return crush(mix(whoosh, hiss) * env(seconds, 0.25, 0.9), 48), 0.5
 
 
+def _crackle(seconds, density=60, level=1.0):
+    """Firework crackle: short bright pops scattered over `seconds`, thinning out."""
+    out = np.zeros(int(seconds * RATE))
+    for _ in range(int(density * seconds)):
+        start = rng.uniform(0.0, seconds) ** 1.6 / seconds ** 0.6
+        pop = highpass(noise(0.012), 1800) * perc(0.012, 300) * rng.uniform(0.3, 1.0)
+        i = int(start * RATE)
+        out[i:i + len(pop)] += pop[:len(out) - i]
+    return out * level
+
+
+def _boom(seconds, hold, cutoff, pitch_from, pitch_to):
+    body = lowpass(noise(seconds, hold=hold), cutoff) * perc(seconds, 9)
+    thump = triangle(sweep(pitch_from, pitch_to, seconds, 0.5), seconds) * perc(seconds, 10) * 0.8
+    return mix(body, thump)
+
+
+def rocket_far():
+    """A New Year rocket heard from the cellar: a thin whistle rising, then a muffled boom and
+    a soft crackle, all through the walls."""
+    whistle_s = 1.1
+    whistle = square(sweep(700, 1900, whistle_s, 0.8), whistle_s, 0.3) * env(whistle_s, 0.3, 0.15) * 0.16
+    boom = _boom(1.2, 10, 320, 110, 40)
+    crackle = lowpass(_crackle(1.4, 40), 2200) * 0.35
+    return crush(lowpass(mix(whistle, at(whistle_s, boom), at(whistle_s + 0.25, crackle)), 2600), 48), 0.5
+
+
+def rocket_near():
+    """A rocket bursting right above the cellar: a short whistle, a heavy boom that shakes the
+    ceiling, and a longer crackle."""
+    whistle_s = 0.6
+    whistle = square(sweep(900, 2200, whistle_s, 0.7), whistle_s, 0.3) * env(whistle_s, 0.15, 0.1) * 0.14
+    boom = _boom(1.6, 7, 520, 140, 35) * 1.3
+    crackle = lowpass(_crackle(1.8, 70), 3200) * 0.45
+    return crush(mix(whistle, at(whistle_s, boom), at(whistle_s + 0.2, crackle)), 48), 0.8
+
+
+def fireworks_door():
+    """Fireworks heard through the open door: no walls between, so bright bangs and crackle."""
+    bangs = mix(_boom(0.7, 4, 1400, 180, 60), at(0.35, _boom(0.6, 4, 1600, 200, 70) * 0.7))
+    crackle = _crackle(1.6, 90) * 0.6
+    return crush(mix(bangs, at(0.15, crackle)), 48), 0.6
+
+
+def candle_pop():
+    """A roman candle star leaving the tube: a quick fizz and a hollow pop."""
+    fizz = highpass(noise(0.09), 2500) * env(0.09, 0.005, 0.06) * 0.5
+    pop = mix(triangle(sweep(520, 180, 0.07), 0.07), lowpass(noise(0.05, hold=3), 1200) * 0.6) * perc(0.07, 45)
+    return crush(mix(fizz, at(0.05, pop)), 48), 0.5
+
+
 RECIPES = {
     "gunshot": gunshot,
     "thunder_near": thunder_near,
@@ -649,6 +700,10 @@ RECIPES = {
     "brew_result_low": brew_result_low,
     "door_creak": door_creak,
     "winter_gust": winter_gust,
+    "rocket_far": rocket_far,
+    "rocket_near": rocket_near,
+    "fireworks_door": fireworks_door,
+    "candle_pop": candle_pop,
 }
 
 

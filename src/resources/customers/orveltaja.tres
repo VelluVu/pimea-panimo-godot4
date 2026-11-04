@@ -1,0 +1,44 @@
+[gd_resource type="Resource" script_class="CustomerData" format=3]
+
+[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_data"]
+[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/orveltaja_anim.tres" id="2_sprite"]
+[ext_resource type="PackedScene" path="res://src/scenes/roman_candle_shots.tscn" id="3_shots"]
+
+[resource]
+script = ExtResource("1_data")
+customer_name = "Jartsa"
+title = "Örveltäjä"
+first_names = Array[String](["Jartsa", "Raimo", "Pertsa", "Kake", "Tuomo", "Jonne"])
+min_quality = 0.3
+budget_multiplier = 1.4
+primary_style = 35
+secondary_style = 31
+also_likes = Array[int]([21, 20])
+sprite_frames = ExtResource("2_sprite")
+randomize_skin = false
+randomize_hair = false
+randomize_clothes = false
+randomize_shoes = false
+carries_glass_out = false
+effect_scene = ExtResource("3_shots")
+voice_pitch = 0.85
+dialogue_intro = "HYVÄÄ UUTTA VUOTTA! *hik* Mä oon ihan selvä. Onks teillä jotain kuplivaa?"
+dialogue_success = "Tää kuplii niinku mun pää! Kippis koko kellarille!"
+dialogue_fallback = "Ei kuplii kunnolla, mut lasissa on juotavaa. Kelpaa!"
+dialogue_wrong_style = "Mikä tää on? Ihan sama, kippis!"
+dialogue_reject = "Tää on pahempaa ku viime vuos. Enkä mä muista viime vuotta."
+dialogue_no_match = "Ei kuplia? Mä meen ampuun raketit jonnekin muualle!"
+dialogue_preview_format = "Ooh, %s! Anna sitä, mä oon vielä ihan selvä!"
+dialogue_nothing_available = "Hyllyt on tyhjii ku mun lompakko. Onks tää edes baari?"
+tip_base_chance = 0.4
+risk_primary_style = -1
+risk_secondary_style = 0
+appearance_weight = 0.0
+busy_season = 5
+busy_season_weight = 3.0
+after_season_weight = 0.15
+max_bottles_per_visit = 2
+drunk_service_risk = 8
+dialogue_drunk_served = "Hups, toi oli vahvaa! *hik* Kippis, ja älkää kertoko kenellekään!"
+dialogue_drunk_sale_toast = "Myit väkevää jo valmiiksi humalaiselle. Se on laitonta, ja LVV:n korvat höristyvät."
+metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

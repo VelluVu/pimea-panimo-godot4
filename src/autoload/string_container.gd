@@ -39,6 +39,7 @@ const LAKKASELTZERI : String = "Alkoholiton lakkaseltzeri"
 const PUKKIBOCK : String = "Pukkibock"
 const TONTTUPUURO : String = "Tonttupuuro-olut"
 const JOULUOLUT : String = "Jouluolut"
+const KUOHURAKETTI : String = "Kuohuraketti"
 
 const KG : String = "kg"
 const G : String = "g"

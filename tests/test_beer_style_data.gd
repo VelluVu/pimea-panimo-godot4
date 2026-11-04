@@ -15,6 +15,9 @@ const GINGERBREAD_SPICE_ID : int = 412
 const PORRIDGE_RICE_ID : int = 116
 const CINNAMON_ID : int = 413
 const LACTOSE_ID : int = 408
+const POPPING_CANDY_ID : int = 415
+## Less malt and no sugar, as an alcohol-free yeast still leaves a little alcohol.
+const ALCOHOL_FREE_KUOHURAKETTI : Dictionary = {100: 3, 200: 10, 202: 20, 303: 1, 400: 1, 415: 1}
 
 
 func suite_name() -> String:
@@ -187,3 +190,29 @@ func test_jouluolut_needs_dark_crystal_malt() -> void:
 	assert_false(plain != null and plain.is_matched and plain.beer_style == jouluolut, "no dark crystal, no Jouluolut")
 	assert_eq(jouluolut.known_in_season, SeasonRules.Season.CHRISTMAS)
 	assert_true(jouluolut.off_season_price_per_bottle < jouluolut.fixed_price_per_bottle)
+
+
+## Kuohuraketti takes any yeast with popping candy: a lager yeast makes the party drink,
+## an alcohol-free yeast the one for a customer who has had enough.
+func test_kuohuraketti_brews_strong_or_alcohol_free() -> void:
+	var resolver := _resolver()
+	var kuohuraketti : BeerStyle = resolver.get_beer_style(BeerStyle.Style.KUOHURAKETTI)
+	var strong : BrewResult = resolver.resolve_brew_style(kuohuraketti.reference_recipe.duplicate())
+	assert_true(strong != null and strong.is_matched and strong.beer_style == kuohuraketti, "the reference recipe brews Kuohuraketti")
+	assert_true(strong.abv > BeerStyle.ALCOHOL_FREE_MAX_ABV, "the reference recipe is strong: %s" % strong.abv)
+	var alcohol_free_recipe : Dictionary = ALCOHOL_FREE_KUOHURAKETTI.duplicate()
+	var alcohol_free : BrewResult = resolver.resolve_brew_style(alcohol_free_recipe)
+	assert_true(alcohol_free != null and alcohol_free.is_matched and alcohol_free.beer_style == kuohuraketti, "an alcohol-free yeast still brews Kuohuraketti")
+	assert_true(alcohol_free.abv <= BeerStyle.ALCOHOL_FREE_MAX_ABV, "the alcohol-free yeast leaves no alcohol: %s" % alcohol_free.abv)
+	assert_true(absf(alcohol_free.original_quality - strong.original_quality) < 0.05, "strength is not scored, so neither version is worse")
+
+
+func test_kuohuraketti_needs_popping_candy() -> void:
+	var resolver := _resolver()
+	var kuohuraketti : BeerStyle = resolver.get_beer_style(BeerStyle.Style.KUOHURAKETTI)
+	var without : Dictionary = kuohuraketti.reference_recipe.duplicate()
+	without.erase(POPPING_CANDY_ID)
+	var plain : BrewResult = resolver.resolve_brew_style(without)
+	assert_false(plain != null and plain.is_matched and plain.beer_style == kuohuraketti, "no candy, no Kuohuraketti")
+	assert_eq(kuohuraketti.known_in_season, SeasonRules.Season.NEW_YEAR)
+	assert_true(kuohuraketti.off_season_price_per_bottle < kuohuraketti.fixed_price_per_bottle)

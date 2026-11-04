@@ -103,6 +103,7 @@
 [ext_resource type="Texture2D" path="res://assets/textures/christmas/tonttu_felt_tall.png" id="xm_tonttu_tall"]
 [ext_resource type="Texture2D" path="res://assets/textures/christmas/tonttu_felt_sitting.png" id="xm_tonttu_sit"]
 [ext_resource type="Texture2D" path="res://assets/textures/christmas/tonttu_felt_small.png" id="xm_tonttu_small"]
+[ext_resource type="PackedScene" path="res://src/scenes/new_year_decor.tscn" id="x_newyeardecor"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_yf5fn"]
 blend_mode = 1
@@ -834,6 +835,8 @@ stairs_bottom = NodePath("../WorldYSort/CustomerSpawner/StairsBottomMarker")
 room_center = NodePath("../WorldYSort/CustomerSpawner/RoomCenterMarker")
 counter_spot = NodePath("../WorldYSort/CustomerSpawner/CounterPositionsParent/CounterMarker1")
 bartender = NodePath("../WorldYSort/Bartender")
+
+[node name="NewYearDecor" parent="." instance=ExtResource("x_newyeardecor")]
 
 [node name="ChristmasDecor" type="Node2D" parent="."]
 script = ExtResource("87_ipwpp")

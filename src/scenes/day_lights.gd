@@ -64,7 +64,7 @@ func _set_season(season : SeasonRules.Season) -> void:
 			_day_darkness = BLACK_MONTH_DARKNESS
 		SeasonRules.Season.CYBER_WEEK:
 			_day_darkness = CYBER_WEEK_DARKNESS
-		SeasonRules.Season.CHRISTMAS:
+		SeasonRules.Season.CHRISTMAS, SeasonRules.Season.NEW_YEAR:
 			_day_darkness = CHRISTMAS_DARKNESS
 		_:
 			_day_darkness = _plain_darkness

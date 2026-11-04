@@ -152,6 +152,10 @@ msgid "Kotikalja"
 msgstr "Homebrew"
 
 #: src/autoload/string_container.gd
+msgid "Kuohuraketti"
+msgstr "Bubble Rocket"
+
+#: src/autoload/string_container.gd
 msgid "Kurpitsaolut"
 msgstr "Pumpkin Ale"
 
@@ -1582,6 +1586,25 @@ msgstr ""
 "Made to grandma's recipe: yeast, malty wort, and patience. Mild and sweet, "
 "nothing special."
 
+#: src/resources/beer_styles/kuohuraketti.tres
+msgid ""
+"Uudenvuoden kuohuva juhlaolut: vaalea, kuiva ja niin kuplainen, että korkki "
+"lähtee kuin raketti. Väkevänä se on illan malja. Alkoholittomalla hiivalla "
+"siitä tulee kuohuraketti sille, joka on jo saanut tarpeekseen."
+msgstr ""
+"The sparkling New Year party beer: pale, dry and so bubbly the cork takes "
+"off like a rocket. Brewed strong, it is the toast of the night. With an "
+"alcohol-free yeast it becomes a Bubble Rocket for someone who has already "
+"had enough."
+
+#: src/resources/beer_styles/kuohuraketti.tres
+msgid ""
+"Vaalea ja kuiva kuohuolut, jonka kuplat tulevat rätisevästä karkista. "
+"Karkkia myydään vain uutenavuotena."
+msgstr ""
+"A pale, dry sparkling beer whose bubbles come from a crackling candy. The "
+"candy is sold only at New Year."
+
 #: src/resources/beer_styles/kurpitsaolut.tres
 msgid ""
 "Amerikkalainen syysolut, jonka mäskiin heitetään paahdettua kurpitsaa. "
@@ -2877,6 +2900,54 @@ msgstr "Student"
 msgid "Toi %s näyttää sopivan budjettiin..."
 msgstr "That %s looks like it fits the budget..."
 
+#: src/resources/customers/orveltaja.tres
+msgid "Ei kuplia? Mä meen ampuun raketit jonnekin muualle!"
+msgstr "No bubbles? I'll go fire my rockets somewhere else!"
+
+#: src/resources/customers/orveltaja.tres
+msgid "Ei kuplii kunnolla, mut lasissa on juotavaa. Kelpaa!"
+msgstr "Not very bubbly, but there's a drink in the glass. Good enough!"
+
+#: src/resources/customers/orveltaja.tres
+msgid "HYVÄÄ UUTTA VUOTTA! *hik* Mä oon ihan selvä. Onks teillä jotain kuplivaa?"
+msgstr "HAPPY NEW YEAR! *hic* I'm totally sober. Got anything bubbly?"
+
+#: src/resources/customers/orveltaja.tres
+msgid "Hups, toi oli vahvaa! *hik* Kippis, ja älkää kertoko kenellekään!"
+msgstr "Oops, that was strong! *hic* Cheers, and don't tell anyone!"
+
+#: src/resources/customers/orveltaja.tres
+msgid "Hyllyt on tyhjii ku mun lompakko. Onks tää edes baari?"
+msgstr "The shelves are as empty as my wallet. Is this even a bar?"
+
+#: src/resources/customers/orveltaja.tres
+msgid "Mikä tää on? Ihan sama, kippis!"
+msgstr "What's this? Whatever, cheers!"
+
+#: src/resources/customers/orveltaja.tres
+msgid ""
+"Myit väkevää jo valmiiksi humalaiselle. Se on laitonta, ja LVV:n korvat "
+"höristyvät."
+msgstr ""
+"You sold strong beer to someone already drunk. That's illegal, and the "
+"LVV's ears prick up."
+
+#: src/resources/customers/orveltaja.tres
+msgid "Ooh, %s! Anna sitä, mä oon vielä ihan selvä!"
+msgstr "Ooh, %s! Give me that, I'm still totally sober!"
+
+#: src/resources/customers/orveltaja.tres
+msgid "Tää kuplii niinku mun pää! Kippis koko kellarille!"
+msgstr "This bubbles like my head! Cheers to the whole cellar!"
+
+#: src/resources/customers/orveltaja.tres
+msgid "Tää on pahempaa ku viime vuos. Enkä mä muista viime vuotta."
+msgstr "This is worse than last year. And I don't remember last year."
+
+#: src/resources/customers/orveltaja.tres
+msgid "Örveltäjä"
+msgstr "Reveller"
+
 #: src/resources/customers/papparainen.tres
 msgid ""
 "Ei täällä ollu mitään kunnon miehen juomaa. Palaan, kun ootte oppineet "
@@ -3435,6 +3506,16 @@ msgstr ""
 msgid "Tänään on arkipyhä. Odotettavissa sekalaisia ryhmiä ympäri kaupunkia."
 msgstr "Today is a public holiday. Expect mixed groups from all over town."
 
+#: src/resources/day_events/day_event_krapulapaiva.tres
+msgid ""
+"Uudenvuodenpäivä eli krapulapäivä. Aamu on hiljainen, ja ne harvat, jotka "
+"raahautuvat kellariin, kaipaavat jotain kevyttä tai alkoholitonta. LVV:kin "
+"nukkuu pitkään."
+msgstr ""
+"New Year's Day, also known as hangover day. The morning is quiet, and the "
+"few who drag themselves into the cellar want something light or "
+"alcohol-free. Even the LVV sleeps in."
+
 #: src/resources/day_events/day_event_kybermaanantai.tres
 msgid ""
 "Kybermaanantai! Baarit maksavat tynnyreistä tänään 25 % enemmän, ja "
@@ -3520,6 +3601,16 @@ msgstr ""
 #: src/resources/day_events/day_event_tuhoelaimet.tres
 msgid "Tuhoeläimet söivät varastosta %d kg maltaita."
 msgstr "Pests ate %d kg of malt from storage."
+
+#: src/resources/day_events/day_event_uudenvuodenaatto.tres
+msgid ""
+"Uudenvuodenaatto! Illalla kellari täyttyy juhlijoista ja kadulla paukkuu. "
+"Juhlakansa tippaa avokätisesti, mutta muista: jo humalaiselle ei saa myydä "
+"väkevää."
+msgstr ""
+"New Year's Eve! Tonight the cellar fills with revellers and the street "
+"crackles with rockets. The party crowd tips generously, but remember: you "
+"must not sell strong drinks to someone already drunk."
 
 #: src/resources/day_events/day_event_yllatystarkastus.tres
 msgid ""
@@ -4931,6 +5022,24 @@ msgstr "Dried bitter orange peel. An old friend of Witbier and Saison."
 msgid "Pomeranssinkuori"
 msgstr "Bitter Orange Peel"
 
+#: src/resources/ingredients/spices/popping_candy.tres
+msgid "Paukkukarkki"
+msgstr "Popping candy"
+
+#: src/resources/ingredients/spices/popping_candy.tres
+msgid ""
+"Poksuvaa karkkia, joka rätisee kielellä kuin pikkuraketti. Vaaleasta "
+"oluesta tulee sillä Kuohurakettia, väkevää tai alkoholitonta, hiivasta "
+"riippuen. Myynnissä vain uutenavuotena."
+msgstr ""
+"Popping candy that crackles on the tongue like a tiny rocket. It turns a "
+"pale beer into Bubble Rocket, strong or alcohol-free depending on the "
+"yeast. Sold only at New Year."
+
+#: src/resources/ingredients/spices/popping_candy.tres
+msgid "paukkukarkkia"
+msgstr "popping candy"
+
 #: src/resources/ingredients/spices/prompt.tres
 msgid "Kehote"
 msgstr "Prompt"
@@ -6264,6 +6373,10 @@ msgstr "Empty"
 #: src/scenes/main.tscn
 msgid "päivä: 1"
 msgstr "day: 1"
+
+#: src/scenes/new_year_banner.gd
+msgid "HYVÄÄ UUTTA VUOTTA"
+msgstr "HAPPY NEW YEAR"
 
 #: src/scenes/ui/achievement_tile.gd
 msgid ""
@@ -7973,7 +8086,10 @@ msgid ""
 "Jaahas, meinaat alkaa pyörittämään pimeää panimoa? Minä olen Pate, ja "
 "neuvon hieman alkuun. Ovet pysyvät kiinni, kunnes ensimmäinen olut on "
 "pantu. Avaa reseptikirja, niin nähdään, mitä tiedät."
-msgstr "Well now, so you mean to start running a hidden brewery? I'm Pate, and I'll help you get started. The doors stay shut until the first beer is brewing. Open the recipe book and let's see what you know."
+msgstr ""
+"Well now, so you mean to start running a hidden brewery? I'm Pate, and I'll "
+"help you get started. The doors stay shut until the first beer is brewing. "
+"Open the recipe book and let's see what you know."
 
 #: src/ui/guide/cellar_guide_text.gd
 msgid "Kaikki on pöydällä. Paina Pane, niin päästään keittämään."
