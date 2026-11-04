@@ -2,13 +2,13 @@
 
 [ext_resource type="Theme" uid="uid://dkmfe4a5nvvcd" path="res://src/resources/themes/main_theme.tres" id="1_m1kxf"]
 [ext_resource type="Script" uid="uid://blvng2ex11ydp" path="res://src/scenes/ui/main_menu.gd" id="2_x2yvf"]
-[ext_resource type="PackedScene" path="res://src/scenes/ui/menu_backdrop.tscn" id="menu_backdrop"]
-[ext_resource type="Script" path="res://src/ui/season_chip.gd" id="season_chip"]
 [ext_resource type="PackedScene" uid="uid://cvfiooeo4kwdt" path="res://src/scenes/ui/options_window.tscn" id="4_btxxm"]
 [ext_resource type="PackedScene" path="res://src/scenes/ui/leaderboard_window.tscn" id="5_x2yvf"]
 [ext_resource type="PackedScene" uid="uid://l06vc07u2qk7" path="res://src/scenes/ui/olutoppi_window.tscn" id="7_olutoppi"]
 [ext_resource type="PackedScene" path="res://src/scenes/ui/achievements_window.tscn" id="8_ach"]
 [ext_resource type="PackedScene" path="res://src/systems/console/console_panel.tscn" id="9_console"]
+[ext_resource type="PackedScene" path="res://src/scenes/ui/menu_backdrop.tscn" id="menu_backdrop"]
+[ext_resource type="Script" uid="uid://dldflwygsvloj" path="res://src/ui/season_chip.gd" id="season_chip"]
 
 [node name="MainMenu" type="Control" unique_id=1468878832]
 layout_mode = 3
@@ -20,7 +20,7 @@ grow_vertical = 2
 theme = ExtResource("1_m1kxf")
 script = ExtResource("2_x2yvf")
 
-[node name="MenuBackdrop" parent="." instance=ExtResource("menu_backdrop")]
+[node name="MenuBackdrop" parent="." unique_id=53003989 instance=ExtResource("menu_backdrop")]
 process_mode = 3
 
 [node name="MenuPanel" type="PanelContainer" parent="." unique_id=433273737]
@@ -34,7 +34,7 @@ offset_right = 628.0
 offset_bottom = 130.0
 grow_vertical = 2
 
-[node name="Margin" type="MarginContainer" parent="MenuPanel"]
+[node name="Margin" type="MarginContainer" parent="MenuPanel" unique_id=1002068847]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/margin_left = 6
@@ -42,7 +42,7 @@ theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="BoardRows" type="VBoxContainer" parent="MenuPanel/Margin"]
+[node name="BoardRows" type="VBoxContainer" parent="MenuPanel/Margin" unique_id=882450255]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 4
@@ -55,14 +55,14 @@ theme_override_font_sizes/font_size = 32
 text = "Pimeä Panimo"
 horizontal_alignment = 1
 
-[node name="SeasonLine" type="Label" parent="MenuPanel/Margin/BoardRows"]
+[node name="SeasonLine" type="Label" parent="MenuPanel/Margin/BoardRows" unique_id=355530178]
 unique_name_in_owner = true
 layout_mode = 2
 horizontal_alignment = 1
 script = ExtResource("season_chip")
 long_form = true
 
-[node name="Gap" type="Control" parent="MenuPanel/Margin/BoardRows"]
+[node name="Gap" type="Control" parent="MenuPanel/Margin/BoardRows" unique_id=1759287468]
 custom_minimum_size = Vector2(0, 2)
 layout_mode = 2
 mouse_filter = 2
@@ -81,7 +81,7 @@ layout_mode = 2
 theme_type_variation = &"PrimaryButton"
 text = "Jatka peliä"
 
-[node name="SaveSummary" type="Label" parent="MenuPanel/Margin/BoardRows/RootMenuView"]
+[node name="SaveSummary" type="Label" parent="MenuPanel/Margin/BoardRows/RootMenuView" unique_id=2145708908]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
@@ -128,7 +128,7 @@ layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 3
 
-[node name="NewGameWarning" type="Label" parent="MenuPanel/Margin/BoardRows/StartGameView"]
+[node name="NewGameWarning" type="Label" parent="MenuPanel/Margin/BoardRows/StartGameView" unique_id=1492909322]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(140, 0)
 layout_mode = 2

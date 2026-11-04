@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="DayEventData" format=3]
+[gd_resource type="Resource" script_class="DayEventData" format=3 uid="uid://h1gmfu22msym"]
 
 [ext_resource type="Script" uid="uid://dhlswvb7h0ba8" path="res://src/events/day_event_data.gd" id="1_event"]
 [ext_resource type="Script" uid="uid://dewmdbm4a0vst" path="res://src/progression/run_perk.gd" id="2_perk"]
@@ -8,8 +8,8 @@ script = ExtResource("2_perk")
 perk_name = "Joulurauha"
 description = "LVV:n tarkastajatkin ovat kotona kinkun ääressä."
 icon_placeholder = "🎄"
-sale_risk_multiplier = 0.5
 raid_threshold_multiplier = 1.5
+sale_risk_multiplier = 0.5
 
 [resource]
 script = ExtResource("1_event")
