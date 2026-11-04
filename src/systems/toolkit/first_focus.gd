@@ -51,6 +51,9 @@ static func prefer(button : Control) -> void:
 static func focus_now(window : Control, hidden : bool = true) -> void:
 	if not is_instance_valid(window) or not window.is_visible_in_tree():
 		return
+	# A window opened under another (two in one frame) is shut; _give_back_focus() focuses it later.
+	if is_instance_valid(_top_window) and window != _top_window and not _top_window.is_ancestor_of(window):
+		return
 	_follow_focus(window)
 	var focused : Control = window.get_viewport().gui_get_focus_owner()
 	if focused != null and window.is_ancestor_of(focused):
