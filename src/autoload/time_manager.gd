@@ -15,6 +15,9 @@ const LOG_DAY_CHANGED : String = "--- DAY CHANGED: Day %s starts ---"
 
 @export var day_duration_seconds : float = DayPace.DAY_SECONDS
 var day_timer: Timer
+## The clock ran out with customers at the counter: they finish, no one new comes in, or a
+## busy cellar would keep the day open forever.
+var is_last_call : bool = false
 var aging_timer: Timer
 var ferment_timer: Timer
 
@@ -48,6 +51,7 @@ func _ready() -> void:
 ## The clock outlives a run: a new game stays stopped (free practice until the first
 ## brew), a loaded save with a batch resumes.
 func _on_brewery_changed(brewery: Brewery) -> void:
+	is_last_call = false
 	day_timer.stop()
 	_on_brewery_state_changed(brewery)
 
@@ -83,6 +87,7 @@ func _on_ferment_tick() -> void:
 ## No player to confirm with, so it rechecks shortly instead of ending the day mid-sale.
 func _on_day_timeout() -> void:
 	if CustomerManager.has_active_customers():
+		is_last_call = true
 		day_timer.start(DAY_END_CUSTOMER_RETRY_SECONDS)
 		return
 
@@ -110,6 +115,7 @@ func force_advance_day() -> void:
 
 
 func _advance_day() -> void:
+	is_last_call = false
 	var brewery := BrewEngine.current_brewery
 	if brewery == null:
 		return

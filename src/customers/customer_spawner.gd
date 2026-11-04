@@ -114,7 +114,7 @@ func scatter_groups() -> void:
 
 
 func _is_quiet() -> bool:
-	return Time.get_ticks_msec() < _quiet_until_msec
+	return Time.get_ticks_msec() < _quiet_until_msec or TimeManager.is_last_call
 
 
 ## No stock check: the first-brew gate is in CustomerManager, and later an empty cellar
