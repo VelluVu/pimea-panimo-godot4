@@ -64,9 +64,14 @@ func get_random_customer_data() -> CustomerData:
 	return _pick_weighted_customer(eligible_customers)
 
 
-## The Don's protection keeps the Agentti out of the cellar for the day it was paid.
+## The Don's protection keeps the Agentti out of the cellar for the day it was paid, and
+## Joulupukki waits until the tontut have marked enough visits (NaughtyListRules).
 func _kept_away(customer : CustomerData, brewery : Brewery) -> bool:
-	return brewery != null and customer.title == TITLE_AGENTTI and brewery.current_day < brewery.agentti_free_until_day
+	if brewery == null:
+		return false
+	if customer.korvatunturi_role == CustomerData.KorvatunturiRole.JOULUPUKKI:
+		return not NaughtyListRules.joulupukki_due(brewery.naughty_list_kiltti, brewery.naughty_list_tuhma)
+	return customer.title == TITLE_AGENTTI and brewery.current_day < brewery.agentti_free_until_day
 
 
 ## A group visit with any member the Don's protection keeps away stays out as a whole.

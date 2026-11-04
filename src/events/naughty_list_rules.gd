@@ -6,6 +6,9 @@ extends RefCounted
 
 enum Verdict { NONE, GIFT, FAVOUR, PUNISHMENT }
 
+## Tonttu visits marked since his last settling before Joulupukki comes again; tontut come
+## about three times a day, so he comes about every other day with a list worth reading.
+const JOULUPUKKI_MIN_MARKS : int = 6
 ## Kiltti marks needed, with his Pukkibock served, for the three wrapped gifts.
 const GIFT_MIN_KILTTI : int = 2
 const GIFT_COUNT : int = 3
@@ -21,6 +24,10 @@ const SIP_MAX_BOTTLES : int = 3
 const HIDE_SHARE : float = 0.34
 
 enum Mischief { FOOTPRINTS, HIDE_INGREDIENT, SIP_KEG }
+
+
+static func joulupukki_due(kiltti : int, tuhma : int) -> bool:
+	return kiltti + tuhma >= JOULUPUKKI_MIN_MARKS
 
 
 static func verdict(kiltti : int, tuhma : int, got_favourite : bool) -> Verdict:

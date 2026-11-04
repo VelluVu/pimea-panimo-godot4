@@ -6,6 +6,12 @@ func suite_name() -> String:
 	return "naughty_list_rules"
 
 
+func test_joulupukki_waits_for_enough_marked_visits() -> void:
+	assert_false(NaughtyListRules.joulupukki_due(0, 0))
+	assert_false(NaughtyListRules.joulupukki_due(NaughtyListRules.JOULUPUKKI_MIN_MARKS - 2, 1))
+	assert_true(NaughtyListRules.joulupukki_due(NaughtyListRules.JOULUPUKKI_MIN_MARKS - 2, 2))
+
+
 func test_more_tuhma_marks_bring_the_punishment() -> void:
 	assert_eq(NaughtyListRules.verdict(1, 2, true), NaughtyListRules.Verdict.PUNISHMENT)
 
