@@ -100,10 +100,12 @@ def look() -> Look:
 
 # The bucket he carries out: the handle up to his paw, three bottle necks with their caps
 # over the lit rim, the body narrowing to the bottom. Red, apart from the two he wears.
+# The gaps between the necks are the bucket's dark inside, not see-through: his paw is
+# behind the handle and showed through as holes.
 BUCKET_OF_BOTTLES = [
     ".kkkkkk.",
-    "k.y.y.yk",
-    "k.B.G.Bk",
+    "kxyxyxyk",
+    "kxBxGxBk",
     "XqqqqqqX",
     "XXXXXXXx",
     ".XXXXXx.",

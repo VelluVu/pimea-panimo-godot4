@@ -141,6 +141,15 @@ static func position_for(title: String, frame: int, own_offsets: Array[Vector2] 
 	return offsets[frame % offsets.size()]
 
 
+## A held item drawn at the body's pixel size (the bucket) moved so its pixels land on the
+## body's pixel grid; off the grid they straddle the body's pixels and cut them in half.
+## `item_size` is the texture size in art pixels, centred on `position`.
+static func snap_to_art_grid(position: Vector2, item_size: Vector2, pixel: float) -> Vector2:
+	var half : Vector2 = item_size * pixel / 2.0
+	var corner : Vector2 = ((position - half) / pixel).round() * pixel
+	return corner + half
+
+
 ## True when the glass is mirrored on this walk_towards frame; `flipped_frames` lists them
 ## within the table, so the index wraps like position_for() with `table_size` frames.
 static func is_flipped(frame: int, flipped_frames: Array[int], table_size: int) -> bool:

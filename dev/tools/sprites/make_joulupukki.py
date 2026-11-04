@@ -58,11 +58,11 @@ HEAD_FRONT = [
 	".......WWWWWWWWWWWWwww......",
 	"........sWWWssWWWsst........",
 	"........ssessssesstt........",
-	".......wpptsspssppttw.......",
-	"......WWWWwppppppWWwwg......",
+	".......Wpptsspssppttw.......",
+	"......WWWWWppppppWWwwg......",
 	"......WWWWWWWWWWWWWwwg......",
 	"......WWWWWWqqqqWWWwwg......",
-	".......WWWWWWWWWWWwwg.......",
+	"......WWWWWWWWWWWWwwg.......",
 	".......WWWWWWWWWWWwwg.......",
 	"........WWWWWWWWWwwg........",
 	"........WWWWWWWWwwgg........",
@@ -71,20 +71,22 @@ HEAD_FRONT = [
 	"...........WWwg.............",
 ]
 HEAD_BACK = [
-	"...........RRRr.............",
-	"..........RRRRRrrr..........",
-	"..........RRRRRrrrrr........",
-	".........RRRRRRrrr.rrWW.....",
-	".........RRRRRRrr....Wwg....",
-	"........WWWWWWWWWWww.wg.....",
-	".......WWWWWWWWWWWWwww......",
-	"........WWWWWWWWWwww........",
-	".......wWWWWWWWWwwwgg.......",
-	".......wWWWWWWWwwwwgg.......",
-	"......WWwWWWWWwwwwggWg......",
-	"......WWW.wwwwwwgg..Wg......",
-	"......WWW..sssstt..wWg......",
-	".......WW..........wg.......",
+	".............rRRR...........",
+	"..........rrrRRRRR..........",
+	"........rrrrrRRRRR..........",
+	".....WWrr.rrrRRRRRR.........",
+	"....gwW....rrRRRRRR.........",
+	".....gw.WWWWWWWWWWWw........",
+	".......WWWWWWWWWWWWwg.......",
+	"........WWWWWWWWWWwwg.......",
+	".......WWWWWWWWWWwwgg.......",
+	"......WWWWWWWWWWwwwgg.......",
+	"......WWWWWWWWWwwwgggg......",
+	"......WWWWWWWWwwgggggg......",
+	"......WWWWWWWwwgggg..g......",
+	".......WWWWWwwgggg..........",
+	"........WWwwggggggg.........",
+	".........wggggggg...........",
 ]
 # Shoulders, arms hanging by a round belly, the belt and buckle, the fur hem. The arms are
 # split from the body by the shade colour; the mittens rest at the belt.
@@ -118,32 +120,81 @@ TORSO_BACK = [
 	"......WWWWWWWWWWWWWwwww.....",
 	".......WWWWWWWWWWWwwwg......",
 ]
-# The sack: over his left shoulder, so from the front it bulges out behind his right side
-# (painted first, the body covers most of it); from behind it covers his back.
+# The sack (drawn by the user 2026-11-04): a big one he carries behind him, his right hand
+# raised to his shoulder gripping its neck, hanging almost to the floor and showing between
+# his legs. From the front it hangs behind his right side (painted first, the body and legs
+# cover the rest), with his left arm still at the belt; from behind it covers his back. The
+# sack grids are wider than the body box, so each has its own frame x. The bottom rows run
+# on behind the legs, so walking opens no holes in it.
 SACK_FRONT = [
-	"......................cc....",
-	".....................BBBb...",
-	"....................BBBBbb..",
-	"...................BBBBBbbb.",
-	"...................BBBBBbbb.",
-	"...................BBBBbbbb.",
-	"...................BBBBbbbb.",
-	"....................BBbbbb..",
+	"......BB............",
+	".....BBBB...........",
+	"....................",
+	"....BB..............",
+	"...BBB..............",
+	"..BBBB..............",
+	".BBBBB..............",
+	".BBBBB..............",
+	"BBBBBBB.............",
+	"BBBBBBBB............",
+	"BBBBBBBBb...........",
+	"BBBBBBBBb...........",
+	"BBBBBBBBb...........",
+	"BBBBBBBBb...........",
+	".BBBBBBb............",
+	".BBBBBBbb...........",
+	"...BBBBbbbbbbbbbbbb.",
+	"......bbbbbbbbbbbbb.",
+	"........bbbbbbbbbb..",
 ]
-SACK_FRONT_TOP = 14
+SACK_FRONT_X = 4
+SACK_FRONT_TOP = 17
+# His right arm raised, the mitten at the sack's neck; the left arm stays at the belt.
+TORSO_FRONT_CARRY = [
+	"....kkkqWWWWWWWWwwgg........",
+	"....WWwkrWWWWWWwwggrrr......",
+	"....RRRrrRWWWWwwgRRrqrr.....",
+	"....RRRrRRRWWwgRRRRrqrrr....",
+	"....RRRRRRRRRRRRRRRRrqrr....",
+	".....RRRRRRRRRRRRRRRrqrrr...",
+	"......RRRRRRRRRRRRRRRqrrr...",
+	".......RRRRRRRRRRRRRRqrrr...",
+	".......kkkkkkYYykkkkkkwww...",
+	".......RRRRRRYyyRRRRrqkkk...",
+	".......WWWWWWWWWWWWwww.kk...",
+	"......WWWWWWWWWWWWWwwww.....",
+	".......WWWWWWWWWWWwwwg......",
+]
+# The top of the mitten round the sack's neck, a row above the torso, and the cord.
+HAND_FRONT = ["kkkc"]
+HAND_FRONT_X = 10
 SACK_BACK = [
-	"...........cc...............",
-	"..........BBBBb.............",
-	"........BBBBBBBbb...........",
-	".......BBBBBBBBBbbb.........",
-	".......BBBBBBBBBbbb.........",
-	".......BBBBBBBBbbbb.........",
-	".......BBBBBBBbbbbb.........",
-	".......BBBBBBbbbbbb.........",
-	"........BBBbbbbbbb..........",
-	"..........bbbbbb............",
+	".............Bb......",
+	"............BBBb.....",
+	".............cc......",
+	"...........BBBbb.....",
+	".........BBBBBbbb....",
+	".......BBBBBcBbbbb...",
+	".....BBBBBBBcBbbbbb..",
+	"....BBBBBBBBBBBbbbbb.",
+	"...BBBBBBBBBBBbbbbbb.",
+	"..BBBBBBBBBBBBBbbbbbb",
+	"..BBBBBBBBBBBBBbbbbbb",
+	".BBBBBBBBBBBBBbbbbbbb",
+	".BBBBBBBBBBBBBbbbbbbb",
+	".BBBBBBBBBBBBBbbbbbbb",
+	".BBBBBBBBBBBBbbbbbbbb",
+	"..BBBBBBBBBBBbbbbbbb.",
+	"..BBBBBBBBBbbbbbbbbb.",
+	"...BBBBBBBbbbbbbbbb..",
+	"....bbbbbbbbbbbbb....",
+	"......bbbbbbbbb......",
 ]
-SACK_BACK_TOP = 18
+SACK_BACK_X = 12
+SACK_BACK_TOP = 16
+# From behind, the same right hand grips the neck at his shoulder, on the other side.
+HAND_BACK = ["ckkk"]
+HAND_BACK_X = 26
 
 LEGS = {
 	"stand": [
@@ -252,35 +303,43 @@ OFF_TORSO_FRONT = _open_coat(TORSO_FRONT)
 
 LOOKS = {
 	"joulupukki_40": dict(head_front=HEAD_FRONT, head_back=HEAD_BACK, head_top=HEAD_TOP,
-		torso_front=TORSO_FRONT, torso_back=TORSO_BACK, sack=True),
+		torso_front=TORSO_FRONT_CARRY, torso_back=TORSO_BACK, sack=True),
 	"pukki_40": dict(head_front=OFF_HEAD_FRONT, head_back=OFF_HEAD_BACK, head_top=OFF_HEAD_TOP,
 		torso_front=OFF_TORSO_FRONT, torso_back=TORSO_BACK, sack=False),
 }
 
 
 def check(look: dict) -> None:
-	grids = [look["head_front"], look["head_back"], look["torso_front"], look["torso_back"],
-		SACK_FRONT, SACK_BACK, *LEGS.values()]
-	for grid in grids:
+	grids = [look["head_front"], look["head_back"], look["torso_front"], look["torso_back"], *LEGS.values()]
+	sacks = [(SACK_FRONT, SACK_FRONT_X), (SACK_BACK, SACK_BACK_X), (HAND_FRONT, HAND_FRONT_X), (HAND_BACK, HAND_BACK_X)]
+	for grid in grids + [sack for sack, _ in sacks]:
+		width = len(grid[0])
+		assert grid in [sack for sack, _ in sacks] or width == BOX_WIDTH, f"row is {width} wide: {grid[0]!r}"
 		for row in grid:
-			assert len(row) == BOX_WIDTH, f"row is {len(row)} wide: {row!r}"
+			assert len(row) == width, f"uneven row {row!r}"
 			for char in row:
 				assert char == "." or char in PALETTE, f"no colour for {char!r} in {row!r}"
+	for sack, left in sacks:
+		assert left + len(sack[0]) <= FRAME, "sack runs off the frame"
 
 
 def draw_frame(sheet: Image.Image, look: dict, column: int, row: int, *, back: bool, bob: int, legs: str) -> None:
 	frame = Image.new("RGBA", (FRAME, FRAME), (0, 0, 0, 0))
+	# From the front the sack hangs behind everything, the legs too.
+	if look["sack"] and not back:
+		paint(frame, PALETTE, SACK_FRONT, SACK_FRONT_X, SACK_FRONT_TOP + bob)
 	leg_rows = LEGS[legs]
 	paint(frame, PALETTE, leg_rows, BOX_X, LEGS_TOP)
 	# The belly sits a row lower on a bob up, so no gap opens above the legs.
 	for gap_row in range(bob, 0):
 		paint(frame, PALETTE, leg_rows[:1], BOX_X, LEGS_TOP + gap_row)
-	if look["sack"] and not back:
-		paint(frame, PALETTE, SACK_FRONT, BOX_X, SACK_FRONT_TOP + bob)
 	paint(frame, PALETTE, look["torso_back"] if back else look["torso_front"], BOX_X, TORSO_TOP + bob)
 	paint(frame, PALETTE, look["head_back"] if back else look["head_front"], BOX_X, look["head_top"] + bob)
 	if look["sack"] and back:
-		paint(frame, PALETTE, SACK_BACK, BOX_X, SACK_BACK_TOP + bob)
+		paint(frame, PALETTE, SACK_BACK, SACK_BACK_X, SACK_BACK_TOP + bob)
+	if look["sack"]:
+		hand, hand_x = (HAND_BACK, HAND_BACK_X) if back else (HAND_FRONT, HAND_FRONT_X)
+		paint(frame, PALETTE, hand, hand_x, TORSO_TOP - 1 + bob)
 	sheet.alpha_composite(frame, (column * FRAME, row * FRAME))
 
 

@@ -105,7 +105,7 @@ func _show_customer() -> void:
 	_offsets.clear()
 	_flips.clear()
 	for frame : int in range(frame_count):
-		_offsets.append(CustomerHandOffsets.position_for(data.title, frame, data.hand_offsets))
+		_offsets.append(_on_grid(CustomerHandOffsets.position_for(data.title, frame, data.hand_offsets)))
 		_flips.append(CustomerHandOffsets.is_flipped(frame, data.hand_flipped_frames, maxi(data.hand_offsets.size(), 4)))
 		_customers.append(_add_customer(data, frame))
 		_frame_labels.append(_add_label(Vector2(frame * CELL_WIDTH + 8.0, FEET_Y + 2.0)))
@@ -155,9 +155,21 @@ func _select_frame(frame: int) -> void:
 		queue_redraw()
 
 
+## A held item drawn at body pixel size (the bucket) moves a whole body pixel at a time and
+## stays on the body's grid, as the game snaps it.
 func _nudge(delta: Vector2) -> void:
-	_offsets[_frame] += delta
+	var item : Texture2D = _datas[_index].hand_item
+	if item != null:
+		delta = delta.sign() * BIG_STEP
+	_offsets[_frame] = _on_grid(_offsets[_frame] + delta)
 	_mark_dirty()
+
+
+func _on_grid(offset: Vector2) -> Vector2:
+	var item : Texture2D = _datas[_index].hand_item
+	if item == null:
+		return offset
+	return CustomerHandOffsets.snap_to_art_grid(offset, item.get_size(), BIG_STEP)
 
 
 func _mark_dirty() -> void:

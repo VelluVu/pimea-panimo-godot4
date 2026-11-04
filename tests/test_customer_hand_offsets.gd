@@ -74,6 +74,19 @@ func test_glass_flips_only_on_listed_frames() -> void:
 	assert_false(HandOffsetsScript.is_flipped(3, [] as Array[int], 4))
 
 
+## The 8x7 bucket at 4x: its corner must sit on a multiple of 4 like the body's pixels.
+func test_held_item_snaps_to_the_body_pixel_grid() -> void:
+	var on_grid : Vector2 = HandOffsetsScript.snap_to_art_grid(Vector2(-31, -40), Vector2(8, 7), 4.0)
+	assert_eq(on_grid, Vector2(-32, -42))
+	var corner : Vector2 = on_grid - Vector2(16, 14)
+	assert_eq(fposmod(corner.x, 4.0), 0.0)
+	assert_eq(fposmod(corner.y, 4.0), 0.0)
+
+
+func test_held_item_on_the_grid_stays_put() -> void:
+	assert_eq(HandOffsetsScript.snap_to_art_grid(Vector2(-28, -34), Vector2(8, 7), 4.0), Vector2(-28, -34))
+
+
 func test_every_tonttu_has_its_own_hand_offsets() -> void:
 	for name : String in ["harmaa", "sydan", "punainen"]:
 		var tonttu : CustomerData = load("res://src/resources/customers/tonttu_%s.tres" % name)
