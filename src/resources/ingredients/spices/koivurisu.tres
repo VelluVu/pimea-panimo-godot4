@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="IngredientData" format=3]
+
+[ext_resource type="Script" uid="uid://dniwiyu5ynp71" path="res://src/brewing/ingredient_data.gd" id="1_koivurisu"]
+
+[resource]
+script = ExtResource("1_koivurisu")
+id = 414
+name = "Koivurisu"
+name_partitive = "koivurisua"
+description = "Joulupukin terveiset tuhmalle panimomestarille: nippu koivunvarpuja punaisella nauhalla. Ei myynnissä missään. Savuoluessa ja sahdissa se maistuu yllättävän hyvältä, mikä on melkein yhtä nöyryyttävää."
+base_price = 0
+unit = 2
+type = 3
+for_sale = false
+metadata/_custom_type_script = "uid://dniwiyu5ynp71"

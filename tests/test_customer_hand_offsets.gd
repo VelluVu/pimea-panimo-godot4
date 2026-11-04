@@ -57,3 +57,17 @@ func test_praying_customers_hold_the_glass_at_the_middle() -> void:
 
 func test_frame_index_wraps_around_the_table() -> void:
 	assert_eq(HandOffsetsScript.position_for("", 4), HandOffsetsScript.DEFAULT_OFFSETS[0])
+
+
+## A customer's own table wins over its title's, so the small tonttu holds the glass lower.
+func test_own_offsets_override_the_title_table() -> void:
+	var own : Array[Vector2] = [Vector2(22, -14), Vector2(22, -22)]
+	assert_eq(HandOffsetsScript.position_for(HandOffsetsScript.MUNKKI_TITLE, 1, own), Vector2(22, -22))
+	assert_eq(HandOffsetsScript.position_for("", 2, own), Vector2(22, -14))
+
+
+func test_every_tonttu_has_its_own_hand_offsets() -> void:
+	for name : String in ["harmaa", "sydan", "punainen"]:
+		var tonttu : CustomerData = load("res://src/resources/customers/tonttu_%s.tres" % name)
+		assert_eq(tonttu.hand_offsets.size(), 4, name)
+		assert_true(tonttu.sprite_frames.has_animation(&"walk_towards"), name)

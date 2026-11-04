@@ -98,19 +98,19 @@
 [ext_resource type="PackedScene" path="res://src/scenes/ui/achievements_window.tscn" id="99_ach"]
 [ext_resource type="PackedScene" path="res://src/scenes/ui/game_menu_window.tscn" id="99_gamemenu"]
 [ext_resource type="PackedScene" path="res://src/scenes/ui/leaderboard_window.tscn" id="99_leaderboard"]
+[ext_resource type="Texture2D" uid="uid://ldsfshd2dflm" path="res://assets/textures/christmas/christmas_barrel_candles.png" id="xm_candles"]
+[ext_resource type="SpriteFrames" uid="uid://drxqeqayhy0x" path="res://src/resources/sprite_frames/christmas_lights_anim.tres" id="xm_lights"]
+[ext_resource type="Texture2D" uid="uid://bn8esc2carl62" path="res://assets/textures/christmas/christmas_candlestick.png" id="xm_stick"]
+[ext_resource type="Texture2D" uid="uid://c0cdp6ebcss17" path="res://assets/textures/christmas/tonttu_felt_sitting.png" id="xm_tonttu_sit"]
+[ext_resource type="Texture2D" uid="uid://c8fsvpxayixi2" path="res://assets/textures/christmas/tonttu_felt_small.png" id="xm_tonttu_small"]
+[ext_resource type="Texture2D" uid="uid://bd8hekf226vkv" path="res://assets/textures/christmas/tonttu_felt_tall.png" id="xm_tonttu_tall"]
+[ext_resource type="Texture2D" uid="uid://bgu731ac1dmhc" path="res://assets/textures/christmas/christmas_tree.png" id="xm_tree"]
 [ext_resource type="PackedScene" path="res://src/scenes/ui/close_day_confirm_window.tscn" id="x_closedayconfirmwindow"]
 [ext_resource type="PackedScene" path="res://src/scenes/ui/day_recap_window.tscn" id="x_dayrecapwindow"]
 [ext_resource type="PackedScene" path="res://src/scenes/ui/game_end_window.tscn" id="x_gameendwindow"]
 [ext_resource type="PackedScene" path="res://src/scenes/ui/lvv_raid_window.tscn" id="x_lvvraidwindow"]
 [ext_resource type="PackedScene" uid="uid://dfxsisxcex8tj" path="res://src/scenes/ui/recipe_library_window.tscn" id="x_recipelibrarywindow"]
 [ext_resource type="Script" uid="uid://dldflwygsvloj" path="res://src/ui/season_chip.gd" id="x_seasonchip"]
-[ext_resource type="Texture2D" path="res://assets/textures/christmas/christmas_tree.png" id="xm_tree"]
-[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/christmas_lights_anim.tres" id="xm_lights"]
-[ext_resource type="Texture2D" path="res://assets/textures/christmas/christmas_candlestick.png" id="xm_stick"]
-[ext_resource type="Texture2D" path="res://assets/textures/christmas/christmas_barrel_candles.png" id="xm_candles"]
-[ext_resource type="Texture2D" path="res://assets/textures/christmas/tonttu_felt_tall.png" id="xm_tonttu_tall"]
-[ext_resource type="Texture2D" path="res://assets/textures/christmas/tonttu_felt_sitting.png" id="xm_tonttu_sit"]
-[ext_resource type="Texture2D" path="res://assets/textures/christmas/tonttu_felt_small.png" id="xm_tonttu_small"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_yf5fn"]
 blend_mode = 1
@@ -1716,6 +1716,38 @@ position = Vector2(200, 85)
 [node name="End" type="Marker2D" parent="WorldYSort/ImmersionEventSpawner/BatPathMarkers" unique_id=979688027]
 position = Vector2(75, 60)
 
+[node name="TonttuArchPath" type="Node2D" parent="WorldYSort/ImmersionEventSpawner" unique_id=895931394]
+
+[node name="Start" type="Marker2D" parent="WorldYSort/ImmersionEventSpawner/TonttuArchPath" unique_id=1712523692]
+position = Vector2(140, 246)
+
+[node name="End" type="Marker2D" parent="WorldYSort/ImmersionEventSpawner/TonttuArchPath" unique_id=1510962650]
+position = Vector2(258, 246)
+
+[node name="TonttuStorePath" type="Node2D" parent="WorldYSort/ImmersionEventSpawner" unique_id=1696818435]
+
+[node name="Start" type="Marker2D" parent="WorldYSort/ImmersionEventSpawner/TonttuStorePath" unique_id=14111861]
+position = Vector2(572, 290)
+
+[node name="End" type="Marker2D" parent="WorldYSort/ImmersionEventSpawner/TonttuStorePath" unique_id=582135638]
+position = Vector2(650, 290)
+
+[node name="TonttuCounterPeek" type="Node2D" parent="WorldYSort/ImmersionEventSpawner" unique_id=1859562441]
+
+[node name="Start" type="Marker2D" parent="WorldYSort/ImmersionEventSpawner/TonttuCounterPeek" unique_id=2106303138]
+position = Vector2(531, 262)
+
+[node name="End" type="Marker2D" parent="WorldYSort/ImmersionEventSpawner/TonttuCounterPeek" unique_id=1284564327]
+position = Vector2(537, 262)
+
+[node name="TonttuTreePeek" type="Node2D" parent="WorldYSort/ImmersionEventSpawner" unique_id=1747697981]
+
+[node name="Start" type="Marker2D" parent="WorldYSort/ImmersionEventSpawner/TonttuTreePeek" unique_id=180122250]
+position = Vector2(205, 262)
+
+[node name="End" type="Marker2D" parent="WorldYSort/ImmersionEventSpawner/TonttuTreePeek" unique_id=219832011]
+position = Vector2(199, 262)
+
 [node name="DirtyKegPile" type="Area2D" parent="WorldYSort" unique_id=2096720517]
 position = Vector2(152, 259)
 script = ExtResource("67_68ujc")
@@ -1805,6 +1837,57 @@ theme_override_constants/outline_size = 0
 text = "TARJOUS"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="ChristmasFloorDecor" type="Node2D" parent="WorldYSort" unique_id=1964549680]
+y_sort_enabled = true
+script = ExtResource("87_ipwpp")
+season = 4
+
+[node name="Tree" type="Sprite2D" parent="WorldYSort/ChristmasFloorDecor" unique_id=1741384625]
+light_mask = 3
+texture_filter = 1
+position = Vector2(177, 278)
+scale = Vector2(2, 2)
+texture = ExtResource("xm_tree")
+centered = false
+offset = Vector2(0, -108)
+
+[node name="Glow" type="PointLight2D" parent="WorldYSort/ChristmasFloorDecor/Tree" unique_id=86819505]
+position = Vector2(12.5, -105.5)
+color = Color(1, 0.85, 0.4, 1)
+energy = 0.8
+range_item_cull_mask = 2
+texture = ExtResource("9_nylc4")
+texture_scale = 0.25
+script = ExtResource("8_5c2vg")
+flicker_amount = 0.05
+
+[node name="BarrelCandles" type="Sprite2D" parent="WorldYSort/ChristmasFloorDecor" unique_id=68641247]
+light_mask = 3
+texture_filter = 1
+position = Vector2(86, 259)
+texture = ExtResource("xm_candles")
+centered = false
+offset = Vector2(0, -8)
+
+[node name="Glow" type="PointLight2D" parent="WorldYSort/ChristmasFloorDecor/BarrelCandles" unique_id=1707903153]
+position = Vector2(4, -6)
+color = Color(1, 0.6, 0.25, 1)
+energy = 1.1
+range_item_cull_mask = 2
+texture = ExtResource("9_nylc4")
+texture_scale = 0.8
+script = ExtResource("8_5c2vg")
+flicker_amount = 0.3
+
+[node name="TonttuStairs" type="Sprite2D" parent="WorldYSort/ChristmasFloorDecor" unique_id=1579245059]
+light_mask = 3
+texture_filter = 1
+position = Vector2(106, 304)
+scale = Vector2(2, 2)
+texture = ExtResource("xm_tonttu_tall")
+centered = false
+offset = Vector2(0, -26)
 
 [node name="WarehouseWallOverlay" type="Polygon2D" parent="." unique_id=1022889779]
 z_index = 2
@@ -1986,11 +2069,11 @@ texture = ExtResource("9_nylc4")
 texture_scale = 0.8
 script = ExtResource("8_5c2vg")
 
-[node name="ChristmasDecor" type="Node2D" parent="."]
+[node name="ChristmasDecor" type="Node2D" parent="." unique_id=274404129]
 script = ExtResource("87_ipwpp")
 season = 4
 
-[node name="StringLights" type="AnimatedSprite2D" parent="ChristmasDecor"]
+[node name="StringLights" type="AnimatedSprite2D" parent="ChristmasDecor" unique_id=1567197599]
 self_modulate = Color(2, 2, 2, 1)
 light_mask = 3
 texture_filter = 1
@@ -2000,7 +2083,7 @@ animation = &"twinkle"
 autoplay = "twinkle"
 centered = false
 
-[node name="Glow1" type="PointLight2D" parent="ChristmasDecor/StringLights"]
+[node name="Glow1" type="PointLight2D" parent="ChristmasDecor/StringLights" unique_id=1998218448]
 position = Vector2(60, 6)
 color = Color(1, 0.72, 0.45, 1)
 energy = 0.6
@@ -2010,7 +2093,7 @@ texture_scale = 0.9
 script = ExtResource("8_5c2vg")
 flicker_amount = 0.1
 
-[node name="Glow2" type="PointLight2D" parent="ChristmasDecor/StringLights"]
+[node name="Glow2" type="PointLight2D" parent="ChristmasDecor/StringLights" unique_id=2026291485]
 position = Vector2(215, 6)
 color = Color(1, 0.72, 0.45, 1)
 energy = 0.6
@@ -2020,7 +2103,7 @@ texture_scale = 0.9
 script = ExtResource("8_5c2vg")
 flicker_amount = 0.1
 
-[node name="Glow3" type="PointLight2D" parent="ChristmasDecor/StringLights"]
+[node name="Glow3" type="PointLight2D" parent="ChristmasDecor/StringLights" unique_id=1484073616]
 position = Vector2(345, 6)
 color = Color(1, 0.72, 0.45, 1)
 energy = 0.6
@@ -2030,7 +2113,7 @@ texture_scale = 0.9
 script = ExtResource("8_5c2vg")
 flicker_amount = 0.1
 
-[node name="Candlestick" type="Sprite2D" parent="ChristmasDecor"]
+[node name="Candlestick" type="Sprite2D" parent="ChristmasDecor" unique_id=1011493354]
 light_mask = 3
 texture_filter = 1
 position = Vector2(346, 198)
@@ -2038,7 +2121,7 @@ scale = Vector2(2, 2)
 texture = ExtResource("xm_stick")
 centered = false
 
-[node name="Glow" type="PointLight2D" parent="ChristmasDecor/Candlestick"]
+[node name="Glow" type="PointLight2D" parent="ChristmasDecor/Candlestick" unique_id=1453452996]
 position = Vector2(11, 3)
 color = Color(1, 0.75, 0.4, 1)
 energy = 0.9
@@ -2048,7 +2131,7 @@ texture_scale = 0.3
 script = ExtResource("8_5c2vg")
 flicker_amount = 0.05
 
-[node name="TonttuShelf" type="Sprite2D" parent="ChristmasDecor"]
+[node name="TonttuShelf" type="Sprite2D" parent="ChristmasDecor" unique_id=1372125097]
 light_mask = 3
 texture_filter = 1
 position = Vector2(495, 97)
@@ -2056,64 +2139,13 @@ scale = Vector2(2, 2)
 texture = ExtResource("xm_tonttu_sit")
 centered = false
 
-[node name="TonttuCounter" type="Sprite2D" parent="ChristmasDecor"]
+[node name="TonttuCounter" type="Sprite2D" parent="ChristmasDecor" unique_id=1941975471]
 light_mask = 3
 texture_filter = 1
 position = Vector2(463, 197)
 scale = Vector2(2, 2)
 texture = ExtResource("xm_tonttu_small")
 centered = false
-
-[node name="ChristmasFloorDecor" type="Node2D" parent="WorldYSort"]
-y_sort_enabled = true
-script = ExtResource("87_ipwpp")
-season = 4
-
-[node name="Tree" type="Sprite2D" parent="WorldYSort/ChristmasFloorDecor"]
-light_mask = 3
-texture_filter = 1
-position = Vector2(177, 278)
-scale = Vector2(2, 2)
-texture = ExtResource("xm_tree")
-centered = false
-offset = Vector2(0, -108)
-
-[node name="Glow" type="PointLight2D" parent="WorldYSort/ChristmasFloorDecor/Tree"]
-position = Vector2(12.5, -105.5)
-color = Color(1, 0.85, 0.4, 1)
-energy = 0.8
-range_item_cull_mask = 2
-texture = ExtResource("9_nylc4")
-texture_scale = 0.25
-script = ExtResource("8_5c2vg")
-flicker_amount = 0.05
-
-[node name="BarrelCandles" type="Sprite2D" parent="WorldYSort/ChristmasFloorDecor"]
-light_mask = 3
-texture_filter = 1
-position = Vector2(86, 259)
-texture = ExtResource("xm_candles")
-centered = false
-offset = Vector2(0, -8)
-
-[node name="Glow" type="PointLight2D" parent="WorldYSort/ChristmasFloorDecor/BarrelCandles"]
-position = Vector2(4, -6)
-color = Color(1, 0.6, 0.25, 1)
-energy = 1.1
-range_item_cull_mask = 2
-texture = ExtResource("9_nylc4")
-texture_scale = 0.8
-script = ExtResource("8_5c2vg")
-flicker_amount = 0.3
-
-[node name="TonttuStairs" type="Sprite2D" parent="WorldYSort/ChristmasFloorDecor"]
-light_mask = 3
-texture_filter = 1
-position = Vector2(106, 304)
-scale = Vector2(2, 2)
-texture = ExtResource("xm_tonttu_tall")
-centered = false
-offset = Vector2(0, -26)
 
 [connection signal="pressed" from="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/IngredientSelectionPanel/AddRemoveLastModifiedButtonPanel/HBoxContainer/AddButton" to="GUI_CanvasLayer/GUI/Left_BrewingView" method="_on_add_button_pressed"]
 [connection signal="pressed" from="GUI_CanvasLayer/GUI/Left_BrewingView/Panel/MarginContainer/VBoxContainer/MaltAndHopVBoxContainer/IngredientSelectionPanel/AddRemoveLastModifiedButtonPanel/HBoxContainer/RemoveButton" to="GUI_CanvasLayer/GUI/Left_BrewingView" method="_on_remove_button_pressed"]

@@ -180,6 +180,13 @@ signal customer_outburst(message: String)
 ## A walk-in found every counter spot taken: the cellar has a queue (unlocks Ämpärihamstraaja).
 @warning_ignore("unused_signal")
 signal counter_queue_formed()
+## A tonttu or Joulupukki left: `served` when they got a beer they like, `got_favourite`
+## when it was their own style (NaughtyList).
+@warning_ignore("unused_signal")
+signal korvatunturi_visit_ended(data: CustomerData, served: bool, got_favourite: bool)
+## Joulupukki brought three wrapped gifts (ChristmasGift); the player opens one.
+@warning_ignore("unused_signal")
+signal christmas_gifts_offered(gifts: Array)
 ## A customer's own narration after a sale (Presidentti's visit), shown as a toast.
 @warning_ignore("unused_signal")
 signal customer_sale_narrated(message: String)

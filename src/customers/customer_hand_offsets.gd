@@ -111,8 +111,11 @@ const JOULUPUKKI_OFFSETS : Array[Vector2] = [
 ]
 
 
-## Hand position for one walk_towards frame of the archetype with this title.
-static func position_for(title: String, frame: int) -> Vector2:
+## Hand position for one walk_towards frame of the archetype with this title, or from
+## `own_offsets` when the customer data has its own.
+static func position_for(title: String, frame: int, own_offsets: Array[Vector2] = []) -> Vector2:
+	if not own_offsets.is_empty():
+		return own_offsets[frame % own_offsets.size()]
 	var offsets : Array[Vector2] = DEFAULT_OFFSETS
 	match title:
 		ZGEN_TITLE:

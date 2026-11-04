@@ -9,3 +9,11 @@ var tip_income : float = 0.0
 var tip_doubled : bool = false
 var net_income : float = 0.0
 var reputation_gain : int = 0
+
+
+## Korvatunturi's folk take the beer and pay nothing, tip included.
+func waive_payment() -> void:
+	gross_income = 0.0
+	tip_income = 0.0
+	tip_doubled = false
+	net_income = 0.0

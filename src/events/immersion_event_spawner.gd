@@ -123,10 +123,11 @@ func _run_vignette(vignette : ImmersionVignetteData) -> void:
 ## Null when nothing is loaded.
 func _pick_vignette() -> ImmersionVignetteData:
 	var weights : Array[float] = []
-	var is_halloween : bool = SeasonRules.now() == SeasonRules.Season.HALLOWEEN
+	var season : SeasonRules.Season = SeasonRules.now()
+	var is_halloween : bool = season == SeasonRules.Season.HALLOWEEN
 	# The cellar cat walks on its own timer (_on_cat_timer_timeout).
 	for vignette : ImmersionVignetteData in vignettes:
-		weights.append(vignette.pick_weight(is_halloween))
+		weights.append(vignette.pick_weight(is_halloween, season))
 	return WeightedPicker.pick(vignettes, weights) as ImmersionVignetteData
 
 
@@ -164,11 +165,11 @@ func _cross(actor : ImmersionActorData, points : PackedVector2Array) -> void:
 		tween.tween_interval(actor.start_delay_seconds)
 		tween.tween_callback(sprite.show)
 	for i : int in range(1, points.size()):
-		# Art faces left, so mirror it on legs heading right; vertical legs keep facing.
+		# Mirror the art on legs heading away from the way it was drawn; vertical legs keep facing.
 		var dx : float = points[i].x - points[i - 1].x
 		if not is_zero_approx(dx):
-			var facing_right : bool = dx > 0.0
-			tween.tween_callback(func() -> void: sprite.flip_h = facing_right)
+			var mirrored : bool = (dx > 0.0) != actor.art_faces_right
+			tween.tween_callback(func() -> void: sprite.flip_h = mirrored)
 		PixelStepTween.move(tween, sprite, points[i - 1], points[i], durations[i - 1])
 	tween.tween_callback(_finish_actor.bind(sprite))
 	_fade_in_and_out(sprite, actor.start_delay_seconds, actor.crossing_seconds)

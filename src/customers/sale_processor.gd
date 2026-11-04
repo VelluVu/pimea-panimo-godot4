@@ -59,8 +59,10 @@ func process(data : CustomerData, picks : Array[BrewBatch] = []) -> String:
 	if batches.is_empty():
 		batches = pick_batches_for(data)
 	if batches.is_empty() or batches[0].amount_bottles < BOTTLES_SOLD_PER_TRANSACTION:
+		_report_to_korvatunturi(data, false, false)
 		return _turn_away(data, wanted)
 	if SaleEvaluation.refuses(data, batches[0].current_quality):
+		_report_to_korvatunturi(data, false, false)
 		return _refuse_bad_quality(data, batches[0].current_quality)
 
 	# The net reputation change, bar fight included, is reported as one popup at the end.
@@ -70,9 +72,13 @@ func process(data : CustomerData, picks : Array[BrewBatch] = []) -> String:
 	var reputation_gain : int = 0
 	var bottles_sold : int = 0
 	var last_batch : BrewBatch = null
+	var got_favourite : bool = false
+	var got_liked : bool = false
 	for batch : BrewBatch in batches:
 		if SaleEvaluation.refuses(data, batch.current_quality):
 			continue
+		got_favourite = got_favourite or batch.beer_style.style == data.primary_style
+		got_liked = got_liked or data.get_preference_score(batch.beer_style.style) > 0.0
 		var results : Dictionary = _sell(data, batch, wanted, is_regular)
 		if response_text.is_empty():
 			response_text = results[CustomerManager.KEY_RESPONSE]
@@ -92,7 +98,14 @@ func process(data : CustomerData, picks : Array[BrewBatch] = []) -> String:
 	BrewerySignals.brewery_state_changed.emit(brewery)
 	_update_standing(data, delighted, reputation_gain)
 	BrewerySignals.customer_served.emit(data)
+	_report_to_korvatunturi(data, bottles_sold > 0 and got_liked, got_favourite)
 	return response_text
+
+
+## Tontut and Joulupukki watch every visit for the kiltti/tuhma list (NaughtyList).
+func _report_to_korvatunturi(data : CustomerData, served : bool, got_favourite : bool) -> void:
+	if data.korvatunturi_role != CustomerData.KorvatunturiRole.NONE:
+		BrewerySignals.korvatunturi_visit_ended.emit(data, served, got_favourite)
 
 
 ## Sells up to `wanted` servings from one batch and applies money, reputation, risk and xp.
@@ -112,6 +125,9 @@ func _sell(data : CustomerData, batch : BrewBatch, wanted : int, is_regular : bo
 		brewery.stats.multiplier(PerkStats.TIP_INCOME) * (RegularRules.TIP_MULTIPLIER if is_regular else 1.0),
 		brewery.stats.chance(PerkStats.TIP_DOUBLE_CHANCE),
 		brewery.stats.multiplier(PerkStats.REPUTATION_GAIN))
+	if data.takes_for_free:
+		outcome.waive_payment()
+		results[CustomerManager.KEY_INCOME] = 0.0
 
 	brewery.change_money(outcome.gross_income, MoneyLedger.Source.SALES)
 	brewery.change_money(outcome.tip_income, MoneyLedger.Source.TIPS)

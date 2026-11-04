@@ -202,6 +202,9 @@ signal cellar_upgrades_requested()
 ## The player asked to buy the next level of the upgrade with this upgrade_id.
 @warning_ignore("unused_signal")
 signal cellar_upgrade_requested(upgrade_id : String)
+## The player opened Joulupukki's gift at this index (BrewerySignals.christmas_gifts_offered).
+@warning_ignore("unused_signal")
+signal christmas_gift_chosen(index : int)
 ## The player flipped the on/off switch of an owned machine, see CellarMachines.
 @warning_ignore("unused_signal")
 signal machine_switch_requested(upgrade_id : String)

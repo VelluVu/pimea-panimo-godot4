@@ -68,7 +68,13 @@ func _on_scene_changed() -> void:
 	if get_tree().current_scene is MainMenu:
 		play_music_loop(bank.menu_music)
 	elif not is_playlist_playing():
-		play_playlist(bank.music_tracks)
+		play_playlist(bank.run_playlist(SeasonRules.now()))
+
+
+## The console's season switch brings that season's tracks in at once.
+func _on_season_forced(season : SeasonRules.Season) -> void:
+	if not get_tree().current_scene is MainMenu:
+		play_playlist(bank.run_playlist(season))
 
 
 func _setup_tension_player() -> void:
@@ -120,6 +126,7 @@ func _on_brew_day_loops(burner: float, boil: float, pouring: bool) -> void:
 
 func _connect_signals() -> void:
 	BrewerySignals.brewery_state_changed.connect(_on_brewery_state_changed)
+	BrewerySignals.season_forced.connect(_on_season_forced)
 	BrewerySignals.style_discovered.connect(play_sfx.bind(bank.sfx_style_discovered).unbind(1))
 	BrewerySignals.lvv_raid_triggered.connect(play_sfx.bind(bank.sfx_lvv_alarm).unbind(3))
 	SpecialEventManager.special_event_triggered.connect(play_sfx.bind(bank.sfx_notification_ping).unbind(1))

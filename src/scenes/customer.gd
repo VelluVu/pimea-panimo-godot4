@@ -10,6 +10,7 @@ const ANIM_IDLE_UP : StringName = &"idle_up"
 const ANIM_WALK_TOWARDS : StringName = &"walk_towards"
 const ANIM_WALK_RIGHT : StringName = &"walk_right"
 const WALK_ANIMATIONS : Array[StringName] = [ANIM_WALK_TOWARDS, ANIM_WALK_RIGHT]
+const NO_OFFSETS : Array[Vector2] = []
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var bottle_hand_marker: Marker2D = $BottleHandMarker
@@ -76,7 +77,8 @@ func _process(delta: float) -> void:
 
 func _on_animated_sprite_frame_changed() -> void:
 	var title : String = customer_data.title if customer_data != null else ""
-	bottle_hand_marker.position = CustomerHandOffsets.position_for(title, animated_sprite.frame) + Vector2(_sway.x, 0.0)
+	var own_offsets : Array[Vector2] = customer_data.hand_offsets if customer_data != null else NO_OFFSETS
+	bottle_hand_marker.position = CustomerHandOffsets.position_for(title, animated_sprite.frame, own_offsets) + Vector2(_sway.x, 0.0)
 
 
 func _apply_visuals() -> void:
@@ -344,7 +346,7 @@ func _say(text: String, skippable: bool = false, seconds: float = -1.0, typed: b
 	var display_time := seconds if seconds >= 0.0 else SpeechTiming.seconds_for(text)
 	if skippable and CustomerManager.is_counter_crowded():
 		return display_time
-	BrewerySignals.dialogue_pushed.emit(text, false, dialogue_slot, global_position, display_time, SpeechTiming.FADE_SECONDS, typed)
+	BrewerySignals.dialogue_pushed.emit(text, false, dialogue_slot, customer_data.speech_anchor(global_position), display_time, SpeechTiming.FADE_SECONDS, typed)
 	BrewerySignals.customer_spoke.emit(global_position, customer_data.voice_pitch)
 	return display_time
 

@@ -35,3 +35,11 @@ func test_the_cellar_cat_is_never_picked() -> void:
 func test_the_bats_are_commoner_at_halloween() -> void:
 	var bats : ImmersionVignetteData = load("res://src/resources/immersion_vignettes/bats.tres")
 	assert_true(bats.pick_weight(true) > bats.pick_weight(false))
+
+
+func test_a_christmas_vignette_plays_only_at_christmas() -> void:
+	var tontut := _vignette(1.5)
+	tontut.only_in_season = SeasonRules.Season.CHRISTMAS
+	assert_eq(tontut.pick_weight(false, SeasonRules.Season.CHRISTMAS), 1.5)
+	assert_eq(tontut.pick_weight(false, SeasonRules.Season.NONE), 0.0)
+	assert_eq(tontut.pick_weight(true, SeasonRules.Season.HALLOWEEN), 0.0)

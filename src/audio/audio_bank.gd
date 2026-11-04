@@ -9,6 +9,8 @@ extends Resource
 @export var menu_music: AudioStream
 ## Shuffled playlist during a run.
 @export var music_tracks: Array[AudioStream] = []
+## Joins the run playlist in its season.
+@export var season_music: Array[SeasonMusic] = []
 
 @export_group("Economy")
 @export var sfx_coin_success: AudioStream
@@ -82,3 +84,12 @@ extends Resource
 @export var sfx_glass_shatter: AudioStream
 ## A customer's outburst: Persuasiakas firing into the air.
 @export var sfx_gunshot: AudioStream
+
+
+## The run playlist in `season`: the usual tracks plus that season's own.
+func run_playlist(season : SeasonRules.Season) -> Array[AudioStream]:
+	var tracks : Array[AudioStream] = music_tracks.duplicate()
+	for entry : SeasonMusic in season_music:
+		if entry != null and SeasonRules.includes(season, entry.season):
+			tracks.append_array(entry.tracks)
+	return tracks

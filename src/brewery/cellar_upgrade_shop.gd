@@ -37,11 +37,17 @@ func _on_cellar_upgrade_requested(upgrade_id : String) -> void:
 		return
 
 	brewery.change_money(-cost, MoneyLedger.Source.UPGRADES)
-	brewery.cellar_upgrade_levels[upgrade_id] = level + 1
-	brewery.inventory.add_clean_kegs(upgrade.kegs_per_level)
-	BrewerySignals.cellar_upgrade_purchased.emit(upgrade, level + 1)
-	BrewerySignals.brewery_state_changed.emit(brewery)
+	raise_level(brewery, upgrade)
 	brewery.check_bankruptcy()
+
+
+## One level up, paid for or not (Joulupukki's gift).
+static func raise_level(owner : Brewery, upgrade : CellarUpgradeData) -> void:
+	var level : int = owner.cellar_upgrade_levels.get(upgrade.upgrade_id, 0) + 1
+	owner.cellar_upgrade_levels[upgrade.upgrade_id] = level
+	owner.inventory.add_clean_kegs(upgrade.kegs_per_level)
+	BrewerySignals.cellar_upgrade_purchased.emit(upgrade, level)
+	BrewerySignals.brewery_state_changed.emit(owner)
 
 
 func _on_machine_switch_requested(upgrade_id : String) -> void:

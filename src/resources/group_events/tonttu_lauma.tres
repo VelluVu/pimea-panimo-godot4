@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="GroupVisitEventData" format=3]
+
+[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_customer"]
+[ext_resource type="Script" uid="uid://cnkqeqeaug3gu" path="res://src/customers/group_visit_event_data.gd" id="1_event"]
+[ext_resource type="Resource" path="res://src/resources/customers/tonttu_harmaa.tres" id="2_harmaa"]
+[ext_resource type="Resource" path="res://src/resources/customers/tonttu_sydan.tres" id="3_sydan"]
+[ext_resource type="Resource" path="res://src/resources/customers/tonttu_punainen.tres" id="4_punainen"]
+
+[resource]
+script = ExtResource("1_event")
+banner_text = "Portailta kuuluu pieniä hyppyjä. Kolme, ei kun viisi, ei kun vielä useampi.
+Tontut tulivat katsomaan, onko panimomestari ollut kiltti."
+customer_data_options = Array[ExtResource("1_customer")]([ExtResource("2_harmaa"), ExtResource("3_sydan"), ExtResource("4_punainen")])
+min_group_size = 3
+max_group_size = 7
+walk_in_stagger_seconds = 0.35
+formation_spacing_px = 8.0
+chant_texts = Array[String](["Hei tonttu-ukot, tuopit ylös,", "Pukki ei näe, eikä muori kuule!", "Puuro on syöty ja kalja on juotu,", "tontut sammuu saunan lauteille!"])
+chant_interval_seconds = 2.4

@@ -217,7 +217,7 @@ func _chant_until_arrival(visit : GroupVisit, resume_seconds : float) -> bool:
 		visit.chant_index += 1
 		if not chant_text.is_empty():
 			var display_time : float = visit.event_data.chant_interval_seconds + CHANT_BUBBLE_EXTRA_SECONDS
-			_show_bubble(visit, chant_text, last_member.global_position, display_time, CHANT_BUBBLE_FADE_SECONDS)
+			_show_bubble(visit, chant_text, last_member.customer_data.speech_anchor(last_member.global_position), display_time, CHANT_BUBBLE_FADE_SECONDS)
 			BrewerySignals.customer_spoke.emit(last_member.global_position, last_member.customer_data.voice_pitch)
 		if not await _wait(visit, visit.event_data.chant_interval_seconds):
 			return false
@@ -335,7 +335,7 @@ func _dismiss(visit : GroupVisit, resume_seconds : float) -> bool:
 ## Returns how long the line stays up in the shared bubble.
 func _say(visit : GroupVisit, text : String) -> float:
 	var display_time : float = SpeechTiming.seconds_for(text)
-	_show_bubble(visit, text, visit.counter_position, display_time, SpeechTiming.FADE_SECONDS)
+	_show_bubble(visit, text, _speech_anchor_of(visit), display_time, SpeechTiming.FADE_SECONDS)
 	BrewerySignals.customer_spoke.emit(visit.counter_position, _voice_pitch_of(visit))
 	return display_time
 
@@ -348,6 +348,14 @@ func _show_bubble(visit : GroupVisit, text : String, position : Vector2, display
 	visit.bubble_fade = fade_seconds
 	visit.bubble_timer = _host.get_tree().create_timer(display_time, false)
 	BrewerySignals.dialogue_pushed.emit(text, false, visit.dialogue_slot, position, display_time, fade_seconds, typed)
+
+
+## Above the counter spot, as low as the first member still here needs (short tontut).
+func _speech_anchor_of(visit : GroupVisit) -> Vector2:
+	for member : Variant in visit.members:
+		if is_instance_valid(member):
+			return member.customer_data.speech_anchor(visit.counter_position)
+	return visit.counter_position
 
 
 ## The first member still here speaks for the group.

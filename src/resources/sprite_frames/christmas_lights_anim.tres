@@ -1,6 +1,6 @@
-[gd_resource type="SpriteFrames" format=3]
+[gd_resource type="SpriteFrames" format=3 uid="uid://drxqeqayhy0x"]
 
-[ext_resource type="Texture2D" path="res://assets/textures/christmas/christmas_lights.png" id="1_sheet"]
+[ext_resource type="Texture2D" uid="uid://tslrdyhvbtim" path="res://assets/textures/christmas/christmas_lights.png" id="1_sheet"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0"]
 atlas = ExtResource("1_sheet")
@@ -26,7 +26,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_2")
 }],
-"loop": true,
+"loop": 1,
 "name": &"twinkle",
 "speed": 1.5
 }]

@@ -15,10 +15,14 @@ extends Resource
 ## The adopted cellar cat's walk: never in the random pick, played on its own timer
 ## once Brewery.cellar_cat_adopted (ImmersionEventSpawner).
 @export var needs_cellar_cat : bool = false
+## Played only in this season (the tontut at Christmas); NONE for all year.
+@export var only_in_season : SeasonRules.Season = SeasonRules.Season.NONE
 
 
-func pick_weight(is_halloween : bool) -> float:
+func pick_weight(is_halloween : bool, season : SeasonRules.Season = SeasonRules.Season.NONE) -> float:
 	if needs_cellar_cat:
+		return 0.0
+	if only_in_season != SeasonRules.Season.NONE and not SeasonRules.includes(season, only_in_season):
 		return 0.0
 	var chosen : float = halloween_weight if is_halloween and halloween_weight >= 0.0 else weight
 	return maxf(chosen, 0.0)

@@ -346,6 +346,10 @@ msgid "Tiskimyynnin hinnat nousevat %s"
 msgstr "Counter prices rise by %s"
 
 #: src/autoload/string_container.gd
+msgid "Tonttupuuro-olut"
+msgstr "Elf Porridge Ale"
+
+#: src/autoload/string_container.gd
 msgid "Trooppinen"
 msgstr "Tropical"
 
@@ -688,6 +692,48 @@ msgstr "your best beer"
 #: src/events/day_event_data.gd
 msgid "Tavallinen päivä kellarissa."
 msgstr "An ordinary day in the cellar."
+
+#: src/events/naughty_list.gd
+msgid "Joulupukki iski silmää: hän tuntee LVV:llä yhden jos toisenkin. Riski laski."
+msgstr "Santa winks: he knows a person or two at the LVV. Risk went down."
+
+#: src/events/naughty_list.gd
+msgid ""
+"Joulupukki jätti tiskille koivurisun. Pian sen jälkeen LVV sai nimettömän "
+"vihjeen."
+msgstr ""
+"Santa left a bundle of birch switches on the counter. Soon after, the LVV "
+"got an anonymous tip."
+
+#: src/events/naughty_list.gd
+msgid "Joulupukki selasi listaa pitkään ja hymyili. Se oli pahinta."
+msgstr ""
+"Santa leafed through his list for a long time and smiled. That was the "
+"worst part."
+
+#: src/events/naughty_list.gd
+msgid "Paketista paljastui: %s."
+msgstr "The package held: %s."
+
+#: src/events/naughty_list.gd
+msgid "Tiskillä on pieniä märkiä tassunjälkiä. Ei muuta. Vielä."
+msgstr "Small wet footprints on the counter. Nothing else. Yet."
+
+#: src/events/naughty_list.gd
+msgid "Tonttu raapusti jotain pieneen kirjaansa ja nyökkäsi. Kiltti."
+msgstr "The elf scribbled something in a little book and nodded. Nice."
+
+#: src/events/naughty_list.gd
+msgid "Tontut kävivät maistamassa tynnyriä: %s väheni %d pulloa."
+msgstr "The elves had a taste from the keg: %s is down %d bottles."
+
+#: src/events/naughty_list.gd
+msgid "Tontut palauttivat piilottamansa ainekset. Osa on vähän nuoltuja."
+msgstr "The elves returned the ingredients they hid. Some look a little licked."
+
+#: src/events/naughty_list.gd
+msgid "Tontut veivät %s. Ehkä se löytyy huomenna. Ehkä ei."
+msgstr "The elves took some %s. Maybe it turns up tomorrow. Maybe not."
 
 #: src/events/quality_challenge_event_data.gd
 msgid ""
@@ -1701,6 +1747,24 @@ msgstr ""
 "A beer whose recipe doesn't matter. What matters is what the note says. The "
 "notes are only sold in Cyber Week."
 
+#: src/resources/beer_styles/tonttupuuro.tres
+msgid ""
+"Jouluaaton riisipuuro pullossa: vaalea, mieto ja pehmeä olut, jossa on "
+"puuroriisiä, maitosokeria ja kanelia. Kulho saunan lauteille, pullo "
+"kellarin nurkkaan, niin tontut pysyvät tyytyväisinä."
+msgstr ""
+"Christmas Eve rice porridge in a bottle: a pale, mild and soft beer with "
+"porridge rice, milk sugar and cinnamon. A bowl on the sauna bench, a bottle "
+"in the cellar corner, and the elves stay happy."
+
+#: src/resources/beer_styles/tonttupuuro.tres
+msgid ""
+"Mieto ja vaalea jouluolut, joka maistuu siltä, mitä tontuille jätetään "
+"aattona. Riisiä ja kanelia myydään vain jouluna."
+msgstr ""
+"A mild, pale Christmas beer that tastes like what the elves are left on "
+"Christmas Eve. Rice and cinnamon are sold only at Christmas."
+
 #: src/resources/beer_styles/tumma_lager.tres
 msgid "Baijerilainen tumma lager: paahtoleipää ja maltaista pehmeyttä."
 msgstr "A Bavarian dark lager: toast and malty softness."
@@ -2236,48 +2300,50 @@ msgid "Vihdoinkin joku, joka ymmärtää humalaprofiileja."
 msgstr "Finally someone who understands hop profiles."
 
 #: src/resources/customers/joulupukki.tres
-msgid "%s? Hohoo, tuo kuulostaa paketin arvoiselta."
-msgstr "%s? Ho ho, that sounds worth a present."
-
-#: src/resources/customers/joulupukki.tres
-msgid "Ei Pukkibockia? Hohhoijaa. Tontut näkevät kaiken, muista se."
-msgstr "No Pukkibock? Oh dear. The elves see everything, remember that."
-
-#: src/resources/customers/joulupukki.tres
-msgid "Ei ihan Pukkibockia, mutta kelpaa. Tontut eivät kuule, jos en kerro."
-msgstr "Not quite Pukkibock, but it'll do. The elves won't hear unless I tell them."
+msgid "%s? Hohoo. Pukki ottaa. Pukki ei maksa."
+msgstr "%s? Ho ho. Santa takes. Santa does not pay."
 
 #: src/resources/customers/joulupukki.tres
 msgid ""
-"Hohoo! Onko täällä kilttejä panimomestareita? Tulin Korvatunturilta asti, "
-"porot jäivät parkkiin."
-msgstr ""
-"Ho ho! Any good brewers down here? I came all the way from Korvatunturi, "
-"the reindeer are parked outside."
+"Ei Pukkibockia? Hohoo. Mukava panimo. Olisi ikävää, jos sille sattuisi "
+"jotain."
+msgstr "No Pukkibock? Ho ho. Nice brewery. Shame if something happened to it."
 
 #: src/resources/customers/joulupukki.tres
-msgid "Hylly on tyhjä kuin säkkini tapaninpäivänä."
-msgstr "The shelf is as empty as my sack on Boxing Day."
+msgid "Ei ihan Pukkibockia. Pukki muistaa tämänkin, mutta hymyilee silti."
+msgstr "Not quite Pukkibock. Santa will remember this too, but he smiles anyway."
 
 #: src/resources/customers/joulupukki.tres
-msgid "Höh. Tällaista ei kehtaa antaa edes poroille."
-msgstr "Hmph. I wouldn't even give this to the reindeer."
+msgid "Hohoo! Tontut ovat kertoneet sinusta kaikenlaista. Ihan kaikenlaista."
+msgstr "Ho ho! The elves have told me all sorts of things about you. All sorts."
 
 #: src/resources/customers/joulupukki.tres
-msgid "Joulupukki kävi kellarissa. Säkissä kilisevät nyt pullot."
-msgstr "Santa visited the cellar. Now his sack clinks with bottles."
+msgid "Hylly on tyhjä kuin omatuntosi. Hohoo."
+msgstr "The shelf is as empty as your conscience. Ho ho."
 
 #: src/resources/customers/joulupukki.tres
 msgid ""
-"Pukkibockia! Juuri tätä pukki tarvitsee pitkälle lentoyölle. Merkitsen "
-"sinut kilttien listaan."
+"Joulupukki kävi kellarissa. Säkissä kilisevät nyt pullot, kassassa ei "
+"mikään."
 msgstr ""
-"Pukkibock! Just what Santa needs for a long night of flying. I'm putting "
-"you on the nice list."
+"Santa visited the cellar. Now bottles clink in his sack, and nothing in the "
+"till."
 
 #: src/resources/customers/joulupukki.tres
-msgid "Tätä en toivonut. Kirjoitin toivelistaan Pukkibockin isoilla kirjaimilla."
-msgstr "Not what I wished for. I wrote Pukkibock on my wish list in capital letters."
+msgid "Pukkibockia! Merkitsen sinut kilttien listaan. Toistaiseksi."
+msgstr "Pukkibock! I'll put you on the nice list. For now."
+
+#: src/resources/customers/joulupukki.tres
+msgid "Tontut, kirjoittakaa ylös."
+msgstr "Elves, write that down."
+
+#: src/resources/customers/joulupukki.tres
+msgid ""
+"Tätä en toivonut. Kirjoitin toivelistaan Pukkibockin isoilla kirjaimilla. "
+"Hohoo."
+msgstr ""
+"This is not what I wished for. I wrote Pukkibock on my list in capital "
+"letters. Ho ho."
 
 #: src/resources/customers/kesamies.tres
 msgid "Ei ehkä ihan feed-materiaalia, mutta kyllä tän juo."
@@ -3121,6 +3187,52 @@ msgstr "That %s, is it on sale? I'll take them all."
 msgid "Tää ei oo edes tarjouksen arvonen."
 msgstr "This isn't even worth a discount."
 
+#: src/resources/customers/tonttu_harmaa.tres
+msgid "%s? Onko siinä kanelia? Toivottavasti on."
+msgstr "%s? Is there cinnamon in it? There had better be."
+
+#: src/resources/customers/tonttu_harmaa.tres
+msgid "Ei puuroa, mutta kelpaa. Tonttu ei kirjoita tätä. Ainakaan musteella."
+msgstr ""
+"No porridge, but it will do. The elf won't write this down. Not in ink, "
+"anyway."
+
+#: src/resources/customers/tonttu_harmaa.tres
+msgid "Ei puuroa? Kuiva kellari. Palaisi hyvin."
+msgstr "No porridge? Dry cellar. Would burn nicely."
+
+#: src/resources/customers/tonttu_harmaa.tres
+msgid "Hyi. Tällaista ei anneta edes saunatontulle. Tontut tietävät, missä nukut."
+msgstr ""
+"Yuck. You would not give this even to the sauna elf. The elves know where "
+"you sleep."
+
+#: src/resources/customers/tonttu_harmaa.tres
+msgid "Psst. Tonttu tuli tarkastamaan. Onko puuroa, vai pitääkö tontun kirjoittaa?"
+msgstr ""
+"Psst. The elf has come to inspect. Is there porridge, or does the elf need "
+"to write?"
+
+#: src/resources/customers/tonttu_harmaa.tres
+msgid "Puuroa! Tonttu merkitsee sinut kiltiksi. Toistaiseksi."
+msgstr "Porridge! The elf marks you as nice. For now."
+
+#: src/resources/customers/tonttu_harmaa.tres
+msgid "Tonttu"
+msgstr "Elf"
+
+#: src/resources/customers/tonttu_harmaa.tres
+msgid "Tonttu otti pullon eikä maksanut. Kukaan ei uskaltanut sanoa mitään."
+msgstr "The elf took a bottle and didn't pay. Nobody dared to say anything."
+
+#: src/resources/customers/tonttu_harmaa.tres
+msgid "Tyhjä hylly. Tonttu katsoo sinua pitkään. Ja kirjoittaa."
+msgstr "An empty shelf. The elf gives you a long look. And writes."
+
+#: src/resources/customers/tonttu_harmaa.tres
+msgid "Tämä ei tuoksu puurolta. Tonttu kirjoittaa muistiin. Isolla."
+msgstr "This does not smell like porridge. The elf makes a note. A big one."
+
 #: src/resources/customers/zgen.tres
 msgid "Bro ei ollu yhtään alkoholitonta, ei mun tarvii cap-juomaa, painun muualle."
 msgstr ""
@@ -3758,6 +3870,30 @@ msgstr ""
 "The strangest crew ever shows up on the stairs: a hipster, an agent, a "
 "godfather and a builder in the same queue.\n"
 "Nobody asks why."
+
+#: src/resources/group_events/tonttu_lauma.tres
+msgid "Hei tonttu-ukot, tuopit ylös,"
+msgstr "Hey, old elves, raise your mugs,"
+
+#: src/resources/group_events/tonttu_lauma.tres
+msgid ""
+"Portailta kuuluu pieniä hyppyjä. Kolme, ei kun viisi, ei kun vielä useampi.\n"
+"Tontut tulivat katsomaan, onko panimomestari ollut kiltti."
+msgstr ""
+"Small hops on the stairs. Three, no, five, no, even more.\n"
+"The elves came to see if the brewer has been nice."
+
+#: src/resources/group_events/tonttu_lauma.tres
+msgid "Pukki ei näe, eikä muori kuule!"
+msgstr "Santa can't see and Mrs Claus can't hear!"
+
+#: src/resources/group_events/tonttu_lauma.tres
+msgid "Puuro on syöty ja kalja on juotu,"
+msgstr "The porridge is eaten, the beer is drunk,"
+
+#: src/resources/group_events/tonttu_lauma.tres
+msgid "tontut sammuu saunan lauteille!"
+msgstr "the elves pass out on the sauna bench!"
 
 #: src/resources/group_events/zgen_lauma.tres
 msgid "ALKOHOLITONTA TAI SKIBIDI FAIL, KIITOS!"
@@ -4481,6 +4617,24 @@ msgstr "A pale base malt that adds a clean malty flavour."
 msgid "pilsner-mallasta"
 msgstr "pilsner malt"
 
+#: src/resources/ingredients/malts/porridge_rice.tres
+msgid "Puuroriisi"
+msgstr "Porridge rice"
+
+#: src/resources/ingredients/malts/porridge_rice.tres
+msgid ""
+"Pyöreäjyväistä puuroriisiä. Mäskissä se keittyy puuroksi ja tekee oluesta "
+"vaalean ja pehmeän. Tontut tunnistavat sen tuoksun kolmen kellarin päästä. "
+"Myynnissä vain jouluna."
+msgstr ""
+"Round-grain porridge rice. In the mash it cooks into porridge and makes the "
+"beer pale and soft. Elves can smell it three cellars away. Sold only at "
+"Christmas."
+
+#: src/resources/ingredients/malts/porridge_rice.tres
+msgid "puuroriisiä"
+msgstr "porridge rice"
+
 #: src/resources/ingredients/malts/roasted_barley.tres
 msgid "Mallastamaton, mustaksi paahdettu ohra. Kuivan stoutin terävä paahteisuus."
 msgstr "Unmalted barley roasted black. The sharp roast of a dry stout."
@@ -4586,6 +4740,22 @@ msgstr ""
 msgid "Kandisokeri"
 msgstr "Candi Sugar"
 
+#: src/resources/ingredients/spices/cinnamon.tres
+msgid "Kaneli"
+msgstr "Cinnamon"
+
+#: src/resources/ingredients/spices/cinnamon.tres
+msgid ""
+"Kanelitanko puuron päälle ja oluen sekaan. Ilman sitä riisipuuro on vain "
+"riisiä. Myynnissä vain jouluna."
+msgstr ""
+"A cinnamon stick on the porridge and in the beer. Without it rice porridge "
+"is just rice. Sold only at Christmas."
+
+#: src/resources/ingredients/spices/cinnamon.tres
+msgid "kanelia"
+msgstr "cinnamon"
+
 #: src/resources/ingredients/spices/cloudberry.tres
 msgid "Lakka"
 msgstr "Cloudberry"
@@ -4664,6 +4834,24 @@ msgid ""
 msgstr ""
 "Fresh juniper branches. Sahti is filtered through them, and they add a "
 "resinous, foresty flavour."
+
+#: src/resources/ingredients/spices/koivurisu.tres
+msgid ""
+"Joulupukin terveiset tuhmalle panimomestarille: nippu koivunvarpuja "
+"punaisella nauhalla. Ei myynnissä missään. Savuoluessa ja sahdissa se "
+"maistuu yllättävän hyvältä, mikä on melkein yhtä nöyryyttävää."
+msgstr ""
+"Santa's regards to a naughty brewer: a bundle of birch switches tied with a "
+"red ribbon. Not sold anywhere. In a smoked beer or a sahti it tastes "
+"surprisingly good, which is almost as humiliating."
+
+#: src/resources/ingredients/spices/koivurisu.tres
+msgid "Koivurisu"
+msgstr "Birch switches"
+
+#: src/resources/ingredients/spices/koivurisu.tres
+msgid "koivurisua"
+msgstr "birch switches"
 
 #: src/resources/ingredients/spices/lactose.tres
 msgid "Laktoosi"
@@ -6559,6 +6747,18 @@ msgstr "Buy the chosen amount (%s)"
 #: src/scenes/ui/left_shop_view.gd
 msgid "Vaatii %d mainetta"
 msgstr "Needs %d reputation"
+
+#: src/scenes/ui/level_up_window.gd
+msgid "Joulupukin paketit"
+msgstr "Santa's packages"
+
+#: src/scenes/ui/level_up_window.gd
+msgid "Kääritty huolella. Jokin sisällä kolisee."
+msgstr "Carefully wrapped. Something rattles inside."
+
+#: src/scenes/ui/level_up_window.gd
+msgid "Paketti %d"
+msgstr "Package %d"
 
 #: src/scenes/ui/level_up_window.gd
 msgid "Taso %d!"

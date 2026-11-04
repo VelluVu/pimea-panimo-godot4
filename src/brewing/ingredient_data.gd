@@ -21,10 +21,12 @@ enum UnitType { KILOGRAM, GRAM, PIECE }
 ## Sold only in this season (Kehote in Cyber Week); NONE for all year. Stock bought in
 ## season stays usable after it.
 @export var season: SeasonRules.Season = SeasonRules.Season.NONE
+## False for what only comes as a gift (Joulupukki's Koivurisu): never in the shop.
+@export var for_sale: bool = true
 
 
 func is_sold_in(current : SeasonRules.Season) -> bool:
-	return season == SeasonRules.Season.NONE or SeasonRules.includes(current, season)
+	return for_sale and (season == SeasonRules.Season.NONE or SeasonRules.includes(current, season))
 
 
 func get_color() -> Color:

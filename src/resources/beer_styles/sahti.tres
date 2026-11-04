@@ -8,6 +8,7 @@ style_name = "Sahti"
 description = "Suomalainen talonpoikaisolut, joka siivilöidään katajanoksien läpi. Leivinhiiva, ruis ja kataja tekevät siitä vahvan, makean ja vähän pihkaisen."
 locked_hint = "Suomalainen talonpoikaisolut, siivilöity katajanoksien läpi ja käytetty leivinhiivalla."
 style = 22
+preferred_spice_ids = Array[int]([414])
 profit_margin_multiplier = 1.4
 fixed_price_per_bottle = 5.0
 reputation_change = 5

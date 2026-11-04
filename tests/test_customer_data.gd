@@ -504,3 +504,10 @@ func test_a_title_that_is_the_name_gets_no_first_name() -> void:
 	customer.first_names = ["Ada"]
 	customer.title_is_name = true
 	assert_eq(customer.generate_display_name(), "Joulupukki")
+
+
+func test_a_short_customer_speaks_from_lower_down() -> void:
+	var customer := CustomerData.new()
+	assert_eq(customer.speech_anchor(Vector2(100, 290)), Vector2(100, 290))
+	customer.speech_drop_px = 28.0
+	assert_eq(customer.speech_anchor(Vector2(100, 290)), Vector2(100, 318))

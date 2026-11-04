@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="ChristmasGiftPool" format=3]
+
+[ext_resource type="Script" path="res://src/events/christmas_gift_pool.gd" id="1_pool"]
+[ext_resource type="Script" uid="uid://dewmdbm4a0vst" path="res://src/progression/run_perk.gd" id="2_perk"]
+[ext_resource type="Resource" path="res://src/resources/event_perks/arvostelijan_kellarivinkit.tres" id="3_perk"]
+[ext_resource type="Resource" path="res://src/resources/event_perks/donin_suojelus.tres" id="4_perk"]
+[ext_resource type="Resource" path="res://src/resources/event_perks/haajarjestajan_suositus.tres" id="5_perk"]
+[ext_resource type="Resource" path="res://src/resources/event_perks/jussin_tukkuhinnat.tres" id="6_perk"]
+[ext_resource type="Resource" path="res://src/resources/event_perks/kurssi_asiakaspalvelu.tres" id="7_perk"]
+[ext_resource type="Resource" path="res://src/resources/event_perks/kurssi_pikapalvelu.tres" id="8_perk"]
+[ext_resource type="Resource" path="res://src/resources/event_perks/kurssi_tuplatipit.tres" id="9_perk"]
+[ext_resource type="Resource" path="res://src/resources/event_perks/remontti_hyllyt.tres" id="10_perk"]
+[ext_resource type="Resource" path="res://src/resources/event_perks/remontti_keittio.tres" id="11_perk"]
+[ext_resource type="Resource" path="res://src/resources/event_perks/remontti_lampo.tres" id="12_perk"]
+[ext_resource type="Resource" path="res://src/resources/event_perks/remontti_letkut.tres" id="13_perk"]
+[ext_resource type="Resource" path="res://src/resources/event_perks/remontti_salalokero.tres" id="14_perk"]
+
+[resource]
+script = ExtResource("1_pool")
+perks = Array[ExtResource("2_perk")]([ExtResource("3_perk"), ExtResource("4_perk"), ExtResource("5_perk"), ExtResource("6_perk"), ExtResource("7_perk"), ExtResource("8_perk"), ExtResource("9_perk"), ExtResource("10_perk"), ExtResource("11_perk"), ExtResource("12_perk"), ExtResource("13_perk"), ExtResource("14_perk")])

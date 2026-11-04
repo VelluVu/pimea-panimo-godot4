@@ -37,6 +37,7 @@ const KURPITSAOLUT : String = "Kurpitsaolut"
 const TEKOALYOLUT : String = "Tekoälyolut"
 const LAKKASELTZERI : String = "Alkoholiton lakkaseltzeri"
 const PUKKIBOCK : String = "Pukkibock"
+const TONTTUPUURO : String = "Tonttupuuro-olut"
 
 const KG : String = "kg"
 const G : String = "g"

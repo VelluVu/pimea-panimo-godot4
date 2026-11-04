@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="MaltData" format=3]
+
+[ext_resource type="Script" uid="uid://glh0u5xmw6sx" path="res://src/brewing/malt_data.gd" id="1_malt"]
+
+[resource]
+script = ExtResource("1_malt")
+ebc = 1
+extract = 0.8
+id = 116
+name = "Puuroriisi"
+name_partitive = "puuroriisiä"
+description = "Pyöreäjyväistä puuroriisiä. Mäskissä se keittyy puuroksi ja tekee oluesta vaalean ja pehmeän. Tontut tunnistavat sen tuoksun kolmen kellarin päästä. Myynnissä vain jouluna."
+base_price = 1.0
+pack_grams = 500
+season = 4
+metadata/_custom_type_script = "uid://dniwiyu5ynp71"

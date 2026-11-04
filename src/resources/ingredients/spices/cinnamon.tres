@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="IngredientData" format=3]
+
+[ext_resource type="Script" uid="uid://dniwiyu5ynp71" path="res://src/brewing/ingredient_data.gd" id="1_cinnamon"]
+
+[resource]
+script = ExtResource("1_cinnamon")
+id = 413
+name = "Kaneli"
+name_partitive = "kanelia"
+description = "Kanelitanko puuron päälle ja oluen sekaan. Ilman sitä riisipuuro on vain riisiä. Myynnissä vain jouluna."
+base_price = 1
+unit = 2
+type = 3
+season = 4
+metadata/_custom_type_script = "uid://dniwiyu5ynp71"

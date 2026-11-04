@@ -120,6 +120,7 @@ func _advance_day() -> void:
 	brewery.today_sale_receipts.clear()
 
 	Fermenter.new(brewery).finish_all()
+	NaughtyList.return_stash(brewery)
 	_charge_daily_utility_bills(brewery)
 	brewery.close_money_day()
 	_apply_reputation_decay(brewery)

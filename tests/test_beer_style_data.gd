@@ -12,6 +12,9 @@ const GOOD_QUALITY : float = 0.9
 const PROMPT_ID : int = 410
 const CLOUDBERRY_ID : int = 411
 const GINGERBREAD_SPICE_ID : int = 412
+const PORRIDGE_RICE_ID : int = 116
+const CINNAMON_ID : int = 413
+const LACTOSE_ID : int = 408
 
 
 func suite_name() -> String:
@@ -149,3 +152,23 @@ func test_pukkibock_is_learned_and_priced_for_christmas() -> void:
 	assert_eq(pukkibock.known_in_season, SeasonRules.Season.CHRISTMAS)
 	assert_eq(pukkibock.price_season, SeasonRules.Season.CHRISTMAS)
 	assert_true(pukkibock.off_season_price_per_bottle < pukkibock.fixed_price_per_bottle)
+
+
+## Tonttupuuro-olut needs all three of its porridge parts: rice, lactose and cinnamon.
+func test_tonttupuuro_needs_rice_lactose_and_cinnamon() -> void:
+	var resolver := _resolver()
+	var tonttupuuro : BeerStyle = resolver.get_beer_style(BeerStyle.Style.TONTTUPUURO)
+	var result : BrewResult = resolver.resolve_brew_style(tonttupuuro.reference_recipe.duplicate())
+	assert_true(result != null and result.is_matched and result.beer_style == tonttupuuro, "the reference recipe brews Tonttupuuro-olut")
+	for part : int in [PORRIDGE_RICE_ID, LACTOSE_ID, CINNAMON_ID]:
+		var without : Dictionary = tonttupuuro.reference_recipe.duplicate()
+		without.erase(part)
+		var plain : BrewResult = resolver.resolve_brew_style(without)
+		assert_false(plain != null and plain.is_matched and plain.beer_style == tonttupuuro, "no %d, no Tonttupuuro-olut" % part)
+
+
+func test_tonttupuuro_is_learned_and_priced_for_christmas() -> void:
+	var tonttupuuro : BeerStyle = _resolver().get_beer_style(BeerStyle.Style.TONTTUPUURO)
+	assert_eq(tonttupuuro.known_in_season, SeasonRules.Season.CHRISTMAS)
+	assert_eq(tonttupuuro.price_season, SeasonRules.Season.CHRISTMAS)
+	assert_true(tonttupuuro.off_season_price_per_bottle < tonttupuuro.fixed_price_per_bottle)

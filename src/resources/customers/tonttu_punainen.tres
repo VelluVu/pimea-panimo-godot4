@@ -1,0 +1,45 @@
+[gd_resource type="Resource" script_class="CustomerData" format=3]
+
+[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_data"]
+[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/tonttu_punainen_anim.tres" id="2_sprite"]
+
+[resource]
+script = ExtResource("1_data")
+customer_name = "Tuikku"
+title = "Tonttu"
+first_names = Array[String](["Tuikku", "Hipsu", "Nuutti", "Tiltu", "Vilttitossu", "Puurokuppi", "Kurkistaja", "Nyyrikki"])
+min_quality = 0.3
+budget_multiplier = 0.7
+primary_style = 33
+secondary_style = 0
+also_likes = Array[int]([23])
+sprite_frames = ExtResource("2_sprite")
+randomize_skin = false
+randomize_hair = false
+randomize_clothes = false
+randomize_shoes = false
+hand_offsets = Array[Vector2]([Vector2(22, -14), Vector2(22, -22), Vector2(22, -26), Vector2(22, -22)])
+speech_drop_px = 32.0
+voice_pitch = 2.0
+dialogue_intro = "Psst. Tonttu tuli tarkastamaan. Onko puuroa, vai pitääkö tontun kirjoittaa?"
+dialogue_success = "Puuroa! Tonttu merkitsee sinut kiltiksi. Toistaiseksi."
+dialogue_fallback = "Ei puuroa, mutta kelpaa. Tonttu ei kirjoita tätä. Ainakaan musteella."
+dialogue_wrong_style = "Tämä ei tuoksu puurolta. Tonttu kirjoittaa muistiin. Isolla."
+dialogue_reject = "Hyi. Tällaista ei anneta edes saunatontulle. Tontut tietävät, missä nukut."
+dialogue_no_match = "Ei puuroa? Kuiva kellari. Palaisi hyvin."
+dialogue_preview_format = "%s? Onko siinä kanelia? Toivottavasti on."
+dialogue_nothing_available = "Tyhjä hylly. Tonttu katsoo sinua pitkään. Ja kirjoittaa."
+tip_base_chance = 0.3
+rep_primary_style = 3
+risk_bad_quality = 0
+risk_primary_style = 0
+risk_secondary_style = 0
+risk_wrong_style = 0
+appearance_weight = 0.0
+busy_season = 4
+busy_season_weight = 0.8
+no_match_risk_penalty = 0
+dialogue_sale_toast = "Tonttu otti pullon eikä maksanut. Kukaan ei uskaltanut sanoa mitään."
+takes_for_free = true
+korvatunturi_role = 1
+metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

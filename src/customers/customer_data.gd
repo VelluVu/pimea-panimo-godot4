@@ -9,6 +9,8 @@ const DEFAULT_NAMES: Array[String] = ["Matti", "Maija", "Pekka", "Liisa", "Antti
 ## get_batch_preference() for a batch no taste tier takes.
 const NOT_TO_TASTE: float = -1.0
 
+enum KorvatunturiRole { NONE, TONTTU, JOULUPUKKI }
+
 @export_group("Customer Profile")
 @export var customer_name: String = "Anonyymi"
 @export var title: String = ""
@@ -57,6 +59,11 @@ const NOT_TO_TASTE: float = -1.0
 ## Carried out instead of the beer glass, as drawn and at the sprite's own pixel scale
 ## (Ämpärihamstraaja's bucket of bottles). Null = the glass.
 @export var hand_item: Texture2D = null
+## The held glass per walk_towards frame, Customer-local; empty = CustomerHandOffsets' table
+## for the title. For variants of one title drawn at different sizes (the tontut).
+@export var hand_offsets: Array[Vector2] = []
+## Speech bubbles sit this much lower, for customers shorter than the usual body (the tontut).
+@export var speech_drop_px: float = 0.0
 
 @export_group("Äänet")
 ## Pitch of the babble when this customer speaks: under 1 is deeper, over 1 higher.
@@ -137,6 +144,12 @@ const NOT_TO_TASTE: float = -1.0
 ## Out of busy_season once the title was met in any run: a rare return visit. 0 = none.
 @export var after_season_weight: float = 0.0
 
+@export_group("Korvatunturi")
+## Tontut and Joulupukki take their beer and never pay.
+@export var takes_for_free: bool = false
+## Tontut keep the kiltti/tuhma list, Joulupukki settles it (NaughtyList).
+@export var korvatunturi_role: KorvatunturiRole = KorvatunturiRole.NONE
+
 @export_group("Erikoiskäytös")
 @export var randomizes_preference: bool = false
 ## No taste of their own: picks random batches that clear min_quality, and every style
@@ -207,6 +220,11 @@ func get_appearance_weight(season : SeasonRules.Season, is_met : bool = false) -
 	if is_met and after_season_weight > 0.0:
 		return after_season_weight
 	return appearance_weight
+
+
+## Where this customer's speech bubble points from, with its feet at `feet`.
+func speech_anchor(feet : Vector2) -> Vector2:
+	return feet + Vector2(0.0, speech_drop_px)
 
 
 ## False for a seasonal customer out of season (and not met yet): never picked, announced

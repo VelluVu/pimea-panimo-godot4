@@ -10,7 +10,10 @@ peek (2, leaning out from a hiding spot). No black outline, ENDESGA 32 colours, 
 above left, a dark edge only on the shade side. Leaning hats are hand-drawn grids, not a
 shear of the straight ones.
 
-    python dev/tools/sprites/make_tontut.py [--preview out.png] [--force-aseprite]
+Also writes each tonttu's SpriteFrames (src/resources/sprite_frames/<name>_anim.tres, the
+name without the frame size); --frames-only writes just those.
+
+    python dev/tools/sprites/make_tontut.py [--preview out.png] [--force-aseprite] [--frames-only]
 """
 
 import argparse
@@ -28,6 +31,16 @@ FLOOR = 29
 ROWS = 6
 ASEPRITE = Path("C:/Program Files (x86)/Steam/steamapps/common/Aseprite/Aseprite.exe")
 ASEPRITE_SCRIPT = Path(__file__).resolve().parent / "aseprite_source.lua"
+FRAMES_DIR = Path(__file__).resolve().parents[3] / "src/resources/sprite_frames"
+# (name, sheet row, frame count, fps, loops): the rows draw_sheet() paints, in order.
+ANIMATIONS = (
+	("idle", 0, 3, 4.0, True),
+	("idle_up", 1, 3, 6.0, True),
+	("walk_towards", 2, 4, 6.0, True),
+	("walk_right", 3, 4, 6.0, True),
+	("run_right", 4, 4, 12.0, True),
+	("peek", 5, 2, 2.0, True),
+)
 
 BASE_PALETTE = {
 	"W": hex_color("ffffff"), "L": hex_color("c0cbdc"), "M": hex_color("8b9bb4"),  # beard, grey felt
@@ -259,17 +272,42 @@ def write_aseprite_source(png: Path, force: bool) -> None:
 	print(f"wrote {out.name}")
 
 
+def write_frames(name: str) -> None:
+	"""The SpriteFrames the customer scene plays, one AtlasTexture per sheet cell."""
+	lines = ['[gd_resource type="SpriteFrames" format=3]', "",
+			 f'[ext_resource type="Texture2D" path="res://assets/textures/characters/{name}.png" id="1_sheet"]', ""]
+	animations = []
+	for anim, row, count, fps, loops in ANIMATIONS:
+		for column in range(count):
+			lines += [f'[sub_resource type="AtlasTexture" id="AtlasTexture_{anim}_{column}"]', 'atlas = ExtResource("1_sheet")',
+					  f"region = Rect2({column * FRAME}, {row * FRAME}, {FRAME}, {FRAME})", ""]
+		frames = ", ".join('{\n"duration": 1.0,\n"texture": SubResource("AtlasTexture_%s_%d")\n}' % (anim, column)
+						   for column in range(count))
+		loop = "true" if loops else "false"
+		animations.append(f'{{\n"frames": [{frames}],\n"loop": {loop},\n"name": &"{anim}",\n"speed": {fps}\n}}')
+	lines += ["[resource]", "animations = [" + ", ".join(animations) + "]", ""]
+	out = FRAMES_DIR / f"{name.removesuffix('_32')}_anim.tres"
+	out.write_text("\n".join(lines), encoding="utf-8", newline="\n")
+	print(f"wrote {out.name}")
+
+
 def main() -> None:
 	parser = argparse.ArgumentParser(description=__doc__)
 	parser.add_argument("--preview", type=Path, help="also write a 4x preview beside a normal customer")
 	parser.add_argument("--force-aseprite", action="store_true")
+	parser.add_argument("--frames-only", action="store_true", help="write only the SpriteFrames")
 	args = parser.parse_args()
+	if args.frames_only:
+		for name in VARIANTS:
+			write_frames(name)
+		return
 	sheets = {name: draw_sheet(variant) for name, variant in VARIANTS.items()}
 	for name, sheet in sheets.items():
 		path = TEXTURE_DIR / f"{name}.png"
 		sheet.save(path)
 		print(f"wrote {path.name}")
 		write_aseprite_source(path, args.force_aseprite)
+		write_frames(name)
 	if args.preview:
 		normal = Image.open(TEXTURE_DIR / "normaali_mies_32.png").convert("RGBA")
 		image = Image.new("RGBA", (FRAME * 13, FRAME * ROWS), (40, 36, 48, 255))

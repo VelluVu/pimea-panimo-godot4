@@ -113,6 +113,13 @@ var game_has_ended : bool = false
 ## One-way latches for the LVV warnings, see LVV_HINT_RISK.
 @export var lvv_hint_shown : bool = false
 @export var lvv_inspector_visited : bool = false
+## The kiltti/tuhma list since Joulupukki last settled it (NaughtyList).
+@export var naughty_list_kiltti : int = 0
+@export var naughty_list_tuhma : int = 0
+## Ingredients the tontut hid, given back the next day. Ingredient id -> amount.
+@export var tonttu_stash : Dictionary = {}
+## Joulupukki's wrapped gifts until one is opened, so a save keeps the offer.
+@export var christmas_gifts : Array[ChristmasGift] = []
 ## The SeasonData.id() last announced in this run, so a calendar season gets its toast once.
 @export var announced_season_id : String = ""
 
@@ -354,7 +361,7 @@ func _ready() -> void:
 	# pricing is re-synced here.
 	resolver.ingredient_price_multiplier = stats.multiplier(PerkStats.INGREDIENT_PRICE)
 
-	_services = [RecipeBook.new(self), IngredientTrader.new(self), BatchDistributor.new(self), Brewer.new(self), CellarUpgradeShop.new(self), KegWasher.new(self)]
+	_services = [RecipeBook.new(self), IngredientTrader.new(self), BatchDistributor.new(self), Brewer.new(self), CellarUpgradeShop.new(self), KegWasher.new(self), NaughtyList.new(self)]
 	for service : Variant in _services:
 		service.connect_signals()
 

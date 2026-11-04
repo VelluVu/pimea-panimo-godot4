@@ -6,6 +6,8 @@ extends Resource
 @export var sprite_frames : SpriteFrames
 ## Played for the whole crossing. Art faces left; legs heading right are mirrored.
 @export var animation : StringName = &"walk_left"
+## For art drawn facing right (the tontut's dash and peek), mirrored on legs heading left.
+@export var art_faces_right : bool = false
 ## Scale at the depth reference line (VignettePath); shrinks and grows with screen y.
 @export var base_scale : Vector2 = Vector2(4, 4)
 ## Seconds before this actor appears. Equal crossing times keep the gap the whole way, a

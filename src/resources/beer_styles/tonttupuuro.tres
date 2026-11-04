@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="BeerStyle" format=3]
+
+[ext_resource type="Script" uid="uid://qpqfdi1wacne" path="res://src/brewing/beer_style.gd" id="1_tonttupuuro"]
+
+[resource]
+script = ExtResource("1_tonttupuuro")
+style_name = "Tonttupuuro-olut"
+description = "Jouluaaton riisipuuro pullossa: vaalea, mieto ja pehmeä olut, jossa on puuroriisiä, maitosokeria ja kanelia. Kulho saunan lauteille, pullo kellarin nurkkaan, niin tontut pysyvät tyytyväisinä."
+locked_hint = "Mieto ja vaalea jouluolut, joka maistuu siltä, mitä tontuille jätetään aattona. Riisiä ja kanelia myydään vain jouluna."
+known_in_season = 4
+style = 33
+profit_margin_multiplier = 1.2
+fixed_price_per_bottle = 3.2
+price_season = 4
+off_season_price_per_bottle = 2.5
+reputation_change = 4
+peak_days = 4
+shelf_life_days = 20
+aging_factor = 0.05
+mash_steps = Array[int]([69])
+mash_band = 2.0
+hop_additions = Array[int]([0])
+required_yeast_id = 302
+required_malt_id = 116
+required_spice_ids = Array[int]([408, 413])
+preferred_hop_profiles = Array[int]([4])
+abv = 3.3
+min_abv = 2.3
+max_abv = 4.3
+min_ebc = 1
+max_ebc = 7
+min_ibu = 6
+max_ibu = 18
+preferred_malt_ids = Array[int]([100, 116])
+reference_recipe = Dictionary[int, int]({100: 2, 116: 2, 206: 30, 302: 1, 408: 2, 413: 1})
+metadata/_custom_type_script = "uid://qpqfdi1wacne"
