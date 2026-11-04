@@ -1,4 +1,4 @@
-"""Draws Vanha mestari Aatu's 48x48 portrait for the brew day guide.
+"""Draws Vanha mestari Pate's 48x48 portrait for the brew day guide.
 
 Two frames side by side (mouth shut, mouth open) in the characters' palette. Shapes are
 whole-pixel ellipses and boxes, then a 1 px dark outline is added around the silhouette.

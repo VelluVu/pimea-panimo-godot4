@@ -201,7 +201,7 @@ func _on_customer_spoke(at: Vector2, voice_pitch: float) -> void:
 	play_sfx_at(bank.sfx_babbles.pick_random(), at, BABBLE_VOLUME_DB, pitch, VOICE_BUS)
 
 
-## Not placed in the world: Aatu also talks while the brew day or the recipe book has
+## Not placed in the world: Pate also talks while the brew day or the recipe book has
 ## paused it, and the world players pause with it.
 func _on_guide_spoke(voice_pitch: float) -> void:
 	if bank.sfx_babbles.is_empty():

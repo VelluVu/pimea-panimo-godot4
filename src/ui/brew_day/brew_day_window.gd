@@ -4,7 +4,7 @@ extends Control
 ## The brew day minigame: mash, then boil, then the earned quality multiplier goes to the
 ## Brewer. The game pauses meanwhile. Peru (or Esc) asks first and keeps the table;
 ## Pikakeitto brews at once at a lower quality. On a guided brew day (GuideParts, on for
-## the first one) Aatu says what to do next and the pointer marks where.
+## the first one) Pate says what to do next and the pointer marks where.
 
 const MASH_HEADER_TEXT : String = "MÄSKÄYS · %s"
 const BOIL_HEADER_TEXT : String = "KEITTO · %s"

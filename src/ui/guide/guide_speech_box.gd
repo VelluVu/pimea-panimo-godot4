@@ -1,7 +1,7 @@
 class_name GuideSpeechBox
 extends Panel
 
-## Vanha mestari Aatu's speech box: his portrait, the line typed out while his mouth
+## Vanha mestari Pate's speech box: his portrait, the line typed out while his mouth
 ## moves, and Jatka. Lays itself out from its size: wide puts the button at the right,
 ## narrow (the strip beside the recipe book) stacks everything. There is no skip button:
 ## the tutorial is turned off in Asetukset ("Ohita opastus").
@@ -9,7 +9,7 @@ extends Panel
 signal next_pressed
 signal line_typed
 
-const NAME_TEXT : String = "Vanha mestari Aatu"
+const NAME_TEXT : String = "Vanha mestari Pate"
 const NEXT_BUTTON_TEXT : String = "Jatka"
 const PORTRAIT : Texture2D = preload("res://assets/textures/characters/vanha_mestari_portrait_48.png")
 const PORTRAIT_SIZE : Vector2 = Vector2(48, 48)
@@ -41,7 +41,7 @@ var _babble_time : float = 0.0
 
 
 func _ready() -> void:
-	# The recipe book pauses the game while Aatu talks beside it.
+	# The recipe book pauses the game while Pate talks beside it.
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	_portrait_frame.atlas = PORTRAIT

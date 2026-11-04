@@ -1,7 +1,7 @@
 class_name BrewDayGuide
 extends RefCounted
 
-## Aatu on a guided brew day: says the step (BrewDayGuideRules) and frames the control it
+## Pate on a guided brew day: says the step (BrewDayGuideRules) and frames the control it
 ## is about. The window works out the step; this knows what each step points at.
 
 var _box : GuideSpeechBox

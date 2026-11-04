@@ -134,3 +134,12 @@ func test_black_friday_sale_leaves_no_resale_profit() -> void:
 	assert_eq(event.season, SeasonRules.Season.BLACK_MONTH)
 	assert_true(event.day_perk != null)
 	assert_true(event.day_perk.ingredient_price_multiplier >= IngredientPrice.SELL_BACK_RATE)
+
+
+## The Christmas days come only at Christmas, and each brings its day perk.
+func test_the_christmas_days_stay_in_their_season() -> void:
+	for file : String in ["day_event_joulurauha", "day_event_tonttujen_pikkujoulut", "day_event_tapaninpaiva"]:
+		var event : DayEventData = load("res://src/resources/day_events/%s.tres" % file)
+		assert_true(event.can_come_in(SeasonRules.Season.CHRISTMAS), file)
+		assert_false(event.can_come_in(SeasonRules.Season.NONE), file)
+		assert_true(event.day_perk != null, file)

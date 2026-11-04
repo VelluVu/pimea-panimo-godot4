@@ -1,7 +1,7 @@
 @tool
 extends McpTestSuite
 
-## Unit tests for CellarGuideText: Aatu has a line for every first-brew step and talk line.
+## Unit tests for CellarGuideText: Pate has a line for every first-brew step and talk line.
 
 const TextScript := preload("res://src/ui/guide/cellar_guide_text.gd")
 const RulesScript := preload("res://src/progression/next_step_rules.gd")

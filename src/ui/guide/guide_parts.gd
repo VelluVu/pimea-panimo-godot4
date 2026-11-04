@@ -1,7 +1,7 @@
 class_name GuideParts
 extends RefCounted
 
-## Which parts of Aatu's tutorial are still to come in this run. Every new game has the
+## Which parts of Pate's tutorial are still to come in this run. Every new game has the
 ## whole tutorial unless "Ohita opastus" is set in Asetukset, the only way to turn it off or
 ## on. A part seen through is remembered in the run's save (Brewery.guide_parts_done).
 

@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_event")
-event_caller_name = "Vanha mestari Aatu"
+event_caller_name = "Vanha mestari Pate"
 intro_dialogue = "Tuo minulle %d kiloa %s ja {cost} €, niin kerron yhden vanhan panimomestarin salaisuuden."
 success_dialogue = "Kirjoitin sen reseptikirjaasi. Älä kerro kenellekään."
 fail_dialogue = "Ei maltaita, ei salaisuuksia."

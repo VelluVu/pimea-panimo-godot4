@@ -22,7 +22,7 @@ const SCREEN_SHAKE_TOOLTIP : String = "Tappelut ja särkyvät lasit tärisyttäv
 const FOCUS_PAUSE_LABEL_TEXT : String = "Tauko taustalla"
 const FOCUS_PAUSE_TOOLTIP : String = "Peli pysähtyy, kun siirryt toiseen ikkunaan tai välilehteen."
 const SKIP_TUTORIAL_LABEL_TEXT : String = "Ohita opastus"
-const SKIP_TUTORIAL_TOOLTIP : String = "Vanha mestari Aatu ei opasta uuden pelin ensimmäistä päivää eikä keittopäivää."
+const SKIP_TUTORIAL_TOOLTIP : String = "Vanha mestari Pate ei opasta uuden pelin ensimmäistä päivää eikä keittopäivää."
 ## Matches the label width of the rows built in the scene.
 const ROW_LABEL_WIDTH : float = 120.0
 ## Every settings row is as tall as the tallest control (the language dropdown), so rows

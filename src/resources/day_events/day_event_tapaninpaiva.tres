@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="DayEventData" format=3]
+
+[ext_resource type="Script" uid="uid://dhlswvb7h0ba8" path="res://src/events/day_event_data.gd" id="1_event"]
+[ext_resource type="Script" uid="uid://dewmdbm4a0vst" path="res://src/progression/run_perk.gd" id="2_perk"]
+
+[sub_resource type="Resource" id="RunPerk_day"]
+script = ExtResource("2_perk")
+perk_name = "Tapaninpäivä"
+description = "Harvat asiakkaat ovat krapulassa ja maksavat mitä pyydetään."
+icon_placeholder = "🎄"
+spawn_interval_multiplier = 1.4
+counter_price_multiplier = 1.15
+
+[resource]
+script = ExtResource("1_event")
+event_name = "Tapaninpäivä"
+announcement_text = "Tapaninpäivä. Koko kaupunki on krapulassa ja syö kinkkua. Asiakkaita tulee harvakseltaan, mutta ne harvat maksavat tiskillä mitä pyydetään."
+weight = 2.0
+season = 4
+day_perk = SubResource("RunPerk_day")

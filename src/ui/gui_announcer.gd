@@ -119,10 +119,10 @@ func start() -> void:
 	_announce_new_season()
 
 	# Shown while the clock is stopped, so the missing customers do not read as a bug.
-	# Aatu tells it himself when he guides the first brew.
+	# Pate tells it himself when he guides the first brew.
 	if TimeManager.day_timer.is_stopped() and not GuideParts.is_on(GuideParts.Part.CELLAR, BrewEngine.current_brewery):
 		BrewerySignals.brewery_state_changed.connect(_on_first_brew_hint_state_changed)
-		# Turned on in Asetukset, the tutorial takes over the moment Aatu starts talking.
+		# Turned on in Asetukset, the tutorial takes over the moment Pate starts talking.
 		GUISignals.guide_spoke.connect(_on_guide_spoke_over_hint)
 		_first_brew_hint.present(FIRST_BREW_HINT_TEXT)
 
@@ -234,7 +234,7 @@ func _end_first_brew_hint() -> void:
 		BrewerySignals.brewery_state_changed.disconnect(_on_first_brew_hint_state_changed)
 	if GUISignals.guide_spoke.is_connected(_on_guide_spoke_over_hint):
 		GUISignals.guide_spoke.disconnect(_on_guide_spoke_over_hint)
-	# Aatu is switched on in Asetukset, with the game paused behind it.
+	# Pate is switched on in Asetukset, with the game paused behind it.
 	_first_brew_hint.dismiss_early(true)
 
 

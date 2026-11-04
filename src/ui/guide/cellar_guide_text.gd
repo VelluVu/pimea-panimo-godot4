@@ -1,13 +1,13 @@
 class_name CellarGuideText
 extends RefCounted
 
-## What Aatu says in the cellar: a line for each first-brew step of NextStepRules, the talk
+## What Pate says in the cellar: a line for each first-brew step of NextStepRules, the talk
 ## after the first brew day, and his goodbye when the tutorial is switched off mid-way.
 ## Untranslated: the speech box translates the whole constant.
 
 enum Talk { GOALS, RECIPES, UPGRADES, BREWERY_BOOK, GOODBYE }
 
-const OPEN_RECIPES_TEXT : String = "Jaahas, meinaat alkaa pyörittämään pimeää panimoa? Minä olen Aatu, ja neuvon hieman alkuun. Ovet pysyvät kiinni, kunnes ensimmäinen olut on pantu. Avaa reseptikirja, niin nähdään, mitä tiedät."
+const OPEN_RECIPES_TEXT : String = "Jaahas, meinaat alkaa pyörittämään pimeää panimoa? Minä olen Pate, ja neuvon hieman alkuun. Ovet pysyvät kiinni, kunnes ensimmäinen olut on pantu. Avaa reseptikirja, niin nähdään, mitä tiedät."
 const PICK_RECIPE_TEXT : String = "Kotikaljallahan kaikki aloittelee. Avaapa se resepti."
 const LOAD_RECIPE_TEXT : String = "Täältä näkee vähän, mitä halutaan. Resepti voidaan laittaa kohteeksi lataamalla se reseptinäkymään, niin ei tarvitse arpoa raaka-aineiden kanssa."
 const GO_TO_SHOP_TEXT : String = "Maltaat ja hiiva ostetaan kaupasta. Kauppa on tiskin oikeassa päässä."

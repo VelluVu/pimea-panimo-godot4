@@ -140,6 +140,10 @@ msgid "Jalo"
 msgstr "Noble"
 
 #: src/autoload/string_container.gd
+msgid "Jouluolut"
+msgstr "Christmas beer"
+
+#: src/autoload/string_container.gd
 msgid "Kauden tilastot"
 msgstr "Season stats"
 
@@ -1549,6 +1553,22 @@ msgid ""
 msgstr ""
 "An Irish dry stout: black, light and roasty. Roasted barley gives it a "
 "sharp, coffee-like bitterness meant for rainy days."
+
+#: src/resources/beer_styles/jouluolut.tres
+msgid ""
+"Suomalaisen joulupöydän oma olut: tumma, makea ja maltainen lager, jossa "
+"maistuu karamelli ja paahdettu leipä. Jokainen panimo tekee omansa, ja "
+"jokainen setä tietää, kenen on paras."
+msgstr ""
+"The Finnish Christmas table's own beer: a dark, sweet and malty lager "
+"tasting of caramel and toasted bread. Every brewery makes its own, and "
+"every uncle knows whose is best."
+
+#: src/resources/beer_styles/jouluolut.tres
+msgid ""
+"Tumma ja makea joululager, jonka karamelli tulee tummasta "
+"karamellimaltaasta."
+msgstr "A dark and sweet Christmas lager whose caramel comes from dark crystal malt."
 
 #: src/resources/beer_styles/kotikalja.tres
 msgid "Kotitekoinen leipäjuoma isoäidin keittiöstä, mieto ja makea."
@@ -3393,6 +3413,16 @@ msgstr ""
 "The cellar fridge is making a suspicious noise. The cold chain may fail "
 "today."
 
+#: src/resources/day_events/day_event_joulurauha.tres
+msgid ""
+"Joulurauha on julistettu! LVV:n tarkastajatkin istuvat kotona kinkun "
+"ääressä, joten myynnit nostavat riskiä tänään puolet vähemmän. "
+"Korvatunturin väki ei rauhoitu."
+msgstr ""
+"Christmas peace has been declared! Even the LVV inspectors are home with "
+"the Christmas ham, so sales raise the risk only half as much today. "
+"Korvatunturi's folk do not calm down."
+
 #: src/resources/day_events/day_event_kahvipaahtimo.tres
 msgid ""
 "Hipsterien käsityökahvipapupaahtamiskerho kokoontuu tänään lähialueella. "
@@ -3462,6 +3492,24 @@ msgid ""
 msgstr ""
 "Protection money collection day is today. Expect suspiciously well-dressed "
 "businessmen."
+
+#: src/resources/day_events/day_event_tapaninpaiva.tres
+msgid ""
+"Tapaninpäivä. Koko kaupunki on krapulassa ja syö kinkkua. Asiakkaita tulee "
+"harvakseltaan, mutta ne harvat maksavat tiskillä mitä pyydetään."
+msgstr ""
+"St. Stephen's Day. The whole town is hungover and eating ham. Few customers "
+"come, but those few pay whatever you ask."
+
+#: src/resources/day_events/day_event_tonttujen_pikkujoulut.tres
+msgid ""
+"Tonttujen pikkujoulut! Korvatunturin väki juhlii tänään sinun kellarissasi. "
+"Muut asiakkaat tippaavat avokätisesti, tontut eivät maksa mitään, ja meteli "
+"kuuluu kadulle asti."
+msgstr ""
+"The elves' Christmas party! Korvatunturi's folk celebrate in your cellar "
+"today. Other customers tip generously, the elves pay nothing, and the noise "
+"carries to the street."
 
 #: src/resources/day_events/day_event_tuhoelaimet.tres
 msgid "Säkeistä löytyi aamulla puremajälkiä. Jokin on käynyt varastossa yöllä."
@@ -6926,9 +6974,9 @@ msgstr "About"
 
 #: src/scenes/ui/options_window.gd
 msgid ""
-"Vanha mestari Aatu ei opasta uuden pelin ensimmäistä päivää eikä "
+"Vanha mestari Pate ei opasta uuden pelin ensimmäistä päivää eikä "
 "keittopäivää."
-msgstr "Old master Aatu won't guide you through a new game's first day or brew day."
+msgstr "Old master Pate won't guide you through a new game's first day or brew day."
 
 #: src/scenes/ui/options_window.gd
 msgid "Ääni"
@@ -7922,13 +7970,10 @@ msgstr "Oh, I've already taught you this before. My memory's starting to go."
 
 #: src/ui/guide/cellar_guide_text.gd
 msgid ""
-"Jaahas, meinaat alkaa pyörittämään pimeää panimoa? Minä olen Aatu, ja "
+"Jaahas, meinaat alkaa pyörittämään pimeää panimoa? Minä olen Pate, ja "
 "neuvon hieman alkuun. Ovet pysyvät kiinni, kunnes ensimmäinen olut on "
 "pantu. Avaa reseptikirja, niin nähdään, mitä tiedät."
-msgstr ""
-"Well now, so you mean to start running a hidden brewery? I'm Aatu, and I'll "
-"help you get started. The doors stay shut until the first beer is brewing. "
-"Open the recipe book and let's see what you know."
+msgstr "Well now, so you mean to start running a hidden brewery? I'm Pate, and I'll help you get started. The doors stay shut until the first beer is brewing. Open the recipe book and let's see what you know."
 
 #: src/ui/guide/cellar_guide_text.gd
 msgid "Kaikki on pöydällä. Paina Pane, niin päästään keittämään."
@@ -8017,8 +8062,8 @@ msgstr ""
 "an amount and press Add."
 
 #: src/ui/guide/guide_speech_box.gd
-msgid "Vanha mestari Aatu"
-msgstr "Old master Aatu"
+msgid "Vanha mestari Pate"
+msgstr "Old master Pate"
 
 #: src/ui/ingredient_book_text.gd
 msgid "Avautuu maineella %d"
@@ -8373,10 +8418,6 @@ msgid "%s · reseptejä %d"
 msgstr "%s · recipes %d"
 
 #: src/ui/recipe_library_text.gd
-msgid "Aatun vinkki: EBC %s, IBU %s"
-msgstr "Aatu's tip: EBC %s, IBU %s"
-
-#: src/ui/recipe_library_text.gd
 msgid "Ei tallennettuja reseptejä."
 msgstr "No saved recipes."
 
@@ -8411,6 +8452,10 @@ msgstr "Undiscovered styles (%d)"
 #: src/ui/recipe_library_text.gd
 msgid "Mäskäys: %s"
 msgstr "Mash: %s"
+
+#: src/ui/recipe_library_text.gd
+msgid "Paten vinkki: EBC %s, IBU %s"
+msgstr "Pate's tip: EBC %s, IBU %s"
 
 #: src/ui/recipe_library_text.gd
 msgid "Pohjamallas: %s"

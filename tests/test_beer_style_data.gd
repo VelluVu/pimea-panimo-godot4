@@ -172,3 +172,18 @@ func test_tonttupuuro_is_learned_and_priced_for_christmas() -> void:
 	assert_eq(tonttupuuro.known_in_season, SeasonRules.Season.CHRISTMAS)
 	assert_eq(tonttupuuro.price_season, SeasonRules.Season.CHRISTMAS)
 	assert_true(tonttupuuro.off_season_price_per_bottle < tonttupuuro.fixed_price_per_bottle)
+
+
+## Jouluolut is a dark Christmas lager that needs dark crystal malt, so a plain dark lager
+## stays a Tumma Lager.
+func test_jouluolut_needs_dark_crystal_malt() -> void:
+	var resolver := _resolver()
+	var jouluolut : BeerStyle = resolver.get_beer_style(BeerStyle.Style.JOULUOLUT)
+	var result : BrewResult = resolver.resolve_brew_style(jouluolut.reference_recipe.duplicate())
+	assert_true(result != null and result.is_matched and result.beer_style == jouluolut, "the reference recipe brews Jouluolut")
+	var without : Dictionary = jouluolut.reference_recipe.duplicate()
+	without.erase(jouluolut.required_malt_id)
+	var plain : BrewResult = resolver.resolve_brew_style(without)
+	assert_false(plain != null and plain.is_matched and plain.beer_style == jouluolut, "no dark crystal, no Jouluolut")
+	assert_eq(jouluolut.known_in_season, SeasonRules.Season.CHRISTMAS)
+	assert_true(jouluolut.off_season_price_per_bottle < jouluolut.fixed_price_per_bottle)

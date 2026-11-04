@@ -42,7 +42,7 @@ const EFFORT_EASY_TEXT : String = "helppo"
 const EFFORT_MEDIUM_TEXT : String = "keskitaso"
 const EFFORT_HARD_TEXT : String = "vaativa"
 const NEW_CUSTOMER_HINT : String = "Houkuttelee uuden asiakkaan"
-const MASTER_HINT_FORMAT : String = "Aatun vinkki: EBC %s, IBU %s"
+const MASTER_HINT_FORMAT : String = "Paten vinkki: EBC %s, IBU %s"
 
 const BITTERING_ADDITION_TEXT : String = "katkero"
 const FLAVOR_ADDITION_TEXT : String = "maku"

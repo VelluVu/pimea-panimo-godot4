@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="BeerStyle" format=3]
+
+[ext_resource type="Script" uid="uid://qpqfdi1wacne" path="res://src/brewing/beer_style.gd" id="1_jouluolut"]
+
+[resource]
+script = ExtResource("1_jouluolut")
+style_name = "Jouluolut"
+description = "Suomalaisen joulupöydän oma olut: tumma, makea ja maltainen lager, jossa maistuu karamelli ja paahdettu leipä. Jokainen panimo tekee omansa, ja jokainen setä tietää, kenen on paras."
+locked_hint = "Tumma ja makea joululager, jonka karamelli tulee tummasta karamellimaltaasta."
+known_in_season = 4
+style = 34
+preferred_spice_ids = Array[int]([412])
+profit_margin_multiplier = 1.3
+fixed_price_per_bottle = 3.6
+price_season = 4
+off_season_price_per_bottle = 2.9
+reputation_change = 4
+peak_days = 10
+shelf_life_days = 40
+aging_factor = 0.05
+mash_steps = Array[int]([67])
+mash_band = 2.0
+hop_additions = Array[int]([0])
+required_yeast_id = 301
+required_malt_id = 107
+preferred_hop_profiles = Array[int]([4])
+abv = 5.3
+min_abv = 4.3
+max_abv = 6.3
+min_ebc = 30
+max_ebc = 62
+min_ibu = 14
+max_ibu = 26
+preferred_malt_ids = Array[int]([104, 107])
+reference_recipe = Dictionary[int, int]({100: 2, 104: 20, 107: 6, 113: 1, 200: 10, 206: 20, 301: 1})
+metadata/_custom_type_script = "uid://qpqfdi1wacne"

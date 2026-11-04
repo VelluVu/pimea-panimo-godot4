@@ -4,7 +4,7 @@ extends Node
 ## Answers "what now?": until the first brew it points the long way round (the recipe
 ## book's Kotikalja page, the shop and its "Osta puuttuvat", the brewery's "Täytä resepti",
 ## "Pane"), so the player learns the places; the goals panel shows the step as a line.
-## While Aatu's tutorial is on (GuideParts) he says each step in the speech box, and after
+## While Pate's tutorial is on (GuideParts) he says each step in the speech box, and after
 ## the first brew day talks through the goals, the recipe book and the upgrades.
 ## The rules are NextStepRules; GUI builds this and hands it the views.
 
@@ -16,11 +16,11 @@ const SHELF_TOP_DROP : float = 18.0
 ## The warehouse doorway in its hover label's coordinates: the label stays clear of the
 ## screen edge, left of the door.
 const WAREHOUSE_DOOR_AREA : Rect2 = Rect2(87, -42, 43, 194)
-## How long a talk line stays after Aatu has said it.
+## How long a talk line stays after Pate has said it.
 const TALK_CONTINUE_SECONDS : float = 4.0
 ## Under the bar's views, between the options button and the console.
 const SPEECH_RECT : Rect2 = Rect2(36, 302, 524, 54)
-## While Aatu talks, the recipe book and the other tall windows end this far above him;
+## While Pate talks, the recipe book and the other tall windows end this far above him;
 ## their rows scroll.
 const BOOK_GAP : float = 4.0
 
@@ -37,15 +37,15 @@ var _recipe_library : RecipeLibraryWindow
 var _brewing_view : BrewingView
 var _shop_view : ShopView
 var _preparation_panel : BrewPreparationPanel
-## Windows that reach down to Aatu's box and end above it while he speaks.
+## Windows that reach down to Pate's box and end above it while he speaks.
 var _clear_of_speech : Array[Control] = []
 var _brew_day_open : bool = false
 var _refresh_queued : bool = false
 ## Runtime only: after a reload a player who already bought skips the book anyway.
 var _recipe_read : bool = false
-## The after-brew talk's line, or -1 when Aatu is not talking.
+## The after-brew talk's line, or -1 when Pate is not talking.
 var _talk : int = -1
-## Aatu's goodbye after "Ohita opastus" was switched on mid-tutorial.
+## Pate's goodbye after "Ohita opastus" was switched on mid-tutorial.
 var _forgetful : bool = false
 
 
@@ -68,7 +68,7 @@ func setup(pointer : NextStepPointer, speech : GuideSpeechBox, goals_panel : Dai
 	_clear_of_speech.append(recipe_library)
 
 
-## `window` (anchored, no bottom offset of its own) ends above Aatu's box while he speaks,
+## `window` (anchored, no bottom offset of its own) ends above Pate's box while he speaks,
 ## as the recipe book does.
 func keep_clear_of_speech(window : Control) -> void:
 	_clear_of_speech.append(window)
@@ -188,12 +188,12 @@ func _show(step : NextStepRules.Step) -> void:
 	_goals_panel.show_next_step(NextStepText.of(step))
 	_show_speech(step)
 	# The brew day has its own guide; "Ohita opastus" leaves the player free.
-	# The pointer waits until Aatu has said his line (line_typed refreshes).
+	# The pointer waits until Pate has said his line (line_typed refreshes).
 	if _brew_day_open or GuideParts.is_skipped() or (_speech.visible and _speech.is_typing()):
 		_pointer.point_at(null, NextStepPointer.Style.FRAME)
 	elif _talk >= 0:
 		_point_at_talk(_talk)
-	# The pointer belongs to Aatu's route: with "Ohita opastus" on, nothing points.
+	# The pointer belongs to Pate's route: with "Ohita opastus" on, nothing points.
 	elif GuideParts.is_on(GuideParts.Part.CELLAR, BrewEngine.current_brewery):
 		_point_at_step(step)
 	else:
@@ -255,7 +255,7 @@ func _point_at_step(step : NextStepRules.Step) -> void:
 		NextStepRules.Step.BUY_MISSING:
 			_pointer.point_at(_shop_view.buy_missing_button, NextStepPointer.Style.FRAME)
 		NextStepRules.Step.CLOSE_SHOP:
-			# Aatu shows where the bought goods are; closing the shop is the X beside them.
+			# Pate shows where the bought goods are; closing the shop is the X beside them.
 			_pointer.point_at(_warehouse, NextStepPointer.Style.FRAME_ARROW_LEFT, 0.0, WAREHOUSE_DOOR_AREA)
 		NextStepRules.Step.OPEN_BREWERY:
 			_pointer.point_at(_brewery_entrance, NextStepPointer.Style.ARROW_ABOVE, HOVER_LABEL_DROP)

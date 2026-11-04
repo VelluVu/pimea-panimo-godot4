@@ -12,7 +12,7 @@ const BUS_VOICES: StringName = &"Voices"
 const OPTION_SCREEN_SHAKE: String = "screen_shake"
 ## Alt-tab or another browser tab would otherwise let customers walk out unserved.
 const OPTION_PAUSE_ON_FOCUS_LOSS: String = "pause_on_focus_loss"
-## No Vanha mestari Aatu tutorial in new games (GuideParts); each run keeps its own progress.
+## No Vanha mestari Pate tutorial in new games (GuideParts); each run keeps its own progress.
 const OPTION_SKIP_TUTORIAL: String = "skip_tutorial"
 
 

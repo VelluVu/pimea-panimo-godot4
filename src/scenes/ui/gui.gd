@@ -34,7 +34,7 @@ var _announcer : GuiAnnouncer
 var _special_events : SpecialEventPresenter
 ## Built in code; made here so the first bind_brewery reaches it before it joins the tree.
 var _brew_day_window : BrewDayWindow = BrewDayWindow.new()
-## Built in code; Aatu's talk points at it.
+## Built in code; Pate's talk points at it.
 var upgrades_button : TooltipButton
 var _unlock_cards : PopupCardStack
 
@@ -152,7 +152,7 @@ func _add_shortcut_hints() -> void:
 
 
 ## The pointer sits at least above the bar's views, so windows opened over them cover it;
-## Aatu's speech box sits just under the pointer, so its frames draw over him.
+## Pate's speech box sits just under the pointer, so its frames draw over him.
 func _add_next_step_guide() -> void:
 	var views : Array[Control] = [shop_view, brewery_view, brew_preparation_panel, brewery_entrance_panel]
 	var top_view : Control = views[0]
@@ -209,7 +209,7 @@ func _make_unlock_cards() -> PopupCardStack:
 	return cards
 
 
-## Aatu's box sits in the cards' corner, and the first brew's achievement arrives just as he
+## Pate's box sits in the cards' corner, and the first brew's achievement arrives just as he
 ## starts talking: while he speaks, the cards rise from above his box.
 func _lift_unlock_cards(speech : GuideSpeechBox) -> void:
 	var bottom : float = -UNLOCK_CARDS_MARGIN

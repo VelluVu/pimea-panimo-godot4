@@ -1,7 +1,7 @@
 @tool
 extends McpTestSuite
 
-## Unit tests for GuideParts.is_on_for(): which part of Aatu's tutorial runs when.
+## Unit tests for GuideParts.is_on_for(): which part of Pate's tutorial runs when.
 
 const PartsScript := preload("res://src/ui/guide/guide_parts.gd")
 

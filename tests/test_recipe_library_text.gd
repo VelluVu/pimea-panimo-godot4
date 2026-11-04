@@ -134,7 +134,7 @@ func test_a_locked_page_withholds_the_exact_ranges() -> void:
 func test_the_old_master_reveals_the_ranges_of_a_locked_style() -> void:
 	var entry := _entry(false)
 	entry.hinted = true
-	assert_contains(_page(entry), "Aatun vinkki: EBC 11-14, IBU 14-20")
+	assert_contains(_page(entry), "Paten vinkki: EBC 11-14, IBU 14-20")
 
 
 func test_locked_hints_only_when_they_apply() -> void:
