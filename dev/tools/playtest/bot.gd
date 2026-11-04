@@ -63,6 +63,12 @@ func _ready() -> void:
 	BrewerySignals.bar_fight_triggered.connect(func(_m: String) -> void: _inc("bar_fights"))
 	BrewerySignals.customer_outburst.connect(func(_m: String) -> void: _inc("outbursts"))
 	BrewerySignals.game_ended.connect(func(t: String) -> void: ending = t)
+	BrewerySignals.day_event_announced.connect(func(e: DayEventData) -> void: _inc("day_event:" + e.event_name))
+	BrewerySignals.korvatunturi_visit_ended.connect(func(d: CustomerData, served: bool, fav: bool) -> void: _inc("korvatunturi:%s served=%s fav=%s" % [d.title, served, fav]))
+	BrewerySignals.christmas_gifts_offered.connect(func(g: Array) -> void: _inc("christmas_gifts_offered"); _note("gifts offered %d" % g.size()))
+	GUISignals.christmas_gift_chosen.connect(func(_i: int) -> void: _inc("christmas_gift_chosen"))
+	# The naughty list and day events tell the player through narration only; the start of each line is enough to tell them apart.
+	BrewerySignals.customer_sale_narrated.connect(func(t: String) -> void: _inc("narrated:" + t.left(28)))
 	CustomerRegistry.customer_unlocked.connect(func(t: String) -> void: _note("unlocked %s" % t))
 	TimeManager.day_changed.connect(_on_day_changed)
 	BrewerySignals.beer_sale_breakdown.connect(func(e: SaleReceiptEntry) -> void: _inc("counter_money", roundi(e.net_income)); _inc("tip_money", roundi(e.tip_income)))
@@ -302,6 +308,7 @@ func _brew_recipe(b: Brewery, recipe: BrewRecipe) -> void:
 		_brew_cooldown = 5.0
 		return
 
+	recipe = _without_unsold_spices(b, recipe)
 	for id: int in recipe.ingredient_amounts:
 		var missing: int = maxi(0, recipe.ingredient_amounts[id] - _owned(b, id))
 		if missing > 0:
@@ -324,6 +331,24 @@ func _brew_recipe(b: Brewery, recipe: BrewRecipe) -> void:
 	_inc("brews")
 	_inc("brew:" + BeerStyle.get_style_string_from_style(recipe.beer_style))
 	_brew_cooldown = 3.0
+
+
+## A spice used up and not sold now (gift Koivurisu, a season's spice) is left out, as a
+## player would; a copy, so a saved recipe keeps it.
+func _without_unsold_spices(b: Brewery, recipe: BrewRecipe) -> BrewRecipe:
+	var drop: Array[int] = []
+	for id: int in recipe.ingredient_amounts:
+		var ingredient: IngredientData = IngredientDatabase.get_item_by_id(id)
+		if ingredient != null and ingredient.type == IngredientData.IngredientType.SPICE \
+				and _owned(b, id) < recipe.ingredient_amounts[id] and not ingredient.is_sold_in(SeasonRules.now()):
+			drop.append(id)
+	if drop.is_empty():
+		return recipe
+	var copy: BrewRecipe = recipe.duplicate()
+	copy.ingredient_amounts = recipe.ingredient_amounts.duplicate()
+	for id: int in drop:
+		copy.ingredient_amounts.erase(id)
+	return copy
 
 
 ## The best style to brew next, from every style the unlocked ingredients can make.
