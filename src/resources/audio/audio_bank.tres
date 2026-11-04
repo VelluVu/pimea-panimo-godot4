@@ -14,7 +14,27 @@
 [ext_resource type="AudioStream" uid="uid://db3wbwr0rv5ji" path="res://assets/audio/sfx/retro/brew_start.ogg" id="13_brewstart"]
 [ext_resource type="AudioStream" uid="uid://em3q71r5rxgy" path="res://assets/audio/sfx/kenney/glass_clink.ogg" id="14_clink"]
 [ext_resource type="AudioStream" uid="uid://cyd2hmtomjibe" path="res://assets/audio/sfx/retro/talent_purchased.ogg" id="15_talent"]
+[ext_resource type="AudioStream" uid="uid://clcgsnb4yf1dg" path="res://assets/audio/sfx/synth/brew_boil_loop.wav" id="bd_boil_loop"]
+[ext_resource type="AudioStream" uid="uid://c3rc521ic8gcb" path="res://assets/audio/sfx/synth/brew_boil_over.wav" id="bd_boil_over"]
+[ext_resource type="AudioStream" uid="uid://8iuqrjnyul2g" path="res://assets/audio/sfx/synth/brew_burner_loop.wav" id="bd_burner_loop"]
+[ext_resource type="AudioStream" uid="uid://bamnwovnjfssh" path="res://assets/audio/sfx/synth/brew_clump_break.wav" id="bd_clump_break"]
+[ext_resource type="AudioStream" uid="uid://b2puy86qd3uhe" path="res://assets/audio/sfx/synth/brew_clump_hit.wav" id="bd_clump_hit"]
+[ext_resource type="AudioStream" uid="uid://i5q1bs241e8v" path="res://assets/audio/sfx/synth/brew_hop_pour_loop.wav" id="bd_hop_pour_loop"]
+[ext_resource type="AudioStream" uid="uid://bocej8cvlr7lr" path="res://assets/audio/sfx/synth/brew_malt_pour.wav" id="bd_malt_pour"]
+[ext_resource type="AudioStream" uid="uid://bhqr3v6h6i0nw" path="res://assets/audio/sfx/synth/brew_paddle_knock.wav" id="bd_paddle_knock"]
+[ext_resource type="AudioStream" uid="uid://bcr7rygo6cm3y" path="res://assets/audio/sfx/synth/brew_plop.wav" id="bd_plop"]
+[ext_resource type="AudioStream" uid="uid://cwooyof6atxg1" path="res://assets/audio/sfx/synth/brew_result_good.wav" id="bd_result_good"]
+[ext_resource type="AudioStream" uid="uid://uayy2rlu05d5" path="res://assets/audio/sfx/synth/brew_result_low.wav" id="bd_result_low"]
+[ext_resource type="AudioStream" uid="uid://bneomh8kwvd60" path="res://assets/audio/sfx/synth/brew_step_done.wav" id="bd_step_done"]
+[ext_resource type="AudioStream" uid="uid://cabt0o54hgg52" path="res://assets/audio/sfx/synth/ferment_bubble.wav" id="kw_ferment_bubble"]
+[ext_resource type="AudioStream" uid="uid://c7ijapno35nrt" path="res://assets/audio/sfx/synth/keg_clank.wav" id="kw_keg_clank"]
+[ext_resource type="AudioStream" uid="uid://bs41qn1ju4a58" path="res://assets/audio/sfx/synth/keg_scrub.wav" id="kw_keg_scrub"]
+[ext_resource type="AudioStream" uid="uid://pbig58mnv8u" path="res://assets/audio/sfx/synth/keg_shine.wav" id="kw_keg_shine"]
+[ext_resource type="AudioStream" uid="uid://bpwxgtff47goy" path="res://assets/audio/sfx/synth/keg_skitter.wav" id="kw_keg_skitter"]
+[ext_resource type="AudioStream" uid="uid://ddgju5moyyr10" path="res://assets/audio/sfx/synth/keg_splash.wav" id="kw_keg_splash"]
+[ext_resource type="AudioStream" uid="uid://cvv1mcakbsxt8" path="res://assets/audio/sfx/synth/soured.wav" id="kw_soured"]
 [ext_resource type="AudioStream" uid="uid://belsv6j6vprxq" path="res://assets/audio/music/custom/dark_reggae_pub.ogg" id="music_dark_reggae_pub"]
+[ext_resource type="Script" uid="uid://cqfp7w7v0c8j7" path="res://src/audio/season_music.gd" id="season_music_script"]
 [ext_resource type="AudioStream" uid="uid://dr0xk4sb5u04u" path="res://assets/audio/sfx/synth/babble_1.wav" id="snd_babble_1"]
 [ext_resource type="AudioStream" uid="uid://ba1eb0vynqwxs" path="res://assets/audio/sfx/synth/babble_2.wav" id="snd_babble_2"]
 [ext_resource type="AudioStream" uid="uid://dhefl26k5clta" path="res://assets/audio/sfx/synth/babble_3.wav" id="snd_babble_3"]
@@ -23,33 +43,23 @@
 [ext_resource type="AudioStream" uid="uid://cx8icd6q5eadu" path="res://assets/audio/sfx/synth/day_event.wav" id="snd_day_event"]
 [ext_resource type="AudioStream" uid="uid://cstk5a3b7rc45" path="res://assets/audio/sfx/synth/footstep.wav" id="snd_footstep"]
 [ext_resource type="AudioStream" uid="uid://byxi80sjdkwpj" path="res://assets/audio/sfx/synth/group_banner.wav" id="snd_group_banner"]
+[ext_resource type="AudioStream" uid="uid://bevsdssa0c1mx" path="res://assets/audio/sfx/synth/gunshot.wav" id="snd_gunshot"]
 [ext_resource type="AudioStream" uid="uid://drcs0nsvyn5q1" path="res://assets/audio/sfx/synth/pour.wav" id="snd_pour"]
 [ext_resource type="AudioStream" uid="uid://covirrtcco5o3" path="res://assets/audio/sfx/synth/toast.wav" id="snd_toast"]
+[ext_resource type="AudioStream" uid="uid://cppc0bxqq84ma" path="res://assets/audio/music/christmas/jouluyo_chipmetal.ogg" id="xmas_chipmetal"]
+[ext_resource type="AudioStream" uid="uid://dn6i4jsmskk56" path="res://assets/audio/music/christmas/jouluyo_doom.ogg" id="xmas_doom"]
+[ext_resource type="AudioStream" uid="uid://dwsml3l0ausr0" path="res://assets/audio/music/christmas/jouluyo_folkmetal.ogg" id="xmas_folkmetal"]
 
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/brew_burner_loop.wav" id="bd_burner_loop"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/brew_boil_loop.wav" id="bd_boil_loop"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/brew_malt_pour.wav" id="bd_malt_pour"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/brew_hop_pour_loop.wav" id="bd_hop_pour_loop"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/brew_plop.wav" id="bd_plop"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/brew_clump_hit.wav" id="bd_clump_hit"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/brew_clump_break.wav" id="bd_clump_break"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/brew_paddle_knock.wav" id="bd_paddle_knock"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/brew_boil_over.wav" id="bd_boil_over"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/brew_step_done.wav" id="bd_step_done"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/brew_result_good.wav" id="bd_result_good"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/brew_result_low.wav" id="bd_result_low"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/keg_scrub.wav" id="kw_keg_scrub"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/keg_splash.wav" id="kw_keg_splash"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/keg_skitter.wav" id="kw_keg_skitter"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/keg_clank.wav" id="kw_keg_clank"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/keg_shine.wav" id="kw_keg_shine"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/ferment_bubble.wav" id="kw_ferment_bubble"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/soured.wav" id="kw_soured"]
-[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/gunshot.wav" id="snd_gunshot"]
+[sub_resource type="Resource" id="SeasonMusic_christmas"]
+script = ExtResource("season_music_script")
+season = 4
+tracks = Array[AudioStream]([ExtResource("xmas_doom"), ExtResource("xmas_folkmetal"), ExtResource("xmas_chipmetal")])
+
 [resource]
 script = ExtResource("1_bank")
 menu_music = ExtResource("2_music1")
 music_tracks = Array[AudioStream]([ExtResource("4_music3"), ExtResource("5_music4"), ExtResource("6_music5"), ExtResource("music_dark_reggae_pub")])
+season_music = Array[ExtResource("season_music_script")]([SubResource("SeasonMusic_christmas")])
 sfx_coin_success = ExtResource("7_coin")
 sfx_critical_gain = ExtResource("snd_crit_gain")
 sfx_ui_click = ExtResource("8_click")
@@ -60,17 +70,10 @@ sfx_footstep = ExtResource("snd_footstep")
 sfx_babbles = Array[AudioStream]([ExtResource("snd_babble_1"), ExtResource("snd_babble_2"), ExtResource("snd_babble_3"), ExtResource("snd_babble_4")])
 sfx_pour = ExtResource("snd_pour")
 sfx_brew_start = ExtResource("13_brewstart")
-sfx_notification_ping = ExtResource("9_ping")
-sfx_lvv_alarm = ExtResource("10_alarm")
-sfx_risk_tension_drone = ExtResource("11_drone")
-sfx_style_discovered = ExtResource("12_discovered")
-sfx_talent_purchased = ExtResource("15_talent")
-sfx_glass_shatter = ExtResource("14_clink")
-sfx_gunshot = ExtResource("snd_gunshot")
 sfx_brew_burner_loop = ExtResource("bd_burner_loop")
 sfx_brew_boil_loop = ExtResource("bd_boil_loop")
-sfx_brew_malt_pour = ExtResource("bd_malt_pour")
 sfx_brew_hop_pour_loop = ExtResource("bd_hop_pour_loop")
+sfx_brew_malt_pour = ExtResource("bd_malt_pour")
 sfx_brew_plop = ExtResource("bd_plop")
 sfx_brew_clump_hit = ExtResource("bd_clump_hit")
 sfx_brew_clump_break = ExtResource("bd_clump_break")
@@ -86,3 +89,10 @@ sfx_keg_clank = ExtResource("kw_keg_clank")
 sfx_keg_shine = ExtResource("kw_keg_shine")
 sfx_ferment_bubble = ExtResource("kw_ferment_bubble")
 sfx_soured = ExtResource("kw_soured")
+sfx_notification_ping = ExtResource("9_ping")
+sfx_lvv_alarm = ExtResource("10_alarm")
+sfx_risk_tension_drone = ExtResource("11_drone")
+sfx_style_discovered = ExtResource("12_discovered")
+sfx_talent_purchased = ExtResource("15_talent")
+sfx_glass_shatter = ExtResource("14_clink")
+sfx_gunshot = ExtResource("snd_gunshot")

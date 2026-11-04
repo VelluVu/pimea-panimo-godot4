@@ -1,7 +1,8 @@
-The music in this folder is CC0 (public domain), from OpenGameArt.org:
+The OpenGameArt music in this folder is CC0 (public domain), from OpenGameArt.org:
 https://creativecommons.org/publicdomain/zero/1.0/
 
-Human-composed and published 2018-2020, before generative music tools. No AI-generated audio.
+Human-composed and published 2018-2020, before generative music tools. No AI-generated audio
+in these; the Christmas tracks below are AI-generated and marked so.
 
 Main menu only:
 randommind_chiptune_old_tower_inn_loop.ogg  RandomMind, "[Chiptune] Medieval: The Old Tower Inn" (loop version, converted to OGG)
@@ -20,3 +21,13 @@ Composed for Pimeä Panimo by VelluVu in the Furnace tracker (Sega Genesis sound
 The Furnace project and raw export are kept in dev/music/; dev/tools/music/prepare_track.py
 builds the playlist file.
 custom/dark_reggae_pub.ogg                   "Dark Reggae Pub" (intro, three loops, faded ending)
+
+AI-generated music, in christmas/ (played only in the Christmas season):
+The melody is "Stille Nacht" / "Jouluyö, juhlayö" by Franz Xaver Gruber, 1818 (public domain).
+For each track a plain chiptune-metal guide arrangement of the carol was written in code
+for Pimeä Panimo, then re-performed with ACE-Step 1.5 (an open music model, MIT licence,
+commercial use allowed, run locally) in its "cover" mode from a text description of the
+style. Picked by VelluVu, 2026; levelled and faded with dev/tools/music/prepare_track.py.
+christmas/jouluyo_doom.ogg                   "Jouluyö" doom metal version
+christmas/jouluyo_folkmetal.ogg              "Jouluyö" Nordic folk metal version
+christmas/jouluyo_chipmetal.ogg              "Jouluyö" 16-bit chiptune metal version
