@@ -13,6 +13,7 @@ buys_below_bar = true
 budget_multiplier = 1.1
 primary_style = 15
 secondary_style = 14
+also_likes = Array[int]([10])
 sprite_frames = ExtResource("2_sprite")
 randomize_skin = false
 randomize_hair = false

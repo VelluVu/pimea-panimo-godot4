@@ -12,6 +12,7 @@ first_names = Array[String](["Oona", "Anni", "Emma", "Iida", "Aino", "Sanni"])
 min_quality = 0.1
 primary_style = 0
 secondary_style = 13
+also_likes = Array[int]([6])
 sprite_frames = ExtResource("2_sprite")
 hand_offsets = Array[Vector2]([Vector2(-13, -42), Vector2(-5, -46), Vector2(-13, -42), Vector2(-17, -50)])
 voice_pitch = 1.365
