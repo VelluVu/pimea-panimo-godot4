@@ -6,6 +6,7 @@ extends TooltipLabel
 
 ## A click target, though the glyph is 9 px.
 const MIN_SIZE : Vector2 = Vector2(18, 18)
+const SPACE : String = " "
 
 ## The name and the countdown beside the icon, where there is room for them.
 @export var long_form : bool = false
@@ -38,9 +39,37 @@ func _refresh() -> void:
 	if _data == null:
 		text = ""
 	elif long_form:
-		text = SeasonText.line(_data, SeasonRules.days_left_now(_data.winter))
+		var line : String = SeasonText.line(_data, SeasonRules.days_left_now(_data.winter))
+		text = line.replace(_data.icon, _icon_gap())
 	else:
-		text = _data.icon
+		text = _icon_gap()
+	queue_redraw()
+
+
+## The theme's text outline fills the gaps of a sparse colour icon with dark patches, so
+## the text holds spaces where the icon goes and _draw paints it without an outline.
+func _icon_gap() -> String:
+	var font : Font = get_theme_font(&"font")
+	var font_size : int = get_theme_font_size(&"font_size")
+	var icon_width : float = font.get_string_size(_data.icon, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
+	var space_width : float = font.get_string_size(SPACE, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
+	return SPACE.repeat(maxi(1, ceili(icon_width / space_width)))
+
+
+func _draw() -> void:
+	if _data == null or text.is_empty():
+		return
+	var gap_start : int = text.find(SPACE)
+	var gap : String = _icon_gap()
+	var first : Rect2 = get_character_bounds(gap_start)
+	var last : Rect2 = get_character_bounds(gap_start + gap.length() - 1)
+	var font : Font = get_theme_font(&"font")
+	var font_size : int = get_theme_font_size(&"font_size")
+	var icon_width : float = font.get_string_size(_data.icon, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
+	var span : float = last.end.x - first.position.x
+	var x : float = floorf(first.position.x + (span - icon_width) / 2.0)
+	var baseline : float = first.position.y + font.get_ascent(font_size)
+	draw_string(font, Vector2(x, baseline), _data.icon, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size)
 
 
 ## Built on hover, so the countdown is today's.

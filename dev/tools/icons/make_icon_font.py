@@ -870,7 +870,10 @@ def build() -> None:
 	builder.setupGlyphOrder(list(glyphs))
 	builder.setupCharacterMap(cmap)
 	builder.setupGlyf(glyphs)
-	builder.setupHorizontalMetrics(advances)
+	# The side bearing must be each glyph's own left edge: with 0 a renderer moves a
+	# layer's leftmost pixel to the origin, and the colour layers slide apart.
+	glyf = builder.font["glyf"]
+	builder.setupHorizontalMetrics({name: (advance, getattr(glyf[name], "xMin", 0)) for name, (advance, _lsb) in advances.items()})
 	builder.setupHorizontalHeader(ascent=ASCENT, descent=DESCENT)
 	builder.setupNameTable({"familyName": "Pimea Icons", "styleName": "Regular"})
 	builder.setupOS2(sTypoAscender=ASCENT, sTypoDescender=DESCENT, usWinAscent=ASCENT, usWinDescent=-DESCENT)
