@@ -65,6 +65,12 @@ TAP_HOVER = rgb("d06040")
 TAP_LIGHT = rgb("f08a60")
 TAP_DARK = rgb("6a2010")
 TAP_DISABLED = rgb("5a4a40")
+PAPER = rgb("d6bd8c")
+PAPER_LIGHT = rgb("ecdcb4")
+PAPER_SHADE = rgb("b49766")
+PAPER_HOVER = rgb("e2cc9c")
+PAPER_PRESSED = rgb("c2a676")
+PAPER_EDGE = rgb("3a2516")
 STEEL = rgb("c8c8d4")
 STEEL_DARK = rgb("9a9aa8")
 
@@ -249,6 +255,18 @@ def meter(top, bottom) -> Image.Image:
     return img
 
 
+def paper_slip(body, edge=PAPER_EDGE, lit: bool = True) -> Image.Image:
+    """A paper card lying on the window: lit top row, a shaded bottom row, no side
+    bevels (paper is flat), and a 1 px shadow under it. Pressed, the light is gone."""
+    img = frame(SIZE, SIZE, edge, body, None, None)
+    px = img.load()
+    for x in range(1, SIZE - 1):
+        if lit:
+            px[x, 1] = PAPER_LIGHT
+        px[x, SIZE - 2] = PAPER_SHADE
+    return with_drop_shadow(img, 1)
+
+
 def with_drop_shadow(img: Image.Image, depth: int = 1) -> Image.Image:
     """Adds a shadow `depth` px to the right and bottom: solid next to the frame, dithered
     further out, so it fades on the pixel grid."""
@@ -281,6 +299,10 @@ FRAMES = {
     "button_danger_hover": lambda: plank(DANGER_HOVER),
     "button_danger_pressed": lambda: pushed(DANGER_PRESSED, DANGER[2]),
     "tab_selected": tab_selected,
+    # Recipe book cards: paper slips on the dark window, a gold edge on hover.
+    "paper_slip_normal": lambda: paper_slip(PAPER),
+    "paper_slip_hover": lambda: paper_slip(PAPER_HOVER, GOLD_DARK),
+    "paper_slip_pressed": lambda: paper_slip(PAPER_PRESSED, GOLD_DARK, lit=False),
     "panel": lambda: with_drop_shadow(window(), 2),
     "header": plaque,
     # The beer tube slider; the scrollbar keeps the plain track and fill below.

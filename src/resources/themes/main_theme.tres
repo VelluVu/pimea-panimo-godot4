@@ -30,6 +30,9 @@
 [ext_resource type="Texture2D" uid="uid://c3xo47wqwvs35" path="res://assets/textures/ui/tab_selected.png" id="ui_tab_selected"]
 [ext_resource type="Texture2D" uid="uid://c2oppb0jbql5n" path="res://assets/textures/ui/toggle_off.png" id="ui_toggle_off"]
 [ext_resource type="Texture2D" uid="uid://dcggq4h2mlfvi" path="res://assets/textures/ui/toggle_on.png" id="ui_toggle_on"]
+[ext_resource type="Texture2D" uid="uid://bmy65qd3mtynb" path="res://assets/textures/ui/paper_slip_normal.png" id="ui_paper_slip_normal"]
+[ext_resource type="Texture2D" uid="uid://c0jjuytowml1t" path="res://assets/textures/ui/paper_slip_hover.png" id="ui_paper_slip_hover"]
+[ext_resource type="Texture2D" uid="uid://xrsepn3jsru8" path="res://assets/textures/ui/paper_slip_pressed.png" id="ui_paper_slip_pressed"]
 
 [sub_resource type="StyleBoxTexture" id="btn_disabled"]
 content_margin_left = 4.0
@@ -359,6 +362,39 @@ texture_margin_bottom = 2.0
 fallbacks = Array[Font]([ExtResource("4_icons"), ExtResource("3_symbols"), ExtResource("2_twemoji")])
 base_font = ExtResource("1_qtffb")
 
+[sub_resource type="StyleBoxTexture" id="paper_slip_normal"]
+content_margin_left = 4.0
+content_margin_top = 3.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+texture = ExtResource("ui_paper_slip_normal")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 5.0
+texture_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxTexture" id="paper_slip_hover"]
+content_margin_left = 4.0
+content_margin_top = 3.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+texture = ExtResource("ui_paper_slip_hover")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 5.0
+texture_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxTexture" id="paper_slip_pressed"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 5.0
+content_margin_bottom = 4.0
+texture = ExtResource("ui_paper_slip_pressed")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 5.0
+texture_margin_bottom = 5.0
+
 [resource]
 default_font = SubResource("FontVariation_main")
 default_font_size = 16
@@ -438,6 +474,17 @@ PopupMenu/colors/font_outline_color = Color(0.08235294, 0.05490196, 0.03137255, 
 PopupMenu/constants/outline_size = 1
 PopupMenu/styles/hover = SubResource("StyleBoxTexture_xkb5p")
 PopupMenu/styles/panel = SubResource("StyleBoxTexture_ykn37")
+PaperSlip/base_type = &"Button"
+PaperSlip/colors/font_color = Color(0.22745098, 0.14117648, 0.08627451, 1)
+PaperSlip/colors/font_focus_color = Color(0.22745098, 0.14117648, 0.08627451, 1)
+PaperSlip/colors/font_hover_color = Color(0.22745098, 0.14117648, 0.08627451, 1)
+PaperSlip/colors/font_hover_pressed_color = Color(0.22745098, 0.14117648, 0.08627451, 1)
+PaperSlip/colors/font_pressed_color = Color(0.22745098, 0.14117648, 0.08627451, 1)
+PaperSlip/constants/outline_size = 0
+PaperSlip/styles/hover = SubResource("paper_slip_hover")
+PaperSlip/styles/hover_pressed = SubResource("paper_slip_pressed")
+PaperSlip/styles/normal = SubResource("paper_slip_normal")
+PaperSlip/styles/pressed = SubResource("paper_slip_pressed")
 PrimaryButton/base_type = &"Button"
 PrimaryButton/colors/font_color = Color(1, 0.9490196, 0.78431374, 1)
 PrimaryButton/colors/font_focus_color = Color(1, 0.9490196, 0.78431374, 1)

@@ -6938,10 +6938,6 @@ msgid "Olutoppi"
 msgstr "Brewlore"
 
 #: src/scenes/ui/main_menu.gd
-msgid "Pimeä Panimo"
-msgstr "Pimeä Panimo"
-
-#: src/scenes/ui/main_menu.gd
 msgid "Takaisin"
 msgstr "Back"
 

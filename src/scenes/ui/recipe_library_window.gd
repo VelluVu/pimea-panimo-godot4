@@ -18,6 +18,11 @@ const TEXT_FONT_SIZE : int = 16
 const SECTION_COLOR : Color = Color(0.949, 0.788, 0.42)
 ## Muted against the known styles but still readable on the dark panel.
 const LOCKED_COLOR : Color = Color(0.72, 0.66, 0.55)
+## Cards are paper slips (theme PaperSlip) with ink text; locked styles are faded ink.
+const SLIP_VARIATION : StringName = &"PaperSlip"
+const LOCKED_INK_COLOR : Color = Color(0.45, 0.34, 0.24)
+## The swatch's ink border, so a pale beer colour still shows on paper.
+const SWATCH_BORDER_COLOR : Color = Color(0.23, 0.14, 0.09)
 const INDEX_COLUMNS : int = 2
 const SWATCH_SIZE : int = 8
 
@@ -159,12 +164,14 @@ func _index_grid(entries : Array[RecipeBookEntry]) -> GridContainer:
 		var beer_style : BeerStyle = entry.beer_style
 		var button := Button.new()
 		button.text = RecipeLibraryText.index_label(entry)
+		button.theme_type_variation = SLIP_VARIATION
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.size_flags_horizontal = SIZE_EXPAND_FILL
 		button.icon = _swatch(BeerColor.from_ebc(roundi((beer_style.min_ebc + mini(beer_style.max_ebc, RecipeLibraryText.NO_UPPER_LIMIT)) / 2.0)))
 		button.add_theme_font_size_override("font_size", TEXT_FONT_SIZE)
 		if not entry.known:
-			button.add_theme_color_override("font_color", LOCKED_COLOR)
+			button.add_theme_color_override("font_color", LOCKED_INK_COLOR)
+			button.add_theme_color_override("font_hover_color", LOCKED_INK_COLOR)
 		button.pressed.connect(_select_style.bind(beer_style.style))
 		grid.add_child(button)
 		_index_buttons[beer_style.style] = button
@@ -202,6 +209,7 @@ func _build_saved_recipes(brewery : Brewery, beer_style : BeerStyle) -> void:
 		var button := Button.new()
 		button.toggle_mode = true
 		button.button_group = group
+		button.theme_type_variation = SLIP_VARIATION
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.add_theme_font_size_override("font_size", TEXT_FONT_SIZE)
 		var recipe_name : String = RecipeNameText.display(recipe)
@@ -268,7 +276,8 @@ func _text_label(text : String, color : Color) -> Label:
 static func _swatch(color : Color) -> Texture2D:
 	if not _swatches.has(color):
 		var image := Image.create(SWATCH_SIZE, SWATCH_SIZE, false, Image.FORMAT_RGBA8)
-		image.fill(color)
+		image.fill(SWATCH_BORDER_COLOR)
+		image.fill_rect(Rect2i(1, 1, SWATCH_SIZE - 2, SWATCH_SIZE - 2), color)
 		_swatches[color] = ImageTexture.create_from_image(image)
 	return _swatches[color]
 

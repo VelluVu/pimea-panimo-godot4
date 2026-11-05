@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" path="res://src/systems/console/console_panel.tscn" id="9_console"]
 [ext_resource type="PackedScene" path="res://src/scenes/ui/menu_backdrop.tscn" id="menu_backdrop"]
 [ext_resource type="Script" uid="uid://dldflwygsvloj" path="res://src/ui/season_chip.gd" id="season_chip"]
+[ext_resource type="Texture2D" uid="uid://qfuflim0qpkd" path="res://assets/textures/ui/logo_wordmark.png" id="logo_wordmark"]
 
 [node name="MainMenu" type="Control" unique_id=1468878832]
 layout_mode = 3
@@ -22,6 +23,16 @@ script = ExtResource("2_x2yvf")
 
 [node name="MenuBackdrop" parent="." unique_id=53003989 instance=ExtResource("menu_backdrop")]
 process_mode = 3
+
+[node name="Logo" type="TextureRect" parent="." unique_id=1873400211]
+layout_mode = 0
+offset_left = 161.0
+offset_top = 10.0
+offset_right = 308.0
+offset_bottom = 33.0
+mouse_filter = 2
+texture = ExtResource("logo_wordmark")
+stretch_mode = 2
 
 [node name="MenuPanel" type="PanelContainer" parent="." unique_id=433273737]
 layout_mode = 1
@@ -47,13 +58,6 @@ layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 4
 alignment = 1
-
-[node name="TitleLabel" type="Label" parent="MenuPanel/Margin/BoardRows" unique_id=1133990385]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_font_sizes/font_size = 32
-text = "Pimeä Panimo"
-horizontal_alignment = 1
 
 [node name="SeasonLine" type="Label" parent="MenuPanel/Margin/BoardRows" unique_id=355530178]
 unique_name_in_owner = true

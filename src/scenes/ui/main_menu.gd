@@ -2,7 +2,6 @@ class_name MainMenu
 extends Control
 
 
-const TITLE_TEXT: String = "Pimeä Panimo"
 const START_BUTTON_TEXT: String = "Aloita peli"
 const OLUTOPPI_BUTTON_TEXT: String = "Olutoppi"
 const ACHIEVEMENTS_BUTTON_TEXT: String = "Saavutukset"
@@ -20,7 +19,6 @@ const GAME_SCENE_PATH: String = "res://src/scenes/main.tscn"
 const TOUCH_BUTTON_SIZE : Vector2 = Vector2(240, 40)
 const TOUCH_FONT_SIZE : int = 32
 
-@onready var title_label: Label = %TitleLabel
 @onready var save_summary: Label = %SaveSummary
 @onready var new_game_warning: Label = %NewGameWarning
 @onready var backdrop: MenuBackdrop = $MenuBackdrop
@@ -47,7 +45,6 @@ var _saved: Brewery = null
 
 
 func _ready() -> void:
-	title_label.text = TITLE_TEXT
 	leaderboard_button.text = StringContainer.LEADERBOARD_BUTTON_TEXT
 	achievements_button.text = ACHIEVEMENTS_BUTTON_TEXT
 	olutoppi_button.text = OLUTOPPI_BUTTON_TEXT
