@@ -1,6 +1,7 @@
 """Draws Pubivisailija, the Irish pub quiz regular: a grey tweed flat cap, round glasses, a
 ginger beard, a green cable-knit sweater with a shamrock pin, jeans and boots, his quiz
-answer sheet in the left hand and a pencil in the right. The flat cap's brim and the white
+answer sheet in the left hand and a pencil in the right. His female counterpart
+(pubivisailija_naaras_32) has long ginger hair instead of the beard. The flat cap's brim and the white
 sheet make the silhouette. From behind the sheet and pencil change hands; that row is drawn
 again with the light still from the upper left, not mirrored.
 
@@ -20,6 +21,7 @@ from customer_sheet import (FRAME, HANDS_REST, ROOT, STILL, TEXTURE_DIR, Held, L
 from make_orveltaja import write_aseprite_source
 
 NAME = "pubivisailija_32"
+NAARAS_NAME = "pubivisailija_naaras_32"
 
 PALETTE = {
     "s": hex_color("ead4aa"),  # skin
@@ -27,6 +29,7 @@ PALETTE = {
     "e": hex_color("3a4466"),  # pupils
     "o": hex_color("262b44"),  # glasses frames
     "k": hex_color("3e2731"),  # mouth
+    "R": hex_color("e43b44"),  # lips
     "h": hex_color("d77643"),  # ginger beard and hair
     "H": hex_color("be4a2f"),  # beard shade
     "C": hex_color("8b9bb4"),  # grey tweed cap
@@ -89,6 +92,54 @@ TORSO_BACK = [
     ".....gggggggggg.....",
     ".....1111111111.....",
 ]
+# Her: slimmer, the same cap, glasses and sweater, long ginger hair down by the cheeks and over the
+# shoulders instead of the beard, red lips; from behind the hair hangs down her back.
+NAARAS_HEAD_FRONT = [
+    "......CCCCCCc.......",
+    ".....CCCCCCCCc......",
+    "...ccCCCCCCCCc......",
+    "....hhsssssshh......",
+    "....howeoweoth......",
+    "....hssstsssth......",
+    "....hsssssssth......",
+    "....hHssRRssth......",
+    "....hh.sssst.hH.....",
+    "....hh..ss...hH.....",
+]
+NAARAS_HEAD_BACK = [
+    "......CCCCCCc.......",
+    ".....CCCCCCCCc......",
+    ".....cCCCCCCCcc.....",
+    "....hhhhhhhhhh......",
+    "....hhhhhhhhhH......",
+    "....hhhhhhhhhH......",
+    "....hhhhhhhhhH......",
+    "....hhhhhhhhhH......",
+    "....hhhhhhhhHH......",
+    "....hhhhhhhhHH......",
+]
+NAARAS_TORSO_FRONT = [
+    "....hGGGGGGGGGhH....",
+    "...GG.hLGGGLhg.gg...",
+    "...GG.hLGGGLhg.gg...",
+    "...GG.GLGGGLGg.gg...",
+    "...GG.GLGGGLGg.gg...",
+    "...GG.GLGGGLGg.gg...",
+    "......GLGGGLGg......",
+    "......gggggggg......",
+    "......11111111......",
+]
+NAARAS_TORSO_BACK = [
+    "....hhhhhhhhhhHH....",
+    "...GG.hhhhhhHg.gg...",
+    "...GG.GhhhhHGg.gg...",
+    "...GG.GGhhHGGg.gg...",
+    "...GG.GGLGGLGg.gg...",
+    "...GG.GGLGGLGg.gg...",
+    "......GGLGGLGg......",
+    "......gggggggg......",
+    "......11111111......",
+]
 # The answer sheet, held up at the side, its lines of answers; the pencil gripped point up.
 SHEET = [
     "WWWw",
@@ -107,20 +158,20 @@ PENCIL = [
 PENCIL_ANCHOR = (1, -4)
 
 
-def look() -> Look:
+def look(naaras: bool = False) -> Look:
     return Look(
         palette=PALETTE,
-        head_front=HEAD_FRONT,
-        head_back=HEAD_BACK,
-        torso_front=TORSO_FRONT,
-        torso_back=TORSO_BACK,
+        head_front=NAARAS_HEAD_FRONT if naaras else HEAD_FRONT,
+        head_back=NAARAS_HEAD_BACK if naaras else HEAD_BACK,
+        torso_front=NAARAS_TORSO_FRONT if naaras else TORSO_FRONT,
+        torso_back=NAARAS_TORSO_BACK if naaras else TORSO_BACK,
         held=(Held(SHEET, SHEET_ANCHOR, trails=False), Held(PENCIL, PENCIL_ANCHOR, trails=False)),
     )
 
 
-def draw_back_row(sheet: Image.Image, front: Look) -> None:
+def draw_back_row(sheet: Image.Image, front: Look, naaras: bool) -> None:
     """From behind the sheet is in the hand on the right and the pencil on the left."""
-    back = look()
+    back = look(naaras)
     back.palette = front.palette
     back.held = (Held(PENCIL, PENCIL_ANCHOR, trails=False), Held(SHEET, (0, -2), trails=False))
     check(back)
@@ -129,25 +180,29 @@ def draw_back_row(sheet: Image.Image, front: Look) -> None:
         draw_frame(sheet, back, column, 1, back=True, bob=bob, legs="stand", hands=HANDS_REST, trail=STILL)
 
 
+def build(naaras: bool) -> Image.Image:
+    front = look(naaras)
+    sheet = draw_sheet(front)
+    draw_back_row(sheet, front, naaras)
+    return sheet
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--preview", type=Path, help="also write a 6x preview beside a normal customer")
+    parser.add_argument("--preview", type=Path, help="also write a 6x preview of both side by side")
     parser.add_argument("--force-aseprite", action="store_true")
     args = parser.parse_args()
-    front = look()
-    sheet = draw_sheet(front)
-    draw_back_row(sheet, front)
-    path = TEXTURE_DIR / f"{NAME}.png"
-    sheet.save(path)
-    print(f"wrote {path.relative_to(ROOT)}")
-    write_aseprite_source(path, args.force_aseprite)
+    sheets = {NAME: build(False), NAARAS_NAME: build(True)}
+    for name, sheet in sheets.items():
+        path = TEXTURE_DIR / f"{name}.png"
+        sheet.save(path)
+        print(f"wrote {path.relative_to(ROOT)}")
+        write_aseprite_source(path, args.force_aseprite)
     if args.preview:
-        normal = Image.open(TEXTURE_DIR / "normaali_mies_32.png").convert("RGBA")
-        image = Image.new("RGBA", (FRAME * 5, FRAME * 4), (40, 36, 48, 255))
-        image.alpha_composite(sheet, (0, 0))
-        for row in range(4):
-            image.alpha_composite(normal.crop((0, 0, 32, 32)), (FRAME * 4, row * FRAME))
-        image.resize((image.width * 6, image.height * 6), Image.NEAREST).save(args.preview)
+        image = Image.new("RGBA", (FRAME * 8, FRAME * 4), (40, 36, 48, 255))
+        for index, sheet in enumerate(sheets.values()):
+            image.alpha_composite(sheet, (FRAME * 4 * index, 0))
+        image.resize((image.width * 5, image.height * 5), Image.NEAREST).save(args.preview)
 
 
 if __name__ == "__main__":

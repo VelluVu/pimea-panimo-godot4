@@ -804,8 +804,8 @@ msgid "Koko kylä tuttu"
 msgstr "Know the Whole Town"
 
 #: src/resources/achievements/asiakaskirja_kaikki.tres
-msgid "Tapaa kaikki 31 asiakastyyppiä."
-msgstr "Meet all 31 customer types."
+msgid "Tapaa kaikki 32 asiakastyyppiä."
+msgstr "Meet all 32 customer types."
 
 #: src/resources/achievements/bulkkia_5.tres
 msgid "Kansan kalja"
@@ -3092,7 +3092,9 @@ msgstr "Hmm, I'll guess this... no. Zero points, but I'll drink it anyway."
 msgid ""
 "Kysymys yksi: mikä on Irlannin kansallisjuoma? Väärin, se oli retorinen. "
 "Yksi kuiva stout, kiitos."
-msgstr "Question one: what is the national drink of Ireland? Wrong, it was rhetorical. One dry stout, please."
+msgstr ""
+"Question one: what is the national drink of Ireland? Wrong, it was "
+"rhetorical. One dry stout, please."
 
 #: src/resources/customers/pubivisailija.tres
 msgid "Oikea vastaus! Täysi pistemäärä tälle tuopille."
@@ -3110,7 +3112,9 @@ msgstr "Half a point. It's black, but it's not from Dublin."
 msgid ""
 "Tyhjä hana. Tiesitkö, että Dublinissa vuokrattiin panimon tontti 9000 "
 "vuodeksi? Teidän hanoistanne loppui jo."
-msgstr "Empty tap. Did you know a Dublin brewery leased its site for 9000 years? Yours ran dry already."
+msgstr ""
+"Empty tap. Did you know a Dublin brewery leased its site for 9000 years? "
+"Yours ran dry already."
 
 #: src/resources/customers/pubivisailija.tres
 msgid "Tämä ei mene edes jatkokysymykseen. Hylätty."
@@ -3321,6 +3325,42 @@ msgstr "Nothing? And me coming over just as I am."
 #: src/resources/customers/saunamies.tres
 msgid "Tätä ei viitsi edes kiukaalle heittää."
 msgstr "I wouldn't even throw this on the sauna stove."
+
+#: src/resources/customers/saunanainen.tres
+msgid "%s! Sitä minä otan, ennen kuin naistenvuoro loppuu."
+msgstr "%s! I'll have that, before the women's turn is over."
+
+#: src/resources/customers/saunanainen.tres
+msgid ""
+"Ei mitään saunan jälkeen? Takaisin lauteille. Ja silmät kiinni siellä "
+"tiskin takana."
+msgstr "Nothing for after the sauna? Back to the benches. And eyes shut behind the counter."
+
+#: src/resources/customers/saunanainen.tres
+msgid "Ei savua, mutta kylmää on. Kelpaa vilvoitteluun."
+msgstr "No smoke, but it's cold. Good enough for cooling off."
+
+#: src/resources/customers/saunanainen.tres
+msgid ""
+"Huh, naistenvuorolla heitettiin löylyä kuin viimeistä päivää! Anna jotain "
+"savuista, kiitos."
+msgstr "Phew, the women's turn threw steam like there was no tomorrow! Something smoky, please."
+
+#: src/resources/customers/saunanainen.tres
+msgid "No ei tämä nyt sitä ollut, mutta saunan jälkeen kaikki maistuu."
+msgstr "Well, this wasn't it, but after a sauna anything goes down."
+
+#: src/resources/customers/saunanainen.tres
+msgid "Saunanainen"
+msgstr "Sauna Woman"
+
+#: src/resources/customers/saunanainen.tres
+msgid "Tällä ei kehtaa edes vihtaa kastella."
+msgstr "I wouldn't even dip my vihta in this."
+
+#: src/resources/customers/saunanainen.tres
+msgid "Voi että. Maistuu ihan meidän mökin savusaunalta."
+msgstr "Oh my. Tastes just like the smoke sauna at our cottage."
 
 #: src/resources/customers/snobi.tres
 msgid "%s. Kuinka kauan sitä on kypsytetty? Hinnalla ei ole väliä."
@@ -3686,7 +3726,9 @@ msgstr "Student grant payday is today. Expect students eager to spend."
 msgid ""
 "Illalla kellarissa on pubivisa. Visailijat tulevat kynät teroitettuina ja "
 "kurkut kuivina."
-msgstr "There's a pub quiz in the cellar tonight. Quizzers arrive with sharpened pencils and dry throats."
+msgstr ""
+"There's a pub quiz in the cellar tonight. Quizzers arrive with sharpened "
+"pencils and dry throats."
 
 #: src/resources/day_events/day_event_saunailta.tres
 msgid ""

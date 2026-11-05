@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="CustomerData" format=3]
+
+[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_data"]
+[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/saunanainen_anim.tres" id="2_sprite"]
+
+[resource]
+script = ExtResource("1_data")
+customer_name = "Raili"
+title = "Saunanainen"
+first_names = Array[String](["Raili", "Pirjo", "Leena", "Tuula", "Sirkka", "Marjatta"])
+min_quality = 0.3
+budget_multiplier = 1.1
+primary_style = 24
+secondary_style = 22
+also_likes = Array[int]([1, 13])
+sprite_frames = ExtResource("2_sprite")
+randomize_skin = false
+randomize_hair = false
+randomize_clothes = false
+randomize_shoes = false
+hand_offsets = Array[Vector2]([Vector2(-17, -49), Vector2(-17, -49), Vector2(-17, -50), Vector2(-21, -58)])
+voice_pitch = 1.3
+dialogue_intro = "Huh, naistenvuorolla heitettiin löylyä kuin viimeistä päivää! Anna jotain savuista, kiitos."
+dialogue_success = "Voi että. Maistuu ihan meidän mökin savusaunalta."
+dialogue_fallback = "Ei savua, mutta kylmää on. Kelpaa vilvoitteluun."
+dialogue_wrong_style = "No ei tämä nyt sitä ollut, mutta saunan jälkeen kaikki maistuu."
+dialogue_reject = "Tällä ei kehtaa edes vihtaa kastella."
+dialogue_no_match = "Ei mitään saunan jälkeen? Takaisin lauteille. Ja silmät kiinni siellä tiskin takana."
+dialogue_preview_format = "%s! Sitä minä otan, ennen kuin naistenvuoro loppuu."
+dialogue_nothing_available = "Tyhjää? Ja minä kun tulin ihan sellaisenaan."
+tip_base_chance = 0.2
+rep_primary_style = 5
+rep_secondary_style = 1
+min_reputation_to_appear = 20
+required_discovered_style = 24
+metadata/_custom_type_script = "uid://b2vqc8lkfjwic"
