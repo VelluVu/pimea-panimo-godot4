@@ -79,9 +79,16 @@ func _ready() -> void:
 	var touch_hints := TouchHints.new()
 	add_child(touch_hints)
 	if DisplayServer.is_touchscreen_available():
-		TouchHints.make_button(options_button).pressed.connect(func() -> void:
+		var hints_button : Button = TouchHints.make_button(options_button)
+		hints_button.pressed.connect(func() -> void:
 			if not _views.is_away_from_bar():
 				touch_hints.toggle())
+		ScreenBleed.attach(hints_button)
+	# On a wide or tall screen the bar and the corner buttons reach the edges, and what hangs
+	# under the bar (goals, the toasts) moves with it; the rest stays over the cellar. The
+	# toasts show in the stack ToastStack builds from discovery_toast, not in the label itself.
+	for edge_piece : Control in [top_panel_background, top_panel_resources, options_button, daily_goals_panel, get_node(^"ToastStack") as Control]:
+		ScreenBleed.attach(edge_piece)
 	# The goals panel and the passive banners go below the first panel, so open panels cover
 	# them instead of colliding.
 	for passive : Control in [daily_goals_panel, group_visit_banner, first_brew_hint_banner, day_event_banner]:

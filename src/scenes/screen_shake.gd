@@ -37,5 +37,6 @@ func _process(delta : float) -> void:
 
 func _set_offset(offset : Vector2i) -> void:
 	var canvas : Transform2D = get_viewport().canvas_transform
-	canvas.origin = Vector2(offset)
+	# Around the centred stage on a wide screen, not the corner.
+	canvas.origin = Vector2(WideStage.origin_in(get_viewport()) + offset)
 	get_viewport().canvas_transform = canvas

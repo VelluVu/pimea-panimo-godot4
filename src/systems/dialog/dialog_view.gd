@@ -227,8 +227,7 @@ func _place(entry : BubbleEntry, slot : int, speaker_pos : Vector2) -> void:
 ## they collapse.
 func _stacked_position(entry : BubbleEntry, neighbors : Array[BubbleEntry]) -> Vector2:
 	var bubble_size : Vector2 = entry.bubble.get_size()
-	var viewport_size : Vector2 = get_viewport_rect().size
-	var lifted : Vector2 = BubbleLayout.position_for(entry.speaker_pos, entry.height_step, bubble_size, viewport_size)
+	var lifted : Vector2 = _bubble_position(entry.speaker_pos, entry.height_step, bubble_size)
 	if entry.height_step == 0:
 		return lifted
 	var tops : Array[float] = []
@@ -241,13 +240,25 @@ func _stacked_position(entry : BubbleEntry, neighbors : Array[BubbleEntry]) -> V
 	if stacked_y >= BubbleLayout.MIN_VISIBLE_Y:
 		return Vector2(lifted.x, stacked_y)
 	entry.height_step = 0
-	return BubbleLayout.position_for(entry.speaker_pos, 0, bubble_size, viewport_size)
+	return _bubble_position(entry.speaker_pos, 0, bubble_size)
+
+
+func _bubble_position(speaker_pos : Vector2, step : int, bubble_size : Vector2) -> Vector2:
+	var screen : Rect2 = _screen_rect()
+	return BubbleLayout.position_for(speaker_pos - screen.position, step, bubble_size, screen.size) + screen.position
+
+
+## The screen in this layer's coordinates, for BubbleLayout to keep bubbles on it. It
+## starts left of 0 when the layer is moved to centre a stage on a wide screen.
+func _screen_rect() -> Rect2:
+	return get_canvas_transform().affine_inverse() * get_viewport_rect()
 
 
 func _collapse(entry : BubbleEntry) -> void:
 	entry.bubble.collapse()
 	entry.width = entry.bubble.get_size().x
-	entry.bubble.global_position = BubbleLayout.badge_position_for(entry.speaker_pos, entry.bubble.get_size(), get_viewport_rect().size)
+	var screen : Rect2 = _screen_rect()
+	entry.bubble.global_position = BubbleLayout.badge_position_for(entry.speaker_pos - screen.position, entry.bubble.get_size(), screen.size) + screen.position
 	# Under every full bubble, which may cover part of it.
 	entry.bubble.z_index = BUBBLE_Z_BASE - 1
 

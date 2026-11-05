@@ -370,6 +370,8 @@ func _build() -> void:
 	backdrop.color = BACKDROP_COLOR
 	backdrop.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(backdrop)
+	# The room behind covers a wide screen too; the window itself stays on the 640x360 stage.
+	ScreenBleed.attach(backdrop)
 
 	_kettle = KettleView.new()
 	_kettle.position = KETTLE_POSITION

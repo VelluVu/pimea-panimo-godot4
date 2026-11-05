@@ -99,6 +99,7 @@
 [ext_resource type="PackedScene" path="res://src/scenes/ui/achievements_window.tscn" id="99_ach"]
 [ext_resource type="PackedScene" path="res://src/scenes/ui/game_menu_window.tscn" id="99_gamemenu"]
 [ext_resource type="PackedScene" path="res://src/scenes/ui/leaderboard_window.tscn" id="99_leaderboard"]
+[ext_resource type="Script" uid="uid://bd6sv53a7fn72" path="res://src/systems/toolkit/wide_stage.gd" id="115_cs76t"]
 [ext_resource type="Texture2D" uid="uid://ldsfshd2dflm" path="res://assets/textures/christmas/christmas_barrel_candles.png" id="xm_candles"]
 [ext_resource type="SpriteFrames" uid="uid://drxqeqayhy0x" path="res://src/resources/sprite_frames/christmas_lights_anim.tres" id="xm_lights"]
 [ext_resource type="Texture2D" uid="uid://bn8esc2carl62" path="res://assets/textures/christmas/christmas_candlestick.png" id="xm_stick"]
@@ -404,6 +405,12 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 script = ExtResource("12_72le4")
+
+[node name="WideStage" type="Node" parent="." unique_id=1671173250 node_paths=PackedStringArray("layers", "stage_roots")]
+script = ExtResource("115_cs76t")
+layers = [NodePath("../GUI_CanvasLayer")]
+stage_roots = [NodePath("../GUI_CanvasLayer/GUI")]
+mask_color = Color(0.024, 0.02, 0.055, 1)
 
 [node name="GUI_CanvasLayer" type="CanvasLayer" parent="." unique_id=1651647138]
 
@@ -1160,7 +1167,7 @@ text = "Tavoitteet"
 horizontal_alignment = 2
 
 [node name="ToggleButton" type="Button" parent="GUI_CanvasLayer/GUI/DailyGoalsPanel/HeaderHBox" unique_id=1568885538]
-custom_minimum_size = Vector2(18, 18)
+custom_minimum_size = Vector2(25, 25)
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
 text = "▼"

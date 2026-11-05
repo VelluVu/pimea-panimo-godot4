@@ -165,6 +165,8 @@ func _build() -> void:
 	backdrop.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	backdrop.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(backdrop)
+	# The room behind covers a wide screen too; the window itself stays on the 640x360 stage.
+	ScreenBleed.attach(backdrop)
 
 	_view = KegWashView.new()
 	add_child(_view)
