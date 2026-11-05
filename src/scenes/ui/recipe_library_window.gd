@@ -99,6 +99,20 @@ func _select_style(style : int) -> void:
 	_selected_recipe = null
 	_refresh()
 	page_changed.emit(style)
+	if style != NO_STYLE_SELECTED:
+		_focus_page_action()
+
+
+## The index card that had the focus is freed with the index, and the focus would fall to
+## the page's last slip, scrolling the page off its first line. The bottom bar is outside
+## the list, and with one recipe picked already, Enter loads it.
+func _focus_page_action() -> void:
+	await get_tree().process_frame
+	if not visible or selected_style == NO_STYLE_SELECTED:
+		return
+	var target : Button = back_button if load_button.disabled else load_button
+	target.grab_focus(true)
+	(rows_vbox.get_parent() as ScrollContainer).scroll_vertical = 0
 
 
 func _on_close_button_pressed() -> void:
