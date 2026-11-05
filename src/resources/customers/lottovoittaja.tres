@@ -1,0 +1,38 @@
+[gd_resource type="Resource" script_class="CustomerData" format=3]
+
+[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_data"]
+[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/lottovoittaja_anim.tres" id="2_sprite"]
+
+[resource]
+script = ExtResource("1_data")
+customer_name = "Rami"
+title = "Lottovoittaja"
+first_names = Array[String](["Rami", "Pertti", "Jari", "Arto", "Make", "Tero"])
+min_quality = 0.6
+budget_multiplier = 3.0
+primary_style = 18
+secondary_style = 19
+also_likes = Array[int]([16, 15])
+sprite_frames = ExtResource("2_sprite")
+randomize_skin = false
+randomize_hair = false
+randomize_clothes = false
+randomize_shoes = false
+carries_glass_out = false
+voice_pitch = 0.95
+dialogue_intro = "Seitsemän oikein! Nyt otetaan sitä kalleinta, mitä teillä on."
+dialogue_success = "Rahalla saa ja hevosella pääsee! Tarjoan koko kellarille!"
+dialogue_fallback = "Ei kallein, mutta maksan silti kuin kalleimmasta."
+dialogue_wrong_style = "Ihan sama, rahaa on! Mutta tämä ei ollut sitä."
+dialogue_reject = "Tällä rahalla odotin parempaa. Ei tätä juo edes miljonääri."
+dialogue_no_match = "Ei mitään hienoa? Haen kuohuviiniä huoltoasemalta."
+dialogue_preview_format = "%s! Laita kaksi, toinen shekin kunniaksi."
+dialogue_nothing_available = "Tyhjät hanat? Ostan koko panimon ja täytän ne itse."
+tip_base_chance = 0.8
+rep_primary_style = 6
+rep_secondary_style = 3
+min_reputation_to_appear = 40
+appearance_weight = 0.35
+buys_round = true
+dialogue_round = "Lottovoittaja tarjoaa kierroksen koko tiskille: %d annosta lisää hänen laskuunsa!"
+metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

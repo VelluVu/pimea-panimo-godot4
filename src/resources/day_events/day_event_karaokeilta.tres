@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="DayEventData" format=3]
+
+[ext_resource type="Script" uid="uid://dhlswvb7h0ba8" path="res://src/events/day_event_data.gd" id="1_event"]
+[ext_resource type="Script" uid="uid://dewmdbm4a0vst" path="res://src/progression/run_perk.gd" id="2_perk"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/day_karaoke.wav" id="snd_day_karaoke"]
+
+[sub_resource type="Resource" id="RunPerk_day"]
+script = ExtResource("2_perk")
+perk_name = "Karaokeilta"
+description = "Laulajat tippaavat reilusti, mutta laulu kuuluu kadulle asti ja LVV kuulee sen."
+icon_placeholder = "🎶"
+tip_income_multiplier = 1.3
+sale_risk_multiplier = 1.25
+
+[resource]
+script = ExtResource("1_event")
+event_name = "Karaokeilta"
+announcement_text = "Kellarissa on karaokeilta. Mikrofoni on rasvainen, ja jokainen luulee olevansa iskelmätähti."
+announcement_sound = ExtResource("snd_day_karaoke")
+featured_customer_titles = Array[String](["Raksamies", "Opiskelija", "Perusasiakas", "Mummeli"])
+start_delay_fraction_min = 0.4
+start_delay_fraction_max = 0.55
+window_fraction_max = 0.4
+day_perk = SubResource("RunPerk_day")

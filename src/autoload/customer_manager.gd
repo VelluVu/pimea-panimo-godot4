@@ -132,9 +132,11 @@ func pick_batches_for(data: CustomerData) -> Array[BrewBatch]:
 	return SaleProcessor.new(BrewEngine.current_brewery).pick_batches_for(data)
 
 
-## The customer's spoken response; `picks` are the batches it previewed.
+## The customer's spoken response; `picks` are the batches it previewed. Everyone else at
+## the counter counts as a guest for a customer who buys a round.
 func process_auto_sale(data: CustomerData, picks: Array[BrewBatch] = []) -> String:
-	return SaleProcessor.new(BrewEngine.current_brewery).process(data, picks)
+	var guests : int = maxi(0, slots.customers().size() - 1) if data.buys_round else 0
+	return SaleProcessor.new(BrewEngine.current_brewery).process(data, picks, guests)
 
 
 func spawn_normal_customer(forced_data: CustomerData = null) -> void:

@@ -43,9 +43,19 @@ func pick_batches_for(data : CustomerData) -> Array[BrewBatch]:
 	return BatchChoice.pick_batches(brewery.inventory.batches_on_serve(), data, randi_range(1, maxi(1, data.max_styles_per_visit)))
 
 
+## How many servings a round-buyer (Lottovoittaja) pays for on top of his own: one for each
+## of the `guests` at the counter, as far as the batch he drank from lasts. Only after he
+## got something himself.
+static func round_servings(buys_round : bool, own_servings : int, guests : int, in_stock : int) -> int:
+	if not buys_round or own_servings <= 0:
+		return 0
+	return maxi(0, mini(guests, in_stock))
+
+
 ## The customer's spoken response. `picks` are the previewed batches; any sold out
-## meanwhile drop, and none left means a fresh pick.
-func process(data : CustomerData, picks : Array[BrewBatch] = []) -> String:
+## meanwhile drop, and none left means a fresh pick. `guests` are the others at the counter,
+## for a customer who buys them a round.
+func process(data : CustomerData, picks : Array[BrewBatch] = [], guests : int = 0) -> String:
 	if data.browses_only:
 		return tr(data.dialogue_no_match)
 	var is_regular : bool = RegularRules.is_regular(brewery.customer_standing.get(data.title, 0)) if brewery != null else false
@@ -93,6 +103,8 @@ func process(data : CustomerData, picks : Array[BrewBatch] = []) -> String:
 	if is_regular and delighted:
 		response_text = tr(REGULAR_RESPONSE_FORMAT) % response_text
 
+	reputation_gain += _buy_round(data, last_batch, bottles_sold, guests, is_regular)
+
 	if BarFightRules.breaks_out(data, wanted * batches.size(), bottles_sold, brewery.stats.multiplier(PerkStats.BAR_FIGHT_CHANCE), randf()):
 		_trigger_bar_fight(data, last_batch)
 
@@ -104,6 +116,20 @@ func process(data : CustomerData, picks : Array[BrewBatch] = []) -> String:
 	BrewerySignals.customer_served.emit(data)
 	_report_to_korvatunturi(data, bottles_sold > 0 and got_liked, got_favourite)
 	return response_text
+
+
+## The round goes through _sell() as more of his own servings, so he pays and the cellar
+## gets his reputation and tip for each; the toast says how many. Returns the reputation.
+func _buy_round(data : CustomerData, batch : BrewBatch, own_servings : int, guests : int, is_regular : bool) -> int:
+	if batch == null or not brewery.inventory.brew_batches.has(batch):
+		return 0
+	var servings : int = round_servings(data.buys_round, own_servings, guests, batch.amount_bottles)
+	if servings <= 0:
+		return 0
+	var results : Dictionary = _sell(data, batch, servings, is_regular)
+	if not data.dialogue_round.is_empty():
+		BrewerySignals.customer_sale_narrated.emit(tr(data.dialogue_round) % servings)
+	return results[KEY_REPUTATION_GAIN]
 
 
 ## Before the reputation popup is reported, so the honour's bonus shows in it.

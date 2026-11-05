@@ -59,3 +59,17 @@ func test_amounts_are_snapped_to_the_tenth_grid() -> void:
 	# 0.15 * 3 = 0.45 would otherwise carry a hundredths digit.
 	var outcome = SaleProcessorScript.calculate_sale(_results(0.15, 0.0, 0), 3, 1.0, 0.0, 1.0)
 	assert_true(is_equal_approx(outcome.gross_income, 0.5) or is_equal_approx(outcome.gross_income, 0.4), "gross %s is not on the 0.1 grid" % outcome.gross_income)
+
+
+func test_a_round_is_one_serving_per_guest() -> void:
+	assert_eq(SaleProcessorScript.round_servings(true, 1, 3, 20), 3)
+
+
+func test_a_round_stops_when_the_batch_runs_out() -> void:
+	assert_eq(SaleProcessorScript.round_servings(true, 1, 4, 2), 2)
+
+
+func test_no_round_without_his_own_drink_or_guests() -> void:
+	assert_eq(SaleProcessorScript.round_servings(true, 0, 3, 20), 0)
+	assert_eq(SaleProcessorScript.round_servings(true, 1, 0, 20), 0)
+	assert_eq(SaleProcessorScript.round_servings(false, 1, 3, 20), 0)

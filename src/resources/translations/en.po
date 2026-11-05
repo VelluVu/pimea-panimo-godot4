@@ -804,8 +804,8 @@ msgid "Koko kylä tuttu"
 msgstr "Know the Whole Town"
 
 #: src/resources/achievements/asiakaskirja_kaikki.tres
-msgid "Tapaa kaikki 32 asiakastyyppiä."
-msgstr "Meet all 32 customer types."
+msgid "Tapaa kaikki 34 asiakastyyppiä."
+msgstr "Meet all 34 customer types."
 
 #: src/resources/achievements/bulkkia_5.tres
 msgid "Kansan kalja"
@@ -2636,6 +2636,48 @@ msgstr ""
 "Rich and sweet like a fresh cinnamon bun! After this I can knead dough all "
 "day again."
 
+#: src/resources/customers/lottovoittaja.tres
+msgid "%s! Laita kaksi, toinen shekin kunniaksi."
+msgstr "%s! Make it two, one in honour of the cheque."
+
+#: src/resources/customers/lottovoittaja.tres
+msgid "Ei kallein, mutta maksan silti kuin kalleimmasta."
+msgstr "Not the priciest, but I'll pay like it was."
+
+#: src/resources/customers/lottovoittaja.tres
+msgid "Ei mitään hienoa? Haen kuohuviiniä huoltoasemalta."
+msgstr "Nothing fancy? I'll get bubbly from the petrol station."
+
+#: src/resources/customers/lottovoittaja.tres
+msgid "Ihan sama, rahaa on! Mutta tämä ei ollut sitä."
+msgstr "Who cares, I'm loaded! But this wasn't it."
+
+#: src/resources/customers/lottovoittaja.tres
+msgid "Lottovoittaja"
+msgstr "Lottery Winner"
+
+#: src/resources/customers/lottovoittaja.tres
+msgid ""
+"Lottovoittaja tarjoaa kierroksen koko tiskille: %d annosta lisää hänen "
+"laskuunsa!"
+msgstr "The lottery winner buys the whole counter a round: %d more servings on his tab!"
+
+#: src/resources/customers/lottovoittaja.tres
+msgid "Rahalla saa ja hevosella pääsee! Tarjoan koko kellarille!"
+msgstr "Money talks! A round for the whole cellar, on me!"
+
+#: src/resources/customers/lottovoittaja.tres
+msgid "Seitsemän oikein! Nyt otetaan sitä kalleinta, mitä teillä on."
+msgstr "Seven right numbers! Give me the most expensive thing you've got."
+
+#: src/resources/customers/lottovoittaja.tres
+msgid "Tyhjät hanat? Ostan koko panimon ja täytän ne itse."
+msgstr "Empty taps? I'll buy the whole brewery and fill them myself."
+
+#: src/resources/customers/lottovoittaja.tres
+msgid "Tällä rahalla odotin parempaa. Ei tätä juo edes miljonääri."
+msgstr "For this money I expected better. Not even a millionaire drinks this."
+
 #: src/resources/customers/mafioso.tres
 msgid "%s. Katsotaan, kelpaako se Donille."
 msgstr "%s. Let's see if it's good enough for the Don."
@@ -2703,6 +2745,48 @@ msgstr "Landlubbers drink this stuff. Oh well, it'll do."
 #: src/resources/customers/merimies.tres
 msgid "Tämä maistuu pilssivedeltä. Viekää takaisin."
 msgstr "This tastes like bilge water. Take it back."
+
+#: src/resources/customers/metsastaja.tres
+msgid "%s! Se kelpaa metsämiehelle."
+msgstr "%s! Good enough for a hunter."
+
+#: src/resources/customers/metsastaja.tres
+msgid "Ei tummaa? Takaisin metsään sitten."
+msgstr "No dark beer? Back to the woods, then."
+
+#: src/resources/customers/metsastaja.tres
+msgid "Hirvi kaatui! Se oli NÄIN iso. Tummaa lageria, kurkku kuivui passissa."
+msgstr "Got the moose! It was THIS big. Dark lager, my throat went dry on the stand."
+
+#: src/resources/customers/metsastaja.tres
+msgid "Kelpaa. Passissa juotiin pahempaakin, termarista."
+msgstr "It'll do. We drank worse from the thermos on the stand."
+
+#: src/resources/customers/metsastaja.tres
+msgid "Metsästäjä"
+msgstr "Hunter"
+
+#: src/resources/customers/metsastaja.tres
+msgid ""
+"Metsästäjä vakuuttaa, että pussissa on vain makkaraa ja ase on lukkojen "
+"takana kotona."
+msgstr "The hunter swears the case only holds sausages and the rifle is locked up at home."
+
+#: src/resources/customers/metsastaja.tres
+msgid "Ohi meni, kuin minulla aamulla. Mutta juodaan silti."
+msgstr "A miss, like mine this morning. We'll drink it anyway."
+
+#: src/resources/customers/metsastaja.tres
+msgid "Tumma ja täyteläinen, kuin hyvä saalis. Ja se hirvi oli vielä isompi."
+msgstr "Dark and full, like a good catch. And that moose was even bigger."
+
+#: src/resources/customers/metsastaja.tres
+msgid "Tyhjää kuin hirvipassi aamuneljältä."
+msgstr "Empty as a moose stand at four in the morning."
+
+#: src/resources/customers/metsastaja.tres
+msgid "Tällä ei ampuisi edes jänistä. Ei kiitos."
+msgstr "Wouldn't shoot a hare with this. No thanks."
 
 #: src/resources/customers/mummeli.tres
 msgid "Ei tää sitä ollut mitä pyysin, mutta eiköhän tästäkin jotain irtoa."
@@ -3334,7 +3418,9 @@ msgstr "%s! I'll have that, before the women's turn is over."
 msgid ""
 "Ei mitään saunan jälkeen? Takaisin lauteille. Ja silmät kiinni siellä "
 "tiskin takana."
-msgstr "Nothing for after the sauna? Back to the benches. And eyes shut behind the counter."
+msgstr ""
+"Nothing for after the sauna? Back to the benches. And eyes shut behind the "
+"counter."
 
 #: src/resources/customers/saunanainen.tres
 msgid "Ei savua, mutta kylmää on. Kelpaa vilvoitteluun."
@@ -3344,7 +3430,9 @@ msgstr "No smoke, but it's cold. Good enough for cooling off."
 msgid ""
 "Huh, naistenvuorolla heitettiin löylyä kuin viimeistä päivää! Anna jotain "
 "savuista, kiitos."
-msgstr "Phew, the women's turn threw steam like there was no tomorrow! Something smoky, please."
+msgstr ""
+"Phew, the women's turn threw steam like there was no tomorrow! Something "
+"smoky, please."
 
 #: src/resources/customers/saunanainen.tres
 msgid "No ei tämä nyt sitä ollut, mutta saunan jälkeen kaikki maistuu."
@@ -3665,6 +3753,12 @@ msgid ""
 msgstr ""
 "The hipsters' artisan coffee bean roasting club meets nearby today. Expect "
 "hipsters curious about craft beer."
+
+#: src/resources/day_events/day_event_karaokeilta.tres
+msgid ""
+"Kellarissa on karaokeilta. Mikrofoni on rasvainen, ja jokainen luulee "
+"olevansa iskelmätähti."
+msgstr "It's karaoke night in the cellar. The mic is greasy and everyone thinks they're a schlager star."
 
 #: src/resources/day_events/day_event_kesafestivaali.tres
 msgid "Tänään on arkipyhä. Odotettavissa sekalaisia ryhmiä ympäri kaupunkia."
@@ -4047,6 +4141,24 @@ msgstr "CRAFT BEER, PLEASE."
 #: src/resources/group_events/hipsteri_lauma.tres
 msgid "ONKS TÄÄ LUOMUA?"
 msgstr "IS THIS ORGANIC?"
+
+#: src/resources/group_events/hirvimiehet.tres
+msgid "EI KU NÄÄÄÄIN ISO!"
+msgstr "NO, THIIIIS BIG!"
+
+#: src/resources/group_events/hirvimiehet.tres
+msgid "HIRVIPEIJAISET!"
+msgstr "MOOSE FEAST!"
+
+#: src/resources/group_events/hirvimiehet.tres
+msgid ""
+"Hirviseurue tulee jahdista oranssit liivit päällä.\n"
+"Peijaisissa juodaan tummaa!"
+msgstr "The hunting party comes in from the hunt in orange vests.\nThe moose feast calls for dark beer!"
+
+#: src/resources/group_events/hirvimiehet.tres
+msgid "SE OLI NÄIN ISO!"
+msgstr "IT WAS THIS BIG!"
 
 #: src/resources/group_events/kesa_lauma.tres
 msgid ""
@@ -6183,6 +6295,28 @@ msgstr "Liisa the Journalist"
 #: src/resources/special_events/journalist_review.tres
 msgid "Tästä tulee hyvä juttu lehteen!"
 msgstr "This will make a great story!"
+
+#: src/resources/special_events/kaljakellunta.tres
+msgid "Ei riittänyt... kellutaan sitten kuivin suin."
+msgstr "Not enough... we'll float with dry mouths, then."
+
+#: src/resources/special_events/kaljakellunta.tres
+msgid ""
+"Huomenna kellutaan joella! Tarvitaan {servings} annosta jotain kevyttä ja "
+"halpaa. Ei se oo niin tarkkaa, kunhan kelluu."
+msgstr "Tomorrow we float down the river! We need {servings} servings of something light and cheap. Not fussy, as long as it floats."
+
+#: src/resources/special_events/kaljakellunta.tres
+msgid "Kellunnan järjestäjä"
+msgstr "Float party organiser"
+
+#: src/resources/special_events/kaljakellunta.tres
+msgid "No, ostetaan kaupasta. Lämmintä se on kuitenkin."
+msgstr "Fine, we'll get it from the shop. It'll be warm anyway."
+
+#: src/resources/special_events/kaljakellunta.tres
+msgid "Nyt riittää koko joelle! Nähdään, jos ei uida liian kauas."
+msgstr "Enough for the whole river! See you, unless we drift too far."
 
 #: src/resources/special_events/lvv_bribe.tres
 msgid "Ei ollut tarpeeksi rahaa? No, sitten joudun tekemään raportin."

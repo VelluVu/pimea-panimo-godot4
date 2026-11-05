@@ -393,6 +393,24 @@ def topping_out():
     return mix(*knocks, at(0.55, cheer)), 0.55
 
 
+def karaoke():
+    """Mic feedback, a backing beat and a singer who means it but lands a bit flat."""
+    squeal = square(sweep(2400, 2900, 0.25), 0.25, 0.5) * env(0.25, 0.02, 0.1) * 0.25
+    tick = lambda: lowpass(noise(0.04, hold=2), 4000) * perc(0.04, 60) * 0.5
+    beat = mix(*[at(0.3 + 0.18 * i, tick()) for i in range(8)])
+    parts = []
+    t = 0.3
+    # A schlager phrase, each note sung a little under the key and drifting.
+    for name, length, flat in (("E4", 0.18, 0.97), ("G4", 0.18, 0.96), ("A4", 0.36, 0.975), ("G4", 0.18, 0.965), ("C5", 0.5, 0.94)):
+        f = note(name) * flat
+        wobble = f * (1.0 + 0.025 * np.sin(2 * np.pi * 5.5 * _t(length)))
+        voice = lowpass(saw(wobble, length), 1800) * env(length, 0.03, 0.08) * 0.6
+        parts.append(at(t, voice))
+        t += length
+    bass = melody(["C3", None, "G2", None, "A2", None, "G2", None], 0.18, "triangle") * 0.6
+    return mix(squeal, beat, at(0.3, bass), *parts), 0.5
+
+
 # --- brew day ---------------------------------------------------------------------
 
 def brew_burner():
@@ -693,6 +711,7 @@ RECIPES = {
     "day_coffee": coffee,
     "day_wife_carrying": wife_carrying,
     "day_topping_out": topping_out,
+    "day_karaoke": karaoke,
     "brew_burner_loop": brew_burner,
     "brew_boil_loop": brew_boil,
     "brew_malt_pour": brew_malt_pour,

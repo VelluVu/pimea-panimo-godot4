@@ -208,6 +208,13 @@ enum KorvatunturiRole { NONE, TONTTU, JOULUPUKKI }
 ## whose negative risk values lower the LVV risk). Empty = none.
 @export_multiline var dialogue_sale_toast: String = ""
 
+@export_group("Kierros")
+## Buys one serving of his own beer for everyone else at the counter after his sale
+## (Lottovoittaja); see SaleProcessor.round_servings().
+@export var buys_round: bool = false
+## Toast for the round; %d is the servings he paid for.
+@export_multiline var dialogue_round: String = ""
+
 @export_group("Kunnianosoitus")
 ## A primary_style batch sold at or above this quality honours the cellar once a run
 ## (Ritari knights the brewer, see HonourRules): honour_reputation, honour_animation at the

@@ -53,7 +53,7 @@ CONTENT_FIELDS = {
                                 "dialogue_reject", "dialogue_no_match", "dialogue_preview_format",
                                 "dialogue_nothing_available", "dialogue_bar_fight", "dialogue_purity_law_broken",
                                 "dialogue_outburst", "dialogue_sale_toast", "dialogue_drunk_served",
-                                "dialogue_drunk_sale_toast", "dialogue_honour"),
+                                "dialogue_drunk_sale_toast", "dialogue_honour", "dialogue_round"),
     "src/resources/visitors": ("title", "dialogue_intro", "dialogue_no_match", "dialogue_nothing_available"),
     "src/resources/day_events": ("announcement_text", "effect_toast_format"),
     "src/resources/group_events": ("banner_text",),

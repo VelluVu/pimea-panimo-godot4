@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="BulkOrderEventData" format=3]
+
+[ext_resource type="Script" path="res://src/events/bulk_order_event_data.gd" id="1_event"]
+
+[resource]
+script = ExtResource("1_event")
+event_caller_name = "Kellunnan järjestäjä"
+intro_dialogue = "Huomenna kellutaan joella! Tarvitaan {servings} annosta jotain kevyttä ja halpaa. Ei se oo niin tarkkaa, kunhan kelluu."
+success_dialogue = "Nyt riittää koko joelle! Nähdään, jos ei uida liian kauas."
+fail_dialogue = "Ei riittänyt... kellutaan sitten kuivin suin."
+reject_dialogue = "No, ostetaan kaupasta. Lämmintä se on kuitenkin."
+timeout_seconds = 12.0
+delivery_seconds = 150.0
+required_bottles = 100
+reward_money = 0
+reward_reputation = 0
+reward_risk = 8
+accepted_styles = Array[int]([1, 0, 13])
+pub_share = 1.0
