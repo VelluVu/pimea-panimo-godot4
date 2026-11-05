@@ -162,9 +162,10 @@ static func _find(node : Node, preferred_only : bool) -> Control:
 
 ## Any control the keyboard can land on, sliders and lists too, or a settings page would
 ## start on its first toggle below the sliders. Containers are skipped: one with a focus
-## mode would land the focus on an invisible box.
+## mode would land the focus on an invisible box. The mode with override counts a parent's
+## disabled focus_behavior_recursive, which grab_focus() refuses with a warning.
 static func _can_focus(control : Control) -> bool:
-	if control.focus_mode != Control.FOCUS_ALL or control is Container:
+	if control.get_focus_mode_with_override() != Control.FOCUS_ALL or control is Container:
 		return false
 	var button : BaseButton = control as BaseButton
 	return button == null or not button.disabled
