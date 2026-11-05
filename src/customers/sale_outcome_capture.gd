@@ -23,6 +23,8 @@ var beer_ebc: int = -1
 var servings: int = 0
 var strongest_abv: float = 0.0
 var notes: Array[Note] = []
+## The customer honoured the cellar in this sale (HonourRules).
+var honoured: bool = false
 
 
 func start() -> void:
@@ -35,6 +37,7 @@ func start() -> void:
 	BrewerySignals.friend_recommended.connect(_on_friend_recommended)
 	BrewerySignals.bad_review_spread.connect(_on_bad_review)
 	BrewerySignals.regular_status_changed.connect(_on_regular_status_changed)
+	BrewerySignals.customer_honoured.connect(_on_honoured)
 
 
 func stop() -> void:
@@ -47,6 +50,7 @@ func stop() -> void:
 	BrewerySignals.friend_recommended.disconnect(_on_friend_recommended)
 	BrewerySignals.bad_review_spread.disconnect(_on_bad_review)
 	BrewerySignals.regular_status_changed.disconnect(_on_regular_status_changed)
+	BrewerySignals.customer_honoured.disconnect(_on_honoured)
 
 
 func emit_xp_popup(position: Vector2) -> void:
@@ -98,6 +102,10 @@ func _on_bad_review() -> void:
 
 func _on_regular_status_changed(_customer_title: String, is_regular: bool) -> void:
 	notes.append(Note.BECAME_REGULAR if is_regular else Note.LOST_REGULAR)
+
+
+func _on_honoured(_data: CustomerData) -> void:
+	honoured = true
 
 
 func _on_tiers_rated(rated_tip_tier: PopupTierRules.Tier, quality: float) -> void:

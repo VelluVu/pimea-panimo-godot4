@@ -208,6 +208,15 @@ enum KorvatunturiRole { NONE, TONTTU, JOULUPUKKI }
 ## whose negative risk values lower the LVV risk). Empty = none.
 @export_multiline var dialogue_sale_toast: String = ""
 
+@export_group("Kunnianosoitus")
+## A primary_style batch sold at or above this quality honours the cellar once a run
+## (Ritari knights the brewer, see HonourRules): honour_reputation, honour_animation at the
+## counter and dialogue_honour as a toast. Below 0 = never.
+@export var honour_min_quality: float = -1.0
+@export var honour_reputation: int = 0
+@export var honour_animation: StringName = &""
+@export_multiline var dialogue_honour: String = ""
+
 
 func generate_display_name() -> String:
 	if title_is_name and title != "":

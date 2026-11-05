@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="CustomerData" format=3]
+
+[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_data"]
+[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/ritari_anim.tres" id="2_sprite"]
+
+[resource]
+script = ExtResource("1_data")
+customer_name = "Kalevi"
+title = "Ritari"
+first_names = Array[String](["Kalevi", "Tapani", "Seppo", "Arto", "Ilkka", "Kyösti"])
+min_quality = 0.6
+budget_multiplier = 1.5
+primary_style = 28
+secondary_style = 22
+also_likes = Array[int]([10])
+sprite_frames = ExtResource("2_sprite")
+randomize_skin = false
+randomize_hair = false
+randomize_clothes = false
+randomize_shoes = false
+carries_glass_out = false
+voice_pitch = 0.8
+dialogue_intro = "Terve, krouvari! Pitkä on ollut matka Turun linnasta. Tuo minulle Böömin kuninkaiden juomaa!"
+dialogue_success = "Olet arvollinen, krouvari! Tämä on totisesti Böömin kultaa."
+dialogue_fallback = "Ei Böömin juomaa, mutta kelpaa ritarin kurkulle näin retkellä."
+dialogue_wrong_style = "Mitä noituutta tämä on? No, ritari ei hylkää tarjottua maljaa."
+dialogue_reject = "Tämä on talonpoikien litkua! Kaada se vallihautaan."
+dialogue_no_match = "Ei mitään ritarille sopivaa. Palaan, kun kellari on kunnostautunut!"
+dialogue_preview_format = "%s? Tuo se tänne, krouvari, ja ripeästi!"
+dialogue_nothing_available = "Tyhjät tynnyrit! Tästä häpeästä kuulevat vielä kaikki keskiaikamarkkinat."
+tip_base_chance = 0.25
+rep_primary_style = 6
+rep_secondary_style = 1
+min_reputation_to_appear = 40
+required_discovered_style = 28
+honour_min_quality = 1.2
+honour_reputation = 12
+honour_animation = &"knight"
+dialogue_honour = "Ritari laskee miekan olallesi ja lyö sinut Panimon ritariksi! Täydellinen Böömin juoma ansaitsi aatelisarvon."
+metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

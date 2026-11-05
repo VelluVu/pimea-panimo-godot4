@@ -74,6 +74,7 @@ func process(data : CustomerData, picks : Array[BrewBatch] = []) -> String:
 	var last_batch : BrewBatch = null
 	var got_favourite : bool = false
 	var got_liked : bool = false
+	var best_favourite_quality : float = -1.0
 	for batch : BrewBatch in batches:
 		if SaleEvaluation.refuses(data, batch.current_quality):
 			continue
@@ -86,6 +87,8 @@ func process(data : CustomerData, picks : Array[BrewBatch] = []) -> String:
 		reputation_gain += results[KEY_REPUTATION_GAIN]
 		bottles_sold += results[KEY_BOTTLES_SOLD]
 		last_batch = batch
+		if batch.beer_style.style == data.primary_style and results[KEY_BOTTLES_SOLD] > 0:
+			best_favourite_quality = maxf(best_favourite_quality, batch.current_quality)
 
 	if is_regular and delighted:
 		response_text = tr(REGULAR_RESPONSE_FORMAT) % response_text
@@ -94,12 +97,22 @@ func process(data : CustomerData, picks : Array[BrewBatch] = []) -> String:
 		_trigger_bar_fight(data, last_batch)
 
 	_spread_word(data, delighted, reputation_gain, false)
+	_honour(data, best_favourite_quality)
 	BrewerySignals.sale_reputation_gained.emit(brewery.reputation - reputation_before)
 	BrewerySignals.brewery_state_changed.emit(brewery)
 	_update_standing(data, delighted, reputation_gain)
 	BrewerySignals.customer_served.emit(data)
 	_report_to_korvatunturi(data, bottles_sold > 0 and got_liked, got_favourite)
 	return response_text
+
+
+## Before the reputation popup is reported, so the honour's bonus shows in it.
+func _honour(data : CustomerData, best_favourite_quality : float) -> void:
+	if not HonourRules.earns(data.honour_min_quality, best_favourite_quality, brewery.honoured_titles.has(data.title)):
+		return
+	brewery.honoured_titles.append(data.title)
+	brewery.change_reputation(data.honour_reputation, ReputationRules.Source.CUSTOMERS)
+	BrewerySignals.customer_honoured.emit(data)
 
 
 ## Tontut and Joulupukki watch every visit for the kiltti/tuhma list (NaughtyList).

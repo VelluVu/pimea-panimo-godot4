@@ -85,6 +85,8 @@ var game_has_ended : bool = false
 @export var brewed_styles : Dictionary = {} # BeerStyle.Style -> true
 ## How each customer type (CustomerData.title) has been treated this run, see RegularRules.
 @export var customer_standing : Dictionary = {} # String -> int
+## Customer titles that have honoured the cellar this run (HonourRules).
+@export var honoured_titles : Array[String] = []
 ## Cellar upgrades bought this run, see CellarUpgradeShop.
 @export var cellar_upgrade_levels : Dictionary = {} # CellarUpgradeData.upgrade_id -> level
 ## Machines bought in an earlier season and switched off by the player, see CellarMachines.

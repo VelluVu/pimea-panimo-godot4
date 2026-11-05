@@ -298,12 +298,28 @@ func _on_sale_timeout() -> void:
 		BrewerySignals.customer_sale_narrated.emit(tr(customer_data.dialogue_sale_toast))
 	if outcome.servings > 0 and customer_data.is_served_illegally(outcome.strongest_abv) and not customer_data.dialogue_drunk_sale_toast.is_empty():
 		BrewerySignals.customer_sale_narrated.emit(tr(customer_data.dialogue_drunk_sale_toast))
+	if outcome.honoured:
+		if customer_data.honour_animation != &"":
+			leave_after = maxf(leave_after, _animation_seconds(customer_data.honour_animation))
+		_honour()
 	if outcome.servings == 0 and customer_data.outburst_animation != &"":
 		var spot : Vector2 = _outburst_spot()
 		leave_after = maxf(leave_after, _seconds_to(spot) + _animation_seconds(customer_data.outburst_animation))
 		_burst_out(spot)
 	_phase_timer = get_tree().create_timer(leave_after, false)
 	_phase_timer.timeout.connect(leave_counter)
+
+
+## Honours the cellar at the counter (Ritari's knighting), then turns back to the bar.
+func _honour() -> void:
+	if not customer_data.dialogue_honour.is_empty():
+		BrewerySignals.customer_sale_narrated.emit(tr(customer_data.dialogue_honour))
+	if customer_data.honour_animation == &"":
+		return
+	_play_animation(customer_data.honour_animation)
+	await animated_sprite.animation_finished
+	if _phase == CustomerSnapshot.Phase.SERVED:
+		_play_animation(ANIM_IDLE_UP)
 
 
 ## Left with nothing: walks out to `spot` where the whole cellar sees, and plays the

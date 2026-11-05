@@ -804,8 +804,8 @@ msgid "Koko kylä tuttu"
 msgstr "Know the Whole Town"
 
 #: src/resources/achievements/asiakaskirja_kaikki.tres
-msgid "Tapaa kaikki 28 asiakastyyppiä."
-msgstr "Meet all 28 customer types."
+msgid "Tapaa kaikki 31 asiakastyyppiä."
+msgstr "Meet all 31 customer types."
 
 #: src/resources/achievements/bulkkia_5.tres
 msgid "Kansan kalja"
@@ -3076,6 +3076,46 @@ msgstr ""
 "This has alcohol in it! I still have the cycling leg, and a state visit "
 "tomorrow."
 
+#: src/resources/customers/pubivisailija.tres
+msgid "%s! Lukitsen vastauksen, ei muutoksia."
+msgstr "%s! Final answer, no changes."
+
+#: src/resources/customers/pubivisailija.tres
+msgid "Ei stoutia? Tämä on visailta ilman vastauksia. Lähden."
+msgstr "No stout? This is a quiz night with no answers. I'm off."
+
+#: src/resources/customers/pubivisailija.tres
+msgid "Hmm, veikkaan tätä... ei. Nolla pistettä, mutta juon silti."
+msgstr "Hmm, I'll guess this... no. Zero points, but I'll drink it anyway."
+
+#: src/resources/customers/pubivisailija.tres
+msgid ""
+"Kysymys yksi: mikä on Irlannin kansallisjuoma? Väärin, se oli retorinen. "
+"Yksi kuiva stout, kiitos."
+msgstr "Question one: what is the national drink of Ireland? Wrong, it was rhetorical. One dry stout, please."
+
+#: src/resources/customers/pubivisailija.tres
+msgid "Oikea vastaus! Täysi pistemäärä tälle tuopille."
+msgstr "Correct answer! Full marks for this pint."
+
+#: src/resources/customers/pubivisailija.tres
+msgid "Pubivisailija"
+msgstr "Pub Quizzer"
+
+#: src/resources/customers/pubivisailija.tres
+msgid "Puoli pistettä. Musta se on, mutta ei Dublinista."
+msgstr "Half a point. It's black, but it's not from Dublin."
+
+#: src/resources/customers/pubivisailija.tres
+msgid ""
+"Tyhjä hana. Tiesitkö, että Dublinissa vuokrattiin panimon tontti 9000 "
+"vuodeksi? Teidän hanoistanne loppui jo."
+msgstr "Empty tap. Did you know a Dublin brewery leased its site for 9000 years? Yours ran dry already."
+
+#: src/resources/customers/pubivisailija.tres
+msgid "Tämä ei mene edes jatkokysymykseen. Hylätty."
+msgstr "This doesn't even make the tiebreaker. Rejected."
+
 #: src/resources/customers/pukki.tres
 msgid "%s. Katsotaan."
 msgstr "%s. We'll see."
@@ -3142,6 +3182,54 @@ msgstr "That %s will do nicely after a workday..."
 msgid "Tää on vähän turhan laimeeta litkua."
 msgstr "This stuff is a bit too watery."
 
+#: src/resources/customers/ritari.tres
+msgid "%s? Tuo se tänne, krouvari, ja ripeästi!"
+msgstr "%s? Bring it hither, innkeeper, and be quick about it!"
+
+#: src/resources/customers/ritari.tres
+msgid "Ei Böömin juomaa, mutta kelpaa ritarin kurkulle näin retkellä."
+msgstr "Not the drink of Bohemia, but it shall serve a knight's throat on the road."
+
+#: src/resources/customers/ritari.tres
+msgid "Ei mitään ritarille sopivaa. Palaan, kun kellari on kunnostautunut!"
+msgstr "Naught fit for a knight. I shall return when this cellar has proven itself!"
+
+#: src/resources/customers/ritari.tres
+msgid "Mitä noituutta tämä on? No, ritari ei hylkää tarjottua maljaa."
+msgstr "What sorcery is this? Well, a knight never refuses an offered cup."
+
+#: src/resources/customers/ritari.tres
+msgid "Olet arvollinen, krouvari! Tämä on totisesti Böömin kultaa."
+msgstr "Thou art worthy, innkeeper! This is truly the gold of Bohemia."
+
+#: src/resources/customers/ritari.tres
+msgid "Ritari"
+msgstr "Knight"
+
+#: src/resources/customers/ritari.tres
+msgid ""
+"Ritari laskee miekan olallesi ja lyö sinut Panimon ritariksi! Täydellinen "
+"Böömin juoma ansaitsi aatelisarvon."
+msgstr ""
+"The knight lays his sword on your shoulder and dubs you Knight of the "
+"Brewery! A perfect Bohemian pils has earned you a noble title."
+
+#: src/resources/customers/ritari.tres
+msgid ""
+"Terve, krouvari! Pitkä on ollut matka Turun linnasta. Tuo minulle Böömin "
+"kuninkaiden juomaa!"
+msgstr ""
+"Hail, innkeeper! Long was the road from Turku Castle. Bring me the drink of "
+"the kings of Bohemia!"
+
+#: src/resources/customers/ritari.tres
+msgid "Tyhjät tynnyrit! Tästä häpeästä kuulevat vielä kaikki keskiaikamarkkinat."
+msgstr "Empty barrels! Every medieval fair in the land shall hear of this shame."
+
+#: src/resources/customers/ritari.tres
+msgid "Tämä on talonpoikien litkua! Kaada se vallihautaan."
+msgstr "This is peasant swill! Pour it in the moat."
+
 #: src/resources/customers/saksalainen_turisti.tres
 msgid "Ach, hier gibt es wohl nichts Richtiges für mich..."
 msgstr "Ach, hier gibt es wohl nichts Richtiges für mich..."
@@ -3197,6 +3285,42 @@ msgstr ""
 #: src/resources/customers/saksalainen_turisti_naaras.tres
 msgid "Wunderbar! Das schmeckt fast wie in München. Prost, meine Liebe!"
 msgstr "Wunderbar! Das schmeckt fast wie in München. Prost, meine Liebe!"
+
+#: src/resources/customers/saunamies.tres
+msgid "%s! Just sopivaa löylyjen päälle."
+msgstr "%s! Just the thing after the löyly."
+
+#: src/resources/customers/saunamies.tres
+msgid "Ahh. Savua ja mallasta. Ihan kuin istuisi vieläkin lauteilla."
+msgstr "Ahh. Smoke and malt. Like I'm still up on the sauna bench."
+
+#: src/resources/customers/saunamies.tres
+msgid "Ei saunakaljaa? Takaisin lauteille sitten. Älkää katsoko."
+msgstr "No sauna beer? Back to the benches then. Don't look."
+
+#: src/resources/customers/saunamies.tres
+msgid "Ei savua, mutta märkää on. Kelpaa saunakaljaksi."
+msgstr "No smoke, but it's wet. Good enough for a sauna beer."
+
+#: src/resources/customers/saunamies.tres
+msgid "Huh, löylyt oli kovat! Anna jotain, mikä maistuu saunalta."
+msgstr "Phew, that was some steam! Give me something that tastes like a sauna."
+
+#: src/resources/customers/saunamies.tres
+msgid "Mikäs tämä on? No, saunan jälkeen kaikki maistuu."
+msgstr "What's this, then? Well, after a sauna anything goes down."
+
+#: src/resources/customers/saunamies.tres
+msgid "Saunamies"
+msgstr "Sauna Man"
+
+#: src/resources/customers/saunamies.tres
+msgid "Tyhjää? Ja minä kun tulin ihan sellaisenaan."
+msgstr "Nothing? And me coming over just as I am."
+
+#: src/resources/customers/saunamies.tres
+msgid "Tätä ei viitsi edes kiukaalle heittää."
+msgstr "I wouldn't even throw this on the sauna stove."
 
 #: src/resources/customers/snobi.tres
 msgid "%s. Kuinka kauan sitä on kypsytetty? Hinnalla ei ole väliä."
@@ -3557,6 +3681,12 @@ msgid ""
 "Opintotukien maksupäivä on tänään. Odotettavissa rahaa polttavia "
 "opiskelijoita."
 msgstr "Student grant payday is today. Expect students eager to spend."
+
+#: src/resources/day_events/day_event_pubivisailta.tres
+msgid ""
+"Illalla kellarissa on pubivisa. Visailijat tulevat kynät teroitettuina ja "
+"kurkut kuivina."
+msgstr "There's a pub quiz in the cellar tonight. Quizzers arrive with sharpened pencils and dry throats."
 
 #: src/resources/day_events/day_event_saunailta.tres
 msgid ""

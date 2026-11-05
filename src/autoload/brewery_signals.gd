@@ -190,6 +190,9 @@ signal christmas_gifts_offered(gifts: Array)
 ## A customer's own narration after a sale (Presidentti's visit), shown as a toast.
 @warning_ignore("unused_signal")
 signal customer_sale_narrated(message: String)
+## A customer honoured the cellar in this sale (Ritari knighted the brewer), see HonourRules.
+@warning_ignore("unused_signal")
+signal customer_honoured(data: CustomerData)
 ## A glass thrown in a bar fight hit the floor, for the shatter sound.
 @warning_ignore("unused_signal")
 signal glass_shattered()
