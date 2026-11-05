@@ -109,10 +109,10 @@
 [ext_resource type="PackedScene" path="res://src/scenes/ui/day_recap_window.tscn" id="x_dayrecapwindow"]
 [ext_resource type="PackedScene" path="res://src/scenes/ui/game_end_window.tscn" id="x_gameendwindow"]
 [ext_resource type="PackedScene" path="res://src/scenes/ui/lvv_raid_window.tscn" id="x_lvvraidwindow"]
+[ext_resource type="PackedScene" path="res://src/scenes/new_year_decor.tscn" id="x_newyeardecor"]
+[ext_resource type="PackedScene" path="res://src/scenes/new_year_fireworks.tscn" id="x_newyearfireworks"]
 [ext_resource type="PackedScene" uid="uid://dfxsisxcex8tj" path="res://src/scenes/ui/recipe_library_window.tscn" id="x_recipelibrarywindow"]
 [ext_resource type="Script" uid="uid://dldflwygsvloj" path="res://src/ui/season_chip.gd" id="x_seasonchip"]
-[ext_resource type="PackedScene" path="res://src/scenes/new_year_fireworks.tscn" id="x_newyearfireworks"]
-[ext_resource type="PackedScene" path="res://src/scenes/new_year_decor.tscn" id="x_newyeardecor"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_yf5fn"]
 blend_mode = 1
@@ -561,7 +561,7 @@ visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.578125
-anchor_top = 0.08888889
+anchor_top = 0.1
 anchor_right = 0.890625
 anchor_bottom = 0.82
 grow_horizontal = 2

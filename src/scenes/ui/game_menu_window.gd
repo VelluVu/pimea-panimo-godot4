@@ -29,6 +29,7 @@ const CONFIRM_NO_TEXT: String = "Ei"
 @onready var confirm_label: Label = %ConfirmLabel
 @onready var yes_button: Button = %YesButton
 @onready var no_button: Button = %NoButton
+@onready var content: MarginContainer = $MarginContainer
 
 ## True from opening until resuming or leaving, also while a sub-window hides the menu.
 var _is_open: bool = false
@@ -61,6 +62,10 @@ func _ready() -> void:
 	# The confirmation opens on the safe answer.
 	FirstFocus.prefer(no_button)
 	_close_button = WindowCloseButton.attach(self, _back_out)
+	# The menu and its short confirmation differ a lot in height, so the panel follows
+	# whichever is showing instead of leaving empty space under Kyllä and Ei.
+	content.minimum_size_changed.connect(_fit_height)
+	_fit_height()
 
 	GUISignals.game_menu_requested.connect(_open)
 	GUISignals.options_closed.connect(_on_sub_window_closed)
@@ -82,6 +87,15 @@ func _open() -> void:
 	_close_button.visible = resume_button.visible
 	_show_confirm(false)
 	show()
+
+
+## Centred vertically, as tall as what it shows; the width stays on the scene's anchors.
+func _fit_height() -> void:
+	var half_height: int = ceili(content.get_combined_minimum_size().y / 2.0)
+	anchor_top = 0.5
+	anchor_bottom = 0.5
+	offset_top = -half_height
+	offset_bottom = half_height
 
 
 func _close() -> void:

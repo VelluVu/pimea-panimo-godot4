@@ -239,7 +239,9 @@ func _entry(brewery : Brewery, beer_style : BeerStyle) -> RecipeBookEntry:
 	entry.saved_recipe_count = brewery.saved_recipes.filter(func(recipe : BrewRecipe) -> bool: return recipe.beer_style == beer_style.style).size()
 	entry.needs_mash_upgrade = not MashTun.holds(brewery.resolver.reference_malt_weight(beer_style), brewery.mash_capacity_kg())
 	if not entry.known:
-		var yeast : YeastData = IngredientDatabase.get_item_by_id(beer_style.required_yeast_id) as YeastData
+		var yeast : YeastData = null
+		if beer_style.required_yeast_id != BeerStyle.ANY_YEAST:
+			yeast = IngredientDatabase.get_item_by_id(beer_style.required_yeast_id) as YeastData
 		entry.family_name = yeast.family_name if yeast != null else ""
 		entry.effort_score = StyleEffort.score(beer_style, brewery.resolver.ingredient_table(), entry.needs_mash_upgrade)
 		entry.needs_malt_blend =beer_style.required_malt_id == BrewMixture.NO_REQUIRED_MALT and brewery.resolver.style_needs_malt_blend(beer_style)
