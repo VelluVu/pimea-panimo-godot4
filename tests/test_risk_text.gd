@@ -9,8 +9,14 @@ func suite_name() -> String:
 	return "risk_text"
 
 
-func test_the_label_shows_risk_against_the_runs_own_threshold() -> void:
-	assert_eq(RiskTextScript.label(62, 85), "LVV-riski: 62/85")
+func test_the_meter_fills_against_the_runs_own_threshold() -> void:
+	assert_eq(RiskTextScript.fill(0, 85), 0.0)
+	assert_eq(RiskTextScript.fill(25, 100), 0.25)
+	assert_eq(RiskTextScript.fill(120, 85), 1.0)
+
+
+func test_a_zero_threshold_shows_a_full_meter() -> void:
+	assert_eq(RiskTextScript.fill(5, 0), 1.0)
 
 
 func test_the_warning_follows_the_threshold() -> void:

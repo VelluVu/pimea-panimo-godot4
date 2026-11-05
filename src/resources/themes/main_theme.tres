@@ -13,6 +13,9 @@
 [ext_resource type="Texture2D" uid="uid://du31g2l2yuwb3" path="res://assets/textures/ui/button_normal.png" id="ui_button_normal"]
 [ext_resource type="Texture2D" uid="uid://8gtjj80nbtp" path="res://assets/textures/ui/button_pressed.png" id="ui_button_pressed"]
 [ext_resource type="Texture2D" uid="uid://cn6h3pb4ge18e" path="res://assets/textures/ui/header.png" id="ui_header"]
+[ext_resource type="Texture2D" uid="uid://clfkua71o75mn" path="res://assets/textures/ui/meter_beer.png" id="ui_meter_beer"]
+[ext_resource type="Texture2D" uid="uid://dghyb25gc12s" path="res://assets/textures/ui/meter_risk.png" id="ui_meter_risk"]
+[ext_resource type="Texture2D" uid="uid://b5v58w7ot7y67" path="res://assets/textures/ui/meter_track.png" id="ui_meter_track"]
 [ext_resource type="Texture2D" uid="uid://c1oyyse4gy0ti" path="res://assets/textures/ui/panel.png" id="ui_panel"]
 [ext_resource type="Texture2D" uid="uid://spwod0uervin" path="res://assets/textures/ui/slider_beer.png" id="ui_slider_beer"]
 [ext_resource type="Texture2D" uid="uid://dxxlc3ktj7rlc" path="res://assets/textures/ui/slider_beer_hover.png" id="ui_slider_beer_hover"]
@@ -23,6 +26,7 @@
 [ext_resource type="Texture2D" uid="uid://byk427ola604u" path="res://assets/textures/ui/slider_tap_hover.png" id="ui_slider_tap_hover"]
 [ext_resource type="Texture2D" uid="uid://c6py3m2df4jmj" path="res://assets/textures/ui/slider_track.png" id="ui_slider_track"]
 [ext_resource type="Texture2D" uid="uid://cpennliyn5ifs" path="res://assets/textures/ui/slider_tube.png" id="ui_slider_tube"]
+[ext_resource type="Texture2D" uid="uid://b85nm86vskcvr" path="res://assets/textures/ui/stat_plate.png" id="ui_stat_plate"]
 [ext_resource type="Texture2D" uid="uid://c3xo47wqwvs35" path="res://assets/textures/ui/tab_selected.png" id="ui_tab_selected"]
 [ext_resource type="Texture2D" uid="uid://c2oppb0jbql5n" path="res://assets/textures/ui/toggle_off.png" id="ui_toggle_off"]
 [ext_resource type="Texture2D" uid="uid://dcggq4h2mlfvi" path="res://assets/textures/ui/toggle_on.png" id="ui_toggle_on"]
@@ -91,6 +95,12 @@ texture_margin_right = 4.0
 texture_margin_bottom = 4.0
 
 [sub_resource type="StyleBoxEmpty" id="check_flat"]
+
+[sub_resource type="StyleBoxTexture" id="meter_track"]
+texture = ExtResource("ui_meter_track")
+
+[sub_resource type="StyleBoxTexture" id="meter_beer"]
+texture = ExtResource("ui_meter_beer")
 
 [sub_resource type="StyleBoxTexture" id="danger_hover"]
 content_margin_left = 4.0
@@ -229,6 +239,9 @@ texture_margin_top = 4.0
 texture_margin_right = 4.0
 texture_margin_bottom = 4.0
 
+[sub_resource type="StyleBoxTexture" id="meter_risk"]
+texture = ExtResource("ui_meter_risk")
+
 [sub_resource type="StyleBoxEmpty" id="seamless_panel"]
 
 [sub_resource type="StyleBoxFlat" id="seamless_divider"]
@@ -239,6 +252,17 @@ content_margin_bottom = 4.0
 draw_center = false
 border_width_left = 1
 border_color = Color(0.050980393, 0.03137255, 0.019607844, 1)
+
+[sub_resource type="StyleBoxTexture" id="stat_plate"]
+content_margin_left = 3.0
+content_margin_top = 2.0
+content_margin_right = 4.0
+content_margin_bottom = 2.0
+texture = ExtResource("ui_stat_plate")
+texture_margin_left = 1.0
+texture_margin_top = 1.0
+texture_margin_right = 1.0
+texture_margin_bottom = 1.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kduym"]
 texture = ExtResource("ui_button_disabled")
@@ -361,6 +385,9 @@ CheckButton/styles/hover = SubResource("check_flat")
 CheckButton/styles/hover_pressed = SubResource("check_flat")
 CheckButton/styles/normal = SubResource("check_flat")
 CheckButton/styles/pressed = SubResource("check_flat")
+ChipMeter/base_type = &"ProgressBar"
+ChipMeter/styles/background = SubResource("meter_track")
+ChipMeter/styles/fill = SubResource("meter_beer")
 CloseButton/base_type = &"Button"
 CloseButton/colors/font_hover_color = Color(1, 1, 1, 1)
 CloseButton/colors/font_pressed_color = Color(1, 0.8784314, 0.8156863, 1)
@@ -420,10 +447,15 @@ PrimaryButton/styles/hover = SubResource("primary_hover")
 PrimaryButton/styles/hover_pressed = SubResource("primary_pressed")
 PrimaryButton/styles/normal = SubResource("primary_normal")
 PrimaryButton/styles/pressed = SubResource("primary_pressed")
+RiskMeter/base_type = &"ProgressBar"
+RiskMeter/styles/background = SubResource("meter_track")
+RiskMeter/styles/fill = SubResource("meter_risk")
 SeamlessPanel/base_type = &"Panel"
 SeamlessPanel/styles/panel = SubResource("seamless_panel")
 SeamlessPanelContainer/base_type = &"PanelContainer"
 SeamlessPanelContainer/styles/panel = SubResource("seamless_divider")
+StatChip/base_type = &"PanelContainer"
+StatChip/styles/panel = SubResource("stat_plate")
 TabBar/colors/font_disabled_color = Color(0.5411765, 0.47843137, 0.36862746, 1)
 TabBar/colors/font_hovered_color = Color(0.9490196, 0.7882353, 0.41960785, 1)
 TabBar/colors/font_outline_color = Color(0.08235294, 0.05490196, 0.03137255, 1)

@@ -6307,16 +6307,8 @@ msgid "KYBERVIIKKO"
 msgstr "CYBER WEEK"
 
 #: src/scenes/main.tscn
-msgid "LVV Riski: 0%"
-msgstr "LVV Risk: 0%"
-
-#: src/scenes/main.tscn
 msgid "Lisää"
 msgstr "Add"
-
-#: src/scenes/main.tscn
-msgid "Maine: 0"
-msgstr "Reputation: 0"
 
 #: src/scenes/main.tscn
 msgid "Myy"
@@ -6339,10 +6331,6 @@ msgid "Poista"
 msgstr "Remove"
 
 #: src/scenes/main.tscn
-msgid "Raha: 500€"
-msgstr "Money: 500€"
-
-#: src/scenes/main.tscn
 msgid "Resepti:"
 msgstr "Recipe:"
 
@@ -6359,20 +6347,12 @@ msgid "Tallenna resepti"
 msgstr "Save recipe"
 
 #: src/scenes/main.tscn
-msgid "Taso: 1"
-msgstr "Level: 1"
-
-#: src/scenes/main.tscn
 msgid "Tyhjennä valmistelu"
 msgstr "Clear preparation"
 
 #: src/scenes/main.tscn
 msgid "Tyhjää"
 msgstr "Empty"
-
-#: src/scenes/main.tscn
-msgid "päivä: 1"
-msgstr "day: 1"
 
 #: src/scenes/new_year_banner.gd
 msgid "HYVÄÄ UUTTA VUOTTA"
@@ -8728,10 +8708,6 @@ msgstr "Counter prices +%d %%"
 #: src/ui/risk_text.gd
 msgid "%d riskiä ennen ratsiaa"
 msgstr "%d risk before a raid"
-
-#: src/ui/risk_text.gd
-msgid "LVV-riski: %d/%d"
-msgstr "LVV risk: %d/%d"
 
 #: src/ui/risk_text.gd
 msgid "Laskee %d joka yö"

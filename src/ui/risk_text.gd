@@ -1,9 +1,8 @@
 class_name RiskText
 extends RefCounted
 
-## The top bar's LVV risk: label, red warning and tooltip, at the run's own threshold.
+## The top bar's LVV risk: meter, red warning and tooltip, at the run's own threshold.
 
-const LABEL_FORMAT : String = "LVV-riski: %d/%d"
 ## The label turns red this close to the threshold.
 const WARNING_MARGIN : int = 25
 
@@ -18,8 +17,9 @@ const NEXT_RAID_FORMAT : String = "Seuraava ratsia: sakko %s, mainetta -%d ja ol
 const LAST_RAID_TEXT : String = "Seuraava ratsia lopettaa kauden!"
 
 
-static func label(risk : int, threshold : int) -> String:
-	return UiText.of(LABEL_FORMAT) % [risk, threshold]
+## How full the risk meter is: the raid comes at 1.
+static func fill(risk : int, threshold : int) -> float:
+	return clampf(float(risk) / float(threshold), 0.0, 1.0) if threshold > 0 else 1.0
 
 
 static func is_warning(risk : int, threshold : int) -> bool:

@@ -6,12 +6,11 @@ const DAY_STRING : String = "Päivä: %s"
 
 ## Long enough to read a "+X €" popup before it fades.
 const POPUP_EFFECT_DURATION_SECONDS : float = 1.8
-## Gap after the label's text: a fixed offset put the popup inside long labels
-## ("Kellarin salaisuus") and against the next one after short ones.
-const POPUP_GAP : float = 4.0
-const POPUP_FLOAT_DISTANCE : float = 35.0
+## Popups start under their plate and float down, so they never cover the next stat.
+const POPUP_DROP : float = 6.0
+const POPUP_FLOAT_DISTANCE : float = 30.0
 
-## Near the raid threshold the risk label turns red and pulses once on entry.
+## Near the raid threshold the risk turns red, the siren lights and the plate pulses once.
 const RISK_WARNING_COLOR : Color = Color(0.75686276, 0.3137255, 0.22745098, 1) # matches DailyGoalsPanel.GOAL_FAILING_COLOR
 const RISK_WARNING_PULSE_SECONDS : float = 0.3
 ## Brightness, not scale: the pixel font blurs off whole sizes.
@@ -29,12 +28,11 @@ const LEVEL_TOOLTIP_FORMAT : String = "Taso %d\n%d/%d XP\n%d XP seuraavaan tasoo
 ## The clock on the cellar wall; its tooltip shows the time.
 @export var clock_ui : ClockUI
 
-@onready var money_label : Label = $MoneyLabel
-@onready var reputation_label : Label = $ReputationLabel
-@onready var level_label : Label = $LevelBox/LevelLabel
-@onready var level_progress_bar : ProgressBar = $LevelBox/LevelProgressBar
-@onready var risk_label : Label = $RiskLabel
-@onready var day_label : Label = $DayLabel
+@onready var money_chip : StatChip = $MoneyChip
+@onready var reputation_chip : StatChip = $ReputationChip
+@onready var risk_chip : StatChip = $RiskChip
+@onready var level_chip : StatChip = $LevelChip
+@onready var day_chip : StatChip = $DayChip
 var last_money: float = -1.0
 var last_reputation : int = -1
 var last_risk: int = -1
@@ -47,26 +45,14 @@ var _brewery : Brewery = null
 
 
 func _ready() -> void:
-	# Long tooltips wrap via TooltipFactory.
-	level_progress_bar.set_script(TooltipProgressBar)
-	level_label.set_script(TooltipLabel)
-	level_label.mouse_filter = Control.MOUSE_FILTER_PASS
-	reputation_label.set_script(TooltipLabel)
-	reputation_label.mouse_filter = Control.MOUSE_FILTER_PASS
-	risk_label.set_script(TooltipLabel)
-	risk_label.mouse_filter = Control.MOUSE_FILTER_PASS
-	money_label.set_script(LiveTooltipLabel)
-	money_label.set(&"tooltip_source", _money_tooltip)
-	money_label.mouse_filter = Control.MOUSE_FILTER_PASS
+	money_chip.tooltip_source = _money_tooltip
 	# Built on hover, so the time is current.
-	day_label.set_script(LiveTooltipLabel)
-	day_label.set(&"tooltip_source", _day_clock_tooltip)
-	day_label.mouse_filter = Control.MOUSE_FILTER_PASS
+	day_chip.tooltip_source = _day_clock_tooltip
 	clock_ui.tooltip_source = _clock_tooltip
 	clock_ui.mouse_filter = Control.MOUSE_FILTER_PASS
 
 	BrewerySignals.brewery_state_changed.connect(_on_brewery_state_changed)
-	BrewerySignals.brew_xp_gained.connect(func(amount : int) -> void: _float_popup(level_label, tr(XP_POPUP_FORMAT) % amount, XP_POPUP_COLOR))
+	BrewerySignals.brew_xp_gained.connect(func(amount : int) -> void: _float_popup(level_chip, tr(XP_POPUP_FORMAT) % amount, XP_POPUP_COLOR))
 	TimeManager.day_changed.connect(_on_day_changed)
 
 
@@ -109,8 +95,8 @@ func _day_clock_tooltip() -> String:
 
 
 func _update_day_display(day_num: int) -> void:
-	if day_label:
-		day_label.text = tr(DAY_STRING) % str(day_num)
+	if day_chip:
+		day_chip.set_value(tr(DAY_STRING) % str(day_num))
 
 
 func _on_brewery_state_changed(brewery : Brewery) -> void:
@@ -123,10 +109,10 @@ func _on_brewery_state_changed(brewery : Brewery) -> void:
 func _update_money(money : float) -> void:
 	# Snapped so float noise from repeated += and -= never shows as "+0,00 €".
 	var change : float = snappedf(money - last_money, 0.01) if last_money != -1.0 else 0.0
-	money_label.text = NumberText.money(money)
+	money_chip.set_value(NumberText.money(money))
 	last_money = money
 	if change != 0.0:
-		_create_popup_effect(money_label, change, " €", false, 2)
+		_create_popup_effect(money_chip, change, " €", false, 2)
 
 
 func _update_reputation(reputation : int) -> void:
@@ -137,45 +123,44 @@ func _update_reputation(reputation : int) -> void:
 	var tiers : Array[ReputationTier] = ReputationTiers.all()
 	var tier : ReputationTier = ReputationTiers.tier_for(reputation, tiers)
 	if tier == null:
-		reputation_label.text = tr(ReputationTierText.VALUE_FORMAT) % reputation
-		reputation_label.tooltip_text = ""
+		reputation_chip.set_value(tr(ReputationTierText.VALUE_FORMAT) % reputation)
+		reputation_chip.tooltip_text = ""
 	else:
-		reputation_label.text = tr(tier.tier_name)
-		reputation_label.tooltip_text = ReputationTierText.tooltip(reputation, tier, ReputationTiers.next_tier(reputation, tiers))
+		reputation_chip.set_value(tr(tier.tier_name))
+		reputation_chip.tooltip_text = ReputationTierText.tooltip(reputation, tier, ReputationTiers.next_tier(reputation, tiers))
 	if change != 0:
-		_create_popup_effect(reputation_label, change, "", false)
+		_create_popup_effect(reputation_chip, change, "", false)
 
 
 ## Updates on every change: the XP bar is the constant "almost there" read.
 func _update_level(level : int, xp : int) -> void:
 	if level != _last_level:
 		_last_level = level
-		level_label.text = tr(LEVEL_FORMAT) % level
+		level_chip.set_value(tr(LEVEL_FORMAT) % level)
 	var xp_needed : int = Brewery.xp_required_for_level(level)
-	level_progress_bar.value = float(xp) / float(xp_needed) if xp_needed > 0 else 0.0
-	# The label and the thin bar under it share one tooltip.
-	level_progress_bar.tooltip_text = tr(LEVEL_TOOLTIP_FORMAT) % [level, xp, xp_needed, maxi(0, xp_needed - xp)]
-	level_label.tooltip_text = level_progress_bar.tooltip_text
+	level_chip.set_meter(float(xp) / float(xp_needed) if xp_needed > 0 else 0.0)
+	level_chip.tooltip_text = tr(LEVEL_TOOLTIP_FORMAT) % [level, xp, xp_needed, maxi(0, xp_needed - xp)]
 
 
 func _update_risk(brewery : Brewery) -> void:
 	var risk : int = brewery.risk
 	var threshold : int = brewery.get_effective_raid_threshold()
 	var change : int = risk - last_risk if last_risk != -1 else 0
-	risk_label.text = RiskText.label(risk, threshold)
-	risk_label.tooltip_text = _risk_tooltip(brewery, threshold)
+	# The number alone: the siren says what it is, the meter how close the raid is, and
+	# the tooltip has the threshold.
+	risk_chip.set_value(str(risk))
+	risk_chip.set_meter(RiskText.fill(risk, threshold))
+	risk_chip.tooltip_text = _risk_tooltip(brewery, threshold)
 	last_risk = risk
 	if change != 0:
-		_create_popup_effect(risk_label, change, "", true)
+		_create_popup_effect(risk_chip, change, "", true)
 
-	if RiskText.is_warning(risk, threshold):
-		risk_label.add_theme_color_override("font_color", RISK_WARNING_COLOR)
-		if not _risk_warning_active:
-			_risk_warning_active = true
-			_pulse_risk_warning()
-	else:
-		risk_label.remove_theme_color_override("font_color")
-		_risk_warning_active = false
+	var warning : bool = RiskText.is_warning(risk, threshold)
+	risk_chip.set_icon(StatChip.TopBarIcon.SIREN_ON if warning else StatChip.TopBarIcon.SIREN_OFF)
+	risk_chip.set_value_color(RISK_WARNING_COLOR if warning else Color(0, 0, 0, 0))
+	if warning and not _risk_warning_active:
+		_pulse_risk_warning()
+	_risk_warning_active = warning
 
 
 func _risk_tooltip(brewery : Brewery, threshold : int) -> String:
@@ -191,25 +176,28 @@ func _risk_tooltip(brewery : Brewery, threshold : int) -> String:
 ## One-shot, unlike DailyGoalsPanel's looping near-miss pulse: it marks the crossing.
 func _pulse_risk_warning() -> void:
 	var tween := create_tween()
-	tween.tween_property(risk_label, "modulate", RISK_WARNING_FLASH_COLOR, RISK_WARNING_PULSE_SECONDS).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-	tween.tween_property(risk_label, "modulate", Color.WHITE, RISK_WARNING_PULSE_SECONDS).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	tween.tween_property(risk_chip, "modulate", RISK_WARNING_FLASH_COLOR, RISK_WARNING_PULSE_SECONDS).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	tween.tween_property(risk_chip, "modulate", Color.WHITE, RISK_WARNING_PULSE_SECONDS).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 
 
 ## `decimals` is 0 for reputation and risk, 1 for money (tracked to one decimal).
-func _create_popup_effect(target_label: Label, amount: float, suffix: String, is_risk: bool, decimals: int = 0) -> void:
+func _create_popup_effect(chip: StatChip, amount: float, suffix: String, is_risk: bool, decimals: int = 0) -> void:
 	var magnitude_text : String = NumberText.decimal(absf(amount), decimals) if decimals > 0 else str(roundi(absf(amount)))
 	# Rising risk is bad news, rising money and reputation good news.
 	var good : bool = (amount > 0) != is_risk
-	_float_popup(target_label, ("+" if amount > 0 else "-") + magnitude_text + suffix, Color.GREEN if good else Color.RED)
+	_float_popup(chip, ("+" if amount > 0 else "-") + magnitude_text + suffix, Color.GREEN if good else Color.RED)
 
 
-func _float_popup(target_label : Label, text : String, color : Color) -> void:
+func _float_popup(chip : StatChip, text : String, color : Color) -> void:
 	var popup := Label.new()
 	popup.text = text
 	popup.modulate = color
-	target_label.add_child(popup)
-	# The minimum size measures the new text now; size lags until the next layout pass.
-	popup.position = Vector2(target_label.get_minimum_size().x + POPUP_GAP, 0.0)
+	popup.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
+	popup.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	# On the value label, lined up with the number it changes, starting under the plate.
+	var label : Label = chip.value_label()
+	label.add_child(popup)
+	popup.position = Vector2(0.0, chip.size.y - label.position.y + POPUP_DROP)
 
 	var tween := create_tween().set_parallel(true)
 	var target_color := popup.modulate

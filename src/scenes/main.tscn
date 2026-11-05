@@ -57,6 +57,7 @@
 [ext_resource type="PackedScene" uid="uid://cvfiooeo4kwdt" path="res://src/scenes/ui/options_window.tscn" id="30_qkpxi"]
 [ext_resource type="Texture2D" uid="uid://7npr1w4jtxms" path="res://assets/textures/gear_icon.png" id="30_tel4y"]
 [ext_resource type="Script" uid="uid://l7dtc2itv83e" path="res://src/scenes/ui/daily_goals_panel.gd" id="32_qkpxi"]
+[ext_resource type="Script" uid="uid://bf0v7acfsx5lb" path="res://src/ui/stat_chip.gd" id="36_d0eq4"]
 [ext_resource type="Script" uid="uid://dxw7jcfhxobkb" path="res://src/scenes/ui/sale_flash_stack.gd" id="37_fuf3a"]
 [ext_resource type="PackedScene" uid="uid://di8en5fvrwrkk" path="res://src/scenes/ui/sale_receipt_log_window.tscn" id="38_pibwh"]
 [ext_resource type="Script" uid="uid://bdvg8mgx0ohsg" path="res://src/scenes/ui/recipe_shelf_label.gd" id="40_vc5cj"]
@@ -152,25 +153,6 @@ shader_parameter/siren_strength = 0.35
 shader_parameter/pulse_speed = 2.2
 shader_parameter/siren_speed = 1.6
 shader_parameter/dither_levels = 4.0
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bu4jf"]
-bg_color = Color(0.32, 0.24, 0.16, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.12, 0.08, 0.05, 1)
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o7ddy"]
-bg_color = Color(0.949, 0.788, 0.42, 1)
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_savetoast"]
 bg_color = Color(0.09019608, 0.05882353, 0.03529412, 0.92)
@@ -485,59 +467,50 @@ offset_bottom = -2.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 6
 script = ExtResource("2_tipki")
 clock_ui = NodePath("../../../WallClock")
 metadata/_edit_use_anchors_ = true
 
-[node name="MoneyLabel" type="Label" parent="GUI_CanvasLayer/GUI/TopPanel_Resources" unique_id=317223735]
+[node name="MoneyChip" type="PanelContainer" parent="GUI_CanvasLayer/GUI/TopPanel_Resources" unique_id=1942083678]
 layout_mode = 2
-size_flags_horizontal = 2
-theme_override_colors/font_color = Color(0.9490196, 0.7882353, 0.41960785, 1)
-text = "Raha: 500€"
+script = ExtResource("36_d0eq4")
+value_min_width = 50
+value_color = Color(0.9490196, 0.7882353, 0.41960785, 1)
 
-[node name="ReputationLabel" type="Label" parent="GUI_CanvasLayer/GUI/TopPanel_Resources" unique_id=1789414113]
+[node name="ReputationChip" type="PanelContainer" parent="GUI_CanvasLayer/GUI/TopPanel_Resources" unique_id=345278823]
 layout_mode = 2
-size_flags_horizontal = 2
-theme_override_colors/font_color = Color(0.6117647, 0.70980394, 0.41568628, 1)
-text = "Maine: 0"
+script = ExtResource("36_d0eq4")
+icon = 1
+value_color = Color(0.6117647, 0.70980394, 0.41568628, 1)
 
-[node name="RiskLabel" type="Label" parent="GUI_CanvasLayer/GUI/TopPanel_Resources" unique_id=1891358231]
+[node name="RiskChip" type="PanelContainer" parent="GUI_CanvasLayer/GUI/TopPanel_Resources" unique_id=405322135]
 layout_mode = 2
-size_flags_horizontal = 2
-theme_override_colors/font_color = Color(0.75686276, 0.3137255, 0.22745098, 1)
-text = "LVV Riski: 0%"
+script = ExtResource("36_d0eq4")
+icon = 2
+meter = 2
+value_min_width = 18
 
-[node name="LevelBox" type="VBoxContainer" parent="GUI_CanvasLayer/GUI/TopPanel_Resources" unique_id=2009149021]
+[node name="LevelChip" type="PanelContainer" parent="GUI_CanvasLayer/GUI/TopPanel_Resources" unique_id=63629565]
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 4
-mouse_filter = 2
-alignment = 1
+script = ExtResource("36_d0eq4")
+icon = 4
+meter = 1
 
-[node name="LevelLabel" type="Label" parent="GUI_CanvasLayer/GUI/TopPanel_Resources/LevelBox" unique_id=212272449]
+[node name="DayChip" type="PanelContainer" parent="GUI_CanvasLayer/GUI/TopPanel_Resources" unique_id=1513990401]
 layout_mode = 2
-size_flags_horizontal = 6
-text = "Taso: 1"
-horizontal_alignment = 1
-
-[node name="LevelProgressBar" type="ProgressBar" parent="GUI_CanvasLayer/GUI/TopPanel_Resources/LevelBox" unique_id=932778489]
-custom_minimum_size = Vector2(34, 6)
-layout_mode = 2
-theme_override_styles/background = SubResource("StyleBoxFlat_bu4jf")
-theme_override_styles/fill = SubResource("StyleBoxFlat_o7ddy")
-max_value = 1.0
-show_percentage = false
-
-[node name="DayLabel" type="Label" parent="GUI_CanvasLayer/GUI/TopPanel_Resources" unique_id=1287966115]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "päivä: 1"
+script = ExtResource("36_d0eq4")
+icon = 5
 
 [node name="SeasonChip" type="Label" parent="GUI_CanvasLayer/GUI/TopPanel_Resources" unique_id=1569289282]
 layout_mode = 2
 size_flags_horizontal = 4
 script = ExtResource("x_seasonchip")
+
+[node name="Spacer" type="Control" parent="GUI_CanvasLayer/GUI/TopPanel_Resources" unique_id=204857634]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
 
 [node name="GameSpeedButton" type="Button" parent="GUI_CanvasLayer/GUI/TopPanel_Resources" unique_id=1433339387]
 custom_minimum_size = Vector2(24, 22)

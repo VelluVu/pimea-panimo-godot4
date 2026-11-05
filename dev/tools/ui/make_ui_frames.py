@@ -228,6 +228,27 @@ def wrench() -> Image.Image:
     return img
 
 
+def stat_plate() -> Image.Image:
+    """A top bar stat sunk into the wood: dark lip top and left, lit lip bottom and right."""
+    size = 6
+    img = Image.new("RGBA", (size, size), INSET)
+    px = img.load()
+    for i in range(size):
+        px[i, 0] = INK
+        px[0, i] = INK
+    for i in range(1, size):
+        px[i, size - 1] = WOOD
+        px[size - 1, i] = WOOD
+    return img
+
+
+def meter(top, bottom) -> Image.Image:
+    """A 2 px high top bar meter, stretched sideways: lit row over its shade."""
+    img = Image.new("RGBA", (1, 2), top)
+    img.putpixel((0, 1), bottom)
+    return img
+
+
 def with_drop_shadow(img: Image.Image, depth: int = 1) -> Image.Image:
     """Adds a shadow `depth` px to the right and bottom: solid next to the frame, dithered
     further out, so it fades on the pixel grid."""
@@ -271,6 +292,11 @@ FRAMES = {
     "slider_tap_disabled": lambda: tap(TAP_DISABLED),
     # The top bar's upgrades button, sized to its 22 px buttons.
     "icon_wrench": wrench,
+    # Top bar stats: the sunken plate and their thin meters (XP in beer, LVV risk in red).
+    "stat_plate": stat_plate,
+    "meter_track": lambda: meter(SHADE, DARK),
+    "meter_beer": lambda: meter(BEER_LIGHT, BEER),
+    "meter_risk": lambda: meter(DANGER[1], DANGER[0]),
     # Slider: a sunken track and a gold fill.
     "slider_track": lambda: frame(6, 6, INK, DARK, INK, WOOD, cut_corners=False),
     "slider_fill": lambda: frame(6, 6, INK, GOLD, GOLD_LIGHT, GOLD_DARK, cut_corners=False),
