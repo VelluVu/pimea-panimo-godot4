@@ -43,6 +43,8 @@ const NEXT_STEP_WIDTH : float = 160.0
 @onready var tutorial_brew_label : Label = $GoalsVBox/TutorialBrewLabel
 
 var _near_miss_pulses : Array[LabelPulse] = []
+## Label -> its StrikeThrough, for every goal line.
+var _strikes : Dictionary = {}
 var _is_collapsed : bool = true
 var _next_step_label : Label
 var _brewery : Brewery = null
@@ -51,6 +53,8 @@ var _brewery : Brewery = null
 func _ready() -> void:
 	for label : Label in daily_goal_labels:
 		_near_miss_pulses.append(LabelPulse.new(label))
+	for label : Label in daily_goal_labels + [tutorial_malt_label, tutorial_yeast_label, tutorial_brew_label]:
+		_strikes[label] = StrikeThrough.attach(label)
 
 	_add_next_step_label()
 	toggle_button.pressed.connect(_on_toggle_pressed)
@@ -166,9 +170,13 @@ func _update_daily_goals() -> void:
 		_set_line(first, NO_GOALS_LEFT_TEXT, GoalStatus.State.PENDING)
 
 
+## A tick or cross in front, and a line through a met goal, so the state never rests on
+## colour alone.
 func _set_line(label : Label, text : String, state : GoalStatus.State) -> void:
-	label.text = text
+	var prefix : String = GoalMarks.prefix_for(state)
+	label.text = prefix + text
 	label.add_theme_color_override("font_color", _color_for(state))
+	(_strikes[label] as StrikeThrough).strike(GoalMarks.is_struck(state), prefix)
 
 
 func _color_for(state : GoalStatus.State) -> Color:

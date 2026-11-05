@@ -127,6 +127,28 @@ ICONS = {
 		"gggGyGggg",
 		"...nNn...",
 	],
+	0x2714: [  # ✔ a done goal: 2 px strokes, so the label's outline frames it instead of filling it
+		".........",
+		"........g",
+		".......gg",
+		"......gg.",
+		"g....gg..",
+		"gg..gg...",
+		".gggg....",
+		"..gg.....",
+		".........",
+	],
+	0x2716: [  # ✖ a goal that will fail today
+		".........",
+		"rr.....rr",
+		".rr...rr.",
+		"..rr.rr..",
+		"...rrr...",
+		"..rr.rr..",
+		".rr...rr.",
+		"rr.....rr",
+		".........",
+	],
 	0x1F386: [  # 🎆 fireworks: coloured spokes from a solid white heart (a gap round it
 		# filled with the text shadow and read as a dark blob)
 		"r...y...b",
