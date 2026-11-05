@@ -10,7 +10,7 @@ signal resume_requested
 const CONFIRM_CANCEL_TEXT : String = "Perutaanko keittopäivä? Raaka-aineet jäävät pöydälle."
 const CONFIRM_YES_TEXT : String = "Peru keitto"
 const CONFIRM_NO_TEXT : String = "Jatka"
-const PANEL_SIZE : Vector2 = Vector2(320, 88)
+const PANEL_SIZE : Vector2 = Vector2(320, 64)
 const SCREEN_SIZE : Vector2 = Vector2(640, 360)
 
 
@@ -18,6 +18,7 @@ func _ready() -> void:
 	size = PANEL_SIZE
 	position = ((SCREEN_SIZE - size) / 2.0).round()
 	var box := VBoxContainer.new()
+	box.alignment = BoxContainer.ALIGNMENT_CENTER
 	box.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT, Control.PRESET_MODE_MINSIZE, 8)
 	add_child(box)
 	var label := Label.new()

@@ -7,6 +7,7 @@
 [ext_resource type="AudioStream" uid="uid://0m65clbvsugn" path="res://assets/audio/music/randommind_chiptune_minstrel_dance.mp3" id="6_music5"]
 [ext_resource type="AudioStream" uid="uid://djwl66bnp3whr" path="res://assets/audio/sfx/retro/coin_success.ogg" id="7_coin"]
 [ext_resource type="AudioStream" uid="uid://dmnxcs0dlnwwj" path="res://assets/audio/sfx/retro/ui_click.ogg" id="8_click"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/ui_hover.wav" id="snd_ui_hover"]
 [ext_resource type="AudioStream" uid="uid://cta3ob6wqyxsy" path="res://assets/audio/sfx/retro/notification_ping.ogg" id="9_ping"]
 [ext_resource type="AudioStream" uid="uid://dn05ot6efyqbf" path="res://assets/audio/sfx/retro/lvv_alarm.ogg" id="10_alarm"]
 [ext_resource type="AudioStream" uid="uid://wevxvnr0v5mv" path="res://assets/audio/sfx/risk_tension_drone.wav" id="11_drone"]
@@ -63,6 +64,7 @@ season_music = Array[ExtResource("season_music_script")]([SubResource("SeasonMus
 sfx_coin_success = ExtResource("7_coin")
 sfx_critical_gain = ExtResource("snd_crit_gain")
 sfx_ui_click = ExtResource("8_click")
+sfx_ui_hover = ExtResource("snd_ui_hover")
 sfx_toast = ExtResource("snd_toast")
 sfx_group_banner = ExtResource("snd_group_banner")
 sfx_day_event = ExtResource("snd_day_event")

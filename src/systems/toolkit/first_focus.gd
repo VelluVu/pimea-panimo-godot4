@@ -63,8 +63,24 @@ static func focus_now(window : Control, hidden : bool = true) -> void:
 		target = _find(window, false)
 	if target != null:
 		target.grab_focus(hidden)
+		target.get_tree().process_frame.connect(_scroll_home.bind(target), CONNECT_ONE_SHOT)
 	elif focused != null:
 		focused.release_focus()
+
+
+## Following the focus while the list is still being laid out leaves it a few pixels down,
+## cutting the first row. A target that fits with the list at the top gets the top back.
+static func _scroll_home(target : Control) -> void:
+	if not is_instance_valid(target):
+		return
+	var node : Node = target.get_parent()
+	while node != null:
+		if node is ScrollContainer:
+			var scroll := node as ScrollContainer
+			var bottom : float = target.get_global_rect().end.y - scroll.get_global_rect().position.y + scroll.scroll_vertical
+			if bottom <= scroll.size.y:
+				scroll.scroll_vertical = 0
+		node = node.get_parent()
 
 
 ## A scroll list scrolls to the focused row; without it the arrow keys stop at the last

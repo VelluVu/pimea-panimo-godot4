@@ -28,13 +28,14 @@ var _sound_played : bool = false
 func _ready() -> void:
 	super()
 	key_number = 0
-	sack_name = tr(NAME_TEXT)
 	pellet_color = KettleView.CLUMP_LIGHT
 	button_down.connect(_pick_up)
 	button_up.connect(put_down)
 
 
 func reset(malt_kg : float) -> void:
+	# Here, not in _ready(): the language can change between brew days.
+	sack_name = tr(NAME_TEXT)
 	_malt_kg = malt_kg
 	_left = 1.0
 	_sound_played = false

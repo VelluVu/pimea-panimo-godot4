@@ -69,4 +69,5 @@ static func attach(window : Control, on_pressed : Callable, clear_row : HBoxCont
 		clear_row.add_child(gap)
 	# Every closable window is one the keyboard should land in when it opens.
 	FirstFocus.attach(window)
+	WindowPop.attach(window)
 	return button

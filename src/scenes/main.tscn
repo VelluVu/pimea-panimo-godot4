@@ -1160,7 +1160,7 @@ text = "Tavoitteet"
 horizontal_alignment = 2
 
 [node name="ToggleButton" type="Button" parent="GUI_CanvasLayer/GUI/DailyGoalsPanel/HeaderHBox" unique_id=1568885538]
-custom_minimum_size = Vector2(16, 12)
+custom_minimum_size = Vector2(18, 18)
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
 text = "▼"
@@ -1273,7 +1273,7 @@ layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.6
 anchor_top = 0.1
-anchor_right = 0.98
+anchor_right = 0.9796875
 anchor_bottom = 0.85
 
 [node name="CellarUpgradesWindow" parent="GUI_CanvasLayer/GUI" unique_id=1969979881 instance=ExtResource("42_cellarupgrades")]

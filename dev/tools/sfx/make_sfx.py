@@ -645,7 +645,14 @@ def candle_pop():
     return crush(mix(fizz, at(0.05, pop)), 48), 0.5
 
 
+def ui_hover():
+    """The pointer over a button: a tiny soft wooden tick, quieter than the click."""
+    tick = triangle(sweep(1400, 900, 0.025), 0.025) * perc(0.025, 160)
+    return lowpass(tick, 3000), 0.25
+
+
 RECIPES = {
+    "ui_hover": ui_hover,
     "gunshot": gunshot,
     "thunder_near": thunder_near,
     "thunder_far": thunder_far,

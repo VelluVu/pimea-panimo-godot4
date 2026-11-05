@@ -15,11 +15,17 @@ var world_max_distance: float = 900.0
 var world_attenuation: float = 1.0
 var world_panning_strength: float = 0.6
 var click_stream: AudioStream
+## A soft tick when the pointer moves onto a usable button; null for none.
+var hover_stream: AudioStream
+var hover_volume_db: float = -10.0
+## Sweeping across a row of buttons ticks at most this often.
+var hover_min_interval_msec: int = 60
 ## Every button that enters the tree plays the click when pressed, so none is left silent.
 var click_all_buttons: bool = true
 ## A loop whose level falls under this stops instead of playing inaudibly.
 var loop_min_level: float = 0.02
 
+var _last_hover_msec: int = -100000
 var _sfx_pool: Array[AudioStreamPlayer] = []
 var _next_sfx_player_index: int = 0
 var _world_pool: Array[AudioStreamPlayer2D] = []
@@ -173,7 +179,20 @@ func _flush_click() -> void:
 ## A button moved to a new parent enters the tree again; connect it only once.
 func _on_node_added(node: Node) -> void:
 	if node is BaseButton and not (node as BaseButton).pressed.is_connected(play_click):
-		(node as BaseButton).pressed.connect(play_click)
+		var button := node as BaseButton
+		button.pressed.connect(play_click)
+		button.mouse_entered.connect(_play_hover.bind(button))
+
+
+## Silent on a disabled button: the tick tells the player the button can be pressed.
+func _play_hover(button: BaseButton) -> void:
+	if hover_stream == null or button.disabled or not button.is_visible_in_tree():
+		return
+	var now: int = Time.get_ticks_msec()
+	if now - _last_hover_msec < hover_min_interval_msec:
+		return
+	_last_hover_msec = now
+	_play_stream(hover_stream, hover_volume_db)
 
 
 func _play_playlist_track() -> void:

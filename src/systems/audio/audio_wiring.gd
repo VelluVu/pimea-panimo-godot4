@@ -47,6 +47,7 @@ func _init() -> void:
 	sfx_bus = &"SFX"
 	music_bus = &"Music"
 	click_stream = bank.sfx_ui_click
+	hover_stream = bank.sfx_ui_hover
 
 
 func _ready() -> void:

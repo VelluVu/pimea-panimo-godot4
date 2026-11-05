@@ -19,6 +19,7 @@ extends Resource
 
 @export_group("UI")
 @export var sfx_ui_click: AudioStream
+@export var sfx_ui_hover: AudioStream
 @export var sfx_toast: AudioStream
 @export var sfx_group_banner: AudioStream
 ## Day events without an announcement_sound of their own.

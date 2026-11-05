@@ -7,10 +7,15 @@ extends Panel
 const HEADER_FONT_SIZE : int = 16
 const SECTION_SPACING : float = 10.0
 const PERMANENT_PERKS_HEADER : String = "Olutopin pysyvät bonukset (%d):"
+## Margins top and bottom plus the gap under the title, as in the scene.
+const FRAME_HEIGHT : float = 26.0
 
 @onready var title_label : Label = %TitleLabel
 @onready var rows_vbox : VBoxContainer = %RowsVBox
+@onready var scroll : ScrollContainer = $MarginContainer/MainVBox/ScrollContainer
 var _brewery : Brewery = null
+## The height the scene's anchors give; a long perk list scrolls inside it.
+var _max_height : float = 0.0
 
 
 func _ready() -> void:
@@ -33,6 +38,18 @@ func _on_run_effects_requested() -> void:
 		return
 	_refresh_rows()
 	show()
+	_fit_height()
+
+
+## Short sheets (early in a run) get a short window instead of an empty one.
+func _fit_height() -> void:
+	# After a layout pass: before it the wrapping labels have no width and measure a word a line.
+	await get_tree().process_frame
+	if _max_height <= 0.0:
+		_max_height = size.y
+	var content : float = title_label.get_combined_minimum_size().y + rows_vbox.get_combined_minimum_size().y + FRAME_HEIGHT
+	size.y = minf(ceilf(content), _max_height)
+	scroll.scroll_vertical = 0
 
 
 func _on_close_button_pressed() -> void:
@@ -43,10 +60,13 @@ func _on_close_button_pressed() -> void:
 func _on_brewery_state_changed(_changed : Brewery) -> void:
 	if visible:
 		_refresh_rows()
+		_fit_height()
 
 
 func _refresh_rows() -> void:
 	for child in rows_vbox.get_children():
+		# Out of the box at once, so the height fit does not count it.
+		rows_vbox.remove_child(child)
 		child.queue_free()
 
 	var brewery := _brewery

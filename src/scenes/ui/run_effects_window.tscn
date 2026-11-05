@@ -4,7 +4,7 @@
 
 [node name="RunEffectsWindow" type="Panel"]
 visible = false
-custom_minimum_size = Vector2(240, 200)
+custom_minimum_size = Vector2(240, 80)
 script = ExtResource("1_effects")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
