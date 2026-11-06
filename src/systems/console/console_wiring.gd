@@ -15,6 +15,7 @@ const GAME_CHEAT_SET_PATHS: Array[String] = [
 ]
 
 const TITLE_TEXT: String = "Konsoli"
+const HISTORY_TITLE_TEXT: String = "Historia"
 const PLACEHOLDER_TEXT: String = "Kirjoita komento... (help)"
 const READY_MESSAGE: String = "Konsoli valmis. Kirjoita 'help' nähdäksesi komennot."
 const DEV_MODE_OFF_MESSAGE: String = "[color=orange]Komennot ovat pois käytöstä (DEVELOPER_MODE = false).[/color]"
@@ -35,7 +36,7 @@ const DAY_CHANGED_FORMAT: String = "Päivä vaihtui: %d"
 const EVENT_CATEGORY: StringName = &"event"
 ## Customers' lines, shown only on their own tab so the log is not drowned in chatter.
 const DIALOGUE_CATEGORY: StringName = &"dialogue"
-const LOG_TAB_TEXT: String = "Loki"
+const LOKI_TAB_TEXT: String = "Loki"
 const DIALOGUE_TAB_TEXT: String = "Puheet"
 const EVENTS_HIDDEN_OPTION_KEY: String = "console_events_hidden"
 const LOKI_USAGE_TEXT: String = "loki näytä|piilota"
@@ -73,11 +74,18 @@ var _sale_notes: PackedStringArray = []
 
 func _ready() -> void:
 	_console = get_parent() as DevConsole
-	_console.title_label.text = TITLE_TEXT
+	# A phone player cannot type, but can read back a missed line: in the bar the console is
+	# a read-only history in its corner. The menu has nothing worth reading back.
+	var touch_history: bool = DisplayServer.is_touchscreen_available() and not _console.owner is MainMenu
+	_console.read_only = touch_history
+	_console.title_label.text = HISTORY_TITLE_TEXT if touch_history else TITLE_TEXT
 	_console.input_line_edit.placeholder_text = PLACEHOLDER_TEXT
 	_console.open_action = InputManager.ACTION_OPEN_CONSOLE
 	_console.cancel_action = InputManager.ACTION_CANCEL
-	_console.hidden_until_opened = true
+	_console.hidden_until_opened = not touch_history
+	# main.tscn keeps the console hidden until its key; the history has no key to wait for.
+	if touch_history:
+		_console.show()
 
 	var registry: ConsoleCommandRegistry = _console.registry
 	registry.developer_mode_check = BrewEngine.is_developer_mode
@@ -100,9 +108,10 @@ func _ready() -> void:
 	_connect_log_sources()
 	_console.set_category_hidden(EVENT_CATEGORY, SettingsManager.get_option(EVENTS_HIDDEN_OPTION_KEY, false))
 	if in_game:
-		_console.add_view(tr(LOG_TAB_TEXT), [&"", EVENT_CATEGORY] as Array[StringName])
+		_console.add_view(tr(LOKI_TAB_TEXT), [&"", EVENT_CATEGORY] as Array[StringName])
 		_console.add_view(tr(DIALOGUE_TAB_TEXT), [DIALOGUE_CATEGORY] as Array[StringName])
-	_console.log_line(tr(READY_MESSAGE))
+	if not touch_history:
+		_console.log_line(tr(READY_MESSAGE))
 
 
 func _connect_log_sources() -> void:

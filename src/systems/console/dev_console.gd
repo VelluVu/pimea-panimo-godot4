@@ -15,6 +15,7 @@ const MIN_SIZE: Vector2 = Vector2(180, 90)
 const MAX_SIZE: Vector2 = Vector2(440, 200)
 
 const FOCUS_STYLE_BORDER_COLOR: Color = Color(0.85, 0.65, 0.25)
+const READ_ONLY_TOGGLE_SIZE: Vector2 = Vector2(26, 26)
 
 @onready var resize_handle: Control = $ResizeHandle
 @onready var toggle_button: Button = %ToggleButton
@@ -36,6 +37,9 @@ static var _opened_this_session: bool = false
 ## Set by the wiring: collapsed, the console hides instead of keeping its header in the
 ## corner (a main menu, where the header covers the menu). Its key brings it back.
 var hides_when_collapsed: bool = false
+## Set by the wiring before _ready: a history to read, no command line (touch screens,
+## where typing would open the on-screen keyboard). The whole header opens and closes it.
+var read_only: bool = false
 
 var _is_collapsed: bool = true
 var _expanded_size: Vector2
@@ -73,6 +77,12 @@ func _ready() -> void:
 	registry.register("help", registry.print_help, "", "", false, false)
 
 	_apply_focus_style(false)
+	if read_only:
+		input_line_edit.hide()
+		# Passed on, so a finger dragging over the text scrolls the log.
+		log_label.mouse_filter = Control.MOUSE_FILTER_PASS
+		# Open, the tabs fill the header, so the toggle is what closes it: finger-sized.
+		toggle_button.custom_minimum_size = READ_ONLY_TOGGLE_SIZE
 	_apply_collapsed_state()
 	if (hidden_until_opened and not _opened_this_session) or hides_when_collapsed:
 		hide()
@@ -97,6 +107,17 @@ func _input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 
+## Read-only, a press anywhere on the collapsed header opens it (open, the tabs take the
+## header and the toggle closes it).
+func _gui_input(event: InputEvent) -> void:
+	if not read_only or not event is InputEventMouseButton:
+		return
+	var button := event as InputEventMouseButton
+	if button.button_index == MOUSE_BUTTON_LEFT and button.pressed and button.position.y <= _header_size().y:
+		_on_toggle_pressed()
+		accept_event()
+
+
 ## True while the console is open or focused, so the host's own shortcuts can back off.
 func is_console_active() -> bool:
 	return not _is_collapsed or input_line_edit.has_focus()
@@ -105,6 +126,8 @@ func is_console_active() -> bool:
 ## Appends a BBCode line. A `category` can be hidden (set_category_hidden) without losing
 ## its lines, each category capped at MAX_LOG_LINES on its own.
 func log_line(bbcode_line: String, category: StringName = &"") -> void:
+	# Someone scrolled up to read back keeps their place; at the bottom it follows new lines.
+	var follow: bool = _is_at_bottom()
 	_log_entries.append([bbcode_line, category])
 	var oldest: int = _oldest_beyond_cap(category)
 	if oldest != -1:
@@ -115,7 +138,14 @@ func log_line(bbcode_line: String, category: StringName = &"") -> void:
 			log_label.remove_paragraph(shown_before)
 	if _shows(category):
 		log_label.append_text(bbcode_line + "\n")
-	_scroll_log_to_bottom()
+	if follow:
+		_scroll_log_to_bottom()
+
+
+## A line's height of slack, so a pixel short of the end still counts as the bottom.
+func _is_at_bottom() -> bool:
+	var bar: VScrollBar = log_scroll.get_v_scroll_bar()
+	return log_scroll.scroll_vertical >= bar.max_value - bar.page - log_label.get_theme_font_size(&"normal_font_size")
 
 
 ## Index of the oldest line of `category` once it has more than MAX_LOG_LINES, else -1.
@@ -195,6 +225,8 @@ func _open_and_focus_input() -> void:
 	show()
 	if _is_collapsed:
 		_on_toggle_pressed()
+	if read_only:
+		return
 	# A host may switch focus off beside its open window (a main menu); the key overrides it.
 	focus_behavior_recursive = Control.FOCUS_BEHAVIOR_INHERITED
 	input_line_edit.grab_focus()
@@ -203,6 +235,9 @@ func _open_and_focus_input() -> void:
 func _on_toggle_pressed() -> void:
 	_is_collapsed = not _is_collapsed
 	_apply_collapsed_state()
+	# Opened, it starts at the newest lines.
+	if not _is_collapsed:
+		_scroll_log_to_bottom()
 	if _is_collapsed and hides_when_collapsed:
 		hide()
 

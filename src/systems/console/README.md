@@ -14,6 +14,10 @@ registry, developer-only commands, and command sets that group commands by domai
 | `DevConsole.registry.developer_mode_check` | A Callable returning whether dev-only commands may run (default: always) |
 | `DevConsole.open_action` / `cancel_action` | InputMap actions that open and focus the console, and close it (empty = unused) |
 | `DevConsole.is_console_active()` | True while open or focused, so your own shortcuts can back off |
+| `DevConsole.add_view(title, categories)` | Adds a tab above the log showing only those categories |
+| `DevConsole.read_only` | Set before `_ready` (in the wiring): no command line, the whole collapsed header opens it, the log scrolls by finger. For touch screens |
+
+The log follows new lines only while it is scrolled to the bottom, so someone reading back keeps their place.
 
 `clear` and `help` are built in. The registry's wording (unknown command, help headers) is a set of
 `var`s with English defaults.

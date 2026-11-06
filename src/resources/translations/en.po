@@ -7506,6 +7506,10 @@ msgid "%s ei ole enää kanta-asiakas."
 msgstr "%s is no longer a regular."
 
 #: src/systems/console/console_wiring.gd
+msgid "Historia"
+msgstr "History"
+
+#: src/systems/console/console_wiring.gd
 msgid "Kellariparannus: %s (taso %d)"
 msgstr "Cellar upgrade: %s (level %d)"
 
@@ -7524,6 +7528,10 @@ msgstr "Console"
 #: src/systems/console/console_wiring.gd
 msgid "Konsoli valmis. Kirjoita 'help' nähdäksesi komennot."
 msgstr "Console ready. Type 'help' to see the commands."
+
+#: src/systems/console/console_wiring.gd
+msgid "Loki"
+msgstr "Log"
 
 #: src/systems/console/console_wiring.gd
 msgid "Maine hiipui yöllä: -%d (%s)"
