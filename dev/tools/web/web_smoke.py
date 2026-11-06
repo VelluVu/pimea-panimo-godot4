@@ -11,6 +11,7 @@ Needs only the Python standard library and an installed Chrome.
 --phone emulates a phone in landscape (Pixel 7: 915x412 CSS pixels at 2.625x) with touch
 input and an Android user agent; the game then fills the height (scale 412/360) and has bars at the sides.
 --portrait starts that phone held upright (412x915).
+--device picks another screen for --phone: small (667x375), iphone (932x430), tablet (1024x768).
 
 Steps run after the first wait, separated by ';':
     click X Y      left click at page pixels (the page is 1280x720, the game 640x360 x2)
@@ -18,6 +19,7 @@ Steps run after the first wait, separated by ';':
     drag X1 Y1 X2 Y2 [SECS]   press at the first point, move to the second, hold SECS, release
     tap X Y        a finger tap at page pixels (with --phone)
     hold X Y SECS  a finger pressed down for SECS seconds (with --phone)
+    swipe X1 Y1 X2 Y2 [SECS]  a finger dragged to the second point, held SECS, lifted (with --phone)
     key NAME       press and release a key (Escape, Enter, Space, a letter, F1...)
     wait SECONDS   sleep
     shot NAME      save a screenshot as NAME.png
@@ -49,10 +51,22 @@ BUILD_DIR = os.path.join(ROOT, "build", "web")
 DEFAULT_OUT = os.path.join(ROOT, "dev", "tools", "web", "out")
 DEFAULT_CHROME = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
 WINDOW = (1280, 720)
-PHONE = {"width": 915, "height": 412, "deviceScaleFactor": 2.625, "mobile": True,
-	"screenOrientation": {"type": "landscapePrimary", "angle": 90}}
-PORTRAIT = {"width": 412, "height": 915, "deviceScaleFactor": 2.625, "mobile": True,
-	"screenOrientation": {"type": "portraitPrimary", "angle": 0}}
+# Landscape CSS size and pixel ratio: a 20:9 Android, a small 16:9 phone, a tall iPhone, a 4:3 tablet.
+DEVICES = {
+	"pixel7": (915, 412, 2.625),
+	"small": (667, 375, 2.0),
+	"iphone": (932, 430, 3.0),
+	"tablet": (1024, 768, 2.0),
+}
+
+
+def device_metrics(device, portrait):
+	width, height, scale = DEVICES[device]
+	if portrait:
+		return {"width": height, "height": width, "deviceScaleFactor": scale, "mobile": True,
+			"screenOrientation": {"type": "portraitPrimary", "angle": 0}}
+	return {"width": width, "height": height, "deviceScaleFactor": scale, "mobile": True,
+		"screenOrientation": {"type": "landscapePrimary", "angle": 90}}
 # So the game's web_android feature tag is on, as on a real phone.
 PHONE_USER_AGENT = ("Mozilla/5.0 (Linux; Android 14; Pixel 7) AppleWebKit/537.36 "
 	"(KHTML, like Gecko) Chrome/130.0.0.0 Mobile Safari/537.36")
@@ -232,13 +246,25 @@ def touch(tools, x, y, hold_seconds=0.05):
 	tools.call("Input.dispatchTouchEvent", {"type": "touchEnd", "touchPoints": []})
 
 
+# A finger dragged in small steps, like drag() but as touch events.
+def swipe(tools, x1, y1, x2, y2, hold_seconds=0.0, steps=12):
+	tools.call("Input.dispatchTouchEvent", {"type": "touchStart", "touchPoints": [{"x": x1, "y": y1}]})
+	for i in range(1, steps + 1):
+		point = {"x": x1 + (x2 - x1) * i / steps, "y": y1 + (y2 - y1) * i / steps}
+		tools.call("Input.dispatchTouchEvent", {"type": "touchMove", "touchPoints": [point]})
+		tools.pump(0.03)
+	if hold_seconds > 0.0:
+		tools.pump(hold_seconds)
+	tools.call("Input.dispatchTouchEvent", {"type": "touchEnd", "touchPoints": []})
+
+
 def press(tools, name):
 	code, key = KEYS.get(name, (ord(name.upper()) if len(name) == 1 else 0, name))
 	for kind in ("keyDown", "keyUp"):
 		tools.call("Input.dispatchKeyEvent", {"type": kind, "key": key, "windowsVirtualKeyCode": code, "code": name})
 
 
-def run_steps(tools, steps, out_dir):
+def run_steps(tools, steps, out_dir, device="pixel7"):
 	for step in filter(None, (s.strip() for s in steps.split(";"))):
 		verb, *args = step.split()
 		if verb == "click":
@@ -249,6 +275,9 @@ def run_steps(tools, steps, out_dir):
 			tools.pump(0.3)
 		elif verb == "drag":
 			drag(tools, *(float(a) for a in args[:5]))
+			tools.pump(0.3)
+		elif verb == "swipe":
+			swipe(tools, *(float(a) for a in args[:5]))
 			tools.pump(0.3)
 		elif verb == "tap":
 			touch(tools, float(args[0]), float(args[1]))
@@ -264,7 +293,7 @@ def run_steps(tools, steps, out_dir):
 		elif verb == "shot":
 			screenshot(tools, out_dir, args[0])
 		elif verb == "rotate":
-			tools.call("Emulation.setDeviceMetricsOverride", PORTRAIT if args[0] == "portrait" else PHONE)
+			tools.call("Emulation.setDeviceMetricsOverride", device_metrics(device, args[0] == "portrait"))
 			tools.pump(0.5)
 		elif verb == "js":
 			result = tools.call("Runtime.evaluate", {"expression": step[3:].strip(), "returnByValue": True})
@@ -284,6 +313,7 @@ def main():
 	parser.add_argument("--init-script", default="", help="JavaScript file to run in the page before it loads")
 	parser.add_argument("--phone", action="store_true", help="emulate a phone in landscape with touch input")
 	parser.add_argument("--portrait", action="store_true", help="with --phone: start the phone held upright")
+	parser.add_argument("--device", choices=sorted(DEVICES), default="pixel7", help="with --phone: the screen to emulate")
 	args = parser.parse_args()
 
 	if not args.url and not os.path.isfile(os.path.join(BUILD_DIR, "index.html")):
@@ -306,7 +336,7 @@ def main():
 		tools.call("Runtime.enable")
 		tools.call("Page.enable")
 		if args.phone:
-			tools.call("Emulation.setDeviceMetricsOverride", PORTRAIT if args.portrait else PHONE)
+			tools.call("Emulation.setDeviceMetricsOverride", device_metrics(args.device, args.portrait))
 			tools.call("Emulation.setTouchEmulationEnabled", {"enabled": True, "maxTouchPoints": 5})
 			tools.call("Emulation.setUserAgentOverride", {"userAgent": PHONE_USER_AGENT, "platform": "Android"})
 		else:
@@ -319,7 +349,7 @@ def main():
 		tools.call("Page.navigate", {"url": url})
 		tools.pump(args.wait)
 		screenshot(tools, args.out, "loaded")
-		run_steps(tools, args.steps, args.out)
+		run_steps(tools, args.steps, args.out, args.device)
 	finally:
 		# Chrome can hand over to a new main process, and its helpers outlive it: stop every
 		# Chrome using this run's profile, or they keep playing the game in the background.

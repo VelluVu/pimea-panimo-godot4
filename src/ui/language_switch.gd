@@ -25,8 +25,12 @@ func _ready() -> void:
 		button.pressed.connect(_on_language_pressed.bind(locale))
 		add_child(button)
 		_buttons[locale] = button
-	set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT, Control.PRESET_MODE_MINSIZE, int(MARGIN))
-	grow_horizontal = Control.GROW_DIRECTION_BEGIN
+	# On touch the menu's finger-sized panel reaches the top right, so the switch moves left.
+	if DisplayServer.is_touchscreen_available():
+		set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT, Control.PRESET_MODE_MINSIZE, int(MARGIN))
+	else:
+		set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT, Control.PRESET_MODE_MINSIZE, int(MARGIN))
+		grow_horizontal = Control.GROW_DIRECTION_BEGIN
 	SettingsManager.language_changed.connect(_on_language_changed)
 	_on_language_changed(SettingsManager.get_language())
 
