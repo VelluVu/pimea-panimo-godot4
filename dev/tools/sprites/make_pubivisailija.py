@@ -64,9 +64,9 @@ HEAD_BACK = [
     ".....cCCCCCCCcc.....",
     ".....hhhhhhhh.......",
     ".....hhhhhhhH.......",
-    ".....shhhhhhtt......",
-    ".....ssssssstt......",
-    ".....shsssssh.......",
+    ".....hhhhhhhH.......",
+    ".....hhhhhhHH.......",
+    ".....hssssstH.......",
     "......ssssst........",
 ]
 # Rows 10-18: a chunky sweater with two lighter cables down the front and a shamrock pin.

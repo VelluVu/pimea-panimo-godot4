@@ -40,6 +40,8 @@ PALETTE = {
     "b": hex_color("733e39"),  # whisk handle
     # Legs: bare, with pink flip-flops.
     "1": hex_color("e4a672"), "4": hex_color("e4a672"), "2": hex_color("e4a672"), "3": hex_color("f6757a"),
+    # The far leg in the skin shade: the default darkening turns bare skin grey, like trousers.
+    "5": hex_color("b86f50"), "6": hex_color("b86f50"), "7": hex_color("b86f50"),
 }
 
 # A towel wrapped high on the head, wet hair hanging out of it by the cheeks, a flushed face

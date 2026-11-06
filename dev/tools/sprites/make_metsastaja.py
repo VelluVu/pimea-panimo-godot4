@@ -2,7 +2,7 @@
 orange safety vest over a camo jacket, dark trousers and rubber boots, his rifle cased and
 slung over his back (no loaded guns at the bar), a red thermos in the
 left hand and a wooden kuksa in the right. His female counterpart (metsastaja_naaras_32) is
-slimmer, with a brown braid over her right shoulder and down her back. The orange cap and
+slimmer, with a dark braid over her right shoulder, away from the rifle. The orange cap and
 vest make the silhouette. From behind the thermos and kuksa change hands; that row is drawn
 again with the light still from the upper left, not mirrored.
 
@@ -32,8 +32,9 @@ PALETTE = {
     "U": hex_color("a22633"),  # thermos shade
     "M": hex_color("733e39"),  # moustache, short hair
     "m": hex_color("3e2731"),  # kuksa shade
-    "h": hex_color("c28569"),  # her braid
-    "H": hex_color("b86f50"),  # braid shade
+    # Her hair and braid: dark, so they read apart from the rifle case's lighter leather.
+    "h": hex_color("733e39"),  # her braid
+    "H": hex_color("3e2731"),  # braid shade
     "b": hex_color("b86f50"),  # kuksa wood
     "O": hex_color("f77622"),  # blaze orange cap and flaps
     "o": hex_color("be4a2f"),  # orange shade, brim underside
@@ -69,9 +70,9 @@ HEAD_BACK = [
     ".....oOOOOOOOOoo....",
     ".....OOOOOOOOo......",
     ".....OMMMMMMo.......",
-    ".....sMMMMMMt.......",
-    ".....sssssstt.......",
-    "......ssssst........",
+    ".....OMMMMMmo.......",
+    "......MMMMMm........",
+    "......sssstt........",
 ]
 # Rows 10-18: the vest over the jacket, its zip down the middle; camo sleeves and hem.
 TORSO_FRONT = [
@@ -102,40 +103,41 @@ NAARAS_HEAD_FRONT = [
     "......OOOOOOOo......",
     ".....OOOOOOOOOo.....",
     "...ooOOOOOOOOOo.....",
-    "....hOssssssoh......",
-    "....hOsessesoh......",
-    "....hOsssstsoh......",
+    "....hOssssssoH......",
+    "....hOsessesoH......",
+    "....hOsssstsoH......",
     "....hsssRRsstH......",
-    "....hh.sssst.HH.....",
+    "....hH.sssst........",
 ]
 NAARAS_HEAD_BACK = [
     "........OOOO........",
     "......OOOOOOOo......",
     ".....OOOOOOOOOo.....",
     ".....oOOOOOOOOoo....",
-    "....hOOOOOOOOoh.....",
-    "....hOhhhhhhoh......",
+    "....hOOOOOOOOoH.....",
+    "....hOhhhhhhoH......",
     "....hhhhhhhhhH......",
-    "....shhhhHHhtt......",
-    ".....ssssHHtt.......",
+    "....hhhhhhhhHH......",
+    ".....tssssshH.......",
 ]
+# The braid hangs over her right shoulder: screen left from the front, away from the rifle.
 NAARAS_TORSO_FRONT = [
-    "....JJVVVVVVHjj.....",
-    "...JJ.VVVvVHHv.jj...",
-    "...JJ.VVVvVVHv.jj...",
-    "...JK.VVVvVVHv.jK...",
-    "...JJ.VVVvVVRv.jj...",
+    "....JhHVVVVVvjj.....",
+    "...JJ.hHVvVVVv.jj...",
+    "...JJ.hHVvVVVv.jj...",
+    "...JK.hHVvVVVv.jK...",
+    "...JJ.RRVvVVVv.jj...",
     "...KJ.VVVvVVVv.jj...",
     "......JJKJjJKj......",
     "......jjjjjjjj......",
     "......11111111......",
 ]
 NAARAS_TORSO_BACK = [
-    "....JJVVHHVVvjj.....",
-    "...JJ.VVVHHVVv.jj...",
-    "...JJ.VVVHHVVv.jj...",
-    "...JJ.VVVHHVVv.Kj...",
-    "...KJ.VVVRRVVv.jj...",
+    "....JJVVVVVhHjj.....",
+    "...JJ.VVVVVVhH.jj...",
+    "...JJ.VVVVVVVv.jj...",
+    "...JJ.VVVVVVVv.Kj...",
+    "...KJ.VVVVVVVv.jj...",
     "...JJ.VVVVVVVv.jj...",
     "......JKJjJKJj......",
     "......jjjjjjjj......",

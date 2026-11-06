@@ -38,6 +38,8 @@ PALETTE = {
     "b": hex_color("733e39"),  # whisk handle
     # Legs: bare, with blue flip-flops.
     "1": hex_color("e4a672"), "4": hex_color("e4a672"), "2": hex_color("e4a672"), "3": hex_color("0099db"),
+    # The far leg in the skin shade: the default darkening turns bare skin grey, like trousers.
+    "5": hex_color("b86f50"), "6": hex_color("b86f50"), "7": hex_color("b86f50"),
 }
 STEAM = (hex_color("c0cbdc"), hex_color("8b9bb4"))
 
