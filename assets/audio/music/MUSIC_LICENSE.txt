@@ -9,9 +9,9 @@ randommind_chiptune_old_tower_inn_loop.ogg  RandomMind, "[Chiptune] Medieval: Th
     https://opengameart.org/content/chiptune-medieval-the-old-tower-inn
 
 During a run:
-randommind_chiptune_minstrel_dance.mp3      RandomMind, "[Chiptune] Medieval: Minstrel Dance"
+randommind_chiptune_minstrel_dance.ogg      RandomMind, "[Chiptune] Medieval: Minstrel Dance" (converted to OGG)
     https://opengameart.org/content/chiptune-medieval-minstrel-dance
-randommind_chiptune_bards_tale.mp3          RandomMind, "[Chiptune] Medieval: The Bard's Tale"
+randommind_chiptune_bards_tale.ogg          RandomMind, "[Chiptune] Medieval: The Bard's Tale" (converted to OGG)
     https://opengameart.org/node/94347
 theouterlinux_drunken_sailor.ogg            TheOuterLinux, "OPL2 - Unknown - Drunken Sailor" (traditional shanty, played four times in a row)
     https://opengameart.org/content/opl2-unkown-drunken-sailor
