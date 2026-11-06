@@ -9,6 +9,7 @@ const POPUP_EFFECT_DURATION_SECONDS : float = 1.8
 ## Popups start under their plate and float down, so they never cover the next stat.
 const POPUP_DROP : float = 6.0
 const POPUP_FLOAT_DISTANCE : float = 30.0
+const POPUP_META : StringName = &"top_bar_popup"
 
 ## Near the raid threshold the risk turns red, the siren lights and the plate pulses once.
 const RISK_WARNING_COLOR : Color = Color(0.75686276, 0.3137255, 0.22745098, 1) # matches DailyGoalsPanel.GOAL_FAILING_COLOR
@@ -196,8 +197,11 @@ func _float_popup(chip : StatChip, text : String, color : Color) -> void:
 	popup.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	# On the value label, lined up with the number it changes, starting under the plate.
 	var label : Label = chip.value_label()
+	# A cost and a sale often land together: each live popup pushes the new one a line lower.
+	var live : int = label.get_children().filter(func(child : Node) -> bool: return child.has_meta(POPUP_META)).size()
+	popup.set_meta(POPUP_META, true)
 	label.add_child(popup)
-	popup.position = Vector2(0.0, chip.size.y - label.position.y + POPUP_DROP)
+	popup.position = Vector2(0.0, chip.size.y - label.position.y + POPUP_DROP + live * popup.get_line_height())
 
 	var tween := create_tween().set_parallel(true)
 	var target_color := popup.modulate

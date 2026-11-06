@@ -15,13 +15,16 @@ const KEEP_BOILING_TEXT : String = "Pidä vierre kiehumassa, mutta älä pääst
 const WATCH_FOAM_TEXT : String = "Vaahto nousee! Päästä irti, ennen kuin kattila kiehuu yli."
 const ADD_HOPS_TEXT : String = "Heiluva säkki on vuorossa. Vedä se kattilan suulle tai paina sen numeroa."
 const FINISH_TEXT : String = "Siinä se. Laatu näkyy ylhäällä. Paina VALMIS, niin olut pääsee käymään."
+# On a touch screen there is no space bar or number keys to mention.
+const HEAT_WATER_TOUCH_TEXT : String = "Ensin vesi lämpimäksi. Pidä LÄMMITÄ pohjassa, kunnes ollaan sopivassa lämmössä."
+const ADD_HOPS_TOUCH_TEXT : String = "Heiluva säkki on vuorossa. Vedä se kattilan suulle."
 
 
 ## Empty for Step.NONE.
-static func of(step : BrewDayGuideRules.Step) -> String:
+static func of(step : BrewDayGuideRules.Step, touch : bool = false) -> String:
 	match step:
 		BrewDayGuideRules.Step.HEAT_WATER:
-			return HEAT_WATER_TEXT
+			return HEAT_WATER_TOUCH_TEXT if touch else HEAT_WATER_TEXT
 		BrewDayGuideRules.Step.COOL_WATER:
 			return COOL_WATER_TEXT
 		BrewDayGuideRules.Step.POUR_MALTS:
@@ -39,7 +42,7 @@ static func of(step : BrewDayGuideRules.Step) -> String:
 		BrewDayGuideRules.Step.WATCH_FOAM:
 			return WATCH_FOAM_TEXT
 		BrewDayGuideRules.Step.ADD_HOPS:
-			return ADD_HOPS_TEXT
+			return ADD_HOPS_TOUCH_TEXT if touch else ADD_HOPS_TEXT
 		BrewDayGuideRules.Step.FINISH:
 			return FINISH_TEXT
 		_:

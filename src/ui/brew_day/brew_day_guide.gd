@@ -54,7 +54,7 @@ func clear_pointer() -> void:
 func show_step(step : BrewDayGuideRules.Step) -> void:
 	if not _on:
 		return
-	_box.say(BrewDayGuideText.of(step))
+	_box.say(BrewDayGuideText.of(step, DisplayServer.is_touchscreen_available()))
 	match step:
 		BrewDayGuideRules.Step.HEAT_WATER, BrewDayGuideRules.Step.HEAT_BOIL:
 			_pointer.point_at(_heat_button, NextStepPointer.Style.FRAME)

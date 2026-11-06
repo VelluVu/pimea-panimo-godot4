@@ -2660,7 +2660,9 @@ msgstr "Lottery Winner"
 msgid ""
 "Lottovoittaja tarjoaa kierroksen koko tiskille: %d annosta lisää hänen "
 "laskuunsa!"
-msgstr "The lottery winner buys the whole counter a round: %d more servings on his tab!"
+msgstr ""
+"The lottery winner buys the whole counter a round: %d more servings on his "
+"tab!"
 
 #: src/resources/customers/lottovoittaja.tres
 msgid "Rahalla saa ja hevosella pääsee! Tarjoan koko kellarille!"
@@ -2770,7 +2772,9 @@ msgstr "Hunter"
 msgid ""
 "Metsästäjä vakuuttaa, että pussissa on vain makkaraa ja ase on lukkojen "
 "takana kotona."
-msgstr "The hunter swears the case only holds sausages and the rifle is locked up at home."
+msgstr ""
+"The hunter swears the case only holds sausages and the rifle is locked up "
+"at home."
 
 #: src/resources/customers/metsastaja.tres
 msgid "Ohi meni, kuin minulla aamulla. Mutta juodaan silti."
@@ -3758,7 +3762,9 @@ msgstr ""
 msgid ""
 "Kellarissa on karaokeilta. Mikrofoni on rasvainen, ja jokainen luulee "
 "olevansa iskelmätähti."
-msgstr "It's karaoke night in the cellar. The mic is greasy and everyone thinks they're a schlager star."
+msgstr ""
+"It's karaoke night in the cellar. The mic is greasy and everyone thinks "
+"they're a schlager star."
 
 #: src/resources/day_events/day_event_kesafestivaali.tres
 msgid "Tänään on arkipyhä. Odotettavissa sekalaisia ryhmiä ympäri kaupunkia."
@@ -4154,7 +4160,9 @@ msgstr "MOOSE FEAST!"
 msgid ""
 "Hirviseurue tulee jahdista oranssit liivit päällä.\n"
 "Peijaisissa juodaan tummaa!"
-msgstr "The hunting party comes in from the hunt in orange vests.\nThe moose feast calls for dark beer!"
+msgstr ""
+"The hunting party comes in from the hunt in orange vests.\n"
+"The moose feast calls for dark beer!"
 
 #: src/resources/group_events/hirvimiehet.tres
 msgid "SE OLI NÄIN ISO!"
@@ -6304,7 +6312,9 @@ msgstr "Not enough... we'll float with dry mouths, then."
 msgid ""
 "Huomenna kellutaan joella! Tarvitaan {servings} annosta jotain kevyttä ja "
 "halpaa. Ei se oo niin tarkkaa, kunhan kelluu."
-msgstr "Tomorrow we float down the river! We need {servings} servings of something light and cheap. Not fussy, as long as it floats."
+msgstr ""
+"Tomorrow we float down the river! We need {servings} servings of something "
+"light and cheap. Not fussy, as long as it floats."
 
 #: src/resources/special_events/kaljakellunta.tres
 msgid "Kellunnan järjestäjä"
@@ -7790,10 +7800,20 @@ msgstr ""
 "temperature."
 
 #: src/ui/brew_day/brew_day_guide_text.gd
+msgid ""
+"Ensin vesi lämpimäksi. Pidä LÄMMITÄ pohjassa, kunnes ollaan sopivassa "
+"lämmössä."
+msgstr "First, warm the water. Hold HEAT down until it's at the right temperature."
+
+#: src/ui/brew_day/brew_day_guide_text.gd
 msgid "Heiluva säkki on vuorossa. Vedä se kattilan suulle tai paina sen numeroa."
 msgstr ""
 "The wobbling sack is next. Drag it to the kettle's mouth or press its "
 "number."
+
+#: src/ui/brew_day/brew_day_guide_text.gd
+msgid "Heiluva säkki on vuorossa. Vedä se kattilan suulle."
+msgstr "The wobbling sack is next. Drag it to the kettle's mouth."
 
 #: src/ui/brew_day/brew_day_guide_text.gd
 msgid ""
@@ -8387,7 +8407,7 @@ msgstr ""
 
 #: src/ui/guide/cellar_guide_text.gd
 msgid "Kotikaljallahan kaikki aloittelee. Avaapa se resepti."
-msgstr "Everyone starts with kotikalja. Go on, open that recipe."
+msgstr "Everyone starts with Homebrew. Go on, open that recipe."
 
 #: src/ui/guide/cellar_guide_text.gd
 msgid ""
@@ -8661,7 +8681,7 @@ msgstr "Next: open the recipe book on the shelf."
 
 #: src/ui/next_step_text.gd
 msgid "Seuraavaksi: katso Kotikaljan resepti."
-msgstr "Next: look up the Kotikalja recipe."
+msgstr "Next: look up the Homebrew recipe."
 
 #: src/ui/next_step_text.gd
 msgid "Seuraavaksi: katso ostokset varastosta ja sulje kauppa."
