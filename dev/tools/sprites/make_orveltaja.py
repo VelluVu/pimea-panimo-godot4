@@ -130,6 +130,15 @@ def _swayed(rows: list[str], shift: int) -> list[str]:
     return list(rows)
 
 
+def _close_pumped_arm(sheet: Image.Image, row: int) -> None:
+    """A pumped hand leaves one row of its raised arm empty: repeat the arm below it."""
+    for column, left in ((1, 8), (3, 22)):
+        for x in range(left, left + 2):
+            at = (column * FRAME + x, row * FRAME + 12)
+            if sheet.getpixel(at)[3] == 0:
+                sheet.putpixel(at, sheet.getpixel((at[0], at[1] + 1)))
+
+
 def draw_sheet() -> Image.Image:
     plain, flicker = look(), look(flicker=True)
     for one in (plain, flicker):
@@ -149,6 +158,7 @@ def draw_sheet() -> Image.Image:
         for column, (legs, bob, _hands, _trail) in enumerate(poses):
             one = flicker if column % 2 else plain
             draw_frame(sheet, one, column, row, back=False, bob=bob, legs=legs, hands=pumps[column], trail=STILL)
+        _close_pumped_arm(sheet, row)
     return sheet
 
 

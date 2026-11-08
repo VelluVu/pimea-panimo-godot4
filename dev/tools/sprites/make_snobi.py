@@ -11,7 +11,9 @@ outer side of his left eye.
 import argparse
 from pathlib import Path
 
-from customer_sheet import Held, Look, draw_sheet, hex_color, save
+from PIL import Image
+
+from customer_sheet import FRAME, HANDS_REST, STILL, Held, Look, check, draw_frame, draw_sheet, hex_color, save
 
 PALETTE = {
     "s": hex_color("ead4aa"),  # skin
@@ -105,11 +107,25 @@ def look() -> Look:
     )
 
 
+def build() -> Image.Image:
+    """From behind the cane is in the hand on the left."""
+    front = look()
+    sheet = draw_sheet(front)
+    back = look()
+    back.palette = front.palette
+    back.held = (Held(CANE, (-1, -1), trails=False), None)
+    check(back)
+    sheet.paste((0, 0, 0, 0), (0, FRAME, FRAME * 4, FRAME * 2))
+    for column, bob in enumerate((0, -1, 0)):
+        draw_frame(sheet, back, column, 1, back=True, bob=bob, legs="stand", hands=HANDS_REST, trail=STILL)
+    return sheet
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--preview", type=Path, help="also write a 4x preview here")
     args = parser.parse_args()
-    save({"snobi_32": draw_sheet(look())}, args.preview)
+    save({"snobi_32": build()}, args.preview)
 
 
 if __name__ == "__main__":

@@ -160,6 +160,8 @@ class Look:
     torso_front: list[str]
     torso_back: list[str]
     hand: list[str] = field(default_factory=lambda: ["st", "st"])
+    # (left, right) when the hands differ, as when one is half hidden by what it holds.
+    hands: Optional[tuple[list[str], list[str]]] = None
     lift: int = 0
     held: tuple[Optional[Held], Optional[Held]] = (None, None)
     # Drawn last in each frame, for anything the grids cannot hold. Gets (frame, palette, upper, back).
@@ -182,7 +184,7 @@ def check(look: Look) -> None:
     for grid in grids:
         for row in grid:
             assert len(row) == BOX_WIDTH, f"row is {len(row)} wide: {row!r}"
-    for grid in grids + [look.hand] + [held.rows for held in look.held if held]:
+    for grid in grids + [look.hand] + list(look.hands or ()) + [held.rows for held in look.held if held]:
         for row in grid:
             for char in row:
                 assert char == "." or char in look.palette, f"no colour for {char!r} in {row!r}"
@@ -210,20 +212,30 @@ def draw_frame(sheet: Image.Image, look: Look, column: int, row: int, *, back: b
     if head is None:
         head = look.head_back if back else look.head_front
     paint(frame, look.palette, head, BOX_X, upper + HEAD_LAST_ROW + 1 - len(head))
-    for hand, held, side_trail in zip(hands, look.held, trail):
+    for side, (hand, held, side_trail) in enumerate(zip(hands, look.held, trail)):
         if hand is None:
             continue
+        hand_rows = look.hands[side] if look.hands else look.hand
         hand_x, hand_y = hand
         if held is not None:
             shift_x, shift_y = side_trail if held.trails else (0, 0)
             paint(frame, look.palette, held.rows, BOX_X + hand_x + held.anchor[0] + shift_x,
                   upper + hand_y + held.anchor[1] + shift_y)
-        paint(frame, look.palette, look.hand, BOX_X + hand_x, upper + hand_y)
+        paint(frame, look.palette, hand_rows, BOX_X + hand_x, upper + hand_y)
+        if hand_y > HANDS_REST[0][1]:
+            _close_sleeve(frame, BOX_X + hand_x, upper + hand_y, len(look.hand[0]))
     if look.extra is not None:
         look.extra(frame, look.palette, upper, back)
     if extra is not None:
         extra(frame, look.palette, upper)
     sheet.alpha_composite(frame, (column * FRAME, row * FRAME))
+
+
+def _close_sleeve(frame: Image.Image, left: int, hand_top: int, width: int) -> None:
+    """A lowered hand hangs a row below its sleeve: the sleeve's last row again closes the gap."""
+    for x in range(left, left + width):
+        if frame.getpixel((x, hand_top - 1))[3] == 0:
+            frame.putpixel((x, hand_top - 1), frame.getpixel((x, hand_top - 2)))
 
 
 def _lengthened(rows: list[str], lift: int) -> list[str]:

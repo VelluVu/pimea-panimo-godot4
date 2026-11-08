@@ -2,7 +2,7 @@
 he thought there were free buckets, and now wants a bucket of beer. He wears his haul: a blue
 bucket as his body, arms and legs out of it, and a yellow bucket upside down as a hat, his
 round ears poking out under its rim. Cheeks stuffed full and buck teeth below. The two
-buckets make the silhouette: a trapezoid on top, a bigger one under it. Blue is the
+buckets make the silhouette: straight-sided, a smaller one on top of a bigger one. Blue is the
 fur's opposite, so the body bucket never reads as a shirt.
 
 He leaves with a third, red bucket full of bottles in hand (CustomerData.hand_item), drawn
@@ -31,14 +31,14 @@ PALETTE = {
     "1": hex_color("d77643"), "4": hex_color("be4a2f"), "2": hex_color("be4a2f"), "3": hex_color("f6757a"),
 }
 
-# Twelve rows: the hat bucket rises above the head line, a ridge round its bottom (now its
-# top) and its rim the widest, lit part; the ears stick out under the rim. The cheeks stick out past the head on both sides.
+# Twelve rows: the straight hat bucket rises above the head line, with a ridge near its top
+# and a lit rim; dark ear tips stick out under the rim. The cheeks stick out past the head on both sides.
 HEAD_FRONT = [
-    ".......HCCCCc.......",
-    "......cccccccc......",
-    "......HCCCCCCc......",
     ".....HCCCCCCCCc.....",
-    "....PHHHHHHHHHHP....",
+    ".....Hccccccccc.....",
+    ".....HCCCCCCCCc.....",
+    ".....HCCCCCCCCc.....",
+    "....kHHHHHHHHHHk....",
     "....FFFFFFFFFFFf....",
     "...FFFFFFFFFFFFFf...",
     "...FFwkFFFFFFwkFf...",
@@ -48,11 +48,11 @@ HEAD_FRONT = [
     "...fMmmmmwwmmmmMf...",
 ]
 HEAD_BACK = [
-    ".......HCCCCc.......",
-    "......cccccccc......",
-    "......HCCCCCCc......",
     ".....HCCCCCCCCc.....",
-    "....PHHHHHHHHHHP....",
+    ".....Hccccccccc.....",
+    ".....HCCCCCCCCc.....",
+    ".....HCCCCCCCCc.....",
+    "....kHHHHHHHHHHk....",
     "....FFFFFFFFFFFf....",
     "...FFFFFFFFFFFFFf...",
     "...FFFFFFFFFFFFFf...",
@@ -61,29 +61,32 @@ HEAD_BACK = [
     "..fFFFFFFFFFFFffff..",
     "...ffffffffffffff...",
 ]
-# The body bucket: a lit rim under the chin, narrowing to the bottom, the arms out of its
-# sides. The handle hangs in an arc across the front.
+# The body bucket, shaped by the user's hand-edited idle frame: straight sides down to a dark
+# bottom row that covers the top of the legs, thick shoulders against its upper corners. The
+# handle hangs in an arc across the front.
 TORSO_FRONT = [
-    "....QQQQQQQQQQQr....",
-    "....kRRRRRRRRRRk....",
-    "..FFRkRRRRRRRRkrff..",
-    "..FF.RkRRRRRRkr.ff..",
+    "....kQQQQQQQQQrk....",
+    "...FFkRRRRRRRRkff...",
+    "..FFFkRRRRRRRRkfff..",
+    "..FFFRkRRRRRRkrfff..",
     "..FF.RRkkkkkkRr.ff..",
     "..Ff.RRRRRRRRRr.ff..",
-    "......rrrrrrrr......",
-    "......RRRRRRRr......",
-    "......rrrrrrrr......",
+    ".....RRRRRRRRRr.....",
+    ".....RRRRRRRRRr.....",
+    ".....RRRRRRRRRr.....",
+    ".....rrrrrrrrrr.....",
 ]
 TORSO_BACK = [
-    "....QQQQQQQQQQQr....",
-    "....kRRRRRRRRRRk....",
-    "..FFRRRRRRRRRRRrff..",
-    "..FF.RRRRRRRRRr.ff..",
+    "....kQQQQQQQQQrk....",
+    "...FFkRRRRRRRRkff...",
+    "..FFFRRRRRRRRRRfff..",
+    "..FFFRRRRRRRRRrfff..",
     "..FF.RRRRRRRRRr.ff..",
     "..Ff.RRRRRRRRRr.ff..",
-    "......rrrrrrrr......",
-    "......RRRRRRRr......",
-    "......rrrrrrrr......",
+    ".....RRRRRRRRRr.....",
+    ".....RRRRRRRRRr.....",
+    ".....RRRRRRRRRr.....",
+    ".....rrrrrrrrrr.....",
 ]
 
 

@@ -111,12 +111,12 @@ NAARAS_HEAD_BACK = [
     ".....CCCCCCCCc......",
     ".....cCCCCCCCcc.....",
     "....hhhhhhhhhh......",
-    "....hhhhhhhhhH......",
-    "....hhhhhhhhhH......",
-    "....hhhhhhhhhH......",
-    "....hhhhhhhhhH......",
-    "....hhhhhhhhHH......",
-    "....hhhhhhhhHH......",
+    "....hhHhhhhHhH......",
+    "....hhHhhhhHhH......",
+    "....hhHhhhhHhH......",
+    "....hhhhhHhhhH......",
+    "....hhhhhHhhHH......",
+    "....hhHhhHhhHH......",
 ]
 NAARAS_TORSO_FRONT = [
     "....hGGGGGGGGGhH....",

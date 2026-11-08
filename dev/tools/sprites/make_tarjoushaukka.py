@@ -274,7 +274,8 @@ def _frame(sheet: Image.Image, palette: dict, column: int, row: int, *, back: bo
     if female and back:
         # The hair falls over the scarf at the back.
         _paint(frame, palette, HAIR_BACK_FEMALE[5:], BOX_X, upper + 6)
-    for (hand_x, hand_y), (bag_x, bag_y), bag in zip(hands, bags, (BAG_YELLOW, BAG_PINK)):
+    # From behind the bags have changed sides: the hands have not.
+    for (hand_x, hand_y), (bag_x, bag_y), bag in zip(hands, bags, (BAG_PINK, BAG_YELLOW) if back else (BAG_YELLOW, BAG_PINK)):
         # The bags hang from the hands, so they rise and fall with the body.
         _paint(frame, palette, bag, BOX_X + bag_x, upper + bag_y)
         _arm(frame, palette, BOX_X, upper, hand_x, hand_y)
