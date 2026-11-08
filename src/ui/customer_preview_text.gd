@@ -10,5 +10,5 @@ const STYLE_JOINER : String = " ja "
 ## `style_names` are the picked batches' styles, already in the active language.
 static func line(data : CustomerData, style_names : PackedStringArray) -> String:
 	if style_names.is_empty() or data.browses_only:
-		return UiText.of(data.dialogue_nothing_available)
-	return UiText.of(data.dialogue_preview_format) % UiText.of(STYLE_JOINER).join(style_names)
+		return UiText.of(CustomerLines.pick(data.dialogue_nothing_available, data.alt_nothing_available))
+	return UiText.of(CustomerLines.pick(data.dialogue_preview_format, data.alt_preview_format)) % UiText.of(STYLE_JOINER).join(style_names)

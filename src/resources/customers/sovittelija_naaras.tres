@@ -1,0 +1,43 @@
+[gd_resource type="Resource" script_class="CustomerData" format=3]
+
+[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_data"]
+[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/sovittelija_naaras_anim.tres" id="2_sprite"]
+
+[resource]
+script = ExtResource("1_data")
+customer_name = "Marjatta"
+title = "Sovittelija"
+first_names = Array[String](["Marjatta", "Kaarina", "Pirjo", "Raija", "Sirkka", "Leena"])
+min_quality = 0.8
+budget_multiplier = 1.5
+primary_style = 36
+secondary_style = 15
+sprite_frames = ExtResource("2_sprite")
+randomize_skin = false
+randomize_hair = false
+randomize_clothes = false
+randomize_shoes = false
+carries_glass_out = false
+voice_pitch = 1.15
+dialogue_intro = "Työnantajat haluavat yhden, liitot kaksi. Sovintoesitykseni on kolme. Neuvottelut jatkuvat yön yli, joten tripeliä, kiitos."
+dialogue_success = "Neuvottelutulos! Kolmannella kulauksella osapuolet jo halailivat. Kirjataan pöytäkirjaan."
+dialogue_fallback = "Tämä ei miellytä ketään täysin. Siitä tunnistaa hyvän kompromissin."
+dialogue_wrong_style = "Tätä ei ollut esityksessäni, mutta hyväksyn sen eriävän mielipiteen kera."
+dialogue_reject = "Tämä vaarantaa työrauhan. Jätän esityksen pöydälle ja tuopin myös."
+dialogue_no_match = "Ei tripeliä? Neuvottelut ovat kariutuneet. Annan lakkovaroituksen."
+dialogue_preview_format = "%s... tätä voisin esittää osapuolille."
+dialogue_nothing_available = "Hanat tyhjinä. Onko täällä jo työtaistelu? Odotan aamuun, minulla on pullaa."
+alt_intro = Array[String](["Kolmas yö putkeen neuvottelupöydässä. Pullat loppuivat, sopu ei ole edes näköpiirissä. Tripeliä, kiitos.", "Tulin hakemaan paikallista sopimista. Kolmen osapuolen olutta, kiitos."])
+alt_success = Array[String](["Tämä on yleissitova. Kaikki juovat tätä ensi kevääseen asti.", "Työrauha on turvattu. Ainakin tämän tuopin ajaksi."])
+alt_fallback = Array[String](["Kukaan ei voittanut, joten ratkaisu on reilu.", "Ei tripel, mutta neuvotteluvaraa oli. Hyväksyn pienin varauksin."])
+alt_wrong_style = Array[String](["Aamuviideltä hyväksytään mitä tahansa. Tämäkin.", "Tämä ei ollut edes neuvottelupöydällä. Juon sen silti, pöytäkirjan ulkopuolella."])
+alt_reject = Array[String](["Esitys hylätty yksimielisesti. Kaikki kolme osapuolta oksensivat.", "Teen tästä tiedotteen. Se on lyhyt, ja se on ruma."])
+alt_no_match = Array[String](["Kerron medialle, että olemme edelleen kaukana toisistamme. Hyvää yötä.", "Tästä ei synny sopua. Ilmoitan valtioneuvostolle, että kellari on umpikujassa."])
+alt_preview_format = Array[String](["%s... osapuolet voisivat elää tämän kanssa.", "Kirjaan esitykseen: %s. Kukaan ei tykkää, kaikki hyväksyvät."])
+alt_nothing_available = Array[String](["Ei sopivaa. Nukun sitten pöydän ääressä, olen tottunut.", "Tyhjää on. Tämä on työnseisaus, ja minä sentään sovittelen niitä."])
+tip_base_chance = 0.3
+rep_primary_style = 5
+rep_secondary_style = 2
+min_reputation_to_appear = 30
+required_discovered_style = 36
+metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

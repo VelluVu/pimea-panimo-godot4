@@ -6,7 +6,7 @@
 script = ExtResource("1_candi_sugar")
 id = 400
 name = "Kandisokeri"
-description = "Belgialaisten luostarien salaisuus. Kirkastettua sokeria, joka antaa Dubbelille ja vahvalle tummalle belgialaiselle pehmeän, karamellisen syvyyden."
+description = "Belgialaisten luostarien salaisuus. Kirkastettua sokeria, joka antaa Dubbelille ja vahvalle tummalle belgialaiselle pehmeän, karamellisen syvyyden. Vaaleassa ja väkevässä oluessa siitä tulee Tripel."
 base_price = 2
 unit = 2
 type = 3

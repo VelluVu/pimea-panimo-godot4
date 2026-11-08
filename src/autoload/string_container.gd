@@ -40,6 +40,7 @@ const PUKKIBOCK : String = "Pukkibock"
 const TONTTUPUURO : String = "Tonttupuuro-olut"
 const JOULUOLUT : String = "Jouluolut"
 const KUOHURAKETTI : String = "Kuohuraketti"
+const BELGIAN_TRIPEL : String = "Belgian Tripel"
 
 const KG : String = "kg"
 const G : String = "g"

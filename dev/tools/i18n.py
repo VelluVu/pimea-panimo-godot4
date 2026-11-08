@@ -63,6 +63,8 @@ CONTENT_FIELDS = {
 }
 # Content fields that hold a list of texts, like Array[String](["a", "b"]).
 CONTENT_ARRAY_FIELDS = {
+    "src/resources/customers": ("alt_intro", "alt_success", "alt_fallback", "alt_wrong_style", "alt_reject",
+                                "alt_no_match", "alt_preview_format", "alt_nothing_available"),
     "src/resources/group_events": ("chant_texts",),
     "src/resources/guide": ("lines",),
     "src/resources/sour_reactions": ("light_lines", "sour_lines", "spoiled_lines"),

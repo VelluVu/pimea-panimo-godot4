@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="BeerStyle" format=3]
+
+[ext_resource type="Script" uid="uid://qpqfdi1wacne" path="res://src/brewing/beer_style.gd" id="1_tripel"]
+
+[resource]
+script = ExtResource("1_tripel")
+style_name = "Belgian Tripel"
+description = "Vaalea, kuiva ja petollisen helppo: sokeri nostaa voiman lähelle yhdeksää prosenttia, eikä maku kerro siitä mitään. Ensimmäinen lasi on mieto, kolmas neuvottelee puolestasi."
+locked_hint = "Belgian vaalea ja väkevä luostariolut. Kirkas sokeri tuo voiman, mutta ei väriä."
+style = 36
+required_spice_ids = Array[int]([400])
+preferred_spice_ids = Array[int]([400])
+base_malt_ids = Array[int]([100])
+min_base_share = 0.7
+preferred_malt_ids = Array[int]([115])
+profit_margin_multiplier = 1.4
+fixed_price_per_bottle = 4.0
+reputation_change = 5
+peak_days = 15
+shelf_life_days = 40
+aging_factor = 0.03
+aged_price_bonus = 0.4
+mash_steps = Array[int]([63, 72])
+mash_band = 2.0
+hop_additions = Array[int]([0, 2])
+required_yeast_id = 302
+preferred_hop_profiles = Array[int]([4, 5])
+abv = 8.2
+min_abv = 7.5
+max_abv = 9.0
+min_ebc = 5
+max_ebc = 12
+min_ibu = 24
+max_ibu = 40
+reference_recipe = Dictionary[int, int]({100: 6, 115: 1, 200: 20, 205: 20, 302: 1, 400: 1})
+metadata/_custom_type_script = "uid://qpqfdi1wacne"

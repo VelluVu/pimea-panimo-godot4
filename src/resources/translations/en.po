@@ -76,6 +76,10 @@ msgid "Belgian Strong Dark Ale"
 msgstr "Belgian Strong Dark Ale"
 
 #: src/autoload/string_container.gd
+msgid "Belgian Tripel"
+msgstr "Belgian Tripel"
+
+#: src/autoload/string_container.gd
 msgid "Bulkkilager"
 msgstr "Bulk Lager"
 
@@ -804,8 +808,8 @@ msgid "Koko kylä tuttu"
 msgstr "Know the Whole Town"
 
 #: src/resources/achievements/asiakaskirja_kaikki.tres
-msgid "Tapaa kaikki 34 asiakastyyppiä."
-msgstr "Meet all 34 customer types."
+msgid "Tapaa kaikki 35 asiakastyyppiä."
+msgstr "Meet all 35 customer types."
 
 #: src/resources/achievements/bulkkia_5.tres
 msgid "Kansan kalja"
@@ -1460,6 +1464,24 @@ msgid ""
 msgstr ""
 "One of Belgium's strongest dark beers: dark candi syrup brings raisin, fig "
 "and power. Sip it slowly, or fall over quickly."
+
+#: src/resources/beer_styles/belgian_tripel.tres
+msgid ""
+"Belgian vaalea ja väkevä luostariolut. Kirkas sokeri tuo voiman, mutta ei "
+"väriä."
+msgstr ""
+"Belgium's pale, strong abbey beer. Clear sugar brings the strength, but no "
+"colour."
+
+#: src/resources/beer_styles/belgian_tripel.tres
+msgid ""
+"Vaalea, kuiva ja petollisen helppo: sokeri nostaa voiman lähelle yhdeksää "
+"prosenttia, eikä maku kerro siitä mitään. Ensimmäinen lasi on mieto, kolmas "
+"neuvottelee puolestasi."
+msgstr ""
+"Pale, dry and treacherously easy: sugar lifts it close to nine percent, and "
+"the taste says nothing about it. The first glass is mild, the third "
+"negotiates on your behalf."
 
 #: src/resources/beer_styles/bulkkilager.tres
 msgid ""
@@ -3494,6 +3516,130 @@ msgstr "This is not what I ordered. I shall drink it, but I shall not enjoy it."
 msgid "Tämä on talonpoikien juomaa. Vie pois."
 msgstr "This is a drink for peasants. Take it away."
 
+#: src/resources/customers/sovittelija.tres
+msgid "%s... osapuolet voisivat elää tämän kanssa."
+msgstr "%s... the parties could live with this."
+
+#: src/resources/customers/sovittelija.tres
+msgid "%s... tätä voisin esittää osapuolille."
+msgstr "%s... this I could put to the parties."
+
+#: src/resources/customers/sovittelija.tres
+msgid "Aamuviideltä hyväksytään mitä tahansa. Tämäkin."
+msgstr "At five in the morning anything gets accepted. Even this."
+
+#: src/resources/customers/sovittelija.tres
+msgid "Ei sopivaa. Nukun sitten pöydän ääressä, olen tottunut."
+msgstr "Nothing suitable. I'll sleep at the table then, I'm used to it."
+
+#: src/resources/customers/sovittelija.tres
+msgid "Ei tripel, mutta neuvotteluvaraa oli. Hyväksyn pienin varauksin."
+msgstr ""
+"Not a Tripel, but there was room to negotiate. Accepted with minor "
+"reservations."
+
+#: src/resources/customers/sovittelija.tres
+msgid "Ei tripeliä? Neuvottelut ovat kariutuneet. Annan lakkovaroituksen."
+msgstr "No Tripel? Talks have broken down. I'm issuing a strike warning."
+
+#: src/resources/customers/sovittelija.tres
+msgid "Esitys hylätty yksimielisesti. Kaikki kolme osapuolta oksensivat."
+msgstr "Proposal rejected unanimously. All three parties threw up."
+
+#: src/resources/customers/sovittelija.tres
+msgid "Hanat tyhjinä. Onko täällä jo työtaistelu? Odotan aamuun, minulla on pullaa."
+msgstr ""
+"Taps dry. Is there a strike on already? I'll wait till morning, I've got "
+"buns."
+
+#: src/resources/customers/sovittelija.tres
+msgid "Kerron medialle, että olemme edelleen kaukana toisistamme. Hyvää yötä."
+msgstr "I'll tell the press we remain far apart. Good night."
+
+#: src/resources/customers/sovittelija.tres
+msgid "Kirjaan esitykseen: %s. Kukaan ei tykkää, kaikki hyväksyvät."
+msgstr "Into the proposal it goes: %s. Nobody likes it, everybody accepts."
+
+#: src/resources/customers/sovittelija.tres
+msgid ""
+"Kolmas yö putkeen neuvottelupöydässä. Pullat loppuivat, sopu ei ole edes "
+"näköpiirissä. Tripeliä, kiitos."
+msgstr ""
+"Third night running at the table. The buns are gone and a deal isn't even "
+"in sight. A Tripel, please."
+
+#: src/resources/customers/sovittelija.tres
+msgid "Kukaan ei voittanut, joten ratkaisu on reilu."
+msgstr "Nobody won, so the outcome is fair."
+
+#: src/resources/customers/sovittelija.tres
+msgid ""
+"Neuvottelutulos! Kolmannella kulauksella osapuolet jo halailivat. Kirjataan "
+"pöytäkirjaan."
+msgstr ""
+"A settlement! By the third sip the parties were hugging. Enter it in the "
+"minutes."
+
+#: src/resources/customers/sovittelija.tres
+msgid "Sovittelija"
+msgstr "Mediator"
+
+#: src/resources/customers/sovittelija.tres
+msgid "Teen tästä tiedotteen. Se on lyhyt, ja se on ruma."
+msgstr "I'll issue a statement about this. It will be short, and it will be ugly."
+
+#: src/resources/customers/sovittelija.tres
+msgid "Tulin hakemaan paikallista sopimista. Kolmen osapuolen olutta, kiitos."
+msgstr "I came for a local agreement. A three-party beer, please."
+
+#: src/resources/customers/sovittelija.tres
+msgid "Tyhjää on. Tämä on työnseisaus, ja minä sentään sovittelen niitä."
+msgstr "Empty. This is a stoppage, and stoppages are my job."
+
+#: src/resources/customers/sovittelija.tres
+msgid ""
+"Työnantajat haluavat yhden, liitot kaksi. Sovintoesitykseni on kolme. "
+"Neuvottelut jatkuvat yön yli, joten tripeliä, kiitos."
+msgstr ""
+"The employers want one, the unions two. My proposal is three. Talks go on "
+"through the night, so a Tripel, please."
+
+#: src/resources/customers/sovittelija.tres
+msgid "Työrauha on turvattu. Ainakin tämän tuopin ajaksi."
+msgstr "Industrial peace is secured. For the length of this pint, at least."
+
+#: src/resources/customers/sovittelija.tres
+msgid "Tämä ei miellytä ketään täysin. Siitä tunnistaa hyvän kompromissin."
+msgstr "This pleases nobody entirely. That's how you spot a good compromise."
+
+#: src/resources/customers/sovittelija.tres
+msgid ""
+"Tämä ei ollut edes neuvottelupöydällä. Juon sen silti, pöytäkirjan "
+"ulkopuolella."
+msgstr "This wasn't even on the table. I'll drink it anyway, off the record."
+
+#: src/resources/customers/sovittelija.tres
+msgid "Tämä on yleissitova. Kaikki juovat tätä ensi kevääseen asti."
+msgstr "This one is generally binding. Everyone drinks it until next spring."
+
+#: src/resources/customers/sovittelija.tres
+msgid "Tämä vaarantaa työrauhan. Jätän esityksen pöydälle ja tuopin myös."
+msgstr ""
+"This endangers industrial peace. I'm leaving the proposal on the table, and "
+"the pint too."
+
+#: src/resources/customers/sovittelija.tres
+msgid ""
+"Tästä ei synny sopua. Ilmoitan valtioneuvostolle, että kellari on "
+"umpikujassa."
+msgstr ""
+"There's no deal to be had here. I'll inform the government that the cellar "
+"is deadlocked."
+
+#: src/resources/customers/sovittelija.tres
+msgid "Tätä ei ollut esityksessäni, mutta hyväksyn sen eriävän mielipiteen kera."
+msgstr "This wasn't in my proposal, but I accept it with a dissenting opinion."
+
 #: src/resources/customers/tarjoushaukka.tres
 msgid "Ei ollu se tarjous, mutta halpaa on halpaa."
 msgstr "Not the deal I wanted, but cheap is cheap."
@@ -5162,10 +5308,11 @@ msgstr ""
 msgid ""
 "Belgialaisten luostarien salaisuus. Kirkastettua sokeria, joka antaa "
 "Dubbelille ja vahvalle tummalle belgialaiselle pehmeän, karamellisen "
-"syvyyden."
+"syvyyden. Vaaleassa ja väkevässä oluessa siitä tulee Tripel."
 msgstr ""
 "The secret of Belgian monasteries. Clarified sugar that gives Dubbel and "
-"Belgian Strong Dark Ale a smooth, caramel depth."
+"Belgian Strong Dark Ale a smooth, caramel depth. In a pale, strong beer it "
+"makes a Tripel."
 
 #: src/resources/ingredients/spices/candi_sugar.tres
 msgid "Kandisokeri"

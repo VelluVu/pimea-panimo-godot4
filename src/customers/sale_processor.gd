@@ -57,7 +57,7 @@ static func round_servings(buys_round : bool, own_servings : int, guests : int, 
 ## for a customer who buys them a round.
 func process(data : CustomerData, picks : Array[BrewBatch] = [], guests : int = 0) -> String:
 	if data.browses_only:
-		return tr(data.dialogue_no_match)
+		return tr(CustomerLines.pick(data.dialogue_no_match, data.alt_no_match))
 	var is_regular : bool = RegularRules.is_regular(brewery.customer_standing.get(data.title, 0)) if brewery != null else false
 	var wanted : int = randi_range(data.min_bottles_per_visit, data.max_bottles_per_visit)
 	if is_regular:
@@ -228,7 +228,7 @@ func _refuse_bad_quality(data : CustomerData, quality : float) -> String:
 		BrewerySignals.sale_reputation_gained.emit(brewery.reputation - reputation_before)
 		BrewerySignals.brewery_state_changed.emit(brewery)
 		_update_standing(data, false, penalty.x)
-	return tr(data.dialogue_reject) + QualityWishText.reject_suffix(quality, data.min_quality)
+	return tr(CustomerLines.pick(data.dialogue_reject, data.alt_reject)) + QualityWishText.reject_suffix(quality, data.min_quality)
 
 
 ## Nothing in stock or nothing that clears a strict requirement: they leave. The penalty is
@@ -246,7 +246,7 @@ func _turn_away(data : CustomerData, wanted : int) -> String:
 		BrewerySignals.sale_reputation_gained.emit(brewery.reputation - reputation_before)
 		BrewerySignals.brewery_state_changed.emit(brewery)
 		_update_standing(data, false, -data.no_match_reputation_penalty)
-	return tr(data.dialogue_no_match)
+	return tr(CustomerLines.pick(data.dialogue_no_match, data.alt_no_match))
 
 
 func _update_standing(data : CustomerData, delighted : bool, reputation_gain : int) -> void:

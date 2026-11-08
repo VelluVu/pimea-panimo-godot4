@@ -324,6 +324,8 @@ func test_shipped_preview_lines_take_exactly_one_style_name() -> void:
 	for customer : CustomerData in customers:
 		assert_eq(customer.dialogue_preview_format.count("%s"), 1, "%s: dialogue_preview_format needs one %%s" % customer.customer_name)
 		assert_false(customer.dialogue_nothing_available.is_empty(), "%s: dialogue_nothing_available is empty" % customer.customer_name)
+		for line : String in customer.alt_preview_format:
+			assert_eq(line.count("%s"), 1, "%s: alt_preview_format needs one %%s" % customer.customer_name)
 
 
 func test_accepted_non_favourite_style_scores_like_the_secondary() -> void:

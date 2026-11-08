@@ -100,7 +100,7 @@ func test_the_basic_mash_tun_holds_most_styles() -> void:
 	for beer_style : BeerStyle in resolver.active_styles:
 		if MashTun.holds(resolver.reference_malt_weight(beer_style), MashTun.BASE_CAPACITY_KG):
 			fitting += 1
-	assert_eq(resolver.active_styles.size() - fitting, 7, "the upgrade gates only the 7 strongest styles")
+	assert_eq(resolver.active_styles.size() - fitting, 8, "the upgrade gates only the 8 strongest styles")
 
 
 ## A Kehote makes any recipe Tekoälyolut, whatever its yeast, colour or strength.

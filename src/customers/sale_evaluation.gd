@@ -40,20 +40,20 @@ static func evaluate(customer : CustomerData, batch : BrewBatch, style_base_pric
 	if refuses(customer, quality):
 		reputation = customer.rep_bad_quality
 		risk = customer.risk_bad_quality
-		response = customer.dialogue_reject
+		response = CustomerLines.pick(customer.dialogue_reject, customer.alt_reject)
 	elif score >= 1.0:
 		delighted = true
 		reputation = customer.rep_primary_style
 		risk = roundi(customer.risk_primary_style * customer.primary_match_risk_multiplier)
-		response = customer.dialogue_success
+		response = CustomerLines.pick(customer.dialogue_success, customer.alt_success)
 	elif score >= 0.5:
 		reputation = customer.rep_secondary_style
 		risk = customer.risk_secondary_style
-		response = customer.dialogue_fallback
+		response = CustomerLines.pick(customer.dialogue_fallback, customer.alt_fallback)
 	else:
 		reputation = customer.rep_wrong_style
 		risk = customer.risk_wrong_style
-		response = customer.dialogue_wrong_style
+		response = CustomerLines.pick(customer.dialogue_wrong_style, customer.alt_wrong_style)
 
 	# Zero at the bar, positive above it, negative in the bad-quality branch.
 	var quality_margin : float = quality - customer.min_quality

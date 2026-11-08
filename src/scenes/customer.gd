@@ -254,7 +254,7 @@ func _resume_served(snap: CustomerSnapshot) -> void:
 
 func _on_reached_counter() -> void:
 	_play_animation(ANIM_IDLE_UP)
-	_enter_counter_phase(CustomerSnapshot.Phase.GREETING, generated_name + ": " + tr(customer_data.dialogue_intro), _on_preview_timeout)
+	_enter_counter_phase(CustomerSnapshot.Phase.GREETING, generated_name + ": " + tr(CustomerLines.pick(customer_data.dialogue_intro, customer_data.alt_intro)), _on_preview_timeout)
 
 
 ## Says `text`, then moves on to `next`; `seconds` (resuming) is what was left.

@@ -95,6 +95,16 @@ enum KorvatunturiRole { NONE, TONTTU, JOULUPUKKI }
 @export_multiline var dialogue_preview_format: String = "Tuo %s kiinnostaisi..."
 ## Said at the counter before the sale when nothing suits this customer.
 @export_multiline var dialogue_nothing_available: String = "Eipä taida olla mitään sopivaa..."
+## Other lines for the same moments, so a regular does not repeat one joke (CustomerLines).
+@export var alt_intro: Array[String] = []
+@export var alt_success: Array[String] = []
+@export var alt_fallback: Array[String] = []
+@export var alt_wrong_style: Array[String] = []
+@export var alt_reject: Array[String] = []
+@export var alt_no_match: Array[String] = []
+## Each needs one %s, like dialogue_preview_format.
+@export var alt_preview_format: Array[String] = []
+@export var alt_nothing_available: Array[String] = []
 
 ## Hard gates, not preferences: a batch outside them is invisible to this customer.
 @export_group("Tiukat vaatimukset")

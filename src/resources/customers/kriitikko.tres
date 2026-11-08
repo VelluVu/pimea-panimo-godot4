@@ -13,6 +13,7 @@ min_quality = 1.15
 budget_multiplier = 1.5
 primary_style = 16
 secondary_style = 5
+also_likes = Array[int]([36])
 sprite_frames = ExtResource("2_sprite")
 randomize_skin = false
 randomize_hair = false

@@ -15,6 +15,7 @@ min_quality = 1.0
 budget_multiplier = 2.2
 primary_style = 16
 secondary_style = 18
+also_likes = Array[int]([36])
 favourite_rules = Array[ExtResource("taste_script")]([ExtResource("taste_arvostetut")])
 second_rules = Array[ExtResource("taste_script")]([ExtResource("taste_laatu")])
 rolls_favourite = true
