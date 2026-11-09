@@ -1,9 +1,10 @@
 """Draws Pubivisailija, the Irish pub quiz regular: a grey tweed flat cap, round glasses, a
-ginger beard, a green cable-knit sweater with a shamrock pin, jeans and boots, his quiz
-answer sheet in the left hand and a pencil in the right. His female counterpart
+ginger beard, a green cable-knit sweater, jeans and boots, his quiz answer sheet in the left
+hand and a pencil held sideways in the right. His female counterpart
 (pubivisailija_naaras_32) has long ginger hair instead of the beard. The flat cap's brim and the white
 sheet make the silhouette. From behind the sheet and pencil change hands; that row is drawn
-again with the light still from the upper left, not mirrored.
+again with the light still from the upper left, not mirrored. The shapes follow the user's
+hand-edited idle frames.
 
 The sheet follows the other customers' (see customer_sheet.py): 128x128, 32 px frames,
 rows idle, idle_up, walk_towards and walk_right, light from above left.
@@ -37,7 +38,7 @@ PALETTE = {
     "w": hex_color("c0cbdc"),  # glasses lenses, sheet lines
     "G": hex_color("3e8948"),  # sweater
     "g": hex_color("265c42"),  # sweater shade
-    "L": hex_color("63c74d"),  # sweater cables, shamrock
+    "L": hex_color("63c74d"),  # sweater cables
     "W": hex_color("ffffff"),  # answer sheet
     "Y": hex_color("feae34"),  # pencil
     "y": hex_color("181425"),  # pencil lead
@@ -54,43 +55,44 @@ HEAD_FRONT = [
     ".....hssssssh.......",
     ".....oweoweot.......",
     ".....ssstssst.......",
-    ".....hsssssht.......",
+    ".....hssssshH.......",
     ".....hhhkkhhH.......",
     "......hhhhhH........",
 ]
 HEAD_BACK = [
-    "......CCCCCCc.......",
-    ".....CCCCCCCCc......",
-    ".....cCCCCCCCcc.....",
-    ".....hhhhhhhh.......",
-    ".....hhhhhhhH.......",
-    ".....hhhhhhhH.......",
-    ".....hhhhhhHH.......",
-    ".....hssssstH.......",
-    "......ssssst........",
+    ".......CCCCCc.......",
+    "......CCCCCCCc......",
+    "......CCCCCCCccc....",
+    "......hhhhhhhH......",
+    "......hhhhhhhH......",
+    "......hhhhhhhH......",
+    "......hhhhhhHH......",
+    "......hssssstH......",
+    ".......ssssst.......",
 ]
-# Rows 10-18: a chunky sweater with two lighter cables down the front and a shamrock pin.
+# Rows 10-18: a chunky sweater with two lighter cables down the front; the shoulders run
+# straight into the arms.
 TORSO_FRONT = [
-    "....GGGGGGGGGgg.....",
-    "...GGGLGGGGLGLgg....",
-    "..GG.GLGGGGLGGgg....",
-    "..GG.GLGGLGLGGg.gg..",
+    "....GGGGGGGGGggg....",
+    "...GGGLGGGGLGGggg...",
+    "..GGGGLGGGGLGGgggg..",
+    "..GG.GLGGGGLGGg.gg..",
     "..GG.GLGGGGLGGg.gg..",
     "..GG.GLGGGGLGGg.gg..",
     ".....GLGGGGLGGg.....",
     ".....gggggggggg.....",
-    ".....1111111111.....",
+    "......11111111......",
 ]
 TORSO_BACK = [
-    "....GGGGGGGGGgg.....",
-    "...GGGGGGGGGGGgg....",
-    "..GG.GGLGGLGGGg.gg..",
-    "..GG.GGLGGLGGGg.gg..",
-    "..GG.GGLGGLGGGg.gg..",
-    "..GG.GGLGGLGGGg.gg..",
-    ".....GGLGGLGGGg.....",
+    "....GGGGGGGGGggg....",
+    "...GGGGGGGGGGGggg...",
+    "..GGGGGGGGGGGGgggg..",
+    "..GG.GGGGGGGGGg.gg..",
+    "..GG.GGGGGGGGGg.gg..",
+    "..GG.GGGGGGGGGg.gg..",
+    ".....GGGGGGGGGg.....",
     ".....gggggggggg.....",
-    ".....1111111111.....",
+    "......11111111......",
 ]
 # Her: slimmer, the same cap, glasses and sweater, long ginger hair down by the cheeks and over the
 # shoulders instead of the beard, red lips; from behind the hair hangs down her back.
@@ -102,25 +104,25 @@ NAARAS_HEAD_FRONT = [
     "....howeoweoth......",
     "....hssstsssth......",
     "....hsssssssth......",
-    "....hHssRRssth......",
-    "....hh.sssst.hH.....",
-    "....hh..ss...hH.....",
+    "....hhssRRssth......",
+    "....hhhssssthhH.....",
+    "....hhhhssthhhH.....",
 ]
 NAARAS_HEAD_BACK = [
     "......CCCCCCc.......",
     ".....CCCCCCCCc......",
-    ".....cCCCCCCCcc.....",
-    "....hhhhhhhhhh......",
-    "....hhHhhhhHhH......",
-    "....hhHhhhhHhH......",
-    "....hhHhhhhHhH......",
-    "....hhhhhHhhhH......",
-    "....hhhhhHhhHH......",
-    "....hhHhhHhhHH......",
+    ".....CCCCCCCCccc....",
+    ".....hhhhhhhhhH.....",
+    ".....hhHhhhhHhH.....",
+    ".....hhHhhhhHhH.....",
+    ".....hhHhhhhHhH.....",
+    ".....hhhhhHhhhH.....",
+    ".....hhhhhHhhHH.....",
+    ".....hhHhhHhhHH.....",
 ]
 NAARAS_TORSO_FRONT = [
-    "....hGGGGGGGGGhH....",
-    "...GG.hLGGGLhg.gg...",
+    "....GGhGGGGGhggg....",
+    "...GGGhLGGGLhgggg...",
     "...GG.hLGGGLhg.gg...",
     "...GG.GLGGGLGg.gg...",
     "...GG.GLGGGLGg.gg...",
@@ -130,42 +132,52 @@ NAARAS_TORSO_FRONT = [
     "......11111111......",
 ]
 NAARAS_TORSO_BACK = [
-    "....hhhhhhhhhhHH....",
-    "...GG.hhhhhhHg.gg...",
-    "...GG.GhhhhHGg.gg...",
-    "...GG.GGhhHGGg.gg...",
+    ".....hhhhhhhhHH.....",
+    "....GGhhhhhhHHgg....",
+    "...GGGGhhhhHHgggg...",
+    "...GG.GGhhHHGg.gg...",
     "...GG.GGLGGLGg.gg...",
     "...GG.GGLGGLGg.gg...",
     "......GGLGGLGg......",
     "......gggggggg......",
     "......11111111......",
 ]
-# The answer sheet, held up at the side, its lines of answers; the pencil gripped point up.
+# The answer sheet at the side, its lines of answers facing out; the pencil lies sideways in
+# the fist, drawn under the hand. Only his shows the lead from the front.
 SHEET = [
+    "WWWW",
+    "wwww",
+    "WWWW",
+    "wwww",
+    "WWWW",
+]
+SHEET_ANCHOR = (-3, -2)
+PENCIL_WITH_LEAD = ["yYYYY"]
+PENCIL_WITH_LEAD_ANCHOR = (-2, 1)
+PENCIL = ["YYYY"]
+PENCIL_ANCHOR = (-1, 1)
+# From behind: the blank side of the sheet. His arm stays in front of its top corner.
+SHEET_BACK = [
+    ".WWw",
+    ".WWw",
     "WWWw",
-    "wwWw",
     "WWWw",
-    "wwWw",
     "WWWw",
 ]
-SHEET_ANCHOR = (-2, -2)
-PENCIL = [
-    "y",
-    "Y",
-    "Y",
-    "Y",
-]
-PENCIL_ANCHOR = (1, -4)
+NAARAS_SHEET_BACK = ["WWWw"] * 5
+SHEET_BACK_ANCHOR = (1, -2)
 
 
 def look(naaras: bool = False) -> Look:
+    pencil = Held(PENCIL, PENCIL_ANCHOR, trails=False) if naaras else Held(PENCIL_WITH_LEAD, PENCIL_WITH_LEAD_ANCHOR, trails=False)
     return Look(
         palette=PALETTE,
         head_front=NAARAS_HEAD_FRONT if naaras else HEAD_FRONT,
         head_back=NAARAS_HEAD_BACK if naaras else HEAD_BACK,
         torso_front=NAARAS_TORSO_FRONT if naaras else TORSO_FRONT,
         torso_back=NAARAS_TORSO_BACK if naaras else TORSO_BACK,
-        held=(Held(SHEET, SHEET_ANCHOR, trails=False), Held(PENCIL, PENCIL_ANCHOR, trails=False)),
+        held=(Held(SHEET, SHEET_ANCHOR, trails=False), pencil),
+        hand_inset=1 if naaras else 0,
     )
 
 
@@ -173,7 +185,8 @@ def draw_back_row(sheet: Image.Image, front: Look, naaras: bool) -> None:
     """From behind the sheet is in the hand on the right and the pencil on the left."""
     back = look(naaras)
     back.palette = front.palette
-    back.held = (Held(PENCIL, PENCIL_ANCHOR, trails=False), Held(SHEET, (0, -2), trails=False))
+    back.held = (Held(PENCIL, PENCIL_ANCHOR, trails=False),
+                 Held(NAARAS_SHEET_BACK if naaras else SHEET_BACK, SHEET_BACK_ANCHOR, trails=False))
     check(back)
     sheet.paste((0, 0, 0, 0), (0, FRAME, FRAME * 4, FRAME * 2))
     for column, bob in enumerate((0, -1, 0)):

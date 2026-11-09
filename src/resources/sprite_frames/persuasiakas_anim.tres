@@ -154,4 +154,21 @@ animations = [{
 "loop": 1,
 "name": &"walk_towards",
 "speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_walk_towards_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_walk_towards_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_walk_towards_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_walk_towards_3")
+}],
+"loop": 1,
+"name": &"walk_towards_mirrored",
+"speed": 6.0
 }]

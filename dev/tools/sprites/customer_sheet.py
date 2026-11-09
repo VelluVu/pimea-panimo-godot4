@@ -163,6 +163,10 @@ class Look:
     # (left, right) when the hands differ, as when one is half hidden by what it holds.
     hands: Optional[tuple[list[str], list[str]]] = None
     lift: int = 0
+    # How many of the rows added by `lift` stay in the upper leg colour, for longer shorts.
+    long_shorts: int = 0
+    # Moves both hands this many pixels toward the body, for a slim figure's arms.
+    hand_inset: int = 0
     held: tuple[Optional[Held], Optional[Held]] = (None, None)
     # Drawn last in each frame, for anything the grids cannot hold. Gets (frame, palette, upper, back).
     extra: Optional[Callable[[Image.Image, dict, int, bool], None]] = None
@@ -199,7 +203,7 @@ def draw_frame(sheet: Image.Image, look: Look, column: int, row: int, *, back: b
     (frame, palette, upper) where upper is the frame row of box row 0."""
     frame = Image.new("RGBA", (FRAME, FRAME), (0, 0, 0, 0))
     upper = BOX_Y + bob - look.lift
-    leg_rows = _lengthened(LEGS[legs], look.lift)
+    leg_rows = _lengthened(LEGS[legs], look.lift, look.long_shorts)
     legs_top = BOX_Y + LEGS_TOP - look.lift
     paint(frame, look.palette, leg_rows, BOX_X, legs_top)
     # The feet stay on the floor when the body rises: the waist stretches up with it, so no
@@ -217,6 +221,7 @@ def draw_frame(sheet: Image.Image, look: Look, column: int, row: int, *, back: b
             continue
         hand_rows = look.hands[side] if look.hands else look.hand
         hand_x, hand_y = hand
+        hand_x += look.hand_inset if side == 0 else -look.hand_inset
         if held is not None:
             shift_x, shift_y = side_trail if held.trails else (0, 0)
             paint(frame, look.palette, held.rows, BOX_X + hand_x + held.anchor[0] + shift_x,
@@ -238,9 +243,11 @@ def _close_sleeve(frame: Image.Image, left: int, hand_top: int, width: int) -> N
             frame.putpixel((x, hand_top - 1), frame.getpixel((x, hand_top - 2)))
 
 
-def _lengthened(rows: list[str], lift: int) -> list[str]:
-    """Longer legs: the upper leg row again, in the shin colour so shorts stay short."""
-    return rows[:2] + [rows[1].replace("1", "4").replace("5", "6")] * lift + rows[2:]
+def _lengthened(rows: list[str], lift: int, long_shorts: int = 0) -> list[str]:
+    """Longer legs: the upper leg row again, in the shin colour so shorts stay short
+    (except the first `long_shorts` rows)."""
+    bare = rows[1].replace("1", "4").replace("5", "6")
+    return rows[:2] + [rows[1]] * long_shorts + [bare] * (lift - long_shorts) + rows[2:]
 
 
 def draw_sheet(look: Look, extra_rows: int = 0) -> Image.Image:

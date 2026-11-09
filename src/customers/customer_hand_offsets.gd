@@ -5,6 +5,8 @@ extends RefCounted
 ## plays flipped, so the defaults mirror the steady right hand (screen_x = 64 - 4*tx) nudged
 ## 9 px in. Archetypes without a steady hand get their own table.
 
+const CARRYING_WALK : StringName = &"walk_towards_carrying"
+
 const DEFAULT_OFFSETS : Array[Vector2] = [
 	Vector2(-23, -46),
 	Vector2(-7, -46),
@@ -156,6 +158,14 @@ static func is_flipped(frame: int, flipped_frames: Array[int], table_size: int) 
 	if flipped_frames.is_empty() or table_size <= 0:
 		return false
 	return flipped_frames.has(frame % table_size)
+
+
+## The walk out with a glass in hand, when the sheet has one (Ritari sheathes his sword for it);
+## otherwise `plain`, the usual walk.
+static func walk_out_animation(frames: SpriteFrames, carrying_glass: bool, plain: StringName) -> StringName:
+	if carrying_glass and frames != null and frames.has_animation(CARRYING_WALK):
+		return CARRYING_WALK
+	return plain
 
 
 ## The part of the held glass that shows, in glass texels; an empty Rect2 shows all of it.

@@ -1,6 +1,6 @@
-[gd_resource type="SpriteFrames" format=3]
+[gd_resource type="SpriteFrames" format=3 uid="uid://bttgi6mu4wvek"]
 
-[ext_resource type="Texture2D" path="res://assets/textures/characters/saunamies_32.png" id="1_saunamies"]
+[ext_resource type="Texture2D" uid="uid://mnixj8itnwod" path="res://assets/textures/characters/saunamies_32.png" id="1_saunamies"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_idle_0"]
 atlas = ExtResource("1_saunamies")
@@ -120,5 +120,22 @@ animations = [{
 }],
 "loop": 1,
 "name": &"walk_towards",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_walk_towards_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_walk_towards_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_walk_towards_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_walk_towards_3")
+}],
+"loop": 1,
+"name": &"walk_towards_mirrored",
 "speed": 6.0
 }]

@@ -1,9 +1,9 @@
 extends Node2D
 
 ## Dev tool, not shipped: tunes where each customer holds the glass while walking out.
-## Run this scene (F6). All walk_towards frames are shown side by side, mirrored as in the
-## game; the selected frame's glass moves with the keys and S writes hand_offsets and
-## hand_flipped_frames into the customer's .tres.
+## Project > Tools > Beer Glass Hold runs this scene. All frames of the walk out are shown side
+## by side, mirrored as in the game; the selected frame's glass moves with the keys and S writes
+## hand_offsets and hand_flipped_frames into the customer's .tres.
 
 const CUSTOMER_DIR : String = "res://src/resources/customers/"
 const CUSTOMER_SCENE : PackedScene = preload("res://src/scenes/customer.tscn")
@@ -101,7 +101,7 @@ func _show_customer() -> void:
 		label.queue_free()
 	_frame_labels.clear()
 	var data : CustomerData = _datas[_index]
-	var frame_count : int = data.sprite_frames.get_frame_count(Customer.ANIM_WALK_TOWARDS)
+	var frame_count : int = data.sprite_frames.get_frame_count(_walk_out_animation(data))
 	_offsets.clear()
 	_flips.clear()
 	for frame : int in range(frame_count):
@@ -117,12 +117,16 @@ func _show_customer() -> void:
 	_apply_glasses()
 
 
+func _walk_out_animation(data: CustomerData) -> StringName:
+	return CustomerHandOffsets.walk_out_animation(data.sprite_frames, true, Customer.ANIM_WALK_TOWARDS)
+
+
 func _add_customer(data: CustomerData, frame: int) -> Customer:
 	var customer : Customer = CUSTOMER_SCENE.instantiate()
 	add_child(customer)
 	customer.set_process(false)
 	customer.customer_data = data
-	MirroredAnimation.play(customer.animated_sprite, Customer.ANIM_WALK_TOWARDS, true)
+	MirroredAnimation.play(customer.animated_sprite, _walk_out_animation(data), true)
 	customer.animated_sprite.pause()
 	customer.animated_sprite.frame = frame
 	customer.fill_glasses(20)

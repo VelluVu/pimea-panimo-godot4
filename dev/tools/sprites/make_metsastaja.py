@@ -1,10 +1,11 @@
 """Draws Metsästäjä, the moose hunter in from the hunt: a blaze-orange cap with ear flaps, an
-orange safety vest over a camo jacket, dark trousers and rubber boots, his rifle cased and
-slung over his back (no loaded guns at the bar), a red thermos in the
-left hand and a wooden kuksa in the right. His female counterpart (metsastaja_naaras_32) is
-slimmer, with a dark braid over her right shoulder, away from the rifle. The orange cap and
-vest make the silhouette. From behind the thermos and kuksa change hands; that row is drawn
-again with the light still from the upper left, not mirrored.
+orange safety vest with a dark strap across it, a green jacket, dark trousers and rubber boots,
+a thick cased rifle on the back (no loaded guns at the bar) and only a wooden kuksa in the
+hand. His grids follow the user's hand-edited idle and idle_up frames: big white eyes turned
+inward and a toothy grin under the moustache. His female counterpart (metsastaja_naaras_32)
+follows her own edited frames: the same kit and eyes, a slimmer vest and blonde hair over the
+shoulders. The orange cap and vest make the silhouette. From behind the kuksa changes hands;
+that row is drawn again with the light still from the upper left, not mirrored.
 
 The sheet follows the other customers' (see customer_sheet.py): 128x128, 32 px frames,
 rows idle, idle_up, walk_towards and walk_right, light from above left.
@@ -17,8 +18,8 @@ from pathlib import Path
 
 from PIL import Image
 
-from customer_sheet import (FRAME, HANDS_REST, ROOT, STILL, TEXTURE_DIR, Held, Look, check, draw_frame, draw_sheet,
-                            hex_color)
+from customer_sheet import (BOX_X, FRAME, HANDS_REST, LEGS_TOP, ROOT, STILL, TEXTURE_DIR, Held, Look, check, draw_frame,
+                            draw_sheet, hex_color, paint)
 from make_orveltaja import write_aseprite_source
 
 NAME = "metsastaja_32"
@@ -27,194 +28,183 @@ NAARAS_NAME = "metsastaja_naaras_32"
 PALETTE = {
     "s": hex_color("ead4aa"),  # skin
     "t": hex_color("e4a672"),  # skin shade
-    "e": hex_color("3a4466"),  # eyes
-    "R": hex_color("e43b44"),  # lips, braid tie, thermos
-    "U": hex_color("a22633"),  # thermos shade
-    "M": hex_color("733e39"),  # moustache, short hair
-    "m": hex_color("3e2731"),  # kuksa shade
-    # Her hair and braid: dark, so they read apart from the rifle case's lighter leather.
-    "h": hex_color("733e39"),  # her braid
-    "H": hex_color("3e2731"),  # braid shade
+    "e": hex_color("3a4466"),  # pupils
+    "W": hex_color("ffffff"),  # eye whites, teeth
+    "M": hex_color("733e39"),  # moustache, kuksa shade
+    # Hers, from the user's edit: warmer skin, blonde hair, a lit vest.
+    "a": hex_color("eeca9e"),  # her skin
+    "c": hex_color("c5a37a"),  # her nose
+    "y": hex_color("e5d58e"),  # her hair
+    "P": hex_color("fc7f2e"),  # her vest light
+    "p": hex_color("cb6c2e"),  # her vest shadow under the hair
     "b": hex_color("b86f50"),  # kuksa wood
     "O": hex_color("f77622"),  # blaze orange cap and flaps
     "o": hex_color("be4a2f"),  # orange shade, brim underside
     "V": hex_color("f77622"),  # vest
     "v": hex_color("be4a2f"),  # vest shade, zip
-    "J": hex_color("3e8948"),  # camo jacket
-    "j": hex_color("265c42"),  # camo shade
-    "K": hex_color("733e39"),  # camo patches
+    "J": hex_color("3e8948"),  # jacket
+    "j": hex_color("265c42"),  # jacket shade
+    "S": hex_color("462724"),  # rifle strap, his hair
     "n": hex_color("b86f50"),  # rifle case leather
     "N": hex_color("733e39"),  # rifle case shade
-    "C": hex_color("c0cbdc"),  # thermos cup
-    "c": hex_color("8b9bb4"),  # thermos cup shade
     # Legs: dark green trousers, black rubber boots.
-    "1": hex_color("265c42"), "4": hex_color("265c42"), "2": hex_color("262b44"), "3": hex_color("181425"),
+    "1": hex_color("1c4330"), "4": hex_color("1c4330"), "2": hex_color("262b44"), "3": hex_color("181425"),
 }
 
-# Cap with its brim to the front left and the ear flaps down by the cheeks; a thick moustache.
+# Cap with its brim to the front left, big eyes, moustache and grin; the rifle's top end rises
+# behind the head on the right, so these grids reach above the usual head rows.
 HEAD_FRONT = [
-    "........OOOO........",
-    "......OOOOOOOo......",
-    ".....OOOOOOOOOo.....",
+    "...............nn...",
+    "..............nnN...",
+    "..............nnN...",
+    "........OOOO.nnN....",
+    "......OOOOOOOonN....",
+    ".....OOOOOOOOOoN....",
     "...ooOOOOOOOOOo.....",
-    ".....Osssssso.......",
-    ".....Osesseso.......",
-    ".....Osssstso.......",
-    ".....ssMMMMtt.......",
-    "......ssssst........",
+    ".....OWWssWWonN.....",
+    ".....OWetseWonN.....",
+    ".....OssttssoN......",
+    ".....ssMMMMssN......",
+    "......ssWWssnN......",
 ]
+# The rifle crosses the head from the upper left and goes on below the hem (RIFLE_BUTT_BACK).
 HEAD_BACK = [
-    "........OOOO........",
-    "......OOOOOOOo......",
-    ".....OOOOOOOOOo.....",
-    ".....oOOOOOOOOoo....",
-    ".....OOOOOOOOo......",
-    ".....OMMMMMMo.......",
-    ".....OMMMMMmo.......",
-    "......MMMMMm........",
-    "......sssstt........",
+    "...nnN..............",
+    "...nnN..............",
+    "....nnNOOOO.........",
+    "....nnNOOOOOOO......",
+    "....nnnNOOOOOOO.....",
+    ".....nnNOOOOOOooo...",
+    ".....nnnNOOOOo......",
+    ".....nnnNSSSSo......",
+    "......nnnNSSSo......",
+    "......nnnNSSS.......",
+    "......nnnNttt.......",
 ]
-# Rows 10-18: the vest over the jacket, its zip down the middle; camo sleeves and hem.
+# Rows 10-18: the vest over the jacket, the zip down the middle, the strap from shoulder to hip.
 TORSO_FRONT = [
-    "....JJVVVVVVvjj.....",
-    "...JJVVVVvVVVvjj....",
-    "..JJ.VVVVvVVVVv.jj..",
-    "..JK.VVVVvVVVVv.jj..",
-    "..JJ.VVVVvVVVVv.jK..",
-    "..KJ.VVVVvVVVVv.jj..",
-    ".....JJKJjJJJKj.....",
-    ".....jjjjjjjjjj.....",
-    ".....1111111111.....",
+    "...JJJVVVVVVvSSj....",
+    "..JJJVVVVvVVSSjjj...",
+    "..JJJVVVVvVSSVvjjj..",
+    "..JJ.VVVVvSSVVv.jj..",
+    "..JJ.VVVVSSVVVv.jj..",
+    "..JJ.VVVSSVVVVv.jj..",
+    ".....VVSSvVVVVv.....",
+    ".....VSSVvVVVVv.....",
+    ".....SSVVvVVVVv.....",
 ]
 TORSO_BACK = [
-    "....JJVVVVVVvjj.....",
-    "...JJVVVVVVVVvjj....",
-    "..JJ.VVVVVVVVVv.jj..",
-    "..JJ.VVVVVVVVVv.Kj..",
-    "..KJ.VVVVVVVVVv.jj..",
-    "..JJ.VVVVVVVVVv.jj..",
-    ".....JKJJjJJKJj.....",
-    ".....jjjjjjjjjj.....",
-    ".....1111111111.....",
+    "...JSSVnnnNVvjjj....",
+    "..JJJSSnnnNVVvjjj...",
+    "..JJJVSnnnNVVVvjjj..",
+    "..JJ.VVSnnnNVVv.jj..",
+    "..JJ.VVVnnnNVVv.jj..",
+    "..JJ.VVVnnnnNVv.jj..",
+    ".....VVVnnnnSVv.....",
+    ".....VVVVnnnSSv.....",
+    ".....VVVVnnnNSS.....",
 ]
-# Her: no moustache, red lips, brown hair by the flaps and a braid over the right shoulder.
+# Her, as the user drew her: a softer face and blonde hair framing it, down over the shoulders.
 NAARAS_HEAD_FRONT = [
-    "........OOOO........",
-    "......OOOOOOOo......",
-    ".....OOOOOOOOOo.....",
-    "...ooOOOOOOOOOo.....",
-    "....hOssssssoH......",
-    "....hOsessesoH......",
-    "....hOsssstsoH......",
-    "....hsssRRsstH......",
-    "....hH.sssst........",
+    "................nn..",
+    "...............nnN..",
+    "...............nnN..",
+    "........OOOO..nnN...",
+    "......OOOOOOOonnN...",
+    ".....OOOOOOOOOoN....",
+    "...ooOOOOOOOOOoN....",
+    ".....OWWaaWWonnN....",
+    ".....OWeaaeWonN.....",
+    ".....OaacaaaonN.....",
+    ".....yaaWWaaynN.....",
+    ".....yyaaaayyN......",
 ]
 NAARAS_HEAD_BACK = [
-    "........OOOO........",
-    "......OOOOOOOo......",
-    ".....OOOOOOOOOo.....",
-    ".....oOOOOOOOOoo....",
-    "....hOOOOOOOOoH.....",
-    "....hOhhhhhhoH......",
-    "....hhhhhhhhhH......",
-    "....hhhhhhhhHH......",
-    ".....tssssshH.......",
+    "...nn...............",
+    "...nnN..............",
+    "...nnnN.OOOO........",
+    "....nnNOOOOOOO......",
+    "....nnnNOOOOOOO.....",
+    ".....nnNOOOOOOooo...",
+    ".....nnnNOOOOo......",
+    ".....nnnNyyyyo......",
+    "......nnnNyyyo......",
+    "......nnnNyyyy......",
+    "......nnnNyyyy......",
 ]
-# The braid hangs over her right shoulder: screen left from the front, away from the rifle.
+# The vest has a lit patch under her hair. The sleeves step out to meet the hands.
 NAARAS_TORSO_FRONT = [
-    "....JhHVVVVVvjj.....",
-    "...JJ.hHVvVVVv.jj...",
-    "...JJ.hHVvVVVv.jj...",
-    "...JK.hHVvVVVv.jK...",
-    "...JJ.RRVvVVVv.jj...",
-    "...KJ.VVVvVVVv.jj...",
-    "......JJKJjJKj......",
-    "......jjjjjjjj......",
-    "......11111111......",
+    "....yyyOOOOyyyj.....",
+    "....JOyPPoPSyOoj....",
+    "...JJpyPPoSSyPojj...",
+    "...JJ.pPPSSPpp.jjj..",
+    "..JJJ.OpSSppOo..jj..",
+    "..JJ..OSSoOOOo..jj..",
+    "......SSOoOOOo......",
+    "......SOOoOOOo......",
+    "......OOOoOOOo......",
 ]
 NAARAS_TORSO_BACK = [
-    "....JJVVVVVhHjj.....",
-    "...JJ.VVVVVVhH.jj...",
-    "...JJ.VVVVVVVv.jj...",
-    "...JJ.VVVVVVVv.Kj...",
-    "...KJ.VVVVVVVv.jj...",
-    "...JJ.VVVVVVVv.jj...",
-    "......JKJjJKJj......",
-    "......jjjjjjjj......",
-    "......11111111......",
+    ".....JynnnNyyyj.....",
+    "....JJynnnNyyojj....",
+    "...JJJOnnnNyOojjj...",
+    "...JJ.OnnnnNOo.jj...",
+    "..JJJ.OOnnnNOo.jjj..",
+    "..JJ..OOnnnnNo..jj..",
+    "......OOnnnnSo......",
+    "......OOOnnnSS......",
+    "......OOOnnnNS......",
 ]
-# A red thermos with its steel cup on top, gripped round the middle.
-THERMOS = [
-    "Cc",
-    "RU",
-    "RU",
-    "RU",
-    "RU",
+RIFLE_BUTT_BACK = [
+    ".........nnnnN......",
+    ".........nnnnN......",
+    ".........nnnnnN.....",
+    ".........NNNNNN.....",
 ]
-THERMOS_ANCHOR = (0, -2)
-# The kuksa: a wooden cup held by its handle, the bowl out to the side.
+# The kuksa: the handle's loop round the fingers, the bowl out to the side.
 KUKSA = [
-    "bbbm",
-    "bbbm",
-    ".bm.",
+    ".M....",
+    "MbbbbM",
+    "...bbM",
+    "...bbM",
+    "MMbbM.",
 ]
-KUKSA_ANCHOR = (1, -1)
-KUKSA_LEFT = [
-    "bbbm",
-    "bbbm",
-    ".bm.",
+KUKSA_ANCHOR = (0, -2)
+KUKSA_BACK = [
+    "Mbbb..",
+    "Mbb...",
+    "Mbb...",
+    ".MbbMM",
 ]
-KUKSA_LEFT_ANCHOR = (-3, -1)
-
-# The cased rifle slung over the back, on a clean 1:3 diagonal from the hip to up beside the
-# head, in box coordinates: (column, row) at its butt end, out one column every three rows.
-RIFLE_BUTT = (12, 18)
-RIFLE_TOP_ROW = -1
-RIFLE_RISE = 3
+KUKSA_BACK_ANCHOR = (-4, -1)
+# The left hand from behind is lit on the other side, as the user drew it.
+HANDS_BACK = (["ts", "ts"], ["st", "st"])
 
 
-def rifle_rows(back: bool) -> list[tuple[int, int]]:
-    """(column, row) of the case's lit side, bottom to top. Facing away it is the same sling
-    seen from behind: the top end comes over the shoulder on the other side."""
-    butt_col, butt_row = RIFLE_BUTT
-    points = []
-    for row in range(butt_row, RIFLE_TOP_ROW - 1, -1):
-        col = butt_col + (butt_row - row) // RIFLE_RISE
-        points.append((19 - col - 1 if back else col, row))
-    return points
+def paint_rifle_butt(frame: Image.Image, palette: dict, upper: int, back: bool) -> None:
+    """From behind the case hangs past the hem, over the legs."""
+    if back:
+        paint(frame, palette, RIFLE_BUTT_BACK, BOX_X, upper + LEGS_TOP)
 
 
-def paint_rifle(frame: Image.Image, palette: dict, upper: int, back: bool) -> None:
-    """Behind the body from the front (only empty pixels are painted), over it from behind.
-    The lit side is the left one; the top end is capped in the shade colour."""
-    top = rifle_rows(back)[-1]
-    for col, row in rifle_rows(back):
-        for dx, char in ((0, "n"), (1, "N")):
-            x, y = 6 + col + dx, upper + row
-            if not (0 <= x < frame.width and 0 <= y < frame.height):
-                continue
-            if not back and frame.getpixel((x, y))[3] != 0:
-                continue
-            frame.putpixel((x, y), palette["N" if (col, row) == top else char])
-
-
-def look(naaras: bool = False) -> Look:
+def look(naaras: bool) -> Look:
     return Look(
         palette=PALETTE,
         head_front=NAARAS_HEAD_FRONT if naaras else HEAD_FRONT,
         head_back=NAARAS_HEAD_BACK if naaras else HEAD_BACK,
         torso_front=NAARAS_TORSO_FRONT if naaras else TORSO_FRONT,
         torso_back=NAARAS_TORSO_BACK if naaras else TORSO_BACK,
-        held=(Held(THERMOS, THERMOS_ANCHOR, trails=False), Held(KUKSA, KUKSA_ANCHOR, trails=False)),
-        extra=paint_rifle,
+        held=(None, Held(KUKSA, KUKSA_ANCHOR, trails=False)),
+        extra=paint_rifle_butt,
     )
 
 
 def draw_back_row(sheet: Image.Image, front: Look, naaras: bool) -> None:
-    """From behind the kuksa is in the hand on the left and the thermos on the right."""
+    """From behind the kuksa is in the hand on the left."""
     back = look(naaras)
     back.palette = front.palette
-    back.held = (Held(KUKSA_LEFT, KUKSA_LEFT_ANCHOR, trails=False), Held(THERMOS, THERMOS_ANCHOR, trails=False))
+    back.held = (Held(KUKSA_BACK, KUKSA_BACK_ANCHOR, trails=False), None)
+    back.hands = HANDS_BACK
     check(back)
     sheet.paste((0, 0, 0, 0), (0, FRAME, FRAME * 4, FRAME * 2))
     for column, bob in enumerate((0, -1, 0)):

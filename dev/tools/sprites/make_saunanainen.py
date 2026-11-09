@@ -1,9 +1,9 @@
 """Draws Saunanainen, Saunamies' counterpart, also straight from the smoke sauna and
-munasillaan: a white towel turban with wet blonde hair under it, pink flip-flops and nothing
-else, flushed skin, a birch whisk (vihta), and censor mosaics over the chest and the
-crotch. Steam rises off her like off him. The turban and the mosaics make the silhouette.
-From behind the vihta changes hands; that row is drawn again with the light still from the
-upper left, not mirrored.
+munasillaan: a tan felt sauna hat like his with long light blonde hair under it, pink
+flip-flops and nothing else, flushed skin, a birch whisk (vihta), and censor mosaics over the
+chest and the crotch. Steam rises off her like off him. The hat and the mosaics make the
+silhouette. From behind the vihta changes hands; that row is drawn again with the light still
+from the upper left, not mirrored. The shapes follow the user's hand-edited idle frames.
 
 The sheet follows the other customers' (see customer_sheet.py): 128x128, 32 px frames,
 rows idle, idle_up, walk_towards and walk_right, light from above left.
@@ -30,10 +30,11 @@ PALETTE = {
     "R": hex_color("e43b44"),  # lips
     "w": hex_color("ffffff"),  # eye white
     "e": hex_color("3a4466"),  # pupil
-    "T": hex_color("ffffff"),  # towel turban
-    "U": hex_color("c0cbdc"),  # turban shade
-    "y": hex_color("feae34"),  # wet blonde hair
-    "Y": hex_color("b86f50"),  # hair shade
+    "T": hex_color("b19779"),  # felt hat
+    "U": hex_color("9c876d"),  # felt hat shade
+    "y": hex_color("ffd697"),  # light blonde hair
+    "f": hex_color("ffbc83"),  # lit side of the back
+    "d": hex_color("9c5f45"),  # shaded side of the back
     "M": hex_color("ead4aa"), "O": hex_color("d77643"),  # censor mosaic, with "t"
     "G": hex_color("63c74d"),  # birch leaves
     "g": hex_color("3e8948"),  # birch leaves shade
@@ -44,56 +45,64 @@ PALETTE = {
     "5": hex_color("b86f50"), "6": hex_color("b86f50"), "7": hex_color("b86f50"),
 }
 
-# A towel wrapped high on the head, wet hair hanging out of it by the cheeks, a flushed face
-# with red lips.
+# A felt hat, hair hanging out of it by the cheeks, a flushed face with red lips.
 HEAD_FRONT = [
-    ".......TTTTU........",
-    "......TTTTTTU.......",
-    "......TTTTTUU.......",
-    ".....UTTTTTTUU......",
-    ".....yssssssy.......",
-    ".....ywesewty.......",
-    ".....yPsstsPy.......",
-    ".....ysRRRsty.......",
-    "......yssssty.......",
-    ".......ssss.........",
+    "........TTTTU.......",
+    ".......TTTTTTU......",
+    ".......TTTTTTU......",
+    "......UTTTTTTUU.....",
+    "......ywwsswwty.....",
+    "......ywessewty.....",
+    "......yPstssPty.....",
+    "......yssRRsst......",
+    "......yysssst.......",
+    ".......yysssy.......",
 ]
 HEAD_BACK = [
     ".......TTTTU........",
     "......TTTTTTU.......",
-    "......TTTTTUU.......",
+    "......TTTTTTU.......",
     ".....UTTTTTTUU......",
-    ".....yyyyyyyy.......",
-    ".....yyyyyyyY.......",
-    ".....yyyyyyyY.......",
-    ".....yyyyyyYY.......",
-    "......yyyyyY........",
-    ".......ssss.........",
+    ".....yyyyyyyyy......",
+    ".....yyyyyyyyy......",
+    ".....yyyyyyyyy......",
+    "......yyyyyyyy......",
+    ".......yyyyyyy......",
+    ".......yyyyyy.......",
 ]
 # Rows 10-18: slim, narrow shoulders and arms close to the body, a censor mosaic over the chest, a waist and hips; the
-# crotch mosaic is painted over the hips (CENSOR, shared with Saunamies). From behind the wet
-# hair ends between the shoulder blades.
+# crotch mosaic is painted over the hips (CENSOR, shared with Saunamies). From behind the
+# hair narrows to a point between the shoulder blades.
 TORSO_FRONT = [
     "....ssssssssssst....",
-    "...ss.sMMOOMMt.st...",
-    "...ss.sMMOOMMt.st...",
-    "...ss.ssssssst.st...",
+    "...sssMMOOttOOsst...",
+    "...ss.MMOOttOO.st...",
+    "...ss.ttMMOOMM.st...",
+    "...ss.ttMMOOMM.st...",
     "...ss..ssssst..st...",
-    "...ss.ssssssst.st...",
-    "......ssssssst......",
+    ".......ssssst.......",
     "......ssssssst......",
     "......ssssssst......",
 ]
 TORSO_BACK = [
-    "....sssssyyYssst....",
-    "...ss.sssyYsst.st...",
-    "...ss.sssyYsst.st...",
-    "...ss.ssssssst.st...",
+    "....ssssyyyyssst....",
+    "...ssssssyysstsst...",
+    "...ss.fssyyssd.st...",
+    "...ss.fssysssd.st...",
+    "...ss.fssssstd.st...",
     "...ss..ssssst..st...",
-    "...ss.ssssssst.st...",
-    "......ssssssst......",
+    ".......ssssst.......",
     "......sssstsst......",
     "......sssstsst......",
+]
+# From behind the vihta's outer edge is hidden by her leg.
+VIHTA_BACK = [
+    ".b..",
+    ".b..",
+    "gGg.",
+    "GgG.",
+    "gGg.",
+    ".gG.",
 ]
 
 
@@ -110,6 +119,7 @@ def look() -> Look:
         torso_front=TORSO_FRONT,
         torso_back=TORSO_BACK,
         held=(None, Held(VIHTA, VIHTA_ANCHOR, trails=True)),
+        hand_inset=1,
         extra=_censor,
     )
 
@@ -118,7 +128,7 @@ def draw_back_row(sheet: Image.Image, front: Look) -> None:
     """From behind the vihta is in the hand on the left."""
     back = look()
     back.palette = front.palette
-    back.held = (Held(VIHTA, VIHTA_ANCHOR, trails=True), None)
+    back.held = (Held(VIHTA_BACK, VIHTA_ANCHOR, trails=True), None)
     check(back)
     sheet.paste((0, 0, 0, 0), (0, FRAME, FRAME * 4, FRAME * 2))
     for column, bob in enumerate((0, -1, 0)):

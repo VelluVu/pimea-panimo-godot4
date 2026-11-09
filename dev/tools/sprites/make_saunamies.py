@@ -1,8 +1,9 @@
-"""Draws Saunamies, who walks in straight from the smoke sauna, munasillaan: a red felt
+"""Draws Saunamies, who walks in straight from the smoke sauna, munasillaan: a tan felt
 sauna hat and blue flip-flops and nothing else, his skin flushed red with soot smudges from
 the savusauna, a big moustache and a content grin, a birch whisk (vihta) in his right hand,
 and a censor mosaic blurring the crotch. Steam rises off his shoulders and hat. The hat,
-the bare red body and the mosaic make the silhouette.
+the bare red body and the mosaic make the silhouette. The shapes follow the user's
+hand-edited idle frames.
 
 The sheet follows the other customers' (see customer_sheet.py): 128x128, 32 px frames,
 rows idle, idle_up, walk_towards and walk_right, light from above left.
@@ -30,8 +31,8 @@ PALETTE = {
     "e": hex_color("3a4466"),  # pupil
     "m": hex_color("3e2731"),  # mouth
     "a": hex_color("733e39"),  # moustache, wet hair
-    "R": hex_color("e43b44"),  # felt hat
-    "r": hex_color("a22633"),  # felt hat shade
+    "R": hex_color("b19779"),  # felt hat
+    "r": hex_color("9c876d"),  # felt hat shade
     "M": hex_color("ead4aa"), "O": hex_color("d77643"),  # censor mosaic, with "t"
     "G": hex_color("63c74d"),  # birch leaves
     "g": hex_color("3e8948"),  # birch leaves shade
@@ -50,9 +51,9 @@ HEAD_FRONT = [
     "......RRRRRRr.......",
     "......RRRRRRr.......",
     "....rRRRRRRRRrr.....",
-    ".....asssssssa......",
-    ".....swesssewt......",
-    ".....PssktssPt......",
+    ".....awwssswwa......",
+    ".....swetssewt......",
+    ".....PssttssPt......",
     ".....saaaaaaat......",
     ".....ssmmmmsst......",
     "......sssssst.......",
@@ -72,8 +73,8 @@ HEAD_BACK = [
 # Rows 10-18. Bare shoulders and arms, a flushed chest, a round belly. Nothing else on:
 # the front gets the censor mosaic (CENSOR), the back a bare behind.
 TORSO_FRONT = [
-    "...sssssssssssst....",
-    "..sssPPsssPPsssstt..",
+    "...sssssssssssstt...",
+    "..ssssPPsssPPssstt..",
     "..ss.ssssssssst.st..",
     "..ss.ssssssssst.st..",
     "..ss.sssssssstt.st..",
@@ -83,7 +84,7 @@ TORSO_FRONT = [
     ".....ssssssssst.....",
 ]
 TORSO_BACK = [
-    "...sssssssssssst....",
+    "...sssssssssssstt...",
     "..sssssssssksssstt..",
     "..ss.ssssssssst.st..",
     "..ss.ssssssssst.st..",

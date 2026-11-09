@@ -87,6 +87,39 @@ func test_held_item_on_the_grid_stays_put() -> void:
 	assert_eq(HandOffsetsScript.snap_to_art_grid(Vector2(-28, -34), Vector2(8, 7), 4.0), Vector2(-28, -34))
 
 
+func test_walk_out_uses_the_carrying_walk_only_with_a_glass_and_a_sheet_that_has_it() -> void:
+	var with_row := SpriteFrames.new()
+	with_row.add_animation(HandOffsetsScript.CARRYING_WALK)
+	var without_row := SpriteFrames.new()
+	assert_eq(HandOffsetsScript.walk_out_animation(with_row, true, &"walk_towards"), HandOffsetsScript.CARRYING_WALK)
+	assert_eq(HandOffsetsScript.walk_out_animation(with_row, false, &"walk_towards"), &"walk_towards")
+	assert_eq(HandOffsetsScript.walk_out_animation(without_row, true, &"walk_towards"), &"walk_towards")
+	assert_eq(HandOffsetsScript.walk_out_animation(null, true, &"walk_towards"), &"walk_towards")
+
+
+## His sword hand is free only on the carrying row, so the glass needs both.
+func test_ritari_carries_the_glass_on_his_own_row() -> void:
+	var ritari : CustomerData = load("res://src/resources/customers/ritari.tres")
+	assert_true(ritari.carries_glass_out)
+	assert_eq(ritari.hand_offsets.size(), 4)
+	assert_true(ritari.sprite_frames.has_animation(HandOffsetsScript.CARRYING_WALK))
+
+
+## Sword and shield stay on the sides his sheet draws them: both walks have unflipped frames.
+func test_ritari_is_not_flipped_walking_towards_the_camera() -> void:
+	var frames : SpriteFrames = (load("res://src/resources/customers/ritari.tres") as CustomerData).sprite_frames
+	assert_true(frames.has_animation(&"walk_towards_mirrored"))
+	assert_true(frames.has_animation(StringName(String(HandOffsetsScript.CARRYING_WALK) + MirroredAnimation.SUFFIX)))
+
+
+## Flipping the walk would swap the hand that holds their briefcase, rifle or vihta.
+func test_one_handed_customers_are_not_flipped_walking_towards_the_camera() -> void:
+	for name : String in ["lottovoittaja", "sovittelija", "sovittelija_naaras", "metsastaja", "metsastaja_naaras",
+			"pubivisailija", "pubivisailija_naaras", "saunamies", "saunanainen", "snobi", "joulupukki", "persuasiakas"]:
+		var data : CustomerData = load("res://src/resources/customers/%s.tres" % name)
+		assert_true(data.sprite_frames.has_animation(&"walk_towards_mirrored"), name)
+
+
 func test_every_tonttu_has_its_own_hand_offsets() -> void:
 	for name : String in ["harmaa", "sydan", "punainen"]:
 		var tonttu : CustomerData = load("res://src/resources/customers/tonttu_%s.tres" % name)

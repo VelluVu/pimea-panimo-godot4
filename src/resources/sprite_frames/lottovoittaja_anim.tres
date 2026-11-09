@@ -1,6 +1,6 @@
-[gd_resource type="SpriteFrames" format=3]
+[gd_resource type="SpriteFrames" format=3 uid="uid://cldhbo5bo8afq"]
 
-[ext_resource type="Texture2D" path="res://assets/textures/characters/lottovoittaja_32.png" id="1_lottovoittaja"]
+[ext_resource type="Texture2D" uid="uid://c4kthkp8p7gi0" path="res://assets/textures/characters/lottovoittaja_32.png" id="1_lottovoittaja"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_idle_0"]
 atlas = ExtResource("1_lottovoittaja")
@@ -120,5 +120,22 @@ animations = [{
 }],
 "loop": 1,
 "name": &"walk_towards",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_walk_towards_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_walk_towards_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_walk_towards_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_walk_towards_3")
+}],
+"loop": 1,
+"name": &"walk_towards_mirrored",
 "speed": 6.0
 }]

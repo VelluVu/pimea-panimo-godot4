@@ -1,9 +1,10 @@
 """Draws Sovittelija, the national labour mediator on the third night of talks: messy grey
-hair with a tuft standing up, dark rings under half-shut eyes, a rumpled grey suit with the
+hair with a tuft standing up, dark rings under staring eyes, a rumpled grey suit with the
 shirt tail out, a loosened red tie, a leather briefcase in one hand and a pulla in the other.
 The female counterpart (sovittelija_naaras_32) is slimmer, with a grey bob and red lips.
 The briefcase makes the silhouette. From behind the hands swap; that row is drawn again with
-the light still from the upper left, not mirrored.
+the light still from the upper left, not mirrored. The shapes follow the user's hand-edited
+idle frames.
 
 The sheet follows the other customers' (see customer_sheet.py): 128x128, 32 px frames,
 rows idle, idle_up, walk_towards and walk_right, light from above left.
@@ -49,72 +50,73 @@ HEAD_FRONT = [
     "......W.GW..........",
     "......WWWWGG........",
     ".....WWWGGGGc.......",
-    ".....Wsssssst.......",
-    ".....sesssest.......",
-    ".....bbssbbst.......",
-    ".....ssstssst.......",
-    ".....ssskksst.......",
+    ".....Wwwsswwt.......",
+    ".....sewssewt.......",
+    ".....sbbtsbbt.......",
+    ".....sssttsst.......",
+    ".....ssswwsst.......",
     "......ssssst........",
 ]
 HEAD_BACK = [
-    "......W.GW..........",
-    "......WWWWGG........",
-    ".....WWWGGGGc.......",
-    ".....WWGGGGGc.......",
-    ".....WGGGGGGc.......",
-    ".....WGGGGGGc.......",
-    ".....sGGGGGGt.......",
-    ".....sssssstt.......",
-    "......sssst.........",
+    ".......W.GW.........",
+    ".......WWWWGG.......",
+    "......WWWGGGGc......",
+    "......WWGGGGGc......",
+    "......WGGGGGGc......",
+    "......WGGGGGGc......",
+    "......sGGGGGGt......",
+    "......sssssstt......",
+    ".......sssstt.......",
 ]
-# Rows 10-18: the jacket open at a loosened tie, the shirt tail out at the hem.
+# Rows 10-18: the jacket open at a loosened tie, the shirt tail out at the hem; the shoulders
+# run straight into the arms.
 TORSO_FRONT = [
-    "....JJJswwsJJjj.....",
-    "...JJJJwrrwJJjjj....",
-    "..JJ.JJwrrwJJjj.jj..",
+    "....JJJswwsJJjjj....",
+    "...JJJJwrrwJJjjjj...",
+    "..JJJJJwrrwJJjjjjj..",
     "..JJ.JJJwrJJJjj.jj..",
     "..JJ.JJJJrJJJjj.jj..",
     "..JJ.JJJJjJJJjj.jj..",
     ".....JJJJjJJJjj.....",
     ".....jjjjjwwjjj.....",
-    ".....1111111111.....",
+    "......11111111......",
 ]
 TORSO_BACK = [
-    "....JJJJJJJJJjj.....",
-    "...JJJJJJJJJJjjj....",
-    "..JJ.JJJJJJJJjj.jj..",
+    "....JJJJJJJJJjjj....",
+    "...JJJJJJJJJJjjjj...",
+    "..JJJJJJJJJJJjjjjj..",
     "..JJ.JJJJJJJJjj.jj..",
     "..JJ.JJJJJJJJjj.jj..",
     "..JJ.JJJJJJJJjj.jj..",
     ".....JJJJJJJJjj.....",
     ".....jjjjjjjwjj.....",
-    ".....1111111111.....",
+    "......11111111......",
 ]
 NAARAS_HEAD_FRONT = [
     ".......WWGG.........",
     ".....WWWWGGGc.......",
     "....WWGssssGGc......",
-    "....WGsssssstGc.....",
-    "....WGsesssesGc.....",
-    "....WGbbssbbtGc.....",
-    "....WGssstsssGc.....",
+    "....WGwwsswwtGc.....",
+    "....WGwesswesGc.....",
+    "....WGbbstbbtGc.....",
+    "....WGssttsssGc.....",
     "....GGsssrrstcc.....",
-    ".....c.sssst.c......",
+    ".......sssst........",
 ]
 NAARAS_HEAD_BACK = [
-    ".......WWGG.........",
-    ".....WWWWGGGc.......",
-    "....WWWGGGGGGc......",
-    "....WWGGGGGGGGc.....",
-    "....WGGGGGGGGGc.....",
-    "....WGGGGGGGGcc.....",
-    "....WGGGGGGGGcc.....",
-    ".....GGGGGGGcc......",
-    "......ssssst........",
+    "........WWGG........",
+    "......WWWWGGGc......",
+    ".....WWWGGGGGGc.....",
+    ".....WWGGGGGGGGc....",
+    ".....WGGGGGGGGGc....",
+    ".....WGGGGGGGGcc....",
+    ".....WGGGGGGGGcc....",
+    "......GGGGGGGcc.....",
+    "........sssst.......",
 ]
 NAARAS_TORSO_FRONT = [
     "....JJJJswsJJJjj....",
-    "...JJ.JJwrwJJj.jj...",
+    "...JJJJJwrwJJjjjj...",
     "...JJ.JJJrJJJj.jj...",
     "...JJ.JJJrJJJj.jj...",
     "...JJ.JJJjJJJj.jj...",
@@ -125,7 +127,7 @@ NAARAS_TORSO_FRONT = [
 ]
 NAARAS_TORSO_BACK = [
     "....JJJJJJJJJjjj....",
-    "...JJ.JJJJJJJj.jj...",
+    "...JJJJJJJJJJjjjj...",
     "...JJ.JJJJJJJj.jj...",
     "...JJ.JJJJJJJj.jj...",
     "...JJ.JJJJJJJj.jj...",
@@ -142,13 +144,23 @@ BRIEFCASE = [
     "DDDDD",
 ]
 BRIEFCASE_ANCHOR = (-2, 2)
-# Golden, with pearl sugar on top; the hand grips its underside.
+BRIEFCASE_BACK_ANCHOR = (-1, 2)
+# Golden, resting on the fingers: it covers the hand's top row.
 PULLA = [
     ".PPP.",
-    "PPsPp",
+    "PPPPp",
     "ppppp",
 ]
 PULLA_ANCHOR = (-2, -2)
+HAND = ["st", "st"]
+HAND_UNDER_PULLA = ["..", "st"]
+# From behind the arm hangs in front of the pulla: only its ends show either side.
+PULLA_BACK = [
+    "...P",
+    "P..p",
+    "p..p",
+]
+PULLA_BACK_ANCHOR = (-1, -2)
 
 
 def look(naaras: bool = False) -> Look:
@@ -159,6 +171,8 @@ def look(naaras: bool = False) -> Look:
         torso_front=NAARAS_TORSO_FRONT if naaras else TORSO_FRONT,
         torso_back=NAARAS_TORSO_BACK if naaras else TORSO_BACK,
         held=(Held(BRIEFCASE, BRIEFCASE_ANCHOR, trails=False), Held(PULLA, PULLA_ANCHOR, trails=False)),
+        hands=(HAND, HAND_UNDER_PULLA),
+        hand_inset=1 if naaras else 0,
     )
 
 
@@ -166,7 +180,8 @@ def draw_back_row(sheet: Image.Image, front: Look, naaras: bool) -> None:
     """From behind the briefcase is in the hand on the right and the pulla on the left."""
     back = look(naaras)
     back.palette = front.palette
-    back.held = (Held(PULLA, PULLA_ANCHOR, trails=False), Held(BRIEFCASE, BRIEFCASE_ANCHOR, trails=False))
+    back.held = (Held(PULLA_BACK, PULLA_BACK_ANCHOR, trails=False), Held(BRIEFCASE, BRIEFCASE_BACK_ANCHOR, trails=False))
+    back.hands = None
     check(back)
     sheet.paste((0, 0, 0, 0), (0, FRAME, FRAME * 4, FRAME * 2))
     for column, bob in enumerate((0, -1, 0)):

@@ -1,17 +1,20 @@
 """Draws Persuasiakas: bald, a bit bulky and always cross. A shining bald head, brows pulled
-down into a glare, flushed cheeks, a frown and a goatee; a sage bomber jacket open over a
+down into a glare, flushed cheeks, a frown and a goatee; a blue bomber jacket open over a
 white T-shirt and a belly, jeans and boots, and a pistol grip out of the waistband (he fires
 it into the air when he does not get his beer: the fifth row, `shoot`). Wider at the shoulders and the belly than
 the other customers, a bigger head and a row taller (lift 1), so the bulk reads in the
-silhouette.
+silhouette. The shapes and the jacket's colours follow the user's hand-edited idle frames.
 
-    python dev/tools/sprites/make_persuasiakas.py [--preview out.png]
+    python dev/tools/sprites/make_persuasiakas.py [--preview out.png] [--force-aseprite]
 """
 
 import argparse
 from pathlib import Path
 
-from customer_sheet import BOX_X, HANDS_REST, Look, draw_frame, draw_sheet, hex_color, paint, save
+from customer_sheet import BOX_X, HANDS_REST, TEXTURE_DIR, Look, draw_frame, draw_sheet, hex_color, paint, save
+from make_orveltaja import write_aseprite_source
+
+NAME = "persuasiakas_32"
 
 PALETTE = {
     "s": hex_color("ead4aa"),  # skin
@@ -23,9 +26,8 @@ PALETTE = {
     "a": hex_color("733e39"),  # brows, goatee
     "g": hex_color("c28569"),  # stubble
     "k": hex_color("3e2731"),  # mouth
-    "L": hex_color("3e8948"), "J": hex_color("265c42"), "j": hex_color("193c3e"),  # bomber
-    "O": hex_color("f77622"),  # bomber lining
-    "c": hex_color("c0cbdc"),  # T-shirt shade
+    "L": hex_color("3b7bb9"), "J": hex_color("3b7bb9"), "j": hex_color("2f659a"),  # bomber
+    "O": hex_color("6ca9e5"),  # bomber lining
     "M": hex_color("8b9bb4"), "m": hex_color("3a4466"),  # pistol
     "Y": hex_color("fee761"), "W": hex_color("ffffff"), "o": hex_color("f77622"),  # muzzle flash
     "G": hex_color("8b9bb4"), "q": hex_color("c0cbdc"),  # gun smoke
@@ -48,40 +50,41 @@ HEAD_FRONT = [
     "......gaaaaag.......",
 ]
 HEAD_BACK = [
-    ".....shhssssst......",
-    "....shsssssssst.....",
-    "....ssssssssstt.....",
-    "....ssssssssstt.....",
-    "....ssssssssstt.....",
-    "...ssssssssssstt....",
-    "....ssssssssstt.....",
-    "....sssssssssst.....",
-    "....ttttttttttt.....",
-    ".....sssssssst......",
+    "......shhssssst.....",
+    ".....shsssssssst....",
+    ".....ssssssssstt....",
+    ".....ssssssssstt....",
+    ".....ssssssssstt....",
+    "....ssssssssssstt...",
+    ".....ssssssssstt....",
+    ".....sssssssssst....",
+    ".....ttttttttttt....",
+    ".......sssssss......",
 ]
 # The jacket hangs open: the lining shows down both edges and the T-shirt stretches over
 # the belly, which pushes out past the hem.
 TORSO_FRONT = [
-    ".....LJOhhhhOJj.....",
-    "...LLLJOhhhhOJjjj...",
-    "..LLLLJOhhhhOJJjjj..",
-    ".LLLLJJOhhhhOJJjjjj.",
-    ".LLL.LJOhhhhcOj.jjj.",
-    ".LLL.JOhhhhhhcO.jjj.",
-    ".LLj.JOhhhhhhcO.jjj.",
-    ".....JJhhhhhhcJM....",
-    ".....jjjjjjjjjMm....",
+    ".....LLOhhhhOjj.....",
+    "...LLLLOhhhhOjjjj...",
+    "..LLLLLOhhhhOjjjjj..",
+    ".LLLLLLOhhhhOjjjjjj.",
+    ".LLL.LLOhhhhOOj.jjj.",
+    ".LLL.LOhhhhhhOj.jjj.",
+    ".LLL.LOhhhhhhOj.jjj.",
+    ".....LOhhhhhhOjM....",
+    ".....LLLLLLLLLMm....",
 ]
+# From behind the pistol grip is at the other side of the waistband.
 TORSO_BACK = [
-    ".....LJJJJJJJjj.....",
-    "...LLLJJJJJJJJjjj...",
-    "..LLLLJJJJJJJJJjjj..",
-    ".LLLLJJJJJJJJJJjjjj.",
-    ".LLL.LJJJJJJJJj.jjj.",
-    ".LLL.LJJJJJJJJj.jjj.",
-    ".LLj.LJJJJJJJJj.jjj.",
-    ".....JJJJJJJJJj.....",
-    ".....jjjjjjjjjj.....",
+    ".....LLLLLLLLjj.....",
+    "...LLLLLLLLLLjjjj...",
+    "..LLLLLLLLLLLjjjjj..",
+    ".LLLLLLLLLLLLjjjjjj.",
+    ".LLL.LLLLLLLLLj.jjj.",
+    ".LLL.LLLLLLLLLj.jjj.",
+    ".LLL.LLLLLLLLLj.jjj.",
+    "....MLLLLLLLLLj.....",
+    "....mMLLLLLLLLj.....",
 ]
 
 
@@ -99,15 +102,23 @@ def look() -> Look:
 # The shoot row: his right arm is drawn by the action grids, so this torso has only the
 # shoulder on that side, and the pistol is out of the waistband.
 TORSO_SHOOTING = [
-    ".....LJOhhhhOJj.....",
-    "...LLLJOhhhhOJjjj...",
-    "..LLLLJOhhhhOJJjjj..",
-    ".LLLLJJOhhhhOJJjj...",
-    ".LLL.LJOhhhhcOj.....",
-    ".LLL.JOhhhhhhcO.....",
-    ".LLj.JOhhhhhhcO.....",
-    ".....JJhhhhhhcJ.....",
-    ".....jjjjjjjjjj.....",
+    ".....LLOhhhhOjj.....",
+    "...LLLLOhhhhOjjjj...",
+    "..LLLLLOhhhhOjjjjj..",
+    ".LLLLLLOhhhhOjjjj...",
+    ".LLL.LLOhhhhOOj.....",
+    ".LLL.LOhhhhhhOj.....",
+    ".LLL.LOhhhhhhOj.....",
+    ".....LOhhhhhhOj.....",
+    ".....LLLLLLLLLj.....",
+]
+# With the arm straight up the shoulder rises with it and leaves the side.
+TORSO_SHOOTING_RAISED = [
+    ".....LLOhhhhOjjj....",
+    TORSO_SHOOTING[1],
+    "..LLLLLOhhhhOjjj....",
+    ".LLLLLLOhhhhOjjj....",
+    *TORSO_SHOOTING[4:],
 ]
 # Shouting as he fires: the mouth opens wide in the frown.
 HEAD_SHOUTING = HEAD_FRONT[:7] + [
@@ -209,17 +220,20 @@ def _draw_shoot_row(sheet, character: Look) -> None:
             paint(frame, palette, action, BOX_X + ACTION_LEFT_COLUMN, upper + ACTION_TOP_ROW)
 
         draw_frame(sheet, character, column, SHOOT_ROW, back=False, bob=0, legs="stand",
-                   hands=(HANDS_REST[0], None), torso=TORSO_SHOOTING, head=head, extra=arm)
+                   hands=(HANDS_REST[0], None), torso=TORSO_SHOOTING if column == 0 else TORSO_SHOOTING_RAISED,
+                   head=head, extra=arm)
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--preview", type=Path, help="also write a 4x preview here")
+    parser.add_argument("--force-aseprite", action="store_true")
     args = parser.parse_args()
     character = look()
     sheet = draw_sheet(character, extra_rows=1)
     _draw_shoot_row(sheet, character)
-    save({"persuasiakas_32": sheet}, args.preview)
+    save({NAME: sheet}, args.preview)
+    write_aseprite_source(TEXTURE_DIR / f"{NAME}.png", args.force_aseprite)
 
 
 if __name__ == "__main__":

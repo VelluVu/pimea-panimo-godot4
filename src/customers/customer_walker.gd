@@ -96,9 +96,10 @@ func walk_to(target : Vector2) -> void:
 
 
 ## Walks towards the camera to `exit_position`, speeding up. Add the exit to the returned tween.
-func walk_out(exit_position : Vector2) -> Tween:
+func walk_out(exit_position : Vector2, carrying_glass : bool) -> Tween:
 	var duration := CustomerRoute.seconds_left(_owner.global_position, exit_position, data.floor_walk_speed)
-	_begin_steps(Customer.ANIM_WALK_TOWARDS, true, floor_stride())
+	var anim_name : StringName = CustomerHandOffsets.walk_out_animation(_sprite.sprite_frames, carrying_glass, Customer.ANIM_WALK_TOWARDS)
+	_begin_steps(anim_name, true, floor_stride())
 	var tween := _owner.create_tween()
 	PixelStepTween.move(tween, _owner, _owner.global_position, exit_position, duration, art_pixel()).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 	return tween

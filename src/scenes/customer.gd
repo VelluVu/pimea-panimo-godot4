@@ -9,7 +9,7 @@ const ANIM_IDLE : StringName = &"idle"
 const ANIM_IDLE_UP : StringName = &"idle_up"
 const ANIM_WALK_TOWARDS : StringName = &"walk_towards"
 const ANIM_WALK_RIGHT : StringName = &"walk_right"
-const WALK_ANIMATIONS : Array[StringName] = [ANIM_WALK_TOWARDS, ANIM_WALK_RIGHT]
+const WALK_ANIMATIONS : Array[StringName] = [ANIM_WALK_TOWARDS, ANIM_WALK_RIGHT, CustomerHandOffsets.CARRYING_WALK]
 const NO_OFFSETS : Array[Vector2] = []
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
@@ -442,9 +442,10 @@ func leave_counter(pickup_position_override: Vector2 = Vector2.INF) -> void:
 ## Walks from here to `exit_position` and is gone; resume() calls it mid-way.
 func _walk_out(exit_position: Vector2) -> void:
 	_exit_position = exit_position
-	var walk: Tween = _walker.walk_out(exit_position)
+	var carrying_glass: bool = made_purchase and customer_data.carries_glass_out
+	var walk: Tween = _walker.walk_out(exit_position, carrying_glass)
 	if made_purchase:
 		hide_counter_glass()
-		if customer_data.carries_glass_out:
+		if carrying_glass:
 			show_beer_glass()
 	walk.tween_callback(queue_free)
