@@ -7,9 +7,9 @@
 [ext_resource type="PackedScene" uid="uid://l06vc07u2qk7" path="res://src/scenes/ui/olutoppi_window.tscn" id="7_olutoppi"]
 [ext_resource type="PackedScene" path="res://src/scenes/ui/achievements_window.tscn" id="8_ach"]
 [ext_resource type="PackedScene" path="res://src/systems/console/console_panel.tscn" id="9_console"]
+[ext_resource type="Texture2D" uid="uid://qfuflim0qpkd" path="res://assets/textures/ui/logo_wordmark.png" id="logo_wordmark"]
 [ext_resource type="PackedScene" path="res://src/scenes/ui/menu_backdrop.tscn" id="menu_backdrop"]
 [ext_resource type="Script" uid="uid://dldflwygsvloj" path="res://src/ui/season_chip.gd" id="season_chip"]
-[ext_resource type="Texture2D" uid="uid://qfuflim0qpkd" path="res://assets/textures/ui/logo_wordmark.png" id="logo_wordmark"]
 [ext_resource type="Script" uid="uid://bd6sv53a7fn72" path="res://src/systems/toolkit/wide_stage.gd" id="wide_stage"]
 
 [node name="MainMenu" type="Control" unique_id=1468878832]
@@ -173,7 +173,7 @@ layout_mode = 1
 
 [node name="DevConsole" parent="." unique_id=1504833538 instance=ExtResource("9_console")]
 
-[node name="WideStage" type="Node" parent="." node_paths=PackedStringArray("layers", "stage_roots")]
+[node name="WideStage" type="Node" parent="." unique_id=787820637 node_paths=PackedStringArray("layers", "stage_roots")]
 script = ExtResource("wide_stage")
 move_world = false
 layers = [NodePath("../MenuBackdrop")]
