@@ -124,6 +124,8 @@ var game_has_ended : bool = false
 @export var christmas_gifts : Array[ChristmasGift] = []
 ## The SeasonData.id() last announced in this run, so a calendar season gets its toast once.
 @export var announced_season_id : String = ""
+## DayEventData.id() of each once_per_run event that has come in this run.
+@export var seen_once_events : Array[String] = []
 
 ## Runtime only, not saved.
 var resolver : BrewResolver = null

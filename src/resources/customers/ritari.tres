@@ -31,7 +31,6 @@ tip_base_chance = 0.25
 rep_primary_style = 6
 rep_secondary_style = 1
 min_reputation_to_appear = 40
-required_discovered_style = 28
 honour_min_quality = 1.2
 honour_reputation = 12
 honour_animation = &"knight"

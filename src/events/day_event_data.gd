@@ -20,6 +20,8 @@ extends Resource
 ## Set for a morning after: the event comes only the day after this one (Krapulapäivä
 ## after Uudenvuodenaatto), and then at its weight. Null for any day.
 @export var only_after_event : DayEventData = null
+## Comes at most once in a run (Musta perjantai is one day, however long the season is).
+@export var once_per_run : bool = false
 
 @export_group("Kohdistus")
 ## The group visit favoured while the window is open; null for "nothing special".
@@ -92,9 +94,17 @@ func can_follow(previous : DayEventData) -> bool:
 	return previous != null and previous.resource_path == only_after_event.resource_path
 
 
-## The odds of rolling this event today; 0 when it cannot come.
-func weight_for(current : SeasonRules.Season, available_titles : Array, previous : DayEventData) -> float:
+## What Brewery.seen_once_events remembers this event by.
+func id() -> String:
+	return resource_path.get_file().get_basename()
+
+
+## The odds of rolling this event today; 0 when it cannot come. `seen_once` is the run's
+## Brewery.seen_once_events.
+func weight_for(current : SeasonRules.Season, available_titles : Array, previous : DayEventData, seen_once : Array[String] = []) -> float:
 	if not has_audience(available_titles) or not can_come_in(current) or not can_follow(previous):
+		return 0.0
+	if once_per_run and seen_once.has(id()):
 		return 0.0
 	return weight
 

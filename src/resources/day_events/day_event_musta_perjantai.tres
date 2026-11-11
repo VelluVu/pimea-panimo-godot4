@@ -20,6 +20,7 @@ announcement_text = "Musta perjantai! Raaka-aineet ovat koko päivän 20 % halve
 announcement_sound = ExtResource("snd_day_coins")
 weight = 4.0
 season = 2
+once_per_run = true
 featured_group_event = ExtResource("3_group")
 featured_customer_titles = Array[String](["Tarjoushaukka", "Perusasiakas", "Opiskelija"])
 day_perk = SubResource("RunPerk_ale")

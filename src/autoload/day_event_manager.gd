@@ -69,6 +69,7 @@ func _on_day_changed(_new_day : int) -> void:
 	if _active_event == null:
 		return
 
+	_remember_if_once(_active_event)
 	BrewerySignals.day_event_announced.emit(_active_event)
 	_apply_direct_effect(_active_event)
 
@@ -98,6 +99,12 @@ func _set_day_perk(perk : RunPerk) -> void:
 		brewery.set_day_perk(perk)
 
 
+func _remember_if_once(event : DayEventData) -> void:
+	var brewery : Brewery = BrewEngine.current_brewery
+	if brewery != null and event.once_per_run and not brewery.seen_once_events.has(event.id()):
+		brewery.seen_once_events.append(event.id())
+
+
 ## The one-off stock hit; silent when nothing was lost.
 func _apply_direct_effect(event : DayEventData) -> void:
 	var brewery : Brewery = BrewEngine.current_brewery
@@ -117,9 +124,12 @@ func _pick_weighted_event() -> DayEventData:
 	var available_titles : Array = []
 	for customer : CustomerData in CustomerRegistry.get_eligible_customers():
 		available_titles.append(customer.title)
+	var seen_once : Array[String] = []
+	if BrewEngine.current_brewery != null:
+		seen_once = BrewEngine.current_brewery.seen_once_events
 	var weights : Array[float] = []
 	for event : DayEventData in day_event_pool:
-		weights.append(event.weight_for(season, available_titles, _previous_event))
+		weights.append(event.weight_for(season, available_titles, _previous_event, seen_once))
 	return WeightedPicker.pick(day_event_pool, weights) as DayEventData
 
 

@@ -136,6 +136,25 @@ func test_black_friday_sale_leaves_no_resale_profit() -> void:
 	assert_true(event.day_perk.ingredient_price_multiplier >= IngredientPrice.SELL_BACK_RATE)
 
 
+func test_a_once_per_run_event_stops_after_it_has_come() -> void:
+	var event := load("res://src/resources/day_events/day_event_musta_perjantai.tres") as DayEventData
+	var titles : Array = event.featured_customer_titles
+	var season : SeasonRules.Season = SeasonRules.Season.BLACK_MONTH
+	assert_true(event.once_per_run)
+	assert_eq(event.weight_for(season, titles, null), event.weight)
+	var other : Array[String] = ["day_event_something_else"]
+	assert_eq(event.weight_for(season, titles, null, other), event.weight, "another event's visit changes nothing")
+	var seen : Array[String] = [event.id()]
+	assert_eq(event.weight_for(season, titles, null, seen), 0.0)
+
+
+func test_an_ordinary_event_can_come_again() -> void:
+	var event := DayEventData.new()
+	event.weight = 2.0
+	var seen : Array[String] = [event.id()]
+	assert_eq(event.weight_for(SeasonRules.Season.NONE, [], null, seen), 2.0)
+
+
 ## The Christmas days come only at Christmas, and each brings its day perk.
 func test_the_christmas_days_stay_in_their_season() -> void:
 	for file : String in ["day_event_joulurauha", "day_event_tonttujen_pikkujoulut", "day_event_tapaninpaiva"]:
