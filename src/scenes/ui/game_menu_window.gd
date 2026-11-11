@@ -31,6 +31,7 @@ const CONFIRM_NO_TEXT: String = "Ei"
 @onready var no_button: Button = %NoButton
 @onready var content: MarginContainer = $MarginContainer
 
+var _brewery: Brewery = null
 ## True from opening until resuming or leaving, also while a sub-window hides the menu.
 var _is_open: bool = false
 var _close_button: WindowCloseButton
@@ -75,6 +76,11 @@ func _ready() -> void:
 	hide()
 
 
+## GUI calls this on every new run or loaded save.
+func bind_brewery(brewery: Brewery) -> void:
+	_brewery = brewery
+
+
 func _open() -> void:
 	if _is_open:
 		return
@@ -108,8 +114,7 @@ func _close() -> void:
 
 
 func _is_run_over() -> bool:
-	var brewery: Brewery = BrewEngine.current_brewery
-	return brewery != null and brewery.game_has_ended
+	return _brewery != null and _brewery.game_has_ended
 
 
 ## Esc resumes, or backs out of the confirmation; only while visible, so a sub-window gets

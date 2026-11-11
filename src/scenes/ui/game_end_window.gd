@@ -32,6 +32,7 @@ const MENU_BUTTON_TEXT : String = "Valikkoon"
 @onready var online_score_panel : OnlineScorePanel = %OnlineScorePanel
 @onready var close_button : Button = %CloseButton
 
+var _brewery : Brewery = null
 ## Set per ending: the close button continues the run or opens the game menu.
 var _is_season_end : bool = false
 
@@ -43,9 +44,13 @@ func _ready() -> void:
 	hide()
 
 
+## GUI calls this on every new run or loaded save.
+func bind_brewery(brewery : Brewery) -> void:
+	_brewery = brewery
+
+
 func _on_game_ended(ending_type : String) -> void:
-	var brewery := BrewEngine.current_brewery
-	if brewery == null:
+	if _brewery == null:
 		return
 
 	match ending_type:
@@ -69,7 +74,7 @@ func _on_game_ended(ending_type : String) -> void:
 			message_label.text = ""
 
 	_is_season_end = ending_type in [DayRules.ENDING_SURVIVED, DayRules.ENDING_SEASON_OVER]
-	_show_score(brewery, ending_type)
+	_show_score(ending_type)
 	note_label.visible = _is_season_end
 	note_label.text = CONTINUE_NOTE
 	close_button.text = CONTINUE_BUTTON_TEXT if _is_season_end else MENU_BUTTON_TEXT
@@ -79,11 +84,11 @@ func _on_game_ended(ending_type : String) -> void:
 
 
 ## Endings after continuing are off the record, so no score, rank or renown shows.
-func _show_score(brewery : Brewery, ending_type : String) -> void:
-	var on_record : bool = not brewery.has_continued_past_survival
+func _show_score(ending_type : String) -> void:
+	var on_record : bool = not _brewery.has_continued_past_survival
 	breakdown_label.visible = on_record
 	result_label.visible = on_record
-	var entry : Dictionary = RunScore.entry_for(brewery, ending_type)
+	var entry : Dictionary = RunScore.entry_for(_brewery, ending_type)
 	online_score_panel.show_for(entry, on_record)
 	if not on_record:
 		return
@@ -109,8 +114,7 @@ func _on_close_button_pressed() -> void:
 ## Resumes the scored run for reduced nightly renown. Clears game_has_ended so a bust can
 ## still end it; has_continued_past_survival stops the season ending firing again.
 func _continue_run() -> void:
-	var brewery := BrewEngine.current_brewery
-	if brewery == null:
+	if _brewery == null:
 		return
-	brewery.game_has_ended = false
-	brewery.has_continued_past_survival = true
+	_brewery.game_has_ended = false
+	_brewery.has_continued_past_survival = true

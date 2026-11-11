@@ -54,6 +54,7 @@ const FIRST_BREW_HINT_FADE_SECONDS: float = 1.2
 ## Panimokirja's guide explains the rest.
 const LVV_HINT_TEXT: String = "LVV-riski nousee. Panimokirjan ohjeet kertovat, miten sen pitää kurissa."
 
+var _brewery: Brewery = null
 var _toasts: ToastStack
 var _group_visit_banner: BannerPresenter
 var _day_event_banner: BannerPresenter
@@ -70,6 +71,11 @@ var _day_event_announce_serial: int = 0
 ## [icon, text].
 var _pending_achievements: Array[Array] = []
 var _pending_customers: Array[Array] = []
+
+
+## GUI calls this on every new run or loaded save.
+func bind_brewery(brewery: Brewery) -> void:
+	_brewery = brewery
 
 
 ## Builds the presenters. `goals_panel` is pointed at when the first-brew hint ends.
@@ -120,7 +126,7 @@ func start() -> void:
 
 	# Shown while the clock is stopped, so the missing customers do not read as a bug.
 	# Pate tells it himself when he guides the first brew.
-	if TimeManager.day_timer.is_stopped() and not GuideParts.is_on(GuideParts.Part.CELLAR, BrewEngine.current_brewery):
+	if TimeManager.day_timer.is_stopped() and not GuideParts.is_on(GuideParts.Part.CELLAR, _brewery):
 		BrewerySignals.brewery_state_changed.connect(_on_first_brew_hint_state_changed)
 		# Turned on in Asetukset, the tutorial takes over the moment Pate starts talking.
 		GUISignals.guide_spoke.connect(_on_guide_spoke_over_hint)
@@ -130,11 +136,10 @@ func start() -> void:
 ## Once per season and run: a run started in Halloween and still open in Black Month
 ## hears of both.
 func _announce_new_season() -> void:
-	var brewery: Brewery = BrewEngine.current_brewery
 	var season: SeasonData = SeasonCatalog.current()
-	if brewery == null or season == null or brewery.announced_season_id == season.id():
+	if _brewery == null or season == null or _brewery.announced_season_id == season.id():
 		return
-	brewery.announced_season_id = season.id()
+	_brewery.announced_season_id = season.id()
 	_show_toast(SeasonText.started(season))
 
 
@@ -219,7 +224,7 @@ func _on_day_event_announced(event: DayEventData) -> void:
 
 
 ## Dismisses the hint once the clock starts, handing off to DailyGoalsPanel.
-func _on_first_brew_hint_state_changed(_brewery: Brewery) -> void:
+func _on_first_brew_hint_state_changed(_changed: Brewery) -> void:
 	if TimeManager.day_timer.is_stopped():
 		return
 	_end_first_brew_hint()
@@ -239,8 +244,7 @@ func _end_first_brew_hint() -> void:
 
 
 func _on_kegs_emptied(_count: int) -> void:
-	var brewery : Brewery = BrewEngine.current_brewery
-	if brewery != null and brewery.machine_active(CellarMachines.KEG_WASHER):
+	if _brewery != null and _brewery.machine_active(CellarMachines.KEG_WASHER):
 		return
 	_show_toast(tr(KEG_TO_WASH_TOAST_TEXT))
 

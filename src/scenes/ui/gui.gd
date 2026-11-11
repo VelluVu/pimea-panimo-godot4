@@ -30,10 +30,12 @@ const HINT_ANCHORS_BESIDE_VIEWS: Vector3 = Vector3(0.6, 0.98, 0.62)
 @onready var customer_book_window : CustomerBookWindow = $CustomerBookWindow
 
 var _views : GuiViewSwitcher
-var _announcer : GuiAnnouncer
 var _special_events : SpecialEventPresenter
-## Built in code; made here so the first bind_brewery reaches it before it joins the tree.
+# Built in code; made here so the first bind_brewery reaches them before they join the tree.
+var _announcer : GuiAnnouncer = GuiAnnouncer.new()
+var _next_step_guide : NextStepGuide = NextStepGuide.new()
 var _brew_day_window : BrewDayWindow = BrewDayWindow.new()
+var _keg_wash_window : KegWashWindow = KegWashWindow.new()
 ## Built in code; Pate's talk points at it.
 var upgrades_button : TooltipButton
 var _unlock_cards : PopupCardStack
@@ -50,13 +52,15 @@ var _unlock_cards : PopupCardStack
 @onready var lvv_raid_window : Control = $LvvRaidWindow
 @onready var daily_goals_panel : DailyGoalsPanel = $DailyGoalsPanel
 @onready var day_recap_window : DayRecapWindow = $DayRecapWindow
+@onready var game_end_window : GameEndWindow = $GameEndWindow
+@onready var game_menu_window : GameMenuWindow = $GameMenuWindow
+@onready var dirty_keg_pile_label : DirtyKegPileLabel = $DirtyKegPileLabel
 
 
 func _ready() -> void:
 	# First, before any view opens and reads it.
 	_bind_brewery(BrewEngine.current_brewery)
 	BrewEngine.brewery_changed.connect(_bind_brewery)
-	_announcer = GuiAnnouncer.new()
 	add_child(_announcer)
 	_announcer.setup(discovery_toast, group_visit_banner, day_event_banner, first_brew_hint_banner, daily_goals_panel, day_recap_window, _make_unlock_cards())
 	_special_events = SpecialEventPresenter.new(special_events_container)
@@ -74,7 +78,7 @@ func _ready() -> void:
 	add_child(TouchTooltip.new())
 	add_child(PortraitNotice.new())
 	add_child(_brew_day_window)
-	add_child(KegWashWindow.new())
+	add_child(_keg_wash_window)
 	add_child(FocusPause.new())
 	var touch_hints := TouchHints.new()
 	add_child(touch_hints)
@@ -122,6 +126,12 @@ func _bind_brewery(brewery : Brewery) -> void:
 	customer_book_window.bind_brewery(brewery)
 	recipe_library_window.bind_brewery(brewery)
 	_brew_day_window.bind_brewery(brewery)
+	_keg_wash_window.bind_brewery(brewery)
+	_announcer.bind_brewery(brewery)
+	_next_step_guide.bind_brewery(brewery)
+	game_end_window.bind_brewery(brewery)
+	game_menu_window.bind_brewery(brewery)
+	dirty_keg_pile_label.bind_brewery(brewery)
 	top_panel_resources.bind_brewery(brewery)
 
 
@@ -138,7 +148,7 @@ func _add_upgrades_button() -> void:
 	var side : float = game_speed_button.get_combined_minimum_size().y
 	upgrades_button.custom_minimum_size = Vector2(side, side)
 	upgrades_button.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	upgrades_button.pressed.connect(_toggle_cellar_upgrades_window)
+	upgrades_button.pressed.connect(_toggle_window.bind(cellar_upgrades_window, GUISignals.cellar_upgrades_requested))
 	top_panel_resources.add_child(upgrades_button)
 	top_panel_resources.move_child(upgrades_button, game_speed_button.get_index())
 
@@ -177,11 +187,10 @@ func _add_next_step_guide() -> void:
 	# Hidden until the guide's first line, so that showing it lifts the cards.
 	speech.hide()
 	speech.visibility_changed.connect(_lift_unlock_cards.bind(speech))
-	var guide := NextStepGuide.new()
 	var places : Dictionary = {brewery = brewery_entrance_panel, shop = shop_entrance_panel, recipe_shelf = recipe_shelf_label, brewery_book = $CustomerBookLabel, warehouse = $WarehouseLabel, upgrades = upgrades_button}
-	guide.setup(pointer, speech, daily_goals_panel, places, recipe_library_window, brewery_view, shop_view, brew_preparation_panel)
-	guide.keep_clear_of_speech(cellar_upgrades_window)
-	add_child(guide)
+	_next_step_guide.setup(pointer, speech, daily_goals_panel, places, recipe_library_window, brewery_view, shop_view, brew_preparation_panel)
+	_next_step_guide.keep_clear_of_speech(cellar_upgrades_window)
+	add_child(_next_step_guide)
 
 
 ## `anchors` is the hint's left anchor, right anchor and vertical centre. It wraps, since
@@ -254,16 +263,16 @@ func _on_shortcut_pressed(action: StringName) -> void:
 		InputManager.ACTION_TOGGLE_WAREHOUSE:
 			_toggle_warehouse_view()
 		InputManager.ACTION_TOGGLE_RUN_EFFECTS:
-			_toggle_run_effects_window()
+			_toggle_window(run_effects_window, GUISignals.run_effects_requested)
 		InputManager.ACTION_TOGGLE_RECEIPT_LOG:
-			_toggle_receipt_log_window()
+			_toggle_window(sale_receipt_log_window, GUISignals.receipt_log_requested)
 		# These two pause the tree, so they close on their own key themselves.
 		InputManager.ACTION_TOGGLE_RECIPE_LIBRARY:
 			GUISignals.recipe_library_requested.emit()
 		InputManager.ACTION_TOGGLE_BREWERY_BOOK:
 			GUISignals.customer_book_requested.emit()
 		InputManager.ACTION_TOGGLE_UPGRADES:
-			_toggle_cellar_upgrades_window()
+			_toggle_window(cellar_upgrades_window, GUISignals.cellar_upgrades_requested)
 		# Not while the top bar is hidden, so the speed never changes unseen.
 		InputManager.ACTION_GAME_SPEED:
 			if game_speed_button.is_visible_in_tree():
@@ -282,21 +291,10 @@ func _close_any_open_views() -> bool:
 	if _views.is_away_from_bar():
 		_views.show_bar()
 		closed_something = true
-	if recipe_library_window.visible:
-		recipe_library_window.hide()
-		closed_something = true
-	if run_effects_window.visible:
-		run_effects_window.hide()
-		closed_something = true
-	if cellar_upgrades_window.visible:
-		cellar_upgrades_window.hide()
-		closed_something = true
-	if sale_receipt_log_window.visible:
-		sale_receipt_log_window.hide()
-		closed_something = true
-	if customer_book_window.visible:
-		customer_book_window.hide()
-		closed_something = true
+	for window : Control in [recipe_library_window, run_effects_window, cellar_upgrades_window, sale_receipt_log_window, customer_book_window]:
+		if window.visible:
+			window.hide()
+			closed_something = true
 	if warehouse_view.visible:
 		warehouse_view.hide_warehouse_view()
 		closed_something = true
@@ -311,26 +309,12 @@ func _toggle_warehouse_view() -> void:
 		warehouse_view.show_warehouse_view()
 
 
-## Routed through the button's signal so the window refreshes its content on open.
-func _toggle_run_effects_window() -> void:
-	if run_effects_window.visible:
-		run_effects_window.hide()
+## Opens through the window's signal so it refreshes its content.
+func _toggle_window(window : Control, open_requested : Signal) -> void:
+	if window.visible:
+		window.hide()
 	else:
-		GUISignals.run_effects_requested.emit()
-
-
-func _toggle_cellar_upgrades_window() -> void:
-	if cellar_upgrades_window.visible:
-		cellar_upgrades_window.hide()
-	else:
-		GUISignals.cellar_upgrades_requested.emit()
-
-
-func _toggle_receipt_log_window() -> void:
-	if sale_receipt_log_window.visible:
-		sale_receipt_log_window.hide()
-	else:
-		GUISignals.receipt_log_requested.emit()
+		open_requested.emit()
 
 
 func _on_shop_button_pressed() -> void:

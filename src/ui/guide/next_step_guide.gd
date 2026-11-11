@@ -24,6 +24,7 @@ const SPEECH_RECT : Rect2 = Rect2(36, 302, 524, 54)
 ## their rows scroll.
 const BOOK_GAP : float = 4.0
 
+var _brewery : Brewery = null
 var _pointer : NextStepPointer
 var _speech : GuideSpeechBox
 var _goals_panel : DailyGoalsPanel
@@ -78,7 +79,6 @@ func _ready() -> void:
 	# The recipe book pauses the game while this walks through it.
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	BrewerySignals.brewery_state_changed.connect(_queue_refresh.unbind(1))
-	BrewEngine.brewery_changed.connect(_on_brewery_changed)
 	GUISignals.bar_view_entered.connect(_queue_refresh)
 	GUISignals.bar_view_exited.connect(_queue_refresh)
 	GUISignals.brew_day_opened.connect(_set_brew_day_open.bind(true))
@@ -92,10 +92,13 @@ func _ready() -> void:
 	_queue_refresh()
 
 
-func _on_brewery_changed(_brewery : Brewery) -> void:
+## GUI calls this on every new run or loaded save, the first time before setup().
+func bind_brewery(brewery : Brewery) -> void:
+	_brewery = brewery
 	_recipe_read = false
 	_talk = -1
-	_queue_refresh()
+	if is_inside_tree():
+		_queue_refresh()
 
 
 func _on_library_page_changed(style : int) -> void:
@@ -120,7 +123,7 @@ func _on_speech_next() -> void:
 		_talk += 1
 		if _talk >= CellarGuideText.Talk.size():
 			_talk = -1
-			GuideParts.finish(GuideParts.Part.TALK, BrewEngine.current_brewery)
+			GuideParts.finish(GuideParts.Part.TALK, _brewery)
 	_queue_refresh()
 
 
@@ -153,17 +156,16 @@ func _queue_refresh() -> void:
 
 func _refresh() -> void:
 	_refresh_queued = false
-	var brewery : Brewery = BrewEngine.current_brewery
-	if brewery == null:
+	if _brewery == null:
 		_show(NextStepRules.Step.NONE)
 		return
 
-	var inventory : Inventory = brewery.inventory
-	if _first_brew_done(brewery):
+	var inventory : Inventory = _brewery.inventory
+	if _first_brew_done():
 		_show(NextStepRules.after_first_brew(not inventory.batches_on_serve().is_empty(), not inventory.fermenting.is_empty()))
 		return
 
-	var bought_any : bool = brewery.lifetime_malt_kg_bought > 0 or brewery.tutorial_bought_yeast
+	var bought_any : bool = _brewery.lifetime_malt_kg_bought > 0 or _brewery.tutorial_bought_yeast
 	# Both buy buttons follow the same recipe; the brewery's updates even while hidden.
 	var missing : bool = not _brewing_view.buy_missing_button.disabled
 	var can_brew : bool = not _preparation_panel.start_brew_button.disabled
@@ -172,8 +174,8 @@ func _refresh() -> void:
 
 
 ## One-way: a run past its first brew never sees the pointer again, even with empty kegs.
-func _first_brew_done(brewery : Brewery) -> bool:
-	return brewery.tutorial_brewed_kotikalja or not brewery.inventory.brew_batches.is_empty() or not brewery.inventory.fermenting.is_empty()
+func _first_brew_done() -> bool:
+	return _brewery.tutorial_brewed_kotikalja or not _brewery.inventory.brew_batches.is_empty() or not _brewery.inventory.fermenting.is_empty()
 
 
 func _view() -> NextStepRules.View:
@@ -194,18 +196,17 @@ func _show(step : NextStepRules.Step) -> void:
 	elif _talk >= 0:
 		_point_at_talk(_talk)
 	# The pointer belongs to Pate's route: with "Ohita opastus" on, nothing points.
-	elif GuideParts.is_on(GuideParts.Part.CELLAR, BrewEngine.current_brewery):
+	elif GuideParts.is_on(GuideParts.Part.CELLAR, _brewery):
 		_point_at_step(step)
 	else:
 		_point_at_step(NextStepRules.Step.NONE)
 
 
 func _show_speech(step : NextStepRules.Step) -> void:
-	var brewery : Brewery = BrewEngine.current_brewery
 	# The talk starts after the first brew, and again from the start after a reload.
-	if _talk < 0 and not _forgetful and not _brew_day_open and GuideParts.is_on(GuideParts.Part.TALK, brewery):
+	if _talk < 0 and not _forgetful and not _brew_day_open and GuideParts.is_on(GuideParts.Part.TALK, _brewery):
 		_talk = 0
-	var line : String = CellarGuideText.of(step) if GuideParts.is_on(GuideParts.Part.CELLAR, brewery) else ""
+	var line : String = CellarGuideText.of(step) if GuideParts.is_on(GuideParts.Part.CELLAR, _brewery) else ""
 	if _forgetful:
 		line = CellarGuideText.FORGETFUL_TEXT
 	elif _talk >= 0:

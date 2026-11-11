@@ -30,6 +30,7 @@ const SOUND_TOOL : StringName = &"tool"
 const SOUND_DONE : StringName = &"done"
 const SOUND_STAGE_DONE : StringName = &"stage_done"
 
+var _brewery : Brewery = null
 var _view : KegWashView
 var _session : KegWashSession
 var _rng : RandomNumberGenerator = RandomNumberGenerator.new()
@@ -55,11 +56,15 @@ func _ready() -> void:
 	GUISignals.keg_wash_requested.connect(open)
 
 
+## GUI calls this on every new run or loaded save.
+func bind_brewery(brewery : Brewery) -> void:
+	_brewery = brewery
+
+
 func open() -> void:
-	var brewery : Brewery = BrewEngine.current_brewery
-	if brewery == null or visible or brewery.inventory.dirty_keg_count() == 0:
+	if _brewery == null or visible or _brewery.inventory.dirty_keg_count() == 0:
 		return
-	_keg_total = brewery.inventory.dirty_keg_count()
+	_keg_total = _brewery.inventory.dirty_keg_count()
 	_keg_number = 0
 	show()
 	move_to_front()
@@ -79,8 +84,7 @@ func _close() -> void:
 
 
 func _next_keg() -> void:
-	var brewery : Brewery = BrewEngine.current_brewery
-	if brewery == null or _keg_number >= _keg_total or brewery.inventory.dirty_keg_count() == 0:
+	if _brewery == null or _keg_number >= _keg_total or _brewery.inventory.dirty_keg_count() == 0:
 		_close()
 		return
 	_keg_number += 1
