@@ -35,6 +35,10 @@ const TOAST_MAX_HOLD_SECONDS: float = 7.0
 ## A burst at once would otherwise stack down the screen.
 const TOAST_MAX_VISIBLE: int = 2
 const DISCOVERY_TOAST_FADE_SECONDS: float = 0.6
+## Beside the open brewery or shop window, under the first-brew hint and above Pate's box.
+const TOAST_BESIDE_VIEWS_ANCHOR_LEFT: float = 0.6
+const TOAST_BESIDE_VIEWS_ANCHOR_RIGHT: float = 0.98
+const TOAST_BESIDE_VIEWS_TOP: float = 240.0
 
 const GROUP_VISIT_BANNER_FLASH_SECONDS: float = 0.2
 const GROUP_VISIT_BANNER_HOLD_SECONDS: float = 4.0
@@ -103,6 +107,8 @@ func setup(toast_label: Label, group_visit_label: Label, day_event_label: Label,
 
 ## Connects every event source and shows the first-brew hint on a fresh run.
 func start() -> void:
+	GUISignals.bar_view_exited.connect(_toasts.place.bind(TOAST_BESIDE_VIEWS_ANCHOR_LEFT, TOAST_BESIDE_VIEWS_ANCHOR_RIGHT, TOAST_BESIDE_VIEWS_TOP))
+	GUISignals.bar_view_entered.connect(_toasts.place_at_template)
 	BrewerySignals.style_discovered.connect(_on_style_discovered)
 	AchievementManager.achievement_unlocked.connect(_on_achievement_unlocked)
 	CustomerRegistry.customer_unlocked.connect(_on_customer_unlocked)

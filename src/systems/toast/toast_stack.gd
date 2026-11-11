@@ -46,6 +46,17 @@ func _init(template: Label, flash_seconds: float, hold_seconds: float, fade_seco
 	template.hide()
 
 
+## Moves the stack, the toasts already up included.
+func place(anchor_left: float, anchor_right: float, top: float) -> void:
+	_stack.anchor_left = anchor_left
+	_stack.anchor_right = anchor_right
+	_stack.offset_top = top
+
+
+func place_at_template() -> void:
+	place(_template.anchor_left, _template.anchor_right, _template.offset_top)
+
+
 func show_toast(text: String) -> void:
 	var count: int = 1
 	for presenter: BannerPresenter in _running():
@@ -61,6 +72,8 @@ func show_toast(text: String) -> void:
 func _present(shown_text: String, text: String, count: int) -> void:
 	var label: Label = _template.duplicate() as Label
 	label.show()
+	# A narrow place() would otherwise push long text off the screen.
+	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	label.custom_minimum_size.y = _template.offset_bottom - _template.offset_top
 	_stack.add_child(label)
 	# Newest on top: early-dismissed toasts keep their slot while fading, so appending would
