@@ -2,9 +2,12 @@
 
 [ext_resource type="Script" uid="uid://bucd3sgymdlc4" path="res://src/events/ingredient_donation_event_data.gd" id="1_loan"]
 [ext_resource type="Resource" path="res://src/resources/event_perks/jussin_tukkuhinnat.tres" id="2_perk"]
+[ext_resource type="Texture2D" path="res://assets/textures/event_portraits/ingredient_loan.png" id="portrait_art"]
 
 [resource]
 script = ExtResource("1_loan")
+portrait = ExtResource("portrait_art")
+voice_pitch = 0.9
 event_caller_name = "Naapuripanimon Jussi"
 intro_dialogue = "Meiltä loppui %s kesken kaiken! Voisitko lainata %d kg? Maksan takaisin korkojen kanssa."
 success_dialogue = "Pelastit päiväni! Kiitos avusta."

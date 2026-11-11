@@ -2,9 +2,12 @@
 
 [ext_resource type="Script" uid="uid://ctrwas4g08sal" path="res://src/events/quality_challenge_event_data.gd" id="1_critic"]
 [ext_resource type="Resource" path="res://src/resources/event_perks/arvostelijan_kellarivinkit.tres" id="2_perk"]
+[ext_resource type="Texture2D" path="res://assets/textures/event_portraits/quality_critic.png" id="portrait_art"]
 
 [resource]
 script = ExtResource("1_critic")
+portrait = ExtResource("portrait_art")
+voice_pitch = 1.1
 event_caller_name = "Olutarvostelija Matti"
 intro_dialogue = "Kuulin, että täällä keitetään jotain erikoista. Näytä minulle parhaasi, vähintään {quality} % laatua! Ostan koko erän ja maksan hyvin. Mutta jos lupaat etkä tuo, kirjoitan siitä (-{fail_reputation} mainetta)."
 success_dialogue = "Vaikuttavaa käsityötä! Tästä saa täydet tähdet."

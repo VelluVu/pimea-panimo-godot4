@@ -1,9 +1,12 @@
 [gd_resource type="Resource" script_class="ReputationFavourEventData" format=3]
 
 [ext_resource type="Script" path="res://src/events/reputation_favour_event_data.gd" id="1_favour"]
+[ext_resource type="Texture2D" path="res://assets/textures/event_portraits/brand_deal.png" id="portrait_art"]
 
 [resource]
 script = ExtResource("1_favour")
+portrait = ExtResource("portrait_art")
+voice_pitch = 1.25
 event_caller_name = "Mainostoimiston Pirjo"
 intro_dialogue = "Haluamme kasvosi energiajuomamainokseen! Maksamme {money} €, mutta maineesi kärsii (-{reputation} mainetta)."
 success_dialogue = "Loistavaa! Kuvaukset ovat huomenna. Älä aja partaa."

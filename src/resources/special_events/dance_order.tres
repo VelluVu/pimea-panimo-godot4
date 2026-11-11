@@ -1,9 +1,12 @@
 [gd_resource type="Resource" script_class="BulkOrderEventData" format=3]
 
 [ext_resource type="Script" path="res://src/events/bulk_order_event_data.gd" id="1_event"]
+[ext_resource type="Texture2D" path="res://assets/textures/event_portraits/dance.png" id="portrait_art"]
 
 [resource]
 script = ExtResource("1_event")
+portrait = ExtResource("portrait_art")
+voice_pitch = 0.95
 event_caller_name = "Lavatanssien järjestäjä"
 intro_dialogue = "Lavatansseissa on illalla tuhat janoista! Tarvitaan {servings} annosta bulkkilageria tai kotikaljaa."
 success_dialogue = "Nyt riittää juomaa koko illaksi. Kiitos!"

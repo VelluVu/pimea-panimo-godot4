@@ -21,6 +21,8 @@ const GOOD_COLOR : Color = Color.GREEN
 const BAD_COLOR : Color = Color(1.0, 0.35, 0.3, 1)
 const PERK_COLOR : Color = RunPerk.TIER_COLOR_RARE
 
+const PORTRAIT_GAP : int = 6
+
 @onready var text_label: Label = %SpecialLabel
 @onready var joo_button: Button = %JooButton
 @onready var progress_bar: ProgressBar = %ProgressBar
@@ -33,10 +35,17 @@ var _state: State = State.ASKING
 var _delivery_left: float = 0.0
 var _check_clock: float = 0.0
 var _fade_timer: SceneTreeTimer
+## The portrait's current frame; null for a caller without one.
+var _portrait_frame: AtlasTexture = null
+## Seconds into typing the current text; negative when nothing is being typed.
+var _typing_seconds: float = -1.0
+var _babble_left: float = 0.0
 
 
 func _ready() -> void:
 	text_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	# Wrapped for the whole text from the start, so the lines do not jump while typing.
+	text_label.visible_characters_behavior = TextServer.VC_CHARS_AFTER_SHAPING
 
 	joo_button.visible = true
 	joo_button.pressed.connect(_on_joo_button_pressed)
@@ -45,6 +54,7 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	# The player reads and answers in real seconds, whatever the game speed.
 	var real_delta : float = GameSpeed.real_delta(delta)
+	_advance_typing(real_delta)
 	match _state:
 		State.ASKING:
 			time_left -= real_delta
@@ -69,7 +79,73 @@ func initialize_window(p_data: SpecialEventData, seconds_left: float = -1.0) -> 
 	progress_bar.max_value = event_data.timeout_seconds
 	_show_time(time_left)
 	text_label.text = tr(event_data.event_caller_name) + ": " + event_data.intro_text()
+	_show_portrait()
 	_resize_to_fit_content()
+	# A loaded window is already said.
+	if seconds_left < 0.0:
+		_type_text()
+
+
+## Moves the text into a row beside the caller's portrait; a caller without one keeps the
+## full width.
+func _show_portrait() -> void:
+	if event_data.portrait == null:
+		return
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override(&"separation", PORTRAIT_GAP)
+	var column : Node = text_label.get_parent()
+	column.add_child(row)
+	column.move_child(row, text_label.get_index())
+	_portrait_frame = AtlasTexture.new()
+	_portrait_frame.atlas = event_data.portrait
+	_portrait_frame.region = PortraitTalk.frame_region(false)
+	var portrait := TextureRect.new()
+	portrait.texture = _portrait_frame
+	portrait.stretch_mode = TextureRect.STRETCH_KEEP
+	portrait.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+	portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	row.add_child(portrait)
+	text_label.reparent(row)
+	text_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+
+
+func _type_text() -> void:
+	text_label.visible_characters = 0
+	_typing_seconds = 0.0
+	_babble_left = 0.0
+
+
+func _advance_typing(real_delta: float) -> void:
+	if _typing_seconds < 0.0:
+		return
+	_typing_seconds += real_delta
+	var total: int = text_label.get_total_character_count()
+	var shown: int = PortraitTalk.characters_shown(_typing_seconds, total)
+	text_label.visible_characters = shown
+	_set_mouth(PortraitTalk.is_mouth_open(shown, total))
+	if shown >= total:
+		_stop_typing()
+	else:
+		_babble(real_delta)
+
+
+## Only a caller with a moving mouth babbles, so the stray cat stays quiet.
+func _babble(real_delta: float) -> void:
+	_babble_left -= real_delta
+	if _portrait_frame != null and _babble_left <= 0.0:
+		_babble_left = PortraitTalk.BABBLE_SECONDS
+		GUISignals.special_event_spoke.emit(event_data.voice_pitch)
+
+
+func _stop_typing() -> void:
+	_typing_seconds = -1.0
+	text_label.visible_characters = -1
+	_set_mouth(false)
+
+
+func _set_mouth(is_open: bool) -> void:
+	if _portrait_frame != null:
+		_portrait_frame.region = PortraitTalk.frame_region(is_open)
 
 
 ## Puts a saved window back: still asking, waiting for the goods, or showing the reply.
@@ -80,6 +156,7 @@ func resume(snap: SpecialEventSnapshot) -> void:
 	elif not snap.answer_text.is_empty():
 		_hide_button()
 		_state = State.ANSWERED
+		_stop_typing()
 		text_label.text = snap.answer_text
 		_start_fade_out(snap.fade_left)
 
@@ -132,6 +209,7 @@ func _check_delivery() -> void:
 		return
 	var text: String = tr(event_data.event_caller_name) + ": " + event_data.delivery_text(brewery.inventory)
 	if text != text_label.text:
+		_stop_typing()
 		text_label.text = text
 		_resize_to_fit_content()
 
@@ -162,6 +240,7 @@ func _answer(response: String) -> void:
 	_state = State.ANSWERED
 	text_label.text = _caller_line(response)
 	_resize_to_fit_content()
+	_type_text()
 	_start_fade_out()
 
 

@@ -1,9 +1,12 @@
 [gd_resource type="Resource" script_class="RepairOfferEventData" format=3]
 
 [ext_resource type="Script" path="res://src/events/repair_offer_event_data.gd" id="1_event"]
+[ext_resource type="Texture2D" path="res://assets/textures/event_portraits/electrician.png" id="portrait_art"]
 
 [resource]
 script = ExtResource("1_event")
+portrait = ExtResource("portrait_art")
+voice_pitch = 0.85
 event_caller_name = "Sähkömies Seppo"
 intro_dialogue = "Sulakkeet on vähän niin ja näin... {cost} € ja korjaan."
 success_dialogue = "No niin, nyt pysyy virrat päällä."

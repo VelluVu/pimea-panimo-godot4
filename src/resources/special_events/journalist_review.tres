@@ -1,9 +1,12 @@
 [gd_resource type="Resource" script_class="ReputationFavourEventData" format=3]
 
 [ext_resource type="Script" path="res://src/events/reputation_favour_event_data.gd" id="1_journalist"]
+[ext_resource type="Texture2D" path="res://assets/textures/event_portraits/journalist.png" id="portrait_art"]
 
 [resource]
 script = ExtResource("1_journalist")
+portrait = ExtResource("portrait_art")
+voice_pitch = 1.2
 event_caller_name = "Toimittaja Liisa"
 intro_dialogue = "Teen juttua paikallisista pienpanimoista. Saisinko haastatella sinua lehteen?"
 success_dialogue = "Tästä tulee hyvä juttu lehteen!"

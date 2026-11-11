@@ -148,6 +148,8 @@ func _connect_signals() -> void:
 	BrewerySignals.critical_gain_shown.connect(play_sfx.bind(bank.sfx_critical_gain).unbind(1))
 	GUISignals.brew_day_sound.connect(_on_brew_day_sound)
 	GUISignals.guide_spoke.connect(_on_guide_spoke)
+	# Pate's sound, but its own signal: guide_spoke also ends the first-brew hint.
+	GUISignals.special_event_spoke.connect(_on_guide_spoke)
 	GUISignals.keg_wash_sound.connect(_on_brew_day_sound)
 	GUISignals.brew_day_loops.connect(_on_brew_day_loops)
 	GUISignals.brew_day_closed.connect(_on_brew_day_loops.bind(0.0, 0.0, false))

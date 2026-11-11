@@ -1,9 +1,12 @@
 [gd_resource type="Resource" script_class="BulkOrderEventData" format=3]
 
 [ext_resource type="Script" path="res://src/events/bulk_order_event_data.gd" id="1_event"]
+[ext_resource type="Texture2D" path="res://assets/textures/event_portraits/kaljakellunta.png" id="portrait_art"]
 
 [resource]
 script = ExtResource("1_event")
+portrait = ExtResource("portrait_art")
+voice_pitch = 1.05
 event_caller_name = "Kellunnan järjestäjä"
 intro_dialogue = "Huomenna kellutaan joella! Tarvitaan {servings} annosta jotain kevyttä ja halpaa. Ei se oo niin tarkkaa, kunhan kelluu."
 success_dialogue = "Nyt riittää koko joelle! Nähdään, jos ei uida liian kauas."

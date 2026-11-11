@@ -7,6 +7,11 @@ extends Resource
 
 
 @export var event_caller_name: String = "Kaljabisnesmies"
+## Beside the caller's words: two 48 px frames side by side, mouth shut and open (see
+## PortraitTalk). Null shows the words alone.
+@export var portrait: Texture2D
+## The babble while the caller talks, as CustomerData.voice_pitch.
+@export var voice_pitch: float = 1.0
 @export var intro_dialogue: String = "Nyt pitäs saada reippaasti kaljaa kaikille, eli bulkkia vähintään 20 annosta!"
 @export var success_dialogue: String = "Nyt bileet pystyyn!"
 @export var fail_dialogue: String = "Eikö täältä räkälästä saa ees bulkkii kaikille?"

@@ -40,6 +40,8 @@ signal brew_day_closed()
 ## Vanha mestari Pate says a bit of his line; repeats while the line types.
 @warning_ignore("unused_signal")
 signal guide_spoke(voice_pitch : float)
+## A special event's caller talks in their window, for the babble sound.
+signal special_event_spoke(voice_pitch : float)
 ## A one-shot brew day sound, named by a BrewDaySound constant.
 @warning_ignore("unused_signal")
 signal brew_day_sound(sound : StringName)

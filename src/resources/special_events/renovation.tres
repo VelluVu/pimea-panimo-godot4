@@ -7,9 +7,12 @@
 [ext_resource type="Resource" path="res://src/resources/event_perks/remontti_lampo.tres" id="5_heat"]
 [ext_resource type="Resource" path="res://src/resources/event_perks/remontti_keittio.tres" id="6_kitchen"]
 [ext_resource type="Resource" path="res://src/resources/event_perks/remontti_salalokero.tres" id="7_hideout"]
+[ext_resource type="Texture2D" path="res://assets/textures/event_portraits/renovation.png" id="portrait_art"]
 
 [resource]
 script = ExtResource("1_reno")
+portrait = ExtResource("portrait_art")
+voice_pitch = 0.85
 event_caller_name = "Remonttihenkilö Pasi"
 intro_dialogue = "Nyt tarjolla {cost} € remppa... laitetaas tilat kuntoon, niin on mukavampi jatkaa bisneksiä... köh"
 success_dialogue = "Valmista tuli! Kyllä nyt kelpaa."

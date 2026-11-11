@@ -1,9 +1,12 @@
 [gd_resource type="Resource" script_class="ReputationFavourEventData" format=3]
 
 [ext_resource type="Script" path="res://src/events/reputation_favour_event_data.gd" id="1_favour"]
+[ext_resource type="Texture2D" path="res://assets/textures/event_portraits/lvv_favour.png" id="portrait_art"]
 
 [resource]
 script = ExtResource("1_favour")
+portrait = ExtResource("portrait_art")
+voice_pitch = 1.0
 event_caller_name = "Valtuutettu Kettunen"
 intro_dialogue = "Tunnen LVV:n tarkastajan. Hän unohtaa paperisi, jos panimosi nimi komeilee vaalimainoksessani. Hinta: {reputation} mainetta, LVV-riski laskee {risk}."
 success_dialogue = "Sovittu. Nimesi kampanjaan, paperisi silppuriin."

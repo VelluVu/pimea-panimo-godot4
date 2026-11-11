@@ -11,7 +11,7 @@ signal line_typed
 
 const NAME_TEXT : String = "Vanha mestari Pate"
 const NEXT_BUTTON_TEXT : String = "Jatka"
-const PORTRAIT : Texture2D = preload("res://assets/textures/characters/vanha_mestari_portrait_48.png")
+const PORTRAIT : Texture2D = preload("res://assets/textures/event_portraits/old_master.png")
 const PORTRAIT_SIZE : Vector2 = Vector2(48, 48)
 const PADDING : float = 4.0
 const GAP : float = 4.0

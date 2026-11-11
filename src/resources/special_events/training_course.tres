@@ -5,9 +5,12 @@
 [ext_resource type="Resource" path="res://src/resources/event_perks/kurssi_tuplatipit.tres" id="2_tips"]
 [ext_resource type="Resource" path="res://src/resources/event_perks/kurssi_pikapalvelu.tres" id="3_flow"]
 [ext_resource type="Resource" path="res://src/resources/event_perks/kurssi_asiakaspalvelu.tres" id="4_service"]
+[ext_resource type="Texture2D" path="res://assets/textures/event_portraits/training_course.png" id="portrait_art"]
 
 [resource]
 script = ExtResource("1_course")
+portrait = ExtResource("portrait_art")
+voice_pitch = 1.15
 event_caller_name = "Kouluttaja Keke"
 intro_dialogue = "Baarimikoille olisi pikainen kurssi tarjolla, {cost} € maksaisi... et tule katumaan."
 success_dialogue = "Kurssi käyty! Nyt osaat jotain uutta."
