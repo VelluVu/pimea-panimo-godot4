@@ -102,6 +102,25 @@ func test_combine_stacking_mixes_both_modes_in_one_total() -> void:
 	assert_true(is_equal_approx(result, 1.4))
 
 
+func test_combine_stacking_adds_a_repeated_bonus_instead_of_compounding() -> void:
+	var perk := RunPerk.new()
+	perk.tip_income_multiplier = 1.5
+	var other := RunPerk.new()
+	other.tip_income_multiplier = 1.2
+
+	# 1.5 * 1.2 from the two different perks, then +0.5 for each repeat of the first.
+	var result := RunPerk.combine_stacking(1.0, [perk, other, perk, perk], func(p: RunPerk) -> float: return p.tip_income_multiplier)
+	assert_true(is_equal_approx(result, 2.8), "got %s" % result)
+
+
+func test_combine_stacking_keeps_multiplying_a_repeated_reduction() -> void:
+	var perk := RunPerk.new()
+	perk.ingredient_price_multiplier = 0.5
+
+	var result := RunPerk.combine_stacking(1.0, [perk, perk, perk], func(p: RunPerk) -> float: return p.ingredient_price_multiplier)
+	assert_true(is_equal_approx(result, 0.125), "got %s" % result)
+
+
 func test_combine_stacking_respects_a_non_neutral_base() -> void:
 	var perk := RunPerk.new()
 	perk.reputation_gain_multiplier = 1.1

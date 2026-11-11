@@ -26,7 +26,15 @@ func test_multiplier_is_neutral_with_nothing_active() -> void:
 func test_multiplier_stacks_the_perks() -> void:
 	var perk := RunPerk.new()
 	perk.tip_income_multiplier = 1.5
-	assert_true(is_equal_approx(_stats([perk, perk]).multiplier(PerkStatsScript.TIP_INCOME), 2.25))
+	var other := RunPerk.new()
+	other.tip_income_multiplier = 1.2
+	assert_true(is_equal_approx(_stats([perk, other]).multiplier(PerkStatsScript.TIP_INCOME), 1.8))
+
+
+func test_multiplier_adds_a_repeated_pick() -> void:
+	var perk := RunPerk.new()
+	perk.tip_income_multiplier = 1.5
+	assert_true(is_equal_approx(_stats([perk, perk]).multiplier(PerkStatsScript.TIP_INCOME), 2.0))
 
 
 func test_multiplier_without_modifier_counterpart_starts_at_one() -> void:
@@ -151,7 +159,7 @@ func test_total_lines_show_the_combined_change_as_plain_percent() -> void:
 	prices.ingredient_price_multiplier = 0.9
 	var lines : PackedStringArray = _stats([tips, tips, prices]).total_lines()
 	assert_eq(lines, PackedStringArray([
-		StringContainer.PERK_TIP_STAT_STRING % "32 %",
+		StringContainer.PERK_TIP_STAT_STRING % "30 %",
 		StringContainer.PERK_INGREDIENT_PRICE_STAT_STRING % "10 %",
 	]))
 

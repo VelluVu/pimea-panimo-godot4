@@ -81,15 +81,20 @@ enum Tier { COMMON, RARE, LEGENDARY }
 @export var is_permanent: bool = false
 
 
-## One stat over a list of perks: multiplied, or added for stacks_additively perks. Static
-## for tests.
+## One stat over a list of perks: multiplied, or added for stacks_additively perks. A bonus
+## picked again also adds, so repeat picks grow linearly instead of compounding; repeated
+## reductions keep multiplying, which never reaches zero. Static for tests.
 static func combine_stacking(base : float, perks : Array[RunPerk], field_getter : Callable) -> float:
 	var multiplier : float = base
 	var additive_bonus : float = 0.0
+	var seen : Dictionary = {}
 
 	for perk : RunPerk in perks:
 		var value : float = field_getter.call(perk)
-		if perk.stacks_additively:
+		var key : String = perk.resource_path if not perk.resource_path.is_empty() else str(perk.get_instance_id())
+		var repeat : bool = seen.has(key)
+		seen[key] = true
+		if perk.stacks_additively or (repeat and value > 1.0):
 			additive_bonus += value - 1.0
 		else:
 			multiplier *= value
