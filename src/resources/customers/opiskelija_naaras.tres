@@ -16,6 +16,7 @@ also_likes = Array[int]([6])
 sprite_frames = ExtResource("2_sprite")
 hand_offsets = Array[Vector2]([Vector2(-13, -42), Vector2(-5, -46), Vector2(-13, -42), Vector2(-17, -50)])
 voice_pitch = 1.365
+dialogue_intro = "Moi! Opintotuki kilahti tilille, vuokra saa odottaa. Mikä täällä on halvinta?"
 dialogue_success = "Jes, kunnon oluet!"
 dialogue_fallback = "Noni."
 dialogue_wrong_style = "Näillä mennään."

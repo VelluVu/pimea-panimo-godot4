@@ -22,6 +22,7 @@ randomize_shoes = false
 hand_offsets = Array[Vector2]([Vector2(-13, -48), Vector2(2, -57), Vector2(-13, -49), Vector2(-13, -53)])
 voice_pitch = 1.04
 dialogue_intro = "Don on kiinnostunut liiketoiminnastanne. Näytä, mitä teillä on."
+dialogue_no_match = "Ei mitään Donille? Hieno kellari. Olisi ikävää, jos sille sattuisi jotain."
 dialogue_success = "Don pitää tästä. Homma hoidossa, ei tarvii huolehtia tarkastajista hetkeen."
 dialogue_fallback = "Käy tällä kertaa."
 dialogue_wrong_style = "Don lähettää kiitokset."
