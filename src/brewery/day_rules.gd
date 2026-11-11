@@ -13,6 +13,8 @@ const DAILY_WATER_COST : int = 3
 const SURVIVAL_DAY_TARGET : int = 15
 const ENDING_SURVIVED : String = "survived"
 const ENDING_SEASON_OVER : String = "season_over"
+const ENDING_BUSTED : String = "busted"
+const ENDING_BANKRUPT : String = "bankrupt"
 
 ## LVV risk shed each night. Without it about half of all runs were busted however
 ## carefully they sold.

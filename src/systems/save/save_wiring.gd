@@ -11,7 +11,7 @@ const SAVE_VERSION: int = 6
 
 ## Endings that finish the run for good; the season endings are left out, since play can go
 ## on.
-const RUN_ENDING_TYPES: PackedStringArray = ["busted", "bankrupt", "demo_over"]
+const RUN_ENDING_TYPES: PackedStringArray = [DayRules.ENDING_BUSTED, DayRules.ENDING_BANKRUPT, DemoRules.ENDING_DEMO_OVER]
 
 
 func _init() -> void:

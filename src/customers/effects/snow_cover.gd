@@ -22,7 +22,7 @@ func _ready() -> void:
 	_sprite = get_parent() as AnimatedSprite2D
 	var width : int = _current_edge().size()
 	_cells.resize(width)
-	for x in width:
+	for x : int in width:
 		var roll : float = randf()
 		_cells[x] = Cell.BARE if roll < BARE_CHANCE else (Cell.HEAP if roll < BARE_CHANCE + HEAP_CHANCE else Cell.SNOW)
 
@@ -34,7 +34,7 @@ func _process(_delta : float) -> void:
 
 func _draw() -> void:
 	var tops : PackedInt32Array = _current_edge()
-	for x in mini(tops.size(), _cells.size()):
+	for x : int in mini(tops.size(), _cells.size()):
 		if _cells[x] == Cell.BARE or tops[x] < 0:
 			continue
 		var cell : Vector2 = _cell_at(x, tops[x], tops.size())
@@ -48,7 +48,7 @@ func _draw() -> void:
 func shake(share : float, floor_y : float) -> void:
 	var tops : PackedInt32Array = _current_edge()
 	var falling := PackedVector2Array()
-	for x in mini(tops.size(), _cells.size()):
+	for x : int in mini(tops.size(), _cells.size()):
 		if _cells[x] == Cell.BARE or (share < 1.0 and randf() >= share):
 			continue
 		if tops[x] >= 0:

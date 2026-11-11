@@ -54,16 +54,16 @@ func _on_game_ended(ending_type : String) -> void:
 		return
 
 	match ending_type:
-		"busted":
+		DayRules.ENDING_BUSTED:
 			title_label.text = TITLE_BUSTED
 			message_label.text = MESSAGE_BUSTED
-		"bankrupt":
+		DayRules.ENDING_BANKRUPT:
 			title_label.text = TITLE_BANKRUPT
 			message_label.text = MESSAGE_BANKRUPT
-		"survived":
+		DayRules.ENDING_SURVIVED:
 			title_label.text = TITLE_SURVIVED
 			message_label.text = MESSAGE_SURVIVED
-		"season_over":
+		DayRules.ENDING_SEASON_OVER:
 			title_label.text = TITLE_SEASON_OVER
 			message_label.text = tr(MESSAGE_SEASON_OVER) % Brewery.SURVIVAL_MIN_REPUTATION
 		DemoRules.ENDING_DEMO_OVER:

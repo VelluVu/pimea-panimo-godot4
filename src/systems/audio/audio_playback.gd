@@ -44,11 +44,11 @@ var _last_played_msec: Dictionary = {}
 
 
 func _ready() -> void:
-	for i in range(sfx_pool_size):
+	for i : int in range(sfx_pool_size):
 		# A sound that is playing when a window pauses the tree would freeze until it
 		# closes, which silences the click of every button that opens one.
 		_sfx_pool.append(_add_player(sfx_bus))
-	for i in range(world_pool_size):
+	for i : int in range(world_pool_size):
 		_world_pool.append(_add_world_player())
 	_music_player = _add_player(music_bus)
 	# The web's default sample playback lost track of a looping song, so the menu music

@@ -62,7 +62,7 @@ func _on_day_changed(_new_day : int) -> void:
 
 
 func _refresh_rows() -> void:
-	for child in rows_vbox.get_children():
+	for child : Node in rows_vbox.get_children():
 		child.queue_free()
 
 	if _brewery == null:
@@ -79,7 +79,7 @@ func _refresh_rows() -> void:
 		return
 
 	# Newest first, so the latest sale is visible without scrolling.
-	for i in range(receipts.size() - 1, -1, -1):
+	for i : int in range(receipts.size() - 1, -1, -1):
 		rows_vbox.add_child(_build_row(receipts[i]))
 
 

@@ -22,11 +22,11 @@ const TOTAL_LINE : String = "Pisteet: %d"
 ## Endesga 32: gold, silver and bronze for the podium.
 const PODIUM_COLORS : Array[Color] = [Color("feae34"), Color("c0cbdc"), Color("e4a672")]
 const ENDING_COLORS : Dictionary = {
-	"survived": Color("feae34"),
-	"season_over": Color("63c74d"),
-	"busted": Color("e43b44"),
-	"bankrupt": Color("8b9bb4"),
-	"demo_over": Color("2ce8f5"),
+	DayRules.ENDING_SURVIVED: Color("feae34"),
+	DayRules.ENDING_SEASON_OVER: Color("63c74d"),
+	DayRules.ENDING_BUSTED: Color("e43b44"),
+	DayRules.ENDING_BANKRUPT: Color("8b9bb4"),
+	DemoRules.ENDING_DEMO_OVER: Color("2ce8f5"),
 	"": Color("f77622"),
 }
 ## The theme's Label color.
@@ -35,15 +35,15 @@ const DEFAULT_COLOR : Color = Color("ecdcb8")
 
 static func ending_label(ending_type : String) -> String:
 	match ending_type:
-		"survived":
+		DayRules.ENDING_SURVIVED:
 			return UiText.of(ENDING_SURVIVED)
-		"season_over":
+		DayRules.ENDING_SEASON_OVER:
 			return UiText.of(ENDING_SEASON_OVER)
-		"demo_over":
+		DemoRules.ENDING_DEMO_OVER:
 			return UiText.of(ENDING_DEMO_OVER)
-		"busted":
+		DayRules.ENDING_BUSTED:
 			return UiText.of(ENDING_BUSTED)
-		"bankrupt":
+		DayRules.ENDING_BANKRUPT:
 			return UiText.of(ENDING_BANKRUPT)
 		"":
 			return UiText.of(ENDING_IN_PROGRESS)

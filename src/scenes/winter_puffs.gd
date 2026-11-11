@@ -39,7 +39,7 @@ func _ready() -> void:
 
 
 func _process(delta : float) -> void:
-	for i in range(_ages.size() - 1, -1, -1):
+	for i : int in range(_ages.size() - 1, -1, -1):
 		_ages[i] += delta
 		var is_snow : bool = _floors[i] != INF
 		if _ages[i] >= (SNOW_SECONDS if is_snow else BREATH_SECONDS):
@@ -59,7 +59,7 @@ func _process(delta : float) -> void:
 
 
 func _draw() -> void:
-	for i in _ages.size():
+	for i : int in _ages.size():
 		var is_snow : bool = _floors[i] != INF
 		var life : float = _ages[i] / (SNOW_SECONDS if is_snow else BREATH_SECONDS)
 		var color : Color = SNOW_COLOR if is_snow else BREATH_COLOR
@@ -71,21 +71,21 @@ func _draw() -> void:
 
 
 func _on_snow_stamped_off(feet : Vector2) -> void:
-	for i in SNOW_BITS_PER_STOMP:
+	for i : int in SNOW_BITS_PER_STOMP:
 		var start : Vector2 = feet + Vector2(randf_range(-SNOW_SPREAD_PX, SNOW_SPREAD_PX), -BIT_PX)
 		var hop : Vector2 = Vector2(randf_range(-SNOW_HOP_SPEED.x, SNOW_HOP_SPEED.x), -randf_range(0.5, 1.0) * SNOW_HOP_SPEED.y)
 		_add(start, hop, feet.y + randf_range(0.0, SNOW_LAND_DEPTH_PX))
 
 
 func _on_snow_shaken_off(spots : PackedVector2Array, floor_y : float) -> void:
-	for spot in spots:
+	for spot : Vector2 in spots:
 		var drift : Vector2 = Vector2(randf_range(-SHAKEN_DRIFT.x, SHAKEN_DRIFT.x), -randf_range(0.0, SHAKEN_DRIFT.y))
 		_add(spot, drift, floor_y + randf_range(0.0, SNOW_LAND_DEPTH_PX))
 
 
 func _on_breath_puffed(mouth : Vector2) -> void:
 	var side : float = 1.0 if randf() < 0.5 else -1.0
-	for i in BREATH_BITS:
+	for i : int in BREATH_BITS:
 		var drift : Vector2 = Vector2(side * randf_range(0.3, 1.0) * BREATH_SPEED.x, -randf_range(0.4, 1.0) * BREATH_SPEED.y)
 		_add(mouth + Vector2(randf_range(-BIT_PX, BIT_PX), randf_range(-BIT_PX, BIT_PX)), drift, INF)
 

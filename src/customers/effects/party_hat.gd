@@ -38,6 +38,7 @@ static func position_for(frame : Texture2D, offset : Vector2, mirrored : bool) -
 	var middle : int = top.x
 	if mirrored:
 		middle = frame.get_width() - middle
+	@warning_ignore("integer_division")
 	return offset + Vector2(middle - HAT_SIZE.x / 2, top.y - HAT_SIZE.y + SINK_ROWS)
 
 
@@ -46,6 +47,7 @@ static func position_for(frame : Texture2D, offset : Vector2, mirrored : bool) -
 static func head_top(image : Image) -> Vector2i:
 	var used : Rect2i = image.get_used_rect()
 	if not used.has_area():
+		@warning_ignore("integer_division")
 		return Vector2i(image.get_width() / 2, 0)
 	var left : int = used.end.x
 	var right : int = used.position.x
@@ -54,4 +56,5 @@ static func head_top(image : Image) -> Vector2i:
 			if image.get_pixel(x, y).a > 0.0:
 				left = mini(left, x)
 				right = maxi(right, x + 1)
+	@warning_ignore("integer_division")
 	return Vector2i((left + right) / 2, used.position.y)

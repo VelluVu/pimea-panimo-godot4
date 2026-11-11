@@ -191,12 +191,12 @@ func _parse_ingredient_amount(args: PackedStringArray) -> Dictionary:
 
 
 func _find_ingredient_by_name(query : String) -> IngredientData:
-	for id in IngredientDatabase.sorted_ids:
+	for id : int in IngredientDatabase.sorted_ids:
 		var data : IngredientData = IngredientDatabase.database[id]
 		if _names_of(data).any(func(name: String) -> bool: return name.begins_with(query)):
 			return data
 
-	for id in IngredientDatabase.sorted_ids:
+	for id : int in IngredientDatabase.sorted_ids:
 		var data : IngredientData = IngredientDatabase.database[id]
 		if _names_of(data).any(func(name: String) -> bool: return name.contains(query)):
 			return data

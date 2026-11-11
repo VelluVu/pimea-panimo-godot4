@@ -59,7 +59,7 @@ const STAT_SPOILED_BATCHES : StringName = &"spoiled_batches"
 const STRONG_ABV_OVER : float = 7.0
 const DARK_EBC_MIN : int = 30
 
-const ENDING_SURVIVED : String = "survived"
+const ENDING_SURVIVED : String = DayRules.ENDING_SURVIVED
 
 const ACHIEVEMENT_FOLDER_PATH : String = "res://src/resources/achievements/"
 

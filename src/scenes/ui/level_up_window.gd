@@ -32,7 +32,7 @@ var _blockers : Dictionary = {} # StringName -> true
 
 
 func _ready() -> void:
-	for i in range(cards_hbox.get_child_count()):
+	for i : int in range(cards_hbox.get_child_count()):
 		var card : Button = cards_hbox.get_child(i)
 		_card_buttons.append(card)
 		_card_icon_labels.append(card.get_node("CardVBox/IconLabel"))
@@ -86,7 +86,7 @@ func _on_brewery_changed(brewery : Brewery) -> void:
 func _show_gifts() -> void:
 	_showing_gifts = true
 	title_label.text = tr(GIFT_TITLE)
-	for i in range(_card_buttons.size()):
+	for i : int in range(_card_buttons.size()):
 		_card_buttons[i].visible = i < _gift_count
 		_card_icon_labels[i].text = GIFT_ICON
 		_card_header_labels[i].text = tr(GIFT_HEADER_FORMAT) % (i + 1)
@@ -136,7 +136,7 @@ func _show_next_pending_level() -> void:
 	title_label.text = tr(TITLE_FORMAT) % level
 	_offered_perks = PerkRegistry.get_random_perks(CARD_COUNT)
 
-	for i in range(_card_buttons.size()):
+	for i : int in range(_card_buttons.size()):
 		var has_perk : bool = i < _offered_perks.size()
 		_card_buttons[i].visible = has_perk
 		if not has_perk:

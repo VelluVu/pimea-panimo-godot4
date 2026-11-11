@@ -32,7 +32,7 @@ static func get_random_perks(count : int) -> Array[RunPerk]:
 	var result : Array[RunPerk] = []
 	var take : int = mini(count, remaining.size())
 
-	for i in range(take):
+	for i : int in range(take):
 		var total_weight : int = 0
 		for perk : RunPerk in remaining:
 			total_weight += TIER_WEIGHTS.get(perk.tier, 1)

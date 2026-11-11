@@ -18,7 +18,7 @@ static func pick(items: Array, weights: Array[float], roll: float = randf()) -> 
 
 	var target: float = roll * total_weight
 	var cumulative: float = 0.0
-	for i in range(items.size()):
+	for i : int in range(items.size()):
 		cumulative += weights[i]
 		if target < cumulative:
 			return items[i]

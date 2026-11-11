@@ -79,7 +79,7 @@ func check_for_raid() -> void:
 	BrewerySignals.brewery_state_changed.emit(brewery)
 
 	if brewery.raid_count >= raid_limit(brewery):
-		brewery.trigger_ending("busted")
+		brewery.trigger_ending(DayRules.ENDING_BUSTED)
 		return
 
 	brewery.check_bankruptcy()

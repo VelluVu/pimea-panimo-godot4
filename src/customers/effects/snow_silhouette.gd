@@ -25,14 +25,14 @@ static func top_edge(image : Image) -> PackedInt32Array:
 	var tops := PackedInt32Array()
 	tops.resize(image.get_width())
 	var highest : int = image.get_height()
-	for x in image.get_width():
+	for x : int in image.get_width():
 		tops[x] = -1
-		for y in image.get_height():
+		for y : int in image.get_height():
 			if image.get_pixel(x, y).a >= ALPHA_THRESHOLD:
 				tops[x] = y
 				highest = mini(highest, y)
 				break
-	for x in tops.size():
+	for x : int in tops.size():
 		if tops[x] > highest + MAX_DROP_ROWS:
 			tops[x] = -1
 	return tops

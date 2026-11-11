@@ -23,7 +23,7 @@ func _initialize_storage_nodes() -> void:
 	_empty_label.modulate = EMPTY_TEXT_COLOR
 	_empty_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	ingredient_list_vbox.add_child(_empty_label)
-	for id in IngredientDatabase.display_ids():
+	for id : int in IngredientDatabase.display_ids():
 		var ingredient: IngredientData = IngredientDatabase.database[id]
 		
 		var new_label := TooltipLabel.new()
@@ -48,7 +48,7 @@ func _update_ingredient_list() -> void:
 	var inventory : Inventory = BrewEngine.current_brewery.inventory
 	var any_shown : bool = false
 
-	for id in IngredientDatabase.display_ids():
+	for id : int in IngredientDatabase.display_ids():
 		var ingredient : IngredientData = IngredientDatabase.database[id]
 		var label: Label = storage_labels[id]
 		var item : InventoryItem = null

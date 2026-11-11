@@ -45,7 +45,7 @@ func get_random_customer_data() -> CustomerData:
 
 	var brewery : Brewery = BrewEngine.current_brewery
 	var eligible_customers : Array[CustomerData] = []
-	for customer in customer_pool:
+	for customer : CustomerData in customer_pool:
 		if is_eligible(customer) and not _kept_away(customer, brewery):
 			eligible_customers.append(customer)
 
@@ -55,7 +55,7 @@ func get_random_customer_data() -> CustomerData:
 	var day_event : DayEventData = DayEventManager.get_active_event()
 	if day_event != null and not day_event.featured_customer_titles.is_empty() and randf() < day_event.solo_customer_bias_chance:
 		var featured : Array[CustomerData] = []
-		for customer in eligible_customers:
+		for customer : CustomerData in eligible_customers:
 			if day_event.featured_customer_titles.has(customer.title):
 				featured.append(customer)
 		if not featured.is_empty():
@@ -107,7 +107,7 @@ func get_customer_for_style(style: BeerStyle.Style) -> CustomerData:
 	var primary_matches : Array[CustomerData] = []
 	var secondary_matches : Array[CustomerData] = []
 
-	for customer in customer_pool:
+	for customer : CustomerData in customer_pool:
 		if customer.randomizes_preference or customer.rolls_favourite or customer.picks_at_random:
 			continue
 		if not is_eligible(customer):

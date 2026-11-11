@@ -12,7 +12,7 @@ const SERVINGS_PER_POINT : int = 2
 const SURVIVAL_BONUS : int = 1500
 ## Endings that close the brewery: no points for reputation or worth, so a failed run never
 ## outscores one that made it.
-const FAILED_ENDINGS : PackedStringArray = ["busted", "bankrupt"]
+const FAILED_ENDINGS : PackedStringArray = [DayRules.ENDING_BUSTED, DayRules.ENDING_BANKRUPT]
 ## Points per euro of worth (money and cellar upgrades), so buying one never lowers the score.
 const WORTH_POINTS_PER_EURO : float = 0.5
 const MONEY_WORTH_SHARE : float = 0.5

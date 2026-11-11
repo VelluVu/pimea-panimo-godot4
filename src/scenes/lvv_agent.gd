@@ -71,14 +71,14 @@ func walk_in_and_seize(waypoints : Array[Vector2], skip_seconds : float = 0.0) -
 	tween.tween_callback(_play_animation.bind(ANIM_WALK_TOWARDS, true, stair_stride))
 	_tween_stairs(tween, spawn_pos, waypoints[0])
 
-	for i in range(1, waypoints.size()):
+	for i : int in range(1, waypoints.size()):
 		_tween_leg(tween, waypoints[i - 1], waypoints[i])
 
 	tween.tween_callback(_seize_keg)
 	tween.tween_interval(PICKUP_PAUSE_SECONDS)
 	tween.tween_callback(_show_carried_keg)
 
-	for i in range(waypoints.size() - 1, 0, -1):
+	for i : int in range(waypoints.size() - 1, 0, -1):
 		_tween_leg(tween, waypoints[i], waypoints[i - 1])
 
 	# The return climb uses walk_away, which has no Customer equivalent.
@@ -120,7 +120,7 @@ func _tween_leg(tween : Tween, from_pos : Vector2, to_pos : Vector2) -> void:
 
 func _tween_stairs(tween : Tween, from_pos : Vector2, to_pos : Vector2) -> void:
 	var step_from := from_pos
-	for i in range(1, STAIR_STEPS + 1):
+	for i : int in range(1, STAIR_STEPS + 1):
 		var step_pos := from_pos.lerp(to_pos, float(i) / STAIR_STEPS)
 		PixelStepTween.move(tween, self, step_from, step_pos, STAIR_STEP_DURATION, animated_sprite.scale.x)
 		tween.tween_interval(0.05)

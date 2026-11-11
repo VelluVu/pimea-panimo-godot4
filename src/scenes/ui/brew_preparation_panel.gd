@@ -80,7 +80,7 @@ func _on_recipe_save_rejected(reason : int, same_recipe_name : String) -> void:
 
 
 func _initialize_table_nodes() -> void:
-	for id in IngredientDatabase.display_ids():
+	for id : int in IngredientDatabase.display_ids():
 		var new_label := TooltipLabel.new()
 		new_label.visible = false
 		new_label.mouse_filter = Control.MOUSE_FILTER_STOP
@@ -111,7 +111,7 @@ func _update_table_list_ui() -> void:
 
 	_update_preview(_brewery, prep_contents)
 
-	for id in IngredientDatabase.display_ids():
+	for id : int in IngredientDatabase.display_ids():
 
 		var ingredient: IngredientData = IngredientDatabase.database[id]
 		var label: Label = table_labels[id]

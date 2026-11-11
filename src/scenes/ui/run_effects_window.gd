@@ -64,7 +64,7 @@ func _on_brewery_state_changed(_changed : Brewery) -> void:
 
 
 func _refresh_rows() -> void:
-	for child in rows_vbox.get_children():
+	for child : Node in rows_vbox.get_children():
 		# Out of the box at once, so the height fit does not count it.
 		rows_vbox.remove_child(child)
 		child.queue_free()

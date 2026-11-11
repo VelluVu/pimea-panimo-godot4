@@ -30,7 +30,7 @@ func _on_brewery_state_changed(brewery : Brewery) -> void:
 	_rebuild_items()
 
 	if previously_selected != null:
-		for i in range(item_count):
+		for i : int in range(item_count):
 			if get_item_id(i) < CustomerRegistry.bar_contact_pool.size() and CustomerRegistry.bar_contact_pool[get_item_id(i)] == previously_selected and not is_item_disabled(i):
 				select(i)
 				_sync_own_tooltip()
@@ -45,7 +45,7 @@ func _rebuild_items() -> void:
 	var reputation : int = brewery.reputation if brewery != null else 0
 	_last_reputation_seen = reputation
 
-	for i in range(CustomerRegistry.bar_contact_pool.size()):
+	for i : int in range(CustomerRegistry.bar_contact_pool.size()):
 		var bar : BarContact = CustomerRegistry.bar_contact_pool[i]
 		var is_locked : bool = reputation < bar.required_reputation
 
@@ -59,7 +59,7 @@ func _rebuild_items() -> void:
 
 
 func _select_first_enabled() -> void:
-	for i in range(item_count):
+	for i : int in range(item_count):
 		if not is_item_disabled(i):
 			select(i)
 			_sync_own_tooltip()

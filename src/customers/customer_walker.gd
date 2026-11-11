@@ -140,7 +140,7 @@ func _queue_stair_descent(tween : Tween, from_pos : Vector2, stairs_pos : Vector
 		return
 	tween.tween_callback(_begin_steps.bind(Customer.ANIM_WALK_TOWARDS, true, WalkStepper.stair_stride(from_pos, stairs_pos, steps)))
 	var step_from := from_pos
-	for i in range(1, steps + 1):
+	for i : int in range(1, steps + 1):
 		var step_pos := from_pos.lerp(stairs_pos, float(i) / steps)
 		PixelStepTween.move(tween, _owner, step_from, step_pos, data.stair_step_duration, art_pixel())
 		tween.tween_interval(STAIR_STEP_PAUSE_SECONDS)

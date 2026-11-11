@@ -338,7 +338,7 @@ func check_bankruptcy() -> void:
 			buy_prices[id] = IngredientPrice.unit(ingredient, price_multiplier)
 
 	if BankruptcyRules.is_bankrupt(money, 0, owned_ingredient_amounts(), recipes, buy_prices, sell_prices):
-		trigger_ending("bankrupt")
+		trigger_ending(DayRules.ENDING_BANKRUPT)
 
 
 ## Storage plus what is on the brewing table, id -> amount.

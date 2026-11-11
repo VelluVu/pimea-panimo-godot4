@@ -55,11 +55,13 @@ func _draw() -> void:
 	var slots : Array = PennantLayout.slots(text)
 	for index : int in slots.size():
 		var x : int = slots[index][0]
+		@warning_ignore("integer_division")
 		var top : int = PennantLayout.sag(x + PennantLayout.PENNANT_WIDTH / 2, total) + 1
 		var pair : Array = COLOURS[(index + first_colour) % COLOURS.size()]
 		_draw_pennant(Vector2i(x, top), pair[0], pair[1])
 		var character : String = slots[index][1]
 		var glyph_width : int = roundi(font.get_char_size(character.unicode_at(0), size).x)
+		@warning_ignore("integer_division")
 		var left : int = x + (PennantLayout.PENNANT_WIDTH - glyph_width + 1) / 2
 		draw_char(font, Vector2(left, top + BASELINE_ROW), character, size, LETTER_COLOR)
 

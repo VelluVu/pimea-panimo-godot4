@@ -37,13 +37,13 @@ func _input(event: InputEvent) -> void:
 
 
 func _refresh_tiles() -> void:
-	for child in tiles_grid.get_children():
+	for child : Node in tiles_grid.get_children():
 		child.queue_free()
 
 	var pool: Array[AchievementData] = AchievementManager.achievement_pool
 	var unlocked: Array[AchievementData] = []
 	var locked: Array[AchievementData] = []
-	for achievement in pool:
+	for achievement : AchievementData in pool:
 		if AchievementManager.is_unlocked(achievement.achievement_id):
 			unlocked.append(achievement)
 		else:
@@ -51,9 +51,9 @@ func _refresh_tiles() -> void:
 
 	title_label.text = tr(TITLE_FORMAT) % [unlocked.size(), pool.size()]
 
-	for achievement in unlocked:
+	for achievement : AchievementData in unlocked:
 		_add_tile(achievement, true)
-	for achievement in locked:
+	for achievement : AchievementData in locked:
 		_add_tile(achievement, false)
 
 

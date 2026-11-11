@@ -14,7 +14,7 @@ static func _static_init() -> void:
 	print(StringContainer.FOLDER_SCAN_MESSAGE)
 	build_ingredient_database_recursive(StringContainer.PATH_TO_INGREDIENTS)
 	
-	for id in database.keys():
+	for id : int in database.keys():
 		sorted_ids.append(id)
 	sorted_ids.sort()
 	

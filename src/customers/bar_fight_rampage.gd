@@ -48,7 +48,7 @@ static func play(actor: Node2D, sprite: AnimatedSprite2D, glass_texture: Texture
 	flash.tween_property(sprite, "modulate", RAGE_COLOR, FLASH_SECONDS)
 	flash.tween_property(sprite, "modulate", Color.WHITE, FLASH_SECONDS)
 
-	for i in range(first_stomp, STOMPS):
+	for i : int in range(first_stomp, STOMPS):
 		if on_stomp.is_valid():
 			on_stomp.call(i + 1)
 		var direction: float = 1.0 if i % 2 == 0 else -1.0
@@ -58,7 +58,7 @@ static func play(actor: Node2D, sprite: AnimatedSprite2D, glass_texture: Texture
 		var landed : Vector2 = home + Vector2(STOMP_DISTANCE * direction, 0.0)
 		PixelStepTween.move_property(stomp, actor, &"position", actor.position, lifted, STOMP_SECONDS * 0.5, sprite.scale.x)
 		PixelStepTween.move_property(stomp, actor, &"position", lifted, landed, STOMP_SECONDS * 0.5, sprite.scale.x)
-		for throw in share_of(i, glass_count, STOMPS):
+		for throw : int in share_of(i, glass_count, STOMPS):
 			_throw_glass(actor, glass_texture, direction)
 		await stomp.finished
 
@@ -106,7 +106,7 @@ static func _shatter(glass: Sprite2D) -> void:
 	var at: Vector2 = glass.position
 	glass.queue_free()
 	BrewerySignals.glass_shattered.emit()
-	for i in SHARD_COUNT:
+	for i : int in SHARD_COUNT:
 		var shard := ColorRect.new()
 		shard.size = SHARD_SIZE
 		shard.color = SHARD_COLOR

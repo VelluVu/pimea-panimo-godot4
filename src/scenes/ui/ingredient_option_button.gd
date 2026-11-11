@@ -48,7 +48,7 @@ func _on_brewery_state_changed(_brewery : Brewery) -> void:
 	var previously_selected_id : int = get_item_id(selected) if selected != -1 else -1
 	_rebuild_items()
 
-	for i in range(item_count):
+	for i : int in range(item_count):
 		if get_item_id(i) == previously_selected_id and not is_item_disabled(i):
 			_select(i)
 			_sync_own_tooltip(previously_selected_id)
@@ -166,7 +166,7 @@ func _of_type() -> Array[IngredientData]:
 	var of_type : Array[IngredientData] = []
 	var season : SeasonRules.Season = SeasonRules.now()
 	var owned : Dictionary = _owned()
-	for id in IngredientDatabase.sorted_ids:
+	for id : int in IngredientDatabase.sorted_ids:
 		var ingredient: IngredientData = IngredientDatabase.database[id]
 		if ingredient.type == target_type and (ingredient.is_sold_in(season) or owned.get(id, 0) > 0):
 			of_type.append(ingredient)
@@ -194,7 +194,7 @@ func _owned() -> Dictionary:
 
 
 func _first_enabled_index() -> int:
-	for i in range(item_count):
+	for i : int in range(item_count):
 		if not is_item_disabled(i):
 			return i
 	return -1
@@ -212,7 +212,7 @@ func _on_global_ingredient_changed(ingredient_id: int) -> void:
 	var ingredient: IngredientData = IngredientDatabase.get_item_by_id(ingredient_id)
 
 	if ingredient and ingredient.type == target_type:
-		for i in range(item_count):
+		for i : int in range(item_count):
 			if get_item_id(i) == ingredient_id:
 				_select(i)
 				_sync_own_tooltip(ingredient_id)

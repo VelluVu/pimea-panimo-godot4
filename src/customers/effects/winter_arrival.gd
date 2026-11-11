@@ -29,7 +29,7 @@ static func cover(sprite : AnimatedSprite2D) -> SnowCover:
 ## Takes seconds() of the tween.
 static func queue(tween : Tween, owner : Node2D, sprite : AnimatedSprite2D, snow : SnowCover, data : CustomerData) -> void:
 	var rest_offset : Vector2 = sprite.offset
-	for share in STOMP_SHARES:
+	for share : float in STOMP_SHARES:
 		tween.tween_callback(func() -> void: sprite.offset = rest_offset + Vector2.UP)
 		tween.tween_interval(STOMP_LIFT_SECONDS)
 		tween.tween_callback(_stomp.bind(owner, sprite, rest_offset, snow, share, data.makes_footsteps))

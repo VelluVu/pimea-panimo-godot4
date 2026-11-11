@@ -35,5 +35,6 @@ static func width(text : String) -> int:
 static func sag(x : int, total : int) -> int:
 	if total <= 0:
 		return 0
+	@warning_ignore("integer_division")
 	var index : int = clampi(x * SAG_PROFILE.size() / total, 0, SAG_PROFILE.size() - 1)
 	return SAG_PROFILE[index]

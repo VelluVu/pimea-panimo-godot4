@@ -33,7 +33,7 @@ var _gust_player : AudioStreamPlayer
 
 func _ready() -> void:
 	_layers.append(snow)
-	for i in range(1, SNOW_LAYERS):
+	for i : int in range(1, SNOW_LAYERS):
 		var layer := snow.duplicate() as ColorRect
 		layer.material = snow.material.duplicate()
 		add_child(layer)
@@ -49,7 +49,7 @@ func _ready() -> void:
 
 func _process(delta : float) -> void:
 	var any_falling : bool = false
-	for i in _layers.size():
+	for i : int in _layers.size():
 		if not _layers[i].visible:
 			continue
 		_layer_seconds[i] += delta
@@ -71,11 +71,11 @@ func open() -> void:
 	if _tween != null:
 		_tween.kill()
 	_tween = create_tween()
-	for frame in range(door.frame + 1, open_frames + 1):
+	for frame : int in range(door.frame + 1, open_frames + 1):
 		_tween.tween_property(door, "frame", frame, FRAME_SECONDS)
 	_tween.parallel().tween_property(cold_light, "energy", COLD_LIGHT_ENERGY, COLD_LIGHT_FADE_SECONDS)
 	_tween.tween_interval(HOLD_OPEN_SECONDS)
-	for frame in range(open_frames - 1, -1, -1):
+	for frame : int in range(open_frames - 1, -1, -1):
 		_tween.tween_property(door, "frame", frame, FRAME_SECONDS)
 	_tween.parallel().tween_property(cold_light, "energy", 0.0, COLD_LIGHT_FADE_SECONDS)
 	_let_snow_in(open_frames * FRAME_SECONDS + HOLD_OPEN_SECONDS)
@@ -102,7 +102,7 @@ func _show_for(is_winter : bool) -> void:
 		_tween.kill()
 	door.frame = 0
 	cold_light.energy = 0.0
-	for layer in _layers:
+	for layer : ColorRect in _layers:
 		layer.hide()
 	_layer_seconds.fill(SNOW_SECONDS)
 	set_process(false)

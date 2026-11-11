@@ -12,14 +12,14 @@ var _prefix : String = ""
 
 
 static func attach(label : Label) -> StrikeThrough:
-	var strike := StrikeThrough.new()
-	strike._label = label
-	strike.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	strike.visible = false
-	strike.set_anchors_preset(Control.PRESET_FULL_RECT)
-	label.add_child(strike)
-	label.resized.connect(strike.queue_redraw)
-	return strike
+	var line := StrikeThrough.new()
+	line._label = label
+	line.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	line.visible = false
+	line.set_anchors_preset(Control.PRESET_FULL_RECT)
+	label.add_child(line)
+	label.resized.connect(line.queue_redraw)
+	return line
 
 
 ## `prefix` is the mark at the start of the text, which stays unstruck.

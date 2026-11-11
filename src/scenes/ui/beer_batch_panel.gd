@@ -1,4 +1,4 @@
-class_name BeerPatchPanel
+class_name BeerBatchPanel
 extends VBoxContainer
 
 
@@ -85,109 +85,126 @@ func _fermenting_text(batch : BrewBatch) -> String:
 
 
 func _update_beer_batches_ui() -> void:
-	for child in beer_batch_list_vbox.get_children():
+	for child : Node in beer_batch_list_vbox.get_children():
 		child.queue_free()
 	_fermenting_labels.clear()
-		
-	if BrewEngine.current_brewery == null: 
+
+	if BrewEngine.current_brewery == null:
 		return
-		
+
 	var inventory : Inventory = BrewEngine.current_brewery.inventory
-	var any_bottles_left : bool = false
 	_keg_count_label.text = KegCountText.line(KegRules.tap_count(inventory.total_kegs()), inventory.kegs_in_use(), inventory.total_kegs(), inventory.dirty_keg_count())
 	var on_tap : Array[BrewBatch] = inventory.batches_on_serve()
 
 	for batch : BrewBatch in inventory.fermenting:
-		var fermenting_label := TooltipLabel.new()
-		fermenting_label.mouse_filter = Control.MOUSE_FILTER_STOP
-		fermenting_label.clip_text = true
-		fermenting_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-		fermenting_label.add_theme_font_size_override("font_size", 16)
-		fermenting_label.modulate = Color(1, 1, 1, 0.7)
-		fermenting_label.tooltip_text = FERMENTING_TOOLTIP
-		fermenting_label.text = _fermenting_text(batch)
-		_fermenting_labels[batch] = fermenting_label
-		beer_batch_list_vbox.add_child(fermenting_label)
+		_add_fermenting_row(batch)
 
-	for batch: BrewBatch in inventory.brew_batches:
-
+	var any_bottles_left : bool = false
+	for batch : BrewBatch in inventory.brew_batches:
 		if batch.amount_bottles > 0:
 			any_bottles_left = true
-
-			var name_label := _make_batch_label(batch)
-			name_label.text = NAME_LABEL_STRING % [batch.get_style_name(), NumberText.decimal(batch.get_abv(), 1)]
-			match batch.get_sour_level():
-				FermentationRules.SourLevel.LIGHT:
-					name_label.text = tr(LIGHT_SOUR_LABEL_FORMAT) % name_label.text
-				FermentationRules.SourLevel.CLEAR:
-					name_label.text = tr(SOUR_LABEL_FORMAT) % name_label.text
-				FermentationRules.SourLevel.STRONG:
-					name_label.text = tr(STRONG_SOUR_LABEL_FORMAT) % name_label.text
-			if batch.novelty:
-				name_label.text = tr(NOVELTY_LABEL_FORMAT) % name_label.text
-
-			if batch.beer_style.style == BeerStyle.Style.KOTIKALJA:
-				name_label.modulate = Color.DARK_GRAY
-			elif batch.beer_style.style == BeerStyle.Style.IPA:
-				name_label.modulate = Color.GOLD
-
-			var amount_label := _make_batch_label(batch)
-			amount_label.clip_text = false
-			amount_label.text_overrun_behavior = TextServer.OVERRUN_NO_TRIMMING
-			amount_label.size_flags_horizontal = Control.SIZE_FILL
-			amount_label.custom_minimum_size = Vector2.ZERO
-			var waiting : bool = not batch.held and not on_tap.has(batch)
-			amount_label.text = tr(SPARE_AMOUNT_FORMAT if waiting else AMOUNT_LABEL_STRING) % batch.amount_bottles
-
-			var quality_label := _make_batch_label(batch)
-			quality_label.custom_minimum_size = Vector2.ZERO
-			quality_label.modulate = Color(1, 1, 1, 0.7)
-			quality_label.text = QUALITY_LABEL_STRING % [
-				batch.get_quality_tier_string(),
-				batch.get_aging_trend_icon()
-			]
-
-			var ship_button := TooltipButton.new()
-			ship_button.text = SHIP_BUTTON_TEXT
-			ship_button.tooltip_text = SHIP_BUTTON_TOOLTIP
-			ship_button.custom_minimum_size = ROW_BUTTON_SIZE
-			ship_button.pressed.connect(func():
-				var bar : BarContact = _bar_contact_option_button.get_selected_bar()
-				if bar != null:
-					GUISignals.ship_batch_to_bar_requested.emit(batch, bar)
-			)
-
-			var action_row := HBoxContainer.new()
-			action_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
-			action_row.add_child(amount_label)
-			action_row.add_child(quality_label)
-			action_row.add_child(ship_button)
-
-			var hold_button := TooltipButton.new()
-			hold_button.text = HELD_ICON if batch.held else RELEASED_ICON
-			hold_button.tooltip_text = HOLD_BUTTON_TOOLTIP
-			hold_button.flat = true
-			hold_button.custom_minimum_size = ROW_BUTTON_SIZE
-			hold_button.pressed.connect(func(): GUISignals.batch_hold_toggled.emit(batch))
-			var name_row := HBoxContainer.new()
-			name_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
-			name_row.add_child(name_label)
-			name_row.add_child(hold_button)
-
-			var batch_box := VBoxContainer.new()
-			batch_box.mouse_filter = Control.MOUSE_FILTER_IGNORE
-			batch_box.add_theme_constant_override("separation", 2)
-			batch_box.add_child(name_row)
-			batch_box.add_child(action_row)
-			beer_batch_list_vbox.add_child(batch_box)
+			_add_batch_row(batch, on_tap.has(batch))
 
 	if not any_bottles_left:
-		var empty_label := Label.new()
-		empty_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		empty_label.add_theme_font_size_override("font_size", 16)
-		empty_label.text = EMPTY_INVENTORY_TEXT
-		empty_label.modulate = EMPTY_INVENTORY_COLOR
-		beer_batch_list_vbox.add_child(empty_label)
+		_add_empty_note()
+
+
+func _add_fermenting_row(batch : BrewBatch) -> void:
+	var fermenting_label := TooltipLabel.new()
+	fermenting_label.mouse_filter = Control.MOUSE_FILTER_STOP
+	fermenting_label.clip_text = true
+	fermenting_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	fermenting_label.add_theme_font_size_override("font_size", 16)
+	fermenting_label.modulate = Color(1, 1, 1, 0.7)
+	fermenting_label.tooltip_text = FERMENTING_TOOLTIP
+	fermenting_label.text = _fermenting_text(batch)
+	_fermenting_labels[batch] = fermenting_label
+	beer_batch_list_vbox.add_child(fermenting_label)
+
+
+func _add_batch_row(batch : BrewBatch, is_on_tap : bool) -> void:
+	var batch_box := VBoxContainer.new()
+	batch_box.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	batch_box.add_theme_constant_override("separation", 2)
+	batch_box.add_child(_make_name_row(batch))
+	batch_box.add_child(_make_action_row(batch, is_on_tap))
+	beer_batch_list_vbox.add_child(batch_box)
+
+
+func _make_name_row(batch : BrewBatch) -> HBoxContainer:
+	var name_label := _make_batch_label(batch)
+	name_label.text = _batch_name_text(batch)
+	if batch.beer_style.style == BeerStyle.Style.KOTIKALJA:
+		name_label.modulate = Color.DARK_GRAY
+	elif batch.beer_style.style == BeerStyle.Style.IPA:
+		name_label.modulate = Color.GOLD
+
+	var hold_button := TooltipButton.new()
+	hold_button.text = HELD_ICON if batch.held else RELEASED_ICON
+	hold_button.tooltip_text = HOLD_BUTTON_TOOLTIP
+	hold_button.flat = true
+	hold_button.custom_minimum_size = ROW_BUTTON_SIZE
+	hold_button.pressed.connect(func() -> void: GUISignals.batch_hold_toggled.emit(batch))
+
+	var name_row := HBoxContainer.new()
+	name_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	name_row.add_child(name_label)
+	name_row.add_child(hold_button)
+	return name_row
+
+
+func _batch_name_text(batch : BrewBatch) -> String:
+	var text : String = NAME_LABEL_STRING % [batch.get_style_name(), NumberText.decimal(batch.get_abv(), 1)]
+	match batch.get_sour_level():
+		FermentationRules.SourLevel.LIGHT:
+			text = tr(LIGHT_SOUR_LABEL_FORMAT) % text
+		FermentationRules.SourLevel.CLEAR:
+			text = tr(SOUR_LABEL_FORMAT) % text
+		FermentationRules.SourLevel.STRONG:
+			text = tr(STRONG_SOUR_LABEL_FORMAT) % text
+	if batch.novelty:
+		text = tr(NOVELTY_LABEL_FORMAT) % text
+	return text
+
+
+func _make_action_row(batch : BrewBatch, is_on_tap : bool) -> HBoxContainer:
+	var amount_label := _make_batch_label(batch)
+	amount_label.clip_text = false
+	amount_label.text_overrun_behavior = TextServer.OVERRUN_NO_TRIMMING
+	amount_label.size_flags_horizontal = Control.SIZE_FILL
+	amount_label.custom_minimum_size = Vector2.ZERO
+	var waiting : bool = not batch.held and not is_on_tap
+	amount_label.text = tr(SPARE_AMOUNT_FORMAT if waiting else AMOUNT_LABEL_STRING) % batch.amount_bottles
+
+	var quality_label := _make_batch_label(batch)
+	quality_label.custom_minimum_size = Vector2.ZERO
+	quality_label.modulate = Color(1, 1, 1, 0.7)
+	quality_label.text = QUALITY_LABEL_STRING % [batch.get_quality_tier_string(), batch.get_aging_trend_icon()]
+
+	var ship_button := TooltipButton.new()
+	ship_button.text = SHIP_BUTTON_TEXT
+	ship_button.tooltip_text = SHIP_BUTTON_TOOLTIP
+	ship_button.custom_minimum_size = ROW_BUTTON_SIZE
+	ship_button.pressed.connect(func() -> void:
+		var bar : BarContact = _bar_contact_option_button.get_selected_bar()
+		if bar != null:
+			GUISignals.ship_batch_to_bar_requested.emit(batch, bar))
+
+	var action_row := HBoxContainer.new()
+	action_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	action_row.add_child(amount_label)
+	action_row.add_child(quality_label)
+	action_row.add_child(ship_button)
+	return action_row
+
+
+func _add_empty_note() -> void:
+	var empty_label := Label.new()
+	empty_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	empty_label.add_theme_font_size_override("font_size", 16)
+	empty_label.text = EMPTY_INVENTORY_TEXT
+	empty_label.modulate = EMPTY_INVENTORY_COLOR
+	beer_batch_list_vbox.add_child(empty_label)
 
 
 func _make_batch_label(batch: BrewBatch) -> TooltipLabel:
