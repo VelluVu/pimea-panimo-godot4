@@ -3,7 +3,7 @@ extends McpTestSuite
 
 ## Unit tests for SnowSilhouette: which pixels of a sprite frame snow settles on.
 
-const SnowSilhouetteScript := preload("res://src/customers/snow_silhouette.gd")
+const SnowSilhouetteScript := preload("res://src/customers/effects/snow_silhouette.gd")
 
 
 func suite_name() -> String:

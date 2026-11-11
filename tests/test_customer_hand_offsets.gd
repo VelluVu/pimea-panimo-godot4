@@ -4,7 +4,7 @@ extends McpTestSuite
 ## Unit tests for CustomerHandOffsets, the per-archetype held-glass positions
 ## used while a customer walks away with a beer.
 
-const HandOffsetsScript := preload("res://src/customers/customer_hand_offsets.gd")
+const HandOffsetsScript := preload("res://src/customers/look/customer_hand_offsets.gd")
 
 
 func suite_name() -> String:

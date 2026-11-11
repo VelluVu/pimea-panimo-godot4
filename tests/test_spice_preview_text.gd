@@ -3,7 +3,7 @@ extends McpTestSuite
 
 ## Unit tests for SpicePreviewText: the brewing preview's spice line.
 
-const SpicePreviewTextScript := preload("res://src/ui/spice_preview_text.gd")
+const SpicePreviewTextScript := preload("res://src/ui/text/spice_preview_text.gd")
 
 
 func suite_name() -> String:

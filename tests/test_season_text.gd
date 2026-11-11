@@ -1,7 +1,7 @@
 @tool
 extends McpTestSuite
 
-const SeasonTextScript := preload("res://src/ui/season_text.gd")
+const SeasonTextScript := preload("res://src/ui/text/season_text.gd")
 const SeasonDataScript := preload("res://src/events/season_data.gd")
 
 

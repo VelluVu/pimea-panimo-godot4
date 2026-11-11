@@ -3,8 +3,8 @@ extends McpTestSuite
 
 ## Unit tests for CustomerBookText: what the Asiakaskirja says about a customer.
 
-const TextScript := preload("res://src/ui/customer_book_text.gd")
-const NumberTextScript := preload("res://src/ui/number_text.gd")
+const TextScript := preload("res://src/ui/text/customer_book_text.gd")
+const NumberTextScript := preload("res://src/ui/text/number_text.gd")
 
 const NAMES : Dictionary = {
 	BeerStyle.Style.KOTIKALJA: "Kotikalja",

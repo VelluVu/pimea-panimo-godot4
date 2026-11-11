@@ -3,7 +3,7 @@ extends McpTestSuite
 
 ## Unit tests for CustomerPreviewText: the customer's line before the sale.
 
-const CustomerPreviewTextScript := preload("res://src/ui/customer_preview_text.gd")
+const CustomerPreviewTextScript := preload("res://src/ui/text/customer_preview_text.gd")
 
 
 func suite_name() -> String:

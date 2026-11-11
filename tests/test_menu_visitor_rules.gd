@@ -1,7 +1,7 @@
 @tool
 extends McpTestSuite
 
-const MenuVisitorRulesScript := preload("res://src/customers/menu_visitor_rules.gd")
+const MenuVisitorRulesScript := preload("res://src/customers/rules/menu_visitor_rules.gd")
 const CustomerDataScript := preload("res://src/customers/customer_data.gd")
 const SeasonRulesScript := preload("res://src/events/season_rules.gd")
 

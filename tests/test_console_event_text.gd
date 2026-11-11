@@ -1,7 +1,7 @@
 @tool
 extends McpTestSuite
 
-const ConsoleEventTextScript := preload("res://src/ui/console_event_text.gd")
+const ConsoleEventTextScript := preload("res://src/ui/text/console_event_text.gd")
 
 
 func suite_name() -> String:

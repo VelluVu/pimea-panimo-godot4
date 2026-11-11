@@ -3,7 +3,7 @@ extends McpTestSuite
 
 ## Unit tests for ReputationBreakdownText.format().
 
-const TextScript := preload("res://src/ui/reputation_breakdown_text.gd")
+const TextScript := preload("res://src/ui/text/reputation_breakdown_text.gd")
 
 
 func suite_name() -> String:

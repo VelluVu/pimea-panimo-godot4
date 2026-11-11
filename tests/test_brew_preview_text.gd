@@ -3,8 +3,8 @@ extends McpTestSuite
 
 ## Unit tests for BrewPreviewText: the brewing table's live preview line.
 
-const BrewPreviewTextScript := preload("res://src/ui/brew_preview_text.gd")
-const NumberTextScript := preload("res://src/ui/number_text.gd")
+const BrewPreviewTextScript := preload("res://src/ui/text/brew_preview_text.gd")
+const NumberTextScript := preload("res://src/ui/text/number_text.gd")
 
 
 func suite_name() -> String:

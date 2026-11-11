@@ -1,7 +1,7 @@
 @tool
 extends McpTestSuite
 
-const PopupTierRulesScript := preload("res://src/customers/popup_tier_rules.gd")
+const PopupTierRulesScript := preload("res://src/customers/rules/popup_tier_rules.gd")
 
 
 func suite_name() -> String:

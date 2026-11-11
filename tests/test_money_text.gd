@@ -1,8 +1,8 @@
 @tool
 extends McpTestSuite
 
-const MoneyTextScript := preload("res://src/ui/money_text.gd")
-const NumberTextScript := preload("res://src/ui/number_text.gd")
+const MoneyTextScript := preload("res://src/ui/text/money_text.gd")
+const NumberTextScript := preload("res://src/ui/text/number_text.gd")
 const MoneyLedgerScript := preload("res://src/brewery/money_ledger.gd")
 
 

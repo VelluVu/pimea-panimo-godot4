@@ -3,8 +3,8 @@ extends McpTestSuite
 
 ## Unit tests for BrewAimText: the preview's hint towards the style's centre.
 
-const BrewAimTextScript := preload("res://src/ui/brew_aim_text.gd")
-const NumberTextScript := preload("res://src/ui/number_text.gd")
+const BrewAimTextScript := preload("res://src/ui/text/brew_aim_text.gd")
+const NumberTextScript := preload("res://src/ui/text/number_text.gd")
 
 
 func suite_name() -> String:

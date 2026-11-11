@@ -1,7 +1,7 @@
 @tool
 extends McpTestSuite
 
-const WalkInRulesScript := preload("res://src/customers/walk_in_rules.gd")
+const WalkInRulesScript := preload("res://src/customers/rules/walk_in_rules.gd")
 
 
 func suite_name() -> String:

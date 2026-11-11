@@ -3,7 +3,7 @@ extends McpTestSuite
 
 ## Unit tests for LeaderboardText: ending names and the score breakdown.
 
-const LeaderboardTextScript := preload("res://src/ui/leaderboard_text.gd")
+const LeaderboardTextScript := preload("res://src/ui/text/leaderboard_text.gd")
 
 
 func suite_name() -> String:

@@ -3,7 +3,7 @@ extends McpTestSuite
 
 ## Unit tests for TipsyRules: how far a customer sways on the way out.
 
-const TipsyRulesScript := preload("res://src/customers/tipsy_rules.gd")
+const TipsyRulesScript := preload("res://src/customers/rules/tipsy_rules.gd")
 
 
 func suite_name() -> String:

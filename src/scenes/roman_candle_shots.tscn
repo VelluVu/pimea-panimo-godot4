@@ -1,6 +1,6 @@
 [gd_scene format=3]
 
-[ext_resource type="Script" path="res://src/customers/roman_candle_shots.gd" id="1_shots"]
+[ext_resource type="Script" path="res://src/customers/effects/roman_candle_shots.gd" id="1_shots"]
 [ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/candle_pop.wav" id="2_pop"]
 
 [node name="RomanCandleShots" type="Node2D"]

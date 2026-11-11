@@ -3,7 +3,7 @@ extends McpTestSuite
 
 ## Unit tests for CellarUpgradeText.
 
-const TextScript := preload("res://src/ui/cellar_upgrade_text.gd")
+const TextScript := preload("res://src/ui/text/cellar_upgrade_text.gd")
 const UpgradeScript := preload("res://src/brewery/cellar_upgrade_data.gd")
 
 

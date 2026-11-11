@@ -3,8 +3,8 @@ extends McpTestSuite
 
 ## ReceiptText: the receipt adds up from the list price to what went on the account.
 
-const ReceiptTextScript := preload("res://src/ui/receipt_text.gd")
-const NumberTextScript := preload("res://src/ui/number_text.gd")
+const ReceiptTextScript := preload("res://src/ui/text/receipt_text.gd")
+const NumberTextScript := preload("res://src/ui/text/number_text.gd")
 
 
 func suite_name() -> String:

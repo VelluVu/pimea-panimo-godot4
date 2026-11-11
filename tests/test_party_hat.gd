@@ -1,6 +1,6 @@
 extends McpTestSuite
 
-const PartyHatScript := preload("res://src/customers/party_hat.gd")
+const PartyHatScript := preload("res://src/customers/effects/party_hat.gd")
 
 
 func suite_name() -> String:

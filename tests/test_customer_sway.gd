@@ -1,8 +1,8 @@
 @tool
 extends McpTestSuite
 
-const CustomerSwayScript := preload("res://src/customers/customer_sway.gd")
-const TipsyRulesScript := preload("res://src/customers/tipsy_rules.gd")
+const CustomerSwayScript := preload("res://src/customers/look/customer_sway.gd")
+const TipsyRulesScript := preload("res://src/customers/rules/tipsy_rules.gd")
 
 
 func suite_name() -> String:

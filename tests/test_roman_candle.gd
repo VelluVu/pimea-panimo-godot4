@@ -1,7 +1,7 @@
 extends McpTestSuite
 
-const ShotsScript := preload("res://src/customers/roman_candle_shots.gd")
-const StarScript := preload("res://src/customers/roman_candle_star.gd")
+const ShotsScript := preload("res://src/customers/effects/roman_candle_shots.gd")
+const StarScript := preload("res://src/customers/effects/roman_candle_star.gd")
 
 
 func suite_name() -> String:

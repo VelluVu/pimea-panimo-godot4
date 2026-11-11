@@ -3,7 +3,7 @@ extends McpTestSuite
 
 ## Unit tests for RecipeNameText: stored names and the names rebuilt for display.
 
-const RecipeNameTextScript := preload("res://src/ui/recipe_name_text.gd")
+const RecipeNameTextScript := preload("res://src/ui/text/recipe_name_text.gd")
 
 
 func suite_name() -> String:

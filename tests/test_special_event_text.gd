@@ -1,7 +1,7 @@
 @tool
 extends McpTestSuite
 
-const NumberTextScript := preload("res://src/ui/number_text.gd")
+const NumberTextScript := preload("res://src/ui/text/number_text.gd")
 
 ## SpecialEventText: the delivery line and the reward popup numbers.
 

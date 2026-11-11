@@ -3,7 +3,7 @@ extends McpTestSuite
 
 ## Unit tests for CustomerPalette: region targets and which region claims a pixel.
 
-const PaletteScript := preload("res://src/customers/customer_palette.gd")
+const PaletteScript := preload("res://src/customers/look/customer_palette.gd")
 
 
 func suite_name() -> String:

@@ -3,7 +3,7 @@ extends McpTestSuite
 
 ## Unit tests for WordOfMouthRules.outcome().
 
-const RulesScript := preload("res://src/customers/word_of_mouth_rules.gd")
+const RulesScript := preload("res://src/customers/rules/word_of_mouth_rules.gd")
 
 
 func suite_name() -> String:

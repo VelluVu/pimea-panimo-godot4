@@ -3,7 +3,7 @@ extends McpTestSuite
 
 ## Unit tests for OlutoppiText: the node tooltips.
 
-const OlutoppiTextScript := preload("res://src/ui/olutoppi_text.gd")
+const OlutoppiTextScript := preload("res://src/ui/text/olutoppi_text.gd")
 
 
 func suite_name() -> String:

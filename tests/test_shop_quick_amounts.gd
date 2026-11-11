@@ -4,7 +4,7 @@ extends McpTestSuite
 ## Unit tests for ShopQuickAmounts: quick buttons and purchase caps by how a thing is sold.
 
 const QuickScript := preload("res://src/ui/shop_quick_amounts.gd")
-const NumberTextScript := preload("res://src/ui/number_text.gd")
+const NumberTextScript := preload("res://src/ui/text/number_text.gd")
 
 
 func suite_name() -> String:

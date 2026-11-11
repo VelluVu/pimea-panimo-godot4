@@ -3,7 +3,7 @@ extends McpTestSuite
 
 ## Unit tests for ToastText: the toasts that need a decision. Empty means no toast.
 
-const ToastTextScript := preload("res://src/ui/toast_text.gd")
+const ToastTextScript := preload("res://src/ui/text/toast_text.gd")
 
 
 func suite_name() -> String:

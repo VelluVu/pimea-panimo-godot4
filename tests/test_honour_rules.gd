@@ -3,7 +3,7 @@ extends McpTestSuite
 
 ## Unit tests for HonourRules: when a customer honours the cellar.
 
-const RulesScript := preload("res://src/customers/honour_rules.gd")
+const RulesScript := preload("res://src/customers/rules/honour_rules.gd")
 
 
 func suite_name() -> String:

@@ -1,8 +1,8 @@
 @tool
 extends McpTestSuite
 
-const RiskTextScript := preload("res://src/ui/risk_text.gd")
-const NumberTextScript := preload("res://src/ui/number_text.gd")
+const RiskTextScript := preload("res://src/ui/text/risk_text.gd")
+const NumberTextScript := preload("res://src/ui/text/number_text.gd")
 
 
 func suite_name() -> String:

@@ -1,7 +1,7 @@
 @tool
 extends McpTestSuite
 
-const KegCountTextScript := preload("res://src/ui/keg_count_text.gd")
+const KegCountTextScript := preload("res://src/ui/text/keg_count_text.gd")
 
 
 func suite_name() -> String:

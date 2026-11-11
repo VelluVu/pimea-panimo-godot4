@@ -3,8 +3,8 @@ extends McpTestSuite
 
 ## Unit tests for CustomerPortrait: the CPU recolour of a customer's still.
 
-const PortraitScript := preload("res://src/customers/customer_portrait.gd")
-const PaletteScript := preload("res://src/customers/customer_palette.gd")
+const PortraitScript := preload("res://src/customers/look/customer_portrait.gd")
+const PaletteScript := preload("res://src/customers/look/customer_palette.gd")
 
 
 func suite_name() -> String:

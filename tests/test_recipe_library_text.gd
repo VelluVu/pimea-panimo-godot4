@@ -3,8 +3,8 @@ extends McpTestSuite
 
 ## Unit tests for RecipeLibraryText: the recipe book's index buttons and style pages.
 
-const RecipeLibraryTextScript := preload("res://src/ui/recipe_library_text.gd")
-const NumberTextScript := preload("res://src/ui/number_text.gd")
+const RecipeLibraryTextScript := preload("res://src/ui/text/recipe_library_text.gd")
+const NumberTextScript := preload("res://src/ui/text/number_text.gd")
 
 
 func suite_name() -> String:

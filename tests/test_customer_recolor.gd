@@ -3,7 +3,7 @@ extends McpTestSuite
 
 ## Unit tests for CustomerRecolor: which shader regions are switched on.
 
-const RecolorScript := preload("res://src/customers/customer_recolor.gd")
+const RecolorScript := preload("res://src/customers/look/customer_recolor.gd")
 
 
 func suite_name() -> String:

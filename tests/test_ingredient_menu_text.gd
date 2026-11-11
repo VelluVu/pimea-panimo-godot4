@@ -1,7 +1,7 @@
 @tool
 extends McpTestSuite
 
-const IngredientMenuTextScript := preload("res://src/ui/ingredient_menu_text.gd")
+const IngredientMenuTextScript := preload("res://src/ui/text/ingredient_menu_text.gd")
 
 
 func suite_name() -> String:

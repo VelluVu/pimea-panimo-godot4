@@ -3,7 +3,7 @@ extends McpTestSuite
 
 ## Unit tests for RegularRules: standing changes and the regular threshold.
 
-const RulesScript := preload("res://src/customers/regular_rules.gd")
+const RulesScript := preload("res://src/customers/rules/regular_rules.gd")
 
 
 func suite_name() -> String:

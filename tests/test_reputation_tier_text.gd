@@ -3,7 +3,7 @@ extends McpTestSuite
 
 ## Unit tests for ReputationTierText: the top bar's reputation tooltip.
 
-const ReputationTierTextScript := preload("res://src/ui/reputation_tier_text.gd")
+const ReputationTierTextScript := preload("res://src/ui/text/reputation_tier_text.gd")
 
 
 func suite_name() -> String:

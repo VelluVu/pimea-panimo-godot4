@@ -3,9 +3,9 @@ extends McpTestSuite
 
 ## Unit tests for IngredientBookText: the Ainekset tab's price, unlock and description lines.
 
-const IngredientBookTextScript := preload("res://src/ui/ingredient_book_text.gd")
+const IngredientBookTextScript := preload("res://src/ui/text/ingredient_book_text.gd")
 const IngredientDataScript := preload("res://src/brewing/ingredient_data.gd")
-const NumberTextScript := preload("res://src/ui/number_text.gd")
+const NumberTextScript := preload("res://src/ui/text/number_text.gd")
 
 
 func suite_name() -> String:

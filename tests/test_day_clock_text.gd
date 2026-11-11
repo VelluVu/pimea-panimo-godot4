@@ -1,7 +1,7 @@
 @tool
 extends McpTestSuite
 
-const DayClockTextScript := preload("res://src/ui/day_clock_text.gd")
+const DayClockTextScript := preload("res://src/ui/text/day_clock_text.gd")
 
 
 func suite_name() -> String:

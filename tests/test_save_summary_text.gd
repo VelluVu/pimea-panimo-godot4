@@ -1,7 +1,7 @@
 @tool
 extends McpTestSuite
 
-const SaveSummaryTextScript := preload("res://src/ui/save_summary_text.gd")
+const SaveSummaryTextScript := preload("res://src/ui/text/save_summary_text.gd")
 
 
 func suite_name() -> String:
