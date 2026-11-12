@@ -87,13 +87,16 @@ TORSO_BACK = [
 ]
 # Gripped by its tied neck, so the hand hides the tie; it hangs and lags when walking.
 SACK = [
-    ".vv.",
-    "UUuv",
-    "UUuv",
-    "Uuuv",
-    "uuvv",
+    ".vv..",
+    "UUUuv",
+    "UUUuv",
+    "UUuuv",
+    "Uuuuv",
+    ".vvv.",
 ]
-SACK_ANCHOR = (-1, 0)
+SACK_ANCHOR = (-2, 0)
+# In the right hand (from behind) it hangs on the outer side of that hand.
+SACK_BACK_ANCHOR = (-1, 0)
 
 
 # Emäntä, the farm wife: a red headscarf with white dots tied under the chin, rosy cheeks,
@@ -137,7 +140,7 @@ EMANTA_TORSO_FRONT = [
     "...DDDDDDDDddddKK...",
     "...DD.DDWWWwdK.dK...",
     "...DD.DDWWWwdK.dK...",
-    "...DD.DWWWWWwK.dK...",
+    "...DD.DwwwwwwK.dK...",
     "...DD.DWWWWWwK.dK...",
     "....DDDWWWWWwdKK....",
     "...DDDDWWWWWwddKK...",
@@ -176,7 +179,7 @@ def draw_back_row(sheet: Image.Image, front: Look, emanta: bool) -> None:
     """From behind the sack is in the hand on the right."""
     back = look(emanta)
     back.palette = front.palette
-    back.held = (None, Held(SACK, SACK_ANCHOR))
+    back.held = (None, Held(SACK, SACK_BACK_ANCHOR))
     check(back)
     sheet.paste((0, 0, 0, 0), (0, FRAME, FRAME * 4, FRAME * 2))
     for column, bob in enumerate((0, -1, 0)):

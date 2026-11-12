@@ -58,8 +58,8 @@ HEAD_BACK = [
     ".....QPPPPPPPPp.....",
     "......PPPPPPPp......",
     "......PPPPPPPp......",
+    "......PPPPPPPp......",
     "......tPPPPPpt......",
-    ".......ssssst.......",
     ".......ssssst.......",
 ]
 # Slim: the arms hang close to the body (hand_inset 1). The shirt narrows from the bow tie
@@ -117,14 +117,14 @@ def draw_dance_row(sheet: Image.Image, front: Look, arm_front: list[str], arm_ba
     sheet.alpha_composite(side, (FRAME * 3, FRAME * 4))
 
 
-# Her: a lilac-grey perm with a red rose pinned in it, red lips, a pearl necklace and a
+# Her: a silver-grey perm with a red rose pinned in it, red lips, a pearl necklace and a
 # royal blue dance dress whose skirt swings over the knees; red dance shoes.
 NAARAS_NAME = "lavatanssija_naaras_32"
 NAARAS_PALETTE = {
     **PALETTE,
     "Q": hex_color("c0cbdc"),  # perm, lit
     "P": hex_color("8b9bb4"),  # perm
-    "p": hex_color("68386c"),  # perm shade, a lilac rinse
+    "p": hex_color("5a6988"),  # perm shade
     "D": hex_color("0099db"),  # dress, lit
     "d": hex_color("124e89"),  # dress
     "K": hex_color("262b44"),  # dress shade
