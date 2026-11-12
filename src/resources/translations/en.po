@@ -1331,7 +1331,9 @@ msgstr "The Corner Dive"
 msgid ""
 "Naapurustobaari, joka ottaa kyselemättä vastaan mitä tahansa kelvollista "
 "tynnyriolutta. Ei maksa paljon, mutta ei myöskään herätä huomiota."
-msgstr "A neighbourhood bar that takes any decent keg beer, no questions asked. It doesn't pay much, but it doesn't draw attention either."
+msgstr ""
+"A neighbourhood bar that takes any decent keg beer, no questions asked. It "
+"doesn't pay much, but it doesn't draw attention either."
 
 #: src/resources/bars/kultainen_tynnyri.tres
 msgid ""
@@ -1602,7 +1604,9 @@ msgstr "A homemade bread drink from grandma's kitchen, mild and sweet."
 msgid ""
 "Mummon reseptin mukaan: hiivaa, maltaista lientä ja kärsivällisyyttä. Mieto "
 "ja makea, ei mitään ihmeellistä."
-msgstr "Made to grandma's recipe: yeast, malty wort, and patience. Mild and sweet, nothing special."
+msgstr ""
+"Made to grandma's recipe: yeast, malty wort, and patience. Mild and sweet, "
+"nothing special."
 
 #: src/resources/beer_styles/kuohuraketti.tres
 msgid ""
@@ -4324,105 +4328,105 @@ msgstr "I didn't order this. I accept my fate."
 msgid "Mustanmetallinnainen"
 msgstr "Black Metal Woman"
 
-#: src/resources/customers/normaali_mies.tres
+#: src/resources/customers/normaali_flanelli.tres
 msgid "Ei huono. Se on suomeksi kehu."
 msgstr "Not bad. In Finnish, that's a compliment."
 
-#: src/resources/customers/normaali_mies.tres
+#: src/resources/customers/normaali_flanelli.tres
 msgid "Ei kehtaa juoda. Eikä kehtaa sanoa, mutta nyt sanoin."
 msgstr ""
 "Can't bring myself to drink it. Couldn't bring myself to say so either, but "
 "now I did."
 
-#: src/resources/customers/normaali_mies.tres
+#: src/resources/customers/normaali_flanelli.tres
 msgid "Ei kyllä kelpaa tällainen, sori."
 msgstr "Sorry, this won't do."
 
-#: src/resources/customers/normaali_mies.tres
+#: src/resources/customers/normaali_flanelli.tres
 msgid "Ei mitään? No, onpahan käyty. Se on jo lenkistä."
 msgstr "Nothing? Well, at least I came. That counts as a walk."
 
-#: src/resources/customers/normaali_mies.tres
+#: src/resources/customers/normaali_flanelli.tres
 msgid "Ei oo mitään. Seison tässä silti hetken, kun tulin jo."
 msgstr "Nothing here. I'll stand here a moment anyway, since I came."
 
-#: src/resources/customers/normaali_mies.tres
+#: src/resources/customers/normaali_flanelli.tres
 msgid "Ei sitten. Käyn kaupassa ja juon saunassa, kuten ihmisen kuuluu."
 msgstr "Fine then. I'll hit the shop and drink in the sauna, like a person should."
 
-#: src/resources/customers/normaali_mies.tres
+#: src/resources/customers/normaali_flanelli.tres
 msgid "Eipä tämä ollut se, mutta ei ruveta riitelemään."
 msgstr "This wasn't the one, but let's not start arguing."
 
-#: src/resources/customers/normaali_mies.tres
+#: src/resources/customers/normaali_flanelli.tres
 msgid "En tätä tilannut, mutta en viitsi sanoa mitään."
 msgstr "I didn't order this, but I won't bother saying anything."
 
-#: src/resources/customers/normaali_mies.tres
+#: src/resources/customers/normaali_flanelli.tres
 msgid "Hiljaista on hyllyssä. No, täällä on ainakin rauhallista."
 msgstr "Quiet on the shelf. Well, at least it's peaceful here."
 
-#: src/resources/customers/normaali_mies.tres
+#: src/resources/customers/normaali_flanelli.tres
 msgid "Hmm, ei taida olla mitään juotavaa..."
 msgstr "Hmm, doesn't look like there's anything to drink..."
 
-#: src/resources/customers/normaali_mies.tres
+#: src/resources/customers/normaali_flanelli.tres
 msgid "Hyvää on. Kiitti!"
 msgstr "That's good. Thanks!"
 
-#: src/resources/customers/normaali_mies.tres
+#: src/resources/customers/normaali_flanelli.tres
 msgid "Hyvää on. Sanon sen vain kerran, ettei mene överiksi."
 msgstr "It's good. I'll only say it once, so it doesn't go too far."
 
-#: src/resources/customers/normaali_mies.tres
+#: src/resources/customers/normaali_flanelli.tres
 msgid "Ihan ok."
 msgstr "It's okay."
 
-#: src/resources/customers/normaali_mies.tres
+#: src/resources/customers/normaali_flanelli.tres
 msgid "Käy tää."
 msgstr "This'll do."
 
-#: src/resources/customers/normaali_mies.tres
+#: src/resources/customers/normaali_flanelli.tres
 msgid "Menettelee. Puoliso sanoo samaa minusta."
 msgstr "It'll do. My spouse says the same about me."
 
-#: src/resources/customers/normaali_mies.tres
+#: src/resources/customers/normaali_flanelli.tres
 msgid "Moi. Kelit on ollu. Mitäs teillä on?"
 msgstr "Hi. Some weather we've had. What've you got?"
 
-#: src/resources/customers/normaali_mies.tres
+#: src/resources/customers/normaali_flanelli.tres
 msgid "Moi. Mitäs hyvää teillä tänään on?"
 msgstr "Hi. What's good today?"
 
-#: src/resources/customers/normaali_mies.tres
+#: src/resources/customers/normaali_flanelli.tres
 msgid "Naapurin kotikalja oli parempaa, ja naapuri on kuollut."
 msgstr "The neighbour's home brew was better, and the neighbour is dead."
 
-#: src/resources/customers/normaali_mies.tres
+#: src/resources/customers/normaali_flanelli.tres
 msgid "No niin. Töissä oli taas sitä samaa. Mitäs tänään juodaan?"
 msgstr "Right then. Same old at work again. What are we drinking today?"
 
-#: src/resources/customers/normaali_mies.tres
+#: src/resources/customers/normaali_flanelli.tres
 msgid "No nyt. Tästä ei valiteta, eikä kyllä kehutakaan ääneen."
 msgstr "Now then. No complaints about this, and no praising it out loud either."
 
-#: src/resources/customers/normaali_mies.tres
+#: src/resources/customers/normaali_flanelli.tres
 msgid "No se %s sitten. Ei ruveta miettimään."
 msgstr "The %s then. Let's not overthink it."
 
-#: src/resources/customers/normaali_mies.tres
+#: src/resources/customers/normaali_flanelli.tres
 msgid "Otan %s. Tai no, otan. Joo."
 msgstr "I'll take %s. Or, well, I'll take it. Yeah."
 
-#: src/resources/customers/normaali_mies.tres
+#: src/resources/customers/normaali_flanelli.tres
 msgid "Otetaanpa vaikka %s."
 msgstr "I'll have %s, then."
 
-#: src/resources/customers/normaali_mies.tres
+#: src/resources/customers/normaali_flanelli.tres
 msgid "Perusasiakas"
 msgstr "Average Joe"
 
-#: src/resources/customers/normaali_mies.tres
+#: src/resources/customers/normaali_flanelli.tres
 msgid "Tyhjät hyllyt? No, käyn sitten muualla."
 msgstr "Empty shelves? Well, I'll go somewhere else then."
 
@@ -7112,7 +7116,9 @@ msgid ""
 "Humalan alfahapot kertovat, kuinka paljon se katkeroi. Tyylin omalla "
 "aromihumalalla voi myös katkeroida, kuten perinteisissä oluissa tehdään, "
 "mutta se vaatii enemmän grammoja."
-msgstr "A hop's alpha acids tell how much it bitters. You can also bitter with the style's own aroma hop, as traditional beers do, it just takes more grams."
+msgstr ""
+"A hop's alpha acids tell how much it bitters. You can also bitter with the "
+"style's own aroma hop, as traditional beers do, it just takes more grams."
 
 #: src/resources/guide/02_keittaminen.tres
 msgid ""
@@ -8829,7 +8835,9 @@ msgstr "No money? Pity. Let's hope nothing happens."
 msgid ""
 "Sana on kiirinyt, että on eräs kellari, jossa tehdään jotain hämärää. "
 "Teillä on varmaan tarvetta erityissuojelulle. {cost} €."
-msgstr "Word has it there's a certain cellar where something shady goes on. You'll surely be needing some special protection. {cost} €."
+msgstr ""
+"Word has it there's a certain cellar where something shady goes on. You'll "
+"surely be needing some special protection. {cost} €."
 
 #: src/resources/special_events/don_protection.tres
 msgid "Viisas valinta. Tänään kukaan ei tule kyselemään."
@@ -10854,14 +10862,18 @@ msgstr ""
 msgid ""
 "Nyt on tavarat. Voit tarkistaa ostamasi raaka-aineet varastonäkymästä. "
 "Sitten sulje kauppa ja mennään panimoon."
-msgstr "Now we have the goods. You can check what you bought in the warehouse view. Then close the shop and let's go to the brewery."
+msgstr ""
+"Now we have the goods. You can check what you bought in the warehouse view. "
+"Then close the shop and let's go to the brewery."
 
 #: src/ui/guide/cellar_guide_text.gd
 msgid ""
 "Osta puuttuvat ostaa kerralla kaiken, mitä valittu resepti tarvitsee. "
 "Yksittäisen raaka-aineen ostat valitsemalla sen ja määrän ja painamalla "
 "Osta."
-msgstr "Buy missing buys everything the chosen recipe needs in one go. To buy a single ingredient, pick it and the amount and press Buy."
+msgstr ""
+"Buy missing buys everything the chosen recipe needs in one go. To buy a "
+"single ingredient, pick it and the amount and press Buy."
 
 #: src/ui/guide/cellar_guide_text.gd
 msgid "Panimo on vasemmalla holvin takana. Siellä tapahtuu taika."
@@ -10879,13 +10891,18 @@ msgstr ""
 msgid ""
 "Täytä resepti nostaa kaikki reseptin raaka-aineet pöydälle kerralla. Uusia "
 "oluttyylejä löydät kokeilemalla: valitse raaka-aine ja määrä ja paina Lisää."
-msgstr "Fill recipe puts all of the recipe's ingredients on the table at once. You find new beer styles by experimenting: pick an ingredient and the amount and press Add."
+msgstr ""
+"Fill recipe puts all of the recipe's ingredients on the table at once. You "
+"find new beer styles by experimenting: pick an ingredient and the amount "
+"and press Add."
 
 #: src/ui/guide/cellar_guide_text.gd
 msgid ""
 "Täältä näkee vähän, mitä halutaan. Lataa resepti reseptinäkymään, niin ei "
 "tarvitse arpoa raaka-aineiden kanssa."
-msgstr "This shows a bit of what's wanted. Load a recipe into the recipe view, so you don't have to guess with the ingredients."
+msgstr ""
+"This shows a bit of what's wanted. Load a recipe into the recipe view, so "
+"you don't have to guess with the ingredients."
 
 #: src/ui/guide/guide_speech_box.gd
 msgid "Vanha mestari Pate"
