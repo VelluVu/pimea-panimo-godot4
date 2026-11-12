@@ -106,8 +106,8 @@ LEGS = {
 }
 # Walking right with the shoes the user draws (normaali_mies, opiskelija): a compact
 # slanted shoe, the back foot pushing off heel up and toe down, the front foot landing heel
-# first, the lifted foot hanging toe down behind. '3' and '8' are the shoe's dark top. A
-# Look takes these with `legs=LEGS_STEPPED`.
+# first, the lifted foot hanging toe down behind. '3' and '8' are the shoe's dark top. They
+# replace the flat-shoe walk in LEGS below, for every customer drawn with this module.
 LEGS_STEPPED = {
     "stride_near": [
         ".......555.1111.....",
@@ -146,6 +146,7 @@ LEGS_STEPPED = {
         "..........7777......",
     ],
 }
+LEGS.update(LEGS_STEPPED)
 # The far leg's letters and the near-leg letters they darken.
 FAR_LEG = {"5": "1", "6": "4", "7": "2", "8": "3"}
 FAR_LEG_SHADE = (24, 20, 37)
@@ -291,6 +292,10 @@ def _close_sleeve(frame: Image.Image, left: int, hand_top: int, width: int) -> N
 def _lengthened(rows: list[str], lift: int, long_shorts: int = 0) -> list[str]:
     """Longer legs: the upper leg row again, in the shin colour so shorts stay short
     (except the first `long_shorts` rows)."""
+    if any(shoe in rows[1] for shoe in "2378"):
+        # A stepping walk has a shoe in its second row: the hip row grows down instead.
+        bare = rows[0].replace("1", "4").replace("5", "6")
+        return rows[:1] + [rows[0]] * long_shorts + [bare] * (lift - long_shorts) + rows[1:]
     bare = rows[1].replace("1", "4").replace("5", "6")
     return rows[:2] + [rows[1]] * long_shorts + [bare] * (lift - long_shorts) + rows[2:]
 
