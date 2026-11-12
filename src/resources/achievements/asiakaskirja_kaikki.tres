@@ -7,7 +7,7 @@
 script = ExtResource("1_achievement")
 achievement_id = "asiakaskirja_kaikki"
 title = "Koko kylä tuttu"
-description = "Tapaa kaikki 35 asiakastyyppiä."
+description = "Tapaa 35 eri asiakastyyppiä."
 icon = ExtResource("2_icon")
 stat_key = &"customers_met"
 target_value = 35

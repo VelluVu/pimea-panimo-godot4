@@ -614,7 +614,7 @@ msgid "Matti"
 msgstr "Matti"
 
 #: src/customers/customer_data.gd
-msgid "Mitä helvettiä sä mulle myyt? Pitää tunkkis."
+msgid "Mitä helvettiä sä mulle myyt? Pidä tunkkis."
 msgstr "What the hell are you selling me? Keep your swill."
 
 #: src/customers/customer_data.gd
@@ -808,8 +808,8 @@ msgid "Koko kylä tuttu"
 msgstr "Know the Whole Town"
 
 #: src/resources/achievements/asiakaskirja_kaikki.tres
-msgid "Tapaa kaikki 35 asiakastyyppiä."
-msgstr "Meet all 35 customer types."
+msgid "Tapaa 35 eri asiakastyyppiä."
+msgstr "Meet 35 different customer types."
 
 #: src/resources/achievements/bulkkia_5.tres
 msgid "Kansan kalja"
@@ -1329,11 +1329,9 @@ msgstr "The Corner Dive"
 
 #: src/resources/bars/kulman_kuppila.tres
 msgid ""
-"Naapurustobaari, joka ottaa vastaan mitä tahansa kelvollista tynnyriolutta "
-"ilman kysymyksiä. Ei maksa paljon, mutta ei myöskään herätä huomiota."
-msgstr ""
-"A neighbourhood bar that takes any decent keg beer, no questions asked. It "
-"doesn't pay much, but it doesn't draw attention either."
+"Naapurustobaari, joka ottaa kyselemättä vastaan mitä tahansa kelvollista "
+"tynnyriolutta. Ei maksa paljon, mutta ei myöskään herätä huomiota."
+msgstr "A neighbourhood bar that takes any decent keg beer, no questions asked. It doesn't pay much, but it doesn't draw attention either."
 
 #: src/resources/bars/kultainen_tynnyri.tres
 msgid ""
@@ -1490,7 +1488,7 @@ msgid ""
 msgstr "A pale, easy lager that fills the shop shelves. Drunk cold and in quantity."
 
 #: src/resources/beer_styles/bulkkilager.tres
-msgid "Vaalea ja puhdas lager, mitä on halpa valmistaa, ja halpa myös janoiselle."
+msgid "Vaalea ja puhdas lager, jota on halpa valmistaa, ja halpa myös janoiselle."
 msgstr "A pale, clean lager that is cheap to make, and cheap for the thirsty too."
 
 #: src/resources/beer_styles/czech_pilsner.tres
@@ -1602,11 +1600,9 @@ msgstr "A homemade bread drink from grandma's kitchen, mild and sweet."
 
 #: src/resources/beer_styles/kotikalja.tres
 msgid ""
-"Mummon reseptin mukaan: hiivaa, maltaista lientä, ja kärsivällisyyttä. "
-"Mieto ja makea, ei mitään ihmeellistä."
-msgstr ""
-"Made to grandma's recipe: yeast, malty wort, and patience. Mild and sweet, "
-"nothing special."
+"Mummon reseptin mukaan: hiivaa, maltaista lientä ja kärsivällisyyttä. Mieto "
+"ja makea, ei mitään ihmeellistä."
+msgstr "Made to grandma's recipe: yeast, malty wort, and patience. Mild and sweet, nothing special."
 
 #: src/resources/beer_styles/kuohuraketti.tres
 msgid ""
@@ -3449,6 +3445,10 @@ msgid "TYHJÄÄ?! TÄÄ ON PAHEMPI KUIN HÄVIÖ RUOTSILLE!"
 msgstr "EMPTY?! THIS IS WORSE THAN LOSING TO SWEDEN!"
 
 #: src/resources/customers/leijonafani.tres
+msgid "TÄTÄ EI JUO EDES RUOTSALAINEN!"
+msgstr "NOT EVEN A SWEDE WOULD DRINK THIS!"
+
+#: src/resources/customers/leijonafani.tres
 msgid "TÄÄ MENEE KURKUSTA ALAS KUIN VOITTOMAALI VIIMEISELLÄ MINUUTILLA!"
 msgstr "THIS GOES DOWN LIKE A WINNING GOAL IN THE LAST MINUTE!"
 
@@ -3463,10 +3463,6 @@ msgstr "THIS IS LIKE OFFSIDE, BUT THE GAME GOES ON!"
 #: src/resources/customers/leijonafani.tres
 msgid "TÄÄ ON KUIN TÄYDELLINEN SYÖTTÖ MAALIN ETEEN!"
 msgstr "THIS IS LIKE A PERFECT PASS IN FRONT OF THE NET!"
-
-#: src/resources/customers/leijonafani.tres
-msgid "VELI, TEE ITSELLESI PALVELUS JA JUO TÄÄ YKSINÄS!"
-msgstr "MATE, DO YOURSELF A FAVOUR AND DRINK THIS ALONE!"
 
 #: src/resources/customers/leijonafani.tres
 msgid "VÄÄRÄ KALJA, MUTTA LEIJONAT ON OIKEA JOUKKUE!"
@@ -3555,6 +3551,10 @@ msgid "Tilasin makeaa, sain karvasta. No, ei kaikki pullatkaan onnistu."
 msgstr "I ordered sweet, got bitter. Well, not every bun turns out either."
 
 #: src/resources/customers/leipuri.tres
+msgid "Tilasin viinerin ja sain ruisleipää. No, juodaan."
+msgstr "I ordered a Danish and got rye bread. Oh well, let's drink."
+
+#: src/resources/customers/leipuri.tres
 msgid "Tyhjää kuin leipäkori lauantai-iltana."
 msgstr "Empty as a bread basket on a Saturday night."
 
@@ -3569,10 +3569,6 @@ msgstr "This is like fresh-baked bread. Smells and tastes like it."
 #: src/resources/customers/leipuri.tres
 msgid "Tämä on pohjaan palanut. Ei kelpaa leipurille."
 msgstr "This is burnt at the bottom. Not good enough for a baker."
-
-#: src/resources/customers/leipuri.tres
-msgid "Tämä on sama ku ruisleipää, vaikka tilaisin viinerin. No, juodaan."
-msgstr "This is the same as rye bread when I'd order a Danish. Oh well, let's drink."
 
 #: src/resources/customers/leipuri.tres
 msgid ""
@@ -4721,7 +4717,7 @@ msgid "No sentään, tässä on edes vähän selkärankaa. Ei tää nyt ihan has
 msgstr "Well at least this has a bit of backbone. It's not half bad."
 
 #: src/resources/customers/papparainen.tres
-msgid "No voi pahanen peijjoona, eikö täällä ollut mitään kunnon olutta..."
+msgid "No voi peijooni, eikö täällä ollut mitään kunnon olutta..."
 msgstr "Well, blast it all, wasn't there any proper beer here..."
 
 #: src/resources/customers/papparainen.tres
@@ -7114,11 +7110,9 @@ msgstr ""
 #: src/resources/guide/02_keittaminen.tres
 msgid ""
 "Humalan alfahapot kertovat, kuinka paljon se katkeroi. Tyylin omalla "
-"aromihumalalla voi myös katkeroida, kuten perinteisissä oluissa tehdään, se "
-"vain vaatii enemmän grammoja."
-msgstr ""
-"A hop's alpha acids tell how much it bitters. You can also bitter with the "
-"style's own aroma hop, as traditional beers do, it just takes more grams."
+"aromihumalalla voi myös katkeroida, kuten perinteisissä oluissa tehdään, "
+"mutta se vaatii enemmän grammoja."
+msgstr "A hop's alpha acids tell how much it bitters. You can also bitter with the style's own aroma hop, as traditional beers do, it just takes more grams."
 
 #: src/resources/guide/02_keittaminen.tres
 msgid ""
@@ -7433,7 +7427,7 @@ msgid "Arvostettu englantilainen humala, hunajainen ja pehmeä."
 msgstr "A prized English hop, honeyed and smooth."
 
 #: src/resources/ingredients/hops/east_kent_golding_hop.tres
-msgid "East Kent Golding-humala"
+msgid "East Kent Golding -humala"
 msgstr "East Kent Golding Hops"
 
 #: src/resources/ingredients/hops/fuggle_hop.tres
@@ -7499,7 +7493,7 @@ msgid ""
 msgstr "A German noble hop, spicy and minty. Works for both bitterness and aroma."
 
 #: src/resources/ingredients/hops/saaz_hop.tres
-msgid "Klassinen tsekkiläinen jalohumala, mieto ja mausteinen."
+msgid "Klassinen tšekkiläinen jalohumala, mieto ja mausteinen."
 msgstr "A classic Czech noble hop, mild and spicy."
 
 #: src/resources/ingredients/hops/saaz_hop.tres
@@ -8833,11 +8827,9 @@ msgstr "No money? Pity. Let's hope nothing happens."
 
 #: src/resources/special_events/don_protection.tres
 msgid ""
-"Sana on kiirinyt, että on eräs kellari, missä tehdään jotain hämärää. "
+"Sana on kiirinyt, että on eräs kellari, jossa tehdään jotain hämärää. "
 "Teillä on varmaan tarvetta erityissuojelulle. {cost} €."
-msgstr ""
-"Word has it there's a certain cellar where something shady goes on. You'll "
-"surely be needing some special protection. {cost} €."
+msgstr "Word has it there's a certain cellar where something shady goes on. You'll surely be needing some special protection. {cost} €."
 
 #: src/resources/special_events/don_protection.tres
 msgid "Viisas valinta. Tänään kukaan ei tule kyselemään."
@@ -10794,7 +10786,9 @@ msgstr "New beer style discovered: %s!"
 msgid ""
 "Uutuus: kauden ensimmäinen %s! +%d pistettä, ja erä myy tiskillä +%d %% "
 "hintaan."
-msgstr "New this season: the first %s! +%d points, and the batch sells at +%d %% at the counter."
+msgstr ""
+"New this season: the first %s! +%d points, and the batch sells at +%d %% at "
+"the counter."
 
 #: src/ui/guide/cellar_guide_text.gd
 msgid ""
@@ -10858,11 +10852,16 @@ msgstr ""
 
 #: src/ui/guide/cellar_guide_text.gd
 msgid ""
-"Nyt on tavarat. Voit tarkistaa ostamasi raaka-aineet varasto näkymästä. "
+"Nyt on tavarat. Voit tarkistaa ostamasi raaka-aineet varastonäkymästä. "
 "Sitten sulje kauppa ja mennään panimoon."
-msgstr ""
-"Now we have the goods. You can check what you bought in the warehouse view. "
-"Then close the shop and let's go to the brewery."
+msgstr "Now we have the goods. You can check what you bought in the warehouse view. Then close the shop and let's go to the brewery."
+
+#: src/ui/guide/cellar_guide_text.gd
+msgid ""
+"Osta puuttuvat ostaa kerralla kaiken, mitä valittu resepti tarvitsee. "
+"Yksittäisen raaka-aineen ostat valitsemalla sen ja määrän ja painamalla "
+"Osta."
+msgstr "Buy missing buys everything the chosen recipe needs in one go. To buy a single ingredient, pick it and the amount and press Buy."
 
 #: src/ui/guide/cellar_guide_text.gd
 msgid "Panimo on vasemmalla holvin takana. Siellä tapahtuu taika."
@@ -10878,31 +10877,15 @@ msgstr ""
 
 #: src/ui/guide/cellar_guide_text.gd
 msgid ""
-"Täältä näkee vähän, mitä halutaan. Resepti voidaan laittaa kohteeksi "
-"lataamalla se reseptinäkymään, niin ei tarvitse arpoa raaka-aineiden kanssa."
-msgstr ""
-"This shows roughly what's wanted. Load the recipe into the recipe view to "
-"make it your target, so you don't have to guess with the ingredients."
+"Täytä resepti nostaa kaikki reseptin raaka-aineet pöydälle kerralla. Uusia "
+"oluttyylejä löydät kokeilemalla: valitse raaka-aine ja määrä ja paina Lisää."
+msgstr "Fill recipe puts all of the recipe's ingredients on the table at once. You find new beer styles by experimenting: pick an ingredient and the amount and press Add."
 
 #: src/ui/guide/cellar_guide_text.gd
 msgid ""
-"Valitsemalla osta puuttuvat ostaa kaikki tarvittavat valittuun reseptiin "
-"minkä jo tiedät. Yksitellen voit ostaa valitsemalla raaka-aine määrä ja "
-"osta-napilla."
-msgstr ""
-"Buy missing buys everything the chosen recipe needs, for a recipe you "
-"already know. To buy one at a time, choose an ingredient and an amount and "
-"press Buy."
-
-#: src/ui/guide/cellar_guide_text.gd
-msgid ""
-"Valitsemalla täytä resepti nostaa kaiken reseptiin vaaditut raaka-aineet "
-"pöydälle kerralla. Jos haluat kokeilla löytää uusia oluttyylejä täytyy "
-"kokeilla valitsemalla raaka-aine, määrä ja lisää."
-msgstr ""
-"Fill recipe puts all the ingredients the recipe needs on the table at once. "
-"To find new beer styles, you have to experiment: choose an ingredient and "
-"an amount and press Add."
+"Täältä näkee vähän, mitä halutaan. Lataa resepti reseptinäkymään, niin ei "
+"tarvitse arpoa raaka-aineiden kanssa."
+msgstr "This shows a bit of what's wanted. Load a recipe into the recipe view, so you don't have to guess with the ingredients."
 
 #: src/ui/guide/guide_speech_box.gd
 msgid "Vanha mestari Pate"
@@ -10969,8 +10952,8 @@ msgid "Meni jo kiillottamiseksi tuo hankaaminen."
 msgstr "That scrubbing turned into polishing a while ago."
 
 #: src/ui/keg_wash/keg_wash_lines.gd
-msgid "Noniin nyt on valmis"
-msgstr "Right, now it is done"
+msgid "No niin, nyt on valmis."
+msgstr "Right, now it's done."
 
 #: src/ui/keg_wash/keg_wash_lines.gd
 msgid "Vesilasku kasvaa, mutta lika ei lähde."

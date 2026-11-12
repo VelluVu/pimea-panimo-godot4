@@ -4,7 +4,7 @@ extends RefCounted
 ## The keg wash's humour popups. The wording is the developer's own; change it only on
 ## their word.
 
-const FINISHED_TEXT : String = "Noniin nyt on valmis"
+const FINISHED_TEXT : String = "No niin, nyt on valmis."
 const RINSED_TEXT : String = "Huuhdeltu on! Nyt desinfiointi!"
 const MISTAKE_TEXTS : Dictionary = {
 	KegWashSession.Mistake.WASTED_WATER: "Vesilasku kasvaa, mutta lika ei lähde.",

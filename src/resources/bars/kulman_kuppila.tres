@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_kuppila")
 bar_name = "Kulman Kuppila"
-description = "Naapurustobaari, joka ottaa vastaan mitä tahansa kelvollista tynnyriolutta ilman kysymyksiä. Ei maksa paljon, mutta ei myöskään herätä huomiota."
+description = "Naapurustobaari, joka ottaa kyselemättä vastaan mitä tahansa kelvollista tynnyriolutta. Ei maksa paljon, mutta ei myöskään herätä huomiota."
 price_multiplier = 0.8
 risk_per_shipment = 4
 required_reputation = 0

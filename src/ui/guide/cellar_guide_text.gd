@@ -9,12 +9,12 @@ enum Talk { GOALS, RECIPES, UPGRADES, BREWERY_BOOK, GOODBYE }
 
 const OPEN_RECIPES_TEXT : String = "Jaahas, meinaat alkaa pyörittämään pimeää panimoa? Minä olen Pate, ja neuvon hieman alkuun. Ovet pysyvät kiinni, kunnes ensimmäinen olut on pantu. Avaa reseptikirja, niin nähdään, mitä tiedät."
 const PICK_RECIPE_TEXT : String = "Kotikaljallahan kaikki aloittelee. Avaapa se resepti."
-const LOAD_RECIPE_TEXT : String = "Täältä näkee vähän, mitä halutaan. Resepti voidaan laittaa kohteeksi lataamalla se reseptinäkymään, niin ei tarvitse arpoa raaka-aineiden kanssa."
+const LOAD_RECIPE_TEXT : String = "Täältä näkee vähän, mitä halutaan. Lataa resepti reseptinäkymään, niin ei tarvitse arpoa raaka-aineiden kanssa."
 const GO_TO_SHOP_TEXT : String = "Maltaat ja hiiva ostetaan kaupasta. Kauppa on tiskin oikeassa päässä."
-const BUY_MISSING_TEXT : String = "Valitsemalla osta puuttuvat ostaa kaikki tarvittavat valittuun reseptiin minkä jo tiedät. Yksitellen voit ostaa valitsemalla raaka-aine määrä ja osta-napilla."
-const CLOSE_SHOP_TEXT : String = "Nyt on tavarat. Voit tarkistaa ostamasi raaka-aineet varasto näkymästä. Sitten sulje kauppa ja mennään panimoon."
+const BUY_MISSING_TEXT : String = "Osta puuttuvat ostaa kerralla kaiken, mitä valittu resepti tarvitsee. Yksittäisen raaka-aineen ostat valitsemalla sen ja määrän ja painamalla Osta."
+const CLOSE_SHOP_TEXT : String = "Nyt on tavarat. Voit tarkistaa ostamasi raaka-aineet varastonäkymästä. Sitten sulje kauppa ja mennään panimoon."
 const OPEN_BREWERY_TEXT : String = "Panimo on vasemmalla holvin takana. Siellä tapahtuu taika."
-const ADD_INGREDIENTS_TEXT : String = "Valitsemalla täytä resepti nostaa kaiken reseptiin vaaditut raaka-aineet pöydälle kerralla. Jos haluat kokeilla löytää uusia oluttyylejä täytyy kokeilla valitsemalla raaka-aine, määrä ja lisää."
+const ADD_INGREDIENTS_TEXT : String = "Täytä resepti nostaa kaikki reseptin raaka-aineet pöydälle kerralla. Uusia oluttyylejä löydät kokeilemalla: valitse raaka-aine ja määrä ja paina Lisää."
 const START_BREW_TEXT : String = "Kaikki on pöydällä. Paina Pane, niin päästään keittämään."
 
 const GOALS_TALK_TEXT : String = "Hyvin meni. Oikealla ylhäällä ovat päivän tavoitteet. Täytä ne, niin saat rahaa, mainetta ja kokemusta."

@@ -88,7 +88,7 @@ enum KorvatunturiRole { NONE, TONTTU, JOULUPUKKI }
 @export_multiline var dialogue_success: String = "Kylläpä uppoo! Tässä rahat."
 @export_multiline var dialogue_fallback: String = "No, tämäkin käy paremman puutteessa."
 @export_multiline var dialogue_wrong_style: String = "Ei tää sitäkään ollu, mut menköön..."
-@export_multiline var dialogue_reject: String = "Mitä helvettiä sä mulle myyt? Pitää tunkkis."
+@export_multiline var dialogue_reject: String = "Mitä helvettiä sä mulle myyt? Pidä tunkkis."
 ## Said leaving without buying: nothing in stock, or nothing clears a strict requirement.
 @export_multiline var dialogue_no_match: String = "Ei täällä ollu mitään minulle. Ehkä ensi kerralla."
 ## Said before the sale, naming the batch picked (%s is the style name).
