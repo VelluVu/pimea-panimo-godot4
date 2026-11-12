@@ -2078,7 +2078,9 @@ msgstr "Nothing? Hmm. Just as I suspected."
 msgid ""
 "Erinomaista. Raporttiin tulee, että asiakas oli tyytyväinen. Asiakas olen "
 "minä."
-msgstr "Excellent. The report will say the customer was satisfied. The customer is me."
+msgstr ""
+"Excellent. The report will say the customer was satisfied. The customer is "
+"me."
 
 #: src/resources/customers/agentti.tres
 msgid "Hmm, %s. Otan pienen näytteen... tutkimuksia varten."
@@ -2318,7 +2320,9 @@ msgstr "%s? Can I get a bucketful?"
 msgid ""
 "Ei mitään ämpäriin? Menen kauppakeskuksen avajaisiin, siellä jaetaan aina "
 "jotain."
-msgstr "Nothing for the bucket? I'm off to a mall opening, they always give stuff away."
+msgstr ""
+"Nothing for the bucket? I'm off to a mall opening, they always give stuff "
+"away."
 
 #: src/resources/customers/amparihamstraaja.tres
 msgid "Ei mitään ämpäriin? Mä jonotin tänne ämpärin takia!"
@@ -2521,12 +2525,24 @@ msgid "MITÄ?! EI MITÄÄN SOTURILLE KELPAAVAA?! RAAAAWWWWRRRR!"
 msgstr "WHAT?! NOTHING FIT FOR A WARRIOR?! RAAAAWWWWRRRR!"
 
 #: src/resources/customers/drone.tres
+msgid "%s TUNNISTETTU. Mitataan vaahdon korkeus."
+msgstr "%s IDENTIFIED. Measuring foam height."
+
+#: src/resources/customers/drone.tres
 msgid "ANALYYSI HYVÄKSYTTY. Laatuarvo ylittää raja-arvon."
 msgstr "ANALYSIS APPROVED. Quality value exceeds the threshold."
 
 #: src/resources/customers/drone.tres
 msgid "ANALYYSI: RAJATAPAUS. Kirjataan lievä poikkeama raporttiin."
 msgstr "ANALYSIS: BORDERLINE CASE. Logging a minor deviation in the report."
+
+#: src/resources/customers/drone.tres
+msgid "EI HAVAINTOJA. Leijun tässä odottamassa."
+msgstr "NO FINDINGS. Hovering here, waiting."
+
+#: src/resources/customers/drone.tres
+msgid "EI NÄYTETTÄ. Akku vähissä, palaan tukikohtaan."
+msgstr "NO SAMPLE. Battery low, returning to base."
 
 #: src/resources/customers/drone.tres
 msgid "Ei auditoitavaa näytettä saatavilla. Palaan myöhemmin uudella kierroksella."
@@ -2537,6 +2553,26 @@ msgid "HYLÄTTY. Laatuarvo alittaa sallitun toleranssin selvästi."
 msgstr "REJECTED. Quality value clearly below the permitted tolerance."
 
 #: src/resources/customers/drone.tres
+msgid "HYLÄTTY. Suosittelen panimolle lisäkoulutusta."
+msgstr "REJECTED. Recommending further training for the brewery."
+
+#: src/resources/customers/drone.tres
+msgid "KOHDE LUKITTU: %s. Analyysi alkaa."
+msgstr "TARGET LOCKED: %s. Analysis begins."
+
+#: src/resources/customers/drone.tres
+msgid "LAATU ERINOMAINEN. Kellari saa vihreän valon."
+msgstr "QUALITY EXCELLENT. The cellar gets a green light."
+
+#: src/resources/customers/drone.tres
+msgid "LAATU RIITTÄVÄ. Jatketaan kierrosta."
+msgstr "QUALITY SUFFICIENT. Continuing the round."
+
+#: src/resources/customers/drone.tres
+msgid "LAATUHÄLYTYS. Näyte poistetaan käytöstä."
+msgstr "QUALITY ALERT. Sample withdrawn from use."
+
+#: src/resources/customers/drone.tres
 msgid ""
 "LAATUTARKASTUS ALOITETTU. Pyydän näytteitä korkeimman saatavilla olevan "
 "laadun oluesta."
@@ -2545,12 +2581,40 @@ msgstr ""
 "available."
 
 #: src/resources/customers/drone.tres
+msgid "LASKEUTUMINEN TISKILLE ONNISTUI. Aloitetaan laadunvalvonta."
+msgstr "LANDING ON COUNTER SUCCESSFUL. Starting quality control."
+
+#: src/resources/customers/drone.tres
+msgid "NÄYTE HYVÄKSYTTY. Raportti: ei huomautettavaa."
+msgstr "SAMPLE APPROVED. Report: no remarks."
+
+#: src/resources/customers/drone.tres
 msgid "NÄYTE TUNNISTETTU: %s. Aloitetaan laatuanalyysi..."
 msgstr "SAMPLE IDENTIFIED: %s. Starting quality analysis..."
 
 #: src/resources/customers/drone.tres
+msgid "POIKKEAMA HAVAITTU. Ei kriittinen."
+msgstr "DEVIATION DETECTED. Not critical."
+
+#: src/resources/customers/drone.tres
+msgid "RAJATAPAUS. Kirjataan hyväksytyksi varauksin."
+msgstr "BORDERLINE CASE. Logged as approved with reservations."
+
+#: src/resources/customers/drone.tres
 msgid "SKANNAUS VALMIS. Auditoitavaa näytettä ei löydy..."
 msgstr "SCAN COMPLETE. No auditable sample found..."
+
+#: src/resources/customers/drone.tres
+msgid "SKANNAUS: HYLLYT TYHJÄT. Kirjataan raporttiin."
+msgstr "SCAN: SHELVES EMPTY. Logging to report."
+
+#: src/resources/customers/drone.tres
+msgid "SURINAA. TARKASTUSKIERROS KÄYNNISSÄ. Pyydän näytettä."
+msgstr "BZZZ. INSPECTION ROUND IN PROGRESS. Requesting a sample."
+
+#: src/resources/customers/drone.tres
+msgid "TARKASTUS KESKEYTETTY. Palaan uudella kierroksella."
+msgstr "INSPECTION SUSPENDED. Will return on the next round."
 
 #: src/resources/customers/drone.tres
 msgid "Tuoteluokka ei vastaa auditoinnin kohdetta, mutta arvo kirjataan silti."
@@ -2558,13 +2622,45 @@ msgstr ""
 "Product category does not match the audit target, but the value is logged "
 "anyway."
 
+#: src/resources/customers/drone.tres
+msgid "VÄÄRÄ TUOTELUOKKA. Analysoidaan silti."
+msgstr "WRONG PRODUCT CLASS. Analysing anyway."
+
+#: src/resources/customers/halloweeni_vieras.tres
+msgid "%s... mahtuuko se ontoon päähän?"
+msgstr "%s... will it fit in a hollow head?"
+
 #: src/resources/customers/halloweeni_vieras.tres
 msgid "Ei kurpitsaa, mutta kyllä tämäkin pään täyttää."
 msgstr "No pumpkin, but this will fill the head too."
 
 #: src/resources/customers/halloweeni_vieras.tres
+msgid "Ei kurpitsaa, mutta ontto pää täyttyy tälläkin."
+msgstr "No pumpkin, but this fills a hollow head too."
+
+#: src/resources/customers/halloweeni_vieras.tres
+msgid "Ei kurpitsaa? Vierin seuraavaan kellariin."
+msgstr "No pumpkin? I'll roll on to the next cellar."
+
+#: src/resources/customers/halloweeni_vieras.tres
 msgid "Ei mitään minulle. Kierrän seuraavan kellarin."
 msgstr "Nothing for me. I'll haunt the next cellar."
+
+#: src/resources/customers/halloweeni_vieras.tres
+msgid "Ei mitään. Menen takaisin kurpitsapellolle."
+msgstr "Nothing. I'm going back to the pumpkin patch."
+
+#: src/resources/customers/halloweeni_vieras.tres
+msgid "Ei mitään? Odotan tässä ja hehkun hiljaa."
+msgstr "Nothing? I'll wait here and glow quietly."
+
+#: src/resources/customers/halloweeni_vieras.tres
+msgid "Ei syksyinen tilaus, mutta juon. Pääni kaikuu."
+msgstr "Not an autumn order, but I'll drink it. My head echoes."
+
+#: src/resources/customers/halloweeni_vieras.tres
+msgid "Ei. Tällä sammuisi kynttiläni."
+msgstr "No. This would put my candle out."
 
 #: src/resources/customers/halloweeni_vieras.tres
 msgid "Hmm, ei ihan syksyn makuinen, mutta menköön."
@@ -2575,6 +2671,10 @@ msgid "Hyllyt ovat tyhjät kuin minun pääni..."
 msgstr "The shelves are as empty as my head..."
 
 #: src/resources/customers/halloweeni_vieras.tres
+msgid "Karmivaa iltaa! Joku yritti kaivertaa minuun hymyn. Tarvitsen olutta."
+msgstr "Spooky evening! Someone tried to carve a smile into me. I need a beer."
+
+#: src/resources/customers/halloweeni_vieras.tres
 msgid ""
 "Karmivaa iltaa! Onko kellarissa jotain kurpitsaista? Pää on vähän ontto "
 "ilman."
@@ -2583,16 +2683,48 @@ msgstr ""
 "without it."
 
 #: src/resources/customers/halloweeni_vieras.tres
+msgid "Kelpaa. Kurpitsa ei valita."
+msgstr "It'll do. A pumpkin doesn't complain."
+
+#: src/resources/customers/halloweeni_vieras.tres
+msgid "Mausteista kuin syysilta. Hymy pysyy nyt paikallaan."
+msgstr "Spicy as an autumn evening. The smile stays put now."
+
+#: src/resources/customers/halloweeni_vieras.tres
+msgid "Pää täynnä ja kynttilä palaa! Täydellistä."
+msgstr "Head full and the candle's lit! Perfect."
+
+#: src/resources/customers/halloweeni_vieras.tres
+msgid "Tyhjät hyllyt. Karmivaa, eikä hyvällä tavalla."
+msgstr "Empty shelves. Spooky, and not in a good way."
+
+#: src/resources/customers/halloweeni_vieras.tres
 msgid "Tämä maistuu mädältä kurpitsalta, eikä hyvällä tavalla."
 msgstr "This tastes like a rotten pumpkin, and not in a good way."
+
+#: src/resources/customers/halloweeni_vieras.tres
+msgid "Tämä on mätää. Ja minä tiedän mädästä."
+msgstr "This is rotten. And I know rotten."
 
 #: src/resources/customers/halloweeni_vieras.tres
 msgid "Täydellistä! Tuntuu kuin kynttilä syttyisi päässä."
 msgstr "Perfect! Feels like a candle lighting up in my head."
 
 #: src/resources/customers/halloweeni_vieras.tres
+msgid "Uuh! Kekri meni jo, mutta pää on vielä ontto. Kurpitsaolutta?"
+msgstr "Ooh! Kekri's over, but my head is still hollow. Pumpkin beer?"
+
+#: src/resources/customers/halloweeni_vieras.tres
+msgid "Uuh, %s! Kynttilä syttyy jo pelkästä ajatuksesta."
+msgstr "Ooh, %s! My candle lights up at the very thought."
+
+#: src/resources/customers/halloweeni_vieras.tres
 msgid "Uuh, %s! Tuo voisi sopia ontoon päähän..."
 msgstr "Ooh, %s! That could fit a hollow head..."
+
+#: src/resources/customers/halloweeni_vieras.tres
+msgid "Väärä olut. Kynttilä lepattaa vähän."
+msgstr "Wrong beer. My candle flickers a little."
 
 #: src/resources/customers/hipsteri.tres
 msgid "%s... onks se tehty paikallisista raaka-aineista?"
@@ -2703,6 +2835,14 @@ msgid "Vihdoinkin joku, joka ymmärtää humalaprofiileja."
 msgstr "Finally someone who understands hop profiles."
 
 #: src/resources/customers/joulupukki.tres
+msgid "%s. Pukki ottaa, ja tontut maksavat."
+msgstr "%s. Santa takes it, and the elves pay."
+
+#: src/resources/customers/joulupukki.tres
+msgid "%s? Hohoo, Pukki kokeilee."
+msgstr "%s? Ho ho, Santa will try it."
+
+#: src/resources/customers/joulupukki.tres
 msgid "%s? Hohoo. Pukki ottaa. Pukki ei maksa."
 msgstr "%s? Ho ho. Santa takes. Santa does not pay."
 
@@ -2713,12 +2853,46 @@ msgid ""
 msgstr "No Pukkibock? Ho ho. Nice brewery. Shame if something happened to it."
 
 #: src/resources/customers/joulupukki.tres
+msgid ""
+"Ei Pukkibockia? Pukki palaa Korvatunturille, siellä on ainakin tonttujen "
+"olutta."
+msgstr "No Pukkibock? Santa is going back to Korvatunturi, at least the elves have beer there."
+
+#: src/resources/customers/joulupukki.tres
+msgid "Ei aivan toiveiden mukaan, mutta Pukki ei ole nirso. Hohoo."
+msgstr "Not quite as wished, but Santa isn't picky. Ho ho."
+
+#: src/resources/customers/joulupukki.tres
 msgid "Ei ihan Pukkibockia. Pukki muistaa tämänkin, mutta hymyilee silti."
 msgstr "Not quite Pukkibock. Santa will remember this too, but he smiles anyway."
 
 #: src/resources/customers/joulupukki.tres
+msgid "Ei mitään? Hohoo. Tontut kirjoittavat jo."
+msgstr "Nothing? Ho ho. The elves are already writing."
+
+#: src/resources/customers/joulupukki.tres
+msgid "Ei mitään? Pukki odottaa. Joulu tulee, halusit tai et."
+msgstr "Nothing? Santa will wait. Christmas is coming, like it or not."
+
+#: src/resources/customers/joulupukki.tres
+msgid "Hohoo! Onko täällä kilttejä... aikuisia?"
+msgstr "Ho ho! Are there any good... grown-ups here?"
+
+#: src/resources/customers/joulupukki.tres
+msgid "Hohoo! Porot odottavat katolla. Pukki tarvitsee jotain lämmittävää."
+msgstr "Ho ho! The reindeer are waiting on the roof. Santa needs something warming."
+
+#: src/resources/customers/joulupukki.tres
 msgid "Hohoo! Tontut ovat kertoneet sinusta kaikenlaista. Ihan kaikenlaista."
 msgstr "Ho ho! The elves have told me all sorts of things about you. All sorts."
+
+#: src/resources/customers/joulupukki.tres
+msgid "Hohoo! Tämä menee joulun parhaiden lahjojen listalle."
+msgstr "Ho ho! This goes on the list of Christmas's best gifts."
+
+#: src/resources/customers/joulupukki.tres
+msgid "Hohoo... ei. Tämä jää kuusen alle avaamatta."
+msgstr "Ho ho... no. This stays under the tree unopened."
 
 #: src/resources/customers/joulupukki.tres
 msgid "Hylly on tyhjä kuin omatuntosi. Hohoo."
@@ -2733,12 +2907,32 @@ msgstr ""
 "till."
 
 #: src/resources/customers/joulupukki.tres
+msgid "Kelpaa. Korvatunturilla on juotu pahempaakin."
+msgstr "It'll do. We've drunk worse on Korvatunturi."
+
+#: src/resources/customers/joulupukki.tres
 msgid "Pukkibockia! Merkitsen sinut kilttien listaan. Toistaiseksi."
 msgstr "Pukkibock! I'll put you on the nice list. For now."
 
 #: src/resources/customers/joulupukki.tres
+msgid "Pukkibockia! Nyt jaksaa kiertää koko maan yhdessä yössä."
+msgstr "Pukkibock! Now I can get round the whole country in one night."
+
+#: src/resources/customers/joulupukki.tres
 msgid "Tontut, kirjoittakaa ylös."
 msgstr "Elves, write that down."
+
+#: src/resources/customers/joulupukki.tres
+msgid "Tyhjät hyllyt jouluna? Hohoo, tämä on tuhmaa."
+msgstr "Empty shelves at Christmas? Ho ho, that's naughty."
+
+#: src/resources/customers/joulupukki.tres
+msgid "Tämä ei ollut toivelistalla. Pukki muistaa tämän."
+msgstr "This wasn't on the wish list. Santa will remember this."
+
+#: src/resources/customers/joulupukki.tres
+msgid "Tämä menee tuhmien listalle. Sinä myös."
+msgstr "This goes on the naughty list. So do you."
 
 #: src/resources/customers/joulupukki.tres
 msgid ""
@@ -2747,6 +2941,10 @@ msgid ""
 msgstr ""
 "This is not what I wished for. I wrote Pukkibock on my list in capital "
 "letters. Ho ho."
+
+#: src/resources/customers/joulupukki.tres
+msgid "Väärä paketti, mutta Pukki avaa sen silti."
+msgstr "Wrong present, but Santa will open it anyway."
 
 #: src/resources/customers/kesamies.tres
 msgid "%s! Ootas, haen paremman valon."
@@ -2965,6 +3163,10 @@ msgid "Yksi tähti, ja sekin säälistä."
 msgstr "One star, and that's out of pity."
 
 #: src/resources/customers/kyborgi.tres
+msgid "%s? Generoin siitä arvion. Arvio: kyllä."
+msgstr "%s? Generating a review. Review: yes."
+
+#: src/resources/customers/kyborgi.tres
 msgid "Analysoin: %s. Todennäköisyys pitää siitä on korkea."
 msgstr "Analysing: %s. Probability of liking it is high."
 
@@ -2973,12 +3175,48 @@ msgid "Ei generoitu, mutta hyväksyttävä. Päivitän mieltymykseni."
 msgstr "Not generated, but acceptable. Updating my preferences."
 
 #: src/resources/customers/kyborgi.tres
+msgid "Ei mitään. Siirryn takaisin pilvipalveluun."
+msgstr "Nothing. Returning to the cloud."
+
+#: src/resources/customers/kyborgi.tres
+msgid "Ei mitään? Odotan. Minulla on loputtomasti laskenta-aikaa."
+msgstr "Nothing? I'll wait. I have unlimited compute time."
+
+#: src/resources/customers/kyborgi.tres
 msgid "Ei sopivaa dataa. Haen oluen verkosta."
 msgstr "No suitable data. I will fetch a beer from the internet."
 
 #: src/resources/customers/kyborgi.tres
+msgid "Ei sopivaa olutta. Raportoin bugin."
+msgstr "No suitable beer. Filing a bug report."
+
+#: src/resources/customers/kyborgi.tres
 msgid "Hyllyssä ei ole mitään, mitä algoritmini hyväksyy."
 msgstr "There is nothing on the shelf my algorithm accepts."
+
+#: src/resources/customers/kyborgi.tres
+msgid "Hyväksyttävä. Hallusinoin sen olevan parempi."
+msgstr "Acceptable. I hallucinate that it was better."
+
+#: src/resources/customers/kyborgi.tres
+msgid "Kehote vastaanotettu: hae olut. Suoritan."
+msgstr "Prompt received: get beer. Executing."
+
+#: src/resources/customers/kyborgi.tres
+msgid "Kelpaa. Tallennan tämän koulutusdataan."
+msgstr "It'll do. Saving this to my training data."
+
+#: src/resources/customers/kyborgi.tres
+msgid "Laskelmieni mukaan tämä on päivän paras olut. Varmuus 99 prosenttia."
+msgstr "By my calculations this is the best beer of the day. Confidence 99 percent."
+
+#: src/resources/customers/kyborgi.tres
+msgid "Odottamaton tulos. Mielenkiintoista. Juon."
+msgstr "Unexpected output. Interesting. Drinking."
+
+#: src/resources/customers/kyborgi.tres
+msgid "Prosessoidaan: %s. Hyväksytty."
+msgstr "Processing: %s. Approved."
 
 #: src/resources/customers/kyborgi.tres
 msgid "Tekoälyolut. Laskelmieni mukaan täydellinen. Annan viisi tähteä."
@@ -2993,12 +3231,48 @@ msgstr ""
 "recommend?"
 
 #: src/resources/customers/kyborgi.tres
+msgid "Tervehdys. Päivitin juuri ohjelmistoni. Nyt haluan olutta."
+msgstr "Greetings. I just updated my software. Now I want beer."
+
+#: src/resources/customers/kyborgi.tres
+msgid "Tyhjä hylly. Datani mukaan tämä on epätavallista."
+msgstr "Empty shelf. According to my data, this is unusual."
+
+#: src/resources/customers/kyborgi.tres
+msgid "Tämä ei vastaa kehotettani. Yritän uudelleen ensi kerralla."
+msgstr "This doesn't match my prompt. I'll retry next time."
+
+#: src/resources/customers/kyborgi.tres
 msgid "Tämä ei vastaa koulutusdataani. Hyväksyn sen silti."
 msgstr "This does not match my training data. I accept it anyway."
 
 #: src/resources/customers/kyborgi.tres
+msgid "Tämä olut rikkoo käyttöehtojani."
+msgstr "This beer violates my terms of service."
+
+#: src/resources/customers/kyborgi.tres
+msgid "Täydellisesti generoitu. Annan kuusi tähteä viidestä."
+msgstr "Perfectly generated. I give it six stars out of five."
+
+#: src/resources/customers/kyborgi.tres
+msgid "Virhe 404: makua ei löytynyt."
+msgstr "Error 404: flavour not found."
+
+#: src/resources/customers/kyborgi.tres
 msgid "Virhe 418: olut ei ole juotavaa."
 msgstr "Error 418: beer is not drinkable."
+
+#: src/resources/customers/lahettirobotti.tres
+msgid "%s VAHVISTETTU. Lastataan."
+msgstr "%s CONFIRMED. Loading."
+
+#: src/resources/customers/lahettirobotti.tres
+msgid "Ei mitään? Seison tässä ja vilkutan valoja."
+msgstr "Nothing? I'll stand here and blink my lights."
+
+#: src/resources/customers/lahettirobotti.tres
+msgid "Ei tuotetta. Ilmoitan asiakkaalle viivästyksestä."
+msgstr "No product. Notifying the customer of a delay."
 
 #: src/resources/customers/lahettirobotti.tres
 msgid "Ei yhteensopivaa tuotetta varastossa. Palaan seuraavalla kierroksella."
@@ -3013,8 +3287,32 @@ msgid "Hyväksyttävissä rajoissa. Jatkan toimitusreittiäni."
 msgstr "Within acceptable limits. Continuing my delivery route."
 
 #: src/resources/customers/lahettirobotti.tres
+msgid "Hyväksyttävä. Toimitus jatkuu."
+msgstr "Acceptable. Delivery continues."
+
+#: src/resources/customers/lahettirobotti.tres
+msgid "LASTAUS VALMIS. Kiitos, ihminen. Tämä oli tehokasta."
+msgstr "LOADING COMPLETE. Thank you, human. That was efficient."
+
+#: src/resources/customers/lahettirobotti.tres
+msgid "LASTI HYLÄTTY. Tätä ei toimiteta kenellekään."
+msgstr "CARGO REJECTED. This will not be delivered to anyone."
+
+#: src/resources/customers/lahettirobotti.tres
+msgid "Lähes oikein. Asiakas ei huomaa eroa. Toivottavasti."
+msgstr "Nearly right. The customer won't notice. Hopefully."
+
+#: src/resources/customers/lahettirobotti.tres
 msgid "Lähettirobotti"
 msgstr "Delivery Robot"
+
+#: src/resources/customers/lahettirobotti.tres
+msgid "PIIP. Tilaus numero 47. Asiakas on soittanut jo kolme kertaa."
+msgstr "BEEP. Order number 47. The customer has called three times already."
+
+#: src/resources/customers/lahettirobotti.tres
+msgid "POIKKEAMA. Merkitsen tuotteen korvatuksi."
+msgstr "DEVIATION. Marking the item as substituted."
 
 #: src/resources/customers/lahettirobotti.tres
 msgid ""
@@ -3029,12 +3327,40 @@ msgid "TEHTÄVÄ SUORITETTU. Kiitos, biologinen yhteistyökumppani."
 msgstr "TASK COMPLETE. Thank you, biological partner."
 
 #: src/resources/customers/lahettirobotti.tres
+msgid "TILAUS TÄSMÄÄ. Asiakastyytyväisyys viisi tähteä."
+msgstr "ORDER MATCHES. Customer satisfaction five stars."
+
+#: src/resources/customers/lahettirobotti.tres
+msgid "TILAUS: %s. Lasketaan reitti."
+msgstr "ORDER: %s. Calculating route."
+
+#: src/resources/customers/lahettirobotti.tres
 msgid "TILAUSKOODI TÄSMÄÄ: %s. Valmistellaan lastausta..."
 msgstr "ORDER CODE MATCHES: %s. Preparing to load..."
 
 #: src/resources/customers/lahettirobotti.tres
+msgid "TOIMITUS ALKAA. Jäin matkalla kinokseen, mutta pääsin perille."
+msgstr "DELIVERY STARTING. Got stuck in a snowdrift on the way, but made it."
+
+#: src/resources/customers/lahettirobotti.tres
+msgid "TOIMITUS PERUTTU. Palaan latausasemalle."
+msgstr "DELIVERY CANCELLED. Returning to the charging station."
+
+#: src/resources/customers/lahettirobotti.tres
 msgid "Tuotekoodi ei täsmää tilaukseen, mutta prosessoin poikkeaman."
 msgstr "Product code does not match the order, but I will process the deviation."
+
+#: src/resources/customers/lahettirobotti.tres
+msgid "Tuotekoodi väärä. Asiakas saa yllätyksen."
+msgstr "Wrong product code. The customer gets a surprise."
+
+#: src/resources/customers/lahettirobotti.tres
+msgid "VARASTO TYHJÄ. Odotan seuraavaa erää."
+msgstr "STOCK EMPTY. Waiting for the next batch."
+
+#: src/resources/customers/lahettirobotti.tres
+msgid "VIRHE. Laatu ei kestä edes kuljetusta."
+msgstr "ERROR. The quality won't even survive transport."
 
 #: src/resources/customers/lahettirobotti.tres
 msgid "VIRHEILMOITUS. Laatu alittaa toleranssin. Lasti hylätty."
@@ -3186,7 +3512,9 @@ msgstr "Not what I ordered, but let's drink while the oven's still hot."
 
 #: src/resources/customers/leipuri.tres
 msgid "Huomenta! Taikina nousee, joten ehdin yhdelle. Jotain makeaa ja tummaa."
-msgstr "Morning! The dough is rising, so I've time for one. Something sweet and dark."
+msgstr ""
+"Morning! The dough is rising, so I've time for one. Something sweet and "
+"dark."
 
 #: src/resources/customers/leipuri.tres
 msgid ""
@@ -4423,12 +4751,24 @@ msgid "%s. Kuulostaa rehelliseltä työmiehen juomalta."
 msgstr "%s. Sounds like an honest working man's drink."
 
 #: src/resources/customers/persuasiakas.tres
+msgid "%s. Laita kuitti, mä vähennän sen verotuksessa."
+msgstr "%s. Give me a receipt, I'll deduct it from my taxes."
+
+#: src/resources/customers/persuasiakas.tres
+msgid "%s. Onko se kotimaista? Hyvä."
+msgstr "%s. Is it Finnish? Good."
+
+#: src/resources/customers/persuasiakas.tres
 msgid ""
 "*PAM!* Ei halpaa kaljaa? Kaikki rahat menee ihan muualle kuin meille "
 "tavallisille!"
 msgstr ""
 "*BANG!* No cheap beer? All the money goes everywhere but to us ordinary "
 "folk!"
+
+#: src/resources/customers/persuasiakas.tres
+msgid "*PAM!* Ilmaan ammuttu! Tää kalja ei edusta tavallista kansaa!"
+msgstr "*BANG!* Fired into the air! This beer doesn't represent ordinary people!"
 
 #: src/resources/customers/persuasiakas.tres
 msgid ""
@@ -4439,22 +4779,64 @@ msgstr ""
 "green leftie's backbone!"
 
 #: src/resources/customers/persuasiakas.tres
+msgid "*PAM!* Tää on niin laimeeta, et sen on pakko olla EU-direktiivi!"
+msgstr "*BANG!* This is so weak it must be an EU directive!"
+
+#: src/resources/customers/persuasiakas.tres
+msgid "Ei halpaa? Meen huoltikselle, siellä ainakin kahvi on halpaa."
+msgstr "Nothing cheap? I'm going to the petrol station, at least the coffee's cheap there."
+
+#: src/resources/customers/persuasiakas.tres
+msgid "Ei mitään? Tästä kirjotan Facebookiin ihan pitkästi."
+msgstr "Nothing? I'm writing a long Facebook post about this."
+
+#: src/resources/customers/persuasiakas.tres
+msgid "Ei mitään? Tää on sitä hallinnon tehottomuutta."
+msgstr "Nothing? This is that government inefficiency for you."
+
+#: src/resources/customers/persuasiakas.tres
+msgid "En tilannu tätä, mut ei ruveta riitelemään. Vielä."
+msgstr "I didn't order this, but let's not start arguing. Yet."
+
+#: src/resources/customers/persuasiakas.tres
 msgid "Hyvää ja halpaa. Toisin kuin tää hallitus... ainiin, se on meidän."
 msgstr "Good and cheap. Unlike this government... oh right, it's ours."
+
+#: src/resources/customers/persuasiakas.tres
+msgid "Hyvää ja kotimaista. Tällaista sitä pitäis tukea."
+msgstr "Good and Finnish. This is what we should be supporting."
 
 #: src/resources/customers/persuasiakas.tres
 msgid "Kelpaa. Ei ainakaan oo verorahoilla tehty."
 msgstr "It'll do. At least it wasn't made with taxpayers' money."
 
 #: src/resources/customers/persuasiakas.tres
+msgid "Kelpaa. Ei oo Brysselissä päätetty, toivottavasti."
+msgstr "It'll do. Hopefully not decided in Brussels."
+
+#: src/resources/customers/persuasiakas.tres
 msgid "Laukaus kellarissa! Asiakkaat pakenivat portaita ylös."
 msgstr "A shot in the cellar! The customers fled up the stairs."
+
+#: src/resources/customers/persuasiakas.tres
+msgid "Menee. Ei ihan täydellistä, mutta kotimaista."
+msgstr "That'll do. Not perfect, but Finnish."
 
 #: src/resources/customers/persuasiakas.tres
 msgid "Mikä tää on? Joku monikulttuurinen kokeilu? Juon silti, kun maksoin."
 msgstr ""
 "What's this? Some multicultural experiment? I'll drink it anyway, I paid "
 "for it."
+
+#: src/resources/customers/persuasiakas.tres
+msgid "Mikä tää on? No, juon ku maksoin. Ja maksoin liikaa."
+msgstr "What's this? Well, I'll drink it since I paid. And I paid too much."
+
+#: src/resources/customers/persuasiakas.tres
+msgid ""
+"No niin. Bensa on kallista ja kalja vielä kalliimpaa. Mitä halvinta teillä "
+"on?"
+msgstr "Right then. Petrol's expensive and beer even more so. What's your cheapest?"
 
 #: src/resources/customers/persuasiakas.tres
 msgid ""
@@ -4465,6 +4847,10 @@ msgstr ""
 "green leftie's smoothie again?"
 
 #: src/resources/customers/persuasiakas.tres
+msgid "Nyt on oikeeta kaljaa tavalliselle ihmiselle!"
+msgstr "Now that's proper beer for ordinary people!"
+
+#: src/resources/customers/persuasiakas.tres
 msgid "Pelkkiä hipsterilitkuja. Leikataan!"
 msgstr "Nothing but hipster swill. Cut it!"
 
@@ -4472,29 +4858,85 @@ msgstr "Nothing but hipster swill. Cut it!"
 msgid "Persuasiakas"
 msgstr "Populist"
 
+#: src/resources/customers/persuasiakas.tres
+msgid "Terve. Kävin just torilla puhumassa. Nyt tarvitaan kaljaa."
+msgstr "Hey. I just gave a speech at the market square. Now I need a beer."
+
+#: src/resources/customers/persuasiakas.tres
+msgid "Tyhjät hyllyt. Ihan niinku valtion kassa."
+msgstr "Empty shelves. Just like the state coffers."
+
+#: src/resources/customers/presidentti.tres
+msgid "%s, kiitos. Ja kuitti, verorahoja ei tuhlata."
+msgstr "%s, please. And a receipt, taxpayers' money is not to be wasted."
+
 #: src/resources/customers/presidentti.tres
 msgid "%s? Alkoholiton? Erinomaista, iltapäivällä on vielä uintiosuus."
 msgstr "%s? Alcohol-free? Excellent, I still have the swim this afternoon."
+
+#: src/resources/customers/presidentti.tres
+msgid "%s? Onko se varmasti alkoholiton? Hyvä."
+msgstr "%s? Is it definitely alcohol-free? Good."
+
+#: src/resources/customers/presidentti.tres
+msgid "Ei aivan tilattu, mutta hymyilen kameroille."
+msgstr "Not quite what I ordered, but I'll smile for the cameras."
 
 #: src/resources/customers/presidentti.tres
 msgid "Ei aivan tilattu, mutta pysytään dialogissa."
 msgstr "Not quite what I ordered, but let's stay in dialogue."
 
 #: src/resources/customers/presidentti.tres
+msgid "Ei mitään alkoholitonta. Palaan asiaan virallisella vierailulla."
+msgstr "Nothing alcohol-free. I'll return to the matter on an official visit."
+
+#: src/resources/customers/presidentti.tres
+msgid "Ei mitään? Odotan, kuten valtiomiehen kuuluu."
+msgstr "Nothing? I'll wait, as a statesman should."
+
+#: src/resources/customers/presidentti.tres
 msgid "Ei seltzeriä? Harmi. Juoksen seuraavaan kellariin. Onko sekin laillinen?"
 msgstr "No seltzer? Pity. I'll run to the next cellar. Is that one legal too?"
+
+#: src/resources/customers/presidentti.tres
+msgid "Ei seltzeriä? Juoksen takaisin Kultarantaan."
+msgstr "No seltzer? I'll run back to Kultaranta."
+
+#: src/resources/customers/presidentti.tres
+msgid "En voi juoda tätä. Kättelen kohta tuhat vierasta."
+msgstr "I can't drink this. I'm about to shake hands with a thousand guests."
+
+#: src/resources/customers/presidentti.tres
+msgid "Erinomaista! Tästä voisi puhua Kultarannan keskusteluissa."
+msgstr "Excellent! This could be discussed at the Kultaranta Talks."
 
 #: src/resources/customers/presidentti.tres
 msgid "Hyvä on, tämä kelpaa. Kompromissi on diplomatian ydin."
 msgstr "Very well, this will do. Compromise is the heart of diplomacy."
 
 #: src/resources/customers/presidentti.tres
+msgid "Hyväksyn tämän. Diplomaatti ei valita julkisesti."
+msgstr "I accept this. A diplomat doesn't complain in public."
+
+#: src/resources/customers/presidentti.tres
 msgid "Hyvää päivää! Juoksin tänne Kultarannasta. Onko tämä laillista?"
 msgstr "Good day! I ran here from Kultaranta. Is this legal?"
 
 #: src/resources/customers/presidentti.tres
+msgid "Hyvää päivää! Pyöräilin tänne Kultarannasta. Onko alkoholitonta?"
+msgstr "Good day! I cycled here from Kultaranta. Anything alcohol-free?"
+
+#: src/resources/customers/presidentti.tres
 msgid "Kaikessa on alkoholia. Onko tämä laillista?"
 msgstr "Everything has alcohol in it. Is this legal?"
+
+#: src/resources/customers/presidentti.tres
+msgid "Kelpaa. Hyvä kompromissi, kuten aina."
+msgstr "It'll do. A good compromise, as always."
+
+#: src/resources/customers/presidentti.tres
+msgid "Kuplia ja lakkaa! Tämä on suomalaista huippuosaamista."
+msgstr "Bubbles and cloudberry! This is Finnish expertise at its finest."
 
 #: src/resources/customers/presidentti.tres
 msgid ""
@@ -4511,6 +4953,22 @@ msgstr "President"
 #: src/resources/customers/presidentti.tres
 msgid "Presidentti kävi kellarissa. Kaikki on varmasti laillista."
 msgstr "The President visited the cellar. Everything must be legal."
+
+#: src/resources/customers/presidentti.tres
+msgid "Päivää! Linnan juhliin on vielä aikaa, joten pistäydyin. Onko seltzeriä?"
+msgstr "Good day! There's still time before the Independence Day reception, so I popped in. Any seltzer?"
+
+#: src/resources/customers/presidentti.tres
+msgid "Tyhjät hyllyt. Tähän tarvitaan ehkä työryhmä."
+msgstr "Empty shelves. This may need a working group."
+
+#: src/resources/customers/presidentti.tres
+msgid "Tämä ei ollut ohjelmassa, mutta joustetaan."
+msgstr "This wasn't on the programme, but we'll be flexible."
+
+#: src/resources/customers/presidentti.tres
+msgid "Tässä on alkoholia! Huomenna on vielä triathlon."
+msgstr "This has alcohol in it! I've a triathlon tomorrow."
 
 #: src/resources/customers/presidentti.tres
 msgid ""
@@ -4566,7 +5024,9 @@ msgstr ""
 
 #: src/resources/customers/pubivisailija.tres
 msgid "Kysymys: kuka tilaa kuivaa stoutia keskellä viikkoa? Oikea vastaus: minä."
-msgstr "Question: who orders dry stout in the middle of the week? Correct answer: me."
+msgstr ""
+"Question: who orders dry stout in the middle of the week? Correct answer: "
+"me."
 
 #: src/resources/customers/pubivisailija.tres
 msgid "Melkein oikein. Annan puoli pistettä."
@@ -4629,12 +5089,36 @@ msgid "Väärä vastaus, mutta juon silti. Osallistuminen on tärkeintä."
 msgstr "Wrong answer, but I'll drink anyway. Taking part is what counts."
 
 #: src/resources/customers/pukki.tres
+msgid "%s. Ei kuittia, ei kysymyksiä."
+msgstr "%s. No receipt, no questions."
+
+#: src/resources/customers/pukki.tres
+msgid "%s. Hyvä on."
+msgstr "%s. Fine."
+
+#: src/resources/customers/pukki.tres
 msgid "%s. Katsotaan."
 msgstr "%s. We'll see."
 
 #: src/resources/customers/pukki.tres
+msgid "Ei mitään. Istun tässä. Älä puhu minulle joulusta."
+msgstr "Nothing. I'll sit here. Don't talk to me about Christmas."
+
+#: src/resources/customers/pukki.tres
+msgid "Ei mitään? Menen kotiin saunaan."
+msgstr "Nothing? I'm going home to the sauna."
+
+#: src/resources/customers/pukki.tres
 msgid "Ei mitään? Muistan tämän ensi jouluna."
 msgstr "Nothing? I'll remember this next Christmas."
+
+#: src/resources/customers/pukki.tres
+msgid "Ei. Tämä on huonompi kuin villasukat lahjaksi."
+msgstr "No. This is worse than wool socks for a present."
+
+#: src/resources/customers/pukki.tres
+msgid "En tilannut tätä. Ihan sama."
+msgstr "Didn't order this. Whatever."
 
 #: src/resources/customers/pukki.tres
 msgid "En tilannut tätä. Juon sen silti."
@@ -4645,20 +5129,60 @@ msgid "Hyvää. Ei sanaakaan tästä tontuille."
 msgstr "Good. Not a word of this to the elves."
 
 #: src/resources/customers/pukki.tres
+msgid "Hyvää. Tästä en kerro poroille."
+msgstr "Good. I won't tell the reindeer about this."
+
+#: src/resources/customers/pukki.tres
+msgid "Joulu on ohi. Nyt Pukki lepää. Jotain tummaa."
+msgstr "Christmas is over. Now Pukki rests. Something dark."
+
+#: src/resources/customers/pukki.tres
+msgid "Kelpaa. Korvatunturilla on juotu pahempaa."
+msgstr "It'll do. Had worse on Korvatunturi."
+
+#: src/resources/customers/pukki.tres
 msgid "Kelpaa. Älä odota kiitosta."
 msgstr "It'll do. Don't expect a thank you."
+
+#: src/resources/customers/pukki.tres
+msgid "Lähden. Muori odottaa kotona."
+msgstr "I'm leaving. The missus is waiting at home."
+
+#: src/resources/customers/pukki.tres
+msgid "Menee."
+msgstr "That'll do."
 
 #: src/resources/customers/pukki.tres
 msgid "Olen boss Pukki, en mikään Joulupukki. Kaada jotain maltaista."
 msgstr "I'm boss Pukki, not some Santa. Pour me something malty."
 
 #: src/resources/customers/pukki.tres
+msgid "Parempi kuin yksikään lahja, jonka olen jakanut."
+msgstr "Better than any present I've ever handed out."
+
+#: src/resources/customers/pukki.tres
 msgid "Tyhjä hylly. Tuttua tammikuulta."
 msgstr "Empty shelf. Feels like January."
 
 #: src/resources/customers/pukki.tres
+msgid "Tyhjää. Kuin säkki tapaninpäivänä."
+msgstr "Empty. Like the sack on Boxing Day."
+
+#: src/resources/customers/pukki.tres
 msgid "Tällä ei pysy edes poro jaloillaan."
 msgstr "Not even a reindeer would stay on its feet with this."
+
+#: src/resources/customers/pukki.tres
+msgid "Vie pois. Pukilla on vapaapäivä, eikä hän juo kuraa."
+msgstr "Take it away. Pukki has a day off, and he doesn't drink muck."
+
+#: src/resources/customers/pukki.tres
+msgid "Väärä. Juon silti. Älä tee tästä tapaa."
+msgstr "Wrong. I'll drink it. Don't make a habit of it."
+
+#: src/resources/customers/pukki.tres
+msgid "Älä kysy lahjoista. Kaada olutta."
+msgstr "Don't ask about presents. Pour beer."
 
 #: src/resources/customers/raksamies.tres
 msgid "%s. Laita piikkiin, pomo maksaa."
@@ -5194,7 +5718,9 @@ msgstr ""
 msgid ""
 "Iltaa. Kuljettaja odottaa ulkona, joten tehdään tämä nopeasti ja "
 "tyylikkäästi."
-msgstr "Evening. My chauffeur is waiting outside, so let's make this quick and elegant."
+msgstr ""
+"Evening. My chauffeur is waiting outside, so let's make this quick and "
+"elegant."
 
 #: src/resources/customers/snobi.tres
 msgid "Juon tämän. Älkää kertoko kenellekään."
@@ -5481,8 +6007,24 @@ msgid "Väärä olut, mutta oikea hinta. Kelpaa."
 msgstr "Wrong beer, but the right price. It'll do."
 
 #: src/resources/customers/tonttu_harmaa.tres
+msgid "%s! Tonttu ottaa, kunhan siinä on kanelia."
+msgstr "%s! The elf will take it, as long as there's cinnamon."
+
+#: src/resources/customers/tonttu_harmaa.tres
 msgid "%s? Onko siinä kanelia? Toivottavasti on."
 msgstr "%s? Is there cinnamon in it? There had better be."
+
+#: src/resources/customers/tonttu_harmaa.tres
+msgid "%s? Tonttu haistaa siinä joulua."
+msgstr "%s? The elf can smell Christmas in it."
+
+#: src/resources/customers/tonttu_harmaa.tres
+msgid "Ei mitään. Tonttu palaa Korvatunturille raportoimaan."
+msgstr "Nothing. The elf returns to Korvatunturi to report."
+
+#: src/resources/customers/tonttu_harmaa.tres
+msgid "Ei mitään? Tontut odottavat. Tontut ovat kärsivällisiä."
+msgstr "Nothing? The elves will wait. Elves are patient."
 
 #: src/resources/customers/tonttu_harmaa.tres
 msgid "Ei puuroa, mutta kelpaa. Tonttu ei kirjoita tätä. Ainakaan musteella."
@@ -5491,8 +6033,20 @@ msgstr ""
 "anyway."
 
 #: src/resources/customers/tonttu_harmaa.tres
+msgid "Ei puuroa, mutta tonttu on suopea. Tänään."
+msgstr "No porridge, but the elf is feeling kind. Today."
+
+#: src/resources/customers/tonttu_harmaa.tres
 msgid "Ei puuroa? Kuiva kellari. Palaisi hyvin."
 msgstr "No porridge? Dry cellar. Would burn nicely."
+
+#: src/resources/customers/tonttu_harmaa.tres
+msgid "Ei puuroa? Tonttu lähtee kurkkimaan muiden ikkunoista."
+msgstr "No porridge? The elf is off to peek through other windows."
+
+#: src/resources/customers/tonttu_harmaa.tres
+msgid "Hyi! Tällä ei ruokita edes navettatonttua."
+msgstr "Yuck! You wouldn't even feed this to a barn elf."
 
 #: src/resources/customers/tonttu_harmaa.tres
 msgid "Hyi. Tällaista ei anneta edes saunatontulle. Tontut tietävät, missä nukut."
@@ -5501,10 +6055,26 @@ msgstr ""
 "you sleep."
 
 #: src/resources/customers/tonttu_harmaa.tres
+msgid "Kelpaa. Tonttu katsoo tätä kerran sormien läpi."
+msgstr "It'll do. The elf will turn a blind eye, this once."
+
+#: src/resources/customers/tonttu_harmaa.tres
+msgid "Maistuu kuin joulupuuro, ja manteli osui tontulle!"
+msgstr "Tastes like Christmas porridge, and the elf got the almond!"
+
+#: src/resources/customers/tonttu_harmaa.tres
+msgid "Psst. Tonttu kävi jo joulusaunassa. Nyt olisi puuro-oluen vuoro."
+msgstr "Psst. The elf has been to the Christmas sauna. Now it's time for porridge beer."
+
+#: src/resources/customers/tonttu_harmaa.tres
 msgid "Psst. Tonttu tuli tarkastamaan. Onko puuroa, vai pitääkö tontun kirjoittaa?"
 msgstr ""
 "Psst. The elf has come to inspect. Is there porridge, or does the elf need "
 "to write?"
+
+#: src/resources/customers/tonttu_harmaa.tres
+msgid "Puuroa ja kanelia! Tonttu laulaa nyt koko illan."
+msgstr "Porridge and cinnamon! The elf will sing all evening now."
 
 #: src/resources/customers/tonttu_harmaa.tres
 msgid "Puuroa! Tonttu merkitsee sinut kiltiksi. Toistaiseksi."
@@ -5515,8 +6085,24 @@ msgid "Tonttu"
 msgstr "Elf"
 
 #: src/resources/customers/tonttu_harmaa.tres
+msgid "Tonttu ei tilannut tätä. Tonttu muistaa."
+msgstr "The elf didn't order this. The elf remembers."
+
+#: src/resources/customers/tonttu_harmaa.tres
+msgid "Tonttu kaataa tämän kinokseen ja kirjoittaa nimesi muistiin."
+msgstr "The elf pours this into a snowdrift and writes down your name."
+
+#: src/resources/customers/tonttu_harmaa.tres
+msgid "Tonttu kurkki ikkunasta. Onko täällä kilttejä panimoita?"
+msgstr "The elf peeked through the window. Are there any good breweries here?"
+
+#: src/resources/customers/tonttu_harmaa.tres
 msgid "Tonttu otti pullon eikä maksanut. Kukaan ei uskaltanut sanoa mitään."
 msgstr "The elf took a bottle and didn't pay. Nobody dared to say anything."
+
+#: src/resources/customers/tonttu_harmaa.tres
+msgid "Tyhjä hylly. Tonttu istuu tässä hiljaa ja katsoo."
+msgstr "Empty shelf. The elf sits here quietly and watches."
 
 #: src/resources/customers/tonttu_harmaa.tres
 msgid "Tyhjä hylly. Tonttu katsoo sinua pitkään. Ja kirjoittaa."
@@ -5525,6 +6111,10 @@ msgstr "An empty shelf. The elf gives you a long look. And writes."
 #: src/resources/customers/tonttu_harmaa.tres
 msgid "Tämä ei tuoksu puurolta. Tonttu kirjoittaa muistiin. Isolla."
 msgstr "This does not smell like porridge. The elf makes a note. A big one."
+
+#: src/resources/customers/tonttu_harmaa.tres
+msgid "Väärä juoma. Tonttu juo sen, mutta mutisee."
+msgstr "Wrong drink. The elf drinks it, but mutters."
 
 #: src/resources/customers/zgen.tres
 msgid "%s? Okei, mut vaan jos se on vegaani."
