@@ -2079,6 +2079,14 @@ msgid "Selvä. Tämäkään ei mennyt hukkaan."
 msgstr "Fine. This wasn't wasted either."
 
 #: src/resources/customers/alpha_gen.tres
+msgid "%s... six seven... no cap, otan sen."
+msgstr "%s... six seven... no cap, I'll take it."
+
+#: src/resources/customers/alpha_gen.tres
+msgid "%s? Lowkey goated, I'm gonna rizz it up."
+msgstr "%s? Lowkey goated, I'm gonna rizz it up."
+
+#: src/resources/customers/alpha_gen.tres
 msgid "Alfagen"
 msgstr "Gen Alpha"
 
@@ -2111,6 +2119,10 @@ msgid "Bro, toi %s näyttää lowkey goated, otan sen fr fr."
 msgstr "Bro, that %s looks lowkey goated, I'll take it fr fr."
 
 #: src/resources/customers/alpha_gen.tres
+msgid "Ei goated, not chopped either. Six seven."
+msgstr "Not goated, not chopped either. Six seven."
+
+#: src/resources/customers/alpha_gen.tres
 msgid "Ei mitään aurapointsien arvoista? Ihan NPC-meininki..."
 msgstr "Nothing worth any aura points? Total NPC vibes..."
 
@@ -2123,8 +2135,60 @@ msgstr ""
 "anything, heading back to Ohio."
 
 #: src/resources/customers/alpha_gen.tres
+msgid "Empty shelves? This is so Ohio."
+msgstr "Empty shelves? This is so Ohio."
+
+#: src/resources/customers/alpha_gen.tres
+msgid "Goated juoma, no cap. This cellar mogs everyone."
+msgstr "Goated drink, no cap. This cellar mogs everyone."
+
+#: src/resources/customers/alpha_gen.tres
+msgid "I did not order this. Joku NPC sekotti tilaukset, plot twist."
+msgstr "I did not order this. Some NPC mixed up the orders, plot twist."
+
+#: src/resources/customers/alpha_gen.tres
 msgid "Ihan okei, ei nyt mitään 67-tasoa mut ei tää chopattukaan ollu."
 msgstr "It's alright, not 67-level or anything but it wasn't chopped either."
+
+#: src/resources/customers/alpha_gen.tres
+msgid "Mid but ok. Chill guy energy, no crashout."
+msgstr "Mid but ok. Chill guy energy, no crashout."
+
+#: src/resources/customers/alpha_gen.tres
+msgid "Minus thousand aura. Tää on literally brainrot in a glass."
+msgstr "Minus a thousand aura. This is literally brainrot in a glass."
+
+#: src/resources/customers/alpha_gen.tres
+msgid "Nah. This is so chopped, I'm about to crash out."
+msgstr "Nah. This is so chopped, I'm about to crash out."
+
+#: src/resources/customers/alpha_gen.tres
+msgid "No alkoholiton? NPC-panimo fr. Lähen kotiin doomscrollaamaan."
+msgstr "No alcohol-free? NPC brewery fr. I'm going home to doomscroll."
+
+#: src/resources/customers/alpha_gen.tres
+msgid "Nothing for me? My aura can't handle this, lähen looksmaxxaamaan."
+msgstr "Nothing for me? My aura can't handle this, I'm off to looksmax."
+
+#: src/resources/customers/alpha_gen.tres
+msgid "Nothing? This cellar is skibidi. Ratio plus L plus NPC."
+msgstr "Nothing? This cellar is skibidi. Ratio plus L plus NPC."
+
+#: src/resources/customers/alpha_gen.tres
+msgid "Okay this is peak. Absolute cinema. Plus thousand aura."
+msgstr "Okay this is peak. Absolute cinema. Plus a thousand aura."
+
+#: src/resources/customers/alpha_gen.tres
+msgid "Skibidi moro! I'm literally mewing tässä jonossa, alkoholiton lager fr fr."
+msgstr "Skibidi hey! I'm literally mewing in this queue, alcohol-free lager fr fr."
+
+#: src/resources/customers/alpha_gen.tres
+msgid "Tää on Ohio-juoma, but I'm sigma, so juon sen silti."
+msgstr "This is an Ohio drink, but I'm sigma, so I'll drink it anyway."
+
+#: src/resources/customers/alpha_gen.tres
+msgid "Yo chat, alkoholiton lager ja make it quick. Mul on aura farming going on."
+msgstr "Yo chat, alcohol-free lager and make it quick. I've got aura farming going on."
 
 #: src/resources/customers/alpha_gen.tres
 msgid ""
@@ -2415,20 +2479,60 @@ msgstr ""
 "letters. Ho ho."
 
 #: src/resources/customers/kesamies.tres
+msgid "%s! Ootas, haen paremman valon."
+msgstr "%s! Hang on, let me find better light."
+
+#: src/resources/customers/kesamies.tres
 msgid "Ei ehkä ihan feed-materiaalia, mutta kyllä tän juo."
 msgstr "Not exactly feed material, but it's drinkable."
+
+#: src/resources/customers/kesamies.tres
+msgid "Ei ihan feediin, mut storyyn kelpaa."
+msgstr "Not for the feed, but it'll do for a story."
+
+#: src/resources/customers/kesamies.tres
+msgid "Ei mitään kesäistä? Meen kotiin kattoon vanhoja mökkikuvia."
+msgstr "Nothing summery? I'm going home to look at old cottage photos."
+
+#: src/resources/customers/kesamies.tres
+msgid "Ei mitään? No, julkasen sit kuvan tyhjästä hyllystä. Minimalismia."
+msgstr "Nothing? Fine, I'll post a photo of the empty shelf. Minimalism."
 
 #: src/resources/customers/kesamies.tres
 msgid "Ei täällä ollu mitään kesäistä. Täytyy etsiä parempi valokuvapaikka."
 msgstr "Nothing summery here. Gotta find a better photo spot."
 
 #: src/resources/customers/kesamies.tres
+msgid "Ei vehnää eikä mitään sameeta. Pitää kuvata pelkkää kahvia taas."
+msgstr "No wheat, nothing hazy. I'll have to shoot plain coffee again."
+
+#: src/resources/customers/kesamies.tres
+msgid "Ei, tää näyttää ihan suovedeltä. Ei mun kanavalle."
+msgstr "No, this looks like bog water. Not for my channel."
+
+#: src/resources/customers/kesamies.tres
+msgid "Hei! Laitetaanko lasiin sitruunaviipale? Se toimii kuvissa aina."
+msgstr "Hi! Can we put a lemon slice in the glass? It always works in photos."
+
+#: src/resources/customers/kesamies.tres
 msgid "Hmm, ei mitään kesäistä, tästä ei tuu hyvää otosta..."
 msgstr "Hmm, nothing summery, this won't make a good shot..."
 
 #: src/resources/customers/kesamies.tres
+msgid "Ihan täydellinen. Tää saa enemmän tykkäyksiä ku mun mökkikuvat."
+msgstr "Just perfect. This'll get more likes than my cottage photos."
+
+#: src/resources/customers/kesamies.tres
 msgid "Kesämies"
 msgstr "Summer Guy"
+
+#: src/resources/customers/kesamies.tres
+msgid "Menee. Laitan päälle filtterin, niin näyttää paremmalta."
+msgstr "It'll do. I'll put a filter on so it looks better."
+
+#: src/resources/customers/kesamies.tres
+msgid "Moi! Haluun jotain vaaleeta ja sameeta, mikä näyttää kesältä kuvassa."
+msgstr "Hi! I want something pale and hazy that looks like summer in a photo."
 
 #: src/resources/customers/kesamies.tres
 msgid ""
@@ -2445,8 +2549,32 @@ msgid "Ooh, %s! Tää näyttää kuvassa tosi hyvältä..."
 msgstr "Ooh, %s! This looks so good on camera..."
 
 #: src/resources/customers/kesamies.tres
+msgid "Sameeta ja aurinkoista! Kesäfiilis, vaikka ulkona sataa räntää."
+msgstr "Hazy and sunny! Summer vibes, even with sleet falling outside."
+
+#: src/resources/customers/kesamies.tres
+msgid "Toi %s näyttää hyvältä. Saanks kuvata sen ennen ku juon?"
+msgstr "That %s looks good. Can I take a photo before I drink it?"
+
+#: src/resources/customers/kesamies.tres
+msgid "Tyhjää hyllyä ei voi edes kuvata esteettisesti."
+msgstr "You can't even shoot an empty shelf aesthetically."
+
+#: src/resources/customers/kesamies.tres
+msgid "Tätä ei pelasta mikään filtteri."
+msgstr "No filter can save this."
+
+#: src/resources/customers/kesamies.tres
+msgid "Tää ei oo se mitä hain, mut otan tästä silti kuvan."
+msgstr "Not what I was after, but I'll take a photo of it anyway."
+
+#: src/resources/customers/kesamies.tres
 msgid "Tää näyttää ihan surkeelta kuvissa, en voi ottaa tätä."
 msgstr "This looks awful in photos, I can't take it."
+
+#: src/resources/customers/kesamies.tres
+msgid "Tää on vähän liian synkkä mun brändille. Juon sen ilman kuvaa."
+msgstr "This is a bit too dark for my brand. I'll drink it without a photo."
 
 #: src/resources/customers/kesamies.tres
 msgid "Väri on ihan täydellinen, tää menee suoraan tarinaan!"
@@ -2832,7 +2960,9 @@ msgstr "%s... my glasses are in my handbag, but my nose still works."
 
 #: src/resources/customers/mummeli.tres
 msgid "Ei mitään? Menen sitten lavatansseihin. Siellä joku aina tarjoaa."
-msgstr "Nothing? Then I'm off to the dance pavilion. Someone always buys me a drink there."
+msgstr ""
+"Nothing? Then I'm off to the dance pavilion. Someone always buys me a drink "
+"there."
 
 #: src/resources/customers/mummeli.tres
 msgid "Ei tämä ole sahtia, mutta on tämä märkää."
@@ -2852,7 +2982,9 @@ msgstr ""
 
 #: src/resources/customers/mummeli.tres
 msgid "En tätä pyytänyt, mutta en minä valita. Kerron vain koko ompeluseuralle."
-msgstr "I didn't ask for this, but I won't complain. I'll just tell the whole sewing circle."
+msgstr ""
+"I didn't ask for this, but I won't complain. I'll just tell the whole "
+"sewing circle."
 
 #: src/resources/customers/mummeli.tres
 msgid "Hyvänen aika, tyhjää. Meillä kotona on sentään aina kahvia ja pullaa."
@@ -3020,7 +3152,9 @@ msgstr "Not bad. In Finnish, that's a compliment."
 
 #: src/resources/customers/normaali_mies.tres
 msgid "Ei kehtaa juoda. Eikä kehtaa sanoa, mutta nyt sanoin."
-msgstr "Can't bring myself to drink it. Couldn't bring myself to say so either, but now I did."
+msgstr ""
+"Can't bring myself to drink it. Couldn't bring myself to say so either, but "
+"now I did."
 
 #: src/resources/customers/normaali_mies.tres
 msgid "Ei kyllä kelpaa tällainen, sori."
@@ -3128,7 +3262,9 @@ msgstr "Can't afford it. I'm going home to drink my flatmate's beers."
 
 #: src/resources/customers/opiskelija.tres
 msgid "En tilannu tätä, mut gradukin on eri aiheesta ku piti."
-msgstr "Didn't order this, but my thesis isn't on the topic it was meant to be either."
+msgstr ""
+"Didn't order this, but my thesis isn't on the topic it was meant to be "
+"either."
 
 #: src/resources/customers/opiskelija.tres
 msgid "Haalarit on pesemättä ja tentti huomenna. Yksi halpa, kiitos."
@@ -3172,7 +3308,9 @@ msgstr "Hi! The student grant just landed, the rent can wait. What's cheapest he
 msgid ""
 "Moro! Opintotuki tuli just, eli tänään eletään kuin kuninkaat. Mikä on "
 "halvin?"
-msgstr "Hey! The student grant just came, so tonight we live like kings. What's the cheapest?"
+msgstr ""
+"Hey! The student grant just came, so tonight we live like kings. What's the "
+"cheapest?"
 
 #: src/resources/customers/opiskelija.tres
 msgid "Noni."
@@ -3242,7 +3380,9 @@ msgstr "No bubbles, but the buzz holds. It'll do!"
 msgid ""
 "Ei kuplii? Mä meen Alkoon. Ai se on kiinni? No sit mä meen kotiin. Missä mä "
 "asun?"
-msgstr "No bubbles? I'm going to Alko. Oh, it's closed? Then I'm going home. Where do I live?"
+msgstr ""
+"No bubbles? I'm going to Alko. Oh, it's closed? Then I'm going home. Where "
+"do I live?"
 
 #: src/resources/customers/orveltaja.tres
 msgid "HYVÄÄ UUTTA VUOTTA! *hik* Mä oon ihan selvä. Onks teillä jotain kuplivaa?"
@@ -3324,7 +3464,9 @@ msgstr "This is worse than last year. And I don't remember last year."
 msgid ""
 "Uudenvuodenlupaus oli... *hik* ...en oksenna. Tarviin oluen ylläpitämään "
 "hyvää nousua."
-msgstr "My New Year's resolution was... *hic* ...don't throw up. I need a beer to keep the good buzz going."
+msgstr ""
+"My New Year's resolution was... *hic* ...don't throw up. I need a beer to "
+"keep the good buzz going."
 
 #: src/resources/customers/orveltaja.tres
 msgid "Väärä juoma, oikee suunta! *hik*"
@@ -3556,7 +3698,9 @@ msgstr "Wasn't on the order, but we'll make do since the wholesaler's closed too
 
 #: src/resources/customers/raksamies.tres
 msgid "Ei oo mitään. Haen huoltikselta, siellä sentään palvelu pelaa."
-msgstr "Nothing here. I'll get some at the petrol station, at least the service works there."
+msgstr ""
+"Nothing here. I'll get some at the petrol station, at least the service "
+"works there."
 
 #: src/resources/customers/raksamies.tres
 msgid ""
@@ -3606,7 +3750,9 @@ msgstr "Hey! Workday's over, a cold beer would hit the spot now."
 
 #: src/resources/customers/raksamies.tres
 msgid "Terve! Urakka on myöhässä ja kaikki on suunnittelijan vika. Kalja, kiitos."
-msgstr "Hey! The job's behind schedule and it's all the designer's fault. A beer, please."
+msgstr ""
+"Hey! The job's behind schedule and it's all the designer's fault. A beer, "
+"please."
 
 #: src/resources/customers/raksamies.tres
 msgid "Toi %s kelpaa hyvin työpäivän päälle..."
@@ -3745,8 +3891,32 @@ msgid "%s! Just sopivaa löylyjen päälle."
 msgstr "%s! Just the thing after the löyly."
 
 #: src/resources/customers/saunamies.tres
+msgid "%s, vai? Sopii hyvin vihdan tuoksun kanssa."
+msgstr "%s, is it? Goes well with the smell of a birch whisk."
+
+#: src/resources/customers/saunamies.tres
+msgid "%s. Saunatakki on päällä, joten ei ole kiire mihinkään."
+msgstr "%s. The sauna robe is on, so I'm in no hurry."
+
+#: src/resources/customers/saunamies.tres
 msgid "Ahh. Savua ja mallasta. Ihan kuin istuisi vieläkin lauteilla."
 msgstr "Ahh. Smoke and malt. Like I'm still up on the sauna bench."
+
+#: src/resources/customers/saunamies.tres
+msgid "Ei ihan saunakaljaa, mutta laiturilla tämäkin menisi."
+msgstr "Not quite a sauna beer, but on the jetty this would do too."
+
+#: src/resources/customers/saunamies.tres
+msgid "Ei mitään? Hyppään sitten avantoon uudestaan, se ainakin herättää."
+msgstr "Nothing? I'll jump in the ice hole again then, at least that wakes you up."
+
+#: src/resources/customers/saunamies.tres
+msgid "Ei mitään? Istun hetken, höyry nousee vielä päästä."
+msgstr "Nothing? I'll sit a while, there's still steam coming off my head."
+
+#: src/resources/customers/saunamies.tres
+msgid "Ei saunakaljaa? Lähden kotiin, siellä on ainakin kiuas lämpimänä."
+msgstr "No sauna beer? I'm going home, at least the stove is warm there."
 
 #: src/resources/customers/saunamies.tres
 msgid "Ei saunakaljaa? Takaisin lauteille sitten. Älkää katsoko."
@@ -3757,8 +3927,28 @@ msgid "Ei savua, mutta märkää on. Kelpaa saunakaljaksi."
 msgstr "No smoke, but it's wet. Good enough for a sauna beer."
 
 #: src/resources/customers/saunamies.tres
+msgid "En tätä tilannut, mutta pyyhe on jo märkä, joten ihan sama."
+msgstr "I didn't order this, but the towel's already wet, so whatever."
+
+#: src/resources/customers/saunamies.tres
+msgid "Huh, kiuas oli kuuma. Jotain savuista, ja kylmänä, kiitos."
+msgstr "Phew, the sauna stove was hot. Something smoky, and cold, please."
+
+#: src/resources/customers/saunamies.tres
 msgid "Huh, löylyt oli kovat! Anna jotain, mikä maistuu saunalta."
 msgstr "Phew, that was some steam! Give me something that tastes like a sauna."
+
+#: src/resources/customers/saunamies.tres
+msgid "Juuri tätä. Lauteet, savu ja kylmä tuoppi. Ei muuta tarvita."
+msgstr "Just this. The sauna bench, smoke and a cold pint. Nothing else needed."
+
+#: src/resources/customers/saunamies.tres
+msgid "Kävin avannossa. Nyt tarvitaan jotain, mikä maistuu saunalta."
+msgstr "I've been in the ice hole. Now I need something that tastes like a sauna."
+
+#: src/resources/customers/saunamies.tres
+msgid "Menköön. Saunan jälkeen ei olla nirsoja."
+msgstr "Fine. After the sauna nobody's picky."
 
 #: src/resources/customers/saunamies.tres
 msgid "Mikäs tämä on? No, saunan jälkeen kaikki maistuu."
@@ -3769,12 +3959,32 @@ msgid "Saunamies"
 msgstr "Sauna Man"
 
 #: src/resources/customers/saunamies.tres
+msgid "Tyhjää. Tämä on kuin sauna ilman löylyä."
+msgstr "Empty. Like a sauna without steam."
+
+#: src/resources/customers/saunamies.tres
 msgid "Tyhjää? Ja minä kun tulin ihan sellaisenaan."
 msgstr "Nothing? And me coming over just as I am."
 
 #: src/resources/customers/saunamies.tres
+msgid "Tämä haisee märältä pyyhkeeltä. Ei kiitos."
+msgstr "This smells like a wet towel. No thanks."
+
+#: src/resources/customers/saunamies.tres
+msgid "Tämä on laimeampaa kuin mökin kaivovesi."
+msgstr "This is weaker than the cottage well water."
+
+#: src/resources/customers/saunamies.tres
 msgid "Tätä ei viitsi edes kiukaalle heittää."
 msgstr "I wouldn't even throw this on the sauna stove."
+
+#: src/resources/customers/saunamies.tres
+msgid "Tätä juodessa kuulee melkein kiukaan sihinän."
+msgstr "Drinking this, you can almost hear the sauna stove hiss."
+
+#: src/resources/customers/saunamies.tres
+msgid "Väärä olut, mutta oikea olo. Juon."
+msgstr "Wrong beer, but the right mood. I'll drink it."
 
 #: src/resources/customers/saunanainen.tres
 msgid "%s! Sitä minä otan, ennen kuin naistenvuoro loppuu."
@@ -3981,12 +4191,48 @@ msgid "Tätä ei ollut esityksessäni, mutta hyväksyn sen eriävän mielipiteen
 msgstr "This wasn't in my proposal, but I accept it with a dissenting opinion."
 
 #: src/resources/customers/tarjoushaukka.tres
+msgid "%s. Saako tästä kuitin? Minä keräilen niitä."
+msgstr "%s. Do I get a receipt? I collect them."
+
+#: src/resources/customers/tarjoushaukka.tres
 msgid "Ei ollu se tarjous, mutta halpaa on halpaa."
 msgstr "Not the deal I wanted, but cheap is cheap."
 
 #: src/resources/customers/tarjoushaukka.tres
+msgid "Ei se tarjous, mutta melkein. Kelpaa."
+msgstr "Not the deal, but almost. It'll do."
+
+#: src/resources/customers/tarjoushaukka.tres
+msgid "Ei tarjouksia? Menen halpahalliin, siellä on aina punaisia lappuja."
+msgstr "No deals? I'm going to the discount store, they always have red price tags."
+
+#: src/resources/customers/tarjoushaukka.tres
+msgid "En tilannut tätä, mutta jos se oli halvempi, en valita."
+msgstr "I didn't order this, but if it was cheaper, I won't complain."
+
+#: src/resources/customers/tarjoushaukka.tres
+msgid "Halpaa ja hyvää! Tämä menee kuitin kanssa kehyksiin."
+msgstr "Cheap and good! This is going in a frame with the receipt."
+
+#: src/resources/customers/tarjoushaukka.tres
 msgid "Huh, selvisin. Onko täällä mitään tarjouksessa?"
 msgstr "Phew, I made it. Is anything on sale here?"
+
+#: src/resources/customers/tarjoushaukka.tres
+msgid ""
+"Huh. Kävin jo kolmessa kaupassa ja yhdessä alennusmyynnissä. Mikä täällä on "
+"halvinta?"
+msgstr ""
+"Phew. I've been to three shops and one clearance sale already. What's "
+"cheapest here?"
+
+#: src/resources/customers/tarjoushaukka.tres
+msgid "Loppuunmyyty? Tiesin, että olisi pitänyt jonottaa yöllä."
+msgstr "Sold out? I knew I should have queued overnight."
+
+#: src/resources/customers/tarjoushaukka.tres
+msgid "Löytö! Säästin niin paljon, että voin ostaa toisen."
+msgstr "What a find! I saved so much I can buy another."
 
 #: src/resources/customers/tarjoushaukka.tres
 msgid "Mitä, ei mitään halpaa? Mä jonotin tänne kolme tuntia."
@@ -3999,6 +4245,18 @@ msgstr "Fine, it'll do this time. I still saved."
 #: src/resources/customers/tarjoushaukka.tres
 msgid "Normaalihinnalla? En ikinä. Mä meen jonottaan seuraavaan paikkaan."
 msgstr "Full price? Never. I'm off to queue somewhere else."
+
+#: src/resources/customers/tarjoushaukka.tres
+msgid "Normaalihinta kirpaisee, mutta juon sen silti."
+msgstr "Full price stings, but I'll drink it anyway."
+
+#: src/resources/customers/tarjoushaukka.tres
+msgid "Onko teillä kanta-asiakaskorttia? Entä kaksi yhden hinnalla?"
+msgstr "Do you have a loyalty card? What about two for the price of one?"
+
+#: src/resources/customers/tarjoushaukka.tres
+msgid "Paljonko %s on, jos ostan kaksi? Entä kolme?"
+msgstr "How much is %s if I buy two? What about three?"
 
 #: src/resources/customers/tarjoushaukka.tres
 msgid "Sain viimeiset! Joku vei multa kengän, mutta sain viimeiset."
@@ -4017,8 +4275,28 @@ msgid "Tuo %s, onko se alessa? Otan kaikki."
 msgstr "That %s, is it on sale? I'll take them all."
 
 #: src/resources/customers/tarjoushaukka.tres
+msgid "Tyhjin käsin? Ensimmäinen kerta sitten viime alen."
+msgstr "Empty-handed? First time since the last sale."
+
+#: src/resources/customers/tarjoushaukka.tres
+msgid "Tyhjät hyllyt. Joku ehti ennen minua, taas."
+msgstr "Empty shelves. Someone beat me to it, again."
+
+#: src/resources/customers/tarjoushaukka.tres
+msgid "Tämä on kuin ilmainen näyte, paitsi että siitä joutui maksamaan."
+msgstr "This is like a free sample, except I had to pay for it."
+
+#: src/resources/customers/tarjoushaukka.tres
+msgid "Tästä en maksaisi edes punaisen lapun hintaa."
+msgstr "I wouldn't even pay the red tag price for this."
+
+#: src/resources/customers/tarjoushaukka.tres
 msgid "Tää ei oo edes tarjouksen arvonen."
 msgstr "This isn't even worth a discount."
+
+#: src/resources/customers/tarjoushaukka.tres
+msgid "Väärä olut, mutta oikea hinta. Kelpaa."
+msgstr "Wrong beer, but the right price. It'll do."
 
 #: src/resources/customers/tonttu_harmaa.tres
 msgid "%s? Onko siinä kanelia? Toivottavasti on."
@@ -4067,6 +4345,10 @@ msgid "Tämä ei tuoksu puurolta. Tonttu kirjoittaa muistiin. Isolla."
 msgstr "This does not smell like porridge. The elf makes a note. A big one."
 
 #: src/resources/customers/zgen.tres
+msgid "%s? Okei, mut vaan jos se on vegaani."
+msgstr "%s? Okay, but only if it's vegan."
+
+#: src/resources/customers/zgen.tres
 msgid "Bro ei ollu yhtään alkoholitonta, ei mun tarvii cap-juomaa, painun muualle."
 msgstr ""
 "Bro there wasn't a single non-alcoholic one, I don't need a cap drink, I'm "
@@ -4093,8 +4375,70 @@ msgid "Bro, toi %s on lowkey sigma, otan sen."
 msgstr "Bro, that %s is lowkey sigma, I'll take it."
 
 #: src/resources/customers/zgen.tres
+msgid "Ei alkoholitonta? Ok boomer -kellari. Meen kotiin pelaamaan."
+msgstr "No alcohol-free? Ok boomer cellar. I'm going home to game."
+
+#: src/resources/customers/zgen.tres
+msgid "Ei krapulaa ja silti näin hyvää? Tää on peak."
+msgstr "No hangover and still this good? This is peak."
+
+#: src/resources/customers/zgen.tres
+msgid "Ei mitään mulle sopivaa. Haen kaupasta energiajuoman, se on mun persoona."
+msgstr ""
+"Nothing for me. I'll grab an energy drink from the shop, it's my whole "
+"personality."
+
+#: src/resources/customers/zgen.tres
+msgid "Ei mitään? Ratio tälle kellarille."
+msgstr "Nothing? Ratio for this cellar."
+
+#: src/resources/customers/zgen.tres
+msgid "Ei mun lempi, mut vibat on kohdallaan."
+msgstr "Not my favourite, but the vibes are right."
+
+#: src/resources/customers/zgen.tres
+msgid "Ei. Tää antaa ihan kunnon ickin. Vie pois."
+msgstr "No. This gives me a proper ick. Take it away."
+
+#: src/resources/customers/zgen.tres
+msgid "Hyllyt tyhjänä? Tää kellari on ihan dead."
+msgstr "Empty shelves? This cellar is so dead."
+
+#: src/resources/customers/zgen.tres
+msgid "Ihan ok. Seiska, mut ei ickiä."
+msgstr "Just ok. A seven, but no ick."
+
+#: src/resources/customers/zgen.tres
 msgid "Meh, ihan mid mut ok, ei L eikä W, käyköön."
 msgstr "Meh, pretty mid but ok, not an L or a W, it'll do."
+
+#: src/resources/customers/zgen.tres
+msgid ""
+"Moi, onks teil alkoholitonta IPA:a? Mul on huomenna aamuvuoro ja main "
+"character -energia."
+msgstr ""
+"Hi, got any alcohol-free IPA? I've got a morning shift tomorrow and main "
+"character energy."
+
+#: src/resources/customers/zgen.tres
+msgid "Okei tää slayaa. Laitan tän storyyn ja tagaan teidät."
+msgstr "Okay, this slays. I'm putting it in my story and tagging you."
+
+#: src/resources/customers/zgen.tres
+msgid "Toi %s näyttää hyvältä. Maksan MobilePaylla, käteistä en omista."
+msgstr "That %s looks good. I'll pay by MobilePay, I don't own cash."
+
+#: src/resources/customers/zgen.tres
+msgid "Tää ei oo se mitä tilasin, mut en jaksa draamaa. Juon."
+msgstr "Not what I ordered, but I can't be bothered with drama. I'll drink it."
+
+#: src/resources/customers/zgen.tres
+msgid "Tää maistuu siltä ku kouluruokalan maitokannu. Ei kiitos."
+msgstr "This tastes like the school canteen milk jug. No thanks."
+
+#: src/resources/customers/zgen.tres
+msgid "Väärä juoma, mut ei tehä tästä mitään isoo juttua fr."
+msgstr "Wrong drink, but let's not make a big deal of it fr."
 
 #: src/resources/customers/zgen.tres
 msgid ""
@@ -4103,6 +4447,10 @@ msgid ""
 msgstr ""
 "Yo bro, do you have non-alcoholic IPA? I'm done with that cap life, I need "
 "a sigma drink fr fr."
+
+#: src/resources/customers/zgen.tres
+msgid "Yo. Äiti luulee et oon salilla. Yks alkoholiton IPA, no cap."
+msgstr "Yo. Mum thinks I'm at the gym. One alcohol-free IPA, no cap."
 
 #: src/resources/customers/zgen_naaras.tres
 msgid "Bestie tää on ihan cap, ei tää oo se paras, skibidi fail."
