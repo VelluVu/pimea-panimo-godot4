@@ -4,6 +4,9 @@ extends Resource
 ## A special event window open at the save, shown again with its time left.
 
 @export var event_data : SpecialEventData
+## time_left of an event still waiting for a free spot (SpecialEventQueue): it opens anew.
+const NOT_OPENED : float = -1.0
+
 ## Seconds left to answer; unused once answered.
 @export var time_left : float = 0.0
 ## Accepted and waiting for the goods, with the seconds left to deliver.
