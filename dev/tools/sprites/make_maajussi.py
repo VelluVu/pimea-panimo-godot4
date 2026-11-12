@@ -24,7 +24,8 @@ NAME = "maajussi_32"
 PALETTE = {
     "s": hex_color("ead4aa"),  # skin
     "t": hex_color("e4a672"),  # skin shade
-    "e": hex_color("3a4466"),  # eyes
+    "e": hex_color("3a4466"),  # pupils
+    "W": hex_color("ffffff"),  # eye whites
     "h": hex_color("733e39"),  # moustache, hair
     "H": hex_color("3e2731"),  # hair shade
     "C": hex_color("3e8948"),  # cap
@@ -47,8 +48,8 @@ HEAD_FRONT = [
     ".....CCCCYYCCcc.....",
     "....cccccccccccc....",
     "......tttttttt......",
-    "......ssessest......",
-    "......sssstsst......",
+    "......sWWssWWt......",
+    "......sWessWet......",
     "......sshhhhst......",
     ".......tsssst.......",
 ]
@@ -118,10 +119,11 @@ EMANTA_PALETTE = {
 EMANTA_HEAD_FRONT = [
     "......HHHHHHHg......",
     ".....HHWHHHWHgg.....",
-    ".....HhhhhhhhHg.....",
-    ".....HssessesHg.....",
-    ".....HsCsstsCHg.....",
-    ".....HssskkssHg.....",
+    ".....Hhhhhhhhhg.....",
+    ".....HsWWssWWsg.....",
+    ".....HsWessWesg.....",
+    ".....HCssttssCg.....",
+    ".....Hssskksssg.....",
     ".......tsssst.......",
     ".........Hg.........",
 ]
