@@ -234,6 +234,8 @@ enum KorvatunturiRole { NONE, TONTTU, JOULUPUKKI }
 @export var honour_min_quality: float = -1.0
 @export var honour_reputation: int = 0
 @export var honour_animation: StringName = &""
+## Played with the honour (Ilmakitaristi's riff), or null for none.
+@export var honour_sound: AudioStream = null
 @export_multiline var dialogue_honour: String = ""
 
 @export_group("Tuliaiset")

@@ -1,0 +1,46 @@
+[gd_resource type="Resource" script_class="CustomerData" format=3]
+
+[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_data"]
+[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/kalsarikannari_anim.tres" id="2_sprite"]
+
+[resource]
+script = ExtResource("1_data")
+customer_name = "Jari"
+title = "Kalsarikännäri"
+first_names = Array[String](["Jari", "Mika", "Petri", "Sami", "Janne", "Tomi"])
+min_quality = 0.4
+budget_multiplier = 1.0
+primary_style = 13
+secondary_style = 1
+sprite_frames = ExtResource("2_sprite")
+randomize_skin = false
+randomize_hair = false
+randomize_clothes = false
+randomize_shoes = false
+carries_glass_out = false
+voice_pitch = 0.9
+tip_base_chance = 0.15
+rep_primary_style = 4
+rep_secondary_style = 1
+min_reputation_to_appear = 20
+required_discovered_style = 13
+min_bottles_per_visit = 6
+max_bottles_per_visit = 6
+dialogue_sale_toast = "Kalsarikännäri lähti kuusi pulloa kainalossa. Ovi kävi ennen kuin ehdit sanoa kiitos."
+dialogue_intro = "Älä kysy mitään. Kuusi session alea mukaan, mä meen takas sohvalle."
+dialogue_success = "Täydellinen. Tällä jaksaa kolme kautta putkeen."
+dialogue_fallback = "Bulkkia. No, sohva ei tiedä eroa."
+dialogue_wrong_style = "Ei tää ollut listalla, mutta en jaksa vaihtaa. Mukaan."
+dialogue_reject = "Ei. Mä en tullut ihmisten ilmoille tällaisen takia."
+dialogue_no_match = "Ei session alea? Turha reissu. En kerro tästä kenellekään."
+dialogue_preview_format = "%s. Ihan sama, kunhan on kuusi."
+dialogue_nothing_available = "Tyhjät hanat. Kuin mun jääkaappi, ja siksi mä tänne tulin."
+alt_intro = Array[String](["Tulin villasukissa, koska kenkien laittaminen on sosiaalinen tilanne. Session alea, kuusi.", "Sarja odottaa pausella. Session alea, nopeasti."])
+alt_success = Array[String](["Hyvää. Kalsarit ja kuusi pulloa, siinä on koko illan suunnitelma.", "Nyt on ilta valmis. Kiitos, älä soita."])
+alt_fallback = Array[String](["Kelpaa. Kalsarikännit ei oo mikään viinitasting.", "Ihan sama, kunhan on kylmää ja paljon."])
+alt_wrong_style = Array[String](["Väärä, mutta sohvalla kaikki maistuu samalta.", "Tää on väärä. Otan silti, keskustelu on raskaampaa kuin juominen."])
+alt_reject = Array[String](["Tällä ei saa edes kalsareita lämpimiksi.", "Mä vedin villasukat jalkaan tämän takia. Ei käy."])
+alt_no_match = Array[String](["Ei mitään? Tää oli virhe. Sohva, mä tuun.", "Mä olin ihmisten ilmoilla ihan turhaan."])
+alt_preview_format = Array[String](["%s? Joo. Laita pussiin.", "%s. Älä kerro siitä mitään, ota vaan rahat."])
+alt_nothing_available = Array[String](["Ei mitään? Tää on pahempi kuin small talk.", "Tyhjää. Mä lähdin kotoa ihan turhaan."])
+metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

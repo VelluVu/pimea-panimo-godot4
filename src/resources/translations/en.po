@@ -808,8 +808,8 @@ msgid "Koko kylä tuttu"
 msgstr "Know the Whole Town"
 
 #: src/resources/achievements/asiakaskirja_kaikki.tres
-msgid "Tapaa 39 eri asiakastyyppiä."
-msgstr "Meet 39 different customer types."
+msgid "Tapaa 43 eri asiakastyyppiä."
+msgstr "Meet 43 different customer types."
 
 #: src/resources/achievements/bulkkia_5.tres
 msgid "Kansan kalja"
@@ -2670,7 +2670,9 @@ msgstr "Farm Wife"
 msgid ""
 "Emäntä jätti tiskille säkillisen ohraa omalta pellolta: %d kg "
 "pilsner-mallasta varastoon."
-msgstr "The farm wife left a sack of barley from her own field on the counter: %d kg of pilsner malt into storage."
+msgstr ""
+"The farm wife left a sack of barley from her own field on the counter: %d "
+"kg of pilsner malt into storage."
 
 #: src/resources/customers/emanta.tres
 msgid "Huono satovuosi tässä kellarissa. Lähden."
@@ -2942,6 +2944,112 @@ msgstr "Gorgeous hopping. Citrus and pine needles, just like forest bathing."
 msgid "Vihdoinkin joku, joka ymmärtää humalaprofiileja."
 msgstr "Finally someone who understands hop profiles."
 
+#: src/resources/customers/ilmakitaristi.tres
+msgid "%s! Kuulostaa riffiltä."
+msgstr "%s! Sounds like a riff."
+
+#: src/resources/customers/ilmakitaristi.tres
+msgid "%s. Soitetaan se!"
+msgstr "%s. Let's play it!"
+
+#: src/resources/customers/ilmakitaristi.tres
+msgid "%s? Viritän ilmakitaran sitä varten."
+msgstr "%s? I'll tune my air guitar for it."
+
+#: src/resources/customers/ilmakitaristi.tres
+msgid "Ei ihan oikea biisi, mutta hyvä kertosäe."
+msgstr "Not quite the right song, but a good chorus."
+
+#: src/resources/customers/ilmakitaristi.tres
+msgid "Ei mitään. Hiljaisuus on pahinta mitä tiedän."
+msgstr "Nothing. Silence is the worst thing I know."
+
+#: src/resources/customers/ilmakitaristi.tres
+msgid "Ei mitään? Tää lava on liian pieni mulle."
+msgstr "Nothing? This stage is too small for me."
+
+#: src/resources/customers/ilmakitaristi.tres
+msgid "Ei scotch alea? Keikka peruttu. Pakkaan kitaran."
+msgstr "No scotch ale? Gig cancelled. I'm packing up the guitar."
+
+#: src/resources/customers/ilmakitaristi.tres
+msgid "Feedback korvissa. Ei käy."
+msgstr "Feedback in my ears. No way."
+
+#: src/resources/customers/ilmakitaristi.tres
+msgid "Ilmakitaristi"
+msgstr "Air Guitarist"
+
+#: src/resources/customers/ilmakitaristi.tres
+msgid ""
+"Ilmakitaristi soittaa tiskillä huikean soolon! Jono hurraa, ja joku nostaa "
+"sytkärin ilmaan."
+msgstr "The air guitarist plays an epic solo at the counter! The queue cheers, and someone holds up a lighter."
+
+#: src/resources/customers/ilmakitaristi.tres
+msgid "Kelpaa, vaikka vähän eri viritys."
+msgstr "It'll do, even if the tuning's a bit off."
+
+#: src/resources/customers/ilmakitaristi.tres
+msgid "Kieli katkesi! Tällä ei soiteta mitään."
+msgstr "A string snapped! Nobody's playing anything to this."
+
+#: src/resources/customers/ilmakitaristi.tres
+msgid "Mä lähden. Encorea ei tule."
+msgstr "I'm leaving. No encore."
+
+#: src/resources/customers/ilmakitaristi.tres
+msgid "Oulussa olin viides. Tuomaristo ei ymmärtänyt mun vibratoa. Scotch ale."
+msgstr "I came fifth in Oulu. The judges didn't get my vibrato. Scotch ale."
+
+#: src/resources/customers/ilmakitaristi.tres
+msgid "Raskasta kuitenkin. Kelpaa soundcheckiin."
+msgstr "Heavy at least. Good enough for the soundcheck."
+
+#: src/resources/customers/ilmakitaristi.tres
+msgid "Rokkaa! Tää ansaitsee soolon!"
+msgstr "This rocks! It deserves a solo!"
+
+#: src/resources/customers/ilmakitaristi.tres
+msgid "Treenasin koko päivän, sormet on ihan rakoilla. Yksi scotch ale."
+msgstr "I practised all day, my fingers are blistered. One scotch ale."
+
+#: src/resources/customers/ilmakitaristi.tres
+msgid "Tyhjät hanat. Kuin keikka ilman vahvistinta."
+msgstr "Empty taps. Like a gig without an amp."
+
+#: src/resources/customers/ilmakitaristi.tres
+msgid "Tyhjää. Tää on mun uran alamäki."
+msgstr "Empty. This is the low point of my career."
+
+#: src/resources/customers/ilmakitaristi.tres
+msgid "Täydellinen sointi. Ilmakitara on vireessä."
+msgstr "Perfect chord. The air guitar is in tune."
+
+#: src/resources/customers/ilmakitaristi.tres
+msgid "Tää kuulostaa haitarilta. Ei."
+msgstr "This sounds like an accordion. No."
+
+#: src/resources/customers/ilmakitaristi.tres
+msgid "Tää on balladi, mä pyysin heavya. No, juodaan."
+msgstr "This is a ballad, I asked for heavy. Well, let's drink."
+
+#: src/resources/customers/ilmakitaristi.tres
+msgid "Tää on kuin finaalin viimeinen sointu. Kiitos!"
+msgstr "Like the last chord of the final. Thanks!"
+
+#: src/resources/customers/ilmakitaristi.tres
+msgid "Väärä biisi, mutta soitetaan silti."
+msgstr "Wrong song, but we'll play it anyway."
+
+#: src/resources/customers/ilmakitaristi.tres
+msgid "Väärä sävellaji, mutta rokki antaa anteeksi."
+msgstr "Wrong key, but rock forgives."
+
+#: src/resources/customers/ilmakitaristi.tres
+msgid "Wee heavy, eli raskas. Kuin mun soolot. Scotch ale, kiitos!"
+msgstr "Wee heavy, as in heavy. Like my solos. Scotch ale, please!"
+
 #: src/resources/customers/joulupukki.tres
 msgid "%s. Pukki ottaa, ja tontut maksavat."
 msgstr "%s. Santa takes it, and the elves pay."
@@ -3055,6 +3163,326 @@ msgstr ""
 #: src/resources/customers/joulupukki.tres
 msgid "Väärä paketti, mutta Pukki avaa sen silti."
 msgstr "Wrong present, but Santa will open it anyway."
+
+#: src/resources/customers/kalsarikannari.tres
+msgid "%s. Ihan sama, kunhan on kuusi."
+msgstr "%s. Whatever, as long as it's six."
+
+#: src/resources/customers/kalsarikannari.tres
+msgid "%s. Älä kerro siitä mitään, ota vaan rahat."
+msgstr "%s. Don't tell me about it, just take the money."
+
+#: src/resources/customers/kalsarikannari.tres
+msgid "%s? Joo. Laita pussiin."
+msgstr "%s? Yeah. Put them in a bag."
+
+#: src/resources/customers/kalsarikannari.tres
+msgid "Bulkkia. No, sohva ei tiedä eroa."
+msgstr "Bulk lager. Well, the sofa can't tell the difference."
+
+#: src/resources/customers/kalsarikannari.tres
+msgid "Ei mitään? Tää oli virhe. Sohva, mä tuun."
+msgstr "Nothing? This was a mistake. Sofa, I'm coming."
+
+#: src/resources/customers/kalsarikannari.tres
+msgid "Ei mitään? Tää on pahempi kuin small talk."
+msgstr "Nothing? This is worse than small talk."
+
+#: src/resources/customers/kalsarikannari.tres
+msgid "Ei session alea? Turha reissu. En kerro tästä kenellekään."
+msgstr "No session ale? Wasted trip. I'm telling nobody about this."
+
+#: src/resources/customers/kalsarikannari.tres
+msgid "Ei tää ollut listalla, mutta en jaksa vaihtaa. Mukaan."
+msgstr "This wasn't on the list, but I can't be bothered to swap. To go."
+
+#: src/resources/customers/kalsarikannari.tres
+msgid "Ei. Mä en tullut ihmisten ilmoille tällaisen takia."
+msgstr "No. I didn't go out among people for this."
+
+#: src/resources/customers/kalsarikannari.tres
+msgid "Hyvää. Kalsarit ja kuusi pulloa, siinä on koko illan suunnitelma."
+msgstr "Good. Underpants and six bottles, that's the whole evening's plan."
+
+#: src/resources/customers/kalsarikannari.tres
+msgid "Ihan sama, kunhan on kylmää ja paljon."
+msgstr "Whatever, as long as it's cold and there's lots."
+
+#: src/resources/customers/kalsarikannari.tres
+msgid "Kalsarikännäri"
+msgstr "Pantsdrunk"
+
+#: src/resources/customers/kalsarikannari.tres
+msgid ""
+"Kalsarikännäri lähti kuusi pulloa kainalossa. Ovi kävi ennen kuin ehdit "
+"sanoa kiitos."
+msgstr "The pantsdrunk left with six bottles under his arm. The door shut before you could say thanks."
+
+#: src/resources/customers/kalsarikannari.tres
+msgid "Kelpaa. Kalsarikännit ei oo mikään viinitasting."
+msgstr "It'll do. Pantsdrunk isn't a wine tasting."
+
+#: src/resources/customers/kalsarikannari.tres
+msgid "Mä olin ihmisten ilmoilla ihan turhaan."
+msgstr "I went out among people for nothing."
+
+#: src/resources/customers/kalsarikannari.tres
+msgid "Mä vedin villasukat jalkaan tämän takia. Ei käy."
+msgstr "I put on woolly socks for this. No way."
+
+#: src/resources/customers/kalsarikannari.tres
+msgid "Nyt on ilta valmis. Kiitos, älä soita."
+msgstr "The evening is sorted. Thanks, don't call."
+
+#: src/resources/customers/kalsarikannari.tres
+msgid "Sarja odottaa pausella. Session alea, nopeasti."
+msgstr "My series is on pause. Session ale, quick."
+
+#: src/resources/customers/kalsarikannari.tres
+msgid ""
+"Tulin villasukissa, koska kenkien laittaminen on sosiaalinen tilanne. "
+"Session alea, kuusi."
+msgstr "I came in woolly socks, because putting on shoes is a social situation. Session ale, six."
+
+#: src/resources/customers/kalsarikannari.tres
+msgid "Tyhjät hanat. Kuin mun jääkaappi, ja siksi mä tänne tulin."
+msgstr "Empty taps. Like my fridge, and that's why I came here."
+
+#: src/resources/customers/kalsarikannari.tres
+msgid "Tyhjää. Mä lähdin kotoa ihan turhaan."
+msgstr "Empty. I left home for nothing."
+
+#: src/resources/customers/kalsarikannari.tres
+msgid "Tällä ei saa edes kalsareita lämpimiksi."
+msgstr "This won't even warm up my underpants."
+
+#: src/resources/customers/kalsarikannari.tres
+msgid "Täydellinen. Tällä jaksaa kolme kautta putkeen."
+msgstr "Perfect. This'll last me three seasons in a row."
+
+#: src/resources/customers/kalsarikannari.tres
+msgid "Tää on väärä. Otan silti, keskustelu on raskaampaa kuin juominen."
+msgstr "This is wrong. I'll take it anyway, talking is harder work than drinking."
+
+#: src/resources/customers/kalsarikannari.tres
+msgid "Väärä, mutta sohvalla kaikki maistuu samalta."
+msgstr "Wrong one, but on the sofa everything tastes the same."
+
+#: src/resources/customers/kalsarikannari.tres
+msgid "Älä kysy mitään. Kuusi session alea mukaan, mä meen takas sohvalle."
+msgstr "Don't ask anything. Six session ales to go, I'm going back to the sofa."
+
+#: src/resources/customers/kannihirvi.tres
+msgid "%s! Sarvet sanoo kyllä."
+msgstr "%s! The antlers say yes."
+
+#: src/resources/customers/kannihirvi.tres
+msgid "%s. Hik. Joo."
+msgstr "%s. Hic. Yeah."
+
+#: src/resources/customers/kannihirvi.tres
+msgid "%s? Kaada ämpäriin."
+msgstr "%s? Pour it in the bucket."
+
+#: src/resources/customers/kannihirvi.tres
+msgid "Ei doppelbockia? Takaisin omenatarhaan."
+msgstr "No doppelbock? Back to the orchard."
+
+#: src/resources/customers/kannihirvi.tres
+msgid "Ei ihan oikea, mutta metsässä ei valita."
+msgstr "Not quite right, but in the forest you don't get to choose."
+
+#: src/resources/customers/kannihirvi.tres
+msgid "Ei mitään? Mä meen nuolemaan suolakiveä."
+msgstr "Nothing? I'm off to lick a salt lick."
+
+#: src/resources/customers/kannihirvi.tres
+msgid "Ei mitään? Tää on pahempi kuin metsästyskausi."
+msgstr "Nothing? This is worse than hunting season."
+
+#: src/resources/customers/kannihirvi.tres
+msgid "Ei. Tämän takia en selvinnyt metsästyskaudesta."
+msgstr "No. I didn't survive hunting season for this."
+
+#: src/resources/customers/kannihirvi.tres
+msgid "Hik. En tiedä mitä tää on, mutta juon sen."
+msgstr "Hic. Don't know what this is, but I'll drink it."
+
+#: src/resources/customers/kannihirvi.tres
+msgid "Hik. Lähden. Varokaa minua tiellä."
+msgstr "Hic. I'm off. Watch out for me on the road."
+
+#: src/resources/customers/kannihirvi.tres
+msgid "Hik. Omenat loppu. Onks teillä jotain vahvempaa? Doppelbock."
+msgstr "Hic. The apples ran out. Got anything stronger? Doppelbock."
+
+#: src/resources/customers/kannihirvi.tres
+msgid "Kelpaa. Pää on jo valmiiksi sumussa."
+msgstr "It'll do. My head's already foggy."
+
+#: src/resources/customers/kannihirvi.tres
+msgid "Kännihirvi"
+msgstr "Drunk Moose"
+
+#: src/resources/customers/kannihirvi.tres
+msgid ""
+"Kännihirvi joi doppelbockin suoraan ämpäristä ja röyhtäisi niin, että "
+"pullot kilisivät."
+msgstr "The drunk moose drank the doppelbock straight from the bucket and burped so hard the bottles rattled."
+
+#: src/resources/customers/kannihirvi.tres
+msgid "Mä oon se hirvi siitä varoitusmerkistä. Lomalla. Doppelbock."
+msgstr "I'm the moose from that warning sign. On holiday. Doppelbock."
+
+#: src/resources/customers/kannihirvi.tres
+msgid "Nestemäistä leipää. Hirvikin tarvitsee hiilaria."
+msgstr "Liquid bread. Even a moose needs carbs."
+
+#: src/resources/customers/kannihirvi.tres
+msgid "Pfft. Hirvikärpäsetkin lähti tämän hajusta."
+msgstr "Pfft. Even the deer flies fled the smell of this."
+
+#: src/resources/customers/kannihirvi.tres
+msgid "Sarvet jäi oveen, mutta mä pääsin. Doppelbock, kiitos."
+msgstr "My antlers got stuck in the door, but I made it. Doppelbock, please."
+
+#: src/resources/customers/kannihirvi.tres
+msgid "Tummaa ja vahvaa. Kelpaa hirvelle."
+msgstr "Dark and strong. Good enough for a moose."
+
+#: src/resources/customers/kannihirvi.tres
+msgid "Tyhjät hanat. Kuin omenapuu helmikuussa."
+msgstr "Empty taps. Like an apple tree in February."
+
+#: src/resources/customers/kannihirvi.tres
+msgid "Tyhjää. Mä nojaan tähän hetken, ettei kaadu."
+msgstr "Empty. I'll lean here a moment so I don't fall over."
+
+#: src/resources/customers/kannihirvi.tres
+msgid "Tää ei ollut doppelbock. Ei haittaa, mikään ei ole enää terävää."
+msgstr "This wasn't a doppelbock. Doesn't matter, nothing's sharp any more."
+
+#: src/resources/customers/kannihirvi.tres
+msgid "Tää maistuu tienvarren suolalta. Ei."
+msgstr "This tastes like road salt. No."
+
+#: src/resources/customers/kannihirvi.tres
+msgid "Tää on parempaa kuin käyneet omenat. Hik!"
+msgstr "This beats fermented apples. Hic!"
+
+#: src/resources/customers/kannihirvi.tres
+msgid "Upeeta. En lähde tämän jälkeen tielle, mä kävelen ojassa."
+msgstr "Great. I won't go on the road after this, I'll walk in the ditch."
+
+#: src/resources/customers/kannihirvi.tres
+msgid "Väärä, mutta hirvi ei ole tarkka."
+msgstr "Wrong one, but a moose isn't picky."
+
+#: src/resources/customers/keppihevosratsastaja.tres
+msgid "%s! Salama hirnahti, se tarkoittaa kyllä."
+msgstr "%s! Salama neighed, that means yes."
+
+#: src/resources/customers/keppihevosratsastaja.tres
+msgid "%s. Kuulostaa ruusukkeen arvoiselta."
+msgstr "%s. Sounds worth a rosette."
+
+#: src/resources/customers/keppihevosratsastaja.tres
+msgid "%s? Hypätään sitä kohti!"
+msgstr "%s? Let's jump towards it!"
+
+#: src/resources/customers/keppihevosratsastaja.tres
+msgid "Ei ihan witbier, mutta hyvä ravi."
+msgstr "Not quite a witbier, but a good trot."
+
+#: src/resources/customers/keppihevosratsastaja.tres
+msgid "Ei mitään meille. Salama, laukkaa!"
+msgstr "Nothing for us. Salama, gallop!"
+
+#: src/resources/customers/keppihevosratsastaja.tres
+msgid "Ei mitään. Salama on pettynyt, katso sen silmiä."
+msgstr "Nothing. Salama is disappointed, look at her eyes."
+
+#: src/resources/customers/keppihevosratsastaja.tres
+msgid "Ei witbier. Salama pudisti harjaansa."
+msgstr "Not a witbier. Salama shook her mane."
+
+#: src/resources/customers/keppihevosratsastaja.tres
+msgid "Ei witbieriä? Tallille sitten. Hyppy, hyppy!"
+msgstr "No witbier? Back to the stable then. Hup, hup!"
+
+#: src/resources/customers/keppihevosratsastaja.tres
+msgid "Ei. Tälle Salamakin kieltäytyisi esteeltä."
+msgstr "No. Even Salama would refuse this fence."
+
+#: src/resources/customers/keppihevosratsastaja.tres
+msgid "Hei! Mulle witbier ja Salamalle ämpäri vettä. Se on janoinen laukan jälkeen."
+msgstr "Hi! A witbier for me and a bucket of water for Salama. She's thirsty after the gallop."
+
+#: src/resources/customers/keppihevosratsastaja.tres
+msgid "Hylätty suoritus. Nolla pistettä."
+msgstr "Disqualified. Zero points."
+
+#: src/resources/customers/keppihevosratsastaja.tres
+msgid "Hypättiin portaat kolmella askeleella. Witbier, kiitos!"
+msgstr "We jumped the stairs in three strides. Witbier, please!"
+
+#: src/resources/customers/keppihevosratsastaja.tres
+msgid "Ihanaa, täällä on hyvä pohja! Salama, seis. Yksi witbier."
+msgstr "Lovely, good footing in here! Salama, whoa. One witbier."
+
+#: src/resources/customers/keppihevosratsastaja.tres
+msgid "Kelpaa. Salama ei ole nirso, enkä minäkään."
+msgstr "It'll do. Salama isn't fussy, and neither am I."
+
+#: src/resources/customers/keppihevosratsastaja.tres
+msgid "Keppihevosratsastaja"
+msgstr "Hobby Horse Rider"
+
+#: src/resources/customers/keppihevosratsastaja.tres
+msgid ""
+"Keppihevosratsastaja ja Salama tekevät kouluratsastuskumarruksen tiskin "
+"edessä! Koko kellari taputtaa, ja Salama saa ruusukkeen."
+msgstr "The hobby horse rider and Salama do a dressage bow in front of the counter! The whole cellar claps, and Salama gets a rosette."
+
+#: src/resources/customers/keppihevosratsastaja.tres
+msgid "Salama haistoi tämän ja peruutti."
+msgstr "Salama sniffed this and backed off."
+
+#: src/resources/customers/keppihevosratsastaja.tres
+msgid "Salamakin hirnuu hyväksyvästi."
+msgstr "Even Salama neighs her approval."
+
+#: src/resources/customers/keppihevosratsastaja.tres
+msgid "Tyhjät hanat? Kuin rata ilman esteitä."
+msgstr "Empty taps? Like a course with no fences."
+
+#: src/resources/customers/keppihevosratsastaja.tres
+msgid "Tyhjää. Mennään takaisin laitumelle."
+msgstr "Empty. Back to the pasture."
+
+#: src/resources/customers/keppihevosratsastaja.tres
+msgid "Täydet pisteet! Tää menee suoraan kisakuvaan."
+msgstr "Full marks! This goes straight in the show photo."
+
+#: src/resources/customers/keppihevosratsastaja.tres
+msgid "Tää ei ollut tilauksessa, mutta otetaan. Salama, älä katso noin."
+msgstr "This wasn't what I ordered, but we'll take it. Salama, don't look at me like that."
+
+#: src/resources/customers/keppihevosratsastaja.tres
+msgid "Tää kellari ei ole meidän kisapaikka."
+msgstr "This cellar isn't our show ground."
+
+#: src/resources/customers/keppihevosratsastaja.tres
+msgid "Vehnää kuitenkin. Hevonenkin syö kauraa, jos ei muuta ole."
+msgstr "Wheat at least. A horse eats oats too if there's nothing else."
+
+#: src/resources/customers/keppihevosratsastaja.tres
+msgid "Väärä este, mutta hypätään silti."
+msgstr "Wrong fence, but we'll jump it anyway."
+
+#: src/resources/customers/keppihevosratsastaja.tres
+msgid "Wau! Kevyt ja poreileva, ihan kuin Salaman harja tuulessa."
+msgstr "Wow! Light and fizzy, just like Salama's mane in the wind."
 
 #: src/resources/customers/kesamies.tres
 msgid "%s! Ootas, haen paremman valon."
@@ -3590,7 +4018,9 @@ msgstr "Wrong tempo, but I won't leave my partner on the floor."
 msgid ""
 "Lavatanssija niiaa: Saanko luvan? Pyörähdätte valssin tiskin edessä, ja "
 "koko kellari taputtaa."
-msgstr "The dance hall regular curtsies: May I have this dance? You waltz in front of the counter, and the whole cellar claps."
+msgstr ""
+"The dance hall regular curtsies: May I have this dance? You waltz in front "
+"of the counter, and the whole cellar claps."
 
 #: src/resources/customers/leijonafani.tres
 msgid "%s! ANNA SE TÄNNE KUIN KIEKKO MAALIIN!"

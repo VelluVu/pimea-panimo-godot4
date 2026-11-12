@@ -157,6 +157,9 @@ func _connect_signals() -> void:
 	# Not placed in the world: the whole cellar hears the shot, like the shake it comes with.
 	BrewerySignals.customer_outburst.connect(play_sfx.bind(bank.sfx_gunshot).unbind(1))
 	# Not placed in the world: the car is outside, beyond the door.
+	BrewerySignals.customer_honoured.connect(func(data : CustomerData) -> void:
+		if data.honour_sound != null:
+			play_sfx(data.honour_sound))
 	BrewerySignals.customer_arrival_sounded.connect(func(stream : AudioStream) -> void: play_sfx(stream, ARRIVAL_VOLUME_DB))
 	BrewerySignals.glass_shattered.connect(func() -> void: play_sfx(bank.sfx_glass_shatter, 0.0, randf_range(SHATTER_PITCH_RANGE.x, SHATTER_PITCH_RANGE.y)))
 

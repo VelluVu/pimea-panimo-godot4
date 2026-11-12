@@ -685,6 +685,28 @@ def raggari_horn():
     return crush(mix(idle, at(0.35, blip), at(1.0, horn)), 48), 0.6
 
 
+def air_guitar_riff():
+    """Ilmakitaristi's solo: a distorted power-chord riff (E5, G5, A5, then a bend) that
+    plays in the player's head, since the guitar is made of air."""
+    def chord(root, seconds):
+        x = saw(note(root), seconds) + saw(note(root) * 1.5, seconds) * 0.8 + saw(note(root) * 2.0, seconds) * 0.4
+        return np.tanh(lowpass(x, 2600) * 4.0) * env(seconds, 0.005, 0.06)
+
+    riff = seq([chord("E3", 0.18), chord("E3", 0.18), chord("G3", 0.18), chord("A3", 0.3),
+                silence(0.04), chord("E3", 0.18), chord("G3", 0.18), chord("A#3", 0.12), chord("A3", 0.4)])
+    s = 0.6
+    bend = np.tanh(lowpass(saw(sweep(note("E4"), note("F#4"), s, 0.6), s), 3000) * 3.0) * env(s, 0.01, 0.3) * 0.6
+    return crush(seq([riff, bend]), 48), 0.55
+
+
+def antler_thud():
+    """Kännihirvi's antlers hitting the door frame: a hollow wooden knock, a rattle, a grunt."""
+    knock = mix(triangle(sweep(170, 70, 0.25), 0.25) * perc(0.25, 14), lowpass(noise(0.12, hold=5), 700) * perc(0.12, 25))
+    rattle = lowpass(noise(0.3, hold=3), 2200) * perc(0.3, 12) * 0.35
+    grunt = lowpass(saw(sweep(110, 85, 0.35), 0.35) * env(0.35, 0.03, 0.15), 500) * 0.5
+    return crush(mix(knock, at(0.05, rattle), at(0.45, grunt)), 48), 0.6
+
+
 RECIPES = {
     "ui_hover": ui_hover,
     "gunshot": gunshot,
@@ -747,6 +769,8 @@ RECIPES = {
     "fireworks_door": fireworks_door,
     "candle_pop": candle_pop,
     "raggari_horn": raggari_horn,
+    "air_guitar_riff": air_guitar_riff,
+    "antler_thud": antler_thud,
 }
 
 
