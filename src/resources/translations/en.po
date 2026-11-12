@@ -2856,7 +2856,9 @@ msgstr "No Pukkibock? Ho ho. Nice brewery. Shame if something happened to it."
 msgid ""
 "Ei Pukkibockia? Pukki palaa Korvatunturille, siellä on ainakin tonttujen "
 "olutta."
-msgstr "No Pukkibock? Santa is going back to Korvatunturi, at least the elves have beer there."
+msgstr ""
+"No Pukkibock? Santa is going back to Korvatunturi, at least the elves have "
+"beer there."
 
 #: src/resources/customers/joulupukki.tres
 msgid "Ei aivan toiveiden mukaan, mutta Pukki ei ole nirso. Hohoo."
@@ -4784,7 +4786,9 @@ msgstr "*BANG!* This is so weak it must be an EU directive!"
 
 #: src/resources/customers/persuasiakas.tres
 msgid "Ei halpaa? Meen huoltikselle, siellä ainakin kahvi on halpaa."
-msgstr "Nothing cheap? I'm going to the petrol station, at least the coffee's cheap there."
+msgstr ""
+"Nothing cheap? I'm going to the petrol station, at least the coffee's cheap "
+"there."
 
 #: src/resources/customers/persuasiakas.tres
 msgid "Ei mitään? Tästä kirjotan Facebookiin ihan pitkästi."
@@ -4956,7 +4960,9 @@ msgstr "The President visited the cellar. Everything must be legal."
 
 #: src/resources/customers/presidentti.tres
 msgid "Päivää! Linnan juhliin on vielä aikaa, joten pistäydyin. Onko seltzeriä?"
-msgstr "Good day! There's still time before the Independence Day reception, so I popped in. Any seltzer?"
+msgstr ""
+"Good day! There's still time before the Independence Day reception, so I "
+"popped in. Any seltzer?"
 
 #: src/resources/customers/presidentti.tres
 msgid "Tyhjät hyllyt. Tähän tarvitaan ehkä työryhmä."
@@ -6064,7 +6070,9 @@ msgstr "Tastes like Christmas porridge, and the elf got the almond!"
 
 #: src/resources/customers/tonttu_harmaa.tres
 msgid "Psst. Tonttu kävi jo joulusaunassa. Nyt olisi puuro-oluen vuoro."
-msgstr "Psst. The elf has been to the Christmas sauna. Now it's time for porridge beer."
+msgstr ""
+"Psst. The elf has been to the Christmas sauna. Now it's time for porridge "
+"beer."
 
 #: src/resources/customers/tonttu_harmaa.tres
 msgid "Psst. Tonttu tuli tarkastamaan. Onko puuroa, vai pitääkö tontun kirjoittaa?"
@@ -10783,8 +10791,10 @@ msgid "Uusi oluttyyli löydetty: %s!"
 msgstr "New beer style discovered: %s!"
 
 #: src/ui/gui_announcer.gd
-msgid "Uutuus: kauden ensimmäinen %s! Erä myy tiskillä +%d %% hintaan."
-msgstr "New this season: the first %s! The batch sells at +%d %% at the counter."
+msgid ""
+"Uutuus: kauden ensimmäinen %s! +%d pistettä, ja erä myy tiskillä +%d %% "
+"hintaan."
+msgstr "New this season: the first %s! +%d points, and the batch sells at +%d %% at the counter."
 
 #: src/ui/guide/cellar_guide_text.gd
 msgid ""
@@ -11303,8 +11313,8 @@ msgid "Selvisi"
 msgstr "Survived"
 
 #: src/ui/text/leaderboard_text.gd
-msgid "Tyylit %d × %d"
-msgstr "Styles %d × %d"
+msgid "Tyylit %d: +%d"
+msgstr "Styles %d: +%d"
 
 #: src/ui/text/money_text.gd
 msgid "Eilen %s"

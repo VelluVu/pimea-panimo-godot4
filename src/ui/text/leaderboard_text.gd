@@ -15,7 +15,7 @@ const REPUTATION_LINE : String = "Maine %d × %d"
 const REPUTATION_UNSCORED_LINE : String = "Maine %d: ei pisteitä"
 const BOTTLES_LINE : String = "Annokset %d: +%d"
 const WORTH_LINE : String = "Panimon arvo %d €: +%d"
-const STYLES_LINE : String = "Tyylit %d × %d"
+const STYLES_LINE : String = "Tyylit %d: +%d"
 const BONUS_LINE : String = "Legendabonus +%d"
 const TOTAL_LINE : String = "Pisteet: %d"
 
@@ -73,7 +73,7 @@ static func breakdown_lines(entry : Dictionary) -> PackedStringArray:
 		lines.append(UiText.of(WORTH_LINE) % [roundi(entry.get("worth", 0.0)), worth_points])
 	var styles : int = entry.get("styles_brewed", 0)
 	if styles > 0:
-		lines.append(UiText.of(STYLES_LINE) % [styles, RunScore.STYLE_POINTS])
+		lines.append(UiText.of(STYLES_LINE) % [styles, RunScore.stored_style_points(entry)])
 	var bonus : int = entry.get("bonus", 0)
 	if bonus > 0:
 		lines.append(UiText.of(BONUS_LINE) % bonus)

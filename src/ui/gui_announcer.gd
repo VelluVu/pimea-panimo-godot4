@@ -25,7 +25,7 @@ const HOP_VARIETY_LIMIT_TOAST_FORMAT: String = "Enintään %d humalalajiketta sa
 const LIGHTLY_SOURED_TOAST_FORMAT: String = "%s happani vähän likaisessa tynnyrissä."
 const SOURED_TOAST_FORMAT: String = "%s happani likaisessa tynnyrissä!"
 const BADLY_SOURED_TOAST_FORMAT: String = "%s happani pahasti likaisessa tynnyrissä!"
-const NOVELTY_TOAST_FORMAT: String = "Uutuus: kauden ensimmäinen %s! Erä myy tiskillä +%d %% hintaan."
+const NOVELTY_TOAST_FORMAT: String = "Uutuus: kauden ensimmäinen %s! +%d pistettä, ja erä myy tiskillä +%d %% hintaan."
 const DISCOVERY_TOAST_FLASH_SECONDS: float = 0.15
 const DISCOVERY_TOAST_HOLD_SECONDS: float = 2.0
 ## Long toasts (a daily goal's reward line) stay up long enough to read.
@@ -149,8 +149,10 @@ func _announce_new_season() -> void:
 	_show_toast(SeasonText.started(season))
 
 
-func _on_season_first_brew(_style: int, style_name: String) -> void:
-	_show_toast(tr(NOVELTY_TOAST_FORMAT) % [UiText.of(style_name), roundi(FirstBrewRules.NOVELTY_PRICE_BONUS * 100.0)])
+func _on_season_first_brew(style: int, style_name: String) -> void:
+	var beer_style: BeerStyle = _brewery.resolver.get_beer_style(style) if _brewery != null else null
+	var points: int = RunScore.style_points(beer_style) if beer_style != null else RunScore.LEGACY_STYLE_POINTS
+	_show_toast(tr(NOVELTY_TOAST_FORMAT) % [UiText.of(style_name), points, roundi(FirstBrewRules.NOVELTY_PRICE_BONUS * 100.0)])
 
 
 func _on_brew_spiced(style_name: String, spice_bonus: float) -> void:

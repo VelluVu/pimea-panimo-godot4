@@ -19,8 +19,11 @@ const MONEY_WORTH_SHARE : float = 0.5
 ## Upgrades count above cash but under their price, so a last-day buy that can no longer
 ## help the run only gains a little: build the cellar for the run, not for the score.
 const UPGRADE_WORTH_SHARE : float = 0.75
-## Per style brewed this season, so the range pays, not one safe style.
-const STYLE_POINTS : int = 100
+## Per euro of a style's bottle price, for each style brewed this season: the range pays,
+## and prices follow brewing effort, so a Sahti counts for more than a Bulkkilager.
+const STYLE_POINTS_PER_EURO : float = 30.0
+## What each style was worth before score version 9, for entries saved without style points.
+const LEGACY_STYLE_POINTS : int = 100
 
 const RENOWN_DIVISOR : float = 20.0
 ## A bust already costs the run, so it still pays a little.
@@ -53,13 +56,18 @@ static func worth_points(worth : float, ending_type : String) -> int:
 	return roundi(maxf(0.0, worth) * WORTH_POINTS_PER_EURO) if counts_reputation(ending_type) else 0
 
 
-static func base_points(day : int, reputation : int, bottles : int, ending_type : String, worth : float = 0.0, styles : int = 0) -> int:
+## The base price, not the season's: an off-season Pukkibock took as much brewing.
+static func style_points(beer_style : BeerStyle) -> int:
+	return roundi(maxf(0.0, beer_style.fixed_price_per_bottle) * STYLE_POINTS_PER_EURO)
+
+
+static func base_points(day : int, reputation : int, bottles : int, ending_type : String, worth : float = 0.0, styles_points : int = 0) -> int:
 	return scored_days(day) * DAY_POINTS + reputation_points(reputation, ending_type) + bottle_points(bottles) + bonus(ending_type) + worth_points(worth, ending_type) \
-			+ styles * STYLE_POINTS
+			+ maxi(0, styles_points)
 
 
-static func score(day : int, reputation : int, bottles : int, ending_type : String, worth : float = 0.0, styles : int = 0) -> int:
-	return base_points(day, reputation, bottles, ending_type, worth, styles)
+static func score(day : int, reputation : int, bottles : int, ending_type : String, worth : float = 0.0, styles_points : int = 0) -> int:
+	return base_points(day, reputation, bottles, ending_type, worth, styles_points)
 
 
 static func renown(run_score : int) -> int:
@@ -74,7 +82,7 @@ static func continued_day_renown(bottles_sold_that_day : int) -> int:
 
 ## The score with its parts, as the leaderboard stores it. An empty `ending_type` is the run
 ## in progress, without the survival bonus.
-static func entry(day : int, reputation : int, bottles : int, ending_type : String, worth : float = 0.0, styles : int = 0) -> Dictionary:
+static func entry(day : int, reputation : int, bottles : int, ending_type : String, worth : float = 0.0, styles : int = 0, styles_points : int = 0) -> Dictionary:
 	return {
 		"ending_type": ending_type,
 		"days_survived": scored_days(day),
@@ -82,19 +90,35 @@ static func entry(day : int, reputation : int, bottles : int, ending_type : Stri
 		"lifetime_bottles_sold": bottles,
 		"worth": snappedf(maxf(0.0, worth), 0.1),
 		"styles_brewed": styles,
+		"style_points": maxi(0, styles_points),
 		"bonus": bonus(ending_type),
-		"score": score(day, reputation, bottles, ending_type, worth, styles),
+		"score": score(day, reputation, bottles, ending_type, worth, styles_points),
 	}
 
 
 ## A stored entry's score under today's formula, from the parts it keeps.
 static func rescore(stored : Dictionary) -> int:
 	var ending_type : String = stored.get("ending_type", "")
-	return base_points(stored.get("days_survived", 0), stored.get("reputation", 0), stored.get("lifetime_bottles_sold", 0), ending_type, stored.get("worth", 0.0), stored.get("styles_brewed", 0))
+	return base_points(stored.get("days_survived", 0), stored.get("reputation", 0), stored.get("lifetime_bottles_sold", 0), ending_type, stored.get("worth", 0.0), stored_style_points(stored))
+
+
+## An entry from before score version 9 has only the count of its styles.
+static func stored_style_points(stored : Dictionary) -> int:
+	if stored.has("style_points"):
+		return stored.get("style_points", 0)
+	return stored.get("styles_brewed", 0) * LEGACY_STYLE_POINTS
 
 
 static func entry_for(brewery : Brewery, ending_type : String) -> Dictionary:
-	return entry(brewery.current_day, brewery.reputation, brewery.lifetime_bottles_sold, ending_type, brewery_worth(brewery), brewery.brewed_styles.size())
+	return entry(brewery.current_day, brewery.reputation, brewery.lifetime_bottles_sold, ending_type, brewery_worth(brewery), brewery.brewed_styles.size(), brewed_style_points(brewery))
+
+
+static func brewed_style_points(brewery : Brewery) -> int:
+	var total : int = 0
+	for style : int in brewery.brewed_styles:
+		var beer_style : BeerStyle = brewery.resolver.get_beer_style(style)
+		total += style_points(beer_style) if beer_style != null else LEGACY_STYLE_POINTS
+	return total
 
 
 static func brewery_worth(brewery : Brewery) -> float:

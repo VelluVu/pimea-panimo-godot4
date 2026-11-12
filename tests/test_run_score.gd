@@ -99,25 +99,44 @@ func test_rescore_keeps_the_worth() -> void:
 	assert_eq(RunScoreScript.rescore(entry), entry["score"])
 
 
-func test_every_style_brewed_this_season_adds_points() -> void:
+func test_the_styles_brewed_this_season_add_their_points() -> void:
 	var plain : int = RunScoreScript.score(10, 20, 30, DayRulesScript.ENDING_SEASON_OVER)
-	assert_eq(RunScoreScript.score(10, 20, 30, DayRulesScript.ENDING_SEASON_OVER, 0.0, 4), plain + 4 * RunScoreScript.STYLE_POINTS)
+	assert_eq(RunScoreScript.score(10, 20, 30, DayRulesScript.ENDING_SEASON_OVER, 0.0, 350), plain + 350)
 
 
 func test_styles_count_even_when_the_run_fails() -> void:
-	assert_eq(RunScoreScript.score(5, 100, 0, "busted", 0.0, 3), 5 * 100 + 3 * RunScoreScript.STYLE_POINTS)
+	assert_eq(RunScoreScript.score(5, 100, 0, "busted", 0.0, 270), 5 * 100 + 270)
+
+
+func test_a_style_scores_by_its_price() -> void:
+	var lager := BeerStyle.new()
+	lager.fixed_price_per_bottle = 2.0
+	var sahti := BeerStyle.new()
+	sahti.fixed_price_per_bottle = 5.0
+	assert_eq(RunScoreScript.style_points(lager), 60)
+	assert_eq(RunScoreScript.style_points(sahti), 150)
+	assert_true(RunScoreScript.style_points(sahti) > RunScoreScript.style_points(lager), "more effort, more points")
 
 
 func test_rescore_keeps_the_styles() -> void:
-	var entry : Dictionary = RunScoreScript.entry(15, 120, 400, DayRulesScript.ENDING_SEASON_OVER, 500.0, 9)
+	var entry : Dictionary = RunScoreScript.entry(15, 120, 400, DayRulesScript.ENDING_SEASON_OVER, 500.0, 9, 840)
 	assert_eq(entry.styles_brewed, 9)
+	assert_eq(entry.style_points, 840)
 	assert_eq(RunScoreScript.rescore(entry), entry.score)
 
 
 func test_an_old_entry_without_styles_rescores_unchanged() -> void:
 	var entry : Dictionary = RunScoreScript.entry(15, 120, 400, DayRulesScript.ENDING_SEASON_OVER, 500.0)
 	entry.erase("styles_brewed")
+	entry.erase("style_points")
 	assert_eq(RunScoreScript.rescore(entry), entry.score)
+
+
+func test_an_entry_from_before_style_points_keeps_100_a_style() -> void:
+	var entry : Dictionary = RunScoreScript.entry(15, 120, 400, DayRulesScript.ENDING_SEASON_OVER, 500.0)
+	entry.erase("style_points")
+	entry["styles_brewed"] = 3
+	assert_eq(RunScoreScript.rescore(entry), entry.score + 3 * RunScoreScript.LEGACY_STYLE_POINTS)
 
 
 func test_two_servings_make_a_point() -> void:

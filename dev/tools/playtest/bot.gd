@@ -404,7 +404,7 @@ func _expert_recipe(b: Brewery) -> BrewRecipe:
 func _novelty_value(b: Brewery, style: BeerStyle) -> float:
 	var value: float = maxi(0, style.reputation_change) + b.resolver.get_style_base_price(style) * FirstBrewRules.NOVELTY_PRICE_BONUS
 	if cfg.strategy == "minmax":
-		value += float(RunScore.STYLE_POINTS) / REP_POINTS
+		value += float(RunScore.style_points(style)) / REP_POINTS
 	return value
 
 

@@ -9,7 +9,7 @@ const MAX_ENTRIES : int = 20
 
 ## Older entries are rescored with RunScore.rescore() when they keep every part of their
 ## score (RESCORABLE_VERSION on), else archived out of the list.
-const SCORE_VERSION : int = 8
+const SCORE_VERSION : int = 9
 const RESCORABLE_VERSION : int = 2
 const KEY_ARCHIVED_ENTRIES : String = "archived_entries"
 
