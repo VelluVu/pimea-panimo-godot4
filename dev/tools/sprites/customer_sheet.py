@@ -104,6 +104,48 @@ LEGS = {
         ".......8888.........",
     ],
 }
+# Walking right with the shoes the user draws (normaali_mies, opiskelija): a compact
+# slanted shoe, the back foot pushing off heel up and toe down, the front foot landing heel
+# first, the lifted foot hanging toe down behind. '3' and '8' are the shoe's dark top. A
+# Look takes these with `legs=LEGS_STEPPED`.
+LEGS_STEPPED = {
+    "stride_near": [
+        ".......555.1111.....",
+        "......555...113.....",
+        ".....7855....32.....",
+        "....7778.....2222...",
+        "....777......2222...",
+        ".....777.....222....",
+        "......77.....22.....",
+    ],
+    "pass_near": [
+        ".......551115.......",
+        ".......85111........",
+        "......778111........",
+        ".....777.33.........",
+        "......77722.........",
+        ".......772222.......",
+        ".........2222.......",
+    ],
+    "stride_far": [
+        ".....1111..5555.....",
+        ".....1111...558.....",
+        "....2311.....87.....",
+        "...2223......7777...",
+        "...222.......7777...",
+        "....222......777....",
+        ".....22......77.....",
+    ],
+    "pass_far": [
+        "........11115.......",
+        ".......31115........",
+        "......223155........",
+        ".....222..88........",
+        "......222.77........",
+        ".......22.7777......",
+        "..........7777......",
+    ],
+}
 # The far leg's letters and the near-leg letters they darken.
 FAR_LEG = {"5": "1", "6": "4", "7": "2", "8": "3"}
 FAR_LEG_SHADE = (24, 20, 37)
@@ -170,6 +212,8 @@ class Look:
     held: tuple[Optional[Held], Optional[Held]] = (None, None)
     # Drawn last in each frame, for anything the grids cannot hold. Gets (frame, palette, upper, back).
     extra: Optional[Callable[[Image.Image, dict, int, bool], None]] = None
+    # Leg grids that replace LEGS by name (LEGS_STEPPED for the user's stepping shoes).
+    legs: Optional[dict] = None
 
 
 def paint(image: Image.Image, palette: dict, rows: list[str], left: int, top: int) -> None:
@@ -184,7 +228,8 @@ def paint(image: Image.Image, palette: dict, rows: list[str], left: int, top: in
 
 def check(look: Look) -> None:
     """Every grid row is the box width and every letter has a colour."""
-    grids = [look.head_front, look.head_back, look.torso_front, look.torso_back, *LEGS.values()]
+    grids = [look.head_front, look.head_back, look.torso_front, look.torso_back, *LEGS.values(),
+             *(look.legs or {}).values()]
     for grid in grids:
         for row in grid:
             assert len(row) == BOX_WIDTH, f"row is {len(row)} wide: {row!r}"
@@ -203,7 +248,7 @@ def draw_frame(sheet: Image.Image, look: Look, column: int, row: int, *, back: b
     (frame, palette, upper) where upper is the frame row of box row 0."""
     frame = Image.new("RGBA", (FRAME, FRAME), (0, 0, 0, 0))
     upper = BOX_Y + bob - look.lift
-    leg_rows = _lengthened(LEGS[legs], look.lift, look.long_shorts)
+    leg_rows = _lengthened((look.legs or LEGS).get(legs, LEGS[legs]), look.lift, look.long_shorts)
     legs_top = BOX_Y + LEGS_TOP - look.lift
     paint(frame, look.palette, leg_rows, BOX_X, legs_top)
     # The feet stay on the floor when the body rises: the waist stretches up with it, so no

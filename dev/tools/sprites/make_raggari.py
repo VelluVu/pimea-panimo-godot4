@@ -15,7 +15,7 @@ from pathlib import Path
 
 from PIL import Image
 
-from customer_sheet import FRAME, ROOT, TEXTURE_DIR, Look, draw_sheet, hex_color
+from customer_sheet import LEGS_STEPPED, FRAME, ROOT, TEXTURE_DIR, Look, draw_sheet, hex_color
 from make_orveltaja import write_aseprite_source
 
 NAME = "raggari_32"
@@ -150,9 +150,9 @@ NAARAS_TORSO_BACK = [
 
 def look(naaras: bool = False) -> Look:
     if naaras:
-        return Look(palette=NAARAS_PALETTE, head_front=NAARAS_HEAD_FRONT, head_back=NAARAS_HEAD_BACK,
+        return Look(legs=LEGS_STEPPED, palette=NAARAS_PALETTE, head_front=NAARAS_HEAD_FRONT, head_back=NAARAS_HEAD_BACK,
                     torso_front=NAARAS_TORSO_FRONT, torso_back=NAARAS_TORSO_BACK, hand_inset=1)
-    return Look(palette=PALETTE, head_front=HEAD_FRONT, head_back=HEAD_BACK,
+    return Look(legs=LEGS_STEPPED, palette=PALETTE, head_front=HEAD_FRONT, head_back=HEAD_BACK,
                 torso_front=TORSO_FRONT, torso_back=TORSO_BACK)
 
 

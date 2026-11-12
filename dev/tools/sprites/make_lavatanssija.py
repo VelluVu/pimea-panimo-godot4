@@ -16,7 +16,7 @@ from pathlib import Path
 
 from PIL import Image
 
-from customer_sheet import (BOX_X, FRAME, HANDS_REST, RIGHT, ROOT, STILL, TEXTURE_DIR, Look, draw_frame, draw_sheet,
+from customer_sheet import (LEGS_STEPPED, BOX_X, FRAME, HANDS_REST, RIGHT, ROOT, STILL, TEXTURE_DIR, Look, draw_frame, draw_sheet,
                             hex_color, paint)
 from make_orveltaja import write_aseprite_source
 
@@ -189,9 +189,9 @@ def _skirt(frame: Image.Image, palette: dict, upper: int, _back: bool) -> None:
 
 def look(naaras: bool = False) -> Look:
     if naaras:
-        return Look(palette=NAARAS_PALETTE, head_front=NAARAS_HEAD_FRONT, head_back=NAARAS_HEAD_BACK,
+        return Look(legs=LEGS_STEPPED, palette=NAARAS_PALETTE, head_front=NAARAS_HEAD_FRONT, head_back=NAARAS_HEAD_BACK,
                     torso_front=NAARAS_TORSO_FRONT, torso_back=NAARAS_TORSO_BACK, hand_inset=1, extra=_skirt)
-    return Look(palette=PALETTE, head_front=HEAD_FRONT, head_back=HEAD_BACK,
+    return Look(legs=LEGS_STEPPED, palette=PALETTE, head_front=HEAD_FRONT, head_back=HEAD_BACK,
                 torso_front=TORSO_FRONT, torso_back=TORSO_BACK, hand_inset=1)
 
 
