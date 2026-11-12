@@ -82,6 +82,8 @@ enum KorvatunturiRole { NONE, TONTTU, JOULUPUKKI }
 @export var breathes: bool = true
 ## Loops quietly wherever the customer goes (the drone's rotors), or null for none.
 @export var ambient_loop: AudioStream = null
+## Heard once from outside when he arrives (Raggari's car), or null for none.
+@export var arrival_sound: AudioStream = null
 
 @export_group("Dialogues")
 @export_multiline var dialogue_intro: String = "Moro. Oisko jotain juotavaa?"
@@ -227,12 +229,20 @@ enum KorvatunturiRole { NONE, TONTTU, JOULUPUKKI }
 
 @export_group("Kunnianosoitus")
 ## A primary_style batch sold at or above this quality honours the cellar once a run
-## (Ritari knights the brewer, see HonourRules): honour_reputation, honour_animation at the
+## (Ritari knights the brewer, Lavatanssija asks for a dance, see HonourRules): honour_reputation, honour_animation at the
 ## counter and dialogue_honour as a toast. Below 0 = never.
 @export var honour_min_quality: float = -1.0
 @export var honour_reputation: int = 0
 @export var honour_animation: StringName = &""
 @export_multiline var dialogue_honour: String = ""
+
+@export_group("Tuliaiset")
+## After a sale he sometimes leaves an ingredient behind (Maajussi's barley from his own
+## field), see CustomerGiftRules. dialogue_gift is the toast, with %d for the amount.
+@export var gift_ingredient_id: int = -1
+@export var gift_amount: int = 0
+@export_range(0.0, 1.0) var gift_chance: float = 0.0
+@export_multiline var dialogue_gift: String = ""
 
 
 func generate_display_name() -> String:

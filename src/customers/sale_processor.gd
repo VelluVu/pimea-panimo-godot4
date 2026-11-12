@@ -110,6 +110,7 @@ func process(data : CustomerData, picks : Array[BrewBatch] = [], guests : int = 
 
 	_spread_word(data, delighted, reputation_gain, false)
 	_honour(data, best_favourite_quality)
+	_leave_gift(data, bottles_sold)
 	BrewerySignals.sale_reputation_gained.emit(brewery.reputation - reputation_before)
 	BrewerySignals.brewery_state_changed.emit(brewery)
 	_update_standing(data, delighted, reputation_gain)
@@ -139,6 +140,15 @@ func _honour(data : CustomerData, best_favourite_quality : float) -> void:
 	brewery.honoured_titles.append(data.title)
 	brewery.change_reputation(data.honour_reputation, ReputationRules.Source.CUSTOMERS)
 	BrewerySignals.customer_honoured.emit(data)
+
+
+## Maajussi's barley: a free ingredient now and then after a sale, with his own toast.
+func _leave_gift(data : CustomerData, bottles_sold : int) -> void:
+	if not CustomerGiftRules.leaves_gift(data.gift_ingredient_id, data.gift_amount, data.gift_chance, bottles_sold, randf()):
+		return
+	brewery.inventory.add_amount_by_id(data.gift_ingredient_id, data.gift_amount)
+	if not data.dialogue_gift.is_empty():
+		BrewerySignals.customer_sale_narrated.emit(tr(data.dialogue_gift) % data.gift_amount)
 
 
 ## Tontut and Joulupukki watch every visit for the kiltti/tuhma list (NaughtyList).

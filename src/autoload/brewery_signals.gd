@@ -214,6 +214,9 @@ signal customer_served(data: CustomerData)
 ## Someone came in through the main door at the top of the stairs, for the winter door.
 @warning_ignore("unused_signal")
 signal customer_entered(position: Vector2)
+## A walk-in with an arrival sound came in (Raggari's car outside), see CustomerData.arrival_sound.
+@warning_ignore("unused_signal")
+signal customer_arrival_sounded(stream: AudioStream)
 ## In winter a customer stamped the snow off their boots at `position` (their feet).
 @warning_ignore("unused_signal")
 signal snow_stamped_off(position: Vector2)

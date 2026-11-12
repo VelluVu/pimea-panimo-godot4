@@ -1,7 +1,7 @@
 class_name HonourRules
 extends RefCounted
 
-## A customer who honours the cellar (Ritari knights the brewer) does it once a run, when
+## A customer who honours the cellar (Ritari knights the brewer, Lavatanssija dances with him) does it once a run, when
 ## his favourite style is sold to him at or above CustomerData.honour_min_quality.
 
 

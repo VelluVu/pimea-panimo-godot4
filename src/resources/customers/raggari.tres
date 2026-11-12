@@ -1,0 +1,45 @@
+[gd_resource type="Resource" script_class="CustomerData" format=3]
+
+[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_data"]
+[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/raggari_anim.tres" id="2_sprite"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/synth/raggari_horn.wav" id="3_horn"]
+
+[resource]
+script = ExtResource("1_data")
+customer_name = "Jarkko"
+title = "Raggari"
+first_names = Array[String](["Jarkko", "Jari", "Pertti", "Kari", "Tero", "Esa"])
+min_quality = 0.5
+budget_multiplier = 1.1
+primary_style = 4
+secondary_style = 1
+sprite_frames = ExtResource("2_sprite")
+randomize_skin = false
+randomize_hair = false
+randomize_clothes = false
+randomize_shoes = false
+carries_glass_out = false
+voice_pitch = 0.95
+arrival_sound = ExtResource("3_horn")
+tip_base_chance = 0.25
+rep_primary_style = 5
+rep_secondary_style = 1
+min_reputation_to_appear = 20
+required_discovered_style = 4
+dialogue_intro = "Tsiigaa, beibi. Letti on kunnossa ja jenkkirauta pihassa. Yksi amber ale, yhtä punaista kuin mun kaaran lakka."
+dialogue_success = "Täyttä rautaa! Tällä kelpaa kiertää kylänraittia aamuun asti."
+dialogue_fallback = "Bulkkia. No, kelpaa huoltoaseman pihalle."
+dialogue_wrong_style = "Ei tää oo mitä tilasin, mutta rokki ei kysy. Juon."
+dialogue_reject = "Tää maistuu jäähdytinnesteeltä. Ja mä tiedän, mä oon maistanut."
+dialogue_no_match = "Ei amberia? No sitten kaara käyntiin ja kylille."
+dialogue_preview_format = "%s? Ehdin kammata letin sillä aikaa."
+dialogue_nothing_available = "Tyhjät hanat? Tää on kuin bensa-asema ilman bensaa."
+alt_intro = Array[String](["Moottori jäi tikittämään pihaan. Amberia, äkkiä, ennen kuin se ylikuumenee.", "Rasvaletti pysyy ja Elvis elää. Amber ale, kiitos. Kaveri ajaa."])
+alt_success = Array[String](["Tää kulkee kuin jenkkirauta moottoritiellä.", "Punaista ja kiiltävää. Just niin kuin pitää."])
+alt_fallback = Array[String](["Ei amberia, mutta kolmonen käy. Rokki ei valita.", "Kelpaa. Ei tää rasvalettiä pilaa."])
+alt_wrong_style = Array[String](["Väärä, mutta en mä viitti tehdä numeroa. Letti voi sotkeentua.", "Outo juoma. No, Elviskin söi outoja voileipiä."])
+alt_reject = Array[String](["Tää haisee palaneelta kytkimeltä. Ei käy.", "Ei, beibi. Tällä ei kulje edes mopo."])
+alt_no_match = Array[String](["Tyhjä reissu. Takaisin huoltoaseman pihalle.", "Ei mitään mulle? Mä lähden kylille."])
+alt_preview_format = Array[String](["%s. Kuulostaa yhtä hyvältä kuin V8:n murina.", "%s, beibi. Odotan tässä."])
+alt_nothing_available = Array[String](["Ei mitään? Nyt lässähtää letti.", "Tyhjää kuin tankki lauantaiyönä."])
+metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

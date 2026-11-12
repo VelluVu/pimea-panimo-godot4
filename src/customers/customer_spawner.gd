@@ -213,6 +213,8 @@ func _try_spawn_walk_in(forced_data: CustomerData) -> bool:
 	CustomerManager.register_active_customer(free_slot, new_customer)
 	new_customer.walk_complex_route(stairs_bottom_marker.global_position, room_center_marker.global_position, counter_positions[free_slot])
 	BrewerySignals.customer_entered.emit(global_position)
+	if data.arrival_sound != null:
+		BrewerySignals.customer_arrival_sounded.emit(data.arrival_sound)
 	return true
 
 

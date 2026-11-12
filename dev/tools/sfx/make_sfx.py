@@ -669,6 +669,22 @@ def ui_hover():
     return lowpass(tick, 3000), 0.25
 
 
+def raggari_horn():
+    """Raggari's car outside the door: a lumpy V8 idle, a blip of the throttle and two
+    honks of a two-tone horn, muffled by the cellar wall."""
+    s = 2.0
+    burble = 1.0 + 0.6 * np.sign(np.sin(2 * np.pi * 11 * _t(s)))
+    idle = lowpass((saw(sweep(48, 44, s), s) + lowpass(noise(s, hold=10), 300) * 0.8) * burble, 260) * env(s, 0.2, 0.4)
+    blip_s = 0.6
+    blip = lowpass(saw(sweep(55, 120, blip_s, 0.5), blip_s) * env(blip_s, 0.05, 0.3), 420) * 0.9
+
+    def honk(seconds):
+        return lowpass((square(note("F4"), seconds, 0.4) + square(note("A4"), seconds, 0.4)) * env(seconds, 0.01, 0.04), 1300)
+
+    horn = mix(honk(0.22), at(0.32, honk(0.45))) * 0.55
+    return crush(mix(idle, at(0.35, blip), at(1.0, horn)), 48), 0.6
+
+
 RECIPES = {
     "ui_hover": ui_hover,
     "gunshot": gunshot,
@@ -730,6 +746,7 @@ RECIPES = {
     "rocket_near": rocket_near,
     "fireworks_door": fireworks_door,
     "candle_pop": candle_pop,
+    "raggari_horn": raggari_horn,
 }
 
 

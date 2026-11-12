@@ -808,8 +808,8 @@ msgid "Koko kylä tuttu"
 msgstr "Know the Whole Town"
 
 #: src/resources/achievements/asiakaskirja_kaikki.tres
-msgid "Tapaa 35 eri asiakastyyppiä."
-msgstr "Meet 35 different customer types."
+msgid "Tapaa 38 eri asiakastyyppiä."
+msgstr "Meet 38 different customer types."
 
 #: src/resources/achievements/bulkkia_5.tres
 msgid "Kansan kalja"
@@ -3368,6 +3368,116 @@ msgstr "ERROR. The quality won't even survive transport."
 msgid "VIRHEILMOITUS. Laatu alittaa toleranssin. Lasti hylätty."
 msgstr "ERROR REPORT. Quality below tolerance. Cargo rejected."
 
+#: src/resources/customers/lavatanssija.tres
+msgid "%s! Kumarran ja odotan vuoroani."
+msgstr "%s! I'll bow and wait my turn."
+
+#: src/resources/customers/lavatanssija.tres
+msgid "%s. Odotan kuin naistenhakua."
+msgstr "%s. I'll wait for it like ladies' choice."
+
+#: src/resources/customers/lavatanssija.tres
+msgid "%s? Otetaan, kun kerran tarjotaan."
+msgstr "%s? I'll take it, since it's offered."
+
+#: src/resources/customers/lavatanssija.tres
+msgid "Astuit varpaille. Tällä ei tanssita."
+msgstr "You stepped on my toes. Nobody dances to this."
+
+#: src/resources/customers/lavatanssija.tres
+msgid "Ei ihan valssia, mutta reipas foksi. Kelpaa."
+msgstr "Not quite a waltz, but a brisk foxtrot. It'll do."
+
+#: src/resources/customers/lavatanssija.tres
+msgid "Ei mitään minun tahtiini. Lähden lavalle, siellä soi ainakin orkesteri."
+msgstr ""
+"Nothing to my tempo. I'm off to the dance hall, at least the band plays "
+"there."
+
+#: src/resources/customers/lavatanssija.tres
+msgid "Ei mitään. Istun seinäruusuna."
+msgstr "Nothing. I'll sit here as a wallflower."
+
+#: src/resources/customers/lavatanssija.tres
+msgid "Ei mitään? Sitten lähden etsimään parempaa paria."
+msgstr "Nothing? Then I'll go find a better partner."
+
+#: src/resources/customers/lavatanssija.tres
+msgid "Ei valssi, mutta hyvä vientiote."
+msgstr "Not a waltz, but a good firm lead."
+
+#: src/resources/customers/lavatanssija.tres
+msgid "Hieman jäykkä, mutta vie hyvin."
+msgstr "A bit stiff, but it leads well."
+
+#: src/resources/customers/lavatanssija.tres
+msgid "Kengät kiiltää ja polvet kestää. Yksi wieniläinen."
+msgstr "Shoes shining and knees holding up. One Vienna."
+
+#: src/resources/customers/lavatanssija.tres
+msgid "Kiitos tanssista. Ei."
+msgstr "Thank you for the dance. No."
+
+#: src/resources/customers/lavatanssija.tres
+msgid "Kuin valssi Wienissä! Yksi, kaksi, kolme... ja kulaus."
+msgstr "Like a waltz in Vienna! One, two, three... and a gulp."
+
+#: src/resources/customers/lavatanssija.tres
+msgid "Lavatanssija"
+msgstr "Dance Hall Regular"
+
+#: src/resources/customers/lavatanssija.tres
+msgid ""
+"Lavatanssija kumartaa: Saanko luvan? Pyörähdätte valssin tiskin edessä, ja "
+"koko kellari taputtaa."
+msgstr ""
+"The dance hall regular bows: May I have this dance? You waltz in front of "
+"the counter, and the whole cellar claps."
+
+#: src/resources/customers/lavatanssija.tres
+msgid "Naistenhakuun on vielä tunti. Ehdin yhden lagerin."
+msgstr "An hour until ladies' choice. Time for one lager."
+
+#: src/resources/customers/lavatanssija.tres
+msgid "Saanko luvan? Ensin tuoppi, sitten valssi. Yksi wieniläinen lager, kiitos."
+msgstr "May I have this dance? First a pint, then a waltz. One Vienna lager, please."
+
+#: src/resources/customers/lavatanssija.tres
+msgid "Tahti on oikea. Pyörähdän kerran tiskin ympäri."
+msgstr "The tempo is right. I'll twirl once round the counter."
+
+#: src/resources/customers/lavatanssija.tres
+msgid "Tyhjät hanat. Kuin tanssilava ilman orkesteria."
+msgstr "Empty taps. Like a dance hall with no band."
+
+#: src/resources/customers/lavatanssija.tres
+msgid "Tyhjää. Orkesteri on tauolla, ja hanat myös."
+msgstr "Empty. The band's on a break, and so are the taps."
+
+#: src/resources/customers/lavatanssija.tres
+msgid "Tällä ei pääse edes ensimmäiselle kierrokselle."
+msgstr "This wouldn't even make the first round."
+
+#: src/resources/customers/lavatanssija.tres
+msgid "Tällä jaksaa tangon ja jenkan peräkkäin."
+msgstr "With this I can do a tango and a jenkka back to back."
+
+#: src/resources/customers/lavatanssija.tres
+msgid "Tämä kellari ei soita minun kappalettani."
+msgstr "This cellar isn't playing my song."
+
+#: src/resources/customers/lavatanssija.tres
+msgid "Tämä on humppaa, kun pyysin valssia. Tanssitaan silti."
+msgstr "This is a humppa, and I asked for a waltz. Let's dance anyway."
+
+#: src/resources/customers/lavatanssija.tres
+msgid "Tämä on tangoa, kun pyysin valssia. Hyvä on."
+msgstr "This is a tango, and I asked for a waltz. Very well."
+
+#: src/resources/customers/lavatanssija.tres
+msgid "Väärä tahti, mutta en jätä kumppania lattialle."
+msgstr "Wrong tempo, but I won't leave my partner on the floor."
+
 #: src/resources/customers/leijonafani.tres
 msgid "%s! ANNA SE TÄNNE KUIN KIEKKO MAALIIN!"
 msgstr "%s! GET IT OVER HERE LIKE A PUCK INTO THE NET!"
@@ -3689,6 +3799,114 @@ msgstr "This is worth a million! Well, almost."
 #: src/resources/customers/lottovoittaja.tres
 msgid "Väärä olut, mutta ostan sen silti. Ja seuraavankin."
 msgstr "Wrong beer, but I'll buy it anyway. And the next one."
+
+#: src/resources/customers/maajussi.tres
+msgid "%s. Kuulostaa hyvältä sadolta."
+msgstr "%s. Sounds like a good harvest."
+
+#: src/resources/customers/maajussi.tres
+msgid "%s. Laitetaan EU-tukihakemuksen liitteeksi."
+msgstr "%s. I'll attach it to my EU subsidy application."
+
+#: src/resources/customers/maajussi.tres
+msgid "%s. Odotan kuin sadetta kesäkuussa."
+msgstr "%s. I'll wait for it like rain in June."
+
+#: src/resources/customers/maajussi.tres
+msgid "Ei maalaisolutta? Lähden takaisin navettaan."
+msgstr "No farmhouse beer? I'm going back to the cowshed."
+
+#: src/resources/customers/maajussi.tres
+msgid "Ei mitään minulle? Takaisin pellolle."
+msgstr "Nothing for me? Back to the fields."
+
+#: src/resources/customers/maajussi.tres
+msgid "Ei mitään. Kuin halla olisi vienyt kaiken."
+msgstr "Nothing. As if the frost took it all."
+
+#: src/resources/customers/maajussi.tres
+msgid "Ei saisonia, mutta kalja käy. Maalla kaikki käy."
+msgstr "No saison, but kalja will do. Anything goes in the country."
+
+#: src/resources/customers/maajussi.tres
+msgid "Ei tätä tilattu, mutta maalla ei nirsoilla."
+msgstr "Didn't order this, but in the country we're not fussy."
+
+#: src/resources/customers/maajussi.tres
+msgid "Ei. Sikakaan ei tätä joisi."
+msgstr "No. Not even the pig would drink this."
+
+#: src/resources/customers/maajussi.tres
+msgid "Huono satovuosi tässä kellarissa. Lähden."
+msgstr "A bad harvest year in this cellar. I'm off."
+
+#: src/resources/customers/maajussi.tres
+msgid "Kotikaljaa, ihan kuin mummolassa. Hyvä."
+msgstr "Kotikalja, just like at grandma's. Good."
+
+#: src/resources/customers/maajussi.tres
+msgid "Kotikaljaa. Tätä juodaan heinätöissä. Kelpaa."
+msgstr "Kotikalja. We drink this at haymaking. It'll do."
+
+#: src/resources/customers/maajussi.tres
+msgid "Kun tätä saisi kotona, morsiankin löytyisi."
+msgstr "If I had this at home, I'd find a bride too."
+
+#: src/resources/customers/maajussi.tres
+msgid "Maajussi"
+msgstr "Farmer"
+
+#: src/resources/customers/maajussi.tres
+msgid ""
+"Maajussi jätti tiskille säkillisen ohraa omalta pellolta: %d kg "
+"pilsner-mallasta varastoon."
+msgstr "The farmer left a sack of barley from his own field on the counter: %d kg of pilsner malt into storage."
+
+#: src/resources/customers/maajussi.tres
+msgid "Maistuu pellolta ja hyvältä säältä. Tätä kun olisi riihen nurkalla."
+msgstr ""
+"Tastes of the field and good weather. If only I had this by the threshing "
+"barn."
+
+#: src/resources/customers/maajussi.tres
+msgid "Morsianta en ole vielä löytänyt, mutta toivottavasti olut löytyy. Saison."
+msgstr "Haven't found a bride yet, but hopefully I'll find a beer. Saison."
+
+#: src/resources/customers/maajussi.tres
+msgid "Outoa, mutta juodaan. Maalla ei kaadeta mitään viemäriin."
+msgstr "Odd, but we'll drink it. In the country nothing goes down the drain."
+
+#: src/resources/customers/maajussi.tres
+msgid "Saison on kuulemma maatilan olutta. Sitä minä, lehmät on jo lypsetty."
+msgstr "They say saison is a farm beer. That's for me, the cows are already milked."
+
+#: src/resources/customers/maajussi.tres
+msgid "Tulin traktorilla, se on parkissa. Saisonia, kiitos."
+msgstr "Came by tractor, it's parked outside. Saison, please."
+
+#: src/resources/customers/maajussi.tres
+msgid "Tyhjää kuin heinälato maaliskuussa."
+msgstr "Empty as a hay barn in March."
+
+#: src/resources/customers/maajussi.tres
+msgid "Tyhjää. Kato on käynyt kellarissakin."
+msgstr "Empty. Crop failure has hit the cellar too."
+
+#: src/resources/customers/maajussi.tres
+msgid "Tällä ei kastelisi edes perunamaata."
+msgstr "I wouldn't even water the potato patch with this."
+
+#: src/resources/customers/maajussi.tres
+msgid "Tämä menee lannoitteeksi."
+msgstr "This goes on the fields as fertiliser."
+
+#: src/resources/customers/maajussi.tres
+msgid "Tämä on parempaa kuin EU-tuki. Ja tulee nopeammin."
+msgstr "This is better than an EU subsidy. And it comes faster."
+
+#: src/resources/customers/maajussi.tres
+msgid "Väärää satoa, mutta korjataan talteen."
+msgstr "Wrong crop, but we'll bring it in anyway."
 
 #: src/resources/customers/mafioso.tres
 msgid "%s. Don maistaa ensin."
@@ -5189,6 +5407,110 @@ msgstr "Wrong. I'll drink it. Don't make a habit of it."
 #: src/resources/customers/pukki.tres
 msgid "Älä kysy lahjoista. Kaada olutta."
 msgstr "Don't ask about presents. Pour beer."
+
+#: src/resources/customers/raggari.tres
+msgid "%s, beibi. Odotan tässä."
+msgstr "%s, baby. I'll wait right here."
+
+#: src/resources/customers/raggari.tres
+msgid "%s. Kuulostaa yhtä hyvältä kuin V8:n murina."
+msgstr "%s. Sounds as good as a V8's rumble."
+
+#: src/resources/customers/raggari.tres
+msgid "%s? Ehdin kammata letin sillä aikaa."
+msgstr "%s? I'll have time to comb my quiff meanwhile."
+
+#: src/resources/customers/raggari.tres
+msgid "Bulkkia. No, kelpaa huoltoaseman pihalle."
+msgstr "Bulk lager. Well, it'll do for the petrol station yard."
+
+#: src/resources/customers/raggari.tres
+msgid "Ei amberia, mutta kolmonen käy. Rokki ei valita."
+msgstr "No amber, but a medium beer will do. Rock doesn't complain."
+
+#: src/resources/customers/raggari.tres
+msgid "Ei amberia? No sitten kaara käyntiin ja kylille."
+msgstr "No amber? Then I'll start the car and hit the town."
+
+#: src/resources/customers/raggari.tres
+msgid "Ei mitään mulle? Mä lähden kylille."
+msgstr "Nothing for me? I'm off to town."
+
+#: src/resources/customers/raggari.tres
+msgid "Ei mitään? Nyt lässähtää letti."
+msgstr "Nothing? Now my quiff's going flat."
+
+#: src/resources/customers/raggari.tres
+msgid "Ei tää oo mitä tilasin, mutta rokki ei kysy. Juon."
+msgstr "Not what I ordered, but rock doesn't ask. I'll drink it."
+
+#: src/resources/customers/raggari.tres
+msgid "Ei, beibi. Tällä ei kulje edes mopo."
+msgstr "No, baby. Not even a moped would run on this."
+
+#: src/resources/customers/raggari.tres
+msgid "Kelpaa. Ei tää rasvalettiä pilaa."
+msgstr "It'll do. Won't ruin the quiff."
+
+#: src/resources/customers/raggari.tres
+msgid "Moottori jäi tikittämään pihaan. Amberia, äkkiä, ennen kuin se ylikuumenee."
+msgstr "Left the engine ticking over in the yard. Amber, quick, before it overheats."
+
+#: src/resources/customers/raggari.tres
+msgid "Outo juoma. No, Elviskin söi outoja voileipiä."
+msgstr "Weird drink. Well, Elvis ate weird sandwiches too."
+
+#: src/resources/customers/raggari.tres
+msgid "Punaista ja kiiltävää. Just niin kuin pitää."
+msgstr "Red and shiny. Just how it should be."
+
+#: src/resources/customers/raggari.tres
+msgid "Raggari"
+msgstr "Greaser"
+
+#: src/resources/customers/raggari.tres
+msgid "Rasvaletti pysyy ja Elvis elää. Amber ale, kiitos. Kaveri ajaa."
+msgstr "The quiff holds and Elvis lives. Amber ale, thanks. My buddy's driving."
+
+#: src/resources/customers/raggari.tres
+msgid ""
+"Tsiigaa, beibi. Letti on kunnossa ja jenkkirauta pihassa. Yksi amber ale, "
+"yhtä punaista kuin mun kaaran lakka."
+msgstr ""
+"Check it out, baby. The quiff is sharp and the Yank tank's in the yard. One "
+"amber ale, as red as my car's paint."
+
+#: src/resources/customers/raggari.tres
+msgid "Tyhjä reissu. Takaisin huoltoaseman pihalle."
+msgstr "Wasted trip. Back to the petrol station yard."
+
+#: src/resources/customers/raggari.tres
+msgid "Tyhjät hanat? Tää on kuin bensa-asema ilman bensaa."
+msgstr "Empty taps? This is like a petrol station with no petrol."
+
+#: src/resources/customers/raggari.tres
+msgid "Tyhjää kuin tankki lauantaiyönä."
+msgstr "Empty as the tank on a Saturday night."
+
+#: src/resources/customers/raggari.tres
+msgid "Täyttä rautaa! Tällä kelpaa kiertää kylänraittia aamuun asti."
+msgstr "Pure steel! With this I can cruise the village main street till morning."
+
+#: src/resources/customers/raggari.tres
+msgid "Tää haisee palaneelta kytkimeltä. Ei käy."
+msgstr "This smells like a burnt clutch. No way."
+
+#: src/resources/customers/raggari.tres
+msgid "Tää kulkee kuin jenkkirauta moottoritiellä."
+msgstr "This runs like a Yank tank on the motorway."
+
+#: src/resources/customers/raggari.tres
+msgid "Tää maistuu jäähdytinnesteeltä. Ja mä tiedän, mä oon maistanut."
+msgstr "This tastes like coolant. And I'd know, I've tasted it."
+
+#: src/resources/customers/raggari.tres
+msgid "Väärä, mutta en mä viitti tehdä numeroa. Letti voi sotkeentua."
+msgstr "Wrong one, but I won't make a scene. The quiff might get messed up."
 
 #: src/resources/customers/raksamies.tres
 msgid "%s. Laita piikkiin, pomo maksaa."

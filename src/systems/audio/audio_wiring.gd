@@ -13,6 +13,7 @@ const VOICE_BUS: StringName = &"Voices"
 
 ## Varied pitch so several glasses breaking in a row don't sound identical.
 const SHATTER_PITCH_RANGE: Vector2 = Vector2(0.6, 0.85)
+const ARRIVAL_VOLUME_DB: float = -6.0
 const FOOTSTEP_PITCH_RANGE: Vector2 = Vector2(0.85, 1.15)
 const FOOTSTEP_VOLUME_DB: float = -10.0
 ## A whole group walking in would otherwise drum every frame.
@@ -155,6 +156,8 @@ func _connect_signals() -> void:
 	GUISignals.brew_day_closed.connect(_on_brew_day_loops.bind(0.0, 0.0, false))
 	# Not placed in the world: the whole cellar hears the shot, like the shake it comes with.
 	BrewerySignals.customer_outburst.connect(play_sfx.bind(bank.sfx_gunshot).unbind(1))
+	# Not placed in the world: the car is outside, beyond the door.
+	BrewerySignals.customer_arrival_sounded.connect(func(stream : AudioStream) -> void: play_sfx(stream, ARRIVAL_VOLUME_DB))
 	BrewerySignals.glass_shattered.connect(func() -> void: play_sfx(bank.sfx_glass_shatter, 0.0, randf_range(SHATTER_PITCH_RANGE.x, SHATTER_PITCH_RANGE.y)))
 
 	# Buttons click on their own; these also cover keyboard shortcuts that open things.
