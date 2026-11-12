@@ -1,0 +1,47 @@
+[gd_resource type="Resource" script_class="CustomerData" format=3]
+
+[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_data"]
+[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/lavatanssija_naaras_anim.tres" id="2_sprite"]
+
+[resource]
+script = ExtResource("1_data")
+customer_name = "Raili"
+title = "Lavatanssija"
+first_names = Array[String](["Raili", "Anneli", "Ritva", "Aila", "Terttu", "Eila"])
+min_quality = 0.6
+budget_multiplier = 1.2
+primary_style = 7
+secondary_style = 8
+sprite_frames = ExtResource("2_sprite")
+randomize_skin = false
+randomize_hair = false
+randomize_clothes = false
+randomize_shoes = false
+carries_glass_out = false
+voice_pitch = 1.25
+tip_base_chance = 0.3
+rep_primary_style = 5
+rep_secondary_style = 1
+min_reputation_to_appear = 25
+required_discovered_style = 7
+honour_min_quality = 1.1
+honour_reputation = 8
+honour_animation = &"dance"
+dialogue_honour = "Lavatanssija niiaa: Saanko luvan? Pyörähdätte valssin tiskin edessä, ja koko kellari taputtaa."
+dialogue_intro = "Saanko luvan? Ensin tuoppi, sitten valssi. Yksi wieniläinen lager, kiitos."
+dialogue_success = "Kuin valssi Wienissä! Yksi, kaksi, kolme... ja kulaus."
+dialogue_fallback = "Ei ihan valssia, mutta reipas foksi. Kelpaa."
+dialogue_wrong_style = "Tämä on humppaa, kun pyysin valssia. Tanssitaan silti."
+dialogue_reject = "Kiitos tanssista. Ei."
+dialogue_no_match = "Ei mitään minun tahtiini. Lähden lavalle, siellä soi ainakin orkesteri."
+dialogue_preview_format = "%s! Kumarran ja odotan vuoroani."
+dialogue_nothing_available = "Tyhjät hanat. Kuin tanssilava ilman orkesteria."
+alt_intro = Array[String](["Naistenhakuun on vielä tunti. Ehdin yhden lagerin.", "Kengät kiiltää ja polvet kestää. Yksi wieniläinen."])
+alt_success = Array[String](["Tahti on oikea. Pyörähdän kerran tiskin ympäri.", "Tällä jaksaa tangon ja jenkan peräkkäin."])
+alt_fallback = Array[String](["Hieman jäykkä, mutta vie hyvin.", "Ei valssi, mutta hyvä vientiote."])
+alt_wrong_style = Array[String](["Väärä tahti, mutta en jätä kumppania lattialle.", "Tämä on tangoa, kun pyysin valssia. Hyvä on."])
+alt_reject = Array[String](["Astuit varpaille. Tällä ei tanssita.", "Tällä ei pääse edes ensimmäiselle kierrokselle."])
+alt_no_match = Array[String](["Ei mitään? Sitten lähden etsimään parempaa paria.", "Tämä kellari ei soita minun kappalettani."])
+alt_preview_format = Array[String](["%s. Odotan kuin naistenhakua.", "%s? Otetaan, kun kerran tarjotaan."])
+alt_nothing_available = Array[String](["Ei mitään. Istun seinäruusuna.", "Tyhjää. Orkesteri on tauolla, ja hanat myös."])
+metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

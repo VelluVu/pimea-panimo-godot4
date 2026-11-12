@@ -1,0 +1,47 @@
+[gd_resource type="Resource" script_class="CustomerData" format=3]
+
+[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_data"]
+[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/emanta_anim.tres" id="2_sprite"]
+
+[resource]
+script = ExtResource("1_data")
+customer_name = "Aino"
+title = "Emäntä"
+first_names = Array[String](["Aino", "Helmi", "Kerttu", "Maija", "Tyyne", "Sirpa"])
+min_quality = 0.5
+budget_multiplier = 1.0
+primary_style = 14
+secondary_style = 0
+sprite_frames = ExtResource("2_sprite")
+randomize_skin = false
+randomize_hair = false
+randomize_clothes = false
+randomize_shoes = false
+carries_glass_out = false
+voice_pitch = 1.2
+tip_base_chance = 0.2
+rep_primary_style = 5
+rep_secondary_style = 1
+min_reputation_to_appear = 15
+required_discovered_style = 14
+gift_ingredient_id = 100
+gift_amount = 3
+gift_chance = 0.35
+dialogue_gift = "Emäntä jätti tiskille säkillisen ohraa omalta pellolta: %d kg pilsner-mallasta varastoon."
+dialogue_intro = "Saison on kuulemma maatilan olutta. Sitä minä, lehmät on jo lypsetty."
+dialogue_success = "Maistuu pellolta ja hyvältä säältä. Tätä kun olisi riihen nurkalla."
+dialogue_fallback = "Kotikaljaa. Tätä juodaan heinätöissä. Kelpaa."
+dialogue_wrong_style = "Ei tätä tilattu, mutta maalla ei nirsoilla."
+dialogue_reject = "Tällä ei kastelisi edes perunamaata."
+dialogue_no_match = "Ei maalaisolutta? Lähden takaisin navettaan."
+dialogue_preview_format = "%s. Odotan kuin sadetta kesäkuussa."
+dialogue_nothing_available = "Tyhjää kuin heinälato maaliskuussa."
+alt_intro = Array[String](["Tulin traktorilla, se on parkissa. Saisonia, kiitos.", "Isäntää en ole vielä löytänyt, mutta toivottavasti olut löytyy. Saison."])
+alt_success = Array[String](["Tämä on parempaa kuin EU-tuki. Ja tulee nopeammin.", "Kun tätä saisi kotona, isäntäkin löytyisi."])
+alt_fallback = Array[String](["Kotikaljaa, ihan kuin mummolassa. Hyvä.", "Ei saisonia, mutta kalja käy. Maalla kaikki käy."])
+alt_wrong_style = Array[String](["Outoa, mutta juodaan. Maalla ei kaadeta mitään viemäriin.", "Väärää satoa, mutta korjataan talteen."])
+alt_reject = Array[String](["Tämä menee lannoitteeksi.", "Ei. Sikakaan ei tätä joisi."])
+alt_no_match = Array[String](["Huono satovuosi tässä kellarissa. Lähden.", "Ei mitään minulle? Takaisin pellolle."])
+alt_preview_format = Array[String](["%s. Kuulostaa hyvältä sadolta.", "%s. Laitetaan EU-tukihakemuksen liitteeksi."])
+alt_nothing_available = Array[String](["Ei mitään. Kuin halla olisi vienyt kaiken.", "Tyhjää. Kato on käynyt kellarissakin."])
+metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

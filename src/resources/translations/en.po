@@ -808,8 +808,8 @@ msgid "Koko kylä tuttu"
 msgstr "Know the Whole Town"
 
 #: src/resources/achievements/asiakaskirja_kaikki.tres
-msgid "Tapaa 38 eri asiakastyyppiä."
-msgstr "Meet 38 different customer types."
+msgid "Tapaa 39 eri asiakastyyppiä."
+msgstr "Meet 39 different customer types."
 
 #: src/resources/achievements/bulkkia_5.tres
 msgid "Kansan kalja"
@@ -2626,6 +2626,114 @@ msgstr ""
 msgid "VÄÄRÄ TUOTELUOKKA. Analysoidaan silti."
 msgstr "WRONG PRODUCT CLASS. Analysing anyway."
 
+#: src/resources/customers/emanta.tres
+msgid "%s. Kuulostaa hyvältä sadolta."
+msgstr "%s. Sounds like a good harvest."
+
+#: src/resources/customers/emanta.tres
+msgid "%s. Laitetaan EU-tukihakemuksen liitteeksi."
+msgstr "%s. I'll attach it to my EU subsidy application."
+
+#: src/resources/customers/emanta.tres
+msgid "%s. Odotan kuin sadetta kesäkuussa."
+msgstr "%s. I'll wait for it like rain in June."
+
+#: src/resources/customers/emanta.tres
+msgid "Ei maalaisolutta? Lähden takaisin navettaan."
+msgstr "No farmhouse beer? I'm going back to the cowshed."
+
+#: src/resources/customers/emanta.tres
+msgid "Ei mitään minulle? Takaisin pellolle."
+msgstr "Nothing for me? Back to the fields."
+
+#: src/resources/customers/emanta.tres
+msgid "Ei mitään. Kuin halla olisi vienyt kaiken."
+msgstr "Nothing. As if the frost took it all."
+
+#: src/resources/customers/emanta.tres
+msgid "Ei saisonia, mutta kalja käy. Maalla kaikki käy."
+msgstr "No saison, but kalja will do. Anything goes in the country."
+
+#: src/resources/customers/emanta.tres
+msgid "Ei tätä tilattu, mutta maalla ei nirsoilla."
+msgstr "Didn't order this, but in the country we're not fussy."
+
+#: src/resources/customers/emanta.tres
+msgid "Ei. Sikakaan ei tätä joisi."
+msgstr "No. Not even the pig would drink this."
+
+#: src/resources/customers/emanta.tres
+msgid "Emäntä"
+msgstr "Farm Wife"
+
+#: src/resources/customers/emanta.tres
+msgid ""
+"Emäntä jätti tiskille säkillisen ohraa omalta pellolta: %d kg "
+"pilsner-mallasta varastoon."
+msgstr "The farm wife left a sack of barley from her own field on the counter: %d kg of pilsner malt into storage."
+
+#: src/resources/customers/emanta.tres
+msgid "Huono satovuosi tässä kellarissa. Lähden."
+msgstr "A bad harvest year in this cellar. I'm off."
+
+#: src/resources/customers/emanta.tres
+msgid "Isäntää en ole vielä löytänyt, mutta toivottavasti olut löytyy. Saison."
+msgstr "Haven't found a husband yet, but hopefully I'll find a beer. Saison."
+
+#: src/resources/customers/emanta.tres
+msgid "Kotikaljaa, ihan kuin mummolassa. Hyvä."
+msgstr "Kotikalja, just like at grandma's. Good."
+
+#: src/resources/customers/emanta.tres
+msgid "Kotikaljaa. Tätä juodaan heinätöissä. Kelpaa."
+msgstr "Kotikalja. We drink this at haymaking. It'll do."
+
+#: src/resources/customers/emanta.tres
+msgid "Kun tätä saisi kotona, isäntäkin löytyisi."
+msgstr "If I had this at home, I'd find a husband too."
+
+#: src/resources/customers/emanta.tres
+msgid "Maistuu pellolta ja hyvältä säältä. Tätä kun olisi riihen nurkalla."
+msgstr ""
+"Tastes of the field and good weather. If only I had this by the threshing "
+"barn."
+
+#: src/resources/customers/emanta.tres
+msgid "Outoa, mutta juodaan. Maalla ei kaadeta mitään viemäriin."
+msgstr "Odd, but we'll drink it. In the country nothing goes down the drain."
+
+#: src/resources/customers/emanta.tres
+msgid "Saison on kuulemma maatilan olutta. Sitä minä, lehmät on jo lypsetty."
+msgstr "They say saison is a farm beer. That's for me, the cows are already milked."
+
+#: src/resources/customers/emanta.tres
+msgid "Tulin traktorilla, se on parkissa. Saisonia, kiitos."
+msgstr "Came by tractor, it's parked outside. Saison, please."
+
+#: src/resources/customers/emanta.tres
+msgid "Tyhjää kuin heinälato maaliskuussa."
+msgstr "Empty as a hay barn in March."
+
+#: src/resources/customers/emanta.tres
+msgid "Tyhjää. Kato on käynyt kellarissakin."
+msgstr "Empty. Crop failure has hit the cellar too."
+
+#: src/resources/customers/emanta.tres
+msgid "Tällä ei kastelisi edes perunamaata."
+msgstr "I wouldn't even water the potato patch with this."
+
+#: src/resources/customers/emanta.tres
+msgid "Tämä menee lannoitteeksi."
+msgstr "This goes on the fields as fertiliser."
+
+#: src/resources/customers/emanta.tres
+msgid "Tämä on parempaa kuin EU-tuki. Ja tulee nopeammin."
+msgstr "This is better than an EU subsidy. And it comes faster."
+
+#: src/resources/customers/emanta.tres
+msgid "Väärää satoa, mutta korjataan talteen."
+msgstr "Wrong crop, but we'll bring it in anyway."
+
 #: src/resources/customers/halloweeni_vieras.tres
 msgid "%s... mahtuuko se ontoon päähän?"
 msgstr "%s... will it fit in a hollow head?"
@@ -3478,6 +3586,12 @@ msgstr "This is a tango, and I asked for a waltz. Very well."
 msgid "Väärä tahti, mutta en jätä kumppania lattialle."
 msgstr "Wrong tempo, but I won't leave my partner on the floor."
 
+#: src/resources/customers/lavatanssija_naaras.tres
+msgid ""
+"Lavatanssija niiaa: Saanko luvan? Pyörähdätte valssin tiskin edessä, ja "
+"koko kellari taputtaa."
+msgstr "The dance hall regular curtsies: May I have this dance? You waltz in front of the counter, and the whole cellar claps."
+
 #: src/resources/customers/leijonafani.tres
 msgid "%s! ANNA SE TÄNNE KUIN KIEKKO MAALIIN!"
 msgstr "%s! GET IT OVER HERE LIKE A PUCK INTO THE NET!"
@@ -3801,54 +3915,6 @@ msgid "Väärä olut, mutta ostan sen silti. Ja seuraavankin."
 msgstr "Wrong beer, but I'll buy it anyway. And the next one."
 
 #: src/resources/customers/maajussi.tres
-msgid "%s. Kuulostaa hyvältä sadolta."
-msgstr "%s. Sounds like a good harvest."
-
-#: src/resources/customers/maajussi.tres
-msgid "%s. Laitetaan EU-tukihakemuksen liitteeksi."
-msgstr "%s. I'll attach it to my EU subsidy application."
-
-#: src/resources/customers/maajussi.tres
-msgid "%s. Odotan kuin sadetta kesäkuussa."
-msgstr "%s. I'll wait for it like rain in June."
-
-#: src/resources/customers/maajussi.tres
-msgid "Ei maalaisolutta? Lähden takaisin navettaan."
-msgstr "No farmhouse beer? I'm going back to the cowshed."
-
-#: src/resources/customers/maajussi.tres
-msgid "Ei mitään minulle? Takaisin pellolle."
-msgstr "Nothing for me? Back to the fields."
-
-#: src/resources/customers/maajussi.tres
-msgid "Ei mitään. Kuin halla olisi vienyt kaiken."
-msgstr "Nothing. As if the frost took it all."
-
-#: src/resources/customers/maajussi.tres
-msgid "Ei saisonia, mutta kalja käy. Maalla kaikki käy."
-msgstr "No saison, but kalja will do. Anything goes in the country."
-
-#: src/resources/customers/maajussi.tres
-msgid "Ei tätä tilattu, mutta maalla ei nirsoilla."
-msgstr "Didn't order this, but in the country we're not fussy."
-
-#: src/resources/customers/maajussi.tres
-msgid "Ei. Sikakaan ei tätä joisi."
-msgstr "No. Not even the pig would drink this."
-
-#: src/resources/customers/maajussi.tres
-msgid "Huono satovuosi tässä kellarissa. Lähden."
-msgstr "A bad harvest year in this cellar. I'm off."
-
-#: src/resources/customers/maajussi.tres
-msgid "Kotikaljaa, ihan kuin mummolassa. Hyvä."
-msgstr "Kotikalja, just like at grandma's. Good."
-
-#: src/resources/customers/maajussi.tres
-msgid "Kotikaljaa. Tätä juodaan heinätöissä. Kelpaa."
-msgstr "Kotikalja. We drink this at haymaking. It'll do."
-
-#: src/resources/customers/maajussi.tres
 msgid "Kun tätä saisi kotona, morsiankin löytyisi."
 msgstr "If I had this at home, I'd find a bride too."
 
@@ -3860,53 +3926,13 @@ msgstr "Farmer"
 msgid ""
 "Maajussi jätti tiskille säkillisen ohraa omalta pellolta: %d kg "
 "pilsner-mallasta varastoon."
-msgstr "The farmer left a sack of barley from his own field on the counter: %d kg of pilsner malt into storage."
-
-#: src/resources/customers/maajussi.tres
-msgid "Maistuu pellolta ja hyvältä säältä. Tätä kun olisi riihen nurkalla."
 msgstr ""
-"Tastes of the field and good weather. If only I had this by the threshing "
-"barn."
+"The farmer left a sack of barley from his own field on the counter: %d kg "
+"of pilsner malt into storage."
 
 #: src/resources/customers/maajussi.tres
 msgid "Morsianta en ole vielä löytänyt, mutta toivottavasti olut löytyy. Saison."
 msgstr "Haven't found a bride yet, but hopefully I'll find a beer. Saison."
-
-#: src/resources/customers/maajussi.tres
-msgid "Outoa, mutta juodaan. Maalla ei kaadeta mitään viemäriin."
-msgstr "Odd, but we'll drink it. In the country nothing goes down the drain."
-
-#: src/resources/customers/maajussi.tres
-msgid "Saison on kuulemma maatilan olutta. Sitä minä, lehmät on jo lypsetty."
-msgstr "They say saison is a farm beer. That's for me, the cows are already milked."
-
-#: src/resources/customers/maajussi.tres
-msgid "Tulin traktorilla, se on parkissa. Saisonia, kiitos."
-msgstr "Came by tractor, it's parked outside. Saison, please."
-
-#: src/resources/customers/maajussi.tres
-msgid "Tyhjää kuin heinälato maaliskuussa."
-msgstr "Empty as a hay barn in March."
-
-#: src/resources/customers/maajussi.tres
-msgid "Tyhjää. Kato on käynyt kellarissakin."
-msgstr "Empty. Crop failure has hit the cellar too."
-
-#: src/resources/customers/maajussi.tres
-msgid "Tällä ei kastelisi edes perunamaata."
-msgstr "I wouldn't even water the potato patch with this."
-
-#: src/resources/customers/maajussi.tres
-msgid "Tämä menee lannoitteeksi."
-msgstr "This goes on the fields as fertiliser."
-
-#: src/resources/customers/maajussi.tres
-msgid "Tämä on parempaa kuin EU-tuki. Ja tulee nopeammin."
-msgstr "This is better than an EU subsidy. And it comes faster."
-
-#: src/resources/customers/maajussi.tres
-msgid "Väärää satoa, mutta korjataan talteen."
-msgstr "Wrong crop, but we'll bring it in anyway."
 
 #: src/resources/customers/mafioso.tres
 msgid "%s. Don maistaa ensin."
