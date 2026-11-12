@@ -18,7 +18,7 @@ from pathlib import Path
 
 from PIL import Image
 
-from customer_sheet import (BOX_X, FRAME, HANDS_REST, LEGS_TOP, ROOT, STILL, TEXTURE_DIR, Held, Look, check, draw_frame,
+from customer_sheet import (flat_clothes, BOX_X, FRAME, HANDS_REST, LEGS_TOP, ROOT, STILL, TEXTURE_DIR, Held, Look, check, draw_frame,
                             draw_sheet, hex_color, paint)
 from make_orveltaja import write_aseprite_source
 
@@ -155,6 +155,11 @@ NAARAS_TORSO_BACK = [
     "......OOOnnnSS......",
     "......OOOnnnNS......",
 ]
+# Clothes in one flat tone with a one-pixel right edge (customer_sheet.flat_clothes).
+TORSO_FRONT = flat_clothes(TORSO_FRONT, {"J": "j", "V": "v"})
+TORSO_BACK = flat_clothes(TORSO_BACK, {"J": "j", "V": "v"})
+NAARAS_TORSO_FRONT = flat_clothes(NAARAS_TORSO_FRONT, {"J": "j", "O": "o"})
+NAARAS_TORSO_BACK = flat_clothes(NAARAS_TORSO_BACK, {"J": "j", "O": "o"})
 RIFLE_BUTT_BACK = [
     ".........nnnnN......",
     ".........nnnnN......",

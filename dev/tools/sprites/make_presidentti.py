@@ -11,7 +11,7 @@ with big front teeth hanging two rows down. The shapes follow the user's hand-ed
 import argparse
 from pathlib import Path
 
-from customer_sheet import TEXTURE_DIR, Look, draw_sheet, hex_color, save
+from customer_sheet import flat_clothes, TEXTURE_DIR, Look, draw_sheet, hex_color, save
 from make_orveltaja import write_aseprite_source
 
 NAME = "presidentti_32"
@@ -81,6 +81,9 @@ TORSO_BACK = [
     "......HCCCCCCc......",
     ".....HCCCCCCCcc.....",
 ]
+# Clothes in one flat tone with a one-pixel right edge (customer_sheet.flat_clothes).
+TORSO_FRONT = flat_clothes(TORSO_FRONT, {"C": "c", "s": "t"}, lit={"H": "C"})
+TORSO_BACK = flat_clothes(TORSO_BACK, {"C": "c", "s": "t"}, lit={"H": "C"})
 
 
 def look() -> Look:

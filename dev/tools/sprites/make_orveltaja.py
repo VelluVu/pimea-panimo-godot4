@@ -18,7 +18,7 @@ from pathlib import Path
 
 from PIL import Image
 
-from customer_sheet import (FRAME, RIGHT, ROOT, STILL, TEXTURE_DIR, TOWARDS, Held, Look, check, draw_frame,
+from customer_sheet import (flat_clothes, FRAME, RIGHT, ROOT, STILL, TEXTURE_DIR, TOWARDS, Held, Look, check, draw_frame,
                             far_leg_colors, hex_color)
 
 ASEPRITE = Path("C:/Program Files (x86)/Steam/steamapps/common/Aseprite/Aseprite.exe")
@@ -94,6 +94,9 @@ TORSO_BACK = [
     ".....TTTTTTTTTT.....",
     ".....MMMMmMMMMm.....",
 ]
+# Clothes in one flat tone with a one-pixel right edge (customer_sheet.flat_clothes).
+TORSO_FRONT = flat_clothes(TORSO_FRONT, {"M": "m"})
+TORSO_BACK = flat_clothes(TORSO_BACK, {"M": "m"})
 # Gripped upright, the tube runs down behind the fist; the mouth on top glows.
 CANDLE = [
     "oY",

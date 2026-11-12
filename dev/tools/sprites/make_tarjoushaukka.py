@@ -21,6 +21,8 @@ from pathlib import Path
 
 from PIL import Image
 
+from customer_sheet import flat_clothes
+
 ROOT = Path(__file__).resolve().parents[3]
 TEXTURE_DIR = ROOT / "assets/textures/characters"
 FRAME = 32
@@ -149,6 +151,9 @@ TORSO_BACK = [
     ".....HCCCCCCXCc.....",
     ".....HCCCCCCCCc.....",
 ]
+# Clothes in one flat tone with a one-pixel right edge (customer_sheet.flat_clothes).
+TORSO_FRONT = flat_clothes(TORSO_FRONT, {"C": "c"}, lit={"H": "C"}, keep_rows=(0, 3, 6))
+TORSO_BACK = flat_clothes(TORSO_BACK, {"C": "c"}, lit={"H": "C"}, keep_rows=(0, 3, 6))
 
 # Rows 19-25 for each leg pose.
 LEGS = {

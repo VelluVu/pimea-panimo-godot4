@@ -15,7 +15,7 @@ from pathlib import Path
 
 from PIL import Image
 
-from customer_sheet import (BOX_X, FRAME, HANDS_REST, ROOT, STILL, TEXTURE_DIR, Held, Look, check, draw_frame,
+from customer_sheet import (flat_clothes, BOX_X, FRAME, HANDS_REST, ROOT, STILL, TEXTURE_DIR, Held, Look, check, draw_frame,
                             draw_sheet, hex_color, paint)
 from make_orveltaja import write_aseprite_source
 
@@ -85,6 +85,9 @@ TORSO_BACK = [
     ".....AAAAAAAAAa.....",
     ".....aaaaaaaaaa.....",
 ]
+# Clothes in one flat tone with a one-pixel right edge (customer_sheet.flat_clothes).
+TORSO_FRONT = flat_clothes(TORSO_FRONT, {"A": "a"}, keep_rows=(8,))
+TORSO_BACK = flat_clothes(TORSO_BACK, {"A": "a"}, keep_rows=(8,))
 # The giant cheque: a blue header, a long amount, a red signature; pressed under the arm.
 CHEQUE = [
     "BBBBBBBBB",

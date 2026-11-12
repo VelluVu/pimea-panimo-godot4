@@ -15,6 +15,7 @@ bare legs or paws. Walking right, the far leg is '5', '6', '7' and '8': the same
 darkened toward the palette's darkest (see far_leg_colors), so the legs read apart.
 """
 
+import re
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Callable, Optional
@@ -215,6 +216,45 @@ class Look:
     extra: Optional[Callable[[Image.Image, dict, int, bool], None]] = None
     # Leg grids that replace LEGS by name (LEGS_STEPPED for the user's stepping shoes).
     legs: Optional[dict] = None
+
+
+def flat_clothes(rows: list[str], shades: dict[str, str], lit: Optional[dict[str, str]] = None,
+                 keep_rows: tuple[int, ...] = ()) -> list[str]:
+    """Clothes in one flat tone with a one-pixel shade on the right edge, like the user's
+    customers. `shades` maps a garment's main letter to its shade letter, `lit` a lit letter
+    to its main letter. In each row the lit pixels take the main tone; the body and the right
+    arm (every run of pixels but the left arm) lose the dark block on their right side and
+    keep one shade pixel at the edge. Rows in `keep_rows` (hem bands, quilt lines, rims)
+    stay as drawn, and so do details inside a garment (zips, fold lines)."""
+    lit = lit or {}
+    main_of = {shade: main for main, shade in shades.items()}
+    out = []
+    for index, row in enumerate(rows):
+        if index in keep_rows:
+            out.append(row)
+            continue
+        chars = [lit.get(c, c) for c in row]
+        runs = [(m.start(), m.end()) for m in re.finditer(r"[^.]+", "".join(chars))]
+        for number, (start, end) in enumerate(runs):
+            if len(runs) > 1 and number == 0:
+                continue
+            right_arm = len(runs) >= 3 and number == len(runs) - 1
+            x = end - 1
+            if right_arm:
+                for i in range(start, end):
+                    chars[i] = main_of.get(chars[i], chars[i])
+            else:
+                # Skip details at the very edge (a stripe), then clear the dark block.
+                while x >= start and chars[x] not in shades and chars[x] not in main_of:
+                    x -= 1
+                while x >= start and chars[x] in main_of:
+                    chars[x] = main_of[chars[x]]
+                    x -= 1
+            last = end - 1
+            if chars[last] in shades:
+                chars[last] = shades[chars[last]]
+        out.append("".join(chars))
+    return out
 
 
 def paint(image: Image.Image, palette: dict, rows: list[str], left: int, top: int) -> None:

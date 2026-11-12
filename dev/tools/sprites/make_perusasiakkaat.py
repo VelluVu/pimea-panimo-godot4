@@ -17,6 +17,7 @@ follow the other customers' (see customer_sheet.py).
 """
 
 import argparse
+import re
 from pathlib import Path
 
 from customer_sheet import BOX_WIDTH, TEXTURE_DIR, Look, draw_sheet, hex_color, save
@@ -32,8 +33,10 @@ def pad(rows: list[str]) -> list[str]:
 
 def fabric(mask: list[str], lit: str, shade: str, shade_from: int, lines: dict[str, str] | None = None,
            line_cols: tuple[int, ...] = (), line_rows: tuple[int, ...] = ()) -> list[str]:
-    """Fills each X of a mask with the lit or shade letter (shade from column `shade_from`
-    on) and draws check or quilt lines: `lines` maps the lit and shade letter to their line."""
+    """Fills each X of a mask with the lit letter and draws check or quilt lines (`lines`
+    maps the lit and shade letter to their line); the shade is one pixel on the right edge
+    of the body and the right arm, like the user's customers. `shade_from` is no longer used:
+    it once started the shade at that column."""
     out = []
     for y, row in enumerate(pad(mask)):
         chars = []
@@ -41,10 +44,17 @@ def fabric(mask: list[str], lit: str, shade: str, shade_from: int, lines: dict[s
             if char != "X":
                 chars.append(char)
                 continue
-            base = lit if x < shade_from else shade
+            base = lit
             if lines and (x in line_cols or y in line_rows):
                 base = lines[base]
             chars.append(base)
+        runs = [(m.start(), m.end()) for m in re.finditer(r"[^.]+", row)]
+        for number, (start, end) in enumerate(runs):
+            if len(runs) > 1 and number == 0:
+                continue
+            x = end - 1
+            if row[x] == "X":
+                chars[x] = lines[shade] if lines and chars[x] == lines.get(lit) else shade
         out.append("".join(chars))
     return out
 

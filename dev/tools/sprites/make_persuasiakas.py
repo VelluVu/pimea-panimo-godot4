@@ -11,7 +11,7 @@ silhouette. The shapes and the jacket's colours follow the user's hand-edited id
 import argparse
 from pathlib import Path
 
-from customer_sheet import BOX_X, HANDS_REST, TEXTURE_DIR, Look, draw_frame, draw_sheet, hex_color, paint, save
+from customer_sheet import flat_clothes, BOX_X, HANDS_REST, TEXTURE_DIR, Look, draw_frame, draw_sheet, hex_color, paint, save
 from make_orveltaja import write_aseprite_source
 
 NAME = "persuasiakas_32"
@@ -43,7 +43,8 @@ HEAD_FRONT = [
     "....ssssssssstt.....",
     "....sssssssssst.....",
     "....saaasssaaat.....",
-    "...sswessssewstt....",
+    "...sswwsssswwstt....",
+    "...sswesstswestt....",
     "....srssttsssrt.....",
     "....sgskkkkksgt.....",
     "....sgkgggggkgt.....",
@@ -120,6 +121,9 @@ TORSO_SHOOTING_RAISED = [
     ".LLLLLLOhhhhOjjj....",
     *TORSO_SHOOTING[4:],
 ]
+# Clothes in one flat tone with a one-pixel right edge (customer_sheet.flat_clothes).
+TORSO_FRONT = flat_clothes(TORSO_FRONT, {"L": "j"})
+TORSO_BACK = flat_clothes(TORSO_BACK, {"L": "j"})
 # Shouting as he fires: the mouth opens wide in the frown.
 HEAD_SHOUTING = HEAD_FRONT[:7] + [
     "....sgkkkkkkkgt.....",

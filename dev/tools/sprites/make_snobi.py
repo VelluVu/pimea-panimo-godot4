@@ -13,7 +13,7 @@ from pathlib import Path
 
 from PIL import Image
 
-from customer_sheet import FRAME, HANDS_REST, STILL, Held, Look, check, draw_frame, draw_sheet, hex_color, save
+from customer_sheet import flat_clothes, FRAME, HANDS_REST, STILL, Held, Look, check, draw_frame, draw_sheet, hex_color, save
 
 PALETTE = {
     "s": hex_color("ead4aa"),  # skin
@@ -80,6 +80,9 @@ TORSO_BACK = [
     ".....VUUUUuUUUu.....",
     ".....VUUUUuUUUu.....",
 ]
+# Clothes in one flat tone with a one-pixel right edge (customer_sheet.flat_clothes).
+TORSO_FRONT = flat_clothes(TORSO_FRONT, {"U": "u"}, lit={"V": "U"})
+TORSO_BACK = flat_clothes(TORSO_BACK, {"U": "u"}, lit={"V": "U"})
 # Gripped by the knob: the shaft runs behind the hand down to the floor.
 CANE = [
     "Yy",

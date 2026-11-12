@@ -16,7 +16,7 @@ from pathlib import Path
 
 from PIL import Image
 
-from customer_sheet import ROOT, Look, draw_sheet, hex_color, paint, save
+from customer_sheet import flat_clothes, ROOT, Look, draw_sheet, hex_color, paint, save
 
 PALETTE = {
     "F": hex_color("d77643"),  # fur
@@ -88,6 +88,9 @@ TORSO_BACK = [
     ".....RRRRRRRRRr.....",
     ".....rrrrrrrrrr.....",
 ]
+# Clothes in one flat tone with a one-pixel right edge (customer_sheet.flat_clothes).
+TORSO_FRONT = flat_clothes(TORSO_FRONT, {"R": "r", "F": "f"}, keep_rows=(0, 9))
+TORSO_BACK = flat_clothes(TORSO_BACK, {"R": "r", "F": "f"}, keep_rows=(0, 9))
 
 
 def look() -> Look:
