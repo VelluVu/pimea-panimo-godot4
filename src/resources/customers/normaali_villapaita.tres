@@ -1,0 +1,41 @@
+[gd_resource type="Resource" script_class="CustomerData" format=3]
+
+[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_normaali_nainen"]
+[ext_resource type="Script" uid="uid://dq66tbectyal5" path="res://src/customers/taste_rule.gd" id="1_rypsu"]
+[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/normaali_villapaita_anim.tres" id="2_sprite"]
+
+[resource]
+script = ExtResource("1_normaali_nainen")
+customer_name = "Leena"
+title = "Perusasiakas"
+first_names = Array[String](["Leena", "Sirpa", "Päivi", "Marja"])
+min_quality = 0.3
+sprite_frames = ExtResource("2_sprite")
+randomize_skin = false
+randomize_hair = false
+randomize_clothes = false
+randomize_shoes = false
+hand_offsets = Array[Vector2]([Vector2(-17, -45), Vector2(-17, -45), Vector2(-17, -46), Vector2(-20, -52)])
+voice_pitch = 1.25
+dialogue_intro = "Moi. Mitäs hyvää teillä tänään on?"
+dialogue_success = "Hyvää on. Kiitti!"
+dialogue_fallback = "Käy tää."
+dialogue_wrong_style = "Ihan ok."
+dialogue_reject = "Ei kyllä kelpaa tällainen, sori."
+dialogue_no_match = "Tyhjät hyllyt? No, käyn sitten muualla."
+dialogue_preview_format = "Otetaanpa vaikka %s."
+dialogue_nothing_available = "Hmm, ei taida olla mitään juotavaa..."
+alt_intro = Array[String](["Moi. Kelit on ollu. Mitäs teillä on?", "No niin. Töissä oli taas sitä samaa. Mitäs tänään juodaan?"])
+alt_success = Array[String](["No nyt. Tästä ei valiteta, eikä kyllä kehutakaan ääneen.", "Hyvää on. Sanon sen vain kerran, ettei mene överiksi."])
+alt_fallback = Array[String](["Ei huono. Se on suomeksi kehu.", "Menettelee. Puoliso sanoo samaa minusta."])
+alt_wrong_style = Array[String](["En tätä tilannut, mutta en viitsi sanoa mitään.", "Eipä tämä ollut se, mutta ei ruveta riitelemään."])
+alt_reject = Array[String](["Ei kehtaa juoda. Eikä kehtaa sanoa, mutta nyt sanoin.", "Naapurin kotikalja oli parempaa, ja naapuri on kuollut."])
+alt_no_match = Array[String](["Ei sitten. Käyn kaupassa ja juon saunassa, kuten ihmisen kuuluu.", "Ei mitään? No, onpahan käyty. Se on jo lenkistä."])
+alt_preview_format = Array[String](["No se %s sitten. Ei ruveta miettimään.", "Otan %s. Tai no, otan. Joo."])
+alt_nothing_available = Array[String](["Hiljaista on hyllyssä. No, täällä on ainakin rauhallista.", "Ei oo mitään. Seison tässä silti hetken, kun tulin jo."])
+rep_primary_style = 2
+risk_primary_style = 1
+picks_at_random = true
+max_styles_per_visit = 2
+appearance_weight = 0.2
+metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

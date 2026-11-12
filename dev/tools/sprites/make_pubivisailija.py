@@ -168,6 +168,12 @@ NAARAS_SHEET_BACK = ["WWWw"] * 5
 SHEET_BACK_ANCHOR = (1, -2)
 
 
+# Turned around, the head sat a pixel left of the back view's (and the legs'): one
+# pixel right lines the front up, so the head no longer jumps when they turn.
+HEAD_FRONT = ["." + row[:-1] for row in HEAD_FRONT]
+NAARAS_HEAD_FRONT = ["." + row[:-1] for row in NAARAS_HEAD_FRONT]
+
+
 def look(naaras: bool = False) -> Look:
     pencil = Held(PENCIL, PENCIL_ANCHOR, trails=False) if naaras else Held(PENCIL_WITH_LEAD, PENCIL_WITH_LEAD_ANCHOR, trails=False)
     return Look(

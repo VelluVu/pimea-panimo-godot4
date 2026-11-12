@@ -112,6 +112,11 @@ SLEEVE_BACK_COLUMN = 14
 SLEEVE_BACK_TOP = 13
 
 
+# Turned around, the head sat a pixel left of the back view's (and the legs'): one
+# pixel right lines the front up, so the head no longer jumps when they turn.
+HEAD_FRONT = ["." + row[:-1] for row in HEAD_FRONT]
+
+
 def look() -> Look:
     return Look(
         palette=PALETTE,

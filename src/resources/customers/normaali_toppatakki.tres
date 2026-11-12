@@ -37,5 +37,5 @@ rep_primary_style = 2
 risk_primary_style = 1
 picks_at_random = true
 max_styles_per_visit = 2
-appearance_weight = 0.34
+appearance_weight = 0.2
 metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

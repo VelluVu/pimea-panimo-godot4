@@ -163,6 +163,12 @@ PULLA_BACK = [
 PULLA_BACK_ANCHOR = (-1, -2)
 
 
+# Turned around, the head sat a pixel left of the back view's (and the legs'): one
+# pixel right lines the front up, so the head no longer jumps when they turn.
+HEAD_FRONT = ["." + row[:-1] for row in HEAD_FRONT]
+NAARAS_HEAD_FRONT = ["." + row[:-1] for row in NAARAS_HEAD_FRONT]
+
+
 def look(naaras: bool = False) -> Look:
     return Look(
         palette=PALETTE,
