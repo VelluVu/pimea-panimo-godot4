@@ -66,25 +66,25 @@ HEAD_BACK = [
 ]
 # The bib and its straps over the flannel; the sleeves' checks are rows of the two reds.
 TORSO_FRONT = [
-    "....FFOFFFFFFOff....",
-    "...FFFOFFFFFFOfff...",
-    "..ffFFOOOOOOOOffff..",
-    "..FF.FOOOooOOOf.ff..",
-    "..ff.FOOOooOOOf.ff..",
-    "..FF.OOOOOOOOOo.ff..",
-    ".....OOOOOOOOOo.....",
-    ".....OOOOOOOOOo.....",
+    "....FFOFFFFFFOFF....",
+    "...FFFOFFFFFFOFFF...",
+    "..ffFFOOOOOOOOFFff..",
+    "..FF.FOOOooOOOF.FF..",
+    "..ff.FOOOooOOOF.ff..",
+    "..FF.OOOOOOOOOO.FF..",
+    ".....OOOOOOOOOO.....",
+    ".....OOOOOOOOOO.....",
     "......11111111......",
 ]
 TORSO_BACK = [
-    "....FFFFFFFFFfff....",
-    "...FFFOFFFFFFOfff...",
-    "..ffFFFOFFFFOfffff..",
-    "..FF.FFFOFFOFFf.ff..",
-    "..ff.FFFFOOFFFf.ff..",
-    "..FF.OOOOOOOOOo.ff..",
-    ".....OOOOOOOOOo.....",
-    ".....OOOOOOOOOo.....",
+    "....FFFFFFFFFFFF....",
+    "...FFFOFFFFFFOFFF...",
+    "..ffFFFOFFFFOFFFff..",
+    "..FF.FFFOFFOFFF.FF..",
+    "..ff.FFFFOOFFFF.ff..",
+    "..FF.OOOOOOOOOO.FF..",
+    ".....OOOOOOOOOO.....",
+    ".....OOOOOOOOOO.....",
     "......11111111......",
 ]
 # Gripped by its tied neck, so the hand hides the tie; it hangs and lags when walking.
@@ -139,30 +139,30 @@ EMANTA_HEAD_BACK = [
     "........HHgg........",
 ]
 EMANTA_TORSO_FRONT = [
-    "....DDDDDDDdddKK....",
-    "...DDDDDDDDddddKK...",
-    "...DD.DDWWWwdK.dK...",
-    "...DD.DDWWWwdK.dK...",
-    "...DD.DwwwwwwK.dK...",
-    "...DD.DWWWWWwK.dK...",
-    "....DDDWWWWWwdKK....",
-    "...DDDDWWWWWwddKK...",
-    "...DDDDWWWWWwddKK...",
+    "....DDDDDDDDDDDD....",
+    "...DDDDDDDDDDDDDD...",
+    "...DD.DDWWWWDD.DD...",
+    "...DD.DDWWWWDD.DD...",
+    "...DD.DwwwwwwD.DD...",
+    "...DD.DWWWWWWD.DD...",
+    "....DDDWWWWWWDDD....",
+    "...DDDDWWWWWWDDDD...",
+    "...DDDDWWWWWWDDDD...",
 ]
 EMANTA_TORSO_BACK = [
-    "....DDDDDDDdddKK....",
-    "...DDDDDDDDddddKK...",
-    "...DD.DDDDdddK.dK...",
-    "...DD.DDDDdddK.dK...",
-    "...DD.WWWWWWwK.dK...",
-    "...DD.DDDDdddK.dK...",
-    "....DDDDDDddddKK....",
-    "...DDDDDDDddddKKK...",
-    "...DDDDDDDddddKKK...",
+    "....DDDDDDDDDDDD....",
+    "...DDDDDDDDDDDDDD...",
+    "...DD.DDDDDDDD.DD...",
+    "...DD.DDDDDDDD.DD...",
+    "...DD.WWWWWWWD.DD...",
+    "...DD.DDDDDDDD.DD...",
+    "....DDDDDDDDDDDD....",
+    "...DDDDDDDDDDDDDD...",
+    "...DDDDDDDDDDDDDD...",
 ]
 # The skirt and apron go on over the knees; below them only the boots show.
-SKIRT_HEM = ["...DDDDWWWWWwddKK...", "...dDdDwwwwwwdKdK..."]
-SKIRT_HEM_BACK = ["...DDDDDDDddddKKK...", "...dDdDdDddKdKdKK..."]
+SKIRT_HEM = ["...DDDDWWWWWWDDDD...", "...ddddwwwwwwdddd..."]
+SKIRT_HEM_BACK = ["...DDDDDDDDDDDDDD...", "...dddddddddddddd..."]
 
 
 def _skirt(frame: Image.Image, palette: dict, upper: int, back: bool) -> None:

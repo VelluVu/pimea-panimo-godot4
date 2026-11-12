@@ -66,32 +66,32 @@ HEAD_BACK = [
 # Slim: the arms hang close to the body (hand_inset 1). The shirt narrows from the bow tie
 # into the buttoned jacket; the rose sits on his left lapel.
 TORSO_FRONT = [
-    "....JJJWbbbbWjjK....",
-    "...JJJRRWWWWjjjKK...",
-    "...JJ.JrJWWjjK.jK...",
-    "...JJ.JJJJjjjK.jK...",
-    "...JJ.JJJJjjjK.jK...",
-    "...JJ.JJJJjjjK.jK...",
-    "......JJJJjjjK......",
-    "......jjjjjjjK......",
+    "....jjjWbbbbWjjj....",
+    "...jjjRRWWWWjjjjj...",
+    "...jj.jrjWWjjj.jj...",
+    "...jj.jjjjjjjj.jj...",
+    "...jj.jjjjjjjj.jj...",
+    "...jj.jjjjjjjj.jj...",
+    "......jjjjjjjj......",
+    "......jjjjjjjj......",
     "......11111111......",
 ]
 TORSO_BACK = [
-    "....JJJJwwwwjjjK....",
-    "...JJJJJJJjjjjjKK...",
-    "...JJ.JJJjjjjK.jK...",
-    "...JJ.JJJjjjjK.jK...",
-    "...JJ.JJJjjjjK.jK...",
-    "...JJ.JJJjjjjK.jK...",
-    "......JJJjjjjK......",
-    "......jjjjjjjK......",
+    "....jjjjwwwwjjjj....",
+    "...jjjjjjjjjjjjjj...",
+    "...jj.jjjjjjjj.jj...",
+    "...jj.jjjjjjjj.jj...",
+    "...jj.jjjjjjjj.jj...",
+    "...jj.jjjjjjjj.jj...",
+    "......jjjjjjjj......",
+    "......jjjjjjjj......",
     "......11111111......",
 ]
 
 
 # The raised arm: sleeve from the shoulder up past the head, the hand on top.
-RAISED_ARM_FRONT = ["st", "st", "jK", "jK", "jK", "jK", "jK", "jK"]
-RAISED_ARM_BACK = ["st", "st", "JJ", "JJ", "JJ", "JJ", "JJ", "JJ"]
+RAISED_ARM_FRONT = ["st", "st", "jj", "jj", "jj", "jj", "jj", "jj"]
+RAISED_ARM_BACK = ["st", "st", "jj", "jj", "jj", "jj", "jj", "jj"]
 RAISED_ARM_TOP = 3
 
 
@@ -156,30 +156,30 @@ NAARAS_HEAD_BACK = [
     ".......ssssst.......",
 ]
 NAARAS_TORSO_FRONT = [
-    "....DDDssssssdKK....",
-    "...DDDDDWWWWddKKK...",
-    "...DD.DDDDdddK.dK...",
-    "...DD.DDDDdddK.dK...",
-    "...DD.DDDDdddK.dK...",
-    "...DD.DDDDdddK.dK...",
-    "....DDDDDDdddKK.....",
-    "...DDDDDDDddddKK....",
-    "...DDDDDDDddddKK....",
+    "....DDDssssssDDD....",
+    "...DDDDDWWWWDDDDD...",
+    "...DD.DDDDDDDD.DD...",
+    "...DD.DDDDDDDD.DD...",
+    "...DD.DDDDDDDD.DD...",
+    "...DD.DDDDDDDD.DD...",
+    "....DDDDDDDDDDD.....",
+    "...DDDDDDDDDDDDD....",
+    "...DDDDDDDDDDDDD....",
 ]
 NAARAS_TORSO_BACK = [
-    "....DDDDDDddddKK....",
-    "...DDDDDDDdddddKK...",
-    "...DD.DDDDdddK.dK...",
-    "...DD.DDDDdddK.dK...",
-    "...DD.DDDDdddK.dK...",
-    "...DD.DDDDdddK.dK...",
-    "....DDDDDDdddKK.....",
-    "...DDDDDDDddddKK....",
-    "...DDDDDDDddddKK....",
+    "....DDDDDDDDDDDD....",
+    "...DDDDDDDDDDDDDD...",
+    "...DD.DDDDDDDD.DD...",
+    "...DD.DDDDDDDD.DD...",
+    "...DD.DDDDDDDD.DD...",
+    "...DD.DDDDDDDD.DD...",
+    "....DDDDDDDDDDD.....",
+    "...DDDDDDDDDDDDD....",
+    "...DDDDDDDDDDDDD....",
 ]
 # The skirt goes on over the knees, so the legs show only from the calf down.
-SKIRT_HEM = ["...DDDDDDDddddKK....", "...dDdDdDddKdKdK...."]
-NAARAS_ARM_FRONT = ["st", "st", "dK", "dK", "dK", "dK", "dK", "dK"]
+SKIRT_HEM = ["...DDDDDDDDDDDDD....", "...ddddddddddddd...."]
+NAARAS_ARM_FRONT = ["st", "st", "DD", "DD", "DD", "DD", "DD", "DD"]
 NAARAS_ARM_BACK = ["st", "st", "DD", "DD", "DD", "DD", "DD", "DD"]
 
 
