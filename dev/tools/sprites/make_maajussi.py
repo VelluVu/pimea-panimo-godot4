@@ -49,7 +49,8 @@ HEAD_FRONT = [
     "....cccccccccccc....",
     "......tttttttt......",
     "......sWWssWWt......",
-    "......sWessWet......",
+    "......sWestWet......",
+    "......sssttsst......",
     "......sshhhhst......",
     ".......tsssst.......",
 ]
@@ -121,7 +122,7 @@ EMANTA_HEAD_FRONT = [
     ".....HHWHHHWHgg.....",
     ".....Hhhhhhhhhg.....",
     ".....HsWWssWWsg.....",
-    ".....HsWessWesg.....",
+    ".....HsWestWesg.....",
     ".....HCssttssCg.....",
     ".....Hssskksssg.....",
     ".......tsssst.......",
