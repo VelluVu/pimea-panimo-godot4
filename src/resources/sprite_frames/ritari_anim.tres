@@ -126,8 +126,8 @@ animations = [{
 "duration": 2.0,
 "texture": SubResource("AtlasTexture_knight_2")
 }, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_knight_0")
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_knight_1")
 }, {
 "duration": 2.0,
 "texture": SubResource("AtlasTexture_knight_2")
