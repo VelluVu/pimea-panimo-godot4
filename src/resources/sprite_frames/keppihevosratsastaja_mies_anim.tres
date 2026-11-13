@@ -1,6 +1,22 @@
-[gd_resource type="SpriteFrames" format=3]
+[gd_resource type="SpriteFrames" format=3 uid="uid://cwcyjiav4gt3y"]
 
-[ext_resource type="Texture2D" path="res://assets/textures/characters/keppihevosratsastaja_mies_32.png" id="1_tex"]
+[ext_resource type="Texture2D" uid="uid://fkx8ak6y1kin" path="res://assets/textures/characters/keppihevosratsastaja_mies_32.png" id="1_tex"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bow_0"]
+atlas = ExtResource("1_tex")
+region = Rect2(0, 128, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bow_1"]
+atlas = ExtResource("1_tex")
+region = Rect2(32, 128, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bow_2"]
+atlas = ExtResource("1_tex")
+region = Rect2(64, 128, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bow_3"]
+atlas = ExtResource("1_tex")
+region = Rect2(96, 128, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_idle_0"]
 atlas = ExtResource("1_tex")
@@ -58,24 +74,40 @@ region = Rect2(64, 64, 32, 32)
 atlas = ExtResource("1_tex")
 region = Rect2(96, 64, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_bow_0"]
-atlas = ExtResource("1_tex")
-region = Rect2(0, 128, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_bow_1"]
-atlas = ExtResource("1_tex")
-region = Rect2(32, 128, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_bow_2"]
-atlas = ExtResource("1_tex")
-region = Rect2(64, 128, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_bow_3"]
-atlas = ExtResource("1_tex")
-region = Rect2(96, 128, 32, 32)
-
 [resource]
 animations = [{
+"frames": [{
+"duration": 3.0,
+"texture": SubResource("AtlasTexture_bow_0")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_bow_1")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_bow_2")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_bow_3")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_bow_0")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_bow_1")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_bow_2")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_bow_3")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_bow_0")
+}],
+"loop": 0,
+"name": &"bow",
+"speed": 8.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_idle_0")
@@ -137,38 +169,6 @@ animations = [{
 "loop": 1,
 "name": &"walk_towards",
 "speed": 6.0
-}, {
-"frames": [{
-"duration": 3.0,
-"texture": SubResource("AtlasTexture_bow_0")
-}, {
-"duration": 2.0,
-"texture": SubResource("AtlasTexture_bow_1")
-}, {
-"duration": 2.0,
-"texture": SubResource("AtlasTexture_bow_2")
-}, {
-"duration": 2.0,
-"texture": SubResource("AtlasTexture_bow_3")
-}, {
-"duration": 2.0,
-"texture": SubResource("AtlasTexture_bow_0")
-}, {
-"duration": 2.0,
-"texture": SubResource("AtlasTexture_bow_1")
-}, {
-"duration": 2.0,
-"texture": SubResource("AtlasTexture_bow_2")
-}, {
-"duration": 2.0,
-"texture": SubResource("AtlasTexture_bow_3")
-}, {
-"duration": 2.0,
-"texture": SubResource("AtlasTexture_bow_0")
-}],
-"loop": 0,
-"name": &"bow",
-"speed": 8.0
 }, {
 "frames": [{
 "duration": 1.0,

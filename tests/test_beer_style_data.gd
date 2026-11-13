@@ -16,6 +16,8 @@ const PORRIDGE_RICE_ID : int = 116
 const CINNAMON_ID : int = 413
 const LACTOSE_ID : int = 408
 const POPPING_CANDY_ID : int = 415
+const HONEY_ID : int = 416
+const DRIED_PEAS_ID : int = 417
 ## Less malt and no sugar, as an alcohol-free yeast still leaves a little alcohol.
 const ALCOHOL_FREE_KUOHURAKETTI : Dictionary = {100: 3, 200: 10, 202: 20, 303: 1, 400: 1, 415: 1}
 
@@ -216,3 +218,15 @@ func test_kuohuraketti_needs_popping_candy() -> void:
 	assert_false(plain != null and plain.is_matched and plain.beer_style == kuohuraketti, "no candy, no Kuohuraketti")
 	assert_eq(kuohuraketti.known_in_season, SeasonRules.Season.NEW_YEAR)
 	assert_true(kuohuraketti.off_season_price_per_bottle < kuohuraketti.fixed_price_per_bottle)
+
+
+## Honey makes a strong pale lager Eukonkanto-olut, peas make a dark ale Hernekeittoportteri;
+## without them the same grist is some other style.
+func test_eukonkanto_and_pea_porter_need_their_special_ingredient() -> void:
+	var resolver := _resolver()
+	for pair : Array in [[BeerStyle.Style.EUKONKANTO_OLUT, HONEY_ID], [BeerStyle.Style.HERNEKEITTOPORTTERI, DRIED_PEAS_ID]]:
+		var beer_style : BeerStyle = resolver.get_beer_style(pair[0])
+		var without : Dictionary = beer_style.reference_recipe.duplicate()
+		without.erase(pair[1])
+		var plain : BrewResult = resolver.resolve_brew_style(without)
+		assert_false(plain != null and plain.is_matched and plain.beer_style == beer_style, "%s without its ingredient" % beer_style.style_name)

@@ -104,6 +104,10 @@ msgid "Ennätykset"
 msgstr "Records"
 
 #: src/autoload/string_container.gd
+msgid "Eukonkanto-olut"
+msgstr "Wife-Carrying Beer"
+
+#: src/autoload/string_container.gd
 msgid "Hapantuminen vähenee %s"
 msgstr "Souring drops by %s"
 
@@ -122,6 +126,10 @@ msgstr "Decline slows by %s"
 #: src/autoload/string_container.gd
 msgid "Helles"
 msgstr "Helles"
+
+#: src/autoload/string_container.gd
+msgid "Hernekeittoportteri"
+msgstr "Pea Soup Porter"
 
 #: src/autoload/string_container.gd
 msgid "IPA"
@@ -808,8 +816,8 @@ msgid "Koko kylä tuttu"
 msgstr "Know the Whole Town"
 
 #: src/resources/achievements/asiakaskirja_kaikki.tres
-msgid "Tapaa 43 eri asiakastyyppiä."
-msgstr "Meet 43 different customer types."
+msgid "Tapaa 47 eri asiakastyyppiä."
+msgstr "Meet 47 different customer types."
 
 #: src/resources/achievements/bulkkia_5.tres
 msgid "Kansan kalja"
@@ -1520,6 +1528,24 @@ msgstr ""
 msgid "Munkkien paastoajan vahva ja maltainen lager. Tarvitsee paljon mallasta."
 msgstr "The monks' strong, malty lager for Lent. It takes a lot of malt."
 
+#: src/resources/beer_styles/eukonkanto_olut.tres
+msgid ""
+"Sonkajärven kisojen virallinen voimajuoma: vaalea ja vahva lager, jonka "
+"hunaja tekee pehmeäksi ja vähän makeaksi. Voittaja saa vaimonsa painon tätä "
+"olutta. Vaimot ovat alkaneet syödä hyvin ennen kisoja."
+msgstr ""
+"The official power drink of the Sonkajärvi championships: a pale, strong "
+"lager that honey makes smooth and a little sweet. The winner gets his "
+"wife's weight in it. The wives have started eating well before the race."
+
+#: src/resources/beer_styles/eukonkanto_olut.tres
+msgid ""
+"Vaalea ja vahva lager, jota kantajat juovat voimiensa jatkoksi. Makeus "
+"tulee mehiläisiltä."
+msgstr ""
+"A pale, strong lager that carriers drink to keep their strength up. The "
+"sweetness comes from the bees."
+
 #: src/resources/beer_styles/hefeweizen.tres
 msgid "Baijerilainen samea vehnäolut, joka tuoksuu banaanilta ja neilikalta."
 msgstr "A hazy Bavarian wheat beer that smells of banana and clove."
@@ -1539,6 +1565,24 @@ msgstr "Munich's pale lager: soft, bready and only gently bitter."
 #: src/resources/beer_styles/helles.tres
 msgid "Perinteinen eteläsaksalainen vaalea lagerolut, jokapäiväinen terassijuoma."
 msgstr "A traditional pale lager from southern Germany, an everyday terrace drink."
+
+#: src/resources/beer_styles/hernekeittoportteri.tres
+msgid ""
+"Tumma ale torstain perinneruoan kunniaksi. Sen erikoisainesosa löytyy "
+"keittopadasta."
+msgstr ""
+"A dark ale honouring Thursday's traditional meal. Its special ingredient is "
+"found in the soup pot."
+
+#: src/resources/beer_styles/hernekeittoportteri.tres
+msgid ""
+"Varuskuntien torstaiperinne pullossa: tumma ja pehmeä portteri, jossa herne "
+"tuo täyteläisyyttä ja savumallas kinkun. Juodaan hernekeiton ja pannukakun "
+"kanssa. Tupakaverit kiittävät kasarmilla yöllä, tai eivät kiitä."
+msgstr ""
+"The garrison's Thursday tradition in a bottle: a dark, smooth porter where "
+"peas bring body and smoked malt the ham. Drunk with pea soup and oven "
+"pancake. The roommates in the barracks will thank you at night, or not."
 
 #: src/resources/beer_styles/imperial_stout.tres
 msgid "Tsaarin hovin musta ja erittäin vahva olut: suklaata ja kahvia."
@@ -2736,6 +2780,116 @@ msgstr "This is better than an EU subsidy. And it comes faster."
 msgid "Väärää satoa, mutta korjataan talteen."
 msgstr "Wrong crop, but we'll bring it in anyway."
 
+#: src/resources/customers/eukonkantajat.tres
+msgid "%s. Laita pussiin, minulla on kädet täynnä."
+msgstr "%s. Bag it, my hands are full."
+
+#: src/resources/customers/eukonkantajat.tres
+msgid "%s. Vaimo nyökkää, luulisin. Vaikea sanoa tästä kulmasta."
+msgstr "%s. The wife nods, I think. Hard to tell from this angle."
+
+#: src/resources/customers/eukonkantajat.tres
+msgid "%s? Hyvä. Vaimo näyttää peukkua, ylösalaisin se on vähän epäselvä."
+msgstr "%s? Good. The wife gives a thumbs up. Upside down it's a bit unclear."
+
+#: src/resources/customers/eukonkantajat.tres
+msgid "Ei eukonkanto-olutta? Kannoin hänet tänne ihan turhaan. Hän on samaa mieltä."
+msgstr "No Wife-Carrying Beer? I carried her here for nothing. She agrees."
+
+#: src/resources/customers/eukonkantajat.tres
+msgid "Ei mitään? Juostaan sitten seuraavaan panimoon."
+msgstr "Nothing? Then we run to the next brewery."
+
+#: src/resources/customers/eukonkantajat.tres
+msgid "Ei mitään? Minä kannoin seitsemänkymmentä kiloa portaat alas."
+msgstr "Nothing? I carried seventy kilos down the stairs."
+
+#: src/resources/customers/eukonkantajat.tres
+msgid "Ei se oikea, mutta vaimo on jo maksanut. Tavallaan."
+msgstr "Not the right one, but the wife already paid. Sort of."
+
+#: src/resources/customers/eukonkantajat.tres
+msgid "Ei tämä ole eukonkanto-olutta, mutta otetaan. Takaisin ei jaksa kantaa."
+msgstr ""
+"This isn't Wife-Carrying Beer, but we'll take it. Can't be bothered to "
+"carry it back."
+
+#: src/resources/customers/eukonkantajat.tres
+msgid "Ei. Tästä saisi kisoissa hylkäyksen."
+msgstr "No. This would get you disqualified at the races."
+
+#: src/resources/customers/eukonkantajat.tres
+msgid "Eukonkantajat"
+msgstr "Wife Carriers"
+
+#: src/resources/customers/eukonkantajat.tres
+msgid ""
+"Eukonkanto-olutta, vaimon painon verran. Hän sanoo, että se on kuusi "
+"pulloa, enkä minä väitä vastaan."
+msgstr ""
+"Wife-Carrying Beer, my wife's weight of it. She says that's six bottles, "
+"and I'm not arguing."
+
+#: src/resources/customers/eukonkantajat.tres
+msgid "Hanat kuivina. Vaimo ehti jo innostua."
+msgstr "The taps are dry. The wife was already excited."
+
+#: src/resources/customers/eukonkantajat.tres
+msgid "Hyvää! Vaimokin sanoo, että hyvää, vaikka veri on jo päässä."
+msgstr "Good! The wife says so too, even with all the blood in her head."
+
+#: src/resources/customers/eukonkantajat.tres
+msgid "Ihan juotavaa. Vaimon mukaan ylösalaisin kaikki maistuu vähän oudolta."
+msgstr "Drinkable. The wife says everything tastes a bit odd upside down."
+
+#: src/resources/customers/eukonkantajat.tres
+msgid "Kelpaa. Kantaja ei valitse, kantaja juo."
+msgstr "It'll do. A carrier doesn't choose, a carrier drinks."
+
+#: src/resources/customers/eukonkantajat.tres
+msgid "Menee. Kisoissa juodaan mitä annetaan."
+msgstr "Fine. At the races you drink what you're given."
+
+#: src/resources/customers/eukonkantajat.tres
+msgid "Treenataan kisoihin. Hän on reppu, minä olen muuli. Eukonkanto-olutta."
+msgstr ""
+"Training for the championships. She's the backpack, I'm the mule. "
+"Wife-Carrying Beer."
+
+#: src/resources/customers/eukonkantajat.tres
+msgid "Tyhjin käsin. Siis vaimo käsissä, mutta muuten tyhjin."
+msgstr "Empty-handed. Well, hands full of wife, but otherwise empty."
+
+#: src/resources/customers/eukonkantajat.tres
+msgid "Tyhjää. Ja minä kannoin hänet portaat alas."
+msgstr "Empty. And I carried her down the stairs."
+
+#: src/resources/customers/eukonkantajat.tres
+msgid "Tällä ei jaksa kantaa edes ostoskassia. Ei käy."
+msgstr "You couldn't carry a shopping bag on this. No."
+
+#: src/resources/customers/eukonkantajat.tres
+msgid "Tällä juostaan vesiesteen yli kuivin jaloin. Vaimo kiittää, ylösalaisin."
+msgstr ""
+"With this we'll clear the water pit with dry feet. The wife says thanks, "
+"upside down."
+
+#: src/resources/customers/eukonkantajat.tres
+msgid "Tämä on se palkinto, jonka eteen me treenataan. Ja minä kannan sen kotiin."
+msgstr "This is the prize we train for. And I'll carry it home."
+
+#: src/resources/customers/eukonkantajat.tres
+msgid "Vaimo sanoo ei, ja hänellä on paras näkymä lattiaan."
+msgstr "The wife says no, and she has the best view of the floor."
+
+#: src/resources/customers/eukonkantajat.tres
+msgid "Vaimo tilaa täältä alhaalta: eukonkanto-olutta! Minä vain maksan ja kannan."
+msgstr "The wife orders from down there: Wife-Carrying Beer! I just pay and carry."
+
+#: src/resources/customers/eukonkantajat.tres
+msgid "Väärä olut, mutta en laske vaimoa maahan tämän takia."
+msgstr "Wrong beer, but I'm not putting the wife down over it."
+
 #: src/resources/customers/halloweeni_vieras.tres
 msgid "%s... mahtuuko se ontoon päähän?"
 msgstr "%s... will it fit in a hollow head?"
@@ -3051,6 +3205,212 @@ msgstr "Wrong key, but rock forgives."
 #: src/resources/customers/ilmakitaristi.tres
 msgid "Wee heavy, eli raskas. Kuin mun soolot. Scotch ale, kiitos!"
 msgstr "Wee heavy, as in heavy. Like my solos. Scotch ale, please!"
+
+#: src/resources/customers/inttimies.tres
+msgid "%s! Herra panimomestari, tämä kelpaa!"
+msgstr "%s! Sir, brewmaster, sir, this will do!"
+
+#: src/resources/customers/inttimies.tres
+msgid "%s. Kuittaan!"
+msgstr "%s. Roger!"
+
+#: src/resources/customers/inttimies.tres
+msgid "%s? Lupa juoda, herra panimomestari?"
+msgstr "%s? Permission to drink, brewmaster?"
+
+#: src/resources/customers/inttimies.tres
+msgid "Aamuja jäljellä 87. Hernekeittoportteria, se on ainoa mitä varuskunta osaa."
+msgstr ""
+"87 mornings to go. Pea Soup Porter, it's the only thing the garrison does "
+"well."
+
+#: src/resources/customers/inttimies.tres
+msgid "Ei hernekeittoportteria? Takaisin kasarmille ja keittojonoon."
+msgstr "No Pea Soup Porter? Back to the barracks and the soup queue."
+
+#: src/resources/customers/inttimies.tres
+msgid "Ei käy. Mieluummin juon kenttäpullosta."
+msgstr "No. I'd rather drink from my canteen."
+
+#: src/resources/customers/inttimies.tres
+msgid "Ei mitään. Kai sitä sitten mennään taas jonottamaan sotkuun."
+msgstr "Nothing. Guess it's back to queueing at the mess hall."
+
+#: src/resources/customers/inttimies.tres
+msgid "Ei mitään? Pahempaa kuin herätys viideltä."
+msgstr "Nothing? Worse than a five o'clock wake-up."
+
+#: src/resources/customers/inttimies.tres
+msgid "Ei ole hernekeittoportteria, mutta lomalla ei valiteta. Ostetaan."
+msgstr "No Pea Soup Porter, but you don't complain on leave. I'll buy it."
+
+#: src/resources/customers/inttimies.tres
+msgid "Ei se oikea, mutta päiväraha palaa joka tapauksessa."
+msgstr "Not the right one, but the allowance gets spent either way."
+
+#: src/resources/customers/inttimies.tres
+msgid "Ei. Tämä on huonompaa kuin märkä maastopuku."
+msgstr "No. This is worse than a wet camo uniform."
+
+#: src/resources/customers/inttimies.tres
+msgid "Ei. Tästä joutuisi sulkeisiin."
+msgstr "No. This would get me drill as punishment."
+
+#: src/resources/customers/inttimies.tres
+msgid "Hanat tyhjinä. Kuin varusvarasto perjantaina."
+msgstr "Empty taps. Like the kit store on a Friday."
+
+#: src/resources/customers/inttimies.tres
+msgid "Inttimies"
+msgstr "Conscript"
+
+#: src/resources/customers/inttimies.tres
+msgid "Juotavaa. Metsäleirin jälkeen kaikki on juotavaa."
+msgstr "Drinkable. After a field exercise, everything is."
+
+#: src/resources/customers/inttimies.tres
+msgid "Kelpaa. Inttiruoan jälkeen kaikki kelpaa."
+msgstr "It'll do. After army food, anything does."
+
+#: src/resources/customers/inttimies.tres
+msgid "Lomille! Hernekeittoportteria, äkkiä, ennen kuin joku käskee riviin."
+msgstr "On leave! Pea Soup Porter, quick, before someone orders me into line."
+
+#: src/resources/customers/inttimies.tres
+msgid "Menee. Ei tämä ole sotkun kahvia huonompaa."
+msgstr "Fine. It's no worse than the mess hall coffee."
+
+#: src/resources/customers/inttimies.tres
+msgid "Päiväraha poltti taskussa koko viikon. Hernekeittoportteria!"
+msgstr ""
+"The daily allowance has been burning a hole in my pocket all week. Pea Soup "
+"Porter!"
+
+#: src/resources/customers/inttimies.tres
+msgid "Tyhjää. Kuin tupa aamulla, kun kaikki ovat jo lähteneet."
+msgstr "Empty. Like the barracks room in the morning when everyone has left."
+
+#: src/resources/customers/inttimies.tres
+msgid "Tyhjää? Loma meni pilalle jo ensimmäisessä paikassa."
+msgstr "Empty? Leave is ruined at the first stop."
+
+#: src/resources/customers/inttimies.tres
+msgid "Tällä jaksaa loman. Tupakaverit eivät jaksa minua sen jälkeen."
+msgstr ""
+"This will get me through leave. My roommates won't get through me "
+"afterwards."
+
+#: src/resources/customers/inttimies.tres
+msgid ""
+"Tämä on parempaa kuin torstain hernekeitto. Ja sitä on syöty jo puoli "
+"vuotta."
+msgstr "This beats Thursday's pea soup. And I've eaten that for half a year."
+
+#: src/resources/customers/inttimies.tres
+msgid "Täydellinen. Ihan kuin torstai, mutta ilman pannukakkujonoa."
+msgstr "Perfect. Just like Thursday, but without the pancake queue."
+
+#: src/resources/customers/inttimies.tres
+msgid "Väärä olut. Kuittaan silti, lomalla ei ole aikaa odottaa."
+msgstr "Wrong beer. Roger anyway, no time to wait on leave."
+
+#: src/resources/customers/inttinainen.tres
+msgid "%s. Hyvä, tämä menee rinkkaan."
+msgstr "%s. Good, this goes in the rucksack."
+
+#: src/resources/customers/inttinainen.tres
+msgid "%s? Sopii. Rinkassa on vielä tilaa."
+msgstr "%s? Fine. There's still room in the rucksack."
+
+#: src/resources/customers/inttinainen.tres
+msgid "Aamuja jäljellä 112. Hernekeittoportteria, kiitos."
+msgstr "112 mornings to go. Pea Soup Porter, please."
+
+#: src/resources/customers/inttinainen.tres
+msgid "Ei hernekeittoportteria? Sitten takaisin kasarmille. Huoh."
+msgstr "No Pea Soup Porter? Back to the barracks, then. Sigh."
+
+#: src/resources/customers/inttinainen.tres
+msgid "Ei käy. Tällaisesta tulisi sulkeiset koko tuvalle."
+msgstr "No. This would get the whole barracks room punishment drill."
+
+#: src/resources/customers/inttinainen.tres
+msgid "Ei mitään minulle. Takaisin riviin sitten."
+msgstr "Nothing for me. Back in line, then."
+
+#: src/resources/customers/inttinainen.tres
+msgid "Ei mitään? Pahempaa kuin kolmen päivän metsäleiri."
+msgstr "Nothing? Worse than a three-day field exercise."
+
+#: src/resources/customers/inttinainen.tres
+msgid "Ei ole hernekeittoportteria, mutta otan. Lomalla ei jäädä odottamaan."
+msgstr "No Pea Soup Porter, but I'll take it. On leave you don't wait around."
+
+#: src/resources/customers/inttinainen.tres
+msgid "Ei se oikea. Otan silti, päiväraha ei säästy kuitenkaan."
+msgstr "Not the right one. I'll take it, the allowance won't save itself anyway."
+
+#: src/resources/customers/inttinainen.tres
+msgid "Ei. Mieluummin juon kenttäpullosta."
+msgstr "No. I'd rather drink from my canteen."
+
+#: src/resources/customers/inttinainen.tres
+msgid "Ei. Tällä ei pärjäisi edes tupatarkastuksessa."
+msgstr "No. This wouldn't even pass a barracks inspection."
+
+#: src/resources/customers/inttinainen.tres
+msgid "Hanat tyhjinä. Kuin sotku torstain jälkeen."
+msgstr "Empty taps. Like the mess hall after Thursday."
+
+#: src/resources/customers/inttinainen.tres
+msgid "Hyvää. Kerron tästä koko tuvalle, ja ne kaikki tulevat."
+msgstr "Good. I'll tell the whole barracks room, and they'll all come."
+
+#: src/resources/customers/inttinainen.tres
+msgid "Ihan hyvää. Inttiruoan jälkeen kaikki on gourmeta."
+msgstr "Pretty good. After army food, everything is gourmet."
+
+#: src/resources/customers/inttinainen.tres
+msgid "Inttinainen"
+msgstr "Volunteer Conscript"
+
+#: src/resources/customers/inttinainen.tres
+msgid "Juuri tätä. Parempaa kuin torstain keitto, ja se on iso sana."
+msgstr "Just this. Better than Thursday's soup, and that's saying a lot."
+
+#: src/resources/customers/inttinainen.tres
+msgid "Kelpaa. Olen syönyt maastossa kylmää säilykettä, tämä on luksusta."
+msgstr "It'll do. I've eaten cold tinned food in the field, this is luxury."
+
+#: src/resources/customers/inttinainen.tres
+msgid "Lomille! Vapaaehtoisena tulin, vapaaehtoisesti juon. Hernekeittoportteria."
+msgstr "On leave! I joined as a volunteer, I drink as a volunteer. Pea Soup Porter."
+
+#: src/resources/customers/inttinainen.tres
+msgid "Menettelee. Ainakaan tätä ei tarvitse kaivaa poteroon."
+msgstr "Passable. At least I don't have to dig a foxhole for it."
+
+#: src/resources/customers/inttinainen.tres
+msgid ""
+"Rinkka painaa kolmekymmentä kiloa, mutta olut on tärkeämpää. "
+"Hernekeittoportteria."
+msgstr "The rucksack weighs thirty kilos, but beer matters more. Pea Soup Porter."
+
+#: src/resources/customers/inttinainen.tres
+msgid "Tyhjää. Kuin minun lomakalenterini ennen tätä."
+msgstr "Empty. Like my leave calendar before this."
+
+#: src/resources/customers/inttinainen.tres
+msgid "Tyhjää? Loma alkoi huonosti."
+msgstr "Empty? Leave is off to a bad start."
+
+#: src/resources/customers/inttinainen.tres
+msgid "Täydellinen. Tämän voimalla jaksaa vaikka marssin takaisin."
+msgstr "Perfect. On this I could march all the way back."
+
+#: src/resources/customers/inttinainen.tres
+msgid "Väärä olut. Kuittaan, ei jaksa alkaa neuvotella."
+msgstr "Wrong beer. Roger, can't be bothered to negotiate."
 
 #: src/resources/customers/joulupukki.tres
 msgid "%s. Pukki ottaa, ja tontut maksavat."
@@ -6916,6 +7276,110 @@ msgstr "This does not smell like porridge. The elf makes a note. A big one."
 msgid "Väärä juoma. Tonttu juo sen, mutta mutisee."
 msgstr "Wrong drink. The elf drinks it, but mutters."
 
+#: src/resources/customers/ukonkantajat.tres
+msgid "%s. Ukko maksaa, hänen lompakkonsa roikkuu tuossa nenäni edessä."
+msgstr "%s. The husband pays, his wallet is dangling right in front of my nose."
+
+#: src/resources/customers/ukonkantajat.tres
+msgid "%s? Hyvä. Ukko, älä heilu."
+msgstr "%s? Good. Dear, stop wobbling."
+
+#: src/resources/customers/ukonkantajat.tres
+msgid "%s? Ukko sanoo joo. Hän sanoo aina joo, kun on ylösalaisin."
+msgstr "%s? The husband says yes. He always says yes upside down."
+
+#: src/resources/customers/ukonkantajat.tres
+msgid "Ei käy. Ukko on kevyempi kuin tämän laatu."
+msgstr "No. The husband carries more weight than this beer."
+
+#: src/resources/customers/ukonkantajat.tres
+msgid "Ei mitään meille. Mennään, ukko. Pidä kiinni."
+msgstr "Nothing for us. Let's go, dear. Hold on."
+
+#: src/resources/customers/ukonkantajat.tres
+msgid "Ei mitään. Ukko pettyi, tunsin sen selkärangassa."
+msgstr "Nothing. The husband is disappointed, I felt it in my spine."
+
+#: src/resources/customers/ukonkantajat.tres
+msgid "Ei mitään? No, olipa ainakin hyvä treeni."
+msgstr "Nothing? Well, at least it was good training."
+
+#: src/resources/customers/ukonkantajat.tres
+msgid "Ei se oikea. Ukko ottaa silti, hän ei näe etikettiä tästä asennosta."
+msgstr ""
+"Not the right one. The husband takes it anyway, he can't see the label from "
+"there."
+
+#: src/resources/customers/ukonkantajat.tres
+msgid "Ei. Tällä ei jaksaisi kantaa edes ukon lippalakkia."
+msgstr "No. You couldn't carry the husband's cap on this."
+
+#: src/resources/customers/ukonkantajat.tres
+msgid "Ei. Ukko yrittää sanoa jotain, mutta minä päätän."
+msgstr "No. The husband is trying to say something, but I decide."
+
+#: src/resources/customers/ukonkantajat.tres
+msgid "Hyvää! Tällä kannetaan ukko maaliin ja vielä takaisinkin."
+msgstr "Good! This carries the husband to the finish and back again."
+
+#: src/resources/customers/ukonkantajat.tres
+msgid "Ihan hyvää. Ukolle kelpaa mikä vain, kunhan joku kantaa."
+msgstr "Pretty good. Anything suits the husband, as long as someone carries."
+
+#: src/resources/customers/ukonkantajat.tres
+msgid "Juuri tätä. Ukko hihkuu takana, tai sitten hänellä on huono olla."
+msgstr "Just this. The husband is whooping back there, or he's feeling sick."
+
+#: src/resources/customers/ukonkantajat.tres
+msgid "Kelpaa. Kunhan ukko ei kaada sitä selkääni."
+msgstr "It'll do. As long as the husband doesn't spill it down my back."
+
+#: src/resources/customers/ukonkantajat.tres
+msgid "Kuivaa on. Ja ukko vielä kehui teitä matkalla."
+msgstr "Dry. And the husband was praising you all the way here."
+
+#: src/resources/customers/ukonkantajat.tres
+msgid "Menettelee. Ukkokin on vain menettelevä, ja häntä minä kannan joka päivä."
+msgstr "Passable. So is my husband, and I carry him every day."
+
+#: src/resources/customers/ukonkantajat.tres
+msgid "Säännöissä ei sanota, kumpi kantaa. Eukonkanto-olutta, ukon painon verran."
+msgstr ""
+"The rules don't say who carries whom. Wife-Carrying Beer, my husband's "
+"weight of it."
+
+#: src/resources/customers/ukonkantajat.tres
+msgid "Tyhjät hanat. Kannoin ukon portaat alas turhaan."
+msgstr "Empty taps. I carried the husband down the stairs for nothing."
+
+#: src/resources/customers/ukonkantajat.tres
+msgid "Tyhjää. Ukko, me lähdetään. Älä potki."
+msgstr "Empty. Dear, we're leaving. Stop kicking."
+
+#: src/resources/customers/ukonkantajat.tres
+msgid "Täydellinen. Tällä voitetaan kisat, ja ukko saa juoda palkinnon."
+msgstr "Perfect. This wins us the race, and the husband gets to drink the prize."
+
+#: src/resources/customers/ukonkantajat.tres
+msgid "Ukko on kevyempi kuin näyttää, olut painavampaa. Eukonkanto-olutta."
+msgstr "The husband is lighter than he looks, the beer heavier. Wife-Carrying Beer."
+
+#: src/resources/customers/ukonkantajat.tres
+msgid "Ukko tervehtii tuolta takaa. Ylösalaisin, mutta tervehtii."
+msgstr "The husband says hello from back there. Upside down, but hello."
+
+#: src/resources/customers/ukonkantajat.tres
+msgid "Ukonkantajat"
+msgstr "Husband Carriers"
+
+#: src/resources/customers/ukonkantajat.tres
+msgid "Väärä olut, mutta en jaksa laskea ukkoa maahan sen takia."
+msgstr "Wrong beer, but I can't be bothered to put the husband down over it."
+
+#: src/resources/customers/ukonkantajat.tres
+msgid "Väärä, mutta lähtee mukaan. Kuten ukkokin aikoinaan."
+msgstr "Wrong, but it's coming along. Like the husband did, back in the day."
+
 #: src/resources/customers/zgen.tres
 msgid "%s? Okei, mut vaan jos se on vegaani."
 msgstr "%s? Okay, but only if it's vegan."
@@ -7114,11 +7578,11 @@ msgstr "Ship a keg to a bar"
 
 #: src/resources/day_events/day_event_eukonkanto.tres
 msgid ""
-"Eukonkantokisat järjestetään tänään lähistöllä. Odotettavissa "
-"testosteronintäyteisiä vahvoja asiakkaita ryhmittäin."
+"Eukonkantokisat järjestetään tänään lähistöllä. Odotettavissa kantajapareja "
+"ja testosteronintäyteisiä vahvoja asiakkaita ryhmittäin."
 msgstr ""
-"The wife-carrying championships are held nearby today. Expect groups of "
-"strong customers full of testosterone."
+"The wife-carrying championships are held nearby today. Expect carrying "
+"couples and groups of strong customers full of testosterone."
 
 #: src/resources/day_events/day_event_harjakaiset.tres
 msgid ""
@@ -8643,6 +9107,24 @@ msgid ""
 "mausteisen tuoksun."
 msgstr "Crushed coriander seeds. They give Witbier and Saison a fresh, spicy aroma."
 
+#: src/resources/ingredients/spices/dried_peas.tres
+msgid ""
+"Herneitä torstain hernekeittoon, suoraan varuskunnan muonavarastosta. "
+"Tummassa alessa niistä tulee Hernekeittoportteria. Seurauksista vastaa "
+"juoja."
+msgstr ""
+"Peas for Thursday's pea soup, straight from the garrison's food store. In a "
+"dark ale they make Pea Soup Porter. The drinker answers for the "
+"consequences."
+
+#: src/resources/ingredients/spices/dried_peas.tres
+msgid "Kuivatut herneet"
+msgstr "Dried peas"
+
+#: src/resources/ingredients/spices/dried_peas.tres
+msgid "kuivattuja herneitä"
+msgstr "dried peas"
+
 #: src/resources/ingredients/spices/gingerbread_spice.tres
 msgid ""
 "Kanelia, inkivääriä, neilikkaa ja pomeranssinkuorta. Tummasta bockista "
@@ -8660,6 +9142,24 @@ msgstr "Gingerbread spice"
 #: src/resources/ingredients/spices/gingerbread_spice.tres
 msgid "piparkakkumaustetta"
 msgstr "gingerbread spice"
+
+#: src/resources/ingredients/spices/honey.tres
+msgid "Hunaja"
+msgstr "Honey"
+
+#: src/resources/ingredients/spices/honey.tres
+msgid ""
+"Suomalaista kukkahunajaa. Eukonkantajien salainen ase: lusikallinen ennen "
+"lähtöä, ja kantaja juoksee kuin hirvi. Vaaleassa ja vahvassa lagerissa "
+"siitä tulee Eukonkanto-olutta."
+msgstr ""
+"Finnish flower honey. The wife carriers' secret weapon: a spoonful before "
+"the start and the carrier runs like a moose. In a pale, strong lager it "
+"makes Wife-Carrying Beer."
+
+#: src/resources/ingredients/spices/honey.tres
+msgid "hunajaa"
+msgstr "honey"
 
 #: src/resources/ingredients/spices/juniper.tres
 msgid "Katajanoksat"

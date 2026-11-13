@@ -1,7 +1,8 @@
-[gd_resource type="Resource" script_class="CustomerData" format=3]
+[gd_resource type="Resource" script_class="CustomerData" format=3 uid="uid://37sefxphy0pk"]
 
 [ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_data"]
-[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/lottovoittaja_anim.tres" id="2_sprite"]
+[ext_resource type="Script" uid="uid://dq66tbectyal5" path="res://src/customers/taste_rule.gd" id="1_lpqsj"]
+[ext_resource type="SpriteFrames" uid="uid://cldhbo5bo8afq" path="res://src/resources/sprite_frames/lottovoittaja_anim.tres" id="2_sprite"]
 
 [resource]
 script = ExtResource("1_data")

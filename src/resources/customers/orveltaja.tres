@@ -1,7 +1,8 @@
-[gd_resource type="Resource" script_class="CustomerData" format=3]
+[gd_resource type="Resource" script_class="CustomerData" format=3 uid="uid://bjx70rvur1h2l"]
 
 [ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_data"]
-[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/orveltaja_anim.tres" id="2_sprite"]
+[ext_resource type="Script" uid="uid://dq66tbectyal5" path="res://src/customers/taste_rule.gd" id="2_lvmaa"]
+[ext_resource type="SpriteFrames" uid="uid://coo57rfwk3vgp" path="res://src/resources/sprite_frames/orveltaja_anim.tres" id="2_sprite"]
 [ext_resource type="PackedScene" path="res://src/scenes/roman_candle_shots.tscn" id="3_shots"]
 
 [resource]

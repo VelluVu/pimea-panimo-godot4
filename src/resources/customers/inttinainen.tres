@@ -1,0 +1,44 @@
+[gd_resource type="Resource" script_class="CustomerData" format=3]
+
+[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_data"]
+[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/inttinainen_anim.tres" id="2_sprite"]
+
+[resource]
+script = ExtResource("1_data")
+customer_name = "Emma"
+title = "Inttinainen"
+first_names = Array[String](["Emma", "Aino", "Iida", "Venla", "Siiri", "Ella"])
+min_quality = 0.45
+budget_multiplier = 1.0
+primary_style = 38
+secondary_style = 1
+sprite_frames = ExtResource("2_sprite")
+randomize_skin = false
+randomize_hair = false
+randomize_clothes = false
+randomize_shoes = false
+voice_pitch = 1.25
+tip_base_chance = 0.15
+rep_primary_style = 4
+rep_secondary_style = 1
+min_reputation_to_appear = 15
+required_discovered_style = 38
+min_bottles_per_visit = 2
+max_bottles_per_visit = 4
+dialogue_intro = "Lomille! Vapaaehtoisena tulin, vapaaehtoisesti juon. Hernekeittoportteria."
+dialogue_success = "Juuri tätä. Parempaa kuin torstain keitto, ja se on iso sana."
+dialogue_fallback = "Kelpaa. Olen syönyt maastossa kylmää säilykettä, tämä on luksusta."
+dialogue_wrong_style = "Ei ole hernekeittoportteria, mutta otan. Lomalla ei jäädä odottamaan."
+dialogue_reject = "Ei. Tällä ei pärjäisi edes tupatarkastuksessa."
+dialogue_no_match = "Ei hernekeittoportteria? Sitten takaisin kasarmille. Huoh."
+dialogue_preview_format = "%s. Hyvä, tämä menee rinkkaan."
+dialogue_nothing_available = "Tyhjää. Kuin minun lomakalenterini ennen tätä."
+alt_intro = Array[String](["Aamuja jäljellä 112. Hernekeittoportteria, kiitos.", "Rinkka painaa kolmekymmentä kiloa, mutta olut on tärkeämpää. Hernekeittoportteria."])
+alt_success = Array[String](["Täydellinen. Tämän voimalla jaksaa vaikka marssin takaisin.", "Hyvää. Kerron tästä koko tuvalle, ja ne kaikki tulevat."])
+alt_fallback = Array[String](["Ihan hyvää. Inttiruoan jälkeen kaikki on gourmeta.", "Menettelee. Ainakaan tätä ei tarvitse kaivaa poteroon."])
+alt_wrong_style = Array[String](["Ei se oikea. Otan silti, päiväraha ei säästy kuitenkaan.", "Väärä olut. Kuittaan, ei jaksa alkaa neuvotella."])
+alt_reject = Array[String](["Ei käy. Tällaisesta tulisi sulkeiset koko tuvalle.", "Ei. Mieluummin juon kenttäpullosta."])
+alt_no_match = Array[String](["Tyhjää? Loma alkoi huonosti.", "Ei mitään minulle. Takaisin riviin sitten."])
+alt_preview_format = Array[String](["%s. Kuittaan!", "%s? Sopii. Rinkassa on vielä tilaa."])
+alt_nothing_available = Array[String](["Ei mitään? Pahempaa kuin kolmen päivän metsäleiri.", "Hanat tyhjinä. Kuin sotku torstain jälkeen."])
+metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

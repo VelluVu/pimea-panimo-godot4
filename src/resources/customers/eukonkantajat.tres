@@ -1,0 +1,45 @@
+[gd_resource type="Resource" script_class="CustomerData" format=3]
+
+[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_data"]
+[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/eukonkantajat_anim.tres" id="2_sprite"]
+
+[resource]
+script = ExtResource("1_data")
+customer_name = "Taisto ja Sirpa"
+title = "Eukonkantajat"
+first_names = Array[String](["Taisto ja Sirpa", "Jari ja Tiina", "Pekka ja Merja", "Mika ja Hanna", "Arto ja Pirjo"])
+min_quality = 0.45
+budget_multiplier = 1.0
+primary_style = 37
+secondary_style = 1
+sprite_frames = ExtResource("2_sprite")
+randomize_skin = false
+randomize_hair = false
+randomize_clothes = false
+randomize_shoes = false
+carries_glass_out = false
+voice_pitch = 0.95
+tip_base_chance = 0.15
+rep_primary_style = 4
+rep_secondary_style = 1
+min_reputation_to_appear = 25
+required_discovered_style = 37
+min_bottles_per_visit = 4
+max_bottles_per_visit = 8
+dialogue_intro = "Eukonkanto-olutta, vaimon painon verran. Hän sanoo, että se on kuusi pulloa, enkä minä väitä vastaan."
+dialogue_success = "Tällä juostaan vesiesteen yli kuivin jaloin. Vaimo kiittää, ylösalaisin."
+dialogue_fallback = "Kelpaa. Kantaja ei valitse, kantaja juo."
+dialogue_wrong_style = "Ei tämä ole eukonkanto-olutta, mutta otetaan. Takaisin ei jaksa kantaa."
+dialogue_reject = "Tällä ei jaksa kantaa edes ostoskassia. Ei käy."
+dialogue_no_match = "Ei eukonkanto-olutta? Kannoin hänet tänne ihan turhaan. Hän on samaa mieltä."
+dialogue_preview_format = "%s. Vaimo nyökkää, luulisin. Vaikea sanoa tästä kulmasta."
+dialogue_nothing_available = "Tyhjää. Ja minä kannoin hänet portaat alas."
+alt_intro = Array[String](["Vaimo tilaa täältä alhaalta: eukonkanto-olutta! Minä vain maksan ja kannan.", "Treenataan kisoihin. Hän on reppu, minä olen muuli. Eukonkanto-olutta."])
+alt_success = Array[String](["Hyvää! Vaimokin sanoo, että hyvää, vaikka veri on jo päässä.", "Tämä on se palkinto, jonka eteen me treenataan. Ja minä kannan sen kotiin."])
+alt_fallback = Array[String](["Ihan juotavaa. Vaimon mukaan ylösalaisin kaikki maistuu vähän oudolta.", "Menee. Kisoissa juodaan mitä annetaan."])
+alt_wrong_style = Array[String](["Väärä olut, mutta en laske vaimoa maahan tämän takia.", "Ei se oikea, mutta vaimo on jo maksanut. Tavallaan."])
+alt_reject = Array[String](["Ei. Tästä saisi kisoissa hylkäyksen.", "Vaimo sanoo ei, ja hänellä on paras näkymä lattiaan."])
+alt_no_match = Array[String](["Tyhjin käsin. Siis vaimo käsissä, mutta muuten tyhjin.", "Ei mitään? Juostaan sitten seuraavaan panimoon."])
+alt_preview_format = Array[String](["%s? Hyvä. Vaimo näyttää peukkua, ylösalaisin se on vähän epäselvä.", "%s. Laita pussiin, minulla on kädet täynnä."])
+alt_nothing_available = Array[String](["Hanat kuivina. Vaimo ehti jo innostua.", "Ei mitään? Minä kannoin seitsemänkymmentä kiloa portaat alas."])
+metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

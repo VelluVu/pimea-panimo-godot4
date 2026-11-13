@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="BeerStyle" format=3]
+
+[ext_resource type="Script" uid="uid://qpqfdi1wacne" path="res://src/brewing/beer_style.gd" id="1_style"]
+
+[resource]
+script = ExtResource("1_style")
+style_name = "Hernekeittoportteri"
+description = "Varuskuntien torstaiperinne pullossa: tumma ja pehmeä portteri, jossa herne tuo täyteläisyyttä ja savumallas kinkun. Juodaan hernekeiton ja pannukakun kanssa. Tupakaverit kiittävät kasarmilla yöllä, tai eivät kiitä."
+locked_hint = "Tumma ale torstain perinneruoan kunniaksi. Sen erikoisainesosa löytyy keittopadasta."
+style = 38
+required_spice_ids = Array[int]([417])
+preferred_malt_ids = Array[int]([108, 105])
+fixed_price_per_bottle = 3.4
+reputation_change = 4
+peak_days = 0
+shelf_life_days = 20
+aging_factor = -0.02
+mash_steps = Array[int]([67])
+mash_band = 2.0
+hop_additions = Array[int]([0, 1])
+required_yeast_id = 302
+preferred_hop_profiles = Array[int]([5])
+abv = 5.1
+min_abv = 4.3
+max_abv = 5.9
+min_ebc = 40
+max_ebc = 76
+min_ibu = 12
+max_ibu = 24
+reference_recipe = Dictionary[int, int]({101: 3, 105: 4, 108: 1, 111: 4, 200: 10, 207: 10, 302: 1, 417: 1})
+metadata/_custom_type_script = "uid://qpqfdi1wacne"

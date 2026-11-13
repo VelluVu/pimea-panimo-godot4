@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="IngredientData" format=3]
+
+[ext_resource type="Script" uid="uid://dniwiyu5ynp71" path="res://src/brewing/ingredient_data.gd" id="1_honey"]
+
+[resource]
+script = ExtResource("1_honey")
+id = 416
+name = "Hunaja"
+name_partitive = "hunajaa"
+description = "Suomalaista kukkahunajaa. Eukonkantajien salainen ase: lusikallinen ennen lähtöä, ja kantaja juoksee kuin hirvi. Vaaleassa ja vahvassa lagerissa siitä tulee Eukonkanto-olutta."
+base_price = 2
+unit = 2
+type = 3
+metadata/_custom_type_script = "uid://dniwiyu5ynp71"

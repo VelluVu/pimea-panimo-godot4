@@ -1,0 +1,45 @@
+[gd_resource type="Resource" script_class="CustomerData" format=3]
+
+[ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_data"]
+[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/ukonkantajat_anim.tres" id="2_sprite"]
+
+[resource]
+script = ExtResource("1_data")
+customer_name = "Sirpa ja Taisto"
+title = "Ukonkantajat"
+first_names = Array[String](["Sirpa ja Taisto", "Tiina ja Jari", "Merja ja Pekka", "Hanna ja Mika", "Pirjo ja Arto"])
+min_quality = 0.45
+budget_multiplier = 1.0
+primary_style = 37
+secondary_style = 1
+sprite_frames = ExtResource("2_sprite")
+randomize_skin = false
+randomize_hair = false
+randomize_clothes = false
+randomize_shoes = false
+carries_glass_out = false
+voice_pitch = 1.15
+tip_base_chance = 0.15
+rep_primary_style = 4
+rep_secondary_style = 1
+min_reputation_to_appear = 25
+required_discovered_style = 37
+min_bottles_per_visit = 4
+max_bottles_per_visit = 8
+dialogue_intro = "Säännöissä ei sanota, kumpi kantaa. Eukonkanto-olutta, ukon painon verran."
+dialogue_success = "Hyvää! Tällä kannetaan ukko maaliin ja vielä takaisinkin."
+dialogue_fallback = "Menettelee. Ukkokin on vain menettelevä, ja häntä minä kannan joka päivä."
+dialogue_wrong_style = "Väärä olut, mutta en jaksa laskea ukkoa maahan sen takia."
+dialogue_reject = "Ei. Tällä ei jaksaisi kantaa edes ukon lippalakkia."
+dialogue_no_match = "Ei mitään meille. Mennään, ukko. Pidä kiinni."
+dialogue_preview_format = "%s? Ukko sanoo joo. Hän sanoo aina joo, kun on ylösalaisin."
+dialogue_nothing_available = "Tyhjät hanat. Kannoin ukon portaat alas turhaan."
+alt_intro = Array[String](["Ukko on kevyempi kuin näyttää, olut painavampaa. Eukonkanto-olutta.", "Ukko tervehtii tuolta takaa. Ylösalaisin, mutta tervehtii."])
+alt_success = Array[String](["Juuri tätä. Ukko hihkuu takana, tai sitten hänellä on huono olla.", "Täydellinen. Tällä voitetaan kisat, ja ukko saa juoda palkinnon."])
+alt_fallback = Array[String](["Kelpaa. Kunhan ukko ei kaada sitä selkääni.", "Ihan hyvää. Ukolle kelpaa mikä vain, kunhan joku kantaa."])
+alt_wrong_style = Array[String](["Ei se oikea. Ukko ottaa silti, hän ei näe etikettiä tästä asennosta.", "Väärä, mutta lähtee mukaan. Kuten ukkokin aikoinaan."])
+alt_reject = Array[String](["Ei käy. Ukko on kevyempi kuin tämän laatu.", "Ei. Ukko yrittää sanoa jotain, mutta minä päätän."])
+alt_no_match = Array[String](["Tyhjää. Ukko, me lähdetään. Älä potki.", "Ei mitään? No, olipa ainakin hyvä treeni."])
+alt_preview_format = Array[String](["%s. Ukko maksaa, hänen lompakkonsa roikkuu tuossa nenäni edessä.", "%s? Hyvä. Ukko, älä heilu."])
+alt_nothing_available = Array[String](["Ei mitään. Ukko pettyi, tunsin sen selkärangassa.", "Kuivaa on. Ja ukko vielä kehui teitä matkalla."])
+metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

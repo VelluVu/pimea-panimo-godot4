@@ -1,14 +1,14 @@
-[gd_resource type="Resource" script_class="CustomerData" format=3]
+[gd_resource type="Resource" script_class="CustomerData" format=3 uid="uid://cvyqvl38hi1fs"]
 
 [ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_data"]
-[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/pubivisailija_naaras_anim.tres" id="2_sprite"]
+[ext_resource type="Script" uid="uid://dq66tbectyal5" path="res://src/customers/taste_rule.gd" id="1_fncug"]
+[ext_resource type="SpriteFrames" uid="uid://epd6x60fq2h1" path="res://src/resources/sprite_frames/pubivisailija_naaras_anim.tres" id="2_sprite"]
 
 [resource]
 script = ExtResource("1_data")
 customer_name = "Riikka"
 title = "Pubivisailija"
 first_names = Array[String](["Riikka", "Satu", "Hanna", "Merja", "Tiina", "Kaisa"])
-min_quality = 0.5
 budget_multiplier = 1.2
 primary_style = 26
 secondary_style = 9
@@ -37,7 +37,6 @@ alt_no_match = Array[String](["Ei stoutia? Tiedän vastauksen: lähden toiseen p
 alt_preview_format = Array[String](["%s. Onko se lopullinen vastaus? On.", "%s! Viidenkymmenen prosentin varmuudella."])
 alt_nothing_available = Array[String](["Tyhjää. Ihan kuin minun vastauslomakkeeni urheilukierroksella.", "Ei mitään? Jatkokysymys: miksi?"])
 tip_base_chance = 0.25
-rep_primary_style = 5
 rep_secondary_style = 1
 min_reputation_to_appear = 30
 required_discovered_style = 26

@@ -13,8 +13,8 @@ var _astar : AStar2D = AStar2D.new()
 func _init(routes : Array[PackedVector2Array]) -> void:
 	for route : PackedVector2Array in routes:
 		var previous : int = -1
-		for point : Vector2 in route:
-			var id : int = _id_for(point)
+		for at : Vector2 in route:
+			var id : int = _id_for(at)
 			if previous >= 0 and previous != id:
 				_astar.connect_points(previous, id)
 			previous = id

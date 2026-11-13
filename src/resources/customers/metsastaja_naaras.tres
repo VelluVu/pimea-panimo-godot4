@@ -1,7 +1,8 @@
-[gd_resource type="Resource" script_class="CustomerData" format=3]
+[gd_resource type="Resource" script_class="CustomerData" format=3 uid="uid://cmcgewuu1s1np"]
 
+[ext_resource type="Script" uid="uid://dq66tbectyal5" path="res://src/customers/taste_rule.gd" id="1_2kj4l"]
 [ext_resource type="Script" uid="uid://b2vqc8lkfjwic" path="res://src/customers/customer_data.gd" id="1_data"]
-[ext_resource type="SpriteFrames" path="res://src/resources/sprite_frames/metsastaja_naaras_anim.tres" id="2_sprite"]
+[ext_resource type="SpriteFrames" uid="uid://c4t4qd4r0eeok" path="res://src/resources/sprite_frames/metsastaja_naaras_anim.tres" id="2_sprite"]
 
 [resource]
 script = ExtResource("1_data")
@@ -36,9 +37,8 @@ alt_reject = Array[String](["Tämä maistuu märältä koiralta. Ei kiitos.", "T
 alt_no_match = Array[String](["Ei tummaa? Menen kotiin, pakastimessa on ainakin lihaa.", "Ei mitään? No, metsässä on ainakin hiljaista."])
 alt_preview_format = Array[String](["%s, vai? Se kelpaa jahtiporukalle.", "%s. Otetaan se saaliin kunniaksi."])
 alt_nothing_available = Array[String](["Tyhjää. Ihan kuin koko syksyn saalis.", "Ei mitään? Istun tässä kuin passissa ja odotan."])
-dialogue_sale_toast = "Metsästäjä vakuuttaa, että pussissa on vain makkaraa ja ase on lukkojen takana kotona."
 tip_base_chance = 0.3
-rep_primary_style = 5
 rep_secondary_style = 1
 min_reputation_to_appear = 15
+dialogue_sale_toast = "Metsästäjä vakuuttaa, että pussissa on vain makkaraa ja ase on lukkojen takana kotona."
 metadata/_custom_type_script = "uid://b2vqc8lkfjwic"

@@ -1,6 +1,6 @@
-[gd_resource type="SpriteFrames" format=3]
+[gd_resource type="SpriteFrames" format=3 uid="uid://1v3i1r57mc1d"]
 
-[ext_resource type="Texture2D" path="res://assets/textures/characters/ilmakitaristi_32.png" id="1_tex"]
+[ext_resource type="Texture2D" uid="uid://cfjfond08niu2" path="res://assets/textures/characters/ilmakitaristi_32.png" id="1_tex"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_idle_0"]
 atlas = ExtResource("1_tex")
@@ -25,6 +25,22 @@ region = Rect2(32, 32, 32, 32)
 [sub_resource type="AtlasTexture" id="AtlasTexture_idle_up_2"]
 atlas = ExtResource("1_tex")
 region = Rect2(64, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_solo_0"]
+atlas = ExtResource("1_tex")
+region = Rect2(0, 128, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_solo_1"]
+atlas = ExtResource("1_tex")
+region = Rect2(32, 128, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_solo_2"]
+atlas = ExtResource("1_tex")
+region = Rect2(64, 128, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_solo_3"]
+atlas = ExtResource("1_tex")
+region = Rect2(96, 128, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_walk_right_0"]
 atlas = ExtResource("1_tex")
@@ -58,22 +74,6 @@ region = Rect2(64, 64, 32, 32)
 atlas = ExtResource("1_tex")
 region = Rect2(96, 64, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_solo_0"]
-atlas = ExtResource("1_tex")
-region = Rect2(0, 128, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_solo_1"]
-atlas = ExtResource("1_tex")
-region = Rect2(32, 128, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_solo_2"]
-atlas = ExtResource("1_tex")
-region = Rect2(64, 128, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_solo_3"]
-atlas = ExtResource("1_tex")
-region = Rect2(96, 128, 32, 32)
-
 [resource]
 animations = [{
 "frames": [{
@@ -103,6 +103,38 @@ animations = [{
 "loop": 1,
 "name": &"idle_up",
 "speed": 6.0
+}, {
+"frames": [{
+"duration": 3.0,
+"texture": SubResource("AtlasTexture_solo_0")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_solo_1")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_solo_2")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_solo_3")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_solo_0")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_solo_1")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_solo_2")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_solo_3")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_solo_0")
+}],
+"loop": 0,
+"name": &"solo",
+"speed": 8.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -137,38 +169,6 @@ animations = [{
 "loop": 1,
 "name": &"walk_towards",
 "speed": 6.0
-}, {
-"frames": [{
-"duration": 3.0,
-"texture": SubResource("AtlasTexture_solo_0")
-}, {
-"duration": 2.0,
-"texture": SubResource("AtlasTexture_solo_1")
-}, {
-"duration": 2.0,
-"texture": SubResource("AtlasTexture_solo_2")
-}, {
-"duration": 2.0,
-"texture": SubResource("AtlasTexture_solo_3")
-}, {
-"duration": 2.0,
-"texture": SubResource("AtlasTexture_solo_0")
-}, {
-"duration": 2.0,
-"texture": SubResource("AtlasTexture_solo_1")
-}, {
-"duration": 2.0,
-"texture": SubResource("AtlasTexture_solo_2")
-}, {
-"duration": 2.0,
-"texture": SubResource("AtlasTexture_solo_3")
-}, {
-"duration": 2.0,
-"texture": SubResource("AtlasTexture_solo_0")
-}],
-"loop": 0,
-"name": &"solo",
-"speed": 8.0
 }, {
 "frames": [{
 "duration": 1.0,
