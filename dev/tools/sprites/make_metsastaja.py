@@ -18,12 +18,15 @@ from pathlib import Path
 
 from PIL import Image
 
-from customer_sheet import (flat_clothes, BOX_X, FRAME, HANDS_REST, LEGS_TOP, ROOT, STILL, TEXTURE_DIR, Held, Look, check, draw_frame,
+from customer_sheet import (flat_clothes, BOX_X, FRAME, HANDS_REST, LEGS_TOP, RIGHT, ROOT, STILL, TEXTURE_DIR, Held, Look, check, draw_frame,
                             draw_sheet, hex_color, paint)
 from make_orveltaja import write_aseprite_source
 
 NAME = "metsastaja_32"
 NAARAS_NAME = "metsastaja_naaras_32"
+# Head grid rows of the cap brim and of the eyes' pupils.
+BRIM_ROW = 6
+EYE_ROW = 8
 
 PALETTE = {
     "s": hex_color("ead4aa"),  # skin
@@ -216,10 +219,32 @@ def draw_back_row(sheet: Image.Image, front: Look, naaras: bool) -> None:
         draw_frame(sheet, back, column, 1, back=True, bob=bob, legs="stand", hands=HANDS_REST, trail=STILL)
 
 
+def facing_right(head: list[str]) -> list[str]:
+    """Walking right the brim points right and both pupils look ahead; a brim on the left read
+    as him facing left. The idle rows keep the user's inward eyes and left brim."""
+    rows = list(head)
+    brim = rows[BRIM_ROW]
+    rows[BRIM_ROW] = "....." + brim[5:14] + "ooo" + brim[17:]
+    eyes = rows[EYE_ROW]
+    rows[EYE_ROW] = eyes[:10] + "We" + eyes[12:]
+    return rows
+
+
+def draw_walk_right_row(sheet: Image.Image, front: Look) -> None:
+    walker = look(front.head_front is NAARAS_HEAD_FRONT)
+    walker.palette = front.palette
+    walker.head_front = facing_right(front.head_front)
+    check(walker)
+    sheet.paste((0, 0, 0, 0), (0, FRAME * 3, FRAME * 4, FRAME * 4))
+    for column, (legs, bob, hands, trail) in enumerate(RIGHT):
+        draw_frame(sheet, walker, column, 3, back=False, bob=bob, legs=legs, hands=hands, trail=trail)
+
+
 def build(naaras: bool) -> Image.Image:
     front = look(naaras)
     sheet = draw_sheet(front)
     draw_back_row(sheet, front, naaras)
+    draw_walk_right_row(sheet, front)
     return sheet
 
 
