@@ -20,7 +20,7 @@ create table if not exists public.demo_scores (
 	reputation integer not null check (reputation between -1000 and 1000),
 	bottles integer not null check (bottles between 0 and 3000),
 	worth numeric(10, 1) not null check (worth between 0 and 20000),
-	-- Styles brewed this season; 37 exist.
+	-- Styles brewed this season; 39 exist.
 	styles_brewed integer not null default 0 check (styles_brewed between 0 and 40),
 	-- Their points, RunScore.style_points(): 30 per euro of bottle price, 30 to 150 a style.
 	style_points integer not null default 0 check (style_points between 0 and 6000),
