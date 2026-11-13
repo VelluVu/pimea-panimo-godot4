@@ -3,20 +3,24 @@ gentleman. Grey-brown coat, near-black stripes running from the spine down the b
 legs, the tabby M on the forehead, warm tan bands on the chest, an ochre glow round the eyes,
 a light jaw and muzzle, a darker reddish-brown nose, white whiskers and dark paws and pink ears, the tail held up with ringed stripes.
 
-The sheet replaces assets/textures/cat_32.png in place: four 32 px frames side by side, a
-walk facing left (cat_anim.tres plays it as `walk_left`), the cat on the same floor row as
-before. Light from the upper left; the far legs are a shade darker.
+The sheet is assets/textures/cat_32.png: 32 px frames, one animation per row, all facing
+left (cat_anim.tres plays them). Row 0 is the walk (`walk_left`, also the mouse chase), then
+the poses of the cat who lives in the cellar: sit (tail flicks, a blink), sleep (curled up,
+breathing), groom (paw to the mouth, licks, wipes the face) and stretch (a bow, a yawn).
+The new poses reuse the head of walk frame 0, the user's hand-edited face, as a stamp.
+Light from the upper left; the far legs are a shade darker.
 
     python dev/tools/sprites/make_tikru.py [--preview out.png] [--force-aseprite]
 """
 
 import argparse
+import subprocess
 from pathlib import Path
 
 from PIL import Image
 
 from customer_sheet import ROOT, hex_color, paint
-from make_orveltaja import write_aseprite_source
+from make_orveltaja import ASEPRITE, ASEPRITE_SCRIPT
 
 OUT = ROOT / "assets/textures/cat_32.png"
 FRAME = 32
@@ -134,28 +138,253 @@ def draw_frame(column: int) -> Image.Image:
     return frame
 
 
+# --- the head as a stamp for the other poses ------------------------------------------------
+# Walk frame 0's head with the user's edits (x <= 12, rows 15-22) plus its whiskers on the
+# right; poses move it up or down. Overrides are in the same walk-frame coordinates.
+def _head_stamp() -> dict:
+    walk = draw_frame(0)
+    stamp = {}
+    for y in range(15, 23):
+        for x in range(0, 13 if y < 22 else 12):
+            color = walk.getpixel((x, y))
+            if color[3]:
+                stamp[(x, y)] = color
+    for y in range(19, 23):
+        for x in range(12, 17):
+            if walk.getpixel((x, y)) == PALETTE["W"]:
+                stamp[(x, y)] = PALETTE["W"]
+    return stamp
+
+
+def _pixels(rows: list[str], left: int, top: int) -> dict:
+    return {(left + x, top + y): PALETTE[c] for y, row in enumerate(rows) for x, c in enumerate(row) if c != "."}
+
+
+EYES_CLOSED = {**_pixels(["L....H"], 6, 18), **_pixels(["KK..KK"], 6, 19)}
+# Eyes squeezed shut and the jaw dropped open, pink inside.
+YAWN = {**EYES_CLOSED, **_pixels(["KKKK", "KPPK", "KPPK", "CKKC"], 7, 21)}
+TONGUE = _pixels(["PP"], 8, 22)
+
+
+def stamp_head(frame: Image.Image, dy: int, overrides: dict | None = None) -> None:
+    for (x, y), color in {**HEAD, **(overrides or {})}.items():
+        if 0 <= y + dy < FRAME:
+            frame.putpixel((x, y + dy), color)
+
+
+def blank() -> Image.Image:
+    return Image.new("RGBA", (FRAME, FRAME), (0, 0, 0, 0))
+
+
+# --- sit ---------------------------------------------------------------------------------------
+SIT_LIFT = -4  # the head sits four rows higher than in the walk
+SIT_BODY = [  # left 0, top 12: the back sloping down to the haunch, the near front leg at x7-8
+    ".............F........",
+    ".............FS.......",
+    ".............FFF......",
+    ".............KKFF.....",
+    ".............FFKKF....",
+    ".............FFFFKF...",
+    "............FKKFFFKF..",
+    "......FKKKKFFFKKFFFK..",
+    "......FFCCFFFFFFKKFKD.",
+    "......FFFFFFFFFFFFKKD.",
+    "......FFFFFFKKFFFFFKD.",
+    ".......FFDDFFKKKKFFKD.",
+    ".......SFDKFFFFFFKKFD.",
+    ".......FFDDFFFFFFFFKD.",
+    ".......SFDKFKKKKFFFKD.",
+    ".......FFDDFFFFKKFFDD.",
+]
+# The tail comes round the haunch and lies in front of the paws (rows 28-29), ringed every
+# third pixel; its tip at the left lifts and curls for the flick.
+_RING_TOP, _RING_BOTTOM = "LLK" * 6, "FFS" * 6
+TAIL_LEFT, TAIL_TOP = 3, 24
+TAILS = {
+    "down": ["", "", "", "", "." + _RING_TOP[:17], "K" + _RING_BOTTOM[:16] + "D"],
+    "up": ["", "", "KS", "LF", ".K" + _RING_TOP[:16], "..D" + _RING_BOTTOM[:14] + "D"],
+    "curl": ["", ".KS", "LF.", "KS.", ".L" + _RING_TOP[:16], "..D" + _RING_BOTTOM[:14] + "D"],
+}
+
+
+def sit_frame(tail: str = "down", face: dict | None = None) -> Image.Image:
+    frame = blank()
+    paint(frame, PALETTE, SIT_BODY, 0, 12)
+    paint(frame, PALETTE, TAILS[tail], TAIL_LEFT, TAIL_TOP)
+    stamp_head(frame, SIT_LIFT, face)
+    return frame
+
+
+# --- groom: the near front leg lifted to the mouth, behind it only the far leg -----------------
+GROOM_GAP = [".D"] * 5  # left 7, top 23: where the near leg stood
+GROOM_POSES = {  # pose: (head dy, face, (left, top, rows) of the lifted leg with its lit forearm)
+    "lift": (SIT_LIFT, None, (5, 21, ["..LF", ".LF.", "DD..", "KK.."])),
+    "lick": (SIT_LIFT + 1, TONGUE, (6, 20, ["DDD..", "KKLF.", "..LF.", "...LF"])),
+    "lick2": (SIT_LIFT + 1, None, (6, 21, ["DDD..", "KKLF.", "..LF."])),
+    "wipe": (SIT_LIFT, EYES_CLOSED, (5, 14, ["DD...", "KKL..", ".LF..", "..LF.", "..LF.", "...LF", "...LF"])),
+}
+
+
+def groom_frame(pose: str) -> Image.Image:
+    head_dy, face, (left, top, leg) = GROOM_POSES[pose]
+    frame = blank()
+    paint(frame, PALETTE, SIT_BODY, 0, 12)
+    paint(frame, PALETTE, GROOM_GAP, 7, 23)
+    paint(frame, PALETTE, TAILS["down"], TAIL_LEFT, TAIL_TOP)
+    stamp_head(frame, head_dy, face)
+    paint(frame, PALETTE, leg, left, top)
+    return frame
+
+
+# --- sleep: curled up, head down on the paws, the back rising with each breath -----------------
+SLEEP_DY = 5
+SLEEP_BODY = [  # left 11, top 20
+    "....FFKKFF...",
+    "..FFKKFFKKFF.",
+    ".FFFKKFFKKFFD",
+    "FFFKKFFKKFFKD",
+    "FFFKKFFKKFFKD",
+    "FFFKKFFKKFFKD",
+    "FFFFKKFFKKFKD",
+    "FFFFKKFFKKFDD",
+    "DDDDDDDDDDDD.",
+]
+SLEEP_BREATH_IN = "....FFKKF...."  # one row on top, at row 19
+
+
+def sleep_frame(breath_in: bool) -> Image.Image:
+    frame = blank()
+    if breath_in:
+        paint(frame, PALETTE, [SLEEP_BREATH_IN], 11, 19)
+    paint(frame, PALETTE, SLEEP_BODY, 11, 20)
+    paint(frame, PALETTE, TAILS["down"], TAIL_LEFT, TAIL_TOP)
+    stamp_head(frame, SLEEP_DY, EYES_CLOSED)
+    return frame
+
+
+# --- stretch: a bow (chin down, front legs out, rump up), a yawn, then up on four legs -------
+BOW_DY = 5
+# The torso slanting from the shoulders (x12) up to the rump: row -> (first x, last x).
+BOW_TORSO = {18: (17, 22), 19: (14, 22), 20: (12, 22), 21: (12, 22), 22: (12, 22),
+             23: (12, 18), 24: (12, 16), 25: (12, 14), 26: (12, 13)}
+BOW_STRIPES = (14, 15, 18, 19)  # the walk's stripe rhythm
+BOW_HIND_NEAR = ["FF", "SF", "FF", "SF", "DD", "DD", "KK"]  # x19-20, rows 23-29
+BOW_HIND_FAR = ["DD", "KD", "DD", "KD", "DD", "DD", "KK"]  # x21-22
+BOW_FRONT_LEGS = ["KFFSFFSFFFF", "KKDDDDDDDD."]  # left 1, top 28: stretched along the floor
+BOW_TAIL = ["KS", "LF", "KS", "LF", "SK", "LF", "KS"]  # left 21, top 11
+
+
+def _bow_body() -> list[str]:
+    rows = [["."] * 24 for _ in range(18, 30)]
+    for y, (first, last) in BOW_TORSO.items():
+        below = BOW_TORSO.get(y + 1)
+        for x in range(first, last + 1):
+            underside = below is None or not below[0] <= x <= below[1]
+            rows[y - 18][x] = "D" if underside or x == 22 else ("K" if x in BOW_STRIPES else "F")
+    for index in range(7):
+        rows[23 - 18 + index][19:21] = list(BOW_HIND_NEAR[index])
+        rows[23 - 18 + index][21:23] = list(BOW_HIND_FAR[index])
+    return ["".join(row) for row in rows]
+
+
+def bow_frame(yawn: bool) -> Image.Image:
+    frame = blank()
+    paint(frame, PALETTE, BOW_TAIL, 21, 11)
+    paint(frame, PALETTE, _bow_body(), 0, 18)
+    paint(frame, PALETTE, BOW_FRONT_LEGS, 1, 28)
+    stamp_head(frame, BOW_DY, YAWN if yawn else None)
+    return frame
+
+
+def stand_frame(yawn: bool) -> Image.Image:
+    frame = draw_frame(1)
+    for (x, y), color in (YAWN if yawn else {}).items():
+        frame.putpixel((x, y), color)
+    return frame
+
+
+# --- walking away, towards the back wall: the same walk, the head seen from behind -------------
+# No face and no whiskers: the backs of the ears and the tabby lines running down the back of
+# the head, lit from the upper left like the rest. The chest under the chin turns to coat.
+BACK_HEAD = [  # left 5, top 15
+    ".L....H.",
+    "LLL..HHH",
+    "LLLKKHHH",
+    "LFFKKFFH",
+    "HFFKKFFH",
+    "HFKFFKFD",
+    "HKFFFFKD",
+    ".DFFFFD.",
+]
+BACK_CHEST = {"K": "F", "C": "F"}  # rows 23-24, x5-12
+
+
+def back_frame(column: int) -> Image.Image:
+    frame = draw_frame(column)
+    inverse = {color: letter for letter, color in PALETTE.items()}
+    for y in range(15, 23):
+        for x in range(0, 17):
+            if x <= 12 or frame.getpixel((x, y)) == PALETTE["W"]:
+                frame.putpixel((x, y), (0, 0, 0, 0))
+    for y in (23, 24):
+        for x in range(5, 13):
+            letter = inverse.get(frame.getpixel((x, y)))
+            if letter in BACK_CHEST:
+                frame.putpixel((x, y), PALETTE[BACK_CHEST[letter]])
+    paint(frame, PALETTE, BACK_HEAD, 5, 15)
+    return frame
+
+
+HEAD = _head_stamp()
+
+# The sheet rows, top to bottom: (animation, frames). cat_anim.tres sets the timings.
+ROWS = [
+    ("walk_left", lambda: [draw_frame(column) for column in range(4)]),
+    ("sit", lambda: [sit_frame("down"), sit_frame("up"), sit_frame("curl"), sit_frame("down", EYES_CLOSED)]),
+    ("sleep", lambda: [sleep_frame(False), sleep_frame(True)]),
+    ("groom", lambda: [groom_frame(pose) for pose in ("lift", "lick", "lick2", "wipe")]),
+    ("stretch", lambda: [bow_frame(False), bow_frame(True), stand_frame(True), stand_frame(False)]),
+    ("walk_back", lambda: [back_frame(column) for column in range(4)]),
+]
+COLUMNS = 4
+
+
 def draw_sheet() -> Image.Image:
-    sheet = Image.new("RGBA", (FRAME * 4, FRAME), (0, 0, 0, 0))
-    for column in range(4):
-        sheet.alpha_composite(draw_frame(column), (column * FRAME, 0))
+    sheet = Image.new("RGBA", (FRAME * COLUMNS, FRAME * len(ROWS)), (0, 0, 0, 0))
+    for row, (_name, frames) in enumerate(ROWS):
+        for column, frame in enumerate(frames()):
+            sheet.alpha_composite(frame, (column * FRAME, row * FRAME))
     return sheet
+
+
+def write_aseprite_source(png: Path, force: bool) -> None:
+    """An editable source with one tag per animation row; an existing one is kept."""
+    out = png.with_suffix(".aseprite")
+    if out.exists() and not force:
+        print(f"kept {out.name} (pass --force-aseprite to redo it)")
+        return
+    if not ASEPRITE.exists():
+        print("Aseprite not found, no .aseprite source written:", ASEPRITE)
+        return
+    rows = ",".join(f"{name}:{len(frames())}" for name, frames in ROWS)
+    subprocess.run([str(ASEPRITE), "-b", "--script-param", f"png={png}", "--script-param", f"out={out}",
+                    "--script-param", f"cell={FRAME}", "--script-param", f"rows={rows}",
+                    "--script", str(ASEPRITE_SCRIPT)], check=True)
+    print(f"wrote {out.name}")
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--preview", type=Path, help="also write an 8x preview beside the old cat")
+    parser.add_argument("--preview", type=Path, help="also write an 8x preview")
     parser.add_argument("--force-aseprite", action="store_true")
     args = parser.parse_args()
-    old = Image.open(OUT).convert("RGBA") if args.preview and OUT.exists() else None
     sheet = draw_sheet()
     sheet.save(OUT)
     print(f"wrote {OUT.relative_to(ROOT)}")
     write_aseprite_source(OUT, args.force_aseprite)
     if args.preview:
-        image = Image.new("RGBA", (FRAME * 4, FRAME * 2), (40, 36, 48, 255))
-        image.alpha_composite(sheet, (0, 0))
-        if old is not None:
-            image.alpha_composite(old, (0, FRAME))
+        image = Image.new("RGBA", sheet.size, (40, 36, 48, 255))
+        image.alpha_composite(sheet)
         image.resize((image.width * 8, image.height * 8), Image.NEAREST).save(args.preview)
 
 

@@ -14,3 +14,4 @@ crossing_seconds = 7.4
 flying = true
 sound_chance = 0.4
 sounds = Array[AudioStream]([ExtResource("snd_bat_squeak")])
+pest = true

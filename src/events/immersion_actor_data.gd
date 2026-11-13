@@ -21,3 +21,7 @@ extends Resource
 @export var sounds : Array[AudioStream] = []
 ## Chance that this actor makes its sound on a crossing, so it doesn't get old.
 @export_range(0.0, 1.0) var sound_chance : float = 1.0
+## A critter the adopted cellar cat goes after (or watches, when it flies).
+@export var pest : bool = false
+## The stray cat of the mouse chase: left out once the cellar cat lives here, who hunts instead.
+@export var cellar_cat_takes_over : bool = false

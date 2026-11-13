@@ -1,13 +1,14 @@
 class_name ImmersionEventSpawner
 extends Node2D
 
-## Decorative vignettes (a mouse chased by a cat) every few minutes, no gameplay. An
-## adopted cellar cat walks on its own, more frequent timer so it is seen.
+## Decorative vignettes (a mouse chased by a cat) every few minutes, no gameplay. The
+## adopted cellar cat lives in the cellar on its own (CellarCat) and hears of every pest.
+
+## A pest actor came out; the cellar cat chases it or, when it flies, watches it.
+signal pest_appeared(sprite : AnimatedSprite2D, flying : bool)
 
 const MIN_INTERVAL_SECONDS : float = 240.0 * DayPace.SCALE
 const MAX_INTERVAL_SECONDS : float = 480.0 * DayPace.SCALE
-const CAT_MIN_INTERVAL_SECONDS : float = 60.0 * DayPace.SCALE
-const CAT_MAX_INTERVAL_SECONDS : float = 120.0 * DayPace.SCALE
 
 const VIGNETTE_DIR : String = "res://src/resources/immersion_vignettes/"
 
@@ -29,7 +30,6 @@ const IMMERSION_EVENT_SPAWNER_GROUP : String = "immersion_event_spawner"
 var vignettes : Array[ImmersionVignetteData] = []
 
 var _timer : Timer
-var _cat_timer : Timer
 ## Live actor sprite -> its base scale, rescaled for depth every frame.
 var _active_sprites : Dictionary = {}
 
@@ -38,13 +38,6 @@ func _ready() -> void:
 	add_to_group(IMMERSION_EVENT_SPAWNER_GROUP)
 	_load_vignettes()
 	_setup_timer()
-	_cat_timer = Timer.new()
-	_cat_timer.one_shot = true
-	_cat_timer.timeout.connect(_on_cat_timer_timeout)
-	add_child(_cat_timer)
-	BrewerySignals.cellar_cat_adopted.connect(_on_cat_timer_timeout)
-	BrewEngine.brewery_changed.connect(_on_brewery_changed)
-	_on_brewery_changed(BrewEngine.current_brewery)
 
 
 func _process(_delta: float) -> void:
@@ -85,23 +78,6 @@ func _on_timer_timeout() -> void:
 	_start_next_timer()
 
 
-## A loaded season with the cat keeps its walks going; a new one stops them.
-func _on_brewery_changed(brewery : Brewery) -> void:
-	if brewery != null and brewery.cellar_cat_adopted:
-		_cat_timer.start(randf_range(CAT_MIN_INTERVAL_SECONDS, CAT_MAX_INTERVAL_SECONDS))
-	else:
-		_cat_timer.stop()
-
-
-## Walks the cellar cat now and schedules its next round.
-func _on_cat_timer_timeout() -> void:
-	for vignette : ImmersionVignetteData in vignettes:
-		if vignette.needs_cellar_cat:
-			_run_vignette(vignette)
-			break
-	_cat_timer.start(randf_range(CAT_MIN_INTERVAL_SECONDS, CAT_MAX_INTERVAL_SECONDS))
-
-
 func _run_vignette(vignette : ImmersionVignetteData) -> void:
 	if vignette == null:
 		return
@@ -116,8 +92,13 @@ func _run_vignette(vignette : ImmersionVignetteData) -> void:
 		push_warning("ImmersionEventSpawner: '%s' needs at least 2 Marker2D children" % path_root.name)
 		return
 
+	var has_cellar_cat : bool = BrewEngine.current_brewery != null and BrewEngine.current_brewery.cellar_cat_adopted
 	for actor : ImmersionActorData in vignette.actors:
-		_cross(actor, points)
+		if actor.cellar_cat_takes_over and has_cellar_cat:
+			continue
+		var sprite : AnimatedSprite2D = _cross(actor, points)
+		if actor.pest:
+			pest_appeared.emit(sprite, actor.flying)
 
 
 ## Null when nothing is loaded.
@@ -125,7 +106,6 @@ func _pick_vignette() -> ImmersionVignetteData:
 	var weights : Array[float] = []
 	var season : SeasonRules.Season = SeasonRules.now()
 	var is_halloween : bool = season == SeasonRules.Season.HALLOWEEN
-	# The cellar cat walks on its own timer (_on_cat_timer_timeout).
 	for vignette : ImmersionVignetteData in vignettes:
 		weights.append(vignette.pick_weight(is_halloween, season))
 	return WeightedPicker.pick(vignettes, weights) as ImmersionVignetteData
@@ -139,7 +119,7 @@ func _get_waypoints(path_root : Node2D) -> PackedVector2Array:
 	return points
 
 
-func _cross(actor : ImmersionActorData, points : PackedVector2Array) -> void:
+func _cross(actor : ImmersionActorData, points : PackedVector2Array) -> AnimatedSprite2D:
 	var sprite := AnimatedSprite2D.new()
 	sprite.sprite_frames = actor.sprite_frames
 	sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
@@ -174,6 +154,7 @@ func _cross(actor : ImmersionActorData, points : PackedVector2Array) -> void:
 	tween.tween_callback(_finish_actor.bind(sprite))
 	_fade_in_and_out(sprite, actor.start_delay_seconds, actor.crossing_seconds)
 	_maybe_make_sound(actor, sprite)
+	return sprite
 
 
 ## A child player, so the sound comes from the critter and leaves with it.

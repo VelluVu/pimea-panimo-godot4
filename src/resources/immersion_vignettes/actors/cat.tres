@@ -12,3 +12,4 @@ base_scale = Vector2(3, 3)
 start_delay_seconds = 0.5
 sounds = Array[AudioStream]([ExtResource("snd_cat_meow_1"), ExtResource("snd_cat_meow_2")])
 sound_chance = 0.85
+cellar_cat_takes_over = true

@@ -11,3 +11,4 @@ base_scale = Vector2(2, 2)
 start_delay_seconds = 0.0
 crossing_seconds = 9.0
 flying = true
+pest = true

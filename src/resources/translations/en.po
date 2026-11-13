@@ -2984,7 +2984,9 @@ msgstr "Air Guitarist"
 msgid ""
 "Ilmakitaristi soittaa tiskillä huikean soolon! Jono hurraa, ja joku nostaa "
 "sytkärin ilmaan."
-msgstr "The air guitarist plays an epic solo at the counter! The queue cheers, and someone holds up a lighter."
+msgstr ""
+"The air guitarist plays an epic solo at the counter! The queue cheers, and "
+"someone holds up a lighter."
 
 #: src/resources/customers/ilmakitaristi.tres
 msgid "Kelpaa, vaikka vähän eri viritys."
@@ -3216,7 +3218,9 @@ msgstr "Pantsdrunk"
 msgid ""
 "Kalsarikännäri lähti kuusi pulloa kainalossa. Ovi kävi ennen kuin ehdit "
 "sanoa kiitos."
-msgstr "The pantsdrunk left with six bottles under his arm. The door shut before you could say thanks."
+msgstr ""
+"The pantsdrunk left with six bottles under his arm. The door shut before "
+"you could say thanks."
 
 #: src/resources/customers/kalsarikannari.tres
 msgid "Kelpaa. Kalsarikännit ei oo mikään viinitasting."
@@ -3242,7 +3246,9 @@ msgstr "My series is on pause. Session ale, quick."
 msgid ""
 "Tulin villasukissa, koska kenkien laittaminen on sosiaalinen tilanne. "
 "Session alea, kuusi."
-msgstr "I came in woolly socks, because putting on shoes is a social situation. Session ale, six."
+msgstr ""
+"I came in woolly socks, because putting on shoes is a social situation. "
+"Session ale, six."
 
 #: src/resources/customers/kalsarikannari.tres
 msgid "Tyhjät hanat. Kuin mun jääkaappi, ja siksi mä tänne tulin."
@@ -3328,7 +3334,9 @@ msgstr "Drunk Moose"
 msgid ""
 "Kännihirvi joi doppelbockin suoraan ämpäristä ja röyhtäisi niin, että "
 "pullot kilisivät."
-msgstr "The drunk moose drank the doppelbock straight from the bucket and burped so hard the bottles rattled."
+msgstr ""
+"The drunk moose drank the doppelbock straight from the bucket and burped so "
+"hard the bottles rattled."
 
 #: src/resources/customers/kannihirvi.tres
 msgid "Mä oon se hirvi siitä varoitusmerkistä. Lomalla. Doppelbock."
@@ -3416,7 +3424,9 @@ msgstr "No. Even Salama would refuse this fence."
 
 #: src/resources/customers/keppihevosratsastaja.tres
 msgid "Hei! Mulle witbier ja Salamalle ämpäri vettä. Se on janoinen laukan jälkeen."
-msgstr "Hi! A witbier for me and a bucket of water for Salama. She's thirsty after the gallop."
+msgstr ""
+"Hi! A witbier for me and a bucket of water for Salama. She's thirsty after "
+"the gallop."
 
 #: src/resources/customers/keppihevosratsastaja.tres
 msgid "Hylätty suoritus. Nolla pistettä."
@@ -3442,7 +3452,9 @@ msgstr "Hobby Horse Rider"
 msgid ""
 "Keppihevosratsastaja ja Salama tekevät kouluratsastuskumarruksen tiskin "
 "edessä! Koko kellari taputtaa, ja Salama saa ruusukkeen."
-msgstr "The hobby horse rider and Salama do a dressage bow in front of the counter! The whole cellar claps, and Salama gets a rosette."
+msgstr ""
+"The hobby horse rider and Salama do a dressage bow in front of the counter! "
+"The whole cellar claps, and Salama gets a rosette."
 
 #: src/resources/customers/keppihevosratsastaja.tres
 msgid "Salama haistoi tämän ja peruutti."
@@ -3466,7 +3478,9 @@ msgstr "Full marks! This goes straight in the show photo."
 
 #: src/resources/customers/keppihevosratsastaja.tres
 msgid "Tää ei ollut tilauksessa, mutta otetaan. Salama, älä katso noin."
-msgstr "This wasn't what I ordered, but we'll take it. Salama, don't look at me like that."
+msgstr ""
+"This wasn't what I ordered, but we'll take it. Salama, don't look at me "
+"like that."
 
 #: src/resources/customers/keppihevosratsastaja.tres
 msgid "Tää kellari ei ole meidän kisapaikka."
@@ -7348,9 +7362,9 @@ msgstr "Cellar Cat"
 
 #: src/resources/event_perks/kellarikissa.tres
 msgid ""
-"Kissa pitää tuholaiset loitolla: oluet heikkenevät "
+"Tikru pitää tuholaiset loitolla: oluet heikkenevät "
 "{decline_rate_multiplier} hitaammin."
-msgstr "The cat keeps pests away: beers decline {decline_rate_multiplier} slower."
+msgstr "Tikru keeps pests away: beers decline {decline_rate_multiplier} slower."
 
 #: src/resources/event_perks/kurssi_asiakaspalvelu.tres
 msgid "Asiakaspalvelukurssi"
@@ -9914,8 +9928,12 @@ msgid "Miau? (Laiha kulkukissa katsoo ovelta. Ruokitaanko se, {cost} €?)"
 msgstr "Meow? (A thin stray cat looks in from the door. Feed it, {cost} €?)"
 
 #: src/resources/special_events/stray_cat.tres
-msgid "Purr... (Kissa tekee tarkastuskierroksen panimon ympäri. Se jää taloon.)"
-msgstr "Purr... (The cat makes an inspection round of the brewery. It's staying.)"
+msgid ""
+"Purr... (Kissa tekee tarkastuskierroksen panimon ympäri. Se jää taloon. "
+"Panimomestari antaa sille nimen Tikru.)"
+msgstr ""
+"Purr... (The cat makes an inspection round of the brewery. It's staying. "
+"The brewmaster names him Tikru.)"
 
 #: src/resources/special_events/training_course.tres
 msgid ""

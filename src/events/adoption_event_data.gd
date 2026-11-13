@@ -1,8 +1,8 @@
 class_name AdoptionEventData
 extends PerkOfferEventData
 
-## A stray cat: pay offer_cost to keep it, once a season. It brings its perk and walks
-## through the cellar now and then (ImmersionVignetteData.needs_cellar_cat).
+## A stray cat: pay offer_cost to keep it, once a season. It brings its perk and stays
+## in the cellar (CellarCat).
 
 
 func get_weight(brewery: Brewery) -> float:

@@ -1,7 +1,7 @@
 @tool
 extends McpTestSuite
 
-## Unit tests for ImmersionVignetteData.pick_weight(): the seasonal weight and the cat.
+## Unit tests for ImmersionVignetteData.pick_weight(): the seasonal weights.
 
 const VignetteScript := preload("res://src/events/immersion_vignette_data.gd")
 
@@ -24,12 +24,6 @@ func test_halloween_uses_the_seasonal_weight() -> void:
 
 func test_without_a_seasonal_weight_the_year_round_one_holds() -> void:
 	assert_eq(_vignette(0.7).pick_weight(true), 0.7)
-
-
-func test_the_cellar_cat_is_never_picked() -> void:
-	var cat := _vignette(3.0, 3.0)
-	cat.needs_cellar_cat = true
-	assert_eq(cat.pick_weight(true), 0.0)
 
 
 func test_the_bats_are_commoner_at_halloween() -> void:

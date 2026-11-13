@@ -13,3 +13,4 @@ start_delay_seconds = 0.0
 crossing_seconds = 6.0
 sound_chance = 0.6
 sounds = Array[AudioStream]([ExtResource("snd_mouse_squeak")])
+pest = true
